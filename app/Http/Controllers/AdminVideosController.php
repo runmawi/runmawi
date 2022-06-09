@@ -911,11 +911,12 @@ if(!empty($artistsdata)){
             'languages' => Language::all(),
             'artists' => Artist::all(),
             'settings' => $settings,
-            'age_categories' => AgeCategory::all(),
+            'age_categories' => AgeCategory::get(),
             'countries' => CountryCode::all(),
             'video_artist' => Videoartist::where('video_id', $id)->pluck('artist_id')->toArray(),
             'category_id' => CategoryVideo::where('video_id', $id)->pluck('category_id')->toArray(),
             'languages_id' => LanguageVideo::where('video_id', $id)->pluck('language_id')->toArray(),
+            'block_countries' => BlockVideo::where('video_id', $id)->pluck('country_id')->toArray(),
             'page' => 'Edit',
             'Reels_videos' => $Reels_videos,
             'ads_paths' => $ads_details ? $ads_details : 0 ,
@@ -941,6 +942,7 @@ if(!empty($artistsdata)){
         }
         
         $data = $request->all();
+
         $validatedData = $request->validate([
             'title' => 'required|max:255',
             // 'video_country' => 'required'        
@@ -1382,6 +1384,8 @@ if(!empty($artistsdata)){
          $video->description = strip_tags($data['description']);
          $video->banner =  $banner;
          $video->enable =  $enable;
+         $video->rating =  $request->rating;
+
         //  dd($data['enable']);
          $video->save();
 
@@ -1399,7 +1403,11 @@ if(!empty($artistsdata)){
                 }
 
             }
+        }else{
+            Videoartist::where('video_id', $video->id)->delete();
+
         }
+
         if(!empty($data['video_category_id'])){
             $category_id = $data['video_category_id'];
             unset($data['video_category_id']);
