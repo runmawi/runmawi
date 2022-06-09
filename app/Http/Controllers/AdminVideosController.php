@@ -2381,8 +2381,8 @@ if(!empty($artistsdata)){
             $id = $data['videoid'];
             $video = Video::findOrFail($id);
 
-            echo "<pre>";
-            print_r($video);exit();
+            // echo "<pre>";
+            // print_r($video);exit();
             $validator = Validator::make($request->all(), [
                'file' => 'required|mimes:video/mp4,video/x-m4v,video/*',
                
@@ -2438,7 +2438,7 @@ if(!empty($artistsdata)){
                 $video->path = $path;
                 $video->mp4_url = $storepath;
                 $video->type = 'mp4_url';
-                $video->draft = 0;
+                // $video->draft = 0;
                 // $video->image = 'default_image.jpg';
     
                 
@@ -2460,6 +2460,8 @@ if(!empty($artistsdata)){
             
             }elseif($mp4_url != '' && $pack == "Business" && $settings->transcoding_access  == 1) {
     
+            // echo "<pre>";
+            // print_r($mp4_url);exit();
                 $rand = Str::random(16);
                 $path = $rand . '.' . $request->file->getClientOriginalExtension();
                 $request->file->storeAs('public', $path);
@@ -2482,7 +2484,8 @@ if(!empty($artistsdata)){
                  $video->path = $path;
                  $video->title = $file_folder_name;
                  $video->mp4_url = $storepath;
-                 $video->draft = 0;
+                //  $video->draft = 0;
+                $video->type = '';
                 //  $video->image = 'default_image.jpg';
                  $video->duration  = $Video_duration;
                  $video->user_id = Auth::user()->id;
@@ -2525,7 +2528,7 @@ if(!empty($artistsdata)){
                 $video->path = $path;
                 $video->mp4_url = $storepath;
                 $video->type = 'mp4_url';
-                $video->draft = 0;
+                // $video->draft = 0;
                 $video->image = 'default_image.jpg'; 
                 $video->duration  = $Video_duration;
                 $video->save(); 
@@ -2565,4 +2568,110 @@ if(!empty($artistsdata)){
         }
       
     }
+
+
+
+    public function Updatemp4url(Request $request)
+    {
+        $value = array();
+        $data = $request->all();
+
+        $id = $data['videoid'];
+        $video = Video::findOrFail($id);
+        // echo"<pre>";print_r($data);exit;
+        if(!empty($data['mp4_url'])) {
+             
+            $video->disk = 'public';
+            $video->original_name = 'public';
+            // $video->title = $data['mp4_url'];
+            $video->mp4_url = $data['mp4_url'];
+            $video->type = 'mp4_url';
+            // $video->draft = 0;
+            $video->active = 1 ;
+            $video->image = 'default_image.jpg';
+            
+            $video->user_id = Auth::user()->id;
+            $video->save();
+            
+            $video_id = $video->id;
+
+            $value['success'] = 1;
+            $value['message'] = 'Uploaded Successfully!';
+            $value['video_id'] = $video_id;
+
+            return $value;  
+       }
+   
+
+    }
+    public function Updatem3u8url(Request $request)
+    {
+        $data = $request->all();
+        $value = array();
+
+        $id = $data['videoid'];
+        $video = Video::findOrFail($id);
+        if(!empty($data['m3u8_url'])) {
+             
+            // $video = new Video();
+            $video->disk = 'public';
+            $video->original_name = 'public';
+            // $video->title = $data['m3u8_url'];
+            $video->m3u8_url = $data['m3u8_url'];
+            $video->type = 'm3u8_url';
+            // $video->draft = 0;
+            $video->active = 1 ;
+            $video->image = 'default_image.jpg';
+            
+            $video->user_id = Auth::user()->id;
+            $video->save();
+            
+            $video_id = $video->id;
+
+            $value['success'] = 1;
+            $value['message'] = 'Uploaded Successfully!';
+            $value['video_id'] = $video_id;
+
+            return $value;  
+       }
+   
+
+    }
+    public function UpdateEmbededcode(Request $request)
+    {
+        $data = $request->all();
+        $value = array();
+
+        // echo "<pre>";
+        // print_r($data);
+        // exit();
+        $id = $data['videoid'];
+        $video = Video::findOrFail($id);
+        
+        if(!empty($data['embed'])) {
+             
+            // $video = new Video();
+            $video->disk = 'public';
+            $video->original_name = 'public';
+            // $video->title = $data['embed'];
+            $video->embed_code = $data['embed'];
+            $video->type = 'embed';
+            $video->draft = 0;
+            $video->active = 1 ;
+            $video->image = 'default_image.jpg';
+            
+            $video->user_id = Auth::user()->id;
+            $video->save();
+            
+            $video_id = $video->id;
+
+            $value['success'] = 1;
+            $value['message'] = 'Uploaded Successfully!';
+            $value['video_id'] = $video_id;
+            return $value;  
+       }
+   
+
+    }
+
 }

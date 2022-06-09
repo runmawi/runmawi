@@ -625,6 +625,9 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/uploadEditVideo',  'AdminVideosController@uploadEditVideo');
 
 
+    Route::post('/Updatem3u8url',  'AdminVideosController@Updatem3u8url');
+    Route::post('/UpdateEmbededcode',  'AdminVideosController@UpdateEmbededcode');
+    Route::post('/Updatemp4url',  'AdminVideosController@Updatemp4url');
 
     /*Audio Uploads */
     
