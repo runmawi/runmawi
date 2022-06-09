@@ -156,7 +156,7 @@ header .navbar ul li:last-child { margin-right: 0; }
 .playbtn:hover .circle { stroke-dashoffset: 0; opacity: 1; }
 .w-trailor { font-size: 17px; letter-spacing: 3.5px; font-weight: 600; color: var(--iq-white); margin-left: 5px; }
 .slider-inner{position: relative;overflow: hidden;width: 100%;}
-.big-title { background: url('../images/texure.jpg'); background-repeat: repeat-x; background-position: 100% 100%; color: #fff; -webkit-font-smoothing: antialiased; -webkit-background-clip: text; -moz-background-clip: text; background-clip: text; /*-webkit-text-fill-color: transparent; */}
+.big-title { background: url('../images/texure.jpg'); background-repeat: repeat-x; background-position: 100% 100%; color: transparent; -webkit-font-smoothing: antialiased; -webkit-background-clip: text; -moz-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
 .slick-track{margin:unset!important;}
 .favorites-contens{
    
@@ -271,7 +271,7 @@ li.slide-item .block-description .parallax-ratting span { font-size: 12px; }
 .trending-pills.nav-pills .nav-item a:hover { color: var(--iq-primary); }
 .trending-content { padding: 0px 50px; display: flex; }
 .p-btns { display: flex; align-items: center; }
-.trending-info .trending-text { font-size: 30px; line-height: 60px; margin: 15px 0; }
+.trending-info .trending-text { font-size: 60px; line-height: 60px; margin: 15px 0; }
 .trending-info .text-detail { font-size: 20px; font-weight: 500; letter-spacing: 0.7px;  }
 .trending-info .text-detail .badge { font-size: 20px; }
 .badge.badge-trend { background: rgb(0, 0, 0, 0.42); }

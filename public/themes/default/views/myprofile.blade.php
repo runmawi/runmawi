@@ -648,22 +648,23 @@ $uppercase =  ucfirst($request_url);
                         <div class="row align-items-center justify-content-end mb-3">
                             <div class="col-md-8 d-flex justify-content-between mt-3">
                                 <span class="text-light font-size-13">Password</span>
-                                <p class="mb-0">**********</p>
+                                <p class="mb-0"></p>
                             </div>
                         </div>
-                        <div class="row align-items-center justify-content-end mb-3">
+                        
+                        </div></div>
+                              <div class="a-border"></div>
+                        <div class="row align-items-center justify-content-end">
                             <div class="col-md-8 d-flex justify-content-between mt-3">
                                 <span class="text-light font-size-13">Phone</span>
                                 <p class="mb-0"><?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?></p>
                             </div>
                         </div> 
-                        <div class="row align-items-center justify-content-end mb-3">
+                        <div class="row align-items-center justify-content-end">
                             <div class="col-md-8 d-flex justify-content-between mt-3">
                                 <span class="text-light font-size-13">DOB</span>
                                 <p class="mb-0"><?php if(!empty($user->DOB)): ?><?= $user->DOB ?><?php endif; ?></p>
                             </div>
-                        </div></div>
-                              <div class="a-border"></div>
                         <!-- Add New Modal -->
 	<div class="modal fade" id="add-new">
 		<div class="modal-dialog">

@@ -593,7 +593,7 @@ class AdminUsersController extends Controller
     }
     }
 
-    public function SubscriberRevenueStartEndDateRecordofile()
+    public function myprofile()
     {
 
         $Theme = HomeSetting::pluck('theme_choosen')->first();
@@ -741,7 +741,7 @@ class AdminUsersController extends Controller
                 'Multiuser' => $Multiuser,
                 'alldevices' => $alldevices,
             );
-            return Theme::view('SubscriberRevenueStartEndDateRecordofile', $data);
+            return Theme::view('myprofile', $data);
         }
     }
     public function ProfileImage(Request $request)
@@ -2712,156 +2712,7 @@ class AdminUsersController extends Controller
         ));
 
     }
- public function myprofile()
-    {
 
-        $Theme = HomeSetting::pluck('theme_choosen')->first();
-        Theme::uses($Theme);
-
-        if (Auth::guest())
-        {
-            return redirect('/login');
-        }
-        $data = Session::all();
-
-        // $session_password = $data['password_hash'];
-        if (empty($data['password_hash']))
-        {
-            $system_settings = SystemSetting::first();
-
-            return Theme::view('auth.login', compact('system_settings'));
-
-            // return View::make('auth.login', $data);
-            
-        }
-        else
-        {
-
-            $user_id = Auth::user()->id;
-            $user_role = Auth::user()->role;
-            $alldevices = LoggedDevice::where('user_id', '=', Auth::User()->id)
-                ->get();
-
-            if ($user_role == 'registered' || $user_role == 'admin')
-            {
-                $role_plan = $user_role;
-                $plans = "";
-                $devices_name = "";
-
-            }
-            elseif ($user_role == 'subscriber')
-            {
-
-                $user_role = Subscription::select('subscription_plans.*')->join('subscription_plans', 'subscription_plans.plan_id', '=', 'subscriptions.stripe_plan')
-                    ->where('subscriptions.user_id', $user_id)->orderBy('created_at', 'DESC')
-                    ->get();
-                //     SELECT
-                // subscription_plans.* FROM subscriptions INNER JOIN subscription_plans ON
-                // subscriptions.stripe_plan = subscription_plans.plan_id
-                // WHERE subscriptions.user_id = 601
-                
-
-                if (!empty($user_role[0]))
-                {
-                    $role_plan = $user_role[0]->plans_name;
-                    $plans = SubscriptionPlan::where('plans_name', $role_plan)->first();
-                    $devices = Devices::all();
-                    $permission = $plans->devices;
-                    $user_devices = explode(",", $permission);
-                }
-                else
-                {
-                    $role_plan = "No Plan";
-                    $plans = "";
-                }
-
-                if (!empty($plans->devices))
-                {
-                    foreach ($devices as $key => $value)
-                    {
-                        if (in_array($value->id, $user_devices))
-                        {
-                            $devices_name[] = $value->devices_name;
-                        }
-                    }
-                    $plan_devices = implode(",", $devices_name);
-                    if (!empty($plan_devices))
-                    {
-                        $devices_name = $plan_devices;
-                    }
-                    else
-                    {
-                        $devices_name = "";
-                    }
-                }
-                else
-                {
-                    $devices_name = "";
-                }
-
-            }
-            $user_role = Auth::user()->role;
-
-            $user_details = User::find($user_id);
-            $recent_videos = RecentView::orderBy('id', 'desc')->take(10)
-                ->get();
-            $recent_view = $recent_videos->unique('video_id');
-
-            foreach ($recent_view as $key => $value)
-            {
-                $videos[] = Video::Where('id', '=', $value->video_id)
-                    ->take(10)
-                    ->get();
-            }
-            // dd($videos);
-            // $recent_view = $videos->unique('slug');
-            $videocategory = VideoCategory::all();
-            $language = Language::all();
-
-            // Multiuser profile details
-            $Multiuser = Session::get('subuser_id');
-
-            if ($Multiuser != null)
-            {
-                $users = Multiprofile::where('id', $Multiuser)->pluck('id')
-                    ->first();
-                $profile_details = Multiprofile::where('id', $users)->get();
-            }
-            else
-            {
-                $users = User::where('id', Auth::user()->id)
-                    ->pluck('id')
-                    ->first();
-                $profile_details = Multiprofile::where('parent_id', $users)->get();
-            }
-            // $video = "";
-            if (!empty($video))
-            {
-                $video = array_unique($videos);
-            }
-            else
-            {
-                $video = [];
-            }
-            // $video = array_unique($videos);
-            $data = array(
-                'videos' => $video,
-                'videocategory' => $videocategory,
-                'plans' => $plans,
-                'devices_name' => $devices_name,
-                'user' => $user_details,
-                'role_plan' => $role_plan,
-                'user_role' => $user_role,
-                'post_route' => URL::to('/profile/update') ,
-                'language' => $language,
-                'profile_details' => $profile_details,
-                'Multiuser' => $Multiuser,
-                'alldevices' => $alldevices,
-            );
-            return Theme::view('myprofile', $data);
-        }
-    }
-    
     public function Splash_edit(Request $request, $id)
     {
 

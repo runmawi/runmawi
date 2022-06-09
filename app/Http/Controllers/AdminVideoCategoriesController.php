@@ -77,14 +77,8 @@ class AdminVideoCategoriesController extends Controller
             $image = $request['image']; 
           
             $slug = $request['slug']; 
-
-            $in_menu = $request['in_menu']; 
-
           
             $in_home = $request['in_home']; 
-
-            $banner = $request['banner']; 
-
             
             $footer = $request['footer']; 
           
@@ -120,24 +114,7 @@ class AdminVideoCategoriesController extends Controller
           } else {
                $input['image']  = 'default.jpg';
            }
-           $banner_image = $request['banner_image']; 
           
-           if($banner_image != '') {   
-            //code for remove old file
-                if($banner_image != ''  && $banner_image != null){
-                     $file_old = $path.$banner_image;
-                    if (file_exists($file_old)){
-                     unlink($file_old);
-                    }
-                }
-                //upload new file
-                $file = $banner_image;
-                $input['banner_image']  = $file->getClientOriginalName();
-                $file->move($path, $input['banner_image']);
-  
-            } else {
-                 $input['banner_image']  = 'default.jpg';
-             }
             
 
             VideoCategory::create($input);
@@ -161,7 +138,6 @@ class AdminVideoCategoriesController extends Controller
         $id = $request['id'];
         $in_home = $request['in_home']; 
         $footer = $request['footer']; 
-        $in_menu = $request['in_menu']; 
         $category = VideoCategory::find($id);
          
              if (isset($request['image']) && !empty($request['image'])){
@@ -169,13 +145,6 @@ class AdminVideoCategoriesController extends Controller
                  } else {
                      $request['image'] = $category->image;
               }
-
-
-              if (isset($request['banner_image']) && !empty($request['banner_image'])){
-                $banner_image = $request['banner_image']; 
-             } else {
-                 $request['banner_image'] = $category->banner_image;
-          }
 
               $slug = $request['slug']; 
               if ( $in_home != '') {
@@ -203,27 +172,12 @@ class AdminVideoCategoriesController extends Controller
                   $file->move($path,$category->image);
 
               } 
-              if( isset($banner_image) && $banner_image!= '') {   
-                //code for remove old file
-                if ($banner_image != ''  && $banner_image != null) {
-                    $file_old = $path.$banner_image;
-                    if (file_exists($file_old)){
-                           unlink($file_old);
-                    }
-                }
-                      //upload new file
-                      $file = $banner_image;
-                      $category->banner_image  = $file->getClientOriginalName();
-                      $file->move($path,$category->banner_image);
-    
-                  } 
+         
             $category->name = $request['name'];
             $category->slug = $request['slug'];
             $category->parent_id = $request['parent_id'];
             $category->in_home = $request['in_home'];
             $category->footer = $request['footer'];
-            $category->in_menu = $request['in_menu'];
-            $category->banner = $request['banner'];
 
             if ( $category->slug != '') {
               $category->slug  = $request['slug'];
