@@ -207,31 +207,34 @@ border-radius: 0px 4px 4px 0px;
                </div>
                </div>
                <div class="row">
-               <div class="col-sm-6 form-group">
-               <label class="m-0">Age Restrict:</label>
-               <select class="form-control" id="age_restrict" name="age_restrict">
-               <option selected disabled="">Choose Age</option>
-               @foreach($age_categories as $age)
-               <option value="{{ $age->age }}" @if(!empty($video->language) && $video->age_restrict == $age->slug)selected="selected"@endif>{{ $age->slug }}</option>
-               @endforeach
-               </select>
-               </div>
+                  
+         {{-- Age Restrict --}}
+                  <div class="col-sm-6 form-group">
+                     <label class="m-0">Age Restrict:</label>
+                     <select class="form-control" id="age_restrict" name="age_restrict">
+                        <option value="">Choose Age</option>
+                           @foreach($age_categories as $key => $age)
+                              <option value="{{ $age->age }}"  {{  ($video->age_restrict == $age->slug ) ? 'selected' : '' }} > {{ $age->slug }}</option>
+                           @endforeach
+                     </select>
+                  </div>
+
                <div class="col-sm-6 form-group ">                                       
-               <label class="m-0">Rating:</label>
-               <!-- <input type="text" class="form-control" placeholder="Movie Ratings" name="rating" id="rating" value="@if(!empty($video->rating)){{ $video->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);"> -->
-               <select  class="js-example-basic-single" style="width: 100%;" name="rating" id="rating" tags= "true" onkeyup="NumAndTwoDecimals(event , this);" >
-               <option value="1" >1</option>
-               <option value="2">2</option>
-               <option value="3">3</option>
-               <option value="4">4</option>
-               <option value="5">5</option>
-               <option value="6">6</option>
-               <option value="7">7</option>
-               <option value="8">8</option>
-               <option value="9">9</option>
-               <option value="10">10</option>
-               </select>
-               </div>
+                     <label class="m-0">Rating:</label>
+                     <!-- <input type="text" class="form-control" placeholder="Movie Ratings" name="rating" id="rating" value="@if(!empty($video->rating)){{ $video->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);"> -->
+                     <select  class="js-example-basic-single" style="width: 100%;" name="rating" id="rating" tags= "true" onkeyup="NumAndTwoDecimals(event , this);" >
+                        <option value="1" {{ $video->rating == '1' ? 'selected':'' }} >1</option>
+                        <option value="2" {{ $video->rating == '2' ? 'selected':'' }} >2</option>
+                        <option value="3" {{ $video->rating == '3' ? 'selected':'' }} >3</option>
+                        <option value="4" {{ $video->rating == '4' ? 'selected':'' }} >4</option>
+                        <option value="5" {{ $video->rating == '5' ? 'selected':'' }} >5</option>
+                        <option value="6" {{ $video->rating == '6' ? 'selected':'' }} >6</option>
+                        <option value="7" {{ $video->rating == '7' ? 'selected':'' }} >7</option>
+                        <option value="8" {{ $video->rating == '8' ? 'selected':'' }} >8</option>
+                        <option value="9" {{ $video->rating == '9' ? 'selected':'' }} >9</option>
+                        <option value="10"{{ $video->rating == '10' ? 'selected':'' }} >10</option>
+                     </select>
+                  </div>
                </div>
               
                
@@ -339,33 +342,35 @@ border-radius: 0px 4px 4px 0px;
                <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> 
                </div>
                </div> 
-               <div class="panel-body" style="display: block;"> 
-               <select name="artists[]" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
-               @foreach($artists as $artist)
-               @if(in_array($artist->id, $video_artist))
-               <option value="{{ $artist->id }}" selected="true">{{ $artist->artist_name }}</option>
-               @else
-               <option value="{{ $artist->id }}">{{ $artist->artist_name }}</option>
-               @endif 
-               @endforeach
-               </select>
-            </div> 
+
+                  <div class="panel-body" style="display: block;"> 
+                     <select name="artists[]" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
+                        @foreach($artists as $artist)
+                           @if(in_array($artist->id, $video_artist))
+                              <option value="{{ $artist->id }}" selected="true">{{ $artist->artist_name }}</option>
+                           @else
+                              <option value="{{ $artist->id }}">{{ $artist->artist_name }}</option>
+                           @endif 
+                        @endforeach
+                     </select>
+                  </div> 
+                  
                </div>
                </div>
                </div>
                <div class="row">
                <div class="col-sm-6 form-group">
                <label class="m-0">Choose Language:</label>
-               <select class="form-control js-example-basic-multiple" id="language" name="language[]" style="width: 100%;" multiple="multiple">
-               <!-- <option selected disabled="">Choose Language</option> -->
-               @foreach($languages as $language)
-               @if(in_array($language->id, $languages_id))
-               <option value="{{ $language->id }}" selected="true">{{ $language->name }}</option>
-               @else
-               <option value="{{ $language->id }}" >{{ $language->name }}</option>
-               @endif 
-               @endforeach
-               </select>
+                  <select class="form-control js-example-basic-multiple" id="language" name="language[]" style="width: 100%;" multiple="multiple">
+                     <!-- <option selected disabled="">Choose Language</option> -->
+                     @foreach($languages as $language)
+                        @if(in_array($language->id, $languages_id))
+                           <option value="{{ $language->id }}" selected="true">{{ $language->name }}</option>
+                        @else
+                           <option value="{{ $language->id }}" >{{ $language->name }}</option>
+                        @endif 
+                     @endforeach
+                  </select>
                <span><p id="error_language" style="color:red;" >* Choose the Language </p></span>
 
                </div> 
@@ -456,20 +461,22 @@ border-radius: 0px 4px 4px 0px;
                    <div class="col-sm-12">
                     <h2 class="fs-title">Geo-location for Videos</h2>
                </div>
+
                <!-- {{-- Block country --}} -->
                <div class="col-sm-6 form-group">
                    <label class="m-0">Block Country</label>
-                   <select  name="country[]" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
-                    <option value="All">Select Country </option>
-                   @foreach($countries as $country)
-                       @if(in_array($country->country_name, $video_artist))
-                        <option value="{{ $country->country_name  }}" selected="true">{{ $country->country_name }}</option>
-                       @else
-                        <option value="{{ $country->country_name  }}">{{$country->country_name }}</option>
-                       @endif 
-                   @endforeach
-                   </select>
+                     <select  name="country[]" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
+                     <option value="All">Select Country </option>
+                        @foreach($countries as $country)
+                           @if(in_array($country->country_name, $block_countries))
+                              <option value="{{ $country->country_name  }}" selected="true">{{ $country->country_name }}</option>
+                           @else
+                              <option value="{{ $country->country_name  }}">{{$country->country_name }}</option>
+                           @endif 
+                        @endforeach
+                     </select>
                </div>
+
                <!-- {{-- country --}} -->
                <div class="col-sm-6 form-group">
                <label class="m-0">Available Country</label>
