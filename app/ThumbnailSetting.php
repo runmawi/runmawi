@@ -11,6 +11,6 @@ class ThumbnailSetting extends Model
     protected $fillable = [
         'title', 'age', 'rating', 'published_year', 
         'duration', 'category', 'featured', 'play_button',
-        'free_or_cost_label'
+        'free_or_cost_label','reels_videos','trailer'
     ];
 }

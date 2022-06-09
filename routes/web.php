@@ -226,6 +226,7 @@ Route::post('purchase-live', 'PaymentController@StoreLive')->name('stripe.store'
 Route::post('purchase-video', 'PaymentController@purchaseVideo');
 Route::post('purchase-videocount', 'AdminVideosController@purchaseVideocount');
 Route::post('player_analytics_create', 'AdminPlayerAnalyticsController@PlayerAnalyticsCreate');
+Route::post('player_analytics_store', 'AdminPlayerAnalyticsController@PlayerAnalyticsStore');
 Route::post('purchase-episode', 'PaymentController@purchaseEpisode');
 Route::post('purchase-series', 'PaymentController@purchaseSeries');
 Route::get('/ppvVideos/play_videos/{vid}', 'ChannelController@PlayPpv');
@@ -335,7 +336,8 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/category_order', 'AdminVideoCategoriesController@category_order');
     Route::get('/videos', 'AdminVideosController@index');
     Route::get('/videos/categories', 'AdminVideoCategoriesController@index');
-    Route::get('/videos/edit/{id}', 'AdminVideosController@edit');
+    Route::get('/videos/edit/{id}', 'AdminVideosController@edit'); 
+    Route::get('/videos/editvideo/{id}', 'AdminVideosController@editvideo'); 
     Route::post('/videos/update', array('before' => 'demo', 'uses' => 'AdminVideosController@update'));
     Route::get('/videos/delete/{id}', array('before' => 'demo', 'uses' => 'AdminVideosController@destroy'));
     Route::get('/videos/create', 'AdminVideosController@create');
@@ -461,6 +463,19 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     /* Thumbnail Setting */
     Route::get('/ThumbnailSetting', 'AdminSettingsController@ThumbnailSetting')->name('ThumbnailSetting'); 
     Route::post('/ThumbnailSetting_Store', 'AdminSettingsController@ThumbnailSetting_Store'); 
+
+
+    // Footer Link
+    Route::get('/footer_menu', 'AdminSettingsController@footer_link')->name('footer_link'); 
+    Route::post('/footer_link_store', 'AdminSettingsController@footer_link_store'); 
+    Route::post('/footer_order_update', 'AdminSettingsController@footer_order_update'); 
+    Route::get('/footer_delete/{id}', 'AdminSettingsController@footer_delete'); 
+    Route::get('/footer_menu_edit/{id}', 'AdminSettingsController@footer_edit'); 
+    Route::post('/footer_update', 'AdminSettingsController@footer_update'); 
+
+    //Select video delete
+    Route::get('/VideoBulk_delete', 'AdminVideosController@VideoBulk_delete')->name('VideoBulk_delete'); 
+
 
     Route::get('ThemeIntegration', 'ThemeIntegrationController@index')->name('ThemeIntegration');
 
@@ -595,7 +610,10 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::get('/list_total_cpv', 'AdminAdvertiserController@list_total_cpv'); 
     Route::get('/Ads-TimeSlot', 'AdminAdvertiserController@AdsTimeSlot'); 
     Route::post('/AdsTimeSlot_Save', 'AdminAdvertiserController@AdsTimeSlot_Save'); 
-    
+    Route::post('/ads_viewcount', 'AdminAdvertiserController@ads_viewcount'); 
+    Route::post('/ads_viewcount_mid', 'AdminAdvertiserController@ads_viewcount_mid'); 
+
+
     /*Ads Management ends*/
 
     /*Video Uploads */
@@ -604,6 +622,8 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/embededcode',  'AdminVideosController@Embededcode');
     Route::post('/mp4url',  'AdminVideosController@Mp4url');
     Route::post('/uploadFile',  'AdminVideosController@uploadFile');
+    Route::post('/uploadEditVideo',  'AdminVideosController@uploadEditVideo');
+
 
 
     /*Audio Uploads */
@@ -689,8 +709,24 @@ Route::get('/analytics/ViewsRegion', 'AdminUsersController@ViewsRegion');
 Route::get('/analytics/RevenueRegion', 'AdminUsersController@RevenueRegion');
 Route::get('/regionvideos', 'AdminUsersController@RegionVideos');
 
+Route::get('/analytics/PlayerVideoAnalytics', 'AdminPlayerAnalyticsController@PlayerVideoAnalytics');
+Route::post('/analytics/playervideos_start_date_url', 'AdminPlayerAnalyticsController@PlayerVideosStartDateRecord');
+Route::post('/analytics/playervideos_end_date_url', 'AdminPlayerAnalyticsController@PlayerVideosEndDateRecord');
+// Route::post('/admin/subscriber_end_date_url', 'AdminUsersController@SubscriberRevenueStartEndDateRecord');
+
+Route::get('/analytics/RegionVideoAnalytics', 'AdminPlayerAnalyticsController@RegionVideoAnalytics');
 
 
+Route::get('/analytics/PlayerUserAnalytics', 'AdminPlayerAnalyticsController@PlayerUserAnalytics');
+Route::post('/analytics/playerusers_start_date_url', 'AdminPlayerAnalyticsController@PlayerUsersStartDateRecord');
+Route::post('/analytics/playerusers_end_date_url', 'AdminPlayerAnalyticsController@PlayerUsersEndDateRecord');
+
+Route::get('/analytics/VideoAllCountry', 'AdminPlayerAnalyticsController@RegionVideoAllCountry');
+Route::get('/analytics/VideoAllCity', 'AdminPlayerAnalyticsController@RegionVideoAllCity');
+Route::get('/analytics/Videostate', 'AdminPlayerAnalyticsController@RegionVideoState');
+Route::get('/analytics/Videocity', 'AdminPlayerAnalyticsController@RegionVideoCity');
+Route::post('/analytics/getState', 'AdminPlayerAnalyticsController@RegionGetState');
+Route::post('/analytics/RegionGetCity', 'AdminPlayerAnalyticsController@RegionGetCity');
 
 Route::get('/currency_settings', 'AdminCurrencySettings@IndexCurrencySettings');
 Route::post('/currency/store', 'AdminCurrencySettings@StoreCurrencySettings');
@@ -1376,6 +1412,10 @@ Route::get('/RazorpaySubscriptionStore', 'RazorpayController@RazorpaySubscriptio
 Route::get('/RazorpaySubscriptionUpdate/{planId}', 'RazorpayController@RazorpaySubscriptionUpdate')->name('RazorpaySubscriptionUpdate');
 });
 
+Route::get('/RazorpayVideoRent/{video_id}/{amount}', 'RazorpayController@RazorpayVideoRent')->name('RazorpayVideoRent');
+Route::POST('/RazorpayVideoRent_Payment', 'RazorpayController@RazorpayVideoRent_Payment')->name('RazorpayVideoRent_Payment');
 
+Route::get('/RazorpayLiveRent/{live_id}/{amount}', 'RazorpayController@RazorpayLiveRent')->name('RazorpayLiveRent');
+Route::POST('/RazorpayLiveRent_Payment', 'RazorpayController@RazorpayLiveRent_Payment')->name('RazorpayLiveRent_Payment');
 
 
