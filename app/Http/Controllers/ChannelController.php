@@ -82,6 +82,7 @@ class ChannelController extends Controller
       $countryName = $geoip->getCountry();
       $ThumbnailSetting = ThumbnailSetting::first();
 
+      try {
 
         $vpp = VideoPerPage();
         $category_id = \App\VideoCategory::where('slug',$cid)->pluck('id');
@@ -89,7 +90,7 @@ class ChannelController extends Controller
                               ->where('category_id','=',$category_id)->where('active', '=', '1')->count();
 
         if ($categoryVideos_count > 0) {
-    // blocked videos
+      // blocked videos
               $block_videos= \App\BlockVideo::where('country_id',$countryName)->get();
               if(!$block_videos->isEmpty()){
                 foreach($block_videos as $block_video){
@@ -131,23 +132,41 @@ class ChannelController extends Controller
 
             );
        return Theme::view('categoryvids',['data'=>$data]);
+
+      } catch (\Throwable $th) {
+
+        return abort(404);
+      }
         
     } 
     
       public function play_videos($slug)
     {
 
-
         $data['password_hash'] = "";
         $data = session()->all();
+        $getfeching = \App\Geofencing::first();
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+        $userIp = $geoip->getip();    
+        $countryName = $geoip->getCountry();
+        $cityName = $geoip->getcity();
+        $stateName = $geoip->getregion();
+        $ThumbnailSetting = ThumbnailSetting::first();
+
+        // dd($geoip->getregion());
        
         if(!empty($data['password_hash'])){
 
         $get_video_id = \App\Video::where('slug',$slug)->first(); 
 
-        $vid = $get_video_id->id;
+        try {
+          $vid = $get_video_id->id;
 
-        // echo "<pre>"; 
+        } catch (\Throwable $th) {
+
+          return abort(404);
+        }
+        
         $artistscount = Videoartist::join("artists","video_artists.artist_id", "=", "artists.id")
         ->select("artists.*")
         ->where("video_artists.video_id", "=", $vid)
@@ -490,7 +509,7 @@ class ChannelController extends Controller
                  'playerui_settings' => $playerui,
                  'subtitles' => $subtitle,
                  'artists' => $artists,
-    		'ppv_video_play' => $ppv_video_play,
+    		      'ppv_video_play' => $ppv_video_play,
             'ads' => \App\AdsVideo::where('video_id',$vid)->first(),
             'category_name'=> $category_name,
             'langague_Name' => $langague_Name,
@@ -500,7 +519,7 @@ class ChannelController extends Controller
             'artistsname'  => $artistsname,
             'lang_name'  => $lang_name,
             'subtitles_name'  => $subtitles,
-
+            'ThumbnailSetting' => $ThumbnailSetting,
 
 
                  );
@@ -566,6 +585,7 @@ class ChannelController extends Controller
                  'langague_Name' => $langague_Name,
                  'release_year'  => $release_year,
                  'Reels_videos'  => $Reels_videos,
+                 'ThumbnailSetting' => $ThumbnailSetting,
      
             );
 
@@ -649,6 +669,7 @@ class ChannelController extends Controller
                  'langague_Name' => $langague_Name,
                  'release_year'  => $release_year,
                  'Reels_videos'  => $Reels_videos,
+                 'ThumbnailSetting' => $ThumbnailSetting,
      
                  );
              
@@ -685,6 +706,7 @@ class ChannelController extends Controller
                  'langague_Name' => $langague_Name,
                  'release_year'  => $release_year,
                  'Reels_videos'  => $Reels_videos,
+                 'ThumbnailSetting' => $ThumbnailSetting,
      
             );
 

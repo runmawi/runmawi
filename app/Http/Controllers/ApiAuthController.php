@@ -97,6 +97,8 @@ use App\AdsVideo;
 use App\AdvertisementView;
 use App\OrderHomeSetting;
 use App\MobileHomeSetting;
+use App\SiteTheme;
+use App\PlayerAnalytic;
 
 
 class ApiAuthController extends Controller
@@ -1206,6 +1208,7 @@ public function verifyandupdatepassword(Request $request)
       $banners = Video::where('active','=',1)->where('status','=',1)->where('banner', '=', 1)->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['video_url'] = URL::to('/').'/storage/app/public/';
+        $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
         return $item;
       });
       $live_banner = LiveStream::where('active','=',1)->where('banner', '=', 1)->get()->map(function ($item) {
@@ -4141,17 +4144,22 @@ return response()->json($response, 200);
         $item['skip_time'] = ContinueWatching::where('videoid','=',$item->id)->where('user_id','=',$user_id)->pluck('skip_time')->min();
         return $item;
       });
-      $status = "true";
+      $response = array(
+        'status' => "true",
+        'videos'=> $videos,
+      );
     }else{
-            $status = "false";
-            $videos = [];
+      $response = array(
+        'status' => "false",
+        'videos'=> [],
+      );
     }
 
   
-    $response = array(
-        'status'=>$status,
-        'videos'=> $videos
-      );
+    // $response = array(
+    //     'status'=>$status,
+    //     'videos'=> $videos
+    //   );
     return response()->json($response, 200);
 
 
@@ -4432,16 +4440,17 @@ return response()->json($response, 200);
     {
 
         $audio_id = $request->audio_id;
-
         $current_date = date('Y-m-d h:i:s a', time()); 
         $audiodetail = Audio::where('id',$audio_id)->get()->map(function ($item) {
             $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
             return $item;
         });
 
+
         if ( isset($request->user_id) && $request->user_id != '' ) { 
             $user_id = $request->user_id;
       //Wishlilst
+
             $cnt = Wishlist::select('audio_id')->where('user_id','=',$user_id)->where('audio_id','=',$audio_id)->count();
             $wishliststatus =  ($cnt == 1) ? "true" : "false";
       //Watchlater
@@ -4460,6 +4469,7 @@ return response()->json($response, 200);
             $like = ($like_data == 1) ? "true" : "false";
             $dislike = ($dislike_data == 1) ? "true" : "false";
         } else{
+
             $wishliststatus = 'false';
             $watchlaterstatus = 'false';
             $favoritestatus = 'false';
@@ -4475,11 +4485,18 @@ return response()->json($response, 200);
         $audio_cat_id = Audio::where('id','=',$audio_id)->pluck('audio_category_id');
 
         $audio_cat = AudioCategory::where('id','=',$audio_cat_id)->get();
+        // print_r(count($audio_cat));exit;
+
+        if(count($audio_cat) > 0){
+         $main_genre = $audio_cat[0]->name;
+        }else{
+          $main_genre = '';
+        }
 
         $response = array(
             'status' => $status,
             'wishlist' => $wishliststatus,
-            'main_genre' => $audio_cat[0]->name,
+            'main_genre' => $main_genre,
             'watchlater' => $watchlaterstatus,
             'favorite' => $favoritestatus,
             'userrole' => $userrole,
@@ -6639,5 +6656,73 @@ public function Adstatus_upate(Request $request)
     return response()->json($response, 200);
   }
 
+  public function theme_primary_color(Request $request)
+  {
+
+    $button_color = SiteTheme::pluck('button_bg_color')->first();
+
+    if($button_color != null){
+        $button_bg_color =  $button_color ;
+    }else{
+        $button_bg_color =  '#006AFF' ;
+    }
+    $response = array(
+      'status' => 'true' ,
+      'theme_primary_color' => $button_bg_color,
+     
+    );
+
+    return response()->json($response, 200);
+  }
+
+
+
+  public function PlayerAnalytics(Request $request)
+  {
+
+    $user_id = $request->user_id;
+    $videoid =  $request->videoid;
+    $duration =  $request->duration;
+    $currentTime = $request->currentTime;
+    $bufferedTime = $request->bufferedTime;
+    $seekTime = $request->seekTime;
+    $countryName = $request->country_name;
+    $state_name = $request->state_name;
+    $city_name = $request->city_name;
+    $watch_percentage = ($currentTime * 100 / $duration);
+
+
+    if($currentTime != 0){
+
+      $player = new PlayerAnalytic;
+      $player->videoid = $videoid;
+      $player->user_id = $user_id;
+      $player->duration = $duration;
+      $player->currentTime = $currentTime;
+      $player->watch_percentage = $watch_percentage;
+      $player->seekTime = $seekTime;
+      $player->bufferedTime = $bufferedTime;
+      $player->country_name = $countryName;
+      $player->state_name = $state_name;
+      $player->city_name = $city_name;
+      $player->save();
+        
+    $response = array(
+      'status' => 'true' ,
+      'message' => 'Added to Analytics',
+     
+    );
+  }else{
+
+    $response = array(
+      'status' => 'false' ,
+      'message' => 'not added',
+     
+    );
+  }
+
+
+    return response()->json($response, 200);
+  }
 
 }
