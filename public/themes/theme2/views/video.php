@@ -94,6 +94,12 @@ h2{
   font-size: 60px;
   margin-top: 0px;
 }
+      #video_container{
+          padding: 20px;
+          background: #202933;
+border-radius: 0px 0px 20px 20px;
+
+      }
   </style>
 <?php
 

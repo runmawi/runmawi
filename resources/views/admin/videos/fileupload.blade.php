@@ -498,6 +498,8 @@ border-radius: 0px 4px 4px 0px;
                                     <option value="{{ $language->id }}" >{{ $language->name }}</option>
                                     @endforeach
                                  </select>
+                                 <span><p id="error_language" style="color:red;" >* Choose the Language </p></span>
+
                               </div>
                               
                               <div class="col-sm-6 form-group">
@@ -1259,18 +1261,24 @@ $(document).ready(function($){
 
 // video category
    $('#error_video_Category').hide();
+   $('#error_language').hide();
 
    $('.Next3').on('keyup keypress blur change click mouseover', function(event) {
-   if($('#video_category_id').val() == null){
+
+   if($('#video_category_id').val() == null || $('#language').val() == null  ){
       $('#error_video_Category').show();
+      $('#error_language').show();
       $('#next3').attr('disabled','disabled');
    }  
    else{
       $('#error_video_Category').hide();
+      $('#error_language').hide();
       $('#next3').removeAttr('disabled');
    }
-  
 });
+
+ 
+  
 
 });
 

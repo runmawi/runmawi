@@ -101,7 +101,7 @@ header .navbar ul.navbar-nav { display: block; text-align: center; }
 header .navbar ul li { list-style: none;/* margin-right: 18px;*/ position: relative; transition: all 0.3s ease-in-out; transition: all 0.3s ease-in-out; -moz-transition: all 0.3s ease-in-out; -ms-transition: all 0.3s ease-in-out; -o-transition: all 0.3s ease-in-out; -webkit-transition: all 0.3s ease-in-out; display: inline-block;padding: 10px; }
 header .navbar ul li ul li {display: block; margin-right: 0; }
 header .navbar ul limenu-item ul li a {text-align: left;}
-header .navbar ul li.menu-item a {  position: relative;line-height: 70px; position: relative; z-index: 9; text-decoration: none; transition: all 0.3s ease-in-out; transition: all 0.3s ease-in-out; -moz-transition: all 0.3s ease-in-out; -ms-transition: all 0.3s ease-in-out; -o-transition: all 0.3s ease-in-out; -webkit-transition: all 0.3s ease-in-out; text-transform: capitalize; font-family: 'Proxima Nova';
+header .navbar ul li.menu-item a {  position: relative;line-height: 70px; position: relative; z-index: 9; text-decoration: none; transition: all 0.3s ease-in-out; transition: all 0.3s ease-in-out; -moz-transition: all 0.3s ease-in-out; -ms-transition: all 0.3s ease-in-out; -o-transition: all 0.3s ease-in-out; -webkit-transition: all 0.3s ease-in-out; text-transform: capitalize; /*font-family: 'Proxima Nova';*/
 font-style: normal;
 font-weight: normal;
 font-size: 16px;
@@ -419,7 +419,7 @@ video { display: block; width: 100%; height: 100%; }
 .genres-box { position: absolute; top: 100px; left: 15%; }
 .genres-box .btn-secondary { background-color: rgba(108, 117, 125, 0.8); border-color: transparent; position: relative; }
 .genres-box .btn-secondary:focus { box-shadow: none !important; }
-.genres-box .dropdown-toggle::after { content: '\ea41'; position: absolute; right: 37px; top: 10px; font-family: 'Proxima Nova'; border: none !important; transition: all 0.4s ease; vertical-align: middle !important; }
+.genres-box .dropdown-toggle::after { content: '\ea41'; position: absolute; right: 37px; top: 10px; /*font-family: 'Proxima Nova'; */border: none !important; transition: all 0.4s ease; vertical-align: middle !important; }
 .genres-box .btn { padding: 9px 42px 9px 25px; }
 .genres-box .dropdown-menu { background-color: rgb(36, 36, 36, 0.9); border: transparent; color: var(--iq-white) !important; border-radius: 0; transform: translate(0, 0); -webkit-transform: translate(0, 0); -webkit-transition: all 0.3s ease-out 0s; transition: all 0.3s ease-out 0s; }
 .genres-box .dropdown-menu.show { transform: translate(0, 70px); }
@@ -551,7 +551,7 @@ border-radius: 20px; display: block; margin: 0 auto; }
 }
 in{
     color: #000;
-    font-family: 'Proxima Nova'!important;
+   /* font-family: 'Proxima Nova'!important;*/
 }
 /*---------------------------------------------------------------------
                       Animation
@@ -671,7 +671,7 @@ in{
 .nav-tabs>li{float: none; display: inline-block;padding: 5px 20px;}
 .nav>li.disabled>a:hover, .nav>li.disabled>a:focus{border: 0;border-bottom: 2px solid #3daae0;border-radius: 0;}
 .nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus{background-color: #f5f5f500;border: 0;border-bottom: 2px solid #3daae0;border-radius: 0px;color: #fff;}
-.nav-tabs>li>a {border: 0;border-bottom: 2px solid transparent;font-size: 17px;font-family: 'Proxima Nova';border-radius: 2px;padding: 0;color: #fff;}
+.nav-tabs>li>a {border: 0;border-bottom: 2px solid transparent;font-size: 17px;/*font-family: 'Proxima Nova';*/border-radius: 2px;padding: 0;color: #fff;}
 video.trail-vid{
 	width: 30%;
 }
@@ -945,13 +945,13 @@ li.list-group-item {width: 375px;}
 	.downtag{
 		font-weight: bold;
 		color: #fff;
-		font-family: 'Proxima Nova','Helvetica Neue',Helvetica,Arial,sans-serif;
+		/*font-family: 'Proxima Nova','Helvetica Neue',Helvetica,Arial,sans-serif;*/
 		font-size:3.125rem;
 		text-align: left;
 	}
 	.downscene{
 		font-size: 25px;
-		font-family: 'Proxima Nova','Helvetica Neue',Helvetica,Arial,sans-serif;
+		/*font-family: 'Proxima Nova','Helvetica Neue',Helvetica,Arial,sans-serif;*/
 		color: #fff;
 		width: 370px;
 		margin-top: 13px;
@@ -962,12 +962,12 @@ li.list-group-item {width: 375px;}
 	.devicetag{
 		font-weight: bold;
 		color: #fff;
-		font-family: 'Proxima Nova','Helvetica Neue',Helvetica,Arial,sans-serif;
+		/*font-family: 'Proxima Nova','Helvetica Neue',Helvetica,Arial,sans-serif;*/
 		    font-size: 3.125rem;
 	}
 	.devicescene{
 		font-size: 25px;
-		font-family: 'Proxima Nova','Helvetica Neue',Helvetica,Arial,sans-serif;
+		/*font-family: 'Proxima Nova','Helvetica Neue',Helvetica,Arial,sans-serif;*/
 		color: #fff;
         text-align: left;
         
@@ -982,7 +982,7 @@ li.list-group-item {width: 375px;}
 	.freq{
 		font-weight: bold;
 		color: #fff;
-		font-family: 'Proxima Nova','Helvetica Neue',Helvetica,Arial,sans-serif;
+		/*font-family: 'Proxima Nova','Helvetica Neue',Helvetica,Arial,sans-serif;*/
 		    font-size: 3.125rem
 	}
 	.bandetails{
@@ -992,7 +992,7 @@ li.list-group-item {width: 375px;}
 	.banhead{
 		font-weight: bold;
 		color: #fff;
-		font-family: 'Proxima Nova','Helvetica Neue',Helvetica,Arial,sans-serif;
+	/*	font-family: 'Proxima Nova','Helvetica Neue',Helvetica,Arial,sans-serif;*/
 		font-size: 4.125rem;
 	}
 	.watch{
@@ -1003,13 +1003,13 @@ li.list-group-item {width: 375px;}
 	}
 	.prime{
 		font-size: 1.2rem;
-		font-family: 'Proxima Nova','Helvetica Neue',Helvetica,Arial,sans-serif;
+	/*	font-family: 'Proxima Nova','Helvetica Neue',Helvetica,Arial,sans-serif;*/
 		color: #fff;
 		margin-top: 30px;
 	}
 	.primebot{
 		font-size: 1.2rem;
-		font-family: 'Proxima Nova','Helvetica Neue',Helvetica,Arial,sans-serif;
+		/*font-family: 'Proxima Nova','Helvetica Neue',Helvetica,Arial,sans-serif;*/
 		color: #fff;
 		margin-top: 120px;
 	}
@@ -1109,7 +1109,7 @@ li.list-group-item {width: 375px;}
 .step h2{
     color: #000000;
     font-weight: bold;
-		font-family: 'Proxima Nova','Helvetica Neue',Helvetica,Arial,sans-serif;
+	/*	font-family: 'Proxima Nova','Helvetica Neue',Helvetica,Arial,sans-serif;*/
 		font-size: 3.125rem;
 }
 .comm{
@@ -1297,7 +1297,6 @@ li.list-group-item {width: 375px;}
 	}
 	.downscene{
 		font-size: 25px;
-		font-family: 'Proxima Nova','Helvetica Neue',Helvetica,Arial,sans-serif;
 		color: #fff;
 		width: 370px;
 		margin-top: 13px;
@@ -1314,7 +1313,6 @@ li.list-group-item {width: 375px;}
 	.devicetag{
 		font-weight: bold;
 		color: #fff;
-		font-family: 'Proxima Nova','Helvetica Neue',Helvetica,Arial,sans-serif;
 		    font-size: 3.125rem;
 	}
 	
@@ -1325,7 +1323,6 @@ li.list-group-item {width: 375px;}
 	.freq{
 		font-weight: bold;
 		color: #fff;
-		font-family: 'Proxima Nova','Helvetica Neue',Helvetica,Arial,sans-serif;
 		    font-size: 3.125rem
 	}
 	.bandetails{
@@ -1335,7 +1332,6 @@ li.list-group-item {width: 375px;}
 	.banhead{
 		font-weight: bold;
 		color: #fff;
-		font-family: 'Proxima Nova','Helvetica Neue',Helvetica,Arial,sans-serif;
 		font-size: 3.125rem;
 	}
 	.watch{
@@ -1433,7 +1429,7 @@ li.list-group-item {width: 375px;}
 .social_share p {
     display: inline-block;
     font-weight: 700;
-   font-family: 'Proxima Nova';
+   /*font-family: 'Proxima Nova';*/
     font-size: 16px;
     margin-right: -32px;
 }
@@ -1804,7 +1800,7 @@ padding: 15px;
   
    
     border-radius: 3px;
-   font-family: 'Proxima Nova';
+   /*font-family: 'Proxima Nova';*/
     font-weight: 500;
     border-top: none;
     border-left: none;
@@ -1831,7 +1827,7 @@ padding: 15px;
     font-size: 12px;
    
     border-radius: 3px;
-   font-family: 'Proxima Nova';
+   /*font-family: 'Proxima Nova';*/
     font-weight: 500;
      border-top: none;
     border-left: none;  
@@ -2291,7 +2287,7 @@ a {
     .sign-in-page-data h3 {
     color: #cdcece;
     font-size: 30px;
-    font-family: 'Proxima Nova';
+   /* font-family: 'Proxima Nova';*/
 }
     .btn-primary{
         background-color: #45c5e1 !important;
@@ -2320,8 +2316,7 @@ a {
     cursor: pointer;
 }
 .med{
-    font-family: Chivo;
-font-size: 30px;
+  font-size: 30px;
 font-style: normal;
 font-weight: 400;
 line-height: 36px;
@@ -2331,8 +2326,7 @@ text-align: center;
 
 }
 .pag{
-    font-family: Chivo;
-font-size: 20px;
+   font-size: 20px;
 font-style: normal;
 font-weight: 400;
 line-height: 33px;
@@ -2343,7 +2337,6 @@ text-align: center;
 
 }
 .sig{
-font-family: 'Chivo';
 font-style: normal;
 font-weight: 400;
 font-size: 18px;
@@ -2363,7 +2356,6 @@ color: #FFFFFF;
 
 
 .agree{
-    font-family: 'Chivo';
 font-style: normal;
 font-weight: 400;
 font-size: 12px;

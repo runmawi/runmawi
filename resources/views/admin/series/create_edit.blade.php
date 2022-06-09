@@ -568,6 +568,10 @@ $('form[id="series_form"]').validate({
 	  image: {
         required: '#check_image:blank'
     },
+	'language[]': {
+                required: true
+            },
+			
 	},
 	messages: {
 	  title: 'This field is required',
