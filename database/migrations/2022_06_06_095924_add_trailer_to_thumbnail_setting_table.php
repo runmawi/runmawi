@@ -14,8 +14,8 @@ class AddTrailerToThumbnailSettingTable extends Migration
     public function up()
     {
         Schema::table('thumbnail_setting', function (Blueprint $table) {
-            $table->string('reels_videos')->default('0');
-            $table->string('trailer')->default('0');
+            $table->string('reels_videos')->default('1');
+            $table->string('trailer')->default('1');
 
         });
     }

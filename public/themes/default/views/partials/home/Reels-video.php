@@ -10,7 +10,7 @@
                     <div class="block-images position-relative" data-toggle="modal" data-target="#Reels" data-name=<?php echo $reel->reels_videos ?>  onclick="addvidoes(this)"  >
                             <div class="img-box">
                                 <a>
-                                    <video width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$reel->image;  ?>"  data-play="hover" >
+                                    <video width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$reel->reels_thumbnail;  ?>"  data-play="hover" >
                                         <source src="<?php echo $reel->trailer;  ?>" type="video/mp4">
                                     </video>
                                 </a>
