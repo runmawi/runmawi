@@ -633,38 +633,60 @@ $uppercase =  ucfirst($request_url);
                             </div></div>
                         </div>
                         <div class="a-border"></div>
-                        <div class="row align-items-center justify-content-end mb-3">
-                            <div class="col-md-8 d-flex justify-content-between mt-3">
+                       <div class="a-border"></div>
+                          <div class="row jusitfy-content-center">
+                            <div class="col-md-3 mt-3">
+                                <h5>Account Details</h5>
+                              </div>
+                            <div class="col-md-9">
+                                 <div class="row align-items-center justify-content-end">
+                            <div class="col-md-8 d-flex justify-content-between mt-1 mb-2">
                                 <span class="text-light font-size-13">Email</span>
                                 <p class="mb-0"><?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?></p>
                             </div>   
                         </div>
-                        <div class="row align-items-center justify-content-end mb-3">
-                            <div class="col-md-8 d-flex justify-content-between mt-3">
+                        <div class="row align-items-center justify-content-end">
+                            <div class="col-md-8 d-flex justify-content-between mt-1 mb-2">
                                 <span class="text-light font-size-13">Username</span>
                                 <p class="mb-0"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></p>
                             </div>   
                         </div>
-                        <div class="row align-items-center justify-content-end mb-3">
-                            <div class="col-md-8 d-flex justify-content-between mt-3">
+                        <div class="row align-items-center justify-content-end">
+                            <div class="col-md-8 d-flex justify-content-between mt-1 mb-2">
                                 <span class="text-light font-size-13">Password</span>
                                 <p class="mb-0"></p>
                             </div>
                         </div>
                         
-                        </div></div>
-                              <div class="a-border"></div>
-                        <div class="row align-items-center justify-content-end">
-                            <div class="col-md-8 d-flex justify-content-between mt-3">
+                      
+                           
+                       
+                              </div>
+                        </div>
+                          <div class="a-border"></div>
+                        <div class="row">
+                            <div class="col-md-3">
+                            </div>
+                            <div class="col-md-9">
+                                 <div class="row align-items-center justify-content-end">
+                            <div class="col-md-8 d-flex justify-content-between mt-2 mb-2">
                                 <span class="text-light font-size-13">Phone</span>
                                 <p class="mb-0"><?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?></p>
                             </div>
                         </div> 
                         <div class="row align-items-center justify-content-end">
-                            <div class="col-md-8 d-flex justify-content-between mt-3">
+                            <div class="col-md-8 d-flex justify-content-between mt-1 mb-2">
                                 <span class="text-light font-size-13">DOB</span>
                                 <p class="mb-0"><?php if(!empty($user->DOB)): ?><?= $user->DOB ?><?php endif; ?></p>
+                                  
                             </div>
+                        </div>
+                      
+                            </div>
+                        </div>
+                       
+                            </div>
+                              <div class="a-border"></div>
                         <!-- Add New Modal -->
 	<div class="modal fade" id="add-new">
 		<div class="modal-dialog">
@@ -1718,6 +1740,20 @@ jQuery(document).ready(function($){
    });
 });
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
