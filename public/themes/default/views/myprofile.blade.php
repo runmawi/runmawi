@@ -54,10 +54,13 @@ $uppercase =  ucfirst($request_url);
    .col-md-12.profile_image {
     display: flex;
    }
-
+        .profile-bg{
+            height: 100px;
+    width: 150px!important;
+        }
    img.multiuser_img {
     padding: 9%;
-    border-radius: 50%;
+    border-radius: 70%;
 }
 
 .name{
@@ -608,10 +611,11 @@ $uppercase =  ucfirst($request_url);
                     <h3>Account Setting</h3>
                     <div class="mt-5 text-white p-0">
                         <ul class="usk" style="margin-left: -45px;">
-                            <li><a class="showSingle" target="1">User Settings</a></li>
-                            <li><a class="showSingle" target="2">Transaction details</a></li>
-                            <li><a class="showSingle" target="3">Plan details</a></li>
-                            <li><a class="showSingle" target="4">Manage Profile</a></li>
+                          <!--  <li><a class="showSingle" target="1">User Settings</a></li>-->
+                              <!-- <li><a class="showSingle" target="2">Transaction details</a></li>-->
+                             <!--  <li><a class="showSingle" target="3">Plan details</a></li>-->
+                            <li><a class="showSingle" target="1">Manage Profile</a></li>
+                            <li><a class="showSingle" target="2">Plan details</a></li>
                             <li><a class="showSingle" target="5">Preference for videos</a></li>
                             <li><a class="showSingle" target="6">Profile</a></li>
                             <li><a class="showSingle" target="7">Recently Viewd Items</a></li>
@@ -687,6 +691,29 @@ $uppercase =  ucfirst($request_url);
                        
                             </div>
                               <div class="a-border"></div>
+                             
+                              <div class="mt-3 row align-items-center">
+                                  <div class="col-md-3"> <h5 class="card-title mb-2">Update Profile</h5></div>
+                                  <div class="col-md-9"> <!-- <form action="<?php if (isset($ref) ) { echo URL::to('/').'/register1?ref='.$ref.'&coupon='.$coupon; } else { echo URL::to('/').'/register1'; } ?>" method="POST" id="stripe_plan" class="stripe_plan" name="member_signup" enctype="multipart/form-data"> -->
+                        <form action="{{ URL::to('admin/profileupdate') }}" method="POST"  enctype="multipart/form-data">
+                        @csrf
+                            <div class="row align-items-center">
+                                <div class="col-sm-6">
+                                    <input type="hidden" name="user_id" value="<?= $user->id ?>" />
+                        <input type="file" multiple="true" class="form-control editbtn mt-3" name="avatar" id="avatar" />
+                        <!--   <input type="submit" value="<?=__('Update Profile');?>" class="btn btn-primary  noborder-radius btn-login nomargin editbtn" /> -->    
+                                </div>
+                                <div class="col-sm-6">
+                                     <button type="submit" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile " style="display: none;"> Verify Profile</button>
+                        <button class="btn btn-primary noborder-radius btn-login nomargin editbtn " type="submit" name="create-account" value="<?=__('Update Profile');?>">{{ __('Update Profile') }}</button>     
+                                </div>
+                            </div>
+						                    
+                        </form>	</div>
+                                  <div class="col-md-3"></div></div>
+                       
+                       	
+                    </div>
                         <!-- Add New Modal -->
 	<div class="modal fade" id="add-new">
 		<div class="modal-dialog">
@@ -740,25 +767,47 @@ $uppercase =  ucfirst($request_url);
 			</div>
 		</div>
 	</div>
-                        </div></div>
-<div class="row">
-<?php
-       
-         ?>
+                        </div>
 
-       
-            
-
-        
-
-                    </div>
-                    
              
-                    <div class="col-sm-12 targetDiv" id="div2">
-            <div class=" text-center mb-3">
+                    <div class="col-sm-12 text-center targetDiv" id="div2">
+                        <div class="d-flex justify-content-center">  <img class="rounded-circle img-fluid d-block  mb-3" height="100" width="100" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg"/></div>
+                        
+                        <h4 class="mb-3"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></h4>
+                          <h4 class="mb-3"><?php if(!empty($user->role)): ?><?= $user->role ?><?php endif; ?> as on <?php if(!empty($user->created_at)): ?><?= $user->created_at ?><?php endif; ?></h4>
+                          <h4 class="mb-3"></h4>
+                        
+          <div class="text-center">
+                       <?php  if($user_role == 'registered'){ ?>
+                              <h6><?php echo 'Registered'." " .'(Free)'; ?> Subscription</h6>                                       
+                              <h6></h6>                                       
+                           <?php }elseif($user_role == 'subscriber'){ ?>
+                              <h6><?php echo $role_plan." " .'(Paid User)'; ?></h6>
+                              <br>       
+                           <h5 class="card-title mb-0">Available Specification :</h5><br>
+                           <h6> Video Quality : <p> <?php if($plans != null || !empty($plans)) {  echo $plans->video_quality ; } else { ' ';} ?></p></h6>  
+                           <h6> Video Resolution : <p> <?php if($plans != null || !empty($plans)) {  echo $plans->resolution ; } else { ' ';} ?>  </p></h6>                               
+                           <h6> Available Devices : <p> <?php if($plans != null || !empty($plans) ) {  echo $devices_name ; } else { ' ';} ?> </p></h6>                                                                                                                   
+                              <!--<h6>Subscription</h6>-->
+                           <?php } ?>
+                           </div>
+                             
+                             <!-- -->
+                    <div class="row align-items-center justify-content-center mb-3 mt-3">
+                         <div class=" text-center colsm-4 ">
                 <a href="<?=URL::to('/transactiondetails');?>" class="btn btn-primary btn-login nomargin noborder-radius" >View Transaction Details</a>
             </div>
+                            
+                            <div class="col-sm-4 text-center">
+                               <?php if(Auth::user()->role == "subscriber"){ ?>
+                                <a href="<?=URL::to('/upgrade-subscription_plan');?>" class="btn btn-primary editbtn" >Upgrade Plan </a>        
+                                <?php }else{ ?>
+                        <a href="<?=URL::to('/becomesubscriber');?>" class="btn btn-primary btn-login nomargin noborder-radius" > Become Subscriber</a>
+                        <?php } ?>
+                            </div>
+                        </div>
         </div>
+                    
                     <div class="targetDiv" id="div3">
                         <div class="row align-items-center justify-content-between mb-3 mt-3">
                             <div class="col-sm-4">
@@ -786,17 +835,7 @@ $uppercase =  ucfirst($request_url);
                     </div>
                     <div class="targetDiv" id="div4">
                      <div class="mb-3" id="updatepic">
-                    <div class="">
-                        <h4 class="card-title mb-2">Manage Profile</h4>
-                        <!-- <form action="<?php if (isset($ref) ) { echo URL::to('/').'/register1?ref='.$ref.'&coupon='.$coupon; } else { echo URL::to('/').'/register1'; } ?>" method="POST" id="stripe_plan" class="stripe_plan" name="member_signup" enctype="multipart/form-data"> -->
-                        <form action="{{ URL::to('admin/profileupdate') }}" method="POST"  enctype="multipart/form-data">
-                        @csrf
-						      <input type="hidden" name="user_id" value="<?= $user->id ?>" />
-                        <input type="file" multiple="true" class="form-control editbtn" name="avatar" id="avatar" />
-                        <!--   <input type="submit" value="<?=__('Update Profile');?>" class="btn btn-primary  noborder-radius btn-login nomargin editbtn" /> -->     <button type="submit" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile " style="display: none;"> Verify Profile</button>
-                        <button class="btn btn-primary noborder-radius btn-login nomargin editbtn mt-2" type="submit" name="create-account" value="<?=__('Update Profile');?>">{{ __('Update Profile') }}</button>                   
-                        </form>		
-                    </div>
+                   
                 </div>
                     </div>
                     <div class="targetDiv" id="div5">
