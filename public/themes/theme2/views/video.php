@@ -614,15 +614,30 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
               echo $value->categories_name. ',';  
             }
              ?></span>
-                 <div class="col-sm-12 mt-4 p-0">
+
+             <!-- Trailer Description -->
+              <?php if(!empty($video->trailer_description) ) { ?>
+                <div class="col-sm-12 mt-4 p-0 trailer_description">
+                  <h5>Trailer Description:</h5>
+                      <div class="text-white">
+                          <p class="trending-dec w-100 mb-0 text-white mt-3"><?php echo __($video->trailer_description); ?></p>
+                      </div>
+                  </div>
+              <?php  }?>
+
+              <div class="col-sm-12 mt-4 p-0">
                  <?php if(!empty($video->description) ) { ?>
 
-<h5>Description:</h5>
-<div class="text-white">
-    <p class="trending-dec w-100 mb-0 text-white mt-3"><?php echo __($video->description); ?></p>
-</div>
-<?php  }?>
-             </div></div>
+                    <h5>Description:</h5>
+                    <div class="text-white">
+                        <p class="trending-dec w-100 mb-0 text-white mt-3"><?php echo __($video->description); ?></p>
+                    </div>
+                    <?php  }?>
+              </div>
+
+
+              </div>
+
              <div class="col-sm-1 col-md-1 col-xs-12">
                  <!--<div class="btn btn-default views text-white">
                            <span class="view-count"><i class="fa fa-eye"></i> 
@@ -956,6 +971,8 @@ $artists = [];
           var vid = document.getElementById("videoPlayer"); 
           $('#watch_trailer').hide();
           $('#close_trailer').hide();
+          $('.trailer_description').hide();
+
           // Play Trailer
           $('#videoplay').click(function(){
             // alert('test');
@@ -964,6 +981,8 @@ $artists = [];
             $('#watch_trailer').show();
             $('#videoplay').hide();
             $('#close_trailer').show();
+            $('.trailer_description').show();
+
           });
           // Close Trailer
           $('#close_trailer').click(function(){
@@ -973,6 +992,8 @@ $artists = [];
             $('#video_container').show();
             $('#videoplay').show();            
             $('#close_trailer').hide();
+            $('.trailer_description').hide();
+
           });
            /*Skip Video*/
           //  $(document).on("click",".skip",function() {

@@ -690,6 +690,11 @@ border-radius: 0px 4px 4px 0px;
                            </div>
 
                            <div class="row">
+
+                              <div class="col-7">
+                                 <h2 class="fs-title">Trailer Upload:</h2>
+                              </div>
+
                               <div class="col-sm-6">
                                  <label class="m-0">Video Trailer Type:</label>
                                  <select  class="trailer_type form-control"  style="width: 100%;" class="" name="trailer_type" id="trailer_type">                              
@@ -745,6 +750,16 @@ border-radius: 0px 4px 4px 0px;
                               @endif
                            </div>
                         </div>
+
+                        <div class="row">
+                           <div class="col-sm-8  form-group">
+                              <label class="m-0">Trailer Description:</label>
+                              <textarea  rows="5" class="form-control mt-2" name="trailer_description" id="trailer-ckeditor"
+                                 placeholder="Trailer Description">
+                              </textarea>
+                           </div>
+                        </div>
+
                </div>
                <input type="button" name="next" class="next action-button" value="Next" />
                <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
@@ -1475,6 +1490,12 @@ $(document).ready(function($){
        filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
        filebrowserUploadMethod: 'form'
    });
+
+   CKEDITOR.replace( 'trailer-ckeditor', {
+       filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
+       filebrowserUploadMethod: 'form'
+   });
+
 </script>
 <script>
    $('input[type="checkbox"]').on('change', function(){

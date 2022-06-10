@@ -600,7 +600,14 @@ border-radius: 0px 4px 4px 0px;
                           </div>
                       </div>
 
+                    
+
                       <div class="row">
+
+                        <div class="col-7">
+                           <h2 class="fs-title">Trailer Upload:</h2>
+                        </div>
+
                         <div class="col-sm-6">
                            <label class="m-0">Video Trailer Type:</label>
                            <select  class="trailer_type form-control"  style="width: 100%;" class="" name="trailer_type" id="trailer_type">    
@@ -638,7 +645,6 @@ border-radius: 0px 4px 4px 0px;
                                     <source src="{{ $video->trailer }}" type="video/mp4" />
                                  </video>
                               @endif
-
                            </div>
                         </div>
 
@@ -655,8 +661,8 @@ border-radius: 0px 4px 4px 0px;
                         </div>
 
 
-                       <div class="row trailer_video_upload">
-                          <div class="col-sm-8 form-group">
+                     <div class="row trailer_video_upload">
+                           <div class="col-sm-8 form-group">
                               <label class="m-0">Upload Trailer :</label><br />
                               <div class="new-video-file form_video-upload" style="position: relative;" @if(!empty($video->type) && $video->type == 'upload') style="display:none" @else style="display:block" @endif >
                                   <input type="file" accept="video/mp4,video/x-m4v,video/*" name="trailer" id="trailer" />
@@ -666,7 +672,7 @@ border-radius: 0px 4px 4px 0px;
                           </div>
                           <!-- <input type="file" accept="video/mp4,video/x-m4v,video/*" name="trailer" id="trailer" >
                                 <span id="remove" class="danger">Remove</span> -->
-                          <div class="col-sm-8 mt-5 form-group">
+                           <div class="col-sm-8 mt-5 form-group">
                               <!--<p>Upload Trailer video</p>-->
                               @if(!empty($video->trailer) && $video->trailer != '')
                               <video width="200" height="200" controls>
@@ -674,7 +680,17 @@ border-radius: 0px 4px 4px 0px;
                               </video>
                               @endif
                           </div>
-                      </div>
+                     </div>
+
+                     <div class="row">
+                        <div class="col-sm-8  form-group">
+                           <label class="m-0">Trailer Description:</label>
+                           <textarea  rows="5" class="form-control mt-2" name="trailer_description" id="trailer-ckeditor"
+                              placeholder="Description">@if(!empty($video->trailer_description)){{ htmlspecialchars($video->trailer_description) }}@endif
+                           </textarea>
+                        </div>
+                     </div>
+
                   </div>
                   <input type="button" name="next" class="next action-button" value="Next" />
                   <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
@@ -1458,6 +1474,11 @@ $(document).ready(function($){
    });
 
    CKEDITOR.replace( 'links-ckeditor', {
+       filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
+       filebrowserUploadMethod: 'form'
+   });
+
+   CKEDITOR.replace( 'trailer-ckeditor', {
        filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
        filebrowserUploadMethod: 'form'
    });
