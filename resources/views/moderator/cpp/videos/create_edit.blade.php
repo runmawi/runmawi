@@ -469,8 +469,8 @@
                          
                         <div>
                             <h5>Publish Type</h5>
-                                </div>
-                            <div class="row">
+                                
+                            <div class="row mt-2 p-0">
 
                                 <div class="col-sm-6 form-group mt-3" >
                                     <!-- <label class="">Choose Ad Name</label> -->
@@ -481,7 +481,7 @@
                                     <label class="">Publish Time</label>
 			                    <input type="datetime-local" class="form-control" id="publish_time" name="publish_time" value="@if(!empty($video->publish_time)){{ $video->publish_time }}@endif">
                                 </div>
-                            </div>
+                            </div></div>
                             <div class="row">
                             <div class="col-sm-4 form-group mt-3">
                             <label class="">Skip Intro Time</label>

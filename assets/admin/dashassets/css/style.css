@@ -271,7 +271,7 @@ Waves Effect
 }
 li.active {
     color:#0993D2!important;
-    background-color: #F2F5FA;
+   /* background-color: #F2F5FA;*/
 }
 li.active a span{
     color:#0993D2!important;

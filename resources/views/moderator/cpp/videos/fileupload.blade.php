@@ -45,14 +45,7 @@
                         </div>
                         @endforeach
                         @endif
-                    <div class="col-md-8" align="right">
-                        <div id="optionradio"  >
-                                <input type="radio" class="text-black" value="videoupload" id="videoupload" name="videofile" checked="checked"> Video Upload &nbsp;&nbsp;&nbsp;
-                                <input type="radio" class="text-black" value="m3u8"  id="m3u8" name="videofile">m3u8 Url &nbsp;&nbsp;&nbsp;
-                                <input type="radio" class="text-black" value="videomp4"  id="videomp4" name="videofile"> Video mp4 &nbsp;&nbsp;&nbsp;
-                                <input type="radio" class="text-black" value="embed_video"  id="embed_video" name="videofile"> Embed Code              
-                        </div>
-                    </div>
+                   
                 </div>
                     <div class="row">
                         <div class="col-md-12">
@@ -85,11 +78,10 @@
                                     <h4 class="card-title">Upload Full Video Here</h4>
                                     <!-- Dropzone -->
                                     <form action="{{URL::to('/cpp/uploadFile')}}" method= "post" class='dropzone' ></form> 
+                                <p class="text-center mt-2 mb-0">Trailers Can Be Uploaded From Video Edit Screen</p>
                                 </div> 
-                            <p style="margin-top: -3%;margin-left: 50%;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Trailers Can Be Uploaded From Video Edit Screen</p>
-                                
                             </div> 
-   
+     
                             <div class="text-center" style="margin-top: 30px;">
                                 <input type="button" id="Next" value='Proceed to Next Step' class='btn btn-primary'>
                             </div>
@@ -99,6 +91,14 @@
                         </div>
                     <hr />
                 </div>
+                 <div class="col-md-12" align="center">
+                        <div id="optionradio"  >
+                                <input type="radio" class="text-black" value="videoupload" id="videoupload" name="videofile" checked="checked"> Video Upload &nbsp;&nbsp;&nbsp;
+                                <input type="radio" class="text-black" value="m3u8"  id="m3u8" name="videofile">m3u8 Url &nbsp;&nbsp;&nbsp;
+                                <input type="radio" class="text-black" value="videomp4"  id="videomp4" name="videofile"> Video mp4 &nbsp;&nbsp;&nbsp;
+                                <input type="radio" class="text-black" value="embed_video"  id="embed_video" name="videofile"> Embed Code              
+                        </div>
+                    </div>
             </div>
         </div>
 
@@ -303,6 +303,7 @@ data: {
 
     <div id="content-page" class="content-page1">
     <div class="container-fluid">
+        <div class="iq-card p-3">
     <div class="row justify-content-center">
         <div class="col-11 col-sm-10 col-md-10 col-lg-12 col-xl-12 text-center p-0 mt-3 mb-2">
             <div class="px-0 pt-4 pb-0 mt-12 mb-3 col-md-12">
@@ -311,13 +312,13 @@ data: {
                 <form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="msform">
                     <!-- progressbar -->
                     <ul id="progressbar">
-                        <li class="active" id="account"><strong>Video Details</strong></li>
-                        <li id="personal"><strong>Category</strong></li>
-                        <li id="useraccess_ppvprice"><strong>User Video Access</strong></li>
-                        <!-- <li id="payment"><strong>Upload Image & Trailer</strong></li> -->
-                        <li id="payment"><strong>Upload Image & Trailer</strong></li>
-
-                        <li id="confirm"><strong>Ads Management</strong></li>
+                        <li class="active" id="videot"><img class="" src="<?php echo  URL::to('/assets/img/icon/1.svg')?>">Video</li>
+                          <li class="" id="account"><img class="" src="<?php echo  URL::to('/assets/img/icon/1.svg')?>">Video Details</li>
+                  <li id="personal"><img class="" src="<?php echo  URL::to('/assets/img/icon/2.svg')?>">Category</li>
+                  <li id="useraccess_ppvprice"><img class="" src="<?php echo  URL::to('/assets/img/icon/3.svg')?>">User Video Access</li>
+                  <li id="payment"><img class="" src="<?php echo  URL::to('/assets/img/icon/4.svg')?>">Upload Image &amp; Trailer</li>
+                  <li id="confirm"><img class="" src="<?php echo  URL::to('/assets/img/icon/5.svg')?>">Ads Management &amp; Transcoding</li>
+                        
                     </ul>
                     <div class="progress">
                         <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
@@ -446,7 +447,7 @@ data: {
                             </div>
                                 </div>
 
-                      </div> <input type="button" name="next" class="next action-button" value="Next" />
+                      </div> <input type="button" name="next" class="next action-button ml-3" value="Next" />
                     </fieldset>
                     <fieldset>
                         <div class="form-card">
@@ -622,7 +623,7 @@ data: {
                                     <label class="">PPV Price:</label>
                                     <input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($video->ppv_price)){{ $video->ppv_price }}@endif">
                                 </div>
-                                <div class="col-sm-6 form-group mt-3" id="ppv_price">
+                                <div class="col-sm-6 form-group mt-3 d-flex" id="ppv_price">
                                 <?php if($settings->ppv_status == 1){ ?>
                                     <label for="global_ppv">Is this video Is Global PPV:</label>
                                     <input type="checkbox" name="global_ppv" value="1" id="global_ppv" />
@@ -772,7 +773,7 @@ data: {
     </div>
 </div>
 </div>
-
+</div>
 </div>
 <style>
     * {
@@ -812,7 +813,8 @@ p {
 }
 
 .form-card {
-    text-align: left
+    text-align: left;
+    padding: 20px;
 }
 
 #msform fieldset:not(:first-of-type) {
@@ -822,15 +824,15 @@ p {
 #msform input,
 #msform textarea {
     padding: 8px 15px 8px 15px;
-    border: 1px solid #ccc;
+   
     border-radius: 0px;
     margin-bottom: 25px;
     margin-top: 2px;
     width: 100%;
     box-sizing: border-box;
-    font-family: montserrat;
+  
     color: #2C3E50;
-    background-color: #ECEFF1;
+  
     font-size: 16px;
     letter-spacing: 1px
 }
@@ -846,15 +848,15 @@ p {
 
 #msform .action-button {
     width: 100px;
-    background: #673AB7;
-    font-weight: bold;
+    background: #0993D2;
+    font-weight: 500;
     color: white;
     border: 0 none;
-    border-radius: 0px;
+    border-radius: 4px;
     cursor: pointer;
-    padding: 10px 5px;
-    margin: 10px 0px 10px 5px;
-    float: right
+    padding: 7px 5px;
+    margin: 10px 28px 10px 5px;
+    float: right;
 }
 
 #msform .action-button:hover,
@@ -865,16 +867,15 @@ p {
 #msform .action-button-previous {
     width: 100px;
     background: #616161;
-    font-weight: bold;
+    font-weight: 500;
     color: white;
     border: 0 none;
-    border-radius: 0px;
+    border-radius: 4px;
     cursor: pointer;
-    padding: 10px 5px;
+    padding: 7px 5px;
     margin: 10px 5px 10px 0px;
-    float: right
+    float: right;
 }
-
 #msform .action-button-previous:hover,
 #msform .action-button-previous:focus {
     background-color: #000000
@@ -925,11 +926,11 @@ p {
 #progressbar li {
     list-style-type: none;
     font-size: 15px;
-    width: 20%;
+    width: 16%;
     float: left;
     position: relative;
     font-weight: 400;
-    background-color: cornflowerblue;
+    color: #000;
     padding: 10px;
 }
 
@@ -966,7 +967,9 @@ p {
     background: lightgray;
     border-radius: 50%;
     margin: 0 auto 10px auto;
-    padding: 2px
+    padding: 2px;
+    display: none;
+    
 }
 
 #progressbar li:after {
@@ -982,7 +985,7 @@ p {
 
 #progressbar li.active:before,
 #progressbar li.active:after {
-    background: #673AB7
+    /*background: #673AB7*/
 }
 
 .progress {

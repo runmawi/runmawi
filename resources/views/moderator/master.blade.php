@@ -48,7 +48,9 @@ $userrolepermissiom = Session::get('userrolepermissiom ');
    
    <!-- Bootstrap CSS -->
    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/bootstrap.min.css';?>" />
-    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/responsive.css';?>" />
 
    <!--datatable CSS -->
@@ -104,15 +106,15 @@ for($i=0;$i<(count($userrolepermissiom));$i++){
 <div class="page-container sidebar-collapsed"><!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
   <!-- Sidebar-->
       <div class="iq-sidebar">
-         <div class="iq-sidebar-logo d-flex justify-content-between">
-            <a href="<?php echo URL::to('home') ?>" class="header-logo">
+         <div class=" d-flex justify-content-between align-items-center">
+            <a href="<?php echo URL::to('home') ?>" class="header-logo mt-2">
                <img src="<?php echo URL::to('/').'/public/uploads/settings/'.$settings->logo;?>" class="img-fluid rounded-normal" alt="">
                <div class="logo-title">
                </div>
             </a>
             <div class="iq-menu-bt-sidebar">
                <div class="iq-menu-bt align-self-center">
-                  <div class="wrapper-menu">
+                  <div class="wrapper-menu mt-2">
                      <div class="main-circle"><i class="las la-bars"></i></div>
                   </div>
                </div>
