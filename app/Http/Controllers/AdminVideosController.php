@@ -52,6 +52,8 @@ use GuzzleHttp\Message\Response;
 use App\ReelsVideo;
 use App\PpvPurchase as PpvPurchase;
 use App\Adscategory;
+use App\VideoSearchTag;
+
 
 class AdminVideosController extends Controller
 {
@@ -944,6 +946,7 @@ if(!empty($artistsdata)){
         
         $data = $request->all();
 
+        // dd($data['searchtags']);
 
 
         $validatedData = $request->validate([
@@ -1353,6 +1356,11 @@ if(!empty($artistsdata)){
         }else{
             $video->default_ads = 0;
         }
+        if(!empty($data['searchtags'])){
+            $searchtags = $data['searchtags'];
+        }else{
+            $searchtags = $video->searchtags;
+        }
 
          $video->ads_category =  $data['ads_category'];   
          $shortcodes = $request['short_code'];        
@@ -1390,6 +1398,7 @@ if(!empty($artistsdata)){
          $video->banner =  $banner;
          $video->enable =  $enable;
          $video->rating =  $request->rating;
+         $video->search_tags =  $searchtags;
 
          $video->save();
 
@@ -1407,7 +1416,21 @@ if(!empty($artistsdata)){
                 }
             }
         }else{
-            Videoartist::where('video_id', $video->id)->delete();
+            // Videoartist::where('video_id', $video->id)->delete();
+        }
+
+        if(!empty($data['searchtags'])){
+            $searchtags = explode(',',$data['searchtags']);
+            VideoSearchTag::where('video_id', $video->id)->delete();
+            foreach ($searchtags as $key => $value) {
+                $videosearchtags = new VideoSearchTag;
+                $videosearchtags->user_id = Auth::User()->id;
+                $videosearchtags->video_id = $video->id;
+                $videosearchtags->search_tag = $value;
+                $videosearchtags->save();
+            }
+        }else{
+            // $searchtags = null;
         }
 
      // Category Video
@@ -1647,6 +1670,7 @@ if(!empty($artistsdata)){
             $video = Video::findOrFail($id);
               
 
+
             if(!empty($video->embed_code)) {
                 $embed_code = $video->embed_code;
             }else{
@@ -1735,7 +1759,12 @@ if(!empty($artistsdata)){
             } else {
                 $data['year'] =  $data['year'];
             }   
-            
+            if(empty($data['searchtags'])){
+                $searchtags = null;
+            } else {
+                $searchtags =  $data['searchtags'];
+            }   
+
             if(empty($data['language'])){
                 $data['language'] = 0;
             }  else {
@@ -1980,6 +2009,7 @@ if(!empty($artistsdata)){
              $video->featured =  $featured;
              $video->country =  $data['video_country'];
             $video->enable =  1;
+            $video->search_tags =  $searchtags;
 
             if(!empty($data['default_ads'])){
                 $video->default_ads = $data['default_ads'];
@@ -2081,7 +2111,18 @@ if(!empty($artistsdata)){
                 }
             }
 
-            
+            if(!empty($data['searchtags'])){
+                $searchtags = explode(',',$data['searchtags']);
+                VideoSearchTag::where('video_id', $video->id)->delete();
+                foreach ($searchtags as $key => $value) {
+                    $videosearchtags = new VideoSearchTag;
+                    $videosearchtags->user_id = Auth::User()->id;
+                    $videosearchtags->video_id = $video->id;
+                    $videosearchtags->search_tag = $value;
+                    $videosearchtags->save();
+                }
+            }
+    
             if(!empty($data['country'])){
                 $country = $data['country'];
                 unset($data['country']);

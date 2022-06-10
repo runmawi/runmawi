@@ -826,7 +826,7 @@ public function verifyandupdatepassword(Request $request)
           if($getfeching !=null && $getfeching->geofencing == 'ON'){
             $latestvideos = $latestvideos->whereNotIn('id',$blockvideos);
             }
-    $latestvideos =$latestvideos->get()->map(function ($item) {
+    $latestvideos =$latestvideos->orderBy('created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['video_url'] = URL::to('/').'/storage/app/public/';
         return $item;
@@ -843,7 +843,7 @@ public function verifyandupdatepassword(Request $request)
 
   public function categorylist()
   {
-    $channellist = VideoCategory::get()->map(function ($item) {
+    $channellist = VideoCategory::orderBy('created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/videocategory/'.$item->image;
         return $item;
       });
@@ -932,7 +932,7 @@ public function verifyandupdatepassword(Request $request)
 
       
     $current_date = date('Y-m-d h:i:s a', time()); 
-    $videodetail = Video::where('id',$videoid)->get()->map(function ($item) {
+    $videodetail = Video::where('id',$videoid)->orderBy('created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['video_url'] = URL::to('/').'/storage/app/public/';
         $item['reelvideo_url'] = URL::to('/').'/public/uploads/reelsVideos/'.$item->reelvideo;
@@ -1150,7 +1150,7 @@ public function verifyandupdatepassword(Request $request)
   {
     $liveid = $request->liveid;
     $user_id = $request->user_id;
-    $livedetail = LiveStream::where('id',$liveid)->get()->map(function ($item) {
+    $livedetail = LiveStream::where('id',$liveid)->orderBy('created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         return $item;
       });
@@ -1201,22 +1201,24 @@ public function verifyandupdatepassword(Request $request)
 
      public function sliders()
      {
-      $sliders = Slider::where('active', '=', 1)->get()->map(function ($item) {
+      $sliders = Slider::where('active', '=', 1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
         $item['slider'] = URL::to('/').'/public/uploads/videocategory/'.$item->slider;
         return $item;
       });
-      $banners = Video::where('active','=',1)->where('status','=',1)->where('banner', '=', 1)->get()->map(function ($item) {
+      $banners = Video::where('active','=',1)->where('status','=',1)
+      ->where('banner', '=', 1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['video_url'] = URL::to('/').'/storage/app/public/';
         $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
         return $item;
       });
-      $live_banner = LiveStream::where('active','=',1)->where('banner', '=', 1)->get()->map(function ($item) {
+      $live_banner = LiveStream::where('active','=',1)
+      ->where('banner', '=', 1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
         return $item;
       });
-      $series_banner = Series::where('active','=',1)->get()->map(function ($item) {
+      $series_banner = Series::where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
         return $item;
@@ -1246,7 +1248,7 @@ $final[] = array_merge($array1,$array2,$array3,$array4);
            // $myrefferals = User::find($user_id)->referrals;
             $coupons = Coupon::first();
             // $myrefferals = User::with('referrals')->where("id",$user_id)->where("coupon_used",$user_id)->get();
-            $myrefferals = User::where("referrer_id","=",$user_id)->get()->map(function ($item) {
+            $myrefferals = User::where("referrer_id","=",$user_id)->orderBy('created_at', 'desc')->get()->map(function ($item) {
                 $item['coupon_code'] = Coupon::first()->coupon_code;
                 return $item;
             });
@@ -1278,7 +1280,7 @@ $final[] = array_merge($array1,$array2,$array3,$array4);
     
     public function MobileSliders()
      {
-      $sliders = MobileSlider::where('active', '=', 1)->get()->map(function ($item) {
+      $sliders = MobileSlider::where('active', '=', 1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
         $item['slider'] = URL::to('/').'/public/uploads/videocategory/'.$item->slider;
         return $item;
       });
@@ -1328,11 +1330,13 @@ $final[] = array_merge($array1,$array2,$array3,$array4);
   {
     $ppvvideoid = $request->ppvvideoid;
     $user_id = $request->user_id;
-    $ppvvideodetail = PpvVideo::where('id',$ppvvideoid)->get()->map(function ($item) {
+    $ppvvideodetail = PpvVideo::where('id',$ppvvideoid)->orderBy('created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         return $item;
       });
-      $ppv_status = PpvPurchase::join('ppv_videos', 'ppv_videos.id', '=', 'ppv_purchases.video_id')->where('ppv_purchases.user_id', '=', $user_id)->where('ppv_purchases.video_id', '=', $ppvvideoid)->get()->map(function ($item) {
+      $ppv_status = PpvPurchase::join('ppv_videos', 'ppv_videos.id', '=', 'ppv_purchases.video_id')
+      ->where('ppv_purchases.user_id', '=', $user_id)
+      ->where('ppv_purchases.video_id', '=', $ppvvideoid)->orderBy('ppv_purchases.created_at', 'desc')->get()->map(function ($item) {
         $item['ppv_videos_status'] = ($item->to_time > Carbon::now() )?"Can View":"Expired";
         return $item;
       });
@@ -1646,7 +1650,7 @@ $final[] = array_merge($array1,$array2,$array3,$array4);
       foreach ($video_ids as $key => $value1) {
         $k2[] = $value1->video_id;
       }
-      $channel_videos = Video::whereIn('id', $k2)->get()->map(function ($item) {
+      $channel_videos = Video::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['video_url'] = URL::to('/').'/storage/app/public/';
         return $item;
@@ -1679,7 +1683,7 @@ $final[] = array_merge($array1,$array2,$array3,$array4);
       foreach ($video_ids as $key => $value) {
         $k2[] = $value->video_id;
       }
-      $channel_videos = Video::whereIn('id', $k2)->get()->map(function ($item) {
+      $channel_videos = Video::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['video_url'] = URL::to('/').'/storage/app/public/';
         return $item;
@@ -1712,7 +1716,7 @@ $final[] = array_merge($array1,$array2,$array3,$array4);
       foreach ($video_ids as $key => $value1) {
         $k2[] = $value1->video_id;
       }
-      $channel_videos = Video::whereIn('id', $k2)->get()->map(function ($item) {
+      $channel_videos = Video::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['video_url'] = URL::to('/').'/storage/app/public/';
         return $item;
@@ -1793,7 +1797,9 @@ $final[] = array_merge($array1,$array2,$array3,$array4);
 
     $daten = date('Y-m-d h:i:s a', time());
 
-    $payperview_video = PpvPurchase::join('videos', 'videos.id', '=', 'ppv_purchases.video_id')->where('ppv_purchases.user_id', '=', $user_id)->where('ppv_purchases.video_id', '!=', 0)->get()->map(function ($item) {
+    $payperview_video = PpvPurchase::join('videos', 'videos.id', '=', 'ppv_purchases.video_id')
+    ->where('ppv_purchases.user_id', '=', $user_id)->where('ppv_purchases.video_id', '!=', 0)
+    ->orderBy('ppv_purchases.created_at', 'desc')->get()->map(function ($item) {
         $item['ppv_videos_status'] = ($item->to_time > Carbon::now() )?"Can View":"Expired";
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         return $item;
@@ -1833,7 +1839,9 @@ $final[] = array_merge($array1,$array2,$array3,$array4);
 
     $daten = date('Y-m-d h:i:s a', time());
 
-    $payperview_video = LivePurchase::join('live_streams', 'live_streams.id', '=', 'live_purchases.video_id')->where('live_purchases.user_id', '=', $user_id)->where('live_purchases.video_id', '!=', 0)->get()->map(function ($item) {
+    $payperview_video = LivePurchase::join('live_streams', 'live_streams.id', '=', 'live_purchases.video_id')
+    ->where('live_purchases.user_id', '=', $user_id)->where('live_purchases.video_id', '!=', 0)
+    ->orderBy('live_purchases.created_at', 'desc')->get()->map(function ($item) {
         $item['live_streams_status'] = ($item->to_time > Carbon::now() )?"Can View":"Expired";
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         return $item;
@@ -2120,7 +2128,7 @@ $final[] = array_merge($array1,$array2,$array3,$array4);
             $user_id = $request->user_id;
             $stripe_plan = SubscriptionPlan();
 
-            $user_details = User::where('id', '=', $user_id)->get()->map(function ($item) {
+            $user_details = User::where('id', '=', $user_id)->orderBy('created_at', 'desc')->get()->map(function ($item) {
                 $item['profile_url'] = URL::to('/').'/public/uploads/avatars/'.$item->avatar;
                 return $item;
             });
@@ -2308,7 +2316,8 @@ $final[] = array_merge($array1,$array2,$array3,$array4);
       $videoid = $request->videoid;
       $categoryVideos = Video::where('id',$videoid)->first();
         $category_id = Video::where('id',$videoid)->pluck('video_category_id');
-        $recomended = Video::where('video_category_id','=',$category_id)->where('id','!=',$videoid)->where('status','=',1)->where('active','=',1)->get()->map(function ($item) {
+        $recomended = Video::where('video_category_id','=',$category_id)->where('id','!=',$videoid)
+        ->orderBy('created_at', 'desc')->where('status','=',1)->where('active','=',1)->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         return $item;
       });
@@ -2321,7 +2330,7 @@ $final[] = array_merge($array1,$array2,$array3,$array4);
 
     public function relatedppvvideos(Request $request) {
       $ppvvideoid = $request->ppvvideoid;
-      $recomended = PpvVideo::where('id','!=',$ppvvideoid)->where('status',1)->where('active','=',1)->get()->map(function ($item) {
+      $recomended = PpvVideo::where('id','!=',$ppvvideoid)->where('status',1)->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         return $item;
       });
@@ -3001,7 +3010,7 @@ public function checkEmailExists(Request $request)
 
     public function serieslist()
     {
-      $series = Series::where('active', '=', '1')->get()->map(function ($item) {
+      $series = Series::where('active', '=', '1')->orderBy('created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['mp4_url'] = URL::to('/').'/storage/app/public/'.$item->mp4_url;
         return $item;
@@ -3021,7 +3030,7 @@ public function checkEmailExists(Request $request)
       $seriesid = $request->seriesid;
       $user_id = $request->user_id;
 
-      $series = Series::where('id', '=', $seriesid)->where('active', '=', '1')->get()->map(function ($item) {
+      $series = Series::where('id', '=', $seriesid)->where('active', '=', '1')->orderBy('created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['mp4_url'] = URL::to('/').'/storage/app/public/'.$item->mp4_url;
         return $item;
@@ -3054,7 +3063,7 @@ public function checkEmailExists(Request $request)
 
   public function seasonlist(Request $request){
       $seriesid = $request->seriesid;
-      $season = SeriesSeason::where('series_id','=',$seriesid)->get();
+      $season = SeriesSeason::where('series_id','=',$seriesid)->orderBy('created_at', 'desc')->get();
       $seasonfirst = SeriesSeason::where('series_id','=',$seriesid)->first();
       $first_season_id = $seasonfirst->id;
       $response = array(
@@ -3069,7 +3078,7 @@ public function checkEmailExists(Request $request)
     
       $season_id = $request->seasonid;
       
-      $episodes = Episode::where('season_id','=',$season_id)->get()->map(function ($item) {
+      $episodes = Episode::where('season_id','=',$season_id)->orderBy('created_at', 'desc')->get()->map(function ($item) {
          $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
          return $item;
        });
@@ -3089,7 +3098,7 @@ public function checkEmailExists(Request $request)
       
       $episodeid = $request->episodeid;
 
-      $episode = Episode::where('id',$episodeid)->get()->map(function ($item) {
+      $episode = Episode::where('id',$episodeid)->orderBy('created_at', 'desc')->get()->map(function ($item) {
          $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
          return $item;
        });
@@ -3227,7 +3236,7 @@ public function checkEmailExists(Request $request)
       $episode_count = Episode::where('id','=',$episodeid)->count();
       if($episode_count > 0){
       $season_id = Episode::where('id','=',$episodeid)->pluck('season_id');
-      $episode = Episode::where('id','!=',$episodeid)->where('season_id','=',$season_id)->get()->map(function ($item) {
+      $episode = Episode::where('id','!=',$episodeid)->where('season_id','=',$season_id)->orderBy('created_at', 'desc')->get()->map(function ($item) {
          $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
          return $item;
        });
@@ -3440,7 +3449,7 @@ public function checkEmailExists(Request $request)
   
   public function CastList() {
 
-      $casts = Cast::all()->map(function ($item) {
+      $casts = Cast::orderBy('created_at', 'desc')->get()->map(function ($item) {
         $item['cast_image'] = URL::to('/').'/public/uploads/avatars/casts/'.$item->cast;
         return $item;
       });
@@ -3489,10 +3498,10 @@ public function checkEmailExists(Request $request)
     public function UserComments(Request $request){
                      
           $comments =  Comment::where("video_id","=",$request->video_id)
-         ->where('user_id',$request->user_id)->get()->map(function ($item) {
+         ->where('user_id',$request->user_id)->orderBy('created_at', 'desc')->get()->map(function ($item) {
             $i = 0;
             while ($i<= $item->count()) {
-              $user =  User::where("id","=",$item->user_id)->get()->first();
+              $user =  User::where("id","=",$item->user_id)->orderBy('created_at', 'desc')->get()->first();
               if (!empty($user->avatar)) {
                 $item['user_profile'] = URL::to('/').'/public/uploads/avatars/'.$user->avatar;
               } else {
@@ -3607,6 +3616,7 @@ if($upnext_audios > 0){
   $album_all_audios =  Audio::join('category_audios', 'audio.id', '=', 'category_audios.audio_id')
   ->select('audio.*')
   ->where('category_id', $album_id)
+  ->orderBy('audio.created_at', 'desc')
   ->get();
     $response = array(
       'status'=>'true',
@@ -3632,12 +3642,14 @@ if($upnext_audios > 0){
     $similarAudio =  Audio::join('category_audios', 'audio.id', '=', 'category_audios.audio_id')
     ->select('audio.*')
     ->where('category_id','!=', $album_id)
+    ->orderBy('audio.created_at', 'desc')
     ->count();
 
 if($similarAudio > 0){
 $similar_Audio =  Audio::join('category_audios', 'audio.id', '=', 'category_audios.audio_id')
 ->select('audio.*')
 ->where('category_id','!=', $album_id)
+->orderBy('audio.created_at', 'desc')
 ->get();
 $response = array(
   'status'=>'true',
@@ -3688,7 +3700,7 @@ return response()->json($response, 200);
 
     foreach ($seasonlist as $key => $season) {
       $seasonid = $season['id'];
-      $episodes= Episode::where('season_id',$seasonid)->where('active','=',1)->get()->map(function ($item)  {
+      $episodes= Episode::where('season_id',$seasonid)->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item)  {
         $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
         return $item;
       });;
@@ -3724,10 +3736,10 @@ return response()->json($response, 200);
     $season_id = $request->season_id;
     $episode_id = $request->episode_id;
 
-    $episode = Episode::where('id','=',$episode_id)->orderBy('id', 'DESC')->first();    
+    $episode = Episode::where('id','=',$episode_id)->first();    
     // $season = SeriesSeason::where('series_id','=',$episode->series_id)->with('episodes')->get();
     $season = SeriesSeason::where('series_id','=',$episode->series_id)->where('id','=',$season_id)
-    ->with('episodes')->get();
+    ->with('episodes')->orderBy('created_at', 'desc')->get();
     if(!empty($season)){
       $ppv_price = $season[0]->ppv_price;
       $ppv_interval = $season[0]->ppv_interval;
@@ -3776,7 +3788,7 @@ return response()->json($response, 200);
     $next_videoid = Wishlist::where('video_id', '>', $video_id)->where('user_id', '=', $user_id)->min('video_id');
 
     if($next_videoid){
-      $video= Video::where('id','=',$next_videoid)->where('status','=','1')->where('active','=','1')->get();
+      $video= Video::where('id','=',$next_videoid)->where('status','=','1')->where('active','=','1')->orderBy('created_at', 'desc')->get();
       $response = array(
         'status' => true,
         'next_videoid' => $next_videoid,
@@ -3798,7 +3810,7 @@ return response()->json($response, 200);
   
     $prev_videoid = Wishlist::where('video_id', '<', $request->video_id)->where('user_id', '=', $user_id)->max('video_id');
     if($prev_videoid){
-      $video= Video::where('id','=',$prev_videoid)->where('status','=','1')->where('active','=','1')->get();
+      $video= Video::where('id','=',$prev_videoid)->where('status','=','1')->where('active','=','1')->orderBy('created_at', 'desc')->get();
       $response = array(
         'status' => true,
         'prev_videoid' => $prev_videoid,
@@ -3820,7 +3832,7 @@ return response()->json($response, 200);
     $video_id = $request->video_id;
     $next_videoid = Watchlater::where('video_id', '>', $video_id)->where('user_id', '=', $user_id)->min('video_id');
     if($next_videoid){
-      $video= Video::where('id','=',$next_videoid)->where('status','=','1')->where('active','=','1')->get();
+      $video= Video::where('id','=',$next_videoid)->where('status','=','1')->where('active','=','1')->orderBy('created_at', 'desc')->get();
       $response = array(
         'status' => true,
         'next_videoid' => $next_videoid,
@@ -3842,7 +3854,7 @@ return response()->json($response, 200);
 
     $prev_videoid = Watchlater::where('video_id', '<', $video_id)->where('user_id', '=', $user_id)->max('video_id');
     if($prev_videoid){
-      $video= Video::where('id','=',$prev_videoid)->where('status','=','1')->where('active','=','1')->get();
+      $video= Video::where('id','=',$prev_videoid)->where('status','=','1')->where('active','=','1')->orderBy('created_at', 'desc')->get();
       $response = array(
         'status' => true,
         'prev_videoid' => $prev_videoid,
@@ -3863,7 +3875,7 @@ return response()->json($response, 200);
     $video_id = $request->video_id;
     $next_videoid = Favorite::where('video_id', '>', $video_id)->where('user_id', '=', $user_id)->min('video_id');
     if($next_videoid){
-      $video= Video::where('id','=',$next_videoid)->where('status','=','1')->where('active','=','1')->get();
+      $video= Video::where('id','=',$next_videoid)->where('status','=','1')->where('active','=','1')->orderBy('created_at', 'desc')->get();
       $response = array(
         'status' => true,
         'next_videoid' => $next_videoid,
@@ -4138,7 +4150,7 @@ return response()->json($response, 200);
       foreach ($video_ids as $key => $value1) {
         $k2[] = $value1->videoid;
       }
-      $videos = Video::whereIn('id', $k2)->get()->map(function ($item) use ($user_id) {
+      $videos = Video::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) use ($user_id) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['watch_percentage'] = ContinueWatching::where('videoid','=',$item->id)->where('user_id','=',$user_id)->pluck('watch_percentage')->min();
         $item['skip_time'] = ContinueWatching::where('videoid','=',$item->id)->where('user_id','=',$user_id)->pluck('skip_time')->min();
@@ -4243,7 +4255,7 @@ return response()->json($response, 200);
       foreach ($episode_ids as $key => $value1) {
         $k2[] = $value1->episodeid;
       }
-      $episodes = Episode::whereIn('id', $k2)->get()->map(function ($item) use ($user_id) {
+      $episodes = Episode::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) use ($user_id) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['watch_percentage'] = ContinueWatching::where('episodeid','=',$item->id)->where('user_id','=',$user_id)->pluck('watch_percentage')->min();
         return $item;
@@ -4336,7 +4348,7 @@ return response()->json($response, 200);
     public function viewchildprofile(Request $request)
     {
         $parent_id = $request->parent_id;
-        $sub_users = DB::table('sub_users')->where('parent_id', $parent_id)->get();
+        $sub_users = DB::table('sub_users')->where('parent_id', $parent_id)->orderBy('created_at', 'desc')->get();
         if(!empty($sub_users)){
             $response = array(
                 'status'=>'true',
@@ -4379,6 +4391,7 @@ return response()->json($response, 200);
         ->join('audio_categories', 'audio.audio_category_id', '=', 'audio_categories.id')
         ->select('audio_categories.name as audio_cat_name ', 'audio.*')
         ->where('audio.created_at', '>=', $date)
+        ->orderBy('audio.created_at', 'desc')
         ->get();
 
         $recent_audios_count = Audio::where('created_at', '>=', $date)->count();
@@ -4415,7 +4428,7 @@ return response()->json($response, 200);
       if ( $recent_audios_count > 0) {
 
         // $allaudios =  Audio::get();
-        $allaudios = Audio::get()->map(function ($item) {
+        $allaudios = Audio::orderBy('created_at', 'desc')->get()->map(function ($item) {
           $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
           return $item;
       });
@@ -4441,7 +4454,7 @@ return response()->json($response, 200);
 
         $audio_id = $request->audio_id;
         $current_date = date('Y-m-d h:i:s a', time()); 
-        $audiodetail = Audio::where('id',$audio_id)->get()->map(function ($item) {
+        $audiodetail = Audio::where('id',$audio_id)->orderBy('created_at', 'desc')->get()->map(function ($item) {
             $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
             return $item;
         });
@@ -4517,7 +4530,8 @@ return response()->json($response, 200);
         foreach ($audiocategories as $key => $audiocategory) {
             $audiocategoryid = $audiocategory['id'];
             $genre_image = $audiocategory['image'];
-            $audios= Audio::where('audio_category_id',$audiocategoryid)->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+            $audios= Audio::where('audio_category_id',$audiocategoryid)
+            ->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
             $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
             $item['video_url'] = URL::to('/').'/storage/app/public/'.$item->mp4_url;
             return $item;
@@ -4548,7 +4562,7 @@ return response()->json($response, 200);
 
     public function artistlist()
     {
-        $artistlist = Artist::all()->map(function ($item) {
+        $artistlist = Artist::orderBy('created_at', 'desc')->get()->map(function ($item) {
             $item['image_url'] = URL::to('/').'/public/uploads/artists/'.$item->image;
             return $item;
         });
@@ -4579,7 +4593,8 @@ return response()->json($response, 200);
         // ->where('artist_favourites.user_id',$user_id)
         // ->where('artist_favourites.favourites',1)
         // ->get(['artists.*']);
-        $favoriteslist = Artist::join('artist_favourites', 'artists.id', '=', 'artist_favourites.artist_id')->get()
+        $favoriteslist = Artist::join('artist_favourites', 'artists.id', '=', 'artist_favourites.artist_id')
+          ->orderBy('artists.created_at', 'desc')->get()
           ->map(function ($item) {
           $item['image_url'] = URL::to('/').'/public/uploads/artists/'.$item->image;
           return $item;
@@ -4601,7 +4616,10 @@ return response()->json($response, 200);
     public function artistfollowings(Request $request)
     {
         $user_id = $request->user_id;
-        $followinglist = Artist::join('artist_favourites', 'artists.id', '=', 'artist_favourites.artist_id')->where('artist_favourites.user_id',$user_id)->where('artist_favourites.following',1)->get(['artists.*']);
+        $followinglist = Artist::join('artist_favourites', 'artists.id', '=', 'artist_favourites.artist_id')
+        ->where('artist_favourites.user_id',$user_id)->where('artist_favourites.following',1)
+        ->orderBy('artists.created_at', 'desc')->get(['artists.*']);
+       
         if($followinglist){
             $response = array(
                 'status' => 'true',
@@ -4692,7 +4710,7 @@ return response()->json($response, 200);
     {
         $artist_id = $request->artist_id;
         $user_id = $request->user_id;
-        $artist = Artist::where('id',$artist_id)->get()->map(function ($item) {
+        $artist = Artist::where('id',$artist_id)->orderBy('created_at', 'desc')->get()->map(function ($item) {
             $item['image_url'] = URL::to('/').'/public/uploads/artists/'.$item->image;
             return $item;
         });
@@ -4749,8 +4767,8 @@ return response()->json($response, 200);
       $audioalbums_count = AudioAlbums::get()->count();
 
         if($audioalbums_count > 0){
-          $audioalbums = AudioAlbums::all();
-          $audioalbums = AudioAlbums::get()->map(function ($item) {
+          $audioalbums = AudioAlbums::orderBy('created_at', 'desc')->get();
+          $audioalbums = AudioAlbums::orderBy('created_at', 'desc')->get()->map(function ($item) {
             $item['image_url'] = URL::to('/').'/public/uploads/albums/'.$item->album;
             return $item;
           });
@@ -4759,6 +4777,7 @@ return response()->json($response, 200);
             // $audioalbums= $val->albumname;
 
             $audio[$val->albumname] = Audio::where('album_id',$val->id)
+            ->orderBy('created_at', 'desc')
             ->get()->map(function ($item) {
               $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
               $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;     
@@ -4785,14 +4804,14 @@ return response()->json($response, 200);
     {
 
       $album_id = $request->album_id ;
-      $audioalbums_count = AudioAlbums::where('id' , $album_id)->get()->count();
+      $audioalbums_count = AudioAlbums::where('id' , $album_id)->orderBy('created_at', 'desc')->get()->count();
       if($audioalbums_count > 0){
 
         $audioalbums = AudioAlbums::where('id' , $album_id)->first();
         $genre_name = $audioalbums->albumname;
         // print_r($audioalbums->albumname);exit;
           $audio = Audio::where('album_id',$album_id)
-          ->get()->map(function ($item) {
+          ->orderBy('created_at', 'desc')->get()->map(function ($item) {
             $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
             $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;     
             return $item;
@@ -4816,17 +4835,19 @@ return response()->json($response, 200);
     }
     public function AudioCategory(Request $request)
     {
-        $audiocategories_count = AudioCategory::get()->count();
+        $audiocategories_count = AudioCategory::orderBy('created_at', 'desc')->get()->count();
     
 
-        $audiocategories = AudioCategory::select('id','image')->get()->toArray();
+        $audiocategories = AudioCategory::select('id','image')->orderBy('created_at', 'desc')->get()->toArray();
         $myData = array();
         foreach ($audiocategories as $key => $audiocategory) {
           $audiocategoryid = $audiocategory['id'];
           $genre_image = $audiocategory['image'];
           // $categoryauido =  Audio::join('category_audios', 'audio.id', '=', 'category_audios.audio_id')
 
-          $audio = Audio::Join('category_audios','category_audios.audio_id','=','audio.id')->where('category_audios.category_id',$audiocategoryid)
+          $audio = Audio::Join('category_audios','category_audios.audio_id','=','audio.id')
+          ->where('category_audios.category_id',$audiocategoryid)
+          ->orderBy('audio.created_at', 'desc')
           ->get()->map(function ($item) {
             $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
             // $item['auido_url'] = URL::to('/').'/storage/app/public/';
@@ -4887,11 +4908,13 @@ return response()->json($response, 200);
           }                        
           $blockaudios[]='';
     
-        $audioalbum = Audio::where('audio_category_id',$album_id)->where('active','=',1)->orderBy('created_at', 'desc');
+        $audioalbum = Audio::where('audio_category_id',$album_id)->where('active','=',1)
+        ->orderBy('created_at', 'desc');
         if($getfeching !=null && $getfeching->geofencing == 'ON'){
           $audioalbum =   $audioalbum->whereNotIn('id',$blockaudios);
         }
-        $audioalbum = $audioalbum->get()->map(function ($item) {
+        $audioalbum = $audioalbum->orderBy('created_at', 'desc')
+        ->get()->map(function ($item) {
             $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
             $item['video_url'] = URL::to('/').'/storage/app/public/'.$item->mp4_url;
             return $item;
@@ -4899,12 +4922,14 @@ return response()->json($response, 200);
     $categoryauido =  Audio::join('category_audios', 'audio.id', '=', 'category_audios.audio_id')
     ->select('audio.*')
     ->where('category_id', $album_id)
+    ->orderBy('audio.created_at', 'desc')
     ->count();
     
     if($categoryauido > 0){
     $albumcategoryauido =  Audio::join('category_audios', 'audio.id', '=', 'category_audios.audio_id')
     ->select('audio.*')
     ->where('category_id', $album_id)
+    ->orderBy('audio.created_at', 'desc')
     ->get();
     }else{
       $albumcategoryauido =  'No Audio Found';
@@ -4974,7 +4999,8 @@ return response()->json($response, 200);
         $audio_id = $request->audio_id;
         $categoryAudios = Audio::where('id',$audio_id)->first();
         $category_id = Audio::where('id',$audio_id)->pluck('audio_category_id');
-        $recomended = Audio::where('audio_category_id','=',$category_id)->where('id','!=',$audio_id)->where('status','=',1)->where('active','=',1)->get()->map(function ($item) {
+        $recomended = Audio::where('audio_category_id','=',$category_id)
+        ->where('id','!=',$audio_id)->where('status','=',1)->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
                 $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
                 $item['mp4_url'] = URL::to('/').'/public/uploads/videos/'.$item->mp4_url;
                 return $item;
@@ -4999,7 +5025,7 @@ return response()->json($response, 200);
         foreach ($audio_ids as $key => $value1) {
           $k2[] = $value1->audio_id;
         }
-        $channel_videos = Audio::whereIn('id', $k2)->get()->map(function ($item) {
+        $channel_videos = Audio::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) {
           $item['image_url'] = URL::to('/').'/uploads/images/'.$item->image;
           $item['mp3_url'] = $item->mp3_url;
           return $item;
@@ -5031,7 +5057,7 @@ return response()->json($response, 200);
         foreach ($audio_ids as $key => $value1) {
           $k2[] = $value1->audio_id;
         }
-        $channel_videos = Audio::whereIn('id', $k2)->get()->map(function ($item) {
+        $channel_videos = Audio::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) {
           $item['image_url'] = URL::to('/').'/uploads/images/'.$item->image;
           $item['mp3_url'] = $item->mp3_url;
           return $item;
@@ -5052,7 +5078,7 @@ return response()->json($response, 200);
 
     public function Alllanguage(Request $request) {
 
-      $all_languages = Language::all();
+      $all_languages = Language::orderBy('created_at', 'desc')->get();
       $count_all_languages = count($all_languages);
       $response = array(
           'status'=>'true',
@@ -5301,7 +5327,7 @@ public function LocationCheck(Request $request){
     $user_id = $request->user_id;
 
     /*channel videos*/
-    $episode_id_ids = Wishlist::select('episode_id')->where('user_id','=',$user_id)->get();
+    $episode_id_ids = Wishlist::select('episode_id')->where('user_id','=',$user_id)->orderBy('created_at', 'desc')->get();
     $episode_id_ids_count = Wishlist::select('episode_id')->where('user_id','=',$user_id)->count();
 
     if ( $episode_id_ids_count  > 0) {
@@ -5309,7 +5335,7 @@ public function LocationCheck(Request $request){
       foreach ($episode_id_ids as $key => $value1) {
         $k2[] = $value1->video_id;
       }
-      $channel_videos = Episode::whereIn('id', $k2)->get()->map(function ($item) {
+      $channel_videos = Episode::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['video_url'] = URL::to('/').'/storage/app/public/';
         return $item;
@@ -5334,7 +5360,7 @@ public function LocationCheck(Request $request){
     $user_id = $request->user_id;
 
     /*channel videos*/
-    $episode_ids = Watchlater::select('episode_id')->where('user_id','=',$user_id)->get();
+    $episode_ids = Watchlater::select('episode_id')->where('user_id','=',$user_id)->orderBy('created_at', 'desc')->get();
     $episode_ids_count = Watchlater::select('episode_id')->where('user_id','=',$user_id)->count();
 
     if ( $episode_ids_count  > 0) {
@@ -5342,7 +5368,7 @@ public function LocationCheck(Request $request){
       foreach ($episode_ids as $key => $value1) {
         $k2[] = $value1->video_id;
       }
-      $channel_videos = Episode::whereIn('id', $k2)->get()->map(function ($item) {
+      $channel_videos = Episode::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['video_url'] = URL::to('/').'/storage/app/public/';
         return $item;
@@ -5364,7 +5390,7 @@ public function LocationCheck(Request $request){
 
     $user_id = $request->user_id;
     /*channel videos*/
-    $episode_ids = Favorite::select('episode_id')->where('user_id',$user_id)->get();
+    $episode_ids = Favorite::select('episode_id')->where('user_id',$user_id)->orderBy('created_at', 'desc')->get();
     $episode_ids_count = Favorite::select('episode_id')->where('user_id',$user_id)->count();
 
     if ( $episode_ids_count  > 0) {
@@ -5372,7 +5398,7 @@ public function LocationCheck(Request $request){
       foreach ($episode_ids as $key => $value) {
         $k2[] = $value->video_id;
       }
-      $channel_videos = Episode::whereIn('id', $k2)->get()->map(function ($item) {
+      $channel_videos = Episode::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['video_url'] = URL::to('/').'/storage/app/public/';
         return $item;
@@ -5687,6 +5713,7 @@ public function LocationCheck(Request $request){
       $video_cast = Videoartist::join("artists","video_artists.artist_id", "=", "artists.id")
       ->select("artists.*")
       ->where("video_artists.video_id", "=", $video_id)
+      ->orderBy('created_at', 'desc')
       ->get()
       ->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/artists/'.$item->image;
@@ -5717,6 +5744,7 @@ public function LocationCheck(Request $request){
       $series_cast = Seriesartist::join("artists","series_artists.artist_id", "=", "artists.id")
       ->select("artists.*")
       ->where("series_artists.series_id", "=", $seriesid)
+      ->orderBy('created_at', 'desc')
       ->get()
       ->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/artists/'.$item->image;
@@ -5755,7 +5783,7 @@ public function LocationCheck(Request $request){
 
           if($preference_genres !=null ){
               $video_genres = json_decode($preference_genres);
-              $preference_gen = Video::whereIn('video_category_id',$video_genres)->whereNotIn('videos.id',$blockvideos)->get();
+              $preference_gen = Video::whereIn('video_category_id',$video_genres)->whereNotIn('videos.id',$blockvideos)->orderBy('created_at', 'desc')->get();
           }
           else{
               $preference_gen =[];
@@ -5791,7 +5819,7 @@ public function LocationCheck(Request $request){
       $preference_language = User::where('id',$user_id)->pluck('preference_language')->first();
             if($preference_language !=null ){
               $video_language =json_decode($preference_language);
-              $preference_Lan = Video::whereIn('language',$video_language)->whereNotIn('videos.id',$blockvideos)->get();
+              $preference_Lan = Video::whereIn('language',$video_language)->whereNotIn('videos.id',$blockvideos)->orderBy('created_at', 'desc')->get();
             }else{
                   $preference_Lan =[];
               }
@@ -5844,7 +5872,7 @@ public function LocationCheck(Request $request){
 
   public function Welcome_Screen()
   {
-     $Screen =WelcomeScreen::all()->map(function ($item) {
+     $Screen =WelcomeScreen::orderBy('created_at', 'desc')->get()->map(function ($item) {
       $item['welcome_images_link'] = URL::to('/').'/public/uploads/settings/'.$item->welcome_images;
       return $item;
     });
@@ -6231,6 +6259,7 @@ public function AdsView(Request $request)
 {
     $ads_videos = AdsVideo::where('ads_videos.video_id',$request->videoid)
     ->join('advertisements', 'ads_videos.ads_id', '=', 'advertisements.id')
+    ->orderBy('created_at', 'desc')
     ->first();
 
     AdvertisementView::create([
@@ -6289,7 +6318,7 @@ public function Adstatus_upate(Request $request)
   public function PPVVideodetails(Request $request){
 
     $ppv_videos = PpvPurchase::Join('videos','videos.id','=','ppv_purchases.video_id')
-                  ->where('ppv_purchases.user_id',$request->user_id)->get()->map(function ($item) {
+                  ->where('ppv_purchases.user_id',$request->user_id)->orderBy('ppv_purchases.created_at', 'desc')->get()->map(function ($item) {
                         $item['video_image'] = URL::to('/').'/public/uploads/images/'.$item->image;
                         $item['videoExpired_date'] = Carbon::parse($item->to_time)->format('d-m-Y');
                         $item['videoExpired_time'] = Carbon::parse($item->to_time)->format('g:i:s A');
@@ -6626,21 +6655,21 @@ public function Adstatus_upate(Request $request)
 
   public function andriod_slider()
   {
-    $sliders = Slider::where('active', '=', 1)->get()->map(function ($item) {
+    $sliders = Slider::where('active', '=', 1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
       $item['slider'] = URL::to('/').'/public/uploads/videocategory/'.$item->slider;
       return $item;
     });
-    $banners = Video::where('active','=',1)->where('status','=',1)->where('banner', '=', 1)->get()->map(function ($item) {
+    $banners = Video::where('active','=',1)->where('status','=',1)->where('banner', '=', 1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
       $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
       $item['video_url'] = URL::to('/').'/storage/app/public/';
       return $item;
     });
-    $live_banner = LiveStream::where('active','=',1)->where('banner', '=', 1)->get()->map(function ($item) {
+    $live_banner = LiveStream::where('active','=',1)->where('banner', '=', 1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
       $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
       $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
       return $item;
     });
-    $series_banner = Series::where('active','=',1)->get()->map(function ($item) {
+    $series_banner = Series::where('active','=',1)->get()->orderBy('created_at', 'desc')->map(function ($item) {
       $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
       $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
       return $item;

@@ -154,27 +154,26 @@
                         <div id="view-chart-01">
                         </div>
                         <div class="row mt-1">
-                           <div class="col-sm-6 col-md-3 col-lg-6 iq-user-list">
+                           <div class="col-sm-12 col-md-3 col-lg-12 iq-user-list">
                               <div class="iq-card1">
                                  <div class="iq-card-body">
                                     <div class="media align-items-center">
                                        <div class="iq-user-box bg-primary"></div>
                                        <div class="media-body text-white">
-                                          <p class="mb-0 font-size-14 line-height">Total  <br> 
-                                          Subscriber's
+                                          <p class="mb-0 font-size-14 line-height">Total Subscriber's
                                           </p>
                                        </div>
                                     </div>
                                  </div>
                               </div>
                            </div>
-                           <div class="col-sm-6 col-md-3 col-lg-6 iq-user-list">
+                           <div class="col-sm-6 col-md-3 col-lg-12 iq-user-list">
                               <div class="iq-card1">
                                  <div class="iq-card-body">
                                     <div class="media align-items-center">
                                        <div class="iq-user-box bg-warning"></div>
                                        <div class="media-body text-white">
-                                          <p class="mb-0 font-size-14 line-height">New <br>
+                                          <p class="mb-0 font-size-14 line-height">New
                                              Subscriber's
                                           </p>
                                        </div>
@@ -182,13 +181,13 @@
                                  </div>
                               </div>
                            </div>
-                           <div class="col-sm-6 col-md-3 col-lg-6 iq-user-list">
+                           <div class="col-sm-6 col-md-3 col-lg-12 iq-user-list">
                               <div class="iq-card1">
                                  <div class="iq-card-body">
                                     <div class="media align-items-center">
                                        <div class="iq-user-box bg-info"></div>
                                        <div class="media-body text-white">
-                                          <p class="mb-0 font-size-14 line-height">Total <br>
+                                          <p class="mb-0 font-size-14 line-height">Total
                                                 Video's
                                           </p>
                                        </div>
@@ -196,7 +195,7 @@
                                  </div>
                               </div>
                            </div>
-                           <div class="col-sm-6 col-md-3 col-lg-6 iq-user-list">
+                           <div class="col-sm-6 col-md-3 col-lg-12 iq-user-list">
                               <div class="iq-card1">
                                  <div class="iq-card-body">
                                     <div class="media align-items-center">
