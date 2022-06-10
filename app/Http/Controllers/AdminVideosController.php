@@ -948,6 +948,7 @@ if(!empty($artistsdata)){
 
         // dd($data['searchtags']);
 
+
         $validatedData = $request->validate([
             'title' => 'required|max:255',
             // 'video_country' => 'required'        
@@ -1393,6 +1394,7 @@ if(!empty($artistsdata)){
          $video->ppv_price =$data['ppv_price'];
          $video->type =$data['type'];
          $video->description = strip_tags($data['description']);
+         $video->trailer_description = strip_tags($data['trailer_description']);
          $video->banner =  $banner;
          $video->enable =  $enable;
          $video->rating =  $request->rating;
@@ -1980,20 +1982,21 @@ if(!empty($artistsdata)){
 
             // Ads category
 
-             $shortcodes = $request['short_code'];        
-             $languages=$request['sub_language'];
-             $video->video_category_id = null;
-             $video->skip_recap =  $data['skip_recap'];
-             $video->recap_start_time =  $data['recap_start_time'];
-             $video->recap_end_time =  $data['recap_end_time'];
-             $video->skip_intro =  $data['skip_intro'];
-             $video->intro_start_time =  $data['intro_start_time'];
-             $video->intro_end_time =  $data['intro_end_time'];   
-             $video->ads_category =  $data['ads_category'];   
+            $shortcodes = $request['short_code'];        
+            $languages=$request['sub_language'];
+            $video->video_category_id = null;
+            $video->skip_recap =  $data['skip_recap'];
+            $video->recap_start_time =  $data['recap_start_time'];
+            $video->recap_end_time =  $data['recap_end_time'];
+            $video->skip_intro =  $data['skip_intro'];
+            $video->intro_start_time =  $data['intro_start_time'];
+            $video->intro_end_time =  $data['intro_end_time'];   
+            $video->ads_category =  $data['ads_category'];   
 
+            $video->description = strip_tags($data['description']);
+            $video->trailer_description = strip_tags($data['trailer_description']);
 
-             $video->description = strip_tags($data['description']);
-             $video->draft = 1;
+            $video->draft = 1;
             $video->active = 1 ;
             $video->embed_code =  $embed_code ;
             $video->player_image =   $player_image ;

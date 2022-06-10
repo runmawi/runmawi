@@ -748,18 +748,32 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 
   <!--End Intro Skip and Recap Skip -->
 
-           <?php if(!empty($video->description) ) { ?>
-<div class="col-md-7 p-0">
-<h4>Description</h4>
-<div class="text-white">
-    <p class="trending-dec w-100 mb-0 text-white mt-2"><?php echo __($video->description); ?></p>
-    <p class="trending-dec w-100 mb-0 text-white mt-2">Starring : <span class="sta"><?php echo $artistsname; ?></span></p>
-    <p class="trending-dec w-100 mb-0 text-white mt-2">Genres : <span class="sta"><?php echo $genres_name; ?></span></p>
-    <p class="trending-dec w-100 mb-0 text-white mt-2">This Movie is :</p>
-    <p class="trending-dec w-100 mb-0 text-white mt-2">Subtitles : <?php echo $subtitles_name; ?></p>
-    <p class="trending-dec w-100 mb-0 text-white mt-2">Audio Languages : <?php echo $lang_name; ?></p>
-</div></div>
-<?php  }?>
+
+  <!-- Trailer Description -->
+  <?php if(!empty($video->trailer_description) ) { ?>
+      <div class="col-md-7 p-0 trailer_description">
+          <h4>Trailer Description</h4>
+          <div class="text-white">
+              <p class="trending-dec w-100 mb-0 text-white mt-2"><?php echo __($video->trailer_description); ?></p>
+          </div>
+      </div>
+      <br>
+  <?php  }?>
+
+
+  <?php if(!empty($video->description) ) { ?>
+    <div class="col-md-7 p-0">
+      <h4>Description</h4>
+      <div class="text-white">
+          <p class="trending-dec w-100 mb-0 text-white mt-2"><?php echo __($video->description); ?></p>
+          <p class="trending-dec w-100 mb-0 text-white mt-2">Starring : <span class="sta"><?php echo $artistsname; ?></span></p>
+          <p class="trending-dec w-100 mb-0 text-white mt-2">Genres : <span class="sta"><?php echo $genres_name; ?></span></p>
+          <p class="trending-dec w-100 mb-0 text-white mt-2">This Movie is :</p>
+          <p class="trending-dec w-100 mb-0 text-white mt-2">Subtitles : <?php echo $subtitles_name; ?></p>
+          <p class="trending-dec w-100 mb-0 text-white mt-2">Audio Languages : <?php echo $lang_name; ?></p>
+      </div>
+    </div>
+  <?php  }?>
 <br>
 
 <?php if(!empty($video->details) ) { ?>
@@ -991,19 +1005,26 @@ $artists = [];
           //    $(".skip").css('display','inline-block');
           //    $("#video_container").html(videohtml);
           //  });
-          var vid = document.getElementById("videoPlayer"); 
+
+
+        var vid = document.getElementById("videoPlayer"); 
           $('#watch_trailer').hide();
           $('#close_trailer').hide();
-          // Play Trailer
+          $('.trailer_description').hide();
+
+        // Play Trailer
           $('#videoplay').click(function(){
             // alert('test');
-            $('#video_container').hide();
-            const player = new Plyr('#videoPlayers');
-            $('#watch_trailer').show();
-            $('#videoplay').hide();
-            $('#close_trailer').show();
+              $('#video_container').hide();
+              const player = new Plyr('#videoPlayers');
+              $('#watch_trailer').show();
+              $('#videoplay').hide();
+              $('#close_trailer').show();
+              $('.trailer_description').show();
+
           });
-          // Close Trailer
+
+        // Close Trailer
           $('#close_trailer').click(function(){
             // alert('test');
             $('#watch_trailer').hide();
@@ -1011,11 +1032,11 @@ $artists = [];
             $('#video_container').show();
             $('#videoplay').show();            
             $('#close_trailer').hide();
+            $('.trailer_description').hide();
+
           });
 
 
-
-          
            /*Skip Video*/
           //  $(document).on("click",".skip",function() {
           //    $("#video_container").empty();

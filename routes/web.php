@@ -458,7 +458,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     /* Master List */
     Route::get('/Masterlist', 'AdminDashboardController@Masterlist'); 
     Route::get('/ActiveSlider', 'AdminDashboardController@ActiveSlider'); 
-
+    Route::post('/ActiveSlider_update', 'AdminDashboardController@ActiveSlider_update'); 
 
     /* Thumbnail Setting */
     Route::get('/ThumbnailSetting', 'AdminSettingsController@ThumbnailSetting')->name('ThumbnailSetting'); 
@@ -1413,12 +1413,14 @@ Route::get('/RazorpayUpgrade', 'RazorpayController@RazorpayUpgrade')->name('Razo
 Route::get('/RazorpayCancelSubscriptions', 'RazorpayController@RazorpayCancelSubscriptions')->name('RazorpayCancelSubscriptions');
 Route::get('/RazorpaySubscriptionStore', 'RazorpayController@RazorpaySubscriptionStore')->name('RazorpaySubscriptionStore');
 Route::get('/RazorpaySubscriptionUpdate/{planId}', 'RazorpayController@RazorpaySubscriptionUpdate')->name('RazorpaySubscriptionUpdate');
-});
 
 Route::get('/RazorpayVideoRent/{video_id}/{amount}', 'RazorpayController@RazorpayVideoRent')->name('RazorpayVideoRent');
 Route::POST('/RazorpayVideoRent_Payment', 'RazorpayController@RazorpayVideoRent_Payment')->name('RazorpayVideoRent_Payment');
 
 Route::get('/RazorpayLiveRent/{live_id}/{amount}', 'RazorpayController@RazorpayLiveRent')->name('RazorpayLiveRent');
 Route::POST('/RazorpayLiveRent_Payment', 'RazorpayController@RazorpayLiveRent_Payment')->name('RazorpayLiveRent_Payment');
+});
 
+// Cache clear
+Route::get('/clear_cache', 'ClearCacheController@clear_cache')->name('clear_cache');
 
