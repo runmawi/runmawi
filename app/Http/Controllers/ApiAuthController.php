@@ -6669,7 +6669,7 @@ public function Adstatus_upate(Request $request)
       $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
       return $item;
     });
-    $series_banner = Series::where('active','=',1)->get()->orderBy('created_at', 'desc')->map(function ($item) {
+    $series_banner = Series::where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
       $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
       $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
       return $item;
