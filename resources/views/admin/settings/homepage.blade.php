@@ -236,11 +236,11 @@ border-radius: 0px 4px 4px 0px;
                         <!-- </div> -->
         </div>
                         
-<div class="row ">
-    <div class="col-md-12 d-flex justify-content-end">
-        <button type="submit" class="btn btn-primary mt-3" name="submit"> Save Settings</button>
+    <div class="row ">
+        <div class="col-md-12 d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary mt-3" name="submit"> Save Settings</button>
+        </div>
     </div>
-</div>
 
                 
 </form>
