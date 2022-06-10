@@ -1401,6 +1401,11 @@ Route::post('admin/ThemeIntegration/create', 'ThemeIntegrationController@create'
 Route::get('admin/ThemeIntegration/set_theme', 'ThemeIntegrationController@set_theme')->name('ThemeIntegration/set_theme');
 Route::post('admin/ThemeIntegration/uniquevalidation', 'ThemeIntegrationController@uniquevalidation')->name('ThemeIntegration/uniquevalidation');
 
+// Cache clear
+Route::get('admin/clear_cache', 'ClearCacheController@index')->name('clear_cache');
+Route::post('admin/clear_caches', 'ClearCacheController@clear_caches')->name('clear_caches');
+Route::post('admin/clear_view_cache', 'ClearCacheController@clear_view_cache')->name('clear_view_cache');
+
     // Reels
 Route::get('/Reals_videos/videos/{slug}', 'ChannelController@Reals_videos');
 
@@ -1421,6 +1426,5 @@ Route::get('/RazorpayLiveRent/{live_id}/{amount}', 'RazorpayController@RazorpayL
 Route::POST('/RazorpayLiveRent_Payment', 'RazorpayController@RazorpayLiveRent_Payment')->name('RazorpayLiveRent_Payment');
 });
 
-// Cache clear
-Route::get('/clear_cache', 'ClearCacheController@clear_cache')->name('clear_cache');
+
 

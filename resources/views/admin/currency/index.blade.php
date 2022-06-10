@@ -200,8 +200,6 @@ border-radius: 0px 4px 4px 0px;
 
 		});
 		</script>
-		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/jquery-ui.min.js"></script>
 		<script type="text/javascript">
 			$(function () {
 				$("#slidertbl").sortable({
@@ -233,8 +231,8 @@ border-radius: 0px 4px 4px 0px;
 					type:'post',
 					data:{position:data, _token : $('#_token').val()},
 					success:function(){
-						alert('Position changed successfully.');
-						location.reload();
+						// alert('Position changed successfully.');
+						// location.reload();
 					}
 				})
 			}
