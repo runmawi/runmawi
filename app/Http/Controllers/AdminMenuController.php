@@ -80,10 +80,10 @@ class AdminMenuController extends Controller
         
         $validatedData = $request->validate([
             'name' => 'required|max:255',
-            'url' => 'required|max:255'
+            // 'url' => 'required|max:255'
         ]);
-        
-        
+
+      
         $last_menu_item = Menu::orderBy('order', 'DESC')->first();
         
         if(isset($last_menu_item->order)){
