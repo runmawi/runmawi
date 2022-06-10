@@ -476,7 +476,7 @@ Index Of Script
 		/*---------------------------------------------------------------------
 			Video popup
 		-----------------------------------------------------------------------*/
-		jQuery('.video-open').magnificPopup({
+		/*jQuery('.video-open').magnificPopup({
 			type: 'iframe',
 			mainClass: 'mfp-fade',
 			removalDelay: 160,
@@ -490,7 +490,10 @@ Index Of Script
 
 				srcAction: 'iframe_src',
 			}
-		});
+		});*/
+         jQuery('.video-open').magnificPopup({
+            type: 'inline', preloader: true, midClick: false, removalDelay: 160,fixedContentPos: false
+        });
 
 		/*---------------------------------------------------------------------
 			Flatpicker
