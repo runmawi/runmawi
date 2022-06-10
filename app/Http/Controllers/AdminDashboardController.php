@@ -237,7 +237,7 @@ class AdminDashboardController extends Controller
 
     public function ActiveSlider(Request $request){
 
-      
+     
         $Active_Videos =  Video::where('banner',1)->orderBy('created_at', 'DESC')->get();
 
         $Active_LiveStream = LiveStream::where('banner',1)->orderBy('created_at', 'DESC')->get();
@@ -256,5 +256,33 @@ class AdminDashboardController extends Controller
 
          return View::make('admin.videos.Active_slider', $data);
 
+    }
+
+    public function ActiveSlider_update(Request $request)
+    {
+       
+        try {
+            if($request->type == "video"){
+                $video = Video::where('id',$request->video_id)->update([
+                    'banner' => $request->banner_status,
+                ]);
+            }
+            elseif($request->type == "Livestream"){
+                $LiveStream = LiveStream::where('id',$request->video_id)->update([
+                    'banner' => $request->banner_status,
+                ]);
+
+            }elseif($request->type == "Episode"){
+                $Episode = Episode::where('id',$request->video_id)->update([
+                    'banner' => $request->banner_status,
+                ]);
+            }
+
+            return response()->json(['message'=>"true"]);
+
+        } catch (\Throwable $th) {
+            return response()->json(['message'=>"false"]);
+        }
+    
     }
 }

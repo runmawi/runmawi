@@ -109,6 +109,7 @@ border-radius: 0px 4px 4px 0px;
                                  <th>Video Access</th>
                                  <th>Status</th>
                                  <th>Source</th>
+                                 <th>Status</th>
                                  <th>Action</th>
                               </tr>
                            </thead>
@@ -149,7 +150,18 @@ border-radius: 0px 4px 4px 0px;
                                     @endif
 
                                     <td> {{ $video->access }} </td>
+
                                     <td> {{ 'Videos'}} </td>
+
+                                    <td>
+                                       <div class="mt-1">
+                                          <label class="switch">
+                                              <input name="video_status" class="video_status" id="{{ 'video_'.$video->id }}" type="checkbox" @if( $video->banner == "1") checked  @endif data-id={{ $video->id }}  data-type="video" onchange="updatebanner(this)" >
+                                              <span class="slider round"></span>
+                                          </label>
+                                      </div>
+                                    </td>
+
 
                                     <td>
                                        <div class="flex align-items-center list-user-action">
@@ -209,7 +221,18 @@ border-radius: 0px 4px 4px 0px;
                                        @endif
       
                                        <td> {{ $video->access }} </td>
+
                                        <td> {{ 'Live Stream'}} </td>
+
+                                       <td>
+                                          <div class="mt-1">
+                                             <label class="switch">
+                                                 <input name="livevideo_status" class="livevideo_status" id="{{ 'livestream_'.$video->id }}" 
+                                                         type="checkbox" @if( $video->banner == "1") checked  @endif data-id={{ $video->id }}  data-type="livestream" onchange="updatebanner(this)" >
+                                                 <span class="slider round"></span>
+                                             </label>
+                                         </div>
+                                       </td>
 
                                     <td>
                                        <div class="flex align-items-center list-user-action">
@@ -268,7 +291,18 @@ border-radius: 0px 4px 4px 0px;
                                     @endif
       
                                     <td> {{ $Episodes->access }} </td>
+
                                     <td> {{ 'Episodes'}} </td>
+
+                                    <td>
+                                       <div class="mt-1">
+                                          <label class="switch">
+                                              <input name="episode_status" class="episode_status" id="{{ 'episodes_'.$Episodes->id }}" 
+                                                   type="checkbox" @if( $Episodes->banner == "1") checked  @endif data-id={{ $Episodes->id }} data-type="episode"   onchange="updatebanner(this)" >
+                                              <span class="slider round"></span>
+                                          </label>
+                                      </div>
+                                    </td>
                                        
                                     <td>
                                        <div class="flex align-items-center list-user-action">
@@ -296,9 +330,77 @@ border-radius: 0px 4px 4px 0px;
 
 {{-- Jquery Table --}}
 @section('javascript')
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
    <script>
       $(document).ready( function () {
                $('#master_list').DataTable();
       });
+
+
+      function updatebanner(ele){
+
+            var video_id = $(ele).attr('data-id');
+            var source = $(ele).attr('data-type');
+
+               if(video_Status == true){
+                     var banner_status  = '1';
+               }else{
+                     var banner_status  = '0';
+               }
+
+               if(source == "video"){
+                  var type = "video";
+                  var status   = '#video_'+video_id;
+               }
+               else if(source == "livestream" ){
+                  var type = "Livestream";
+                  var status   = '#livestream_'+video_id;
+               }
+               else if(source == "episode" ){
+                  var type = "Episode";
+                  var status   = '#episodes_'+video_id;
+               }
+
+            var video_Status = $(status).prop("checked");
+            var check = confirm("Are you sure you want to remove this slider?");  
+
+            if(check == true){ 
+
+               $.ajax({
+                        type: "POST", 
+                        dataType: "json", 
+                        url: "{{ url('admin/ActiveSlider_update') }}",
+                              data: {
+                                 _token  : "{{csrf_token()}}" ,
+                                 video_id: video_id,
+                                 banner_status: banner_status,
+                                 type: type,
+                        },
+                        success: function(data) {
+                              if(data.message == 'true'){
+                                 location.reload();
+                              }
+                              else if(data.message == 'false'){
+                                 swal.fire({
+                                 title: 'Oops', 
+                                 text: 'Something went wrong!', 
+                                 allowOutsideClick:false,
+                                 icon: 'error',
+                                 title: 'Oops...',
+                                 }).then(function() {
+                                    location.href = '{{ URL::to('admin/ActiveSlider') }}';
+                                 });
+                              }
+                           },
+                     });
+            }else if(check == false){
+               $(status).prop('checked', true);
+
+            }
+      }
+		
    </script>
+
 @stop
