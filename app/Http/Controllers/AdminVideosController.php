@@ -1396,7 +1396,7 @@ if(!empty($artistsdata)){
          $video->banner =  $banner;
          $video->enable =  $enable;
          $video->rating =  $request->rating;
-         $video->search_tags =  $searchtags;
+         $video->search_tags =  $searchtags;        
 
          $video->save();
 
@@ -1414,7 +1414,7 @@ if(!empty($artistsdata)){
                 }
             }
         }else{
-            // Videoartist::where('video_id', $video->id)->delete();
+            Videoartist::where('video_id', $video->id)->delete();
         }
 
         if(!empty($data['searchtags'])){

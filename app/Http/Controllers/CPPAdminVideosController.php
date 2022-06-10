@@ -48,6 +48,7 @@ use App\BlockVideo;
 use Exception;
 use getID3;
 use App\AdsVideo;
+use App\VideoSearchTag;
 
 
 
@@ -1184,6 +1185,12 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
 
             }
 
+            if(!empty($data['searchtags'])){
+                $searchtags = $data['searchtags'];
+            }else{
+                $searchtags = $video->searchtags;
+            }
+
         // E-Paper 
             if($request->pdf_file != null){
                 $pdf_files = time().'.'.$request->pdf_file->extension();  
@@ -1243,6 +1250,8 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
          $video->description = strip_tags($data['description']);
          $video->banner =  $banner;
          $video->enable =  $enable;
+         $video->search_tags =  $searchtags;
+
         //  dd($data['enable']);
          $video->save();
 
@@ -1259,8 +1268,26 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
                     $artist->save();
                 }
 
-            }
+            }else{
+                Videoartist::where('video_id', $video->id)->delete();
+    
+                }
         }
+
+        if(!empty($data['searchtags'])){
+            $searchtags = explode(',',$data['searchtags']);
+            VideoSearchTag::where('video_id', $video->id)->delete();
+            foreach ($searchtags as $key => $value) {
+                $videosearchtags = new VideoSearchTag;
+                $videosearchtags->user_id = Auth::User()->id;
+                $videosearchtags->video_id = $video->id;
+                $videosearchtags->search_tag = $value;
+                $videosearchtags->save();
+            }
+        }else{
+            VideoSearchTag::where('video_id', $video->id)->delete();
+        }
+
         if(!empty($data['video_category_id'])){
             $category_id = $data['video_category_id'];
             unset($data['video_category_id']);
@@ -1676,7 +1703,11 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
                    if(!empty($data['age_restrict'])) {
                     $video->age_restrict =  $data['age_restrict'];
                    }
-
+                   if(empty($data['searchtags'])){
+                    $searchtags = null;
+                } else {
+                    $searchtags =  $data['searchtags'];
+                }   
 
     // E -Paper File
                 if($request->pdf_file != null){
@@ -1736,6 +1767,7 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
                      $video->access =  $data['access'];
                      $video->banner =  $banner;
                     $video->enable =  1;
+                    $video->search_tags =  $searchtags;
         
                      $video->update($data);
         
@@ -1753,6 +1785,18 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
                 //     }
                  
                     }
+
+                     if(!empty($data['searchtags'])){
+                $searchtags = explode(',',$data['searchtags']);
+                VideoSearchTag::where('video_id', $video->id)->delete();
+                foreach ($searchtags as $key => $value) {
+                    $videosearchtags = new VideoSearchTag;
+                    $videosearchtags->user_id = Auth::User()->id;
+                    $videosearchtags->video_id = $video->id;
+                    $videosearchtags->search_tag = $value;
+                    $videosearchtags->save();
+                }
+            }
                      if(!empty($data['artists'])){
                         $artistsdata = $data['artists'];
                         unset($data['artists']);
