@@ -498,6 +498,8 @@ border-radius: 0px 4px 4px 0px;
                                     <option value="{{ $language->id }}" >{{ $language->name }}</option>
                                     @endforeach
                                  </select>
+                                 <span><p id="error_language" style="color:red;" >* Choose the Language </p></span>
+
                               </div>
                               
                               <div class="col-sm-6 form-group">
@@ -508,6 +510,11 @@ border-radius: 0px 4px 4px 0px;
                               <div class="col-sm-6 form-group">
                                  <label class="m-0" style="display:block;">Reels Videos: </label>
                                  <input type="file" class="form-group" name="reels_videos[]" accept="video/mp4,video/x-m4v,video/*" id="" multiple>
+                              </div>
+
+                              <div class="col-sm-6 form-group">
+                                 <label class="m-0">Reels Thumbnail: <small>(9:16 Ratio or 720X1080px)</small></label>
+                                 <input type="file" class="form-group" name="reels_thumbnail"  id=""  >
                               </div>
 
                               <div class="col-sm-6 form-group">
@@ -1259,18 +1266,22 @@ $(document).ready(function($){
 
 // video category
    $('#error_video_Category').hide();
+   $('#error_language').hide();
 
    $('.Next3').on('keyup keypress blur change click mouseover', function(event) {
-   if($('#video_category_id').val() == null){
-      $('#error_video_Category').show();
+
+   if( $('#language').val() == null  ){
+      $('#error_language').show();
       $('#next3').attr('disabled','disabled');
    }  
    else{
-      $('#error_video_Category').hide();
+      $('#error_language').hide();
       $('#next3').removeAttr('disabled');
    }
-  
 });
+
+ 
+  
 
 });
 

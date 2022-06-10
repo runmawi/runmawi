@@ -55,10 +55,7 @@
                             allowCalEventOverlap : true,
                             overlapEventsSeparate: true,
                             firstDayOfWeek : 1,
-                            displayEventTime: true,
-                            timeFormat: 'h(:mm)a',
-                            displayEventEnd: true,
-                            eventColor: '#006AFF',
+                            eventColor: '#378006',
                             header: {
                                     left: 'prev,next today',
                                     center: 'title',

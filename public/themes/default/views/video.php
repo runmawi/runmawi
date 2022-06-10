@@ -631,7 +631,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
        ?>
          <div class="d-flex align-items-center text-white text-detail">
          <?php if(!empty($video->age_restrict)){ ?><span class="badge  p-3"><?php echo __($video->age_restrict).' '.'+';?></span><?php } ?>
-          <?php if(!empty($time)){ ?><span class="ml-3"><?php echo $time;?></span><?php } ?>
+          <?php if(!empty($time)){ ?><span class=""><?php echo $time;?></span><?php } ?>
           <?php if(!empty($video->year)){ ?><span class="trending-year"><?php if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span><?php } ?>
           <?php if(!empty($genres_name)){ ?><span class="trending-year"><?php echo $genres_name; ?></span><?php } ?>
 
@@ -765,7 +765,10 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 <?php if(!empty($video->details) ) { ?>
 
 <h4>Links & details</h4>
-<div class="col-md-7 text-white p-0" style="font-size:18px;">
+           
+<div class="col-md-7 text-white p-0" style="font-size:18px;width:80%;">
+      <?php    $details = html_entity_decode($video->details) ; 
+                        $detail = strip_tags($details); ?>
     <p class="trending-dec w-100 mb-0  mt-2" ><?php echo __($video->details); ?></p>
 </div>
 <?php  }?>
@@ -816,7 +819,7 @@ $artists = [];
                    <span id="paypal-button"></span> 
                  </div>
                  
-                  <div class="col-sm-4">
+                  <div class="col-sm-10">
                   <span class="badge badge-secondary p-2"><?php echo __($video->title);?></span>
                   <span class="badge badge-secondary p-2"><?php echo __($video->age_restrict).' '.'+';?></span>
                   <span class="badge badge-secondary p-2"><?php echo __(isset($video->categories->name));?></span>

@@ -337,6 +337,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::get('/videos', 'AdminVideosController@index');
     Route::get('/videos/categories', 'AdminVideoCategoriesController@index');
     Route::get('/videos/edit/{id}', 'AdminVideosController@edit'); 
+    Route::get('/videos/editvideo/{id}', 'AdminVideosController@editvideo'); 
     Route::post('/videos/update', array('before' => 'demo', 'uses' => 'AdminVideosController@update'));
     Route::get('/videos/delete/{id}', array('before' => 'demo', 'uses' => 'AdminVideosController@destroy'));
     Route::get('/videos/create', 'AdminVideosController@create');
@@ -465,8 +466,15 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
 
 
     // Footer Link
-    Route::get('/footer_link', 'AdminSettingsController@footer_link')->name('footer_link'); 
+    Route::get('/footer_menu', 'AdminSettingsController@footer_link')->name('footer_link'); 
     Route::post('/footer_link_store', 'AdminSettingsController@footer_link_store'); 
+    Route::post('/footer_order_update', 'AdminSettingsController@footer_order_update'); 
+    Route::get('/footer_delete/{id}', 'AdminSettingsController@footer_delete'); 
+    Route::get('/footer_menu_edit/{id}', 'AdminSettingsController@footer_edit'); 
+    Route::post('/footer_update', 'AdminSettingsController@footer_update'); 
+
+    //Select video delete
+    Route::get('/VideoBulk_delete', 'AdminVideosController@VideoBulk_delete')->name('VideoBulk_delete'); 
 
 
     Route::get('ThemeIntegration', 'ThemeIntegrationController@index')->name('ThemeIntegration');
@@ -614,7 +622,12 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/embededcode',  'AdminVideosController@Embededcode');
     Route::post('/mp4url',  'AdminVideosController@Mp4url');
     Route::post('/uploadFile',  'AdminVideosController@uploadFile');
+    Route::post('/uploadEditVideo',  'AdminVideosController@uploadEditVideo');
 
+
+    Route::post('/Updatem3u8url',  'AdminVideosController@Updatem3u8url');
+    Route::post('/UpdateEmbededcode',  'AdminVideosController@UpdateEmbededcode');
+    Route::post('/Updatemp4url',  'AdminVideosController@Updatemp4url');
 
     /*Audio Uploads */
     
