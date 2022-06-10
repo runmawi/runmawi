@@ -33,21 +33,22 @@
 
                     <form method="POST" action="{{ URL::to('/cpp/audios/categories/update') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="cpp_audio">
                         @csrf
-                        <div class="col-md-6" style="width: 50%; float: left;">
+                        <div class="row justify-content-between p-2">
+                        <div class="col-md-5" style="">
 
                         <div class="form-group row">
                         <label>Name:</label>
                             <input type="text" id="name" name="name" value="{{ $categories[0]->name }}" class="form-control" placeholder="Enter Name">
                             </div>
                         </div>
-                        <div class="col-md-6" style="width: 50%; float: left;">
+                        <div class="col-md-5" style="">
 
                         <div class="form-group row">
                         <label>Slug:</label>
                         <input type="text" id="slug" name="slug" value="{{ $categories[0]->slug }}" class="form-control" placeholder="Enter Slug">
                             </div>
                         </div>
-                        <div class="col-md-6" style="width: 50%; float: left;">
+                        <div class="col-md-6" style="">
 
                         <div class="form-group row">
                         <label>Image:</label>
@@ -60,7 +61,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6" style="width: 50%; float: left;">
+                        <div class="col-md-6" style="">
 
 
                         <div class="form-group row">
@@ -75,7 +76,7 @@
                             @endforeach
                         </select>
 
-                        </select>         
+                             
                         </div>
                         </div>
                     
