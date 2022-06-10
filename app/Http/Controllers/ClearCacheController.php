@@ -9,11 +9,37 @@ use \Redirect as Redirect;
 
 class ClearCacheController extends Controller
 {
-    public function clear_cache()
+   
+    public function index()
     {
-        Artisan::call('cache:clear');
-        Artisan::call('view:clear');
-        return Redirect::route('home')->with('status','Views Cleared!');
+        return view('admin.cache.index');
+    }
 
+    public function clear_caches()
+    {
+        try {
+            Artisan::call('cache:clear');
+            Artisan::call('view:clear');
+            return response()->json(['message'=>"true"]);
+
+        } catch (\Throwable $th) {
+
+            return response()->json(['message'=>"false"]);
+        }
+    }
+
+    public function clear_view_cache()
+    {
+        try {
+            Artisan::call('view:clear');
+
+            return response()->json(['message'=>"true"]);
+
+        } catch (\Throwable $th) {
+
+            return response()->json(['message'=>"false"]);
+
+        }
+       
     }
 }

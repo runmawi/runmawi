@@ -49,7 +49,7 @@ class AdminVideoCategoriesController extends Controller
   );
             return view('admin.expired_dashboard', $data);
         }else{
-        $allCategories = VideoCategory::All();
+        $allCategories = VideoCategory::orderBy('order')->get();
           
           $data = array (
             'allCategories'=>$allCategories

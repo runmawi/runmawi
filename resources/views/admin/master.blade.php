@@ -595,6 +595,14 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
 
                <li><a href="{{ URL::to('admin/countries') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/geo2.svg')?>"><span>Manage Countries</span></a></li>
 
+                  {{-- Clear cache  --}}
+                  <li><p class="lnk">Cache Management</p></li>
+
+                  <li><a href="{{ URL::to('admin/clear_cache') }}" class="iq-waves-effect">
+                        <img height="30" width="30" class="" src="<?php echo  URL::to('/assets/img/icon/geo.svg')?>">
+                        <span> Cache Clear</span>
+                     </a>
+                  </li>
                
                   <!-- Ads Menu ends -->
                   <?php }elseif(  $package == "Business" && auth()->user()->role == "admin" || $package == "Business" && auth()->user()->role == "subscriber" || $package == "Business" && auth()->user()->role == "registered" || $package == "Pro" && auth()->user()->role == "admin"){ ?>
@@ -833,6 +841,15 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
 
                <li><a href="{{ URL::to('admin/countries') }}" class="iq-waves-effect"><img height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/geo1.svg')?>"><span>Manage Countries</span></a></li>
 
+               
+                 {{-- Clear cache  --}}
+                 <li><p class="lnk">Cache Management</p></li>
+
+                 <li><a href="{{ URL::to('admin/clear_cache') }}" class="iq-waves-effect">
+                     <img height="30" width="30" class="" src="<?php echo  URL::to('/assets/img/icon/geo.svg')?>">
+                     <span> Cache Clear</span>
+                     </a>
+                  </li>
 
                   <!-- Ads Menu ends -->
                   <?php } elseif(auth()->user()->role == "admin" && $package == "Pro" && $package == "Business"){ ?>
@@ -1066,6 +1083,14 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
 
                <li><a href="{{ URL::to('admin/countries') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/geo2.svg')?>"><span>Manage Countries</span></a></li>
 
+                  {{-- Clear cache  --}}
+                  <li><p class="lnk">Cache Management</p></li>
+
+                  <li><a href="{{ URL::to('admin/clear_cache') }}" class="iq-waves-effect">
+                     <img height="30" width="30" class="" src="<?php echo  URL::to('/assets/img/icon/geo.svg')?>">
+                        <span> Cache Clear</span>
+                     </a>
+                  </li>
                   <!-- Ads Menu ends -->
                   <?php } ?>
                     
