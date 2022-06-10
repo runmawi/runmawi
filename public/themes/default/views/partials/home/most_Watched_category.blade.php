@@ -55,8 +55,8 @@
                 <div class="block-images position-relative">
                     <!-- block-images -->
                     <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
-                        <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" class="img-fluid loading" alt="" />
-                        <!-- <video  width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"  data-play="hover" >
+                        <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->player_image;  ?>" class="img-fluid loading" alt="" />
+                        <!-- <video  width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->player_image;  ?>"  data-play="hover" >
                                             <source src="<?php echo $category_video->trailer;  ?>" type="video/mp4">
                                             </video>-->
                     </a>

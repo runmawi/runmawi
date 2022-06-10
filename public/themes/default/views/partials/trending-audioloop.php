@@ -38,7 +38,7 @@
                         </div>
                         <div class="thriller"> <p><?= $albumname;?></p></div>
                     </div>
-                    <img src="<?php echo URL::to('/').'/public/uploads/images/'.$audio->image;  ?>">
+                    <img src="<?php echo URL::to('/').'/public/uploads/images/'.$audio->player_image;  ?>">
                 </a>
                  <div class="block-contents">
                     <p class="movie-title padding"><?= $audio->title; ?></p>

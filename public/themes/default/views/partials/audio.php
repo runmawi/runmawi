@@ -4,7 +4,7 @@ foreach($audios as $audio): ?>
     <div class="favorites-contens">           
         <div class="epi-box">
             <div class="epi-img position-relative">
-               <img src="<?php echo URL::to('/').'/public/uploads/images/'.$audio->image;?>" class="img-fluid img-zoom" alt="">
+               <img src="<?php echo URL::to('/').'/public/uploads/images/'.$audio->player_image;?>" class="img-fluid img-zoom" alt="">
                <div class="episode-play-info">
                   <div class="episode-play">
                      <a href="<?= URL::to('audio') ?><?= '/' . $audio->slug ?>">

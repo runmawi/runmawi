@@ -13,7 +13,7 @@
                 </div>
                 <div class="thriller"> <p><?= $movie->name;?></p></div>
             </div>
-            <img src="<?php echo URL::to('/').'/public/uploads/videocategory/'.$movie->image;  ?>" />
+            <img src="<?php echo URL::to('/').'/public/uploads/videocategory/'.$movie->player_image;  ?>" />
         </a>
 
      

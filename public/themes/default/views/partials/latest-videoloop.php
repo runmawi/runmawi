@@ -109,7 +109,7 @@ overflow-hidden {
                               <a href="<?php echo URL::to('home') ?>">
                                  <div class="block-images position-relative">
                                     <div class="img-box">
-                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid" alt="">
+                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->player_image;  ?>" class="img-fluid" alt="">
                                     </div>
                                     <div class="block-description">
                                        <h6><?php echo __($watchlater_video->title); ?></h6>
@@ -166,7 +166,7 @@ foreach($latest_videos as $watchlater_video): ?>
                                         </div>
                                     <?php  elseif($watchlater_video->type == 'file'): ?>
                                         <div id="video_container" class="fitvid">
-                                        <video id="videojs-seek-buttons-player"   onplay="playstart()" class="video-js vjs-default-skin" controls preload="auto" poster="<?= URL::to('/public/') . '/uploads/images/' . $watchlater_video->image ?>"  data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }' width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
+                                        <video id="videojs-seek-buttons-player"   onplay="playstart()" class="video-js vjs-default-skin" controls preload="auto" poster="<?= URL::to('/public/') . '/uploads/images/' . $watchlater_video->player_image ?>"  data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }' width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
 
                                             <source src="<?= $watchlater_video->trailer; ?>" type='video/mp4' label='auto' >
                                             <!--<source src="<?php echo URL::to('/storage/app/public/').'/'.$watchlater_video->webm_url; ?>" type='video/webm' label='auto' >
@@ -191,7 +191,7 @@ foreach($latest_videos as $watchlater_video): ?>
                                         </div>
                                     <?php  else: ?>
                                         <div id="video_container" class="fitvid" atyle="z-index: 9999;">
-                                        <video id="videojs-seek-buttons-player" onplay="playstart()"  class="video-js vjs-default-skin" controls preload="auto" poster="<?= Config::get('site.uploads_url') . '/images/' . $watchlater_video->image ?>"  data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }' width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
+                                        <video id="videojs-seek-buttons-player" onplay="playstart()"  class="video-js vjs-default-skin" controls preload="auto" poster="<?= Config::get('site.uploads_url') . '/images/' . $watchlater_video->player_image ?>"  data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }' width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
 
                                         <source src="<?= $watchlater_video->trailer; ?>" type='video/mp4' label='auto' >
 
@@ -540,7 +540,7 @@ $(document).ready(function () {
          
                                   <?php if(isset($latest_videos)) :
 foreach($latest_videos as $watchlater_video): ?>
-                                <div class="modal fade thumb-cont" id="myModal<?= $watchlater_video->id;?>" role="dialog"  style="background:url('<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>') no-repeat;background-size: cover;"> 
+                                <div class="modal fade thumb-cont" id="myModal<?= $watchlater_video->id;?>" role="dialog"  style="background:url('<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->player_image;  ?>') no-repeat;background-size: cover;"> 
                                     <div class="img-black-back">
                                     </div>
                                     <div align="right">
@@ -572,11 +572,11 @@ foreach($latest_videos as $watchlater_video): ?>
 
 		
 				<?php if (!empty($watchlater_video->trailer)) { ?>
-                        <video class="trail-vid" width="30%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" data-play="hover" muted="muted">
+                        <video class="trail-vid" width="30%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->player_image;  ?>" data-play="hover" muted="muted">
                                     <source src="<?= $watchlater_video->trailer; ?>" type="video/mp4">
 								 </video>
                             <?php } else { ?>
-                                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="thumb-img">
+                                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->player_image;  ?>" class="thumb-img">
 			
 		                   <?php } ?>  
 			            <div class="play-button-trail" >

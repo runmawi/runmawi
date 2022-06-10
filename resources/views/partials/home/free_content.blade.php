@@ -13,7 +13,7 @@
             <a href="<?php if($free_episode->series_id == $free_serie->id){ echo URL::to('/episode'.'/'.$free_serie->title.'/'.$free_episode->title) ; }?> ">
               <div class="block-images position-relative">
                 <div class="img-box">
-                  <img src="<?php echo URL::to('/').'/public/uploads/images/'.$free_episode->image;  ?>" class="img-fluid w-100" alt="">
+                  <img src="<?php echo URL::to('/').'/public/uploads/images/'.$free_episode->player_image;  ?>" class="img-fluid w-100" alt="">
                 </div>
                 <div class="block-description">
                 <a href="<?php if($free_episode->series_id == $free_serie->id){ echo URL::to('/episode'.'/'.$free_serie->title.'/'.$free_episode->title) ; }?> ">
