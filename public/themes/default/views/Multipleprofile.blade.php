@@ -48,10 +48,15 @@
                                    </div>
                                 </div>
                             @endforeach  
+
+                            @if ($sub_user_count < $multiuser_limit)
+                                <div class="" style="margin-top: 63px;">
+                                    <li> 
+                                        <a class="fa fa-plus-circle fa-100x" href="{{route('Choose-profile.create') }}"></a>
+                                    </li> 
+                                </div>
+                            @endif
                             
-                            <li> 
-                                <a class="fa fa-plus-circle fa-10x" href="{{route('Choose-profile.create') }}"></a>
-                            </li> 
                     </div>
                 </div>
         </div>
