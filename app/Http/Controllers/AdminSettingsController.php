@@ -788,4 +788,26 @@ if($watermark != '') {
         FooterLink::destroy($id);
         return redirect()->route('footer_link');
     }
+
+    public function multiuser_limit(Request $request)
+    {
+      $data = [
+        'button_text' => 'Update Setting',
+        'post_route' => URL::to('admin/Multi_limit_store') ,
+        'Setting'    => Setting::pluck('multiuser_limit')->first(),
+      ];
+
+      return view('admin.multiuser.index',$data);
+    }
+
+    public function Multi_limit_store(Request $request)
+    {
+
+      Setting::where('id',1)->update([
+        'multiuser_limit' => $request->multiuser_limit,
+      ]);
+
+      return redirect()->route('multiuser_limit')->with(array('message' => 'Successfully Updated!', 'note_type' => 'success') );
+
+    }
 }

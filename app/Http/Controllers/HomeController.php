@@ -3011,8 +3011,12 @@ class HomeController extends Controller
             'users' => $users,
             'Website_name' => $Website_name,
             'screen' => $screen,
-            'subcriber_user' => $subcriber_user
+            'subcriber_user' => $subcriber_user,
+            'multiuser_limit' => Setting::pluck('multiuser_limit')->first(),
+            'sub_user_count'  => Multiprofile::where('parent_id', Auth::user()->id )->count(),
         );
+
+
         return Theme::view('Multipleprofile', $data);
 
     }
