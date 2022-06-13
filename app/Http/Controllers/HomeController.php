@@ -2212,8 +2212,11 @@ class HomeController extends Controller
         {
 
             $data = Video::where('search_tags', 'LIKE', '%' . $request->country . '%')
-                ->limit('10')
-                ->get();
+                            ->where('active', '=', '1')
+                            ->where('status', '=', '1')
+                            ->where('draft', '=', '1')
+                            ->limit('10')
+                            ->get();
 
             $channeldata = VideoCategory::where('id', 'LIKE', '%' . $request->country . '%')
                 ->limit('10')
@@ -2303,8 +2306,12 @@ class HomeController extends Controller
 
         if ($videos_count > 0)
         {
-            $videos = Video::where('search_tags', 'LIKE', '%' . $search_value . '%')->orderBy('created_at', 'desc')
-                ->paginate(9);
+            $videos = Video::where('search_tags', 'LIKE', '%' . $search_value . '%')->where('active', '=', '1')
+                            ->where('status', '=', '1')
+                            ->where('draft', '=', '1')
+                            ->orderBy('created_at', 'desc')
+                            ->take(20)
+                            ->get();
         }
         else
         {
@@ -2312,8 +2319,19 @@ class HomeController extends Controller
         }
 
         $latest_videos = Video::where('search_tags', 'LIKE', '%' . $search_value . '%')
-            ->take(10)
-            ->orderBy('created_at', 'DESC')->get();
+                            ->where('active', '=', '1')
+                            ->where('status', '=', '1')
+                            ->where('draft', '=', '1')
+                            ->take(20)
+                            ->orderBy('created_at', 'DESC')->get();
+
+        $Most_recent_view = RecentView::Join('videos','videos.id','=','recent_views.video_id')
+                             ->where('videos.search_tags', 'LIKE', '%' . $search_value . '%')
+                            ->where('videos.active', '=', '1')
+                            ->where('videos.status', '=', '1')
+                            ->where('videos.draft', '=', '1')
+                            ->groupBy('video_id')->get();
+
 
         $data = array(
             // 'ppv_videos' => $ppv_videos,
@@ -2323,6 +2341,7 @@ class HomeController extends Controller
             'search_value' => $search_value,
             'currency' => CurrencySetting::first() ,
             'latest_videos' => $latest_videos,
+            'Most_recent_view' => $Most_recent_view,
         );
 
         return Theme::view('search', $data);
