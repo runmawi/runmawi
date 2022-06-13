@@ -24,7 +24,7 @@
     <div class="col-md-5">
         <div class="row1">
     <h1 class="mt-5">Who's Watching ?</h1>
-            <p class="text-center">You can setup up to 5 profiles for your <br> family or friends</p>
+            <p class="text-center">You can setup up to {{ $multiuser_limit }} profiles for your <br> family or friends</p>
                     <div class="row-data row justify-content-around"  >
                       
                     
@@ -51,9 +51,11 @@
                                 </div>
                             @endforeach  
                             
-                            <li> 
-                                <a class="fa fa-plus-circle fa-10x" href="{{route('Choose-profile.create') }}"></a>
-                            </li> 
+                            @if ($sub_user_count < $multiuser_limit)
+                                <div> 
+                                    <a class="fa fa-plus-circle fa-100x" href="{{route('Choose-profile.create') }}"></a>
+                                </div> 
+                            @endif 
                     </div>
                 </div>
         </div>

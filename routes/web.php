@@ -464,7 +464,6 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::get('/ThumbnailSetting', 'AdminSettingsController@ThumbnailSetting')->name('ThumbnailSetting'); 
     Route::post('/ThumbnailSetting_Store', 'AdminSettingsController@ThumbnailSetting_Store'); 
 
-
     // Footer Link
     Route::get('/footer_menu', 'AdminSettingsController@footer_link')->name('footer_link'); 
     Route::post('/footer_link_store', 'AdminSettingsController@footer_link_store'); 
@@ -476,7 +475,11 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     //Select video delete
     Route::get('/VideoBulk_delete', 'AdminVideosController@VideoBulk_delete')->name('VideoBulk_delete'); 
 
+    // Multi-user Limit
+    Route::get('/MultiUser-limit', 'AdminSettingsController@multiuser_limit')->name('multiuser_limit'); 
+    Route::post('/Multi_limit_store', 'AdminSettingsController@Multi_limit_store')->name('Multi_limit_store'); 
 
+    // Theme Integration 
     Route::get('ThemeIntegration', 'ThemeIntegrationController@index')->name('ThemeIntegration');
 
     Route::get('/languages', 'LanguageTranslationController@index')->name('languages');
