@@ -29,10 +29,12 @@ use Illuminate\Support\Facades\Cache;
 use Intervention\Image\Facades\Image;
 use Laravel\Cashier\Exceptions\IncompletePayment;
 use Carbon\Carbon;
+use Carbon\CarbonInterval;
 use Mail; 
 use Illuminate\Support\Str;
 use App\AdsEvent;
 use App\AdsTimeSlot;
+use DatePeriod;
 
 class AuthController extends Controller
 {
@@ -246,22 +248,21 @@ class AuthController extends Controller
 
               $now = Carbon::now();
 
-              $data['Monday']    =  $now->startOfWeek(Carbon::MONDAY)->format('Y-m-d');
-              $data['Tuesday']   =  $now->endOfWeek(Carbon::TUESDAY)->format('Y-m-d');
-              $data['Wednesday'] =  $now->endOfWeek(Carbon::WEDNESDAY)->format('Y-m-d');
-              $data['Thrusday']  =  $now->endOfWeek(Carbon::THURSDAY)->format('Y-m-d');
-              $data['Friday']    =  $now->endOfWeek(Carbon::FRIDAY)->format('Y-m-d');
-              $data['Saturday']  =  $now->endOfWeek(Carbon::SATURDAY)->format('Y-m-d');
-              $data['Sunday']    =  $now->endOfWeek(Carbon::SUNDAY)->format('Y-m-d');
-
               $data = [
                 'Monday_time'    => AdsTimeSlot::where('day','Monday')->get(),
                 'Tuesday_time' =>AdsTimeSlot::where('day','Tuesday')->get(),
                 'Wednesday_time' =>AdsTimeSlot::where('day','Wednesday')->get(),
-                'Thursday_time' =>AdsTimeSlot::where('day','Thursday')->get(),
+                'Thursday_time' =>AdsTimeSlot::where('day','Thrusday')->get(),
                 'Friday_time' =>AdsTimeSlot::where('day','Friday')->get(),
                 'Saturday_time' =>AdsTimeSlot::where('day','Saturday')->get(),
                 'Sunday_time' =>AdsTimeSlot::where('day','Sunday')->get(),
+                'Monday'   =>  $now->startOfWeek(Carbon::MONDAY)->format('Y-m-d'),
+                'Tuesday'   =>  $now->endOfWeek(Carbon::TUESDAY)->format('Y-m-d'),
+                'Wednesday' =>  $now->endOfWeek(Carbon::WEDNESDAY)->format('Y-m-d'),
+                'Thrusday'  =>  $now->endOfWeek(Carbon::THURSDAY)->format('Y-m-d'),
+                'Friday'    => $now->endOfWeek(Carbon::FRIDAY)->format('Y-m-d'),
+                'Saturday' => $now->endOfWeek(Carbon::SATURDAY)->format('Y-m-d'),
+                'Sunday'    => $now->endOfWeek(Carbon::SUNDAY)->format('Y-m-d'),
               ];
 
           //  End Scheduling
@@ -273,8 +274,10 @@ class AuthController extends Controller
     }
 
     public function store_ads(Request $request) {
-        $data = $request->all();
 
+        
+        $data = $request->all();   
+    
         $Ads = new Advertisement;
         $Ads->advertiser_id = session('advertiser_id');
         $Ads->ads_name = $request->ads_name;
@@ -284,7 +287,14 @@ class AuthController extends Controller
         // $Ads->age = $request->age;
         // $Ads->gender = $request->gender;
         $Ads->household_income = $request->household_income;
-        $Ads->location = $request->location;
+
+        if($request->location == "all_countries" || $request->location == "India" ){
+            $Ads->location = $request->location;
+        }
+        else{
+            $Ads->location = $request->locations;
+        }
+
         if (!empty($data['age']))
         {
             $Ads->age = json_encode($data['age']);
@@ -302,9 +312,170 @@ class AuthController extends Controller
 
         $Ads->save();
 
-        $getdata = Advertiserplanhistory::where('advertiser_id',session('advertiser_id'))->where('status','active')->first();
-        $getdata->no_of_uploads += 1;
-        $getdata->save();
+        $last_ads_id = $Ads->id ;
+        $last_ads_name = $Ads->ads_name ?  $Ads->ads_name : 'Ads' ;
+
+
+
+// Events
+
+        $mondays   = new DatePeriod(Carbon::now()->startOfWeek(Carbon::MONDAY) ,CarbonInterval::week(), Carbon::now(Carbon::MONDAY)->addMonths(1));
+        $tuesday   = new DatePeriod(Carbon::now()->startOfWeek(Carbon::TUESDAY) ,CarbonInterval::week(), Carbon::now(Carbon::TUESDAY)->addMonths(1));
+        $wednesday = new DatePeriod(Carbon::now()->startOfWeek(Carbon::WEDNESDAY) ,CarbonInterval::week(), Carbon::now(Carbon::WEDNESDAY)->addMonths(1));
+        $thursday  = new DatePeriod(Carbon::now()->startOfWeek(Carbon::THURSDAY) ,CarbonInterval::week(), Carbon::now(Carbon::THURSDAY)->addMonths(1));
+        $friday    = new DatePeriod(Carbon::now()->startOfWeek(Carbon::FRIDAY) ,CarbonInterval::week(), Carbon::now(Carbon::FRIDAY)->addMonths(1));
+        $saturday  = new DatePeriod(Carbon::now()->startOfWeek(Carbon::SATURDAY) ,CarbonInterval::week(), Carbon::now(Carbon::SATURDAY)->addMonths(1));
+        $sunday    = new DatePeriod(Carbon::now()->startOfWeek(Carbon::SUNDAY) ,CarbonInterval::week(), Carbon::now(Carbon::SUNDAY)->addMonths(1));
+
+
+        if($request->Monday_Start_time  != null && $request->Monday_end_time != null ){
+
+            foreach ($mondays as $date) {
+
+                $Monday_start_time = count($request['Monday_Start_time']);
+        
+                for ($i=0; $i<$Monday_start_time; $i++){
+                        $AdsTimeSlot = new AdsEvent;
+                        $AdsTimeSlot->start = $date->format('Y-m-d').' '.$request['Monday_Start_time'][$i];
+                        $AdsTimeSlot->end   = $date->format('Y-m-d').' '.$request['Monday_end_time'][$i];
+                        $AdsTimeSlot->ads_category_id = $request->ads_category;
+                        $AdsTimeSlot->ads_id = $last_ads_id;
+                        $AdsTimeSlot->title = $last_ads_name;
+                        $AdsTimeSlot->status = '1';
+                        $AdsTimeSlot->day = "Monday";
+                        $AdsTimeSlot->save();
+                }
+            }
+        }
+    
+        if($request->tuesday_start_time  != null && $request->Tuesday_end_time  != null ){
+    
+            $tuesday_start_time = count($request['tuesday_start_time']);
+    
+            foreach ($tuesday as $date) {
+    
+                for ($i=0; $i<$tuesday_start_time; $i++){
+                        $AdsTimeSlot = new AdsEvent;
+                        $AdsTimeSlot->start =  $date->format('Y-m-d').' '.$request['tuesday_start_time'][$i];
+                        $AdsTimeSlot->end =    $date->format('Y-m-d').' '.$request['Tuesday_end_time'][$i];
+                        $AdsTimeSlot->ads_category_id = $request->ads_category;
+                        $AdsTimeSlot->ads_id = $last_ads_id;
+                        $AdsTimeSlot->title = $last_ads_name;
+                        $AdsTimeSlot->day = "Tuesday";
+                        $AdsTimeSlot->status = '1';
+                        $AdsTimeSlot->save();
+                }
+            }
+        }
+    
+        if($request->wednesday_start_time  != null && $request->wednesday_end_time  != null ){
+    
+            $wednesday_start_time = count($request['wednesday_start_time']);
+
+            foreach ($wednesday as $date) {
+
+                for ($i=0; $i<$wednesday_start_time; $i++){
+                        $AdsTimeSlot = new AdsEvent;
+                        $AdsTimeSlot->start = $date->format('Y-m-d').' '. $request['wednesday_start_time'][$i];
+                        $AdsTimeSlot->end =  $date->format('Y-m-d').' '.$request['wednesday_end_time'][$i];
+                        $AdsTimeSlot->ads_category_id = $request->ads_category;
+                        $AdsTimeSlot->ads_id = $last_ads_id;
+                        $AdsTimeSlot->title = $last_ads_name;
+                        $AdsTimeSlot->status = '1';
+                        $AdsTimeSlot->day = "Wednesday";
+                        $AdsTimeSlot->save();
+                }
+
+            }
+        }
+    
+        if($request->thursday_start_time  != null && $request->thursday_end_time  != null ){
+    
+            $thursday_start_time = count($request['thursday_start_time']);
+
+            foreach ($thursday as $date) {
+    
+                for ($i=0; $i<$thursday_start_time; $i++){
+                        $AdsTimeSlot = new AdsEvent;
+                        $AdsTimeSlot->start = $date->format('Y-m-d').' '. $request['thursday_start_time'][$i];
+                        $AdsTimeSlot->end =  $date->format('Y-m-d').' '. $request['thursday_end_time'][$i];
+                        $AdsTimeSlot->ads_category_id = $request->ads_category;
+                        $AdsTimeSlot->ads_id = $last_ads_id;
+                        $AdsTimeSlot->status = '1';
+                        $AdsTimeSlot->day = "Thursday";
+                        $AdsTimeSlot->title = $last_ads_name;
+                        $AdsTimeSlot->save();
+                }
+
+            }
+
+        }
+    
+        if($request->friday_start_time  != null && $request->friday_end_time  != null){
+    
+            $friday_start_time = count($request['friday_start_time']);
+    
+            foreach ($friday as $date) {
+
+            for ($i=0; $i<$friday_start_time; $i++){
+                    $AdsTimeSlot = new AdsEvent;
+                    $AdsTimeSlot->start =  $date->format('Y-m-d').' '.$request['friday_start_time'][$i];
+                    $AdsTimeSlot->end =  $date->format('Y-m-d').' '.$request['friday_end_time'][$i];
+                    $AdsTimeSlot->ads_category_id = $request->ads_category;
+                    $AdsTimeSlot->ads_id = $last_ads_id;
+                    $AdsTimeSlot->status = '1';
+                    $AdsTimeSlot->title = $last_ads_name;
+                    $AdsTimeSlot->day = "Friday";
+                    $AdsTimeSlot->save();
+            }
+            }
+
+        }
+    
+        if($request->saturday_start_time  != null && $request->saturday_end_time  != null  ){
+    
+            $saturday_start_time = count($request['saturday_start_time']);
+
+            foreach ($saturday as $date) {
+    
+            for ($i=0; $i<$saturday_start_time; $i++){
+                    $AdsTimeSlot = new AdsEvent;
+                    $AdsTimeSlot->start = $date->format('Y-m-d').' '. $request['saturday_start_time'][$i];
+                    $AdsTimeSlot->end = $date->format('Y-m-d').' '. $request['saturday_end_time'][$i];
+                    $AdsTimeSlot->ads_category_id = $request->ads_category;
+                    $AdsTimeSlot->ads_id = $last_ads_id;
+                    $AdsTimeSlot->title = $last_ads_name;
+                    $AdsTimeSlot->status = '1';
+                    $AdsTimeSlot->day = "Saturday";
+                    $AdsTimeSlot->save();
+            }
+            }
+    
+        }
+    
+        if($request->sunday_start_time  != null && $request->sunday_end_time != null ){
+    
+            $sunday_start_time = count($request['sunday_start_time']);
+
+            foreach ($sunday as $date) {
+    
+            for ($i=0; $i<$sunday_start_time; $i++){
+                    $AdsTimeSlot = new AdsEvent;
+                    $AdsTimeSlot->start = $date->format('Y-m-d').' '.$request['sunday_start_time'][$i];
+                    $AdsTimeSlot->end =    $date->format('Y-m-d').' '.$request['sunday_end_time'][$i];
+                    $AdsTimeSlot->ads_category_id = $request->ads_category;
+                    $AdsTimeSlot->ads_id = $last_ads_id;
+                    $AdsTimeSlot->title = $last_ads_name;
+                    $AdsTimeSlot->status = '1';
+                    $AdsTimeSlot->day = "Sunday";
+                    $AdsTimeSlot->save();
+            }
+            }
+        }
+
+        // $getdata = Advertiserplanhistory::where('advertiser_id',session('advertiser_id'))->where('status','active')->first();
+        // $getdata->no_of_uploads += 1;
+        // $getdata->save();
 
         return Redirect::to('advertiser/ads-list');
     }
