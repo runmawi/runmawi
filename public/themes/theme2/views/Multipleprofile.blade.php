@@ -52,9 +52,9 @@
                             @endforeach  
                             
                             @if ($sub_user_count < $multiuser_limit)
-                                <li> 
+                                <div> 
                                     <a class="fa fa-plus-circle fa-100x" href="{{route('Choose-profile.create') }}"></a>
-                                </li> 
+                                </div> 
                             @endif 
                     </div>
                 </div>

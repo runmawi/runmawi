@@ -2211,15 +2211,15 @@ class HomeController extends Controller
         if ($request->ajax())
         {
 
-            $data = Video::where('title', 'LIKE', '%' . $request->country . '%')
+            $data = Video::where('search_tags', 'LIKE', '%' . $request->country . '%')
                 ->limit('10')
                 ->get();
 
-            $channeldata = VideoCategory::where('name', 'LIKE', '%' . $request->country . '%')
+            $channeldata = VideoCategory::where('id', 'LIKE', '%' . $request->country . '%')
                 ->limit('10')
                 ->get();
 
-            $ppvdata = PpvVideo::where('title', 'LIKE', '%' . $request->country . '%')
+            $ppvdata = PpvVideo::where('id', 'LIKE', '%' . $request->country . '%')
                 ->limit('10')
                 ->get();
 
@@ -2252,74 +2252,80 @@ class HomeController extends Controller
 
         $search_value = $request['search'];
 
-        $videos_count = Video::where('title', 'LIKE', '%' . $search_value . '%')->count();
 
-        $ppv_videos_count = PpvVideo::where('title', 'LIKE', '%' . $search_value . '%')->count();
+        // $ppv_videos_count = PpvVideo::where('title', 'LIKE', '%' . $search_value . '%')->count();
 
-        $video_category_count = VideoCategory::where('name', 'LIKE', '%' . $search_value . '%')->count();
+        // $video_category_count = VideoCategory::where('name', 'LIKE', '%' . $search_value . '%')->count();
 
-        $ppv_category_count = PpvCategory::where('name', 'LIKE', '%' . $search_value . '%')->count();
+        // $ppv_category_count = PpvCategory::where('name', 'LIKE', '%' . $search_value . '%')->count();
+
+      
+
+        // if ($ppv_videos_count > 0)
+        // {
+
+        //     $ppv_videos = Video::where('title', 'LIKE', '%' . $search_value . '%')->orderBy('created_at', 'desc')
+        //         ->paginate(9);
+
+        // }
+        // else
+        // {
+        //     $ppv_videos = 0;
+        // }
+
+        // if ($video_category_count > 0)
+        // {
+        //     $video_category = Video::select("videos.*")
+        //     ->join("categoryvideos", "categoryvideos.video_id", "=", "videos.id")
+        //     ->join("video_categories", "video_categories.id", "=", "categoryvideos.category_id")
+        //     ->where('video_categories.name', 'LIKE', '%' . $search_value . '%')
+        //     ->orderBy('created_at', 'desc')
+        //     ->paginate(9);
+        // }
+        // else
+        // {
+        //     $video_category = 0;
+        // }
+
+        // if ($ppv_category_count > 0)
+        // {
+
+        //     $ppv_category = PpvCategory::where('name', 'LIKE', '%' . $search_value . '%')->orderBy('created_at', 'desc')
+        //         ->paginate(9);
+
+        // }
+        // else
+        // {
+        //     $ppv_category = 0;
+        // }
+
+        $videos_count = Video::where('search_tags', 'LIKE', '%' . $search_value . '%')->count();
 
         if ($videos_count > 0)
         {
-
-            $videos = Video::where('title', 'LIKE', '%' . $search_value . '%')->orderBy('created_at', 'desc')
+            $videos = Video::where('search_tags', 'LIKE', '%' . $search_value . '%')->orderBy('created_at', 'desc')
                 ->paginate(9);
-
         }
         else
         {
             $videos = 0;
         }
 
-        if ($ppv_videos_count > 0)
-        {
+        $latest_videos = Video::where('search_tags', 'LIKE', '%' . $search_value . '%')
+            ->take(10)
+            ->orderBy('created_at', 'DESC')->get();
 
-            $ppv_videos = Video::where('title', 'LIKE', '%' . $search_value . '%')->orderBy('created_at', 'desc')
-                ->paginate(9);
-
-        }
-        else
-        {
-            $ppv_videos = 0;
-        }
-
-        if ($video_category_count > 0)
-        {
-            $video_category = Video::select("videos.*")
-            ->join("categoryvideos", "categoryvideos.video_id", "=", "videos.id")
-            ->join("video_categories", "video_categories.id", "=", "categoryvideos.category_id")
-            ->where('video_categories.name', 'LIKE', '%' . $search_value . '%')
-            ->orderBy('created_at', 'desc')
-            ->paginate(9);
-        }
-        else
-        {
-            $video_category = 0;
-        }
-
-        if ($ppv_category_count > 0)
-        {
-
-            $ppv_category = PpvCategory::where('name', 'LIKE', '%' . $search_value . '%')->orderBy('created_at', 'desc')
-                ->paginate(9);
-
-        }
-        else
-        {
-            $ppv_category = 0;
-        }
         $data = array(
+            // 'ppv_videos' => $ppv_videos,
+            // 'video_category' => $video_category,
+            // 'ppv_category' => $ppv_category,
             'videos' => $videos,
-            'ppv_videos' => $ppv_videos,
-            'video_category' => $video_category,
-            'ppv_category' => $ppv_category,
             'search_value' => $search_value,
             'currency' => CurrencySetting::first() ,
-
+            'latest_videos' => $latest_videos,
         );
 
-        return View('search', $data);
+        return Theme::view('search', $data);
 
     }
 
@@ -3185,4 +3191,7 @@ class HomeController extends Controller
     }
 
 }
+
+
+
 
