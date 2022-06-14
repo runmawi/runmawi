@@ -1412,6 +1412,11 @@ Route::post('admin/clear_view_cache', 'ClearCacheController@clear_view_cache')->
     // Reels
 Route::get('/Reals_videos/videos/{slug}', 'ChannelController@Reals_videos');
 
+
+    // Cast & crew
+Route::get('/Artist/{id}', 'ChannelController@artist_videos');
+
+
     // Razorpay 
 Route::group(['middleware' => ['RazorpayMiddleware']], function() {
 Route::get('Razorpay', 'RazorpayController@Razorpay');

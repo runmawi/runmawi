@@ -111,7 +111,7 @@
 
     <div class="container movlistt" id="home-content">
         <div class="new-art">
-            <h4 class="Continue Watching  padding-top-40" >Search Result of "{{  $search_value }}" Channel Videos</h4>
+            <h4 class="Continue Watching  padding-top-40" >Search Result of "{{  $search_value }}" Videos</h4>
             <div class="border-line" style="margin-bottom:15px;margin-top:20px;"></div>
         </div>
     
@@ -199,7 +199,7 @@
 
 
 {{-- Latest Videos --}}
-
+@if(count($latest_videos) >= 1)
     <div class="container movlistt" id="home-content">
         <div class="new-art">
             <h4 class="Continue Watching  padding-top-40" >Search Result of "{{  $search_value }}" Latest Videos</h4>
@@ -287,19 +287,22 @@
             </ul>
         </div>
     </div>
+@endif
 
 {{-- Top Recent Watched video --}}
 
+@if(count($Most_recent_view) >= 1)
+
 <div class="container movlistt" id="home-content">
     <div class="new-art">
-        <h4 class="Continue Watching  padding-top-40" >Search Result of "{{  $search_value }}" Top Recent Videos</h4>
+        <h4 class="Continue Watching  padding-top-40" >Search Result of "{{  $search_value }}" {{ ucwords('top trending content')}} </h4>
         <div class="border-line" style="margin-bottom:15px;margin-top:20px;"></div>
     </div>
 
     <div class="row nomargin">
         <ul class="favorites-slider list-inline  row p-0 mb-0">
-            @if(isset($top_videos) && !empty($top_videos)) 
-                @foreach($top_videos as $top_search_videos): 
+            @if(isset($Most_recent_view) && !empty($Most_recent_view)) 
+                @foreach($Most_recent_view as $top_search_videos): 
                     <li class="slide-item">
                         <a href="<?php echo URL::to('home') ?>">
                             <div class="block-images position-relative">
@@ -377,6 +380,7 @@
         </ul>
     </div>
 </div>
+@endif
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
