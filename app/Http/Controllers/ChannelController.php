@@ -1403,7 +1403,7 @@ class ChannelController extends Controller
             ->where('video_artists.artist_id',$artist_id);
               if ($getfeching != null && $getfeching->geofencing == 'ON')
             {
-                $artist_videos = $artist_videos->whereNotIn('id', $blockvideos);
+                $artist_videos = $artist_videos->whereNotIn('videos.id', $blockvideos);
             }
           $artist_videos =$artist_videos->get();
 
