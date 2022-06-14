@@ -650,15 +650,8 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                  </ul>
            </div>
                
-           <div class="col-sm-6 col-md-6 col-xs-12">
-<!--
-                 <div class="d-flex align-items-center series mb-4">
-                    <a href="javascript:void();"><img src="images/trending/trending-label.png" class="img-fluid"
-                          alt=""></a>
-                    <span class="text-gold ml-3">#2 in Series Today</span>
-                 </div>
--->                 
-               <ul class="list-inline p-0 mt-4 rental-lists">
+           <div class="col-sm-6 col-md-6 col-xs-12 p-0">
+                <ul class="list-inline p-0 mt-4 rental-lists ">
                <!-- Subscribe -->
                    <li>
                        <?php     
@@ -678,13 +671,21 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                        <?php } ?>
                    </li>
                    <li>
-                       <div class="btn btn-primary views text-white text-right">
+                       <div class="btn btn-primary views text-white ">
                            <span class="view-count"><i class="fa fa-eye"></i> 
                                <?php if(isset($view_increment) && $view_increment == true ): ?><?= $movie->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?> 
                            </span>
                        </div>
                    </li>
                </ul>
+<!--
+                 <div class="d-flex align-items-center series mb-4">
+                    <a href="javascript:void();"><img src="images/trending/trending-label.png" class="img-fluid"
+                          alt=""></a>
+                    <span class="text-gold ml-3">#2 in Series Today</span>
+                 </div>
+-->                 
+              
            </div>
        </div>
 
