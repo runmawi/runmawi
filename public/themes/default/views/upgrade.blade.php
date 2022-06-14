@@ -3,7 +3,7 @@
 @section('content')
 
 @php
-    include(public_path('themes\default\views\header.php'));
+    include(public_path('themes/default/views/header.php'));
 @endphp
 
 <head>
@@ -536,7 +536,7 @@ body.loading .overlay{
 
 
 @php
-    include(public_path('themes\default\views\footer.blade.php'));
+    include(public_path('themes/default/views/footer.blade.php'));
 @endphp
 
 @endsection 
