@@ -241,7 +241,7 @@ body.loading .overlay{
                         @endif
 
                         <div class="form-group row">
-                            <div class="col-md-11 col-sm-offset-1">
+                            <div class="col-md-12 ">
                             <div class="sign-up-buttons" align="center">
 
                                     <p> <span>Or</span></p>

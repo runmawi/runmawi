@@ -1,6 +1,8 @@
 
 @extends('admin.master')
 <meta name="csrf-token" content="{{ csrf_token() }}">
+
+
 <style>
     table{
         width: 100%;
@@ -42,30 +44,45 @@
     }
     .fc-agendaDay-button{
         background-color: orange;
-        border: none;
+        border:
+         none;
+    }
+    .fc-scroller.fc-day-grid-container {
+        height: 500px !important;
     }
 </style>
 
 @section('content')
-<div id="content-page" class="content-page">
-     <div class="iq-card">
- <div class="container-fluid">
-     <h2>Ads Surge Price </h2>
-    <p>Notes: Adding surge pricing will increase the price of the base by x times.</p>
-  <div class="row">
-      
-    
-      <div class="col-md-8">
-    <div id='full_calendar_events'></div></div>
-</div>
-</div>
-    </div></div>
+
+
+    <div id="content-page" class="content-page">
+        <div class="iq-card">
+            <div class="container-fluid">
+                <div class=" row col-sm-12">
+                    <div class="col-sm-9">
+                        <h5>Ads Surge Price</h5>
+                        <p>Notes: Adding surge pricing will increase the price of the base by x times.</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div id="full_calendar_events"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.css" />
+
+
 @section('javascript')
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
 <script>
     $(document).ready(function () {
         var SITEURL = "{{ url('/admin/') }}";

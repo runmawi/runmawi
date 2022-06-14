@@ -458,12 +458,11 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     /* Master List */
     Route::get('/Masterlist', 'AdminDashboardController@Masterlist'); 
     Route::get('/ActiveSlider', 'AdminDashboardController@ActiveSlider'); 
-
+    Route::post('/ActiveSlider_update', 'AdminDashboardController@ActiveSlider_update'); 
 
     /* Thumbnail Setting */
     Route::get('/ThumbnailSetting', 'AdminSettingsController@ThumbnailSetting')->name('ThumbnailSetting'); 
     Route::post('/ThumbnailSetting_Store', 'AdminSettingsController@ThumbnailSetting_Store'); 
-
 
     // Footer Link
     Route::get('/footer_menu', 'AdminSettingsController@footer_link')->name('footer_link'); 
@@ -476,7 +475,11 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     //Select video delete
     Route::get('/VideoBulk_delete', 'AdminVideosController@VideoBulk_delete')->name('VideoBulk_delete'); 
 
+    // Multi-user Limit
+    Route::get('/MultiUser-limit', 'AdminSettingsController@multiuser_limit')->name('multiuser_limit'); 
+    Route::post('/Multi_limit_store', 'AdminSettingsController@Multi_limit_store')->name('Multi_limit_store'); 
 
+    // Theme Integration 
     Route::get('ThemeIntegration', 'ThemeIntegrationController@index')->name('ThemeIntegration');
 
     Route::get('/languages', 'LanguageTranslationController@index')->name('languages');
@@ -1401,8 +1404,18 @@ Route::post('admin/ThemeIntegration/create', 'ThemeIntegrationController@create'
 Route::get('admin/ThemeIntegration/set_theme', 'ThemeIntegrationController@set_theme')->name('ThemeIntegration/set_theme');
 Route::post('admin/ThemeIntegration/uniquevalidation', 'ThemeIntegrationController@uniquevalidation')->name('ThemeIntegration/uniquevalidation');
 
+// Cache clear
+Route::get('admin/clear_cache', 'ClearCacheController@index')->name('clear_cache');
+Route::post('admin/clear_caches', 'ClearCacheController@clear_caches')->name('clear_caches');
+Route::post('admin/clear_view_cache', 'ClearCacheController@clear_view_cache')->name('clear_view_cache');
+
     // Reels
 Route::get('/Reals_videos/videos/{slug}', 'ChannelController@Reals_videos');
+
+
+    // Cast & crew
+Route::get('/Artist/{id}', 'ChannelController@artist_videos');
+
 
     // Razorpay 
 Route::group(['middleware' => ['RazorpayMiddleware']], function() {
@@ -1413,12 +1426,13 @@ Route::get('/RazorpayUpgrade', 'RazorpayController@RazorpayUpgrade')->name('Razo
 Route::get('/RazorpayCancelSubscriptions', 'RazorpayController@RazorpayCancelSubscriptions')->name('RazorpayCancelSubscriptions');
 Route::get('/RazorpaySubscriptionStore', 'RazorpayController@RazorpaySubscriptionStore')->name('RazorpaySubscriptionStore');
 Route::get('/RazorpaySubscriptionUpdate/{planId}', 'RazorpayController@RazorpaySubscriptionUpdate')->name('RazorpaySubscriptionUpdate');
-});
 
 Route::get('/RazorpayVideoRent/{video_id}/{amount}', 'RazorpayController@RazorpayVideoRent')->name('RazorpayVideoRent');
 Route::POST('/RazorpayVideoRent_Payment', 'RazorpayController@RazorpayVideoRent_Payment')->name('RazorpayVideoRent_Payment');
 
 Route::get('/RazorpayLiveRent/{live_id}/{amount}', 'RazorpayController@RazorpayLiveRent')->name('RazorpayLiveRent');
 Route::POST('/RazorpayLiveRent_Payment', 'RazorpayController@RazorpayLiveRent_Payment')->name('RazorpayLiveRent_Payment');
+});
+
 
 

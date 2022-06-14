@@ -115,6 +115,7 @@ $data = Session::all();
     <!-- Responsive -->
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/responsive.css';?>" />
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/slick.css';?>" />
+    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/slick.css';?>" />
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/plyr_marker.scss';?>" />
 
     

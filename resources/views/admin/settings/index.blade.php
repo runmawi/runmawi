@@ -995,7 +995,6 @@ border-radius: 0px 4px 4px 0px;
         <script src="js/scripts.js"></script>
 		
 @section('javascript')
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 
                     <script src="jquery-3.5.1.min.js"></script>
@@ -1008,10 +1007,8 @@ border-radius: 0px 4px 4px 0px;
     })
 </script>
 	<script src="{{ '/application/assets/admin/js/bootstrap-switch.min.js' }}"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.css" rel="stylesheet"/>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.full.js"></script>
 	<script>
 

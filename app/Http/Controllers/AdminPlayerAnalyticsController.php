@@ -360,7 +360,7 @@ class AdminPlayerAnalyticsController extends Controller
                 foreach ($player_videos as $key => $row)
                 {
                     if(!empty($playervideo->bufferedTime))  { $bufferedTime = $row->bufferedTime; } else { $bufferedTime = 'No Buffer'; }
-                    
+                    $i = 1 ;
                     $output .= '
                   <tr>
                   <td>' . $i++ . '</td>

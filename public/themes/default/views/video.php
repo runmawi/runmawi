@@ -95,6 +95,24 @@ h2{
   font-size: 60px;
   margin-top: 0px;
 }
+      .btn1{
+          padding: 9px 30px;
+          font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  border: 1px solid;
+   
+    font-size: 1rem;
+    line-height: 1.5;
+      }
+      .subsc-video{
+         font-size: 18px!important;   
+      }
   </style>
 <?php
 
@@ -578,14 +596,21 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
    <div class="container-fluid video-details" style="width:90%!important;">
        <div class="trending-info g-border p-0">
            <div class="row align-items-center">
-               <div class="col-sm-9 col-md-9 col-xs-12">
+               <div class="col-sm-8 col-md-8 col-xs-12">
                    <h1 class="text-white  mt-3"><?php echo __($video->title);?> <?php if( Auth::guest() ) { ?>  <?php } ?></h1>
                        <!-- Category -->
                    <ul class="p-0 list-inline d-flex align-items-center movie-content">
                     <li class="text-white"><?//= $videocategory ;?></li>
                    </ul>
                </div>
-               <div class="col-md-3">
+               <div class="col-md-2">
+                    <div class=" views text-white text-right" style="font-size:14px;">
+                           <span class="view-count"><i class="fa fa-eye"></i> 
+                               <?php if(isset($view_increment) && $view_increment == true ): ?><?= $movie->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?> 
+                           </span>
+                       </div>
+               </div>
+               <div class="col-md-2">
             <!-- <div id="video_containers plyr__video" class="fitvid mfp-hide" atyle="z-index: 9999;"> -->
             <!-- <div id="video-trailer" class="mfp-hide"> -->
              <!-- <video id="videoPlayer"  poster="<?php echo URL::to('/').'/public/uploads/images/' .$video->image;?>"  class="" controls src="<?= $video->trailer; ?>"  type="application/x-mpegURL" ></video>
@@ -606,9 +631,9 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                     </a>
                     </div> -->
                <div class="col-sm-3 col-md-3 col-xs-12">
-                   <div class="pull-left"     style="margin-left: 371%;">     
+                   <div class="pull-left"     >     
                        <?php if($video->trailer != '' && $ThumbnailSetting->trailer == 1 ){ ?>
-                           <div id="videoplay" class="btn btn-primary  watch_trailer"><i class="ri-film-line"></i> Watch Trailer</div>
+                           <div id="videoplay" class="btn1 btn-outline-danger  watch_trailer"><i class="ri-film-line"></i> Watch Trailer</div>
                            <div id="close_trailer" class="btn btn-danger  close_trailer"><i class="ri-film-line"></i> Close Trailer</div>
                            <div style=" display: none;" class="skiptrailer btn btn-default skip"> Skip</div>
                        <?php } ?>
@@ -650,21 +675,14 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                  </ul>
            </div>
                
-           <div class="col-sm-6 col-md-6 col-xs-12">
-<!--
-                 <div class="d-flex align-items-center series mb-4">
-                    <a href="javascript:void();"><img src="images/trending/trending-label.png" class="img-fluid"
-                          alt=""></a>
-                    <span class="text-gold ml-3">#2 in Series Today</span>
-                 </div>
--->                 
-               <ul class="list-inline p-0 mt-4 rental-lists">
+           <div class="col-sm-6 col-md-6 col-xs-12 p-0">
+                <ul class="list-inline p-0 mt-4 rental-lists ">
                <!-- Subscribe -->
                    <li>
                        <?php     
                            $user = Auth::user(); 
                            if (  ($user->role!="subscriber" && $user->role!="admin") ) { ?>
-                               <a href="<?php echo URL::to('/becomesubscriber');?>"><span class="view-count btn btn-primary subsc-video"><?php echo __('Subscribe');?> </span></a>
+                               <a href="<?php echo URL::to('/becomesubscriber');?>"><span class="view-count btn1 btn-outline-danger subsc-video"><?php echo __('Subscribe');?> </span></a>
                        <?php } ?>
                    </li>
                    <!-- PPV button -->
@@ -673,18 +691,26 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                        <?php if ( $video->global_ppv != null && $user->role!="admin" || $video->ppv_price != null  && $user->role!="admin") { ?>
 
                          <!-- && ($video->global_ppv == 1 ) -->
-                           <button  data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary rent-video">
+                           <button  data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn1 btn-outline-danger rent-video">
                            <?php echo __('Rents');?> </button>
                        <?php } ?>
                    </li>
                    <li>
-                       <div class="btn btn-default views text-white text-right">
+                      <!-- <div class=" views text-white " style="font-size:14px;">
                            <span class="view-count"><i class="fa fa-eye"></i> 
                                <?php if(isset($view_increment) && $view_increment == true ): ?><?= $movie->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?> 
                            </span>
-                       </div>
+                       </div>-->
                    </li>
                </ul>
+<!--
+                 <div class="d-flex align-items-center series mb-4">
+                    <a href="javascript:void();"><img src="images/trending/trending-label.png" class="img-fluid"
+                          alt=""></a>
+                    <span class="text-gold ml-3">#2 in Series Today</span>
+                 </div>
+-->                 
+              
            </div>
        </div>
 
@@ -748,18 +774,32 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 
   <!--End Intro Skip and Recap Skip -->
 
-           <?php if(!empty($video->description) ) { ?>
-<div class="col-md-7 p-0">
-<h4>Description</h4>
-<div class="text-white">
-    <p class="trending-dec w-100 mb-0 text-white mt-2"><?php echo __($video->description); ?></p>
-    <p class="trending-dec w-100 mb-0 text-white mt-2">Starring : <span class="sta"><?php echo $artistsname; ?></span></p>
-    <p class="trending-dec w-100 mb-0 text-white mt-2">Genres : <span class="sta"><?php echo $genres_name; ?></span></p>
-    <p class="trending-dec w-100 mb-0 text-white mt-2">This Movie is :</p>
-    <p class="trending-dec w-100 mb-0 text-white mt-2">Subtitles : <?php echo $subtitles_name; ?></p>
-    <p class="trending-dec w-100 mb-0 text-white mt-2">Audio Languages : <?php echo $lang_name; ?></p>
-</div></div>
-<?php  }?>
+
+  <!-- Trailer Description -->
+  <?php if(!empty($video->trailer_description) ) { ?>
+      <div class="col-md-7 p-0 trailer_description">
+          <h4>Trailer Description</h4>
+          <div class="text-white">
+              <p class="trending-dec w-100 mb-0 text-white mt-2"><?php echo __($video->trailer_description); ?></p>
+          </div>
+      </div>
+      <br>
+  <?php  }?>
+
+
+  <?php if(!empty($video->description) ) { ?>
+    <div class="col-md-7 p-0">
+      <h4>Description</h4>
+      <div class="text-white">
+          <p class="trending-dec w-100 mb-0 text-white mt-2"><?php echo __($video->description); ?></p>
+          <p class="trending-dec w-100 mb-0 text-white mt-2">Starring : <span class="sta"><?php echo $artistsname; ?></span></p>
+          <p class="trending-dec w-100 mb-0 text-white mt-2">Genres : <span class="sta"><?php echo $genres_name; ?></span></p>
+          <p class="trending-dec w-100 mb-0 text-white mt-2">This Movie is :</p>
+          <p class="trending-dec w-100 mb-0 text-white mt-2">Subtitles : <?php echo $subtitles_name; ?></p>
+          <p class="trending-dec w-100 mb-0 text-white mt-2">Audio Languages : <?php echo $lang_name; ?></p>
+      </div>
+    </div>
+  <?php  }?>
 <br>
 
 <?php if(!empty($video->details) ) { ?>
@@ -790,15 +830,21 @@ $artists = [];
 
 }
  if(count($artists) > 0 ) { ?>
- <h4>Cast & crew</h4>
-         <?php
-           foreach($artists as $key => $artist){
-          //  foreach($artist as $key => $value){
-         ?>
-           <div class="mt-2 d-flex">
-           <img src="<?= URL::to('/') . '/public/uploads/artists/'.$artist->image ?>" alt=""width="50" height="60">
-           <p class="trending-dec w-100 mb-0 text-white mt-2" ><?php echo $artist->artist_name ; ?> </p></div>
-    <?php } }  ?>
+ <h4 style="margin-left: -15px;">Cast & crew</h4>
+       
+          
+          <div class="row">
+                <?php foreach($artists as $key => $artist){  ?>
+            <div class="mt-6 d-flex">
+              <a  href="<?php echo __(URL::to('/') . '/Artist/' . $artist->artist_name); ?>"  >
+                <img src="<?= URL::to('/') . '/public/uploads/artists/'.$artist->image ?>" alt=""width="50" height="60">
+                <p class="trending-dec w-100 mb-0 text-white mt-2" ><?php echo $artist->artist_name ; ?> </p>
+              </a>
+            </div>
+                 <?php } }  ?>
+          </div>
+       
+     
            
        <!-- <div class="text-white">
            <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->description); ?></p>
@@ -929,7 +975,7 @@ $artists = [];
 
 
    <div class="video-list you-may-like">
-       <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Recomended Videos');?></h4>
+       <h4 class="Continue Watching" style="color:#fffff;margin-left:-15px;"><?php echo __('Recomended Videos');?></h4>
            <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>   
                <?php include('partials/video-loop.php');?>
            </div>
@@ -991,19 +1037,26 @@ $artists = [];
           //    $(".skip").css('display','inline-block');
           //    $("#video_container").html(videohtml);
           //  });
-          var vid = document.getElementById("videoPlayer"); 
+
+
+        var vid = document.getElementById("videoPlayer"); 
           $('#watch_trailer').hide();
           $('#close_trailer').hide();
-          // Play Trailer
+          $('.trailer_description').hide();
+
+        // Play Trailer
           $('#videoplay').click(function(){
             // alert('test');
-            $('#video_container').hide();
-            const player = new Plyr('#videoPlayers');
-            $('#watch_trailer').show();
-            $('#videoplay').hide();
-            $('#close_trailer').show();
+              $('#video_container').hide();
+              const player = new Plyr('#videoPlayers');
+              $('#watch_trailer').show();
+              $('#videoplay').hide();
+              $('#close_trailer').show();
+              $('.trailer_description').show();
+
           });
-          // Close Trailer
+
+        // Close Trailer
           $('#close_trailer').click(function(){
             // alert('test');
             $('#watch_trailer').hide();
@@ -1011,11 +1064,11 @@ $artists = [];
             $('#video_container').show();
             $('#videoplay').show();            
             $('#close_trailer').hide();
+            $('.trailer_description').hide();
+
           });
 
 
-
-          
            /*Skip Video*/
           //  $(document).on("click",".skip",function() {
           //    $("#video_container").empty();

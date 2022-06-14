@@ -80,7 +80,7 @@ border-radius: 0px 4px 4px 0px;
                               @foreach($videos as $key => $video)
                                  <tr id="tr_{{$video->id}}" >
                                    
-                                       <td><input type="checkbox" class="sub_chk" data-id="{{$video->id}}"></td>
+                                       <td><input type="checkbox" id="Sub_chck" class="sub_chk" data-id="{{$video->id}}"></td>
                                     <td>
                                        <div class="media align-items-center">
                                           <div class="iq-movie">
@@ -249,20 +249,38 @@ $('#cpp_user_videos').change(function(){
 <script type="text/javascript">
    $(document).ready(function () {
 
+      $(".delete_all").hide();
+
        $('#select_all').on('click', function(e) {
+
             if($(this).is(':checked',true))  
             {
+               $(".delete_all").show();
                $(".sub_chk").prop('checked', true);  
             } else {  
+               $(".delete_all").hide();
                $(".sub_chk").prop('checked',false);  
             }  
        });
+
+
+      $('.sub_chk').on('click', function(e) {
+
+         var checkboxes = $('input:checkbox:checked').length;
+
+         if(checkboxes > 0){
+            $(".delete_all").show();
+         }else{
+            $(".delete_all").hide();
+         }
+      });
 
 
        $('.delete_all').on('click', function(e) {
 
            var allVals = [];  
             $(".sub_chk:checked").each(function() {  
+
                   allVals.push($(this).attr('data-id'));
             });  
 
