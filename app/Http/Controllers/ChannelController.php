@@ -1372,7 +1372,7 @@ class ChannelController extends Controller
 
       }
 
-      public function artist_videos(Request $request,$id)
+      public function artist_videos(Request $request,$slug)
       {
             $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
             $countryName = $geoip->getCountry();
@@ -1391,7 +1391,7 @@ class ChannelController extends Controller
                 $blockvideos[] = '';
             }
 
-            $artist_id = $id ;
+            $artist_id = Artist::where('artist_name',$slug)->pluck('id')->first();
 
             $artist_videos = Video::Join('video_artists','video_artists.video_id','=','videos.id')
               ->Join('artists','artists.id','=','video_artists.artist_id')
@@ -1405,6 +1405,14 @@ class ChannelController extends Controller
               }
             $artist_videos =$artist_videos->get();
 
+            $data = array(
+              'artist_videos' => $artist_videos,
+              'ThumbnailSetting' => ThumbnailSetting::first() ,
+               'currency' => CurrencySetting::first() ,
+
+            );
+    
+            return Theme::view('artists',$data); 
       }
     
 }
