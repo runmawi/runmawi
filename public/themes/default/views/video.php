@@ -812,7 +812,7 @@ $artists = [];
 
 }
  if(count($artists) > 0 ) { ?>
- <h4 class="mb-2">Cast & crew</h4>
+ <h4 style="margin-left: -15px;">Cast & crew</h4>
        
           
           <div class="row">
