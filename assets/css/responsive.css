@@ -129,6 +129,7 @@
     .h-100 {height: 200px !important;}
     .btn{
         padding: 5px 10px!important;
+        border-radius: 5px!important;
     }
     .km{
         font-size: 40px!important;
