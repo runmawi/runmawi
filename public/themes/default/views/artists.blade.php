@@ -4,6 +4,11 @@
 
 <section id="iq-favorites">
     <div class="container-fluid">
+
+        <div class="iq-main-header align-items-center">
+            <h2 class="">{{ ucwords("artist videos ".$artist_name) }}</h2>
+        </div>
+
         <div class="row">
             <div class="col-sm-12 overflow-hidden">
                 <div class="favorites-contens">

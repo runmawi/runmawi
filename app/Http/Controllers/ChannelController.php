@@ -1374,45 +1374,54 @@ class ChannelController extends Controller
 
       public function artist_videos(Request $request,$slug)
       {
-            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-            $countryName = $geoip->getCountry();
-            $getfeching = Geofencing::first();
 
-            $block_videos = BlockVideo::where('country_id', $countryName)->get();
-            if (!$block_videos->isEmpty())
-            {
-                foreach ($block_videos as $block_video)
-                {
-                    $blockvideos[] = $block_video->video_id;
-                }
-            }
-            else
-            {
-                $blockvideos[] = '';
-            }
+        try {
+          $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+          $countryName = $geoip->getCountry();
+          $getfeching = Geofencing::first();
 
-            $artist_id = Artist::where('artist_name',$slug)->pluck('id')->first();
-
-            $artist_videos = Video::Join('video_artists','video_artists.video_id','=','videos.id')
-              ->Join('artists','artists.id','=','video_artists.artist_id')
-              ->where('videos.active', '=', '1')
-              ->where('videos.status', '=', '1')
-              ->where('videos.draft', '=', '1')
-              ->where('video_artists.artist_id',$artist_id);
-                if ($getfeching != null && $getfeching->geofencing == 'ON')
+          $block_videos = BlockVideo::where('country_id', $countryName)->get();
+          if (!$block_videos->isEmpty())
+          {
+              foreach ($block_videos as $block_video)
               {
-                  $artist_videos = $artist_videos->whereNotIn('id', $blockvideos);
+                  $blockvideos[] = $block_video->video_id;
               }
-            $artist_videos =$artist_videos->get();
+          }
+          else
+          {
+              $blockvideos[] = '';
+          }
 
-            $data = array(
-              'artist_videos' => $artist_videos,
-              'ThumbnailSetting' => ThumbnailSetting::first() ,
-               'currency' => CurrencySetting::first() ,
+          $artist_id = Artist::where('artist_name',$slug)->pluck('id')->first();
 
-            );
-    
-            return Theme::view('artists',$data); 
+          $artist_videos = Video::Join('video_artists','video_artists.video_id','=','videos.id')
+            ->Join('artists','artists.id','=','video_artists.artist_id')
+            ->where('videos.active', '=', '1')
+            ->where('videos.status', '=', '1')
+            ->where('videos.draft', '=', '1')
+            ->where('video_artists.artist_id',$artist_id);
+              if ($getfeching != null && $getfeching->geofencing == 'ON')
+            {
+                $artist_videos = $artist_videos->whereNotIn('id', $blockvideos);
+            }
+          $artist_videos =$artist_videos->get();
+
+          $data = array(
+            'artist_videos'    => $artist_videos,
+            'ThumbnailSetting' => ThumbnailSetting::first() ,
+            'currency'        => CurrencySetting::first() ,
+            "artist_name"     => $slug,
+
+          );
+  
+          return Theme::view('artists',$data); 
+          
+        } catch (\Throwable $th) {
+
+          return abort(404);
+      }
+            
       }
     
 }
