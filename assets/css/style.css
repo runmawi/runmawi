@@ -256,6 +256,7 @@ li.slide-item .block-description .parallax-ratting span { font-size: 12px; }
 .tab-title-info { z-index: 99; }
 .trending-info h1{
     font-size: 35px;
+    font-weight: 500;
 }
 .series_title h1{
     font-size: 30px;
