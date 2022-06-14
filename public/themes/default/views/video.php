@@ -578,14 +578,14 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
    <div class="container-fluid video-details" style="width:90%!important;">
        <div class="trending-info g-border p-0">
            <div class="row align-items-center">
-               <div class="col-sm-9 col-md-9 col-xs-12">
+               <div class="col-sm-10 col-md-10 col-xs-12">
                    <h1 class="text-white  mt-3"><?php echo __($video->title);?> <?php if( Auth::guest() ) { ?>  <?php } ?></h1>
                        <!-- Category -->
                    <ul class="p-0 list-inline d-flex align-items-center movie-content">
                     <li class="text-white"><?//= $videocategory ;?></li>
                    </ul>
                </div>
-               <div class="col-md-3">
+               <div class="col-md-2">
             <!-- <div id="video_containers plyr__video" class="fitvid mfp-hide" atyle="z-index: 9999;"> -->
             <!-- <div id="video-trailer" class="mfp-hide"> -->
              <!-- <video id="videoPlayer"  poster="<?php echo URL::to('/').'/public/uploads/images/' .$video->image;?>"  class="" controls src="<?= $video->trailer; ?>"  type="application/x-mpegURL" ></video>
@@ -606,7 +606,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                     </a>
                     </div> -->
                <div class="col-sm-3 col-md-3 col-xs-12">
-                   <div class="pull-left"     style="margin-left: 371%;">     
+                   <div class="pull-left"     >     
                        <?php if($video->trailer != '' && $ThumbnailSetting->trailer == 1 ){ ?>
                            <div id="videoplay" class="btn btn-primary  watch_trailer"><i class="ri-film-line"></i> Watch Trailer</div>
                            <div id="close_trailer" class="btn btn-danger  close_trailer"><i class="ri-film-line"></i> Close Trailer</div>
@@ -650,15 +650,8 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                  </ul>
            </div>
                
-           <div class="col-sm-6 col-md-6 col-xs-12">
-<!--
-                 <div class="d-flex align-items-center series mb-4">
-                    <a href="javascript:void();"><img src="images/trending/trending-label.png" class="img-fluid"
-                          alt=""></a>
-                    <span class="text-gold ml-3">#2 in Series Today</span>
-                 </div>
--->                 
-               <ul class="list-inline p-0 mt-4 rental-lists">
+           <div class="col-sm-6 col-md-6 col-xs-12 p-0">
+                <ul class="list-inline p-0 mt-4 rental-lists ">
                <!-- Subscribe -->
                    <li>
                        <?php     
@@ -678,13 +671,21 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                        <?php } ?>
                    </li>
                    <li>
-                       <div class="btn btn-default views text-white text-right">
+                       <div class=" views text-white " style="font-size:14px;">
                            <span class="view-count"><i class="fa fa-eye"></i> 
                                <?php if(isset($view_increment) && $view_increment == true ): ?><?= $movie->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?> 
                            </span>
                        </div>
                    </li>
                </ul>
+<!--
+                 <div class="d-flex align-items-center series mb-4">
+                    <a href="javascript:void();"><img src="images/trending/trending-label.png" class="img-fluid"
+                          alt=""></a>
+                    <span class="text-gold ml-3">#2 in Series Today</span>
+                 </div>
+-->                 
+              
            </div>
        </div>
 

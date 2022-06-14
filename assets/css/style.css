@@ -194,8 +194,8 @@ li.slide-item:hover .block-images .img-box{position:relative;}
 li.slide-item:hover .block-images{z-index: 99;transform: scale3d(1.1, 1.1, 1.1) translate3d(0, 0, 0) perspective(500px); transform-origin: 50% 50%; transition: all 0.6s ease 0s; -webkit-transition: all 0.6s ease 0s; -moz-transition: all 0.6s ease 0s; -o-transition: all 0.6s ease 0s; box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.9);border-radius:10px;}
 /*.block-social-info { position: absolute; top: 0; left: auto; bottom: 0;right: 25px; z-index: 999;display: flex; align-items: center; opacity: 0; }*/
 
-.music-play-lists li { height: 30px; width: 30px; line-height: 35px; text-align: center; background: rgba(255, 255, 255, 0.30); border-radius: 50%;  display: flex;justify-content: space-around; -webkit-display: flex; -moz-display: flex; -o-display: flex; align-items: center;list-style: none; }
-.music-play-lists span { position: relative; display: block; height: 20px; width: 20px; line-height: 26px; font-size: 12px; text-align: center; background: var(--iq-white); color: var(--iq-primary); border-radius: 50%; -webkit-border-radius: 50%; -moz-border-radius: 50%; -o-border-radius: 50%; margin: 0 auto; display: flex; -webkit-display: flex; -moz-display: flex; -o-display: flex; align-items: center; justify-content: center; transition: all 0.45s ease 0s; -webkit-transition: all 0.45s ease 0s; -moz-transition: all 0.45s ease 0s; -o-transition: all 0.45s ease 0s; cursor: pointer; }
+.music-play-lists li { height: 30px; width: 30px; line-height: 35px; text-align: center; /*background: rgba(255, 255, 255, 0.30);*/ border-radius: 50%;  display: flex;justify-content: space-around; -webkit-display: flex; -moz-display: flex; -o-display: flex; align-items: center;list-style: none; }
+.music-play-lists span { position: relative; display: block; height: 20px; width: 20px; line-height: 26px; font-size: 12px; text-align: center; /*background: var(--iq-white);*/ color: /*var(--iq-primary)*/#fff; border-radius: 50%; -webkit-border-radius: 50%; -moz-border-radius: 50%; -o-border-radius: 50%; margin: 0 auto; display: flex; -webkit-display: flex; -moz-display: flex; -o-display: flex; align-items: center; justify-content: center; transition: all 0.45s ease 0s; -webkit-transition: all 0.45s ease 0s; -moz-transition: all 0.45s ease 0s; -o-transition: all 0.45s ease 0s; cursor: pointer; }
 .music-play-lists li:hover span { background: var(--iq-primary); color: var(--iq-white); transition: all 0.45s ease 0s; -webkit-transition: all 0.45s ease 0s; -moz-transition: all 0.45s ease 0s; -o-transition: all 0.45s ease 0s; }
 .block-description {bottom: 0;
     opacity: 0;
@@ -357,13 +357,13 @@ ul.f-link li a:hover { color: var(--iq-primary);!important }
 .banner-caption, .overlay-s-name { position: absolute; bottom: 30px; left: 80px; }
 .movie-detail .trending-info { padding: 0 0 20px 0; border: 1px solid; border-image-slice: 1; border-width: 0 0 1px 0; }
 .movie-detail .trending-info.g-border { border-image-source: linear-gradient(to left, rgba(209, 208, 207, 0), rgba(209, 208, 207, 0.6), rgba(209, 208, 207, 0)); }
-.share-icons.music-play-lists li { display: inline-flex; margin-right: 7px; width: 45px; height: 45px; }
+.share-icons.music-play-lists li { display: inline-flex; margin-right: 7px; width: 30px; height: 30px; }
 .share-icons.music-play-lists li span { width: 32px; height: 32px; }
 .share-icons.music-play-lists li span i { font-size: 18px; }
 .movie-detail .trending-info .trending-text { font-size: 50px; line-height: 1.5; margin: 0; }
 .main-content.movi { padding-top: 30px; }
 .share { position: relative; }
-.share-box { -webkit-box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.75); box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.75); display: none; position: absolute; width: 130px; left: -130px; bottom: -60px; background-color: var(--iq-bg1); padding: 10px; border-radius: 5px; text-align: center; z-index: 2; animation: slide-in  0.5s forwards; margin-bottom: 10px; }
+.share-box { -webkit-box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.75); box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.75); display: none; position: absolute; width: 130px; left: -130px; bottom: -60px; background-color: var(--iq-bg1); padding: 10px; border-radius: 5px; text-align: center; z-index: 2; animation: slide-in  0.5s forwards; margin-bottom: 10px; color: #fff;}
 .share:hover .share-box { display: inline-block; }
 .share-box a { background: transparent !important; color: var(--iq-body) !important; margin-right: 8px; }
 .share-box i { font-size: 25px !important; }
