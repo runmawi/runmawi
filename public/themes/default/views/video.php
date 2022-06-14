@@ -812,19 +812,21 @@ $artists = [];
 
 }
  if(count($artists) > 0 ) { ?>
- <h4>Cast & crew</h4>
-         <?php foreach($artists as $key => $artist){  ?>
+ <h4 class="mb-2">Cast & crew</h4>
+       
           
           <div class="row">
+                <?php foreach($artists as $key => $artist){  ?>
             <div class="mt-6 d-flex">
               <a  href="<?php echo __(URL::to('/') . '/Artist/' . $artist->artist_name); ?>"  >
                 <img src="<?= URL::to('/') . '/public/uploads/artists/'.$artist->image ?>" alt=""width="50" height="60">
                 <p class="trending-dec w-100 mb-0 text-white mt-2" ><?php echo $artist->artist_name ; ?> </p>
               </a>
             </div>
+                 <?php } }  ?>
           </div>
        
-        <?php } }  ?>
+     
            
        <!-- <div class="text-white">
            <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->description); ?></p>
