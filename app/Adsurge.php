@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Adsurge extends Model
 {
-    protected $table = 'ad_surge';
+    protected $table = 'ads_surge';
     protected $guarded = array();
     public static $rules = array();
 
