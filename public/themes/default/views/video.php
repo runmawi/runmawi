@@ -633,7 +633,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                <div class="col-sm-3 col-md-3 col-xs-12">
                    <div class="pull-left"     >     
                        <?php if($video->trailer != '' && $ThumbnailSetting->trailer == 1 ){ ?>
-                           <div id="videoplay" class="btn btn-primary  watch_trailer"><i class="ri-film-line"></i> Watch Trailer</div>
+                           <div id="videoplay" class="btn1 btn-outline-danger  watch_trailer"><i class="ri-film-line"></i> Watch Trailer</div>
                            <div id="close_trailer" class="btn btn-danger  close_trailer"><i class="ri-film-line"></i> Close Trailer</div>
                            <div style=" display: none;" class="skiptrailer btn btn-default skip"> Skip</div>
                        <?php } ?>
