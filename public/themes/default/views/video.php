@@ -95,6 +95,24 @@ h2{
   font-size: 60px;
   margin-top: 0px;
 }
+      .btn1{
+          padding: 9px 30px;
+          font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  border: 1px solid;
+   
+    font-size: 1rem;
+    line-height: 1.5;
+      }
+      .subsc-video{
+         font-size: 18px!important;   
+      }
   </style>
 <?php
 
@@ -615,7 +633,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                <div class="col-sm-3 col-md-3 col-xs-12">
                    <div class="pull-left"     >     
                        <?php if($video->trailer != '' && $ThumbnailSetting->trailer == 1 ){ ?>
-                           <div id="videoplay" class="btn btn-primary  watch_trailer"><i class="ri-film-line"></i> Watch Trailer</div>
+                           <div id="videoplay" class="btn1 btn-outline-danger  watch_trailer"><i class="ri-film-line"></i> Watch Trailer</div>
                            <div id="close_trailer" class="btn btn-danger  close_trailer"><i class="ri-film-line"></i> Close Trailer</div>
                            <div style=" display: none;" class="skiptrailer btn btn-default skip"> Skip</div>
                        <?php } ?>
@@ -664,7 +682,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                        <?php     
                            $user = Auth::user(); 
                            if (  ($user->role!="subscriber" && $user->role!="admin") ) { ?>
-                               <a href="<?php echo URL::to('/becomesubscriber');?>"><span class="view-count btn btn-primary subsc-video"><?php echo __('Subscribe');?> </span></a>
+                               <a href="<?php echo URL::to('/becomesubscriber');?>"><span class="view-count btn1 btn-outline-danger subsc-video"><?php echo __('Subscribe');?> </span></a>
                        <?php } ?>
                    </li>
                    <!-- PPV button -->
@@ -673,7 +691,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                        <?php if ( $video->global_ppv != null && $user->role!="admin" || $video->ppv_price != null  && $user->role!="admin") { ?>
 
                          <!-- && ($video->global_ppv == 1 ) -->
-                           <button  data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary rent-video">
+                           <button  data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn1 btn-outline-danger rent-video">
                            <?php echo __('Rents');?> </button>
                        <?php } ?>
                    </li>
@@ -812,19 +830,21 @@ $artists = [];
 
 }
  if(count($artists) > 0 ) { ?>
- <h4>Cast & crew</h4>
-         <?php foreach($artists as $key => $artist){  ?>
+ <h4 style="margin-left: -15px;">Cast & crew</h4>
+       
           
           <div class="row">
+                <?php foreach($artists as $key => $artist){  ?>
             <div class="mt-6 d-flex">
               <a  href="<?php echo __(URL::to('/') . '/Artist/' . $artist->artist_name); ?>"  >
                 <img src="<?= URL::to('/') . '/public/uploads/artists/'.$artist->image ?>" alt=""width="50" height="60">
                 <p class="trending-dec w-100 mb-0 text-white mt-2" ><?php echo $artist->artist_name ; ?> </p>
               </a>
             </div>
+                 <?php } }  ?>
           </div>
        
-        <?php } }  ?>
+     
            
        <!-- <div class="text-white">
            <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->description); ?></p>
@@ -955,7 +975,7 @@ $artists = [];
 
 
    <div class="video-list you-may-like">
-       <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Recomended Videos');?></h4>
+       <h4 class="Continue Watching" style="color:#fffff;margin-left:-15px;"><?php echo __('Recomended Videos');?></h4>
            <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>   
                <?php include('partials/video-loop.php');?>
            </div>
