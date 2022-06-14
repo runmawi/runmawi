@@ -18,19 +18,33 @@
     <!-- JS -->
     
     <script src="{{asset('dropzone/dist/min/dropzone.min.js')}}" type="text/javascript"></script>
+<style>
+     .black{
+        color: #000;
+        background: #f2f5fa;
+        padding: 20px 20px;
+border-radius: 0px 4px 4px 0px;
+    }
+    .black:hover{
+        background: #fff;
+         padding: 20px 20px;
+        color: rgba(66, 149, 210, 1);
 
+    }
+
+      </style>
   </head>
   <body>
   @section('content')
   
     <div id=" content_videopage" class="content-page">
         <div class="mt-5 d-flex">
-            <a class="black1" href="{{ URL::to('admin/videos') }}">All Videos</a>
-            <a class="black1" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/videos/create') }}">Add New Video</a>
-            <a class="black1" href="{{ URL::to('admin/CPPVideosIndex') }}">Videos For Approval</a>
-            <a class="black1" href="{{ URL::to('admin/Masterlist') }}" class="iq-waves-effect"> Master Video List</a>
-            <a class="black1" href="{{ URL::to('admin/videos/categories') }}">Manage Video Categories</a>
-            <a class="black1"  href="{{ URL::to('admin/ActiveSlider') }}">Active Slider List</a>
+            <a class="black" href="{{ URL::to('admin/videos') }}">All Videos</a>
+            <a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/videos/create') }}">Add New Video</a>
+            <a class="black" href="{{ URL::to('admin/CPPVideosIndex') }}">Videos For Approval</a>
+            <a class="black" href="{{ URL::to('admin/Masterlist') }}" class="iq-waves-effect"> Master Video List</a>
+            <a class="black" href="{{ URL::to('admin/videos/categories') }}">Manage Video Categories</a>
+            <a class="black"  href="{{ URL::to('admin/ActiveSlider') }}">Active Slider List</a>
         </div>
                 <div class="container-fluid p-0" id="content_videopage">
                     <div class="admin-section-title">
