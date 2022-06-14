@@ -357,9 +357,9 @@ ul.f-link li a:hover { color: var(--iq-primary);!important }
 .banner-caption, .overlay-s-name { position: absolute; bottom: 30px; left: 80px; }
 .movie-detail .trending-info { padding: 0 0 20px 0; border: 1px solid; border-image-slice: 1; border-width: 0 0 1px 0; }
 .movie-detail .trending-info.g-border { border-image-source: linear-gradient(to left, rgba(209, 208, 207, 0), rgba(209, 208, 207, 0.6), rgba(209, 208, 207, 0)); }
-.share-icons.music-play-lists li { display: inline-flex; margin-right: 7px; width: 30px; height: 30px; }
+.share-icons.music-play-lists li { display: inline-flex; /*margin-right: 7px;*/ width: 30px; height: 30px; }
 .share-icons.music-play-lists li span { width: 32px; height: 32px; }
-.share-icons.music-play-lists li span i { font-size: 18px; }
+.share-icons.music-play-lists li span i { font-size: 20px; }
 .movie-detail .trending-info .trending-text { font-size: 50px; line-height: 1.5; margin: 0; }
 .main-content.movi { padding-top: 30px; }
 .share { position: relative; }
