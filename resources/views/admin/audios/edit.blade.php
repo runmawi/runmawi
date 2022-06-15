@@ -757,6 +757,7 @@ var tagInput1 = new TagsInput({
         max : 10
     });
 
+	
 var tagsdata = '<?= $audio->search_tags ?>';
 
     // tagInput1.addData([])
