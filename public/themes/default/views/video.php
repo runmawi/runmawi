@@ -748,7 +748,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                                <?php echo __('Rent');?> </a>
                        </li>
                        <li>
-                           <div class="btn btn-default views">
+                           <div class=" views">
                                <span class="view-count"><i class="fa fa-eye"></i> 
                                    <?php if(isset($view_increment) && $view_increment == true ): ?><?= $movie->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?> 
                                </span>
