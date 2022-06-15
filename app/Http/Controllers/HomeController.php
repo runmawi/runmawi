@@ -2401,6 +2401,7 @@ class HomeController extends Controller
             'currency' => CurrencySetting::first() ,
             'latest_videos' => $latest_videos,
             'Most_recent_view' => $Most_recent_view,
+            'ThumbnailSetting' =>   ThumbnailSetting::first(),
         );
 
         return Theme::view('search', $data);
