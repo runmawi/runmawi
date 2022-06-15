@@ -97,7 +97,7 @@ h2{
       #video_container{
           padding: 20px;
           background: #202933;
-border-radius: 0px 0px 20px 20px;
+border-radius: 20px;
 
       }
   </style>
@@ -127,7 +127,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 <?php //dd(Auth::user()->role); ?>
 
  <div id="video_bg">
-   <div class=" page-height">
+   <div class="container-fluid page-height mt-3">
      <?php 
            $paypal_id = Auth::user()->paypal_id;
            if (!empty($paypal_id) && !empty(PaypalSubscriptionStatus() )  ) {
@@ -608,8 +608,8 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
              <div class="col-sm-6 col-md-6 col-xs-12">
             <span class="badge badge-secondary p-3"><?php echo __($video->age_restrict).' '.'+';?></span>
             <span class="ml-3"><?php echo __(gmdate('H:i:s', $video->duration));?></span>
-            <span class="trending-year"><?php if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span>
-            <span class="trending-year"><?php
+            <span class="trending-year">,<?php if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span>
+            <span class="trending-year" style="display:none;"><?php
             foreach($category_name as $value){
               echo $value->categories_name. ',';  
             }

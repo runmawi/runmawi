@@ -17,10 +17,10 @@
                     </h1>
                             <div class="mb-3">
                             <span class="fa fa-star checked"></span>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star"></span>
-<span class="fa fa-star"></span></div>
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star"></span>
+                            <span class="fa fa-star"></span></div>
                             <div class="p-0">
                      <a href="<?php echo $slider_video->link; ?>"
                         class="btn bd "><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now</a>
@@ -147,8 +147,27 @@ endif; ?>
                         overflow: hidden;">
                         <?php echo __($videos->description); ?>
                         </div>
+                            <div class="row justify r-mb-23  p-0 mb-4 text-center" data-animation-in="fadeInUp"
+                            data-delay-in="1.2">
+                                <div class="col-md-3">
+                                  <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"
+                                class="text-white">
+                                <div class="" style="font-size:25px;">
+                             <i class="fa fa-plus" aria-hidden="true"></i>
+
+                                      </div>
+                                Add Whislist</a></div>
+                                <div class="col-md-3">
+                                 <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"
+                                class="text-white ">
+                                <div class="" style="font-size:25px;">
+                              <i class="fa fa-share-alt" aria-hidden="true"></i>
+                                      </div>
+                                Share</a>
+                            </div></div>
                             <div class="justify r-mb-23  p-0" data-animation-in="fadeInUp"
                             data-delay-in="1.2">
+                                
                             <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"
                                 class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Start Watching</a>
                                <!-- <a href="#vide
@@ -254,7 +273,7 @@ endif; ?>
 
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
             <div class="slide slick-bg s-bg-1 lazy"
-            style="background:url('<?php echo URL::to('/').'/public/uploads/images/' .$slider_video->image;?>') no-repeat;background-size:cover;background-position:center center; ">
+            style="background:linear-gradient(0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('<?php echo URL::to('/').'/public/uploads/images/' .$slider_video->image;?>') no-repeat;background-size:cover;background-position:center center; ">
             <div class="container-fluid position-relative h-100">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center bl h-100">
@@ -269,14 +288,14 @@ data-delay-in="0.6">
 <?php echo __($slider_video->title); ?>
 </h1>
 <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
-<span class="badge badge-secondary p-2">
+<span class=" p-2">
         <?php echo __($slider_video->age_restrict); ?>
     </span>
     <!--                      <span class="ml-3"><?php echo __($slider_video->language); ?></span>-->
 </div>
 <br>
 <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
-    <span class="badge badge-secondary p-2">
+    <span class=" p-2">
         <?php echo __($slider_video->year); ?>
     </span>
     <!--                      <span class="ml-3"><?php echo __($slider_video->language); ?></span>-->
@@ -288,16 +307,34 @@ style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bo
   overflow: hidden;">
 <?php echo __($slider_video->description); ?>
 </div>
+   <div class="row justify r-mb-23  p-0 mb-4 text-center" data-animation-in="fadeInUp"
+                            data-delay-in="1.2">
+                                <div class="col-md-3">
+                                  <a href="<?php echo URL::to('episode') ?><?= '/'.@$slider_video->series_title->title.'/' . $slider_video->title ?>"
+                                class="text-white">
+                                <div class="" style="font-size:25px;">
+                             <i class="fa fa-plus" aria-hidden="true"></i>
+
+                                      </div>
+                                Add Whislist</a></div>
+                                <div class="col-md-3">
+                                 <a href="<?php echo URL::to('episode') ?><?= '/'.@$slider_video->series_title->title.'/' . $slider_video->title ?>"
+                                class="text-white ">
+                                <div class="" style="font-size:25px;">
+                              <i class="fa fa-share-alt" aria-hidden="true"></i>
+                                      </div>
+                                Share</a>
+                            </div></div>                         
 <div class="justify r-mb-23" data-animation-in="fadeInUp"
 data-delay-in="1.2">
 <a href="<?php echo URL::to('episode') ?><?= '/'.@$slider_video->series_title->title.'/' . $slider_video->title ?>"
     class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play</a>
     <!-- <a class=" btn black" href="https://flicknexui.webnexs.org/" ><i class="fa fa-plus" aria-hidden="true"></i> Watchlater</a>-->
-    <a class="btn bd" href="<?php echo URL::to('episode') ?><?= '/'.@$slider_video->series_title->title.'/' . $slider_video->title ?>"><i class="fa fa-info" aria-hidden="true"></i> More details</a>
+    <a class="btn bd ml-3" href="<?php echo URL::to('episode') ?><?= '/'.@$slider_video->series_title->title.'/' . $slider_video->title ?>"><i class="fa fa-info" aria-hidden="true"></i> More details</a>
 </div>
 </div>
 </div>
-<div class="trailor-video">
+<!--<div class="trailor-video">
     <a href="<?php echo URL::to('episode') ?><?= '/'.@$slider_video->series_title->title.'/' . $slider_video->title ?>"
         class="video-open playbtn">
         <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
@@ -311,7 +348,7 @@ data-delay-in="1.2">
     </svg>
     <span class="w-trailor">Watch Trailer</span>
 </a>
-</div>
+</div>-->
 </div>
 </div>
 </div>
