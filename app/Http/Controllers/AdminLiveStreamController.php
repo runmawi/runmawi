@@ -150,7 +150,7 @@ class AdminLiveStreamController extends Controller
     {
 
         $data = $request->all();
-
+        // dd($data);
         $validatedData = $request->validate([
             // 'title' => 'required|max:255',
             // // 'slug' => 'required|max:255',
@@ -298,6 +298,11 @@ class AdminLiveStreamController extends Controller
                 $rating  = null;
             }
 
+            if (!empty($data['searchtags'])) {
+                $searchtags  = $data['searchtags'];
+            } else {
+                $searchtags  = null;
+            }
             if ($request->slug != '') {
                 $data['slug'] = $this->createSlug($request->slug);
                 }
@@ -390,6 +395,7 @@ class AdminLiveStreamController extends Controller
         $movie->status =$status;
         $movie->year =$data['year'];
         $movie->active = $active ;
+        $movie->search_tags = $searchtags;
         $movie->player_image = $player_image;
         $movie->user_id =Auth::User()->id;
         $movie->save();
@@ -698,7 +704,12 @@ class AdminLiveStreamController extends Controller
         }else{
             $active = 1;
         } 
-        
+
+        if(empty($data['searchtags'])){
+            $searchtags = null;
+        }else{
+            $searchtags = $request['searchtags'];
+        } 
         $video->rating = $rating;
         $video->url_type = $url_type;
         $video->ppv_price = $ppv_price;
@@ -708,6 +719,7 @@ class AdminLiveStreamController extends Controller
         $video->publish_time = $request['publish_time'];
         $video->embed_url =     $embed_url;
         $video->active = $active;
+        $video->search_tags = $searchtags;
         $video->access = $request->access;
         $video->save();
 
