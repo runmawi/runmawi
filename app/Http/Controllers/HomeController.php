@@ -2381,6 +2381,7 @@ class HomeController extends Controller
                             ->where('active', '=', '1')
                             ->where('status', '=', '1')
                             ->where('draft', '=', '1')
+                            ->latest()
                             ->take(20)
                             ->orderBy('created_at', 'DESC')->get();
 
@@ -2391,21 +2392,40 @@ class HomeController extends Controller
                             ->where('videos.draft', '=', '1')
                             ->groupBy('video_id')->get();
 
+        $livestreams = LiveStream::where('search_tags', 'LIKE', '%' . $request->country . '%')
+                            ->where('active', '=', '1')
+                            ->where('status', '=', '1')
+                            ->limit('10')
+                            ->latest()
+                            ->get();
+
+        $audio = Audio::where('search_tags', 'LIKE', '%' . $request->country . '%')
+                            ->where('active', '=', '1')
+                            ->where('status', '=', '1')
+                            ->limit('10')
+                            ->latest()
+                            ->get();
+
+        $Episode = Episode::where('search_tags', 'LIKE', '%' . $request->country . '%')
+                            ->where('active', '=', '1')
+                            ->where('status', '=', '1')
+                            ->limit('10')
+                            ->latest()
+                            ->get();    
 
         $data = array(
-            // 'ppv_videos' => $ppv_videos,
-            // 'video_category' => $video_category,
-            // 'ppv_category' => $ppv_category,
             'videos' => $videos,
             'search_value' => $search_value,
             'currency' => CurrencySetting::first() ,
             'latest_videos' => $latest_videos,
             'Most_recent_view' => $Most_recent_view,
             'ThumbnailSetting' =>   ThumbnailSetting::first(),
+            'audio' => $audio,
+            'livestreams' => $livestreams,
+            'Episode' => $Episode,
         );
 
         return Theme::view('search', $data);
-
     }
 
     public function SendOTP(Request $request, \Nexmo\Client $nexmo)
