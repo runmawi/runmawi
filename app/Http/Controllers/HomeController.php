@@ -2211,42 +2211,101 @@ class HomeController extends Controller
         if ($request->ajax())
         {
 
-            $data = Video::where('search_tags', 'LIKE', '%' . $request->country . '%')
+            $videos = Video::where('search_tags', 'LIKE', '%' . $request->country . '%')
                             ->where('active', '=', '1')
                             ->where('status', '=', '1')
                             ->where('draft', '=', '1')
                             ->limit('10')
                             ->get();
 
-            $channeldata = VideoCategory::where('id', 'LIKE', '%' . $request->country . '%')
-                ->limit('10')
-                ->get();
+            $livestream = LiveStream::where('search_tags', 'LIKE', '%' . $request->country . '%')
+                            ->where('active', '=', '1')
+                            ->where('status', '=', '1')
+                            ->limit('10')
+                            ->get();
 
-            $ppvdata = PpvVideo::where('id', 'LIKE', '%' . $request->country . '%')
-                ->limit('10')
-                ->get();
+            $audio = Audio::where('search_tags', 'LIKE', '%' . $request->country . '%')
+                            ->where('active', '=', '1')
+                            ->where('status', '=', '1')
+                            ->limit('10')
+                            ->get();
 
-            $output = '';
+            $Episode = Episode::where('search_tags', 'LIKE', '%' . $request->country . '%')
+                            ->where('active', '=', '1')
+                            ->where('status', '=', '1')
+                            ->limit('10')
+                            ->get();                
 
-            if (count($data) > 0 || count($ppvdata) > 0 || count($channeldata) > 0 && !empty($request->country))
+
+            if (count($videos) > 0 || count($livestream) > 0 || count($Episode) > 0 || count($audio) > 0 && !empty($request->country))
             {
 
-                $output = '<ul class="list-group" style="display: block; position: relative; z-index: 999999;;margin-bottom: 0;border-radius: 0;">';
-                $output .= "<h3 style='margin: 0;text-align: center;padding: 10px;'> Videos</h3>";
-                foreach ($data as $row)
-                {
-                    $output .= '<li class="list-group-item">
-                    <img width="35px" height="35px" src="' . URL::to('/') . '/public/uploads/images/' . $row->image . '"><a href="' . URL::to('/') . '/category/videos/' . $row->slug . '" style="font-color: #c61f1f00;color: #000;text-decoration: none;">' . $row->title . '</a></li>';
-                }
+                // videos Search
+                    if(count($videos) > 0){
+                        $output = '<ul class="list-group" style="display: block; position: relative; z-index: 999999;;margin-bottom: 0;border-radius: 0;">';
+                        $output .= "<h6 style='margin: 0;text-align: center;padding: 10px;'> Videos</h6>";
+                        foreach ($videos as $row)
+                        {
+                            $output .= '<li class="list-group-item">
+                            <img width="35px" height="35px" src="' . URL::to('/') . '/public/uploads/images/' . $row->image . '"><a href="' . URL::to('/') . '/category/videos/' . $row->slug . '" style="font-color: #c61f1f00;color: #000;text-decoration: none;">' . $row->title . '</a></li>';
+                        }
 
+                    }else{
+                        $output  = null ;
+                    }
+
+                // livestream Search
+                    if(count($livestream) > 0){
+
+                        $livestreams = '<ul class="list-group" style="display: block; position: relative; z-index: 999999;;margin-bottom: 0;border-radius: 0;">';
+                        $livestreams .= "<h6 style='margin: 0;text-align: center;padding: 10px;'> Live Videos</h6>";
+                        foreach ($livestream as $row)
+                        {
+                            $livestreams .= '<li class="list-group-item">
+                            <img width="35px" height="35px" src="' . URL::to('/') . '/public/uploads/images/' . $row->image . '"><a href="' . URL::to('/') . '/live' .'/'. $row->slug . '" style="font-color: #c61f1f00;color: #000;text-decoration: none;">' . $row->title . '</a></li>';
+                        }
+                    }
+                    else{
+                        $livestreams = null ;
+                    }
+
+                // Audio Search
+
+                    if(count($audio) > 0){
+                        $audios = '<ul class="list-group" style="display: block; position: relative; z-index: 999999;;margin-bottom: 0;border-radius: 0;">';
+                        $audios .= "<h6 style='margin: 0;text-align: center;padding: 10px;'> Audio </h6>";
+                        foreach ($audio as $row)
+                        {
+                            $audios .= '<li class="list-group-item">
+                            <img width="35px" height="35px" src="' . URL::to('/') . '/public/uploads/images/' . $row->image . '"><a href="' . URL::to('/') . '/audio/' . $row->slug . '" style="font-color: #c61f1f00;color: #000;text-decoration: none;">' . $row->title . '</a></li>';
+                        }
+                    }
+                    else{
+                        $audios = null ;
+                    }
+
+                // Episode
+
+                    if(count($Episode) > 0){
+                        $Episodes = '<ul class="list-group" style="display: block; position: relative; z-index: 999999;;margin-bottom: 0;border-radius: 0;">';
+                        $Episodes .= "<h6 style='margin: 0;text-align: center;padding: 10px;'> Episode </h6>";
+                        foreach ($Episode as $row)
+                        {   
+                            $series_slug = Series::where('id',$row->series_id)->pluck('slug')->first();
+                            $Episodes .= '<li class="list-group-item">
+                            <img width="35px" height="35px" src="' . URL::to('/') . '/public/uploads/images/' . $row->image . '"><a href="' . URL::to('/') . '/episode' .'/'. $series_slug . '/'. $row->slug . '" style="font-color: #c61f1f00;color: #000;text-decoration: none;">' . $row->title . '</a></li>';
+                        }
+                    }
+                    else{
+                        $Episodes = null ;
+                    }
             }
             else
             {
-
                 $output .= '<li class="list-group-item">' . 'No results' . '</li>';
             }
 
-            return $output;
+            return $output.$audios.$livestreams.$Episodes;
         }
     }
 
