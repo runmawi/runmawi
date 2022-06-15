@@ -2220,12 +2220,12 @@ class HomeController extends Controller
 
             $livestream = LiveStream::where('search_tags', 'LIKE', '%' . $request->country . '%')
                             ->where('active', '=', '1')
-                            ->where('status', '=', '1')
+                            // ->where('status', '=', '1')
                             ->limit('10')
                             ->get();
 
             $audio = Audio::where('search_tags', 'LIKE', '%' . $request->country . '%')
-                            // ->where('active', '=', '1')
+                            ->where('active', '=', '1')
                             ->where('status', '=', '1')
                             ->limit('10')
                             ->get();
@@ -2393,11 +2393,12 @@ class HomeController extends Controller
                             ->groupBy('video_id')->get();
 
         $livestreams = LiveStream::where('search_tags', 'LIKE', '%' . $request->country . '%')
-                            // ->where('active', '=', '1')
-                            ->where('status', '=', '1')
+                            ->where('active', '=', '1')
+                            // ->where('status', '=', '1')
                             ->limit('10')
                             ->latest()
                             ->get();
+
 
 
         $audio = Audio::where('search_tags', 'LIKE', '%' . $request->country . '%')
