@@ -310,7 +310,7 @@ border-radius: 0px 4px 4px 0px;
                      <select class="form-control" id="age_restrict" name="age_restrict">
                         <option value="">Choose Age</option>
                            @foreach($age_categories as $key => $age)
-                              <option value="{{ $age->age }}"  {{  ($video->age_restrict == $age->slug ) ? 'selected' : '' }} > {{ $age->slug }}</option>
+                              <option value="{{ $age->age }}"  {{  ($video->age_restrict == $age->age ) ? 'selected' : '' }} > {{ $age->slug }}</option>
                            @endforeach
                      </select>
                   </div>
