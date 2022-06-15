@@ -34,6 +34,35 @@ $order_settings_list = App\OrderHomeSetting::get();
            </div>
         </div>
     </section>
+    
+    <div class="main-content">
+    <section id="iq-continue">
+        <div class="container-fluid">
+           <div class="row">
+              <div class="col-sm-12 overflow-hidden">
+                 <h4 class="mb-3">New Live</h4>
+                  <div class="block-images position-relative">
+                    <!-- block-images -->
+                    <div class="img-box">
+                         <img src="<?php echo URL::to('assets/img/conjuring.png') ?> " alt="Play store" class="w-">
+                      
+                           
+                                 
+                             
+                    </div>
+                </div>
+
+                
+                <div class="block-description">
+                    <div class="hover-buttons text-white">
+                      
+                        <div></div>
+                    </div>
+                </div>
+              </div>
+           </div>
+        </div>
+    </section>
 
 <!-- Top Watched Videos -->
     <?php 

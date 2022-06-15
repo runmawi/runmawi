@@ -25,7 +25,7 @@
         <div class="row1">
     <h1 class="mt-5">Who's Watching ?</h1>
             <p class="text-center">You can setup up to {{ $multiuser_limit }} profiles for your <br> family or friends</p>
-                    <div class="row-data row justify-content-around"  >
+                    <div class="row-data row justify-content-center align-items-center"  >
                       
                     
                         <div class="member col-md-4">
@@ -50,18 +50,19 @@
                                    </div>
                                 </div>
                             @endforeach  
-                            
+                            <div class="col-md-3">
                             @if ($sub_user_count < $multiuser_limit)
-                                <div> 
+                                 
                                     <a class="fa fa-plus-circle fa-100x" href="{{route('Choose-profile.create') }}"></a>
-                                </div> 
+                               
                             @endif 
+                          </div>
                     </div>
                 </div>
         </div>
     </div>
 
-</div>
+
  @endsection
 <!-- JavaScript Bundle with Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
@@ -71,7 +72,7 @@
 mix-blend-mode: hard-light;
 border-radius: 10px;
          border-radius:30px;
-         padding: 20px;   margin: 80px auto;
+         padding: 20px;   
 
      }
      .row1 h1{
