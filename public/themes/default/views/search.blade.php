@@ -44,8 +44,8 @@
         height: 36px;
     }
         .movlistt {
-        padding-top: 90px;
-            min-height: 450px;
+      
+            min-height: 300px;
     }
     .thumb-cont{
             position: fixed;
@@ -90,7 +90,7 @@
         height: 410px !important;
     }
         li.slide-item .block-images{
-            margin-bottom: 2rem !important;
+          
         }
         /* .navbar-right.menu-right {
         margin-right: -150px !important;
@@ -102,37 +102,36 @@
         width: 60%;
     }
         .slick-slide{
-            width: 250px!important;
+           
             
-        padding-left: 25px!important;
+     
         }
 </style>
 
 
-    <div class="container movlistt" id="home-content">
-        <div class="new-art">
+    <div class="container movlistt mt-5" id="home-content">
+        <div class="new-art p-0">
             <h4 class="Continue Watching  padding-top-40" >Search Result of "{{  $search_value }}" Videos</h4>
             <div class="border-line" style="margin-bottom:15px;margin-top:20px;"></div>
         </div>
     
-        <div class="row nomargin">
-            <ul class="favorites-slider list-inline  row p-0 mb-0">
+        <div class="">
+            <ul class="favorites-slider list-inline row p-0 mb-0">
                 @if(isset($videos) && !empty($videos)) 
-                    @foreach($videos as $watchlater_video): 
+                    @foreach($videos as $watchlater_video) 
                         <li class="slide-item">
                             <a href="<?php echo URL::to('home') ?>">
                                 <div class="block-images position-relative">
 
                                 <div class="img-box">
                                     <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
-                                        <!-- <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid" alt=""> -->
-                                        <video width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>"  data-play="hover" >
+                                         <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid w-100" alt="">
+                                      <!--  <video width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>"  data-play="hover" >
                                             <source src="<?php echo $watchlater_video->trailer;  ?>" type="video/mp4">
-                                        </video>
+                                        </video>-->
                                     </a>
                                 </div>
-                                    <div class="corner-text-wrapper">
-                                        <div class="corner-text">
+                                    
                                              <?php  if(!empty($watchlater_video->ppv_price)){?>
                                                 <p class="p-tag1">
                                                     {{ $currency->symbol.' '.$watchlater_video->ppv_price }}
@@ -148,10 +147,9 @@
                                                     {{  "Free" }}
                                                 </p>
                                             <?php } ?>
-                                        </div>
-                                    </div>
+                                     
+                               
                                 </div>
-
                                 <div class="block-description">
                                     <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
                                         <h6><?php echo __($watchlater_video->title); ?></h6>
@@ -187,6 +185,7 @@
 
                                     </div>
                                 </div>
+                                   
                             </a>
                         </li>
                     @endforeach
@@ -206,7 +205,7 @@
             <div class="border-line" style="margin-bottom:15px;margin-top:20px;"></div>
         </div>
     
-        <div class="row nomargin">
+        <div class="">
             <ul class="favorites-slider list-inline  row p-0 mb-0">
                 @if(isset($latest_videos) && !empty($latest_videos)) 
                     @foreach($latest_videos as $latest_search_videos): 
@@ -222,8 +221,7 @@
                                         </video>
                                     </a>
 
-                                    <div class="corner-text-wrapper">
-                                        <div class="corner-text">
+                                    
                                              <?php  if(!empty($latest_search_videos->ppv_price)){?>
                                                 <p class="p-tag1">
                                                     {{ $currency->symbol.' '.$latest_search_videos->ppv_price }}
@@ -240,8 +238,7 @@
                                                 </p>
                                             <?php } ?>
                                         </div>
-                                    </div>
-                                </div>
+                                   
 
                                 <div class="block-description">
                                     <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $latest_search_videos->slug ?>">
@@ -299,7 +296,7 @@
         <div class="border-line" style="margin-bottom:15px;margin-top:20px;"></div>
     </div>
 
-    <div class="row nomargin">
+    <div class="">
         <ul class="favorites-slider list-inline  row p-0 mb-0">
             @if(isset($Most_recent_view) && !empty($Most_recent_view)) 
                 @foreach($Most_recent_view as $top_search_videos): 
@@ -315,8 +312,7 @@
                                     </video>
                                 </a>
 
-                                <div class="corner-text-wrapper">
-                                    <div class="corner-text">
+                              
                                          <?php  if(!empty($top_search_videos->ppv_price)){?>
                                             <p class="p-tag1">
                                                 {{ $currency->symbol.' '.$top_search_videos->ppv_price }}
@@ -333,7 +329,6 @@
                                             </p>
                                         <?php } ?>
                                     </div>
-                                </div>
                             </div>
 
                             <div class="block-description">
@@ -371,6 +366,7 @@
 
                                 </div>
                             </div>
+                            
                         </a>
                     </li>
                 @endforeach
