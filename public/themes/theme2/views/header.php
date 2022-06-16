@@ -342,15 +342,23 @@ input:checked + .sliderk:before {
                                             <a class="dropdown-toggle" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
                                               <?php echo __($menu->name);?> <!--<i class="fa fa-angle-down"></i>-->
                                             </a>
-                                            <ul class="dropdown-menu categ-head">
-                                              <?php foreach ( $cat as $category) { ?>
-                                              <li>
-                                                <a class="dropdown-item cont-item" style="text-decoration: none!important;" href="<?php echo URL::to('/').'/category/'.$category->slug;?>"> 
-                                                  <?php echo $category->name;?> 
-                                                </a>
-                                              </li>
-                                              <?php } ?>
-                                            </ul>
+
+                                             <ul class="dropdown-menu categ-head">
+                                                   <?php foreach ( $cat->take(4) as $category) { ?>
+                                                      <li>
+                                                         <a class="dropdown-item cont-item" style="text-decoration: none!important;" href="<?php echo URL::to('/').'/category/'.$category->slug;?>"> 
+                                                            <?php echo $category->name;?> 
+                                                         </a>
+                                                      </li>
+                                                   <?php } ?>
+
+                                                   <li>
+                                                      <a class="dropdown-item cont-item" style="text-decoration: none!important;" href="<?php echo URL::to('/').'/category/'.$category->slug;?>"> 
+                                                         <?php echo "More..." ;?> 
+                                                      </a>
+                                                   </li>
+
+                                             </ul>
                                           </li>
                                           <?php } elseif ( $menu->in_menu == "movies") { 
                                         $cat = App\VideoCategory::all();

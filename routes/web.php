@@ -1416,6 +1416,8 @@ Route::get('/Reals_videos/videos/{slug}', 'ChannelController@Reals_videos');
     // Cast & crew
 Route::get('/Artist/{slug}', 'ChannelController@artist_videos');
 
+  // category List
+Route::get('categoryList', 'ChannelController@categoryList')->name('categoryList');
 
     // Razorpay 
 Route::group(['middleware' => ['RazorpayMiddleware']], function() {
