@@ -827,3 +827,10 @@ document.addEventListener("DOMContentLoaded", function() {
     window.addEventListener("orientationChange", lazyload);
   }
 })
+
+
+
+            $(function() {
+        $('.lazy').Lazy();
+    });
+    
