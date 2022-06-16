@@ -164,6 +164,12 @@ header .navbar ul li:last-child { margin-right: 0; }
 .view-count{
     color: #fff;
 }
+.outline-secondary{
+
+    padding: 10px 10px;
+    color: #fff!important;
+    background-color: gray;
+}
 /*---------------------------------------------------------------------
                       Pages Content
 -----------------------------------------------------------------------*/

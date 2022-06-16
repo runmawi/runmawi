@@ -1,7 +1,12 @@
 <!-- Header -->
     @partial('category_header')
 <!-- Header End -->
-
+<style>
+    .dropdown-menu{
+        background-color: Gray!important;
+        color: #000!important;
+    }
+</style>
 <!-- MainContent -->
 <?php if(!empty($data['password_hash'])) { $id = Auth::user()->id ; } else { $id = 0 ; } ?>
 
@@ -10,9 +15,20 @@
             <div class="container">
                <div class="row pageheight">
                   <div class="col-sm-12 overflow-hidden">
-                     <div class="iq-main-header align-items-center">
+                     <div class="iq-main-header align-items-center d-flex justify-content-between">
                         <h2 class=""><?php echo __($data['category_title']);?></h2>
-                     </div>
+                         <div class="dropdown show">
+                      <a class="outline-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Movies Sort by
+                      </a>
+
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                      </div>
+                    </div>
+                </div>
                      <div class="favorites-contens">
                         <ul class="category-page list-inline  row p-0 mb-4">
                             <?php if (count($data['categoryVideos']) > 0) { ?>         
