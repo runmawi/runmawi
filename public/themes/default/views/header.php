@@ -337,7 +337,7 @@ input:checked + .sliderk:before {
                                             </a>
                                            
                                              <ul class="dropdown-menu categ-head">
-                                                <?php foreach ( $cat as $category) { ?>
+                                                <?php foreach ( $cat->take(4) as $category) { ?>
                                                    <li>
                                                       <a class="dropdown-item cont-item" href="<?php echo URL::to('/').'/category/'.$category->slug;?>"> 
                                                       <?php echo $category->name;?> 
