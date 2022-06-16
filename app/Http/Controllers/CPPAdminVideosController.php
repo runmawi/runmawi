@@ -916,7 +916,9 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
                 $file = $player_image;
                 $data['player_image']  = $file->getClientOriginalName();
                 $file->move($image_path, $data['player_image']);
-                $player_image = $file->getClientOriginalName();
+                // $player_image = $file->getClientOriginalName();
+               $player_image = str_replace(' ', '_', $player_image->getClientOriginalName());
+
             //    $data['player_image'] = $video->image;
   
   
@@ -1549,7 +1551,9 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
                             $file = $player_image;
                             $data['player_image']  = $file->getClientOriginalName();
                             $file->move($image_path, $data['player_image']);
-                            $player_image = $file->getClientOriginalName();
+                            // $player_image = $file->getClientOriginalName();
+               $player_image = str_replace(' ', '_', $player_image->getClientOriginalName());
+
                         //    $data['player_image'] = $video->image;
               
               
