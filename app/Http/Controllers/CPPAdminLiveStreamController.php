@@ -175,7 +175,9 @@ class CPPAdminLiveStreamController extends Controller
                $player_image = $player_image;
                $data['player_image']  = $player_image->getClientOriginalName();
                $player_image->move($image_path, $data['player_image']);
-               $player_image  = $player_image->getClientOriginalName();
+            //    $player_image  = $player_image->getClientOriginalName();
+            $player_image = str_replace(' ', '_', $player_image->getClientOriginalName());
+
  
           } else{
             $player_image = "Defualt.jpg";
@@ -550,7 +552,9 @@ class CPPAdminLiveStreamController extends Controller
                $player_image = $player_image;
                $data['player_image']  = $player_image->getClientOriginalName();
                $player_image->move($image_path, $data['player_image']);
-               $player_image  = $player_image->getClientOriginalName();
+            //    $player_image  = $player_image->getClientOriginalName();
+            $player_image = str_replace(' ', '_', $player_image->getClientOriginalName());
+
 
  
           } else{
