@@ -835,9 +835,9 @@ $artists = [];
           
           <div class="row">
                 <?php foreach($artists as $key => $artist){  ?>
-            <div class="mt-6 d-flex">
+            <div class="mt-6 ml-3 d-flex">
               <a  href="<?php echo __(URL::to('/') . '/Artist/' . $artist->artist_name); ?>"  >
-                <img src="<?= URL::to('/') . '/public/uploads/artists/'.$artist->image ?>" alt=""width="50" height="60">
+                <img src="<?= URL::to('/') . '/public/uploads/artists/'.$artist->image ?>" alt=""width="60" height="70">
                 <p class="trending-dec w-100 mb-0 text-white mt-2" ><?php echo $artist->artist_name ; ?> </p>
               </a>
             </div>

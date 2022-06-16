@@ -1423,5 +1423,19 @@ class ChannelController extends Controller
       }
             
       }
-    
+
+      public function categoryList(Request $request)
+      {
+
+        try {
+          $data =array(
+            "category_list" => VideoCategory::all() ,
+          );
+
+           return Theme::view('categoryList',$data); 
+        } 
+        catch (\Throwable $th) {
+           return abort(404);
+        }
+      }
 }

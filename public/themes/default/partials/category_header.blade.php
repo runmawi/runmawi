@@ -115,6 +115,7 @@ $data = Session::all();
     <!-- Responsive -->
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/responsive.css';?>" />
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/slick.css';?>" />
+    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/slick.css';?>" />
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/plyr_marker.scss';?>" />
 
     
@@ -329,21 +330,25 @@ input:checked + .sliderk:before {
                                         if ( $menu->in_menu == "video") { 
                                         $cat = App\VideoCategory::all();
                                         ?>
-                                       <li class="dropdown menu-item">
+
+                                          <li class="dropdown menu-item">
                                             <a class="dropdown-toggle" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
-                                              <?php echo __($menu->name);?> <!--<i class="fa fa-angle-down"></i>-->
+                                              <?php echo __($menu->name);?>
                                             </a>
                                            
-                                            <ul class="dropdown-menu categ-head">
-                                              <?php foreach ( $cat as $category) { ?>
-                                              <li>
-                                                <a class="dropdown-item cont-item" href="<?php echo URL::to('/').'/category/'.$category->slug;?>"> 
-                                                  <?php echo $category->name;?> 
-                                                </a>
-                                                  
-                                              </li>
-                                               
-                                              <?php } ?>
+                                             <ul class="dropdown-menu categ-head">
+                                                <?php foreach ( $cat->take(4) as $category) { ?>
+                                                   <li>
+                                                      <a class="dropdown-item cont-item" href="<?php echo URL::to('/').'/category/'.$category->slug;?>"> 
+                                                      <?php echo $category->name;?> 
+                                                      </a>  
+                                                   </li>           
+                                                <?php } ?>
+                                                   <li>
+                                                      <a class="dropdown-item cont-item" href="<?php echo URL::to('/categoryList');?>"> 
+                                                      <?php echo "More...";?> 
+                                                      </a>  
+                                                   </li> 
                                             </ul>
                                           </li>
                                           <?php } elseif ( $menu->in_menu == "movies") { 
@@ -564,10 +569,11 @@ input:checked + .sliderk:before {
                                     <div class="iq-card shadow-none m-0">
                                        <div class="iq-card-body p-0 pl-3 pr-3">
                                                                           <!-- dark mode -->
+                                           <div class="toggle mt-3 text-right">
                          <label class="switch toggle mt-3">
   <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
   <span class="sliderk round"></span>
-</label>
+                                               </label></div>
                                           <a href="<?php echo  URL::to('myprofile') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
