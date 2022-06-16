@@ -45,8 +45,8 @@
     height: 36px;
 }
     .movlistt {
-    padding-top: 90px;
-        min-height: 450px;
+   
+        min-height: 300px;
 }
  .thumb-cont{
          position: fixed;
@@ -103,22 +103,20 @@
     width: 60%;
 }
     .slick-slide{
-        width: 250px!important;
-           
-    padding-left: 25px!important;
+      
     }
 
 </style>
 
 
-<div class="container movlistt" id="home-content">
+<div class="container-fluid movlistt mt-5" id="home-content">
     
     <div class="new-art">
         <h4 class="Continue Watching  padding-top-40" >Search Result of "<?php echo $search_value;?>" Channel Videos</h4>
 	    <div class="border-line" style="margin-bottom:15px;margin-top:20px;"></div>
     </div>
     
-    <div class="row nomargin">
+    <div class="">
                         <ul class="favorites-slider list-inline  row p-0 mb-0">
         <?php if(isset($videos) && !empty($videos)) { 
             foreach($videos as $watchlater_video): ?>

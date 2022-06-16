@@ -83,6 +83,9 @@ div#url_linkdetails {
     left: 79%;
           display: none;
 }
+      .plyr__poster{
+          background-size: cover!important;
+      }
 .countdown {
   text-align: center;
   font-size: 60px;
@@ -127,6 +130,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 <?php //dd(Auth::user()->role); ?>
 
  <div id="video_bg">
+      
    <div class="container-fluid page-height mt-3">
      <?php 
            $paypal_id = Auth::user()->paypal_id;
