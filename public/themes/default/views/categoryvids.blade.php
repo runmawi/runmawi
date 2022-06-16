@@ -21,7 +21,7 @@
                                         <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
                                             <div class="block-images position-relative">
                                                 <div class="img-box">
-                                                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" class="img-fluid" alt="" width="">
+                                                <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" class="img-fluid loading" alt="" width="">
                                                 
                                           <?php  if(!empty($category_video->ppv_price)){?>
                                           <p class="p-tag1" ><?php echo $data['currency']->symbol.' '.$category_video->ppv_price; ?></p>
@@ -151,10 +151,10 @@
                                     </li>
                             @endforeach
  <?php } else { ?>
-                                        <!-- <p class="no_video"> <?php echo __('No Video Found');?></p> -->
+                                        <!-- <p class="no_video"> <?php echo __('No Video Found');?></p> style="position: absolute;top: 50%;left: 50%;color: white;"-->
                                         <!-- <p><h2>No Media in My Watchlater</h2></p> -->
-                                    <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:cover;height: 500px!important;">
-                               <p ><h2 style="position: absolute;top: 50%;left: 50%;color: white;">No video Available</h2>
+                                    <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
+                               <p ><h3 class="text-center">No video Available</h3>
                             </div>
       <?php } ?>
                     
