@@ -330,21 +330,25 @@ input:checked + .sliderk:before {
                                         if ( $menu->in_menu == "video") { 
                                         $cat = App\VideoCategory::all();
                                         ?>
-                                       <li class="dropdown menu-item">
+
+                                          <li class="dropdown menu-item">
                                             <a class="dropdown-toggle" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
-                                              <?php echo __($menu->name);?> <!--<i class="fa fa-angle-down"></i>-->
+                                              <?php echo __($menu->name);?>
                                             </a>
                                            
-                                            <ul class="dropdown-menu categ-head">
-                                              <?php foreach ( $cat as $category) { ?>
-                                              <li>
-                                                <a class="dropdown-item cont-item" href="<?php echo URL::to('/').'/category/'.$category->slug;?>"> 
-                                                  <?php echo $category->name;?> 
-                                                </a>
-                                                  
-                                              </li>
-                                               
-                                              <?php } ?>
+                                             <ul class="dropdown-menu categ-head">
+                                                <?php foreach ( $cat as $category) { ?>
+                                                   <li>
+                                                      <a class="dropdown-item cont-item" href="<?php echo URL::to('/').'/category/'.$category->slug;?>"> 
+                                                      <?php echo $category->name;?> 
+                                                      </a>  
+                                                   </li>           
+                                                <?php } ?>
+                                                   <li>
+                                                      <a class="dropdown-item cont-item" href="<?php echo URL::to('/categoryList');?>"> 
+                                                      <?php echo "More...";?> 
+                                                      </a>  
+                                                   </li> 
                                             </ul>
                                           </li>
                                           <?php } elseif ( $menu->in_menu == "movies") { 
