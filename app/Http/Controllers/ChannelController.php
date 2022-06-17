@@ -47,6 +47,12 @@ use Theme;
 use App\ThumbnailSetting;
 use App\Geofencing;
 use App\AgeCategory;
+use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
+use FFMpeg\Filters\Video\VideoFilters;
+use FFMpeg\FFProbe;
+use FFMpeg\Coordinate\Dimension;
+use FFMpeg\Coordinate\TimeCode;
+use FFMpeg\Format\Video\X264;
 
 class ChannelController extends Controller
 {
@@ -160,7 +166,6 @@ class ChannelController extends Controller
         if(!empty($data['password_hash'])){
 
         $get_video_id = \App\Video::where('slug',$slug)->first(); 
-
         try {
           $vid = $get_video_id->id;
 
@@ -361,22 +366,49 @@ class ChannelController extends Controller
            ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
            ->where('videos.id','!=',$vid)
            ->limit(10)->get();
+           $endcardvideo = Video::select('videos.*','video_categories.name as categories_name','categoryvideos.category_id as categories_id')
+           ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
+           ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+           ->where('videos.id','!=',$vid)
+           ->limit(3)->get();
+           }
+           if($get_video_id->type == "mp4_url"){
+            $ffprobe = FFProbe::create();
+            $endtimevideos = $ffprobe->format($get_video_id->mp4_url) // extracts file informations
+               ->get('duration');
+               $endtimevideo = $endtimevideos - 2;
+          //  dd();  
+              //  $duration = $ffprobe
+              //  ->format($this->getCorrectPathOnServerAndLocal($get_video_id->type)) // extracts file informations
+              //  ->get('duration');
+              //  dd($endtimevideo - 2);
+           }else{
+            $endtimevideo = '';
+           }
+           
+          //  dd($endtimevideo);
+           if(!empty($endcardvideo)){
+            $endcardvideo = $endcardvideo;
+           }else{
+            $endcardvideo = [];
            }
            if(!empty($recomendeds)){
             foreach($recomendeds as $category){
               if(in_array($category->categories_id, $categoryvideo)){
                $recomended[] = $category;
+              // $endcardvideo[] = $category;
+
              }            
              }
            }else{
              $recomended = [];
+            //  $endcardvideo = [];
            }
            if(!empty($recomended)){
             $recomended = $recomended;
            }else{
             $recomended =[] ;
            }
-           
           $videocategory = [];
 
            $playerui = Playerui::first();
@@ -498,8 +530,10 @@ class ChannelController extends Controller
                      'video' => $categoryVideos,
                      'videocategory' => $videocategory,
                      'recomended' => $recomended,
+                     'endtimevideo' => $endtimevideo,
                      'ads_path' => $ads_path,
                      'ppv_exist' => $ppv_exist,
+                     'endcardvideo' => $endcardvideo,
                      'ppv_price' => 100,
                     'publishable_key' => $publishable_key,
                      'watchlatered' => $watchlater,

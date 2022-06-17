@@ -78,12 +78,18 @@ div#url_linkdetails {
     font-size: x-large;
     display: none;
 }
-     .end_card_video .intro_skips,.Recap_skip {
+   .intro_skips,.Recap_skip {
     position: absolute;
     top: -19%;
     left: 79%;
           display: none;
 }
+/* .end_card_video {
+    position: absolute;
+    top: -19%;
+    left: 79%;
+          display: none;
+} */
 .countdown {
   text-align: center;
   font-size: 60px;
@@ -767,11 +773,13 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
        <input type="button" class="skips" value="Skip Intro" id="intro_skip">
        <input type="button" class="skips" value="Auto Skip in 5 Secs" id="Auto_skip">
   </div>
-  <!-- <div class="col-sm-12 end_card_video">
-      <a href="#">
-   <img id="endcard" src="<?php //echo URL::to('/').'/public/uploads/images/' .$video->player_image ;?>" alt="">
+  <div class="col-sm-12 end_card_video" style="position: absolute; top: -244%; width: 500%; height: 500%;" >
+  <?php foreach($endcardvideo as $val) { ?>
+      <a href="<?php  echo URL::to('category') ?><?= '/videos/' . $val->slug ?>">
+   <img id="endcard" src="<?php echo URL::to('/').'/public/uploads/images/' .$val->image ;?>" alt="">
       </a>
-  </div> -->
+      <?php  } ?>
+  </div>
 
       <style>
         #endcard{
@@ -1031,8 +1039,15 @@ $artists = [];
 
 
          $(document).ready(function () { 
-    
+          var endtimevideo = '<?= $endtimevideo ?>';
+      // alert(endtimevideo);
+  $('.end_card_video').hide();
 
+var currentTime = vid.currentTime;
+if(currentTime >= endtimevideo){
+  $('.end_card_video').hide();
+  video.play();
+}
        })
 
       //  $(videoPlayers).on("load",function(){
@@ -1354,6 +1369,8 @@ if( SkipIntroPermissions == 1 ){
        $("#intro_skip").remove();  // Button Shows only one tym
     video.play();
   })
+
+
     if(AutoSkip != 1){
           this.video.addEventListener('timeupdate', (e) => {
             document.getElementById("intro_skip").style.display = "none";
