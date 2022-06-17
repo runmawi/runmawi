@@ -46,7 +46,7 @@ use App\AdsVideo;
 use Theme;
 use App\ThumbnailSetting;
 use App\Geofencing;
-
+use App\AgeCategory;
 
 class ChannelController extends Controller
 {
@@ -130,6 +130,7 @@ class ChannelController extends Controller
                 'categoryVideos'=>$categoryVideos,
                 'ppv_gobal_price' => $ppv_gobal_price,
                 'ThumbnailSetting' => $ThumbnailSetting,
+                'age_categories' => AgeCategory::get(),
 
             );
        return Theme::view('categoryvids',['data'=>$data]);
