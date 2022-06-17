@@ -995,7 +995,9 @@ if(!empty($artistsdata)){
                 $file = $player_image;
                 $data['player_image']  = $file->getClientOriginalName();
                 $file->move($image_path, $data['player_image']);
-                $player_image = $file->getClientOriginalName();
+                // $player_image = $file->getClientOriginalName();
+               $player_image = str_replace(' ', '_', $player_image->getClientOriginalName());
+
   
   
            } else {
@@ -1730,7 +1732,9 @@ if(!empty($artistsdata)){
                 $file = $player_image;
                 $data['player_image']  = $file->getClientOriginalName();
                 $file->move($image_path, $data['player_image']);
-                $player_image = $file->getClientOriginalName();
+                // $player_image = $file->getClientOriginalName();
+               $player_image = str_replace(' ', '_', $player_image->getClientOriginalName());
+
   
   
            } else {
