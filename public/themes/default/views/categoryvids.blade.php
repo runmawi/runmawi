@@ -1,12 +1,6 @@
     @partial('category_header')
+<!-- Header End -->
 
-
-<style>
-    .dropdown-menu{
-        background-color: Gray!important;
-        color: #000!important;
-    }
-</style>
 <!-- MainContent -->
 <?php if(!empty($data['password_hash'])) { $id = Auth::user()->id ; } else { $id = 0 ; } ?>
 
@@ -69,6 +63,9 @@
                     </div>   --}}
 
 
+                     <div class="iq-main-header align-items-center">
+                        <h2 class=""><?php echo __($data['category_title']);?></h2>
+                     </div>
                      <div class="favorites-contens">
                         <ul class="category-page list-inline  row p-0 mb-4">
                             <?php if (count($data['categoryVideos']) > 0) { ?>         
@@ -77,7 +74,7 @@
                                         <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
                                             <div class="block-images position-relative">
                                                 <div class="img-box">
-                                                <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" class="img-fluid loading" alt="" width="">
+                                                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" class="img-fluid" alt="" width="">
                                                 
                                           <?php  if(!empty($category_video->ppv_price)){?>
                                           <p class="p-tag1" ><?php echo $data['currency']->symbol.' '.$category_video->ppv_price; ?></p>

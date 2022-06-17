@@ -859,7 +859,9 @@ class AdminUsersController extends Controller
                 }
             }
             $file = $image;                         //upload new file
-            $user->avatar = $file->getClientOriginalName();
+            // $user->avatar = $file->getClientOriginalName();
+            $user->avatar = str_replace(' ', '_', $file->getClientOriginalName());
+
             $file->move($image_path, $user->avatar);
         }
         $user->save();

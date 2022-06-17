@@ -186,9 +186,12 @@ class AdminLiveStreamController extends Controller
               }
               //upload new file
               $file = $image;
-              $data['image']  = $file->getClientOriginalName();
+            //   $data['image']  = $file->getClientOriginalName();
+            $data['image'] = str_replace(' ', '_', $file->getClientOriginalName());
               $file->move($image_path, $data['image']);
-              $image = $file->getClientOriginalName();
+            //   $image = $file->getClientOriginalName();
+            $image = str_replace(' ', '_', $file->getClientOriginalName());
+              
          }else{
             $image = "Defualt.jpg";
          } 
@@ -209,7 +212,8 @@ class AdminLiveStreamController extends Controller
                }
                //upload new file
                $player_image = $player_image;
-               $data['player_image']  = $player_image->getClientOriginalName();
+            //    $data['player_image']  = $player_image->getClientOriginalName();
+            $data['player_image'] = str_replace(' ', '_', $player_image->getClientOriginalName());
                $player_image->move($image_path, $data['player_image']);
             //    $player_image  = $player_image->getClientOriginalName();
             $player_image = str_replace(' ', '_', $player_image->getClientOriginalName());
@@ -644,7 +648,8 @@ class AdminLiveStreamController extends Controller
               }
               //upload new file
               $file = $image;
-              $data['image']  = $file->getClientOriginalName();
+            //   $data['image']  = $file->getClientOriginalName();
+                $data['image'] = str_replace(' ', '_', $file->getClientOriginalName());
               $file->move($image_path, $data['image']);
 
          } 
@@ -665,10 +670,11 @@ class AdminLiveStreamController extends Controller
                }
                //upload new file
                $player_image = $player_image;
-               $data['player_image']  = $player_image->getClientOriginalName();
+            //    $data['player_image']  = $player_image->getClientOriginalName();
+            $data['player_image'] = str_replace(' ', '_', $player_image->getClientOriginalName());
                 // $player_image = str_replace(' ', '_', $player_image->getClientOriginalName());
                $player_image->move($image_path, $data['player_image']);
-               $player_image  = $player_image->getClientOriginalName();
+            //    $player_image  = $player_image->getClientOriginalName();
                $player_image = str_replace(' ', '_', $player_image->getClientOriginalName());
           } else{
               $player_image = $video->player_image;
