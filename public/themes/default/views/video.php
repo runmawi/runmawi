@@ -78,7 +78,7 @@ div#url_linkdetails {
     font-size: x-large;
     display: none;
 }
-      .intro_skips,.Recap_skip {
+     .end_card_video .intro_skips,.Recap_skip {
     position: absolute;
     top: -19%;
     left: 79%;
@@ -767,7 +767,19 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
        <input type="button" class="skips" value="Skip Intro" id="intro_skip">
        <input type="button" class="skips" value="Auto Skip in 5 Secs" id="Auto_skip">
   </div>
+  <!-- <div class="col-sm-12 end_card_video">
+      <a href="#">
+   <img id="endcard" src="<?php //echo URL::to('/').'/public/uploads/images/' .$video->player_image ;?>" alt="">
+      </a>
+  </div> -->
 
+      <style>
+        #endcard{
+          width: 20%;
+          height: 20%;
+        }
+      </style>
+  </div>
   <div class="col-sm-12 Recap_skip">
       <input type="button" class="Recaps" value="Recap Intro" id="Recaps_Skip" style="display:none;">
   </div>
