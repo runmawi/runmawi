@@ -16,9 +16,10 @@
                         <h1 class="text-white mb-3" data-animation-in="fadeInLeft"
                         data-delay-in="0.6">
                         <?php
-                        $title = $slider_video->title;
-                        $slidertitle = substr($title, 0, 80);                        
-                        echo ($slidertitle.'...');
+                        // $title = $slider_video->title;
+                        // $slidertitle = substr($title, 0, 80);                        
+                        // echo ($slidertitle.'...');
+                        echo (strlen($slider_video->title) > 15) ? substr($slider_video->title,0,80).'...' : $slider_video->title;
                        //  echo __($slider_video->title); 
                         ?>
                     </h1>
@@ -57,9 +58,11 @@ endif; ?>
 <h1 class="text-white mb-3" data-animation-in="fadeInLeft"
 data-delay-in="0.6">
 <?php 
- $title = $slider_video->title;
- $slidertitle = substr($title, 0, 80);                        
- echo ($slidertitle.'...');
+//  $title = $slider_video->title;
+//  $slidertitle = substr($title, 0, 80);                        
+//  echo ($slidertitle.'...');
+echo (strlen($slider_video->title) > 15) ? substr($slider_video->title,0,80).'...' : $slider_video->title;
+
  // echo __($slider_video->title);
  ?>
 </h1>
@@ -130,9 +133,10 @@ endif; ?>
                         <h1 class="text-white mb-3" data-animation-in="fadeInLeft"
                         data-delay-in="0.6">
                         <?php 
-                        $title = $videos->title;
-                        $slidertitle = substr($title, 0, 80);                        
-                        echo ($slidertitle.'...');
+                        // $title = $videos->title;
+                        // $slidertitle = substr($title, 0, 80);                
+echo (strlen($videos->title) > 15) ? substr($videos->title,0,80).'...' : $videos->title;
+                        // echo ($slidertitle.'...');
                         ?>
                     </h1>
                     <div data-animation-in="fadeInUp" data-delay-in="1.2"
@@ -260,9 +264,10 @@ endif; ?>
 <h1 class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft"
 data-delay-in="0.6">
 <?php 
-      $title = $slider_video->title;
-      $slidertitle = substr($title, 0, 80);                        
-      echo ($slidertitle.'...');
+    //   $title = $slider_video->title;
+    //   $slidertitle = substr($title, 0, 80);                        
+    //   echo ($slidertitle.'...');
+echo (strlen($slider_video->title) > 15) ? substr($slider_video->title,0,80).'...' : $slider_video->title;
       // echo __($slider_video->title);
 
 ?>
