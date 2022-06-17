@@ -103,13 +103,13 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()  || $video->access == "guest" &
                     <!-- </div>  -->
             <?php }elseif(!empty($video->url_type == "Encode_video")){  ?>
 
-                        <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $Rtmp_url.$video->Stream_key.".m3u8"; ?>">
+                        <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->hls_url ; ?>">
                         <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
                         <input type="hidden" id="live" name="live" value="live">
                         <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
 
                          <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
-                            <source  type="application/x-mpegURL"  src="<?php echo $Rtmp_url.$video->Stream_key.'.m3u8' ; ?>" >
+                            <source  type="application/x-mpegURL"  src="<?php echo $video->hls_url ; ?>" >
                         </video>
 
                <?php  }elseif(!empty($video->url_type ) && $video->url_type == "live_stream_video"){  ?>

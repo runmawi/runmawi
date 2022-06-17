@@ -196,11 +196,13 @@ border-radius: 0px 4px 4px 0px;
                                     
                                     @foreach($Rtmp_urls as $key => $urls)
                                       @php     $number = $key+1;  @endphp
-                                           <option class="Encode_stream_video" value={{ "Encode_video" }} data-name="{{ $urls->rtmp_url }}" >{{ "RTMP Streaming"." ".$number }} </option>
+                                           <option class="Encode_stream_video" value={{ "Encode_video" }} data-name="{{ $urls->rtmp_url }}" data-hls-url="{{ $urls->hls_url  }}" >{{ "RTMP Streaming"." ".$number }} </option>
                                     @endforeach 
                                 </select>
 
                                 <input type="hidden" name="Rtmp_url" id="Rtmp_url" value="" />
+                                <input type="hidden" name="hls_url" id="hls_url" value="" />
+
 
                                 <div class="new-video-upload mt-2" id="mp4_code">
                                     <label for="embed_code"><label class="mb-1">Live Stream URL</label></label>
@@ -456,10 +458,17 @@ border-radius: 0px 4px 4px 0px;
 
             if($(".url_type").val() == "Encode_video"){
                 var optionText = $(".url_type option:selected").attr("data-name") ;
+                var hls_url = $(".url_type option:selected").attr("data-hls-url") ;
+
 
                 $("#Rtmp_url").val(function() {
                     $("#Rtmp_url").val(' ');
 	                return this.value + optionText;
+	            });
+
+                $("#hls_url").val(function() {
+                    $("#hls_url").val(' ');
+	                return this.value + hls_url;
 	            });
             }
         });

@@ -968,7 +968,7 @@ class AdminSeriesController extends Controller
            //upload new file
            $player_image = $player_image;
            $data['player_image']  = str_replace(' ', '_', $player_image->getClientOriginalName());
-           $file->move($image_path, $data['player_image']);
+           $player_image->move($image_path, $data['player_image']);
         //    $player_image = $file->getClientOriginalName();
         $player_image = str_replace(' ', '_', $player_image->getClientOriginalName());
 
@@ -1222,7 +1222,7 @@ class AdminSeriesController extends Controller
                //upload new file
                $player_image = $player_image;
                $data['player_image']  = str_replace(' ', '_', $player_image->getClientOriginalName());
-               $file->move($image_path, $data['player_image']);
+               $player_image->move($image_path, $data['player_image']);
             //    $player_image = $file->getClientOriginalName();
             $player_image = str_replace(' ', '_', $player_image->getClientOriginalName());
 
