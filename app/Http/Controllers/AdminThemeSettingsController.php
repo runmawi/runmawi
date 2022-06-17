@@ -300,7 +300,9 @@ class AdminThemeSettingsController extends Controller
                         }
                     }
                     $file = $image;
-                    $category->slider  = $file->getClientOriginalName();
+                    // $category->slider  = $file->getClientOriginalName();
+                    $category->slider = str_replace(' ', '_', $file->getClientOriginalName());
+
                     $file->move($path,$category->slider);
               } 
           $path = public_path().'/uploads/videocategory/';
@@ -355,7 +357,9 @@ class AdminThemeSettingsController extends Controller
                         }
                     }
                     $file = $image;
-                    $category->slider  = $file->getClientOriginalName();
+                    // $category->slider  = $file->getClientOriginalName();
+            $category->slider = str_replace(' ', '_', $file->getClientOriginalName());
+
                     $file->move($path,$category->slider);
               } 
             $category->link  = $link;
@@ -555,7 +559,8 @@ class AdminThemeSettingsController extends Controller
               }
               //upload new file
               $file = $image;
-              $slider->slider  = $file->getClientOriginalName();
+              // $slider->slider  = $file->getClientOriginalName();
+              $slider->slider = str_replace(' ', '_', $file->getClientOriginalName());
               $file->move($path,$slider->slider);
 
            } 
@@ -571,7 +576,8 @@ class AdminThemeSettingsController extends Controller
                  }
              }
              $file = $player_image;
-             $slider->player_image  = $file->getClientOriginalName();
+            //  $slider->player_image  = $file->getClientOriginalName();
+            $slider->player_image = str_replace(' ', '_', $file->getClientOriginalName());
              $file->move($path,$slider->player_image);
        } 
           $slider->link  = $link;
@@ -610,13 +616,14 @@ class AdminThemeSettingsController extends Controller
               }
               //upload new file
               $file = $image;
-              $slider->slider  = $file->getClientOriginalName();
+              // $slider->slider  = $file->getClientOriginalName();
+              $slider->slider= str_replace(' ', '_', $file->getClientOriginalName());
               $slider->link  = $link;
               $slider->title  = $title;
               $file->move($path, $slider->slider);
            } 
           
-          $input['slider']  = $file->getClientOriginalName();
+          $input['slider']  = str_replace(' ', '_', $file->getClientOriginalName());
           $slider->active = $request['active'];
           $slider->save();
             return back()->with('success', 'New Category added successfully.');

@@ -114,7 +114,9 @@ class AdminVideoCategoriesController extends Controller
               }
               //upload new file
               $file = $image;
-              $input['image']  = $file->getClientOriginalName();
+            //   $input['image']  = $file->getClientOriginalName();
+            $input['image'] = str_replace(' ', '_', $file->getClientOriginalName());
+
               $file->move($path, $input['image']);
 
           } else {
@@ -132,7 +134,9 @@ class AdminVideoCategoriesController extends Controller
                 }
                 //upload new file
                 $file = $banner_image;
-                $input['banner_image']  = $file->getClientOriginalName();
+                // $input['banner_image']  = $file->getClientOriginalName();
+            $input['banner_image'] = str_replace(' ', '_', $file->getClientOriginalName());
+
                 $file->move($path, $input['banner_image']);
   
             } else {
@@ -199,7 +203,9 @@ class AdminVideoCategoriesController extends Controller
             }
                   //upload new file
                   $file = $image;
-                  $category->image  = $file->getClientOriginalName();
+                //   $category->image  = $file->getClientOriginalName();
+                $category->image = str_replace(' ', '_', $file->getClientOriginalName());
+
                   $file->move($path,$category->image);
 
               } 

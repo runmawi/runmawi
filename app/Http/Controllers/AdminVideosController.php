@@ -602,7 +602,9 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
               }
               //upload new file
               $file = $image;
-              $data['image']  = $file->getClientOriginalName();
+            //   $data['image']  = $file->getClientOriginalName();
+            $data['image'] = str_replace(' ', '_', $file->getClientOriginalName());
+
               $file->move($image_path, $data['image']);
 
          } else {
@@ -992,8 +994,10 @@ if(!empty($artistsdata)){
                 }
                 
                 //upload new file
-                $file = $player_image;
-                $data['player_image']  = $file->getClientOriginalName();
+                $player_image = $player_image;
+                // $data['player_image']  = $player_image->getClientOriginalName();
+            $data['player_image'] = str_replace(' ', '_', $player_image->getClientOriginalName());
+
                 $file->move($image_path, $data['player_image']);
                 // $player_image = $file->getClientOriginalName();
                $player_image = str_replace(' ', '_', $player_image->getClientOriginalName());
@@ -1729,8 +1733,10 @@ if(!empty($artistsdata)){
                 }
                 
                 //upload new file
-                $file = $player_image;
-                $data['player_image']  = $file->getClientOriginalName();
+                $player_image = $player_image;
+                // $data['player_image']  = $file->getClientOriginalName();
+            $data['player_image'] = str_replace(' ', '_', $player_image->getClientOriginalName());
+
                 $file->move($image_path, $data['player_image']);
                 // $player_image = $file->getClientOriginalName();
                $player_image = str_replace(' ', '_', $player_image->getClientOriginalName());

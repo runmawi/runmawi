@@ -84,7 +84,9 @@ class CPPAdminAudioCategoriesController extends Controller
               }
                 //upload new file
               $file = $image;
-              $input['image']  = $file->getClientOriginalName();
+            //   $input['image']  = $file->getClientOriginalName();
+            $data['image'] = str_replace(' ', '_', $file->getClientOriginalName());
+
               $file->move($path, $input['image']);
          } else {
                $input['image']  = 'default.jpg';
@@ -152,7 +154,8 @@ class CPPAdminAudioCategoriesController extends Controller
                   }
                   //upload new file
                   $file = $image;
-                  $category->image  = $file->getClientOriginalName();
+                //   $category->image  = $file->getClientOriginalName();
+            $data['image'] = str_replace(' ', '_', $file->getClientOriginalName());
                   $file->move($path,$category->image);
 
              } 
@@ -246,7 +249,9 @@ class CPPAdminAudioCategoriesController extends Controller
              }
               //upload new file
              $file = $image;
-             $input['album']  = $file->getClientOriginalName();
+            //  $input['album']  = $file->getClientOriginalName();
+            $input['album'] = str_replace(' ', '_', $file->getClientOriginalName());
+
              $file->move($image_path, $input['album']);
          }
         
@@ -312,7 +317,9 @@ class CPPAdminAudioCategoriesController extends Controller
              }
               //upload new file
              $file = $image;
-             $request['album']  = $file->getClientOriginalName();
+            //  $request['album']  = $file->getClientOriginalName();
+            $request['album'] = str_replace(' ', '_', $file->getClientOriginalName());
+
              $file->move($image_path, $request['album']);
          }
          $request['user_id'] = $user_id;
