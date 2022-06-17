@@ -15,7 +15,12 @@
                         <div class="col-xl-6 col-lg-12 col-md-12">
                         <h1 class="text-white mb-3" data-animation-in="fadeInLeft"
                         data-delay-in="0.6">
-                        <?php echo __($slider_video->title); ?>
+                        <?php
+                        $title = $slider_video->title;
+                        $slidertitle = substr($title, 0, 40);                        
+                        echo ($slidertitle);
+                       //  echo __($slider_video->title); 
+                        ?>
                     </h1>
                     <div class="d-flex justify-content-evenly align-items-center r-mb-23" data-animation-in="fadeInUp"
                     data-delay-in="1.2">
@@ -51,7 +56,12 @@ endif; ?>
 </a>-->
 <h1 class="text-white mb-3" data-animation-in="fadeInLeft"
 data-delay-in="0.6">
-<?php echo __($slider_video->title); ?>
+<?php 
+ $title = $slider_video->title;
+ $slidertitle = substr($title, 0, 40);                        
+ echo ($slidertitle);
+// echo __($slider_video->title);
+ ?>
 </h1>
 <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
     <span class="badge badge-secondary p-2">
@@ -119,7 +129,10 @@ endif; ?>
                         <div class="col-xl-6 col-lg-12 col-md-12">
                         <h1 class="text-white mb-3" data-animation-in="fadeInLeft"
                         data-delay-in="0.6">
-                        <?php echo __($videos->title); ?>
+                        <?php 
+                        $title = $videos->title;
+                        $slidertitle = substr($title, 0, 40);                        
+                        echo ($slidertitle); ?>
                     </h1>
                     <div data-animation-in="fadeInUp" data-delay-in="1.2"
                         style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
@@ -245,7 +258,13 @@ endif; ?>
 </a>-->
 <h1 class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft"
 data-delay-in="0.6">
-<?php echo __($slider_video->title); ?>
+<?php 
+      $title = $slider_video->title;
+      $slidertitle = substr($title, 0, 40);                        
+      echo ($slidertitle);
+// echo __($slider_video->title);
+
+?>
 </h1>
 <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
 <span class="badge badge-secondary p-2">
