@@ -1,12 +1,7 @@
 <!-- Header -->
     @partial('category_header')
 <!-- Header End -->
-<style>
-    .dropdown-menu{
-        background-color: Gray!important;
-        color: #000!important;
-    }
-</style>
+
 <!-- MainContent -->
 <?php if(!empty($data['password_hash'])) { $id = Auth::user()->id ; } else { $id = 0 ; } ?>
 
@@ -15,20 +10,9 @@
             <div class="container">
                <div class="row pageheight">
                   <div class="col-sm-12 overflow-hidden">
-                     <div class="iq-main-header align-items-center d-flex justify-content-between">
+                     <div class="iq-main-header align-items-center">
                         <h2 class=""><?php echo __($data['category_title']);?></h2>
-                         <div class="dropdown show">
-                      <a class="outline-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Movies Sort by
-                      </a>
-
-                      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                      </div>
-                    </div>
-                </div>
+                     </div>
                      <div class="favorites-contens">
                         <ul class="category-page list-inline  row p-0 mb-4">
                             <?php if (count($data['categoryVideos']) > 0) { ?>         
@@ -37,7 +21,7 @@
                                         <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
                                             <div class="block-images position-relative">
                                                 <div class="img-box">
-                                                <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" class="img-fluid loading" alt="" width="">
+                                                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" class="img-fluid" alt="" width="">
                                                 
                                           <?php  if(!empty($category_video->ppv_price)){?>
                                           <p class="p-tag1" ><?php echo $data['currency']->symbol.' '.$category_video->ppv_price; ?></p>
@@ -167,10 +151,10 @@
                                     </li>
                             @endforeach
  <?php } else { ?>
-                                        <!-- <p class="no_video"> <?php echo __('No Video Found');?></p> style="position: absolute;top: 50%;left: 50%;color: white;"-->
+                                        <!-- <p class="no_video"> <?php echo __('No Video Found');?></p> -->
                                         <!-- <p><h2>No Media in My Watchlater</h2></p> -->
-                                    <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
-                               <p ><h3 class="text-center">No video Available</h3>
+                                    <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:cover;height: 500px!important;">
+                               <p ><h2 style="position: absolute;top: 50%;left: 50%;color: white;">No video Available</h2>
                             </div>
       <?php } ?>
                     
