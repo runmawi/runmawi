@@ -205,12 +205,13 @@ border-radius: 0px 4px 4px 0px;
 					        @else
                                  @foreach($Rtmp_urls as $key => $urls)
                                     @php     $number = $key+1;  @endphp
-                                    <option class="Encode_stream_video" value={{ "Encode_video" }} data-name="{{ $urls->rtmp_url }}">{{ "Streaming Video"." ".$number }} </option>
+                                    <option class="Encode_stream_video" value={{ "Encode_video" }} data-name="{{ $urls->rtmp_url }}" data-hls-url="{{ $urls->hls_url  }}">{{ "Streaming Video"." ".$number }} </option>
                                 @endforeach 
                             @endif
                         </select>
 
 				        <input type="hidden" name="Rtmp_url" id="Rtmp_url" value="" />
+                        <input type="hidden" name="hls_url" id="hls_url" value="" />
 
                             <div class="new-video-upload mt-2" id="mp4_code">
                                 <label for="embed_code"><label>Live Stream URL</label></label>
@@ -508,6 +509,7 @@ $( document ).ready(function() {
 		var Rtmp_url   = "{{ $Rtmp_url ? $Rtmp_url : 'No RTMP URL Added' }}" ;	
 		var Stream_keys = '{{ $Stream_key }}';
 		var Title = "{{ 'RTMP Streaming Details for'.' '. $title }}";
+		var Rtmp_url   = "{{ $Rtmp_url ? $Rtmp_url : 'No RTMP URL Added' }}" ;
 	
 		if( Stream_error == 1){
 			Swal.fire({
@@ -943,11 +945,17 @@ tagInput1.addData([])
 	if($(".url_type").val() == "Encode_video"){
 	
 		var optionText = $(".url_type option:selected").attr("data-name") ;
+        var hls_url = $(".url_type option:selected").attr("data-hls-url") ;
 	
 		$("#Rtmp_url").val(function() {
 			$("#Rtmp_url").val(' ');
 			return this.value + optionText;
 		});
+
+        $("#hls_url").val(function() {
+                    $("#hls_url").val(' ');
+	                return this.value + hls_url;
+	    });
 	}
 	});
 	

@@ -118,7 +118,7 @@ border-radius: 0px 4px 4px 0px;
 						<td> @if( $video->url_type != null && $video->url_type == "Encode_video") {{ 'Video Encoder' }} @elseif( $video->url_type != null && $video->url_type == "live_stream_video") {{ 'Live Stream Video' }} @else {{  ucwords($video->url_type)  }} @endif
 							
 							@if( $video->url_type != null && $video->url_type == "Encode_video")
-								<i class="fa fa-info-circle encode_video_alert"  aria-hidden="true" data-title = "{{ $video->title }}" data-name="{{$video->Stream_key}}"  data-rtmpURL= "{{ $video->rtmp_url ? $video->rtmp_url : null }}" value="{{$video->Stream_key}}" onclick="addRow(this)" ></i>
+								<i class="fa fa-info-circle encode_video_alert"  aria-hidden="true" data-title = "{{ $video->title }}" data-name="{{$video->Stream_key}}"  data-rtmpURL= "{{ $video->rtmp_url ? $video->rtmp_url : null }}" data-hls-url= "{{ $video->hls_url ? $video->hls_url : null }}" value="{{$video->Stream_key}}" onclick="addRow(this)" ></i>
 							@endif
 
  						</td>
@@ -156,12 +156,15 @@ border-radius: 0px 4px 4px 0px;
 			var stream_key = $(ele).attr('data-name');
 			var Rtmp_url   = $(ele).attr('data-rtmpURL');
 			var Rtmp_title = $(ele).attr('data-title');
+			var hls_url = $(ele).attr('data-hls-url');
+
 			Swal.fire({
 					allowOutsideClick:false,
 					icon:'success',
 					title: 'RTMP Streaming Details for '+ Rtmp_title ,
 					html: '<div class="col-md-12">' + ' URL :  ' + Rtmp_url + '</div>' +"<br>"+ 
-						  '<div class="col-md-12">' + 'Stream Key :  ' +  stream_key + '</div>' ,
+						  '<div class="col-md-12">' + 'Stream Key :  ' +  stream_key + '</div>'+"<br>"+ 
+						  '<div class="col-md-12">' + 'HLS URL :  ' +  hls_url + '</div>' ,
 			})
 		}
 
