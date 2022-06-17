@@ -17,7 +17,7 @@ class RTMLSeeder extends Seeder
 
         $rtml_url = [
             [   'rtmp_url'   => 'rtmp://75.119.145.126:1935/show/', 
-                'rtmp_url'   => 'http://75.119.145.126:9090/hls/streamkey/index.m3u8', 
+                'hls_url'   => 'http://75.119.145.126:9090/hls/streamkey/index.m3u8', 
                 'created_at' => Carbon::now(),
                 'updated_at' => null,
             ],
