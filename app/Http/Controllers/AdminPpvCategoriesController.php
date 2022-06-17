@@ -67,7 +67,9 @@ class AdminPpvCategoriesController extends Controller
               }
                 //upload new file
               $file = $image;
-              $input['image']  = $file->getClientOriginalName();
+              // $input['image']  = $file->getClientOriginalName();
+            $input['image'] = str_replace(' ', '_', $file->getClientOriginalName());
+
               $file->move($path, $input['image']);
          } else {
                $input['image']  = 'default.jpg';
@@ -117,7 +119,9 @@ class AdminPpvCategoriesController extends Controller
                   }
                   //upload new file
                   $file = $image;
-                  $category->image  = $file->getClientOriginalName();
+                  // $category->image  = $file->getClientOriginalName();
+                  $category->image = str_replace(' ', '_', $file->getClientOriginalName());
+
                   $file->move($path,$category->image);
 
              } 

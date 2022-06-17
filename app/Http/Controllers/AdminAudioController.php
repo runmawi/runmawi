@@ -207,6 +207,7 @@ class AdminAudioController extends Controller
     public function store(Request $request)
     {
         $data = Session::all();
+        // dd($data);
         if (!empty($data['password_hash'])) {
         $package_id = auth()->user()->id;
         $user_package =    User::where('id', $package_id)->first();
@@ -252,7 +253,8 @@ class AdminAudioController extends Controller
               }
               //upload new file
               $file = $image;
-              $data['image']  = $file->getClientOriginalName();
+            //   $data['image']  = $file->getClientOriginalName();
+              $data['image'] = str_replace(' ', '_', $file->getClientOriginalName());
               $file->move($image_path, $data['image']);
         } else {
             $data['image'] = 'placeholder.jpg';
@@ -478,7 +480,8 @@ class AdminAudioController extends Controller
               }
               //upload new file
               $file = $image;
-              $data['image']  = $file->getClientOriginalName();
+            //   $data['image']  = $file->getClientOriginalName();
+            $data['image'] = str_replace(' ', '_', $file->getClientOriginalName());
               $file->move($image_path, $data['image']);
         }
 
@@ -497,9 +500,12 @@ class AdminAudioController extends Controller
               }
               //upload new file
               $player_image = $image;
-              $data['player_image']  = $player_image->getClientOriginalName();
+            //   $data['player_image']  = $player_image->getClientOriginalName();
+            $data['player_image'] = str_replace(' ', '_', $player_image->getClientOriginalName());
               $player_image->move($image_path, $data['player_image']);
-            $player_image =  $player_image->getClientOriginalName();
+            // $player_image =  $player_image->getClientOriginalName();
+            $player_image = str_replace(' ', '_', $player_image->getClientOriginalName());
+
 
                 }
         if(empty($data['active'])){
@@ -515,12 +521,19 @@ class AdminAudioController extends Controller
         }else{
         $data['ppv_status'] = 1;
         }
+        if(!empty($data['searchtags'])){
+            $searchtags = $data['searchtags'];
+        }else{
+            $searchtags = null;
+        }
         $audio->update($data);
         $audio->ppv_price =  $ppv_price;
         $audio->ppv_status =  $data['ppv_status'];
         $audio->player_image =  $player_image;
+        $audio->search_tags =  $searchtags;
 
         $audio->save();
+        // dd($audio->id);
 
         if(!empty($data['artists'])){
             $artistsdata = $data['artists'];
@@ -812,7 +825,9 @@ class AdminAudioController extends Controller
 
     
         $input = $request->all();
-      
+        // dd('$input');
+
+        // dd($input);
         $id = $request->audio_id;
 
         $settings =Setting::first();
@@ -822,6 +837,11 @@ class AdminAudioController extends Controller
             $ppv_price = $settings->ppv_price;
         }
 
+        if(!empty($input['searchtags'])){
+            $ppv_price = $input['ppv_price'];
+        }elseif(!empty($input['ppv_status']) || $settings->ppv_status == 1){
+            $ppv_price = $settings->ppv_price;
+        }
         $audio = Audio::findOrFail($id);
 
         $validator = Validator::make($data = $input, Audio::$rules);
@@ -859,7 +879,8 @@ class AdminAudioController extends Controller
               }
               //upload new file
               $file = $image;
-              $data['image']  = $file->getClientOriginalName();
+            //   $data['image']  = $file->getClientOriginalName();
+            $data['image'] = str_replace(' ', '_', $file->getClientOriginalName());
               $file->move($image_path, $data['image']);
         }
 
@@ -878,9 +899,13 @@ class AdminAudioController extends Controller
               }
               //upload new file
               $player_image = $image;
-              $data['player_image']  = $player_image->getClientOriginalName();
+            //   $data['player_image']  = $player_image->getClientOriginalName();
+            $data['player_image'] = str_replace(' ', '_', $player_image->getClientOriginalName());
+
               $player_image->move($image_path, $data['player_image']);
-            $player_image =  $player_image->getClientOriginalName();
+            // $player_image =  $player_image->getClientOriginalName();
+            $player_image = str_replace(' ', '_', $player_image->getClientOriginalName());
+
 
                 }
 
@@ -896,9 +921,17 @@ class AdminAudioController extends Controller
         }else{
         $data['ppv_status'] = 1;
         }
+
+
+        if(!empty($input['searchtags'])){
+            $searchtags = $input['searchtags'];
+        }else{
+            $searchtags = null;
+        }
         $audio->update($data);
         $audio->ppv_price =  $ppv_price;
         $audio->player_image =  $player_image;
+        $audio->search_tags =  $searchtags;
         $audio->status =  1;
         $audio->ppv_status =  $data['ppv_status'];
         $audio->save();

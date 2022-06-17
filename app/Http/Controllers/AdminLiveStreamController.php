@@ -150,7 +150,7 @@ class AdminLiveStreamController extends Controller
     {
 
         $data = $request->all();
-
+        // dd($data);
         $validatedData = $request->validate([
             // 'title' => 'required|max:255',
             // // 'slug' => 'required|max:255',
@@ -187,9 +187,12 @@ class AdminLiveStreamController extends Controller
               }
               //upload new file
               $file = $image;
-              $data['image']  = $file->getClientOriginalName();
+            //   $data['image']  = $file->getClientOriginalName();
+            $data['image'] = str_replace(' ', '_', $file->getClientOriginalName());
               $file->move($image_path, $data['image']);
-              $image = $file->getClientOriginalName();
+            //   $image = $file->getClientOriginalName();
+            $image = str_replace(' ', '_', $file->getClientOriginalName());
+              
          }else{
             $image = "Defualt.jpg";
          } 
@@ -210,9 +213,12 @@ class AdminLiveStreamController extends Controller
                }
                //upload new file
                $player_image = $player_image;
-               $data['player_image']  = $player_image->getClientOriginalName();
+            //    $data['player_image']  = $player_image->getClientOriginalName();
+            $data['player_image'] = str_replace(' ', '_', $player_image->getClientOriginalName());
                $player_image->move($image_path, $data['player_image']);
-               $player_image  = $player_image->getClientOriginalName();
+            //    $player_image  = $player_image->getClientOriginalName();
+            $player_image = str_replace(' ', '_', $player_image->getClientOriginalName());
+
  
           } else{
             $player_image = "Defualt.jpg";
@@ -298,6 +304,11 @@ class AdminLiveStreamController extends Controller
                 $rating  = null;
             }
 
+            if (!empty($data['searchtags'])) {
+                $searchtags  = $data['searchtags'];
+            } else {
+                $searchtags  = null;
+            }
             if ($request->slug != '') {
                 $data['slug'] = $this->createSlug($request->slug);
                 }
@@ -390,6 +401,7 @@ class AdminLiveStreamController extends Controller
         $movie->status =$status;
         $movie->year =$data['year'];
         $movie->active = $active ;
+        $movie->search_tags = $searchtags;
         $movie->player_image = $player_image;
         $movie->user_id =Auth::User()->id;
         $movie->save();
@@ -633,7 +645,8 @@ class AdminLiveStreamController extends Controller
               }
               //upload new file
               $file = $image;
-              $data['image']  = $file->getClientOriginalName();
+            //   $data['image']  = $file->getClientOriginalName();
+                $data['image'] = str_replace(' ', '_', $file->getClientOriginalName());
               $file->move($image_path, $data['image']);
 
          } 
@@ -654,11 +667,12 @@ class AdminLiveStreamController extends Controller
                }
                //upload new file
                $player_image = $player_image;
-               $data['player_image']  = $player_image->getClientOriginalName();
+            //    $data['player_image']  = $player_image->getClientOriginalName();
+            $data['player_image'] = str_replace(' ', '_', $player_image->getClientOriginalName());
+                // $player_image = str_replace(' ', '_', $player_image->getClientOriginalName());
                $player_image->move($image_path, $data['player_image']);
-               $player_image  = $player_image->getClientOriginalName();
-
- 
+            //    $player_image  = $player_image->getClientOriginalName();
+               $player_image = str_replace(' ', '_', $player_image->getClientOriginalName());
           } else{
               $player_image = $video->player_image;
           }
@@ -698,7 +712,12 @@ class AdminLiveStreamController extends Controller
         }else{
             $active = 1;
         } 
-        
+
+        if(empty($data['searchtags'])){
+            $searchtags = null;
+        }else{
+            $searchtags = $request['searchtags'];
+        } 
         $video->rating = $rating;
         $video->url_type = $url_type;
         $video->ppv_price = $ppv_price;
@@ -708,6 +727,7 @@ class AdminLiveStreamController extends Controller
         $video->publish_time = $request['publish_time'];
         $video->embed_url =     $embed_url;
         $video->active = $active;
+        $video->search_tags = $searchtags;
         $video->access = $request->access;
         $video->save();
 

@@ -69,14 +69,16 @@ if(isset($videos)) :
             <div class="favorites-contens">
                 <ul class="favorites-slider list-inline  row p-0 mb-0">
                     <li class="slide-item">
+                         <a href="<?php echo URL::to('category') ?><?= '/videos/' . $top_category_video->slug ?>">
                         <div class="block-images position-relative">
-                                <a href="<?php echo URL::to('category') ?><?= '/videos/' . $top_category_video->slug ?>">
-                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$top_category_video->player_image;  ?>"
+                               
+                                      <div class="img-box">
+                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$top_category_video->image;  ?>"
                                             class="img-fluid" alt=""> 
                                             <!-- <video  width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$top_category_video->player_image;  ?>"  data-play="hover" >
                                                 <source src="<?php echo $top_category_video->trailer;  ?>" type="video/mp4">
                                             </video>-->
-                                </a>
+                               
                                 
                                         <p class="p-tag1">   
                                             <?php if(!empty($top_category_video->ppv_price)) {
@@ -89,7 +91,8 @@ if(isset($videos)) :
                                             ?>
                                          </p>
                                    
-                        </div>
+                                    </div>
+                            
                                 <div class="block-description">
                                     <a href="<?php echo URL::to('category') ?><?= '/videos/' . $top_category_video->slug ?>">
                                         <h6> <?php echo __($top_category_video->title); ?> </h6>
@@ -110,7 +113,9 @@ if(isset($videos)) :
                                     </div>
 
                                 </div> 
-                       
+                        
+                              </div>
+                             </a>
                     </li>
                 </ul>
             </div>
@@ -146,15 +151,16 @@ if(isset($videos)) :
                         
                         ?>
                     <li class="slide-item">
+                         <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
                             <div class="block-images position-relative">
                             <!-- block-images -->
-                            <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
-                                    <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->player_image;  ?>"
+                            <div class="img-box">
+                                    <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"
                                         class="img-fluid" alt="">
                                         <!-- <video  width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->player_image;  ?>"  data-play="hover" >
                                             <source src="<?php echo $category_video->trailer;  ?>" type="video/mp4">
                                             </video> -->
-                                    </a>
+                                    
 
                             <!-- PPV price -->
                                 
@@ -277,6 +283,7 @@ if(isset($videos)) :
                                 </div>
                               
                             </div>
+                             </a>
                     </li>
                     <?php           
                           endforeach; 

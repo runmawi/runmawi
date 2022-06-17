@@ -22,11 +22,10 @@ $uppercase =  ucfirst($request_url);
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/bootstrap.min.css';?>" />
     <!-- Typography CSS -->
-    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/typography.css';?>" />
-    <!-- Style -->
-    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/style.css';?>" />
-    <!-- Responsive -->
-    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/responsive.css';?>" />
+   <link href="<?php echo URL::to('public/themes/theme2/assets/css/style.css') ?>" rel="stylesheet">
+       <link href="<?php echo URL::to('public/themes/theme2/assets/css/typography.css') ?>" rel="stylesheet">
+       <link href="<?php echo URL::to('public/themes/theme2/assets/css/responsive.css') ?>" rel="stylesheet">
+
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/slick.css';?>" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -117,8 +116,9 @@ $uppercase =  ucfirst($request_url);
           
            
         }
-        .sig{
-            background: #161617;
+        .sigk{
+            background: linear-gradient(180deg, rgba(21, 30, 41, 0.85) 0%, rgba(21, 30, 41, 0) 100%);
+
 mix-blend-mode: normal;
             padding: 50px;
             border-radius: 20px;
@@ -209,6 +209,14 @@ border-radius: 20px;
         .dl{
             font-size: 16px;
         }
+        .account{
+            background: linear-gradient(180deg, #121C28 -35.59%, rgba(11, 18, 28, 0.36) 173.05%);
+            padding: 15px 10px;
+            border-radius: 10px;
+            margin-top: 10px;
+color: #FFFFFF;
+            font-size: 20px;
+        }
     </style>
    <body>
       <!-- loader Start -->
@@ -219,7 +227,7 @@ border-radius: 20px;
       <!-- loader END -->
      <!-- Header -->
      
-      <header id="main-header" style="padding: 15px 0;">
+      <header id="main-header" style="padding: 5px 0;">
          <div class="main-header">
             <div class="container-fluid">
                <div class="row">
@@ -699,9 +707,28 @@ border-radius: 20px;
         <!-- MainContent -->
     <section  class="m-profile setting-wrapper pt-0">
         <div class="container">
-            <div class="row sig ">
-                <div class="col-md-4 mt-3 pt-3">
-                    <h4 class="main-title mb-4">My Account</h4>
+            <div class="row justify-content-center">
+                <div class="col-md-5 sigk text-center">
+                    <div class="d-flex justify-content-between">
+                        <div><i class="fa fa-arrow-left text-white" aria-hidden="true"></i></div>
+                        <div><h4 class="main-title mb-4 text-center">My Account</h4></div>
+                        <div><a herf="" class="text-white">Done</a>
+                           </div>
+                        
+  </div>
+                 
+                    <img class="rounded-circle img-fluid text-center mb-3 mt-4" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg"/ style="" width="150">
+                    <div> <a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="Text-white" style="color: #fff!important;"><i class="fa fa-plus-circle"></i> Edit</a></div>
+                      
+                    <div class="text-center">
+                        <p class="account d-flex justify-content-around"><span class="">First Name:</span> <span class=""><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></span></p>
+                        <p class="account d-flex justify-content-around"><span>User Name:</span><span class=""><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></span> </p>
+                        <p class="account d-flex justify-content-around"><span>Moblie.no:</span><span class=""> <?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?></span></p>
+                        <p class="account d-flex justify-content-around"><span>Email-id:</span><span class=""> <?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?></span></p>
+                         
+                    </div>
+                <!--<div class="col-md-4 mt-3 pt-3">
+                   
                     <p class="text-white">Edit your name or change<br>your password.</p>
                     <ul class="edit p-0 mt-5">
                         <li>
@@ -733,10 +760,10 @@ border-radius: 20px;
                                 <?php } ?></div></li>
                                 <li><div class="d-flex showSingle" target="2">
                         <?php if(Auth::User()->role == "subscriber"){ ?>
-                           <!-- <a href="<?=URL::to('/upgrade-subscription_plan');?>"> -->
+                           <!-- <a href="<?=URL::to('/upgrade-subscription_plan');?>"> 
                            <img class="ply mr-3" src="<?php echo URL::to('/').'/assets/img/plan.png';  ?>"> 
                             Plan
-                                <!-- </a> -->
+                                <!-- </a> 
                                 <?php } ?></div></li>
                     </ul>
                 </div>
@@ -841,12 +868,12 @@ border-radius: 20px;
                               <!--<h6>Subscription</h6>-->
                            <?php } ?>
 
-                        <!-- <h1><span class="dl">$</span>1197 <span>for 9 months</span></h1></div> -->
+                        <!-- <h1><span class="dl">$</span>1197 <span>for 9 months</span></h1></div> 
                         </div>
                         <br>       
 
                     <a href="<?=URL::to('/upgrade-subscription_plan');?>" class="btn btn-primary editbtn" >Upgrade Plan </a>        
-                    <br>       
+                    <br>-->       
                         
                     </div>
                 
@@ -1540,94 +1567,160 @@ border-radius: 5px;padding:10px;">
 		</div>
 		<?php $settings = App\Setting::first(); ?>
       <footer class="mb-0">
-         <div class="container-fluid">
-            <div class="block-space">
-               <div class="row align-items-center">
-                   <div class="col-lg-3 col-md-4 col-sm-12 r-mt-15">
-                       <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="Flicknexs"> </a>
-                     <div class="d-flex mt-2">
-                        <a href="https://www.facebook.com/<?php echo FacebookId();?>" target="_blank"  class="s-icon">
-                        <i class="ri-facebook-fill"></i>
+       <div class="container-fluid px-5">
+            <div class="row align-items-center  justify-content-between ">
+                <div class="col-sm-8 small m-0 text-white exp p-0">
+                    <ul class="text-white p-0 mt-3 d-flex">
+                       <?php 
+                        $pages = App\Page::all();
+                            foreach($pages as $page): ?>
+                            <?php if ( $page->slug != 'promotion' ){ ?>
+                                <li><a href="<?php echo URL::to('page'); ?><?= '/' . $page->slug ?>"><?= __($page->title) ?></a></li>
+                            <?php } ?>
+						<?php endforeach; ?>
+                    </ul>
+                     <div class="mt-2 p-2">
+                    <div class="small m-0 text-white"><p>The Best Streaming Platform</p></div>
+                    <div class="d-flex p-0 text-white icon mt-4">
+<p>Social :</p>
+                    <?php if(!empty($settings->facebook_page_id)){?>
+                      <a href="https://www.facebook.com/<?php echo FacebookId();?>" target="_blank"  class="">
+                        <i class="fa fa-facebook" aria-hidden="true" style="padding: 0px 10px;"></i>
                         </a>
-                        <a href="#" class="s-icon">
-                        <i class="ri-skype-fill"></i>
+                    <?php } ?>
+
+                    <?php if(!empty($settings->skype_page_id)){?>
+                      <a href="https://www.skype.com/en/<?php echo SkypeId();?>" target="_blank"  class="">
+                        <i class="fa fa-skype"></i>
                         </a>
-                        <a href="#" class="s-icon">
-                        <i class="ri-linkedin-fill"></i>
+                    <?php } ?>
+
+                    <?php if(!empty($settings->twitter_page_id)){?>
+                      <a href="https://twitter.com/<?php echo TwiterId();?>" target="_blank"  class="">
+                        <i class="fa fa-twitter" aria-hidden="true"style="padding: 0px 10px;"></i>
                         </a>
-                        <a href="#" class="s-icon">
-                        <i class="ri-whatsapp-fill"></i>
+                    <?php } ?>
+
+                    <?php if(!empty($settings->instagram_page_id)){?>
+                      <a href="https://www.instagram.com/<?php echo InstagramId();?>" target="_blank"  class="">
+                        <i class="fa fa-instagram" aria-hidden="true"style="padding: 0px 10px;"></i>
                         </a>
-                         <a href="https://www.google.com/<?php echo GoogleId();?>" target="_blank" class="s-icon">
+                    <?php } ?>
+
+                    <?php if(!empty($settings->linkedin_page_id)){?>
+                      <a href="https://www.linkedin.com/<?php echo linkedinId();?>" target="_blank"  class="">
+                        <i class="fa fa-linkedin" aria-hidden="true" style="padding: 0px 10px;"></i>
+                        </a>
+                    <?php } ?>
+
+
+                    <?php if(!empty($settings->whatsapp_page_id)){?>
+                      <a href="https://www.whatsapp.com/<?php echo YoutubeId();?>" target="_blank"  class="">
+                        <i class="fa fa-whatsapp"></i>
+                        </a>
+                    <?php } ?>
+
+                    <?php if(!empty($settings->youtube_page_id)){?>
+                      <a href="https://www.youtube.com/<?php echo YoutubeId();?>" target="_blank"  class="">
+                        <i class="fa fa-youtube"></i>
+                        </a>
+                    <?php } ?>
+
+                    <?php if(!empty($settings->google_page_id)){?>
+                      <a href="https://www.google.com/<?php echo GoogleId();?>" target="_blank" class="">
                         <i class="fa fa-google-plus"></i>
                         </a>
-                     </div>
-                  </div>
-                  <div class="col-lg-3 col-md-4 col-sm-12 p-0">
-                     <ul class="f-link list-unstyled mb-0">
-                        <!-- <li><a href="<?php echo URL::to('home') ?>">Movies</a></li>
-                        <li><a href="<?php echo URL::to('home') ?>">Tv Shows</a></li>
-                        <li><a href="<?php echo URL::to('home') ?>">Coporate Information</a></li> -->
-                     </ul>
-                  </div>                  
-                  <div class="col-lg-3 col-md-4">
-                      <!-- <div class="row">
-                     <ul class="f-link list-unstyled mb-0 catag"> -->
-                        <!-- <li><a href="<?php echo URL::to('category/Thriller'); ?>">Thriller</a></li>
-                        <li><a href="<?php echo URL::to('category/Drama'); ?>">Drama</a></li>
-                        <li><a href="<?php echo URL::to('category/action'); ?>">Action</a></li>
-                         <li><a href="<?php echo URL::to('category/fantasy'); ?>">Fantasy</a></li> -->
-                         
-                          <!-- </ul>
-                          <ul class="f-link list-unstyled mb-0"> -->
-                        
-                         <!-- <li><a href="<?php echo URL::to('category/horror'); ?>">Horror</a></li>
-                         <li><a href="<?php echo URL::to('category/mystery'); ?>">Mystery</a></li>
-                         <li><a href="<?php echo URL::to('category/Romance'); ?>">Romance</a></li> -->
-                          <!-- </ul> -->
-                      <!-- </div> -->
-                      
-                      <!--<ul class="f-link list-unstyled mb-0">
-                        
-						<?php 
-                        
+                    <?php } ?>
+
+                </div>
+                         <p>2022 flicknexs Networks India Pvt. Ltd.</p>
+                    </div></div>
+             <!--   <div class="col-sm-3">
+                    <div class="small m-0 text-white"><p>The Best Streaming Platform</p></div>
+                    <div class="d-flex p-0 text-white icon mt-4">
+
+                    <?php if(!empty($settings->facebook_page_id)){?>
+                      <a href="https://www.facebook.com/<?php echo FacebookId();?>" target="_blank"  class="">
+                        <i class="fa fa-facebook" aria-hidden="true" style="padding: 0px 10px;"></i>
+                        </a>
+                    <?php } ?>
+
+                    <?php if(!empty($settings->skype_page_id)){?>
+                      <a href="https://www.skype.com/en/<?php echo SkypeId();?>" target="_blank"  class="">
+                        <i class="fa fa-skype"></i>
+                        </a>
+                    <?php } ?>
+
+                    <?php if(!empty($settings->twitter_page_id)){?>
+                      <a href="https://twitter.com/<?php echo TwiterId();?>" target="_blank"  class="">
+                        <i class="fa fa-twitter" aria-hidden="true"style="padding: 0px 10px;"></i>
+                        </a>
+                    <?php } ?>
+
+                    <?php if(!empty($settings->instagram_page_id)){?>
+                      <a href="https://www.instagram.com/<?php echo InstagramId();?>" target="_blank"  class="">
+                        <i class="fa fa-instagram" aria-hidden="true"style="padding: 0px 10px;"></i>
+                        </a>
+                    <?php } ?>
+
+                    <?php if(!empty($settings->linkedin_page_id)){?>
+                      <a href="https://www.linkedin.com/<?php echo linkedinId();?>" target="_blank"  class="">
+                        <i class="fa fa-linkedin" aria-hidden="true" style="padding: 0px 10px;"></i>
+                        </a>
+                    <?php } ?>
+
+
+                    <?php if(!empty($settings->whatsapp_page_id)){?>
+                      <a href="https://www.whatsapp.com/<?php echo YoutubeId();?>" target="_blank"  class="">
+                        <i class="fa fa-whatsapp"></i>
+                        </a>
+                    <?php } ?>
+
+                    <?php if(!empty($settings->youtube_page_id)){?>
+                      <a href="https://www.youtube.com/<?php echo YoutubeId();?>" target="_blank"  class="">
+                        <i class="fa fa-youtube"></i>
+                        </a>
+                    <?php } ?>
+
+                    <?php if(!empty($settings->google_page_id)){?>
+                      <a href="https://www.google.com/<?php echo GoogleId();?>" target="_blank" class="">
+                        <i class="fa fa-google-plus"></i>
+                        </a>
+                    <?php } ?>
+
+                </div>
+                </div>-->
+               <!-- <div class="col-sm-3 small m-0 text-white exp"><p class="ml-2">Explore</p>
+                    <ul class="text-white p-0 mt-3 ">
+                        <li><a href="<?php echo URL::to('home') ?>">Home</a></li>
+                        <li><a href="<?php echo URL::to('tv-shows') ?>">Tv Shows</a></li>
+                        <li><a href="<?php echo URL::to('audios') ?>">Audio</a></li>
+
+                    <?php if($user->package == 'Pro' && empty($session['password_hash']) || empty($session['password_hash']) ){ ?> 
+                          <li><a href="<?php echo URL::to('/cpp/signup') ;?>">Content Partner Portal</a></li>
+                          <li><a href="<?php echo URL::to('/advertiser/register') ;?>">Advertiser Portal</a></li>
+                          <li><a href="<?php echo URL::to('/channel/register') ;?>">Channel Portal</a></li>
+
+                        <?php }else{ }?>
+                    </ul>
+                </div>
+                <div class="col-sm-3 small m-0 text-white exp"><p class="ml-2">Company</p>
+                    <ul class="text-white p-0 mt-3 list-inline">
+                       <?php 
                         $pages = App\Page::all();
-                        
-                        foreach($pages as $page): ?>
-                        <?php if ( $page->slug != 'promotion' ){ ?>
-							<li><a href="<?php echo URL::to('page'); ?><?= '/' . $page->slug ?>"><?= __($page->title) ?></a></li>
-                        <?php } ?>
+                            foreach($pages as $page): ?>
+                            <?php if ( $page->slug != 'promotion' ){ ?>
+                                <li><a href="<?php echo URL::to('page'); ?><?= '/' . $page->slug ?>"><?= __($page->title) ?></a></li>
+                            <?php } ?>
 						<?php endforeach; ?>
-					</ul>-->
-				</div>
-                   <div class="col-lg-3 col-md-4 p-0">
-                     <!--<ul class="f-link list-unstyled mb-0">
-                        <li><a href="#">FAQ</a></li>
-                        <li><a href="#">Cotact Us</a></li>
-                        <li><a href="#">Legal Notice</a></li>
-                     </ul>-->
-                      <ul class="f-link list-unstyled mb-0">
-                        
-						<?php 
-                        
-                        $pages = App\Page::all();
-                        
-                        foreach($pages as $page): ?>
-                        <?php if ( $page->slug != 'promotion' ){ ?>
-							<li><a href="<?php echo URL::to('page'); ?><?= '/' . $page->slug ?>"><?= __($page->title) ?></a></li>
-                        <?php } ?>
-						<?php endforeach; ?>
-					</ul>
-				</div>
-                  
-                   </div>
-               </div>
+                    </ul>
+                </div>-->
+                <div class="col-sm-4 small m-0 text-white text-right"><h3 class="font-weight-bold mb-2">Download App</h3>
+                    <p>Available on Play Store</p>
+                    <img src="<?php echo URL::to('assets/img/gp2.png') ?> " alt="Play store" class="w-50">
+                </div>
             </div>
-         <div class="copyright py-2">
-            <div class="container-fluid">
-               <p class="mb-0 text-center font-size-14 text-body" style="color:#fff!important;"><?php echo $settings->website_name ; ?> - 2021 All Rights Reserved</p>
-            </div>
-         </div>
+        </div> 
       </footer>
           <!-- back-to-top End -->
      <!-- back-to-top End -->

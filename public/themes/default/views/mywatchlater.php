@@ -14,9 +14,10 @@
           <div class="row">
      <div class="col-sm-12 overflow-hidden">
         <div class="iq-main-header d-flex align-items-center justify-content-between">
-            <h4 class="Continue Watching">Media in My Watchlater</h4>
+            <h2 class="Continue Watching">Media in My Watchlater</h2>
         </div>
      </div>
+              </div>
      <section class="movie-detail ">
          <div class="row">
             <?php if(count($channelwatchlater) > 0): 
@@ -75,14 +76,16 @@
                 </li>
                 </a>
             </div>
+         </div>
+         
     <?php endforeach; 
         else: ?>
-            <p><h2>No Media in My Watchlater</h2></p>
-                 <div class="col-md-12 text-center mt-4">
-             <img class="w-50" src="<?php echo  URL::to('/assets/img/watch.png')?>">
+            
+                 <div class="col-md-12 text-center mt-5" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
+             <h3 class="text-center">No Media in My Watchlater</h3>
          </div>
         <?php endif; ?>
-         </div>
+        
       </section>
          </div>
      </div>

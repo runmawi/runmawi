@@ -128,7 +128,8 @@ class AdminAudioCategoriesController extends Controller
               }
                 //upload new file
               $file = $image;
-              $input['image']  = $file->getClientOriginalName();
+            //   $input['image']  = $file->getClientOriginalName();
+            $data['image'] = str_replace(' ', '_', $file->getClientOriginalName());
               $file->move($path, $input['image']);
          } else {
                $input['image']  = 'default.jpg';
@@ -239,7 +240,9 @@ class AdminAudioCategoriesController extends Controller
                   }
                   //upload new file
                   $file = $image;
-                  $category->image  = $file->getClientOriginalName();
+                //   $category->image  = $file->getClientOriginalName();
+                  $category->image  = str_replace(' ', '_', $file->getClientOriginalName());
+
                   $file->move($path,$category->image);
 
              } 
@@ -390,7 +393,8 @@ class AdminAudioCategoriesController extends Controller
              }
               //upload new file
              $file = $image;
-             $input['album']  = $file->getClientOriginalName();
+            //  $input['album']  = $file->getClientOriginalName();
+            $data['album'] = str_replace(' ', '_', $file->getClientOriginalName());
              $file->move($image_path, $input['album']);
          }
         
@@ -458,7 +462,8 @@ class AdminAudioCategoriesController extends Controller
              }
               //upload new file
              $file = $image;
-             $request['album']  = $file->getClientOriginalName();
+            //  $request['album']  = $file->getClientOriginalName();
+            $request['album'] = str_replace(' ', '_', $file->getClientOriginalName());
              $file->move($image_path, $request['album']);
          }
         

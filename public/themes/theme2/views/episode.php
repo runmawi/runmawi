@@ -29,7 +29,8 @@ $series=App\series::first();
 
 <input type="hidden" value="<?php echo URL::to('/');?>" id="base_url" >
 <input type="hidden" id="videoslug" value="<?php if(isset($episode->path)) { echo $episode->path; } else{ echo "0";}?>">
-	<div id="series_bg">
+<div class="container-fluid">
+	<div id="series_bg" class=" mt-3">
 		<div class="">
 			
 			<?php 
@@ -358,7 +359,7 @@ $series=App\series::first();
        </div>
      </div>
    </div>
-
+</div>
        
 		<div class="clear"></div>
 
@@ -478,6 +479,7 @@ location.reload();
     margin-bottom: 0;
     margin-left: 80%;
     margin-right: 0;
+        display: none;
 }
 input.skips,input#Recaps_Skip{
   background-color: #21252952;
@@ -485,6 +487,7 @@ input.skips,input#Recaps_Skip{
     padding: 15px 32px;
     text-align: center;
     margin: 4px 2px;
+    display: none;
 }
 #intro_skip{
 	display: none;
@@ -495,6 +498,11 @@ input.skips,input#Recaps_Skip{
     .slick-track{
         width: 0 auto!important;
         
+    }
+    #series_bg{
+         padding: 20px;
+          background: #202933;
+border-radius: 20px;
     }
 	</style>
 

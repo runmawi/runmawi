@@ -1,7 +1,7 @@
 <!-- Header -->
 
 @partial('category_header')
-<link href="<?php echo URL::to('public/themes/theme1/assets/css/style.css') ?>" rel="stylesheet">
+<link href="<?php echo URL::to('public/themes/theme2/assets/css/style.css') ?>" rel="stylesheet">
 
 <!-- Header End -->
 <!-- MainContent -->
@@ -24,7 +24,7 @@
                                         <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
                                             <div class="block-images position-relative">
                                                 <div class="img-box">
-                                                <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->player_image;  ?>" class="img-fluid" alt="" width="">
+                                                <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" class="img-fluid w-100" alt="" width="">
                                                
                                         </div>
                                                  </div>
