@@ -773,13 +773,13 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
        <input type="button" class="skips" value="Skip Intro" id="intro_skip">
        <input type="button" class="skips" value="Auto Skip in 5 Secs" id="Auto_skip">
   </div>
-  <!-- <div class="col-sm-12 end_card_video" style="position: absolute; top: -244%; width: 500%; height: 500%;" > -->
-  <?php // foreach($endcardvideo as $val) { ?>
-      <!-- <a href="<?php  //echo URL::to('category') ?><? //'/videos/' . $val->slug ?>"> -->
-   <!-- <img id="endcard" src="<?php //echo URL::to('/').'/public/uploads/images/' .$val->image ;?>" alt=""> -->
-      <!-- </a> -->
-      <?php  // } ?>
-  <!-- </div> -->
+  <div class="col-sm-12 end_card_video" style="position: absolute; top: -244%; width: 500%; height: 500%;" >
+  <?php foreach($endcardvideo as $val) { ?>
+      <a href="<?php  echo URL::to('category') ?><?= '/videos/' . $val->slug ?>">
+   <img id="endcard" src="<?php echo URL::to('/').'/public/uploads/images/' .$val->image ;?>" alt="">
+      </a>
+      <?php  } ?>
+  </div>
 
       <style>
         #endcard{
@@ -1045,7 +1045,7 @@ $artists = [];
 
 var currentTime = vid.currentTime;
 if(currentTime >= endtimevideo){
-  $('.end_card_video').show();
+  $('.end_card_video').hide();
   video.play();
 }
        })
