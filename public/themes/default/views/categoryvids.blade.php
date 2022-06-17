@@ -1,6 +1,6 @@
-<!-- Header -->
     @partial('category_header')
-<!-- Header End -->
+
+
 <style>
     .dropdown-menu{
         background-color: Gray!important;
@@ -19,15 +19,55 @@
                         <h2 class=""><?php echo __($data['category_title']);?></h2>
                     </div>
 
-                    <div class="form-group">
-                        <select id="refine" class="refine" name="refine[]" multiple="multiple" class="form-control" >
-                            <option value="movies" >Movies</option>
-                            <option value="tv_shows">Tv Shows</option>
-                            <option value="age">Age</option>
-                            <option value="rating">Ratings</option>
-                            <option value="new_added">Newly added First</option>
-                        </select>
-                    </div>
+                    {{-- filter Option --}}
+
+                    {{-- <div class="row d-flex ">
+
+                        <div class="col-md-3">
+                            <select class="selectpicker" multiple title="Refine" data-live-search="true">
+                                <option value="videos">Movie</option>
+                                <option value="tv_Shows">TV Shows</option>
+                                <option value="live_stream">Live stream</option>
+                                <option value="audios">Audios</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-3">
+                            <select class="selectpicker" multiple title="Age" name="age" id="age" data-live-search="true">
+                                @foreach($data['age_categories'] as $age)
+                                    <option value="{{ $age->age  }}">{{ $age->slug }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-md-3">
+                            <select class="selectpicker" multiple title="Rating" id="rating" data-live-search="true">
+                                <option value="1" >1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                            </select>
+                        </div>
+
+                        
+                        <div class="col-md-3">
+                            <select class="selectpicker " multiple  title="Newly added First" id="sorting" data-live-search="true">
+                                <option value="1">Latest Videos</option>
+                                <option value="2">oldest videos</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-3">
+                            <button type="button" class="btn btn-primary filter">Filter</button>
+                        </div>
+                    </div>   --}}
+
 
                      <div class="favorites-contens">
                         <ul class="category-page list-inline  row p-0 mb-4">
@@ -153,28 +193,38 @@
     include(public_path('themes/default/views/footer.blade.php'));
 @endphp
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css" />
+{{--Multiple Select  --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/js/bootstrap-select.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/css/bootstrap-select.min.css">
+
 
 <script>
 
-    $(document).ready(function(){
-        $('#refine').multiselect({
-            nonSelectedText: 'Refine',
-            buttonWidth:'400px'
-        });
-    });
+$(".filter").click(function(){
+    var age = [];
+    var rating = [];
+    var sorting = [];
 
-$(".refine").change(function(){
-    var selected = [];
-    for (var option of document.getElementById('refine').options)
+    for (var option of document.getElementById('age').options)
     {
         if (option.selected) {
-            selected.push(option.value);
+            age.push(option.value);
         }
     }
 
-    var Selected = selected;
+    for (var option of document.getElementById('rating').options)
+    {
+        if (option.selected) {
+            rating.push(option.value);
+        }
+    }
+
+    for (var option of document.getElementById('sorting').options)
+    {
+        if (option.selected) {
+            sorting.push(option.value);
+        }
+    }
 
     $.ajax({
             type: "get", 
@@ -182,9 +232,12 @@ $(".refine").change(function(){
             url: "{{ url('/category/other_category') }}",
              data: {
                  _token  : "{{csrf_token()}}" ,
-                 selected_items: Selected,
+                 age: age,
+                 rating: rating,
+                 sorting: sorting,
             },
             success: function(data) {
+                console.log('ss');
                 if(data.message == 'true'){
                     alert('Clear Cached Successfully');
                     location.reload();

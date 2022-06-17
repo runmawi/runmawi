@@ -150,7 +150,6 @@ class AdminLiveStreamController extends Controller
     {
 
         $data = $request->all();
-        // dd($data);
         $validatedData = $request->validate([
             // 'title' => 'required|max:255',
             // // 'slug' => 'required|max:255',
@@ -365,6 +364,7 @@ class AdminLiveStreamController extends Controller
             $Stream_key = random_int(1000000000, 9999999999);
             $movie->Stream_key = $Stream_key;
             $movie->Rtmp_url = $data['Rtmp_url'];
+            $movie->hls_url = str_replace( "streamkey",$Stream_key,$data['hls_url']);
         }
 
              
@@ -438,7 +438,7 @@ class AdminLiveStreamController extends Controller
                                                             'Stream_key' => $Stream_key,
                                                             'Stream_error' => '1' ,
                                                             'Rtmp_url' => $data['Rtmp_url'],
-                                                            'title' => $data['title']
+                                                            'title' => $data['title'],
                                                         ]);
                
             }
@@ -574,11 +574,14 @@ class AdminLiveStreamController extends Controller
             if(!empty($data['url_type']) && $video['url_type'] != "Encode_video" && $data['url_type'] == "Encode_video" ){
                 $Stream_key = random_int(1000000000, 9999999999);
                 $video->Stream_key = $Stream_key;
+
             }
+
 
             if(!empty($data['url_type']) && $data['url_type'] == "Encode_video" ){
                 if($data['Rtmp_url'] !=null){
                     $video->Rtmp_url =  $data['Rtmp_url'];
+                    $video->hls_url =  $data['hls_url'];
                 }
             }
         
