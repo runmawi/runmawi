@@ -149,7 +149,7 @@ overflow-hidden {
                                      <div class="">
                                         
                                        <div class="movie-time  align-items-center d-flex justify-content-between">
-                                           <div>  <h6><?php  echo (strlen($watchlater_video->title) > 15) ? substr($watchlater_video->title,0,80).'...' : $watchlater_video->title; ?></h6>
+                                           <div>  <h6><?php  echo (strlen($watchlater_video->title) > 15) ? substr($watchlater_video->title,0,15).'...' : $watchlater_video->title; ?></h6>
 </div>
                                           <div class="badge badge-secondary p-1 mr-2"><?php echo $watchlater_video->age_restrict.' '.'+' ?></div>
                                         
@@ -574,7 +574,7 @@ foreach($latest_videos as $watchlater_video): ?>
                                 <div class="tab-sec">
                                     <div class="tab-content">
                                     <div id="overview<?= $watchlater_video->id;?>" class="container tab-pane active"><br>
-                                           <h1 class="movie-title-thumb"><?php  echo (strlen($watchlater_video->title) > 15) ? substr($watchlater_video->title,0,80).'...' : $watchlater_video->title; ?></h1>
+                                           <h1 class="movie-title-thumb"><?php  echo (strlen($watchlater_video->title) > 15) ? substr($watchlater_video->title,0,15).'...' : $watchlater_video->title; ?></h1>
                                                    <p class="movie-rating">
                                                     <span class="thumb-star-rate"><i class="fa fa-star fa-w-18"></i><?= $watchlater_video->rating;?></span>
                                                     <span class="viewers"><i class="fa fa-eye"></i>(<?= $watchlater_video->views;?>)</span>
