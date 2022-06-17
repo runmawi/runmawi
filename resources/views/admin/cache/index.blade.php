@@ -25,10 +25,17 @@
 
                     <div class="panel-body">
                         <div class="row align-items-center p-2">
-                            <div class="col-sm-6">
+                            <div class="col-sm-3">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
                                     <div class="mt-1 d-flex align-items-center justify-content-around">
                                         <button class="button-87" role="button" id="clear_cache"> {{ ucwords('clear cache') }} </button>
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="col-sm-4">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                                    <div class="d-flex align-items-center justify-content-around">
+                                        <button class="button-87" role="button" id="clear_views_cache"> {{ ucwords('clear views cache') }} </button>
                                     </div>
                                 </div>
                             </div>
@@ -37,13 +44,7 @@
 
                     <div class="panel-body">
                         <div class="row align-items-center p-2">
-                            <div class="col-sm-6">
-                                <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
-                                    <div class="d-flex align-items-center justify-content-around">
-                                        <button class="button-87" role="button" id="clear_views_cache"> {{ ucwords('clear views cache') }} </button>
-                                    </div>
-                                </div>
-                            </div>
+                           
                         </div>
                     </div>
 
