@@ -200,7 +200,7 @@ border-radius: 0px 4px 4px 0px;
                         	@if(!empty($video->url_type) && $video->url_type == 'Encode_video')
                                 @foreach($Rtmp_urls as $key => $urls)
                                     @php     $number = $key+1;  @endphp
-                                    <option class="Encode_stream_video" value={{ "Encode_video" }} data-name="{{ $urls->rtmp_url }}" @if( $urls->rtmp_url == $video->rtmp_url ) {{ 'selected' }} @endif >{{ "RTMP Streaming"." ".$number }} </option>
+                                    <option class="Encode_stream_video" value={{ "Encode_video" }} data-name="{{ $urls->rtmp_url }}" data-hls-url="{{ $urls->hls_url  }}" @if( $urls->rtmp_url == $video->rtmp_url ) {{ 'selected' }} @endif >{{ "RTMP Streaming"." ".$number }} </option>
                                 @endforeach 
 					        @else
                                  @foreach($Rtmp_urls as $key => $urls)
@@ -234,7 +234,7 @@ border-radius: 0px 4px 4px 0px;
                     <div class="col-sm-6" id="url_rtmp">
                         <label class="m-0">RTMP URL</label>
                         <div class="panel-body">
-                            <input type="text" class="form-control" value="@if( !empty($video->Stream_key) && !empty($settings->rtmp_url) ) {{ $video->rtmp_url. $video->Stream_key }}  @else {{ 'NO RTML URL '}} @endif" readonly>
+                            <input type="text" class="form-control" value="@if( !empty($video->Stream_key) && !empty($settings->rtmp_url) ) {{ $video->rtmp_url }}  @else {{ 'NO RTML URL '}} @endif" readonly>
                         </div>
                     </div>
                 @endif
@@ -510,14 +510,17 @@ $( document ).ready(function() {
 		var Stream_keys = '{{ $Stream_key }}';
 		var Title = "{{ 'RTMP Streaming Details for'.' '. $title }}";
 		var Rtmp_url   = "{{ $Rtmp_url ? $Rtmp_url : 'No RTMP URL Added' }}" ;
+		var hls_url   = "{{ $hls_url ? $hls_url : 'No HLS URL Added' }}" ;
+
 	
 		if( Stream_error == 1){
 			Swal.fire({
 			allowOutsideClick:false,
 			icon: 'success',
 			title: Title,
-			html: '<div class="col-md-12">' + ' URL :  ' + Rtmp_url + '</div>' +"<br>"+ 
-					  '<div class="col-md-12">' + 'Stream Key :  ' +  Stream_keys + '</div>' ,
+			html: '<div class="col-md-12">' + 'RTMP URL :  ' + Rtmp_url + '</div>' +"<br>"+ 
+					  '<div class="col-md-12">' + 'Stream Key :  ' +  Stream_keys + '</div>'+"<br>"
+                      ,
 			}).then(function (result) {
 			if (result.value) {
 				@php
