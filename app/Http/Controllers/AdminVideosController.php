@@ -998,7 +998,7 @@ if(!empty($artistsdata)){
                 // $data['player_image']  = $player_image->getClientOriginalName();
             $data['player_image'] = str_replace(' ', '_', $player_image->getClientOriginalName());
 
-                $file->move($image_path, $data['player_image']);
+                $player_image->move($image_path, $data['player_image']);
                 // $player_image = $file->getClientOriginalName();
                $player_image = str_replace(' ', '_', $player_image->getClientOriginalName());
 
@@ -1736,8 +1736,8 @@ if(!empty($artistsdata)){
                 $player_image = $player_image;
                 // $data['player_image']  = $file->getClientOriginalName();
             $data['player_image'] = str_replace(' ', '_', $player_image->getClientOriginalName());
-
-                $file->move($image_path, $data['player_image']);
+                // dd($file->getClientOriginalName());
+                $player_image->move($image_path, $data['player_image']);
                 // $player_image = $file->getClientOriginalName();
                $player_image = str_replace(' ', '_', $player_image->getClientOriginalName());
 
