@@ -187,15 +187,16 @@ border-radius: 0px 4px 4px 0px;
 			var Rtmp_url   = "{{ $Rtmp_url ? $Rtmp_url : 'No RTMP URL Added' }}" ;	
 			var Stream_keys = '{{ $Stream_key }}';
 			var Title = "{{ 'RTMP Streaming Details for'.' '. $title }}";
-	
+			var hls_url   = "{{ $hls_url ? $hls_url : 'No HLS URL Added' }}" ;
 	
 		if( Stream_error == 1){
 			Swal.fire({
 			allowOutsideClick:false,
 			icon: 'success',
 			title: Title,
-			html: '<div class="col-md-12">' + ' URL :  ' + Rtmp_url + '</div>' +"<br>"+  
-					  '<div class="col-md-12">' + 'Stream Key :  ' +  Stream_keys + '</div>' ,
+			html: '<div class="col-md-12">' + 'RTMP URL :  ' + Rtmp_url + '</div>' +"<br>"+ 
+					  '<div class="col-md-12">' + 'Stream Key :  ' +  Stream_keys + '</div>'+"<br>"
+                     ,
 			}).then(function (result) {
 			if (result.value) {
 				@php
@@ -203,6 +204,7 @@ border-radius: 0px 4px 4px 0px;
 						session()->forget('Stream_error');
 						session()->forget('Rtmp_url');
 						session()->forget('title');
+						session()->forget('hls_url');
 				@endphp
 				location.href = "{{ URL::to('admin/livestream')}}";
 			}
