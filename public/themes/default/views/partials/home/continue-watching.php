@@ -10,7 +10,7 @@
                          foreach($cnt_watching as $cont_video): 
                           ?>
                        <li class="slide-item">
-                          <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>">
+                          <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>" target="_blank">
                              <div class="block-images position-relative">
                              <!-- block-images -->
                                 <div class="img-box">
