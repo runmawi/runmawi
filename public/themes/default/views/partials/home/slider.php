@@ -17,8 +17,8 @@
                         data-delay-in="0.6">
                         <?php
                         $title = $slider_video->title;
-                        $slidertitle = substr($title, 0, 40);                        
-                        echo ($slidertitle);
+                        $slidertitle = substr($title, 0, 80);                        
+                        echo ($slidertitle.'...');
                        //  echo __($slider_video->title); 
                         ?>
                     </h1>
@@ -58,9 +58,9 @@ endif; ?>
 data-delay-in="0.6">
 <?php 
  $title = $slider_video->title;
- $slidertitle = substr($title, 0, 40);                        
- echo ($slidertitle);
-// echo __($slider_video->title);
+ $slidertitle = substr($title, 0, 80);                        
+ echo ($slidertitle.'...');
+ // echo __($slider_video->title);
  ?>
 </h1>
 <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
@@ -131,8 +131,9 @@ endif; ?>
                         data-delay-in="0.6">
                         <?php 
                         $title = $videos->title;
-                        $slidertitle = substr($title, 0, 40);                        
-                        echo ($slidertitle); ?>
+                        $slidertitle = substr($title, 0, 80);                        
+                        echo ($slidertitle.'...');
+                        ?>
                     </h1>
                     <div data-animation-in="fadeInUp" data-delay-in="1.2"
                         style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
@@ -260,9 +261,9 @@ endif; ?>
 data-delay-in="0.6">
 <?php 
       $title = $slider_video->title;
-      $slidertitle = substr($title, 0, 40);                        
-      echo ($slidertitle);
-// echo __($slider_video->title);
+      $slidertitle = substr($title, 0, 80);                        
+      echo ($slidertitle.'...');
+      // echo __($slider_video->title);
 
 ?>
 </h1>
