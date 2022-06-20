@@ -548,13 +548,34 @@ return;
       'https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.1.2/lazysizes.min.js';
     document.body.appendChild(script);
   }
-
-
-
-
-
-
 </script>
+
+
+
+{{-- Prevent the Code  --}}
+
+<?php   $Prevent_inspect = App\HomeSetting::pluck('prevent_inspect')->first();
+if( $Prevent_inspect == 1){
+?>
+
+<script>
+        $(document).keydown(function (event) {
+            if (event.keyCode == 123) { // Prevent F12
+                alert("This function has been disabled");
+                return false;
+            } else if (event.ctrlKey && event.shiftKey && event.keyCode == 73) { // Prevent Ctrl+Shift+I 
+              alert("This function has been disabled ");       
+                return false;
+            }
+        });
+
+        $(document).on("contextmenu", function (e) {        
+            alert("This function has been disabled");
+            e.preventDefault();
+        });
+</script>
+
+<?php } ?>
 
 </body>
 </html>

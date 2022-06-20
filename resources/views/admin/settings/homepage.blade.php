@@ -232,6 +232,22 @@ border-radius: 0px 4px 4px 0px;
                                 </div>
                             </div>
 
+                            <div class="col-sm-4">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                                <div><label class="mt-1"> Prevent </label></div>
+                              
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                         <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                        <input type="checkbox"  @if ($settings->prevent_inspect  == 1) {{ "checked='checked'" }} @else {{ "" }} @endif name="prevent_inspect" id="prevent_inspect">
+                                        <span class="slider round"></span>
+                                        </label>
+                                        <div class="ml-2">ON</div>
+                                    </div>
+                                   
+                                </div>
+                            </div>
+
 
                         <!-- </div> -->
         </div>
@@ -723,3 +739,4 @@ border-radius: 0px 4px 4px 0px;
         </script>
 -->
 @stop
+
