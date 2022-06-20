@@ -376,7 +376,7 @@ class ChannelController extends Controller
             $ffprobe = FFProbe::create();
             $endtimevideos = $ffprobe->format($get_video_id->mp4_url) // extracts file informations
                ->get('duration');
-               $endtimevideo = $endtimevideos - 2;
+               $endtimevideo = $endtimevideos - 5;
           //  dd();  
               //  $duration = $ffprobe
               //  ->format($this->getCorrectPathOnServerAndLocal($get_video_id->type)) // extracts file informations
