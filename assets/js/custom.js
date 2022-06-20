@@ -121,7 +121,7 @@ Index Of Script
 		$('#home-slider').slick({
 			autoplay: false,
 			speed: 800,
-			lazyLoad: 'progressive',
+			 lazyLoad:true,
 			arrows: true,
 			dots: true,
 			prevArrow: '<div class="slick-nav prev-arrow"><i></i><svg><use xlink:href="#circle"></svg></div>',
@@ -156,7 +156,7 @@ Index Of Script
 			infinite: true,
 			speed: 300,
 			autoplay: false,
-			slidesToShow: 6,
+			slidesToShow: 7,
 			slidesToScroll: 1,		
 			// appendArrows: $('#sm-slick-arrow'),
 			
