@@ -101,7 +101,8 @@ $data = Session::all();
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
    <input type="hidden" value="<?php echo $settings->google_tracking_id ; ?>" name="tracking_id" id="tracking_id">
     <!-- Favicon -->
-           
+         <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/slick.css';?>" />
+      
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 
     <link rel="shortcut icon" type="image/png" href="<?= URL::to('/'). '/public/uploads/settings/'. $settings->favicon; ?>" />
@@ -114,8 +115,6 @@ $data = Session::all();
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/variable.css';?>" />
     <!-- Responsive -->
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/responsive.css';?>" />
-    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/slick.css';?>" />
-    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/slick.css';?>" />
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/plyr_marker.scss';?>" />
 
     
