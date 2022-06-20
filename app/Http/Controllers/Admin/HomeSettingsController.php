@@ -127,6 +127,12 @@ class HomeSettingsController extends Controller
             $settings->AutoIntro_skip = 0;
         }
 
+        if($request->prevent_inspect !=null){
+            $settings->prevent_inspect = 1;
+        }else{
+            $settings->prevent_inspect = 0;
+        }
+
         $settings->save();
         return redirect::to('/admin/home-settings');
     }

@@ -631,6 +631,20 @@ border-radius: 0px 4px 4px 0px;
                      <!-- <input type="text" class="form-control" id="#inputTag" name="searchtags" value="" data-role="tagsinput"> -->
                   </div>
                </div>
+               <div class="row">
+               <div class="col-sm-6 form-group" >
+                     <label class="m-0">Related Videos :</label>
+                     <select  name="related_videos[]" class="form-control js-example-basic-multiple" style="width: 100%;" multiple="multiple">
+                     @foreach($related_videos as $video)
+                     @if(in_array($video->id, $all_related_videos))
+                     <option value="{{ $video->id }}" selected="true">{{ $video->title }}</option>
+                     @else
+                     <option value="{{ $video->id }}"  > {{ $video->title }}</option>
+                     @endif      
+                     @endforeach
+                     </select>
+                     </div>
+               </div>
                    <div class="row">
                        <div class="col-sm-6 "> 
                            <div class="panel panel-primary" data-collapsed="0"> 
