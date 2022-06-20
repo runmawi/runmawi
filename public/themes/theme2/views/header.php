@@ -354,7 +354,7 @@ input:checked + .sliderk:before {
                                                    <?php } ?>
 
                                                    <li>
-                                                      <a class="dropdown-item cont-item" style="text-decoration: none!important;" href="<?php echo URL::to('/').'/category/'.$category->slug;?>"> 
+                                                      <a class="dropdown-item cont-item" style="text-decoration: none!important;" href="<?php echo URL::to('/categoryList');?>">  
                                                          <?php echo "More..." ;?> 
                                                       </a>
                                                    </li>
