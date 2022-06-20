@@ -1058,7 +1058,7 @@ endif; ?>
                              if($Kids_Mode == 1){
                                  $videos = $videos->where('age_restrict', '<', 10);
                              }
-                              $videos = $videos ->get();
+                              $videos = $videos->orderBy('videos.created_at','desc')->get();
                            }else{
 
                      $videos = App\Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
@@ -1093,7 +1093,7 @@ endif; ?>
                           if($Kids_Mode == 1){
                               $videos = $videos->where('age_restrict', '<', 10);
                           }
-                     $videos = $videos ->get();
+                     $videos = $videos->orderBy('videos.created_at','desc')->get();
                      }
                 ?>
                         <?php if (count($videos) > 0) { 

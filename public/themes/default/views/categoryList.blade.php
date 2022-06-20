@@ -20,7 +20,7 @@
                                             <img src="<?php echo URL::to('/').'/public/uploads/videocategory/'.$category_lists->image;  ?>" class="img-fluid" alt="">
                                         </div>
                             
-                                        <div class="block-description" style="bottom:-38px!important;">
+                                        <div class="block-description" >
                                                 <a href="{{ URL::to('category').'/'.$category_lists->slug   }}">
                                                     <h6><?php  echo (strlen($category_lists->name) > 17) ? substr($category_lists->name,0,18).'...' : $category_lists->name; ?></h6>
                                                 </a>

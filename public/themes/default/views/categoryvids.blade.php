@@ -63,9 +63,7 @@
                     </div>   --}}
 
 
-                     <div class="iq-main-header align-items-center">
-                        <h2 class=""><?php echo __($data['category_title']);?></h2>
-                     </div>
+                   
                      <div class="favorites-contens">
                         <ul class="category-page list-inline  row p-0 mb-4">
                             <?php if (count($data['categoryVideos']) > 0) { ?>         

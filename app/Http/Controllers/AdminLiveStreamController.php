@@ -38,6 +38,8 @@ class AdminLiveStreamController extends Controller
             $Stream_error =Session::get('Stream_error');
             $Rtmp_url = Session::get('Rtmp_url');
             $title = Session::get('title');
+            $hls_url = Session::get('hls_url');
+
             $user =  User::where('id',1)->first();
             $duedate = $user->package_ends;
             $current_date = date('Y-m-d');
@@ -85,6 +87,7 @@ class AdminLiveStreamController extends Controller
                 'Stream_error' => $Stream_error ? $Stream_error : 0 ,
                 'Rtmp_url'  => $Rtmp_url ? $Rtmp_url : null ,
                 'title' => $title ? $title : null,
+                'hls_url' => $hls_url ? $hls_url : null,
                 );
 
             return View('admin.livestream.index', $data);
@@ -443,6 +446,7 @@ class AdminLiveStreamController extends Controller
                                                             'Stream_error' => '1' ,
                                                             'Rtmp_url' => $data['Rtmp_url'],
                                                             'title' => $data['title'],
+                                                            'hls_url' => $data['hls_url'],
                                                         ]);
                
             }
@@ -488,6 +492,7 @@ class AdminLiveStreamController extends Controller
 
         $Stream_key = Session::get('Stream_key');
         $Stream_error =Session::get('Stream_error');
+        $hls_url  = Session::get('hls_url');
         $Rtmp_url = Session::get('Rtmp_url');
         $title = Session::get('title');
 
@@ -508,6 +513,7 @@ class AdminLiveStreamController extends Controller
             'Stream_error' => $Stream_error ? $Stream_error : 0 ,
             'Rtmp_url'  => $Rtmp_url ? $Rtmp_url : null ,
             'title' => $title ? $title : null,
+            'hls_url' => $hls_url ? $hls_url : null,
             );
 
         return View::make('admin.livestream.edit', $data); 
@@ -578,17 +584,20 @@ class AdminLiveStreamController extends Controller
             if(!empty($data['url_type']) && $video['url_type'] != "Encode_video" && $data['url_type'] == "Encode_video" ){
                 $Stream_key = random_int(1000000000, 9999999999);
                 $video->Stream_key = $Stream_key;
-
+                $video->hls_url = str_replace( "streamkey",$Stream_key,$data['hls_url']);
             }
 
 
             if(!empty($data['url_type']) && $data['url_type'] == "Encode_video" ){
                 if($data['Rtmp_url'] !=null){
                     $video->Rtmp_url =  $data['Rtmp_url'];
-                    $video->hls_url =  $data['hls_url'];
+                    $Stream_key = random_int(1000000000, 9999999999);
+                    $video->Stream_key = $Stream_key;
+                    $video->hls_url = str_replace( "streamkey",$Stream_key,$data['hls_url']);
                 }
+
             }
-        
+
            $image = ($request->file('image')) ? $request->file('image') : '';
            $mp4_url = (isset($data['mp4_url'])) ? $data['mp4_url'] : '';
         
@@ -772,7 +781,9 @@ class AdminLiveStreamController extends Controller
                                                     [ 'Stream_key' => $video['Stream_key'],
                                                       'Stream_error' => '1',
                                                       'Rtmp_url' => $data['Rtmp_url'] ? $data['Rtmp_url'] : $video['rtmp_url']  ,
-                                                      'title' => $data['title']
+                                                      'title' => $data['title'],
+                                                      'hls_url' =>  $data['hls_url'] ? $data['hls_url'] : $video['hls_url']  ,
+
                                                     ]);
         }else{
 

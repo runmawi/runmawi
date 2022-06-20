@@ -2299,13 +2299,16 @@ class HomeController extends Controller
                     else{
                         $Episodes = null ;
                     }
+
+                return $output.$audios.$livestreams.$Episodes;
             }
             else
             {
-                $output .= '<li class="list-group-item">' . 'No results' . '</li>';
+                $output = '<li class="list-group-item">' . 'No results' . '</li>';
+
+                return $output;
             }
 
-            return $output.$audios.$livestreams.$Episodes;
         }
     }
 
@@ -2374,7 +2377,7 @@ class HomeController extends Controller
         }
         else
         {
-            $videos = 0;
+            $videos = [];
         }
 
         $latest_videos = Video::where('search_tags', 'LIKE', '%' . $search_value . '%')
@@ -2662,7 +2665,7 @@ class HomeController extends Controller
         {
             $language_videos = $language_videos->whereNotIn('videos.id', $blockvideos);
         }
-        $language_videos = $language_videos->get();
+        $language_videos = $language_videos->orderBy('videos.created_at','desc')->get();
 
         $currency = CurrencySetting::first();
 

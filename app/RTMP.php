@@ -10,6 +10,7 @@ class RTMP extends Model
 
     protected $fillable = [
         'rtmp_url',
+        'hls_url',
         'created_at',
         'updated_at',
     ];
