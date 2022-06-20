@@ -531,13 +531,25 @@
                             -->
                                 
                             </div>
-                            <div class="">
+                            <div class="row">
                             <div class="col-sm-6 form-group mt-3" id="ppv_price">
                                     <label for="">Search Tags</label>
                                         <input type="text" id="exist-values" class="tagged form-control1" data-removeBtn="true" name="searchtags" value="@if(!empty($video->search_tags)){{ $video->search_tags }}@endif" >
                                         <!-- <input type="text" class="form-control" id="#inputTag" name="searchtags" value="" data-role="tagsinput"> -->
                                     </div>
                                 </div>
+                                <div class="col-sm-6 form-group" >
+                                    <label class="m-0">Related Videos :</label>
+                                    <select  name="related_videos[]" class="form-control js-example-basic-multiple" style="width: 100%;" multiple="multiple">
+                                    @foreach($related_videos as $video)
+                                    @if(in_array($video->id, $all_related_videos))
+                                    <option value="{{ $video->id }}" selected="true">{{ $video->title }}</option>
+                                    @else
+                                    <option value="{{ $video->id }}"  > {{ $video->title }}</option>
+                                    @endif      
+                                    @endforeach
+                                    </select>
+                                  </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-6 form-group mt-3" id="ppv_price">

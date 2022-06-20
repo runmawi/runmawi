@@ -765,6 +765,16 @@ data: {
                                         </div> 
                                     </div>
                                 </div> -->
+                                
+                                <div class="col-sm-6 form-group">
+                                       <label class="m-0">Related Videos:</label>
+                                       <select  name="related_videos[]" class="form-control js-example-basic-multiple" style="width: 100%;" multiple="multiple">
+                                          <!-- <option value="">Choose Videos</option> -->
+                                             @foreach($related_videos as $key => $video)
+                                                <option value="{{ $video->id }}"  > {{ $video->title }}</option>
+                                             @endforeach
+                                       </select>
+                                    </div>
                             </div>
                           
                             <!-- </div> -->
