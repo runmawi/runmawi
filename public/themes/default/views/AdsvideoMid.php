@@ -6,8 +6,8 @@
   $AdsVideosMid = App\AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
     ->Join('videos','advertisements.ads_category','=','videos.ads_category')
     ->whereDate('start', '=', Carbon\Carbon::now()->format('Y-m-d'))
-    ->whereTime('start', '<=', $current_time)
-    ->whereTime('end', '>=', $current_time)
+    // ->whereTime('start', '<=', $current_time)
+    // ->whereTime('end', '>=', $current_time)
     ->where('ads_events.status',1)
     ->where('advertisements.status',10)
     ->where('advertisements.ads_position','mid')
@@ -53,7 +53,7 @@
 
     if( $ads_position_mid !=null && $ads_position_mid == 'mid'){
 
-        $ads_start_tym_mid = '0.1';
+        $ads_start_tym_mid = '30';
 
     }else{
         $ads_start_tym_mid = ' ';
@@ -93,13 +93,16 @@
                   $('#ads_start_tym_mid').replaceWith('<input type="hidden" id="ads_start_tym_mid" class="ads_start_tym_mid" value="'+ ads_end_tym_mid+'">');
                   $('.ads_show_status_mid').replaceWith('<input type="hidden" id="" class="ads_show_status_mid"  value="0">');
                   document.getElementById("Ads_vies_count_mid").click();
+                  $(".plyr__controls__item ").css("display", "none");
+                  $(".plyr__time ").css("display", "block");
             }
-            else if(ads_show_status == 0){
+            else if(ads_show_status_mid == 0){
                   $('.ads_show_status_mid').replaceWith('<input type="hidden" id="" class="ads_show_status_mid"  value="5">');
                   $('.adstime_url').attr('src', normal_videos_mid);
+                  $(".plyr__controls__item").css("display", "block");
 
                   document.getElementById('videoPlayer').addEventListener('loadedmetadata', function() {
-                      this.currentTime = 0;
+                      this.currentTime = 30;
                     }, true);
 
                 videoId.play();
