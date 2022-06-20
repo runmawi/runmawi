@@ -102,7 +102,9 @@ class AdminPpvController extends Controller
               }
               //upload new file
               $file = $image;
-              $data['image']  = $file->getClientOriginalName();
+            //   $data['image']  = $file->getClientOriginalName();
+            $data['image'] = str_replace(' ', '_', $file->getClientOriginalName());
+
               $file->move($image_path, $data['image']);
 
          } 
@@ -333,7 +335,8 @@ class AdminPpvController extends Controller
               }
               //upload new file
               $file = $image;
-              $data['image']  = $file->getClientOriginalName();
+            //   $data['image']  = $file->getClientOriginalName();
+            $data['image'] = str_replace(' ', '_', $file->getClientOriginalName());
               $file->move($image_path, $data['image']);
 
          } 

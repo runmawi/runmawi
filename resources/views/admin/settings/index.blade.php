@@ -945,7 +945,8 @@ border-radius: 0px 4px 4px 0px;
 
                                 @forelse($rtmp_url as $key => $url)
                                     <tr>  
-                                        <td class="col-md-6" ><input type="text" name="rtmp_url[0][url]" placeholder="rtmp://123.456.789.123/hls/" class="form-control rtmp_urls" value="{{ $url->rtmp_url }}" readonly/></td>  
+                                        <td class="col-md-4" ><input type="text" name="addmore[0][rtmp_url]" placeholder="rtmp://75.119.145.126:1935/show/" class="form-control rtmp_urls" value="{{ $url->rtmp_url }}" readonly/></td>  
+                                        <td class="col-md-5" ><input type="text" name="addmore[0][hls_url]" placeholder="http://75.119.145.126:9090/hls/streamkey/index.m3u8" class="form-control rtmp_urls" value="{{ $url->hls_url }}" readonly/></td>  
                                         <td class="col-md-4">
                                             <button type="button" name="add" id="add" class="btn btn-success add">Add </button>
                                             <button type="button" name="remove_url" id="remove_url" class="btn btn-danger remove_url"  data-name="{{ $url->id }}" value="{{ $url->rtmp_url }}" onclick="addRow(this)" >Remove</button>
@@ -953,7 +954,9 @@ border-radius: 0px 4px 4px 0px;
                                     </tr>  
                                 @empty
                                     <tr>  
-                                        <td ><input type="text" name="rtmp_url[0][url]" placeholder="rtmp://123.456.789.123/hls/" class="form-control" /></td>  
+                                        <td ><input type="text" name="addmore[0][rtmp_url]" placeholder=" rtmp://75.119.145.126:1935/show" class="form-control" /></td>  
+                                        <td ><input type="text" name="addmore[0][hls_url]" placeholder="http://75.119.145.126:9090/hls/streamkey/index.m3u8" class="form-control" /></td>  
+
                                         <td >
                                             <button type="button" name="add" id="add" class="btn btn-success add">Add </button> 
                                         </td>  
@@ -1445,7 +1448,7 @@ $('form[id="Setting_rtmpURL"]').validate({
        
        $(".add").click(function(){
            ++i;
-           $("#dynamicTable").append('<tr><td><input type="text" name="rtmp_url['+i+'][url]" placeholder="rtmp://123.456.789.123/hls/"  class="form-control" /></td><td><button type="button" class="btn btn-danger remove-tr">Remove</button></td></tr>');
+           $("#dynamicTable").append('<tr><td class="col-md-4"><input type="text" name="addmore['+i+'][rtmp_url]" placeholder="rtmp://123.456.789.123/hls/"  class="form-control" /></td> <td class="col-md-5"> <input type="text" name="addmore['+i+'][hls_url]" placeholder="http://75.119.145.126:9090/hls/streamkey/index.m3u8"  class="form-control" /></td><td><button type="button" class="btn btn-danger remove-tr">Remove</button></td></tr>');
        });
       
        $(document).on('click', '.remove-tr', function(){  

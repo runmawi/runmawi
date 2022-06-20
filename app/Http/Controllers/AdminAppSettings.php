@@ -162,23 +162,24 @@ class AdminAppSettings extends Controller
 
       public function rtmpUpdate(Request $request)
       {
-          $rtmp_url  =  $request->rtmp_url;
 
+      
+        foreach ($request->addmore as $key => $value) {
 
-          foreach($rtmp_url as $url){
+            $checking = RTMP::first();
 
-           $checking = RTMP::where('rtmp_url',$url['url'])->first();
-
-            if($checking == null){
-              
-              $RTMP_url = new RTMP;
-              $RTMP_url->rtmp_url = $url['url'] ;
-              $RTMP_url->save();
-
+            if( $checking != null){
+                if($key > 0){
+                  RTMP::create($value);
+                }
             }
-          }
-          
-          return Redirect::back();
+            else{
+              RTMP::create($value);
+            }
+        }
+
+        return back()->with('success', 'Record Created Successfully.');
+
       }
 
       public function rtmp_remove(Request $request)
