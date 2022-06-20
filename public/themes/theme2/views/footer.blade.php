@@ -671,7 +671,6 @@ return;
 </script>
 
 
-{{-- Prevent the Code  --}}
 
 <?php   $Prevent_inspect = App\HomeSetting::pluck('prevent_inspect')->first();
 if( $Prevent_inspect == 1){

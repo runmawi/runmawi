@@ -2665,7 +2665,7 @@ class HomeController extends Controller
         {
             $language_videos = $language_videos->whereNotIn('videos.id', $blockvideos);
         }
-        $language_videos = $language_videos->get();
+        $language_videos = $language_videos->orderBy('videos.created_at','desc')->get();
 
         $currency = CurrencySetting::first();
 
