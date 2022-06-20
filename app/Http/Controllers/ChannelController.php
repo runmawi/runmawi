@@ -53,6 +53,7 @@ use FFMpeg\FFProbe;
 use FFMpeg\Coordinate\Dimension;
 use FFMpeg\Coordinate\TimeCode;
 use FFMpeg\Format\Video\X264;
+use App\RelatedVideo;
 
 class ChannelController extends Controller
 {
@@ -370,28 +371,46 @@ class ChannelController extends Controller
            ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
            ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
            ->where('videos.id','!=',$vid)
-           ->limit(3)->get();
+           ->limit(5)->get();
            }
-           if($get_video_id->type == "mp4_url"){
-            $ffprobe = FFProbe::create();
-            $endtimevideos = $ffprobe->format($get_video_id->mp4_url) // extracts file informations
-               ->get('duration');
-               $endtimevideo = $endtimevideos - 2;
-          //  dd();  
-              //  $duration = $ffprobe
-              //  ->format($this->getCorrectPathOnServerAndLocal($get_video_id->type)) // extracts file informations
-              //  ->get('duration');
-              //  dd($endtimevideo - 2);
-           }else{
-            $endtimevideo = '';
-           }
-           
-          //  dd($endtimevideo);
-           if(!empty($endcardvideo)){
+          //  RelatedVideo
+          $related_videos =  Video::select('videos.*','related_videos.id as related_videos_id','related_videos.related_videos_title as related_videos_title')
+           ->Join('related_videos', 'videos.id', '=', 'related_videos.video_id')
+           ->where('related_videos.video_id','=',$vid)
+           ->limit(5)->get();
+          //  RelatedVideo::where('video_id', $id)->pluck('related_videos_id')->toArray();
+          // dd($related_videos);
+          
+           if(count($related_videos) < 0 ){
+            $endcardvideo = $related_videos;
+           }elseif(!empty($endcardvideo)){
             $endcardvideo = $endcardvideo;
            }else{
             $endcardvideo = [];
            }
+          //  dd($endcardvideo);
+
+
+           if($get_video_id->type == "mp4_url"){
+            $ffprobe = FFProbe::create();
+            $endtimevideos = $ffprobe->format($get_video_id->mp4_url) // extracts file informations
+               ->get('duration');
+               $endtimevideo = $endtimevideos - 5;
+           }elseif($get_video_id->type == "m3u8_url"){
+            $ffprobe = FFProbe::create();
+            $endtimevideos = $ffprobe->format($get_video_id->m3u8_url) // extracts file informations
+               ->get('duration');
+               $endtimevideo = $endtimevideos - 5;
+           }elseif($get_video_id->type == ""){
+            $ffprobe = FFProbe::create();
+            $endtimevideos = $ffprobe->format($get_video_id->mp4_url) // extracts file informations
+               ->get('duration');
+               $endtimevideo = $endtimevideos - 5;
+           }else{
+            $endtimevideo = '';
+           }
+           
+ 
            if(!empty($recomendeds)){
             foreach($recomendeds as $category){
               if(in_array($category->categories_id, $categoryvideo)){

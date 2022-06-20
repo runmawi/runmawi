@@ -49,6 +49,7 @@ use Exception;
 use getID3;
 use App\AdsVideo;
 use App\VideoSearchTag;
+use App\RelatedVideo;
 
 
 
@@ -477,6 +478,7 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
                     'post_route' => URL::to('cpp/videos/fileupdate'),
                     'button_text' => 'Add New Video',
                     // 'admin_user' => Auth::user(),
+                    'related_videos' => Video::get(),
                     'video_categories' => VideoCategory::all(),
                     'video_subtitle' => VideosSubtitle::all(),
                     'languages' => Language::all(),
@@ -854,6 +856,8 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
                 'subtitles' => Subtitle::all(),
                 'languages' => Language::all(),
                 'artists' => Artist::all(),
+                'related_videos' => Video::get(),
+                'all_related_videos' => RelatedVideo::where('video_id', $id)->pluck('related_videos_id')->toArray(),
                 'settings' => $settings,
                 'countries' => CountryCode::all(),
                 'age_categories' => AgeCategory::all(),
@@ -1260,6 +1264,32 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
 
         //  dd($data['enable']);
          $video->save();
+
+
+         if(!empty($data['related_videos'])){
+
+            RelatedVideo::where('video_id', $video->id)->delete();
+        $related_videos = $data['related_videos'];
+        // unset($data['related_videos']);
+        /*save artist*/
+        if(!empty($related_videos)){
+            
+            foreach ($related_videos as $key => $vid) {
+                // RelatedVideo::where('video_id', $video->id)->delete();
+
+                $videos = Video::where('id',$vid)->get();
+                foreach ($videos as $key => $val) {
+                $RelatedVideo = new RelatedVideo;
+                $RelatedVideo->video_id = $video->id;
+                $RelatedVideo->user_id = Auth::user()->id;
+                $RelatedVideo->related_videos_id = $val->id;
+                $RelatedVideo->related_videos_title = $val->title;
+                $RelatedVideo->save();
+                }
+   
+            }                    
+        }
+    }
 
          if(!empty($data['artists'])){
             $artistsdata = $data['artists'];
@@ -1805,6 +1835,28 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
                     $videosearchtags->video_id = $video->id;
                     $videosearchtags->search_tag = $value;
                     $videosearchtags->save();
+                }
+            }
+
+
+            if(!empty($data['related_videos'])){
+                $related_videos = $data['related_videos'];
+                // unset($data['related_videos']);
+                /*save artist*/
+                if(!empty($related_videos)){
+                    
+                    foreach ($related_videos as $key => $vid) {
+                        $videos = Video::where('id',$vid)->get();
+                        foreach ($videos as $key => $val) {
+                         $RelatedVideo = new RelatedVideo;
+                        $RelatedVideo->video_id = $id;
+                        $RelatedVideo->user_id = Auth::user()->id;
+                        $RelatedVideo->related_videos_id = $val->id;
+                        $RelatedVideo->related_videos_title = $val->title;
+                        $RelatedVideo->save();
+                        }
+           
+                    }                    
                 }
             }
                      if(!empty($data['artists'])){

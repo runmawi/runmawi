@@ -53,6 +53,8 @@ use App\ReelsVideo;
 use App\PpvPurchase as PpvPurchase;
 use App\Adscategory;
 use App\VideoSearchTag;
+use App\RelatedVideo;
+
 
 
 class AdminVideosController extends Controller
@@ -535,6 +537,7 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
             'post_route' => URL::to('admin/videos/fileupdate'),
             'button_text' => 'Add New Video',
             'admin_user' => Auth::user(),
+            'related_videos' => Video::get(),
             'video_categories' => VideoCategory::all(),
             'ads' => Advertisement::where('status','=',1)->get(),
             'video_subtitle' => VideosSubtitle::all(),
@@ -902,7 +905,10 @@ if(!empty($artistsdata)){
         $ads_category = Adscategory::get();
 
         $Reels_videos = Video::Join('reelsvideo','reelsvideo.video_id','=','videos.id')->where('videos.id',$id)->get();
+        $related_videos = Video::get();
 
+        $all_related_videos = RelatedVideo::where('video_id', $id)->pluck('related_videos_id')->toArray();
+        // dd($all_related_videos);
         $data = array(
             'headline' => '<i class="fa fa-edit"></i> Edit Video',
             'video' => $video,
@@ -916,6 +922,8 @@ if(!empty($artistsdata)){
             'languages' => Language::all(),
             'artists' => Artist::all(),
             'settings' => $settings,
+            'related_videos' => Video::get(),
+            'all_related_videos' => RelatedVideo::where('video_id', $id)->pluck('related_videos_id')->toArray(),
             'age_categories' => AgeCategory::get(),
             'countries' => CountryCode::all(),
             'video_artist' => Videoartist::where('video_id', $id)->pluck('artist_id')->toArray(),
@@ -1408,6 +1416,33 @@ if(!empty($artistsdata)){
 
          $video->save();
 
+
+// dd($data['related_videos']);
+
+         if(!empty($data['related_videos'])){
+
+                RelatedVideo::where('video_id', $video->id)->delete();
+            $related_videos = $data['related_videos'];
+            // unset($data['related_videos']);
+            /*save artist*/
+            if(!empty($related_videos)){
+                
+                foreach ($related_videos as $key => $vid) {
+                    // RelatedVideo::where('video_id', $video->id)->delete();
+
+                    $videos = Video::where('id',$vid)->get();
+                    foreach ($videos as $key => $val) {
+                    $RelatedVideo = new RelatedVideo;
+                    $RelatedVideo->video_id = $video->id;
+                    $RelatedVideo->user_id = Auth::user()->id;
+                    $RelatedVideo->related_videos_id = $val->id;
+                    $RelatedVideo->related_videos_title = $val->title;
+                    $RelatedVideo->save();
+                    }
+       
+                }                    
+            }
+        }
          if(!empty($data['artists'])){
             $artistsdata = $data['artists'];
             unset($data['artists']);
@@ -1674,9 +1709,9 @@ if(!empty($artistsdata)){
 
             $id = $data['video_id'];
             $video = Video::findOrFail($id);
-              
+            // RelatedVideo
 
-
+            // dd($videos);
             if(!empty($video->embed_code)) {
                 $embed_code = $video->embed_code;
             }else{
@@ -2088,6 +2123,28 @@ if(!empty($artistsdata)){
                     $category->video_id = $video->id;
                     $category->category_id = $other_category_id;
                     $category->save();
+            }
+
+
+            if(!empty($data['related_videos'])){
+                $related_videos = $data['related_videos'];
+                // unset($data['related_videos']);
+                /*save artist*/
+                if(!empty($related_videos)){
+                    
+                    foreach ($related_videos as $key => $vid) {
+                        $videos = Video::where('id',$vid)->get();
+                        foreach ($videos as $key => $val) {
+                         $RelatedVideo = new RelatedVideo;
+                        $RelatedVideo->video_id = $id;
+                        $RelatedVideo->user_id = Auth::user()->id;
+                        $RelatedVideo->related_videos_id = $val->id;
+                        $RelatedVideo->related_videos_title = $val->title;
+                        $RelatedVideo->save();
+                        }
+           
+                    }                    
+                }
             }
 
             if(!empty($data['language'])){

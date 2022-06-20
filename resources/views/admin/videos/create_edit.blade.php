@@ -245,7 +245,7 @@ border-radius: 0px 4px 4px 0px;
                             <p>Click <a href="#"onclick="EmbedCopy();" class="share-ico"><i class="ri-links-fill"></i> here</a> to get the Embedded URL</p>
                         </div>
 
-                      <div id="video_container" class="fitvid" atyle="z-index: 9999;" >
+                      <div id="video_container" class="fitvid col-sm-12" atyle="z-index: 9999;" >
                         @if($video->type == 'mp4_url')
                            <video id="videoPlayer"  class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4">
                               <source src="<?php if(!empty($video->mp4_url)){   echo $video->mp4_url; }else {  echo $video->trailer; } ?>"  type='video/mp4' label='auto' >
@@ -630,6 +630,20 @@ border-radius: 0px 4px 4px 0px;
                      <input type="text" id="exist-values" class="tagged form-control1" data-removeBtn="true" name="searchtags" value="@if(!empty($video->search_tags)){{ $video->search_tags }}@endif" >
                      <!-- <input type="text" class="form-control" id="#inputTag" name="searchtags" value="" data-role="tagsinput"> -->
                   </div>
+               </div>
+               <div class="row">
+               <div class="col-sm-6 form-group" >
+                     <label class="m-0">Related Videos :</label>
+                     <select  name="related_videos[]" class="form-control js-example-basic-multiple" style="width: 100%;" multiple="multiple">
+                     @foreach($related_videos as $video)
+                     @if(in_array($video->id, $all_related_videos))
+                     <option value="{{ $video->id }}" selected="true">{{ $video->title }}</option>
+                     @else
+                     <option value="{{ $video->id }}"  > {{ $video->title }}</option>
+                     @endif      
+                     @endforeach
+                     </select>
+                     </div>
                </div>
                    <div class="row">
                        <div class="col-sm-6 "> 

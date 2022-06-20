@@ -68,6 +68,10 @@ input.skips,input#Recaps_Skip{
 #Auto_skip{
 	display: none;
 }
+#end_card_video{
+  /* end_card_video */
+	display: none;
+}
       h4{
           font-size:22px!important;
       }
@@ -767,7 +771,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
        <input type="button" class="skips" value="Skip Intro" id="intro_skip">
        <input type="button" class="skips" value="Auto Skip in 5 Secs" id="Auto_skip">
   </div>
-  <div class="col-sm-12 end_card_video" style="position: absolute; top: -244%; width: 500%; height: 500%;" >
+  <div class="col-sm-12 end_card_video" id="end_card_video" style="position: absolute; top: -244%; width: 500%; height: 500%;" >
   <?php foreach($endcardvideo as $val) { ?>
       <a href="<?php  echo URL::to('category') ?><?= '/videos/' . $val->slug ?>">
    <img id="endcard" src="<?php echo URL::to('/').'/public/uploads/images/' .$val->image ;?>" alt="">
@@ -1017,6 +1021,8 @@ $artists = [];
    </script>
    <script src="https://checkout.stripe.com/checkout.js"></script>
    <div class="clear"></div>
+
+
        <script>
 
 
@@ -1031,18 +1037,13 @@ $artists = [];
 // });
 // });
 
-
          $(document).ready(function () { 
-          var endtimevideo = '<?= $endtimevideo ?>';
-      // alert(endtimevideo);
-  $('.end_card_video').hide();
+    
+})
 
-var currentTime = vid.currentTime;
-if(currentTime >= endtimevideo){
-  $('.end_card_video').hide();
-  video.play();
-}
-       })
+
+
+      //  })
 
       //  $(videoPlayers).on("load",function(){
       //   // alert(url);
@@ -1356,6 +1357,25 @@ location.reload();
   var End = <?php echo json_encode($EndSec); ?>;
   var AutoSkip = <?php echo json_encode($Auto_skip['AutoIntro_skip']); ?>;
   var IntroskipEnd = <?php echo json_encode($skipIntroTime); ?>;
+
+
+
+var endtimevideo = '<?= $endtimevideo ?>';
+
+var videotype_Ids = <?php echo json_encode($video_type_id); ?>;
+var endtimevideo = <?php echo json_encode($endtimevideo); ?>;
+// alert(videotype_Ids);
+
+  var video = document.getElementById(videotype_Ids);
+// alert(video);
+
+          this.video.addEventListener('timeupdate', (e) => {
+         document.getElementById("end_card_video").style.display = "none";
+            if (e.target.currentTime >= endtimevideo) {
+                    document.getElementById("end_card_video").style.display = "block"; // Manual skip
+            } 
+              
+        });
 
 if( SkipIntroPermissions == 1 ){
   button.addEventListener("click", function(e) {

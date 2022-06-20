@@ -705,11 +705,21 @@ border-radius: 0px 4px 4px 0px;
                               </div>
                            </div>
                            <div class="row">
-                              <div class="col-sm-6 form-group mt-3" id="ppv_price">
+                              <div class="col-sm-6 form-group mt-3" >
                                  <label for="">Search Tags </label>
                                     <!-- <input type="text" class="form-control" id="#inputTag" name="searchtags" value="" data-role="tagsinput"> -->
                                     <input type="text" id="exist-values" class="tagged form-control1" data-removeBtn="true" name="searchtags" value="" >
                                  </div>
+
+                                 <div class="col-sm-6 form-group">
+                                       <label class="m-0">Related Videos:</label>
+                                       <select  name="related_videos[]" class="form-control js-example-basic-multiple" style="width: 100%;" multiple="multiple">
+                                          <!-- <option value="">Choose Videos</option> -->
+                                             @foreach($related_videos as $key => $video)
+                                                <option value="{{ $video->id }}"  > {{ $video->title }}</option>
+                                             @endforeach
+                                       </select>
+                                    </div>
                            </div>
 
                            <div class="row">
