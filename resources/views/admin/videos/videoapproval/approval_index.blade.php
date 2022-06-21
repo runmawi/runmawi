@@ -53,8 +53,10 @@ border-radius: 0px 4px 4px 0px;
                                     <th>Title</th>
                                     <th>Video Uploaded By</th>
                                     <th>Video Type</th>
-                                    <th>Rating</th>
-                                    <th>Video Access</th>
+                                    <th>Uploaded Date</th>
+                                    <th>Video Duration</th>
+                                    <th>Video Category</th>
+                                    <th>Video Meta</th>
                                     <th>Status</th>
                                     <th >Action</th>
                                  </tr>
@@ -76,8 +78,11 @@ border-radius: 0px 4px 4px 0px;
                                     </td>
                                     <td>{{ $video->username }}</td>
                                     <td>{{ $video->type }}</td>
-                                    <td>{{ $video->rating }}</td>
-                                    <td>{{ $video->access }}</td>
+                                    <td>{{ $video->created_at }}</td>
+                                    <td>{{ gmdate('H:i:s', $video->duration) }}</td>
+                                    <td>{{ $video->name }}</td>
+                                    <td>{{ $video->description }}</td>
+                                    <!-- <td>{{ $video->access }}</td> -->
                                     
                                     <td>
                                     <?php if($video->active == 0){
