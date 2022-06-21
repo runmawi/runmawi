@@ -605,7 +605,7 @@ return;
 </script>
 
 
-<?php   $Prevent_inspect = App\HomeSetting::pluck('prevent_inspect')->first();
+<?php   $Prevent_inspect = App\SiteTheme::pluck('prevent_inspect')->first();
 if( $Prevent_inspect == 1){
 ?>
 
