@@ -75,10 +75,17 @@
                         <li><a href="<?php echo URL::to($language_href) ?>"><?php echo $lan->name; ?> </a></li>
 
                         <?php }}?>
-                         <li><a href="<?php echo URL::to('latest-videos') ?>">Latest Videos</a></li>
-                        <li><a href="<?php echo URL::to('tv-shows') ?>">Tv Shows</a></li>
-                        <li><a href="<?php echo URL::to('audios') ?>">Audio</a></li>
-                        <li><a href="<?php echo URL::to('live') ?>">Live</a></li>
+
+                        <?php $column2_footer = App\FooterLink::where('column_position',2)->orderBy('order')->get();  
+                          foreach ($column2_footer as $key => $footer_link){ ?>
+
+                            <li><a href="<?php echo URL::to('/'.$footer_link->link) ?>">
+                                    <?php echo  $footer_link->name ; ?>
+                                </a>
+                            </li>
+                        
+                        <?php  } ?>
+
                         <?php if($user->package == 'Pro' && empty($session['password_hash']) || empty($session['password_hash']) ){ ?> 
                           <li><a href="<?php echo URL::to('/cpp/signup') ;?>">Content Partner Portal</a></li>
                           <li><a href="<?php echo URL::to('/advertiser/register') ;?>">Advertiser Portal</a></li>
@@ -87,55 +94,24 @@
                         <?php }else{ }?>
                      </ul>
                   </div>                  
-                  <!-- <div class="col-lg-3 col-md-4"> -->
-                      <!-- <div class="row">
-                     <ul class="f-link list-unstyled mb-0 catag"> -->
-                        <!-- <li><a href="<?php echo URL::to('category/Thriller'); ?>">Thriller</a></li>
-                        <li><a href="<?php echo URL::to('category/Drama'); ?>">Drama</a></li>
-                        <li><a href="<?php echo URL::to('category/action'); ?>">Action</a></li>
-                         <li><a href="<?php echo URL::to('category/fantasy'); ?>">Fantasy</a></li> -->
-                         
-                          <!-- </ul>
-                          <ul class="f-link list-unstyled mb-0"> -->
-                        
-                         <!-- <li><a href="<?php echo URL::to('category/horror'); ?>">Horror</a></li>
-                         <li><a href="<?php echo URL::to('category/mystery'); ?>">Mystery</a></li>
-                         <li><a href="<?php echo URL::to('category/Romance'); ?>">Romance</a></li> -->
-                          <!-- </ul> -->
-                      <!-- </div> -->
+                 
                       
-                      <!--<ul class="f-link list-unstyled mb-0">
-                        
-						<?php 
-                        
-                        $pages = App\Page::all();
-                        
-                        foreach($pages as $page): ?>
-                        <?php if ( $page->slug != 'promotion' ){ ?>
-							<li><a href="<?php echo URL::to('page'); ?><?= '/' . $page->slug ?>"><?= __($page->title) ?></a></li>
-                        <?php } ?>
-						<?php endforeach; ?>
-					</ul>-->
+                    
 				<!-- </div> -->
-                   <div class="col-lg-2 col-md-4 p-0">
-                     <!--<ul class="f-link list-unstyled mb-0">
-                        <li><a href="#">FAQ</a></li>
-                        <li><a href="#">Cotact Us</a></li>
-                        <li><a href="#">Legal Notice</a></li>
-                     </ul>-->
+                  <div class="col-lg-2 col-md-4 p-0">
                       <ul class="f-link list-unstyled mb-0">
-                        
-						<?php 
-                        
-                        $pages = App\Page::all();
-                        
-                        foreach($pages as $page): ?>
-                        <?php if ( $page->slug != 'promotion' ){ ?>
-							<li><a href="<?php echo URL::to('page'); ?><?= '/' . $page->slug ?>"><?= __($page->title) ?></a></li>
-                        <?php } ?>
-						<?php endforeach; ?>
-					</ul>
-				</div>
+
+                        <?php $column3_footer = App\FooterLink::where('column_position',3)->orderBy('order')->get();  
+                        foreach ($column3_footer as $key => $footer_link){ ?>
+                          <li><a href="<?php echo URL::to('/'.$footer_link->link) ?>">
+                                  <?php echo  $footer_link->name ; ?>
+                              </a>
+                          </li>
+                        <?php  } ?>
+                         
+				              </ul>
+			            </div>
+
                    <div class="col-lg-3 col-md-2 p-0">
                        <div >
                        <img class="" height="80" width="140" src="<?php echo  URL::to('/assets/img/apps1.png')?>" style="margin-top:-20px;">

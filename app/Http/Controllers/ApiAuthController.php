@@ -1132,7 +1132,7 @@ public function verifyandupdatepassword(Request $request)
       $myData[] = array(
         // "genre_id"   => $livecategoryid,
         // "genre_image"   => URL::to('/').'/public/uploads/livecategory/'.$genre_image,
-        // "message" => $msg,
+        "message" => $msg,
         "videos" => $videos
       );
 
@@ -1140,7 +1140,7 @@ public function verifyandupdatepassword(Request $request)
 
     $response = array(
       'status' => 'true',
-      'live_streams' => $myData
+      'live_streams' => $myData,
     );
     return response()->json($response, 200);
   

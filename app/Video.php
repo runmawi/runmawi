@@ -19,7 +19,8 @@ class Video extends Model
 		'subtitle', 'type', 'access', 'details', 'description', 'active', 'featured','banner', 
 		'footer', 'duration', 'image', 'embed_code', 'mp4_url', 'webm_url', 'ogg_url','views','rating',
 		'language' ,'year','trailer','created_at','path','Recommendation','country','pdf_files',
-		'reelvideo','url_link','url_linktym','url_linksec','urlEnd_linksec');
+		'reelvideo','url_link','url_linktym','url_linksec','urlEnd_linksec','search_tags',
+		'trailer_description','trailer_type','reels_thumbnail');
 
 	public function tags(){
 		return $this->belongsToMany('Tag');

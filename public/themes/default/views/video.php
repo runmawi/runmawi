@@ -126,19 +126,13 @@ h2{
   </style>
 <?php
 
-// $ppv_video = \DB::table('ppv_purchases')->where('user_id',Auth::user()->id)->get();
-// exit();
-// echo "<pre>";
-// print_r($ppv_video_play); exit();
-// dd($recomended);
 
 $package = App\User::where('id',1)->first();
 $pack = $package->package;
 if(empty($new_date)){
 
 if(!Auth::guest()) {
-  // dd($video->access);
-  // dd('test');
+
 if( !empty($ppv_video_play) || Auth::user()->role == 'registered' || 
  $video->global_ppv == null && $video->access == 'subscriber' ||  $video->global_ppv == null && $video->ppv_price == null && $video->access == 'registered' ||  $video->global_ppv == null && $video->ppv_price == null && $video->access == 'subscriber' && Auth::user()->role == 'subscriber' || $video->access == 'ppv' && Auth::user()->role == 'admin' || $video->access == 'subscriber' && Auth::user()->role == 'admin' || $video->access == 'registered' && Auth::user()->role == 'admin'|| $video->access == 'registered' && Auth::user()->role == 'subscriber'|| $video->access == 'registered' && Auth::user()->role == 'registered' || Auth::user()->role == 'admin'){
 
@@ -1364,25 +1358,6 @@ location.reload();
   var AutoSkip = <?php echo json_encode($Auto_skip['AutoIntro_skip']); ?>;
   var IntroskipEnd = <?php echo json_encode($skipIntroTime); ?>;
 
-
-
-var endtimevideo = '<?= $endtimevideo ?>';
-
-var videotype_Ids = <?php echo json_encode($video_type_id); ?>;
-var endtimevideo = <?php echo json_encode($endtimevideo); ?>;
-// alert(videotype_Ids);
-
-  var video = document.getElementById(videotype_Ids);
-// alert(video);
-
-          this.video.addEventListener('timeupdate', (e) => {
-         document.getElementById("end_card_video").style.display = "none";
-            if (e.target.currentTime >= endtimevideo) {
-                    document.getElementById("end_card_video").style.display = "block"; // Manual skip
-            } 
-              
-        });
-
 if( SkipIntroPermissions == 1 ){
   button.addEventListener("click", function(e) {
     video.currentTime = IntroskipEnd;
@@ -1483,6 +1458,27 @@ if( SkipIntroPermissions == 1 ){
                 document.getElementById("url_linkdetails").style.display = "block"; 
           } 
         });
+
+
+        // video end crd
+        
+var endtimevideo = '<?= $endtimevideo ?>';
+
+var videotype_Ids = <?php echo json_encode($video_type_id); ?>;
+var endtimevideo = <?php echo json_encode($endtimevideo); ?>;
+// alert(videotype_Ids);
+
+  var video = document.getElementById(videotype_Ids);
+// alert(video);
+
+  this.video.addEventListener('timeupdate', (e) => {
+  document.getElementById("end_card_video").style.display = "none";
+    if (e.target.currentTime >= endtimevideo) {
+            document.getElementById("end_card_video").style.display = "block"; // Manual skip
+    } 
+      
+});
+
 // Tool Tip
     $(document).ready(function(){
           $('[data-toggle="tooltip"]').tooltip();   
@@ -1518,13 +1514,14 @@ $(document).ready(function(){
   $AdsVideos = App\AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
     ->Join('videos','advertisements.ads_category','=','videos.ads_category')
     ->whereDate('start', '=', Carbon\Carbon::now()->format('Y-m-d'))
-    ->whereTime('start', '<=', $current_time)
-    ->whereTime('end', '>=', $current_time)
+    // ->whereTime('start', '<=', $current_time)
+    // ->whereTime('end', '>=', $current_time)
     ->where('ads_events.status',1)
     ->where('advertisements.status',10)
     ->where('videos.ads_category',$video->ads_category)
     ->where('ads_position','pre')
     ->get();
+
 
     if( count($AdsVideos) >= 1){
       $AdsVideoss = $AdsVideos->random();
@@ -1605,11 +1602,14 @@ $(document).ready(function(){
                 videoId.play();
                   $('#ads_start_tym').replaceWith('<input type="hidden" id="ads_start_tym" class="ads_start_tym" value="'+ ads_end_tym+'">');
                   $('.ads_show_status').replaceWith('<input type="hidden" id="" class="ads_show_status"  value="0">');
+                  $(".plyr__controls__item ").css("display", "none");
+                  $(".plyr__time ").css("display", "block");
                   document.getElementById("Ads_vies_count").click();
             }
             else if(ads_show_status == 0){
                   $('.ads_show_status').replaceWith('<input type="hidden" id="" class="ads_show_status"  value="5">');
                   $('.adstime_url').attr('src', normal_videos);
+                  $(".plyr__controls__item").css("display", "block");
 
                   document.getElementById('videoPlayer').addEventListener('loadedmetadata', function() {
                       this.currentTime = 0;
@@ -1641,9 +1641,9 @@ $(document).ready(function(){
 
 </script>
 
-
 <?php include('AdsvideoMid.php'); ?>
 
+<?php include('AdsvideoPost.php'); ?>
 
 <?php
   $player_ui = App\Playerui::pluck('show_logo')->first();

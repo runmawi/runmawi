@@ -615,6 +615,8 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/AdsTimeSlot_Save', 'AdminAdvertiserController@AdsTimeSlot_Save'); 
     Route::post('/ads_viewcount', 'AdminAdvertiserController@ads_viewcount'); 
     Route::post('/ads_viewcount_mid', 'AdminAdvertiserController@ads_viewcount_mid'); 
+    Route::post('/ads_viewcount_Post', 'AdminAdvertiserController@ads_viewcount_Post'); 
+
 
 
     /*Ads Management ends*/
