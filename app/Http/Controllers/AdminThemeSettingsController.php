@@ -190,6 +190,8 @@ class AdminThemeSettingsController extends Controller
 
           $theme_settings->signup_theme = !empty( $data['signup_theme']) ? '1' : '0';
 
+          $theme_settings->prevent_inspect = !empty( $data['prevent_inspect']) ? '1' : '0';
+
           $theme_settings->signup_payment_content = $request->signup_payment_content ? $request->signup_payment_content : null;
 
           $theme_settings->save();       
