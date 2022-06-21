@@ -327,7 +327,7 @@ input:checked + .sliderk:before {
                                         $LiveCategory = App\LiveCategory::all();
                                         foreach ($menus as $menu) { 
                                         if ( $menu->in_menu == "video") { 
-                                        $cat = App\VideoCategory::all();
+                                        $cat = App\VideoCategory::orderBy("order")->get();
                                         ?>
 
                                           <li class="dropdown menu-item">
