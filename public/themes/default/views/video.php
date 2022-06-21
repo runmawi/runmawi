@@ -1364,25 +1364,6 @@ location.reload();
   var AutoSkip = <?php echo json_encode($Auto_skip['AutoIntro_skip']); ?>;
   var IntroskipEnd = <?php echo json_encode($skipIntroTime); ?>;
 
-
-
-var endtimevideo = '<?= $endtimevideo ?>';
-
-var videotype_Ids = <?php echo json_encode($video_type_id); ?>;
-var endtimevideo = <?php echo json_encode($endtimevideo); ?>;
-// alert(videotype_Ids);
-
-  var video = document.getElementById(videotype_Ids);
-// alert(video);
-
-          this.video.addEventListener('timeupdate', (e) => {
-         document.getElementById("end_card_video").style.display = "none";
-            if (e.target.currentTime >= endtimevideo) {
-                    document.getElementById("end_card_video").style.display = "block"; // Manual skip
-            } 
-              
-        });
-
 if( SkipIntroPermissions == 1 ){
   button.addEventListener("click", function(e) {
     video.currentTime = IntroskipEnd;
@@ -1483,6 +1464,27 @@ if( SkipIntroPermissions == 1 ){
                 document.getElementById("url_linkdetails").style.display = "block"; 
           } 
         });
+
+
+        // video end crd
+        
+var endtimevideo = '<?= $endtimevideo ?>';
+
+var videotype_Ids = <?php echo json_encode($video_type_id); ?>;
+var endtimevideo = <?php echo json_encode($endtimevideo); ?>;
+// alert(videotype_Ids);
+
+  var video = document.getElementById(videotype_Ids);
+// alert(video);
+
+  this.video.addEventListener('timeupdate', (e) => {
+  document.getElementById("end_card_video").style.display = "none";
+    if (e.target.currentTime >= endtimevideo) {
+            document.getElementById("end_card_video").style.display = "block"; // Manual skip
+    } 
+      
+});
+
 // Tool Tip
     $(document).ready(function(){
           $('[data-toggle="tooltip"]').tooltip();   
