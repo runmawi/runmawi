@@ -30,9 +30,9 @@
                     @csrf
                     <div class="panel-body">
                         <div class="row align-items-center p-2">
-                            <div class="col-sm-4">
+                            <div class="col-sm-5">
                                 <div class="form-group">
-                                    <label class="mb-1">Multi-user Set Limit <small>(Please Give In Number)</small> </label>
+                                    <label class="mb-2">Number of simultaneous Sessions  <small>(Give in Number)</small> </label>
                                     <div class="form-group">
                                         <input type="text"  class="form-control"  name="multiuser_limit" id="multiuser_limit" value="{{ $Setting }}" required />
                                     </div>
