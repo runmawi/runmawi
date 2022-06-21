@@ -65,6 +65,9 @@
 	 font-weight: 400;
 	 text-align: center;
 	 color: #20222c;
+     height: 30px;
+     display: flex;
+     align-items: center;
 	 background-color: #f8f9fa;
 	 border-radius: 3px;
 	 transition: background-color 0.3s ease;
@@ -84,7 +87,7 @@
 	 margin-right: 3px;
 }
  .tag__remove {
-	 position: absolute;
+	  position: absolute;
 	 right: 0;
 	 bottom: 0;
 	 width: 20px;
@@ -96,9 +99,8 @@
 	 opacity: 0.5;
 	 cursor: pointer;
 	 border: 0;
-	 background-color: transparent;
+	 background-color: #000;
 	 color: #fff;
-	 line-height: 1;
 }
  .tag__remove:hover {
 	 opacity: 1;
