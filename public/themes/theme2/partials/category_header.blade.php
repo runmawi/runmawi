@@ -110,6 +110,7 @@ $data = Session::all();
       <link href="<?php echo URL::to('public/themes/theme2/assets/css/style.css') ?>" rel="stylesheet">
        <link href="<?php echo URL::to('public/themes/theme2/assets/css/typography.css') ?>" rel="stylesheet">
        <link href="<?php echo URL::to('public/themes/theme2/assets/css/responsive.css') ?>" rel="stylesheet">
+       <link href="<?php echo URL::to('public/themes/theme2/assets/fonts/proxima.otf') ?>" rel="stylesheet">
 
        <!-- Icon - Remixicon & fontawesome  -->
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -336,7 +337,7 @@ input:checked + .sliderk:before {
                                         $languages = App\Language::all();
                                         foreach ($menus as $menu) { 
                                         if ( $menu->in_menu == "video") { 
-                                        $cat = App\VideoCategory::all();
+                                        $cat = App\VideoCategory::orderBy("order")->get();
                                         ?>
                                        <li class="dropdown menu-item">
                                             <a class="dropdown-toggle" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
