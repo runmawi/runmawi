@@ -40,7 +40,7 @@ class CreateVideosTable extends Migration
             $table->string('slug')->nullable();
             $table->string('rating')->nullable();
             $table->integer('status')->nullable();
-            $table->integer('publish_type')->nullable();
+            $table->string('publish_type')->nullable();
             $table->integer('publish_status')->nullable();
             $table->string('publish_time')->nullable();
             $table->string('skip_recap')->nullable();

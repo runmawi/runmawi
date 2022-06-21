@@ -956,7 +956,7 @@ if(!empty($artistsdata)){
         
         $data = $request->all();
 
-        // dd($data['searchtags']);
+        // dd($data);
 
 
         $validatedData = $request->validate([
@@ -1276,11 +1276,16 @@ if(!empty($artistsdata)){
                 }else{
                 }  
             if(empty($data['publish_type'])){
-                $video->publish_type =0;
+                $publish_type = 0;
+                }else{
+                    $publish_type =   $data['publish_type'];
                 }  
+                // dd($publish_type);
         if(empty($data['publish_time'])){
-            $video->publish_time =0;
-            }  
+            $publish_time =0;
+            }else{
+                $publish_time =   $data['publish_time'];
+            }
 
             if(!empty($data['Recommendation'])){
                 $video->Recommendation =  $data['Recommendation'];
@@ -1390,8 +1395,8 @@ if(!empty($artistsdata)){
          $video->intro_end_time =  $request['intro_end_time'];
          $video->country =  $request['video_country'];
          $video->publish_status = $request['publish_status'];
-         $video->publish_type = $request['publish_type'];
-         $video->publish_time = $request['publish_time'];
+         $video->publish_type = $publish_type;
+         $video->publish_time = $publish_time;
          $video->age_restrict=$data['age_restrict'];
          $video->access=$data['access'];
         //  $video->active=1;
@@ -1874,7 +1879,19 @@ if(!empty($artistsdata)){
                 if(!empty($data['Recommendation'])) {
                     $video->Recommendation = $data['Recommendation'];
                }
-    
+               if(empty($data['publish_type'])){
+                $publish_type = 0;
+                }else{
+                    $publish_type =   $data['publish_type'];
+                }  
+                // dd($publish_type);
+                
+            if(empty($data['publish_time'])){
+                $publish_time =0;
+                }else{
+                    $publish_time =   $data['publish_time'];
+                }
+
     
             $path = public_path().'/uploads/videos/';
             $image_path = public_path().'/uploads/images/';
@@ -2045,8 +2062,8 @@ if(!empty($artistsdata)){
             $video->active = 1 ;
             $video->embed_code =  $embed_code ;
             $video->player_image =   $player_image ;
-            $video->publish_type = $data['publish_type'];
-            $video->publish_time = $data['publish_time'];
+            $video->publish_type = $publish_type;
+            $video->publish_time = $publish_time;
              $video->age_restrict =  $data['age_restrict'];
             $video->ppv_price =$data['ppv_price'];
              $video->access =  $data['access'];
