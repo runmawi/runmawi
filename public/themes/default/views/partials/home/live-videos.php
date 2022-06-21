@@ -111,7 +111,7 @@
                                   </div>
 
                                   <div class="hover-buttons">
-                                    <a class="text-white d-flex" href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
+                                    <a class="text-white d-flex align-items-center" href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
                                         <img class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" width="10%" height="10%" />
                                         Live Now
                                     </a>
