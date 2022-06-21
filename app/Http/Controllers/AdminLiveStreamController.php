@@ -724,6 +724,11 @@ class AdminLiveStreamController extends Controller
         }else{
             $active = 1;
         } 
+        if(empty($data['banner'])){
+            $banner = 0;
+        }else{
+            $banner = 1;
+        } 
 
         if(empty($data['searchtags'])){
             $searchtags = null;
@@ -731,6 +736,7 @@ class AdminLiveStreamController extends Controller
             $searchtags = $request['searchtags'];
         } 
         $video->rating = $rating;
+        $video->banner = $banner;
         $video->url_type = $url_type;
         $video->ppv_price = $ppv_price;
         $video->player_image = $player_image;
