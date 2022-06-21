@@ -741,12 +741,12 @@ border-radius: 0px 4px 4px 0px;
                         <div class="row trailer_m3u8_url">
                            <div class="col-sm-6 form-group" >
                               <label class="m-0"> Trailer m3u8 Url :</label>
-                              <input type="text" class="form-control" name="m3u8_trailer" id="" value="@if(!empty($video->trailer)){{ $video->trailer }}@endif">
+                              <input type="text" class="form-control" name="m3u8_trailer" id="" value="@if(!empty($video->trailer) && $video->trailer_type == 'm3u8_url' ){{ $video->trailer }}@endif">
 
-                              @if(!empty($video->trailer) && $video->trailer != '')
+                              @if(!empty($video->trailer) && $video->trailer != '' && $video->trailer_type != null &&  $video->trailer_type != 'm3u8_url' )
                                  <video width="560" height="315" controls>
                                     <source src="{{ $video->trailer }}" type="application/x-mpegURL">
-                              </video>
+                                 </video>
                               @endif
 
                            </div>
@@ -756,9 +756,9 @@ border-radius: 0px 4px 4px 0px;
                         <div class="row trailer_mp4_url">
                            <div class="col-sm-6 form-group" >
                               <label class="m-0"> Trailer mp4 Url :</label>
-                              <input type="text" class="form-control" name="mp4_trailer" id="" value="@if(!empty($video->trailer)){{ $video->trailer }}@endif">
+                              <input type="text" class="form-control" name="mp4_trailer" id="" value="@if(!empty($video->trailer) && $video->trailer_type == 'mp4_url' ){{ $video->trailer }}@endif">
 
-                              @if(!empty($video->trailer) && $video->trailer != '')
+                              @if(!empty($video->trailer) && $video->trailer != '' && $video->trailer_type != null &&  $video->trailer_type == 'mp4_url'  )
                                  <video width="560" height="315" controls>
                                     <source src="{{ $video->trailer }}" type="video/mp4" />
                                  </video>
@@ -769,9 +769,9 @@ border-radius: 0px 4px 4px 0px;
                         <div class="row trailer_embed_url">
                            <div class="col-sm-6 form-group" >
                               <label class="m-0">Trailer Embed Code :</label>
-                              <input type="text" class="form-control" name="embed_trailer" id="" value="@if(!empty($video->trailer)){{ $video->trailer }}@endif">
+                              <input type="text" class="form-control" name="embed_trailer" id="" value="@if(!empty($video->trailer) && $video->trailer_type == 'embed_url' ){{ $video->trailer }}@endif">
 
-                              @if(!empty($video->trailer) && $video->trailer != '')
+                              @if(!empty($video->trailer) && $video->trailer != '' && $video->trailer_type != null &&  $video->trailer_type == 'embed_url' )
                                  <iframe width="560" height="315"  src="{{ $video->trailer }}" frameborder="0" allowfullscreen></iframe>
                               @endif
 
@@ -792,7 +792,7 @@ border-radius: 0px 4px 4px 0px;
                                 <span id="remove" class="danger">Remove</span> -->
                            <div class="col-sm-8 mt-5 form-group">
                               <!--<p>Upload Trailer video</p>-->
-                              @if(!empty($video->trailer) && $video->trailer != '')
+                              @if(!empty($video->trailer) && $video->trailer != '' && $video->trailer_type != null &&  $video->trailer_type == 'video_mp4' )
                               <video width="200" height="200" controls>
                                   <source src="{{ $video->trailer }}" type="video/mp4" />
                               </video>
