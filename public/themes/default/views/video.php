@@ -587,7 +587,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 <?php  }?>
 
 
-
+                              <!-- Trailer  -->
           <div class=" page-height">
               <div id="watch_trailer" class="fitvid" atyle="z-index: 9999;">
                
@@ -598,11 +598,12 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                           type="video/mp4" src="<?php echo $video->trailer;?>">
                     </video>
 
+
                 <?php }elseif($video->trailer_type !=null && $video->trailer_type == "m3u8_url" ){ ?>
 
                     <video  class="videoPlayers" 
                           controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
-                          type="video/mp4" src="<?php echo $video->trailer;?>">
+                          type="application/x-mpegURL">
                     </video>
 
                 <?php }elseif($video->trailer_type !=null && $video->trailer_type == "embed_url" ){ ?>
@@ -1744,5 +1745,28 @@ var x = setInterval(function() {
 
 </script>
 
+
+
 <?php include('footer.blade.php');?>
+
+<!-- Trailer m3u8 -->
+
+<script>
+
+  var trailer_video_m3u8 = <?php echo json_encode($video->trailer) ; ?> ;
+
+    (function () {
+      var video = document.querySelector('.videoPlayers');
+
+      if (Hls.isSupported()) {
+          var hls = new Hls();
+          hls.loadSource(trailer_video_m3u8);
+          hls.attachMedia(video);
+          hls.on(Hls.Events.MANIFEST_PARSED,function() {
+        });
+      }
+      
+    })();
+
+</script>
 
