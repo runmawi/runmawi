@@ -804,7 +804,7 @@ border-radius: 0px 4px 4px 0px;
                         <div class="col-sm-8  form-group">
                            <label class="m-0">Trailer Description:</label>
                            <textarea  rows="5" class="form-control mt-2" name="trailer_description" id="trailer-ckeditor"
-                              placeholder="Description">@if(!empty($video->trailer_description)){{ htmlspecialchars($video->trailer_description) }}@endif
+                              placeholder="Description">@if(!empty($video->trailer_description)){{ strip_tags($video->trailer_description) }}@endif
                            </textarea>
                         </div>
                      </div>
