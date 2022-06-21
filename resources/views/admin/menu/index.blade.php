@@ -23,7 +23,10 @@
 		<div class="row justify-content-start">
 			<div class="col-md-8 d-flex justify-content-between">
 				<h4><i class="entypo-list"></i> Menu Items</h4>
-                <a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add New</a>
+               	<div>
+					<a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add New</a>
+					<a href="{{ URL::to('admin/footer_menu') }}"  class="btn btn-primary"><i class="fa fa-plus-circle"></i> Change Footer Menu</a>
+			   	</div>
 			</div>
             <div class="col-md-8" align="right">
                 
