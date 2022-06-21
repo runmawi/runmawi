@@ -10,14 +10,33 @@
             <div class="row align-items-center  justify-content-between ">
                 <div class="col-sm-8 small m-0 text-white exp p-0">
                     <ul class="text-white p-0 mt-3 d-flex">
-                       <?php 
-                        $pages = App\Page::all();
-                            foreach($pages as $page): ?>
-                            <?php if ( $page->slug != 'promotion' ){ ?>
-                                <li><a href="<?php echo URL::to('page'); ?><?= '/' . $page->slug ?>"><?= __($page->title) ?></a></li>
-                            <?php } ?>
-						<?php endforeach; ?>
+                      <?php $column2_footer = App\FooterLink::where('column_position',2)->orderBy('order')->get();  
+                        foreach ($column2_footer as $key => $footer_link){ ?>
+                          <li><a href="<?php echo URL::to('/'.$footer_link->link) ?>">
+                                  <?php echo  $footer_link->name ; ?>
+                              </a>
+                          </li>
+                      <?php  } ?>
                     </ul>
+
+                    <ul class="text-white p-0 mt-3 d-flex">
+                      <?php $column3_footer = App\FooterLink::where('column_position',3)->orderBy('order')->get();  
+                        foreach ($column3_footer as $key => $footer_link){ ?>
+                          <li><a href="<?php echo URL::to('/'.$footer_link->link) ?>">
+                                  <?php echo  $footer_link->name ; ?>
+                              </a>
+                          </li>
+                      <?php  } ?>
+                    </ul>
+                    
+                    <ul class="text-white p-0 mt-3 d-flex">
+                      <?php if($user->package == 'Pro' && empty($session['password_hash']) || empty($session['password_hash']) ){ ?> 
+                        <li><a href="<?php echo URL::to('/cpp/signup') ;?>">Content Partner Portal</a></li>
+                        <li><a href="<?php echo URL::to('/advertiser/register') ;?>">Advertiser Portal</a></li>
+                        <li><a href="<?php echo URL::to('/channel/register') ;?>">Channel Portal</a></li>
+                      <?php }else{ }?>
+                    </ul>
+
                      <div class="mt-2 p-2">
                     <div class="small m-0 text-white"><p>The Best Streaming Platform</p></div>
                     <div class="d-flex p-0 text-white icon mt-4">
