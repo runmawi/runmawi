@@ -214,6 +214,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                        <ul id="user" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/users') }}"><i class="las la-user-plus"></i>All Users</a></li>
                         <li><a href="{{ URL::to('admin/user/create') }}"><i class="las la-eye"></i>Add New User</a></li>
+                        <li><a href="{{ URL::to('admin/MultiUser-limit') }}"><img height="30" width="30" class="mr-2" src="<?php echo  URL::to('/assets/img/icon/add-new-user.svg')?>">Multi User Management</a></li>
                      </ul>
                       
                    </li>
@@ -448,6 +449,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                        <ul id="user" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/users') }}"><i class="las la-user-plus"></i>All Users</a></li>
                         <li><a href="{{ URL::to('admin/user/create') }}"><i class="las la-eye"></i>Add New User</a></li>
+                        <li><a href="{{ URL::to('admin/MultiUser-limit') }}"><img height="30" width="30" class="mr-2" src="<?php echo  URL::to('/assets/img/icon/add-new-user.svg')?>">Multi User Management</a></li>
                      </ul>
                       
                    </li>
@@ -687,15 +689,18 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
           
                  
                     <div class="men">
-                  
-                        <p class="lnk" >Accounts</p></div>
-                  <li><a href="#user" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/user.svg')?>"><span>Users</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                        <p class="lnk" >Accounts</p>
+                     </div>
+
+                     <li>
+                       <a href="#user" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/user.svg')?>"><span>Users</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                        <ul id="user" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li><a href="{{ URL::to('admin/users') }}"><img height="30" width="30" class="mr-2" src="<?php echo  URL::to('/assets/img/icon/all-user.svg')?>">All Users</a></li>
-                        <li><a href="{{ URL::to('admin/user/create') }}"><img height="30" width="30" class="mr-2" src="<?php echo  URL::to('/assets/img/icon/add-new-user.svg')?>">Add New User</a></li>
-                     </ul>
-                      
-                   </li>
+                           <li><a href="{{ URL::to('admin/users') }}"><img height="30" width="30" class="mr-2" src="<?php echo  URL::to('/assets/img/icon/all-user.svg')?>">All Users</a></li>
+                           <li><a href="{{ URL::to('admin/user/create') }}"><img height="30" width="30" class="mr-2" src="<?php echo  URL::to('/assets/img/icon/add-new-user.svg')?>">Add New User</a></li>
+                           <li><a href="{{ URL::to('admin/MultiUser-limit') }}"><img height="30" width="30" class="mr-2" src="<?php echo  URL::to('/assets/img/icon/add-new-user.svg')?>">Multi User Management</a></li>
+                        </ul>
+                     </li>
+
                    <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/menu.svg')?>"heigth="40" width="40"><span>Menu</span></a></li>
                    <li><a href="{{ URL::to('/admin/filemanager') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/file.svg')?>" heigth="40" width="40"><span>Filemanager</span></a></li>
 
@@ -942,6 +947,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                        <ul id="user" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/users') }}"><i class="las la-user-plus"></i>All Users</a></li>
                         <li><a href="{{ URL::to('admin/user/create') }}"><i class="las la-eye"></i>Add New User</a></li>
+                        <li><a href="{{ URL::to('admin/MultiUser-limit') }}"><img height="30" width="30" class="mr-2" src="<?php echo  URL::to('/assets/img/icon/add-new-user.svg')?>">Multi User Management</a></li>
                      </ul>
                       
                    </li>

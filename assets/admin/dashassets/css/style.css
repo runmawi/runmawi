@@ -54,7 +54,7 @@ General
 ---------------------------------------------------------------------*/
 *::-moz-selection { background: #F2F5FA; color:#000000; text-shadow: none; }
 ::-moz-selection { background: #F2F5FA; color: #000000; text-shadow: none; }
-::selection { background: #F2F5FA; color: #000000; text-shadow: none; }
+::selection { background: #c3c5c9; color: #000000; text-shadow: none; }
 
 /* Definition Lists */
 dl dd { margin-bottom: 15px; }

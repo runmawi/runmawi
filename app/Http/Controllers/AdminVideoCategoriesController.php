@@ -89,10 +89,11 @@ class AdminVideoCategoriesController extends Controller
             $footer = $request['footer']; 
           
           if ( $slug != '') {
-              $input['slug']  = $request['slug'];
+              $input['slug']  =  str_replace(' ', '_',  $request['slug']);
           } else {
-               $input['slug']  = $request['name'];
+               $input['slug']  = str_replace(' ', '_', $request['name']);
           } 
+
           if ( $in_home != '') {
               $input['in_home']  = $request['in_home'];
           } else {
@@ -232,11 +233,11 @@ class AdminVideoCategoriesController extends Controller
             $category->banner = $request['banner'];
 
             if ( $category->slug != '') {
-              $category->slug  = $request['slug'];
+              $category->slug  =str_replace(' ', '_',  $request['slug']);
             } else {
-               $category->slug  = $request['name'];
+               $category->slug  = str_replace(' ', '_', $request['name']);
             }
-           
+
             $category->save();
             
             return Redirect::to('admin/videos/categories')->with(array('message' => 'Successfully Updated Category', 'note_type' => 'success') );
