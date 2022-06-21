@@ -2,7 +2,10 @@
 <!-- Header End -->
 
 <!-- MainContent -->
-<?php if(!empty($data['password_hash'])) { $id = Auth::user()->id ; } else { $id = 0 ; } ?>
+<?php if(!empty($data['password_hash'])) { $id = Auth::user()->id ; } else { $id = 0 ; } 
+
+$category_id = App\VideoCategory::where('name',$data['category_title'])->pluck('id')->first();
+?>
 
       <div class="main-content">
          <section id="iq-favorites">
@@ -52,10 +55,12 @@
                         
                         <div class="col-md-3">
                             <select class="selectpicker " multiple  title="Newly added First" id="sorting" data-live-search="true">
-                                <option value="1">Latest Videos</option>
-                                <option value="2">oldest videos</option>
+                                <option value="latest_videos">Latest Videos</option>
+                                <option value="oldest_videos">oldest videos</option>
                             </select>
                         </div>
+
+                        <input type="hidden" id="category_id" value={{ $category_id  }} name="category_id">
 
                         <div class="col-md-3">
                             <button type="button" class="btn btn-primary filter">Filter</button>
@@ -199,6 +204,8 @@ $(".filter").click(function(){
     var age = [];
     var rating = [];
     var sorting = [];
+    var Category_id = $('#category_id').val();
+
 
     for (var option of document.getElementById('age').options)
     {
@@ -224,12 +231,13 @@ $(".filter").click(function(){
     $.ajax({
             type: "get", 
             dataType: "json", 
-            url: "{{ url('/category/other_category') }}",
+            url: "{{ url('/categoryfilter') }}",
              data: {
                  _token  : "{{csrf_token()}}" ,
                  age: age,
                  rating: rating,
                  sorting: sorting,
+                 category_id: Category_id,
             },
             success: function(data) {
                 console.log('ss');

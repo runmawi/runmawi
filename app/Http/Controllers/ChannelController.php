@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 use \App\User as User;
 use \Redirect as Redirect;
-use Request;
+use Illuminate\Http\Request;
 use App\Setting;
 use App\Genre;
 use App\Audio;
@@ -1491,5 +1491,61 @@ class ChannelController extends Controller
         catch (\Throwable $th) {
            return abort(404);
         }
+      }
+
+      public function categoryfilter(Request $request)
+      {
+
+
+        $PPV_settings = Setting::where('ppv_status','=',1)->first();
+        if(!empty($PPV_settings)){
+
+            $ppv_gobal_price =  $PPV_settings->ppv_price;
+
+         }else{
+
+             $ppv_gobal_price = null ;
+         }
+
+        $getfeching = \App\Geofencing::first();
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+        $userIp = $geoip->getip();    
+        $countryName = $geoip->getCountry();
+        $ThumbnailSetting = ThumbnailSetting::first();
+        $settings = Setting::first();
+        $currency = CurrencySetting::first();
+        $category_title = \App\VideoCategory::where('id',$request->category_id)->pluck('name');
+  
+      
+        // blocked videos
+                $block_videos= \App\BlockVideo::where('country_id',$countryName)->get();
+                if(!$block_videos->isEmpty()){
+                  foreach($block_videos as $block_video){
+                      $blockvideos[]=$block_video->video_id;
+                  }
+                }    
+                $blockvideos[]='';
+
+        $categoryVideos = Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
+        ->where('category_id','=',$request->category_id)->where('active', '=', '1');
+
+        if($getfeching !=null && $getfeching->geofencing == 'ON'){
+          $categoryVideos = $categoryVideos  ->whereNotIn('videos.id',$blockvideos);
+          }
+
+        if(!empty($request->rating) ){
+          $categoryVideos = $categoryVideos->WhereIn('videos.rating',$request->rating);
+        }
+
+        if(!empty($request->age)  ){
+          $categoryVideos = $categoryVideos->WhereIn('videos.age_restrict',$request->age);
+        }
+
+        if(!empty($request->sorting )  ){
+          $categoryVideos = $categoryVideos->orderBy('videos.created_at','DESC');
+        }
+
+        $categoryVideos = $categoryVideos->get();
+
       }
 }

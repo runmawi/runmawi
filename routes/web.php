@@ -472,6 +472,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::get('/footer_menu_edit/{id}', 'AdminSettingsController@footer_edit'); 
     Route::post('/footer_update', 'AdminSettingsController@footer_update'); 
 
+
     //Select video delete
     Route::get('/VideoBulk_delete', 'AdminVideosController@VideoBulk_delete')->name('VideoBulk_delete'); 
 
@@ -1420,6 +1421,11 @@ Route::get('/Artist/{slug}', 'ChannelController@artist_videos');
 
   // category List
 Route::get('categoryList', 'ChannelController@categoryList')->name('categoryList');
+
+// 
+
+Route::get('categoryfilter', 'ChannelController@categoryfilter')->name('categoryfilter');
+
 
     // Razorpay 
 Route::group(['middleware' => ['RazorpayMiddleware']], function() {
