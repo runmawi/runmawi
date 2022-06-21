@@ -1140,7 +1140,8 @@ public function verifyandupdatepassword(Request $request)
 
     $response = array(
       'status' => 'true',
-      'live_streams' => $myData
+      'live_streams' => $myData,
+      'message' => $msg
     );
     return response()->json($response, 200);
   
