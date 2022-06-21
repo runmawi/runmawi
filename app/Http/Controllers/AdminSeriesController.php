@@ -977,7 +977,11 @@ class AdminSeriesController extends Controller
             $player_image = $episode->player_image;
 
          }
-        
+        if(!empty($data['searchtags'])){
+            $searchtags = $data['searchtags'];
+        }else{
+            $searchtags = null;
+        }
         if(empty($data['active'])){
             $data['active'] = 0;
         }
@@ -1081,6 +1085,7 @@ class AdminSeriesController extends Controller
             $episodes->duration =  $data['duration'];
             $episodes->access =  $data['access'];
             $episodes->active =  $active;
+            $episodes->search_tags =  $searchtags;
             $episodes->player_image =  $player_image;
             $episodes->series_id =  $data['series_id'];
             $episodes->season_id =  $data['season_id'];
@@ -1134,7 +1139,14 @@ class AdminSeriesController extends Controller
         $id = $input['id'];
         $episode = Episode::findOrFail($id);
 
+        // dd($input);
 
+
+        if(!empty($input['searchtags'])){
+            $searchtags = $input['searchtags'];
+        }else{
+            $searchtags = $episode->searchtags;
+        }
         if(empty($input['image']) && !empty($episode->image)){
             $image = $episode->image ;
         }else{
@@ -1281,7 +1293,7 @@ class AdminSeriesController extends Controller
         $episode->update($data);
         $episode->skip_recap =  $data['skip_recap'];
         $episode->banner =  $banner;
-
+        $episode->search_tags =  $searchtags;
         $episode->recap_start_time =  $data['recap_start_time'];
         $episode->season_id =  $data['season_id'];
         $episode->recap_end_time =  $data['recap_end_time'];

@@ -95,6 +95,10 @@ h2{
   font-size: 60px;
   margin-top: 0px;
 }
+#end_card_video{
+  /* end_card_video */
+	display: none;
+}
   </style>
 <?php
 
@@ -724,6 +728,20 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
        <input type="button" class="skips" value="Auto Skip in 5 Secs" id="Auto_skip">
   </div>
 
+  <div class="col-sm-12 end_card_video" id="end_card_video" style="position: absolute; top: -244%; width: 500%; height: 500%;" >
+  <?php foreach($endcardvideo as $val) { ?>
+      <a href="<?php  echo URL::to('category') ?><?= '/videos/' . $val->slug ?>">
+   <img id="endcard" src="<?php echo URL::to('/').'/public/uploads/images/' .$val->image ;?>" alt="">
+      </a>
+      <?php  } ?>
+  </div>
+
+      <style>
+        #endcard{
+          width: 20%;
+          height: 20%;
+        }
+      </style>
   <div class="col-sm-12 Recap_skip">
       <input type="button" class="Recaps" value="Recap Intro" id="Recaps_Skip" style="display:none;">
   </div>
@@ -1298,6 +1316,27 @@ if( SkipIntroPermissions == 1 ){
     $(document).ready(function(){
           $('[data-toggle="tooltip"]').tooltip();   
         });
+
+
+                // video end crd
+        
+var endtimevideo = '<?= $endtimevideo ?>';
+
+var videotype_Ids = <?php echo json_encode($video_type_id); ?>;
+var endtimevideo = <?php echo json_encode($endtimevideo); ?>;
+// alert(videotype_Ids);
+
+  var video = document.getElementById(videotype_Ids);
+// alert(video);
+
+  this.video.addEventListener('timeupdate', (e) => {
+  document.getElementById("end_card_video").style.display = "none";
+    if (e.target.currentTime >= endtimevideo) {
+            document.getElementById("end_card_video").style.display = "block"; // Manual skip
+    } 
+      
+});
+
         
 </script>
 

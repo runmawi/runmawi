@@ -159,7 +159,8 @@
                   <!-- Embedded Video -->        
                   <div id="embedvideo" style="">
                      <div class="new-audio-file mt-3">
-                        <label for="embed_code"><label>Embed URL:</label></label>
+                        <label for="embed_code">Embed URL:</label>
+                        <p class="p1">Example URL Format : ( https://www.youtube.com/embed/*xxxxxxxxx*/) ) </p>
                         <input type="text" class="form-control" name="embed_code" id="embed_code" value="" />
                      </div>
                   </div>
