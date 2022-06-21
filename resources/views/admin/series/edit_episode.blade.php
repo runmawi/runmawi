@@ -241,7 +241,7 @@
                     </div>
                     <div class="col-sm-4">
                         <label class="m-0">Free content Duration</label>
-                        <p class="p1">Enter the episode duration in (HH : MM : SS)</p>
+                        <p class="p1">Enter the episode duration in (HH : MM : SS) </p>
 
                         <div class="panel-body">
                             <input class="form-control" name="free_content_duration" id="free_content_duration" value="@if(!empty($episodes->free_content_duration)){{ gmdate('H:i:s', $episodes->free_content_duration) }}@endif" />
