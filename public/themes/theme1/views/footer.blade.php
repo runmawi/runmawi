@@ -65,9 +65,16 @@
                 </div>
                 <div class="col-sm-3 small m-0 text-white exp"><p class="ml-2">Explore</p>
                     <ul class="text-white p-0 mt-3 ">
-                        <li><a href="<?php echo URL::to('home') ?>">Home</a></li>
-                        <li><a href="<?php echo URL::to('tv-shows') ?>">Tv Shows</a></li>
-                        <li><a href="<?php echo URL::to('audios') ?>">Audio</a></li>
+                      
+                      <?php $column2_footer = App\FooterLink::where('column_position',2)->orderBy('order')->get();  
+                        foreach ($column2_footer as $key => $footer_link){ ?>
+
+                          <li><a href="<?php echo URL::to('/'.$footer_link->link) ?>">
+                                  <?php echo  $footer_link->name ; ?>
+                              </a>
+                          </li>
+                      
+                      <?php  } ?>
 
                     <?php if($user->package == 'Pro' && empty($session['password_hash']) || empty($session['password_hash']) ){ ?> 
                           <li><a href="<?php echo URL::to('/cpp/signup') ;?>">Content Partner Portal</a></li>
@@ -79,13 +86,13 @@
                 </div>
                 <div class="col-sm-3 small m-0 text-white exp"><p class="ml-2">Company</p>
                     <ul class="text-white p-0 mt-3">
-                       <?php 
-                        $pages = App\Page::all();
-                            foreach($pages as $page): ?>
-                            <?php if ( $page->slug != 'promotion' ){ ?>
-                                <li><a href="<?php echo URL::to('page'); ?><?= '/' . $page->slug ?>"><?= __($page->title) ?></a></li>
-                            <?php } ?>
-						<?php endforeach; ?>
+                        <?php $column3_footer = App\FooterLink::where('column_position',3)->orderBy('order')->get();  
+                        foreach ($column3_footer as $key => $footer_link){ ?>
+                          <li><a href="<?php echo URL::to('/'.$footer_link->link) ?>">
+                                  <?php echo  $footer_link->name ; ?>
+                              </a>
+                          </li>
+                        <?php  } ?>
                     </ul>
                 </div>
                 <div class="col-sm-3 small m-0 text-white"><p>Download App</p>
