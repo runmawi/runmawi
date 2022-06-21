@@ -2484,10 +2484,19 @@ if(!empty($artistsdata)){
         }else{
 
         $videos = Video::where('active', '=',1)->orderBy('created_at', 'DESC')->paginate(9);
-        $videos =    Video::where('active', '=',0)
+
+        $videocategories = VideoCategory::select('id','image')->get()->toArray();
+        $myData = array();
+        foreach ($videocategories as $key => $videocategory) {
+          $videocategoryid = $videocategory['id'];
+        $videos = Video::where('active', '=',0)
             ->join('moderators_users', 'videos.user_id', '=', 'moderators_users.id')
-            ->select('moderators_users.username', 'videos.*')
+            ->join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
+            ->join('video_categories', 'video_categories.id', '=', 'categoryvideos.category_id')
+            ->select('moderators_users.username', 'videos.*','video_categories.name')
+            ->groupby('videos.id')
             ->orderBy('videos.created_at', 'DESC')->paginate(9);
+        }
             $data = array(
                 'videos' => $videos,
                 );
@@ -2500,10 +2509,11 @@ if(!empty($artistsdata)){
    
         //    echo "<pre>";
         //    print_r($id);
+        //    exit();
+
            $video = Video::findOrFail($id);
            $video->active = 1;
            $video->save();
-        //    exit();
            
 
            return Redirect::back()->with('message','Your video will be available shortly after we process it');

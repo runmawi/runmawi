@@ -1219,6 +1219,26 @@ location.reload();
 ?>
 
 <script>
+
+            // Strat video end card
+var videotype_Ids = <?php echo json_encode($video_type_id); ?>;
+// alert(videotype_Ids);
+  var video = document.getElementById(videotype_Ids);
+// alert(video);
+  this.video.addEventListener('timeupdate', (e) => {
+    var duration = video.duration;
+    var endtime = duration - 5;
+    // alert(duration);
+  document.getElementById("end_card_video").style.display = "none";
+    if (e.target.currentTime >= endtime) {
+            // document.getElementById("end_card_video").style.display = "block"; // Manual show
+  document.getElementById("end_card_video").style.display = "none";
+    } 
+      
+});
+        // End video end card
+        
+
   var SkipIntroPermissions = <?php echo json_encode($SkipIntroPermission); ?>;
   var videotype_Id = <?php echo json_encode($video_type_id); ?>;
   var video = document.getElementById(videotype_Id);
@@ -1227,6 +1247,9 @@ location.reload();
   var End = <?php echo json_encode($EndSec); ?>;
   var AutoSkip = <?php echo json_encode($Auto_skip['AutoIntro_skip']); ?>;
   var IntroskipEnd = <?php echo json_encode($skipIntroTime); ?>;
+
+
+
 
 if( SkipIntroPermissions == 1 ){
   button.addEventListener("click", function(e) {
@@ -1331,25 +1354,6 @@ if( SkipIntroPermissions == 1 ){
           $('[data-toggle="tooltip"]').tooltip();   
         });
 
-
-                // video end crd
-        
-var endtimevideo = '<?= $endtimevideo ?>';
-
-var videotype_Ids = <?php echo json_encode($video_type_id); ?>;
-var endtimevideo = <?php echo json_encode($endtimevideo); ?>;
-// alert(videotype_Ids);
-
-  var video = document.getElementById(videotype_Ids);
-// alert(video);
-
-  this.video.addEventListener('timeupdate', (e) => {
-  document.getElementById("end_card_video").style.display = "none";
-    if (e.target.currentTime >= endtimevideo) {
-            document.getElementById("end_card_video").style.display = "block"; // Manual skip
-    } 
-      
-});
 
         
 </script>

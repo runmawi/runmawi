@@ -40,6 +40,7 @@
         "victorybiz/geoip-location": "^1.1",
         "zanysoft/laravel-zip": "^1.0",
         "zusamarehan/tourify": "^0.5.4"
+        
     },
    
     "require-dev": {
