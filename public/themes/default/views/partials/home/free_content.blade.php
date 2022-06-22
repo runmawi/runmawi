@@ -14,7 +14,7 @@
                              <!-- block-images -->
             <div class="block-images position-relative">
               <div class="img-box">
-                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$free_Content->player_image;  ?>" class="img-fluid w-100" alt="">
+                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$free_Content->image;  ?>" class="img-fluid w-100" alt="">
                
                     <?php  if(!empty($free_Content->ppv_price == 1)){?>
                     <p class="p-tag1"><?php echo $currency->symbol.' '.$free_Content->ppv_price; ?></p>

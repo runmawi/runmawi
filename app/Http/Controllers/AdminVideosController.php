@@ -964,7 +964,12 @@ if(!empty($artistsdata)){
             // 'video_country' => 'required'        
         ]);
 
-            $id = $data['id'];
+            // $id = $data['id'];
+            $title = $data['title'];
+            $video_id = Video::where('title',$title)->first();
+            
+            $id = $video_id['id'];
+
             /*Advertisement Video update starts*/
             // if($data['ads_id'] != 0){
             //         $ad_video = AdsVideo::where('video_id',$id)->first();
