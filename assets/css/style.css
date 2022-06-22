@@ -491,10 +491,10 @@ video { display: block; width: 100%; height: 100%; }
 .favorites-slider .slick-arrow:hover,
 #trending-slider-nav .slick-arrow:hover { /*background: var(--iq-white);*/ color: aqua!important; -webkit-transition: all 0.4s ease-in-out 0s; -moz-transition: all 0.4s ease-in-out 0s; transition: all 0.4s ease-in-out 0s; }
 .favorites-slider .slick-prev,
-#trending-slider-nav .slick-prev { color: var(--iq-white); /*right: 55px;left: auto;*/top:50%;left: -15px!important;display: none;}
+#trending-slider-nav .slick-prev { color: var(--iq-white); /*right: 55px;left: auto;*/top:40px!important;left: -15px!important;display: none;}
 #trending-slider-nav .slick-prev:hover { color: var(--iq-white); /*right: 55px;left: auto;*/top:150px;left: -15px;display: block;}
 .favorites-slider  .slick-next,
-#trending-slider-nav .slick-next{ color: var(--iq-white);right: 0px!important;top: 50%;}
+#trending-slider-nav .slick-next{ color: var(--iq-white);right: 0px!important;top: 40px!important;}
 .favorites-slider .slick-prev:before,
 .favorites-slider .slick-next:before,
 #trending-slider-nav .slick-prev:before,
