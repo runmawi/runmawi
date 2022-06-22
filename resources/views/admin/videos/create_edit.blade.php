@@ -1235,15 +1235,28 @@ $(document).ready(function(){
    $('#slug_error').hide();
 	$('#slug_validate').on('keyup keypress blur mouseover', function(e) {
      
-      var slug = $('#slug').val();
+      var video_id = "{{ $video->id }}";
+      var title = $('#title').val();
+      var slug_name=title.replace(/ /g,"_");
 
+     
+
+      if($('#slug').val().length == 0 ){
+            var slug = $('#slug').val(slug_name);
+      }else{
+            var slug = $('#slug').val();
+      }
+      
       $.ajax({
       type: "POST", 
       dataType: "json", 
       url: "{{ url('admin/video_slug_validate') }}",
             data: {
                _token  : "{{csrf_token()}}" ,
-               slug: null,
+               slug: slug,
+               type: "edit",
+               video_id: video_id,
+             
       },
       success: function(data) {
             console.log(data.message);
