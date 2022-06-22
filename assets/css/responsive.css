@@ -136,6 +136,7 @@
         font-size: 40px!important;
         text-align: center;
     }
+    .more-menu{min-width:0rem;}
     .favorites-slider .slick-prev, #trending-slider-nav .slick-prev{left: -30px!important;}
   .favorites-slider .slick-prev,
   #trending-slider-nav .slick-prev{right:37px;}

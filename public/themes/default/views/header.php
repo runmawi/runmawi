@@ -420,9 +420,9 @@ input:checked + .sliderk:before {
                            </div>
                         </div>
                         <div class="mobile-more-menu">
-                           <a href="javascript:void(0);" class="more-toggle" id="dropdownMenuButton"
+                           <a href="javascript:void(0);" class="more-toggle mt-1" id="dropdownMenuButton"
                               data-toggle="more-toggle" aria-haspopup="true" aria-expanded="false">
-                           <i class="ri-more-line"></i>
+                               <i class="fa fa-search"></i>
                            </a>
                            <div class="more-menu" aria-labelledby="dropdownMenuButton">
                               <div class="navbar-right position-relative">
@@ -433,7 +433,7 @@ input:checked + .sliderk:before {
                                             <form role="search" action="<?php echo URL::to('/').'/searchResult';?>" method="POST">
                                               <input name="_token" type="hidden" value="<?php echo csrf_token(); ?>">
                                               <div>
-                                                <i class="fa fa-search">
+                                                <i class="fa fa-search mr-1">
                                                 </i>
                                                 <input type="text" name="search" class="searches" id="searches" autocomplete="off" placeholder="Type here to Search Videos">
                                               </div>

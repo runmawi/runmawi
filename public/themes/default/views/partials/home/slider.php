@@ -274,24 +274,25 @@ echo (strlen($slider_video->title) > 15) ? substr($slider_video->title,0,80).'..
 
 ?>
 </h1>
-<div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
+<!--<div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
 <span class="badge badge-secondary p-2">
         <?php echo __($slider_video->age_restrict); ?>
     </span>
-    <!--                      <span class="ml-3"><?php echo __($slider_video->language); ?></span>-->
+    <!--                      <span class="ml-3"><?php echo __($slider_video->language); ?></span>
 </div>
 <br>
 <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
-    <span class="badge badge-secondary p-2">
+    <!--<span class="badge badge-secondary p-2">
         <?php echo __($slider_video->year); ?>
     </span>
-    <!--                      <span class="ml-3"><?php echo __($slider_video->language); ?></span>-->
-</div>
+    <!--                      <span class="ml-3"><?php echo __($slider_video->language); ?></span>
+</div>-->
 <div data-animation-in="fadeInUp" data-delay-in="1.2"
 style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;  
   overflow: hidden;">
+    <p>Loki, the God of Mischief, steps out of his brother's shadow to embark on an adventure that takes place after the events of "Avengers: Endgame."</p>
 <?php echo __($slider_video->description); ?>
 </div>
 <div class="d-flex justify-content-evenly align-items-center r-mb-23" data-animation-in="fadeInUp"
