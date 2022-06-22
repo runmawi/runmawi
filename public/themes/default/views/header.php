@@ -320,7 +320,7 @@ input:checked + .sliderk:before {
                                  </li>
                               </ul>-->
                                <ul id="top-menu" class="nav navbar-nav <?php if ( Session::get('locale') == 'arabic') { echo "navbar-right"; } else { echo "navbar-left";}?>">
-                                      <li class=" menu-item" id="user-menu" >
+                                      <!--<li class=" menu-item" id="user-menu" >
                                        <a href="#" class="user-menu">
                                         <img src="<?php echo URL::to('/').'/public/uploads/avatars/' . Auth::user()->avatar ?>" class="img-fluid avatar-40 rounded-circle" alt="user"><br>
                                         <p class="mt-3 ml-3" style="font-size: 16px;">
@@ -341,7 +341,7 @@ input:checked + .sliderk:before {
                                        
                                        </p>
                                     </a> 
-                                   </li>
+                                   </li>-->
                                           <?php
                                         $stripe_plan = SubscriptionPlan();
                                        //  $menus = App\Menu::all();
