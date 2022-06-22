@@ -157,7 +157,7 @@ header .navbar ul li:last-child { margin-right: 0; }
 .big-title { /*background: url('../images/texure.jpg');*/ background-repeat: repeat-x; background-position: 100% 100%; color: #fff; -webkit-font-smoothing: antialiased; -webkit-background-clip: text; -moz-background-clip: text; background-clip: text; /*-webkit-text-fill-color: transparent; */}
 .slick-track{margin:unset!important;}
 .favorites-contens{
-      padding: 10px; 
+     /* padding: 10px; */
 }
 .view-count{
     color: #fff;
@@ -185,7 +185,7 @@ header .navbar ul li:last-child { margin-right: 0; }
     padding-right: 20px;
 }
 .block-space { padding: 40px 0; }
-.s-margin { margin-top: 20px; }
+.s-margin { /*margin-top: 20px;*/ }
 .iq-main-header { margin-bottom: 0px; margin-top: 30px;margin-left: -10px;}
 .main-title a:hover, .main-title a:focus {color:var(--iq-primary) !important;}
 :focus{outline: none !important;}

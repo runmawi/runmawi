@@ -9,7 +9,7 @@
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
             <div class="slide slick-bg s-bg-1 lazyload"
             data-bgset="<?php echo URL::to('/').'/public/uploads/videocategory/' .$slider_video->slider;?>" style="background-position: right;
-    background-position-y: top;">
+    ">
             <div class="container-fluid position-relative h-100" style="padding:0px 100px">
                 <div class="slider-inner h-100">
 
@@ -47,7 +47,7 @@ endif; ?>
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
             <div class="slide slick-bg s-bg-1 lazyload"
             data-bgset="<?php echo URL::to('/').'/public/uploads/images/' .$slider_video->player_image;?>"  style="background-position: right;
-    background-position-y: top;">
+   ">
             <div class="container-fluid position-relative h-100" style="padding:0px 100px">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center bl h-100">
@@ -126,7 +126,7 @@ endif; ?>
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
             <div class="slide slick-bg s-bg-1 lazyload"
             data-bgset="<?php echo URL::to('/').'/public/uploads/images/' .$videos->player_image;?>" style="background-position: right;
-    background-position-y: top;">
+   ">
             <div class="container-fluid position-relative h-100" style="padding:0px 100px">
                 <div class="slider-inner h-100">
 
@@ -253,7 +253,7 @@ endif; ?>
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
             <div class="slide slick-bg s-bg-1 lazyload"
              data-bgset="<?php echo URL::to('/').'/public/uploads/images/' .$slider_video->player_image;?>" style="background-position: right;
-    background-position-y: top; ">
+  ">
             <div class="container-fluid position-relative h-100" style="padding:0px 100px">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center bl h-100">
