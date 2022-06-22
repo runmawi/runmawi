@@ -462,6 +462,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
 
     // Active and De-Active slider Video
     Route::post('/video_slider_update', 'AdminVideosController@video_slider_update'); 
+    Route::post('/video_slug_validate', 'AdminVideosController@video_slug_validate'); 
 
 
     /* Thumbnail Setting */
