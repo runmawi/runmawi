@@ -639,20 +639,24 @@ border-radius: 0px 4px 4px 0px;
                      <!-- <input type="text" class="form-control" id="#inputTag" name="searchtags" value="" data-role="tagsinput"> -->
                   </div>
                </div>
-               <div class="row">
-               <div class="col-sm-6 form-group" >
-                     <label class="m-0">Related Videos :</label>
-                     <select  name="related_videos[]" class="form-control js-example-basic-multiple" style="width: 100%;" multiple="multiple">
-                     @foreach($related_videos as $video)
-                     @if(in_array($video->id, $all_related_videos))
-                     <option value="{{ $video->id }}" selected="true">{{ $video->title }}</option>
-                     @else
-                     <option value="{{ $video->id }}"  > {{ $video->title }}</option>
-                     @endif      
-                     @endforeach
-                     </select>
+
+            
+                  <div class="row">
+                     <div class="col-sm-6 form-group" >
+                        <label class="m-0">Related Videos :</label>
+                        <select  name="related_videos[]" class="form-control js-example-basic-multiple" style="width: 100%;" multiple="multiple">
+                           @foreach($related_videos as $related_video)
+                              @if(in_array($related_video->id, $all_related_videos))
+                                 <option value="{{ $related_video->id }}" selected="true">{{ $related_video->title }}</option>
+                              @else
+                                 <option value="{{ $related_video->id }}"  > {{ $related_video->title }}</option>
+                              @endif   
+                           @endforeach
+                        </select>
                      </div>
-               </div>
+                  </div>
+
+            
                    <div class="row">
                        <div class="col-sm-6 "> 
                            <div class="panel panel-primary" data-collapsed="0"> 
@@ -693,38 +697,36 @@ border-radius: 0px 4px 4px 0px;
 
                <fieldset>
                   <div class="form-card">
-                      <div class="row">
-                          <div class="col-7">
-                              <h2 class="fs-title">Image Upload:</h2>
-                          </div>
-                          <div class="col-5">
-                              <!-- <h2 class="steps">Step 3 - 4</h2> -->
-                          </div>
-                      </div>
-                      <div class="row">
-                          <div class="col-sm-6 form-group">
-                              <label class="mb-1">Video Thumbnail <span>(9:16 Ratio or 720X1080px)</span></label><br />
-                              <input type="file" name="image" id="image" />
-                              @if(!empty($video->image))
-                              <div class="col-sm-8 p-0">
-                                 <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" class="video-img w-100 mt-1" />
-                              </div>
-                              @endif
-                          </div>
-                          <div class="col-sm-6 form-group">
-                              <label class="mb-1">Player Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br />
-                              <input type="file" name="player_image" id="player_image" />
-                              @if(!empty($video->player_image))
-                              <div class="col-sm-8 p-0">
-                                  <img src="{{ URL::to('/') . '/public/uploads/images/' .$video->player_image }}" class="video-img w-100 mt-1" />
-                              </div>
-                              <!-- URL::to('/') . '/public/uploads/images/' .  -->
-                              @endif
-                          </div>
-                      </div>
+                        <div class="row">
+                           <div class="col-7">
+                                 <h2 class="fs-title">Image Upload:</h2>
+                           </div>
+                           <div class="col-5"></div>
+                        </div>
 
-                    
+                        <div class="row">
+                              <div class="col-sm-6 form-group">
+                                 <label class="mb-1">Video Thumbnail <span>(9:16 Ratio or 720X1080px)</span></label><br />
+                                 <input type="file" name="image" id="image" />
+                                    @if(!empty($video->image))
+                                       <div class="col-sm-8 p-0">
+                                          <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" class="video-img w-100 mt-1" />
+                                       </div>
+                                    @endif
+                              </div>
 
+                              <div class="col-sm-6 form-group">
+                                 <label class="mb-1">Player Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br />
+                                 <input type="file" name="player_image" id="player_image" />
+                                    @if(!empty($video->player_image))
+                                       <div class="col-sm-8 p-0">
+                                          <img src="{{ URL::to('/') . '/public/uploads/images/' .$video->player_image }}" class="video-img w-100 mt-1" />
+                                       </div>
+                                    @endif
+                           </div>
+                        </div>
+
+                  
                       <div class="row">
 
                         <div class="col-7">
