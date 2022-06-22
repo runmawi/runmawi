@@ -156,7 +156,7 @@ Index Of Script
 			infinite: true,
 			speed: 300,
 			autoplay: false,
-			slidesToShow: 8,
+			slidesToShow: 10,
 			slidesToScroll: 1,		
 			// appendArrows: $('#sm-slick-arrow'),
 			
