@@ -121,7 +121,7 @@
   .favorites-slider .slick-arrow,
   .favorites-slider .slick-arrow:hover,
   #trending-slider-nav .slick-arrow,
-  #trending-slider-nav .slick-arrow:hover{background: none;top:78px!important;}
+  #trending-slider-nav .slick-arrow:hover{background: none;/*top:78px!important;*/}
     .p-tag {font-size: 8px;
     }
      .p-tag1 {font-size: 8px;
