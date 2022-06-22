@@ -1271,15 +1271,16 @@ $(document).ready(function(){
          }else{
             var slug = $('#slug').val();
          }
-        
-
+      
          $.ajax({
          type: "POST", 
          dataType: "json", 
          url: "{{ url('admin/video_slug_validate') }}",
                data: {
                   _token  : "{{csrf_token()}}" ,
-                  slug: slug,
+                  slug : slug,
+                  type : "create",
+                  video_id: null,
          },
          success: function(data) {
                console.log(data.message);

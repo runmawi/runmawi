@@ -1427,7 +1427,7 @@ if(!empty($artistsdata)){
         $video->banner =  $banner;
         $video->enable =  $enable;
         $video->rating =  $request->rating;
-        $video->search_tags =  $searchtags;        
+        $video->search_tags =  $searchtags;      
         $video->save();
 
 
@@ -2919,8 +2919,21 @@ if(!empty($artistsdata)){
     {
        $video_slug_validate = Video::where('slug',$request->slug)->count();
 
-       $validate_status =  $video_slug_validate > 0 ? "true" : "false" ;
+        if( $request->type == "create" ){
+            $validate_status =  $video_slug_validate > 0 ? "true" : "false" ;
+        }
+        elseif ($request->type == "edit" ) {
 
+            $video_slug_count = Video::where('id',$request->video_id)->where('slug',$request->slug)->count();
+
+            if($video_slug_count == 1 ){
+                $validate_status =  $video_slug_validate > 1 ? "true" : "false" ;
+            }
+            else{
+                $validate_status =  $video_slug_validate > 0 ? "true" : "false" ;
+            }
+            
+        }
        return response()->json(['message'=>$validate_status]);
     }
 
