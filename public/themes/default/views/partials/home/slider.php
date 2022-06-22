@@ -44,7 +44,7 @@ endif; ?>
 
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
             <div class="slide slick-bg s-bg-1 lazyload"
-            data-bgset="<?php echo URL::to('/').'/public/uploads/images/' .$slider_video->image;?>"  style="background-position: right;
+            data-bgset="<?php echo URL::to('/').'/public/uploads/images/' .$slider_video->player_image;?>"  style="background-position: right;
     background-position-y: top;">
             <div class="container position-relative h-100">
                 <div class="slider-inner h-100">
@@ -123,7 +123,7 @@ endif; ?>
 
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
             <div class="slide slick-bg s-bg-1 lazyload"
-            data-bgset="<?php echo URL::to('/').'/public/uploads/images/' .$videos->image;?>" style="background-position: right;
+            data-bgset="<?php echo URL::to('/').'/public/uploads/images/' .$videos->player_image;?>" style="background-position: right;
     background-position-y: top;">
             <div class="container position-relative h-100">
                 <div class="slider-inner h-100">
@@ -176,7 +176,7 @@ echo (strlen($videos->title) > 15) ? substr($videos->title,0,80).'...' : $videos
                     </div>
                     <div class="col-md-12">
             <div id="video-trailer" class="mfp-hide">
-             <video id="videoPlayer" poster="<?php echo URL::to('/').'/public/uploads/images/' .$videos->image;?>"  class="" controls src="<?= $videos->trailer; ?>"  type="application/x-mpegURL" ></video>
+             <video id="videoPlayer" poster="<?php echo URL::to('/').'/public/uploads/images/' .$videos->player_image;?>"  class="" controls src="<?= $videos->trailer; ?>"  type="application/x-mpegURL" ></video>
                     </div>
             </div>
             </div>
@@ -250,7 +250,7 @@ endif; ?>
 
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
             <div class="slide slick-bg s-bg-1 lazyload"
-             data-bgset="<?php echo URL::to('/').'/public/uploads/images/' .$slider_video->image;?>" style="background-position: right;
+             data-bgset="<?php echo URL::to('/').'/public/uploads/images/' .$slider_video->player_image;?>" style="background-position: right;
     background-position-y: top; ">
             <div class="container position-relative h-100">
                 <div class="slider-inner h-100">

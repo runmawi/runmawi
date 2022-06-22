@@ -73,7 +73,7 @@ if(isset($videos)) :
                         <div class="block-images position-relative">
                                
                                       <div class="img-box">
-                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$top_category_video->image;  ?>"
+                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$top_category_video->player_image;  ?>"
                                             class="img-fluid" alt=""> 
                                             <!-- <video  width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$top_category_video->player_image;  ?>"  data-play="hover" >
                                                 <source src="<?php echo $top_category_video->trailer;  ?>" type="video/mp4">
@@ -155,7 +155,7 @@ if(isset($videos)) :
                             <div class="block-images position-relative">
                             <!-- block-images -->
                             <div class="img-box">
-                                    <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"
+                                    <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->player_image;  ?>"
                                         class="img-fluid" alt="">
                                         <!-- <video  width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->player_image;  ?>"  data-play="hover" >
                                             <source src="<?php echo $category_video->trailer;  ?>" type="video/mp4">
