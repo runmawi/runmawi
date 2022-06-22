@@ -388,8 +388,6 @@ class ChannelController extends Controller
            }else{
             $endcardvideo = [];
            }
-          //  dd($endcardvideo);
-
 
            if($get_video_id->type == "mp4_url"){
             // $ffprobe = FFProbe::create();
@@ -399,7 +397,7 @@ class ChannelController extends Controller
             $endtimevideo = '';
 
            }elseif($get_video_id->type == "m3u8_url"){
-            $ffprobe = FFProbe::create();
+            // $ffprobe = FFProbe::create();
             // $endtimevideos = $ffprobe->format($get_video_id->m3u8_url) // extracts file informations
             //    ->get('duration');
             //    $endtimevideo = $endtimevideos - 5;
