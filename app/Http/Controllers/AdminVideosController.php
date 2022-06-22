@@ -1018,6 +1018,8 @@ if(!empty($artistsdata)){
 
                             // Trailer Update
 
+            $path = public_path().'/uploads/videos/';
+
             $video->trailer_type = $data['trailer_type'];
 
             if($data['trailer_type'] == 'video_mp4'){
@@ -2911,6 +2913,15 @@ if(!empty($artistsdata)){
         } catch (\Throwable $th) {
             return response()->json(['message'=>"false"]);
         }
+    }
+
+    public function video_slug_validate(Request $request)
+    {
+       $video_slug_validate = Video::where('slug',$request->slug)->count();
+
+       $validate_status =  $video_slug_validate > 0 ? "true" : "false" ;
+
+       return response()->json(['message'=>$validate_status]);
     }
 
 }
