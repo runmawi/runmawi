@@ -320,6 +320,28 @@ input:checked + .sliderk:before {
                                  </li>
                               </ul>-->
                                <ul id="top-menu" class="nav navbar-nav <?php if ( Session::get('locale') == 'arabic') { echo "navbar-right"; } else { echo "navbar-left";}?>">
+                                      <li class=" menu-item" id="user-menu" >
+                                       <a href="#" class="user-menu">
+                                        <img src="<?php echo URL::to('/').'/public/uploads/avatars/' . Auth::user()->avatar ?>" class="img-fluid avatar-40 rounded-circle" alt="user"><br>
+                                        <p class="mt-3 ml-3" style="font-size: 16px;">
+                                        
+                                        <?php 
+                                        $subuser=Session::get('subuser_id');
+                                        if($subuser != ''){
+                                           $subuser=App\Multiprofile::where('id',$subuser)->first();
+                                          echo  $subuser->user_name  ;
+                                        }
+                                        else{
+                                          echo Auth::user()->username.' '  ;
+                                        }
+                                        
+                                        ?> 
+                                       
+                                    
+                                       
+                                       </p>
+                                    </a> 
+                                   </li>
                                           <?php
                                         $stripe_plan = SubscriptionPlan();
                                        //  $menus = App\Menu::all();
@@ -330,7 +352,8 @@ input:checked + .sliderk:before {
                                         if ( $menu->in_menu == "video") { 
                                         $cat = App\VideoCategory::orderBy("order")->get();
                                         ?>
-
+                            
+                                   
                                           <li class="dropdown menu-item">
                                             <a class="dropdown-toggle" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
                                               <?php echo __($menu->name);?>
