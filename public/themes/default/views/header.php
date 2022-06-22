@@ -99,9 +99,10 @@ $data = Session::all();
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/slick.css';?>" />
+
    <input type="hidden" value="<?php echo $settings->google_tracking_id ; ?>" name="tracking_id" id="tracking_id">
     <!-- Favicon -->
-         <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/slick.css';?>" />
       
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 
