@@ -2909,4 +2909,18 @@ if(!empty($artistsdata)){
 
     }
 
+    public function video_slider_update(Request $request)
+    {
+        try {
+            $video = Video::where('id',$request->video_id)->update([
+                'banner' => $request->banner_status,
+            ]);
+
+            return response()->json(['message'=>"true"]);
+
+        } catch (\Throwable $th) {
+            return response()->json(['message'=>"false"]);
+        }
+    }
+
 }

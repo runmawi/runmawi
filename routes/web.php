@@ -460,6 +460,10 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::get('/ActiveSlider', 'AdminDashboardController@ActiveSlider'); 
     Route::post('/ActiveSlider_update', 'AdminDashboardController@ActiveSlider_update'); 
 
+    // Active and De-Active slider Video
+    Route::post('/video_slider_update', 'AdminVideosController@video_slider_update'); 
+
+
     /* Thumbnail Setting */
     Route::get('/ThumbnailSetting', 'AdminSettingsController@ThumbnailSetting')->name('ThumbnailSetting'); 
     Route::post('/ThumbnailSetting_Store', 'AdminSettingsController@ThumbnailSetting_Store'); 
