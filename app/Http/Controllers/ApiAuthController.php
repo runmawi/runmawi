@@ -2126,6 +2126,22 @@ $final[] = array_merge($array1,$array2,$array3,$array4);
         public function ViewProfile(Request $request) {
 
             $user_id = $request->user_id;
+            if($user_id == 1){
+              
+              $user_details = User::where('id', '=', $user_id)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+                $item['profile_url'] = URL::to('/').'/public/uploads/avatars/'.$item->avatar;
+                return $item;
+            });
+              $response = array(
+                'status'=>'true',
+                'message'=>'success',
+                'curren_stripe_plan'=> '',
+                'user_details' => $user_details,
+                'next_billing' => '',
+                'ends_at' => '',
+            );
+            }else{
+
             $stripe_plan = SubscriptionPlan();
 
             $user_details = User::where('id', '=', $user_id)->orderBy('created_at', 'desc')->get()->map(function ($item) {
@@ -2207,6 +2223,7 @@ $final[] = array_merge($array1,$array2,$array3,$array4);
                 'next_billing' => $nextPaymentAttemptDate,
                 'ends_at' => $ends_at,
             );
+          }
             return response()->json($response, 200);
         }
 
