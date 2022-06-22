@@ -1,7 +1,7 @@
 <?php include('header.php'); ?>
  <!-- MainContent -->
 <section id="iq-favorites">
-            <div class="container">
+            <div class="container-fluid">
                <div class="row">
                   <div class="col-sm-12 page-height">
                      <div class="iq-main-header align-items-center justify-content-between">
@@ -15,7 +15,7 @@
                               <a href="<?php echo URL::to('home') ?>">
                                  <div class="block-images position-relative">
                                     <div class="img-box">
-                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_video->image;  ?>" class="img-fluid" alt="">
+                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_video->image;  ?>" class="img-fluid w-100" alt="">
                                    
                                    
                                           <?php  if(!empty($latest_video->ppv_price)){?>
@@ -28,7 +28,7 @@
                                      
                                 </div>
                                  
-                                    <div class="block-description" style="bottom:-38px!important;">
+                                    <div class="block-description">
                                     
                                     <?php if($ThumbnailSetting->title == 1) { ?>            <!-- Title -->
                                         <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $latest_video->slug ?>">
