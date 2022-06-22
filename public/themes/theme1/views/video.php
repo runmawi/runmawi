@@ -553,12 +553,33 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
            
 <!-- url link -->
 <div class=" page-height">
-        <div id="watch_trailer" class="fitvid" atyle="z-index: 9999;">
-        <video  id="videoPlayers" class=""  
-        controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
-        type="video/mp4" src="<?php echo $video->trailer;?>">
-      </video>
-    </div>
+<div id="watch_trailer" class="fitvid" atyle="z-index: 9999;">
+               
+               <?php  if($video->trailer_type !=null && $video->trailer_type == "video_mp4" || $video->trailer_type == "mp4_url"  ){ ?>
+
+                   <video  class="videoPlayers" 
+                         controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
+                         type="video/mp4" src="<?php echo $video->trailer;?>">
+                   </video>
+
+
+               <?php }elseif($video->trailer_type !=null && $video->trailer_type == "m3u8_url" ){ ?>
+
+                   <video  class="videoPlayers" 
+                         controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
+                         type="application/x-mpegURL">
+                   </video>
+
+               <?php }elseif($video->trailer_type !=null && $video->trailer_type == "embed_url" ){ ?>
+
+                       <div class="videoPlayers" id="">
+                         <iframe src="<?php echo $video->trailer ?>"  
+                           allow="autoplay"  data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  >
+                         </iframe>
+                       </div>
+
+               <?php  } ?>
+             </div>
 
 <?php if(!empty($video->url_link) ) { ?>
 <div class="text-white" id="url_linkdetails" >
@@ -990,7 +1011,7 @@ $artists = [];
             $('#videoplay').click(function(){
               // alert('test');
               $('#video_container').hide();
-              const player = new Plyr('#videoPlayers');
+              const player = new Plyr('.videoPlayers');
               $('#watch_trailer').show();
               $('#videoplay').hide();
               $('#close_trailer').show();
@@ -1001,7 +1022,7 @@ $artists = [];
             $('#close_trailer').click(function(){
               // alert('test');
               $('#watch_trailer').hide();
-              const player = new Plyr('#videoPlayers');
+              const player = new Plyr('.videoPlayers');
               $('#video_container').show();
               $('#videoplay').show();            
               $('#close_trailer').hide();
@@ -1455,4 +1476,26 @@ var x = setInterval(function() {
 </script>
 
 <?php include('footer.blade.php');?>
+
+<!-- Trailer m3u8 -->
+
+<script>
+
+  var trailer_video_m3u8 = <?php echo json_encode($video->trailer) ; ?> ;
+
+    (function () {
+      var video = document.querySelector('.videoPlayers');
+
+      if (Hls.isSupported()) {
+          var hls = new Hls();
+          hls.loadSource(trailer_video_m3u8);
+          hls.attachMedia(video);
+          hls.on(Hls.Events.MANIFEST_PARSED,function() {
+        });
+      }
+      
+    })();
+
+</script>
+
 

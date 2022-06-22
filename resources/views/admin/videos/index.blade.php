@@ -23,7 +23,6 @@ border-radius: 0px 4px 4px 0px;
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
   <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
 @section('content')
-<?php //dd($cppuser); ?>
      <div id="content-page" class="content-page">
          <div class="mt-5 d-flex">
                         <a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/videos') }}">All Videos</a>
@@ -31,7 +30,9 @@ border-radius: 0px 4px 4px 0px;
                         <a class="black" href="{{ URL::to('admin/CPPVideosIndex') }}">Videos For Approval</a>
                         <a class="black" href="{{ URL::to('admin/Masterlist') }}" class="iq-waves-effect"> Master Video List</a>
                         <a class="black" href="{{ URL::to('admin/videos/categories') }}">Manage Video Categories</a>
-                        <a class="black" href="{{ URL::to('admin/ActiveSlider') }}">Active Slider List</a></div>
+                        <a class="black" href="{{ URL::to('admin/ActiveSlider') }}">Active Slider List</a>
+         </div>
+         
          <div class="container-fluid p-0">
             <div class="row ">
                <div class="col-sm-12">
@@ -73,6 +74,7 @@ border-radius: 0px 4px 4px 0px;
                                     <!-- <th>Language</th> -->
                                     <!--<th style="width: 20%;">Description</th>-->
                                      <th>Views</th>
+                                     <th>Slider</th>
                                     <th>Action</th>
                                  </tr>
                               </thead>
@@ -80,7 +82,8 @@ border-radius: 0px 4px 4px 0px;
                               @foreach($videos as $key => $video)
                                  <tr id="tr_{{$video->id}}" >
                                    
-                                       <td><input type="checkbox" id="Sub_chck" class="sub_chk" data-id="{{$video->id}}"></td>
+                                    <td><input type="checkbox" id="Sub_chck" class="sub_chk" data-id="{{$video->id}}"></td>
+
                                     <td>
                                        <div class="media align-items-center">
                                           <div class="iq-movie">
@@ -94,12 +97,15 @@ border-radius: 0px 4px 4px 0px;
                                           </div>
                                        </div>
                                     </td>
+
                                     <!-- <td>{{ $video->rating }}</td> -->
+
                                     <td>@if(isset($video->rating))  
                                        <svg class="duration-style" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Pro 6.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M287.9 0C297.1 0 305.5 5.25 309.5 13.52L378.1 154.8L531.4 177.5C540.4 178.8 547.8 185.1 550.7 193.7C553.5 202.4 551.2 211.9 544.8 218.2L433.6 328.4L459.9 483.9C461.4 492.9 457.7 502.1 450.2 507.4C442.8 512.7 432.1 513.4 424.9 509.1L287.9 435.9L150.1 509.1C142.9 513.4 133.1 512.7 125.6 507.4C118.2 502.1 114.5 492.9 115.1 483.9L142.2 328.4L31.11 218.2C24.65 211.9 22.36 202.4 25.2 193.7C28.03 185.1 35.5 178.8 44.49 177.5L197.7 154.8L266.3 13.52C270.4 5.249 278.7 0 287.9 0L287.9 0zM287.9 78.95L235.4 187.2C231.9 194.3 225.1 199.3 217.3 200.5L98.98 217.9L184.9 303C190.4 308.5 192.9 316.4 191.6 324.1L171.4 443.7L276.6 387.5C283.7 383.7 292.2 383.7 299.2 387.5L404.4 443.7L384.2 324.1C382.9 316.4 385.5 308.5 391 303L476.9 217.9L358.6 200.5C350.7 199.3 343.9 194.3 340.5 187.2L287.9 78.95z"/></svg>
                                        {{ $video->rating }} @else
                                        <svg class="duration-style" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Pro 6.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M287.9 0C297.1 0 305.5 5.25 309.5 13.52L378.1 154.8L531.4 177.5C540.4 178.8 547.8 185.1 550.7 193.7C553.5 202.4 551.2 211.9 544.8 218.2L433.6 328.4L459.9 483.9C461.4 492.9 457.7 502.1 450.2 507.4C442.8 512.7 432.1 513.4 424.9 509.1L287.9 435.9L150.1 509.1C142.9 513.4 133.1 512.7 125.6 507.4C118.2 502.1 114.5 492.9 115.1 483.9L142.2 328.4L31.11 218.2C24.65 211.9 22.36 202.4 25.2 193.7C28.03 185.1 35.5 178.8 44.49 177.5L197.7 154.8L266.3 13.52C270.4 5.249 278.7 0 287.9 0L287.9 0zM287.9 78.95L235.4 187.2C231.9 194.3 225.1 199.3 217.3 200.5L98.98 217.9L184.9 303C190.4 308.5 192.9 316.4 191.6 324.1L171.4 443.7L276.6 387.5C283.7 383.7 292.2 383.7 299.2 387.5L404.4 443.7L384.2 324.1C382.9 316.4 385.5 308.5 391 303L476.9 217.9L358.6 200.5C350.7 199.3 343.9 194.3 340.5 187.2L287.9 78.95z"/></svg>
-                                        0 @endif</td>
+                                        0 @endif
+                                    </td>
 
                                     <!-- <td>@if(isset($video->category['categoryname']->name)) {{ @$video->category['categoryname']->name }} @endif</td> -->
                                     <!-- <td>@if(!empty(@$value->category[$key]->categoryname->name)) {{ @$value->category[$key]->categoryname->name }} @endif</td> -->
@@ -112,15 +118,16 @@ border-radius: 0px 4px 4px 0px;
                                     <td>@if(isset($video->cppuser->username)) Uploaded by {{ $video->cppuser->username }} @else  Admin @endif</td>
 
                                     <td>{{ $video->type }}</td>
+
                                     <td>{{ $video->access }}</td>
                                    
-                                    <?php if($video->draft == null){ ?>
-                                     <td > <p class = "bg-warning video_active"><?php echo "Draft"; ?></p></td>
-                                    <?php }elseif($video->draft == 1 && $video->status == 1 && $video->active == 1){ ?>
-                                     <td > <p class = "bg-success video_active"><?php  echo "Approved"; ?></p></td>
-                                    <?php }else{ ?>
-                                     <td> <p class = "bg-warning video_active"><?php  echo "Draft"; ?></p></td>
-                                     <?php }?>
+                                             <?php if($video->draft == null){ ?>
+                                    <td > <p class = "bg-warning video_active"><?php echo "Draft"; ?></p></td>
+                                             <?php }elseif($video->draft == 1 && $video->status == 1 && $video->active == 1){ ?>
+                                    <td > <p class = "bg-success video_active"><?php  echo "Approved"; ?></p></td>
+                                             <?php }else{ ?>
+                                    <td> <p class = "bg-warning video_active"><?php  echo "Draft"; ?></p></td>
+                                             <?php }?>
                                     
                                     
                              
@@ -129,6 +136,16 @@ border-radius: 0px 4px 4px 0px;
                                        <!--<p> {{ substr($video->description, 0, 50) . '...' }} </p>-->
                                         {{ $video->views }}<i class="lar la-eye "></i>
                                     </td>
+
+                                    <td> 
+                                       <div class="mt-1">
+                                          <label class="switch">
+                                              <input name="video_status" class="video_status" id="{{ 'video_'.$video->id }}" type="checkbox" @if( $video->banner == "1") checked  @endif data-video-id={{ $video->id }}  data-type="video" onchange="update_video_banner(this)" >
+                                              <span class="slider round"></span>
+                                          </label>
+                                      </div>
+                                    </td>
+                                    
                                     <td>
                                        <div class="flex align-items-center list-user-action">
 
@@ -326,6 +343,58 @@ $('#cpp_user_videos').change(function(){
        });
 
    });
+</script>
+
+<script>
+      function update_video_banner(ele){
+
+      var video_id = $(ele).attr('data-video-id');
+      var status   = '#video_'+video_id;
+      var video_Status = $(status).prop("checked");
+
+      if(video_Status == true){
+            var banner_status  = '1';
+            var check = confirm("Are you sure you want to active this slider?");  
+
+      }else{
+            var banner_status  = '0';
+            var check = confirm("Are you sure you want to remove this slider?");  
+      }
+
+
+      if(check == true){ 
+
+         $.ajax({
+                  type: "POST", 
+                  dataType: "json", 
+                  url: "{{ url('admin/video_slider_update') }}",
+                        data: {
+                           _token  : "{{csrf_token()}}" ,
+                           video_id: video_id,
+                           banner_status: banner_status,
+                  },
+                  success: function(data) {
+                        if(data.message == 'true'){
+                           location.reload();
+                        }
+                        else if(data.message == 'false'){
+                           swal.fire({
+                           title: 'Oops', 
+                           text: 'Something went wrong!', 
+                           allowOutsideClick:false,
+                           icon: 'error',
+                           title: 'Oops...',
+                           }).then(function() {
+                              location.href = '{{ URL::to('admin/ActiveSlider') }}';
+                           });
+                        }
+                     },
+               });
+      }else if(check == false){
+         $(status).prop('checked', true);
+
+      }
+      }
 </script>
 
 

@@ -956,19 +956,12 @@ if(!empty($artistsdata)){
         
         $data = $request->all();
 
-        // dd($data);
-
-
         $validatedData = $request->validate([
             'title' => 'required|max:255',
-            // 'video_country' => 'required'        
         ]);
 
-            // $id = $data['id'];
-            $title = $data['title'];
-            $video_id = Video::where('title',$title)->first();
-            
-            $id = $video_id['id'];
+            $id = $request->videos_id;
+
 
             /*Advertisement Video update starts*/
             // if($data['ads_id'] != 0){
@@ -983,153 +976,152 @@ if(!empty($artistsdata)){
             //         $ad_video->save();
             //     }
             /*Advertisement Video update ends*/ 
+
             $video = Video::findOrFail($id);
+
             if($request->slug == ''){
                 $data['slug'] = $this->createSlug($data['title']);    
             }else{
                 $data['slug'] = $request->slug;    
             }
         
-           $image = (isset($data['image'])) ? $data['image'] : '';
-           $trailer = (isset($data['trailer'])) ? $data['trailer'] : '';
-           $mp4_url2 = (isset($data['video'])) ? $data['video'] : '';
-           $files = (isset($data['subtitle_upload'])) ? $data['subtitle_upload'] : '';
-           $player_image = (isset($data['player_image'])) ? $data['player_image'] : '';
-           $image_path = public_path().'/uploads/images/';
+           $image         =  (isset($data['image'])) ? $data['image'] : '';
+           $trailer       =  (isset($data['trailer'])) ? $data['trailer'] : '';
+           $mp4_url2      =  (isset($data['video'])) ? $data['video'] : '';
+           $files         =  (isset($data['subtitle_upload'])) ? $data['subtitle_upload'] : '';
+           $player_image  =  (isset($data['player_image'])) ? $data['player_image'] : '';
+           $image_path    =   public_path().'/uploads/images/';
           
-           if($player_image != '') {   
-                //code for remove old file
-                if($player_image != ''  && $player_image != null){
-                     $file_old = $image_path.$player_image;
+            if($player_image != '') {     
+                if($player_image != ''  && $player_image != null){   //code for remove old file
+                        $file_old = $image_path.$player_image;
+
                     if (file_exists($file_old)){
-                     unlink($file_old);
+                        unlink($file_old);
                     }
                 }
                 
-                //upload new file
-                $player_image = $player_image;
+                                //upload new file
+
+                $player_image = $player_image;   
                 // $data['player_image']  = $player_image->getClientOriginalName();
-            $data['player_image'] = str_replace(' ', '_', $player_image->getClientOriginalName());
+                $data['player_image'] = str_replace(' ', '_', $player_image->getClientOriginalName());
 
                 $player_image->move($image_path, $data['player_image']);
                 // $player_image = $file->getClientOriginalName();
                $player_image = str_replace(' ', '_', $player_image->getClientOriginalName());
-
   
-  
-           } else {
+            } 
+            else {
                $player_image = $video->image;
-           }
+            }
 
-           $video->trailer_type = $data['trailer_type'];
+                            // Trailer Update
 
-           // dd($data);
-   
-           if($data['trailer_type'] == 'video_mp4'){
+            $video->trailer_type = $data['trailer_type'];
+
+            if($data['trailer_type'] == 'video_mp4'){
+
                if(!empty($trailer)) {   
-                   //code for remove old file
-                   if($trailer != ''  && $trailer != null){
-                        $file_old = $path.$trailer;
-                       if (file_exists($file_old)){
-                        unlink($file_old);
-                       }
-                   }
+                    if($trailer != ''  && $trailer != null){
+                            $file_old = $path.$trailer;
+
+                        if (file_exists($file_old)){
+                            unlink($file_old);
+                        }
+                    }
                    //upload new file
                    $randval = Str::random(16);
                    $file = $trailer;
                    $trailer_vid  = $randval.'.'.$request->file('trailer')->extension();
                    $file->move($path, $trailer_vid);
+                   
                    $data['trailer']  = URL::to('/').'/public/uploads/videos/'.$trailer_vid;
                       $video->trailer = URL::to('/').'/public/uploads/videos/'.$trailer_vid;
-                   } else {
+                   } 
+                   else 
+                   {
                        $data['trailer'] = $video->trailer;
                    }  
    
-                   }elseif($data['trailer_type'] == 'm3u8_url'){
-                       $video->trailer = $data['m3u8_trailer'];
-                   }
-                   elseif($data['trailer_type'] == 'mp4_url'){
-                       $video->trailer = $data['mp4_trailer'];
-                   }
-                   elseif($data['trailer_type'] == 'embed_url'){
-                       $video->trailer = $data['embed_trailer'];
-                   }
+            }elseif($data['trailer_type'] == 'm3u8_url'){
+
+                $video->trailer = $data['m3u8_trailer'];
+            }
+            elseif($data['trailer_type'] == 'mp4_url'){
+
+                $video->trailer = $data['mp4_trailer'];
+            }
+            elseif($data['trailer_type'] == 'embed_url'){
+
+                $video->trailer = $data['embed_trailer'];
+            }
                    
            
            $update_mp4 = $request->get('video');
+
            if(empty($data['active'])){
-            $active = 0;
-            $status = 0;
-
-        }  else{
-         $active = 1;
-         $status = 1;
-        }
+                $active = 0;
+                $status = 0;
+            }  
+            else{
+                $active = 1;
+                $status = 1;
+            }
         
-        
-
             if(empty($data['webm_url'])){
-                 $data['webm_url'] = 0;
-            }  else {
+                $data['webm_url'] = 0;
+            }  
+            else {
                 $data['webm_url'] =  $data['webm_url'];
             }  
 
             if(empty($data['ogg_url'])){
                 $data['ogg_url'] = 0;
-            }  else {
+            }  
+            else {
                 $data['ogg_url'] =  $data['ogg_url'];
             }  
 
             if(empty($data['year'])){
                 $year = 0;
-            }  else {
+            }
+            else {
                 $year =  $data['year'];
             }   
         
             if(empty($data['language'])){
                 $data['language'] = 0;
-            }  else {
+            }  
+            else {
                 $data['language'] = $data['language'];
             } 
 
             if(!empty($video->mp4_url)){
                 $data['mp4_url'] = $video->mp4_url;
-            }  else {
+            } 
+            else {
                 $data['mp4_url'] = null;
             } 
 
             if(!empty($video->embed_code)){
                 $data['embed_code'] = $video->embed_code;
-            }  else {
+            }  
+            else {
                 $data['embed_code'] = null;
             } 
             
             if(empty($data['age_restrict'])){
                 $data['age_restrict'] = 0;
-            }  else {
-  
+            }  
+            else {
                 $data['age_restrict'] = $data['age_restrict'];
             } 
-         
-            // $data['age_restrict'] =  $data['age_restrict'];;
-
-            // if(empty($data['featured'])){
-                // $data['featured'] = 0;
-            // } 
-            
-            // if(empty($data['active'])){
-                // $data['active'] = 0;
-            // } 
-
-            //if(empty($data['path'])){
-                    //  $data['path'] = 0;
-            // }  
-
-        
     
             if(empty($data['featured'])){
                 $featured = 0;
-            }else{
+            }
+            else{
                 $featured = 1;
             }  
 
@@ -1146,11 +1138,12 @@ if(!empty($artistsdata)){
             if(!empty($data['embed_code'])){
                 $data['embed_code'] = $data['embed_code'];
             } 
+
             if(!empty($data['m3u8_url'])){
                 $data['m3u8_url'] = $data['m3u8_url'];
             } 
 
-              if(empty($data['video_gif'])){
+            if(empty($data['video_gif'])){
                 $data['video_gif'] = '';
             }
            
@@ -1158,29 +1151,29 @@ if(!empty($artistsdata)){
                 $data['type'] = '';
             }
 
-             if(empty($data['status'])){
+            if(empty($data['status'])){
                 $data['status'] = 0;
             }   
             if(empty($data['publish_status'])){
                 $data['publish_status'] = 0;
             }   
+
             if(empty($data['publish_status'])){
                 $data['publish_status'] = 0;
             }   
             
-
             if(Auth::user()->role =='admin' && Auth::user()->sub_admin == 0 ){
                     $data['status'] = 1;    
-                }
+            }
 
             if( Auth::user()->role =='admin' && Auth::user()->sub_admin == 1 ){
                     $data['status'] = 0;    
             }
 
-           
+        
         $image_path = public_path().'/uploads/images/';
           
-         if($image != '') {   
+        if($image != '') {   
               //code for remove old file
               if($image != ''  && $image != null){
                    $file_old = $image_path.$image;
@@ -1191,7 +1184,6 @@ if(!empty($artistsdata)){
               
               //upload new file
               $file = $image;
-              
               $filename  = time().'.webp';
 
               $PC_image     =  'PC'.$filename ;
@@ -1206,12 +1198,11 @@ if(!empty($artistsdata)){
              $video->mobile_image  = $Mobile_image;
              $video->tablet_image  = $Tablet_image;
 
-
-         } else {
+        } else {
              $data['image'] = $video->image;
          }
         
-         if(isset($data['duration'])){
+        if(isset($data['duration'])){
                 //$str_time = $data
                 $str_time = preg_replace("/^([\d]{1,2})\:([\d]{2})$/", "00:$1:$2", $data['duration']);
                 sscanf($str_time, "%d:%d:%d", $hours, $minutes, $seconds);
@@ -1235,85 +1226,81 @@ if(!empty($artistsdata)){
                 // $original_name = ($request->video->getClientOriginalName()) ? $request->video->getClientOriginalName() : '';
                 $original_name = URL::to('/').'/storage/app/public/'.$path;
                 ConvertVideoForStreaming::dispatch($video);
-         }
+        }
 
        
-          if(!empty($data['embed_code'])) {
+        if(!empty($data['embed_code'])) {
              $video->embed_code = $data['embed_code'];
         }else {
             $video->embed_code = '';
         }
+
         if(!empty($data['global_ppv'])){
-        // dd($data['global_ppv']);
+             $video->global_ppv =$data['global_ppv'];
+        }
+        else{
+            $video->global_ppv = null;
+        }  
 
-         $video->global_ppv =$data['global_ppv'];
-        }else{
-         $video->global_ppv = null;
-        }   
         if(!empty($data['enable'])){
-            // dd($data['global_ppv']);
-    
              $enable =$data['enable'];
-            }else{
-             $enable = 0;
-            }   
-            if(!empty($data['banner'])){
-                // dd($data['global_ppv']);
-                 $banner =$data['banner'];
-                }else{
-                 $banner = 0;
-                }   
-                if(!empty($data['embed_code'])){
-                    // dd($data['global_ppv']);
-    
-                $embed_code =$data['embed_code'];
-                 }else{
-                $embed_code = null;
-            }   
-            if(!empty($data['mp4_url'])){
-            // dd($data['global_ppv']);
-    
-                $mp4_url =$data['mp4_url'];
-            }else{
-                $mp4_url = null;
-            }   
-
-    if(!empty($data['m3u8_url'])){
-        // dd($data['global_ppv']);
-            $m3u8_url =$data['m3u8_url'];
         }else{
+             $enable = 0;
+        }   
+
+        if(!empty($data['banner'])){
+            $banner =$data['banner'];
+        }else{
+            $banner = 0;
+        }   
+
+        if(!empty($data['embed_code'])){    
+            $embed_code =$data['embed_code'];
+        }else{
+            $embed_code = null;
+        }   
+
+        if(!empty($data['mp4_url'])){
+            $mp4_url =$data['mp4_url'];
+        }else{
+            $mp4_url = null;
+        }   
+
+        if(!empty($data['m3u8_url'])){
+            $m3u8_url =$data['m3u8_url'];
+        }
+        else{
             $m3u8_url = null;
-        }    
+        } 
+
         if(!empty($data['title'])){
-            // dd($data['global_ppv']);
             $video->title =$data['title'];
-            }else{
-            }  
-            if(!empty($data['slug'])){
-                // dd($data['global_ppv']);
-                $video->slug =$data['slug'];
-                }else{
-                }  
-            if(empty($data['publish_type'])){
-                $publish_type = 0;
-                }else{
-                    $publish_type =   $data['publish_type'];
-                }  
-                // dd($publish_type);
+        }else{ }  
+
+        if(!empty($data['slug'])){
+            $video->slug =$data['slug'];
+        }else{ }  
+
+        if(empty($data['publish_type'])){
+            $publish_type = 0;
+        }else{
+             $publish_type =   $data['publish_type'];
+        }  
+
         if(empty($data['publish_time'])){
             $publish_time =0;
-            }else{
-                $publish_time =   $data['publish_time'];
-            }
+        }else{
+            $publish_time =   $data['publish_time'];
+        }
 
-            if(!empty($data['Recommendation'])){
-                $video->Recommendation =  $data['Recommendation'];
-                } 
+        if(!empty($data['Recommendation'])){
+            $video->Recommendation =  $data['Recommendation'];
+        } 
 
-                if(empty($data['age_restrict'])){
-                    $video->age_restrict=$data['age_restrict'];
-                    } 
-        // dd($data);
+        if(empty($data['age_restrict'])){
+            $video->age_restrict=$data['age_restrict'];
+        } 
+
         if(!empty($data['details'])){
             $video->details = $data['details'];
         }
@@ -1326,7 +1313,8 @@ if(!empty($artistsdata)){
             $request->pdf_file->move(public_path('uploads/videoPdf'), $pdf_files);
             $video->pdf_files =  $pdf_files;
         }
-    // Reels videos
+
+                 // Reels videos
         $reels_videos= $request->reels_videos;
             
 
@@ -1360,100 +1348,97 @@ if(!empty($artistsdata)){
             }
         }
 
-    // Reels Thumbnail
+                // Reels Thumbnail
 
-    if(!empty($request->reels_thumbnail)){
+        if(!empty($request->reels_thumbnail)){
 
-        $Reels_thumbnail = 'reels_'.time().'.'.$request->reels_thumbnail->extension();  
-        $request->reels_thumbnail->move(public_path('uploads/images'), $Reels_thumbnail);
+            $Reels_thumbnail = 'reels_'.time().'.'.$request->reels_thumbnail->extension();  
+            $request->reels_thumbnail->move(public_path('uploads/images'), $Reels_thumbnail);
 
-        $video->reels_thumbnail =  $Reels_thumbnail ;
-    }
+            $video->reels_thumbnail =  $Reels_thumbnail ;
+        }
 
 
 
-    //URL Link
-          $url_link = $request->url_link;
+                     //URL Link
+        $url_link = $request->url_link;
 
-          if($url_link != null){
-              $video->url_link =  $url_link;
-          }
+        if($url_link != null){
+            $video->url_link =  $url_link;
+        }
 
-          $url_linktym = $request->url_linktym;
+        $url_linktym = $request->url_linktym;
 
-          if($url_linktym != null){
+        if($url_linktym != null){
               $StartParse = date_parse($request->url_linktym);
               $startSec = $StartParse['hour'] * 60 *60 + $StartParse['minute'] * 60 + $StartParse['second'];
               $video->url_linktym =  $url_linktym;
               $video->url_linksec =  $startSec ;
               $video->urlEnd_linksec =  $startSec + 60 ;
-          }
+        }
 
-          if(!empty($data['default_ads'])){
+        if(!empty($data['default_ads'])){
             $video->default_ads = $data['default_ads'];
         }else{
             $video->default_ads = 0;
         }
+
         if(!empty($data['searchtags'])){
             $searchtags = $data['searchtags'];
         }else{
             $searchtags = $video->searchtags;
         }
 
-         $video->ads_category =  $data['ads_category'];   
-         $shortcodes = $request['short_code'];        
-         $languages=$request['sub_language'];
-         $video->mp4_url =  $data['mp4_url'];
-         $video->duration = $data['duration'];
-         $video->language=$request['language'];
-         $video->skip_recap =  $request['skip_recap'];
-         $video->recap_start_time =  $request['recap_start_time'];
-         $video->recap_end_time =  $request['recap_end_time'];
-         $video->skip_intro =  $request['skip_intro'];
-         $video->intro_start_time =  $request['intro_start_time'];
-         $video->intro_end_time =  $request['intro_end_time'];
-         $video->country =  $request['video_country'];
-         $video->publish_status = $request['publish_status'];
-         $video->publish_type = $publish_type;
-         $video->publish_time = $publish_time;
-         $video->age_restrict=$data['age_restrict'];
-         $video->access=$data['access'];
+        $video->ads_category =  $data['ads_category'];   
+        $shortcodes = $request['short_code'];        
+        $languages=$request['sub_language'];
+        $video->mp4_url =  $data['mp4_url'];
+        $video->duration = $data['duration'];
+        $video->language=$request['language'];
+        $video->skip_recap =  $request['skip_recap'];
+        $video->recap_start_time =  $request['recap_start_time'];
+        $video->recap_end_time =  $request['recap_end_time'];
+        $video->skip_intro =  $request['skip_intro'];
+        $video->intro_start_time =  $request['intro_start_time'];
+        $video->intro_end_time =  $request['intro_end_time'];
+        $video->country =  $request['video_country'];
+        $video->publish_status = $request['publish_status'];
+        $video->publish_type = $publish_type;
+        $video->publish_time = $publish_time;
+        $video->age_restrict=$data['age_restrict'];
+        $video->access=$data['access'];
         //  $video->active=1;
         $video->player_image = $player_image ;
-         $video->year = $year ;
-         $video->m3u8_url=$m3u8_url ;
-         $video->mp4_url=$mp4_url ;
-         $video->embed_code=$embed_code ;
-         $video->featured=$featured ;
-         $video->active=$active ;
-         $video->status=$status ;
-         $video->draft=$draft ;
-         $video->banner=$banner ;
-         $video->ppv_price =$data['ppv_price'];
-         $video->type =$data['type'];
-         $video->description = strip_tags($data['description']);
-         $video->trailer_description = strip_tags($data['trailer_description']);
-         $video->banner =  $banner;
-         $video->enable =  $enable;
-         $video->rating =  $request->rating;
-         $video->search_tags =  $searchtags;        
+        $video->year = $year ;
+        $video->m3u8_url=$m3u8_url ;
+        $video->mp4_url=$mp4_url ;
+        $video->embed_code=$embed_code ;
+        $video->featured=$featured ;
+        $video->active=$active ;
+        $video->status=$status ;
+        $video->draft=$draft ;
+        $video->banner=$banner ;
+        $video->ppv_price =$data['ppv_price'];
+        $video->type =$data['type'];
+        $video->description = strip_tags($data['description']);
+        $video->trailer_description = strip_tags($data['trailer_description']);
+        $video->banner =  $banner;
+        $video->enable =  $enable;
+        $video->rating =  $request->rating;
+        $video->search_tags =  $searchtags;        
+        $video->save();
 
-         $video->save();
 
+                        // Related Video 
+        if(!empty($data['related_videos'])){
 
-// dd($data['related_videos']);
+            RelatedVideo::where('video_id', $video->id)->delete();
 
-         if(!empty($data['related_videos'])){
-
-                RelatedVideo::where('video_id', $video->id)->delete();
             $related_videos = $data['related_videos'];
-            // unset($data['related_videos']);
-            /*save artist*/
+           
             if(!empty($related_videos)){
-                
                 foreach ($related_videos as $key => $vid) {
                     // RelatedVideo::where('video_id', $video->id)->delete();
-
                     $videos = Video::where('id',$vid)->get();
                     foreach ($videos as $key => $val) {
                     $RelatedVideo = new RelatedVideo;
@@ -1463,23 +1448,23 @@ if(!empty($artistsdata)){
                     $RelatedVideo->related_videos_title = $val->title;
                     $RelatedVideo->save();
                     }
-       
                 }                    
             }
         }
-         if(!empty($data['artists'])){
+
+        if(!empty($data['artists'])){
             $artistsdata = $data['artists'];
             unset($data['artists']);
-            /*save artist*/
-            if(!empty($artistsdata)){
-                Videoartist::where('video_id', $video->id)->delete();
-                foreach ($artistsdata as $key => $value) {
-                    $artist = new Videoartist;
-                    $artist->video_id = $video->id;
-                    $artist->artist_id = $value;
-                    $artist->save();
+                if(!empty($artistsdata)){
+                    Videoartist::where('video_id', $video->id)->delete();
+
+                    foreach ($artistsdata as $key => $value) {
+                        $artist = new Videoartist;
+                        $artist->video_id = $video->id;
+                        $artist->artist_id = $value;
+                        $artist->save();
+                    }
                 }
-            }
         }else{
             Videoartist::where('video_id', $video->id)->delete();
         }
@@ -1487,18 +1472,19 @@ if(!empty($artistsdata)){
         if(!empty($data['searchtags'])){
             $searchtags = explode(',',$data['searchtags']);
             VideoSearchTag::where('video_id', $video->id)->delete();
-            foreach ($searchtags as $key => $value) {
-                $videosearchtags = new VideoSearchTag;
-                $videosearchtags->user_id = Auth::User()->id;
-                $videosearchtags->video_id = $video->id;
-                $videosearchtags->search_tag = $value;
-                $videosearchtags->save();
-            }
+
+                foreach ($searchtags as $key => $value) {
+                    $videosearchtags = new VideoSearchTag;
+                    $videosearchtags->user_id = Auth::User()->id;
+                    $videosearchtags->video_id = $video->id;
+                    $videosearchtags->search_tag = $value;
+                    $videosearchtags->save();
+                }
         }else{
             // $searchtags = null;
         }
 
-     // Category Video
+                // Category Video
 
         if(!empty($data['video_category_id'])){
             $category_id = $data['video_category_id'];
@@ -1511,10 +1497,8 @@ if(!empty($artistsdata)){
                     $category->category_id = $value;
                     $category->save();
                 }
-
             }
         }else{
-
             CategoryVideo::where('video_id', $video->id)->delete();
 
             $other_category = VideoCategory::where('slug','other_category')->first();
@@ -1544,36 +1528,37 @@ if(!empty($artistsdata)){
                 $category->save();
         }
 
-
+                    // language
         if(!empty($data['language'])){
             $language_id = $data['language'];
             unset($data['language']);
-            /*save artist*/
+
             if(!empty($language_id)){
                 LanguageVideo::where('video_id', $video->id)->delete();
+
                 foreach ($language_id as $key => $value) {
                     $languagevideo = new LanguageVideo;
                     $languagevideo->video_id = $video->id;
                     $languagevideo->language_id = $value;
                     $languagevideo->save();
                 }
-
             }
         }
         
+                    // Block country 
         if(!empty($data['country'])){
             $country = $data['country'];
             unset($data['country']);
-            /*save block country*/
+
             if(!empty($country)){
                 BlockVideo::where('video_id', $video->id)->delete();
+
                 foreach ($country as $key => $value) {
                     $country = new BlockVideo;
                     $country->video_id = $video->id;
                     $country->country_id = $value;
                     $country->save();
                 }
-
             }
         }
       
@@ -2912,6 +2897,20 @@ if(!empty($artistsdata)){
        }
    
 
+    }
+
+    public function video_slider_update(Request $request)
+    {
+        try {
+            $video = Video::where('id',$request->video_id)->update([
+                'banner' => $request->banner_status,
+            ]);
+
+            return response()->json(['message'=>"true"]);
+
+        } catch (\Throwable $th) {
+            return response()->json(['message'=>"false"]);
+        }
     }
 
 }
