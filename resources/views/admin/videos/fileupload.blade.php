@@ -428,7 +428,7 @@ border-radius: 0px 4px 4px 0px;
                         <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
                      </div>
                      <br> <!-- fieldsets -->
-                     <fieldset>
+                     <fieldset id="slug_validate">
                         <div class="form-card">
                            <div class="row">
                               <div class="col-7">
@@ -443,12 +443,19 @@ border-radius: 0px 4px 4px 0px;
                                  <label class="m-0">Title :</label>
                                  <input type="text" class="form-control" name="title" id="title" placeholder="Title" value="">
                               </div>
+
                               <div class="col-sm-6 form-group" >
                                  <label class="m-0">
-                                 Video Slug <a class="" data-toggle="tooltip" data-placement="top" title="Please enter the URL Slug" data-original-title="this is the tooltip" href="#">
-                                 <i class="las la-exclamation-circle"></i></a>:</label>
+                                    Video Slug 
+                                    <a class="" data-toggle="tooltip" data-placement="top" title="Please enter the URL Slug" data-original-title="this is the tooltip" href="#">
+                                       <i class="las la-exclamation-circle"></i>
+                                    </a>:
+                                  </label>
+
                                  <input type="text"   class="form-control" name="slug" id="slug" placeholder="Video Slug" value="@if(!empty($video->slug)){{ $video->slug }}@endif">
+                                 <span><p id="slug_error" style="color:red;">This slug already used </p></span>
                               </div>
+
                            </div>
                            <div class="row">
                               <div class="col-sm-6 form-group">
@@ -547,7 +554,7 @@ border-radius: 0px 4px 4px 0px;
                               </div>
                            </div>
                         </div>
-                        <input type="button" name="next" class="next action-button" value="Next" />
+                        <input type="button" name="next" class="next action-button" id="next2" value="Next" />
                      </fieldset>
                      <fieldset class="Next3">
                         <div class="form-card">
@@ -1247,6 +1254,50 @@ border-radius: 0px 4px 4px 0px;
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
 <script>
+
+
+         // validation for slug
+
+$(document).ready(function(){
+
+      $('#slug_error').hide();
+      $('#slug_validate').on('keyup blur keypress mouseover', function(e) {
+
+         var title = $('#title').val();
+         var slug_name=title.replace(/ /g,"_");
+
+         if($('#slug').val().length == 0 ){
+            var slug = $('#slug').val(slug_name);
+         }else{
+            var slug = $('#slug').val();
+         }
+        
+
+         $.ajax({
+         type: "POST", 
+         dataType: "json", 
+         url: "{{ url('admin/video_slug_validate') }}",
+               data: {
+                  _token  : "{{csrf_token()}}" ,
+                  slug: slug,
+         },
+         success: function(data) {
+               console.log(data.message);
+               if(data.message == "true"){
+                  
+                  $('#next2').attr('disabled','disabled');
+                  $('#slug_error').show();
+               }
+               else if(data.message = "false"){
+                  $('#next2').removeAttr('disabled');
+                  $('#slug_error').hide();
+
+               }
+            },
+         });
+      })
+});
+
   
 $(document).ready(function($){
    // validation Skip 

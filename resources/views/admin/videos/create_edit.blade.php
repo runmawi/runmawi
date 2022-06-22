@@ -293,7 +293,7 @@ border-radius: 0px 4px 4px 0px;
                      <input type="button" name="next" class="next action-button" id="nextplayer" value="Next"  /> 
                </fieldset>
                @endif
-               <fieldset>
+               <fieldset id="slug_validate">
                <div class="form-card">
                                        {{-- video id --}}
                   <input type="hidden" value="{{ $video->id }}" name="videos_id" > 
@@ -303,12 +303,17 @@ border-radius: 0px 4px 4px 0px;
                         <label class="m-0">Title :</label>
                         <input type="text" class="form-control" name="title" id="title" placeholder="Title" value="@if(!empty($video->title)){{ $video->title }}@endif">
                    </div>
-               <div class="col-sm-6 form-group" >
-               <label class="m-0">
-               Video Slug <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title="Please enter the URL Slug" data-original-title="Please enter the URL Slug" href="#">
-               <i class="las la-exclamation-circle"></i></a>:</label>
-               <input type="text"   class="form-control" name="slug" id="slug" placeholder="Video Slug" value="@if(!empty($video->slug)){{ $video->slug }}@endif">
-               </div>
+
+                  <div class="col-sm-6 form-group" >
+                     <label class="m-0"> Video Slug 
+                        <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title="Please enter the URL Slug" data-original-title="Please enter the URL Slug" href="#">
+                           <i class="las la-exclamation-circle"></i>
+                        </a>:
+                     </label>
+                     <input type="text"   class="form-control" name="slug" id="slug" placeholder="Video Slug" value="@if(!empty($video->slug)){{ $video->slug }}@endif">
+                     <span><p id="slug_error" style="color:red;">This slug already used </p></span>
+
+                  </div>
                </div>
                <div class="row">
                   
@@ -1125,6 +1130,7 @@ border-radius: 0px 4px 4px 0px;
 }
    #msform input[type="file"]{border: 0; width: 100%;}
 </style>
+
 <script>
    $(document).ready(function(){
    
@@ -1205,11 +1211,13 @@ border-radius: 0px 4px 4px 0px;
    
    });
 </script>
+
 <style>
    .without::-webkit-datetime-edit-ampm-field {
    display: none;
    }
 </style>
+
 <input type="hidden" id="base_url" value="<?php echo URL::to('/');?>">
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -1218,6 +1226,42 @@ border-radius: 0px 4px 4px 0px;
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
 <script>
+
+
+         // validation for slug
+
+$(document).ready(function(){
+
+   $('#slug_error').hide();
+	$('#slug_validate').on('keyup keypress blur mouseover', function(e) {
+     
+      var slug = $('#slug').val();
+
+      $.ajax({
+      type: "POST", 
+      dataType: "json", 
+      url: "{{ url('admin/video_slug_validate') }}",
+            data: {
+               _token  : "{{csrf_token()}}" ,
+               slug: slug,
+      },
+      success: function(data) {
+            console.log(data.message);
+            if(data.message == "true"){
+               
+               $('#next2').attr('disabled','disabled');
+               $('#slug_error').show();
+            }
+            else if(data.message = "false"){
+               $('#next2').removeAttr('disabled');
+               $('#slug_error').hide();
+
+            }
+         },
+      });
+   })
+});
+
 
 $(document).ready(function($){
    // validation Skip 
@@ -1385,20 +1429,7 @@ $(document).ready(function($){
   
 });
 
-
    // $('#intro_start_time').datetimepicker(
-   // {
-   //     format: 'hh:mm '
-   // });
-   // $('#intro_end_time').datetimepicker(
-   // {
-   //     format: 'hh:mm '
-   // });
-   // $('#recap_start_time').datetimepicker(
-   // {
-   //     format: 'hh:mm '
-   // });
-   // $('#recap_end_time').datetimepicker(
    // {
    //     format: 'hh:mm '
    // });

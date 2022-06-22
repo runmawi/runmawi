@@ -2913,4 +2913,13 @@ if(!empty($artistsdata)){
         }
     }
 
+    public function video_slug_validate(Request $request)
+    {
+       $video_slug_validate = Video::where('slug',$request->slug)->count();
+
+       $validate_status =  $video_slug_validate > 0 ? "true" : "false" ;
+
+       return response()->json(['message'=>$validate_status]);
+    }
+
 }
