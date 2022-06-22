@@ -1018,6 +1018,8 @@ if(!empty($artistsdata)){
 
                             // Trailer Update
 
+            $path = public_path().'/uploads/videos/';
+
             $video->trailer_type = $data['trailer_type'];
 
             if($data['trailer_type'] == 'video_mp4'){

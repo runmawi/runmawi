@@ -1243,7 +1243,7 @@ $(document).ready(function(){
       url: "{{ url('admin/video_slug_validate') }}",
             data: {
                _token  : "{{csrf_token()}}" ,
-               slug: slug,
+               slug: null,
       },
       success: function(data) {
             console.log(data.message);

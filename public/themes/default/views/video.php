@@ -1761,7 +1761,9 @@ var x = setInterval(function() {
 <script>
 
   var trailer_video_m3u8 = <?php echo json_encode($video->trailer) ; ?> ;
+  var trailer_video_type =  <?php echo json_encode($video->trailer_type) ; ?> ;
 
+  if(trailer_video_type == "m3u8_url"){
     (function () {
       var video = document.querySelector('.videoPlayers');
 
@@ -1774,6 +1776,9 @@ var x = setInterval(function() {
       }
       
     })();
+
+  }
+   
 
 </script>
 
