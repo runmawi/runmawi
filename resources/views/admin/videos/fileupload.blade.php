@@ -718,8 +718,8 @@ border-radius: 0px 4px 4px 0px;
                                        <label class="m-0">Related Videos:</label>
                                        <select  name="related_videos[]" class="form-control js-example-basic-multiple" style="width: 100%;" multiple="multiple">
                                           <!-- <option value="">Choose Videos</option> -->
-                                             @foreach($related_videos as $key => $video)
-                                                <option value="{{ $video->id }}"  > {{ $video->title }}</option>
+                                             @foreach($related_videos as $key => $related_video)
+                                                <option value="{{ $related_video->id }}"  > {{ $related_video->title }}</option>
                                              @endforeach
                                        </select>
                                     </div>
