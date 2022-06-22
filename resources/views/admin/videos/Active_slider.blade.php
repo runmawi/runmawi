@@ -109,7 +109,7 @@ border-radius: 0px 4px 4px 0px;
                                  <th>Video Access</th>
                                  <th>Status</th>
                                  <th>Source</th>
-                                 <th>Status</th>
+                                 <th>Slider</th>
                                  <th>Action</th>
                               </tr>
                            </thead>
@@ -164,15 +164,10 @@ border-radius: 0px 4px 4px 0px;
 
 
                                     <td>
-                                       <div class="flex align-items-center list-user-action">
+                                       <div class="align-items-center list-user-action">
                                           <a class="iq-bg-warning mt-" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="View" href="{{ URL::to('/category/videos') . '/' . $video->slug }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>"></a>
-
-                                          <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Edit" href="{{ URL::to('admin/videos/edit') . '/' . $video->id }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
-
-                                          <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Delete" onclick="return confirm('Are you sure?')" href="{{ URL::to('admin/videos/delete') . '/' . $video->id }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
+                                             data-original-title="View" href="{{ URL::to('/category/videos') . '/' . $video->slug }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>">
+                                          </a>
                                        </div>
                                     </td>
                                  </tr>
@@ -235,15 +230,10 @@ border-radius: 0px 4px 4px 0px;
                                        </td>
 
                                     <td>
-                                       <div class="flex align-items-center list-user-action">
+                                       <div class="align-items-center list-user-action">
                                           <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="View" href="{{ URL::to('live') .'/'.$video->slug }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>"></a>
-      
-                                          <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Edit" href="{{ URL::to('admin/livestream/edit') . '/' . $video->id }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
-      
-                                          <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Delete" onclick="return confirm('Are you sure?')" href="{{ URL::to('admin/livestream/delete') . '/' . $video->id }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
+                                             data-original-title="View" href="{{ URL::to('live') .'/'.$video->slug }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>">
+                                          </a>
                                        </div>
                                     </td>
                                  </tr>
@@ -305,15 +295,10 @@ border-radius: 0px 4px 4px 0px;
                                     </td>
                                        
                                     <td>
-                                       <div class="flex align-items-center list-user-action">
+                                       <div class="align-items-center list-user-action">
                                           <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="View" href="{{ URL::to('/episode'.'/'.$Episodes->series_title.'/'.$Episodes->slug) }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>"></a>
-      
-                                          <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Edit" href="{{ URL::to('admin/episode/edit') . '/' . $Episodes->id }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
-      
-                                          <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Delete" onclick="return confirm('Are you sure?')" href="{{ URL::to('admin/episode/delete') . '/' . $Episodes->id }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
+                                             data-original-title="View" href="{{ URL::to('/episode'.'/'.$Episodes->series_title.'/'.$Episodes->slug) }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>">
+                                          </a>
                                        </div>
                                     </td>
                                  </tr>
