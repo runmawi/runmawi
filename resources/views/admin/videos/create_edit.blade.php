@@ -199,17 +199,20 @@ border-radius: 0px 4px 4px 0px;
       <h4 class="card-title">Add Video</h4>
    </div>
 </div>
+
 @if (Session::has('message'))
-<div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
+   <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
 @endif
+
 @if(count($errors) > 0)
-@foreach( $errors->all() as $message )
-<div class="alert alert-danger display-hide" id="successMessage" >
-   <button id="successMessage" class="close" data-close="alert"></button>
-   <span>{{ $message }}</span>
-</div>
-@endforeach
+   @foreach( $errors->all() as $message )
+      <div class="alert alert-danger display-hide" id="successMessage" >
+         <button id="successMessage" class="close" data-close="alert"></button>
+         <span>{{ $message }}</span>
+      </div>
+   @endforeach
 @endif
+
 
 <h5 class="p-1 mt-3 ml-3" style="font-weight: normal;">Video Info Details</h5>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -292,6 +295,8 @@ border-radius: 0px 4px 4px 0px;
                @endif
                <fieldset>
                <div class="form-card">
+                                       {{-- video id --}}
+                  <input type="hidden" value="{{ $video->id }}" name="videos_id" > 
               
                <div class="row">
                    <div class="col-sm-6 form-group" >
