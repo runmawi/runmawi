@@ -329,15 +329,16 @@ input:checked + .sliderk:before {
                                         $LiveCategory = App\LiveCategory::all();
                                         foreach ($menus as $menu) { 
                                         if ( $menu->in_menu == "video") { 
-                                        $cat = App\VideoCategory::orderBy("order")->get();
+                                        $cat = App\VideoCategory::orderBy("order")->where('in_home',1)->get();
                                         ?>
                             
                                    
                                           <li class="dropdown menu-item">
-                                            <a class="dropdown-toggle" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
-                                              <?php echo __($menu->name);?>
+                                            <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                                              <?php echo __($menu->name);?>    <i class="fa fa-chevron-down" aria-hidden="true"></i>
                                             </a>
-                                           
+                                       
+
                                              <ul class="dropdown-menu categ-head">
                                                 <?php foreach ( $cat->take(4) as $category) { ?>
                                                    <li>
@@ -357,8 +358,8 @@ input:checked + .sliderk:before {
                                         $cat = App\VideoCategory::all();
                                         ?>
                                           <li class="dropdown menu-item">
-                                            <a class="dropdown-toggle" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
-                                              <?php echo __($menu->name);?> <!--<i class="fa fa-angle-down"></i>-->
+                                            <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                                              <?php echo __($menu->name);?> <!--<i class="fa fa-angle-down"></i>-->    <i class="fa fa-chevron-down" aria-hidden="true"></i>
                                             </a>
                                             <ul class="dropdown-menu categ-head">
                                               <?php foreach ( $languages as $language){ ?>

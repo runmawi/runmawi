@@ -1578,6 +1578,7 @@ height: 0.2rem !important;}
    
     .dropdown-toggle::after {
     display: inline-block;
+        display: none;
     width: 0;
     height: 0;
     margin-left: .255em;

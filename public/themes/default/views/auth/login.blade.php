@@ -76,7 +76,7 @@ i.fa.fa-google-plus {
 <body>
 <section class="sign-in-page" style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;">
    <div class="container">
-      <div class="row  align-items-center height-self-center">
+      <div class="row mb-4  align-items-center height-self-center">
           <div class="col-lg-7  col-12">
              
               <h1 class="km"><?php echo $settings->login_text; ?></h1>

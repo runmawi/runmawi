@@ -337,8 +337,8 @@ input:checked + .sliderk:before {
                                         $languages = App\Language::all();
                                         foreach ($menus as $menu) { 
                                         if ( $menu->in_menu == "video") { 
-                                        $cat = App\VideoCategory::orderBy("order")->get();
-                                        ?>
+                                          $cat = App\VideoCategory::orderBy("order")->where('in_home',1)->get();
+                                          ?>
                                        <li class="dropdown menu-item">
                                             <a class="dropdown-toggle" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
                                               <?php echo __($menu->name);?> <!--<i class="fa fa-angle-down"></i>-->
