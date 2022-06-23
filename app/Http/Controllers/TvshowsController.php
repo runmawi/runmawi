@@ -166,9 +166,10 @@ class TvshowsController extends Controller
     Theme::uses( $Theme );
 
    	$settings = Setting::first();
-   	if(Auth::guest()):
-            return Redirect::to('/login');
+       if(Auth::guest() && $settings->access_free == 0):
+        return Redirect::to('/login');
         endif;
+        
         $episode = Episode::where('slug','=',$episode_name)->orderBy('id', 'DESC')->first();    
         // dd($episode_name);
         $id = $episode->id;
@@ -186,7 +187,7 @@ class TvshowsController extends Controller
         endif;
         // use App\PpvPurchase as PpvPurchase;
 
-        if(!empty($episode->ppv_price)){
+        if(!empty($episode->ppv_price) && $settings->access_free == 0 ){
             // dd('test');
             $ppv_exits = PpvPurchase::where('user_id', '=', Auth::user()->id)->where('episode_id', '=', $id)->count();
 
@@ -194,7 +195,7 @@ class TvshowsController extends Controller
             $ppv_exits = 0 ;
         }
         
-        if(($series->ppv_status == 1)){
+        if(($series->ppv_status == 1 && $settings->access_free == 0)){
             $ppv_exits = PpvPurchase::where('user_id', '=', Auth::user()->id)->where('series_id', '=', $series->id)->count();
 
         }else{
@@ -282,10 +283,11 @@ class TvshowsController extends Controller
 
                 }
                 // 
-
-                if(Auth::user()->role == 'admin'){
+                if(!Auth::guest()){
+                if(Auth::user()->role == 'admin' ){
                     $free_episode = 1;
                 }
+            }
               
          if((!Auth::guest() && Auth::user()->role == 'admin') || $series_ppv_status != 1 || $ppv_exits > 0 
          || $free_episode > 0){
@@ -377,7 +379,8 @@ class TvshowsController extends Controller
         Theme::uses( $Theme );
         
     	$settings = Setting::first();
-        if(Auth::guest()):
+        // dd($settings->access_free);
+        if(Auth::guest() && $settings->access_free == 0):
             return Redirect::to('/login');
         endif;
   
@@ -459,8 +462,8 @@ class TvshowsController extends Controller
     {
          
         $settings = Setting::first();
-        if(Auth::guest()):
-             return Redirect::to('/login');
+        if(Auth::guest() && $settings->access_free == 0):
+            return Redirect::to('/login');
          endif;
          $episode = Episode::where('slug','=',$episode_name)->first();    
          $id = $episode->id;
@@ -485,7 +488,7 @@ class TvshowsController extends Controller
           if(!Auth::guest()):
                  $watchlater = Watchlater::where('user_id', '=', Auth::user()->id)->where('episode_id', '=', $id)->first();
           endif;
-          if(($series->ppv_status == 1)){
+          if(($series->ppv_status == 1 && $settings->access_free == 0)){
             $ppv_exits = PpvPurchase::where('user_id', '=', Auth::user()->id)->where('series_id', '=', $series->id)->count();
         // dd($ppv_exits);
 
