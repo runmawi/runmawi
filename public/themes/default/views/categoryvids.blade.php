@@ -77,7 +77,7 @@ $category_id = App\VideoCategory::where('name',$data['category_title'])->pluck('
                                         <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
                                             <div class="block-images position-relative">
                                                 <div class="img-box">
-                                                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" class="img-fluid" alt="" width="">
+                                                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" class="img-fluid w-100" alt="" width="">
                                                 
                                           <?php  if(!empty($category_video->ppv_price)){?>
                                           <p class="p-tag1" ><?php echo $data['currency']->symbol.' '.$category_video->ppv_price; ?></p>

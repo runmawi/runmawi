@@ -1068,7 +1068,7 @@ if(!empty($artistsdata)){
             }  
             else{
                 $active = 1;
-                $status = 1;
+                // $status = 1;
             }
         
             if(empty($data['webm_url'])){
@@ -1133,8 +1133,12 @@ if(!empty($artistsdata)){
                     $draft = 1;
             }else{
                     $active = 1;
-                    $status = 1;
                     $draft = 1;
+                    if($video->type == "" && $video->processed_low != 100 || $video->processed_low != null){
+                        $status = 0;
+                    }else{
+                        $status = 1;
+                    }
             }  
            
             if(!empty($data['embed_code'])){
@@ -1164,13 +1168,13 @@ if(!empty($artistsdata)){
                 $data['publish_status'] = 0;
             }   
             
-            if(Auth::user()->role =='admin' && Auth::user()->sub_admin == 0 ){
-                    $data['status'] = 1;    
-            }
+            // if(Auth::user()->role =='admin' && Auth::user()->sub_admin == 0 ){
+            //         $data['status'] = 1;    
+            // }
 
-            if( Auth::user()->role =='admin' && Auth::user()->sub_admin == 1 ){
-                    $data['status'] = 0;    
-            }
+            // if( Auth::user()->role =='admin' && Auth::user()->sub_admin == 1 ){
+            //         $data['status'] = 0;    
+            // }
 
         
         $image_path = public_path().'/uploads/images/';
