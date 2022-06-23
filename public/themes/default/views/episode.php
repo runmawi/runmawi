@@ -150,7 +150,7 @@ $series=App\series::first();
 	<div class="container-fluid series-details">
 	<div id="series_title">
 		<div class="">
-            <div class="row">
+            <div class="row align-items-center">
 			<?php if($free_episode > 0 ||  $ppv_exits > 0 || Auth::user()->role == 'admin' ||  Auth::guest()){ 
 			}else{ ?>
 			<div class="col-md-6">
@@ -181,7 +181,7 @@ $series=App\series::first();
 		</h3>-->
 		
 			<div class="col-md-2 text-center text-white">
-			<span class="view-count  btn btn-primary" style="float:right;">
+			<span class="view-count  " style="float:right;">
 			<i class="fa fa-eye"></i> 
 			<?php if(isset($view_increment) && $view_increment == true ): ?><?= $episode->views + 1 ?>
 			<?php else: ?><?= $episode->views ?><?php endif; ?> Views 
@@ -478,6 +478,9 @@ location.reload();
     margin-left: 80%;
     margin-right: 0;
 }
+    #videoPlayer{
+        height: 500px;
+    }
 input.skips,input#Recaps_Skip{
   background-color: #21252952;
     color: white;

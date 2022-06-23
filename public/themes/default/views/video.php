@@ -123,6 +123,9 @@ h2{
       .subsc-video{
          font-size: 18px!important;   
       }
+      #videoPlayer{
+          height: 500px;
+      }
   </style>
 <?php
 

@@ -118,7 +118,7 @@ $uppercase =  ucfirst($request_url);
     text-decoration: none;
 }*/
 .phselect{
-    width: 100px !important;
+    
     height: 45px !important;
     background: transparent !important;
     color: var(--iq-white) !important;
@@ -159,7 +159,7 @@ i.fa.fa-google-plus {
     background: #474644 !important;
 }
     .reveal{
-        margin-left: -92px !important;
+        margin-left: -92px;
     height: 45px !important;
     background: transparent !important;
     color: #fff !important;
@@ -347,15 +347,15 @@ i.fa.fa-google-plus {
                                  <div class="col-md-12">
                                             <div class="row">
                                
-                            <div class="col-sm-4">
-                              <select class="phselect" name="ccode" id="ccode" >
+                            <div class="col-md-5 col-sm-12">
+                              <select class="phselect form-control" name="ccode" id="ccode" >
                                 @foreach($jsondata as $code)
                                 <option value="{{  $code['dial_code'] }}" {{ $code['name'] == "United States" ? 'selected' : ''}}>{{ $code['name'].' ('. $code['dial_code'] . ')' }}</option>
                                 <!-- <option data-thumbnail="images/icon-chrome.png" value="{{ $code['dial_code'] }}" <?php if($code['dial_code']) ?>> {{ $code['name'].' ('. $code['dial_code'] . ')' }}</option> -->
                                 @endforeach
                             </select>
                             </div>
-                            <div class="col-sm-8">
+                            <div class="col-md-7 col-sm-8">
                                 <input id="mobile" type="text" maxlength="10" minlength="10" class="form-control @error('email') is-invalid @enderror" name="mobile" placeholder="{{ __('Enter Mobile Number') }}" value="{{ old('mobile') }}" required autocomplete="off" autofocus> 
                                 <span class="verify-error"></span>
                                 
@@ -464,7 +464,7 @@ i.fa.fa-google-plus {
                         
                         <div class="form-group" >
 							
-							<div class="col-md-12">
+							<div class="col-md-12" id="mob">
                                 <input id="password-confirm" type="checkbox" name="terms" value="1" required>
 								<label for="password-confirm" class="col-form-label text-md-right" style="display: inline-block;">{{ __('Yes') }} ,<a data-toggle="modal" data-target="#terms" style="text-decoration:none;color: #fff;"> {{ __('I Agree to Terms and  Conditions' ) }}</a></label>
                             </div>
