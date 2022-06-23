@@ -136,6 +136,9 @@
         font-size: 40px!important;
         text-align: center;
     }
+     li.slide-item{
+        width: 33%;
+    }
     #user-menu{
         display: block;
         display: flex;
