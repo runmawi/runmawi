@@ -9,7 +9,7 @@ $category_id = App\VideoCategory::where('name',$data['category_title'])->pluck('
 
       <div class="main-content">
          <section id="iq-favorites">
-            <div class="container">
+            <div class="container-fluid">
                <div class="row pageheight">
                   <div class="col-sm-12 overflow-hidden">
                     <div class="iq-main-header align-items-center d-flex justify-content-between">
