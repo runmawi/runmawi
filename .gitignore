@@ -6,4 +6,4 @@
 /cpp/*
 /.env
 /.htaccess
-/pma
+/pma/*
