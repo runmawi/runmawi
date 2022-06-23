@@ -43,11 +43,11 @@
                         <input type="radio" id="in_home" name="in_home" value="0" <?php if( $categories[0]->in_home == 0) { echo "checked";} ?>> No
 
                     </div>
-                    <div class="form-group {{ $errors->has('slug') ? 'has-error' : '' }}">
+                    <!-- <div class="form-group {{ $errors->has('slug') ? 'has-error' : '' }}">
                         <label class="m-0">Display In Footer page:</label>
                         <input type="radio" id="footer" name="footer" value="1" <?php if( $categories[0]->footer == 1) { echo "checked";} ?>> Yes &nbsp;&nbsp;&nbsp;
                         <input type="radio" id="footer" name="footer" value="0" <?php if( $categories[0]->footer == 1) { echo "checked";} ?>> No
-                    </div>
+                    </div> -->
                     <div class="form-group {{ $errors->has('slug') ? 'has-error' : '' }}">
                         <label>Display In Menu :</label>
                         <input type="radio" checked id="in_menu"  id="in_menu" name="in_menu" value="1" <?php if( $categories[0]->in_menu == 1) { echo "checked";} ?>>Yes
