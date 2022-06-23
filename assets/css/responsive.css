@@ -154,7 +154,7 @@
         font-size:30px; 
     }
     #videoPlayer {
-    height: 300px!important;
+   /* height: 300px!important;*/
 }
     .plyr__video-wrapper::before{
         width: 25%!important;
