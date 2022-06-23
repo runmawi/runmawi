@@ -1,4 +1,6 @@
 
+
+
 <!-- Sliders -->
 
 <?php if(isset($sliders)) :
@@ -7,15 +9,21 @@
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
             <div class="slide slick-bg s-bg-1 lazyload"
             data-bgset="<?php echo URL::to('/').'/public/uploads/videocategory/' .$slider_video->slider;?>" style="background-position: right;
-    background-position-y: top;">
-            <div class="container position-relative h-100">
+    ">
+            <div class="container-fluid position-relative h-100" style="padding:0px 100px">
                 <div class="slider-inner h-100">
 
                     <div class="row align-items-center bl h-100">
                         <div class="col-xl-6 col-lg-12 col-md-12">
                         <h1 class="text-white mb-3" data-animation-in="fadeInLeft"
                         data-delay-in="0.6">
-                        <?php echo __($slider_video->title); ?>
+                        <?php
+                        // $title = $slider_video->title;
+                        // $slidertitle = substr($title, 0, 80);                        
+                        // echo ($slidertitle.'...');
+                        echo (strlen($slider_video->title) > 15) ? substr($slider_video->title,0,80).'...' : $slider_video->title;
+                       //  echo __($slider_video->title); 
+                        ?>
                     </h1>
                     <div class="d-flex justify-content-evenly align-items-center r-mb-23" data-animation-in="fadeInUp"
                     data-delay-in="1.2">
@@ -38,9 +46,9 @@ endif; ?>
 
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
             <div class="slide slick-bg s-bg-1 lazyload"
-            data-bgset="<?php echo URL::to('/').'/public/uploads/images/' .$slider_video->image;?>"  style="background-position: right;
-    background-position-y: top;">
-            <div class="container position-relative h-100">
+            data-bgset="<?php echo URL::to('/').'/public/uploads/images/' .$slider_video->player_image;?>"  style="background-position: right;
+   ">
+            <div class="container-fluid position-relative h-100" style="padding:0px 100px">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center bl h-100">
                         <div class="col-xl-6 col-lg-12 col-md-12">
@@ -51,7 +59,14 @@ endif; ?>
 </a>-->
 <h1 class="text-white mb-3" data-animation-in="fadeInLeft"
 data-delay-in="0.6">
-<?php echo __($slider_video->title); ?>
+<?php 
+//  $title = $slider_video->title;
+//  $slidertitle = substr($title, 0, 80);                        
+//  echo ($slidertitle.'...');
+echo (strlen($slider_video->title) > 15) ? substr($slider_video->title,0,80).'...' : $slider_video->title;
+
+ // echo __($slider_video->title);
+ ?>
 </h1>
 <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
     <span class="badge badge-secondary p-2">
@@ -110,16 +125,21 @@ endif; ?>
 
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
             <div class="slide slick-bg s-bg-1 lazyload"
-            data-bgset="<?php echo URL::to('/').'/public/uploads/images/' .$videos->image;?>" style="background-position: right;
-    background-position-y: top;">
-            <div class="container position-relative h-100">
+            data-bgset="<?php echo URL::to('/').'/public/uploads/images/' .$videos->player_image;?>" style="background-position: right;
+   ">
+            <div class="container-fluid position-relative h-100" style="padding:0px 100px">
                 <div class="slider-inner h-100">
 
                     <div class="row align-items-center bl h-100">
                         <div class="col-xl-6 col-lg-12 col-md-12">
                         <h1 class="text-white mb-3" data-animation-in="fadeInLeft"
                         data-delay-in="0.6">
-                        <?php echo __($videos->title); ?>
+                        <?php 
+                        // $title = $videos->title;
+                        // $slidertitle = substr($title, 0, 80);                
+echo (strlen($videos->title) > 15) ? substr($videos->title,0,80).'...' : $videos->title;
+                        // echo ($slidertitle.'...');
+                        ?>
                     </h1>
                     <div data-animation-in="fadeInUp" data-delay-in="1.2"
                         style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
@@ -158,7 +178,7 @@ endif; ?>
                     </div>
                     <div class="col-md-12">
             <div id="video-trailer" class="mfp-hide">
-             <video id="videoPlayer" poster="<?php echo URL::to('/').'/public/uploads/images/' .$videos->image;?>"  class="" controls src="<?= $videos->trailer; ?>"  type="application/x-mpegURL" ></video>
+             <video id="videoPlayer" poster="<?php echo URL::to('/').'/public/uploads/images/' .$videos->player_image;?>"  class="" controls src="<?= $videos->trailer; ?>"  type="application/x-mpegURL" ></video>
                     </div>
             </div>
             </div>
@@ -232,9 +252,9 @@ endif; ?>
 
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
             <div class="slide slick-bg s-bg-1 lazyload"
-             data-bgset="<?php echo URL::to('/').'/public/uploads/images/' .$slider_video->image;?>" style="background-position: right;
-    background-position-y: top; ">
-            <div class="container position-relative h-100">
+             data-bgset="<?php echo URL::to('/').'/public/uploads/images/' .$slider_video->player_image;?>" style="background-position: right;
+  ">
+            <div class="container-fluid position-relative h-100" style="padding:0px 100px">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center bl h-100">
                         <div class="col-xl-8 col-lg-12 col-md-12">
@@ -245,26 +265,34 @@ endif; ?>
 </a>-->
 <h1 class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft"
 data-delay-in="0.6">
-<?php echo __($slider_video->title); ?>
+<?php 
+    //   $title = $slider_video->title;
+    //   $slidertitle = substr($title, 0, 80);                        
+    //   echo ($slidertitle.'...');
+echo (strlen($slider_video->title) > 15) ? substr($slider_video->title,0,80).'...' : $slider_video->title;
+      // echo __($slider_video->title);
+
+?>
 </h1>
-<div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
+<!--<div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
 <span class="badge badge-secondary p-2">
         <?php echo __($slider_video->age_restrict); ?>
     </span>
-    <!--                      <span class="ml-3"><?php echo __($slider_video->language); ?></span>-->
+    <!--                      <span class="ml-3"><?php echo __($slider_video->language); ?></span>
 </div>
 <br>
 <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
-    <span class="badge badge-secondary p-2">
+    <!--<span class="badge badge-secondary p-2">
         <?php echo __($slider_video->year); ?>
     </span>
-    <!--                      <span class="ml-3"><?php echo __($slider_video->language); ?></span>-->
-</div>
+    <!--                      <span class="ml-3"><?php echo __($slider_video->language); ?></span>
+</div>-->
 <div data-animation-in="fadeInUp" data-delay-in="1.2"
 style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;  
   overflow: hidden;">
+    <p>Loki, the God of Mischief, steps out of his brother's shadow to embark on an adventure that takes place after the events of "Avengers: Endgame."</p>
 <?php echo __($slider_video->description); ?>
 </div>
 <div class="d-flex justify-content-evenly align-items-center r-mb-23" data-animation-in="fadeInUp"
