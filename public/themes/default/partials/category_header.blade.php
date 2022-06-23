@@ -99,9 +99,10 @@ $data = Session::all();
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/slick.css';?>" />
+
    <input type="hidden" value="<?php echo $settings->google_tracking_id ; ?>" name="tracking_id" id="tracking_id">
     <!-- Favicon -->
-         <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/slick.css';?>" />
       
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 
@@ -319,6 +320,7 @@ input:checked + .sliderk:before {
                                  </li>
                               </ul>-->
                                <ul id="top-menu" class="nav navbar-nav <?php if ( Session::get('locale') == 'arabic') { echo "navbar-right"; } else { echo "navbar-left";}?>">
+                                     
                                           <?php
                                         $stripe_plan = SubscriptionPlan();
                                        //  $menus = App\Menu::all();
@@ -329,12 +331,14 @@ input:checked + .sliderk:before {
                                         if ( $menu->in_menu == "video") { 
                                         $cat = App\VideoCategory::orderBy("order")->get();
                                         ?>
-
+                            
+                                   
                                           <li class="dropdown menu-item">
-                                            <a class="dropdown-toggle" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
-                                              <?php echo __($menu->name);?>
+                                            <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                                              <?php echo __($menu->name);?>    <i class="fa fa-chevron-down" aria-hidden="true"></i>
                                             </a>
-                                           
+                                       
+
                                              <ul class="dropdown-menu categ-head">
                                                 <?php foreach ( $cat->take(4) as $category) { ?>
                                                    <li>
@@ -354,8 +358,8 @@ input:checked + .sliderk:before {
                                         $cat = App\VideoCategory::all();
                                         ?>
                                           <li class="dropdown menu-item">
-                                            <a class="dropdown-toggle" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
-                                              <?php echo __($menu->name);?> <!--<i class="fa fa-angle-down"></i>-->
+                                            <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                                              <?php echo __($menu->name);?> <!--<i class="fa fa-angle-down"></i>-->    <i class="fa fa-chevron-down" aria-hidden="true"></i>
                                             </a>
                                             <ul class="dropdown-menu categ-head">
                                               <?php foreach ( $languages as $language){ ?>
@@ -419,9 +423,9 @@ input:checked + .sliderk:before {
                            </div>
                         </div>
                         <div class="mobile-more-menu">
-                           <a href="javascript:void(0);" class="more-toggle" id="dropdownMenuButton"
+                           <a href="javascript:void(0);" class="more-toggle mt-1" id="dropdownMenuButton"
                               data-toggle="more-toggle" aria-haspopup="true" aria-expanded="false">
-                           <i class="ri-more-line"></i>
+                               <i class="fa fa-search"></i>
                            </a>
                            <div class="more-menu" aria-labelledby="dropdownMenuButton">
                               <div class="navbar-right position-relative">
@@ -432,7 +436,7 @@ input:checked + .sliderk:before {
                                             <form role="search" action="<?php echo URL::to('/').'/searchResult';?>" method="POST">
                                               <input name="_token" type="hidden" value="<?php echo csrf_token(); ?>">
                                               <div>
-                                                <i class="fa fa-search">
+                                                <i class="fa fa-search mr-1">
                                                 </i>
                                                 <input type="text" name="search" class="searches" id="searches" autocomplete="off" placeholder="Type here to Search Videos">
                                               </div>

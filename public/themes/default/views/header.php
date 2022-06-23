@@ -334,10 +334,11 @@ input:checked + .sliderk:before {
                             
                                    
                                           <li class="dropdown menu-item">
-                                            <a class="dropdown-toggle" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
-                                              <?php echo __($menu->name);?>
+                                            <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                                              <?php echo __($menu->name);?>    <i class="fa fa-chevron-down" aria-hidden="true"></i>
                                             </a>
-                                           
+                                       
+
                                              <ul class="dropdown-menu categ-head">
                                                 <?php foreach ( $cat->take(4) as $category) { ?>
                                                    <li>
@@ -357,8 +358,8 @@ input:checked + .sliderk:before {
                                         $cat = App\VideoCategory::all();
                                         ?>
                                           <li class="dropdown menu-item">
-                                            <a class="dropdown-toggle" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
-                                              <?php echo __($menu->name);?> <!--<i class="fa fa-angle-down"></i>-->
+                                            <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                                              <?php echo __($menu->name);?> <!--<i class="fa fa-angle-down"></i>-->    <i class="fa fa-chevron-down" aria-hidden="true"></i>
                                             </a>
                                             <ul class="dropdown-menu categ-head">
                                               <?php foreach ( $languages as $language){ ?>
