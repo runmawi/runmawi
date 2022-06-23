@@ -154,10 +154,19 @@
         font-size:30px; 
     }
     #videoPlayer {
-    height: 300px!important;
+   /* height: 300px!important;*/
 }
     .plyr__video-wrapper::before{
         width: 25%!important;
+    }
+    #mob{
+        display: flex;
+    align-items: center;
+    font-size: 12px;
+    justify-content: space-around;
+    }
+    .reveal {
+        margin-left: -52px!important;
     }
     .user-menu{
         display: block;
