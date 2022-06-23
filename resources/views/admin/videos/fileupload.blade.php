@@ -556,6 +556,7 @@ border-radius: 0px 4px 4px 0px;
                         </div>
                         <input type="button" name="next" class="next action-button" id="next2" value="Next" />
                      </fieldset>
+
                      <fieldset class="Next3">
                         <div class="form-card">
                            <div class="row">
@@ -1453,17 +1454,31 @@ $(document).ready(function($){
 
    $('.Next3').on('keyup keypress blur change click mouseover', function(event) {
 
-   if( $('#language').val() == null  ){
-      $('#error_language').show();
+   if( $('#language').val() == null || $('#video_category_id').val() == null ){
+
+      if($('#language').val() == null){
+         $('#error_language').show();
+      }else{
+         $('#error_language').hide();
+      }
+
+      if($('#video_category_id').val() == null){
+         $('#error_video_Category').show();
+      }else{
+         $('#error_video_Category').hide();
+      }
+      
       $('#next3').attr('disabled','disabled');
    }  
    else{
       $('#error_language').hide();
+      $('#error_video_Category').hide();
+
       $('#next3').removeAttr('disabled');
    }
+
 });
 
- 
   
 
 });

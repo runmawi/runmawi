@@ -470,7 +470,7 @@ border-radius: 0px 4px 4px 0px;
                <div class="row">
                <div class="col-sm-6 form-group">
                <label class="m-0">Choose Language:</label>
-                  <select class="form-control js-example-basic-multiple" id="language" name="language[]" style="width: 100%;" multiple="multiple">
+                  <select class="form-control js-example-basic-multiple languages" id="language" name="language[]" style="width: 100%;" multiple="multiple">
                      <!-- <option selected disabled="">Choose Language</option> -->
                      @foreach($languages as $language)
                         @if(in_array($language->id, $languages_id))
@@ -1423,21 +1423,37 @@ $(document).ready(function($){
       }
    });
 
-  // video category and language validation
-  $('#error_video_Category').hide();
+// video category
+$('#error_video_Category').hide();
    $('#error_language').hide();
 
    $('.Next3').on('keyup keypress blur change click mouseover', function(event) {
 
-   if($('#language').val() == null  ){
-      $('#error_language').show();
+   if( $('.languages').val() == null || $('#video_category_id').val() == null ){
+
+      if($('.languages').val() == null){
+         $('#error_language').show();
+      }else{
+         $('#error_language').hide();
+      }
+
+      if($('#video_category_id').val() == null){
+         $('#error_video_Category').show();
+      }else{
+         $('#error_video_Category').hide();
+      }
+      
       $('#next3').attr('disabled','disabled');
    }  
    else{
       $('#error_language').hide();
+      $('#error_video_Category').hide();
+
       $('#next3').removeAttr('disabled');
    }
+
 });
+
 
   
 });
