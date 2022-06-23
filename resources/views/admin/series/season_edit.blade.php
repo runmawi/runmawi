@@ -231,7 +231,7 @@
 		</div> 
 	</div> -->
                 <div class="row">
-                    <div class="panel-body col-sm-6 p-0" style="display: block;">
+                    <div class="panel-body col-sm-6" style="display: block;">
                         <label><h6>Age Restrict :</h6></label>
                         <select class="form-control" id="age_restrict" name="age_restrict">
                             <option selected disabled="">Choose Age</option>
@@ -243,7 +243,7 @@
                     <div class="col-sm-6 p-0" style="display: block;">
                         <label>Search Tags :</label>
                         <div class="panel-body">
-                        <input type="text" id="tag-input1" name="searchtags">
+                        <input class="form-control" type="text" id="tag-input1" name="searchtags">
                         </div>
 
                     </div>
