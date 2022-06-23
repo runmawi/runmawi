@@ -9,7 +9,7 @@
 
  <!-- MainContent -->
  <div class="main-content">
-     <div class="container">
+     <div class="container-fluid">
           <div class="row">
      <div class="col-sm-12 overflow-hidden">
         <div class="iq-main-header d-flex align-items-center justify-content-between">
@@ -20,14 +20,14 @@
          <div class="row">
              <?php if(count($lang_videos) > 0):
                    foreach($lang_videos as $video): ?>
-            <div class="col-1-5 col-md-6 iq-mb-30 wishlist-block">
+            <div class="col-1-5 col-md-6col-sm-2 col-md-2 col-xs-12 iq-mb-30 wishlist-block">
                 <a href="<?php echo URL::to('category') ?><?= '/videos/' . $video->slug ?>">
                 <li class="slide-item position-relative">
                 <!-- block-images -->
                    <div class="block-images position-relative">
-                        <video  width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$video->image; ?>"  data-play="hover" >
-                            <source src="<?php echo $video->trailer;  ?>" type="video/mp4">
-                        </video>
+                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$video->image; ?>"  class="img-fluid" alt="" width="">
+                     
+                      
                    
 <!--
                     <div class="corner-text-wrapper">
