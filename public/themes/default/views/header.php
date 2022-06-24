@@ -329,7 +329,7 @@ input:checked + .sliderk:before {
                                         $LiveCategory = App\LiveCategory::all();
                                         foreach ($menus as $menu) { 
                                         if ( $menu->in_menu == "video") { 
-                                        $cat = App\VideoCategory::orderBy("order")->get();
+                                        $cat = App\VideoCategory::orderBy("order")->where('in_home',1)->get();
                                         ?>
                             
                                    
