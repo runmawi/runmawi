@@ -1013,7 +1013,7 @@ if(!empty($artistsdata)){
   
             } 
             else {
-               $player_image = $video->image;
+               $player_image = $video->player_image;
             }
 
                             // Trailer Update
@@ -1134,7 +1134,7 @@ if(!empty($artistsdata)){
             }else{
                     $active = 1;
                     $draft = 1;
-                    if($video->type == "" && $video->processed_low != 100 || $video->processed_low != null){
+                    if($video->type == "" && $video->processed_low != 100 || $video->type == "" && $video->processed_low == null){
                         $status = 0;
                     }else{
                         $status = 1;
