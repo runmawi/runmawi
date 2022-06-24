@@ -2314,7 +2314,6 @@ class HomeController extends Controller
 
     public function searchResult(Request $request)
     {
-
         $search_value = $request['search'];
 
 
@@ -2364,6 +2363,79 @@ class HomeController extends Controller
         //     $ppv_category = 0;
         // }
 
+        // Latest videos
+
+        $latest_videos = Video::where('search_tags', 'LIKE', '%' . $search_value . '%')
+                            ->where('active', '=', '1')
+                            ->where('status', '=', '1')
+                            ->where('draft', '=', '1')
+                            ->orderBy('created_at', 'desc')
+                            ->take(1)
+                            ->get();
+
+
+        $latest_livestreams = LiveStream::where('search_tags', 'LIKE', '%' . $search_value . '%')
+                            ->where('active', '=', '1')
+                            ->limit('10')
+                            ->latest()
+                            ->get();
+
+
+
+        $latest_audio = Audio::where('search_tags', 'LIKE', '%' . $search_value . '%')
+                                ->where('active', '=', '1')
+                                ->where('status', '=', '1')
+                                ->limit('10')
+                                ->latest()
+                                ->get();
+
+        $latest_Episode = Episode::where('search_tags', 'LIKE', '%' . $search_value . '%')
+                                ->where('active', '=', '1')
+                                ->where('status', '=', '1')
+                                ->limit('20')
+                                ->latest()
+                                ->get();   
+    // Most watched videos
+
+        $Most_view_videos = RecentView::Join('videos','videos.id','=','recent_views.video_id')
+                            ->where('videos.search_tags', 'LIKE', '%' . $search_value . '%')
+                            ->where('videos.active', '=', '1')
+                            ->where('videos.status', '=', '1')
+                            ->where('videos.draft', '=', '1')
+                            ->groupBy('video_id')
+                            ->limit('10')
+                            ->latest('videos.created_at')
+                            ->get();
+
+        $Most_view_audios = RecentView::Join('audio','audio.id','=','recent_views.audio_id')
+                            ->where('audio.search_tags', 'LIKE', '%' . $search_value . '%')
+                            ->where('audio.active', '=', '1')
+                            ->where('audio.status', '=', '1')
+                            ->limit('10')
+                            ->latest('audio.created_at')
+                            ->groupBy('audio_id')
+                            ->get();
+
+        $Most_view_live   = RecentView::Join('live_streams','live_streams.id','=','recent_views.live_id')
+                            ->where('live_streams.search_tags', 'LIKE', '%' . $search_value . '%')
+                            ->where('live_streams.active', '=', '1')
+                            ->limit('10')
+                            ->latest('live_streams.created_at')
+                            ->groupBy('live_id')
+                            ->get();
+
+        $Most_view_episode  = RecentView::Join('episodes','episodes.id','=','recent_views.episode_id')
+                            ->where('episodes.search_tags', 'LIKE', '%' . $search_value . '%')
+                            ->where('episodes.active', '=', '1')
+                            ->where('episodes.status', '=', '1')
+                            ->limit('10')
+                            ->latest('episodes.created_at')
+                            ->groupBy('episode_id')
+                            ->get();
+
+                        
+        //  All videos 
+
         $videos_count = Video::where('search_tags', 'LIKE', '%' . $search_value . '%')->count();
 
         if ($videos_count > 0)
@@ -2380,54 +2452,44 @@ class HomeController extends Controller
             $videos = [];
         }
 
-        $latest_videos = Video::where('search_tags', 'LIKE', '%' . $search_value . '%')
+       
+        $livestreams = LiveStream::where('search_tags', 'LIKE', '%' . $search_value . '%')
                             ->where('active', '=', '1')
-                            ->where('status', '=', '1')
-                            ->where('draft', '=', '1')
-                            ->latest()
-                            ->take(20)
-                            ->orderBy('created_at', 'DESC')->get();
-
-        $Most_recent_view = RecentView::Join('videos','videos.id','=','recent_views.video_id')
-                             ->where('videos.search_tags', 'LIKE', '%' . $search_value . '%')
-                            ->where('videos.active', '=', '1')
-                            ->where('videos.status', '=', '1')
-                            ->where('videos.draft', '=', '1')
-                            ->groupBy('video_id')->get();
-
-        $livestreams = LiveStream::where('search_tags', 'LIKE', '%' . $request->country . '%')
-                            ->where('active', '=', '1')
-                            // ->where('status', '=', '1')
-                            ->limit('10')
+                            ->limit('20')
                             ->latest()
                             ->get();
 
 
 
-        $audio = Audio::where('search_tags', 'LIKE', '%' . $request->country . '%')
+        $audio = Audio::where('search_tags', 'LIKE', '%' . $search_value . '%')
                             ->where('active', '=', '1')
                             ->where('status', '=', '1')
-                            ->limit('10')
+                            ->limit('20')
                             ->latest()
                             ->get();
 
-        $Episode = Episode::where('search_tags', 'LIKE', '%' . $request->country . '%')
+        $Episode = Episode::where('search_tags', 'LIKE', '%' . $search_value . '%')
                             ->where('active', '=', '1')
                             ->where('status', '=', '1')
-                            ->limit('10')
+                            ->limit('20')
                             ->latest()
                             ->get();    
+
 
         $data = array(
             'videos' => $videos,
             'search_value' => $search_value,
             'currency' => CurrencySetting::first() ,
             'latest_videos' => $latest_videos,
-            'Most_recent_view' => $Most_recent_view,
+            'Most_view_videos' => $Most_view_videos,
             'ThumbnailSetting' =>   ThumbnailSetting::first(),
             'audio' => $audio,
             'livestreams' => $livestreams,
             'Episode' => $Episode,
+            'latest_videos' => $latest_videos,
+            'latest_livestreams' => $latest_livestreams,
+            'latest_audio' => $latest_audio,
+            'latest_Episode'=> $latest_Episode,
         );
 
         return Theme::view('search', $data);

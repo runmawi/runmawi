@@ -22,6 +22,7 @@ use App\PaymentSetting;
 use App\CurrencySetting as CurrencySetting;
 use App\HomeSetting;
 use App\ThumbnailSetting;
+use App\RecentView;
 use Theme;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
@@ -31,6 +32,20 @@ use Intervention\Image\ImageManagerStatic as Image;
 
 class LiveStreamController extends Controller
 {
+
+  public function __construct()
+  {
+
+      $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+      $userIp = $geoip->getip();    
+      $countryName = $geoip->getCountry();
+      $regionName = $geoip->getregion();
+      $cityName = $geoip->getcity();
+
+      $this->countryName = $countryName;
+     
+  }
+
     public function Index()
     {
         
@@ -60,7 +75,6 @@ class LiveStreamController extends Controller
           $Theme = HomeSetting::pluck('theme_choosen')->first();
           Theme::uses( $Theme );
 
-          // $category=null,
           $data = session()->all();
 
           $categoryVideos = LiveStream::where('slug',$vid)->first();
@@ -126,6 +140,13 @@ class LiveStreamController extends Controller
              $payment_setting = PaymentSetting::where('status',1)->where('live_mode',1)->get();
              $Razorpay_payment_setting = PaymentSetting::where('status',1)->first();
 
+             $view = new RecentView;
+             $view->user_id      = Auth::User() ? Auth::User()->id : null ;
+             $view->country_name = $this->countryName ? $this->countryName : null ;
+             $view->sub_user     = null ;
+             $view->visited_at   = Carbon::now()->year;
+             $view->live_id      = $vid ;
+             $view->save();
 
            $data = array(
                  'currency' => $currency,

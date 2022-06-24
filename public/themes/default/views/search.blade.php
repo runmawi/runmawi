@@ -162,11 +162,6 @@
                                             @endif
 
                                             <div class="movie-time d-flex align-items-center pt-1">
-                                                @if($ThumbnailSetting->age == 1)  <!-- Age -->
-                                                    <div class="badge badge-secondary p-1 mr-2">
-                                                    {{  $livestream_search->age_restrict.' '.'+' }}
-                                                    </div>
-                                                @endif
 
                                                 @if($ThumbnailSetting->duration == 1) <!-- Duration -->
                                                     <span class="text-white"><i class="fa fa-clock-o"></i>
@@ -353,12 +348,7 @@
                         
 
                                     <div class="block-description" style="bottom:-38px!important;">
-                                        @if($ThumbnailSetting->title == 1)        <!-- Title -->
-                                            <a  href="<?php echo URL::to('audio') ?><?= '/' . $audio_search->slug ?>">	
-                                                <h6><?php  echo (strlen($audio_search->title) > 17) ? substr($audio_search->title,0,18).'...' : $audio_search->title; ?></h6>
-                                            </a>
-                                        @endif
-
+                                       
                                         <div class="movie-time d-flex align-items-center pt-1">
                                             @if($ThumbnailSetting->age == 1)  <!-- Age -->
                                                 <div class="badge badge-secondary p-1 mr-2">
