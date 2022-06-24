@@ -579,7 +579,6 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/videos/updatevideo/', 'AdminAgeController@updatevideo');
 
     
-    
 
      /*  Email Setting  */
 
@@ -587,6 +586,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/email_settings/save', 'AdminEmailSettingsController@store');
     Route::post('/Testing_EmailSettting', 'AdminEmailSettingsController@Testing_EmailSettting'); 
 
+  
      /*Ads Management starts*/
     Route::get('/advertisers', 'AdminAdvertiserController@advertisers');
     Route::get('/advertiser/edit/{id}', 'AdminAdvertiserController@advertisersEdit');
@@ -1416,6 +1416,10 @@ Route::post('admin/ThemeIntegration/uniquevalidation', 'ThemeIntegrationControll
 Route::get('admin/clear_cache', 'ClearCacheController@index')->name('clear_cache');
 Route::post('admin/clear_caches', 'ClearCacheController@clear_caches')->name('clear_caches');
 Route::post('admin/clear_view_cache', 'ClearCacheController@clear_view_cache')->name('clear_view_cache');
+
+// ENV APP DEBUG
+  Route::get('admin/Env_index', 'ClearCacheController@Env_index'); 
+  Route::Post('admin/Env_AppDebug', 'ClearCacheController@Env_AppDebug'); 
 
     // Reels
 Route::get('/Reals_videos/videos/{slug}', 'ChannelController@Reals_videos');
