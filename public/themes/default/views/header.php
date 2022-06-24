@@ -376,8 +376,8 @@ input:checked + .sliderk:before {
                                         ?>
                             
                                    
-                                          <li class="dropdown menu-item">
-                                            <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                                          <li class="dropdown menu-item" >
+                                            <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown" >  
                                               <?php echo __($menu->name);?>  <i class="ri-arrow-down-s-line"></i>
                                             </a>
                                        
@@ -1054,7 +1054,13 @@ $("#toggle").click(function(){
    });
 </script>
 
-
+<script>
+    $('ul.nav li.dropdown').hover(function() {
+  $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(700);
+}, function() {
+  $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(700);
+});
+          </script>
 </header>
       <!-- Header End -->
      
