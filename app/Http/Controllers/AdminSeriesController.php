@@ -118,7 +118,7 @@ class AdminSeriesController extends Controller
     public function create()
     {
         $settings  = Setting::first();
-        // dd($settings);
+
         $user =  User::where('id',1)->first();
         $duedate = $user->package_ends;
         $current_date = date('Y-m-d');
@@ -176,12 +176,6 @@ class AdminSeriesController extends Controller
           $validatedData = $request->validate([
                 'title' => ['required', 'string'],
             ]);
-            
-        
-//        if ($validatedData->fails())
-//        {
-//            return Redirect::back()->withErrors($validator)->withInput();
-//        }
         
          /*Slug*/
         $data = $request->all();
@@ -254,6 +248,7 @@ class AdminSeriesController extends Controller
             $data['active'] = 0;
         }
 
+
         if(empty($data['featured'])){
             $data['featured'] = 0;
         }
@@ -278,6 +273,8 @@ class AdminSeriesController extends Controller
         $series = Series::find($series->id);
         $series->slug = $slug;
         $series->ppv_status = $ppv_status;
+        $series->banner = empty($data['banner']) ? 0 : 1;
+        $series->tags = $request->tags;
         $series->save();  
 
 
@@ -404,7 +401,6 @@ class AdminSeriesController extends Controller
 
        
         $data = $input;
-        // dd($data);
         if(isset($data['duration'])){
                 //$str_time = $data
                 $str_time = preg_replace("/^([\d]{1,2})\:([\d]{2})$/", "00:$1:$2", $data['duration']);
@@ -510,6 +506,7 @@ class AdminSeriesController extends Controller
         
         
         $series->player_image = $player_image;
+        $series->banner = empty($data['banner']) ? 0 : 1;
         $series->update($data);
         if(empty($data['ppv_status'])){
             $ppv_status = 0;
@@ -711,6 +708,7 @@ class AdminSeriesController extends Controller
     
     public function create_season(Request $request)
     {
+
         $data = $request->all();
         $trailer = (isset($data['trailer'])) ? $data['trailer'] : '';
         $image = (isset($data['image'])) ? $data['image'] : '';

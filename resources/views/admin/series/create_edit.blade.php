@@ -265,6 +265,10 @@ $settings  = App\Setting::first();?>
 								<label class="p2" for="active" style="float:left; display:block; margin-right:10px;">Is this series Active:</label>
 								<input type="checkbox" @if(!empty($series->active) && $series->active == 1){{ 'checked="checked"' }}@elseif(!isset($series->active)){{ 'checked="checked"' }}@endif name="active" value="1" id="active" />
 							</div>
+							<div class="d-flex align-items-baseline">
+								<label class="p2" for="featured" style="float:left; display:block; margin-right:10px;">Enable this series as Slider:</label>
+								<input type="checkbox" @if(!empty($series->banner) && $series->banner == 1){{ 'checked="checked"' }}@elseif(!isset($series->banner)){{ 'checked="checked"' }}@endif name="banner" value="1" id="banner" />
+							</div>
 						</div> 
 					</div>
 				</div>
@@ -289,7 +293,7 @@ $settings  = App\Setting::first();?>
                         </div>
                     </div>
                 </div>
-				@else if
+				@else
 				<input type="hidden" name="ppv_status" value="" id="ppv_status" />
 				@endif
             </div>

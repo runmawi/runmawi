@@ -255,9 +255,67 @@ data-delay-in="1.2">
 endif; ?>
 
 
-<script type="application/javascript">
+<!-- Series Banner -->
 
-function trailer_slider_video(ele) 
+<?php if(isset($series_sliders)) :
+    foreach($series_sliders as $key => $series_slider):    ?>
+
+        <div class="item <?php if($key == 0){echo 'active';}?> header-image">
+            <div class="slide slick-bg s-bg-1 lazy"
+                 style="background:url('<?php echo URL::to('/').'/public/uploads/images/' .$series_slider->image;?>') no-repeat;background-size:cover;background-position:right;  ">
+                <div class="container position-relative h-100">
+                    <div class="slider-inner h-100">
+                        <div class="row align-items-center bl h-100">
+                            <div class="col-xl-5 col-lg-12 col-md-12">
+
+                                <h1 class="slider-text big-title title text-uppercase text-white" data-animation-in="fadeInLeft" data-delay-in="0.6">
+                                    <?php echo __($series_slider->title); ?>
+                                </h1>
+
+                                <div class="mb-3">
+                                    <span class="fa fa-star-half  checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star"></span>
+                                    <span class="fa fa-star"></span>
+                                </div>
+
+                                <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
+                                    <span class="badge badge-secondary p-2">
+                                        <?php echo __($series_slider->year); ?>
+                                    </span>
+                                </div>
+
+                                <div data-animation-in="fadeInUp" data-delay-in="1.2"
+                                    style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
+                                        -webkit-line-clamp: 3;   -webkit-box-orient: vertical;      overflow: hidden;">
+                                    <?php echo __($series_slider->description); ?>
+                                </div>
+
+                                <div class="d-flex justify-content-evenly align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1.2">
+                        
+                                    <a href="<?= URL::to('/') ?><?= '/play_series'.'/'. $series_slider->slug ?>"  class="btn bd">
+                                        <i class="fa fa-play mr-2" aria-hidden="true"></i> Play
+                                    </a>
+
+                                    <a class="btn bd ml-2" href="<?= URL::to('/') ?><?= '/play_series'.'/'. $series_slider->slug ?>">
+                                        <i class="fa fa-info" aria-hidden="true"></i>
+                                        More details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<?php endforeach; endif; ?>
+
+
+<!-- <script type="application/javascript">
+
+function trailer_series_slider(ele) 
 	{
         var trailer_url   = $(ele).attr('data-trailer-url');
         var trailer_type = $(ele).attr('data-trailer-type');
@@ -287,4 +345,4 @@ function trailer_slider_video(ele)
         }).magnificPopup('open');
 }
 
-</script>
+</script> -->

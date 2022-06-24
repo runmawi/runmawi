@@ -1,6 +1,4 @@
 
-
-
 <!-- Sliders -->
 
 <?php if(isset($sliders)) :
@@ -36,6 +34,7 @@
 <?php  ?>
 <?php endforeach; 
 endif; ?>
+
 <!-- Live Banners -->
 <?php if(isset($live_banner)) :
     foreach($live_banner as $key => $slider_video): ?>
@@ -111,11 +110,10 @@ endif; ?>
                             </div>
                             <?php  ?>
                             <?php endforeach; 
-                            endif; ?>
+endif; ?>
                             <!-- Video Sliders -->
 
 <?php if(isset($video_banners)) :
-//dd('test');
     foreach($video_banners as $key => $videos): ?>
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
             <div class="slide slick-bg s-bg-1 lazyload"
@@ -317,3 +315,69 @@ endif; ?>
                     <?php  ?>
                     <?php endforeach; 
                     endif; ?>
+
+<!-- Series Slider -->
+
+
+<?php if(isset($series_sliders)) :
+    foreach($series_sliders as $key => $series_slider): ?>
+
+        <div class="item <?php if($key == 0){echo 'active';}?> header-image">
+            <div class="slide slick-bg s-bg-1 lazyload"
+                     data-bgset="<?php echo URL::to('/').'/public/uploads/images/' .$series_slider->image;?>"  style="background-position: right;">
+                <div class="container-fluid position-relative h-100" style="padding:0px 100px">
+                    <div class="slider-inner h-100">
+                        <div class="row align-items-center bl h-100">
+                            <div class="col-xl-6 col-lg-12 col-md-12">
+                        
+                                <h1 class="text-white mb-3" data-animation-in="fadeInLeft"    data-delay-in="0.6">
+                                    <?php  echo (strlen($series_slider->title) > 15) ? substr($series_slider->title,0,80).'...' : $series_slider->title;    ?>
+                                </h1>
+
+                                <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
+                                    <span class="badge badge-secondary p-2">
+                                        <?php echo __($series_slider->year); ?>
+                                    </span>
+                                </div>
+
+                                <div data-animation-in="fadeInUp" data-delay-in="1.2"
+                                        style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
+                                        -webkit-line-clamp: 3;
+                                        -webkit-box-orient: vertical;  
+                                        overflow: hidden;">
+                                    <?php echo __($series_slider->description); ?>
+                                </div>
+
+                                <div class="d-flex justify-content-evenly align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1.2">
+                                        <a href="<?= URL::to('/') ?><?= '/play_series'.'/'. $series_slider->slug ?>"
+                                            class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play
+                                        </a>
+
+                                        <a class="btn bd ml-2" href="<?= URL::to('/') ?><?= '/play_series'.'/'. $series_slider->slug ?>">
+                                                <i class="fa fa-info" aria-hidden="true"></i> More details
+                                        </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- <div class="trailor-video">
+                            <a href="<?= URL::to('/') ?><?= '/live'.'/'. $series_slider->slug ?>" class="video-open playbtn">
+                                <svg class="gt" version="1.1" xmlns="http://www.w3.org/2000/svg"  xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px"
+                                        viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                    <style type="text/css">   .gt{    height: 60px!important; } </style>
+                                    <polygon class='triangle' fill="none" stroke-width="7" stroke-linecap="round"  stroke-linejoin="round" stroke-miterlimit="10"
+                                        points="73.5,62.5 148.5,105.8 73.5,149.1 " />
+                                    <circle class='circle' fill="none" stroke-width="7" stroke-linecap="round"
+                                        stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" />
+                                </svg>
+
+                                <span class="w-trailor">Watch Trailer</span>
+
+                             </a>
+                        </div> -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+<?php endforeach;  endif; ?>

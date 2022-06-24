@@ -215,19 +215,29 @@ class HomeController extends Controller
                 $currency = CurrencySetting::first();
                 $data = array(
                     'currency' => $currency,
+
                     'videos' => Video::where('active', '=', '1')->where('status', '=', '1')
-                    ->where('draft', '=', '1')
-                        ->orderBy('created_at', 'DESC')
-                        ->simplePaginate($this->videos_per_page) ,
+                                        ->where('draft', '=', '1')
+                                        ->orderBy('created_at', 'DESC')
+                                        ->simplePaginate($this->videos_per_page) ,
+
                     'video_banners' => Video::where('active', '=', '1')
-                    ->where('draft', '=', '1')
-                        ->where('status', '=', '1')
-                        ->where('banner', '=', '1')
-                        ->orderBy('created_at', 'DESC')
-                        ->simplePaginate(130000) ,
+                                        ->where('draft', '=', '1')
+                                        ->where('status', '=', '1')
+                                        ->where('banner', '=', '1')
+                                        ->orderBy('created_at', 'DESC')
+                                        ->simplePaginate(130000) ,
+
                     'sliders' => Slider::where('active', '=', '1')
-                        ->orderBy('order_position', 'ASC')
-                        ->get() ,
+                                        ->orderBy('order_position', 'ASC')
+                                        ->get() ,
+                    
+                    'series_sliders' => Series::where('active', '=', '1')
+                                        ->latest()
+                                        ->get() ,
+                    
+                    
+
                     'cnt_watching' => $cnt_watching,
                     'trendings' => $trending_movies,
                     'latest_videos' => $latest_videos,
@@ -343,19 +353,27 @@ class HomeController extends Controller
             $currency = CurrencySetting::first();
             $data = array(
                 'currency' => $currency,
+
                 'videos' => Video::where('active', '=', '1')->where('status', '=', '1')
-                ->where('draft', '=', '1')
-                    ->orderBy('created_at', 'DESC')
-                    ->simplePaginate($this->videos_per_page) ,
+                                ->where('draft', '=', '1')
+                                ->orderBy('created_at', 'DESC')
+                                ->simplePaginate($this->videos_per_page) ,
+
                 'video_banners' => Video::where('active', '=', '1')
-                ->where('draft', '=', '1')
-                    ->where('status', '=', '1')
-                    ->where('banner', '=', '1')
-                    ->orderBy('created_at', 'DESC')
-                    ->simplePaginate(130000) ,
+                                    ->where('draft', '=', '1')
+                                    ->where('status', '=', '1')
+                                    ->where('banner', '=', '1')
+                                    ->orderBy('created_at', 'DESC')
+                                    ->simplePaginate(130000) ,
+
                 'sliders' => Slider::where('active', '=', '1')
                     ->orderBy('order_position', 'ASC')
                     ->get() ,
+
+                'series_sliders' => Series::where('active', '=', '1')
+                    ->latest()
+                     ->get() ,
+
                 'cnt_watching' => $cnt_watching,
                 'trendings' => $trending_movies,
                 'latest_videos' => $latest_videos,
@@ -1105,22 +1123,32 @@ class HomeController extends Controller
                     $data = array(
                         'currency' => $currency,
                         'videos' => Video::where('active', '=', '1')->where('status', '=', '1')
-                        ->where('draft', '=', '1')
-                            ->orderBy('created_at', 'DESC')
-                            ->simplePaginate($this->videos_per_page) ,
+                                            ->where('draft', '=', '1')
+                                             ->orderBy('created_at', 'DESC')
+                                            ->simplePaginate($this->videos_per_page) ,
+
                         //  'banner' => Video::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate(3),
+                       
                         'video_banners' => Video::where('active', '=', '1')
-                        ->where('draft', '=', '1')
-                            ->where('status', '=', '1')
-                            ->where('banner', '=', '1')
-                            ->orderBy('created_at', 'DESC')
-                            ->simplePaginate(130000) ,
+                                            ->where('draft', '=', '1')
+                                            ->where('status', '=', '1')
+                                            ->where('banner', '=', '1')
+                                            ->orderBy('created_at', 'DESC')
+                                            ->simplePaginate(130000) ,
+
                         'sliders' => Slider::where('active', '=', '1')
-                            ->orderBy('order_position', 'ASC')
-                            ->get() ,
+                                            ->orderBy('order_position', 'ASC')
+                                            ->get() ,
+    
+
                         'live_banner' => LiveStream::where('banner', '=', '1')
-                            ->orderBy('created_at', 'DESC')
-                            ->simplePaginate(111111) ,
+                                        ->orderBy('created_at', 'DESC')
+                                        ->simplePaginate(111111) ,
+
+                        'series_sliders' => Series::where('active', '=', '1')
+                                        ->latest()
+                                        ->get() ,
+                                        
                         'cnt_watching' => $cnt_watching,
                         'trendings' => $trending_movies,
                         'latest_videos' => $latest_videos,
@@ -1978,23 +2006,31 @@ class HomeController extends Controller
                 //  dd($currency);
                 $data = array(
                     'currency' => $currency,
+
                     'videos' => Video::where('active', '=', '1')->where('status', '=', '1')
-                    ->where('draft', '=', '1')
-                        ->orderBy('created_at', 'DESC')
-                        ->simplePaginate($this->videos_per_page) ,
-                    //  'video_banners' => Video::where('banner', '=', '1')->where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate(3),
+                                    ->where('draft', '=', '1')
+                                    ->orderBy('created_at', 'DESC')
+                                    ->simplePaginate($this->videos_per_page) ,
+
                     'video_banners' => Video::where('active', '=', '1')
-                    ->where('draft', '=', '1')
-                        ->where('status', '=', '1')
-                        ->where('banner', '=', '1')
-                        ->orderBy('created_at', 'DESC')
-                        ->simplePaginate(130000) ,
-                    'sliders' => Slider::where('active', '=', '1')
-                        ->orderBy('order_position', 'ASC')
-                        ->get() ,
+                                        ->where('draft', '=', '1')
+                                        ->where('status', '=', '1')
+                                        ->where('banner', '=', '1')
+                                        ->orderBy('created_at', 'DESC')
+                                        ->simplePaginate(130000) ,
+
+                    'series_sliders' => Series::where('active', '=', '1')
+                                        ->latest()
+                                        ->get() ,
+                    
                     'live_banner' => LiveStream::where('banner', '=', '1')
-                        ->orderBy('created_at', 'DESC')
-                        ->simplePaginate(111111) ,
+                                        ->orderBy('created_at', 'DESC')
+                                        ->simplePaginate(111111) ,
+
+                    'sliders' => Slider::where('active', '=', '1')
+                                        ->orderBy('order_position', 'ASC')
+                                        ->get() ,
+
                     'cnt_watching' => $cnt_watching,
                     'trendings' => $trending_movies,
                     'latest_videos' => $latest_videos,
