@@ -625,7 +625,7 @@ input:checked + .sliderk:before {
   <span class="sliderk round"></span>
 
                                                </label></div>
-                                          <a href="<?php echo  URL::to('myprofile') ?>" class="iq-sub-card setting-dropdown">
+                                          <a href="<?php echo  URL::to('myprofile') ?>" class="iq-sub-card dropdown-menu setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                       
