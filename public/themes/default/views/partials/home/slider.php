@@ -131,13 +131,13 @@ endif; ?>
                         // echo ($slidertitle.'...');
                         ?>
                     </h1>
-                    <div data-animation-in="fadeInUp" data-delay-in="1.2"
+                    <p class="desc" data-animation-in="fadeInUp" data-delay-in="1.2"
                         style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
                         -webkit-line-clamp: 3;
                         -webkit-box-orient: vertical;  
                         overflow: hidden;">
-                        <?php echo __($videos->description); ?>
-                        </div>
+                       <?php echo __($videos->description); ?>
+                        </p>
                         <div class="d-flex justify-content-evenly align-items-center r-mb-23" data-animation-in="fadeInUp"
                             data-delay-in="1.2">
                             <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"

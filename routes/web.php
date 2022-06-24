@@ -845,7 +845,7 @@ Route::post('/videos/store', array('before' => 'demo', 'uses' => 'CPPAdminVideos
 Route::post('/videos/update', array('before' => 'demo', 'uses' => 'CPPAdminVideosController@Cppupdate'));
 
 Route::get('/cppusers_videodata', 'CPPAdminVideosController@CPPVideo');
-Route::get('/live_search', 'CPPAdminVideosController@CPPlive_search');
+Route::get('/CPPlive_search', 'CPPAdminVideosController@CPPlive_search');
 Route::post('/m3u8url',  'CPPAdminVideosController@CPPm3u8url');
 Route::post('/embededcode',  'CPPAdminVideosController@CPPEmbededcode');
 Route::post('/mp4url',  'CPPAdminVideosController@CPPMp4url');
