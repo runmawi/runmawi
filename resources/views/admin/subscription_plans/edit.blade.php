@@ -56,7 +56,8 @@
                             <input type="text" id="video_quality" name="video_quality"  value="{{ $edit_plan[0]->video_quality }}" class="form-control" placeholder="Quality">
                         </div> 
                     <div class="form-group">
-		                        <label> Price:</label>
+		                        <!-- <label> Price:</label> -->
+		                         <label> Price ( {{ @$allCurrency->symbol }} ):</label>
 		                        <input type="text" id="price" name="price" value="{{ $edit_plan[0]->price }}" class="form-control" placeholder="Price">
                             </div>
                             

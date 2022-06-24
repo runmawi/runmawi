@@ -52,8 +52,11 @@ border-radius: 0px 4px 4px 0px;
 			<div class="col-md-4">
 				<h4><i class="entypo-archive"></i> Currency Setting </h4>
 			</div>
+			@if(count($allCurrency) == 0)
             <div class="col-md-8" align="right">
             <a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add Currency</a></div>
+			@endif
+
             <hr>
 		</div>
 	

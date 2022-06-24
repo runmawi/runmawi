@@ -102,7 +102,7 @@
                                </div>
 
                             <div class="form-group">
-		                         <label> Price (USD):</label>
+		                         <label> Price ( {{ @$allCurrency->symbol }} ):</label>
 		                         <input type="text" id="price" name="price" value="" class="form-control" placeholder="Price">
                             </div>
 							<div class="form-group">

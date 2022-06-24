@@ -758,17 +758,17 @@ border-radius: 0px 4px 4px 0px;
                                     </div>
                                     <div class="panel-body">
                                        <div>
-                                          <label for="featured">Is this video Featured:</label>
+                                          <label for="featured">Enable this video as Featured:</label>
                                           <input type="checkbox" @if(!empty($video->featured) && $video->featured == 1){{ 'checked="checked"' }}@endif name="featured" value="1" id="featured" />
                                        </div>
                                        <div class="clear"></div>
                                        <div>
-                                          <label for="active">Is this video Active:</label>
+                                          <label for="active">Enable this Video:</label>
                                           <input type="checkbox" @if(!empty($video->active) && $video->active == 1){{ 'checked="checked"' }}@elseif(!isset($video->active)){{ 'checked="checked"' }}@endif name="active" value="1" id="active" />
                                        </div>
                                        <div class="clear"></div>
                                        <div>
-                                          <label for="banner">Is this video Banner:</label>
+                                          <label for="banner">Enable this Video as Slider:</label>
                                           <input type="checkbox" @if(!empty($video->banner) && $video->banner == 1){{ 'checked="checked"' }}@elseif(!isset($video->banner)){{ 'checked="checked"' }}@endif name="banner" value="1" id="banner" />
                                        </div>
                                        <div class="clear"></div>
