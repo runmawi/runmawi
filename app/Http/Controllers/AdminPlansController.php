@@ -29,6 +29,8 @@ use App\Setting;
 use App\PaymentSetting as PaymentSetting;
 use App\SubscriptionPlan as SubscriptionPlan;
 use GuzzleHttp\Client;
+use App\Currency;
+use App\CurrencySetting;
 
 class AdminPlansController extends Controller
 {
@@ -99,13 +101,16 @@ public function PaypalIndex()
         $plans = $plans_data->groupBy('plans_name');
         $payment_settings = PaymentSetting::get();
         // dd($payment_settings);
-
+        $currency = Currency::get();
+        $allCurrency = CurrencySetting::first();
+        
         $devices = Devices::all();
          $data = array(
         	'plans' => $plans,
              'allplans'=> $plans,
              'devices'=> $devices,        	
-             'payment_settings'=> $payment_settings,        	
+             'payment_settings'=> $payment_settings,    
+             'allCurrency'=> $allCurrency,        	
         	
         	);
          return view('admin.subscription_plans.index', $data);
@@ -183,12 +188,15 @@ public function PaypalIndex()
         // dd($user_devices);
 
         $devices = Devices::all();
-
+        $currency = Currency::get();
+        $allCurrency = CurrencySetting::first();
         $data = array(
            'edit_plan' => $edit_plan,
            'user_devices' => $user_devices,
            'devices' => $devices,
            'payment_settings' => $payment_settings,
+           'allCurrency' => $allCurrency,
+
            );
        return view('admin.subscription_plans.edit',$data);
         }

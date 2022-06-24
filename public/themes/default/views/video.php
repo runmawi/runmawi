@@ -635,8 +635,8 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                </div>
                <div class="col-md-2">
                     <div class=" views text-white text-right" style="font-size:14px;">
-                           <span class="view-count"><i class="fa fa-eye"></i> 
-                               <?php if(isset($view_increment) && $view_increment == true ): ?><?= $movie->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?> 
+                           <!-- <span class="view-count"><i class="fa fa-eye"></i>  -->
+                               <!-- <?php if(isset($view_increment) && $view_increment == true ): ?><?= $movie->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?>  -->
                            </span>
                        </div>
                </div>
@@ -663,9 +663,9 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                <div class="col-sm-3 col-md-3 col-xs-12">
                    <div class="pull-left"     >     
                        <?php if($video->trailer != '' && $ThumbnailSetting->trailer == 1 ){ ?>
-                           <div id="videoplay" class="btn1 btn-outline-danger  watch_trailer"><i class="ri-film-line"></i> Watch Trailer</div>
+                           <!-- <div id="videoplay" class="btn1 btn-outline-danger  watch_trailer"><i class="ri-film-line"></i> Watch Trailer</div>
                            <div id="close_trailer" class="btn btn-danger  close_trailer"><i class="ri-film-line"></i> Close Trailer</div>
-                           <div style=" display: none;" class="skiptrailer btn btn-default skip"> Skip</div>
+                           <div style=" display: none;" class="skiptrailer btn btn-default skip"> Skip</div> -->
                        <?php } ?>
                    </div>
                </div>
@@ -830,9 +830,18 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
       <br>
   <?php  }?>
 
+  <div class="col-sm-4 p-0">
+        <div>     
+            <?php if($video->trailer != '' && $ThumbnailSetting->trailer == 1 ){ ?>
+                <div id="videoplay" class="btn1 btn-outline-primary  watch_trailer"><i class="ri-film-line"></i> Watch Trailer</div>
+                <div id="close_trailer" class="btn1 btn-outline-danger  close_trailer"><i class="ri-film-line"></i> Close Trailer</div>
+                <div style=" display: none;" class="skiptrailer btn btn-default skip"> Skip</div>
+            <?php } ?>
+        </div>
+    </div>
 
   <?php if(!empty($video->description) ) { ?>
-    <div class="col-md-7 p-0">
+    <div class="col-md-7 p-0" style="margin-top: 2%;">
       <h4>Description</h4>
       <div class="text-white">
           <p class="trending-dec w-100 mb-0 text-white mt-2"><?php echo __($video->description); ?></p>

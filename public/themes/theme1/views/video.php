@@ -645,8 +645,18 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                       </div>
                   </div>
               <?php  }?>
+              
+              <div class="col-sm-4 p-0">
+                    <div>     
+                        <?php if($video->trailer != '' && $ThumbnailSetting->trailer == 1 ){ ?>
+                            <div id="videoplay" class="btn1 btn-outline-primary  watch_trailer"><i class="ri-film-line"></i> Watch Trailer</div>
+                            <div id="close_trailer" class="btn1 btn-outline-danger  close_trailer"><i class="ri-film-line"></i> Close Trailer</div>
+                            <div style=" display: none;" class="skiptrailer btn btn-default skip"> Skip</div>
+                        <?php } ?>
+                    </div>
+                </div>
 
-              <div class="col-sm-12 mt-4 p-0">
+              <div class="col-sm-12 mt-4 p-0" style="margin-top: 2%;">
                 <?php if(!empty($video->description) ) { ?>
                     <h5>Description:</h5>
                     <div class="text-white">
@@ -659,11 +669,11 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
  
 
              <div class="col-sm-1 col-md-1 col-xs-12">
-                 <!--<div class="btn btn-default views text-white">
-                           <span class="view-count"><i class="fa fa-eye"></i> 
-                               <?php if(isset($view_increment) && $view_increment == true ): ?><?= $movie->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?> 
+                 <div class="btn btn-default views text-white">
+                           <!-- <span class="view-count"><i class="fa fa-eye"></i>  -->
+                               <!-- <?php if(isset($view_increment) && $view_increment == true ): ?><?= $movie->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?>  -->
                            </span>
-                       </div>-->
+                       </div>
              </div>
              <div class="col-sm-5 col-md-5 col-xs-12 text-right mt-4">
                <!--  <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
@@ -678,9 +688,9 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
            <div class="col-sm-8 col-md-8 col-xs-4 text-right p-0">
                    <div class=" d-flex justify-content-end">     
                        <?php if($video->trailer != '' && $ThumbnailSetting->trailer == 1  ){ ?>
-                           <div id="videoplay" class="btn1 btn-secondary btn-lg btn-block watch_trailer" style="border-radius:none!important;"><i class="ri-film-line"></i> Watch Trailer</div>
+                           <!-- <div id="videoplay" class="btn1 btn-secondary btn-lg btn-block watch_trailer" style="border-radius:none!important;"><i class="ri-film-line"></i> Watch Trailer</div>
                            <div id="close_trailer" class="btn1 btn-primary btn-lg btn-block  close_trailer"><i class="ri-film-line"></i> Close Trailer</div>
-                           <div style=" display: none;" class="skiptrailer btn btn-default skip"> Skip</div>
+                           <div style=" display: none;" class="skiptrailer btn btn-default skip"> Skip</div> -->
                        <?php } ?>
                         <div id="videoplay" class="btn1 btn-secondary btn-lg btn-block watch_trailer mt-3 mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>" style="border-radius:none!important;"><?php if(isset($mywishlisted->id)): ?> <i class="fa fa-minus-circle" aria-hidden="true"></i> Remove Whislist  <?php else: ?> + Add to Wishlist <?php endif; ?>
                         </div>
