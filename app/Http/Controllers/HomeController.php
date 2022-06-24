@@ -2247,6 +2247,29 @@ class HomeController extends Controller
 
     public function search(Request $request)
     {
+        $search_value = $request['search'];
+
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+        $userIp = $geoip->getip();
+        $countryName = $geoip->getCountry();
+        $regionName = $geoip->getregion();
+        $cityName = $geoip->getcity();
+        
+        $getfeching = Geofencing::first();
+
+        $block_videos = BlockVideo::where('country_id', $countryName)->get();
+        if (!$block_videos->isEmpty())
+        {
+            foreach ($block_videos as $block_video)
+            {
+                $blockvideos[] = $block_video->video_id;
+            }
+        }
+        else
+        {
+            $blockvideos[] = '';
+        }
+
 
         if ($request->ajax())
         {
@@ -2255,8 +2278,12 @@ class HomeController extends Controller
                             ->where('active', '=', '1')
                             ->where('status', '=', '1')
                             ->where('draft', '=', '1')
-                            ->limit('10')
-                            ->get();
+                            ->limit('10');
+                            if ($getfeching != null && $getfeching->geofencing == 'ON')
+                            {
+                                $videos = $videos->whereNotIn('videos.id', $blockvideos);
+                            }
+                           $videos = $videos ->get();
 
             $livestream = LiveStream::where('search_tags', 'LIKE', '%' . $request->country . '%')
                             ->where('active', '=', '1')
