@@ -242,6 +242,70 @@
                                     </li>
                                 @endforeach
                             @endif
+
+                                {{-- Series --}}
+
+                                @if(isset($latest_Series)) 
+                                    @foreach($latest_Series as $latest_Series_search)
+
+                                        <li class="slide-item col-sm-2 col-md-2 col-xs-12">
+                                            <a href="<?php echo URL::to('home') ?>">
+                                                <div class="block-images position-relative">
+                                                    <div class="img-box">
+                                                        <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_Series_search->image;  ?>" class="img-fluid" alt="">
+                                                    </div>
+
+                                                    <div class="block-description">
+                                                        <div class="hover-buttons">
+                                                            <a  href="{{  URL::to('play_series') .'/' .$latest_Series_search->slug }} ">	
+                                                                <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.svg';  ?>">                                  
+                                                            </a>
+                                                        <div>
+                                                    </div>
+                                                </div> </div> </div>
+
+                                                <div class="">
+                                                    <div class="mt-2 d-flex justify-content-between p-0">
+                                                        @if($ThumbnailSetting->title == 1) 
+                                                            <h6><?php  echo (strlen($latest_Series_search->title) > 17) ? substr($latest_Series_search->title,0,18).'...' : $latest_Series_search->title; ?></h6>
+                                                        @endif
+                                                    </div>
+
+                                                    <div class="movie-time my-2"> 
+                                                        @if($ThumbnailSetting->duration == 1) <!-- Duration -->
+                                                            <span class="text-white">
+                                                                    <i class="fa fa-clock-o"></i>
+                                                                    {{ gmdate('H:i:s', $latest_Series_search->duration)}}
+                                                            </span>
+                                                        @endif
+
+                                                        @if($ThumbnailSetting->rating == 1 && $latest_Series_search->rating != null)  <!-- Rating -->
+                                                            <span class="text-white">
+                                                                <i class="fa fa-star-half-o" aria-hidden="true"></i>
+                                                                {{ $latest_Series_search->rating }}
+                                                            </span>
+                                                        @endif
+
+                                                        @if($ThumbnailSetting->featured == 1 && $latest_Series_search->featured == 1)  <!-- Featured -->
+                                                            <span class="text-white">
+                                                                <i class="fa fa-flag" aria-hidden="true"></i>
+                                                            </span>
+                                                        @endif
+                                                    </div>
+                                                
+                                                    <div class="movie-time my-2">                   
+                                                        @if ( ($ThumbnailSetting->published_year == 1) && ( $latest_Series_search->year != null ) )  <!-- published_year -->
+                                                            <span class="text-white">
+                                                                <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                                {{ $latest_Series_search->year }}
+                                                            </span>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                @endif
         
                                 {{-- Audio --}}
         
@@ -316,7 +380,7 @@
         <div class="row">
             <div class="col-sm-12 page-height">
                 <div class="iq-main-header align-items-center justify-content-between">
-                    <h3 class="vid-title">Search Result of "{{  $search_value }}"</h3>                     
+                    <h3 class="vid-title">Highlight Search Result of "{{  $search_value }}"</h3>                     
                 </div>
 
                 <div class="iq-main-header align-items-center justify-content-between"> </div>
@@ -622,7 +686,7 @@
             <div class="col-sm-12 page-height">
 
                 <div class="iq-main-header align-items-center justify-content-between">
-                    <h3 class="vid-title">Highlight Search Result of "{{  $search_value }}"</h3>                     
+                    <h3 class="vid-title"> Search Result of "{{  $search_value }}"</h3>                     
                 </div>
 
                 <div class="iq-main-header align-items-center justify-content-between"> </div>
@@ -853,6 +917,70 @@
                                     </li>
                                 @endforeach
                             @endif
+
+                                {{-- Series --}}
+
+                                @if(isset($Series)) 
+                                    @foreach($Series as $Series_search)
+
+                                        <li class="slide-item col-sm-2 col-md-2 col-xs-12">
+                                            <a href="<?php echo URL::to('home') ?>">
+                                                <div class="block-images position-relative">
+                                                    <div class="img-box">
+                                                        <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$Series_search->image;  ?>" class="img-fluid" alt="">
+                                                    </div>
+
+                                                    <div class="block-description">
+                                                        <div class="hover-buttons">
+                                                            <a  href="{{  URL::to('play_series') .'/' .$Series_search->slug }} ">	
+                                                                <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.svg';  ?>">                                  
+                                                            </a>
+                                                        <div>
+                                                    </div>
+                                                </div> </div> </div>
+
+                                                <div class="">
+                                                    <div class="mt-2 d-flex justify-content-between p-0">
+                                                        @if($ThumbnailSetting->title == 1) 
+                                                            <h6><?php  echo (strlen($Series_search->title) > 17) ? substr($Series_search->title,0,18).'...' : $Series_search->title; ?></h6>
+                                                        @endif
+                                                    </div>
+
+                                                    <div class="movie-time my-2"> 
+                                                        @if($ThumbnailSetting->duration == 1) <!-- Duration -->
+                                                            <span class="text-white">
+                                                                    <i class="fa fa-clock-o"></i>
+                                                                    {{ gmdate('H:i:s', $Series_search->duration)}}
+                                                            </span>
+                                                        @endif
+
+                                                        @if($ThumbnailSetting->rating == 1 && $Series_search->rating != null)  <!-- Rating -->
+                                                            <span class="text-white">
+                                                                <i class="fa fa-star-half-o" aria-hidden="true"></i>
+                                                                {{ $Series_search->rating }}
+                                                            </span>
+                                                        @endif
+
+                                                        @if($ThumbnailSetting->featured == 1 && $Series_search->featured == 1)  <!-- Featured -->
+                                                            <span class="text-white">
+                                                                <i class="fa fa-flag" aria-hidden="true"></i>
+                                                            </span>
+                                                        @endif
+                                                    </div>
+                                                
+                                                    <div class="movie-time my-2">                   
+                                                        @if ( ($ThumbnailSetting->published_year == 1) && ( $Series_search->year != null ) )  <!-- published_year -->
+                                                            <span class="text-white">
+                                                                <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                                {{ $Series_search->year }}
+                                                            </span>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                @endif
 
                                 {{-- Audio --}}
 

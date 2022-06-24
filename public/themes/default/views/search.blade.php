@@ -324,6 +324,99 @@
                             </li>
                         @endforeach
                     @endif
+
+                    {{-- Series --}}
+
+                    @if(isset($latest_Series)) 
+                        @foreach($latest_Series as $latest_Series_search)
+                            <li class="slide-item col-sm-2 col-md-2 col-xs-12">
+                                <a href=" {{ URL::to('home') }} ">
+                                    <div class="block-images position-relative">
+                                        <div class="img-box">
+                                            <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_Series_search->image;  ?>" class="img-fluid" alt="">
+                                            
+                                                {{-- @if(!empty($latest_Series_search->ppv_price))
+                                                    <p class="p-tag1" >
+                                                        {{  $currency->symbol.' '.$latest_Series_search->ppv_price}}
+                                                    </p>
+                                                @elseif( !empty($latest_Series_search->global_ppv || !empty($latest_Series_search->global_ppv) && $latest_Series_search->ppv_price == null))
+                                                    <p class="p-tag1">
+                                                        {{ $latest_Series_search->global_ppv.' '.$currency->symbol }}
+                                                    </p>
+                                                @elseif($latest_Series_search->global_ppv == null && $latest_Series_search->ppv_price == null )
+                                                    <p class="p-tag" > 
+                                                        {{  "Free"}} 
+                                                    </p>
+                                                @endif --}}
+                                        </div>
+                            
+
+                                        <div class="block-description" style="bottom:-38px!important;">
+                                            @if($ThumbnailSetting->title == 1)        <!-- Title -->
+                                                <a  href="{{  URL::to('play_series') .'/' .$latest_Series_search->slug }} ">
+                                                    <h6><?php  echo (strlen($latest_Series_search->title) > 17) ? substr($latest_Series_search->title,0,18).'...' : $latest_Series_search->title; ?></h6>
+                                                </a>
+                                            @endif
+
+                                            <div class="movie-time d-flex align-items-center pt-1">
+
+                                                @if($ThumbnailSetting->duration == 1) <!-- Duration -->
+                                                    <span class="text-white"><i class="fa fa-clock-o"></i>
+                                                        {{ gmdate('H:i:s', $latest_Series_search->duration)}}
+                                                    </span>
+                                                @endif
+                                            </div>
+
+
+                                            @if(($ThumbnailSetting->published_year == 1) || ($ThumbnailSetting->rating == 1)) 
+                                                <div class="movie-time d-flex align-items-center pt-1">
+                                                    @if($ThumbnailSetting->rating == 1)   <!--Rating  -->
+                                                        <div class="badge badge-secondary p-1 mr-2">
+                                                            <span class="text-white">
+                                                                <i class="fa fa-star-half-o" aria-hidden="true"></i>
+                                                            {{ ($latest_Series_search->rating)}}
+                                                            </span>
+                                                        </div>
+                                                    @endif
+
+                                                    @if($ThumbnailSetting->published_year == 1)  <!-- published_year -->
+                                                        <div class="badge badge-secondary p-1 mr-2">
+                                                            <span class="text-white">
+                                                                <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                                {{ ($latest_Series_search->year) }}
+                                                            </span>
+                                                        </div>
+                                                    @endif
+
+                                                    @if($ThumbnailSetting->featured == 1 &&  $latest_Series_search->featured == 1)   <!-- Featured -->
+                                                        <div class="badge badge-secondary p-1 mr-2">
+                                                            <span class="text-white">
+                                                                <i class="fa fa-flag-o" aria-hidden="true"></i>
+                                                            </span>
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            @endif
+
+                                            <div class="hover-buttons">
+                                                <a  href="{{  URL::to('play_series') .'/' .$latest_Series_search->slug }} ">	
+                                                    <span class="text-white">
+                                                        <i class="fa fa-play mr-1" aria-hidden="true"></i>
+                                                            {{ "Watch Now" }}
+                                                    </span>
+                                                </a>
+                                            <div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button type="button" class="show-details-button" data-toggle="modal" data-target="#myModal<?= $latest_Series_search->id;?>">
+                                            <span class="text-center thumbarrow-sec"></span>
+                                        </button>
+                                    </div> </div>   </div>
+                                </a>
+                            </li>
+                        @endforeach
+                    @endif
         
                     {{-- Audio --}}
                     @if(isset($latest_audio)) 
@@ -1150,6 +1243,99 @@
                                     </div>
                                     <div>
                                         <button type="button" class="show-details-button" data-toggle="modal" data-target="#myModal<?= $episode_search->id;?>">
+                                            <span class="text-center thumbarrow-sec"></span>
+                                        </button>
+                                    </div> </div>   </div>
+                                </a>
+                            </li>
+                        @endforeach
+                    @endif
+
+                    {{-- Series --}}
+
+                    @if(isset($Series)) 
+                        @foreach($Series as $Series_search)
+                            <li class="slide-item col-sm-2 col-md-2 col-xs-12">
+                                <a href=" {{ URL::to('home') }} ">
+                                    <div class="block-images position-relative">
+                                        <div class="img-box">
+                                            <img src="<?php echo URL::to('/').'/public/uploads/images/'.$Series_search->image;  ?>" class="img-fluid" alt="">
+                                            
+                                                {{-- @if(!empty($Series_search->ppv_price))
+                                                    <p class="p-tag1" >
+                                                        {{  $currency->symbol.' '.$Series_search->ppv_price}}
+                                                    </p>
+                                                @elseif( !empty($Series_search->global_ppv || !empty($Series_search->global_ppv) && $Series_search->ppv_price == null))
+                                                    <p class="p-tag1">
+                                                        {{ $Series_search->global_ppv.' '.$currency->symbol }}
+                                                    </p>
+                                                @elseif($Series_search->global_ppv == null && $Series_search->ppv_price == null )
+                                                    <p class="p-tag" > 
+                                                        {{  "Free"}} 
+                                                    </p>
+                                                @endif --}}
+                                        </div>
+                            
+
+                                        <div class="block-description" style="bottom:-38px!important;">
+                                            @if($ThumbnailSetting->title == 1)        <!-- Title -->
+                                                <a  href="{{  URL::to('play_series') .'/' .$Series_search->slug }} ">
+                                                    <h6><?php  echo (strlen($Series_search->title) > 17) ? substr($Series_search->title,0,18).'...' : $Series_search->title; ?></h6>
+                                                </a>
+                                            @endif
+
+                                            <div class="movie-time d-flex align-items-center pt-1">
+
+                                                @if($ThumbnailSetting->duration == 1) <!-- Duration -->
+                                                    <span class="text-white"><i class="fa fa-clock-o"></i>
+                                                        {{ gmdate('H:i:s', $Series_search->duration)}}
+                                                    </span>
+                                                @endif
+                                            </div>
+
+
+                                            @if(($ThumbnailSetting->published_year == 1) || ($ThumbnailSetting->rating == 1)) 
+                                                <div class="movie-time d-flex align-items-center pt-1">
+                                                    @if($ThumbnailSetting->rating == 1)   <!--Rating  -->
+                                                        <div class="badge badge-secondary p-1 mr-2">
+                                                            <span class="text-white">
+                                                                <i class="fa fa-star-half-o" aria-hidden="true"></i>
+                                                            {{ ($Series_search->rating)}}
+                                                            </span>
+                                                        </div>
+                                                    @endif
+
+                                                    @if($ThumbnailSetting->published_year == 1)  <!-- published_year -->
+                                                        <div class="badge badge-secondary p-1 mr-2">
+                                                            <span class="text-white">
+                                                                <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                                {{ ($Series_search->year) }}
+                                                            </span>
+                                                        </div>
+                                                    @endif
+
+                                                    @if($ThumbnailSetting->featured == 1 &&  $Series_search->featured == 1)   <!-- Featured -->
+                                                        <div class="badge badge-secondary p-1 mr-2">
+                                                            <span class="text-white">
+                                                                <i class="fa fa-flag-o" aria-hidden="true"></i>
+                                                            </span>
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            @endif
+
+                                            <div class="hover-buttons">
+                                                <a  href="{{  URL::to('play_series') .'/' .$Series_search->slug }} ">	
+                                                    <span class="text-white">
+                                                        <i class="fa fa-play mr-1" aria-hidden="true"></i>
+                                                            {{ "Watch Now" }}
+                                                    </span>
+                                                </a>
+                                            <div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button type="button" class="show-details-button" data-toggle="modal" data-target="#myModal<?= $Series_search->id;?>">
                                             <span class="text-center thumbarrow-sec"></span>
                                         </button>
                                     </div> </div>   </div>

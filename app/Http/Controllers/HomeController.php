@@ -233,6 +233,7 @@ class HomeController extends Controller
                                         ->get() ,
                     
                     'series_sliders' => Series::where('active', '=', '1')
+                                        ->where('banner','=','1')
                                         ->latest()
                                         ->get() ,
                     
@@ -371,8 +372,9 @@ class HomeController extends Controller
                     ->get() ,
 
                 'series_sliders' => Series::where('active', '=', '1')
-                    ->latest()
-                     ->get() ,
+                                ->where('banner','=','1')
+                                ->latest()
+                                ->get() ,
 
                 'cnt_watching' => $cnt_watching,
                 'trendings' => $trending_movies,
@@ -1146,6 +1148,7 @@ class HomeController extends Controller
                                         ->simplePaginate(111111) ,
 
                         'series_sliders' => Series::where('active', '=', '1')
+                                        ->where('banner','=','1')
                                         ->latest()
                                         ->get() ,
                                         
@@ -2020,6 +2023,7 @@ class HomeController extends Controller
                                         ->simplePaginate(130000) ,
 
                     'series_sliders' => Series::where('active', '=', '1')
+                                        ->where('banner','=','1')
                                         ->latest()
                                         ->get() ,
                     
@@ -2270,10 +2274,14 @@ class HomeController extends Controller
                             ->where('active', '=', '1')
                             ->where('status', '=', '1')
                             ->limit('10')
-                            ->get();                
+                            ->get(); 
+                            
+            $Series = Series::where('search_tag', 'LIKE', '%' . $request->country . '%')
+                            ->where('active', '=', '1')
+                            ->limit('10')
+                            ->get();  
 
-
-            if (count($videos) > 0 || count($livestream) > 0 || count($Episode) > 0 || count($audio) > 0 && !empty($request->country))
+            if (count($videos) > 0 || count($livestream) > 0 || count($Episode) > 0 || count($audio) > 0 || count($Series) > 0 && !empty($request->country) )
             {
 
                 // videos Search
@@ -2336,7 +2344,23 @@ class HomeController extends Controller
                         $Episodes = null ;
                     }
 
-                return $output.$audios.$livestreams.$Episodes;
+                // Series Search
+
+                if(count($Series) > 0){
+
+                    $Series_search = '<ul class="list-group" style="display: block; position: relative; z-index: 999999;;margin-bottom: 0;border-radius: 0;">';
+                    $Series_search .= "<h6 style='margin: 0;text-align: center;padding: 10px;'> Live Videos</h6>";
+                    foreach ($Series as $row)
+                    {
+                        $Series_search .= '<li class="list-group-item">
+                        <img width="35px" height="35px" src="' . URL::to('/') . '/public/uploads/images/' . $row->image . '"><a href="' . URL::to('/') . '/play_series' .'/'. $row->slug . '" style="font-color: #c61f1f00;color: #000;text-decoration: none;">' . $row->title . '</a></li>';
+                    }
+                }
+                else{
+                    $Series_search = null ;
+                }
+
+                return $output.$audios.$livestreams.$Episodes.$Series_search;
             }
             else
             {
@@ -2406,7 +2430,7 @@ class HomeController extends Controller
                             ->where('status', '=', '1')
                             ->where('draft', '=', '1')
                             ->orderBy('created_at', 'desc')
-                            ->take(1)
+                            ->take(10)
                             ->get();
 
 
@@ -2428,9 +2452,15 @@ class HomeController extends Controller
         $latest_Episode = Episode::where('search_tags', 'LIKE', '%' . $search_value . '%')
                                 ->where('active', '=', '1')
                                 ->where('status', '=', '1')
-                                ->limit('20')
+                                ->limit('10')
                                 ->latest()
                                 ->get();   
+
+        $latest_Series = Series::where('search_tag', 'LIKE', '%' . $search_value . '%')
+                                ->where('active', '=', '1')
+                                ->limit('10')
+                                ->latest()
+                                ->get();  
     // Most watched videos
 
         $Most_view_videos = RecentView::Join('videos','videos.id','=','recent_views.video_id')
@@ -2468,7 +2498,6 @@ class HomeController extends Controller
                             ->latest('episodes.created_at')
                             ->groupBy('episode_id')
                             ->get();
-
                         
         //  All videos 
 
@@ -2510,6 +2539,12 @@ class HomeController extends Controller
                             ->limit('20')
                             ->latest()
                             ->get();    
+        
+        $Series = Series::where('search_tag', 'LIKE', '%' . $search_value . '%')
+                            ->where('active', '=', '1')
+                            ->limit('20')
+                            ->latest()
+                            ->get();  
 
 
         $data = array(
@@ -2521,10 +2556,12 @@ class HomeController extends Controller
             'audio' => $audio,
             'livestreams' => $livestreams,
             'Episode' => $Episode,
+            'Series' => $Series,
             'latest_videos' => $latest_videos,
             'latest_livestreams' => $latest_livestreams,
             'latest_audio' => $latest_audio,
             'latest_Episode'=> $latest_Episode,
+            'latest_Series'=> $latest_Series,
             'Most_view_videos' => $Most_view_videos,
             'Most_view_audios' => $Most_view_audios,
             'Most_view_live' => $Most_view_live,
