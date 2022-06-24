@@ -1310,8 +1310,10 @@ if(!empty($artistsdata)){
         if(!empty($data['details'])){
             $video->details = $data['details'];
         }
-              if(!empty($data['details'])){
-            $video->details = $data['details'];
+        if(!empty($data['details'])){
+            $details = $data['details'];
+        }else{
+            $details = null;
         }
 
         if($request->pdf_file != null){
@@ -1416,6 +1418,7 @@ if(!empty($artistsdata)){
         //  $video->active=1;
         $video->player_image = $player_image ;
         $video->year = $year ;
+        $video->details = $details ;
         $video->m3u8_url=$m3u8_url ;
         $video->mp4_url=$mp4_url ;
         $video->embed_code=$embed_code ;
