@@ -2376,6 +2376,27 @@ class HomeController extends Controller
     {
         $search_value = $request['search'];
 
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+        $userIp = $geoip->getip();
+        $countryName = $geoip->getCountry();
+        $regionName = $geoip->getregion();
+        $cityName = $geoip->getcity();
+        
+        $getfeching = Geofencing::first();
+
+        $block_videos = BlockVideo::where('country_id', $countryName)->get();
+        if (!$block_videos->isEmpty())
+        {
+            foreach ($block_videos as $block_video)
+            {
+                $blockvideos[] = $block_video->video_id;
+            }
+        }
+        else
+        {
+            $blockvideos[] = '';
+        }
+
 
         // $ppv_videos_count = PpvVideo::where('title', 'LIKE', '%' . $search_value . '%')->count();
 
@@ -2430,8 +2451,12 @@ class HomeController extends Controller
                             ->where('status', '=', '1')
                             ->where('draft', '=', '1')
                             ->orderBy('created_at', 'desc')
-                            ->take(10)
-                            ->get();
+                            ->take(10);
+                            if ($getfeching != null && $getfeching->geofencing == 'ON')
+                            {
+                                $latest_videos = $latest_videos->whereNotIn('videos.id', $blockvideos);
+                            }
+                            $latest_videos = $latest_videos->get();
 
 
         $latest_livestreams = LiveStream::where('search_tags', 'LIKE', '%' . $search_value . '%')
@@ -2470,8 +2495,13 @@ class HomeController extends Controller
                             ->where('videos.draft', '=', '1')
                             ->groupBy('video_id')
                             ->limit('10')
-                            ->latest('videos.created_at')
-                            ->get();
+                            ->latest('videos.created_at');
+                            if ($getfeching != null && $getfeching->geofencing == 'ON')
+                            {
+                                $Most_view_videos = $Most_view_videos->whereNotIn('videos.id', $blockvideos);
+                            }
+                            $Most_view_videos = $Most_view_videos->get();
+                          
 
         $Most_view_audios = RecentView::Join('audio','audio.id','=','recent_views.audio_id')
                             ->where('audio.search_tags', 'LIKE', '%' . $search_value . '%')
@@ -2498,7 +2528,17 @@ class HomeController extends Controller
                             ->latest('episodes.created_at')
                             ->groupBy('episode_id')
                             ->get();
-                        
+
+        $Most_view_Series  = RecentView::select('series.*')
+                            ->Join('episodes','episodes.id','=','recent_views.episode_id')
+                            ->Join('series','series.id','=','episodes.series_id')
+                            ->where('series.search_tag', 'LIKE', '%' . $search_value . '%')
+                            ->where('series.active', '=', '1')
+                            ->limit('20')
+                            ->latest('series.created_at')
+                            ->groupBy('series.id')
+                            ->get();
+
         //  All videos 
 
         $videos_count = Video::where('search_tags', 'LIKE', '%' . $search_value . '%')->count();
@@ -2509,8 +2549,12 @@ class HomeController extends Controller
                             ->where('status', '=', '1')
                             ->where('draft', '=', '1')
                             ->orderBy('created_at', 'desc')
-                            ->take(20)
-                            ->get();
+                            ->take(20);
+                            if ($getfeching != null && $getfeching->geofencing == 'ON')
+                            {
+                                $videos = $videos->whereNotIn('videos.id', $blockvideos);
+                            }
+                            $videos = $videos->get();
         }
         else
         {
@@ -2566,6 +2610,7 @@ class HomeController extends Controller
             'Most_view_audios' => $Most_view_audios,
             'Most_view_live' => $Most_view_live,
             'Most_view_episode' => $Most_view_episode,
+            'Most_view_Series' => $Most_view_Series,
         );
 
         return Theme::view('search', $data);
