@@ -161,12 +161,10 @@ class AdminVideosController extends Controller
         <tr>
         <td>'.$row->title.'</td>
         <td>'.$row->rating.'</td>
-        <td>'.$row->categories->name.'</td>
         <td>'.$username.'</td>
-        <td class="'.$class.'" style="font-weight:bold;">'. $active.'</td>
         <td>'.$row->type.'</td>
-         <td>'.$row->access.'</td>
-        <td>'.@$row->languages->name.'</td>
+        <td>'.$row->access.'</td>
+        <td class="'.$class.'" style="font-weight:bold;">'. $active.'</td>
          <td>'.$row->views.'</td>
          <td> '."<a class='iq-bg-warning' data-toggle='tooltip' data-placement='top' title='' data-original-title='View' href=' $slug/$row->slug'><i class='lar la-eye'></i>
         </a>".'

@@ -326,6 +326,7 @@ class ChannelController extends Controller
            }else{
             $lang_name = "No Languages Added";
            }
+          //  dd($lang_name);
 
            $artists_name = Videoartist::select('artists.artist_name as name')
            ->Join('artists', 'video_artists.artist_id', '=', 'artists.id')
@@ -342,7 +343,6 @@ class ChannelController extends Controller
             $artistsname = "No Languages Added";
            }
 
-
            $subtitles_name = MoviesSubtitles::select('subtitles.language as language')
            ->Join('subtitles', 'movies_subtitles.shortcode', '=', 'subtitles.short_code')
            ->where('movies_subtitles.movie_id',$vid)
@@ -354,9 +354,8 @@ class ChannelController extends Controller
             }
               $subtitles = implode(', ', $subtitlesname);
            }else{
-            $subtitles = "No Genres Added";
+            $subtitles = "No Subtitles Added";
            }
-          //  dd($subtitles);
 
            $category_id = CategoryVideo::where('video_id', $vid)->get();
            $categoryvideo = CategoryVideo::where('video_id', $vid)->pluck('category_id')->toArray();
