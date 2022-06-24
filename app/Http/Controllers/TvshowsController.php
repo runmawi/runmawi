@@ -172,12 +172,10 @@ class TvshowsController extends Controller
    {
     $Theme = HomeSetting::pluck('theme_choosen')->first();
     Theme::uses( $Theme );
-
    	$settings = Setting::first();
-       if(Auth::guest() && $settings->access_free == 0):
-        return Redirect::to('/login');
-        endif;
-        
+        if(Auth::guest() && $settings->access_free == 0):
+            return Redirect::to('/login');    
+            endif;
         $episode = Episode::where('slug','=',$episode_name)->orderBy('id', 'DESC')->first();    
         // dd($episode_name);
         $id = $episode->id;
@@ -331,8 +329,12 @@ class TvshowsController extends Controller
                 'pages' => Page::where('active', '=', 1)->get(),
                 );
 
+            if(Auth::guest() && $settings->access_free == 1){
+                return Theme::view('beforloginepisode', $data);
+            }else {
             return Theme::view('episode', $data);
-            }else{
+            }
+        }else{
                 // dd('exit');
                 $data = array(
                     'currency' => $currency,
@@ -355,8 +357,12 @@ class TvshowsController extends Controller
                     'pages' => Page::where('active', '=', 1)->get(),
                     );
 
-            return Theme::view('episode', $data);
-         // return Redirect::to('/tv-shows')->with(array('message' => 'Sorry, To Watch series You have to purchase.', 'note_type' => 'error'));
+                    if(Auth::guest() && $settings->access_free == 1){
+                        return Theme::view('beforloginepisode', $data);
+                    }else {
+                    return Theme::view('episode', $data);
+                    }
+             // return Redirect::to('/tv-shows')->with(array('message' => 'Sorry, To Watch series You have to purchase.', 'note_type' => 'error'));
 
             }
         } else {
@@ -536,7 +542,11 @@ class TvshowsController extends Controller
                  'series_categories' => Genre::all(),
                  'pages' => Page::where('active', '=', 1)->get(),
                  );
-             return View::make('episode', $data);
+                 if(Auth::guest() && $settings->access_free == 1){
+                    return Theme::view('beforloginepisode', $data);
+                }else {
+                return Theme::view('episode', $data);
+                }
                 }else{
                     // return Redirect::to('/login');
                     return Redirect::to('/tv-shows')->with(array('message' => 'Sorry, To Watch series You have to purchase.', 'note_type' => 'error'));
