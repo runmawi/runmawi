@@ -2481,7 +2481,6 @@ class HomeController extends Controller
             'search_value' => $search_value,
             'currency' => CurrencySetting::first() ,
             'latest_videos' => $latest_videos,
-            'Most_view_videos' => $Most_view_videos,
             'ThumbnailSetting' =>   ThumbnailSetting::first(),
             'audio' => $audio,
             'livestreams' => $livestreams,
@@ -2490,6 +2489,10 @@ class HomeController extends Controller
             'latest_livestreams' => $latest_livestreams,
             'latest_audio' => $latest_audio,
             'latest_Episode'=> $latest_Episode,
+            'Most_view_videos' => $Most_view_videos,
+            'Most_view_audios' => $Most_view_audios,
+            'Most_view_live' => $Most_view_live,
+            'Most_view_episode' => $Most_view_episode,
         );
 
         return Theme::view('search', $data);
