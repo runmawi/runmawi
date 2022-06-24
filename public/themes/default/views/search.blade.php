@@ -834,6 +834,98 @@
                                 </li>
                             @endforeach
                         @endif
+
+                        {{-- Series--}}
+                        @if(isset($Most_view_Series)) 
+                            @foreach($Most_view_Series as $Mv_series_search)
+                                <li class="slide-item col-sm-2 col-md-2 col-xs-12">
+                                    <a href=" {{ URL::to('home') }} ">
+                                        <div class="block-images position-relative">
+                                            <div class="img-box">
+                                                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$Mv_series_search->image;  ?>" class="img-fluid" alt="">
+                                                
+                                                    {{-- @if(!empty($Mv_series_search->ppv_price))
+                                                        <p class="p-tag1" >
+                                                            {{  $currency->symbol.' '.$Mv_series_search->ppv_price}}
+                                                        </p>
+                                                    @elseif( !empty($Mv_series_search->global_ppv || !empty($Mv_series_search->global_ppv) && $Mv_series_search->ppv_price == null))
+                                                        <p class="p-tag1">
+                                                            {{ $Mv_series_search->global_ppv.' '.$currency->symbol }}
+                                                        </p>
+                                                    @elseif($Mv_series_search->global_ppv == null && $Mv_series_search->ppv_price == null )
+                                                        <p class="p-tag" > 
+                                                            {{  "Free"}} 
+                                                        </p>
+                                                    @endif --}}
+                                            </div>
+                                
+
+                                            <div class="block-description" style="bottom:-38px!important;">
+                                                @if($ThumbnailSetting->title == 1)        <!-- Title -->
+                                                    <a  href="{{  URL::to('play_series') .'/' .$Mv_series_search->slug }} ">
+                                                        <h6><?php  echo (strlen($Mv_series_search->title) > 17) ? substr($Mv_series_search->title,0,18).'...' : $Mv_series_search->title; ?></h6>
+                                                    </a>
+                                                @endif
+
+                                                <div class="movie-time d-flex align-items-center pt-1">
+
+                                                    @if($ThumbnailSetting->duration == 1) <!-- Duration -->
+                                                        <span class="text-white"><i class="fa fa-clock-o"></i>
+                                                            {{ gmdate('H:i:s', $Mv_series_search->duration)}}
+                                                        </span>
+                                                    @endif
+                                                </div>
+
+
+                                                @if(($ThumbnailSetting->published_year == 1) || ($ThumbnailSetting->rating == 1)) 
+                                                    <div class="movie-time d-flex align-items-center pt-1">
+                                                        @if($ThumbnailSetting->rating == 1)   <!--Rating  -->
+                                                            <div class="badge badge-secondary p-1 mr-2">
+                                                                <span class="text-white">
+                                                                    <i class="fa fa-star-half-o" aria-hidden="true"></i>
+                                                                {{ ($Mv_series_search->rating)}}
+                                                                </span>
+                                                            </div>
+                                                        @endif
+
+                                                        @if($ThumbnailSetting->published_year == 1)  <!-- published_year -->
+                                                            <div class="badge badge-secondary p-1 mr-2">
+                                                                <span class="text-white">
+                                                                    <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                                    {{ ($Mv_series_search->year) }}
+                                                                </span>
+                                                            </div>
+                                                        @endif
+
+                                                        @if($ThumbnailSetting->featured == 1 &&  $Mv_series_search->featured == 1)   <!-- Featured -->
+                                                            <div class="badge badge-secondary p-1 mr-2">
+                                                                <span class="text-white">
+                                                                    <i class="fa fa-flag-o" aria-hidden="true"></i>
+                                                                </span>
+                                                            </div>
+                                                        @endif
+                                                    </div>
+                                                @endif
+
+                                                <div class="hover-buttons">
+                                                    <a  href="{{  URL::to('play_series') .'/' .$Mv_series_search->slug }} ">	
+                                                        <span class="text-white">
+                                                            <i class="fa fa-play mr-1" aria-hidden="true"></i>
+                                                                {{ "Watch Now" }}
+                                                        </span>
+                                                    </a>
+                                                <div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <button type="button" class="show-details-button" data-toggle="modal" data-target="#myModal<?= $Mv_series_search->id;?>">
+                                                <span class="text-center thumbarrow-sec"></span>
+                                            </button>
+                                        </div> </div>   </div>
+                                    </a>
+                                </li>
+                            @endforeach
+                        @endif  
             
                         {{-- Audio --}}
                         @if(isset($Most_view_audios)) 

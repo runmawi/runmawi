@@ -634,6 +634,76 @@
                                     </li>
                                 @endforeach
                             @endif
+
+                            {{-- Series --}}
+                            
+                            @if(isset($Most_view_Series)) 
+                                @foreach($Most_view_Series as $Mv_series_search)
+
+                                    <li class="slide-item col-sm-2 col-md-2 col-xs-12">
+                                        <a href="<?php echo URL::to('home') ?>">
+                                            <div class="block-images position-relative">
+                                                <div class="img-box">
+                                                    <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$Mv_series_search->image;  ?>" class="img-fluid" alt="">
+                                                </div>
+
+                                                <div class="block-description">
+                                                    <div class="hover-buttons">
+                                                        <a  href="{{  URL::to('play_series') .'/' .$Mv_series_search->slug }} ">	
+                                                            <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.svg';  ?>">                                  
+                                                        </a>
+                                                    <div>
+                                                </div>
+                                            </div> </div> </div>
+
+                                            <div class="">
+                                                <div class="mt-2 d-flex justify-content-between p-0">
+                                                    @if($ThumbnailSetting->title == 1) 
+                                                        <h6><?php  echo (strlen($Mv_series_search->title) > 17) ? substr($Mv_series_search->title,0,18).'...' : $Mv_series_search->title; ?></h6>
+                                                    @endif
+
+                                                    @if($ThumbnailSetting->age == 1)
+                                                        <div class="badge badge-secondary">
+                                                            {{ $Mv_series_search->age_restrict.' '.'+' }}
+                                                        </div>
+                                                    @endif
+                                                </div>
+
+                                                <div class="movie-time my-2"> 
+                                                    @if($ThumbnailSetting->duration == 1) <!-- Duration -->
+                                                        <span class="text-white">
+                                                                <i class="fa fa-clock-o"></i>
+                                                                {{ gmdate('H:i:s', $Mv_series_search->duration)}}
+                                                        </span>
+                                                    @endif
+
+                                                    @if($ThumbnailSetting->rating == 1 && $Mv_series_search->rating != null)  <!-- Rating -->
+                                                        <span class="text-white">
+                                                            <i class="fa fa-star-half-o" aria-hidden="true"></i>
+                                                            {{ $Mv_series_search->rating }}
+                                                        </span>
+                                                    @endif
+
+                                                    @if($ThumbnailSetting->featured == 1 && $Mv_series_search->featured == 1)  <!-- Featured -->
+                                                        <span class="text-white">
+                                                            <i class="fa fa-flag" aria-hidden="true"></i>
+                                                        </span>
+                                                    @endif
+                                                </div>
+                                            
+                                                <div class="movie-time my-2">                   
+                                                    @if ( ($ThumbnailSetting->published_year == 1) && ( $Mv_series_search->year != null ) )  <!-- published_year -->
+                                                        <span class="text-white">
+                                                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                            {{ $Mv_series_search->year }}
+                                                        </span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                @endforeach
+                            @endif
         
                             {{-- Audios --}}
                             @if(isset($Most_view_audios)) 
@@ -1021,7 +1091,7 @@
                                         </a>
                                     </li>
                                 @endforeach
-                @endif
+                            @endif
 
                             {{-- Audios --}}
                             @if(isset($audio)) 
