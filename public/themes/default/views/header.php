@@ -267,6 +267,49 @@ input:checked + .sliderk:before {
         body.light-theme .slick-nav i{
              color: <?php echo GetLightText(); ?>!important;
         }
+        .checkbox {
+  opacity: 0;
+  position: absolute;
+}
+
+.label {
+  width: 47px;
+  height: 17px;
+  background-color:#111;
+  display: flex;
+  border-radius:50px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px;
+  position: relative;
+  transform: scale(1.5);
+}
+
+.ball {
+  width: 15px;
+  height: 15px;
+  background-color: white;
+  position: absolute;
+  top: 1px;
+  left: 4px;
+  border-radius: 50%!important;
+  transition: transform 0.2s linear;
+}
+
+/*  target the elemenent after the label*/
+.checkbox:checked + .label .ball{
+  transform: translateX(24px);
+}
+
+.fa-moon {
+  color: pink;
+    font-size: 10px;
+}
+
+.fa-sun {
+  color: yellow;
+    font-size: 10px
+}
     </style>
      
    <body>
@@ -335,7 +378,7 @@ input:checked + .sliderk:before {
                                    
                                           <li class="dropdown menu-item">
                                             <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
-                                              <?php echo __($menu->name);?>    <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                                              <?php echo __($menu->name);?>  <i class="ri-arrow-down-s-line"></i>
                                             </a>
                                        
 
@@ -359,7 +402,7 @@ input:checked + .sliderk:before {
                                         ?>
                                           <li class="dropdown menu-item">
                                             <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
-                                              <?php echo __($menu->name);?> <!--<i class="fa fa-angle-down"></i>-->    <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                                              <?php echo __($menu->name);?> <!--<i class="fa fa-angle-down"></i>-->    <i class="ri-arrow-down-s-line"></i>
                                             </a>
                                             <ul class="dropdown-menu categ-head">
                                               <?php foreach ( $languages as $language){ ?>
@@ -571,11 +614,16 @@ input:checked + .sliderk:before {
                                    <div class="iq-sub-dropdown iq-user-dropdown">
                                     <div class="iq-card shadow-none m-0">
                                        <div class="iq-card-body p-0 pl-3 pr-3">
+                                           
+                                           
+                                           
                                                                           <!-- dark mode -->
-                                           <div class="toggle mt-3 text-right">
+                                           <div class="toggle  text-right">
                          <label class="switch toggle mt-3">
+                             <i class="fa fa-moon-o" aria-hidden="true"></i>
   <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
   <span class="sliderk round"></span>
+
                                                </label></div>
                                           <a href="<?php echo  URL::to('myprofile') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
@@ -706,12 +754,16 @@ input:checked + .sliderk:before {
                                                <!-- <div class="toggle mt-3 text-right">
   <input type="checkbox" id="toggle" />
   <label for="toggle"></label>
-</div> -->                                                  <!-- dark mode -->
-                           <div class="toggle mt-3 text-right">
+</div> -->    
+                                                   
+                                          
+                                               <!-- dark mode -->
+                           <div class="toggle  text-right">
                               <label class="switch toggle mt-3">
                                  <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?> 
                                  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
                                  <span class="sliderk round"></span>
+                                  
                               </label>
                            </div>
                                            </a>
