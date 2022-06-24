@@ -99,6 +99,7 @@ use App\OrderHomeSetting;
 use App\MobileHomeSetting;
 use App\SiteTheme;
 use App\PlayerAnalytic;
+use App\SystemSetting;
 
 
 class ApiAuthController extends Controller
@@ -6767,6 +6768,25 @@ public function Adstatus_upate(Request $request)
     );
   }
 
+
+    return response()->json($response, 200);
+  }
+
+  public function SocialSetting(Request $request)
+  {
+
+    $socialsetting = SystemSetting::first();
+
+    if($socialsetting != null){
+        $socialsetting =  $socialsetting ;
+    }else{
+        $socialsetting =  'No data' ;
+    }
+    $response = array(
+      'status' => 'true' ,
+      'socialsetting' => $socialsetting,
+     
+    );
 
     return response()->json($response, 200);
   }

@@ -161,12 +161,10 @@ class AdminVideosController extends Controller
         <tr>
         <td>'.$row->title.'</td>
         <td>'.$row->rating.'</td>
-        <td>'.$row->categories->name.'</td>
         <td>'.$username.'</td>
-        <td class="'.$class.'" style="font-weight:bold;">'. $active.'</td>
         <td>'.$row->type.'</td>
-         <td>'.$row->access.'</td>
-        <td>'.@$row->languages->name.'</td>
+        <td>'.$row->access.'</td>
+        <td class="'.$class.'" style="font-weight:bold;">'. $active.'</td>
          <td>'.$row->views.'</td>
          <td> '."<a class='iq-bg-warning' data-toggle='tooltip' data-placement='top' title='' data-original-title='View' href=' $slug/$row->slug'><i class='lar la-eye'></i>
         </a>".'
@@ -1310,8 +1308,10 @@ if(!empty($artistsdata)){
         if(!empty($data['details'])){
             $video->details = $data['details'];
         }
-              if(!empty($data['details'])){
-            $video->details = $data['details'];
+        if(!empty($data['details'])){
+            $details = $data['details'];
+        }else{
+            $details = null;
         }
 
         if($request->pdf_file != null){
@@ -1416,6 +1416,7 @@ if(!empty($artistsdata)){
         //  $video->active=1;
         $video->player_image = $player_image ;
         $video->year = $year ;
+        $video->details = $details ;
         $video->m3u8_url=$m3u8_url ;
         $video->mp4_url=$mp4_url ;
         $video->embed_code=$embed_code ;
