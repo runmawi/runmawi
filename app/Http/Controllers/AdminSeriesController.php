@@ -176,6 +176,7 @@ class AdminSeriesController extends Controller
           $validatedData = $request->validate([
                 'title' => ['required', 'string'],
             ]);
+
         
          /*Slug*/
         $data = $request->all();
@@ -274,7 +275,7 @@ class AdminSeriesController extends Controller
         $series->slug = $slug;
         $series->ppv_status = $ppv_status;
         $series->banner = empty($data['banner']) ? 0 : 1;
-        $series->tags = $request->tags;
+        $series->search_tag =$data['search_tag'];
         $series->save();  
 
 
@@ -447,7 +448,6 @@ class AdminSeriesController extends Controller
             $path = public_path().'/uploads/videos/';
             $image_path = public_path().'/uploads/images/';
                $player_image = (isset($data['player_image'])) ? $data['player_image'] : '';
-        //    dd($data['player_image']);
 
                if(!empty($player_image) && $data['player_image'] != 'validate'){
                    //$data['image'] = ImageHandler::uploadImage($data['image'], 'images');
@@ -495,12 +495,8 @@ class AdminSeriesController extends Controller
                 $update_url = Series::find($resolution_data['series_id']);
 
                 $update_url->mp4_url = $data['mp4_url'];
-
-
+                $update_url->search_tag =$data['search_tag'];
                 $update_url->save();  
-
-
-     
         }
 
         
