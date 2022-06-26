@@ -215,19 +215,30 @@ class HomeController extends Controller
                 $currency = CurrencySetting::first();
                 $data = array(
                     'currency' => $currency,
+
                     'videos' => Video::where('active', '=', '1')->where('status', '=', '1')
-                    ->where('draft', '=', '1')
-                        ->orderBy('created_at', 'DESC')
-                        ->simplePaginate($this->videos_per_page) ,
+                                        ->where('draft', '=', '1')
+                                        ->orderBy('created_at', 'DESC')
+                                        ->simplePaginate($this->videos_per_page) ,
+
                     'video_banners' => Video::where('active', '=', '1')
-                    ->where('draft', '=', '1')
-                        ->where('status', '=', '1')
-                        ->where('banner', '=', '1')
-                        ->orderBy('created_at', 'DESC')
-                        ->simplePaginate(130000) ,
+                                        ->where('draft', '=', '1')
+                                        ->where('status', '=', '1')
+                                        ->where('banner', '=', '1')
+                                        ->orderBy('created_at', 'DESC')
+                                        ->simplePaginate(130000) ,
+
                     'sliders' => Slider::where('active', '=', '1')
-                        ->orderBy('order_position', 'ASC')
-                        ->get() ,
+                                        ->orderBy('order_position', 'ASC')
+                                        ->get() ,
+                    
+                    'series_sliders' => Series::where('active', '=', '1')
+                                        ->where('banner','=','1')
+                                        ->latest()
+                                        ->get() ,
+                    
+                    
+
                     'cnt_watching' => $cnt_watching,
                     'trendings' => $trending_movies,
                     'latest_videos' => $latest_videos,
@@ -343,19 +354,28 @@ class HomeController extends Controller
             $currency = CurrencySetting::first();
             $data = array(
                 'currency' => $currency,
+
                 'videos' => Video::where('active', '=', '1')->where('status', '=', '1')
-                ->where('draft', '=', '1')
-                    ->orderBy('created_at', 'DESC')
-                    ->simplePaginate($this->videos_per_page) ,
+                                ->where('draft', '=', '1')
+                                ->orderBy('created_at', 'DESC')
+                                ->simplePaginate($this->videos_per_page) ,
+
                 'video_banners' => Video::where('active', '=', '1')
-                ->where('draft', '=', '1')
-                    ->where('status', '=', '1')
-                    ->where('banner', '=', '1')
-                    ->orderBy('created_at', 'DESC')
-                    ->simplePaginate(130000) ,
+                                    ->where('draft', '=', '1')
+                                    ->where('status', '=', '1')
+                                    ->where('banner', '=', '1')
+                                    ->orderBy('created_at', 'DESC')
+                                    ->simplePaginate(130000) ,
+
                 'sliders' => Slider::where('active', '=', '1')
                     ->orderBy('order_position', 'ASC')
                     ->get() ,
+
+                'series_sliders' => Series::where('active', '=', '1')
+                                ->where('banner','=','1')
+                                ->latest()
+                                ->get() ,
+
                 'cnt_watching' => $cnt_watching,
                 'trendings' => $trending_movies,
                 'latest_videos' => $latest_videos,
@@ -1105,22 +1125,33 @@ class HomeController extends Controller
                     $data = array(
                         'currency' => $currency,
                         'videos' => Video::where('active', '=', '1')->where('status', '=', '1')
-                        ->where('draft', '=', '1')
-                            ->orderBy('created_at', 'DESC')
-                            ->simplePaginate($this->videos_per_page) ,
+                                            ->where('draft', '=', '1')
+                                             ->orderBy('created_at', 'DESC')
+                                            ->simplePaginate($this->videos_per_page) ,
+
                         //  'banner' => Video::where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate(3),
+                       
                         'video_banners' => Video::where('active', '=', '1')
-                        ->where('draft', '=', '1')
-                            ->where('status', '=', '1')
-                            ->where('banner', '=', '1')
-                            ->orderBy('created_at', 'DESC')
-                            ->simplePaginate(130000) ,
+                                            ->where('draft', '=', '1')
+                                            ->where('status', '=', '1')
+                                            ->where('banner', '=', '1')
+                                            ->orderBy('created_at', 'DESC')
+                                            ->simplePaginate(130000) ,
+
                         'sliders' => Slider::where('active', '=', '1')
-                            ->orderBy('order_position', 'ASC')
-                            ->get() ,
+                                            ->orderBy('order_position', 'ASC')
+                                            ->get() ,
+    
+
                         'live_banner' => LiveStream::where('banner', '=', '1')
-                            ->orderBy('created_at', 'DESC')
-                            ->simplePaginate(111111) ,
+                                        ->orderBy('created_at', 'DESC')
+                                        ->simplePaginate(111111) ,
+
+                        'series_sliders' => Series::where('active', '=', '1')
+                                        ->where('banner','=','1')
+                                        ->latest()
+                                        ->get() ,
+                                        
                         'cnt_watching' => $cnt_watching,
                         'trendings' => $trending_movies,
                         'latest_videos' => $latest_videos,
@@ -1978,23 +2009,32 @@ class HomeController extends Controller
                 //  dd($currency);
                 $data = array(
                     'currency' => $currency,
+
                     'videos' => Video::where('active', '=', '1')->where('status', '=', '1')
-                    ->where('draft', '=', '1')
-                        ->orderBy('created_at', 'DESC')
-                        ->simplePaginate($this->videos_per_page) ,
-                    //  'video_banners' => Video::where('banner', '=', '1')->where('active', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'DESC')->simplePaginate(3),
+                                    ->where('draft', '=', '1')
+                                    ->orderBy('created_at', 'DESC')
+                                    ->simplePaginate($this->videos_per_page) ,
+
                     'video_banners' => Video::where('active', '=', '1')
-                    ->where('draft', '=', '1')
-                        ->where('status', '=', '1')
-                        ->where('banner', '=', '1')
-                        ->orderBy('created_at', 'DESC')
-                        ->simplePaginate(130000) ,
-                    'sliders' => Slider::where('active', '=', '1')
-                        ->orderBy('order_position', 'ASC')
-                        ->get() ,
+                                        ->where('draft', '=', '1')
+                                        ->where('status', '=', '1')
+                                        ->where('banner', '=', '1')
+                                        ->orderBy('created_at', 'DESC')
+                                        ->simplePaginate(130000) ,
+
+                    'series_sliders' => Series::where('active', '=', '1')
+                                        ->where('banner','=','1')
+                                        ->latest()
+                                        ->get() ,
+                    
                     'live_banner' => LiveStream::where('banner', '=', '1')
-                        ->orderBy('created_at', 'DESC')
-                        ->simplePaginate(111111) ,
+                                        ->orderBy('created_at', 'DESC')
+                                        ->simplePaginate(111111) ,
+
+                    'sliders' => Slider::where('active', '=', '1')
+                                        ->orderBy('order_position', 'ASC')
+                                        ->get() ,
+
                     'cnt_watching' => $cnt_watching,
                     'trendings' => $trending_movies,
                     'latest_videos' => $latest_videos,
@@ -2207,6 +2247,29 @@ class HomeController extends Controller
 
     public function search(Request $request)
     {
+        $search_value = $request['search'];
+
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+        $userIp = $geoip->getip();
+        $countryName = $geoip->getCountry();
+        $regionName = $geoip->getregion();
+        $cityName = $geoip->getcity();
+        
+        $getfeching = Geofencing::first();
+
+        $block_videos = BlockVideo::where('country_id', $countryName)->get();
+        if (!$block_videos->isEmpty())
+        {
+            foreach ($block_videos as $block_video)
+            {
+                $blockvideos[] = $block_video->video_id;
+            }
+        }
+        else
+        {
+            $blockvideos[] = '';
+        }
+
 
         if ($request->ajax())
         {
@@ -2215,8 +2278,12 @@ class HomeController extends Controller
                             ->where('active', '=', '1')
                             ->where('status', '=', '1')
                             ->where('draft', '=', '1')
-                            ->limit('10')
-                            ->get();
+                            ->limit('10');
+                            if ($getfeching != null && $getfeching->geofencing == 'ON')
+                            {
+                                $videos = $videos->whereNotIn('videos.id', $blockvideos);
+                            }
+                           $videos = $videos ->get();
 
             $livestream = LiveStream::where('search_tags', 'LIKE', '%' . $request->country . '%')
                             ->where('active', '=', '1')
@@ -2234,10 +2301,14 @@ class HomeController extends Controller
                             ->where('active', '=', '1')
                             ->where('status', '=', '1')
                             ->limit('10')
-                            ->get();                
+                            ->get(); 
+                            
+            $Series = Series::where('search_tag', 'LIKE', '%' . $request->country . '%')
+                            ->where('active', '=', '1')
+                            ->limit('10')
+                            ->get();  
 
-
-            if (count($videos) > 0 || count($livestream) > 0 || count($Episode) > 0 || count($audio) > 0 && !empty($request->country))
+            if (count($videos) > 0 || count($livestream) > 0 || count($Episode) > 0 || count($audio) > 0 || count($Series) > 0 && !empty($request->country) )
             {
 
                 // videos Search
@@ -2300,7 +2371,23 @@ class HomeController extends Controller
                         $Episodes = null ;
                     }
 
-                return $output.$audios.$livestreams.$Episodes;
+                // Series Search
+
+                if(count($Series) > 0){
+
+                    $Series_search = '<ul class="list-group" style="display: block; position: relative; z-index: 999999;;margin-bottom: 0;border-radius: 0;">';
+                    $Series_search .= "<h6 style='margin: 0;text-align: center;padding: 10px;'> Live Videos</h6>";
+                    foreach ($Series as $row)
+                    {
+                        $Series_search .= '<li class="list-group-item">
+                        <img width="35px" height="35px" src="' . URL::to('/') . '/public/uploads/images/' . $row->image . '"><a href="' . URL::to('/') . '/play_series' .'/'. $row->slug . '" style="font-color: #c61f1f00;color: #000;text-decoration: none;">' . $row->title . '</a></li>';
+                    }
+                }
+                else{
+                    $Series_search = null ;
+                }
+
+                return $output.$audios.$livestreams.$Episodes.$Series_search;
             }
             else
             {
@@ -2314,8 +2401,28 @@ class HomeController extends Controller
 
     public function searchResult(Request $request)
     {
-
         $search_value = $request['search'];
+
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+        $userIp = $geoip->getip();
+        $countryName = $geoip->getCountry();
+        $regionName = $geoip->getregion();
+        $cityName = $geoip->getcity();
+        
+        $getfeching = Geofencing::first();
+
+        $block_videos = BlockVideo::where('country_id', $countryName)->get();
+        if (!$block_videos->isEmpty())
+        {
+            foreach ($block_videos as $block_video)
+            {
+                $blockvideos[] = $block_video->video_id;
+            }
+        }
+        else
+        {
+            $blockvideos[] = '';
+        }
 
 
         // $ppv_videos_count = PpvVideo::where('title', 'LIKE', '%' . $search_value . '%')->count();
@@ -2364,6 +2471,103 @@ class HomeController extends Controller
         //     $ppv_category = 0;
         // }
 
+        // Latest videos
+
+        $latest_videos = Video::where('search_tags', 'LIKE', '%' . $search_value . '%')
+                            ->where('active', '=', '1')
+                            ->where('status', '=', '1')
+                            ->where('draft', '=', '1')
+                            ->orderBy('created_at', 'desc')
+                            ->take(10);
+                            if ($getfeching != null && $getfeching->geofencing == 'ON')
+                            {
+                                $latest_videos = $latest_videos->whereNotIn('videos.id', $blockvideos);
+                            }
+                            $latest_videos = $latest_videos->get();
+
+
+        $latest_livestreams = LiveStream::where('search_tags', 'LIKE', '%' . $search_value . '%')
+                            ->where('active', '=', '1')
+                            ->limit('10')
+                            ->latest()
+                            ->get();
+
+
+
+        $latest_audio = Audio::where('search_tags', 'LIKE', '%' . $search_value . '%')
+                                ->where('active', '=', '1')
+                                ->where('status', '=', '1')
+                                ->limit('10')
+                                ->latest()
+                                ->get();
+
+        $latest_Episode = Episode::where('search_tags', 'LIKE', '%' . $search_value . '%')
+                                ->where('active', '=', '1')
+                                ->where('status', '=', '1')
+                                ->limit('10')
+                                ->latest()
+                                ->get();   
+
+        $latest_Series = Series::where('search_tag', 'LIKE', '%' . $search_value . '%')
+                                ->where('active', '=', '1')
+                                ->limit('10')
+                                ->latest()
+                                ->get();  
+    // Most watched videos
+
+        $Most_view_videos = RecentView::Join('videos','videos.id','=','recent_views.video_id')
+                            ->where('videos.search_tags', 'LIKE', '%' . $search_value . '%')
+                            ->where('videos.active', '=', '1')
+                            ->where('videos.status', '=', '1')
+                            ->where('videos.draft', '=', '1')
+                            ->groupBy('video_id')
+                            ->limit('10')
+                            ->latest('videos.created_at');
+                            if ($getfeching != null && $getfeching->geofencing == 'ON')
+                            {
+                                $Most_view_videos = $Most_view_videos->whereNotIn('videos.id', $blockvideos);
+                            }
+                            $Most_view_videos = $Most_view_videos->get();
+                          
+
+        $Most_view_audios = RecentView::Join('audio','audio.id','=','recent_views.audio_id')
+                            ->where('audio.search_tags', 'LIKE', '%' . $search_value . '%')
+                            ->where('audio.active', '=', '1')
+                            ->where('audio.status', '=', '1')
+                            ->limit('10')
+                            ->latest('audio.created_at')
+                            ->groupBy('audio_id')
+                            ->get();
+
+        $Most_view_live   = RecentView::Join('live_streams','live_streams.id','=','recent_views.live_id')
+                            ->where('live_streams.search_tags', 'LIKE', '%' . $search_value . '%')
+                            ->where('live_streams.active', '=', '1')
+                            ->limit('10')
+                            ->latest('live_streams.created_at')
+                            ->groupBy('live_id')
+                            ->get();
+
+        $Most_view_episode  = RecentView::Join('episodes','episodes.id','=','recent_views.episode_id')
+                            ->where('episodes.search_tags', 'LIKE', '%' . $search_value . '%')
+                            ->where('episodes.active', '=', '1')
+                            ->where('episodes.status', '=', '1')
+                            ->limit('10')
+                            ->latest('episodes.created_at')
+                            ->groupBy('episode_id')
+                            ->get();
+
+        $Most_view_Series  = RecentView::select('series.*')
+                            ->Join('episodes','episodes.id','=','recent_views.episode_id')
+                            ->Join('series','series.id','=','episodes.series_id')
+                            ->where('series.search_tag', 'LIKE', '%' . $search_value . '%')
+                            ->where('series.active', '=', '1')
+                            ->limit('20')
+                            ->latest('series.created_at')
+                            ->groupBy('series.id')
+                            ->get();
+
+        //  All videos 
+
         $videos_count = Video::where('search_tags', 'LIKE', '%' . $search_value . '%')->count();
 
         if ($videos_count > 0)
@@ -2372,62 +2576,68 @@ class HomeController extends Controller
                             ->where('status', '=', '1')
                             ->where('draft', '=', '1')
                             ->orderBy('created_at', 'desc')
-                            ->take(20)
-                            ->get();
+                            ->take(20);
+                            if ($getfeching != null && $getfeching->geofencing == 'ON')
+                            {
+                                $videos = $videos->whereNotIn('videos.id', $blockvideos);
+                            }
+                            $videos = $videos->get();
         }
         else
         {
             $videos = [];
         }
 
-        $latest_videos = Video::where('search_tags', 'LIKE', '%' . $search_value . '%')
+       
+        $livestreams = LiveStream::where('search_tags', 'LIKE', '%' . $search_value . '%')
                             ->where('active', '=', '1')
-                            ->where('status', '=', '1')
-                            ->where('draft', '=', '1')
-                            ->latest()
-                            ->take(20)
-                            ->orderBy('created_at', 'DESC')->get();
-
-        $Most_recent_view = RecentView::Join('videos','videos.id','=','recent_views.video_id')
-                             ->where('videos.search_tags', 'LIKE', '%' . $search_value . '%')
-                            ->where('videos.active', '=', '1')
-                            ->where('videos.status', '=', '1')
-                            ->where('videos.draft', '=', '1')
-                            ->groupBy('video_id')->get();
-
-        $livestreams = LiveStream::where('search_tags', 'LIKE', '%' . $request->country . '%')
-                            ->where('active', '=', '1')
-                            // ->where('status', '=', '1')
-                            ->limit('10')
+                            ->limit('20')
                             ->latest()
                             ->get();
 
 
 
-        $audio = Audio::where('search_tags', 'LIKE', '%' . $request->country . '%')
+        $audio = Audio::where('search_tags', 'LIKE', '%' . $search_value . '%')
                             ->where('active', '=', '1')
                             ->where('status', '=', '1')
-                            ->limit('10')
+                            ->limit('20')
                             ->latest()
                             ->get();
 
-        $Episode = Episode::where('search_tags', 'LIKE', '%' . $request->country . '%')
+        $Episode = Episode::where('search_tags', 'LIKE', '%' . $search_value . '%')
                             ->where('active', '=', '1')
                             ->where('status', '=', '1')
-                            ->limit('10')
+                            ->limit('20')
                             ->latest()
                             ->get();    
+        
+        $Series = Series::where('search_tag', 'LIKE', '%' . $search_value . '%')
+                            ->where('active', '=', '1')
+                            ->limit('20')
+                            ->latest()
+                            ->get();  
+
 
         $data = array(
             'videos' => $videos,
             'search_value' => $search_value,
             'currency' => CurrencySetting::first() ,
             'latest_videos' => $latest_videos,
-            'Most_recent_view' => $Most_recent_view,
             'ThumbnailSetting' =>   ThumbnailSetting::first(),
             'audio' => $audio,
             'livestreams' => $livestreams,
             'Episode' => $Episode,
+            'Series' => $Series,
+            'latest_videos' => $latest_videos,
+            'latest_livestreams' => $latest_livestreams,
+            'latest_audio' => $latest_audio,
+            'latest_Episode'=> $latest_Episode,
+            'latest_Series'=> $latest_Series,
+            'Most_view_videos' => $Most_view_videos,
+            'Most_view_audios' => $Most_view_audios,
+            'Most_view_live' => $Most_view_live,
+            'Most_view_episode' => $Most_view_episode,
+            'Most_view_Series' => $Most_view_Series,
         );
 
         return Theme::view('search', $data);

@@ -368,3 +368,53 @@ data-delay-in="1.2">
 <?php  ?>
 <?php endforeach; 
 endif; ?>
+
+
+<!-- Series silder -->
+
+<?php if(isset($series_sliders)) :
+    foreach($series_sliders as $key => $series_slider): ?>
+
+        <div class="item <?php if($key == 0){echo 'active';}?> header-image">
+            <div class="slide slick-bg s-bg-1 lazy"
+                    style="background:linear-gradient(0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('<?php echo URL::to('/').'/public/uploads/images/' .$series_slider->player_image;?>'); background-repeat:no-repeat;background-size:cover;background-postion:top ;">
+            <div class="container-fluid position-relative h-100">
+                <div class="slider-inner h-100">
+
+                    <div class="row align-items-center bl h-100">
+                        <div class="col-xl-5 col-lg-12 col-md-12">
+                            <h1 class=" text-white title text-uppercase mb-3" data-animation-in="fadeInLeft" data-delay-in="0.6">
+                                <?php echo __($series_slider->title); ?>
+                            </h1>
+
+                            <div class="mb-3">
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                            </div>
+
+                            <div data-animation-in="fadeInUp" data-delay-in="1.2"
+                                style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
+                                        -webkit-line-clamp: 3;  -webkit-box-orient: vertical; overflow: hidden;">
+                                <?php echo __($series_slider->description); ?>
+                            </div>
+
+
+                            <div class="justify r-mb-23  p-0" data-animation-in="fadeInUp"   data-delay-in="1.2">    
+                                <a href="<?php echo URL::to('/') ?><?= '/play_series'.'/'. $series_slider->slug ?>" class="btn bd">
+                                    <i class="fa fa-play mr-2" aria-hidden="true"></i> Start Watching
+                                </a>
+                            </div>
+                            
+                        </div>
+                        <div class="col-xl-4 col-lg-12 col-md-12 mt-5 pt-5 b2">  </div>
+                        <div class="col-xl-4 col-lg-12 col-md-12 text-center">   </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    
+<?php endforeach;  endif; ?>
