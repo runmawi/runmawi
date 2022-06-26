@@ -40,7 +40,7 @@ use Illuminate\Support\Str;
 use Illuminate\Contracts\Auth\Authenticatable;
 use GeoIPLocation;
 use Stevebauman\Location\Facades\Location;
-use Carbon;
+use Carbon\Carbon;
 use Session;
 use App\RecentView as RecentView;
 use App\CurrencySetting as CurrencySetting;
@@ -60,6 +60,14 @@ class TvshowsController extends Controller
     public function __construct()
     {
         $settings = Setting::first();
+
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+        $userIp = $geoip->getip();    
+        $countryName = $geoip->getCountry();
+        $regionName = $geoip->getregion();
+        $cityName = $geoip->getcity();
+  
+        $this->countryName = $countryName;
     }
 
     /**
@@ -178,6 +186,15 @@ class TvshowsController extends Controller
         $episodenext = Episode::where('id', '>', $id)->where('series_id','=',$episode->series_id)->first();
         $episodeprev = Episode::where('id', '<', $id)->where('series_id','=',$episode->series_id)->first();
         //Make sure series is active
+
+
+        $view = new RecentView;
+        $view->user_id      = Auth::User() ? Auth::User()->id : null ;
+        $view->sub_user     = null ;
+        $view->country_name = $this->countryName ? $this->countryName : null ;
+        $view->visited_at   = Carbon::now()->year;
+        $view->episode_id      = $id ;
+        $view->save();
         
         $wishlisted = false;
         if(!Auth::guest()):
@@ -290,7 +307,6 @@ class TvshowsController extends Controller
          if((!Auth::guest() && Auth::user()->role == 'admin') || $series_ppv_status != 1 || $ppv_exits > 0 
          || $free_episode > 0){
 
-            // dd($series->ppv_status);
 
             $data = array(
              'currency' => $currency,
