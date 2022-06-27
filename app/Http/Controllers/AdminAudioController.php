@@ -756,6 +756,7 @@ class AdminAudioController extends Controller
         $audio_upload = $request->file('file');
         $ext = $audio_upload->extension();
                
+        // $player_image = str_replace(' ', '_', $player_image->getClientOriginalName());
           
                 $file = $request->file->getClientOriginalName();
     
@@ -778,7 +779,9 @@ class AdminAudioController extends Controller
         
                         $data['mp3_url'] = URL::to('/').'/public/uploads/audios/'.$audio->id.'.'.$ext; 
                     }else{
+                        
                         $audio_upload->move(storage_path().'/app/', $audio_upload->getClientOriginalName());
+                        // $audio_upload->move(storage_path().'/app/', str_replace(' ', '_', $audio_upload->getClientOriginalName()));
                      
                         FFMpeg::open($audio_upload->getClientOriginalName())
                         ->export()
@@ -786,6 +789,7 @@ class AdminAudioController extends Controller
                         ->toDisk('public')
                         ->save('audios/'. $audio->id.'.mp3');
                         unlink(storage_path().'/app/'.$audio_upload->getClientOriginalName());
+                        // unlink(storage_path().'/app/'.str_replace(' ', '_', $audio_upload->getClientOriginalName()));
                         $data['mp3_url'] = URL::to('/').'/public/uploads/audios/'.$audio->id.'.mp3'; 
         
                      
