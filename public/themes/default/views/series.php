@@ -11,11 +11,9 @@
     h1{
         font-size: 27px!important;
     }
-    .form-control {
-   
-    color:red !important;
-   
-}
+     select:invalid { color:grey!important; }
+    select:valid { color:#fff!important; }
+
 </style>
 
 <?php 
