@@ -11,6 +11,11 @@
     h1{
         font-size: 27px!important;
     }
+    .form-control {
+   
+    color:red !important;
+   
+}
 </style>
 
 <?php 
