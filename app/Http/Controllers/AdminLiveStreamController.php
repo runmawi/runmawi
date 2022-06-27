@@ -429,9 +429,9 @@ class AdminLiveStreamController extends Controller
         
 
             /*save LiveLanguage*/
-            if(!empty($language_id)){
+            if(!empty($languages)){
                 LiveLanguage::where('live_id', $movie->id)->delete();
-                foreach ($language_id as $key => $value) {
+                foreach ($languages as $key => $value) {
                     $serieslanguage = new LiveLanguage;
                     $serieslanguage->live_id = $movie->id;
                     $serieslanguage->language_id = $value;
