@@ -12,7 +12,7 @@
         font-size: 27px!important;
     }
      select:invalid { color:grey!important; }
-    select:valid { color:#fff!important; }
+    select:valid { color:#808080!important; }
 
 </style>
 
