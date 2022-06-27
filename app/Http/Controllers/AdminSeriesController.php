@@ -224,7 +224,33 @@ class AdminSeriesController extends Controller
                 $data['image'] = 'placeholder.jpg';
             }
         
-       
+            $player_image = (isset($data['player_image'])) ? $data['player_image'] : '';
+
+            if(!empty($player_image) && $data['player_image'] != 'validate'){
+                //$data['image'] = ImageHandler::uploadImage($data['image'], 'images');
+                if($player_image != ''  && $player_image != null){
+                       $file_old = $image_path.$player_image;
+                      if (file_exists($file_old)){
+                       unlink($file_old);
+                      }
+                  }
+                  //upload new file
+                  $player_image = $player_image;
+                 //  $data['player_image']  = $player_image->getClientOriginalName();
+                 $data['player_image'] =  str_replace(' ', '_', $player_image->getClientOriginalName());
+
+                  $player_image->move($image_path, $data['player_image']);
+                 //  $player_image =  $player_image->getClientOriginalName();
+            $player_image = str_replace(' ', '_', $player_image->getClientOriginalName());
+
+
+
+            } else {
+             $player_image = "default.jpg";
+            }
+
+
+            
 //          
 //         if($image != '') {   
 //              //code for remove old file
@@ -274,6 +300,7 @@ class AdminSeriesController extends Controller
         $series = Series::find($series->id);
         $series->slug = $slug;
         $series->ppv_status = $ppv_status;
+        $series->player_image = $player_image;
         $series->banner = empty($data['banner']) ? 0 : 1;
         $series->search_tag =$data['search_tag'];
         $series->save();  
