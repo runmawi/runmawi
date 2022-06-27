@@ -171,6 +171,11 @@
     .reveal {
         margin-left: -52px!important;
     }
+    #video .plyr.plyr--full-ui, #video-trailer .plyr.plyr--full-ui, #video_container .plyr.plyr--full-ui, #video_container .plyr__video-embed, #watch_trailer .plyr.plyr--full-ui, #watch_trailer .plyr__video-embed {
+    height: calc(60vh - 80px - 75px);
+    max-width: none;
+    width: 100%;
+}
     .user-menu{
         display: block;
         display: flex;
