@@ -376,7 +376,7 @@ class AdminSeriesController extends Controller
             'post_route' => URL::to('admin/series/update'),
             'button_text' => 'Update Series',
             'admin_user' => Auth::user(),
-            'series_categories' => Genre::all(),
+            'series_categories' => VideoCategory::all(),
             'languages' => Language::all(),
             'artists' => Artist::all(),
             'series_artist' => Seriesartist::where('series_id', $id)->pluck('artist_id')->toArray(),
@@ -542,6 +542,8 @@ class AdminSeriesController extends Controller
                 }
 
             }
+        }else{
+            SeriesCategory::where('series_id', $series->id)->delete();
         }
         if(!empty($data['language'])){
             $language_id = $data['language'];

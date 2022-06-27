@@ -466,6 +466,7 @@ input:checked + .sliderk:before {
                            </div>
                         </div>
                         <div class="mobile-more-menu">
+                            
                            <a href="javascript:void(0);" class="more-toggle mt-1" id="dropdownMenuButton"
                               data-toggle="more-toggle" aria-haspopup="true" aria-expanded="false">
                                <i class="fa fa-search"></i>
