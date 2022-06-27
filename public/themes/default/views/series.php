@@ -11,6 +11,9 @@
     h1{
         font-size: 27px!important;
     }
+    select:invalid { color:grey!important; }
+    select:valid { color:#808080!important; }
+
 </style>
 
 <?php 
@@ -101,11 +104,11 @@ $series = $series_data ;
 							<?php else : ?>
 								
 							<a href="<?php echo URL::to('episode').'/'.$series->title.'/'.$episodes->slug;?>">
-								<div class="row mt-4 episodes_div season_<?= $seasons->id;?>">
+								<div class="row align-items-center mt-4 episodes_div season_<?= $seasons->id;?>">
 									<div class="col-md-3">
                                         <div class="block-images position-relative">
                                     <div class="img-box">
-										<img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" width="250" >
+										<img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" width="250">
 										
                                           <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
                                           <p class="p-tag1"><?php echo $currency->symbol.' '.$settings->ppv_price; ?></p>
@@ -117,7 +120,7 @@ $series = $series_data ;
                                             </div>
                                 <!-- </div> -->
                                         </div></div>
-									<div class="col-md-7 ">
+									<div class="col-md-7">
 										<h4><?= $episodes->title; ?></h4>
 										<p class="desc text-white mt-2 mb-0"><?php if(strlen($series->description) > 90){ echo substr($series->description, 0, 90) . '...'; } else { echo $series->description; } ?></p>
                                         <p class="date desc text-white mb-0"><?= date("F jS, Y", strtotime($episodes->created_at)); ?></p>
@@ -164,7 +167,6 @@ $series = $series_data ;
         </div>
 				</div>
 				</div>
-		 
 		</section>
 		
 				<?php endif;?>
@@ -396,4 +398,3 @@ amount: amount * 100
 		$("."+this.value).show();
 	});
 </script>
-<?php include('footer.blade.php'); ?>
