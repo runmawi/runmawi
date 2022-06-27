@@ -238,7 +238,7 @@ $series=App\series::first();
 		<a class="block-thumbnail" href="<?= ($settings->enable_https) ? secure_url('episodes') : URL::to('episode').'/'.@$episodes->series_title->title.'/'.$episodes->slug; ?>">
 				<div class="thumbnail-overlay"></div>
 <!--				<img src="<= ImageHandler::getImage($episodes->image, 'medium')  ?>">-->
-				<img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" width="200">
+				<img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class="w-100">
 				<div class="details">
 				<h6><?= $episodes->title; ?> </h6>
                     <span class="text-white"><?= gmdate("H:i:s", $episodes->duration); ?></span>
