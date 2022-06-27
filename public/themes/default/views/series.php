@@ -399,4 +399,3 @@ amount: amount * 100
 		$("."+this.value).show();
 	});
 </script>
-<?php include('footer.blade.php'); ?>
