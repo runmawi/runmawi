@@ -843,13 +843,25 @@ $(document).ready(function() {
 
 
     $( "#stripe_plan" ).validate({
+        
         rules: {
                 username: {
                     required: true,
                 },
                 password:{
                     required: true,
-                },
+                    minlength: 8,
+                    maxlength: 30,
+                    // regx: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])\w{6,}$/,
+                    regx: /^(?=.*[A-Z])(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+
+            },
+                password_confirmation: {
+                required: true,
+                minlength: 8,
+                maxlength: 30,
+                equalTo: "#password"
+            },
                 mobile: {
                     required: true,
                     remote: {
@@ -900,11 +912,17 @@ $(document).ready(function() {
                         required: "Please Enter the Email Id",
                         remote: "Email Id already in taken ! Please try another Email ID"
                     },
-                   
+                    password: {
+                        pwcheck: "Password is not strong enough"
+                    }   
                    
                 }
     });
-</script>
+
+    $.validator.addMethod("regx", function(value, element, regexpr) {          
+    return regexpr.test(value);
+}, "Please enter a valid pasword.");
+    </script>
 
 
  <!-- jQuery, Popper JS -->
