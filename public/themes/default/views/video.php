@@ -78,22 +78,30 @@ input.skips,input#Recaps_Skip{
 div#url_linkdetails {
     position: absolute;
     top: 22%;
-    left: 83%;
+    left: 10%;
     font-size: x-large;
-    display: none;
+  
 }
    .intro_skips,.Recap_skip {
-    position: absolute;
-    top: -19%;
-    left: 79%;
-          display: none;
+   position: absolute;
+       z-index: 5;
+       top: 60%;
+       right: 0;
+       display: flex;
+       justify-content: flex-end;
+   
+        
 }
-/* .end_card_video {
+      .skips{
+          position: absolute;
+          top:-20%;
+      }
+ .end_card_video {
     position: absolute;
     top: -19%;
     left: 79%;
-          display: none;
-} */
+     
+} 
 .countdown {
   text-align: center;
   font-size: 60px;
@@ -145,6 +153,10 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 <?php //dd(Auth::user()->role); ?>
 
  <div id="video_bg">
+      <div class="col-sm-12 intro_skips">
+       <input type="button" class="skips" value="Skip Intro" id="intro_skip">
+       <input type="button" class="skips" value="Auto Skip in 5 Secs" id="Auto_skip">
+  </div>
    <div class=" page-height">
      <?php 
            $paypal_id = Auth::user()->paypal_id;
@@ -791,10 +803,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 
   <!-- Intro Skip and Recap Skip -->
 
-   <div class="col-sm-12 intro_skips">
-       <input type="button" class="skips" value="Skip Intro" id="intro_skip">
-       <input type="button" class="skips" value="Auto Skip in 5 Secs" id="Auto_skip">
-  </div>
+  
   <div class="col-sm-12 end_card_video" id="end_card_video" style="position: absolute; top: -244%; width: 500%; height: 500%;" >
   <?php foreach($endcardvideo as $val) { ?>
       <a href="<?php  echo URL::to('category') ?><?= '/videos/' . $val->slug ?>">
@@ -1638,17 +1647,27 @@ $(document).ready(function(){
           if(ads_show_status == 1){
             
                 $('.adstime_url').attr('src', Ads_videos);
+
+                document.getElementById('videoPlayer').addEventListener('loadedmetadata', function() {
+                    this.currentTime = 0;
+                }, true);
+                
                 videoId.play();
                   $('#ads_start_tym').replaceWith('<input type="hidden" id="ads_start_tym" class="ads_start_tym" value="'+ ads_end_tym+'">');
                   $('.ads_show_status').replaceWith('<input type="hidden" id="" class="ads_show_status"  value="0">');
+                
                   $(".plyr__controls__item ").css("display", "none");
                   $(".plyr__time ").css("display", "block");
+
                   document.getElementById("Ads_vies_count").click();
             }
             else if(ads_show_status == 0){
                   $('.ads_show_status').replaceWith('<input type="hidden" id="" class="ads_show_status"  value="5">');
                   $('.adstime_url').attr('src', normal_videos);
+
                   $(".plyr__controls__item").css("display", "block");
+                  $(".plyr__volume").removeAttr("style");
+                  
 
                   document.getElementById('videoPlayer').addEventListener('loadedmetadata', function() {
                       this.currentTime = 0;

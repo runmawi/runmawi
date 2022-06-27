@@ -102,6 +102,7 @@ this.videoads_tym_Post.addEventListener('timeupdate', (e) => {
                 }, true);
 
                videoId.play();
+               
                 $('#ads_start_tym_Post').replaceWith('<input type="hidden" id="ads_start_tym_Post" class="ads_start_tym_Post" value="'+ ads_end_tym_Post+'">');
                 $('.ads_show_status_Post').replaceWith('<input type="hidden" id="" class="ads_show_status_Post"  value="0">');
                 document.getElementById("Ads_vies_count_Post").click();
