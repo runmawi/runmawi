@@ -95,6 +95,11 @@
           if(ads_show_status_mid == 1){
             
                 $('.adstime_url').attr('src', Ads_videos_mid);
+
+                document.getElementById('videoPlayer').addEventListener('loadedmetadata', function() {
+                      this.currentTime = 0;
+                  }, true);
+
                 videoId.play();
                   $('#ads_start_tym_mid').replaceWith('<input type="hidden" id="ads_start_tym_mid" class="ads_start_tym_mid" value="'+ ads_end_tym_mid+'">');
                   $('.ads_show_status_mid').replaceWith('<input type="hidden" id="" class="ads_show_status_mid"  value="0">');

@@ -1484,7 +1484,13 @@ $(document).ready(function(){
           if(ads_show_status == 1){
             
                 $('.adstime_url').attr('src', Ads_videos);
-                videoId.play();
+
+                  document.getElementById('videoPlayer').addEventListener('loadedmetadata', function() {
+                        this.currentTime = 0;
+                    }, true);
+                    
+                  videoId.play();
+                  
                   $('#ads_start_tym').replaceWith('<input type="hidden" id="ads_start_tym" class="ads_start_tym" value="'+ ads_end_tym+'">');
                   $('.ads_show_status').replaceWith('<input type="hidden" id="" class="ads_show_status"  value="0">');
                 

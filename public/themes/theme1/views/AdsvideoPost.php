@@ -3,6 +3,12 @@
 
   $current_time = Carbon\Carbon::now()->format('H:i:s');
 
+  $post_tyming =App\PlayerAnalytic::where('videoid',$video->id)->groupBy('videoid')
+  ->orderBy('created_at', 'desc')->pluck('duration')->first();
+
+  $post_tym = $post_tyming - 5 ;
+
+
   $AdsVideosPost = App\AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
     ->Join('videos','advertisements.ads_category','=','videos.ads_category')
     ->whereDate('start', '=', Carbon\Carbon::now()->format('Y-m-d'))
@@ -51,9 +57,9 @@
     }
 
 
-    if( $ads_position_Post !=null && $ads_position_Post == 'Post'){
+    if( $ads_position_Post !=null && $ads_position_Post == 'post'){
 
-        $ads_start_tym_Post = '220';
+        $ads_start_tym_Post = $post_tym;
 
     }else{
         $ads_start_tym_Post = ' ';
@@ -75,6 +81,7 @@
   var ads_end_tym_Post     =  <?php  echo json_encode($Ads_duration_Sec_Post)  ;?>;
   var Ads_count_Post       = <?php echo count($AdsVideosPost); ?> ;
   var Ads_type_Post        = <?php echo json_encode($ads_type_Post); ?> ;
+  var post_tym             = <?php echo json_encode($post_tym); ?> ;
 
 
   if( Ads_count_Post >= 1 &&  Ads_type_Post != null ){
@@ -89,20 +96,28 @@
           if(ads_show_status_Post == 1){
             
                 $('.adstime_url').attr('src', Ads_videos_Post);
-                videoId.play();
+
+                  document.getElementById('videoPlayer').addEventListener('loadedmetadata', function() {
+                      this.currentTime = 0;
+                  }, true);
+
+                 videoId.play();
                   $('#ads_start_tym_Post').replaceWith('<input type="hidden" id="ads_start_tym_Post" class="ads_start_tym_Post" value="'+ ads_end_tym_Post+'">');
                   $('.ads_show_status_Post').replaceWith('<input type="hidden" id="" class="ads_show_status_Post"  value="0">');
                   document.getElementById("Ads_vies_count_Post").click();
+                
                   $(".plyr__controls__item ").css("display", "none");
                   $(".plyr__time ").css("display", "block");
             }
             else if(ads_show_status_Post == 0){
                   $('.ads_show_status_Post').replaceWith('<input type="hidden" id="" class="ads_show_status_Post"  value="5">');
                   $('.adstime_url').attr('src', normal_videos_Post);
+
                   $(".plyr__controls__item").css("display", "block");
+                  $(".plyr__volume").removeAttr("style");
 
                   document.getElementById('videoPlayer').addEventListener('loadedmetadata', function() {
-                      this.currentTime = 60;
+                      this.currentTime = post_tym;
                     }, true);
 
 
