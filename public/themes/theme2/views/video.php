@@ -77,12 +77,26 @@ div#url_linkdetails {
     font-size: x-large;
     display: none;
 }
-      .intro_skips,.Recap_skip {
+     .intro_skips,.Recap_skip {
+   position: absolute;
+       z-index: 5;
+       top: 70%;
+       right: 70px;
+       display: flex;
+       justify-content: flex-end;
+   
+        
+}
+      .skips{
+          position: absolute;
+          top:-20%;
+      }
+ .end_card_video {
     position: absolute;
     top: -19%;
     left: 79%;
-          display: none;
-}
+     
+} 
       .plyr__poster{
           background-size: cover!important;
       }
@@ -135,7 +149,10 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 <?php //dd(Auth::user()->role); ?>
 
  <div id="video_bg">
-      
+      <div class="col-sm-12 intro_skips">
+       <input type="button" class="skips" value="Skip Intro" id="intro_skip">
+       <input type="button" class="skips" value="Auto Skip in 5 Secs" id="Auto_skip">
+  </div>
    <div class="container-fluid page-height mt-3">
      <?php 
            $paypal_id = Auth::user()->paypal_id;
@@ -765,10 +782,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
            
 <!-- Intro Skip and Recap Skip -->
 
-   <div class="col-sm-12 intro_skips">
-       <input type="button" class="skips" value="Skip Intro" id="intro_skip">
-       <input type="button" class="skips" value="Auto Skip in 5 Secs" id="Auto_skip">
-  </div>
+   
 
   <div class="col-sm-12 end_card_video" id="end_card_video" style="position: absolute; top: -244%; width: 500%; height: 500%;" >
   <?php foreach($endcardvideo as $val) { ?>
