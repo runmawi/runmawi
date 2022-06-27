@@ -1171,7 +1171,6 @@ $artists = [];
 
           //   }
             var vid = document.getElementById("videoPlayer");
-
              var currentTime = vid.currentTime;
              var duration = vid.duration;
             var bufferedTimeRanges = vid.buffered;
