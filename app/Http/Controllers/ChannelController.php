@@ -372,6 +372,25 @@ class ChannelController extends Controller
            ->where('videos.id','!=',$vid)
            ->limit(5)->get();
            }
+           if(!Auth::guest()){
+           $latestRecentView = RecentView::where('user_id','!=',Auth::user()->id)->distinct()->limit(30)->pluck('video_id');
+           if(count($latestRecentView) > 10){
+
+           }else{
+
+            $latestviews = Video::select('videos.*','video_categories.name as categories_name','categoryvideos.category_id as categories_id')
+            ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
+            ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+            ->whereIn('videos.id', $latestRecentView)
+            ->groupBy('videos.id')
+            ->get();
+           }
+           }else{
+            $latestRecentView = [];
+            $latestviews = [];
+            $recomendeds = $recomendeds;
+           }
+          //  dd($recomendeds);
           //  RelatedVideo
           $related_videos =  Video::select('videos.*','related_videos.id as related_videos_id','related_videos.related_videos_title as related_videos_title')
            ->Join('related_videos', 'videos.id', '=', 'related_videos.video_id')
@@ -413,12 +432,15 @@ class ChannelController extends Controller
             $endtimevideo = '';
            }
            
- 
+          if(count($latestviews) <= 15){
+            // dd('test');
            if(!empty($recomendeds)){
             foreach($recomendeds as $category){
               if(in_array($category->categories_id, $categoryvideo)){
                $recomended[] = $category;
+              //  $recomended = array_unique($recomended, SORT_REGULAR);
               // $endcardvideo[] = $category;
+              // $recomended = array_map("unserialize", array_unique(array_map("serialize", $recomended)));
 
              }            
              }
@@ -426,6 +448,10 @@ class ChannelController extends Controller
              $recomended = [];
             //  $endcardvideo = [];
            }
+          }else{
+            $recomended = $latestviews;
+          }
+          //  dd($recomended);
            if(!empty($recomended)){
             $recomended = $recomended;
            }else{
@@ -578,8 +604,7 @@ class ChannelController extends Controller
             'lang_name'  => $lang_name,
             'subtitles_name'  => $subtitles,
             'ThumbnailSetting' => $ThumbnailSetting,
-
-
+            // 'latestviews' => $latestviews,
                  );
              
         } else {
