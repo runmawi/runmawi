@@ -22,7 +22,7 @@
          <div class="row">
             <?php if(count($channelwatchlater) > 0): 
             foreach($channelwatchlater as $video): ?>
-            <div class="col-1-5 col-md-6 iq-mb-30 wishlist-block">
+            <div class=" col-md-2 iq-mb-30 wishlist-block">
                 <a href="<?php echo URL::to('category') ?><?= '/videos/' . $video->slug ?>">
                 <li class="slide-item position-relative">
                 <!-- block-images -->
