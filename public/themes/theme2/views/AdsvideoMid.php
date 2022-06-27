@@ -96,17 +96,21 @@
             
                 $('.adstime_url').attr('src', Ads_videos_mid);
 
-                document.getElementById('videoPlayer').addEventListener('loadedmetadata', function() {
-                    this.currentTime = 0;
-                }, true);
-                
-                videoId.play();
+                  document.getElementById('videoPlayer').addEventListener('loadedmetadata', function() {
+                      this.currentTime = 0;
+                  }, true);
+                  
+                  videoId.play();
+                  
                   $('#ads_start_tym_mid').replaceWith('<input type="hidden" id="ads_start_tym_mid" class="ads_start_tym_mid" value="'+ ads_end_tym_mid+'">');
                   $('.ads_show_status_mid').replaceWith('<input type="hidden" id="" class="ads_show_status_mid"  value="0">');
                   document.getElementById("Ads_vies_count_mid").click();
                  
                   $(".plyr__controls__item ").css("display", "none");
                   $(".plyr__time ").css("display", "block");
+
+                 
+
             }
             else if(ads_show_status_mid == 0){
                   $('.ads_show_status_mid').replaceWith('<input type="hidden" id="" class="ads_show_status_mid"  value="5">');
@@ -118,6 +122,8 @@
                   document.getElementById('videoPlayer').addEventListener('loadedmetadata', function() {
                       this.currentTime = Mid_tym;
                     }, true);
+
+                 
 
                 videoId.play();
             }
