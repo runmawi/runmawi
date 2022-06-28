@@ -36,7 +36,10 @@
                         @endif
                     </div>
         
-        
+                    <div class="form-group">
+                        <label>Home Page Genre Name:</label>
+                        <input type="text" id="home_genre" name="home_genre" value="{{ $categories[0]->home_genre }}" class="form-control" placeholder="Enter Home Page Genre Name">
+                    </div>  
                 <div class="form-group {{ $errors->has('in_home') ? 'has-error' : '' }}">
                         <label class="m-0">Display In Home page:</label>
                         <input type="radio" id="in_home" name="in_home" value="1" <?php if( $categories[0]->in_home == 1) { echo "checked";} ?>> Yes &nbsp;&nbsp;&nbsp;

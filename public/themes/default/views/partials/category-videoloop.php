@@ -137,8 +137,10 @@ if(isset($videos)) :
                 <a href="<?php echo URL::to('/category/').'/'.$category->slug;?>" class="category-heading"
                     style="text-decoration:none;color:#fff">
                     <h4 class="movie-title">
-                        <?php 
-                          echo __($category->name);?>
+                        <?php
+                        if(!empty($category->home_genre)){ echo $category->home_genre ; }else{ echo $category->name ; }  
+                        //   echo __($category->name);
+                          ?>
                     </h4>
                 </a>
             </div>
