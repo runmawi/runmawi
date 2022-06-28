@@ -558,7 +558,7 @@ class ChannelController extends Controller
               //         echo "<pre>";
               // print_r($currentdate);
               // echo "<pre>";
-              // print_r($new_date);
+              // print_r($currentdate);
               // exit;
              if($currentdate < $new_date){
               // echo "<pre>";
@@ -567,7 +567,7 @@ class ChannelController extends Controller
 
               // print_r($currentdate);exit;
 
-              $new_date = Carbon::parse($categoryVideos->publish_time)->format('M d , y h:i:s');
+              $new_date = Carbon::parse($categoryVideos->publish_time)->format('M d , y h:i:s a');
 
              }else{
             //  print_r($new_date);exit;

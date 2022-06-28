@@ -199,7 +199,15 @@ border-radius: 0px 4px 4px 0px;
       <h4 class="card-title">Add Video</h4>
    </div>
 </div>
-
+@if($page == 'Edit' && $video->status == 0)
+      <div class="col-sm-12">
+         Video Transcoding is under Progress
+         <div class="progress">
+            <div class="low_bar"></div >
+         </div>
+         <div class="low_percent">0%</div >
+      </div>
+      @endif
 @if (Session::has('message'))
    <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
 @endif
@@ -239,7 +247,7 @@ border-radius: 0px 4px 4px 0px;
                <br> <!-- fieldsets -->
                @if($video->status == 1)
 
-               <fieldset>
+               <fieldset id="player_data">
                   <div class="form-card">
                      <div class="row">
                         <div class="col-6">
@@ -415,8 +423,10 @@ border-radius: 0px 4px 4px 0px;
                     </div>
                 </div>
                </div> <input type="button" name="next" id="next2" class="next action-button" value="Next" /><input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+               <button type="submit" style = "margin-left: 26%;position: absolute;margin-top: .8%;" class="btn btn-primary" value="{{ $button_text }}">{{ $button_text }}</button>
+               
                </fieldset>
-               <fieldset class="Next3">
+               <fieldset class="Next3" id="videocategory_data">
                <div class="form-card">
                <div class="row">
                <div class="col-7">
@@ -558,9 +568,11 @@ border-radius: 0px 4px 4px 0px;
                </div> 
                </div>
                </div>
-               </div> <input type="button" name="next" class="next action-button" value="Next" id="next3"/> <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+               </div> <input type="button" name="next" class="next action-button" value="Next" id="next3"/> 
+               <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+               <button type="submit" class="btn btn-primary" style = "margin-left: 26%;position: absolute;margin-top: .8%;" value="{{ $button_text }}">{{ $button_text }}</button>
                </fieldset>
-               <fieldset>
+               <fieldset id="video_access_data">
                <div class="form-card">
 
                {{-- <div class="row">
@@ -697,10 +709,11 @@ border-radius: 0px 4px 4px 0px;
 
                             <input type="button" name="next" class="next action-button" value="Next" />
                             <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+                            <button type="submit" class="btn btn-primary "style = "margin-left: 26%;position: absolute;margin-top: .8%;" value="{{ $button_text }}">{{ $button_text }}</button>
   
                </fieldset>
 
-               <fieldset>
+               <fieldset id="upload_datas">
                   <div class="form-card">
                         <div class="row">
                            <div class="col-7">
@@ -824,9 +837,10 @@ border-radius: 0px 4px 4px 0px;
                   </div>
                   <input type="button" name="next" class="next action-button" value="Next" />
                   <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+                  <button type="submit" class="btn btn-primary" style = "margin-left: 26%;position: absolute;margin-top: .8%;" value="{{ $button_text }}">{{ $button_text }}</button>
               </fieldset>
               
-               <fieldset>
+               <fieldset id="ads_data">
                   <div class="form-card">
                      <div class="row">
                         <div class="col-7">
@@ -1491,6 +1505,8 @@ $('#error_video_Category').hide();
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.full.js"></script>
 
+
+
 <script type="text/javascript">
 
 
@@ -1536,6 +1552,81 @@ $('#error_video_Category').hide();
 <script type="text/javascript">
    $ = jQuery;
    
+
+   $(document).ready(function(){
+      // $('#player_data').hide();
+      // $('#slug_validate').hide();
+      // $('#videocategory_data').hide();
+      // $('#video_access_data').hide();
+      // $('#upload_datas').hide();
+      // $('#ads_data').hide();
+
+   $('#videot').click(function(){
+      $(".progress-bar").css({"width":"17%"});
+      $('#player_data').show();
+      $('#slug_validate').hide();
+      $('#videocategory_data').hide();
+      $('#video_access_data').hide();
+      $('#upload_datas').hide();
+      $('#ads_data').hide();
+
+   });
+   $('#account').click(function(){
+      $(".progress-bar").css({"width":"33%"});
+     $('#player_data').hide();
+      $('#slug_validate').show();
+      $('#videocategory_data').hide();
+      $('#video_access_data').hide();
+      $('#upload_datas').hide();
+      $('#ads_data').hide();
+
+   });
+   $('#personal').click(function(){
+
+      $(".progress-bar").css({"width":"50%"});
+
+      $('#player_data').hide();
+      $('#slug_validate').hide();
+      $('#videocategory_data').show();
+      $('#video_access_data').hide();
+      $('#upload_datas').hide();
+      $('#ads_data').hide();
+
+   });
+   $('#useraccess_ppvprice').click(function(){
+      $(".progress-bar").css({"width":"67%"});
+
+      $('#player_data').hide();
+      $('#slug_validate').hide();
+      $('#videocategory_data').hide();
+      $('#video_access_data').show();
+      $('#upload_datas').hide();
+      $('#ads_data').hide();
+
+   });
+   $('#payment').click(function(){
+      $(".progress-bar").css({"width":"83%"});
+
+      $('#player_data').hide();
+      $('#slug_validate').hide();
+      $('#videocategory_data').hide();
+      $('#video_access_data').hide();
+      $('#upload_datas').show();
+      $('#ads_data').hide();
+
+   });
+   $('#confirm').click(function(){
+      $(".progress-bar").css({"width":"100%"});
+
+      $('#player_data').hide();
+      $('#slug_validate').hide();
+      $('#videocategory_data').hide();
+      $('#video_access_data').hide();
+      $('#upload_datas').hide();
+      $('#ads_data').show();
+
+   });
+});
    $(document).ready(function($){
       
       $("#inputTag").tagsinput('items');
@@ -2186,6 +2277,7 @@ if(this.textContent === 'destroy') {
 }
 
 });
+
 
 </script>
 @section('javascript')

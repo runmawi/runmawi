@@ -137,8 +137,10 @@ if(isset($videos)) :
                 <a href="<?php echo URL::to('/category/').'/'.$category->slug;?>" class="category-heading"
                     style="text-decoration:none;color:#fff">
                     <h4 class="movie-title">
-                        <?php 
-                          echo __($category->name);?>
+                        <?php
+                        if(!empty($category->home_genre)){ echo $category->home_genre ; }else{ echo $category->name ; }  
+                        //   echo __($category->name);
+                          ?>
                     </h4>
                 </a>
             </div>
@@ -179,13 +181,13 @@ if(isset($videos)) :
                                    
                                 </div>
                                 <div class="block-description">
-
+                                      <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
                                     <?php if($ThumbnailSetting->title == 1) { ?>            <!-- Title -->
-                                        <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
+                                      
                                             <h6>
                                             <?php  echo (strlen($category_video->title) > 17) ? substr($category_video->title,0,18).'...' : $category_video->title; ?>
                                             </h6>
-                                        </a>
+                                       
                                     <?php } ?>  
 
                                     <div class="movie-time d-flex align-items-center pt-1">
@@ -281,8 +283,9 @@ if(isset($videos)) :
                                        </button></div>
                         -->
                                 </div>
-                              
+                               </a>
                             </div>
+                             </div>
                              </a>
                     </li>
                     <?php           

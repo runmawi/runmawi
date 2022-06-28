@@ -85,6 +85,10 @@ class AdminVideoCategoriesController extends Controller
 
             $banner = $request['banner']; 
 
+            $home_genre = $request['home_genre']; 
+
+            $input['home_genre'] = $request['home_genre']; 
+
             
             $footer = $request['footer']; 
           
@@ -166,6 +170,7 @@ class AdminVideoCategoriesController extends Controller
         $id = $request['id'];
         $in_home = $request['in_home']; 
         $footer = $request['footer']; 
+        $home_genre = $request['home_genre']; 
         $in_menu = $request['in_menu']; 
         $category = VideoCategory::find($id);
          
@@ -194,6 +199,7 @@ class AdminVideoCategoriesController extends Controller
             } else {
                  $input['footer']  = $request['footer'];
             }
+
             if( isset($image) && $image!= '') {   
             //code for remove old file
             if ($image != ''  && $image != null) {
@@ -226,6 +232,7 @@ class AdminVideoCategoriesController extends Controller
                   } 
             $category->name = $request['name'];
             $category->slug = $request['slug'];
+            $category->home_genre  = $request['home_genre']; 
             $category->parent_id = $request['parent_id'];
             $category->in_home = $request['in_home'];
             $category->footer = $request['footer'];
