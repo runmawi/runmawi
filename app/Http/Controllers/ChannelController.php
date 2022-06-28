@@ -375,6 +375,8 @@ class ChannelController extends Controller
            if(!Auth::guest()){
            $latestRecentView = RecentView::where('user_id','!=',Auth::user()->id)->distinct()->limit(30)->pluck('video_id');
            if(count($latestRecentView) > 10){
+            
+            $latestviews = [];
 
            }else{
 
