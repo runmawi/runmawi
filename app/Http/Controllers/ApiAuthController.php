@@ -1153,6 +1153,7 @@ public function verifyandupdatepassword(Request $request)
     $user_id = $request->user_id;
     $livedetail = LiveStream::where('id',$liveid)->orderBy('created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $item['live_description'] = $item->description ? $item->description : "" ;
         return $item;
       });
       $current_date = date('Y-m-d h:i:s a', time()); 

@@ -1582,4 +1582,32 @@ class ChannelController extends Controller
         $categoryVideos = $categoryVideos->get();
 
       }
+
+      public function MovieList()
+      {
+        try {
+          $data =array(
+            "Movie_list" => Language::all() ,
+          );
+
+           return Theme::view('movie_list',$data); 
+        } 
+        catch (\Throwable $th) {
+           return abort(404);
+        }
+      }
+
+      public function liveList()
+      {
+        try {
+          $data =array(
+            "Live_list" => VideoCategory::all() ,
+          );
+
+           return Theme::view('Live_list',$data); 
+        } 
+        catch (\Throwable $th) {
+           return abort(404);
+        }
+      }
 }

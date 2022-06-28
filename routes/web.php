@@ -1430,9 +1430,10 @@ Route::get('/Artist/{slug}', 'ChannelController@artist_videos');
 
   // category List
 Route::get('categoryList', 'ChannelController@categoryList')->name('categoryList');
+Route::get('Movie-list', 'ChannelController@MovieList')->name('MovieList');
+Route::get('Live-list', 'ChannelController@liveList')->name('liveList');
 
-// 
-
+    // Filter 
 Route::get('categoryfilter', 'ChannelController@categoryfilter')->name('categoryfilter');
 
 
