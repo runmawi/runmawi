@@ -1035,7 +1035,7 @@ $artists = [];
 
 
    <div class=" container video-list you-may-like">
-       <h4 class="Continue Watching" style="color:#fffff;margin-left:-15px;"><?php echo __('Recomended Videos');?></h4>
+       <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Recomended Videos');?></h4>
            <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>   
                <?php include('partials/video-loop.php');?>
            </div>

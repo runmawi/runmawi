@@ -34,10 +34,10 @@
                 <a href="<?php echo URL::to('/play_series'.'/'.$latest_serie->slug) ?> ">
 
               <h6><?php echo __($latest_serie->title); ?></h6>
-                </a>
+               
                 <div class="movie-time d-flex align-items-center my-2">
                   <div class="badge badge-secondary p-1 mr-2"><?php echo $latest_serie->age_restrict.' '.'+' ?></div>
-                  <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $latest_serie->duration); ?></span>
+                  <!--<span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $latest_serie->duration); ?></span>-->
                 </div>
                 <div class="hover-buttons d-flex">
                   <a class="text-white" href="<?php echo URL::to('/play_series'.'/'.$latest_serie->slug) ?> " >
@@ -45,6 +45,7 @@
                    Watch Series
                   </a>
                 </div>
+                     </a>
               </div>
             </div>
           </a>
