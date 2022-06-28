@@ -89,40 +89,39 @@ $series = $series_data ;
 					<div >
 <!-- $series->title -->
 						
-					 <div class="favorites-contens">
-                        <ul class="category-page list-inline row p-0 mb-0">
-                          	<?php 
-						// if($series->ppv_status == null){						
-						foreach($season as $key => $seasons):  
-							foreach($seasons->episodes as $key => $episodes):
-								// dd($seasons->ppv_interval);
-								if($seasons->ppv_interval > $key):
+				<div class="favorites-contens">
+          <ul class="category-page list-inline row p-0 mb-0">
+              <?php 
+                    foreach($season as $key => $seasons):  
+                      foreach($seasons->episodes as $key => $episodes):
+                        if($seasons->ppv_interval > $key):
 							 ?>
-                           <li class="slide-item col-sm-2 col-md-2 col-xs-12">
-                              <a href="<?php echo URL::to('episode').'/'.$series->title.'/'.$episodes->slug;?>">
-                                 <div class="block-images position-relative">
+                           
+                  <li class="slide-item col-sm-2 col-md-2 col-xs-12">
+                      <a href="<?php echo URL::to('episode').'/'.$series->title.'/'.$episodes->slug;?>">
+                           <div class="block-images position-relative">
                                     <div class="img-box">
                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class="w-100" >
                                    
-                                   
                                          <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
                                             <p class="p-tag"><?php echo "Free"; ?></p>
-                                          <!-- <p class="p-tag1"><?php //echo $currency->symbol.' '.$settings->ppv_price; ?></p> -->
+                                                 <!-- <p class="p-tag1"><?php //echo $currency->symbol.' '.$settings->ppv_price; ?></p> -->
                                           <?php }elseif(!empty($seasons->ppv_price)){?>
                                             <p class="p-tag"><?php echo "Free"; ?></p>
-                                          <!-- <p class="p-tag1"><?php //echo $currency->symbol.' '.$seasons->ppv_price; ?></p> -->
+                                               <!-- <p class="p-tag1"><?php //echo $currency->symbol.' '.$seasons->ppv_price; ?></p> -->
                                           <?php }elseif($series->ppv_status == null && $series->ppv_status == 0 ){ ?>
                                             <p class="p-tag"><?php echo "Free"; ?></p>
                                             <?php } ?>
-                                        </div>
+
+                                    </div>
                                  
                                     <div class="block-description" >
                                     
                                  
                                          <h6><?= $episodes->title; ?></h6>
-										<p class="desc text-white mt-2 mb-0"><?php if(strlen($series->description) > 90){ echo substr($series->description, 0, 90) . '...'; } else { echo $series->description; } ?></p>
-                                        <p class="date desc text-white mb-0"><?= date("F jS, Y", strtotime($episodes->created_at)); ?></p>
-										<p class="text-white desc"><?= gmdate("H:i:s", $episodes->duration); ?></p>
+                                            <p class="desc text-white mt-2 mb-0"><?php if(strlen($series->description) > 90){ echo substr($series->description, 0, 90) . '...'; } else { echo $series->description; } ?></p>
+                                                                <p class="date desc text-white mb-0"><?= date("F jS, Y", strtotime($episodes->created_at)); ?></p>
+                                            <p class="text-white desc"><?= gmdate("H:i:s", $episodes->duration); ?></p>
                                
                                    
                                        <div class="hover-buttons">
@@ -185,13 +184,12 @@ $series = $series_data ;
                                   </div>
                               </a>
                            </li>
-                           
-                            
+                           <?php endif;	endforeach; 
+						                      endforeach; ?>
                         </ul>
                      </div>
-			<?php endif;
-							endforeach; 
-						endforeach;
+			<?php 
+						
 					// }
 						?>
 			<div style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $series->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
