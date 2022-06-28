@@ -2274,36 +2274,43 @@ class HomeController extends Controller
         if ($request->ajax())
         {
 
-            $videos = Video::where('search_tags', 'LIKE', '%' . $request->country . '%')
-                            ->where('active', '=', '1')
-                            ->where('status', '=', '1')
-                            ->where('draft', '=', '1')
-                            ->limit('10');
-                            if ($getfeching != null && $getfeching->geofencing == 'ON')
-                            {
-                                $videos = $videos->whereNotIn('videos.id', $blockvideos);
-                            }
-                           $videos = $videos ->get();
+            $videos = Video::orwhere('videos.search_tags', 'LIKE', '%' . $request->country . '%')
+                           ->orwhere('videos.title', 'LIKE', '%' . $request->country . '%')
+                           ->where('active', '=', '1')
+                           ->where('status', '=', '1')
+                           ->where('draft', '=', '1')
+                           ->orderBy('created_at', 'desc')
+                           ->limit('10');
+                           if ($getfeching != null && $getfeching->geofencing == 'ON')
+                           {
+                               $videos = $videos->whereNotIn('videos.id', $blockvideos);
+                           }
+                           $videos = $videos->get();
 
-            $livestream = LiveStream::where('search_tags', 'LIKE', '%' . $request->country . '%')
+
+            $livestream = LiveStream::orwhere('search_tags', 'LIKE', '%' . $request->country . '%')
+                            ->orwhere('title', 'LIKE', '%' . $request->country . '%')
                             ->where('active', '=', '1')
                             // ->where('status', '=', '1')
                             ->limit('10')
                             ->get();
 
-            $audio = Audio::where('search_tags', 'LIKE', '%' . $request->country . '%')
+            $audio = Audio::orwhere('search_tags', 'LIKE', '%' . $request->country . '%')
+                            ->orwhere('audio.title', 'LIKE', '%' .$request->country . '%')
                             ->where('active', '=', '1')
                             ->where('status', '=', '1')
                             ->limit('10')
                             ->get();
 
-            $Episode = Episode::where('search_tags', 'LIKE', '%' . $request->country . '%')
+            $Episode = Episode::orwhere('search_tags', 'LIKE', '%' . $request->country . '%')
+                            ->orwhere('episodes.title', 'LIKE', '%' . $request->country . '%')
                             ->where('active', '=', '1')
                             ->where('status', '=', '1')
                             ->limit('10')
                             ->get(); 
                             
             $Series = Series::where('search_tag', 'LIKE', '%' . $request->country . '%')
+                             ->orwhere('title', 'LIKE', '%' . $request->country . '%')
                             ->where('active', '=', '1')
                             ->limit('10')
                             ->get();  
