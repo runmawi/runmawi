@@ -378,8 +378,7 @@ input:checked + .sliderk:before {
                                    
                                           <li class="dropdown menu-item" >
                                             <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown" >  
-                                              <a href="https://www.google.com"><?php echo __($menu->name);?>  <i class="ri-arrow-down-s-line"></i></a>
-
+                                              <?php echo __($menu->name);?>  <i class="ri-arrow-down-s-line"></i>
                                             </a>
                                        
 

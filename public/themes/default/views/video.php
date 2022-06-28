@@ -1402,8 +1402,8 @@ var videotype_Ids = <?php echo json_encode($video_type_id); ?>;
     // alert();
   document.getElementById("end_card_video").style.display = "none";
     if (e.target.currentTime >= endtime) {
-            // document.getElementById("end_card_video").style.display = "block"; // Manual show
-  document.getElementById("end_card_video").style.display = "none";
+            document.getElementById("end_card_video").style.display = "block"; // Manual show
+  // document.getElementById("end_card_video").style.display = "none";
 
     } 
       
