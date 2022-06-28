@@ -494,3 +494,19 @@ function button_bg_color()
     return  $button_bg_color ;
 }
 
+function Geofencing(){
+    $getfeching = App\Geofencing::first();
+
+    return $getfeching;
+}
+
+function Country_name(){
+    
+    $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+    $userIp = $geoip->getip();
+    $countryName = $geoip->getCountry();
+    $regionName = $geoip->getregion();
+    $cityName = $geoip->getcity();
+
+    return $countryName;
+}
