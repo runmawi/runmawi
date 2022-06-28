@@ -13,21 +13,24 @@
     }
     select:invalid { color:grey!important; }
     select:valid { color:#808080!important; }
-
+    .plyr__video-wrapper::before{
+        display: none;
+    }
 </style>
 
 <?php 
 $series = $series_data ;
  ?>
-<div class="container-fluid" >
+     <div id="myImage" style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.3), rgba(0, 0, 0, 0.3)), url(<?=URL::to('/') . '/public/uploads/images/' . $series->player_image ?>);background-position:center; background-repeat: no-repeat; background-size:100% 100%;height:550px;  padding:">
+<div class="container-fluid pt-5" >
 	<div id="series_bg_dim" <?php if($series->access == 'guest' || ($series->access == 'subscriber' && !Auth::guest()) ): ?><?php else: ?>class="darker"<?php endif; ?>></div>
 
-	<div class="row mt-3">
+	<div class="row mt-3 align-items-center">
 		<?php if( $ppv_exits > 0 || $series->access == 'guest' && $series->ppv_status != 1 || ( ($series->access == 'subscriber' && $series->ppv_status != 1 || $series->access == 'registered' && $series->ppv_status != 1 ) 
 		&& !Auth::guest() && Auth::user()->subscribed()) && $series->ppv_status != 1 || (!Auth::guest() && (Auth::user()->role == 'demo' && $series->ppv_status != 1 || 
 	 	Auth::user()->role == 'admin') ) || (!Auth::guest() && $series->access == 'registered' && 
 		$settings->free_registration && Auth::user()->role != 'registered' && $series->ppv_status != 1) ): ?>
-		<div class="col-md-7 p-0">
+		<div class="col-md-6 p-0">
 			<div id="series_title">
 				<div class="container">
 					<span class="label"></span> <h1><?= $series->title ?></h1><br><br>
@@ -37,80 +40,116 @@ $series = $series_data ;
 								<option value="season_<?= $seasons->id;?>">Season <?= $key+1; ?></option>
 							<?php endforeach; ?>
 						</select>
-					</div><br><br>
-					<div class="row p-2">
+					</div>
+					<div class="row p-2 text-white">
                         <div class="col-md-7">
-						<p class="desc" style="color:#fff;"><?php echo $series->description;?></p></div>
+                            <p class="desc" style="color:#fff!important;"><?php echo $series->details;?></p>
+						<b><p class="desc" style="color:#fff;"><?php echo $series->description;?></p></b></div>
 					</div>
 				</div>
+               
 			</div>
 		</div>
-		<div class="col-md-5 text-center" id="theDiv">
+		<div class="col-md-6 text-center" id="theDiv">
 			<!-- <img id="myImage" src="<? //URL::to('/') . '/public/uploads/images/' . $series->image; ?>" class="w-100"> -->
-			<img id="myImage" class="w-100" >
+			<!--<img id="myImage" class="w-100" >-->
+            <div id="series_container">
+
+						 <video id="videoPlayer"  class="video-js vjs-default-skin" poster="<?= URL::to('/') . '/public/uploads/images/' . $series->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' width="100%" style="width:100%;" type="video/mp4"  data-authenticated="<?= !Auth::guest() ?>">
+							<source src="" type='video/mp4' label='auto' >
+							<source src="" type='video/webm' label='auto' >
+							<source src="" type='video/ogg' label='auto' >
+						
+							<p class="vjs-no-js">To view this series please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 series</a></p>
+						</video>
+						</div>
+            
+            
+            
+            
+            
+            
 		</div>
 	</div>
 </div>
-
+</div>
 <section id="tabs" class="project-tab">
-	<div class="">
-		<div class="row m-5">
+	<div class="container-fluid">
+		<div class="row">
 			<div class="col-md-12 mt-4">
 				<nav class="nav-justified">
 					<div class="nav nav-tabs nav-fill " id="nav-tab" role="tablist">
-						<a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Episode</a>
-						<a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Related</a>
-						<a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Detail</a>
+                        <h4>Episode</h4>
+						<!--<a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Episode</a>
+						<!--<a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Related</a>
+						<a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Detail</a>-->
 					</div>
 				</nav>
-				<div class="tab-content" id="nav-tabContent">
-					<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+				<div >
+					<div >
 <!-- $series->title -->
 						
-						<?php 
-						// if($series->ppv_status == null){						
-						foreach($season as $key => $seasons):  
-							foreach($seasons->episodes as $key => $episodes):
-								// dd($seasons->ppv_interval);
-								if($seasons->ppv_interval > $key):
+				<div class="favorites-contens">
+          <ul class="category-page list-inline row p-0 mb-0">
+              <?php 
+                    foreach($season as $key => $seasons):  
+                      foreach($seasons->episodes as $key => $episodes):
+                        if($seasons->ppv_interval > $key):
 							 ?>
-								<a href="<?php echo URL::to('episode').'/'.$series->title.'/'.$episodes->slug;?>">
-								<div class="row mt-4 episodes_div season_<?= $seasons->id;?>">
-									<div class="col-md-3">
-										<img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" width="200" >
-										
-                                          <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
+                           
+                  <li class="slide-item col-sm-2 col-md-2 col-xs-12">
+                      <a href="<?php echo URL::to('episode').'/'.$series->title.'/'.$episodes->slug;?>">
+                           <div class="block-images position-relative">
+                                    <div class="img-box">
+                                      <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class="w-100" >
+                                   
+                                         <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
                                             <p class="p-tag"><?php echo "Free"; ?></p>
-                                          <!-- <p class="p-tag1"><?php //echo $currency->symbol.' '.$settings->ppv_price; ?></p> -->
+                                                 <!-- <p class="p-tag1"><?php //echo $currency->symbol.' '.$settings->ppv_price; ?></p> -->
                                           <?php }elseif(!empty($seasons->ppv_price)){?>
                                             <p class="p-tag"><?php echo "Free"; ?></p>
-                                          <!-- <p class="p-tag1"><?php //echo $currency->symbol.' '.$seasons->ppv_price; ?></p> -->
+                                               <!-- <p class="p-tag1"><?php //echo $currency->symbol.' '.$seasons->ppv_price; ?></p> -->
                                           <?php }elseif($series->ppv_status == null && $series->ppv_status == 0 ){ ?>
                                             <p class="p-tag"><?php echo "Free"; ?></p>
                                             <?php } ?>
-                                        
-                                <!-- </div> -->
-								</div>
-									<div class="col-md-7 trending-info">
-										<h1><?= $episodes->title; ?></h1>
-										<p class="desc"><?php if(strlen($series->description) > 90){ echo substr($series->description, 0, 90) . '...'; } else { echo $series->description; } ?></p>
-                                        <p class="date text-white"><?= date("F jS, Y", strtotime($episodes->created_at)); ?></p>
-										<p class="text-white"><?= gmdate("H:i:s", $episodes->duration); ?></p>
-									</div>
-									<div class="col-md-2">
-									</div>
-								</div>
-							</a>
-							<?php else : ?>
-								
-							<a href="<?php echo URL::to('episode').'/'.$series->title.'/'.$episodes->slug;?>">
-								<div class="row align-items-center mt-4 episodes_div season_<?= $seasons->id;?>">
-									<div class="col-md-3">
-                                        <div class="block-images position-relative">
+
+                                    </div>
+                                 
+                                    <div class="block-description" >
+                                    
+                                 
+                                         <h6><?= $episodes->title; ?></h6>
+                                            <p class="desc text-white mt-2 mb-0"><?php if(strlen($series->description) > 90){ echo substr($series->description, 0, 90) . '...'; } else { echo $series->description; } ?></p>
+                                                                <p class="date desc text-white mb-0"><?= date("F jS, Y", strtotime($episodes->created_at)); ?></p>
+                                            <p class="text-white desc"><?= gmdate("H:i:s", $episodes->duration); ?></p>
+                               
+                                   
+                                       <div class="hover-buttons">
+                                            <a href="<?php echo URL::to('episode').'/'.$series->title.'/'.$episodes->slug;?>">
+                                          <span class="text-white">
+                                          <i class="fa fa-play mr-1" aria-hidden="true"></i>
+                                          Watch Now
+                                          </span>
+                                           </a>
+                                           <div>
+                                           <!-- <a   href="" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist</a> -->
+                 
+                                 </div>
+                                        </div>
+                                     </div>
+                                  </div>
+                              </a>
+                            </li>
+                           
+                           	<?php else : ?>
+                             <li class="slide-item col-sm-2 col-md-2 col-xs-12">
+                              <a href="<?php echo URL::to('episode').'/'.$series->title.'/'.$episodes->slug;?>">
+                                 <div class="block-images position-relative">
                                     <div class="img-box">
-										<img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" width="250">
-										
-                                          <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
+                                      <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class="w-100" >
+                                   
+                                   
+                                           <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
                                           <p class="p-tag1"><?php echo $currency->symbol.' '.$settings->ppv_price; ?></p>
                                           <?php }elseif(!empty($seasons->ppv_price)){?>
                                           <p class="p-tag1"><?php echo $currency->symbol.' '.$seasons->ppv_price; ?></p>
@@ -118,36 +157,41 @@ $series = $series_data ;
                                             <p class="p-tag"><?php echo "Free"; ?></p>
                                             <?php } ?>
                                             </div>
-                                <!-- </div> -->
-                                        </div></div>
-									<div class="col-md-7">
-										<h4><?= $episodes->title; ?></h4>
+                                 
+                                    <div class="block-description" >
+                                    
+                                         <h6><?= $episodes->title; ?></h6>
 										<p class="desc text-white mt-2 mb-0"><?php if(strlen($series->description) > 90){ echo substr($series->description, 0, 90) . '...'; } else { echo $series->description; } ?></p>
                                         <p class="date desc text-white mb-0"><?= date("F jS, Y", strtotime($episodes->created_at)); ?></p>
-										<p class="text-white desc">Duration: <?= gmdate("H:i:s", $episodes->duration); ?></p>
-									</div>
-									<div class="col-md-2">
-										
-									</div>
-								</div>
-							</a>
-							<?php endif;
-							endforeach; 
-						endforeach;
+										<p class="text-white desc"><?= gmdate("H:i:s", $episodes->duration); ?></p>
+                               
+
+                                   
+                                       <div class="hover-buttons">
+                                                                        <a href="<?php echo URL::to('episode').'/'.$series->title.'/'.$episodes->slug;?>">
+
+                                          <span class="text-white">
+                                          <i class="fa fa-play mr-1" aria-hidden="true"></i>
+                                          Watch Now
+                                          </span>
+                                           </a>
+                                           <div>
+                                           <!-- <a   href="" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist</a> -->
+                 
+                                 </div>
+                                        </div>
+                                     </div>
+                                  </div>
+                              </a>
+                           </li>
+                           <?php endif;	endforeach; 
+						                      endforeach; ?>
+                        </ul>
+                     </div>
+			<?php 
+						
 					// }
 						?>
-							</div>
-							<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-								Related
-							</div>
-							<div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-								Detail
-							</div>
-						</div>
-            </div>
-        </div>
-
-		<?php else: ?>
 			<div style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $series->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
 					<div id="ppv">
 				<h2>Purchase to Watch the Series <?php if($series->access == 'subscriber'): ?>Subscribers<?php elseif($series->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
@@ -167,11 +211,16 @@ $series = $series_data ;
         </div>
 				</div>
 				</div>
+                </div>
+            </div>
+        </div>
+    </div>
 		</section>
 		
 				<?php endif;?>
 				<?php $payment_type = App\PaymentSetting::get(); ?>
-
+</div>
+<?php include('footer.blade.php');?>
 
 
 				          <!-- Modal -->

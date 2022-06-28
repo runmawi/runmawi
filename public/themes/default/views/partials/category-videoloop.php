@@ -181,13 +181,13 @@ if(isset($videos)) :
                                    
                                 </div>
                                 <div class="block-description">
-
+                                      <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
                                     <?php if($ThumbnailSetting->title == 1) { ?>            <!-- Title -->
-                                        <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
+                                      
                                             <h6>
                                             <?php  echo (strlen($category_video->title) > 17) ? substr($category_video->title,0,18).'...' : $category_video->title; ?>
                                             </h6>
-                                        </a>
+                                       
                                     <?php } ?>  
 
                                     <div class="movie-time d-flex align-items-center pt-1">
@@ -283,8 +283,9 @@ if(isset($videos)) :
                                        </button></div>
                         -->
                                 </div>
-                              
+                               </a>
                             </div>
+                             </div>
                              </a>
                     </li>
                     <?php           
