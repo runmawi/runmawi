@@ -16,12 +16,15 @@
     .plyr__video-wrapper::before{
         display: none;
     }
+    .img-fluid {
+    min-height: 300px;
+}
 </style>
 
 <?php 
 $series = $series_data ;
  ?>
-     <div id="myImage" style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.3), rgba(0, 0, 0, 0.3)), url(<?=URL::to('/') . '/public/uploads/images/' . $series->player_image ?>);background-position:center; background-repeat: no-repeat; background-size:100% 100%;height:550px;  padding:">
+     <div id="myImage" style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.3), rgba(0, 0, 0, 0.3)), url(<?=URL::to('/') . '/public/uploads/images/' . $series->player_image ?>);background-position:center; background-repeat: no-repeat; background-size:cover;height:650px;  padding:">
 <div class="container-fluid pt-5" >
 	<div id="series_bg_dim" <?php if($series->access == 'guest' || ($series->access == 'subscriber' && !Auth::guest()) ): ?><?php else: ?>class="darker"<?php endif; ?>></div>
 
@@ -72,7 +75,7 @@ $series = $series_data ;
 		</div>
 	</div>
 </div>
-</div>
+
 <section id="tabs" class="project-tab">
 	<div class="container-fluid">
 		<div class="row">
@@ -101,7 +104,7 @@ $series = $series_data ;
                       <a href="<?php echo URL::to('episode').'/'.$series->title.'/'.$episodes->slug;?>">
                            <div class="block-images position-relative">
                                     <div class="img-box">
-                                      <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class="w-100" >
+                                      <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class="img-fluid" >
                                    
                                          <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
                                             <p class="p-tag"><?php echo "Free"; ?></p>
@@ -146,7 +149,7 @@ $series = $series_data ;
                               <a href="<?php echo URL::to('episode').'/'.$series->title.'/'.$episodes->slug;?>">
                                  <div class="block-images position-relative">
                                     <div class="img-box">
-                                      <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class="w-100" >
+                                      <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class=" img-fluid" >
                                    
                                    
                                            <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
@@ -219,7 +222,7 @@ $series = $series_data ;
 		
 				<?php endif;?>
 				<?php $payment_type = App\PaymentSetting::get(); ?>
-</div>
+
 <?php include('footer.blade.php');?>
 
 

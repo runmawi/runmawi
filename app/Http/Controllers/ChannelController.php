@@ -54,6 +54,7 @@ use FFMpeg\Coordinate\Dimension;
 use FFMpeg\Coordinate\TimeCode;
 use FFMpeg\Format\Video\X264;
 use App\RelatedVideo;
+use App\LiveCategory;
 
 class ChannelController extends Controller
 {
@@ -1587,29 +1588,54 @@ class ChannelController extends Controller
 
       public function MovieList()
       {
-        try {
-          $data =array(
-            "Movie_list" => Language::all() ,
-          );
 
-           return Theme::view('movie_list',$data); 
-        } 
-        catch (\Throwable $th) {
+        try {
+            $countryName = Country_name();
+            $ThumbnailSetting = ThumbnailSetting::first();
+            
+            $parentCategories = Language::get();
+
+            // blocked videos
+                $block_videos = BlockVideo::where('country_id',$countryName)->get();
+                if(!$block_videos->isEmpty()){
+                    foreach($block_videos as $block_video){
+                    $blockvideos[]=$block_video->video_id;
+                  }
+              }   
+              else{
+                  $blockvideos[]='';
+              } 
+
+            $data =array(
+              'ThumbnailSetting' => $ThumbnailSetting,
+              'blockvideos'      => $blockvideos,
+              'parentCategories' => $parentCategories,
+
+            );    
+
+            return Theme::view('movie_list',$data); 
+
+        } catch (\Throwable $th) {
            return abort(404);
         }
+       
+      
       }
 
       public function liveList()
       {
-        try {
-          $data =array(
-            "Live_list" => VideoCategory::all() ,
-          );
+       
+        $ThumbnailSetting = ThumbnailSetting::first();
+        
+        $parentCategories = LiveCategory::get();
+
+        $data =array(
+          'ThumbnailSetting' => $ThumbnailSetting,
+          'parentCategories' => $parentCategories,
+        );    
+
 
            return Theme::view('Live_list',$data); 
-        } 
-        catch (\Throwable $th) {
-           return abort(404);
-        }
+        
       }
 }
