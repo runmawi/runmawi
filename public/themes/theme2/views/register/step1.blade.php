@@ -917,7 +917,18 @@ $( "#stripe_plan" ).validate({
                 required: true,
             },
             password:{
+                    required: true,
+                    minlength: 8,
+                    maxlength: 30,
+                    // regx: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])\w{6,}$/,
+                    regx: /^(?=.*[A-Z])(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+
+            },
+                password_confirmation: {
                 required: true,
+                minlength: 8,
+                maxlength: 30,
+                equalTo: "#password"
             },
             mobile: {
                 required: true,
@@ -969,7 +980,9 @@ $( "#stripe_plan" ).validate({
                     required: "Please Enter the Email Id",
                     remote: "Email Id already in taken ! Please try another Mobile Number"
                 },
-               
+                password: {
+                        pwcheck: "Password is not strong enough"
+                    }   
                
             }
 });

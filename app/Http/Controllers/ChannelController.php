@@ -547,13 +547,19 @@ class ChannelController extends Controller
             $Reels_videos = Video::Join('reelsvideo','reelsvideo.video_id','=','videos.id')->where('videos.id',$vid)->get();
 
             if(!empty($categoryVideos->publish_time)){
-            $new_date = Carbon::parse($categoryVideos->publish_time)->format('M d , y H:i:s');
+            $new_date = Carbon::parse($categoryVideos->publish_time)->format('M d ,y H:i:s');
             $currentdate = date("M d , y H:i:s");
             date_default_timezone_set('Asia/Kolkata');
             $current_date = Date("M d , y H:i:s");
             // $current_date = date("Y-m-d");
             $date=date_create($current_date);
             $currentdate = date_format($date,"M d ,y H:i:s");
+                    //  dd($currentdate);
+              //         echo "<pre>";
+              // print_r($currentdate);
+              // echo "<pre>";
+              // print_r($new_date);
+              // exit;
              if($currentdate < $new_date){
               // echo "<pre>";
               // print_r($new_date);
@@ -564,7 +570,7 @@ class ChannelController extends Controller
               $new_date = Carbon::parse($categoryVideos->publish_time)->format('M d , y h:i:s');
 
              }else{
-            //  print_r($currentdate);exit;
+            //  print_r($new_date);exit;
 
               $new_date = null;
             }
@@ -1575,5 +1581,33 @@ class ChannelController extends Controller
 
         $categoryVideos = $categoryVideos->get();
 
+      }
+
+      public function MovieList()
+      {
+        try {
+          $data =array(
+            "Movie_list" => Language::all() ,
+          );
+
+           return Theme::view('movie_list',$data); 
+        } 
+        catch (\Throwable $th) {
+           return abort(404);
+        }
+      }
+
+      public function liveList()
+      {
+        try {
+          $data =array(
+            "Live_list" => VideoCategory::all() ,
+          );
+
+           return Theme::view('Live_list',$data); 
+        } 
+        catch (\Throwable $th) {
+           return abort(404);
+        }
       }
 }
