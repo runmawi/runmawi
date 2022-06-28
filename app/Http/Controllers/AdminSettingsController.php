@@ -192,7 +192,7 @@ class AdminSettingsController extends Controller
           $file->move($path, $file->getClientOriginalName());
 
           $logo_path = public_path('uploads/settings/'. $file->getClientOriginalName() );
-          Image::make($logo_path)->fit(180 ,29)->save(public_path('uploads/settings/'. $file->getClientOriginalName() ) );
+          Image::make($logo_path)->resize(80 ,80)->save(public_path('uploads/settings/'. $file->getClientOriginalName() ) );
           $settings->logo  = $file->getClientOriginalName();
 
      }
