@@ -194,8 +194,8 @@ $series = $series_data ;
 			<?php 
 						
 					// }
-						?>
-			<div style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $series->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
+						?><!--style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $series->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;"-->
+			<div >
 					<div id="ppv">
 				<h2>Purchase to Watch the Series <?php if($series->access == 'subscriber'): ?>Subscribers<?php elseif($series->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
 				<div class="clear"></div>

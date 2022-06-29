@@ -1903,13 +1903,13 @@ box-shadow: -1px 6px 13px 0px rgba(0,0,0,0.44);
 /* Player Css */
 
 #video .plyr.plyr--full-ui, #video-trailer .plyr.plyr--full-ui {
-    height: calc(100vh - 80px - 75px);
+    height: calc(90vh - 80px - 75px);
     max-width: none;
     width: 100%;
 }
 .plyr__poster {background-position: contain !important;/*background-size: 80% !important;*/}
 #video .plyr.plyr--full-ui, #video-trailer .plyr.plyr--full-ui, #video_container .plyr.plyr--full-ui, #video_container .plyr__video-embed, #watch_trailer .plyr.plyr--full-ui, #watch_trailer .plyr__video-embed{
-    height: calc(100vh - 80px - 75px);
+    height: calc(90vh - 80px - 75px);
     max-width: none;
     width: 100%;
 }
