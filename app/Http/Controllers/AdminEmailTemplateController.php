@@ -104,8 +104,11 @@ class AdminEmailTemplateController extends Controller
       }
       else
       {
+        $data = [];
 
       }
+      if(count($data)> 0){
+
       $total_row = $data->count();
       if($total_row > 0)
       {
@@ -139,6 +142,7 @@ class AdminEmailTemplateController extends Controller
       );
 
       echo json_encode($data);
+    }
      }
 }
 }

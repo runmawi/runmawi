@@ -2427,9 +2427,10 @@ class AdminUsersController extends Controller
             }
             else
             {
-
+                $data = [];
             }
             $i = 1;
+            if(count($data) > 0){
             $total_row = $data->count();
             if ($total_row > 0)
             {
@@ -2459,6 +2460,7 @@ class AdminUsersController extends Controller
 
             echo json_encode($data);
         }
+    }
     }
 
     public function PlanAllCity(Request $request)
@@ -2479,9 +2481,11 @@ class AdminUsersController extends Controller
             }
             else
             {
+                $data = [];
 
             }
             $i = 1;
+            if(count($data) > 0){
             $total_row = $data->count();
             if ($total_row > 0)
             {
@@ -2512,6 +2516,7 @@ class AdminUsersController extends Controller
             echo json_encode($data);
         }
     }
+    }
 
     public function PlanAllCountry(Request $request)
     {
@@ -2531,9 +2536,11 @@ class AdminUsersController extends Controller
             }
             else
             {
+                $data = [];
 
             }
             $i = 1;
+            if(count($data) > 0){
             $total_row = $data->count();
             if ($total_row > 0)
             {
@@ -2562,6 +2569,7 @@ class AdminUsersController extends Controller
             );
 
             echo json_encode($data);
+        }
         }
     }
 
@@ -2585,9 +2593,11 @@ class AdminUsersController extends Controller
             }
             else
             {
+                $data = [];
 
             }
             $i = 1;
+            if(count($data) > 0){
             $total_row = $data->count();
             if ($total_row > 0)
             {
@@ -2618,6 +2628,7 @@ class AdminUsersController extends Controller
             echo json_encode($data);
         }
     }
+    }
 
     public function PlanCity(Request $request)
     {
@@ -2637,9 +2648,10 @@ class AdminUsersController extends Controller
             }
             else
             {
-
+                $data = [];
             }
             $i = 1;
+            if(count($data) > 0){
             $total_row = $data->count();
             if ($total_row > 0)
             {
@@ -2669,6 +2681,7 @@ class AdminUsersController extends Controller
 
             echo json_encode($data);
         }
+    }
     }
 
     public function profilePreference(Request $request)

@@ -1642,8 +1642,8 @@ class ChannelController extends Controller
        
         $ThumbnailSetting = ThumbnailSetting::first();
         
+        $parentCategories = LiveCategory::get();
         $parentCategories = LiveCategory::orderBy('order')->where('in_menu',1)->get();
-
         $data =array(
           'ThumbnailSetting' => $ThumbnailSetting,
           'parentCategories' => $parentCategories,
