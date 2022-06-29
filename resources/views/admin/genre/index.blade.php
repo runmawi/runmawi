@@ -240,7 +240,7 @@ border-radius: 0px 4px 4px 0px;
 			function updateOrder(data) {
 				
 				$.ajax({
-					url:'<?= URL::to('admin/category_order');?>',
+					url:'<?= URL::to('admin/Series_genre_order');?>',
 					type:'post',
 					data:{position:data, _token : $('#_token').val()},
 					success:function(){

@@ -75,8 +75,10 @@ class AdminSeriesGenreController extends Controller
                  $input['image']  = 'default.jpg';
         }
 
+        $SeriesGenre = SeriesGenre::create($input);
+        $SeriesGenre->order = $SeriesGenre->id;
+        $SeriesGenre->save();
 
-        SeriesGenre::create($input);
         return back()->with('message', 'New Genre added successfully.');
 
     }
@@ -139,5 +141,20 @@ class AdminSeriesGenreController extends Controller
         SeriesGenre::destroy($id);
         
         return Redirect::to('admin/Series/Genre')->with(array('message' => 'Successfully Deleted Genre', 'note_type' => 'success') );
+    }
+
+    public function Series_genre_order(Request $request){
+
+        $input = $request->all();
+        $position = $_POST['position'];
+
+        $i=1;
+        foreach($position as $k=>$v){
+          $videocategory = SeriesGenre::find($v);
+          $videocategory->order = $i;
+          $videocategory->save();
+          $i++;
+        }
+        return 1;
     }
 }

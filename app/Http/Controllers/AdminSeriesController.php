@@ -45,6 +45,7 @@ use App\SeriesCategory as SeriesCategory;
 use App\SeriesLanguage as SeriesLanguage;
 use GuzzleHttp\Client;
 use GuzzleHttp\Message\Response;
+use App\SeriesGenre;
 
 class AdminSeriesController extends Controller
 {
@@ -153,7 +154,7 @@ class AdminSeriesController extends Controller
             'post_route' => URL::to('admin/series/store'),
             'button_text' => 'Add New Series',
             'admin_user' => Auth::user(),
-            'series_categories' => VideoCategory::all(),
+            'series_categories' => SeriesGenre::all(),
             'languages' => Language::all(),
             'artists' => Artist::all(),
             'series_artist' => [],
@@ -403,7 +404,7 @@ class AdminSeriesController extends Controller
             'post_route' => URL::to('admin/series/update'),
             'button_text' => 'Update Series',
             'admin_user' => Auth::user(),
-            'series_categories' => VideoCategory::all(),
+            'series_categories' => SeriesGenre::all(),
             'languages' => Language::all(),
             'artists' => Artist::all(),
             'series_artist' => Seriesartist::where('series_id', $id)->pluck('artist_id')->toArray(),

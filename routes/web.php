@@ -555,8 +555,9 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::get('/Series_genre/edit/{id}', 'AdminSeriesGenreController@Series_genre_edit');
     Route::post('/Series_genre/update', 'AdminSeriesGenreController@Series_genre_update');
     Route::get('/Series_genre/delete/{id}', 'AdminSeriesGenreController@Series_genre_delete');
+    Route::Post('/Series_genre_order', 'AdminSeriesGenreController@Series_genre_order');
     
-
+    
 //Admin Series Season Manage
     // Route::get('/season/create/{id}', 'AdminSeriesController@create_season');
     Route::post('/season/create/', 'AdminSeriesController@create_season');
@@ -1439,6 +1440,11 @@ Route::get('/Artist/{slug}', 'ChannelController@artist_videos');
 Route::get('categoryList', 'ChannelController@categoryList')->name('categoryList');
 Route::get('Movie-list', 'ChannelController@MovieList')->name('MovieList');
 Route::get('Live-list', 'ChannelController@liveList')->name('liveList');
+Route::get('Series-list', 'ChannelController@Series_List')->name('SeriesList');
+Route::get('Series/Genre/{id}', 'ChannelController@Series_genre_list')->name('Series_genre_list');
+
+
+
 
     // Filter 
 Route::get('categoryfilter', 'ChannelController@categoryfilter')->name('categoryfilter');
