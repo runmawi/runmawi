@@ -68,16 +68,16 @@ $Rtmp_url = str_replace ('rtmp', 'http', $rtmp_url);
 if(empty($new_date)){
 
 if(!Auth::guest()){
-    
+    // dd($ppv_exist);
  if(!empty($password_hash)){
-if ($ppv_exist > 0 || Auth::user()->subscribed()  || $video->access == "guest" && $video->ppv_price == null ) { ?>
+if ($ppv_exist > 0 || Auth::user()->subscribed() || Auth::user()->role == "admin" || $video->access == "guest" && $video->ppv_price == null ) { ?>
 <div id="video_bg"> 
         <div class="">
             <div id="video sda" class="fitvid" style="margin: 0 auto;">
 
             <?php if(!empty($video->mp4_url && $request_url != "m3u8"  && $video->url_type == "mp4" )){  ?>
 
-                    <video id="videoPlayer"  class="" poster="<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?=$video->mp4_url; ?>"  type="application/x-mpegURL" data-authenticated="<?=!Auth::guest() ?>">
+                    <video id="videoPlayer" autoplay onplay="playstart()" onended="autoplay1()" class="video-js vjs-default-skin vjs-big-play-centered" poster="<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?=$video->mp4_url; ?>"  type="application/x-mpegURL" data-authenticated="<?=!Auth::guest() ?>">
                         <source src="<?= $video->mp4_url; ?>" type='application/x-mpegURL' label='Auto' res='auto' />
                         <source src="<?php echo $video->mp4_url; ?>" type='application/x-mpegURL' label='480p' res='480'/>
                         <!-- <source src="<?php echo URL::to('/storage/app/public/') . '/' . $video->path . '_2_1000.m3u8'; ?>" type='application/x-mpegURL' label='720p' res='720'/>  -->
@@ -143,7 +143,7 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()  || $video->access == "guest" &
             </div>
 
             <?php  } else {  ?>       
-                <div id="subscribers_only" style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.4)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
+                <div id="subscribers_only" style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.4)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
                     <div id="video_bg_dim" <?php if ( ($video->access == 'subscriber' && !Auth::guest())): ?><?php else: ?> class="darker"<?php endif; ?>></div>
                     <div class="row justify-content-center pay-live">
                         <div class="col-md-4 col-sm-offset-4">
@@ -167,39 +167,65 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()  || $video->access == "guest" &
         }
     
     else{  
-        //   dd($settings);
 
-                if (Auth::guest() && empty($video->ppv_price)) { ?>
-                <div id="video_bg"> 
-        <div class="container">
+                if (Auth::guest() && empty($video->ppv_price)) {  ?>
+               <div id="video_bg"> 
+        <div class="">
             <div id="video sda" class="fitvid" style="margin: 0 auto;">
-                <video id="videoPlayer" autoplay onplay="playstart()" onended="autoplay1()" class="video-js vjs-default-skin vjs-big-play-centered" poster="<?=URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?=$video->mp4_url; ?>"  type="application/x-mpegURL" data-authenticated="<?=!Auth::guest() ?>">
 
-                    <source src="<?=$video->mp4_url; ?>" type='application/x-mpegURL' label='Auto' res='auto' />
-                    <!--
-                    <source src="<?php echo URL::to('/storage/app/public/') . '/' . $video->path . '_0_250.m3u8'; ?>" type='application/x-mpegURL' label='480p' res='480'/>
-                    <source src="<?php echo URL::to('/storage/app/public/') . '/' . $video->path . '_2_1000.m3u8'; ?>" type='application/x-mpegURL' label='720p' res='720'/> 
-                    -->
-                </video>
+            <?php if(!empty($video->mp4_url && $request_url != "m3u8"  && $video->url_type == "mp4" )){  ?>
 
-                <div class="playertextbox hide">
-                    <p> <?php if (isset($videonext)) { ?>
-                        <?=App\LiveStream::where('id', '=', $videonext->id)->pluck('title'); ?>
-                        <?php } elseif (isset($videoprev)) { ?>
-                        <?=App\LiveStream::where('id', '=', $videoprev->id)->pluck('title'); ?>
-                        <?php } ?>
+                    <video id="videoPlayer" autoplay onplay="playstart()" onended="autoplay1()" class="video-js vjs-default-skin vjs-big-play-centered" poster="<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?=$video->mp4_url; ?>"  type="application/x-mpegURL" data-authenticated="<?=!Auth::guest() ?>">
+                        <source src="<?= $video->mp4_url; ?>" type='application/x-mpegURL' label='Auto' res='auto' />
+                        <source src="<?php echo $video->mp4_url; ?>" type='application/x-mpegURL' label='480p' res='480'/>
+                        <!-- <source src="<?php echo URL::to('/storage/app/public/') . '/' . $video->path . '_2_1000.m3u8'; ?>" type='application/x-mpegURL' label='720p' res='720'/>  -->
+                    </video>
 
-                        <?php if (isset($videos_category_next)) { ?>
-                        <?=App\LiveStream::where('id', '=', $videos_category_next->id)->pluck('title'); ?>
-                        <?php } elseif (isset($videos_category_prev)) { ?>
-                        <?=App\LiveStream::where('id', '=', $videos_category_prev->id)->pluck('title'); ?>
-                        <?php } ?>
-                    </p>
+            <?php }elseif(!empty($video->embed_url)  && $video->url_type == "embed"){ ?> 
+                <div class="plyr__video-embed" id="player">
+                    <iframe
+                        src="<?php if(!empty($video->embed_url)){ echo $video->embed_url	; }else { } ?>"
+                        allowfullscreen
+                        allowtransparency
+                        allow="autoplay">
+                    </iframe>
                 </div>
-            </div>
+                <?php  }elseif(!empty($request_url == "m3u8")  && $video->url_type == "mp4"){  ?> 
+                    <!-- <div class="plyr__video-embed" id="player"> -->
+                        <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->mp4_url ?>">
+                        <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
+                        <input type="hidden" id="live" name="live" value="live">
+                        <input type="hidden" id="request_url" name="request_url" value="<?php echo $request_url ?>">
+
+                        <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                            <source  type="application/x-mpegURL"  src="<?php echo $video->mp4_url; ?>" >
+                        </video>
+                    <!-- </div>  -->
+            <?php }elseif(!empty($video->url_type == "Encode_video")){  ?>
+
+                        <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->hls_url ; ?>">
+                        <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
+                        <input type="hidden" id="live" name="live" value="live">
+                        <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
+
+                         <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                            <source  type="application/x-mpegURL"  src="<?php echo $video->hls_url ; ?>" >
+                        </video>
+
+               <?php  }elseif(!empty($video->url_type ) && $video->url_type == "live_stream_video"){  ?>
+
+                <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->live_stream_video; ?>">
+                <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
+                <input type="hidden" id="live" name="live" value="live">
+                <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
+                    <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                                <source type="application/x-mpegURL" src="<?php echo $video->live_stream_video ; ?>">
+                    </video>
+
+            <?php } ?>
 
             <?php  } else { ?>       
-                <div id="subscribers_only"style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.5)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
+                <div id="subscribers_only"style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.5)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
                     <div id="video_bg_dim" <?php if (($video->access == 'subscriber' && !Auth::guest())): ?><?php else: ?> class="darker"<?php endif; ?>></div>
                     <div class="row justify-content-center pay-live">
                         <div class="col-md-4 col-sm-offset-4">
@@ -214,7 +240,7 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()  || $video->access == "guest" &
            <?php }
             }
             } elseif(!empty($new_date)){ ?>
-                <div id="subscribers_only"style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.3)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
+                <div id="subscribers_only"style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.3)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
                     <h2> COMING SOON </h2>
                     <p class="countdown" id="demo"></p>
                     </div>
