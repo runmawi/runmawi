@@ -17,7 +17,7 @@
         display: none;
     }
     .img-fluid {
-    min-height: 300px;
+    min-height: 0px!important;
 }
 </style>
 
