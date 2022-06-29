@@ -797,7 +797,7 @@ border-radius: 0px 4px 4px 0px;
 
                            <div class="row">
                               <div class="col-sm-6 form-group">
-                              <label class="mb-1">Video Thumbnail <span>(9:16 Ratio or 720X1080px)</span></label><br>
+                              <label class="mb-1">Video Thumbnail <span>(9:16 Ratio or 1080X1920px)</span></label><br>
                                  <input type="file" name="image" id="image" >
                                  @if(!empty($video->image))
                                     <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" class="video-img w-100" />

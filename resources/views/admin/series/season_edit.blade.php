@@ -159,7 +159,7 @@
                                     @if(!empty($episodes->image))
                                     <img src="{{ Config::get('site.uploads_dir') . 'images/' . $episodes->image }}" class="episodes-img" width="200" />
                                     @endif
-                                    <p class="p1">Select the episodes image (1280x720 px or 16:9 ratio):</p>
+                                    <p class="p1">Select the episodes image (1080 X 1920px or 16:9 ratio):</p>
                                     <input type="file" multiple="true" class="form-control" name="image" id="image" />
                                 </div>
                             </div>

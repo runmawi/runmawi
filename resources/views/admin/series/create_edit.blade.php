@@ -114,7 +114,7 @@ $settings  = App\Setting::first();?>
 				<div class="panel panel-primary mt-3" data-collapsed="0"> <div class="panel-heading"> 
 				<div class="panel-title font-weight-bold"><label class="m-0">Series Image Cover</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body col-sm-6 p-0" style="display: block;"> 
-                    <p class="p1">Select the series image (1280x720 px or 9:16 ratio):</p> 
+                    <p class="p1">Select the series image (1080 X 1920px or 9:16 ratio):</p> 
 					@if(!empty($series->image))
 						<img src="{{ URL::to('/') . '/public/uploads/images/' . $series->image }}" class="series-img" width="200"/>
 					@endif
