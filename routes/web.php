@@ -1447,7 +1447,7 @@ Route::get('Series/Genre/{id}', 'ChannelController@Series_genre_list')->name('Se
 
 
     // Filter 
-Route::get('categoryfilter', 'ChannelController@categoryfilter')->name('categoryfilter');
+Route::post('category/{id}', 'ChannelController@categoryfilter')->name('categoryfilter');
 
 
     // Razorpay 
