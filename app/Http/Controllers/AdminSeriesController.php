@@ -45,6 +45,7 @@ use App\SeriesCategory as SeriesCategory;
 use App\SeriesLanguage as SeriesLanguage;
 use GuzzleHttp\Client;
 use GuzzleHttp\Message\Response;
+use App\SeriesGenre;
 
 class AdminSeriesController extends Controller
 {
@@ -153,7 +154,7 @@ class AdminSeriesController extends Controller
             'post_route' => URL::to('admin/series/store'),
             'button_text' => 'Add New Series',
             'admin_user' => Auth::user(),
-            'series_categories' => VideoCategory::all(),
+            'series_categories' => SeriesGenre::all(),
             'languages' => Language::all(),
             'artists' => Artist::all(),
             'series_artist' => [],
@@ -403,7 +404,7 @@ class AdminSeriesController extends Controller
             'post_route' => URL::to('admin/series/update'),
             'button_text' => 'Update Series',
             'admin_user' => Auth::user(),
-            'series_categories' => VideoCategory::all(),
+            'series_categories' => SeriesGenre::all(),
             'languages' => Language::all(),
             'artists' => Artist::all(),
             'series_artist' => Seriesartist::where('series_id', $id)->pluck('artist_id')->toArray(),
@@ -1338,6 +1339,8 @@ class AdminSeriesController extends Controller
 
         $value = array();
         $data = $request->all();
+        $series_id = $data['series_id'];
+        $season_id = $data['season_id'];
 
         $validator = Validator::make($request->all(), [
            'file' => 'required|mimes:video/mp4,video/x-m4v,video/*'
@@ -1360,9 +1363,10 @@ class AdminSeriesController extends Controller
          $episode = new Episode();
          $episode->title = $file_folder_name;
          $episode->mp4_url = $path;
+         $episode->series_id = $series_id;
+         $episode->season_id = $season_id;
          $episode->image = 'default_image.jpg';
          $episode->type = 'upload';
-
          $episode->status = 0;
          $episode->save(); 
         

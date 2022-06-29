@@ -199,19 +199,19 @@ $series = $series_data ;
 					<div id="ppv">
 				<h2>Purchase to Watch the Series <?php if($series->access == 'subscriber'): ?>Subscribers<?php elseif($series->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
 				<div class="clear"></div>
-				</div>
+				</div> -->
 
-				<div class="col-md-2 text-center text-white">
-                <div class="col-md-4">
+				<!-- <div class="col-md-2 text-center text-white">
+                <div class="col-md-4"> -->
 			<?php if ( $series->ppv_status == 1 && Auth::User()->role !="admin") { ?>
-			<button class="btn btn-primary" onclick="pay(<?php echo $settings->ppv_price; ?>)" >
-			Purchase For <?php echo $currency->symbol.' '.$settings->ppv_price; ?></button>
+			<!-- <button class="btn btn-primary" onclick="pay(<?php echo $settings->ppv_price; ?>)" >
+			Purchase For <?php echo $currency->symbol.' '.$settings->ppv_price; ?></button> -->
 
 			<?php } ?>
             <br>
-			</div>
+			<!-- </div> -->
 
-        </div>
+        <!-- </div> -->
 				</div>
 				</div>
                 </div>

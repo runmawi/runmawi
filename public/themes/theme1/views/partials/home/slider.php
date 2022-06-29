@@ -181,6 +181,83 @@ endif; ?>
 <?php endforeach; 
 endif; ?>
 
+<!-- VideoCategory -->
+<?php
+
+            $parentCategories = App\VideoCategory::where('banner',1)->get();
+                
+                foreach($parentCategories as $category) {
+                
+                    $videos_category = App\Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
+                    ->where('category_id','=',$category->id)
+                    ->where('active', '=', '1')
+                    ->where('status', '=', '1')
+                    ->where('draft', '=', '1')
+                    ->where('videos.banner','=','0');
+
+                    $videos_category = $videos_category->orderBy('videos.created_at','desc')->get();
+?>
+
+<?php if(isset($videos_category)) :
+    foreach($videos_category as $key => $videos):  ?>
+
+        <div class="item <?php if($key == 0){echo 'active';}?> header-image">
+            <div class="slide slick-bg s-bg-1 lazy"
+                     style="background:url('<?php echo URL::to('/').'/public/uploads/images/' .$videos->player_image;?>') no-repeat;background-size:inherit;background-position:right 10%; ">
+                <div class="container position-relative h-100">
+                    <div class="slider-inner h-100">
+
+                    <div class="row align-items-center bl h-100">
+                        <div class="col-xl-4 col-lg-12 col-md-12">
+                            <h1 class=" text-white title text-uppercase mb-3" data-animation-in="fadeInLeft" data-delay-in="0.6">
+                                    <?php echo __($videos->title); ?>
+                            </h1>
+
+                            <div class="mb-3">
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                            </div>
+
+                            <div data-animation-in="fadeInUp" data-delay-in="1.2" style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
+                                -webkit-line-clamp: 3;   -webkit-box-orient: vertical;  overflow: hidden;">
+                                <?php echo __($videos->description); ?>
+                            </div>
+
+                                              <!-- Trailer  -->
+                            <div class="justify r-mb-23  p-0" data-animation-in="fadeInUp"  data-delay-in="1.2">
+                                <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"  class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now</a>
+                                    <a href="#theme1-trailer"  class="theme1-trailer btn bd ml-2" data-trailer-url="<?= $videos->trailer ?>" data-trailer-type="<?= $videos->trailer_type ?>" onclick="trailer_slider_video(this)" >
+                                        <i class="fa fa-info" aria-hidden="true"></i> Watch Trailer
+                                    </a>
+                            </div>
+                            
+                        </div>
+                        <div class="col-xl-4 col-lg-12 col-md-12 mt-5 pt-5 b2"></div>
+                        <div class="col-xl-4 col-lg-12 col-md-12 text-center"></div>
+                    </div>
+            
+                        <div class="col-md-12">
+                            <div id="theme1-trailer" class="mfp-hide">
+
+                                <video  id="videoPlayer" poster="<?php echo URL::to('/').'/public/uploads/images/' .$videos->player_image;?>"  
+                                    controls src="<?= $videos->trailer; ?>"  type="application/x-mpegURL" >
+                                </video>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<?php endforeach; endif; ?>
+
+<?php }?>
+
+
+
 <!-- Banners -->
 <?php if(isset($banner)) : 
     foreach($banner as $key => $slider_video): 

@@ -8,18 +8,12 @@
         <?php
                 
             foreach($parentCategories as $category) {
-            
-                $videos = App\Video::join('languagevideos', 'languagevideos.video_id', '=', 'videos.id')
-                                    ->where('language_id', '=', $category->id)
+              
+                $videos = App\Series::join('series_categories', 'series_categories.series_id', '=', 'series.id')
+                                    ->where('category_id', '=', $category->id) 
                                     ->where('active', '=', '1')
-                                    ->where('status', '=', '1')
-                                    ->where('draft', '=', '1');
-                
-                if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
-                        $videos = $videos  ->whereNotIn('videos.id',$blockvideos);
-                }
-                    
-                $videos = $videos->orderBy('videos.created_at','desc')->get();
+                                    ->orderBy('series_categories.created_at','desc')
+                                    ->get();
         ?>
 
         @if (count($videos) > 0) 
@@ -27,14 +21,8 @@
                 <div class="row">
                     <div class="col-sm-12 overflow-hidden">
                             <div class="iq-main-header d-flex align-items-center justify-content-between">
-                                <a href="<?php echo URL::to('/language').'/'.$category->id."/".$category->name;?>" class="category-heading"  style="text-decoration:none;color:#fff">
-                                    <h4 class="movie-title"> 
-                                        @if(!empty($category->home_genre))
-                                            {{ $category->home_genre}} 
-                                        @else
-                                            {{ $category->name }} 
-                                        @endif
-                                    </h4>
+                                <a href="<?php echo URL::to('/category/').'/'.$category->slug;?>" class="category-heading" style="text-decoration: none; color: #fff;">
+                                    <h4 class="movie-title"> {{ $category->name }} </h4>
                                 </a>
                             </div>
 
@@ -48,30 +36,14 @@
                                         <li class="slide-item">
                                             <div class="block-images position-relative">
                                                 <!-- block-images -->
-                                                <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
+                                                <a href="<?php echo URL::to('play_series') ?><?= '/' . $category_video->slug ?>">
                                                     <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" class="img-fluid" alt=""> 
                                                 </a>
-                                            
-                                                @if($ThumbnailSetting->free_or_cost_label == 1) 
-                                                    @if(!empty($category_video->ppv_price))  <!-- PPV price -->
-                                                        <p class="p-tag1" >
-                                                            {{  $currency->symbol.' '.$category_video->ppv_price}}
-                                                        </p>
-                                                    @elseif( !empty($category_video->global_ppv || !empty($category_video->global_ppv) && $category_video->ppv_price == null))
-                                                        <p class="p-tag1">
-                                                            {{ $category_video->global_ppv.' '.$currency->symbol }}
-                                                        </p>
-                                                    @elseif($category_video->global_ppv == null && $category_video->ppv_price == null )
-                                                        <p class="p-tag" > 
-                                                            {{  "Free"}} 
-                                                        </p>
-                                                    @endif
-                                                @endif 
                                             </div>
 
                                             <div class="block-description">
                                                 <div class="hover-buttons">
-                                                    <a type="button" class="text-white btn-cl" href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
+                                                    <a type="button" class="text-white btn-cl" href="<?php echo URL::to('play_series') ?><?= '/' . $category_video->slug ?>">
                                                         <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" />
                                                     </a>
                                                 </div>
@@ -82,10 +54,6 @@
                                                     <h6>
                                                         <?php  echo (strlen($category_video->title) > 17) ? substr($category_video->title,0,18).'...' : $category_video->title; ?>
                                                     </h6>
-                                                @endif
-
-                                                @if($ThumbnailSetting->age == 1)   <!-- Age -->          
-                                                    <div class="badge badge-secondary">{{ $category_video->age_restrict.' '.'+' }}</div>
                                                 @endif
                                             </div>
 
@@ -112,30 +80,10 @@
                                             </div>
 
                                             <div class="movie-time my-2">
-                                                @if ( ($ThumbnailSetting->published_year == 1) && ( $category_video->year != null ) ) { ?>   <!-- published_year -->
+                                                @if ( ($ThumbnailSetting->published_year == 1) && ( $category_video->year != null ) )   <!-- published_year -->
                                                     <span class="text-white">
                                                         <i class="fa fa-calendar" aria-hidden="true"></i>
                                                             {{ ($category_video->year) }}
-                                                    </span>
-                                                @endif
-                                            </div>
-
-                                            <div class="movie-time my-2"> <!-- Category Thumbnail  setting -->
-                                                <?php
-                                                $CategoryThumbnail_setting =  App\CategoryVideo::join('video_categories','video_categories.id','=','categoryvideos.category_id')
-                                                            ->where('categoryvideos.video_id',$category_video->video_id)
-                                                            ->pluck('video_categories.name');   
-                                                ?>
-                                                @if ( ($ThumbnailSetting->category == 1 ) &&  ( count($CategoryThumbnail_setting) > 0 ) ) 
-                                                    <span class="text-white">
-                                                        <i class="fa fa-list-alt" aria-hidden="true"></i>
-                                                        <?php
-                                                            $Category_Thumbnail = array();
-                                                                foreach($CategoryThumbnail_setting as $key => $CategoryThumbnail){
-                                                                $Category_Thumbnail[] = $CategoryThumbnail ; 
-                                                                }
-                                                            echo implode(','.' ', $Category_Thumbnail);
-                                                        ?>
                                                     </span>
                                                 @endif
                                             </div>

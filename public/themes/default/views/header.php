@@ -1,122 +1,194 @@
 <!doctype html>
 <html lang="en-US">
    <head>
-      
+   <style>
+   .navbar-nav li:hover > ul.dropdown-menu {
+    display: block;
+}
+.dropdown-submenu {
+    position:relative;
+}
+.dropdown-submenu>.dropdown-menu {
+    top:0;
+    left:100%;
+    /* right:10rem; 10rem is the min-width of dropdown-menu */
+    margin-top:-6px;
+}
+
+/* rotate caret on hover */
+.dropdown-menu > li > a:hover:after {
+    text-decoration: underline;
+    transform: rotate(-90deg);
+} 
+
+  </style>
 <?php
-    
 // dd($video_category);
 
-   $theme_mode = App\SiteTheme::pluck('theme_mode')->first();
+$theme_mode = App\SiteTheme::pluck("theme_mode")->first();
 
-   if(!empty(Auth::User()->id)){
-      $id = Auth::User()->id;
-      $users = App\User::find($id);
-      $date = date_create($users->created_at);
-      $created_at = date_format($date,"Y-m-d");
-      $filldate = date('Y-m-d', strtotime($created_at. ' + 10 day'));
-      $currentdate = date('Y-m-d');
-      $DOB = $users->DOB;
-   }else{
-      $currentdate = null ;
-      $filldate = null ;
-      $DOB = null;
-   }
+if (!empty(Auth::User()->id)) {
+    $id = Auth::User()->id;
+    $users = App\User::find($id);
+    $date = date_create($users->created_at);
+    $created_at = date_format($date, "Y-m-d");
+    $filldate = date("Y-m-d", strtotime($created_at . " + 10 day"));
+    $currentdate = date("Y-m-d");
+    $DOB = $users->DOB;
+} else {
+    $currentdate = null;
+    $filldate = null;
+    $DOB = null;
+}
 // dd($currentdate);
 
 $data = Session::all();
 
-$uri_path = $_SERVER['REQUEST_URI']; 
-$uri_parts = explode('/', $uri_path);
+$uri_path = $_SERVER["REQUEST_URI"];
+$uri_parts = explode("/", $uri_path);
 $request_url = end($uri_parts);
-$uppercase =  ucfirst($request_url);
-if(!empty($data['password_hash']) && empty($uppercase) || empty($data['password_hash']) && empty($uppercase)){
-// dd($uppercase);
-   $uppercase = "Home" ;
-}else{
-
+$uppercase = ucfirst($request_url);
+if (
+    (!empty($data["password_hash"]) && empty($uppercase)) ||
+    (empty($data["password_hash"]) && empty($uppercase))
+) {
+    // dd($uppercase);
+    $uppercase = "Home";
+} else {
 }
 
 // exit();UA-42534483-14
 $data = Session::all();
-
-
-      ?>
+?>
   <!-- Required meta tags -->
-  <?php $settings = App\Setting::first(); //echo $settings->website_name;?>
+  <?php $settings = App\Setting::first();
+//echo $settings->website_name;
+?>
 
     
-    <?php if(!empty($data['password_hash'])){  $videos_data = App\Video::where('slug',$request_url)->first(); } //echo $settings->website_name; ?>
-    <?php if(!empty($data['password_hash'])){ $series = App\Series::where('title',$request_url)->first(); } //echo $settings->website_name; ?>
-    <?php if(!empty($data['password_hash'])){ $episdoe = App\Episode::where('title',$request_url)->first(); } //echo $settings->website_name; ?>
-    <?php if(!empty($data['password_hash'])){ $livestream = App\LiveStream::where('slug',$request_url)->first(); } //echo $settings->website_name; ?>
+    <?php if (!empty($data["password_hash"])) {
+        $videos_data = App\Video::where("slug", $request_url)->first();
+    }
+//echo $settings->website_name;
+?>
+    <?php if (!empty($data["password_hash"])) {
+        $series = App\Series::where("title", $request_url)->first();
+    }
+//echo $settings->website_name;
+?>
+    <?php if (!empty($data["password_hash"])) {
+        $episdoe = App\Episode::where("title", $request_url)->first();
+    }
+//echo $settings->website_name;
+?>
+    <?php if (!empty($data["password_hash"])) {
+        $livestream = App\LiveStream::where("slug", $request_url)->first();
+    }
+//echo $settings->website_name;
+?>
 
 
     <meta charset="UTF-8">
-    <title><?php
-   //  dd($data['password_hash']);
-      if(!empty($videos_data)){  echo $videos_data->title .' | '. $settings->website_name ;
-       }
-      elseif(!empty($series)){ echo $series->title .' | '. $settings->website_name ; }
-    elseif(!empty($episdoe)){ echo $episdoe->title .' | '. $settings->website_name ; }
-    elseif(!empty($livestream)){ echo $livestream->title .' | '. $settings->website_name ; }
-    else{ echo $uppercase .' | ' . $settings->website_name ;} ?></title>
-    <meta name="description" content= "<?php 
-     if(!empty($videos_data)){ echo $videos_data->description  ;
+    <title><?php //  dd($data['password_hash']);
+    if (!empty($videos_data)) {
+        echo $videos_data->title . " | " . $settings->website_name;
+    } elseif (!empty($series)) {
+        echo $series->title . " | " . $settings->website_name;
+    } elseif (!empty($episdoe)) {
+        echo $episdoe->title . " | " . $settings->website_name;
+    } elseif (!empty($livestream)) {
+        echo $livestream->title . " | " . $settings->website_name;
+    } else {
+        echo $uppercase . " | " . $settings->website_name;
+    } ?></title>
+    <meta name="description" content= "<?php if (!empty($videos_data)) {
+        echo $videos_data->description;
+    } elseif (!empty($episdoe)) {
+        echo $episdoe->description;
+    } elseif (!empty($series)) {
+        echo $series->description;
+    } elseif (!empty($livestream)) {
+        echo $livestream->description;
+    } else {
+        echo $settings->website_description;
     }
-    elseif(!empty($episdoe)){ echo $episdoe->description  ;}
-    elseif(!empty($series)){ echo $series->description ;}
-    elseif(!empty($livestream)){ echo $livestream->description  ;}
-    else{ echo $settings->website_description   ;} //echo $settings; ?>" />
+//echo $settings;
+?>" />
 
-    <meta property="og:title" content="<?php
-   //  dd($data['password_hash']);
-      if(!empty($videos_data)){  echo $videos_data->title .' | '. $settings->website_name ;
-       }
-      elseif(!empty($series)){ echo $series->title .' | '. $settings->website_name ; }
-    elseif(!empty($episdoe)){ echo $episdoe->title .' | '. $settings->website_name ; }
-    elseif(!empty($livestream)){ echo $livestream->title .' | '. $settings->website_name ; }
-    else{ echo $uppercase .' | ' . $settings->website_name ;} ?>" />
-
-
-
-   <meta property="og:description" content="<?php 
-     if(!empty($videos_data)){ echo $videos_data->description  ;
-    }
-    elseif(!empty($episdoe)){ echo $episdoe->description  ;}
-    elseif(!empty($series)){ echo $series->description ;}
-    elseif(!empty($livestream)){ echo $livestream->description  ;}
-    else{ echo $settings->website_description   ;} //echo $settings; ?>" />
+    <meta property="og:title" content="<?php //  dd($data['password_hash']);
+    if (!empty($videos_data)) {
+        echo $videos_data->title . " | " . $settings->website_name;
+    } elseif (!empty($series)) {
+        echo $series->title . " | " . $settings->website_name;
+    } elseif (!empty($episdoe)) {
+        echo $episdoe->title . " | " . $settings->website_name;
+    } elseif (!empty($livestream)) {
+        echo $livestream->title . " | " . $settings->website_name;
+    } else {
+        echo $uppercase . " | " . $settings->website_name;
+    } ?>" />
 
 
 
-   <meta property="og:image" content="<?php 
-     if(!empty($videos_data)){ echo URL::to('/public/uploads/images').'/'.$videos_data->image  ;
-    }
-    elseif(!empty($episdoe)){ echo URL::to('/public/uploads/images').'/'.$episdoe->image  ;}
-    elseif(!empty($series)){ echo URL::to('/public/uploads/images').'/'.$series->image ;}
-    elseif(!empty($livestream)){ echo URL::to('/public/uploads/images').'/'.$livestream->image ;}
-    else{  echo URL::to('/').'/public/uploads/settings/'. $settings->logo   ;} //echo $settings; ?>" />
+   <meta property="og:description" content="<?php if (!empty($videos_data)) {
+       echo $videos_data->description;
+   } elseif (!empty($episdoe)) {
+       echo $episdoe->description;
+   } elseif (!empty($series)) {
+       echo $series->description;
+   } elseif (!empty($livestream)) {
+       echo $livestream->description;
+   } else {
+       echo $settings->website_description;
+   }
+//echo $settings;
+?>" />
+
+
+
+   <meta property="og:image" content="<?php if (!empty($videos_data)) {
+       echo URL::to("/public/uploads/images") . "/" . $videos_data->image;
+   } elseif (!empty($episdoe)) {
+       echo URL::to("/public/uploads/images") . "/" . $episdoe->image;
+   } elseif (!empty($series)) {
+       echo URL::to("/public/uploads/images") . "/" . $series->image;
+   } elseif (!empty($livestream)) {
+       echo URL::to("/public/uploads/images") . "/" . $livestream->image;
+   } else {
+       echo URL::to("/") . "/public/uploads/settings/" . $settings->logo;
+   }
+//echo $settings;
+?>" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-                <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/slick.css';?>" />
+                <link rel="stylesheet" href="<?= URL::to("/") .
+                    "/assets/css/slick.css" ?>" />
 
-   <input type="hidden" value="<?php echo $settings->google_tracking_id ; ?>" name="tracking_id" id="tracking_id">
+   <input type="hidden" value="<?php echo $settings->google_tracking_id; ?>" name="tracking_id" id="tracking_id">
     <!-- Favicon -->
       
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 
-    <link rel="shortcut icon" type="image/png" href="<?= URL::to('/'). '/public/uploads/settings/'. $settings->favicon; ?>" />
+    <link rel="shortcut icon" type="image/png" href="<?= URL::to("/") .
+        "/public/uploads/settings/" .
+        $settings->favicon ?>" />
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/bootstrap.min.css';?>" />
+    <link rel="stylesheet" href="<?= URL::to("/") .
+        "/assets/css/bootstrap.min.css" ?>" />
     <!-- Typography CSS -->
-    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/typography.css';?>" />
+    <link rel="stylesheet" href="<?= URL::to("/") .
+        "/assets/css/typography.css" ?>" />
     <!-- Style -->
-    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/style.css';?>" />
-    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/variable.css';?>" />
+    <link rel="stylesheet" href="<?= URL::to("/") .
+        "/assets/css/style.css" ?>" />
+    <link rel="stylesheet" href="<?= URL::to("/") .
+        "/assets/css/variable.css" ?>" />
     <!-- Responsive -->
-    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/responsive.css';?>" />
-    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/plyr_marker.scss';?>" />
+    <link rel="stylesheet" href="<?= URL::to("/") .
+        "/assets/css/responsive.css" ?>" />
+    <link rel="stylesheet" href="<?= URL::to("/") .
+        "/assets/css/plyr_marker.scss" ?>" />
 
     
        <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
@@ -335,148 +407,226 @@ input:checked + .sliderk:before {
                               <span class="navbar-menu-icon navbar-menu-icon--bottom"></span>
                            </div>
                         </a>
-                        <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a>
+                        <a class="navbar-brand" href="<?php echo URL::to(
+                            "home"
+                        ); ?>"> <img src="<?php echo URL::to("/") .
+    "/public/uploads/settings/" .
+    $settings->logo; ?>" class="c-logo" alt="<?php echo $settings->website_name; ?>"> </a>
 
 
                         <!-- dark mode 
                          <label class="switch toggle mt-3">
-  <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
+  <input type="checkbox" id="toggle"  value=<?php echo $theme_mode; ?>  <?php if (
+      $theme_mode == "light"
+  ) {
+      echo "checked";
+  } ?> />
   <span class="sliderk round"></span>
 </label>-->
 
                        <!-- <div class="toggle">
-                              <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
+                              <input type="checkbox" id="toggle"  value=<?php echo $theme_mode; ?>  <?php if (
+      $theme_mode == "light"
+  ) {
+      echo "checked";
+  } ?> />
                               <label for="toggle"></label>
                         </div>-->
 
-                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                           <div class="menu-main-menu-container">
-<!--                              <ul id="top-menu" class="navbar-nav ml-auto">
-                                 <li class="menu-item">
-                                    <a href="<?php echo URL::to('home') ?>">Home</a>
-                                 </li>
-                                 <li class="menu-item">
-                                    <a href="<?php echo URL::to('home') ?>">Tv Shows</a>
-                                 </li>
-                                 <li class="menu-item">
-                                    <a href="href="<?php echo URL::to('home') ?>"">Movies</a>
-                                 </li>
-                              </ul>-->
-                               <ul id="top-menu" class="nav navbar-nav <?php if ( Session::get('locale') == 'arabic') { echo "navbar-right"; } else { echo "navbar-left";}?>">
-                                     
-                                          <?php
-                                        $stripe_plan = SubscriptionPlan();
-                                       //  $menus = App\Menu::all();
-                                       $menus = App\Menu::orderBy('order', 'asc')->get();
-                                        $languages = App\Language::all();
-                                        $LiveCategory = App\LiveCategory::all();
-                                        foreach ($menus as $menu) { 
-                                        if ( $menu->in_menu == "video") { 
-                                        $cat = App\VideoCategory::orderBy("order")->where('in_home',1)->get();
-                                        ?>
-                            
-                                   
-                                          <li class="dropdown menu-item" >
+   <div class="collapse navbar-collapse" id="navbarNavDropdown" style="margin-right:15%">
+    <ul id="top-menu" class="navbar-nav ml-auto <?php if (
+        Session::get("locale") == "arabic"
+    ) {
+        echo "navbar-left";
+    } else {
+        echo "navbar-left";
+    } ?>">
+    <?php
+    $stripe_plan = SubscriptionPlan();
+    //  $menus = App\Menu::all();
+    $menus = App\Menu::orderBy("order", "asc")->get();
+    $languages = App\Language::all();
+    $LiveCategory = App\LiveCategory::all();
 
-                                            <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown" >  
-                                                 <a class="d-flex justify-content-between" href="<?php echo  URL::to('/categoryList');?>"> <?php echo __($menu->name);?>  
-                                                   <i class="ri-arrow-down-s-line"></i>
-                                                </a>
-                                            </a>
-                                       
+    foreach ($menus as $menu) {
+        if ($menu->in_menu == "video") {
 
-                                             <ul class="dropdown-menu categ-head">
-                                                <?php foreach ( $cat->take(4) as $category) { ?>
-                                                   <li>
-                                                      <a class="dropdown-item cont-item" href="<?php echo URL::to('/').'/category/'.$category->slug;?>"> 
-                                                      <?php echo $category->name;?> 
-                                                      </a>  
-                                                   </li>           
-                                                <?php } ?>
-                                                   <li>
-                                                      <a class="dropdown-item cont-item" href="<?php echo URL::to('/categoryList');?>"> 
-                                                      <?php echo "More...";?> 
-                                                      </a>  
-                                                   </li> 
-                                            </ul>
-                                          </li>
-                                          <?php } elseif ( $menu->in_menu == "movies") { 
-                                        $cat = App\VideoCategory::all();
-                                        ?>
-                                          <li class="dropdown menu-item">
+            $cat = App\VideoCategory::orderBy("order")
+                ->where("in_home", 1)
+                ->get();
+            $parent_cat_id = App\VideoCategory::orderBy("order")
+                ->where("parent_id", "!=", 0)
+                ->where("in_home", 1)
+                ->get();
+            $parent_cat_id_array = App\VideoCategory::orderBy("order")
+                ->where("parent_id", "!=", 0)
+                ->where("in_home", 1)
+                ->pluck("parent_id");
+            $parent_cat_all = App\VideoCategory::orderBy("order")
+                ->whereNotIn("id", $parent_cat_id_array)
+                ->where("parent_id", "==", 0)
+                ->where("in_home", 1)
+                ->get();
 
-                                          <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown" >  
-                                                 <a class="d-flex justify-content-between" href="<?php echo  URL::to('/Movie-list');?>"> <?php echo __($menu->name);?>  
-                                                   <i class="ri-arrow-down-s-line"></i>
-                                                </a>
-                                            </a>
+            // dd( $parent_cat_id);
+            ?>
+      <li class="nav-item dropdown">
+    <a class="dropdown-toggle" id="down" href="<?php echo URL::to("/") .
+        $menu->url; ?>" data-toggle="dropdown" >  
+        <?php echo __($menu->name); ?>  <i class="ri-arrow-down-s-line"></i>
+     </a>
+    <ul class="dropdown-menu dropdown-menu categ-head" aria-labelledby="navbarDropdownMenuLink">
+<?php foreach ($cat as $category) {
+    foreach ($parent_cat_id as $parent_cat) {
+        if ($category->id == $parent_cat->parent_id) { ?>
+           <li class="dropdown-submenu">
+              <a class="dropdown-item cont-item  dropdown-item dropdown-toggle" href="<?php echo URL::to(
+                  "/"
+              ) .
+                  "/category/" .
+                  $category->slug; ?>"> 
+              <?php echo $category->name; ?> 
+              </a>  
+              <ul class="dropdown-menu categ-head">
+              <?php foreach ($parent_cat_id as $parent_cat) {
+                  if ($category->id == $parent_cat->parent_id) { ?>
+              <li><a class="dropdown-item" href="<?php echo URL::to("/") .
+                  "/category/" .
+                  $parent_cat->slug; ?>"><?php echo $parent_cat->name; ?></a></li>
+              <?php }
+              } ?>
+            </ul>
+           </li>           
+        <?php break; }
+    }
+} ?>
+     <li>
+     <!-- ->take(4) -->
+     <?php foreach ($parent_cat_all as $val) { ?>  
+        <li class="dropdown">
+           <a class="dropdown-item cont-item  dropdown-item " href="<?php echo URL::to(
+               "/"
+           ) .
+               "/category/" .
+               $val->slug; ?>"> 
+           <?php echo $val->name; ?> 
+           </a>  
+        </li>           
+     <?php } ?>
+            <!-- <a class="dropdown-item cont-item" href="<?php echo URL::to(
+                "/categoryList"
+            ); ?>"> 
+            <?php //echo "More..."; ?> 
+            </a>   -->
+         </li> 
+        </ul>
+      </li>
+      <?php
+        } elseif ($menu->in_menu == "movies") {
+            $cat = App\VideoCategory::all(); ?>
+   <li class="dropdown menu-item">
+      <a class="dropdown-toggle" id="down" href="<?php echo URL::to("/") .
+          $menu->url; ?>" data-toggle="dropdown">  
+      <?php echo __(
+          $menu->name
+      ); ?> <!--<i class="fa fa-angle-down"></i>-->    <i class="ri-arrow-down-s-line"></i>
+      </a>
+      <ul class="dropdown-menu categ-head">
+      <?php foreach ($languages as $language) { ?>
+      <li>
+      <a class="dropdown-item cont-item" href="<?php echo URL::to("/") .
+          "/language/" .
+          $language->id .
+          "/" .
+          $language->name; ?>"> 
+            <?php echo $language->name; ?> 
+            </a>
+      </li>
+      <?php } ?>
+      </ul>
+      </li>
+   <?php
+        } elseif ($menu->in_menu == "live") {
 
-                                         
-                                            <ul class="dropdown-menu categ-head">
-                                              <?php foreach ( $languages as $language){ ?>
-                                              <li>
-                                                <a class="dropdown-item cont-item" href="<?php echo URL::to('/').'/language/'.$language->id.'/'.$language->name;?>"> 
-                                                      <?php echo $language->name;?> 
-                                                    </a>
-                                              </li>
-                                              <?php } ?>
-                                            </ul>
-                                          </li>
-                                          <?php }elseif ( $menu->in_menu == "live") { 
-                                       //  $LiveCategory = App\LiveCategory::all();
-                                       $LiveCategory = App\LiveCategory::get();
+            $LiveCategory = App\LiveCategory::get();
+            $parent_cat_id = App\LiveCategory::orderBy("order")
+               //  ->where("parent_id", "!=", 0)
+                ->get();
+      
+            $parent_cat_id_array = App\LiveCategory::orderBy("order")
+                ->where("parent_id", "!=", 0)
+                ->pluck("parent_id");
+            $parent_cat_all = App\LiveCategory::orderBy("order")
+                ->whereNotIn("id", $parent_cat_id_array)
+                ->where("parent_id", "==", 0)
+                ->get();
+            ?>
+      <li class="nav-item dropdown">
+    <a class="dropdown-toggle" id="down" href="<?php echo URL::to("/") .
+        $menu->url; ?>" data-toggle="dropdown" >  
+        <?php echo __($menu->name); ?>  <i class="ri-arrow-down-s-line"></i>
+     </a>
+    <ul class="dropdown-menu dropdown-menu categ-head" aria-labelledby="navbarDropdownMenuLink">
+              <?php foreach ($LiveCategory as $category) {
+                  foreach ($parent_cat_id as $parent_cat) {
+                      if ($category->id == $parent_cat->parent_id) { ?>
+           <li class="dropdown-submenu">
+              <a class="dropdown-item cont-item  dropdown-item dropdown-toggle" href="<?php echo URL::to(
+                  "/live/category"
+              ) .
+                  "/" .
+                  $category->name; ?>"> 
+              <?php echo $category->name; ?> 
+              </a>  
+              <ul class="dropdown-menu categ-head">
+              <?php foreach ($parent_cat_id as $parent_cat) {
+                  if ($category->id == $parent_cat->parent_id) { ?>
+              <li><a class="dropdown-item" href="<?php echo URL::to(
+                  "/live/category"
+              ) .
+                  "/" .
+                  $parent_cat->name; ?>"><?php echo $parent_cat->name; ?></a></li>
+              <?php }
+              } ?>
+            </ul>
+           </li>           
+        <?php break;}
+                  }
+              } ?>
+     <li>
+     <?php foreach ($parent_cat_all as $val) { ?>
+        <li class="dropdown">
+           <a class="dropdown-item cont-item  dropdown-item " href="<?php echo URL::to(
+                  "/live/category"
+              ) .
+                  "/" .
+                  $val->slug; ?>"> 
+           <?php echo $val->name; ?> 
+           </a>  
+        </li>           
+     <?php } ?>
+         </li> 
+        </ul>
+      </li>
+               <?php
+        } else {
+             ?>
+         <li class="menu-item">
+            <a href="<?php echo URL::to("/") . $menu->url; ?>">
+               <?php echo __($menu->name); ?>
+            </a>
+         </li>
+         <?php
+        }
+    }
+    ?>
 
-                                        ?>
-                                          <li class="dropdown menu-item">
 
-                                          <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown" >  
-                                                 <a class="d-flex justify-content-between" href="<?php echo  URL::to('/Live-list');?>"> <?php echo __($menu->name);?>  
-                                                   <i class="ri-arrow-down-s-line"></i>
-                                                </a>
-                                          </a>
 
-                                            <ul class="dropdown-menu categ-head">
-                                              <?php foreach ( $LiveCategory as $category){ ?>
-                                              <li>
-                                              <a class="dropdown-item cont-item" href="<?php echo URL::to('/live/category').'/'.$category->name;?>"> 
-                                                      <?php echo $category->name;?> 
-                                                    </a>
-                                              </li>
-                                              <?php } ?>
-                                            </ul>
-                                          </li>
-                                          <?php } else { ?>
-                                          <li class="menu-item">
-                                            <a href="<?php echo URL::to('/').$menu->url;?>">
-                                              <?php echo __($menu->name);?>
-                                            </a>
-                                          </li>
-                                          <?php } } ?>
-                                          <!-- <li class="nav-item dropdown menu-item"> -->
-                                            <!-- <a class="dropdown-toggle" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">   -->
-                                              <!-- Movies <i class="fa fa-angle-down"></i> -->
-                                            <!-- </a> -->
-                                              <!-- <ul class="dropdown-menu categ-head"> -->
-                                                  <?php //foreach ( $languages as $language) { ?>
-                                                  <li>
-                                                    <!-- <a class="dropdown-item cont-item" href="<?php //echo URL::to('/').'/language/'.$language->id.'/'.$language->name;?>">  -->
-                                                      <?php //echo $language->name;?> 
-                                                    <!-- </a> -->
-                                                  <!-- </li> -->
+      
+    </ul>
+  </div>
 
-                                                <?php //} ?>
-                                                <!-- </ul> -->
-                                            <!-- </li> -->
-                                          <li class="">
-                                            <!--<a href="<?php echo URL::to('refferal') ?>" style="color: #4895d1 !important;list-style: none;
-                                                                                               font-weight: bold;
-                                                                                               font-size: 16px;">
-                                              <?php echo __('Refer and Earn');?>
-                                            </a>-->
-                                          </li>
-                                        </ul>
-                           </div>
-                        </div>
                         <div class="mobile-more-menu">
                             
                            <a href="javascript:void(0);" class="more-toggle mt-1" id="dropdownMenuButton"
@@ -489,7 +639,10 @@ input:checked + .sliderk:before {
                                     
                                 <li class="hidden-xs">
                                           <div id="navbar-search-form">
-                                            <form role="search" action="<?php echo URL::to('/').'/searchResult';?>" method="POST">
+                                            <form role="search" action="<?php echo URL::to(
+                                                "/"
+                                            ) .
+                                                "/searchResult"; ?>" method="POST">
                                               <input name="_token" type="hidden" value="<?php echo csrf_token(); ?>">
                                               <div>
                                                 <i class="fa fa-search mr-1">
@@ -508,12 +661,14 @@ input:checked + .sliderk:before {
                         <div class="navbar-right menu-right">
                            <ul class="d-flex align-items-center list-inline m-0">
                               <li class="nav-item nav-icon">
-                                 <a href="<?php echo URL::to('/').'/searchResult';?>" class="search-toggle device-search">
+                                 <a href="<?php echo URL::to("/") .
+                                     "/searchResult"; ?>" class="search-toggle device-search">
                                     <i class="ri-search-line"></i>
                                  </a>
 
                                  <div class="search-box iq-search-bar d-search">
-                                    <form action="<?php echo URL::to('/').'/searchResult';?>" method="post" class="searchbox">
+                                    <form action="<?php echo URL::to("/") .
+                                        "/searchResult"; ?>" method="post" class="searchbox">
                                         <input name="_token" type="hidden" value="<?php echo csrf_token(); ?>">
                                        <div class="form-group position-relative">
                                           <input type="text" name="search" class="text search-input font-size-12 searches"
@@ -574,10 +729,13 @@ input:checked + .sliderk:before {
                                     </div>
                                  </div>
                               </li>
-                               <?php if(Auth::guest()): ?>
+                               <?php if (Auth::guest()): ?>
                               <li class="nav-item nav-icon">
-                                    <!-- <img src="<?php echo URL::to('/').'/public/uploads/avatars/lockscreen-user.png' ?>" class="img-fluid avatar-40 rounded-circle" alt="user">-->
-                                    <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
+                                    <!-- <img src="<?php echo URL::to("/") .
+                                        "/public/uploads/avatars/lockscreen-user.png"; ?>" class="img-fluid avatar-40 rounded-circle" alt="user">-->
+                                    <a href="<?php echo URL::to(
+                                        "login"
+                                    ); ?>" class="iq-sub-card">
                                         <div class="media align-items-center">
                                             <div class="right-icon">
                                                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 70 70" style="enable-background:new 0 0 70 70" xml:space="preserve"><path class="st5" d="M13.4 33.7c0 .5.2.9.5 1.2.3.3.8.5 1.2.5h22.2l-4 4.1c-.4.3-.6.8-.6 1.3s.2 1 .5 1.3c.3.3.8.5 1.3.5s1-.2 1.3-.6l7.1-7.1c.7-.7.7-1.8 0-2.5l-7.1-7.1c-.7-.6-1.7-.6-2.4.1s-.7 1.7-.1 2.4l4 4.1H15.2c-1 .1-1.8.9-1.8 1.8z"/><path class="st5" d="M52.3 17.8c0-1.4-.6-2.8-1.6-3.7-1-1-2.3-1.6-3.7-1.6H27.5c-1.4 0-2.8.6-3.7 1.6-1 1-1.6 2.3-1.6 3.7v7.1c0 1 .8 1.8 1.8 1.8s1.8-.8 1.8-1.8v-7.1c0-1 .8-1.8 1.8-1.8H47c.5 0 .9.2 1.2.5.3.3.5.8.5 1.2v31.8c0 .5-.2.9-.5 1.2-.3.3-.8.5-1.2.5H27.5c-1 0-1.8-.8-1.8-1.8v-7.1c0-1-.8-1.8-1.8-1.8s-1.8.8-1.8 1.8v7.1c0 1.4.6 2.8 1.6 3.7 1 1 2.3 1.6 3.7 1.6H47c1.4 0 2.8-.6 3.7-1.6 1-1 1.6-2.3 1.6-3.7V17.8z"/></svg>
@@ -589,7 +747,9 @@ input:checked + .sliderk:before {
                                     </a>
                                </li>
                                <li class="nav-item nav-icon">
-                                  <a href="<?php echo URL::to('signup') ?>" class="iq-sub-card">
+                                  <a href="<?php echo URL::to(
+                                      "signup"
+                                  ); ?>" class="iq-sub-card">
                                      <div class="media align-items-center">
                                         <div class="right-icon">
                                              <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 70 70" style="enable-background:new 0 0 70 70" xml:space="preserve"><path class="st6" d="M53.4 33.7H30.7M36.4 28.1l-5.7 5.7 5.7 5.7"/><path class="st6" d="M50.5 43.7c-2.1 3.4-5.3 5.9-9.1 7.3-3.7 1.4-7.8 1.6-11.7.4a18.4 18.4 0 0 1-9.6-28.8c2.4-3.2 5.8-5.5 9.6-6.6 3.8-1.1 7.9-1 11.7.4 3.7 1.4 6.9 4 9.1 7.3"/></svg>
@@ -604,26 +764,32 @@ input:checked + .sliderk:before {
                                <li class="nav-item nav-icon">
                                     <a href="#" class="iq-user-dropdown  search-toggle p-0 d-flex align-items-center"
                                     data-toggle="search-toggle">
-                                        <!-- <img src="<?php echo URL::to('/').'/public/uploads/avatars/' . Auth::user()->avatar ?>" class="img-fluid avatar-40 rounded-circle" alt="user">-->
+                                        <!-- <img src="<?php echo URL::to("/") .
+                                            "/public/uploads/avatars/" .
+                                            Auth::user()
+                                                ->avatar; ?>" class="img-fluid avatar-40 rounded-circle" alt="user">-->
                                         <p class="mt-3" style="font-size: 16px;">
                                         
-                                        <?php 
-                                        $subuser=Session::get('subuser_id');
-                                        if($subuser != ''){
-                                           $subuser=App\Multiprofile::where('id',$subuser)->first();
-                                          echo  $subuser->user_name  ;
+                                        <?php
+                                        $subuser = Session::get("subuser_id");
+                                        if ($subuser != "") {
+                                            $subuser = App\Multiprofile::where(
+                                                "id",
+                                                $subuser
+                                            )->first();
+                                            echo $subuser->user_name;
+                                        } else {
+                                            echo Auth::user()->username . " ";
                                         }
-                                        else{
-                                          echo Auth::user()->username.' '  ;
-                                        }
-                                        
                                         ?> 
                                        
                                         <i class="ri-arrow-down-s-line"></i>
                                        
                                        </p>
                                     </a>
-                                   <?php if(Auth::user()->role == 'registered'): ?>
+                                   <?php if (
+                                       Auth::user()->role == "registered"
+                                   ): ?>
                                    <div class="iq-sub-dropdown iq-user-dropdown">
                                     <div class="iq-card shadow-none m-0">
                                        <div class="iq-card-body p-0 pl-3 pr-3">
@@ -634,11 +800,17 @@ input:checked + .sliderk:before {
                                            <div class="toggle  text-right">
                          <label class="switch toggle mt-3">
                              <i class="fa fa-moon-o" aria-hidden="true"></i>
-  <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
+  <input type="checkbox" id="toggle"  value=<?php echo $theme_mode; ?>  <?php if (
+      $theme_mode == "light"
+  ) {
+      echo "checked";
+  } ?> />
   <span class="sliderk round"></span>
 
                                                </label></div>
-                                          <a href="<?php echo  URL::to('myprofile') ?>" class="iq-sub-card dropdown-menu setting-dropdown">
+                                          <a href="<?php echo URL::to(
+                                              "myprofile"
+                                          ); ?>" class="iq-sub-card dropdown-menu setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                       
@@ -673,7 +845,9 @@ input:checked + .sliderk:before {
                                                 </div>
                                              </div>
                                           </a>
-                                          <a href="<?php echo URL::to('watchlater') ?>" class="iq-sub-card setting-dropdown">
+                                          <a href="<?php echo URL::to(
+                                              "watchlater"
+                                          ); ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                                                  <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 70 70" style="enable-background:new 0 0 70 70" xml:space="preserve"><style>.st0{fill:#198fcf;stroke:#198fcf;stroke-width:.75;stroke-miterlimit:10}</style><path class="st0" d="M21.5 23.7h14c.2 0 .3.2.3.4v.8c0 .2-.1.4-.3.4h-14c-.2 0-.3-.2-.3-.4V24c0-.1.2-.3.3-.3zM21.5 32h13.4c.2 0 .3.2.3.4v.8c0 .2-.1.4-.3.4H21.5c-.2 0-.3-.2-.3-.4v-.8c0-.2.2-.4.3-.4zM21.5 40.3h23.1c.2 0 .3.2.3.4v.8c0 .2-.1.4-.3.4H21.5c-.2 0-.3-.2-.3-.4v-.7c0-.3.2-.5.3-.5zM21.5 48.7h23.1c.2 0 .3.2.3.4v.8c0 .2-.1.4-.3.4H21.5c-.2 0-.3-.2-.3-.4v-.8c0-.3.2-.4.3-.4z"/><path class="st1" d="M48.4 37c-5.1 0-9.2-4.1-9.2-9.2s4.1-9.2 9.2-9.2 9.2 4.1 9.2 9.2-4.1 9.2-9.2 9.2zm0-16.7c-4.2 0-7.5 3.3-7.5 7.5s3.3 7.5 7.5 7.5 7.5-3.3 7.5-7.5-3.3-7.5-7.5-7.5z" style="fill:#198fcf;stroke:#198fcf;stroke-width:.5;stroke-miterlimit:10"/><path class="st2" d="M52.1 28.7h-3.8c-.4 0-.7-.3-.7-.7v-3.8c0-.2.2-.4.4-.4h.8c.2 0 .4.2.4.4v2.2c0 .4.3.7.7.7h2.2c.2 0 .4.2.4.4v.8c.1.2-.1.4-.4.4z" style="fill:#198fcf"/><path class="st3" d="M54.3 34v20.1c0 1-.8 1.9-1.9 1.9H17.3c-1 0-1.9-.8-1.9-1.9V17.5c0-1 .8-1.9 1.9-1.9h35.1c1 0 1.9.8 1.9 1.9v4.2" style="fill:none;stroke:#198fcf;stroke-width:2;stroke-miterlimit:10"/></svg>
@@ -683,7 +857,9 @@ input:checked + .sliderk:before {
                                                 </div>
                                              </div>
                                           </a>
-                                          <a href="<?php echo URL::to('mywishlists') ?>" class="iq-sub-card setting-dropdown">
+                                          <a href="<?php echo URL::to(
+                                              "mywishlists"
+                                          ); ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                                                   
@@ -718,7 +894,9 @@ input:checked + .sliderk:before {
                                                 </div>
                                              </div>
                                           </a>
-                                            <a href="<?php echo URL::to('purchased-media') ?>" class="iq-sub-card setting-dropdown">
+                                            <a href="<?php echo URL::to(
+                                                "purchased-media"
+                                            ); ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                                                  
@@ -746,7 +924,9 @@ input:checked + .sliderk:before {
                                                 </div>
                                              </div>
                                           </a>
-                                          <a href="<?php echo URL::to('logout') ?>" class="iq-sub-card setting-dropdown">
+                                          <a href="<?php echo URL::to(
+                                              "logout"
+                                          ); ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                                                  <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 70 70" style="enable-background:new 0 0 70 70" xml:space="preserve"><path class="st6" d="M53.4 33.7H30.7M36.4 28.1l-5.7 5.7 5.7 5.7"/><path class="st6" d="M50.5 43.7c-2.1 3.4-5.3 5.9-9.1 7.3-3.7 1.4-7.8 1.6-11.7.4a18.4 18.4 0 0 1-9.6-28.8c2.4-3.2 5.8-5.5 9.6-6.6 3.8-1.1 7.9-1 11.7.4 3.7 1.4 6.9 4 9.1 7.3"/></svg>
@@ -773,15 +953,19 @@ input:checked + .sliderk:before {
                                                <!-- dark mode -->
                            <div class="toggle  text-right">
                               <label class="switch toggle mt-3">
-                                 <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?> 
-                                 <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
+                                 <input type="checkbox" id="toggle"  value=<?php echo $theme_mode; ?> 
+                                 <?php if ($theme_mode == "light") {
+                                     echo "checked";
+                                 } ?> />
                                  <span class="sliderk round"></span>
                                   
                               </label>
                            </div>
                                            </a>
 
-                                          <a href="<?php echo  URL::to('myprofile') ?>" class="iq-sub-card  setting-dropdown">
+                                          <a href="<?php echo URL::to(
+                                              "myprofile"
+                                          ); ?>" class="iq-sub-card  setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                                                   
@@ -816,7 +1000,9 @@ input:checked + .sliderk:before {
                                                 </div>
                                              </div>
                                           </a>
-                                          <a href="<?php echo URL::to('watchlater') ?>" class="iq-sub-card setting-dropdown">
+                                          <a href="<?php echo URL::to(
+                                              "watchlater"
+                                          ); ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                                                     <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 70 70" style="enable-background:new 0 0 70 70" xml:space="preserve"><style>.st0{fill:#198fcf;stroke:#198fcf;stroke-width:.75;stroke-miterlimit:10}</style><path class="st0" d="M21.5 23.7h14c.2 0 .3.2.3.4v.8c0 .2-.1.4-.3.4h-14c-.2 0-.3-.2-.3-.4V24c0-.1.2-.3.3-.3zM21.5 32h13.4c.2 0 .3.2.3.4v.8c0 .2-.1.4-.3.4H21.5c-.2 0-.3-.2-.3-.4v-.8c0-.2.2-.4.3-.4zM21.5 40.3h23.1c.2 0 .3.2.3.4v.8c0 .2-.1.4-.3.4H21.5c-.2 0-.3-.2-.3-.4v-.7c0-.3.2-.5.3-.5zM21.5 48.7h23.1c.2 0 .3.2.3.4v.8c0 .2-.1.4-.3.4H21.5c-.2 0-.3-.2-.3-.4v-.8c0-.3.2-.4.3-.4z"/><path class="st1" d="M48.4 37c-5.1 0-9.2-4.1-9.2-9.2s4.1-9.2 9.2-9.2 9.2 4.1 9.2 9.2-4.1 9.2-9.2 9.2zm0-16.7c-4.2 0-7.5 3.3-7.5 7.5s3.3 7.5 7.5 7.5 7.5-3.3 7.5-7.5-3.3-7.5-7.5-7.5z" style="fill:#198fcf;stroke:#198fcf;stroke-width:.5;stroke-miterlimit:10"/><path class="st2" d="M52.1 28.7h-3.8c-.4 0-.7-.3-.7-.7v-3.8c0-.2.2-.4.4-.4h.8c.2 0 .4.2.4.4v2.2c0 .4.3.7.7.7h2.2c.2 0 .4.2.4.4v.8c.1.2-.1.4-.4.4z" style="fill:#198fcf"/><path class="st3" d="M54.3 34v20.1c0 1-.8 1.9-1.9 1.9H17.3c-1 0-1.9-.8-1.9-1.9V17.5c0-1 .8-1.9 1.9-1.9h35.1c1 0 1.9.8 1.9 1.9v4.2" style="fill:none;stroke:#198fcf;stroke-width:2;stroke-miterlimit:10"/></svg>
@@ -826,7 +1012,9 @@ input:checked + .sliderk:before {
                                                 </div>
                                              </div>
                                           </a>
-                                          <a href="<?php echo URL::to('mywishlists') ?>" class="iq-sub-card setting-dropdown">
+                                          <a href="<?php echo URL::to(
+                                              "mywishlists"
+                                          ); ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                                                 
@@ -861,7 +1049,9 @@ input:checked + .sliderk:before {
                                                 </div>
                                              </div>
                                           </a>
-                                            <a href="<?php echo URL::to('purchased-media') ?>" class="iq-sub-card setting-dropdown">
+                                            <a href="<?php echo URL::to(
+                                                "purchased-media"
+                                            ); ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                                                   
@@ -889,8 +1079,13 @@ input:checked + .sliderk:before {
                                                 </div>
                                              </div>
                                           </a>
-                                          <?php if(Auth::User()->role == "admin"){ ?>
-                                          <a href="<?php echo URL::to('admin/subscription-plans') ?>"  class="iq-sub-card setting-dropdown">
+                                          <?php
+                                          if (
+                                              Auth::User()->role == "admin"
+                                          ) { ?>
+                                          <a href="<?php echo URL::to(
+                                              "admin/subscription-plans"
+                                          ); ?>"  class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                                                  
@@ -913,7 +1108,9 @@ input:checked + .sliderk:before {
                                              </div>
                                           </a>
                                          
-                                           <a href="<?php echo URL::to('admin') ?>" class="iq-sub-card setting-dropdown">
+                                           <a href="<?php echo URL::to(
+                                               "admin"
+                                           ); ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                                                   
@@ -941,15 +1138,19 @@ input:checked + .sliderk:before {
                                           </a>
 
                               <!-- Multiuser Profile -->
-                                          <?php
-                                          }
-                                          if(Auth::user()->role == "subscriber"){
-
-                                          ?>
-                                          <!-- <a href="<?php echo URL::to('choose-profile') ?>" class="iq-sub-card setting-dropdown">
+                                          <?php }
+                                          if (
+                                              Auth::user()->role == "subscriber"
+                                          ) { ?>
+                                          <!-- <a href="<?php echo URL::to(
+                                              "choose-profile"
+                                          ); ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
-                                                   <img src="<?php echo URL::to('/').'/assets/icons/admin.svg';?> " width="25" height="21">
+                                                   <img src="<?php echo URL::to(
+                                                       "/"
+                                                   ) .
+                                                       "/assets/icons/admin.svg"; ?> " width="25" height="21">
                                                 </div>
                                                 <div class="media-body ml-3">
                                                    <h6 class="mb-0 ">Multi Profile</h6>
@@ -957,11 +1158,12 @@ input:checked + .sliderk:before {
                                              </div>
                                           </a> -->
 
-                                          <?php
-                                          }
+                                          <?php }
                                           ?>
 
-                                          <a href="<?php echo URL::to('logout') ?>" class="iq-sub-card setting-dropdown">
+                                          <a href="<?php echo URL::to(
+                                              "logout"
+                                          ); ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                                                   <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 70 70" style="enable-background:new 0 0 70 70" xml:space="preserve"><path class="st6" d="M53.4 33.7H30.7M36.4 28.1l-5.7 5.7 5.7 5.7"/><path class="st6" d="M50.5 43.7c-2.1 3.4-5.3 5.9-9.1 7.3-3.7 1.4-7.8 1.6-11.7.4a18.4 18.4 0 0 1-9.6-28.8c2.4-3.2 5.8-5.5 9.6-6.6 3.8-1.1 7.9-1 11.7.4 3.7 1.4 6.9 4 9.1 7.3"/></svg>
@@ -988,9 +1190,9 @@ input:checked + .sliderk:before {
             </div>
          </div>
           
-         <?php 
-    $playerui_settings = App\Playerui::first();
-    if($playerui_settings->watermark == 1){ ?>
+         <?php
+         $playerui_settings = App\Playerui::first();
+         if ($playerui_settings->watermark == 1) { ?>
     <style>
             .plyr__video-wrapper::before {
             position: absolute;
@@ -1006,14 +1208,15 @@ input:checked + .sliderk:before {
             }
     </style>
        
-<?php } else{ } ?>
+<?php } else {}
+         ?>
            <script>
                $(document).ready(function() {
     $(".dropdown-toggle").dropdown();
 });
 
 $(document).ready(function(){
-var currentdate = "<?=  $currentdate ?>";
+var currentdate = "<?= $currentdate ?>";
 var filldate = "<?= $filldate ?>";
 var DOB = "<?= $DOB ?>";
 
@@ -1030,7 +1233,8 @@ $('.add_watch').slideUp('fast');
 
 </script>
 
-<script src="<?= URL::to('/'). '/assets/admin/dashassets/js/google_analytics_tracking_id.js';?>"></script>
+<script src="<?= URL::to("/") .
+    "/assets/admin/dashassets/js/google_analytics_tracking_id.js" ?>"></script>
 
 <script>
 $("#toggle").click(function(){
@@ -1038,7 +1242,7 @@ $("#toggle").click(function(){
    var theme_mode = $("#toggle").prop("checked");
 
    $.ajax({
-   url: '<?php echo URL::to("theme-mode") ;?>',
+   url: '<?php echo URL::to("theme-mode"); ?>',
    method: 'post',
    data: 
       {
