@@ -37,11 +37,11 @@ if(count($latest_videos) > 0) : ?>
                                     </a>  
                                 </div>
                                 <div class="block-description">
-
+                                     <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
                                 <?php if($ThumbnailSetting->title == 1) { ?>            <!-- Title -->
-                                  <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
+                                 
                                      <h6><?php  echo (strlen($watchlater_video->title) > 17) ? substr($watchlater_video->title,0,18).'...' : $watchlater_video->title; ?></h6>
-                                  </a>
+                                 
                                 <?php } ?> 
 
                                 <div class="movie-time d-flex align-items-center pt-1">
@@ -140,6 +140,10 @@ if(count($latest_videos) > 0) : ?>
                                     </div>
                               
                              </div>
+                                          </a>
+                                 </div>
+                              </div>
+                              
                           </a>
                        </li>
                        <?php                     

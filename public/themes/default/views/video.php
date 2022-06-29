@@ -1035,7 +1035,7 @@ $artists = [];
 
 
    <div class=" container video-list you-may-like">
-       <h4 class="Continue Watching" style="color:#fffff;margin-left:-15px;"><?php echo __('Recomended Videos');?></h4>
+       <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Recomended Videos');?></h4>
            <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>   
                <?php include('partials/video-loop.php');?>
            </div>
@@ -1402,8 +1402,8 @@ var videotype_Ids = <?php echo json_encode($video_type_id); ?>;
     // alert();
   document.getElementById("end_card_video").style.display = "none";
     if (e.target.currentTime >= endtime) {
-            // document.getElementById("end_card_video").style.display = "block"; // Manual show
-  document.getElementById("end_card_video").style.display = "none";
+            document.getElementById("end_card_video").style.display = "block"; // Manual show
+  // document.getElementById("end_card_video").style.display = "none";
 
     } 
       
@@ -1617,6 +1617,7 @@ var x = setInterval(function() {
   if (distance < 0) {
     clearInterval(x);
     // document.getElementById("demo").innerHTML = "EXPIRED";
+location.reload();
   }
 }, 1000);
 </script>

@@ -98,6 +98,10 @@ border-radius: 0px 4px 4px 0px;
                                     @endif
 
                                 </div>  
+                                <div class="form-group">
+                                    <label>Home Page Genre Name:</label>
+                                    <input type="text" id="home_genre" name="home_genre" value="" class="form-control" placeholder="Enter Home Page Genre Name">
+                                </div>  
                                 <div class="form-group {{ $errors->has('slug') ? 'has-error' : '' }}">
                                     <label>Display In Home page:</label>
                                     <input type="radio" checked id="in_home"  id="in_home" name="in_home" value="1">Yes
