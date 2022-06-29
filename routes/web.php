@@ -548,6 +548,13 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/series/update', 'AdminSeriesController@update');
     Route::get('/series/delete/{id}', 'AdminSeriesController@destroy');
     Route::get('/titlevalidation', 'AdminSeriesController@TitleValidation');
+
+// Admin Series Genre
+    Route::get('/Series/Genre', 'AdminSeriesGenreController@index');
+    Route::Post('/Series_genre_store', 'AdminSeriesGenreController@Series_genre_store');
+    Route::get('/Series_genre/edit/{id}', 'AdminSeriesGenreController@Series_genre_edit');
+    Route::post('/Series_genre/update', 'AdminSeriesGenreController@Series_genre_update');
+    Route::get('/Series_genre/delete/{id}', 'AdminSeriesGenreController@Series_genre_delete');
     
 
 //Admin Series Season Manage
