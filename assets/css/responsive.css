@@ -37,7 +37,7 @@
   .navbar-collapse.show { left: -15px; -webkit-transition: left 0.3s ease-in; -o-transition: left 0.3s ease-in; -moz-transition: left 0.3s ease-in; transition: left 0.3s ease-in; z-index: 999; }
   header .navbar ul li.menu-item a { line-height: 30px; /*float: left;*/ display: flex; width: 100%; text-align: left; padding: 10px 30px; color: var(--iq-white)!important;border-bottom:0.5px solid rgba(232, 236, 241,0.4); }
     #down{
-        display: flex;
+        display: none;
         align-items: center;
         justify-content: space-between;
     }
@@ -176,6 +176,9 @@
     max-width: none;
     width: 100%;
 }
+      .ri-arrow-down-s-line{
+        display: ;
+        }
     .user-menu{
         display: block;
         display: flex;
