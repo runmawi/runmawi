@@ -678,10 +678,12 @@ var tagInput1 = new TagsInput({
             rules: {
                 title: "required",
                 image: "required",
+                player_image: "required",
             },
             messages: {
                 title: "This field is required",
                 image: "This field is required",
+                player_image: "This field is required",
             },
             submitHandler: function (form) {
                 form.submit();

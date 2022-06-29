@@ -1532,10 +1532,9 @@ class ChannelController extends Controller
         }
       }
 
-      public function categoryfilter(Request $request)
+      public function categoryfilter(Request $request,$id)
       {
-
-
+        
         $PPV_settings = Setting::where('ppv_status','=',1)->first();
         if(!empty($PPV_settings)){
 
@@ -1585,6 +1584,20 @@ class ChannelController extends Controller
         }
 
         $categoryVideos = $categoryVideos->get();
+
+           
+        $data = array(
+          'currency'=> $currency,
+          'category_title'=>$category_title[0],
+          'categoryVideos'=>$categoryVideos,
+          'ppv_gobal_price' => $ppv_gobal_price,
+          'ThumbnailSetting' => $ThumbnailSetting,
+          'age_categories' => AgeCategory::get(),
+
+      );
+      
+      return Theme::view('categoryvids',['data'=>$data]);
+
 
       }
 
