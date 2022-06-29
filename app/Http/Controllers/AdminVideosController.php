@@ -147,9 +147,9 @@ class AdminVideosController extends Controller
       }
       else
       {
-
+        $data = [];
       }
-
+      if(count($data) > 0){
       $total_row = $data->count();
       if($total_row > 0)
       {
@@ -186,11 +186,15 @@ class AdminVideosController extends Controller
        ';
       }
       $data = array(
-       'table_data'  => $output,
-       'total_data'  => $total_row
-      );
-
+        'table_data'  => $output,
+        'total_data'  => $total_row
+       );
       echo json_encode($data);
+
+    }
+
+ 
+
      }
     }
 
