@@ -784,6 +784,8 @@ var tagInput1 = new TagsInput({
         $("#buttonNext").hide();
         $("#episode_video_data").hide();
         $("#submit").hide();
+        var series_id = '<?= $series->id ?>' ;
+        var season_id = '<?= $season_id ?>' ;
 
         Dropzone.autoDiscover = false;
         var myDropzone = new Dropzone(".dropzone", {
@@ -792,6 +794,8 @@ var tagInput1 = new TagsInput({
             acceptedFiles: "video/mp4,video/x-m4v,video/*",
         });
         myDropzone.on("sending", function (file, xhr, formData) {
+            formData.append('series_id',series_id);
+            formData.append('season_id',season_id);
             formData.append("_token", CSRF_TOKEN);
             // console.log(value)
             this.on("success", function (file, value) {

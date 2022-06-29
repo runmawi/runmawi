@@ -55,6 +55,8 @@ use FFMpeg\Coordinate\TimeCode;
 use FFMpeg\Format\Video\X264;
 use App\RelatedVideo;
 use App\LiveCategory;
+use App\SeriesGenre;
+use App\Series;
 
 class ChannelController extends Controller
 {
@@ -1627,8 +1629,8 @@ class ChannelController extends Controller
        
         $ThumbnailSetting = ThumbnailSetting::first();
         
+        $parentCategories = LiveCategory::get();
         $parentCategories = LiveCategory::orderBy('order')->where('in_menu',1)->get();
-
         $data =array(
           'ThumbnailSetting' => $ThumbnailSetting,
           'parentCategories' => $parentCategories,
@@ -1637,5 +1639,44 @@ class ChannelController extends Controller
 
            return Theme::view('Live_list',$data); 
         
+      }
+
+      public function Series_List(Request $request)
+      {
+
+        $ThumbnailSetting = ThumbnailSetting::first();
+        
+        $parentCategories = SeriesGenre::where('in_menu',1)->orderBy('order')->get();
+
+        $data =array(
+          'ThumbnailSetting' => $ThumbnailSetting,
+          'parentCategories' => $parentCategories,
+        );    
+
+
+        return Theme::view('Series_list',$data); 
+
+      }
+
+      public function Series_genre_list(Request $request,$id)
+      {
+     
+        $ThumbnailSetting = ThumbnailSetting::first();
+
+        $series = Series::join('series_categories', 'series_categories.series_id', '=', 'series.id')
+          ->where('category_id', '=', $id) 
+          ->where('active', '=', '1')
+          ->orderBy('series.created_at','desc')
+          ->get();
+        
+        $Series_Genre_name = SeriesGenre::where('id',$id)->pluck('name')->first();
+
+        $data =array(
+            'ThumbnailSetting' => $ThumbnailSetting,
+            'Series_Genre_name'=> $Series_Genre_name,
+            'videos' => $series,
+          );  
+
+          return Theme::view('Series_genre_list',$data); 
       }
 }
