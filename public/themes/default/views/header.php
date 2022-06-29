@@ -377,8 +377,11 @@ input:checked + .sliderk:before {
                             
                                    
                                           <li class="dropdown menu-item" >
+
                                             <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown" >  
-                                              <?php echo __($menu->name);?>  <i class="ri-arrow-down-s-line"></i>
+                                                 <a href="<?php echo  URL::to('/categoryList');?>"> <?php echo __($menu->name);?>  
+                                                   <i class="ri-arrow-down-s-line"></i>
+                                                </a>
                                             </a>
                                        
 
@@ -401,9 +404,14 @@ input:checked + .sliderk:before {
                                         $cat = App\VideoCategory::all();
                                         ?>
                                           <li class="dropdown menu-item">
-                                            <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
-                                              <?php echo __($menu->name);?> <!--<i class="fa fa-angle-down"></i>-->    <i class="ri-arrow-down-s-line"></i>
+
+                                          <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown" >  
+                                                 <a href="<?php echo  URL::to('/Movie-list');?>"> <?php echo __($menu->name);?>  
+                                                   <i class="ri-arrow-down-s-line"></i>
+                                                </a>
                                             </a>
+
+                                         
                                             <ul class="dropdown-menu categ-head">
                                               <?php foreach ( $languages as $language){ ?>
                                               <li>
@@ -420,9 +428,13 @@ input:checked + .sliderk:before {
 
                                         ?>
                                           <li class="dropdown menu-item">
-                                            <a class="dropdown-toggle" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
-                                              <?php echo __($menu->name);?> <!--<i class="fa fa-angle-down"></i>-->
-                                            </a>
+
+                                          <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown" >  
+                                                 <a href="<?php echo  URL::to('/Live-list');?>"> <?php echo __($menu->name);?>  
+                                                   <i class="ri-arrow-down-s-line"></i>
+                                                </a>
+                                          </a>
+
                                             <ul class="dropdown-menu categ-head">
                                               <?php foreach ( $LiveCategory as $category){ ?>
                                               <li>
