@@ -304,6 +304,7 @@ class AdminSeriesController extends Controller
         $series->player_image = $player_image;
         $series->banner = empty($data['banner']) ? 0 : 1;
         $series->search_tag =$data['search_tag'];
+        $series->details =strip_tags($data['details']);
         $series->save();  
 
 
@@ -539,6 +540,7 @@ class AdminSeriesController extends Controller
         }
         $series->slug = $data['slug'];
         $series->ppv_status = $ppv_status;
+        $series->details =strip_tags($data['details']);
         $series->save();
 
         if(!empty($data['artists'])){
