@@ -54,6 +54,7 @@ use FFMpeg\Coordinate\Dimension;
 use FFMpeg\Coordinate\TimeCode;
 use FFMpeg\Format\Video\X264;
 use App\RelatedVideo;
+use App\LiveCategory;
 
 class ChannelController extends Controller
 {
@@ -375,6 +376,8 @@ class ChannelController extends Controller
            if(!Auth::guest()){
            $latestRecentView = RecentView::where('user_id','!=',Auth::user()->id)->distinct()->limit(30)->pluck('video_id');
            if(count($latestRecentView) > 10){
+            
+            $latestviews = [];
 
            }else{
 
@@ -558,7 +561,7 @@ class ChannelController extends Controller
               //         echo "<pre>";
               // print_r($currentdate);
               // echo "<pre>";
-              // print_r($new_date);
+              // print_r($currentdate);
               // exit;
              if($currentdate < $new_date){
               // echo "<pre>";
@@ -567,7 +570,7 @@ class ChannelController extends Controller
 
               // print_r($currentdate);exit;
 
-              $new_date = Carbon::parse($categoryVideos->publish_time)->format('M d , y h:i:s');
+              $new_date = Carbon::parse($categoryVideos->publish_time)->format('M d , y h:i:s a');
 
              }else{
             //  print_r($new_date);exit;
@@ -1585,29 +1588,54 @@ class ChannelController extends Controller
 
       public function MovieList()
       {
-        try {
-          $data =array(
-            "Movie_list" => Language::all() ,
-          );
 
-           return Theme::view('movie_list',$data); 
-        } 
-        catch (\Throwable $th) {
+        try {
+            $countryName = Country_name();
+            $ThumbnailSetting = ThumbnailSetting::first();
+            
+            $parentCategories = Language::get();
+
+            // blocked videos
+                $block_videos = BlockVideo::where('country_id',$countryName)->get();
+                if(!$block_videos->isEmpty()){
+                    foreach($block_videos as $block_video){
+                    $blockvideos[]=$block_video->video_id;
+                  }
+              }   
+              else{
+                  $blockvideos[]='';
+              } 
+
+            $data =array(
+              'ThumbnailSetting' => $ThumbnailSetting,
+              'blockvideos'      => $blockvideos,
+              'parentCategories' => $parentCategories,
+
+            );    
+
+            return Theme::view('movie_list',$data); 
+
+        } catch (\Throwable $th) {
            return abort(404);
         }
+       
+      
       }
 
       public function liveList()
       {
-        try {
-          $data =array(
-            "Live_list" => VideoCategory::all() ,
-          );
+       
+        $ThumbnailSetting = ThumbnailSetting::first();
+        
+        $parentCategories = LiveCategory::orderBy('order')->where('in_menu',1)->get();
+
+        $data =array(
+          'ThumbnailSetting' => $ThumbnailSetting,
+          'parentCategories' => $parentCategories,
+        );    
+
 
            return Theme::view('Live_list',$data); 
-        } 
-        catch (\Throwable $th) {
-           return abort(404);
-        }
+        
       }
 }

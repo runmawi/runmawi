@@ -2274,36 +2274,43 @@ class HomeController extends Controller
         if ($request->ajax())
         {
 
-            $videos = Video::where('search_tags', 'LIKE', '%' . $request->country . '%')
-                            ->where('active', '=', '1')
-                            ->where('status', '=', '1')
-                            ->where('draft', '=', '1')
-                            ->limit('10');
-                            if ($getfeching != null && $getfeching->geofencing == 'ON')
-                            {
-                                $videos = $videos->whereNotIn('videos.id', $blockvideos);
-                            }
-                           $videos = $videos ->get();
+            $videos = Video::orwhere('videos.search_tags', 'LIKE', '%' . $request->country . '%')
+                           ->orwhere('videos.title', 'LIKE', '%' . $request->country . '%')
+                           ->where('active', '=', '1')
+                           ->where('status', '=', '1')
+                           ->where('draft', '=', '1')
+                           ->orderBy('created_at', 'desc')
+                           ->limit('10');
+                           if ($getfeching != null && $getfeching->geofencing == 'ON')
+                           {
+                               $videos = $videos->whereNotIn('videos.id', $blockvideos);
+                           }
+                           $videos = $videos->get();
 
-            $livestream = LiveStream::where('search_tags', 'LIKE', '%' . $request->country . '%')
+
+            $livestream = LiveStream::orwhere('search_tags', 'LIKE', '%' . $request->country . '%')
+                            ->orwhere('title', 'LIKE', '%' . $request->country . '%')
                             ->where('active', '=', '1')
                             // ->where('status', '=', '1')
                             ->limit('10')
                             ->get();
 
-            $audio = Audio::where('search_tags', 'LIKE', '%' . $request->country . '%')
+            $audio = Audio::orwhere('search_tags', 'LIKE', '%' . $request->country . '%')
+                            ->orwhere('audio.title', 'LIKE', '%' .$request->country . '%')
                             ->where('active', '=', '1')
                             ->where('status', '=', '1')
                             ->limit('10')
                             ->get();
 
-            $Episode = Episode::where('search_tags', 'LIKE', '%' . $request->country . '%')
+            $Episode = Episode::orwhere('search_tags', 'LIKE', '%' . $request->country . '%')
+                            ->orwhere('episodes.title', 'LIKE', '%' . $request->country . '%')
                             ->where('active', '=', '1')
                             ->where('status', '=', '1')
                             ->limit('10')
                             ->get(); 
                             
             $Series = Series::where('search_tag', 'LIKE', '%' . $request->country . '%')
+                             ->orwhere('title', 'LIKE', '%' . $request->country . '%')
                             ->where('active', '=', '1')
                             ->limit('10')
                             ->get();  
@@ -2473,7 +2480,8 @@ class HomeController extends Controller
 
         // Latest videos
 
-        $latest_videos = Video::where('search_tags', 'LIKE', '%' . $search_value . '%')
+        $latest_videos = Video::orwhere('search_tags', 'LIKE', '%' . $search_value . '%')
+                            ->orwhere('title', 'LIKE', '%' . $search_value . '%')
                             ->where('active', '=', '1')
                             ->where('status', '=', '1')
                             ->where('draft', '=', '1')
@@ -2486,29 +2494,34 @@ class HomeController extends Controller
                             $latest_videos = $latest_videos->get();
 
 
-        $latest_livestreams = LiveStream::where('search_tags', 'LIKE', '%' . $search_value . '%')
-                            ->where('active', '=', '1')
-                            ->limit('10')
-                            ->latest()
-                            ->get();
+
+        $latest_livestreams = LiveStream::orwhere('search_tags', 'LIKE', '%' . $search_value . '%')
+                                ->orwhere('title', 'LIKE', '%' . $search_value . '%')
+                                ->orwhere('title', 'LIKE', '%' . $search_value . '%')
+                                ->limit('10')
+                                ->latest()
+                                ->get();
 
 
 
-        $latest_audio = Audio::where('search_tags', 'LIKE', '%' . $search_value . '%')
+        $latest_audio = Audio::orwhere('search_tags', 'LIKE', '%' . $search_value . '%')
+                                ->orwhere('title', 'LIKE', '%' . $search_value . '%')
                                 ->where('active', '=', '1')
                                 ->where('status', '=', '1')
                                 ->limit('10')
                                 ->latest()
                                 ->get();
 
-        $latest_Episode = Episode::where('search_tags', 'LIKE', '%' . $search_value . '%')
+        $latest_Episode = Episode::orwhere('search_tags', 'LIKE', '%' . $search_value . '%')
+                                ->orwhere('episodes.title', 'LIKE', '%' . $search_value . '%')
                                 ->where('active', '=', '1')
                                 ->where('status', '=', '1')
                                 ->limit('10')
                                 ->latest()
                                 ->get();   
 
-        $latest_Series = Series::where('search_tag', 'LIKE', '%' . $search_value . '%')
+        $latest_Series = Series::orwhere('search_tag', 'LIKE', '%' . $search_value . '%')
+                               ->orwhere('title', 'LIKE', '%' . $search_value . '%')
                                 ->where('active', '=', '1')
                                 ->limit('10')
                                 ->latest()
@@ -2516,7 +2529,8 @@ class HomeController extends Controller
     // Most watched videos
 
         $Most_view_videos = RecentView::Join('videos','videos.id','=','recent_views.video_id')
-                            ->where('videos.search_tags', 'LIKE', '%' . $search_value . '%')
+                            ->orwhere('videos.search_tags', 'LIKE', '%' . $search_value . '%')
+                            ->orwhere('videos.title', 'LIKE', '%' . $search_value . '%')
                             ->where('videos.active', '=', '1')
                             ->where('videos.status', '=', '1')
                             ->where('videos.draft', '=', '1')
@@ -2531,7 +2545,8 @@ class HomeController extends Controller
                           
 
         $Most_view_audios = RecentView::Join('audio','audio.id','=','recent_views.audio_id')
-                            ->where('audio.search_tags', 'LIKE', '%' . $search_value . '%')
+                            ->orwhere('audio.search_tags', 'LIKE', '%' . $search_value . '%')
+                            ->orwhere('audio.title', 'LIKE', '%' . $search_value . '%')
                             ->where('audio.active', '=', '1')
                             ->where('audio.status', '=', '1')
                             ->limit('10')
@@ -2540,7 +2555,8 @@ class HomeController extends Controller
                             ->get();
 
         $Most_view_live   = RecentView::Join('live_streams','live_streams.id','=','recent_views.live_id')
-                            ->where('live_streams.search_tags', 'LIKE', '%' . $search_value . '%')
+                            ->orwhere('live_streams.search_tags', 'LIKE', '%' . $search_value . '%')
+                            ->orwhere('live_streams.title', 'LIKE', '%' . $search_value . '%')
                             ->where('live_streams.active', '=', '1')
                             ->limit('10')
                             ->latest('live_streams.created_at')
@@ -2548,7 +2564,8 @@ class HomeController extends Controller
                             ->get();
 
         $Most_view_episode  = RecentView::Join('episodes','episodes.id','=','recent_views.episode_id')
-                            ->where('episodes.search_tags', 'LIKE', '%' . $search_value . '%')
+                            ->orwhere('episodes.search_tags', 'LIKE', '%' . $search_value . '%')
+                            ->orwhere('episodes.title', 'LIKE', '%' . $search_value . '%')
                             ->where('episodes.active', '=', '1')
                             ->where('episodes.status', '=', '1')
                             ->limit('10')
@@ -2559,7 +2576,8 @@ class HomeController extends Controller
         $Most_view_Series  = RecentView::select('series.*')
                             ->Join('episodes','episodes.id','=','recent_views.episode_id')
                             ->Join('series','series.id','=','episodes.series_id')
-                            ->where('series.search_tag', 'LIKE', '%' . $search_value . '%')
+                            ->orwhere('series.search_tag', 'LIKE', '%' . $search_value . '%')
+                            ->orwhere('series.title', 'LIKE', '%' . $search_value . '%')
                             ->where('series.active', '=', '1')
                             ->limit('20')
                             ->latest('series.created_at')
@@ -2568,11 +2586,14 @@ class HomeController extends Controller
 
         //  All videos 
 
-        $videos_count = Video::where('search_tags', 'LIKE', '%' . $search_value . '%')->count();
+        $videos_count = Video::orwhere('videos.search_tags', 'LIKE', '%' . $search_value . '%')
+                        ->orwhere('videos.title', 'LIKE', '%' . $search_value . '%')->count();
 
         if ($videos_count > 0)
         {
-            $videos = Video::where('search_tags', 'LIKE', '%' . $search_value . '%')->where('active', '=', '1')
+            $videos = Video::orwhere('videos.search_tags', 'LIKE', '%' . $search_value . '%')
+                            ->orwhere('videos.title', 'LIKE', '%' . $search_value . '%')
+                            ->where('active', '=', '1')
                             ->where('status', '=', '1')
                             ->where('draft', '=', '1')
                             ->orderBy('created_at', 'desc')
@@ -2589,7 +2610,8 @@ class HomeController extends Controller
         }
 
        
-        $livestreams = LiveStream::where('search_tags', 'LIKE', '%' . $search_value . '%')
+        $livestreams = LiveStream::orwhere('search_tags', 'LIKE', '%' . $search_value . '%')
+                            ->orwhere('title', 'LIKE', '%' . $search_value . '%')
                             ->where('active', '=', '1')
                             ->limit('20')
                             ->latest()
@@ -2597,21 +2619,24 @@ class HomeController extends Controller
 
 
 
-        $audio = Audio::where('search_tags', 'LIKE', '%' . $search_value . '%')
+        $audio = Audio::orwhere('search_tags', 'LIKE', '%' . $search_value . '%')
+                            ->orwhere('audio.title', 'LIKE', '%' . $search_value . '%')
                             ->where('active', '=', '1')
                             ->where('status', '=', '1')
                             ->limit('20')
                             ->latest()
                             ->get();
 
-        $Episode = Episode::where('search_tags', 'LIKE', '%' . $search_value . '%')
+        $Episode = Episode::orwhere('search_tags', 'LIKE', '%' . $search_value . '%')
+                            ->orwhere('episodes.title', 'LIKE', '%' . $search_value . '%')
                             ->where('active', '=', '1')
                             ->where('status', '=', '1')
                             ->limit('20')
                             ->latest()
                             ->get();    
         
-        $Series = Series::where('search_tag', 'LIKE', '%' . $search_value . '%')
+        $Series = Series::orwhere('search_tag', 'LIKE', '%' . $search_value . '%')
+                            ->orwhere('title', 'LIKE', '%' . $search_value . '%')
                             ->where('active', '=', '1')
                             ->limit('20')
                             ->latest()

@@ -38,11 +38,11 @@
                         </a>
                         <div class="hover-buttons">
                             <div class="d-flex align-items-center justify-content-between">
-
+                                 <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
                               <?php if($ThumbnailSetting->title == 1) { ?>            <!-- Title -->
-                                <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
+                               
                                       <span class="text-white"><?php  echo (strlen($video->title) > 17) ? substr($video->title,0,18).'...' : $video->title; ?></span>
-                                </a>
+                             
                               <?php } ?>   
                               </div>
 
@@ -118,7 +118,9 @@
                                 </div>
                         </div>
                     </div>
+                        
                 </div>
+                    
             </a>
         </li>
 

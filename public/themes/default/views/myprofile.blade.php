@@ -58,6 +58,9 @@ $uppercase =  ucfirst($request_url);
             height: 100px;
     width: 150px!important;
         }
+        .img-fluid{
+            min-height: 0px!important;
+        }
    img.multiuser_img {
     padding: 9%;
     border-radius: 70%;

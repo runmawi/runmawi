@@ -28,10 +28,10 @@
               <div class="block-description">
               <a href="<?php if($free_Content->series_id == @$free_Content->series_title->id){ echo URL::to('/episode'.'/'.@$free_Content->series_title->title.'/'.$free_Content->slug) ; }?> ">
                   <h6><?php echo __($free_Content->title); ?></h6>
-                </a>
+               
                 <div class="movie-time d-flex align-items-center my-2">
                   <div class="badge badge-secondary p-1 mr-2"><?php echo $free_Content->age_restrict.' '.'+' ?></div>
-                  <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $free_Content->duration); ?></span>
+                  <!--<span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $free_Content->duration); ?></span>-->
                 </div>
                 <div class="hover-buttons d-flex">
                 <a class="text-white" href="<?php if($free_Content->series_id == @$free_Content->series_title->id){ echo URL::to('/episode'.'/'.@$free_Content->series_title->title.'/'.$free_Content->slug) ; }?> ">
@@ -39,6 +39,7 @@
                    Watch Series
                   </a>
                 </div>
+                   </a>
               </div>
             </div>
           </a>

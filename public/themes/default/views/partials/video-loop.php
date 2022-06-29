@@ -1,16 +1,16 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
 
- <!-- MainContent -->
-<section id="iq-favorites">
+ <!-- MainContent iq-favorites-->
+<section id="">
             <div class="">
                <div class="row">
                   <div class="col-sm-12 overflow-hidden">
                      <div class="iq-main-header align-items-center justify-content-between">
                         <!--<h4 class="main-title"><a href="<?php echo URL::to('home') ?>">Latest Videos</a></h4> -->                     
                      </div>
-                     <div class="favorites-contens">
-                        <ul class="favorites-slider list-inline row p-0 mb-0">
+                     <div class="favorites-contens ml-2">
+                        <ul class="favorites-slider list-inline row mb-0">
                             <?php if(isset($recomended)) :
                            foreach($recomended as $watchlater_video): ?>
                            <li class="slide-item">

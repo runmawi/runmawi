@@ -89,6 +89,10 @@ a:hover { text-decoration: none; }
 /* Form */
 #sidebar-scrollbar { height: 100%; }
 .c-logo{}
+#progressbar li
+{
+    cursor: pointer;
+}
 /*---------------------------------------------------------------------
 Badge
 -----------------------------------------------------------------------*/
