@@ -251,6 +251,10 @@ function myFunction() {
     loadJS("https://afarkas.github.io/lazysizes/plugins/respimg/ls.respimg.min.js");
     }
 </script>
+
+<scrip>
+  
+</scrip>
       <script>
     var type = $('#video_type').val();
     // var type = $('#hls_m3u8').val();
@@ -551,5 +555,8 @@ if( $Prevent_inspect == 1){
 
 <?php } ?>
 
+
+
+ 
 </body>
 </html>

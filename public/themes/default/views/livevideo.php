@@ -5,16 +5,7 @@
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <style type="text/css">
-.video-js *, .video-js :after, .video-js :before {box-sizing: inherit;display: grid;}
-.video-js .vjs-watermark-top-right {right: 5%;top: 50%;}
-.video-js .vjs-watermark-content {opacity: 0.3;}
-.vjs-menu-button-popup .vjs-menu {width: auto;}
-.btn.btn-default.views {color: #fff !important;}
-.pay-live{
-vertical-align: middle; 
-
-text-align: center;
-}
+	
 #video_bg_dim{
 /*background: rgb(0 0 0 / 45%);*/
 position: absolute;
@@ -35,12 +26,23 @@ font-size: 35px;
 margin-top: 0px;
 font-weight: 400;
 }
-
+#videoPlayer {
+    width: 100%;
+    height: 100%;
+    margin: 20px auto;
+}
+    .plyr audio, .plyr iframe, .plyr video {
+    display: block;
+    /* height: 100%; */
+    /* width: 100%; */
+}
+    .plyr--video{
+         height: calc(80vh - 80px - 75px);
+    max-width: none;
+    width: 100%;
+    }  
 </style>
-<link href="https://vjs.zencdn.net/7.8.3/video-js.css" rel="stylesheet" />
 
-<!-- If you'd like to support IE8 (for Video.js versions prior to v7) -->
-<script src="https://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script>
 <style>
 
 .vjs-skin-hotdog-stand { color: #FF0000; }
@@ -70,40 +72,51 @@ if(!Auth::guest()){
 if(!empty($password_hash)){
 if ($ppv_exist > 0 || Auth::user()->subscribed() || Auth::user()->role == "admin" || $video->access == "guest" && $video->ppv_price == null ) { ?>
 <div id="video_bg"> 
-<div class="">
-    <div id="video sda" class="fitvid" style="margin: 0 auto;">
+        <div class="">
+            <div id="video sda" class="fitvid" style="margin: 0 auto;">
 
-    <?php if(!empty($video->mp4_url && $request_url != "m3u8"  && $video->url_type == "mp4" )){  ?>
+            <?php if(!empty($video->mp4_url && $request_url != "m3u8"  && $video->url_type == "mp4" )){  ?>
 
-            <video id="videoPlayer" autoplay onplay="playstart()" onended="autoplay1()" class="video-js vjs-default-skin vjs-big-play-centered" poster="<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?=$video->mp4_url; ?>"  type="application/x-mpegURL" data-authenticated="<?=!Auth::guest() ?>">
-                <source src="<?= $video->mp4_url; ?>" type='application/x-mpegURL' label='Auto' res='auto' />
-                <source src="<?php echo $video->mp4_url; ?>" type='application/x-mpegURL' label='480p' res='480'/>
-                <!-- <source src="<?php echo URL::to('/storage/app/public/') . '/' . $video->path . '_2_1000.m3u8'; ?>" type='application/x-mpegURL' label='720p' res='720'/>  -->
-            </video>
+                    <video id="videoPlayer"  class="" poster="<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?=$video->mp4_url; ?>"  type="application/x-mpegURL" data-authenticated="<?=!Auth::guest() ?>">
+                        <source src="<?= $video->mp4_url; ?>" type='application/x-mpegURL' label='Auto' res='auto' />
+                        <source src="<?php echo $video->mp4_url; ?>" type='application/x-mpegURL' label='480p' res='480'/>
+                        <!-- <source src="<?php echo URL::to('/storage/app/public/') . '/' . $video->path . '_2_1000.m3u8'; ?>" type='application/x-mpegURL' label='720p' res='720'/>  -->
+                    </video>
 
-    <?php }elseif(!empty($video->embed_url)  && $video->url_type == "embed"){ ?> 
-        <div class="plyr__video-embed" id="player">
-            <iframe
-                src="<?php if(!empty($video->embed_url)){ echo $video->embed_url	; }else { } ?>"
-                allowfullscreen
-                allowtransparency
-                allow="autoplay">
-            </iframe>
-        </div>
-        <?php  }elseif(!empty($request_url == "m3u8")  && $video->url_type == "mp4"){  ?> 
-            <!-- <div class="plyr__video-embed" id="player"> -->
-                <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->mp4_url ?>">
-                <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
-                <input type="hidden" id="live" name="live" value="live">
-                <input type="hidden" id="request_url" name="request_url" value="<?php echo $request_url ?>">
+            <?php }elseif(!empty($video->embed_url)  && $video->url_type == "embed"){ ?> 
+                <div class="plyr__video-embed" id="player">
+                    <iframe
+                        src="<?php if(!empty($video->embed_url)){ echo $video->embed_url	; }else { } ?>"
+                        allowfullscreen
+                        allowtransparency
+                        allow="autoplay">
+                    </iframe>
+                </div>
+                <?php  }elseif(!empty($request_url == "m3u8")  && $video->url_type == "mp4"){  ?> 
+                    <!-- <div class="plyr__video-embed" id="player"> -->
+                        <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->mp4_url ?>">
+                        <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
+                        <input type="hidden" id="live" name="live" value="live">
+                        <input type="hidden" id="request_url" name="request_url" value="<?php echo $request_url ?>">
 
-                <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
-                    <source  type="application/x-mpegURL"  src="<?php echo $video->mp4_url; ?>" >
-                </video>
-            <!-- </div>  -->
-    <?php }elseif(!empty($video->url_type == "Encode_video")){  ?>
+                        <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                            <source  type="application/x-mpegURL"  src="<?php echo $video->mp4_url; ?>" >
+                        </video>
+                    <!-- </div>  -->
+            <?php }elseif(!empty($video->url_type == "Encode_video")){  ?>
 
-                <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->hls_url ; ?>">
+                        <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->hls_url ; ?>">
+                        <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
+                        <input type="hidden" id="live" name="live" value="live">
+                        <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
+
+                         <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                            <source  type="application/x-mpegURL"  src="<?php echo $video->hls_url ; ?>" >
+                        </video>
+
+               <?php  }elseif(!empty($video->url_type ) && $video->url_type == "live_stream_video"){  ?>
+
+                <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->live_stream_video; ?>">
                 <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
                 <input type="hidden" id="live" name="live" value="live">
                 <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
@@ -251,7 +264,7 @@ else{
     
     <input type="hidden" class="videocategoryid" data-videocategoryid="<?=$video->video_category_id; ?>" value="<?=$video->video_category_id; ?>">
 
-    <div class="container video-details">
+    <div class="container-fluid video-details">
         <div class="row">
             <div class="col-sm-9 col-md-9 col-xs-12">
                 <h1 class="trending-text big-title text-uppercase mt-3"><?php echo __($video->title);?> <?php if( Auth::guest() ) { ?>  <?php } ?></h1>
