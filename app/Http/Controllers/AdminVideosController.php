@@ -147,9 +147,9 @@ class AdminVideosController extends Controller
       }
       else
       {
-
+        $data = [];
       }
-
+      if(count($data) > 0){
       $total_row = $data->count();
       if($total_row > 0)
       {
@@ -186,11 +186,15 @@ class AdminVideosController extends Controller
        ';
       }
       $data = array(
-       'table_data'  => $output,
-       'total_data'  => $total_row
-      );
-
+        'table_data'  => $output,
+        'total_data'  => $total_row
+       );
       echo json_encode($data);
+
+    }
+
+ 
+
      }
     }
 
@@ -216,9 +220,9 @@ class AdminVideosController extends Controller
       }
       else
       {
-
+        $data = [];
       }
-   
+   if(count($data) > 0){
       $total_row = $data->count();
       if($total_row > 0)
       {
@@ -262,6 +266,7 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
 
       echo json_encode($data);
      }
+    }
     }
 
     public function uploadFile(Request $request)
@@ -1872,6 +1877,7 @@ if(!empty($artistsdata)){
             if(Auth::user()->role =='admin' ){
                 $data['status'] = 1;    
             }
+            $settings = Setting::first();
 
                 if(Auth::user()->role =='admin' &&  $pack != "Business"  ){
                         $data['status'] = 1;    

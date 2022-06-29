@@ -10,8 +10,8 @@
 }
 .dropdown-submenu>.dropdown-menu {
     top:0;
-    /*left:-100%;*/
-    left:-10rem; /* 10rem is the min-width of dropdown-menu */
+    left:100%;
+    /* right:10rem; 10rem is the min-width of dropdown-menu */
     margin-top:-6px;
 }
 
