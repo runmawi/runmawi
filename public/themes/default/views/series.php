@@ -104,7 +104,7 @@ $series = $series_data ;
                       <a href="<?php echo URL::to('episode').'/'.$series->title.'/'.$episodes->slug;?>">
                            <div class="block-images position-relative">
                                     <div class="img-box">
-                                      <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class="img-fluid" >
+                                      <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class="img-fluid w-100" >
                                    
                                          <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
                                             <p class="p-tag"><?php echo "Free"; ?></p>
@@ -149,7 +149,7 @@ $series = $series_data ;
                               <a href="<?php echo URL::to('episode').'/'.$series->title.'/'.$episodes->slug;?>">
                                  <div class="block-images position-relative">
                                     <div class="img-box">
-                                      <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class=" img-fluid" >
+                                      <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class=" img-fluid w-100" >
                                    
                                    
                                            <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
