@@ -64,12 +64,12 @@
 	 font-size: inherit;
 	 font-weight: 400;
 	 text-align: center;
-	 color: #20222c;
+	 color: #fff;
      height: 30px;
      display: flex;
      align-items: center;
-	 background-color: #f8f9fa;
-	 border-radius: 3px;
+	 background-color: #000;
+	 border-radius: 30px;
 	 transition: background-color 0.3s ease;
 	 cursor: default;
 }
@@ -86,21 +86,26 @@
  .tag__name {
 	 margin-right: 3px;
 }
+ .tag__name {
+	 margin-right: 3px;
+     color: #fff!important;
+}
  .tag__remove {
-	  position: absolute;
+	 position: absolute;
 	 right: 0;
 	 bottom: 0;
 	 width: 20px;
 	 height: 100%;
-	 padding: 0 5px;
+	 padding: 0 0px;
 	 font-size: 16px;
 	 font-weight: 400;
 	 transition: opacity 0.3s ease;
-	 opacity: 0.5;
+	border: none;
 	 cursor: pointer;
-	 border: 0;
+	 border-radius: 30px;
 	 background-color: #000;
 	 color: #fff;
+	 
 }
  .tag__remove:hover {
 	 opacity: 1;

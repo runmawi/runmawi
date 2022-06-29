@@ -65,9 +65,21 @@ input.skips,input#Recaps_Skip{
 #intro_skip{
 	display: none;
 }
+      .button.close{
+          color: red;
+      }
 #Auto_skip{
 	display: none;
 }
+      .modal-content{
+          background-color: transparent;
+      }
+      .modal-dialog{
+          max-width:900px!important;
+      }
+      .modal {
+          top:40px;
+      }
 #end_card_video{
   /* end_card_video */
 	display: none;
@@ -75,6 +87,17 @@ input.skips,input#Recaps_Skip{
       h4{
           font-size:22px!important;
       }
+      .close {
+    /* float: right; */
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #FF0000	;
+    text-shadow: 0 1px 0 #fff;
+    opacity: .5;
+    display: flex!important;
+    justify-content: end!important;
+}
 div#url_linkdetails {
     position: absolute;
     top: 22%;
@@ -131,7 +154,45 @@ h2{
       .subsc-video{
          font-size: 18px!important;   
       }
-     
+     .img__wrap {
+  position: relative;
+         height: 200px;
+         widows: 250px;
+ 
+}
+      .img__wrap{
+          transform: scale(1.0);
+      }
+.img__description_layer {
+  position: absolute;
+ padding: 0px 20px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+ background-image: linear-gradient(to bottom, rgba(4,8,15,0), rgba(0,0,0,0.9), rgba(0,0,0,0.9), rgba(0,0,0,0.9));
+  color: #fff;
+  visibility: hidden;
+  opacity: 0;
+    width: 300px;
+  
+
+  /* transition effect. not necessary */
+  transition: opacity .2s, visibility .2s;
+}
+
+.img__wrap:hover .img__description_layer {
+  visibility: visible;
+  opacity: 1;
+}
+
+.img__description {
+  transition: .2s;
+  transform: translateY(1em);
+}
+
+.img__wrap:hover .img__description {
+  transform: translateY(0);
+}
   </style>
 <?php
 
@@ -840,13 +901,52 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
   <div class="col-sm-4 p-0">
         <div>     
             <?php if($video->trailer != '' && $ThumbnailSetting->trailer == 1 ){ ?>
+            
+            <div class="img__wrap">
+  <img class="img__img " src="<?php echo URL::to('/').'/public/uploads/images/'.$video->player_image;  ?>" class="img-fluid" alt="" / height="200" width="300">
+  <div class="img__description_layer">
+    <p class="img__description"><h6><?php echo __($video->title); ?></h6>
+                                       <div class="movie-time  align-items-center my-2">
+                                          <div class="badge badge-secondary p-1 mr-2"><?php echo $video->age_restrict.' '.'+' ?></div>
+                                          <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $video->duration); ?></span>
+                                       </div>
+                                       <div class="hover-buttons">
+                                           <a data-video="<?php echo $video->trailer;  ?>" data-toggle="modal" data-target="#videoModal">	
+                                          <span class="text-white">
+                                          <i class="fa fa-play mr-1" aria-hidden="true"></i>
+                                          Play Now
+                                          </span>
+                                           </a>
+                                       </div>
+      </p>
+  </div>
+</div>
+      <div class="modal fade modal-xl" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <div class="modal-body">
+        
+            
+         <video id="videoPlayer1" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $video->trailer; ?>"  type="video/mp4" >
+            </video>
+        </div>
+      </div>
+    </div>
+  </div>
+       <script src="https://cdn.plyr.io/3.5.10/plyr.js"></script>
+      
+      <script>  const player = new Plyr('#videoPlayer1'); </script>
+                                        
+                                       
                 <!-- <div id="videoplay" class="btn1 btn-outline-primary  watch_trailer"><i class="ri-film-line"></i> Watch Trailer</div>
                 <div id="close_trailer" class="btn1 btn-outline-danger  close_trailer"><i class="ri-film-line"></i> Close Trailer</div>
                 <div style=" display: none;" class="skiptrailer btn btn-default skip"> Skip</div> -->
-                <img src="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image  ?>" alt="">
+               <!-- <img class="w-100" src="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image  ?>" alt="" data-toggle="modal" data-target="#modal1" id="b1">-->
+                </div>
+            
             <?php } ?>
-        </div>
-    </div>
+              </div>
 
   <?php if(!empty($video->description) ) { ?>
     <div class="col-md-7 p-0" style="margin-top: 2%;">
@@ -1643,6 +1743,21 @@ location.reload();
 
 
 </script>
+<script>
+  
+   $(function() {
+  $(".video").click(function () {
+    var theModal = $(this).data("target"),
+        videoSRC = $(this).attr("data-video"),
+        videoSRCauto = videoSRC + "";
+    $(theModal + ' source').attr('src', videoSRCauto);
+    $(theModal + ' video').load();
+    $(theModal + ' button.close').click(function () {
+      $(theModal + ' source').attr('src', videoSRC);
+    });
+  });
+});
+    </script>
 
 
 
