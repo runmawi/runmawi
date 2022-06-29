@@ -224,7 +224,9 @@ input:checked + .sliderk:before {
 .sliderk.round:before {
   border-radius: 50%;
 }
-
+        .dropdown-toggle::after{
+            display: none!important;
+        }
 /* Dark mode and light Mode */
       body.light-theme {
 	      background-color: <?php echo GetLightBg(); ?>;
@@ -340,9 +342,12 @@ input:checked + .sliderk:before {
                                           $cat = App\VideoCategory::orderBy("order")->where('in_home',1)->get();
                                           ?>
                                        <li class="dropdown menu-item">
-                                            <a class="dropdown-toggle" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
-                                              <?php echo __($menu->name);?> <!--<i class="fa fa-angle-down"></i>-->
+                                           <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown" >  
+                                                 <a class="d-flex justify-content-between" href="<?php echo  URL::to('/categoryList');?>"> <?php echo __($menu->name);?>  
+                                                   <i class="ri-arrow-down-s-line"></i>
+                                                </a>
                                             </a>
+
 
                                              <ul class="dropdown-menu categ-head">
                                                    <?php foreach ( $cat->take(4) as $category) { ?>
@@ -365,8 +370,10 @@ input:checked + .sliderk:before {
                                         $cat = App\VideoCategory::all();
                                         ?>
                                           <li class="dropdown menu-item">
-                                            <a class="dropdown-toggle" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
-                                              <?php echo __($menu->name);?> <!--<i class="fa fa-angle-down"></i>-->
+                                           <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown" >  
+                                                 <a class="d-flex justify-content-between" href="<?php echo  URL::to('/Movie-list');?>"> <?php echo __($menu->name);?>  
+                                                   <i class="ri-arrow-down-s-line"></i>
+                                                </a>
                                             </a>
                                             <ul class="dropdown-menu categ-head">
                                               <?php foreach ( $languages as $language){ ?>
@@ -383,9 +390,11 @@ input:checked + .sliderk:before {
                                        $LiveCategory = App\LiveCategory::get();
                                         ?>
                                           <li class="dropdown menu-item">
-                                            <a class="dropdown-toggle" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
-                                              <?php echo __($menu->name);?> <!--<i class="fa fa-angle-down"></i>-->
-                                            </a>
+                                            <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown" >  
+                                                 <a class="d-flex justify-content-between" href="<?php echo  URL::to('/Live-list');?>"> <?php echo __($menu->name);?>  
+                                                   <i class="ri-arrow-down-s-line"></i>
+                                                </a>
+                                          </a>
                                             <ul class="dropdown-menu categ-head">
                                               <?php foreach ( $LiveCategory as $category){ ?>
                                               <li>
