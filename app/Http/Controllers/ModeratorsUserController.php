@@ -5519,11 +5519,13 @@ class ModeratorsUserController extends Controller
                 ->whereDate('ppv_purchases.created_at', '>=', $start_time)->groupBy('ppv_purchases.user_id')
                 ->orderBy('ppv_purchases.created_at')
                 ->get(['ppv_purchases.user_id', 'moderators_users.username', DB::raw('sum(videos.views) as videos_views') , \DB::raw("sum(audio.views) as audio_count") , DB::raw('sum(ppv_purchases.moderator_commssion) as count') , \DB::raw("MONTHNAME(ppv_purchases.created_at) as month_name") ]);
+        }else{
+
         }
 
         $output = '';
         $i = 1;
-
+        if(count($total_users)> 0){
         $total_row = $total_users->count();
         if (!empty($total_users))
         {
@@ -5569,7 +5571,7 @@ class ModeratorsUserController extends Controller
         );
 
         return $value;
-
+    }
     }
 
     public function CPPEndDateRevenue(Request $request)
@@ -5609,10 +5611,13 @@ class ModeratorsUserController extends Controller
                 ->orderBy('ppv_purchases.created_at')
                 ->get(['ppv_purchases.user_id', 'moderators_users.username', DB::raw('sum(videos.views) as videos_views') , \DB::raw("sum(audio.views) as audio_count") , DB::raw('sum(ppv_purchases.moderator_commssion) as count') , \DB::raw("MONTHNAME(ppv_purchases.created_at) as month_name") ]);
 
+        }else{
+            $total_users = [];
         }
 
         $output = '';
         $i = 1;
+        if(count($total_users)> 0){
 
         $total_row = $total_users->count();
         if (!empty($total_users))
@@ -5659,6 +5664,7 @@ class ModeratorsUserController extends Controller
         );
 
         return $value;
+    }
     }
 
     public function CPPExportCsv(Request $request)
@@ -5827,10 +5833,13 @@ class ModeratorsUserController extends Controller
                 , DB::raw('sum(videos.views) as videos_views') , \DB::raw("sum(audio.views) as audio_count") 
             ]);
 
+        }else{
+            $total_content = [];
         }
 
         $output = '';
         $i = 1;
+        if(count($total_content) > 0){
 
         $total_row = $total_content->count();
         if (!empty($total_content))
@@ -5878,7 +5887,7 @@ class ModeratorsUserController extends Controller
         );
 
         return $value;
-
+    }
     }
 
     public function CPPEndDateAnalytic(Request $request)
@@ -5902,11 +5911,14 @@ class ModeratorsUserController extends Controller
                 , DB::raw('sum(videos.views) as videos_views') , \DB::raw("sum(audio.views) as audio_count") 
             ]);
 
+        }else{
+            $total_content = [];
         }
 
         $output = '';
         $i = 1;
 
+        if(count($total_content) > 0){
         $total_row = $total_content->count();
         if (!empty($total_content))
         {
@@ -5953,6 +5965,7 @@ class ModeratorsUserController extends Controller
         );
 
         return $value;
+    }
     }
 
     public function CPPAnalyticExportCsv(Request $request)
