@@ -36,9 +36,11 @@ h2{
     /* height: 100%; */
     /* width: 100%; */
 }
-    video{
-        width: 60%!important;
-    }
+    .plyr--video{
+         height: calc(80vh - 80px - 75px);
+    max-width: none;
+    width: 100%;
+    }  
 </style>
 
 <style>

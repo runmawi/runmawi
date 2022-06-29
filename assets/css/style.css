@@ -1908,6 +1908,9 @@ box-shadow: -1px 6px 13px 0px rgba(0,0,0,0.44);
     max-width: none;
     width: 100%;
 }
+.plyr plyr--full-ui plyr--video plyr--html5 plyr--paused plyr--stopped plyr--pip-supported plyr--fullscreen-enabled{
+     
+}
 .plyr__poster {background-position: contain !important;/*background-size: 80% !important;*/}
 #video .plyr.plyr--full-ui, #video-trailer .plyr.plyr--full-ui, #video_container .plyr.plyr--full-ui, #video_container .plyr__video-embed, #watch_trailer .plyr.plyr--full-ui, #watch_trailer .plyr__video-embed{
     height: calc(90vh - 80px - 75px);
