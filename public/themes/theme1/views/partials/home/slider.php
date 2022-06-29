@@ -183,6 +183,7 @@ endif; ?>
 
 <!-- VideoCategory -->
 <?php
+if(Route::current()->getName() == "home"){
 
             $parentCategories = App\VideoCategory::where('banner',1)->get();
                 
@@ -194,6 +195,10 @@ endif; ?>
                     ->where('status', '=', '1')
                     ->where('draft', '=', '1')
                     ->where('videos.banner','=','0');
+                    
+                    if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+                        $videos_category = $videos_category  ->whereNotIn('videos.id',Block_videos());
+                    }
 
                     $videos_category = $videos_category->orderBy('videos.created_at','desc')->get();
 ?>
@@ -254,7 +259,7 @@ endif; ?>
 
 <?php endforeach; endif; ?>
 
-<?php }?>
+<?php } }?>
 
 
 
