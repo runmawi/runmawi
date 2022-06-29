@@ -5,6 +5,8 @@
 <?php if(!empty($data['password_hash'])) { $id = Auth::user()->id ; } else { $id = 0 ; } 
 
 $category_id = App\VideoCategory::where('name',$data['category_title'])->pluck('id')->first();
+$category_slug = App\VideoCategory::where('name',$data['category_title'])->pluck('slug')->first();
+
 ?>
 
       <div class="main-content">
@@ -18,55 +20,56 @@ $category_id = App\VideoCategory::where('name',$data['category_title'])->pluck('
 
                     {{-- filter Option --}}
 
-                    {{-- <div class="row d-flex ">
+                    {{-- <form method="post" action="{{ route('categoryfilter',$category_slug) }}">  
+                        @csrf    
+                        <div class="row d-flex ">
 
-                        <div class="col-md-3">
-                            <select class="selectpicker" multiple title="Refine" data-live-search="true">
-                                <option value="videos">Movie</option>
-                                <option value="tv_Shows">TV Shows</option>
-                                <option value="live_stream">Live stream</option>
-                                <option value="audios">Audios</option>
-                            </select>
-                        </div>
+                            <div class="col-md-3">
+                                <select class="selectpicker" multiple title="Refine" data-live-search="true">
+                                    <option value="videos">Movie</option>
+                                    <option value="tv_Shows">TV Shows</option>
+                                    <option value="live_stream">Live stream</option>
+                                    <option value="audios">Audios</option>
+                                </select>
+                            </div>
 
-                        <div class="col-md-3">
-                            <select class="selectpicker" multiple title="Age" name="age" id="age" data-live-search="true">
-                                @foreach($data['age_categories'] as $age)
-                                    <option value="{{ $age->age  }}">{{ $age->slug }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                            <div class="col-md-3">
+                                <select class="selectpicker" multiple title="Age" name="age[]" id="age" data-live-search="true">
+                                    @foreach($data['age_categories'] as $age)
+                                        <option value="{{ $age->age  }}">{{ $age->slug }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
 
-                        <div class="col-md-3">
-                            <select class="selectpicker" multiple title="Rating" id="rating" data-live-search="true">
-                                <option value="1" >1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6</option>
-                                <option value="7">7</option>
-                                <option value="8">8</option>
-                                <option value="9">9</option>
-                                <option value="10">10</option>
-                            </select>
-                        </div>
+                            <div class="col-md-3">
+                                <select class="selectpicker" multiple title="Rating" id="rating" name="rating[]" data-live-search="true">
+                                    <option value="1" >1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                </select>
+                            </div>
 
-                        
-                        <div class="col-md-3">
-                            <select class="selectpicker " multiple  title="Newly added First" id="sorting" data-live-search="true">
-                                <option value="latest_videos">Latest Videos</option>
-                                <option value="oldest_videos">oldest videos</option>
-                            </select>
-                        </div>
+                            
+                            <div class="col-md-3">
+                                <select class="selectpicker " multiple  title="Newly added First" id="sorting" name="sorting" data-live-search="true">
+                                    <option value="latest_videos">Latest Videos</option>
+                                </select>
+                            </div>
 
-                        <input type="hidden" id="category_id" value={{ $category_id  }} name="category_id">
+                            <input type="hidden" id="category_id" value={{ $category_id  }} name="category_id">
 
-                        <div class="col-md-3">
-                            <button type="button" class="btn btn-primary filter">Filter</button>
-                        </div>
-                    </div>   --}}
-
+                            <div class="col-md-3">
+                                <button type="submit" class="btn btn-primary filter">Filter</button>
+                            </div>
+                        </div>  
+                    </form>   --}}
 
                    
                      <div class="favorites-contens">
