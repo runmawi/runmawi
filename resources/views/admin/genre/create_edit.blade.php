@@ -1,121 +1,123 @@
 @extends('admin.master')
 
-@section('css')
-	<link rel="stylesheet" href="{{ Url::to('/application/assets/js/tagsinput/jquery.tagsinput.css') }}" />
-@stop
-
 
 @section('content')
 
-<div id="admin-container">
-<!-- This is where -->
-	
-	<ol class="breadcrumb"> <li> <a href="{{ Url::to('/admin/genre_list') }}"><i class="fa fa-newspaper-o"></i>Manage Genre</a> </li> <li class="active">@if(!empty($genre->id)) <strong>{{ $genre->name }}</strong> @else <strong>Create Genre</strong> @endif</li> </ol>
+<div id="content-page" class="content-page">
+         <div class="container-fluid">
 
-	<div class="admin-section-title">
-	@if(!empty($genre->id))
-		<h3>{{ $genre->name }}</h3> 
-	@else
-		<h3><i class="entypo-plus"></i> Create Genre</h3> 
-	@endif
-	</div>
-	<div class="clear"></div>
-
-		<form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
-
-			<div class="row">
-				
-				<div class="@if(!empty($genre->created_at)) col-sm-6 @else col-sm-8 @endif"> 
-
-					<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-						<div class="panel-title">Genre</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-						<div class="panel-body" style="display: block;"> 
-							<p>Genre Name e.g. "Action, Romantic"</p> 
-							<input type="text" class="form-control" name="name" id="name" value="@if(!empty($genre->name)){{ $genre->name }}@endif" />
-                            
-							<div>
-							<label for="web_home" style="float:left; display:block; margin-right:10px;">Is this Genre Display in Web Home Page:</label>
-							<input type="checkbox" @if(!empty($genre->web_home) && $genre->web_home == 1){{ 'checked="checked"' }}@endif name="web_home" id="web_home" value="1" onclick="$(this).attr('value', this.checked ? 1 : 0)"/>
-							</div>
-							<div>
-							<label for="app_home" style="float:left; display:block; margin-right:10px;">Is this Genre Display in App Home Screen:</label>
-							<input type="checkbox" @if(!empty($genre->app_home) && $genre->app_home == 1){{ 'checked="checked"' }}@endif name="app_home"  id="app_home" value="1" onclick="$(this).attr('value', this.checked ? 1 : 0)"/>
-							</div>
-						</div> 
-					</div>
-                    <div class="panel panel-primary" data-collapsed="0"> 
-                        <div class="panel-heading"> 
-                            <label for="web_home" style="float:left; display:block; margin-right:10px;">Slug:</label>
-                            <input type="text" class="form-control" name="slug" id="slug" value="@if(!empty($genre->slug)){{ $genre->slug }}@endif" />
-                        </div>
-                        </div>
-                    
-					<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-						<div class="panel-title">Genre Image Cover</div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-						<div class="panel-body" style="display: block;"> 
-							@if(!empty($genre->image))
-							<img src="{{ Config::get('site.uploads_dir') . 'genres/' . $genre->image }}" class="movie-img" width="200"/>
+<div class="iq-card">
+    <h4><i class="entypo-archive"></i> Add New Series Genre</h4>
+	<div class="modal-body">
+		<form id="update-cat-form" accept-charset="UTF-8" action="{{ URL::to('admin/Series_genre/update') }}" method="post" enctype="multipart/form-data">
+         			<div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
+                        <label class="m-0">Name:</label>
+                        <input type="text" id="name" name="name" value="{{ $categories[0]->name }}" class="form-control" placeholder="Enter Name">
+							@if ($errors->has('name'))
+								<span class="text-red" role="alert">
+									<strong>{{ $errors->first('name') }}</strong>
+								</span>
 							@endif
-							<p>Select the movie image (1280x720 px or 16:9 ratio):</p> 
-							<input type="file" multiple="true" class="form-control" name="image" id="image" />
+                    </div>
 
-						</div> 
+                    <div class="form-group {{ $errors->has('slug') ? 'has-error' : '' }}">
+                        <label class="m-0">Slug:</label>
+                        <input type="text" id="slug" name="slug" value="{{ $categories[0]->slug }}" class="form-control" placeholder="Enter Slug">
+                        @if ($errors->has('slug'))
+                            <span class="text-red" role="alert">
+                                <strong>{{ $errors->first('slug') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+        
+                    <div class="form-group {{ $errors->has('slug') ? 'has-error' : '' }}">
+                        <label>Display In Menu :</label>
+                        <input type="radio" checked id="in_menu"  id="in_menu" name="in_menu" value="1" <?php if( $categories[0]->in_menu == 1) { echo "checked";} ?>>Yes
+                        <input type="radio" id="in_menu" name="in_menu" value="0"<?php if( $categories[0]->in_menu == 0) { echo "checked";} ?>>No
+                    </div>
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group {{ $errors->has('image') ? 'has-error' : '' }}">
+								<label class="m-0">Image:</label>
+								@if(!empty($categories[0]->image))
+								<img src="{{ URL::to('/') . '/public/uploads/videocategory/' . $categories[0]->image }}" class="movie-img" width="200"/>
+								@endif
+							</div>
+			
+							<div class="form-group {{ $errors->has('image') ? 'has-error' : '' }}">
+								<label class="m-0">Choose Category image (1280x720 px or 9:16 ratio):</label> 
+								<input type="file" multiple="true" class="form-control" name="image" id="image" />
+							</div>
+						</div>
 					</div>
 
-				</div>
+                    <div class="form-group {{ $errors->has('parent_id') ? 'has-error' : '' }}">
+                        <label class="m-0">Category:</label>
+                        	<select id="parent_id" name="parent_id" class="form-control">
+								<option value="0">Select</option>
+								@foreach($allCategories as $rows)
+									<option value="{{ $rows->id }}" @if ($rows->id == $categories[0]->parent_id) selected  @endif >{{ $rows->name }}</option>
+								@endforeach
+                        	</select>
+                        @if ($errors->has('parent_id'))
+                            <span class="text-red" role="alert">
+                                <strong>{{ $errors->first('parent_id') }}</strong>
+                            </span>
+                        @endif
+                    </div>
 
+                   
+                                    
+					<input type="hidden" name="id" id="id" value="{{ $categories[0]->id }}" />
+					<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+    		</form>
+		</div>
 
-			</div>
-
-			<div class="clear"></div>
-
-
-			@if(isset($genre->id))
-				<input type="hidden" id="id" name="id" value="{{ $genre->id }}" />
-			@endif
-
-			<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-			<input type="submit" value="{{ $button_text }}" class="btn btn-success pull-right" />
-
-		</form>
-
-		<div class="clear"></div>
-<!-- This is where now -->
+		<div class="modal-footer">
+			<a type="button" class="btn btn-danger" data-dismiss="modal" href="{{ URL::to('admin/videos/categories') }}">Close</a>
+			<button type="button" class="btn btn-primary" id="submit-update-cat">Update</button>
+		</div>
+    </div>
+</div>
 </div>
 
-	
-	
-	
-	@section('javascript')
+@section('javascript')
+
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
+<script>
+    
+$('form[id="update-cat-form"]').validate({
+	rules: {
+        name : 'required',
+	//   image : 'required',
+      parent_id: {
+                required: true
+            }
+	},
+	messages: {
+        name: 'This field is required',
+	//   image: 'This field is required',
+      parent_id: {
+                required: 'This field is required',
+            }
+	},
+	submitHandler: function(form) {
+	  form.submit();
+	}
+  });
 
 
-	<script type="text/javascript" src="{{ Url::to('/application/assets/admin/js/tinymce/tinymce.min.js') }}"></script>
-	<script type="text/javascript" src="{{ Url::to('/application/assets/js/jquery.mask.min.js') }}"></script>
-
-	<script type="text/javascript">
-
-	$ = jQuery;
 
 	$(document).ready(function(){
-
-
-		tinymce.init({
-			relative_urls: false,
-		    selector: '#body, #body_guest',
-		    toolbar: "styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | preview media | forecolor backcolor | code",
-		    plugins: [
-		         "advlist autolink link image code lists charmap print preview hr anchor pagebreak spellchecker code fullscreen",
-		         "save table contextmenu directionality emoticons template paste textcolor code"
-		   ],
-		   menubar:false,
-		 });
-
+		$('#submit-update-cat').click(function(){
+			$('#update-cat-form').submit();
+		});
 	});
+</script>
 
+@stop
 
-
-	</script>
-
-	@stop
 
 @stop
