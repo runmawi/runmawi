@@ -35,7 +35,7 @@ h2{
   margin-top: 0px;
     font-weight: 400;
 }
-
+ 
 </style>
 <link href="https://vjs.zencdn.net/7.8.3/video-js.css" rel="stylesheet" />
 
@@ -169,7 +169,7 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()  || $video->access == "guest" &
 
                 if (Auth::guest() && empty($video->ppv_price)) { ?>
                 <div id="video_bg"> 
-        <div class="container">
+        <div class="">
             <div id="video sda" class="fitvid" style="margin: 0 auto;">
                 <video id="videoPlayer" autoplay onplay="playstart()" onended="autoplay1()" class="video-js vjs-default-skin vjs-big-play-centered" poster="<?=URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?=$video->mp4_url; ?>"  type="application/x-mpegURL" data-authenticated="<?=!Auth::guest() ?>">
 
