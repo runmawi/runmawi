@@ -66,6 +66,7 @@ Route::group([
     Route::post('subscriptiondetail', 'ApiAuthController@subscriptiondetail');
     Route::post('subscriptiondetail', 'ApiAuthController@subscriptiondetail');
     Route::post('add_payperview', 'ApiAuthController@add_payperview');
+    Route::post('add_livepayperview', 'ApiAuthController@add_livepayperview');
     Route::post('addppvpaypal', 'ApiAuthController@AddPpvPaypal');
     Route::get('splash', 'ApiAuthController@splash');
     Route::get('payment_settings','ApiAuthController@payment_settings');
