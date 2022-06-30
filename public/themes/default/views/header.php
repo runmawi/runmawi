@@ -820,7 +820,7 @@ input:checked + .sliderk:before {
   ) {
       echo "checked";
   } ?> />
-  <span class="sliderk round"></span>
+  <span class="sliderk round"><i class="fa fa-moon-o" aria-hidden="true"></i></span>
 
                                                </label></div>
                                           <a href="<?php echo URL::to(
@@ -972,7 +972,7 @@ input:checked + .sliderk:before {
                                  <?php if ($theme_mode == "light") {
                                      echo "checked";
                                  } ?> />
-                                 <span class="sliderk round"></span>
+                                 <span class="sliderk round"><i class="fa fa-moon-o" aria-hidden="true"></i></span>
                                   
                               </label>
                            </div>

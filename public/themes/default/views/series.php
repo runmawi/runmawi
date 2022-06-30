@@ -23,6 +23,13 @@
     .sea{
         font-size: 14px;
     }
+    .pls i{
+        font-size: 25px;
+    }
+    
+    .pls ul{
+        list-style: none;
+    }
       .close {
     /* float: right; */
     font-size: 1.5rem;
@@ -44,7 +51,7 @@
           top:40px;
       }
     .ply{
-        width: 10%;
+        width: %;
     }
 </style>
 
@@ -77,11 +84,28 @@ $series = $series_data ;
                               <span class="sea">Season 1 - Episode 1- U/A English</span>
                             <p class="desc" style="color:#fff!important;"><?php echo $series->details;?></p>
 						<b><p class="desc" style="color:#fff;"><?php echo $series->description;?></p></b>
-                                            <a data-video="<?php echo $series->trailer;  ?>" data-toggle="modal" data-target="#videoModal">	
-                                          <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" />
-                                       
-                                          </span>
-                                           </a> 
+                            <div class="row p-0 mt-3 align-items-center">
+                                <div class="col-md-2">  <a data-video="<?php echo $series->trailer;  ?>" data-toggle="modal" data-target="#videoModal">	
+                                          <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> </a></div>
+                                <div class="col-md-4 text-center pls">  <a herf="">  <i class="fa fa-plus" aria-hidden="true"></i> <br>Add Wishlist</a></div>
+                                <div class="col-md-2 pls"><ul>
+                                    <li class="share">
+<span><i class="ri-share-fill"></i></span>
+    <div class="share-box">
+       <div class="d-flex align-items-center"> 
+          <a href="https://www.facebook.com/sharer/sharer.php?u=" class="share-ico"><i class="ri-facebook-fill"></i></a>
+          <a href="https://twitter.com/intent/tweet?text=" class="share-ico"><i class="ri-twitter-fill"></i></a>
+          <a href="#"onclick="Copy();" class="share-ico"><i class="ri-links-fill"></i></a>
+       </div>
+    </div>
+</li>
+                                    </ul></div>
+                                          
+                              
+                              
+
+
+                            </div>
                             <div class="modal fade modal-xl" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
