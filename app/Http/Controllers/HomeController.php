@@ -350,7 +350,8 @@ class HomeController extends Controller
                 // dd('$agent');
                 
             }
-
+            $latest_series = Series::where('active', '=', '1')->orderBy('created_at', 'DESC')
+            ->get();
             $currency = CurrencySetting::first();
             $data = array(
                 'currency' => $currency,
@@ -375,7 +376,8 @@ class HomeController extends Controller
                                 ->where('banner','=','1')
                                 ->latest()
                                 ->get() ,
-
+                                
+                'latest_series' => $latest_series,
                 'cnt_watching' => $cnt_watching,
                 'trendings' => $trending_movies,
                 'latest_videos' => $latest_videos,
@@ -2034,7 +2036,7 @@ class HomeController extends Controller
                     'sliders' => Slider::where('active', '=', '1')
                                         ->orderBy('order_position', 'ASC')
                                         ->get() ,
-
+                    'latest_series' => $latest_series,
                     'cnt_watching' => $cnt_watching,
                     'trendings' => $trending_movies,
                     'latest_videos' => $latest_videos,
