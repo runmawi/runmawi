@@ -396,7 +396,7 @@ input:checked + .sliderk:before {
          <div class="main-header">
             <div class="container-fluid" >
                <div class="row">
-                  <div class="col-sm-12">
+                  <div class="col-xl-12">
                      <nav class="navbar navbar-expand-lg navbar-light p-0">
                         <a href="#" class="navbar-toggler c-toggler" data-toggle="collapse"
                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -433,8 +433,8 @@ input:checked + .sliderk:before {
                               <label for="toggle"></label>
                         </div>-->
 
-   <div class="collapse navbar-collapse" id="navbarNavDropdown" style="margin-right:15%">
-    <ul id="top-menu" class="navbar-nav ml-auto <?php if (
+   <div class="collapse navbar-collapse" id="navbarNavDropdown" >
+    <ul id="top-menu" class="navbar-nav  <?php if (
         Session::get("locale") == "arabic"
     ) {
         echo "navbar-left";
@@ -820,7 +820,7 @@ input:checked + .sliderk:before {
   ) {
       echo "checked";
   } ?> />
-  <span class="sliderk round"></span>
+  <span class="sliderk round"><i class="fa fa-moon-o" aria-hidden="true"></i></span>
 
                                                </label></div>
                                           <a href="<?php echo URL::to(
@@ -972,7 +972,7 @@ input:checked + .sliderk:before {
                                  <?php if ($theme_mode == "light") {
                                      echo "checked";
                                  } ?> />
-                                 <span class="sliderk round"></span>
+                                 <span class="sliderk round"><i class="fa fa-moon-o" aria-hidden="true"></i></span>
                                   
                               </label>
                            </div>
