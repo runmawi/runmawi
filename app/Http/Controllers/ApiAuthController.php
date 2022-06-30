@@ -2367,8 +2367,46 @@ $final[] = array_merge($array1,$array2,$array3,$array4);
       $search_value =  $request['search'];
       $video_category_id =  $request['category_id'];
       $video_artist_id =  $request['artist_id'];
+      $audio_artist_id =  $request['audio_artist_id'];
 
 
+      $audio_artist_count = Artist::where('id',$audio_artist_id)->count();
+      if($audio_artist_count > 0){
+      $Audioartist = Audioartist::select('audio_id','artist_id')->where('artist_id',$audio_artist_id)->orderBy('created_at', 'desc')->get()->toArray();
+      if(count($Audioartist) > 0){
+      foreach ($Audioartist as $key => $Audio_artist) {
+        $audioartist_idid = $Audio_artist['artist_id'];
+
+        $audio = Audio::where('title', 'LIKE', '%'.$search_value.'%')
+        ->orderBy('audio.created_at', 'desc')
+        ->get()->map(function ($item) {
+          $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+          return $item;
+        });
+
+        if(count($audio) > 0){
+          $msg = 'success';
+        }else{
+          $msg = 'nodata';
+        }
+        $Audio_artist_detail= array(
+          "message" => $msg,
+          "audio" => $audio
+        );
+      }
+    }else{
+      $Audio_artist_detail= array(
+        "message" => 'No Audio',
+        "audio" => '',
+      );
+    }
+      }else{
+        $Audio_artist_detail= array(
+          "message" => 'No Artist',
+          "audio" => '',
+        );
+      }
+      // print_r();exit;
      
       $videos_count = Video::where('title', 'LIKE', '%'.$search_value.'%')->count();
       $ppv_videos_count = PpvVideo::where('title', 'LIKE', '%'.$search_value.'%')->count();
@@ -2505,7 +2543,7 @@ $final[] = array_merge($array1,$array2,$array3,$array4);
         'video_categories' => $video_categories,
         'url_image' => $url_image,
         'video_artist' => $video_artist,
-
+        'Audio_artist_detail' => $Audio_artist_detail,
       );
 
       return response()->json($response, 200);
