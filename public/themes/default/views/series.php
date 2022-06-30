@@ -9,22 +9,56 @@
         font-size: 14px;
     }
     h1{
-        font-size: 27px!important;
+        font-size: 50px!important;
+        font-weight: 500;
     }
-     select:invalid { color:grey!important; }
+    select:invalid { color:grey!important; }
     select:valid { color:#808080!important; }
     .plyr__video-wrapper::before{
         display: none;
     }
     .img-fluid {
-    min-height: 0px!important;
+   height: 250px;
 }
+    .sea{
+        font-size: 14px;
+    }
+    .pls i{
+        font-size: 25px;
+    }
+    
+    .pls ul{
+        list-style: none;
+    }
+      .close {
+    /* float: right; */
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #FF0000	;
+    text-shadow: 0 1px 0 #fff;
+    opacity: .5;
+    display: flex!important;
+    justify-content: end!important;
+}
+     .modal-content{
+          background-color: transparent;
+      }
+      .modal-dialog{
+          max-width:900px!important;
+      }
+      .modal {
+          top:40px;
+      }
+    .ply{
+        width: %;
+    }
 </style>
 
 <?php 
 $series = $series_data ;
  ?>
-     <div id="myImage" style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.3), rgba(0, 0, 0, 0.3)), url(<?=URL::to('/') . '/public/uploads/images/' . $series->player_image ?>);background-position:center; background-repeat: no-repeat; background-size:cover;height:650px;  padding:">
+     <div id="myImage" style="background:linear-gradient(90deg, rgba(0, 0, 0, 1.3)47%, rgba(0, 0, 0, 0.3))40%, url(<?=URL::to('/') . '/public/uploads/images/' . $series->player_image ?>);background-position:right; background-repeat: no-repeat; background-size:contain; height:400px;">
 <div class="container-fluid pt-5" >
 	<div id="series_bg_dim" <?php if($series->access == 'guest' || ($series->access == 'subscriber' && !Auth::guest()) ): ?><?php else: ?>class="darker"<?php endif; ?>></div>
 
@@ -33,21 +67,62 @@ $series = $series_data ;
 		&& !Auth::guest() && Auth::user()->subscribed()) && $series->ppv_status != 1 || (!Auth::guest() && (Auth::user()->role == 'demo' && $series->ppv_status != 1 || 
 	 	Auth::user()->role == 'admin') ) || (!Auth::guest() && $series->access == 'registered' && 
 		$settings->free_registration && Auth::user()->role != 'registered' && $series->ppv_status != 1) ): ?>
-		<div class="col-md-6 p-0">
+		<div class="col-md-7 p-0">
 			<div id="series_title">
 				<div class="container">
-					<span class="label"></span> <h1><?= $series->title ?></h1><br><br>
-					<div class="col-md-6 p-0">
+					 <h1><?= $series->title ?></h1>
+                  
+					<!--<div class="col-md-6 p-0">
 						<select class="form-control" id="season_id" name="season_id">
 							<?php foreach($season as $key => $seasons): ?>
 								<option value="season_<?= $seasons->id;?>">Season <?= $key+1; ?></option>
 							<?php endforeach; ?>
 						</select>
-					</div>
+					</div>-->
 					<div class="row p-2 text-white">
                         <div class="col-md-7">
+                              <span class="sea">Season 1 - Episode 1- U/A English</span>
                             <p class="desc" style="color:#fff!important;"><?php echo $series->details;?></p>
-						<b><p class="desc" style="color:#fff;"><?php echo $series->description;?></p></b></div>
+						<b><p class="desc" style="color:#fff;"><?php echo $series->description;?></p></b>
+                            <div class="row p-0 mt-3 align-items-center">
+                                <div class="col-md-2">  <a data-video="<?php echo $series->trailer;  ?>" >	<!--data-toggle="modal" data-target="#videoModal"-->
+                                          <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> </a></div>
+                                <div class="col-md-4 text-center pls">  <a herf="">  <i class="fa fa-plus" aria-hidden="true"></i> <br>Add Wishlist</a></div>
+                                <div class="col-md-2 pls"><ul>
+                                    <li class="share">
+<span><i class="ri-share-fill"></i></span>
+    <div class="share-box">
+       <div class="d-flex align-items-center"> 
+          <a href="https://www.facebook.com/sharer/sharer.php?u=" class="share-ico"><i class="ri-facebook-fill"></i></a>
+          <a href="https://twitter.com/intent/tweet?text=" class="share-ico"><i class="ri-twitter-fill"></i></a>
+          <a href="#"onclick="Copy();" class="share-ico"><i class="ri-links-fill"></i></a>
+       </div>
+    </div>
+</li>
+                                    </ul></div>
+                                          
+                              
+                              
+
+
+                            </div>
+                            <div class="modal fade modal-xl" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <div class="modal-body">
+        
+            
+         <video id="videoPlayer1" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $series->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $series->trailer; ?>"  type="video/mp4" >
+            </video>
+        </div>
+      </div>
+    </div>
+  </div>
+       <script src="https://cdn.plyr.io/3.5.10/plyr.js"></script>
+      
+      <script>  const player = new Plyr('#videoPlayer1'); </script>
+                        </div>
 					</div>
 				</div>
                
@@ -56,26 +131,20 @@ $series = $series_data ;
 		<div class="col-md-6 text-center" id="theDiv">
 			<!-- <img id="myImage" src="<? //URL::to('/') . '/public/uploads/images/' . $series->image; ?>" class="w-100"> -->
 			<!--<img id="myImage" class="w-100" >-->
-            <div id="series_container">
+          <!--  <div id="series_container">
 
-						 <video id="videoPlayer"  class="video-js vjs-default-skin" poster="<?= URL::to('/') . '/public/uploads/images/' . $series->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' width="100%" style="width:100%;" type="video/mp4"  data-authenticated="<?= !Auth::guest() ?>">
-							<source src="" type='video/mp4' label='auto' >
-							<source src="" type='video/webm' label='auto' >
-							<source src="" type='video/ogg' label='auto' >
-						
+						 <video id="videoPlayer"  class="video-js vjs-default-skin" 
+             poster="<?= URL::to('/') . '/public/uploads/images/' . $series->player_image ?>" 
+             controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' width="100%"
+              style="width:100%;" type="video/mp4"  data-authenticated="<?= !Auth::guest() ?>">
+
 							<p class="vjs-no-js">To view this series please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 series</a></p>
 						</video>
-						</div>
-            
-            
-            
-            
-            
-            
+						</div>-->
 		</div>
 	</div>
 </div>
-
+</div>
 <section id="tabs" class="project-tab">
 	<div class="container-fluid">
 		<div class="row">
@@ -93,6 +162,12 @@ $series = $series_data ;
 <!-- $series->title -->
 						
 				<div class="favorites-contens">
+                    <div class="col-md-3 p-0">
+                    <select class="form-control" id="season_id" name="season_id">
+							<?php foreach($season as $key => $seasons): ?>
+								<option value="season_<?= $seasons->id;?>">Season <?= $key+1; ?></option>
+							<?php endforeach; ?>
+						</select></div>
           <ul class="category-page list-inline row p-0 mb-0">
               <?php 
                     foreach($season as $key => $seasons):  
@@ -102,9 +177,9 @@ $series = $series_data ;
                            
                   <li class="slide-item col-sm-2 col-md-2 col-xs-12">
                       <a href="<?php echo URL::to('episode').'/'.$series->title.'/'.$episodes->slug;?>">
-                           <div class="block-images position-relative">
+                           <div class="block-images position-relative episodes_div season_<?= $seasons->id;?>">
                                     <div class="img-box">
-                                      <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class="img-fluid" >
+                                      <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class="img-fluid w-100" >
                                    
                                          <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
                                             <p class="p-tag"><?php echo "Free"; ?></p>
@@ -147,9 +222,9 @@ $series = $series_data ;
                            	<?php else : ?>
                              <li class="slide-item col-sm-2 col-md-2 col-xs-12">
                               <a href="<?php echo URL::to('episode').'/'.$series->title.'/'.$episodes->slug;?>">
-                                 <div class="block-images position-relative">
+                                 <div class="block-images position-relative episodes_div season_<?= $seasons->id;?>">
                                     <div class="img-box">
-                                      <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class=" img-fluid" >
+                                      <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class=" img-fluid w-100" >
                                    
                                    
                                            <?php  if(!empty($series->ppv_price) && $series->ppv_status == 1){ ?>
@@ -197,21 +272,21 @@ $series = $series_data ;
 						?><!--style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $series->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;"-->
 			<div >
 					<div id="ppv">
-				<h2>Purchase to Watch the Series <?php if($series->access == 'subscriber'): ?>Subscribers<?php elseif($series->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
-				<div class="clear"></div>
-				</div>
+				<!-- <h2>Purchase to Watch the Series <?php if($series->access == 'subscriber'): ?>Subscribers<?php elseif($series->access == 'registered'): ?>Registered Users<?php endif; ?></h2> -->
+				<!-- <div class="clear"></div> -->
+				<!-- </div> --> 
 
-				<div class="col-md-2 text-center text-white">
-                <div class="col-md-4">
+				<!-- <div class="col-md-2 text-center text-white">
+                <div class="col-md-4"> -->
 			<?php if ( $series->ppv_status == 1 && Auth::User()->role !="admin") { ?>
-			<button class="btn btn-primary" onclick="pay(<?php echo $settings->ppv_price; ?>)" >
-			Purchase For <?php echo $currency->symbol.' '.$settings->ppv_price; ?></button>
+			<!-- <button class="btn btn-primary" onclick="pay(<?php echo $settings->ppv_price; ?>)" >
+			Purchase For <?php echo $currency->symbol.' '.$settings->ppv_price; ?></button> -->
 
 			<?php } ?>
             <br>
-			</div>
+			<!-- </div> -->
 
-        </div>
+        <!-- </div> -->
 				</div>
 				</div>
                 </div>
@@ -314,8 +389,8 @@ var season_id = $('#season_id').val();
 $.each(obj, function(i, $val)
 {
 if('season_'+$val.id == season_id){
-	// console.log('season_'+$val.id)
-	$("#myImage").attr("src", $val.image);
+	console.log('season_'+$val.id)
+	$("#videoPlayer").attr("src", $val.trailer);
 }
 });
 
