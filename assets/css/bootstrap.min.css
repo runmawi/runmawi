@@ -4133,7 +4133,7 @@ input[type=button].btn-block,input[type=reset].btn-block,input[type=submit].btn-
     display: -ms-flexbox!important;
     display: flex!important;
     -ms-flex-preferred-size: auto;
- /*   flex-basis: auto;*/
+    flex-basis: auto;
   }
 
   .navbar-expand-lg .navbar-toggler {
