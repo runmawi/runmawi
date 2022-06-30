@@ -4,7 +4,6 @@
 $order_settings = App\OrderHomeSetting::orderBy('order_id', 'asc')->get();  
 $order_settings_list = App\OrderHomeSetting::get();  
 
-// dd($order_settings);
 ?>
 <!-- Header End -->
 
@@ -125,7 +124,7 @@ $order_settings_list = App\OrderHomeSetting::get();
             </div>
          </div>
       </section>
-   <?php } }?>
+   <?php } } ?>
 
 
 <?php 
@@ -200,6 +199,7 @@ if($home_settings->albums == 1){ ?>
 
 <?php 
        if($value->video_name == 'series'){
+
          if($home_settings->series == 1){ ?>
     <section id="iq-favorites">
         <div class="container-fluid">
