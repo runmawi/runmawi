@@ -973,7 +973,6 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
     <p class="trending-dec w-100 mb-0  mt-2" ><?php echo __($video->details); ?></p>
 </div>
 <?php  }?>
-<br>
 
 <?php if(!empty($video->pdf_files) ) { ?>
 <h4>E-Paper:</h4>
@@ -982,7 +981,6 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
     <a  href="<?php echo __(URL::to('/') . '/public/uploads/videoPdf/' . $video->pdf_files); ?>" style="font-size:48px; color: #a51212 !important;" class="fa fa-file-pdf-o video_pdf" width="" height="" download></a>
 </div>
 <?php  }?>
-<br>
 
 
            <?php if(Auth::guest()){
