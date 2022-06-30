@@ -433,8 +433,8 @@ input:checked + .sliderk:before {
                               <label for="toggle"></label>
                         </div>-->
 
-   <div class="collapse navbar-collapse" id="navbarNavDropdown" style="margin-right:15%">
-    <ul id="top-menu" class="navbar-nav ml-auto <?php if (
+   <div class="collapse navbar-collapse" id="navbarNavDropdown" >
+    <ul id="top-menu" class="navbar-nav  <?php if (
         Session::get("locale") == "arabic"
     ) {
         echo "navbar-left";

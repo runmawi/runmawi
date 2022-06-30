@@ -75,7 +75,7 @@ $series = $series_data ;
 		</div>
 	</div>
 </div>
-
+</div>
 <section id="tabs" class="project-tab">
 	<div class="container-fluid">
 		<div class="row">
@@ -93,6 +93,12 @@ $series = $series_data ;
 <!-- $series->title -->
 						
 				<div class="favorites-contens">
+                    <div class="col-md-3 p-0">
+                    <select class="form-control" id="season_id" name="season_id">
+							<?php foreach($season as $key => $seasons): ?>
+								<option value="season_<?= $seasons->id;?>">Season <?= $key+1; ?></option>
+							<?php endforeach; ?>
+						</select></div>
           <ul class="category-page list-inline row p-0 mb-0">
               <?php 
                     foreach($season as $key => $seasons):  
