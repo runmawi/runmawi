@@ -57,6 +57,7 @@
 
 <?php 
 $series = $series_data ;
+// dd($series);
  ?>
      <div id="myImage" style="background:linear-gradient(90deg, rgba(0, 0, 0, 1.3)47%, rgba(0, 0, 0, 0.3))40%, url(<?=URL::to('/') . '/public/uploads/images/' . $series->player_image ?>);background-position:right; background-repeat: no-repeat; background-size:contain; height:400px;">
 <div class="container-fluid pt-5" >
@@ -81,7 +82,7 @@ $series = $series_data ;
 					</div>-->
 					<div class="row p-2 text-white">
                         <div class="col-md-7">
-                              <span class="sea">Season 1 - Episode 1- U/A English</span>
+                        Season  <span class="sea"> 1 </span> - U/A English
                             <p class="desc" style="color:#fff!important;"><?php echo $series->details;?></p>
 						<b><p class="desc" style="color:#fff;"><?php echo $series->description;?></p></b>
                             <div class="row p-0 mt-3 align-items-center">
@@ -113,7 +114,7 @@ $series = $series_data ;
         <div class="modal-body">
         
             
-         <video id="videoPlayer1" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $series->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $series->trailer; ?>"  type="video/mp4" >
+         <video id="videoPlayer1" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $series->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src=""  type="video/mp4" >
             </video>
         </div>
       </div>
@@ -390,7 +391,7 @@ $.each(obj, function(i, $val)
 {
 if('season_'+$val.id == season_id){
 	console.log('season_'+$val.id)
-	$("#videoPlayer").attr("src", $val.trailer);
+	$("#videoPlayer1").attr("src", $val.trailer);
 }
 });
 
@@ -403,6 +404,12 @@ if('season_'+$val.id == season_id){
 	console.log('season_'+$val.id)
 	// $("#theDiv").append("<img id='theImg' src=$val.image/>");
 	$("#myImage").attr("src", $val.image);
+	$("#videoPlayer1").attr("src", $val.trailer);
+
+  $(".sea").empty();
+  // alert($val.id);
+  var id = $val.id;
+	$(".sea").html(id);
 }
 });
 
