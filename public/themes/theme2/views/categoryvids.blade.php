@@ -5,163 +5,75 @@
 
 <!-- Header End -->
 <!-- MainContent -->
-<?php if(!empty($data['password_hash'])) { $id = Auth::user()->id ; } else { $id = 0 ; } ?>
+<?php if(!empty($data['password_hash'])) { $id = Auth::user()->id ; } else { $id = 0 ; }
+$category_id = App\VideoCategory::where('name',$data['category_title'])->pluck('id')->first();
+$category_slug = App\VideoCategory::where('name',$data['category_title'])->pluck('slug')->first();
+?>
 
       <div class="main-content">
          <section id="iq-favorites">
               <h2 class="text-center  mb-3"><?php echo __($data['category_title']);?></h2>
             <div class="container-fluid" >
-               <div class="row pageheight">
+                <div class="row pageheight">
                   <div class="col-sm-12 overflow-hidden">
-                     <div class="iq-main-header align-items-center">
-                       
-                     </div>
-                     <div class="favorites-contens">
-                        <ul class="category-page list-inline  row p-0 mb-4">
-                            <?php if (count($data['categoryVideos']) > 0) { ?>         
-                                    @foreach($data['categoryVideos']  as $category_video) 
-                                    <li class="slide-item col-sm-2 col-md-2 col-xs-12 margin-bottom-30">
-                                        <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
-                                            <div class="block-images position-relative">
-                                                <div class="img-box">
-                                                <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" class="img-fluid w-100" alt="" width="">
-                                               
-                                        </div>
-                                                 </div>
+                    <div class="iq-main-header align-items-center"> </div>
 
-                                                <div class="block-description" >
-                                                    
-                                                        
-                                                    <div class="hover-buttons">
-                                                        <a  class="text-white btn-cl"  href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
-                                                                                                          <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.png';  ?>">                                        </a>
+                        {{-- filter Option --}}
 
-                                                      
-                  <!-- <span style="color: white;"class="mywishlist <?php //if(isset($mywishlisted->id)): ?>active<?php //endif; ?>" data-authenticated="<? // !Auth::guest() ?>" data-videoid="<? // $category_video->id ?>"><i style="color: white;" <?php // if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php //else: ?> class="ri-heart-line" <?php // endif; ?> >Add to Watchlist</i></span> -->
-                    <!-- <div class="hover-buttons d-flex">
-                          <span style="color: white;"class="mywishlist <?php // if(isset($mywishlisted->id)): ?>active<?php //endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $category_video->id ?>">
-                            <i style="" <?php // if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php //else: ?> class="ri-heart-line " <?php //endif; ?> style="" ></i>
-                          </span>
-              
-                          <div style="color:white;" id="<?= $category_video->id ?>"><?php //if(@$category_video->mywishlisted->user_id == $id && @$category_video->mywishlisted->video_id == $category_video->id  ) { echo "Remove From Wishlist"; } else { echo "Add To Wishlist" ; } ?></div> 
-                              </div> -->
-                                        <!-- <a   href="<?php // echo URL::to('category') ?><? // '/wishlist/' . $category_video->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist -->
-                                           <!-- </a> -->
-    
-                                        </div>
-<!--
-                                                    <div>
-                                                        <button type="buttonbtn btn-primary btn-hover" class="show-details-button" data-toggle="modal" data-target="#myModal<?= $category_video->id;?>">
-                                                            <span class="text-center thumbarrow-sec">
-                                                                <img src="<?php echo URL::to('/').'/assets/img/arrow-red.png';?>" class="thumbarrow thumbarrow-red" alt="right-arrow">
-                                                            </span>
-                                                        </button>
-                                                    </div>
--->
-                                                </div>
-                                            <div>
-                                          
-                                                    
-                                                    <div class="movie-time d-flex align-items-center justify-content-between my-2">
-                                                        <?php if($data['ThumbnailSetting']->title == 1) { ?>
-                                                            <h6><?php  echo (strlen($category_video->title) > 17) ? substr($category_video->title,0,18).'...' : $category_video->title; ?></h6>
-                                                        <?php } ?>
-                 
-                                                        <?php if($data['ThumbnailSetting']->age == 1) { ?>
-                                                            <div class="badge badge-secondary"><?php echo $category_video->age_restrict.' '.'+' ?></div>
-                                                        <?php } ?>
-                                                    </div>
+                        <div class="row d-flex ">
 
-                                                    <div class="movie-time my-2">
-                      
-                                                        <!-- Duration -->
-                                   
-                                                        <?php if($data['ThumbnailSetting']->duration == 1) { ?>
-                                                        <span class="text-white">
-                                                           <i class="fa fa-clock-o"></i>
-                                                           <?= gmdate('H:i:s', $category_video->duration); ?>
-                                                        </span>
-                                                        <?php } ?>
-                                   
-                                                        <!-- Rating -->
-                                   
-                                                        <?php if($data['ThumbnailSetting']->rating == 1 && $category_video->rating != null) { ?>
-                                                        <span class="text-white">
-                                                           <i class="fa fa-star-half-o" aria-hidden="true"></i>
-                                                           <?php echo __($category_video->rating); ?>
-                                                        </span>
-                                                        <?php } ?>
-                                   
-                                                        <?php if($data['ThumbnailSetting']->featured == 1 && $category_video->featured == 1) { ?>
-                                                           <!-- Featured -->
-                                                           <span class="text-white">
-                                                              <i class="fa fa-flag" aria-hidden="true"></i>
-                                                           </span>
-                                                        <?php }?>
-                                                     </div>
+                            {{-- <div class="col-md-3">
+                                <select class="selectpicker" multiple title="Refine" data-live-search="true">
+                                    <option value="videos">Movie</option>
+                                    <option value="tv_Shows">TV Shows</option>
+                                    <option value="live_stream">Live stream</option>
+                                    <option value="audios">Audios</option>
+                                </select>
+                            </div> --}}
 
-                                                     <div class="movie-time my-2">
-                                                        <!-- published_year -->
-                                   
-                                                        <?php  if ( ($data['ThumbnailSetting']->published_year == 1) && ( $category_video->year != null ) ) { ?>
-                                                        <span class="text-white">
-                                                           <i class="fa fa-calendar" aria-hidden="true"></i>
-                                                           <?php echo __($category_video->year); ?>
-                                                        </span>
-                                                        <?php } ?>
-                                                  </div>
-
-                                                  <div class="movie-time my-2">
-                                                    <!-- Category Thumbnail  setting -->
-                                                    <?php
-                                                    $CategoryThumbnail_setting =  App\CategoryVideo::join('video_categories','video_categories.id','=','categoryvideos.category_id')
-                                                                ->where('categoryvideos.video_id',$category_video->video_id)
-                                                                ->pluck('video_categories.name');       
-
-                                                    ?>
-                                                    <?php  if ( ($data['ThumbnailSetting']->category == 1 ) &&  ( count($CategoryThumbnail_setting) > 0 ) ) { ?>
-                                                    <span class="text-white">
-                                                       <i class="fa fa-list-alt" aria-hidden="true"></i>
-                                                       <?php
-                                                          $Category_Thumbnail = array();
-                                                                foreach($CategoryThumbnail_setting as $key => $CategoryThumbnail){
-                                                                $Category_Thumbnail[] = $CategoryThumbnail ; 
-                                                                }
-                                                          echo implode(','.' ', $Category_Thumbnail);
-                                                       ?>
-                                                    </span>
-                                                    <?php } ?>
-                                              </div>
-<!--
-                                                <div class="block-social-info">
-                                                    <ul class="list-inline p-0 m-0 music-play-lists">
-                                                        <li><span><i class="ri-volume-mute-fill"></i></span></li>
-                                                        <li><span><i class="ri-heart-fill"></i></span></li>
-                                                        <li><span><i class="ri-add-line"></i></span></li>
-                                                    </ul>
-                                                </div>
--->
-                                            </div>
-                                        </a>
-                                    </li>
-                            @endforeach
- <?php } else { ?>
-                                        <!-- <p class="no_video"> <?php echo __('No Video Found');?></p> -->
-                                        <!-- <p><h2>No Media in My Watchlater</h2></p> -->
-                                    <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:cover;height: 500px!important;">
-                               <p ><h2 style="position: absolute;top: 50%;left: 50%;color: white;">No video Available</h2>
+                            <div class="col-md-3">
+                                <select class="selectpicker" multiple title="Age" name="age[]" id="age" data-live-search="true">
+                                    @foreach($data['age_categories'] as $age)
+                                        <option value="{{ $age->age  }}">{{ $age->slug }}</option>
+                                    @endforeach
+                                </select>
                             </div>
-      <?php } ?>
-                    
-                                                              
-                           
-                        </ul>
-                         
-                     </div>
-                      
+
+                            <div class="col-md-3">
+                                <select class="selectpicker" multiple title="Rating" id="rating" name="rating[]" data-live-search="true">
+                                    <option value="1" >1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                </select>
+                            </div>
+
+                            
+                            <div class="col-md-3">
+                                <select class="selectpicker " multiple  title="Newly added First" id="sorting" name="sorting" data-live-search="true">
+                                    <option value="latest_videos">Latest Videos</option>
+                                </select>
+                            </div>
+
+                            <input type="hidden" id="category_id" value={{ $category_id  }} name="category_id">
+
+                            <div class="col-md-3">
+                                <button type="submit" class="btn btn-primary filter">Filter</button>
+                            </div>
+                        </div>
+                        
+                        <div class="data">
+                            @partial('categoryvids_section')
+                        </div>
+                    </div>
                   </div>
-               </div>
-            </div>
+                </div>
 <?php /*
 <!-- Modal Starts -->
 <div class="modal fade bd-example-modal-xl<?= $category_video->id;?>" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
@@ -331,6 +243,60 @@
 @php
     include(public_path('themes/theme1/views/footer.blade.php'));
 @endphp
+
+{{--Multiple Select  --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/js/bootstrap-select.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/css/bootstrap-select.min.css">
+
+
+<script>
+
+$(".filter").click(function(){
+    var age = [];
+    var rating = [];
+    var sorting = [];
+    var Category_id = $('#category_id').val();
+
+
+    for (var option of document.getElementById('age').options)
+    {
+        if (option.selected) {
+            age.push(option.value);
+        }
+    }
+
+    for (var option of document.getElementById('rating').options)
+    {
+        if (option.selected) {
+            rating.push(option.value);
+        }
+    }
+
+    for (var option of document.getElementById('sorting').options)
+    {
+        if (option.selected) {
+            sorting.push(option.value);
+        }
+    }
+
+    $.ajax({
+            type: "get", 
+            url: "{{ url('/categoryfilter') }}",
+             data: {
+                 _token  : "{{csrf_token()}}" ,
+                 age: age,
+                 rating: rating,
+                 sorting: sorting,
+                 category_id: Category_id,
+            },
+            success: function(data) {
+                $(".data").html(data);
+                },
+                });
+        });
+
+</script>
+
      <script>
     //    $('.mywishlist').click(function(){
     //    if($(this).data('authenticated')){

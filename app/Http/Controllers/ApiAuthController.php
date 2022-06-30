@@ -1159,15 +1159,15 @@ public function verifyandupdatepassword(Request $request)
       $current_date = date('Y-m-d h:i:s a', time()); 
       // $ppv_exist = LivePurchase::where('video_id',$videoid)->where('user_id',$user_id)->where('to_time','>',$current_date)->count();
       $ppv_exist = LivePurchase::where('video_id',$liveid)->where('user_id',$user_id)->count();
-        
+        dd($ppv_exist);
       if ($ppv_exist > 0) {
   
-            $ppv_time_expire = LivePurchase::where('user_id','=',$user_id)->where('video_id','=',$liveid)->pluck('to_time');
+            $ppv_time_expire = LivePurchase::where('user_id','=',$user_id)->where('video_id','=',$liveid)->pluck('to_time')->first();
   
             if ( $ppv_time_expire > $current_date ) {
   
                 $ppv_video_status = "can_view";
-              $ppv_video_status = "pay_now";
+              // $ppv_video_status = "pay_now";
   
             } else {
                   $ppv_video_status = "expired";
@@ -2367,8 +2367,56 @@ $final[] = array_merge($array1,$array2,$array3,$array4);
       $search_value =  $request['search'];
       $video_category_id =  $request['category_id'];
       $video_artist_id =  $request['artist_id'];
+      $audio_artist_id =  $request['audio_artist_id']; 
 
 
+      $audio_artist_count = Artist::where('id',$audio_artist_id)->count();
+      if($audio_artist_count > 0){
+      $Audioartist = Audioartist::select('audio_id','artist_id')->where('artist_id',$audio_artist_id)->orderBy('created_at', 'desc')->get()->toArray();
+      if(count($Audioartist) > 0){
+        $audio_artist = Artist::where('id',$audio_artist_id)->orderBy('created_at', 'desc')
+        ->get()->map(function ($item) {
+          $item['image_url'] = URL::to('/').'/public/uploads/artists/'.$item->image;
+          return $item;
+        });
+
+
+      foreach ($Audioartist as $key => $Audio_artist) {
+        $audioartist_idid = $Audio_artist['artist_id'];
+
+        $audio = Audio::where('title', 'LIKE', '%'.$search_value.'%')
+        ->orderBy('audio.created_at', 'desc')
+        ->get()->map(function ($item) {
+          $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+          return $item;
+        });
+
+        if(count($audio) > 0){
+          $msg = 'success';
+        }else{
+          $msg = 'nodata';
+        }
+        $Audio_artist_detail= array(
+          "message" => $msg,
+          "audio" => $audio,
+          "audio_artist" => $audio_artist,
+        );
+      }
+    }else{
+      $Audio_artist_detail= array(
+        "message" => 'No Audio',
+        "audio" => '',
+        "audio_artist" => '',
+      );
+    }
+      }else{
+        $Audio_artist_detail= array(
+          "message" => 'No Artist',
+          "audio" => '',
+        "audio_artist" => '',
+        );
+      }
+      // print_r();exit;
      
       $videos_count = Video::where('title', 'LIKE', '%'.$search_value.'%')->count();
       $ppv_videos_count = PpvVideo::where('title', 'LIKE', '%'.$search_value.'%')->count();
@@ -2505,7 +2553,7 @@ $final[] = array_merge($array1,$array2,$array3,$array4);
         'video_categories' => $video_categories,
         'url_image' => $url_image,
         'video_artist' => $video_artist,
-
+        'Audio_artist_detail' => $Audio_artist_detail,
       );
 
       return response()->json($response, 200);
