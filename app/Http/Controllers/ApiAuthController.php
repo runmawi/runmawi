@@ -1174,8 +1174,8 @@ public function verifyandupdatepassword(Request $request)
             }
   
       } else {
-            // $ppv_video_status = "pay_now";
-            $ppv_video_status = "can_view";
+            $ppv_video_status = "pay_now";
+            // $ppv_video_status = "can_view";
       }
   
     $response = array(
