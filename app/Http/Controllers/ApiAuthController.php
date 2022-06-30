@@ -2367,13 +2367,20 @@ $final[] = array_merge($array1,$array2,$array3,$array4);
       $search_value =  $request['search'];
       $video_category_id =  $request['category_id'];
       $video_artist_id =  $request['artist_id'];
-      $audio_artist_id =  $request['audio_artist_id'];
+      $audio_artist_id =  $request['audio_artist_id']; 
 
 
       $audio_artist_count = Artist::where('id',$audio_artist_id)->count();
       if($audio_artist_count > 0){
       $Audioartist = Audioartist::select('audio_id','artist_id')->where('artist_id',$audio_artist_id)->orderBy('created_at', 'desc')->get()->toArray();
       if(count($Audioartist) > 0){
+        $audio_artist = Artist::where('id',$audio_artist_id)->orderBy('created_at', 'desc')
+        ->get()->map(function ($item) {
+          $item['image_url'] = URL::to('/').'/public/uploads/artists/'.$item->image;
+          return $item;
+        });
+
+
       foreach ($Audioartist as $key => $Audio_artist) {
         $audioartist_idid = $Audio_artist['artist_id'];
 
@@ -2391,19 +2398,22 @@ $final[] = array_merge($array1,$array2,$array3,$array4);
         }
         $Audio_artist_detail= array(
           "message" => $msg,
-          "audio" => $audio
+          "audio" => $audio,
+          "audio_artist" => $audio_artist,
         );
       }
     }else{
       $Audio_artist_detail= array(
         "message" => 'No Audio',
         "audio" => '',
+        "audio_artist" => '',
       );
     }
       }else{
         $Audio_artist_detail= array(
           "message" => 'No Artist',
           "audio" => '',
+        "audio_artist" => '',
         );
       }
       // print_r();exit;
