@@ -1159,15 +1159,15 @@ public function verifyandupdatepassword(Request $request)
       $current_date = date('Y-m-d h:i:s a', time()); 
       // $ppv_exist = LivePurchase::where('video_id',$videoid)->where('user_id',$user_id)->where('to_time','>',$current_date)->count();
       $ppv_exist = LivePurchase::where('video_id',$liveid)->where('user_id',$user_id)->count();
-        
+        dd($ppv_exist);
       if ($ppv_exist > 0) {
   
-            $ppv_time_expire = LivePurchase::where('user_id','=',$user_id)->where('video_id','=',$liveid)->pluck('to_time');
+            $ppv_time_expire = LivePurchase::where('user_id','=',$user_id)->where('video_id','=',$liveid)->pluck('to_time')->first();
   
             if ( $ppv_time_expire > $current_date ) {
   
                 $ppv_video_status = "can_view";
-              $ppv_video_status = "pay_now";
+              // $ppv_video_status = "pay_now";
   
             } else {
                   $ppv_video_status = "expired";
