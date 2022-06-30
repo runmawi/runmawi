@@ -18,7 +18,7 @@
         display: none;
     }
     .img-fluid {
-   height: 250px;
+  min-height: 0px!important;
 }
     .sea{
         font-size: 14px;
