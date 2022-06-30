@@ -1532,10 +1532,12 @@ class ChannelController extends Controller
         }
       }
 
-      public function categoryfilter(Request $request,$id)
+      public function categoryfilter(Request $request)
       {
-        
+
+        $settings = Setting::first();
         $PPV_settings = Setting::where('ppv_status','=',1)->first();
+
         if(!empty($PPV_settings)){
 
             $ppv_gobal_price =  $PPV_settings->ppv_price;
@@ -1545,31 +1547,12 @@ class ChannelController extends Controller
              $ppv_gobal_price = null ;
          }
 
-        $getfeching = \App\Geofencing::first();
-        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-        $userIp = $geoip->getip();    
-        $countryName = $geoip->getCountry();
-        $ThumbnailSetting = ThumbnailSetting::first();
-        $settings = Setting::first();
-        $currency = CurrencySetting::first();
-        $category_title = \App\VideoCategory::where('id',$request->category_id)->pluck('name');
-  
-      
-        // blocked videos
-                $block_videos= \App\BlockVideo::where('country_id',$countryName)->get();
-                if(!$block_videos->isEmpty()){
-                  foreach($block_videos as $block_video){
-                      $blockvideos[]=$block_video->video_id;
-                  }
-                }    
-                $blockvideos[]='';
-
         $categoryVideos = Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
         ->where('category_id','=',$request->category_id)->where('active', '=', '1');
 
-        if($getfeching !=null && $getfeching->geofencing == 'ON'){
-          $categoryVideos = $categoryVideos  ->whereNotIn('videos.id',$blockvideos);
-          }
+        if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+            $categoryVideos = $categoryVideos  ->whereNotIn('videos.id',Block_videos());
+        }
 
         if(!empty($request->rating) ){
           $categoryVideos = $categoryVideos->WhereIn('videos.rating',$request->rating);
@@ -1580,6 +1563,7 @@ class ChannelController extends Controller
         }
 
         if(!empty($request->sorting )  ){
+        
           $categoryVideos = $categoryVideos->orderBy('videos.created_at','DESC');
         }
 
@@ -1587,17 +1571,19 @@ class ChannelController extends Controller
 
            
         $data = array(
-          'currency'=> $currency,
-          'category_title'=>$category_title[0],
+          'currency'=> CurrencySetting::first(),
+          'category_title'=> VideoCategory::where('id',$request->category_id)->pluck('name')->first(),
+          'ThumbnailSetting' => ThumbnailSetting::first(),
+          'age_categories' => AgeCategory::get(),
           'categoryVideos'=>$categoryVideos,
           'ppv_gobal_price' => $ppv_gobal_price,
-          'ThumbnailSetting' => $ThumbnailSetting,
-          'age_categories' => AgeCategory::get(),
+        );
 
-      );
-      
-      return Theme::view('categoryvids',['data'=>$data]);
+        $theme = Theme::uses( $this->Theme);
 
+          return $theme->load('public/themes/default/partials/categoryvids_section', [
+            'data' => $data
+        ])->render();
 
       }
 

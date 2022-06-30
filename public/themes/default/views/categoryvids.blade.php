@@ -20,18 +20,16 @@ $category_slug = App\VideoCategory::where('name',$data['category_title'])->pluck
 
                     {{-- filter Option --}}
 
-                    {{-- <form method="post" action="{{ route('categoryfilter',$category_slug) }}">  
-                        @csrf    
                         <div class="row d-flex ">
 
-                            <div class="col-md-3">
+                            {{-- <div class="col-md-3">
                                 <select class="selectpicker" multiple title="Refine" data-live-search="true">
                                     <option value="videos">Movie</option>
                                     <option value="tv_Shows">TV Shows</option>
                                     <option value="live_stream">Live stream</option>
                                     <option value="audios">Audios</option>
                                 </select>
-                            </div>
+                            </div> --}}
 
                             <div class="col-md-3">
                                 <select class="selectpicker" multiple title="Age" name="age[]" id="age" data-live-search="true">
@@ -69,129 +67,17 @@ $category_slug = App\VideoCategory::where('name',$data['category_title'])->pluck
                                 <button type="submit" class="btn btn-primary filter">Filter</button>
                             </div>
                         </div>  
-                    </form>   --}}
 
-                   
-                     <div class="favorites-contens">
-                        <ul class="category-page list-inline  row p-0 mb-4">
-                            <?php if (count($data['categoryVideos']) > 0) { ?>         
-                                    @foreach($data['categoryVideos']  as $category_video) 
-                                    <li class="slide-item col-sm-2 col-md-2 col-xs-12 margin-bottom-30">
-                                        <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
-                                            <div class="block-images position-relative">
-                                                <div class="img-box">
-                                                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" class="img-fluid w-100" alt="" width="">
-                                                
-                                          <?php  if(!empty($category_video->ppv_price)){?>
-                                          <p class="p-tag1" ><?php echo $data['currency']->symbol.' '.$category_video->ppv_price; ?></p>
-                                          <?php }elseif( !empty($category_video->global_ppv || !empty($category_video->global_ppv) && $category_video->ppv_price == null)){ ?>
-                                            <p class="p-tag1"><?php echo $category_video->global_ppv.' '.$data['currency']->symbol; ?></p>
-                                                    <?php }elseif($category_video->global_ppv == null && $category_video->ppv_price == null ){ ?>
-                                                    <p class="p-tag"><?php echo "Free"; ?></p>
-                                                    <?php } ?>
-                                               
-                                        </div>
-                                                <!-- </div> -->
+                        <div class="data">
+                            @partial('categoryvids_section')
+                        </div>
 
-                                            <div class="block-description">
-                                                    
-                                                <?php if($data['ThumbnailSetting']->title == 1) { ?>            <!-- Title -->
-                                                    <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
-                                                             <h6><?php  echo (strlen($category_video->title) > 17) ? substr($category_video->title,0,18).'...' : $category_video->title; ?></h6>
-                                                    </a>
-                                                <?php } ?>  
-                                                    
-                                                <div class="movie-time d-flex align-items-center pt-1">
-                                                        <?php if($data['ThumbnailSetting']->age == 1) { ?>
-                                                        <!-- Age -->
-                                                            <div class="badge badge-secondary p-1 mr-2"><?php echo $category_video->age_restrict.' '.'+' ?></div>
-                                                        <?php } ?>
-                
-                                                        <?php if($data['ThumbnailSetting']->duration == 1) { ?>
-                                                        <!-- Duration -->
-                                                            <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $category_video->duration); ?></span>
-                                                        <?php } ?>
-                                                </div>
-
-
-                                                <?php if(($data['ThumbnailSetting']->published_year == 1) || ($data['ThumbnailSetting']->rating == 1)) {?>
-                                                    <div class="movie-time d-flex align-items-center pt-1">
-                                                        <?php if($data['ThumbnailSetting']->rating == 1) { ?>
-                                                            <!--Rating  -->
-                                                            <div class="badge badge-secondary p-1 mr-2">
-                                                                <span class="text-white">
-                                                                    <i class="fa fa-star-half-o" aria-hidden="true"></i>
-                                                                    <?php echo __($category_video->rating); ?>
-                                                                </span>
-                                                            </div>
-                                                        <?php } ?>
-                    
-                                                        <?php if($data['ThumbnailSetting']->published_year == 1) { ?>
-                                                            <!-- published_year -->
-                                                            <div class="badge badge-secondary p-1 mr-2">
-                                                              <span class="text-white">
-                                                                  <i class="fa fa-calendar" aria-hidden="true"></i>
-                                                                  <?php echo __($category_video->year); ?>
-                                                              </span>
-                                                            </div>
-                                                        <?php } ?>
-                    
-                                                        <?php if($data['ThumbnailSetting']->featured == 1 &&  $category_video->featured == 1) { ?>
-                                                            <!-- Featured -->
-                                                        <div class="badge badge-secondary p-1 mr-2">
-                                                              <span class="text-white">
-                                                                <i class="fa fa-flag-o" aria-hidden="true"></i>
-                                                              </span>
-                                                            </div>
-                                                            <?php } ?>
-                                                        </div>
-                                                    <?php } ?>
-
-                                                    <div class="movie-time my-2">
-                                                        <!-- Category Thumbnail  setting -->
-                                                        <?php
-                                                        $CategoryThumbnail_setting =  App\CategoryVideo::join('video_categories','video_categories.id','=','categoryvideos.category_id')
-                                                                    ->where('categoryvideos.video_id',$category_video->video_id)
-                                                                    ->pluck('video_categories.name');        
-                                                        ?>
-                                                        <?php  if ( ($data['ThumbnailSetting']->category == 1 ) &&  ( count($CategoryThumbnail_setting) > 0 ) ) { ?>
-                                                        <span class="text-white">
-                                                            <i class="fa fa-list-alt" aria-hidden="true"></i>
-                                                            <?php
-                                                                $Category_Thumbnail = array();
-                                                                    foreach($CategoryThumbnail_setting as $key => $CategoryThumbnail){
-                                                                    $Category_Thumbnail[] = $CategoryThumbnail ; 
-                                                                    }
-                                                                echo implode(','.' ', $Category_Thumbnail);
-                                                            ?>
-                                                        </span>
-                                                        <?php } ?>
-                                                    </div>
-                                                    
-
-                                                    <div class="hover-buttons">
-                                                        <a  class="text-white"  href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
-                                                            <span class=""><i class="fa fa-play mr-1" aria-hidden="true"></i>Watch Now</span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                            @endforeach
-                            <?php } else { ?>
-                                    <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
-                               <p ><h3 class="text-center">No video Available</h3>
-                            </div>
-                             <?php } ?>
-                        </ul>
-                     </div>
                   </div>
                </div>
             </div>
 </section>
 </div>
-   
+
 @php
     include(public_path('themes/default/views/footer.blade.php'));
 @endphp
@@ -233,7 +119,6 @@ $(".filter").click(function(){
 
     $.ajax({
             type: "get", 
-            dataType: "json", 
             url: "{{ url('/categoryfilter') }}",
              data: {
                  _token  : "{{csrf_token()}}" ,
@@ -243,13 +128,9 @@ $(".filter").click(function(){
                  category_id: Category_id,
             },
             success: function(data) {
-                console.log('ss');
-                if(data.message == 'true'){
-                    alert('Clear Cached Successfully');
-                    location.reload();
-                    }
+                    $(".data").html(data);
                 },
-                });
+            });
         });
 
 </script>
@@ -295,3 +176,4 @@ $('.mywishlist').click(function(){
 
 
 </script>
+
