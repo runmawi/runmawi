@@ -168,10 +168,15 @@ class AdminPlayerAnalyticsController extends Controller
         //    dd($player_videos);
             $player_videos_count =  count($player_videos);
 
-       }
+       }else{
+        $player_videos = [];
+
+        }
+
 
         $output = '';
         $i = 1;
+        if (count($player_videos)){
 
         $total_row = $player_videos->count();
         if (!empty($player_videos))
@@ -209,7 +214,7 @@ class AdminPlayerAnalyticsController extends Controller
         );
 
         return $value;
-
+    }
     }
 
     public function PlayerVideosEndDateRecord(Request $request)
@@ -240,10 +245,14 @@ class AdminPlayerAnalyticsController extends Controller
     
         //    dd($player_videos);
             $player_videos_count =  count($player_videos);
+        }else{
+        $player_videos = [];
+        
         }
 
         $output = '';
         $i = 1;
+        if (count($player_videos)){
 
         $total_row = $player_videos->count();
         if (!empty($player_videos))
@@ -280,6 +289,7 @@ class AdminPlayerAnalyticsController extends Controller
         );
 
         return $value;
+    }
     }
 
 
@@ -350,10 +360,12 @@ class AdminPlayerAnalyticsController extends Controller
                 ]);
 
             }
-            else
-            {
+            else{
+                $player_videos = [];
+                
+                }
+        if (count($player_videos)){
 
-            }
             $total_row = $player_videos->count();
             if (!empty($player_videos))
             {
@@ -395,6 +407,7 @@ class AdminPlayerAnalyticsController extends Controller
     
             return $value;          
         }
+    }
     }
 
     public function RegionVideoState(Request $request)
@@ -447,12 +460,13 @@ class AdminPlayerAnalyticsController extends Controller
                  \DB::raw("(player_analytics.watch_percentage) as watchpercentage"),
                 ]);
             }
-            else
-            {
-
-            }
+            else{
+                $player_videos = [];
+                
+                }
             $output = '';
             $i = 1;
+            if (count($player_videos)){
     
             $total_row = $player_videos->count();
             if (!empty($player_videos))
@@ -495,6 +509,7 @@ class AdminPlayerAnalyticsController extends Controller
     
             return $value;          
         }
+    }
     }
 
     public function RegionVideoCity(Request $request)
@@ -547,12 +562,13 @@ class AdminPlayerAnalyticsController extends Controller
                     ]);
                 }
             }
-            else
-            {
-
-            }
+            else{
+                $player_videos = [];
+                
+                }
             $output = '';
             $i = 1;
+            if (count($player_videos)){
     
             $total_row = $player_videos->count();
             if (!empty($player_videos))
@@ -593,7 +609,8 @@ class AdminPlayerAnalyticsController extends Controller
                 'total_Revenue' => $player_videos,
             );
     
-            return $value;          
+            return $value;  
+        }        
         }
     }
 
@@ -642,10 +659,12 @@ class AdminPlayerAnalyticsController extends Controller
                  \DB::raw("(player_analytics.watch_percentage) as watchpercentage"),
                 ]);
             }
-            else
-            {
+            else{
+                $player_videos = [];
+                
+                }
+        if (count($player_videos)){
 
-            }
             $total_row = $player_videos->count();
             if (!empty($player_videos))
             {
@@ -685,7 +704,8 @@ class AdminPlayerAnalyticsController extends Controller
                 'total_Revenue' => $player_videos,
             );
     
-            return $value;          
+            return $value;     
+        }     
         }
     }
 
@@ -767,10 +787,14 @@ class AdminPlayerAnalyticsController extends Controller
         //    dd($player_videos);
             $player_videos_count =  count($player_videos);
 
-       }
+       }else{
+        $player_videos = [];
+        
+        }
 
         $output = '';
         $i = 1;
+        if (count($player_videos)){
 
         $total_row = $player_videos->count();
         if (!empty($player_videos))
@@ -808,7 +832,7 @@ class AdminPlayerAnalyticsController extends Controller
         );
 
         return $value;
-
+    }
     }
 
     public function PlayerUsersEndDateRecord(Request $request)
@@ -839,10 +863,14 @@ class AdminPlayerAnalyticsController extends Controller
     
         //    dd($player_videos);
             $player_videos_count =  count($player_videos);
-        }
+        }else{
+            $player_videos = [];
+            
+            }
 
         $output = '';
         $i = 1;
+        if (count($player_videos)){
 
         $total_row = $player_videos->count();
         if (!empty($player_videos))
@@ -880,6 +908,7 @@ class AdminPlayerAnalyticsController extends Controller
 
         return $value;
     }
+}
 
     
 }

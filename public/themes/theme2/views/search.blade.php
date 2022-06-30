@@ -11,7 +11,7 @@
             <div class="col-sm-12 page-height">
         
                 <div class="iq-main-header align-items-center justify-content-between">
-                    <h3 class="vid-title">Latest Search Result of "{{  $search_value }}"</h3>                     
+                    <h3 class="vid-title">Showing Recent Videos for "{{  $search_value }}"</h3>                     
                 </div>
         
                 <div class="iq-main-header align-items-center justify-content-between"> </div>
@@ -399,7 +399,7 @@
             <div class="col-sm-12 page-height">
         
                 <div class="iq-main-header align-items-center justify-content-between">
-                    <h3 class="vid-title">Highlight Search Result of "{{  $search_value }}"</h3>                     
+                    <h3 class="vid-title">Showing Trending videos for "{{  $search_value }}"</h3>                     
                 </div>
         
                 <div class="iq-main-header align-items-center justify-content-between"> </div>
@@ -782,12 +782,12 @@
                 </div>
             </div>
 
-            {{-- All videos --}}
+            {{-- All Highlighted --}}
         <div class="row">
             <div class="col-sm-12 page-height">
 
                 <div class="iq-main-header align-items-center justify-content-between">
-                    <h3 class="vid-title"> Search Result of "{{  $search_value }}"</h3>                     
+                    <h3 class="vid-title"> Showing Highlighted videos for "{{  $search_value }}"</h3>                     
                 </div>
 
                 <div class="iq-main-header align-items-center justify-content-between"> </div>

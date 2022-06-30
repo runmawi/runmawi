@@ -403,6 +403,29 @@ input:checked + .sliderk:before {
                                               <?php } ?>
                                             </ul>
                                           </li>
+
+                                          <?php }elseif ( $menu->in_menu == "tv_show") { 
+                                              $SeriesGenre = App\SeriesGenre::get();
+                                          ?>
+
+                                          <li class="dropdown menu-item">
+                                              <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown" >  
+                                                 <a class="d-flex justify-content-between" href="<?php echo  URL::to('/tv-shows');?>"> <?php echo __($menu->name);?>  
+                                                   <i class="ri-arrow-down-s-line"></i>
+                                                </a>
+                                             </a>
+
+                                             <ul class="dropdown-menu categ-head">
+                                                <?php foreach ( $SeriesGenre as $category){ ?>
+                                                   <li>
+                                                      <a class="dropdown-item cont-item" href="<?php echo URL::to('/Series/Genre').'/'.$category->id;?>"> 
+                                                               <?php echo $category->name;?> 
+                                                      </a>
+                                                   </li>
+                                                <?php } ?>
+                                             </ul>
+                                          </li>
+
                                           <?php } else { ?>
                                           <li class="menu-item">
                                             <a href="<?php echo URL::to('/').$menu->url;?>">

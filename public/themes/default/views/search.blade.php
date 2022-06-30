@@ -10,7 +10,7 @@
         <div class="row">
             <div class="col-sm-12 page-height">
                 <div class="iq-main-header align-items-center justify-content-between">
-                    <h3 class="vid-title">Latest Search Result of "{{  $search_value }}"</h3>                     
+                    <h3 class="vid-title">Showing Recent Videos for "{{  $search_value }}"</h3>                     
                 </div>
                 
                 <div class="favorites-contens">
@@ -515,12 +515,12 @@
             </div>
         </div>
 
-            {{-- Highlighted  --}}
+            {{-- Trending videos   --}}
 
             <div class="row">
                 <div class="col-sm-12 page-height">
                     <div class="iq-main-header align-items-center justify-content-between">
-                        <h3 class="vid-title">Highlight Search Result of "{{  $search_value }}"</h3>                     
+                        <h3 class="vid-title">Showing Trending videos for "{{  $search_value }}"</h3>                     
                     </div>
                     
                     <div class="favorites-contens">
@@ -1024,11 +1024,11 @@
                 </div>
             </div>
 
-            {{-- All videos - Videos,Episode,livestream,audio --}}
+            {{-- Showing Highlighted videos - Videos,Episode,livestream,audio --}}
         <div class="row">
             <div class="col-sm-12 page-height">
                 <div class="iq-main-header align-items-center justify-content-between">
-                    <h3 class="vid-title"> Search Result of "{{  $search_value }}"</h3>                     
+                    <h3 class="vid-title"> Showing Highlighted videos for "{{  $search_value }}"</h3>                     
                 </div>
                 
                 <div class="favorites-contens">

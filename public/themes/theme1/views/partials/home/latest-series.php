@@ -7,7 +7,9 @@
 <div class="iq-main-header d-flex align-items-center justify-content-between">
    <h4 class="main-title">
     Recently Added Series
-    <?php if ($order_settings_list[4]->header_name) { echo $order_settings_list[4]->header_name ;} else { echo "" ; } ?>
+    <a href="<?php echo URL::to('/Series-list' ) ?>">
+      <?php if ($order_settings_list[4]->header_name) { echo $order_settings_list[4]->header_name ;} else { echo "" ; } ?>
+    </a>
   </h4>                      
 </div>
 <div class="favorites-contens">

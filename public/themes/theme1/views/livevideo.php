@@ -197,7 +197,11 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()  || $video->access == "guest" &
                             <div class="ppv-block">
                                 <h2 class="mb-3">Pay now to watch <?php echo $video->title; ?></h2>
                                 <div class="clear"></div>
+                                        <?php if(Auth::guest()){ ?>
+                                <a href="<?php echo URL::to('/login');?>"><button class="btn btn-primary btn-block" >Purchase For Pay <?php echo $currency->symbol.' '.$video->ppv_price; ?></button></a>
+                                <?php }else{ ?>
                                 <button class="btn btn-primary btn-block" onclick="pay(<?php echo $video->ppv_price; ?>)">Purchase For Pay <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
+                                <?php } ?>
                             </div>
                         </div>
                     </div>
