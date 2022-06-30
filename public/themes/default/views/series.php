@@ -58,20 +58,14 @@ $series = $series_data ;
 			<!--<img id="myImage" class="w-100" >-->
             <div id="series_container">
 
-						 <video id="videoPlayer"  class="video-js vjs-default-skin" poster="<?= URL::to('/') . '/public/uploads/images/' . $series->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' width="100%" style="width:100%;" type="video/mp4"  data-authenticated="<?= !Auth::guest() ?>">
-							<source src="" type='video/mp4' label='auto' >
-							<source src="" type='video/webm' label='auto' >
-							<source src="" type='video/ogg' label='auto' >
-						
+						 <video id="videoPlayer"  class="video-js vjs-default-skin" 
+             poster="<?= URL::to('/') . '/public/uploads/images/' . $series->player_image ?>" 
+             controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' width="100%"
+              style="width:100%;" type="video/mp4"  data-authenticated="<?= !Auth::guest() ?>">
+
 							<p class="vjs-no-js">To view this series please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 series</a></p>
 						</video>
 						</div>
-            
-            
-            
-            
-            
-            
 		</div>
 	</div>
 </div>
@@ -102,7 +96,7 @@ $series = $series_data ;
                            
                   <li class="slide-item col-sm-2 col-md-2 col-xs-12">
                       <a href="<?php echo URL::to('episode').'/'.$series->title.'/'.$episodes->slug;?>">
-                           <div class="block-images position-relative">
+                           <div class="block-images position-relative episodes_div season_<?= $seasons->id;?>">
                                     <div class="img-box">
                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class="img-fluid w-100" >
                                    
@@ -147,7 +141,7 @@ $series = $series_data ;
                            	<?php else : ?>
                              <li class="slide-item col-sm-2 col-md-2 col-xs-12">
                               <a href="<?php echo URL::to('episode').'/'.$series->title.'/'.$episodes->slug;?>">
-                                 <div class="block-images position-relative">
+                                 <div class="block-images position-relative episodes_div season_<?= $seasons->id;?>">
                                     <div class="img-box">
                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class=" img-fluid w-100" >
                                    
@@ -197,9 +191,9 @@ $series = $series_data ;
 						?><!--style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $series->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;"-->
 			<div >
 					<div id="ppv">
-				<h2>Purchase to Watch the Series <?php if($series->access == 'subscriber'): ?>Subscribers<?php elseif($series->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
-				<div class="clear"></div>
-				</div> -->
+				<!-- <h2>Purchase to Watch the Series <?php if($series->access == 'subscriber'): ?>Subscribers<?php elseif($series->access == 'registered'): ?>Registered Users<?php endif; ?></h2> -->
+				<!-- <div class="clear"></div> -->
+				<!-- </div> --> -->
 
 				<!-- <div class="col-md-2 text-center text-white">
                 <div class="col-md-4"> -->
@@ -314,8 +308,8 @@ var season_id = $('#season_id').val();
 $.each(obj, function(i, $val)
 {
 if('season_'+$val.id == season_id){
-	// console.log('season_'+$val.id)
-	$("#myImage").attr("src", $val.image);
+	console.log('season_'+$val.id)
+	$("#videoPlayer").attr("src", $val.trailer);
 }
 });
 
