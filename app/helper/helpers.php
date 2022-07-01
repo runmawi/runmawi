@@ -427,7 +427,8 @@ function send_password_notification($title,$message,$video_name='',$video_img=''
     $notification_icon = $settings->notification_icon;
     $users = App\User::where('token', '!=', '')->where('id','=',$user_id)->get();
     $userdata = App\User::where('token', '!=', '')->where('id','=',$user_id)->first();
- 
+
+    if($userdata != null){
         $user = $userdata->token;
         $headers = array('Authorization:key='.$server_key,'Content-Type:application/json');
         $field = array('to'=>$user,'notification'=>array('title'=> $title,'body'=>strip_tags($message),'tag'=> $video_name,'icon'=> $video_img,'link'=> URL::to('/public/uploads/') . '/settings/' . $notification_icon));
@@ -443,6 +444,7 @@ function send_password_notification($title,$message,$video_name='',$video_img=''
         curl_exec($curl_session);
         curl_close($curl_session);
         DB::table('notifications')->insert(['user_id' => $user_id, 'title' => $title,'message' => $message]);
+    }
     return true;
 }
 
