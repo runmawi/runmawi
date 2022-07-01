@@ -268,7 +268,7 @@ function myFunction() {
     var hls =  $('#hls').val();
     var ads_path_tag =  $('#ads_path_tag').val();
     var processed_low =  $('#processed_low').val();
-    // alert(ads_path_tag)
+    var episode_type  = $('#episode_type').val();
 
 
     // alert(ads_path_tag);
@@ -305,7 +305,7 @@ function myFunction() {
                       tagUrl: ads_path_tag 
                     }
         });
-   }else if(type != "" && request_url != 'm3u8'){
+   }else if(type != "" && request_url != 'm3u8' && episode_type != 'm3u8'){
     // alert('m3u8')
 
         const player = new Plyr('#videoPlayer',{
@@ -368,6 +368,57 @@ function myFunction() {
                       tagUrl: ads_path_tag 
                     }
         });
+   }else if(episode_type == 'm3u8') {
+
+    // alert('episode_type')
+
+    document.addEventListener("DOMContentLoaded", () => {
+  const video = document.querySelector("video");
+  const source = video.getElementsByTagName("source")[0].src;
+  
+  // For more options see: https://github.com/sampotts/plyr/#options
+  // captions.update is required for captions to work with hls.js
+  const defaultOptions = {};
+
+  if (Hls.isSupported()) {
+    // For more Hls.js options, see https://github.com/dailymotion/hls.js
+    const hls = new Hls();
+    hls.loadSource(source);
+
+    // From the m3u8 playlist, hls parses the manifest and returns
+    // all available video qualities. This is important, in this approach,
+    // we will have one source on the Plyr player.
+    hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+
+      // Transform available levels into an array of integers (height values).
+      const availableQualities = hls.levels.map((l) => l.height)
+
+      // Add new qualities to option
+      defaultOptions.quality = {
+        default: availableQualities[0],
+        options: availableQualities,
+        // this ensures Plyr to use Hls to update quality level
+        forced: true,        
+        onChange: (e) => updateQuality(e),
+      }
+
+      // Initialize here
+      const player = new Plyr(video, defaultOptions);
+    });
+    hls.attachMedia(video);
+    window.hls = hls;
+  }
+
+  function updateQuality(newQuality) {
+    window.hls.levels.forEach((level, levelIndex) => {
+      if (level.height === newQuality) {
+        console.log("Found quality match with " + newQuality);
+        window.hls.currentLevel = levelIndex;
+      }
+    });
+  }
+});
+    
    }
    else if(hls == "hls"){
      
@@ -420,10 +471,11 @@ else{
 
       // Transform available levels into an array of integers (height values).
       const availableQualities = hls.levels.map((l) => l.height)
-
+      // alert(availableQualities);
+      // console.log(availableQualities[]);
       // Add new qualities to option
       defaultOptions.quality = {
-        default: availableQualities[0],
+        default: availableQualities[3],
         options: availableQualities,
         // this ensures Plyr to use Hls to update quality level
         forced: true,        

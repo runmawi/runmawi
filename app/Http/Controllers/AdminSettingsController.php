@@ -166,6 +166,7 @@ class AdminSettingsController extends Controller
 		$settings->earn_amount = $request['earn_amount'];
 		$settings->system_email = $request['system_email'];
 		$settings->discount_percentage = $request['discount_percentage'];
+		$settings->logo_size = $request['logo_size'];
         
 		$settings->notification_key = $request['notification_key'];
         
@@ -192,7 +193,14 @@ class AdminSettingsController extends Controller
           $file->move($path, $file->getClientOriginalName());
 
           $logo_path = public_path('uploads/settings/'. $file->getClientOriginalName() );
-          Image::make($logo_path)->resize(80 ,80)->save(public_path('uploads/settings/'. $file->getClientOriginalName() ) );
+
+          if($request->logo_size == "square"){
+            Image::make($logo_path)->resize(80 ,80)->save(public_path('uploads/settings/'. $file->getClientOriginalName() ) );
+          }
+          elseif($request->logo_size == "rectangle" ){
+            Image::make($logo_path)->resize(185 ,50)->save(public_path('uploads/settings/'. $file->getClientOriginalName() ) );
+          }
+
           $settings->logo  = $file->getClientOriginalName();
 
      }
