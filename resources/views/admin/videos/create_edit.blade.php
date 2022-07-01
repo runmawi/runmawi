@@ -1249,7 +1249,7 @@ border-radius: 0px 4px 4px 0px;
 $(document).ready(function(){
 
    $('#slug_error').hide();
-	$('#slug_validate').on('keyup keypress blur mouseover', function(e) {
+	$('#slug_validate').on('blur mouseover', function(e) {
      
       var video_id = "{{ $video->id }}";
       var title = $('#title').val();

@@ -350,7 +350,8 @@ class HomeController extends Controller
                 // dd('$agent');
                 
             }
-
+            $latest_series = Series::where('active', '=', '1')->orderBy('created_at', 'DESC')
+            ->get();
             $currency = CurrencySetting::first();
             $data = array(
                 'currency' => $currency,
@@ -375,7 +376,8 @@ class HomeController extends Controller
                                 ->where('banner','=','1')
                                 ->latest()
                                 ->get() ,
-
+                                
+                'latest_series' => $latest_series,
                 'cnt_watching' => $cnt_watching,
                 'trendings' => $trending_movies,
                 'latest_videos' => $latest_videos,
@@ -2034,7 +2036,7 @@ class HomeController extends Controller
                     'sliders' => Slider::where('active', '=', '1')
                                         ->orderBy('order_position', 'ASC')
                                         ->get() ,
-
+                    'latest_series' => $latest_series,
                     'cnt_watching' => $cnt_watching,
                     'trendings' => $trending_movies,
                     'latest_videos' => $latest_videos,
@@ -2247,29 +2249,6 @@ class HomeController extends Controller
 
     public function search(Request $request)
     {
-        $search_value = $request['search'];
-
-        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-        $userIp = $geoip->getip();
-        $countryName = $geoip->getCountry();
-        $regionName = $geoip->getregion();
-        $cityName = $geoip->getcity();
-        
-        $getfeching = Geofencing::first();
-
-        $block_videos = BlockVideo::where('country_id', $countryName)->get();
-        if (!$block_videos->isEmpty())
-        {
-            foreach ($block_videos as $block_video)
-            {
-                $blockvideos[] = $block_video->video_id;
-            }
-        }
-        else
-        {
-            $blockvideos[] = '';
-        }
-
 
         if ($request->ajax())
         {
@@ -2281,10 +2260,11 @@ class HomeController extends Controller
                            ->where('draft', '=', '1')
                            ->orderBy('created_at', 'desc')
                            ->limit('10');
-                           if ($getfeching != null && $getfeching->geofencing == 'ON')
-                           {
-                               $videos = $videos->whereNotIn('videos.id', $blockvideos);
-                           }
+
+                           if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+                                $videos = $videos  ->whereNotIn('videos.id',Block_videos());
+                            }
+
                            $videos = $videos->get();
 
 

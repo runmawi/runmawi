@@ -252,7 +252,7 @@ $series=App\series::first();
 				<?php endif; ?>
 				</p>
                                        <div class="hover-buttons">
-                                           <a  href="<?php echo URL::to('category')?><?='/videos/' .$episode->slug ?>">	
+                                           <a  href="<?= ($settings->enable_https) ? secure_url('episodes') : URL::to('episode').'/'.@$episodes->series_title->title.'/'.$episodes->slug; ?>">	
                                           <span class="text-white">
                                           <i class="fa fa-play mr-1" aria-hidden="true"></i>
                                           Play Now

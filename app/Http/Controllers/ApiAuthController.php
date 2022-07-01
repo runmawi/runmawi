@@ -1159,7 +1159,7 @@ public function verifyandupdatepassword(Request $request)
       $current_date = date('Y-m-d h:i:s a', time()); 
       // $ppv_exist = LivePurchase::where('video_id',$videoid)->where('user_id',$user_id)->where('to_time','>',$current_date)->count();
       $ppv_exist = LivePurchase::where('video_id',$liveid)->where('user_id',$user_id)->count();
-        dd($ppv_exist);
+        // dd($ppv_exist);
       if ($ppv_exist > 0) {
   
             $ppv_time_expire = LivePurchase::where('user_id','=',$user_id)->where('video_id','=',$liveid)->pluck('to_time')->first();
@@ -1174,8 +1174,8 @@ public function verifyandupdatepassword(Request $request)
             }
   
       } else {
-            // $ppv_video_status = "pay_now";
-            $ppv_video_status = "can_view";
+            $ppv_video_status = "pay_now";
+            // $ppv_video_status = "can_view";
       }
   
     $response = array(
@@ -2369,6 +2369,16 @@ $final[] = array_merge($array1,$array2,$array3,$array4);
       $video_artist_id =  $request['artist_id'];
       $audio_artist_id =  $request['audio_artist_id']; 
 
+      $artistlist_count = Artist::get()->count();
+      if($artistlist_count > 0){
+      $artist_categories = Artist::orderBy('created_at', 'desc')->get()->map(function ($item) {
+        $item['image_url'] = URL::to('/').'/public/uploads/artists/'.$item->image;
+        return $item;
+    });
+   
+  }else{
+    $artist_categories = 'false';
+  }
 
       $audio_artist_count = Artist::where('id',$audio_artist_id)->count();
       if($audio_artist_count > 0){
@@ -2553,6 +2563,7 @@ $final[] = array_merge($array1,$array2,$array3,$array4);
         'video_categories' => $video_categories,
         'url_image' => $url_image,
         'video_artist' => $video_artist,
+        'artist_categories' => $artist_categories,
         'Audio_artist_detail' => $Audio_artist_detail,
       );
 
