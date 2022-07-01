@@ -103,6 +103,7 @@ class AdminAppSettings extends Controller
         $app_setting = new AppSetting;
         $app_setting->android_url = $input['android_url'];
         $app_setting->ios_url = $input['ios_url'];
+        $app_setting->android_tv = $input['android_tv'];        
         // $app_setting->status = $status;
         $app_setting->user_id = Auth::User()->id;
         $app_setting->save();
@@ -126,6 +127,7 @@ class AdminAppSettings extends Controller
         if(!empty($app_setting)){
         $app_setting->android_url = $input['android_url'];
         $app_setting->ios_url = $input['ios_url'];
+        $app_setting->android_tv = $input['android_tv'];        
         // $app_setting->status = $status;
         $app_setting->user_id = Auth::User()->id;
         $app_setting->save();
@@ -133,6 +135,7 @@ class AdminAppSettings extends Controller
           $app_setting = new AppSetting;
           $app_setting->android_url = $input['android_url'];
           $app_setting->ios_url = $input['ios_url'];
+          $app_setting->android_tv = $input['android_tv'];        
           // $app_setting->status = $status;
           $app_setting->user_id = Auth::User()->id;
           $app_setting->save();
