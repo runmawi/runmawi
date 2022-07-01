@@ -4,6 +4,12 @@
 <?php
 $series = App\series::first();
 ?>
+<?php
+$series= App\series::where('id',$episode->series_id)->first();
+$SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
+// dd($SeriesSeason);
+?>
+<input type="hidden" value="<?php echo URL::to('/');?>" id="base_url" >
 <input type="hidden" value="<?php echo URL::to('/'); ?>" id="base_url" >
 <input type="hidden" id="videoslug" value="<?php if (isset($episode->path))
 {
@@ -218,7 +224,10 @@ else
 	<br>
 	<br>
                 <div class="col-md-6">
-			<span class="text-white" style="font-size: 129%;font-weight: 700;">You're watching:</span> <p style=";font-size: 130%;color: white;"><?=$episode->title
+			<span class="text-white" style="font-size: 129%;font-weight: 700;">You're watching:</span> 
+      <p style=";font-size: 130%;color: white;"><?php if(!empty($series)){ echo 'Series'.' '.$series->id.' ';}
+			if(!empty($SeriesSeason)){ echo 'Season'.' '.$SeriesSeason->id.' ';} if(!empty($episode)){ echo 'Episode'.' '.$episode->id;} ?>
+      <p style=";font-size: 130%;color: white;"><?=$episode->title
 ?></p>
 		
 	</div>
