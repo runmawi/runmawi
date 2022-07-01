@@ -33,6 +33,7 @@ use FFMpeg\Coordinate\Dimension;
 use FFMpeg\Format\Video\X264;
 use App\Http\Requests\StoreVideoRequest;
 use App\Jobs\ConvertVideoForStreaming;
+use App\Jobs\ConvertEpisodeVideo;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use FFMpeg\Filters\Video\VideoFilters;
 use Illuminate\Support\Str;
@@ -959,6 +960,12 @@ class AdminSeriesController extends Controller
         $id = $data['episode_id'];
         $episodes = Episode::findOrFail($id);
 
+        if($episodes->type == 'm3u8'){
+            $type = 'm3u8';
+        }else{
+            $type = 'file';
+        }
+
         $path = public_path().'/uploads/episodes/';
         $image_path = public_path().'/uploads/images/';
         
@@ -1110,7 +1117,7 @@ class AdminSeriesController extends Controller
             $episodes->rating =  $data['rating'];
             $episodes->slug =  $data['slug'];
 
-            $episodes->type =  'file';
+            $episodes->type =  $type;
             $episodes->banner =  $banner;
 
             // $episodes->age_restrict =  $data['age_restrict'];
@@ -1170,8 +1177,6 @@ class AdminSeriesController extends Controller
         $input = $request->all();
         $id = $input['id'];
         $episode = Episode::findOrFail($id);
-
-        // dd($input);
 
 
         if(!empty($input['searchtags'])){
@@ -1282,7 +1287,7 @@ class AdminSeriesController extends Controller
             $data['active'] = 0;
         }
         if(empty($data['slug'])){
-            $slug = $episode->slug;
+            $slug = str_replace(' ', '_', $episode->title);
         }else{
             $slug = str_replace(' ', '_', $data['slug']);
         }
@@ -1294,6 +1299,12 @@ class AdminSeriesController extends Controller
         }else{
             $banner = 1;
         }
+        if($episode->type == 'm3u8'){
+            $type = 'm3u8';
+        }else{
+            $type = $data['type'];
+        }
+
           $episode_upload = (isset($data['episode_upload'])) ? $data['episode_upload'] : '';
 
         if($episode_upload != '' && $request->hasFile('episode_upload')) {
@@ -1325,6 +1336,7 @@ class AdminSeriesController extends Controller
         $episode->update($data);
         $episode->skip_recap =  $data['skip_recap'];
         $episode->banner =  $banner;
+        $episode->type =  $type;
         $episode->slug =  $slug;
         $episode->search_tags =  $searchtags;
         $episode->recap_start_time =  $data['recap_start_time'];
@@ -1356,45 +1368,103 @@ class AdminSeriesController extends Controller
            
         ]);
         $file = (isset($data['file'])) ? $data['file'] : '';
-        $rand = Str::random(16);
-        $path = public_path().'/uploads/episodes/';
-        $path = $rand . '.' . $request->file->getClientOriginalExtension();
-        $request->file->storeAs('public', $path);
-        $path = $rand . '.' . $request->file->getClientOriginalExtension();
-        $path = URL::to('/').'/storage/app/public/'.$path;
-        $file = $request->file->getClientOriginalName();
-        $newfile = explode(".mp4",$file);
-        $file_folder_name = $newfile[0];
 
         // https://webnexs.org/flicknexs/content/uploads/episodes/6.mp4
-        if($file != '') {               
+        $package = User::where('id',1)->first();
+        $pack = $package->package;
+        $mp4_url = $data['file'];
+        $settings = Setting::first();
+
+        if($pack != "Business" || $pack == "Business" && $settings->transcoding_access  == 0){
+
+        if($file != '') {        
+        $rand = Str::random(16);
+        $path = $rand . '.' . $file->getClientOriginalExtension();
+        $request->file->storeAs('public', $path);
+        $storepath  = URL::to('/storage/app/public/'.$path);
+        $file = $request->file->getClientOriginalName();
+        $newfile = explode(".mp4",$file);
+        $file_folder_name = $newfile[0];       
          $original_name = ($request->file->getClientOriginalName()) ? $request->file->getClientOriginalName() : '';
          $episode = new Episode();
          $episode->title = $file_folder_name;
-         $episode->mp4_url = $path;
+         $episode->mp4_url = $storepath;
          $episode->series_id = $series_id;
          $episode->season_id = $season_id;
          $episode->image = 'default_image.jpg';
          $episode->type = 'upload';
          $episode->status = 0;
          $episode->save(); 
-        
          $episode_id = $episode->id;
         $episode_title = Episode::find($episode_id);
         $title =$episode_title->title; 
-
-
         $value['success'] = 1;
         $value['message'] = 'Uploaded Successfully!';
         $value['episode_id'] = $episode_id;
         $value['episode_title'] = $title;
         return $value;
-        }
-        else {
-         $value['success'] = 2;
-         $value['message'] = 'File not uploaded.'; 
-        return response()->json($value);
-        }
+        }else {
+            $value['success'] = 2;
+            $value['message'] = 'File not uploaded.'; 
+           return response()->json($value);
+           }
+        
+    }elseif($pack == "Business" && $settings->transcoding_access  == 1){
+        if($file != '') {     
+        $rand = Str::random(16);
+        $path = $rand . '.' . $file->getClientOriginalExtension();
+        $request->file->storeAs('public', $path);
+        $file = $request->file->getClientOriginalName();
+        $newfile = explode(".mp4",$file);
+        $file_folder_name = $newfile[0];
+        $storepath  = URL::to('/storage/app/public/'.$path);
+
+        $original_name = ($request->file->getClientOriginalName()) ? $request->file->getClientOriginalName() : '';
+         
+        $storepath  = URL::to('/storage/app/public/'.$path);
+
+
+         $video = new Episode();
+         $video->title = $file_folder_name;
+         $video->mp4_url = $path;
+         $video->series_id = $series_id;
+         $video->season_id = $season_id;
+         $video->image = 'default_image.jpg';
+         $video->type = 'm3u8';
+         $video->status = 0;
+         $video->disk = 'public';
+         $video->status = 0;
+         $video->path = $path;
+         $video->mp4_url = $storepath;
+        //  $video->user_id = Auth::user()->id;
+         $video->save();
+
+         ConvertEpisodeVideo::dispatch($video,$storepath);
+
+         $episode_id = $video->id;
+        $episode_title = Episode::find($episode_id);
+        $title =$episode_title->title; 
+        $value['success'] = 1;
+        $value['message'] = 'Uploaded Successfully!';
+        $value['episode_id'] = $episode_id;
+        $value['episode_title'] = $title;
+        return $value;
+         
+          
+
+        }else {
+            $value['success'] = 2;
+            $value['message'] = 'File not uploaded.'; 
+           return response()->json($value);
+           }
+
+        }else {
+            $value['success'] = 2;
+            $value['message'] = 'File not uploaded.'; 
+           return response()->json($value);
+           }
+
+
         }
 
 
