@@ -122,115 +122,131 @@ class ApiAuthController extends Controller
 
   public function signup(Request $request)
   {
-   
-    $input = $request->all();
-    $user_data = array('username' => $request->get('username'), 'email' => $request->get('email'), 'password' => $request->get('password'),'ccode' => $request->get('ccode'),'mobile' => $request->get('mobile') );
 
-    $stripe_plan = SubscriptionPlan();
-    $settings = Setting::first();
-    if (isset($input['ccode']) && !empty($input['ccode'])) {
-      $user_data['ccode'] = $input['ccode'];
-    } else {
-      $user_data['ccode'] = '';
-    } 
+        $input = $request->all();
+        $user_data = array('username' => $request->get('username'), 'email' => $request->get('email'), 'password' => $request->get('password'),'ccode' => $request->get('ccode'),'mobile' => $request->get('mobile') );
+
+        $stripe_plan = SubscriptionPlan();
+        $settings = Setting::first();
+
+        if (isset($input['ccode']) && !empty($input['ccode'])) {
+          $user_data['ccode'] = $input['ccode'];
+        } else {
+          $user_data['ccode'] = '';
+        } 
+
         if (isset($input['mobile']) && !empty($input['mobile'])) {
-      $user_data['mobile'] = $input['mobile'];
-    } else {
-      $user_data['mobile'] = '';
-    } 
-        if (isset($input['skip'])) {
+          $user_data['mobile'] = $input['mobile'];
+        } 
+        else {
+          $user_data['mobile'] = '';
+        } 
 
-      $skip = $input['skip'];
-    } else {
-      $skip = 0;
-    } 
+        if (isset($input['skip'])) {
+          $skip = $input['skip'];
+        } 
+        else {
+          $skip = 0;
+        } 
 
         if (!empty($input['referrer_code'])){
-            $referrer_code = $input['referrer_code'];
+          $referrer_code = $input['referrer_code'];
         }
         
         if ( isset($referrer_code) && !empty($referrer_code) ) { 
-            $referred_user = User::where('referral_token','=',$referrer_code)->first();
-            $referred_user_id = $referred_user->id;
+              $referred_user = User::where('referral_token','=',$referrer_code)->first();
+              $referred_user_id = $referred_user->id;
         } else {
-   
-            $referred_user_id =0;
+              $referred_user_id =0;
         }
 
-    $length = 10;
+
+        $length = 10;
         $pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $ref_token = substr(str_shuffle(str_repeat($pool, 5)), 0, $length);  
         $token = substr(str_shuffle(str_repeat($pool, 5)), 0, $length); 
-    if (!empty($request->token)){
-        $user_data['token'] =  $request->token;
-    } else {
-      $user_data['token'] =  '';
-    }
-        $path = URL::to('/').'/public/uploads/avatars/';
-      $logo = $request->file('avatar');
-            if($logo != '') {   
-                  if($logo != ''  && $logo != null){
-                   $file_old = $path.$logo;
-                   if (file_exists($file_old)){
-                       unlink($file_old);
-                   }
-               }
-               $file = $logo;
-               $avatar  = $file->getClientOriginalName();
-               $file->move(public_path()."/uploads/avatars/", $file->getClientOriginalName());
-            } else {
-                $avatar  = 'default.png';
-            }      
-    if (!$settings->free_registration && $skip == 0) {
-      $user_data['role'] = 'subscriber';
-      $user_data['active'] = '1';
-    } else {
-                if($settings->activation_email):
-                    $user_data['activation_code'] = Str::random(60);
-                    $user_data['active'] = 0;
-                endif;
-      $user_data['role'] = 'registered';
-    }
-            if (isset($input['subscrip_plan'])) {
-                $plan = $input['subscrip_plan'];
-            }    
-      $user = User::where('email', '=', $request->get('email'))->first();
-      $username = User::where('username', '=', $request->get('username'))->first();
-    if ($user === null && $username === null) {
-      $user = new User($user_data);
-      $user->ccode = $user_data['ccode'];
-      $user->mobile = $user_data['mobile'];
-      $user->avatar = $avatar;
-      $user->password = Hash::make($request->get('password'));
-            $user->referrer_id = $referred_user_id;
-            $user->token = $input['token'];
-      $user->referral_token = $ref_token;
-      $user->active = 1;
-      $user->save();
-      $userdata = User::where('email', '=', $request->get('email'))->first();
-      $userid = $userdata->id;
-        send_password_notification('Notification From FLICKNEXS','Your Account  has been Created Successfully','Your Account  has been Created Successfully','',$userid);
-            
-    } else {
-      if($user != null){
-        $response = array('status'=>'false','message' => 'Email id Already Exists');
-        return response()->json($response, 200);
-      }else{
-        $response = array('status'=>'false','message' => 'Username Already Exists');
-        return response()->json($response, 200);
-      }
 
-    }
+        if (!empty($request->token)){
+            $user_data['token'] =  $request->token;
+        } else {
+          $user_data['token'] =  '';
+        }
+
+        
+        $path = URL::to('/').'/public/uploads/avatars/';
+        $logo = $request->file('avatar');
+        if($logo != '') {   
+            if($logo != ''  && $logo != null){
+                $file_old = $path.$logo;
+                if (file_exists($file_old)){
+                      unlink($file_old);
+                }
+            }
+            $file = $logo;
+            $avatar  = $file->getClientOriginalName();
+            $file->move(public_path()."/uploads/avatars/", $file->getClientOriginalName());
+        } else {
+            $avatar  = 'default.png';
+        }      
+
+        if(!$settings->free_registration && $skip == 0) {
+            $user_data['role'] = 'subscriber';
+            $user_data['active'] = '1';
+        } else {
+                if($settings->activation_email):
+                  $user_data['activation_code'] = Str::random(60);
+                  $user_data['active'] = 0;
+                endif;
+          $user_data['role'] = 'registered';
+        }
+
+        if (isset($input['subscrip_plan'])) {
+            $plan = $input['subscrip_plan'];
+        }    
+
+
+        $user = User::where('email', '=', $request->get('email'))->first();
+        $username = User::where('username', '=', $request->get('username'))->first();
+
+        if ($user === null && $username === null) {
+
+              $user = new User($user_data);
+              $user->ccode = $user_data['ccode'];
+              $user->mobile = $user_data['mobile'];
+              $user->avatar = $avatar;
+              $user->password = Hash::make($request->get('password'));
+              $user->referrer_id = $referred_user_id;
+              $user->token = $user_data['token'];
+              $user->referral_token = $ref_token;
+              $user->active = 1;
+              $user->save();
+              $userdata = User::where('email', '=', $request->get('email'))->first();
+              $userid = $userdata->id;
+
+              send_password_notification('Notification From FLICKNEXS','Your Account  has been Created Successfully','Your Account  has been Created Successfully','',$userid);
+                
+        } 
+        else {
+              if($user != null){
+                $response = array('status'=>'false','message' => 'Email id Already Exists');
+                return response()->json($response, 200);
+              }else{
+                $response = array('status'=>'false','message' => 'Username Already Exists');
+                return response()->json($response, 200);
+              }
+        }
+
     try {
       if($settings->free_registration && $settings->activation_email == 1){
-        $email = $input['email'];
-        $uname = $input['username'];
-        Mail::send('emails.verify', array('activation_code' => $user->activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
+
+          $email = $input['email'];
+          $uname = $input['username'];
+          Mail::send('emails.verify', array('activation_code' => $user->activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
           $message->to($email,$uname)->subject('Verify your email address');
         });
         $response = array('status'=>'true','message' => 'Registered Successfully.');
-      } else {
-                
+      } 
+      else {
         if(!$settings->free_registration  && $skip == 0){
 
           $paymentMode = $request->payment_mode;
@@ -394,9 +410,7 @@ class ApiAuthController extends Controller
                                                 $message->to($user->email, $user->username)->subject($request->get('subject'));
                                             });
 
-
-
-                        send_password_notification('Notification From FLICKNEXS','Your Payment has been done Successfully','Your Your Payment has been done Successfully','',$user->id);
+            send_password_notification('Notification From FLICKNEXS','Your Payment has been done Successfully','Your Your Payment has been done Successfully','',$user->id);
         }
       }
       else{

@@ -1,204 +1,193 @@
-<!doctype html>
-<html lang="en-US">
-   <head>
-   <style>
-   .navbar-nav li:hover > ul.dropdown-menu {
-    display: block;
-}
-.dropdown-submenu {
-    position:relative;
-}
-.dropdown-submenu>.dropdown-menu {
-    top:0;
-    left:100%;
-    /* right:10rem; 10rem is the min-width of dropdown-menu */
-    margin-top:-6px;
-}
+<head>
 
-/* rotate caret on hover */
-.dropdown-menu > li > a:hover:after {
-    text-decoration: underline;
-    transform: rotate(-90deg);
-} 
+    <style>
+    .navbar-nav li:hover > ul.dropdown-menu {
+        display: block;
+        }
+        .dropdown-submenu {
+            position:relative;
+        }
+        .dropdown-submenu>.dropdown-menu {
+            top:0;
+            left:100%;
+            /* right:10rem; 10rem is the min-width of dropdown-menu */
+            margin-top:-6px;
+        }
 
-  </style>
-<?php
-// dd($video_category);
+        /* rotate caret on hover */
+        .dropdown-menu > li > a:hover:after {
+            text-decoration: underline;
+            transform: rotate(-90deg);
+        } 
 
-$theme_mode = App\SiteTheme::pluck("theme_mode")->first();
+    </style>
 
-if (!empty(Auth::User()->id)) {
-    $id = Auth::User()->id;
-    $users = App\User::find($id);
-    $date = date_create($users->created_at);
-    $created_at = date_format($date, "Y-m-d");
-    $filldate = date("Y-m-d", strtotime($created_at . " + 10 day"));
-    $currentdate = date("Y-m-d");
-    $DOB = $users->DOB;
-} else {
-    $currentdate = null;
-    $filldate = null;
-    $DOB = null;
-}
-// dd($currentdate);
+    <?php
 
-$data = Session::all();
+        $theme_mode = App\SiteTheme::pluck("theme_mode")->first();
 
-$uri_path = $_SERVER["REQUEST_URI"];
-$uri_parts = explode("/", $uri_path);
-$request_url = end($uri_parts);
-$uppercase = ucfirst($request_url);
-if (
-    (!empty($data["password_hash"]) && empty($uppercase)) ||
-    (empty($data["password_hash"]) && empty($uppercase))
-) {
-    // dd($uppercase);
-    $uppercase = "Home";
-} else {
-}
+        if (!empty(Auth::User()->id)) {
 
-// exit();UA-42534483-14
-$data = Session::all();
-?>
-  <!-- Required meta tags -->
-  <?php $settings = App\Setting::first();
-//echo $settings->website_name;
-?>
+            $id = Auth::User()->id;
+            $users = App\User::find($id);
+            $date = date_create($users->created_at);
+            $created_at = date_format($date, "Y-m-d");
+            $filldate = date("Y-m-d", strtotime($created_at . " + 10 day"));
+            $currentdate = date("Y-m-d");
+            $DOB = $users->DOB;
 
-    
+        } else {
+
+            $currentdate = null;
+            $filldate = null;
+            $DOB = null;
+        }
+
+        $data = Session::all();
+
+        $uri_path = $_SERVER["REQUEST_URI"];
+        $uri_parts = explode("/", $uri_path);
+        $request_url = end($uri_parts);
+        $uppercase = ucfirst($request_url);
+
+        if (
+            (!empty($data["password_hash"]) && empty($uppercase)) ||
+            (empty($data["password_hash"]) && empty($uppercase))
+        ) {
+            $uppercase = "Home";
+        } else {
+        }
+
+        $data = Session::all();
+    ?>
+
+        <!-- Required meta tags -->
+
+    <?php $settings = App\Setting::first();?>
+
     <?php if (!empty($data["password_hash"])) {
         $videos_data = App\Video::where("slug", $request_url)->first();
-    }
-//echo $settings->website_name;
-?>
+        }
+    ?>
     <?php if (!empty($data["password_hash"])) {
         $series = App\Series::where("title", $request_url)->first();
-    }
-//echo $settings->website_name;
-?>
+        }
+    ?>
     <?php if (!empty($data["password_hash"])) {
         $episdoe = App\Episode::where("title", $request_url)->first();
-    }
-//echo $settings->website_name;
-?>
+        }
+    ?>
+
     <?php if (!empty($data["password_hash"])) {
         $livestream = App\LiveStream::where("slug", $request_url)->first();
-    }
-//echo $settings->website_name;
-?>
+        }
+    ?>
 
 
     <meta charset="UTF-8">
-    <title><?php //  dd($data['password_hash']);
-    if (!empty($videos_data)) {
-        echo $videos_data->title . " | " . $settings->website_name;
-    } elseif (!empty($series)) {
-        echo $series->title . " | " . $settings->website_name;
-    } elseif (!empty($episdoe)) {
-        echo $episdoe->title . " | " . $settings->website_name;
-    } elseif (!empty($livestream)) {
-        echo $livestream->title . " | " . $settings->website_name;
-    } else {
-        echo $uppercase . " | " . $settings->website_name;
-    } ?></title>
-    <meta name="description" content= "<?php if (!empty($videos_data)) {
+
+    <title>
+        <?php 
+            if (!empty($videos_data)) {
+                echo $videos_data->title . " | " . $settings->website_name;
+            } elseif (!empty($series)) {
+                echo $series->title . " | " . $settings->website_name;
+            } elseif (!empty($episdoe)) {
+                echo $episdoe->title . " | " . $settings->website_name;
+            } elseif (!empty($livestream)) {
+                echo $livestream->title . " | " . $settings->website_name;
+            } else {
+                echo $uppercase . " | " . $settings->website_name;
+            } ?></title>
+            <meta name="description" content= "<?php if (!empty($videos_data)) {
+                echo $videos_data->description;
+            } elseif (!empty($episdoe)) {
+                echo $episdoe->description;
+            } elseif (!empty($series)) {
+                echo $series->description;
+            } elseif (!empty($livestream)) {
+                echo $livestream->description;
+            } else {
+                echo $settings->website_description;
+            }
+        ?>" />
+
+        <meta property="og:title" content="<?php //  dd($data['password_hash']);
+            if (!empty($videos_data)) {
+                echo $videos_data->title . " | " . $settings->website_name;
+            } elseif (!empty($series)) {
+                echo $series->title . " | " . $settings->website_name;
+            } elseif (!empty($episdoe)) {
+                echo $episdoe->title . " | " . $settings->website_name;
+            } elseif (!empty($livestream)) {
+                echo $livestream->title . " | " . $settings->website_name;
+            } else {
+                echo $uppercase . " | " . $settings->website_name;
+            } 
+        ?>" />
+
+
+
+    <meta property="og:description" content="<?php if (!empty($videos_data)) {
         echo $videos_data->description;
-    } elseif (!empty($episdoe)) {
-        echo $episdoe->description;
-    } elseif (!empty($series)) {
-        echo $series->description;
-    } elseif (!empty($livestream)) {
-        echo $livestream->description;
-    } else {
-        echo $settings->website_description;
-    }
-//echo $settings;
-?>" />
+                } elseif (!empty($episdoe)) {
+                    echo $episdoe->description;
+                } elseif (!empty($series)) {
+                    echo $series->description;
+                } elseif (!empty($livestream)) {
+                    echo $livestream->description;
+                } else {
+                    echo $settings->website_description;
+                }
+        ?>" />
 
-    <meta property="og:title" content="<?php //  dd($data['password_hash']);
-    if (!empty($videos_data)) {
-        echo $videos_data->title . " | " . $settings->website_name;
-    } elseif (!empty($series)) {
-        echo $series->title . " | " . $settings->website_name;
-    } elseif (!empty($episdoe)) {
-        echo $episdoe->title . " | " . $settings->website_name;
-    } elseif (!empty($livestream)) {
-        echo $livestream->title . " | " . $settings->website_name;
-    } else {
-        echo $uppercase . " | " . $settings->website_name;
-    } ?>" />
+    <meta property="og:image" content="<?php if (!empty($videos_data)) {
+        echo URL::to("/public/uploads/images") . "/" . $videos_data->image;
+                } elseif (!empty($episdoe)) {
+                    echo URL::to("/public/uploads/images") . "/" . $episdoe->image;
+                } elseif (!empty($series)) {
+                    echo URL::to("/public/uploads/images") . "/" . $series->image;
+                } elseif (!empty($livestream)) {
+                    echo URL::to("/public/uploads/images") . "/" . $livestream->image;
+                } else {
+                    echo URL::to("/") . "/public/uploads/settings/" . $settings->logo;
+                }
+        ?>" />
 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
+        <!-- Favicon -->
+        <link rel="shortcut icon" href="<?php echo getFavicon();?>" type="image/gif" sizes="16x16">
 
-   <meta property="og:description" content="<?php if (!empty($videos_data)) {
-       echo $videos_data->description;
-   } elseif (!empty($episdoe)) {
-       echo $episdoe->description;
-   } elseif (!empty($series)) {
-       echo $series->description;
-   } elseif (!empty($livestream)) {
-       echo $livestream->description;
-   } else {
-       echo $settings->website_description;
-   }
-//echo $settings;
-?>" />
+        <link rel="stylesheet" href="<?= URL::to("/") ."/assets/css/slick.css" ?>" />
 
+        <input type="hidden" value="<?php echo $settings->google_tracking_id; ?>" name="tracking_id" id="tracking_id">
 
+        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 
-   <meta property="og:image" content="<?php if (!empty($videos_data)) {
-       echo URL::to("/public/uploads/images") . "/" . $videos_data->image;
-   } elseif (!empty($episdoe)) {
-       echo URL::to("/public/uploads/images") . "/" . $episdoe->image;
-   } elseif (!empty($series)) {
-       echo URL::to("/public/uploads/images") . "/" . $series->image;
-   } elseif (!empty($livestream)) {
-       echo URL::to("/public/uploads/images") . "/" . $livestream->image;
-   } else {
-       echo URL::to("/") . "/public/uploads/settings/" . $settings->logo;
-   }
-//echo $settings;
-?>" />
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="<?= URL::to("/") ."/assets/css/bootstrap.min.css" ?>" />
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-                <link rel="stylesheet" href="<?= URL::to("/") .
-                    "/assets/css/slick.css" ?>" />
+        <!-- Typography CSS -->
+        <link rel="stylesheet" href="<?= URL::to("/") ."/assets/css/typography.css" ?>" />
 
-   <input type="hidden" value="<?php echo $settings->google_tracking_id; ?>" name="tracking_id" id="tracking_id">
-    <!-- Favicon -->
-      
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+        <!-- Style -->
+        <link rel="stylesheet" href="<?= URL::to("/") . "/assets/css/style.css" ?>" />
+        <link rel="stylesheet" href="<?= URL::to("/") . "/assets/css/variable.css" ?>" />
 
-    <link rel="shortcut icon" type="image/png" href="<?= URL::to("/") .
-        "/public/uploads/settings/" .
-        $settings->favicon ?>" />
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="<?= URL::to("/") .
-        "/assets/css/bootstrap.min.css" ?>" />
-    <!-- Typography CSS -->
-    <link rel="stylesheet" href="<?= URL::to("/") .
-        "/assets/css/typography.css" ?>" />
-    <!-- Style -->
-    <link rel="stylesheet" href="<?= URL::to("/") .
-        "/assets/css/style.css" ?>" />
-    <link rel="stylesheet" href="<?= URL::to("/") .
-        "/assets/css/variable.css" ?>" />
-    <!-- Responsive -->
-    <link rel="stylesheet" href="<?= URL::to("/") .
-        "/assets/css/responsive.css" ?>" />
-    <link rel="stylesheet" href="<?= URL::to("/") .
-        "/assets/css/plyr_marker.scss" ?>" />
+        <!-- Responsive -->
+        <link rel="stylesheet" href="<?= URL::to("/") ."/assets/css/responsive.css" ?>" />
+        <link rel="stylesheet" href="<?= URL::to("/") ."/assets/css/plyr_marker.scss" ?>" />
 
-    
-       <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-       <script src="<?= URL::to('/'). '/assets/js/jquery.hoverplay.js';?>"></script>
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.js"></script>
+        <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="<?= URL::to('/'). '/assets/js/jquery.hoverplay.js';?>"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.js"></script>
+</head>
 
-   </head>
-    <style>
+<style>
          svg{
             height: 30px;
             widows: 30px;

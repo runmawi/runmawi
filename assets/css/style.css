@@ -203,7 +203,7 @@ header .navbar ul li:last-child { margin-right: 0; }
 }
 .block-space { padding: 40px 0; }
 .s-margin { /*margin-top: 20px;*/ }
-.iq-main-header { margin-bottom: 0px; margin-top: 30px;margin-left: -10px;}
+.iq-main-header { margin-bottom: 0px; margin-top: 30px;margin-left: px;}
 .main-title a:hover, .main-title a:focus {color:var(--iq-primary) !important;}
 :focus{outline: none !important;}
 /*--------------------------*/
