@@ -550,7 +550,8 @@ else{
 
       // Add new qualities to option
       defaultOptions.quality = {
-        default: availableQualities[0],
+        // default: availableQualities[0],
+        default: availableQualities[3],
         options: availableQualities,
         // this ensures Plyr to use Hls to update quality level
         forced: true,        

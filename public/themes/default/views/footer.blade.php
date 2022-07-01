@@ -471,10 +471,11 @@ else{
 
       // Transform available levels into an array of integers (height values).
       const availableQualities = hls.levels.map((l) => l.height)
-
+      // alert(availableQualities);
+      // console.log(availableQualities[]);
       // Add new qualities to option
       defaultOptions.quality = {
-        default: availableQualities[0],
+        default: availableQualities[3],
         options: availableQualities,
         // this ensures Plyr to use Hls to update quality level
         forced: true,        
