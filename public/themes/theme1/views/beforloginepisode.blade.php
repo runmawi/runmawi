@@ -6,7 +6,12 @@ $series = App\series::first();
 
 ?>
 
+<?php 
+$series= App\series::where('id',$episode->series_id)->first();
+$SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 
+?>
+<input type="hidden" value="<?php echo $episode->type; ?>" id='episode_type'>
 
 <input type="hidden" value="<?php echo URL::to('/'); ?>" id="base_url" >
 <input type="hidden" id="videoslug" value="<?php if (isset($episode->path))
@@ -55,8 +60,23 @@ if (Auth::guest())
 							<p class="vjs-no-js">To view this series please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 series</a></p>
 						</video>
 						</div>
-					<?php
-            else: ?>                                  
+            <?php  elseif($episode->type == 'm3u8'): ?>
+							<div id="series_container">
+								 <video id="video"  controls crossorigin playsinline 
+								 poster="<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>" 
+								 controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+									<source 
+										type="application/x-mpegURL" 
+										src="<?php echo URL::to('/storage/app/public/').'/'.$episode->path . '.m3u8'; ?>"
+									>
+									</video>
+								<?php  if(isset($episodesubtitles)){
+								foreach ($episodesubtitles as $key => $episodesubtitles_file) { ?>
+								<track kind="captions" src="<?= $episodesubtitles_file->url; ?>" srclang="<?= $episodesubtitles_file->sub_language; ?>" label="<?= $episodesubtitles_file->shortcode; ?>" default>
+								<?php } } ?>
+								</video>
+								</div>
+					<?php            else: ?>                                  
 						<div id="series_container">
 						<video id="videoPlayer"    class="video-js vjs-default-skin" controls preload="auto" poster="<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>" data-setup="{}" width="100%" style="width:100%;" data-authenticated="<?=!Auth::guest() ?>">
                            
@@ -93,8 +113,7 @@ if (Auth::guest())
 						<!-- Intro Skip and Recap Skip -->
 
 
-			<?php
-        else: ?>
+			<?php        else: ?>
 
                 <div id="subscribers_only"style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
 					<h2>Sorry, this series is only available to <?php if ($series->access == 'subscriber'): ?>Subscribers<?php
@@ -105,8 +124,7 @@ if (Auth::guest())
 						<form method="get" action="<?=URL::to('/') ?>/user/<?=Auth::user()->username ?>/upgrade_subscription">
 							<button id="button">Become a subscriber to watch this episode</button>
 						</form>
-					<?php
-            else: ?>
+					<?php            else: ?>
 						<form method="get" action="<?=URL::to('signup') ?>">
 							<button id="button">Signup Now <?php if ($series->access == 'subscriber'): ?>to Become a Subscriber<?php
                 elseif ($series->access == 'registered'): ?>for Free!<?php
@@ -205,7 +223,11 @@ else
 	<br>
 	<br>
                 <div class="col-md-5">
-			<span class="text-white" style="font-size: 129%;font-weight: 700;">You're watching:</span> <p style=";font-size: 130%;color: white;"><?=$episode->title
+			<span class="text-white" style="font-size: 129%;font-weight: 700;">You're watching:</span>
+      <p style=";font-size: 130%;color: white;"><?php if(!empty($series)){ echo 'Series'.' '.$series->id.' ';}
+			if(!empty($SeriesSeason)){ echo 'Season'.' '.$SeriesSeason->id.' ';} 
+			if(!empty($episode)){ echo 'Episode'.' '.$episode->id;} ?>
+       <p style=";font-size: 130%;color: white;"><?=$episode->title
 ?></p>
 		
 	</div>

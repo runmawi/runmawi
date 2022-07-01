@@ -224,13 +224,10 @@ else
 	<br>
 	<br>
                 <div class="col-md-6">
-			<span class="text-white" style="font-size: 120%;font-weight: 700;">You're watching:</span> 
-                     
-      <p class="mb-0" style=";font-size: 80%;color: white;"><?php 
+			<span class="text-white" style="font-size: 129%;font-weight: 700;">You're watching:</span> 
+      <p style=";font-size: 130%;color: white;"><?php if(!empty($series)){ echo 'Series'.' '.$series->id.' ';}
 			if(!empty($SeriesSeason)){ echo 'Season'.' '.$SeriesSeason->id.' ';} if(!empty($episode)){ echo 'Episode'.' '.$episode->id;} ?>
-    
-                    </p>
-                     <p class="" style=";font-size: 100%;color: white;font-weight: 700;"><?=$episode->title
+      <p style=";font-size: 130%;color: white;"><?=$episode->title
 ?></p>
 	</div>
                 
