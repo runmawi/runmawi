@@ -1,21 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
-    <head>
-        {!! meta_init() !!}
-        <meta name="keywords" content="@get('keywords')">
-        <meta name="description" content="@get('description')">
-        <meta name="author" content="@get('author')">
-
-    {{-- favicon --}}
-    
-        <link rel="shortcut icon" href="<?= getFavicon();?>" type="image/gif" sizes="16x16">
-
-        @styles()
         
-    </head>
-
-    <body>
         @partial('header')
 
         @content()
@@ -23,10 +8,9 @@
         @partial('footer')
 
         @scripts()
-    </body>
 
 
-    <style>
+<style>
 
     /*Button Bg color  */
         button.btn.btn-hover.ab {
@@ -137,4 +121,5 @@
  
  </script>
 
+    
 </html>
