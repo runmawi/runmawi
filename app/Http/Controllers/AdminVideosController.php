@@ -985,9 +985,9 @@ if(!empty($artistsdata)){
             if($request->slug == ''){
                 $data['slug'] = $this->createSlug($data['title']);    
             }else{
-                $data['slug'] = $request->slug;    
+                $data['slug'] = str_replace(' ', '-', $request->slug); 
             }
-        
+
            $image         =  (isset($data['image'])) ? $data['image'] : '';
            $trailer       =  (isset($data['trailer'])) ? $data['trailer'] : '';
            $mp4_url2      =  (isset($data['video'])) ? $data['video'] : '';
