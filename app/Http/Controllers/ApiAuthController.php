@@ -2382,7 +2382,7 @@ $final[] = array_merge($array1,$array2,$array3,$array4);
 
       $audio_artist_count = Artist::where('id',$audio_artist_id)->count();
       if($audio_artist_count > 0){
-      $Audioartist = Audioartist::select('audio_id','artist_id')->where('artist_id',$audio_artist_id)->orderBy('created_at', 'desc')->get()->toArray();
+      $Audioartist = Audioartist::select('audio_id','artist_id')->where('artist_id',$audio_artist_id)->get()->toArray();
       if(count($Audioartist) > 0){
         $audio_artist = Artist::where('id',$audio_artist_id)->orderBy('created_at', 'desc')
         ->get()->map(function ($item) {
