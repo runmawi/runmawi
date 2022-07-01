@@ -45,9 +45,9 @@
 
     $Most_view_live   = App\RecentView::Join('live_streams','live_streams.id','=','recent_views.live_id')
         ->where('live_streams.active', '=', '1')
-        ->limit('5')
         ->latest('live_streams.created_at')
-        ->groupBy('live_id')
+        ->groupBy('recent_views.live_id')
+        ->limit('5')
         ->get();
 
     $Most_view_episode  = App\RecentView::Join('episodes','episodes.id','=','recent_views.episode_id')
