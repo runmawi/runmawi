@@ -111,13 +111,21 @@
                          
 				              </ul>
 			            </div>
-
+                          
+                  <?php $app_settings = App\AppSetting::where('id','=',1)->first();  ?>     
+                         
                    <div class="col-lg-3 col-md-2 p-0">
-                       <!--<div >
+                       <div >
+                       <?php if(!empty($app_settings->android_url)){ ?> 
                        <img class="" height="80" width="140" src="<?php echo  URL::to('/assets/img/apps1.png')?>" style="margin-top:-20px;">
+                        <?php } ?>
+                       <?php if(!empty($app_settings->ios_url)){ ?> 
                        <img class="" height="80" width="140" src="<?php echo  URL::to('/assets/img/apps.png')?>" style="margin-top:-20px;">
+                        <?php } ?>
+                       <?php if(!empty($app_settings->android_tv)){ ?> 
                        <img class="" height="100" width="150" src="<?php echo  URL::to('/assets/img/and.png')?>" style="margin-top:-20px;">
-                   </div>--></div>
+                        <?php } ?>
+                   </div></div>
                   
                    </div>
                </div>
