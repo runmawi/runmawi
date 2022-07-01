@@ -240,7 +240,7 @@ else
 
 		</h3>-->
 		
-			<div class="col-md-2 text-center text-white">
+			<!--<div class="col-md-2 text-center text-white">
 			<span class="view-count  " style="float:right;">
 			<i class="fa fa-eye"></i> 
 			<?php if (isset($view_increment) && $view_increment == true): ?><?=$episode->views + 1 ?>
@@ -248,7 +248,7 @@ else
 else: ?><?=$episode->views ?><?php
 endif; ?> Views 
 			</span>
-			</div>
+			</div>-->
 			<div class="col-md-4">
             <div class="watchlater btn btn-primary text-white  <?php if (isset($watchlatered->id)): ?>active<?php
 endif; ?>" data-authenticated="<?=!Auth::guest() ?>" data-episodeid="<?=$episode->id ?>"><?php if (isset($watchlatered->id)): ?><i class="fa fa-check"></i><?php
