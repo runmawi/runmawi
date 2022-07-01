@@ -24,7 +24,7 @@
         font-size: 14px;
     }
     .pls i{
-        font-size: 25px;
+        font-size: 18px;
     }
     
     .pls ul{
@@ -51,14 +51,14 @@
           top:40px;
       }
     .ply{
-        width: %;
+        width: 40px;
     }
 </style>
 
 <?php 
 $series = $series_data ;
  ?>
-     <div id="myImage" style="background:linear-gradient(90deg, rgba(0, 0, 0, 1.3)47%, rgba(0, 0, 0, 0.3))40%, url(<?=URL::to('/') . '/public/uploads/images/' . $series->player_image ?>);background-position:right; background-repeat: no-repeat; background-size:contain; height:400px;">
+     <div id="myImage" style="background:linear-gradient(90deg, rgba(0, 0, 0, 1.3)47%, rgba(0, 0, 0, 0.3))40%, url(<?=URL::to('/') . '/public/uploads/images/' . $series->player_image ?>);background-position:right; background-repeat: no-repeat; background-size:contain; height:440px;">
 <div class="container-fluid pt-5" >
 	<div id="series_bg_dim" <?php if($series->access == 'guest' || ($series->access == 'subscriber' && !Auth::guest()) ): ?><?php else: ?>class="darker"<?php endif; ?>></div>
 
@@ -87,7 +87,7 @@ $series = $series_data ;
                             <div class="row p-0 mt-3 align-items-center">
                                 <div class="col-md-2">  <a data-video="<?php echo $series->trailer;  ?>" >	<!--data-toggle="modal" data-target="#videoModal"-->
                                           <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> </a></div>
-                                <div class="col-md-4 text-center pls">  <a herf="">  <i class="fa fa-plus" aria-hidden="true"></i> <br>Add Wishlist</a></div>
+                               <!-- <div class="col-md-4 text-center pls">  <a herf="">  <i class="fa fa-plus" aria-hidden="true"></i> <br>Add Wishlist</a></div>-->
                                 <div class="col-md-2 pls"><ul>
                                     <li class="share">
 <span><i class="ri-share-fill"></i></span>
