@@ -228,23 +228,21 @@ $series=App\series::first();
 		<div class="iq-main-header ">
   <h4 class="main-title">Season</h4>                      
 </div>
-<div class="favorites-contens">
-  <ul class="favorites-slider list-inline  row p-0 mb-0">
-    <?php  
+ <div class="favorites-contens ml-2">
+                        <ul class="favorites-slider list-inline row mb-0">
+                             <?php  
 	foreach($season as $key => $seasons):
       foreach($seasons->episodes as $key => $episodes):
 		if($episodes->id != $episode->id): ?>
-        <li class="slide-item">
-		<a class="block-thumbnail" href="<?= ($settings->enable_https) ? secure_url('episodes') : URL::to('episode').'/'.@$episodes->series_title->title.'/'.$episodes->slug; ?>">
-				<div class="thumbnail-overlay"></div>
-<!--				<img src="<= ImageHandler::getImage($episodes->image, 'medium')  ?>">-->
-				<img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class="w-100">
-				<div class="details">
-				<h6><?= $episodes->title; ?> </h6>
-                    <span class="text-white"><?= gmdate("H:i:s", $episodes->duration); ?></span>
-				</div></a>
-              <div class="block-contents">
-			  <p class="date" style="color:#fff;font-size:14px;"><?= date("F jS, Y", strtotime($episodes->created_at)); ?>
+                           <li class="slide-item">
+                              <a href="<?= ($settings->enable_https) ? secure_url('episodes') : URL::to('episode').'/'.@$episodes->series_title->title.'/'.$episodes->slug; ?>">
+                                 <div class="block-images position-relative">
+                                    <div class="img-box">
+                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class="w-100">
+                                    </div>
+                                    <div class="block-description">
+                                      <h6><?= $episodes->title; ?> </h6>
+                                        <p class="date" style="color:#fff;font-size:14px;"><?= date("F jS, Y", strtotime($episodes->created_at)); ?>
 				<?php if($episodes->access == 'guest'): ?>
 				<span class="label label-info">Free</span>
 				<?php elseif($episodes->access == 'subscriber'): ?>
@@ -253,28 +251,26 @@ $series=App\series::first();
 				<span class="label label-warning">Registered Users</span>
 				<?php endif; ?>
 				</p>
-                  <div class="col-md-6"></div>
-				<p class="desc"><?php if(strlen($episodes->description) > 90){ echo substr($episodes->description, 0, 90) . '...'; } else { echo $episodes->description; } ?></p>
-                <!-- <div class="movie-time d-flex align-items-center my-2"> -->
-                  <!-- <div class="badge badge-secondary p-1 mr-2">13+</div>
-                  <span class="text-white"><i class="fa fa-clock-o"></i> <?// gmdate('H:i:s', $latest_serie->duration); ?></span>
-                </div> -->
-                <!-- <div class="hover-buttons">
-                  <a class="btn btn-primary btn-hover" href="<?php //echo URL::to('/play_series'.'/'.$latest_serie->title) ?>/<?// $latest_serie->id ?>" >
-                    <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                    Play Now
-                  </a>
-                </div> -->
-				<!-- </div> -->
-          <!-- </a> --></div>
-        </li>
-		<?php endif; endforeach; ?>
-      <?php endforeach; 
-     ?>
-  </ul>
-
-</div>
- </div>
+                                       <div class="hover-buttons">
+                                           <a  href="<?= ($settings->enable_https) ? secure_url('episodes') : URL::to('episode').'/'.@$episodes->series_title->title.'/'.$episodes->slug; ?>">	
+                                          <span class="text-white">
+                                          <i class="fa fa-play mr-1" aria-hidden="true"></i>
+                                          Play Now
+                                          </span>
+                                           </a>
+                                       </div>
+                                     </div>
+                                 </div>
+                              </a>
+                           </li>
+                           
+                            <?php 
+                            endif;
+                            endforeach; 
+                            endforeach
+		                           ?>
+                        </ul>
+                     </div> </div>
 </div>
 		<div class="clear">
 		<h2 id="tags">

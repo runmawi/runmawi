@@ -510,3 +510,20 @@ function Country_name(){
 
     return $countryName;
 }
+
+function Block_videos(){
+     // blocked videos
+     $block_videos = App\BlockVideo::where('country_id',Country_name())->get();
+     if(!$block_videos->isEmpty()){
+         foreach($block_videos as $block_video){
+         $blockvideos[]=$block_video->video_id;
+       }
+   }   
+   else{
+       $blockvideos[]='';
+       
+   } 
+
+   return $blockvideos;
+
+}

@@ -114,15 +114,16 @@ border-radius: 0px 4px 4px 0px;
 	 font-size: inherit;
 	 font-weight: 400;
 	 text-align: center;
-	 color: #20222c;
+	 color: #fff;
      height: 30px;
      display: flex;
      align-items: center;
-	 background-color: #f8f9fa;
-	 border-radius: 3px;
+	 background-color: #000;
+	 border-radius: 30px;
 	 transition: background-color 0.3s ease;
 	 cursor: default;
 }
+   
  .tag:first-child {
 	 margin-left: 0;
 }
@@ -135,6 +136,7 @@ border-radius: 0px 4px 4px 0px;
 }
  .tag__name {
 	 margin-right: 3px;
+     color: #fff!important;
 }
  .tag__remove {
 	 position: absolute;
@@ -142,13 +144,13 @@ border-radius: 0px 4px 4px 0px;
 	 bottom: 0;
 	 width: 20px;
 	 height: 100%;
-	 padding: 0 5px;
+	 padding: 0 0px;
 	 font-size: 16px;
 	 font-weight: 400;
 	 transition: opacity 0.3s ease;
-	 opacity: 0.5;
+	border: none;
 	 cursor: pointer;
-	 border: 0;
+	 border-radius: 30px;
 	 background-color: #000;
 	 color: #fff;
 	 
@@ -157,7 +159,7 @@ border-radius: 0px 4px 4px 0px;
 	 opacity: 1;
 }
  .tag__remove:focus {
-	 outline: 5px auto #fff;
+	 outline: 1px auto #fff;
 }
  @keyframes shake {
 	 0%, 100% {
@@ -1247,7 +1249,7 @@ border-radius: 0px 4px 4px 0px;
 $(document).ready(function(){
 
    $('#slug_error').hide();
-	$('#slug_validate').on('keyup keypress blur mouseover', function(e) {
+	$('#slug_validate').on('blur mouseover', function(e) {
      
       var video_id = "{{ $video->id }}";
       var title = $('#title').val();

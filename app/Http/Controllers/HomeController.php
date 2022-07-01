@@ -350,7 +350,8 @@ class HomeController extends Controller
                 // dd('$agent');
                 
             }
-
+            $latest_series = Series::where('active', '=', '1')->orderBy('created_at', 'DESC')
+            ->get();
             $currency = CurrencySetting::first();
             $data = array(
                 'currency' => $currency,
@@ -375,7 +376,8 @@ class HomeController extends Controller
                                 ->where('banner','=','1')
                                 ->latest()
                                 ->get() ,
-
+                                
+                'latest_series' => $latest_series,
                 'cnt_watching' => $cnt_watching,
                 'trendings' => $trending_movies,
                 'latest_videos' => $latest_videos,
@@ -2034,7 +2036,7 @@ class HomeController extends Controller
                     'sliders' => Slider::where('active', '=', '1')
                                         ->orderBy('order_position', 'ASC')
                                         ->get() ,
-
+                    'latest_series' => $latest_series,
                     'cnt_watching' => $cnt_watching,
                     'trendings' => $trending_movies,
                     'latest_videos' => $latest_videos,
@@ -2247,29 +2249,6 @@ class HomeController extends Controller
 
     public function search(Request $request)
     {
-        $search_value = $request['search'];
-
-        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-        $userIp = $geoip->getip();
-        $countryName = $geoip->getCountry();
-        $regionName = $geoip->getregion();
-        $cityName = $geoip->getcity();
-        
-        $getfeching = Geofencing::first();
-
-        $block_videos = BlockVideo::where('country_id', $countryName)->get();
-        if (!$block_videos->isEmpty())
-        {
-            foreach ($block_videos as $block_video)
-            {
-                $blockvideos[] = $block_video->video_id;
-            }
-        }
-        else
-        {
-            $blockvideos[] = '';
-        }
-
 
         if ($request->ajax())
         {
@@ -2281,10 +2260,11 @@ class HomeController extends Controller
                            ->where('draft', '=', '1')
                            ->orderBy('created_at', 'desc')
                            ->limit('10');
-                           if ($getfeching != null && $getfeching->geofencing == 'ON')
-                           {
-                               $videos = $videos->whereNotIn('videos.id', $blockvideos);
-                           }
+
+                           if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+                                $videos = $videos  ->whereNotIn('videos.id',Block_videos());
+                            }
+
                            $videos = $videos->get();
 
 
@@ -2526,7 +2506,7 @@ class HomeController extends Controller
                                 ->limit('10')
                                 ->latest()
                                 ->get();  
-    // Most watched videos
+    // Most watched videos - TOP VIDEOS
 
         $Most_view_videos = RecentView::Join('videos','videos.id','=','recent_views.video_id')
                             ->orwhere('videos.search_tags', 'LIKE', '%' . $search_value . '%')
@@ -2584,7 +2564,7 @@ class HomeController extends Controller
                             ->groupBy('series.id')
                             ->get();
 
-        //  All videos 
+        //  Highlighted videos 
 
         $videos_count = Video::orwhere('videos.search_tags', 'LIKE', '%' . $search_value . '%')
                         ->orwhere('videos.title', 'LIKE', '%' . $search_value . '%')->count();
@@ -2596,6 +2576,7 @@ class HomeController extends Controller
                             ->where('active', '=', '1')
                             ->where('status', '=', '1')
                             ->where('draft', '=', '1')
+                            ->where('featured', '=', '1')
                             ->orderBy('created_at', 'desc')
                             ->take(20);
                             if ($getfeching != null && $getfeching->geofencing == 'ON')
@@ -2610,19 +2591,21 @@ class HomeController extends Controller
         }
 
        
-        $livestreams = LiveStream::orwhere('search_tags', 'LIKE', '%' . $search_value . '%')
-                            ->orwhere('title', 'LIKE', '%' . $search_value . '%')
-                            ->where('active', '=', '1')
+        $livestreams = LiveStream::where('active', '=', '1')
+                            ->where('featured','=', '1')
+                            ->where(function ($query) use($search_value) {
+                                $query->orwhere('search_tags', 'LIKE', '%' . $search_value . '%')
+                                ->orwhere('title', 'LIKE', '%' . $search_value . '%');
+                            })
                             ->limit('20')
                             ->latest()
                             ->get();
-
-
 
         $audio = Audio::orwhere('search_tags', 'LIKE', '%' . $search_value . '%')
                             ->orwhere('audio.title', 'LIKE', '%' . $search_value . '%')
                             ->where('active', '=', '1')
                             ->where('status', '=', '1')
+                            ->where('featured', '=', '1')
                             ->limit('20')
                             ->latest()
                             ->get();
@@ -2631,6 +2614,7 @@ class HomeController extends Controller
                             ->orwhere('episodes.title', 'LIKE', '%' . $search_value . '%')
                             ->where('active', '=', '1')
                             ->where('status', '=', '1')
+                            ->where('featured', '=', '1')
                             ->limit('20')
                             ->latest()
                             ->get();    
@@ -2638,6 +2622,7 @@ class HomeController extends Controller
         $Series = Series::orwhere('search_tag', 'LIKE', '%' . $search_value . '%')
                             ->orwhere('title', 'LIKE', '%' . $search_value . '%')
                             ->where('active', '=', '1')
+                            ->where('featured', '=', '1')
                             ->limit('20')
                             ->latest()
                             ->get();  

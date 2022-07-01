@@ -10,8 +10,8 @@
 }
 .dropdown-submenu>.dropdown-menu {
     top:0;
-    /*left:-100%;*/
-    left:-10rem; /* 10rem is the min-width of dropdown-menu */
+    left:100%;
+    /* right:10rem; 10rem is the min-width of dropdown-menu */
     margin-top:-6px;
 }
 
@@ -193,7 +193,7 @@ $data = Session::all();
     
        <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-       
+       <script src="<?= URL::to('/'). '/assets/js/jquery.hoverplay.js';?>"></script>
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.js"></script>
 
@@ -396,7 +396,7 @@ input:checked + .sliderk:before {
          <div class="main-header">
             <div class="container-fluid" >
                <div class="row">
-                  <div class="col-sm-12">
+                  <div class="col-xl-12">
                      <nav class="navbar navbar-expand-lg navbar-light p-0">
                         <a href="#" class="navbar-toggler c-toggler" data-toggle="collapse"
                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -433,8 +433,8 @@ input:checked + .sliderk:before {
                               <label for="toggle"></label>
                         </div>-->
 
-   <div class="collapse navbar-collapse" id="navbarNavDropdown" style="margin-right:15%">
-    <ul id="top-menu" class="navbar-nav ml-auto <?php if (
+   <div class="collapse navbar-collapse" id="navbarNavDropdown" >
+    <ul id="top-menu" class="navbar-nav  <?php if (
         Session::get("locale") == "arabic"
     ) {
         echo "navbar-left";
@@ -561,54 +561,69 @@ input:checked + .sliderk:before {
                 ->where("parent_id", "==", 0)
                 ->get();
             ?>
-      <li class="nav-item dropdown">
-    <a class="dropdown-toggle" id="down" href="<?php echo URL::to("/") .
-        $menu->url; ?>" data-toggle="dropdown" >  
-        <?php echo __($menu->name); ?>  <i class="ri-arrow-down-s-line"></i>
-     </a>
-    <ul class="dropdown-menu dropdown-menu categ-head" aria-labelledby="navbarDropdownMenuLink">
-              <?php foreach ($LiveCategory as $category) {
-                  foreach ($parent_cat_id as $parent_cat) {
-                      if ($category->id == $parent_cat->parent_id) { ?>
+    <li class="nav-item dropdown">
+            <a class="dropdown-toggle" id="down" href="<?php echo URL::to("/") .
+                $menu->url; ?>" data-toggle="dropdown" >  
+                <?php echo __($menu->name); ?>  <i class="ri-arrow-down-s-line"></i>
+            </a>
+
+        <ul class="dropdown-menu dropdown-menu categ-head" aria-labelledby="navbarDropdownMenuLink">
+            <?php foreach ($LiveCategory as $category) {
+                foreach ($parent_cat_id as $parent_cat) {
+                if ($category->id == $parent_cat->parent_id) { ?>
+
            <li class="dropdown-submenu">
-              <a class="dropdown-item cont-item  dropdown-item dropdown-toggle" href="<?php echo URL::to(
-                  "/live/category"
-              ) .
-                  "/" .
-                  $category->name; ?>"> 
-              <?php echo $category->name; ?> 
-              </a>  
-              <ul class="dropdown-menu categ-head">
-              <?php foreach ($parent_cat_id as $parent_cat) {
-                  if ($category->id == $parent_cat->parent_id) { ?>
-              <li><a class="dropdown-item" href="<?php echo URL::to(
-                  "/live/category"
-              ) .
-                  "/" .
-                  $parent_cat->name; ?>"><?php echo $parent_cat->name; ?></a></li>
-              <?php }
-              } ?>
-            </ul>
-           </li>           
-        <?php break;}
-                  }
-              } ?>
-     <li>
-     <?php foreach ($parent_cat_all as $val) { ?>
-        <li class="dropdown">
-           <a class="dropdown-item cont-item  dropdown-item " href="<?php echo URL::to(
-                  "/live/category"
-              ) .
-                  "/" .
-                  $val->slug; ?>"> 
-           <?php echo $val->name; ?> 
-           </a>  
-        </li>           
-     <?php } ?>
-         </li> 
+                <a class="dropdown-item cont-item  dropdown-item dropdown-toggle" href="<?php echo URL::to("/live/category") ."/" . $category->name; ?>"> 
+                    <?php echo $category->name; ?> 
+                </a>  
+
+                <ul class="dropdown-menu categ-head">
+                    <?php foreach ($parent_cat_id as $parent_cat) {
+                        if ($category->id == $parent_cat->parent_id) { ?>
+                            <li>
+                                <a class="dropdown-item" href="<?php echo URL::to("/live/category") ."/" .$parent_cat->name; ?>">
+                                    <?php echo $parent_cat->name; ?>
+                                </a>
+                            </li>
+                    <?php }  } ?>
+                </ul>
+           </li>     
+           
+             <?php break;}  }   } ?>
+
+            <li>
+                <?php foreach ($parent_cat_all as $val) { ?>
+                    <li class="dropdown">
+                        <a class="dropdown-item cont-item  dropdown-item " href="<?php echo URL::to( "/live/category" ) . "/" .$val->slug; ?>"> 
+                            <?php echo $val->name; ?> 
+                        </a>  
+                    </li>           
+                <?php } ?>
+            </li> 
         </ul>
+    </li>
+
+    <?php }elseif ( $menu->in_menu == "tv_show") { 
+          $SeriesGenre = App\SeriesGenre::get(); ?>
+
+      <li class="dropdown menu-item">
+         <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown" >  
+               <a class="d-flex justify-content-between" href="<?php echo  URL::to('/tv-shows');?>"> <?php echo __($menu->name);?>  
+                  <i class="ri-arrow-down-s-line"></i>
+               </a>
+         </a>
+         <ul class="dropdown-menu categ-head">
+            <?php foreach ( $SeriesGenre as $category){ ?>
+               <li>
+                  <a class="dropdown-item cont-item" href="<?php echo URL::to('/Series/Genre').'/'.$category->id;?>"> 
+                     <?php echo $category->name;?> 
+                   </a>
+               </li>
+            <?php } ?>
+         </ul>
       </li>
-               <?php
+
+    <?php
         } else {
              ?>
          <li class="menu-item">
@@ -667,14 +682,15 @@ input:checked + .sliderk:before {
                                  </a>
 
                                  <div class="search-box iq-search-bar d-search">
-                                    <form action="<?php echo URL::to("/") .
-                                        "/searchResult"; ?>" method="post" class="searchbox">
-                                        <input name="_token" type="hidden" value="<?php echo csrf_token(); ?>">
-                                       <div class="form-group position-relative">
-                                          <input type="text" name="search" class="text search-input font-size-12 searches"
-                                             placeholder="Type here to Search Videos">
-                                          <i class="search-link ri-search-line"></i>
-                                       </div>
+                                    <form action="<?php echo URL::to("/") ."/searchResult"; ?>" method="post" class="searchbox">
+                                        <input name="_token" type="hidden" value="<?php echo csrf_token(); ?>" />
+                                        <div class="form-group position-relative">
+                                            <input type="text" name="search" class="text search-input font-size-12 searches" placeholder="Type here to Search Videos" />
+                                            <i class="search-link ri-search-line"></i>
+
+                                            <?php  include 'public/themes/default/partials/Search_content.php'; ?>
+
+                                        </div>
                                     </form>
                                  </div>
                                   <div class="iq-sub-dropdown search_content overflow-auto" id="sidebar-scrollbar" >
@@ -805,7 +821,7 @@ input:checked + .sliderk:before {
   ) {
       echo "checked";
   } ?> />
-  <span class="sliderk round"></span>
+  <span class="sliderk round"><i class="fa fa-moon-o" aria-hidden="true"></i></span>
 
                                                </label></div>
                                           <a href="<?php echo URL::to(
@@ -957,7 +973,7 @@ input:checked + .sliderk:before {
                                  <?php if ($theme_mode == "light") {
                                      echo "checked";
                                  } ?> />
-                                 <span class="sliderk round"></span>
+                                 <span class="sliderk round"><i class="fa fa-moon-o" aria-hidden="true"></i></span>
                                   
                               </label>
                            </div>

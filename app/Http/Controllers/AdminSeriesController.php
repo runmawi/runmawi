@@ -304,6 +304,7 @@ class AdminSeriesController extends Controller
         $series->player_image = $player_image;
         $series->banner = empty($data['banner']) ? 0 : 1;
         $series->search_tag =$data['search_tag'];
+        $series->details =strip_tags($data['details']);
         $series->save();  
 
 
@@ -539,6 +540,7 @@ class AdminSeriesController extends Controller
         }
         $series->slug = $data['slug'];
         $series->ppv_status = $ppv_status;
+        $series->details =strip_tags($data['details']);
         $series->save();
 
         if(!empty($data['artists'])){
@@ -1098,6 +1100,12 @@ class AdminSeriesController extends Controller
             if($request->slug == ''){
                 $data['slug'] = $this->createSlug($data['title']);    
             }
+
+            // if(empty($data['slug'])){
+            //   $slug =   str_replace(' ', '_', $data['title']);
+            // }else{
+            //     $slug =   str_replace(' ', '_', $data['slug']);
+            // }
             // $episode->title =  $data['title'];
             $episodes->rating =  $data['rating'];
             $episodes->slug =  $data['slug'];
@@ -1274,9 +1282,9 @@ class AdminSeriesController extends Controller
             $data['active'] = 0;
         }
         if(empty($data['slug'])){
-            $data['slug'] = $episode->slug;
+            $slug = $episode->slug;
         }else{
-            $data['slug'] = $data['slug'];
+            $slug = str_replace(' ', '_', $data['slug']);
         }
         if(empty($data['featured'])){
             $data['featured'] = 0;
@@ -1317,6 +1325,7 @@ class AdminSeriesController extends Controller
         $episode->update($data);
         $episode->skip_recap =  $data['skip_recap'];
         $episode->banner =  $banner;
+        $episode->slug =  $slug;
         $episode->search_tags =  $searchtags;
         $episode->recap_start_time =  $data['recap_start_time'];
         $episode->season_id =  $data['season_id'];
@@ -1603,6 +1612,7 @@ class AdminSeriesController extends Controller
         }else{
         $data['ppv_status'] = 1;
         }
+
 
         if(isset($data['duration'])){
                 //$str_time = $data
