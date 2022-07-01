@@ -96,7 +96,7 @@ header .navbar-light .navbar-brand img.logo { width: 160px; }
   
 }
 .img-fluid{
-    min-height: 270px;
+   
 }
   #video .plyr.plyr--full-ui, #video-trailer .plyr.plyr--full-ui, #video_container .plyr.plyr--full-ui, #video_container .plyr__video-embed, #watch_trailer .plyr.plyr--full-ui, #watch_trailer .plyr__video-embed {
     height: calc(90vh - 80px - 75px);
