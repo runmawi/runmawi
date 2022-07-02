@@ -67,7 +67,7 @@ class VideoCategoryTableSeeder extends Seeder
                      [  'order' => '1', 
                      'name' => 'Animation',
                       'image' => '9 Animation.jpg' ,
-                      'slug' => 'Thriller',
+                      'slug' => 'Animation',
                       'in_home' => '1' ,
                       'created_at' => Carbon::now(),
                       'updated_at' => null,  ],
