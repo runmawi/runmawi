@@ -161,23 +161,35 @@ border-radius: 0px 4px 4px 0px;
                         value="@if(!empty($settings->website_name)){{ $settings->website_name }}@endif" />
                 </div>
             </div>
-			
+			            {{-- Logo --}}
+
             <div class="panel panel-primary mt-4" data-collapsed="0">
-                 <div class="panel-heading">
-                    <div class="panel-title"><label>Logo <small>(Dimensions: 180px X 29px)</small></label></div>
-                    <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                <div class="panel-heading">
+                    <div class="panel-title"><label>Logo 
+                        <small>(Dimensions: 180px X 29px)</small></label>
                     </div>
-                     <div class="panel-body" style="display: block;">
-                    @if(!empty($settings->logo))
-                    <img src="{{ URL::to('/') . '/public/uploads/settings/' . $settings->logo }}"
-                        style="max-height:100px" />
-                    @endif
-                    <p class="p1">Upload Your Site Logo:</p>
-                    <input type="file" multiple="true" class="form-control" name="logo" id="logo" />
+
+                    <div class="panel-options">
+                        <input type="radio"  name="logo_size" value="square" @if($settings->logo_size != null)
+                                {{ $settings->logo_size == "square" ? 'checked' : '' }} @else {{ 'checked' }}  @endif ><label >Square Size </label>
+                        <input type="radio"  name="logo_size" value="rectangle" {{ $settings->logo_size == "rectangle" ? 'checked' : '' }} ><label >Rectangular size</label>
+                    </div>
+
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i> </a>
+                    </div>
+
+                    <div class="panel-body" style="display: block;">
+                        @if(!empty($settings->logo))
+                            <img src="{{ URL::to('/') . '/public/uploads/settings/' . $settings->logo }}" style="max-height:100px" />
+                        @endif
+                        <p class="p1">Upload Your Site Logo:</p>
+                        <input type="file" multiple="true" class="form-control" name="logo" id="logo" />
+                    </div>
                 </div>
-                </div>
-               
-            </div> </div>
+            </div> 
+
+            </div>
             <!-- </div> -->
            <div class="col-md-6 mt-4">
                 <div class="panel-body" style="display: block;">
@@ -916,6 +928,14 @@ border-radius: 0px 4px 4px 0px;
                         </div>
                     </div>
 
+                    <div class="col-md-6">
+                        <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
+                            <div class="panel-title"><label>Android TV</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+                            <div class="panel-body" style="display: block;"> 
+                                <input type="text" class="form-control" name="android_tv" id="android_tv" value="@if(!empty($app_settings->android_tv)){{ $app_settings->android_tv }}@endif"  />
+                            </div> 
+                        </div>
+                    </div>
                     <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 
                     <div class="d-flex justify-content-end mt-3" style=" ">
