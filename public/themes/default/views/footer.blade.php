@@ -262,9 +262,7 @@ function myFunction() {
     }
 </script>
 
-<scrip>
-  
-</scrip>
+
       <script>
     var type = $('#video_type').val();
     // var type = $('#hls_m3u8').val();
