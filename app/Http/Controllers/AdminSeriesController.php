@@ -1665,4 +1665,21 @@ class AdminSeriesController extends Controller
         return Redirect::to('admin/season/edit/'.$data['series_id'].'/'.$data['season_id'])->with(array('note' => 'New Episode Successfully Added!', 'note_type' => 'success') );
     }
 
+    public function episode_order(Request $request)
+    {
+
+        $input = $request->all();
+        $position = $_POST['position'];
+
+        $i=1;
+        foreach($position as $key =>$value ){
+          $videocategory = Episode::find($value);
+          $videocategory->episode_order =$i;
+          $videocategory->save();
+          $i++;
+        }
+        return 1;
+
+    }
+
 }
