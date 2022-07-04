@@ -1139,6 +1139,7 @@ class AdminSeriesController extends Controller
               $episodes->ppv_price =  $ppv_price;
               $episodes->ppv_status =  $data['ppv_status'];
               $episodes->status =  1;
+              $episodes->episode_order = $episode = Episode::max('episode_order') + 1 ;
               $episodes->save();
 
 
