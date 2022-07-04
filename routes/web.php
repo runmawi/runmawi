@@ -548,6 +548,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/series/update', 'AdminSeriesController@update');
     Route::get('/series/delete/{id}', 'AdminSeriesController@destroy');
     Route::get('/titlevalidation', 'AdminSeriesController@TitleValidation');
+    Route::post('/episode_order', 'AdminSeriesController@episode_order');
 
 // Admin Series Genre
     Route::get('/Series/Genre', 'AdminSeriesGenreController@index');
