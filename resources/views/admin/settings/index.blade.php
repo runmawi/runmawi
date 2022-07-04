@@ -928,6 +928,14 @@ border-radius: 0px 4px 4px 0px;
                         </div>
                     </div>
 
+                    <div class="col-md-6">
+                        <div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
+                            <div class="panel-title"><label>Android TV</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+                            <div class="panel-body" style="display: block;"> 
+                                <input type="text" class="form-control" name="android_tv" id="android_tv" value="@if(!empty($app_settings->android_tv)){{ $app_settings->android_tv }}@endif"  />
+                            </div> 
+                        </div>
+                    </div>
                     <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 
                     <div class="d-flex justify-content-end mt-3" style=" ">

@@ -20,7 +20,7 @@ $category_slug = App\VideoCategory::where('name',$data['category_title'])->pluck
 
                     {{-- filter Option --}}
 
-                        <div class="row d-flex ">
+                        <div class="row mt-2 p-0">
 
                             {{-- <div class="col-md-3">
                                 <select class="selectpicker" multiple title="Refine" data-live-search="true">

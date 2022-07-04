@@ -4,6 +4,12 @@
 <?php
 $series = App\series::first();
 ?>
+<?php
+$series= App\series::where('id',$episode->series_id)->first();
+$SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
+// dd($SeriesSeason);
+?>
+<input type="hidden" value="<?php echo URL::to('/');?>" id="base_url" >
 <input type="hidden" value="<?php echo URL::to('/'); ?>" id="base_url" >
 <input type="hidden" id="videoslug" value="<?php if (isset($episode->path))
 {
@@ -13,6 +19,8 @@ else
 {
     echo "0";
 } ?>">
+<input type="hidden" value="<?php echo $episode->type; ?>" id='episode_type'>
+
 	<div id="series_bg">
 		<div class="">
 			
@@ -51,8 +59,23 @@ if (Auth::guest())
 							<p class="vjs-no-js">To view this series please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 series</a></p>
 						</video>
 						</div>
-					<?php
-            else: ?>                                  
+            <?php  elseif($episode->type == 'm3u8'): ?>
+							<div id="series_container">
+								 <video id="video"  controls crossorigin playsinline 
+								 poster="<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>" 
+								 controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+									<source 
+										type="application/x-mpegURL" 
+										src="<?php echo URL::to('/storage/app/public/').'/'.$episode->path . '.m3u8'; ?>"
+									>
+									</video>
+								<?php  if(isset($episodesubtitles)){
+								foreach ($episodesubtitles as $key => $episodesubtitles_file) { ?>
+								<track kind="captions" src="<?= $episodesubtitles_file->url; ?>" srclang="<?= $episodesubtitles_file->sub_language; ?>" label="<?= $episodesubtitles_file->shortcode; ?>" default>
+								<?php } } ?>
+								</video>
+								</div>
+					<?php  else: ?>                                  
 						<div id="series_container">
 						<video id="videoPlayer"    class="video-js vjs-default-skin" controls preload="auto" poster="<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>" data-setup="{}" width="100%" style="width:100%;" data-authenticated="<?=!Auth::guest() ?>">
                            
@@ -201,7 +224,10 @@ else
 	<br>
 	<br>
                 <div class="col-md-6">
-			<span class="text-white" style="font-size: 129%;font-weight: 700;">You're watching:</span> <p style=";font-size: 130%;color: white;"><?=$episode->title
+			<span class="text-white" style="font-size: 129%;font-weight: 700;">You're watching:</span> 
+      <p style=";font-size: 130%;color: white;"><?php if(!empty($series)){ echo 'Series'.' '.$series->id.' ';}
+			if(!empty($SeriesSeason)){ echo 'Season'.' '.$SeriesSeason->id.' ';} if(!empty($episode)){ echo 'Episode'.' '.$episode->id;} ?>
+      <p style=";font-size: 130%;color: white;"><?=$episode->title
 ?></p>
 		
 	</div>
@@ -287,69 +313,49 @@ elseif (isset($episodeprev))
 		<div class="iq-main-header ">
   <h4 class="main-title">Season</h4>                      
 </div>
-<div class="favorites-contens">
-  <ul class="favorites-slider list-inline  row p-0 mb-0">
-    <?php
-foreach ($season as $key => $seasons):
-    foreach ($seasons->episodes as $key => $episodes):
-        if ($episodes->id != $episode->id): ?>
-        <li class="slide-item">
-		<a class="block-thumbnail" href="<?=($settings->enable_https) ? secure_url('episodes') : URL::to('episode') . '/' . @$episodes
-                ->series_title->title . '/' . $episodes->slug; ?>">
-				<div class="thumbnail-overlay"></div>
-<!--				<img src="<= ImageHandler::getImage($episodes->image, 'medium')  ?>">-->
-				<img src="<?php echo URL::to('/') . '/public/uploads/images/' . $episodes->image; ?>" class="w-100">
-				<div class="details">
-				<h6><?=$episodes->title; ?> </h6>
-                    <span class="text-white"><?=gmdate("H:i:s", $episodes->duration); ?></span>
-				</div></a>
-              <div class="block-contents">
-			  <p class="date" style="color:#fff;font-size:14px;"><?=date("F jS, Y", strtotime($episodes->created_at)); ?>
-				<?php if ($episodes->access == 'guest'): ?>
+<div class="favorites-contens ml-2">
+                        <ul class="favorites-slider list-inline row mb-0">
+                             <?php  
+	foreach($season as $key => $seasons):
+      foreach($seasons->episodes as $key => $episodes):
+		if($episodes->id != $episode->id): ?>
+                           <li class="slide-item">
+                              <a href="<?= ($settings->enable_https) ? secure_url('episodes') : URL::to('episode').'/'.@$episodes->series_title->title.'/'.$episodes->slug; ?>">
+                                 <div class="block-images position-relative">
+                                    <div class="img-box">
+                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class="w-100">
+                                    </div>
+                                    <div class="block-description">
+                                      <h6><?= $episodes->title; ?> </h6>
+                                        <p class="date" style="color:#fff;font-size:14px;"><?= date("F jS, Y", strtotime($episodes->created_at)); ?>
+				<?php if($episodes->access == 'guest'): ?>
 				<span class="label label-info">Free</span>
-				<?php
-            elseif ($episodes->access == 'subscriber'): ?>
+				<?php elseif($episodes->access == 'subscriber'): ?>
 				<span class="label label-success">Subscribers Only</span>
-				<?php
-            elseif ($episodes->access == 'registered'): ?>
+				<?php elseif($episodes->access == 'registered'): ?>
 				<span class="label label-warning">Registered Users</span>
-				<?php
-            endif; ?>
+				<?php endif; ?>
 				</p>
-                  <div class="col-md-6"></div>
-				<p class="desc"><?php if (strlen($episodes->description) > 90)
-            {
-                echo substr($episodes->description, 0, 90) . '...';
-            }
-            else
-            {
-                echo $episodes->description;
-            } ?></p>
-                <!-- <div class="movie-time d-flex align-items-center my-2"> -->
-                  <!-- <div class="badge badge-secondary p-1 mr-2">13+</div>
-                  <span class="text-white"><i class="fa fa-clock-o"></i> <? // gmdate('H:i:s', $latest_serie->duration);
-             ?></span>
-                </div> -->
-                <!-- <div class="hover-buttons">
-                  <a class="btn btn-primary btn-hover" href="<?php //echo URL::to('/play_series'.'/'.$latest_serie->title)
-             ?>/<? // $latest_serie->id
-             ?>" >
-                    <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                    Play Now
-                  </a>
-                </div> -->
-				<!-- </div> -->
-          <!-- </a> --></div>
-        </li>
-		<?php
-        endif;
-    endforeach; ?>
-      <?php
-endforeach;
-?>
-  </ul>
-
-</div>
+                                       <div class="hover-buttons">
+                                           <a  href="<?php echo URL::to('category')?><?='/videos/' .$episode->slug ?>">	
+                                          <span class="text-white">
+                                          <i class="fa fa-play mr-1" aria-hidden="true"></i>
+                                          Play Now
+                                          </span>
+                                           </a>
+                                       </div>
+                                     </div>
+                                 </div>
+                              </a>
+                           </li>
+                           
+                            <?php 
+                            endif;
+                            endforeach; 
+                            endforeach
+		                           ?>
+                        </ul>
+                     </div> </div>
  </div>
 </div>
 		<div class="clear">

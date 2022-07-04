@@ -173,9 +173,20 @@
 						<?php endforeach; ?>
                     </ul>
                 </div>-->
+                <?php $app_settings = App\AppSetting::where('id','=',1)->first();  ?>     
+
                 <div class="col-sm-4 small m-0 text-white text-right"><h3 class="font-weight-bold mb-2">Download App</h3>
                     <p>Available on Play Store</p>
-                    <img src="<?php echo URL::to('assets/img/gp2.png') ?> " alt="Play store" class="w-50">
+                    <!-- <img src="<?php //echo URL::to('assets/img/gp2.png') ?> " alt="Play store" class="w-50"> -->
+                    <?php if(!empty($app_settings->android_url)){ ?> 
+                    <img class="" height="80" width="140" src="<?php echo  URL::to('/assets/img/apps1.png')?>" style="margin-top:-20px;">
+                    <?php } ?>
+                    <?php if(!empty($app_settings->ios_url)){ ?> 
+                    <img class="" height="80" width="140" src="<?php echo  URL::to('/assets/img/apps.png')?>" style="margin-top:-20px;">
+                    <?php } ?>
+                    <?php if(!empty($app_settings->android_tv)){ ?> 
+                    <img class="" height="100" width="150" src="<?php echo  URL::to('/assets/img/and.png')?>" style="margin-top:-20px;">
+                    <?php } ?>
                 </div>
             </div>
         </div>
@@ -419,6 +430,7 @@ function myFunction() {
     var hls =  $('#hls').val();
     var ads_path =  $('#ads_path').val();
     var processed_low =  $('#processed_low').val();
+    var episode_type  = $('#episode_type').val();
     
     // alert(ads_path)
 
@@ -455,7 +467,7 @@ ads:{
     }
 
         });
-   }else if(type != "" && request_url != 'm3u8'){
+   }else if(type != "" && request_url != 'm3u8' && episode_type != 'm3u8'){
     // alert('m3u8')
 
         const player = new Plyr('#videoPlayer',{
@@ -487,7 +499,59 @@ ads:{
                   }
         });
       //  } else if(user_logged_out == 1 && type == ''){
-      }else if(user_logged_out == 1 && type == '' && processed_low != 100 || user_logged_out == 1 && type == '' && processed_low == ""){
+      }else if(episode_type == 'm3u8') {
+
+// alert('episode_type')
+
+document.addEventListener("DOMContentLoaded", () => {
+const video = document.querySelector("video");
+const source = video.getElementsByTagName("source")[0].src;
+
+// For more options see: https://github.com/sampotts/plyr/#options
+// captions.update is required for captions to work with hls.js
+const defaultOptions = {};
+
+if (Hls.isSupported()) {
+// For more Hls.js options, see https://github.com/dailymotion/hls.js
+const hls = new Hls();
+hls.loadSource(source);
+
+// From the m3u8 playlist, hls parses the manifest and returns
+// all available video qualities. This is important, in this approach,
+// we will have one source on the Plyr player.
+hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+
+  // Transform available levels into an array of integers (height values).
+  const availableQualities = hls.levels.map((l) => l.height)
+
+  // Add new qualities to option
+  defaultOptions.quality = {
+    default: availableQualities[0],
+    options: availableQualities,
+    // this ensures Plyr to use Hls to update quality level
+    forced: true,        
+    onChange: (e) => updateQuality(e),
+  }
+
+  // Initialize here
+  const player = new Plyr(video, defaultOptions);
+});
+hls.attachMedia(video);
+window.hls = hls;
+}
+
+function updateQuality(newQuality) {
+window.hls.levels.forEach((level, levelIndex) => {
+  if (level.height === newQuality) {
+    console.log("Found quality match with " + newQuality);
+    window.hls.currentLevel = levelIndex;
+  }
+});
+}
+});
+
+}
+   else if(user_logged_out == 1 && type == '' && processed_low != 100 || user_logged_out == 1 && type == '' && processed_low == ""){
     // alert('user_logged_out')
 
         const player = new Plyr('#videoPlayer',{
@@ -574,7 +638,8 @@ else{
 
       // Add new qualities to option
       defaultOptions.quality = {
-        default: availableQualities[0],
+        // default: availableQualities[0],
+        default: availableQualities[3],
         options: availableQualities,
         // this ensures Plyr to use Hls to update quality level
         forced: true,        
