@@ -6924,4 +6924,27 @@ public function Adstatus_upate(Request $request)
     return response()->json($response, 200);
 
   } 
+
+
+  
+  public function ContinueWatchingExits(Request $request)
+  {
+    $video_id = $request->video_id;
+    $user_id = $request->user_id;
+    $ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('user_id ',$user_id)->count();
+    if($ContinueWatching > 0 ){
+      $ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('user_id ',$user_id)->get();
+      $response = array(
+        'status' => 'true',
+        'ContinueWatching' => $ContinueWatching,
+      );
+    }else{
+      $response = array(
+        'status' => 'false',
+        // 'ContinueWatching' => "video has been added"
+      );
+    }
+    return response()->json($response, 200);
+
+  } 
 }

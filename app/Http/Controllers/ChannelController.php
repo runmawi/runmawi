@@ -397,14 +397,16 @@ class ChannelController extends Controller
            }
           //  dd($recomendeds);
           //  RelatedVideo
-          $related_videos =  Video::select('videos.*','related_videos.id as related_videos_id','related_videos.related_videos_title as related_videos_title')
-           ->Join('related_videos', 'videos.id', '=', 'related_videos.video_id')
+          $related_videos = 
+           Video::select('videos.*','related_videos.id as related_videos_id','related_videos.related_videos_title as related_videos_title')
+           ->Join('related_videos', 'videos.id', '=', 'related_videos.related_videos_id')
            ->where('related_videos.video_id','=',$vid)
            ->limit(5)->get();
           //  RelatedVideo::where('video_id', $id)->pluck('related_videos_id')->toArray();
           // dd($related_videos);
           
-           if(count($related_videos) < 0 ){
+           if(count($related_videos) > 0 ){
+            // dd($related_videos);
             $endcardvideo = $related_videos;
            }elseif(!empty($endcardvideo)){
             $endcardvideo = $endcardvideo;
