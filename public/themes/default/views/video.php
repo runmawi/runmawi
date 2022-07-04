@@ -1,6 +1,7 @@
 
 <?php include('header.php'); ?>
 
+
 <?php 
 
 $ads_details = App\AdsVideo::join('advertisements','advertisements.id','ads_videos.ads_id') 
@@ -865,12 +866,16 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
   <!-- Intro Skip and Recap Skip -->
 
   
-  <div class="col-sm-12 end_card_video" id="end_card_video" style="position: absolute; top: -244%; width: 500%; height: 500%;" >
+  <div class="row end_card_video" id="end_card_video" style="position: absolute; top: -244%; width: 500%; height: 500%;" >
+  <div class="col-md-2">
   <?php foreach($endcardvideo as $val) { ?>
       <a href="<?php  echo URL::to('category') ?><?= '/videos/' . $val->slug ?>">
    <img id="endcard" src="<?php echo URL::to('/').'/public/uploads/images/' .$val->image ;?>" alt="">
       </a>
       <?php  } ?>
+  </div>
+  <div class="col-md-6"></div>
+
   </div>
 
       <style>
