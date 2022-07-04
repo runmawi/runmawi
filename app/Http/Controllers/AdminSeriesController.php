@@ -922,7 +922,8 @@ class AdminSeriesController extends Controller
     public function manage_season($series_id,$season_id)
     {
         $series = Series::find($series_id);
-        $episodes = Episode::where('series_id' ,'=', $series_id)->where('season_id' ,'=', $season_id)->get();
+        $episodes = Episode::where('series_id' ,'=', $series_id)
+        ->where('season_id' ,'=', $season_id)->orderBy('episode_order')->get();
         $data = array(
             'headline' => '<i class="fa fa-edit"></i> Manage episodes of Season '.$season_id.' : '.$series->title,
             'episodes' => $episodes,
