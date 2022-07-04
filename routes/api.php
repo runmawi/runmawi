@@ -290,6 +290,7 @@ Route::group([
     Route::get('theme_primary_color', 'ApiAuthController@theme_primary_color');
     Route::post('PlayerAnalytics', 'ApiAuthController@PlayerAnalytics');
     Route::get('socialsetting', 'ApiAuthController@SocialSetting');
+    Route::post('ContinueWatchingExits', 'ApiAuthController@ContinueWatchingExits');
 
 
 });
