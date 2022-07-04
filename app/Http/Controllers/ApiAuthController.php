@@ -6931,9 +6931,9 @@ public function Adstatus_upate(Request $request)
   {
     $video_id = $request->video_id;
     $user_id = $request->user_id;
-    $ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('user_id ',$user_id)->count();
+    $ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('user_id',$user_id)->count();
     if($ContinueWatching > 0 ){
-      $ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('user_id ',$user_id)->get();
+      $ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('user_id',$user_id)->get();
       $response = array(
         'status' => 'true',
         'ContinueWatching' => $ContinueWatching,
