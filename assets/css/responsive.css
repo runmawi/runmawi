@@ -182,6 +182,8 @@
       .ri-arrow-down-s-line{
         display: ;
         }
+    ul.list-group {width: 200px;}
+
     .user-menu{
         display: block;
         display: flex;
