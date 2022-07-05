@@ -93,7 +93,6 @@ class ChannelController extends Controller
       $countryName = $geoip->getCountry();
       $ThumbnailSetting = ThumbnailSetting::first();
 
-      try {
 
         $vpp = VideoPerPage();
         $category_id = \App\VideoCategory::where('slug',$cid)->pluck('id');
@@ -143,12 +142,9 @@ class ChannelController extends Controller
                 'age_categories' => AgeCategory::get(),
 
             );
-       return Theme::view('categoryvids',['data'=>$data]);
+       return Theme::view('categoryvids',['categoryVideos'=>$data]);
 
-      } catch (\Throwable $th) {
-
-        return abort(404);
-      }
+     
         
     } 
     
@@ -1584,7 +1580,7 @@ class ChannelController extends Controller
         $theme = Theme::uses( $this->Theme);
 
           return $theme->load('public/themes/default/partials/categoryvids_section', [
-            'data' => $data
+            'categoryVideos' => $data
         ])->render();
 
       }
