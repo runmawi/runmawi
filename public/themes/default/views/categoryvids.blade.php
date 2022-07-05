@@ -180,3 +180,11 @@ $('.mywishlist').click(function(){
 
 </script>
 
+<style>
+
+    button.btn.dropdown-toggle.bs-placeholder.btn-light {
+        background: white !important;
+    }
+
+</style>
+
