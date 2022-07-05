@@ -432,29 +432,30 @@
             <div class="clear"></div>
             <!-- Manage Season -->
             <div class="p-4">
+
                 @if(!empty($episodes))
                 <h3 class="card-title">Seasons &amp; Episodes</h3>
                 <div class="admin-section-title">
                     <div class="row">
-                        <table class="table table-striped genres-table">
-                            <tr class="table-header">
-                                <th>Season Name</th>
-                                <th>Episode Name</th>
-                                <th>Action</th>
 
-                                @foreach($episodes as $key=>$episode)
+                        <table class="table table-bordered iq-card text-center" id="categorytbl">
+                            <tr class="table-header r1">
+                                <th><label>Episode </label></th>
+                                <th><label>Episode  Name</label></th>
+                                <th><label>Action</label></th>
                             </tr>
 
-                            <tr>
-                                <td valign="bottom"><p>Season {{$key+1}}</p></td>
-                                <td valign="bottom"><p>{{$episode->title}}</p></td>
-                                <td>
-                                    <p>
-                                        <a href="{{ URL::to('admin/episode/edit') . '/' . $episode->id }}" class="btn btn-xs btn-primary"><span class="fa fa-edit"></span> Edit</a>
-                                        <a href="{{ URL::to('admin/episode/delete') . '/' . $episode->id }}" class="btn btn-xs btn-danger delete"><span class="fa fa-trash"></span> Delete</a>
-                                    </p>
-                                </td>
-                            </tr>
+                            @foreach($episodes as $key => $episode)
+                                <tr id="{{ $episode->id }}">
+                                    <td valign="bottom"><p> Episode {{ $episode->episode_order }}</p></td>
+                                    <td valign="bottom"><p>{{ $episode->title }}</p></td>
+                                    <td>
+                                        <div class=" align-items-center">
+                                            <a href="{{ URL::to('admin/episode/edit') . '/' . $episode->id }}" class="btn btn-xs btn-primary"><span class="fa fa-edit"></span> Edit</a>
+                                            <a href="{{ URL::to('admin/episode/delete') . '/' . $episode->id }}" class="btn btn-xs btn-danger delete"><span class="fa fa-trash"></span> Delete</a>
+                                        </div>
+                                    </td>
+                                </tr>
                             @endforeach
                         </table>
 
@@ -814,6 +815,50 @@ var tagInput1 = new TagsInput({
             $("#submit").show();
         });
     </script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+		
+<script type="text/javascript">
+    $(function () {
+        $("#categorytbl").sortable({
+            items: 'tr:not(tr:first-child)',
+            cursor: 'pointer',
+            axis: 'y',
+            dropOnEmpty: false,
+            start: function (e, ui) {
+                ui.item.addClass("selected");
+            },
+            stop: function (e, ui) {
+                ui.item.removeClass("selected");
+                var selectedData = new Array();
+                $(this).find("tr").each(function (index) {
+                    if (index > 0) {
+                        $(this).find("td").eq(2).html(index);
+                        selectedData.push($(this).attr("id"));
+                    }
+                });
+                updateOrder(selectedData)
+            }
+        });
+    });
+
+    function updateOrder(data) {
+        
+        $.ajax({
+            url:'{{  URL::to('admin/episode_order') }}',
+            type:'post',
+            data:{
+                    position:data,
+                     _token :  "{{ csrf_token() }}",
+                    },
+            success:function(){
+                alert('Position changed successfully.');
+                location.reload();
+            }
+        })
+    }
+</script>
+
 
     @stop 
     

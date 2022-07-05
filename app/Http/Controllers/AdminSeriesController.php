@@ -922,7 +922,8 @@ class AdminSeriesController extends Controller
     public function manage_season($series_id,$season_id)
     {
         $series = Series::find($series_id);
-        $episodes = Episode::where('series_id' ,'=', $series_id)->where('season_id' ,'=', $season_id)->get();
+        $episodes = Episode::where('series_id' ,'=', $series_id)
+        ->where('season_id' ,'=', $season_id)->orderBy('episode_order')->get();
         $data = array(
             'headline' => '<i class="fa fa-edit"></i> Manage episodes of Season '.$season_id.' : '.$series->title,
             'episodes' => $episodes,
@@ -1138,6 +1139,7 @@ class AdminSeriesController extends Controller
               $episodes->ppv_price =  $ppv_price;
               $episodes->ppv_status =  $data['ppv_status'];
               $episodes->status =  1;
+              $episodes->episode_order = $episode = Episode::max('episode_order') + 1 ;
               $episodes->save();
 
 
@@ -1733,6 +1735,23 @@ class AdminSeriesController extends Controller
 
 
         return Redirect::to('admin/season/edit/'.$data['series_id'].'/'.$data['season_id'])->with(array('note' => 'New Episode Successfully Added!', 'note_type' => 'success') );
+    }
+
+    public function episode_order(Request $request)
+    {
+
+        $input = $request->all();
+        $position = $_POST['position'];
+
+        $i=1;
+        foreach($position as $key =>$value ){
+          $videocategory = Episode::find($value);
+          $videocategory->episode_order =$i;
+          $videocategory->save();
+          $i++;
+        }
+        return 1;
+
     }
 
 }

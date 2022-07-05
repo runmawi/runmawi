@@ -181,11 +181,25 @@
       .ri-arrow-down-s-line{
         display: ;
         }
+    ul.list-group {width: 200px;}
+
     .user-menu{
         display: block;
         display: flex;
     
     align-items: center;
+    }
+    #dn i{
+    display: block;
+}
+    #dn{
+        display: flex;
+    justify-content: space-between;
+    align-items: center;
+    align-items: center;
+    }
+    .dk{
+        display: block!important;
     }
     header .navbar ul li{margin-right: 0px;}
     .navbar-nav{padding-right: 0px;}

@@ -126,16 +126,16 @@
                                       <div class="tab-pane fade active show" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
                                          <h6 class="m-0">First things first, you need Video.</h6>
                                          <p class="">Upload a video to get started.</p>
-                                         <a href="/admin/videos/create">Upload Videos Now</a>
+                                         <a href="{{ URL::to('/admin/videos/create') }}">Upload Videos Now</a>
                                       </div>
                                       <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
                                          
                                           <p class="">Setup website logo, Name, Social Links, Payment Types, etc.</p>
-                                          <a href="/admin/settings">Go to Storefront Settings</a>
+                                          <a href="{{ URL::to('/admin/settings') }}">Go to Storefront Settings</a>
                                       </div>
                                       <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
                                           <p class="">Setup subscription Plans</p>
-                                          <a  href="/admin/subscription-plans">Add Subscription Plans</a>
+                                          <a  href="{{ URL::to('/admin/subscription-plans') }}">Add Subscription Plans</a>
                                       </div>
                                    </div>
                                 </div>

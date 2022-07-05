@@ -118,6 +118,11 @@ Route::group([
     Route::post('Episode_addwishlist', 'ApiAuthController@Episode_addwishlist');
     Route::post('Episode_addwatchlater', 'ApiAuthController@Episode_addwatchlater');
 
+    // Audio Like & Dislike
+
+    Route::post('audio_like', 'ApiAuthController@audio_like');
+    Route::post('audio_dislike', 'ApiAuthController@audio_dislike');
+
     // Season and Episodes list
     Route::post('SeasonsEpisodes', 'ApiAuthController@SeasonsEpisodes');
     // Wishlist Next Prev Video
@@ -290,6 +295,7 @@ Route::group([
     Route::get('theme_primary_color', 'ApiAuthController@theme_primary_color');
     Route::post('PlayerAnalytics', 'ApiAuthController@PlayerAnalytics');
     Route::get('socialsetting', 'ApiAuthController@SocialSetting');
+    Route::post('ContinueWatchingExits', 'ApiAuthController@ContinueWatchingExits');
 
 
 });

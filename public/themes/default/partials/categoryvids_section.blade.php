@@ -5,19 +5,14 @@
 
                 <li class="slide-item col-sm-2 col-md-2 col-xs-12 margin-bottom-30">
                     <a href="<?php echo URL::to('category') ?><?= '/videos/' . $testinfg->slug ?>">
+
                         <div class="block-images position-relative">
-                            <div class="img-box">
+                        <div class="img-box">
                             <img src="<?php echo URL::to('/').'/public/uploads/images/'.$testinfg->image;  ?>" class="img-fluid w-100" alt="" width="">
-                            
-                      <?php  if(!empty($testinfg->ppv_price)){?>
-                      <p class="p-tag1" ><?php echo $data['currency']->symbol.' '.$testinfg->ppv_price; ?></p>
-                      <?php }elseif( !empty($testinfg->global_ppv || !empty($testinfg->global_ppv) && $testinfg->ppv_price == null)){ ?>
-                        <p class="p-tag1"><?php echo $testinfg->global_ppv.' '.$data['currency']->symbol; ?></p>
-                                <?php }elseif($testinfg->global_ppv == null && $testinfg->ppv_price == null ){ ?>
-                                <p class="p-tag"><?php echo "Free"; ?></p>
-                                <?php } ?>
-                           
-                    </div>
+
+                          
+
+                        </div>
                             <!-- </div> -->
 
                         <div class="block-description">
