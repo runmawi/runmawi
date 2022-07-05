@@ -2300,8 +2300,8 @@ class HomeController extends Controller
 
                 // videos Search
                     if(count($videos) > 0){
-                        $output = '<ul class="list-group" style="display: block; position: relative; z-index: 999999;;margin-bottom: 0;border-radius: 0;">';
-                        $output .= "<h6 style='margin: 0;text-align: center;padding: 10px;'> Videos</h6>";
+                        $output = '<ul class="list-group" style="display: block; position: relative; z-index: 999999;;margin-bottom: 0;border-radius: 0;background:#000;">';
+                        $output .= "<h6 style='margin: 0;text-align: left;padding: 10px;'> Videos</h6>";
                         foreach ($videos as $row)
                         {
                             $output .= '<li class="list-group-item">
@@ -2315,8 +2315,8 @@ class HomeController extends Controller
                 // livestream Search
                     if(count($livestream) > 0){
 
-                        $livestreams = '<ul class="list-group" style="display: block; position: relative; z-index: 999999;;margin-bottom: 0;border-radius: 0;">';
-                        $livestreams .= "<h6 style='margin: 0;text-align: center;padding: 10px;'> Live Videos</h6>";
+                        $livestreams = '<ul class="list-group" style="display: block; position: relative; z-index: 999999;;margin-bottom: 0;border-radius: 0;background: rgba(20, 20, 20, 0.5);">';
+                        $livestreams .= "<h6 style='margin: 0;text-align: left;padding: 10px;'> Live Videos</h6>";
                         foreach ($livestream as $row)
                         {
                             $livestreams .= '<li class="list-group-item">
@@ -2330,8 +2330,8 @@ class HomeController extends Controller
                 // Audio Search
 
                     if(count($audio) > 0){
-                        $audios = '<ul class="list-group" style="display: block; position: relative; z-index: 999999;;margin-bottom: 0;border-radius: 0;">';
-                        $audios .= "<h6 style='margin: 0;text-align: center;padding: 10px;'> Audio </h6>";
+                        $audios = '<ul class="list-group" style="display: block; position: relative; z-index: 999999;;margin-bottom: 0;border-radius: 0;background: rgba(20, 20, 20, 0.8);">';
+                        $audios .= "<h6 style='margin: 0;text-align: left;padding: 10px;'> Audio </h6>";
                         foreach ($audio as $row)
                         {
                             $audios .= '<li class="list-group-item">
@@ -2345,8 +2345,8 @@ class HomeController extends Controller
                 // Episode
 
                     if(count($Episode) > 0){
-                        $Episodes = '<ul class="list-group" style="display: block; position: relative; z-index: 999999;;margin-bottom: 0;border-radius: 0;">';
-                        $Episodes .= "<h6 style='margin: 0;text-align: center;padding: 10px;'> Episode </h6>";
+                        $Episodes = '<ul class="list-group" style="display: block; position: relative; z-index: 999999;;margin-bottom: 0;border-radius: 0;background: rgba(20, 20, 20, 0.8);">';
+                        $Episodes .= "<h6 style='margin: 0;text-align: left;padding: 10px;'> Episode </h6>";
                         foreach ($Episode as $row)
                         {   
                             $series_slug = Series::where('id',$row->series_id)->pluck('slug')->first();
@@ -2362,8 +2362,8 @@ class HomeController extends Controller
 
                 if(count($Series) > 0){
 
-                    $Series_search = '<ul class="list-group" style="display: block; position: relative; z-index: 999999;;margin-bottom: 0;border-radius: 0;">';
-                    $Series_search .= "<h6 style='margin: 0;text-align: center;padding: 10px;'> Live Videos</h6>";
+                    $Series_search = '<ul class="list-group" style="display: block; position: relative; z-index: 999999;;margin-bottom: 0;border-radius: 0;background: rgba(20, 20, 20, 0.8);">';
+                    $Series_search .= "<h6 style='margin: 0;text-align: left;padding: 10px;'> Live Videos</h6>";
                     foreach ($Series as $row)
                     {
                         $Series_search .= '<li class="list-group-item">
