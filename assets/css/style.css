@@ -92,7 +92,10 @@ header .navbar-light .navbar-brand img.logo { width: 160px; }
   
 }
 .img-fluid{
-    min-height: 270px;
+  
+}
+#dn i{
+    display: none;
 }
   #video .plyr.plyr--full-ui, #video-trailer .plyr.plyr--full-ui, #video_container .plyr.plyr--full-ui, #video_container .plyr__video-embed, #watch_trailer .plyr.plyr--full-ui, #watch_trailer .plyr__video-embed {
     height: calc(90vh - 80px - 75px);
@@ -190,7 +193,7 @@ header .navbar ul li:last-child { margin-right: 0; }
 -----------------------------------------------------------------------*/
 .main-content { /*padding-top: 40px;*/padding:15px;}
 #iq-favorites{
-    margin-top: 30px;
+   /* margin-top: 30px;*/
 }
 .main-title{
     padding-bottom: 15px;
@@ -203,7 +206,7 @@ header .navbar ul li:last-child { margin-right: 0; }
 }
 .block-space { padding: 40px 0; }
 .s-margin { /*margin-top: 20px;*/ }
-.iq-main-header { margin-bottom: 0px; margin-top: 30px;margin-left: px;}
+.iq-main-header { margin-bottom: 0px; margin-top: 15px;margin-left: -5px;}
 .main-title a:hover, .main-title a:focus {color:var(--iq-primary) !important;}
 :focus{outline: none !important;}
 /*--------------------------*/
@@ -272,7 +275,7 @@ li.slide-item .block-description .parallax-ratting span { font-size: 12px; }
     
     border:1px solid hsla(0,0%,100%,.8);
     color:#fff!important;
-}
+}.slick-slider{padding: 5px!important;}
 .bd:hover{
      border-radius:4px!important; 
     background-color: #fff;

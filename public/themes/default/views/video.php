@@ -122,8 +122,8 @@ div#url_linkdetails {
       }
  .end_card_video {
     position: absolute;
-    top: -19%;
-    left: 79%;
+   
+  left: 65%;
      
 } 
 .countdown {
@@ -218,6 +218,17 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
       <div class="col-sm-12 intro_skips">
        <input type="button" class="skips" value="Skip Intro" id="intro_skip">
        <input type="button" class="skips" value="Auto Skip in 5 Secs" id="Auto_skip">
+  </div>
+     <div class="col-md-7 end_card_video" id="end_card_video" style="position: absolute; top: 15%; width: 300%; height: 300%;z-index:1;" >
+  <div class="col-md-12">
+  <?php foreach($endcardvideo as $val) { ?>
+      <a href="<?php  echo URL::to('category') ?><?= '/videos/' . $val->slug ?>">
+   <img id="endcard" src="<?php echo URL::to('/').'/public/uploads/images/' .$val->image ;?>" alt="">
+      </a>
+      <?php  } ?>
+  </div>
+  <div class="col-md-6"></div>
+
   </div>
    <div class=" page-height">
      <?php 
@@ -866,17 +877,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
   <!-- Intro Skip and Recap Skip -->
 
   
-  <div class="row end_card_video" id="end_card_video" style="position: absolute; top: -244%; width: 500%; height: 500%;" >
-  <div class="col-md-2">
-  <?php foreach($endcardvideo as $val) { ?>
-      <a href="<?php  echo URL::to('category') ?><?= '/videos/' . $val->slug ?>">
-   <img id="endcard" src="<?php echo URL::to('/').'/public/uploads/images/' .$val->image ;?>" alt="">
-      </a>
-      <?php  } ?>
-  </div>
-  <div class="col-md-6"></div>
-
-  </div>
+  
 
       <style>
         #endcard{
