@@ -453,6 +453,7 @@ class ThemeAudioController extends Controller{
         $userIp = $geoip->getip();    
         $countryName = $geoip->getCountry();
         
+        try {
             $album_id = AudioAlbums::where('slug', $album_slug)->first()->id;
             $album = AudioAlbums::where('id', $album_id)->first();
          
@@ -482,7 +483,13 @@ class ThemeAudioController extends Controller{
                 'album_audios' => $album_audios,
                 'other_albums' => $other_albums,
             );
-        return Theme::view('albums', $data);
+            
+            return Theme::view('albums', $data);
+
+        } catch (\Throwable $th) {
+                return  abort(404);;       
+        }
+          
     }
 
     public function add_favorite(Request $request)
