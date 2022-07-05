@@ -112,7 +112,7 @@
 
 <?php if( (count($latest_videos) > 1) || (count($latest_livestreams) > 1) || (count($latest_audio) > 1) ||  (count($latest_Episode) > 1) ||  (count($latest_Series) > 1)   ){ ; ?>
 <ul class="list-group home-search" style="display: block; position: relative; z-index: 999999; margin-bottom: 0; border-radius: 0; ">
-    <h6 style="margin: 0; text-align: center; padding: 10px;">Recent Videos </h6>
+    <h6 style="margin: 0; text-align: left; padding: 10px;">Recent Videos </h6>
 
     <?php foreach ($latest_videos as $row) { ?>
         <li class="list-group-item">
@@ -160,8 +160,8 @@
 
 <!-- Top Trending -->
 <?php if( (count($Most_view_videos) > 1) || (count($Most_view_live) > 1) || (count($Most_view_audios) > 1) ||  (count($Most_view_episode) > 1) ||  (count($Most_view_Series) > 1)   ){ ; ?>
-<ul class="list-group home-search" style="display: block; position: relative; z-index: 999999; margin-bottom: 0; border-radius: 0;">
-    <h6 style="margin: 0; text-align: center; padding: 10px;">Trending  Video</h6>
+<ul class="list-group home-search" style="display: block; position: relative; z-index: 999999; margin-bottom: 0; border-radius: 0;background:#000;">
+    <h6 style="margin: 0; text-align: left; padding: 10px;">Trending  Video</h6>
 
     <?php foreach ($Most_view_videos as $row) { ?>
         <li class="list-group-item">
@@ -210,7 +210,7 @@
 
 <?php if( (count($videos) > 1) || (count($livestreams) > 1) || (count($audio) > 1) ||  (count($Episode) > 1) ||  (count($Series) > 1)   ){ ; ?>
 <ul class="list-group home-search" style="display: block; position: relative; z-index: 999999; margin-bottom: 0; border-radius: 0;">
-    <h6 style="margin: 0; text-align: center; padding: 10px;">Highlighted videos </h6>
+    <h6 style="margin: 0; text-align: left; padding: 10px;">Highlighted videos </h6>
 
     <?php foreach ($videos as $row) { ?>
         <li class="list-group-item">
