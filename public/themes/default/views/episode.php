@@ -171,10 +171,10 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 	<div class="container-fluid series-details">
 	<div id="series_title">
 		<div class="">
-            <div class="row align-items-center">
+            <div class="row align-items-center justify-content-between">
 			<?php if($free_episode > 0 ||  $ppv_exits > 0 || Auth::user()->role == 'admin' ||  Auth::guest()){ 
 			}else{ ?>
-			<div class="col-md-6">
+			<div class="col-md-6 p-0">
 			<span class="text-white" style="font-size: 129%;font-weight: 700;">Purchase to Watch the Series:</span>
 			<?php if($series->access == 'subscriber'): ?>Subscribers<?php elseif($series->access == 'registered'): ?>Registered Users<?php endif; ?>
 			</p>
@@ -188,14 +188,15 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 			Purchase For <?php echo $currency->symbol.' '.$season[0]->ppv_price; ?></button>
 	</div>
 	<?php	} } ?>
-	<br>
-	<br>
-	<br>
+	
                 <div class="col-md-6">
-			<span class="text-white" style="font-size: 129%;font-weight: 700;">You're watching:</span>
-			<p style=";font-size: 130%;color: white;"><?php if(!empty($series)){ echo 'Series'.' '.$series->id.' ';}
+			<span class="text-white" style="font-size: 120%;font-weight: 700;">You're watching:</span>
+                    
+                    <p class="mb-0" style=";font-size: 80%;color: white;"><?php
 			if(!empty($SeriesSeason)){ echo 'Season'.' '.$SeriesSeason->id.' ';} if(!empty($episode)){ echo 'Episode'.' '.$episode->id;} ?>
-			 <p style=";font-size: 130%;color: white;"><?= $episode->title ?></p>
+                        	 <p class="" style=";font-size: 100%;color: white;font-weight: 700;"><?= $episode->title ?></p>
+		
+		
 	</div>
                 
 		<!---<h3 style="color:#000;margin: 10px;"><?= $episode->title ?>
@@ -203,13 +204,13 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 
 		</h3>-->
 		
-			<div class="col-md-2 text-center text-white">
+			<!--<div class="col-md-2 text-center text-white">
 			<span class="view-count  " style="float:right;">
 			<i class="fa fa-eye"></i> 
 			<?php if(isset($view_increment) && $view_increment == true ): ?><?= $episode->views + 1 ?>
 			<?php else: ?><?= $episode->views ?><?php endif; ?> Views 
 			</span>
-			</div>
+			</div>-->
 			<div class="col-md-4">
             <div class="watchlater btn btn-primary text-white  <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-episodeid="<?= $episode->id ?>"><?php if(isset($watchlatered->id)): ?><i class="fa fa-check"></i><?php else: ?><i class="fa fa-clock-o"></i><?php endif; ?> Watch Later</div>
 			<div class="mywishlist btn btn-primary text-white  <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-episodeid="<?= $episode->id ?>" style="margin-left:10px;"><?php if(isset($mywishlisted->id)): ?><i class="fa fa-check"></i>Wishlisted<?php else: ?><i class="fa fa-plus"></i>Add Wishlist<?php endif; ?> </div>			
@@ -225,7 +226,7 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 <!-- <div class="clear" style="display:flex;justify-content: space-between;
     align-items: center;">
     <div> -->
-		<h2 id="tags">Tags: 
+		<h4 id="tags">Tags: 
 		<?php if(isset($episode->tags)) {
 		foreach($episode->tags as $key => $tag): ?>
 
@@ -234,7 +235,7 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 		<?php endforeach; }
 		?>
             
-		</h2>
+		</h4>
         </div>
 
 		

@@ -93,7 +93,10 @@
   #home-slider p { margin: 22px 0; }
   .r-mt-20 { margin-top: 20px; }
   .p-btns { flex-direction: column; }
-  .main-title { font-size: 1em; }
+    h4, .h4 {
+    font-size: 1em;
+}
+  /*.main-title { font-size: 1em; }*/
   .sign-info { flex-direction: column; }
   .sign-info .btn { margin-bottom: 15px; }
   .banner-caption, .overlay-s-name { left: 15px; }
@@ -184,6 +187,18 @@
         display: flex;
     
     align-items: center;
+    }
+    #dn i{
+    display: block;
+}
+    #dn{
+        display: flex;
+    justify-content: space-between;
+    align-items: center;
+    align-items: center;
+    }
+    .dk{
+        display: block!important;
     }
     header .navbar ul li{margin-right: 0px;}
     .navbar-nav{padding-right: 0px;}
