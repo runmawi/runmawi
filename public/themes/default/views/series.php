@@ -391,7 +391,7 @@ var season_id = $('#season_id').val();
 $.each(obj, function(i, $val)
 {
 if('season_'+$val.id == season_id){
-alert($('#season_id').val())	
+// alert($('#season_id').val())	
 
 	console.log('season_'+$val.id)
 	$("#videoPlayer1").attr("src", $val.trailer);
