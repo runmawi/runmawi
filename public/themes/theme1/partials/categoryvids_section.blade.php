@@ -1,7 +1,7 @@
   <div class="favorites-contens">
                         <ul class="category-page list-inline  row p-0 mb-4">
-                            <?php if (count($data['categoryVideos']) > 0) { ?>         
-                                    @foreach($data['categoryVideos']  as $category_video) 
+                            <?php if (count($categoryVideos['categoryVideos']) > 0) { ?>         
+                                    @foreach($categoryVideos['categoryVideos']  as $category_video) 
                                     <li class="slide-item col-sm-2 col-md-2 col-xs-12 margin-bottom-30">
                                         <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
                                             <div class="block-images position-relative">
@@ -15,7 +15,7 @@
                                                     <a  class="text-white btn-cl"  href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
                                                         <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.png';  ?>">                                      
                                                     
-                                                        @if($data['ThumbnailSetting']->free_or_cost_label == 1) 
+                                                        @if($categoryVideos['ThumbnailSetting']->free_or_cost_label == 1) 
                                                             @if(!empty($category_video->ppv_price))
                                                                 <p class="p-tag1">
                                                                      {{ $currency->symbol.' '.$category_video->ppv_price }}
@@ -37,11 +37,11 @@
 
                                                 <div>
                                                     <div class="movie-time d-flex align-items-center justify-content-between my-2">
-                                                        <?php if($data['ThumbnailSetting']->title == 1) { ?>
+                                                        <?php if($categoryVideos['ThumbnailSetting']->title == 1) { ?>
                                                             <h6><?php  echo (strlen($category_video->title) > 17) ? substr($category_video->title,0,18).'...' : $category_video->title; ?></h6>
                                                         <?php } ?>
                  
-                                                        <?php if($data['ThumbnailSetting']->age == 1) { ?>
+                                                        <?php if($categoryVideos['ThumbnailSetting']->age == 1) { ?>
                                                             <div class="badge badge-secondary"><?php echo $category_video->age_restrict.' '.'+' ?></div>
                                                         <?php } ?>
                                                     </div>
@@ -50,7 +50,7 @@
                       
                                                         <!-- Duration -->
                                    
-                                                        <?php if($data['ThumbnailSetting']->duration == 1) { ?>
+                                                        <?php if($categoryVideos['ThumbnailSetting']->duration == 1) { ?>
                                                         <span class="text-white">
                                                            <i class="fa fa-clock-o"></i>
                                                            <?= gmdate('H:i:s', $category_video->duration); ?>
@@ -59,14 +59,14 @@
                                    
                                                         <!-- Rating -->
                                    
-                                                        <?php if($data['ThumbnailSetting']->rating == 1 && $category_video->rating != null) { ?>
+                                                        <?php if($categoryVideos['ThumbnailSetting']->rating == 1 && $category_video->rating != null) { ?>
                                                         <span class="text-white">
                                                            <i class="fa fa-star-half-o" aria-hidden="true"></i>
                                                            <?php echo __($category_video->rating); ?>
                                                         </span>
                                                         <?php } ?>
                                    
-                                                        <?php if($data['ThumbnailSetting']->featured == 1 && $category_video->featured == 1) { ?>
+                                                        <?php if($categoryVideos['ThumbnailSetting']->featured == 1 && $category_video->featured == 1) { ?>
                                                            <!-- Featured -->
                                                            <span class="text-white">
                                                               <i class="fa fa-flag" aria-hidden="true"></i>
@@ -77,7 +77,7 @@
                                                      <div class="movie-time my-2">
                                                         <!-- published_year -->
                                    
-                                                        <?php  if ( ($data['ThumbnailSetting']->published_year == 1) && ( $category_video->year != null ) ) { ?>
+                                                        <?php  if ( ($categoryVideos['ThumbnailSetting']->published_year == 1) && ( $category_video->year != null ) ) { ?>
                                                         <span class="text-white">
                                                            <i class="fa fa-calendar" aria-hidden="true"></i>
                                                            <?php echo __($category_video->year); ?>
@@ -93,7 +93,7 @@
                                                                 ->pluck('video_categories.name');       
 
                                                     ?>
-                                                    <?php  if ( ($data['ThumbnailSetting']->category == 1 ) &&  ( count($CategoryThumbnail_setting) > 0 ) ) { ?>
+                                                    <?php  if ( ($categoryVideos['ThumbnailSetting']->category == 1 ) &&  ( count($CategoryThumbnail_setting) > 0 ) ) { ?>
                                                     <span class="text-white">
                                                        <i class="fa fa-list-alt" aria-hidden="true"></i>
                                                        <?php

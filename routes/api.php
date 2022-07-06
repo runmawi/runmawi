@@ -297,5 +297,7 @@ Route::group([
     Route::get('socialsetting', 'ApiAuthController@SocialSetting');
     Route::post('ContinueWatchingExits', 'ApiAuthController@ContinueWatchingExits');
 
+    // Audio Shuffle
+    Route::post('audio_shufffle', 'ApiAuthController@audio_shufffle');
 
 });

@@ -143,13 +143,14 @@ class ChannelController extends Controller
                 'age_categories' => AgeCategory::get(),
 
             );
-       return Theme::view('categoryvids',['data'=>$data]);
+       return Theme::view('categoryvids',['categoryVideos'=>$data]);
 
       } catch (\Throwable $th) {
 
         return abort(404);
+
       }
-        
+
     } 
     
       public function play_videos($slug)
@@ -1584,7 +1585,7 @@ class ChannelController extends Controller
         $theme = Theme::uses( $this->Theme);
 
           return $theme->load('public/themes/default/partials/categoryvids_section', [
-            'data' => $data
+            'categoryVideos' => $data
         ])->render();
 
       }

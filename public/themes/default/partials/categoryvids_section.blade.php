@@ -1,7 +1,7 @@
 <div class="favorites-contens data" >
     <ul class="category-page list-inline  row p-0 mb-4">
-        <?php if (count($data['categoryVideos']) > 0) { ?>         
-                @forelse($data['categoryVideos']  as $key => $testinfg) 
+        <?php if (count($categoryVideos['categoryVideos']) > 0) { ?>         
+                @forelse($categoryVideos['categoryVideos'] as $key => $testinfg) 
 
                 <li class="slide-item col-sm-2 col-md-2 col-xs-12 margin-bottom-30">
                     <a href="<?php echo URL::to('category') ?><?= '/videos/' . $testinfg->slug ?>">
@@ -17,28 +17,28 @@
 
                         <div class="block-description">
                                 
-                            <?php if($data['ThumbnailSetting']->title == 1) { ?>            <!-- Title -->
+                            <?php if($categoryVideos['ThumbnailSetting']->title == 1) { ?>            <!-- Title -->
                                 <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $testinfg->slug ?>">
                                          <h6><?php  echo (strlen($testinfg->title) > 17) ? substr($testinfg->title,0,18).'...' : $testinfg->title; ?></h6>
                                 </a>
                             <?php } ?>  
                                 
                             <div class="movie-time d-flex align-items-center pt-1">
-                                    <?php if($data['ThumbnailSetting']->age == 1) { ?>
+                                    <?php if($categoryVideos['ThumbnailSetting']->age == 1) { ?>
                                     <!-- Age -->
                                         <div class="badge badge-secondary p-1 mr-2"><?php echo $testinfg->age_restrict.' '.'+' ?></div>
                                     <?php } ?>
 
-                                    <?php if($data['ThumbnailSetting']->duration == 1) { ?>
+                                    <?php if($categoryVideos['ThumbnailSetting']->duration == 1) { ?>
                                     <!-- Duration -->
                                         <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $testinfg->duration); ?></span>
                                     <?php } ?>
                             </div>
 
 
-                            <?php if(($data['ThumbnailSetting']->published_year == 1) || ($data['ThumbnailSetting']->rating == 1)) {?>
+                            <?php if(($categoryVideos['ThumbnailSetting']->published_year == 1) || ($categoryVideos['ThumbnailSetting']->rating == 1)) {?>
                                 <div class="movie-time d-flex align-items-center pt-1">
-                                    <?php if($data['ThumbnailSetting']->rating == 1) { ?>
+                                    <?php if($categoryVideos['ThumbnailSetting']->rating == 1) { ?>
                                         <!--Rating  -->
                                         <div class="badge badge-secondary p-1 mr-2">
                                             <span class="text-white">
@@ -48,7 +48,7 @@
                                         </div>
                                     <?php } ?>
 
-                                    <?php if($data['ThumbnailSetting']->published_year == 1) { ?>
+                                    <?php if($categoryVideos['ThumbnailSetting']->published_year == 1) { ?>
                                         <!-- published_year -->
                                         <div class="badge badge-secondary p-1 mr-2">
                                           <span class="text-white">
@@ -58,7 +58,7 @@
                                         </div>
                                     <?php } ?>
 
-                                    <?php if($data['ThumbnailSetting']->featured == 1 &&  $testinfg->featured == 1) { ?>
+                                    <?php if($categoryVideos['ThumbnailSetting']->featured == 1 &&  $testinfg->featured == 1) { ?>
                                         <!-- Featured -->
                                     <div class="badge badge-secondary p-1 mr-2">
                                           <span class="text-white">
@@ -76,7 +76,7 @@
                                                 ->where('categoryvideos.video_id',$testinfg->video_id)
                                                 ->pluck('video_categories.name');        
                                     ?>
-                                    <?php  if ( ($data['ThumbnailSetting']->category == 1 ) &&  ( count($CategoryThumbnail_setting) > 0 ) ) { ?>
+                                    <?php  if ( ($categoryVideos['ThumbnailSetting']->category == 1 ) &&  ( count($CategoryThumbnail_setting) > 0 ) ) { ?>
                                     <span class="text-white">
                                         <i class="fa fa-list-alt" aria-hidden="true"></i>
                                         <?php
