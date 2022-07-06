@@ -1,18 +1,20 @@
-<!-- Header -->
 
-@partial('category_header')
+@php
+include(public_path('themes/default/views/header.php'));
+@endphp
+
 <link href="<?php echo URL::to('public/themes/theme1/assets/css/style.css') ?>" rel="stylesheet">
 
 <!-- Header End -->
 <!-- MainContent -->
 <?php if(!empty($data['password_hash'])) { $id = Auth::user()->id ; } else { $id = 0 ; }
-$category_id = App\VideoCategory::where('name',$data['category_title'])->pluck('id')->first();
-$category_slug = App\VideoCategory::where('name',$data['category_title'])->pluck('slug')->first();
+$category_id = App\VideoCategory::where('name',$categoryVideos['category_title'])->pluck('id')->first();
+$category_slug = App\VideoCategory::where('name',$categoryVideos['category_title'])->pluck('slug')->first();
 ?>
 
       <div class="main-content">
          <section id="iq-favorites">
-              <h2 class="text-center  mb-3"><?php echo __($data['category_title']);?></h2>
+              <h2 class="text-center  mb-3"><?php echo __($categoryVideos['category_title']);?></h2>
             <div class="container-fluid" style="background: linear-gradient(135.05deg, rgba(136, 136, 136, 0.48) 1.85%, rgba(64, 32, 32, 0.13) 38.53%, rgba(81, 57, 57, 0.12) 97.89%);padding:0px 30px!important;">
                <div class="row pageheight">
                   <div class="col-sm-12 overflow-hidden">
@@ -35,7 +37,7 @@ $category_slug = App\VideoCategory::where('name',$data['category_title'])->pluck
 
                         <div class="col-md-3">
                             <select class="selectpicker" multiple title="Age" name="age[]" id="age" data-live-search="true">
-                                @foreach($data['age_categories'] as $age)
+                                @foreach($categoryVideos['age_categories'] as $age)
                                     <option value="{{ $age->age  }}">{{ $age->slug }}</option>
                                 @endforeach
                             </select>
