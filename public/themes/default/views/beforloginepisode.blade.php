@@ -224,12 +224,14 @@ else
 	<br>
 	<br>
                 <div class="col-md-6">
-			<span class="text-white" style="font-size: 129%;font-weight: 700;">You're watching:</span> 
-      <p style=";font-size: 130%;color: white;"><?php if(!empty($series)){ echo 'Series'.' '.$series->id.' ';}
+			<span class="text-white" style="font-size: 120%;font-weight: 700;">You're watching:</span> 
+                     
+      <p class="mb-0" style=";font-size: 80%;color: white;"><?php 
 			if(!empty($SeriesSeason)){ echo 'Season'.' '.$SeriesSeason->id.' ';} if(!empty($episode)){ echo 'Episode'.' '.$episode->id;} ?>
-      <p style=";font-size: 130%;color: white;"><?=$episode->title
+    
+                    </p>
+                     <p class="" style=";font-size: 100%;color: white;font-weight: 700;"><?=$episode->title
 ?></p>
-		
 	</div>
                 
 		<!---<h3 style="color:#000;margin: 10px;"><?=$episode->title
@@ -271,7 +273,7 @@ endif; ?> </div>
 <!-- <div class="clear" style="display:flex;justify-content: space-between;
     align-items: center;">
     <div> -->
-		<h2 id="tags">Tags: 
+		<h4 id="tags">Tags: 
 		<?php if (isset($episode->tags))
 {
     foreach ($episode->tags as $key => $tag): ?>
@@ -286,7 +288,7 @@ endif; ?> </div>
 }
 ?>
             
-		</h2>
+		</h4>
         </div>
 
 		

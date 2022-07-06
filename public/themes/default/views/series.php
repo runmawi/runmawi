@@ -89,7 +89,8 @@ $series = $series_data ;
                                 <div class="col-md-2">  <a data-video="<?php echo $series->trailer;  ?>" data-toggle="modal" data-target="#videoModal">	
                                           <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> </a></div>
                               <!--  <div class="col-md-4 text-center pls">  <a herf="">  <i class="fa fa-plus" aria-hidden="true"></i> <br>Add Wishlist</a></div>-->
-                                <div class="col-md-1 pls mt-3"><ul>
+                                <div class="col-md-1 pls  d-flex text-center mt-2">
+                                    <div></div><ul>
                                     <li class="share">
 <span><i class="ri-share-fill"></i></span>
     <div class="share-box">
@@ -99,7 +100,7 @@ $series = $series_data ;
           <a href="#"onclick="Copy();" class="share-ico"><i class="ri-links-fill"></i></a>
        </div>
     </div>
-</li>
+</li>Share
                                     </ul></div>
                                           
                               

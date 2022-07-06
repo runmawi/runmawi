@@ -155,7 +155,7 @@ class AdminSeriesController extends Controller
             'post_route' => URL::to('admin/series/store'),
             'button_text' => 'Add New Series',
             'admin_user' => Auth::user(),
-            'series_categories' => SeriesGenre::all(),
+            'series_categories' => VideoCategory::all(),
             'languages' => Language::all(),
             'artists' => Artist::all(),
             'series_artist' => [],
@@ -406,14 +406,13 @@ class AdminSeriesController extends Controller
             'post_route' => URL::to('admin/series/update'),
             'button_text' => 'Update Series',
             'admin_user' => Auth::user(),
-            'series_categories' => SeriesGenre::all(),
+            'series_categories' => VideoCategory::all(),
             'languages' => Language::all(),
             'artists' => Artist::all(),
             'series_artist' => Seriesartist::where('series_id', $id)->pluck('artist_id')->toArray(),
             'category_id' => SeriesCategory::where('series_id', $id)->pluck('category_id')->toArray(),
             'languages_id' => SeriesLanguage::where('series_id', $id)->pluck('language_id')->toArray(),
             );
-
 
         return View::make('admin.series.create_edit', $data);
     }
@@ -1139,6 +1138,7 @@ class AdminSeriesController extends Controller
               $episodes->ppv_price =  $ppv_price;
               $episodes->ppv_status =  $data['ppv_status'];
               $episodes->status =  1;
+              $episodes->episode_order = $episode = Episode::max('episode_order') + 1 ;
               $episodes->save();
 
 

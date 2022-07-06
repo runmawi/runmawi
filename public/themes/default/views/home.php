@@ -1016,28 +1016,13 @@ endif; ?>
                       ?>
             <div class="container-fluid">
                <?php
-                     $getfeching = App\Geofencing::first();
-                     $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-                     $userIp = $geoip->getip();    
-                     $countryName = $geoip->getCountry();
-
+               
                      $Multiuser=Session('subuser_id');
                      $Multiprofile= App\Multiprofile::where('id',$Multiuser)->first();
 
                      $parentCategories = App\VideoCategory::where('in_home','=',1)->orderBy('order','ASC')->get();
 
-      // blocked videos
-                      $block_videos = App\BlockVideo::where('country_id',$countryName)->get();
-                      if(!$block_videos->isEmpty()){
-                         foreach($block_videos as $block_video){
-                            $blockvideos[]=$block_video->video_id;
-                         }
-                      }   
-                      else{
-                        $blockvideos[]='';
-                      } 
                     foreach($parentCategories as $category) {
-                     //  dd('$null');
 
                        if( $Multiprofile != null ){
 
@@ -1050,8 +1035,8 @@ endif; ?>
                                              ->where('draft', '=', '1')
                                              ->where('age_restrict','<',18);
 
-                           if($getfeching !=null && $getfeching->geofencing == 'ON'){
-                              $videos = $videos  ->whereNotIn('videos.id',$blockvideos); }
+                           if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+                              $videos = $videos  ->whereNotIn('videos.id',Block_videos()); }
                               if($Family_Mode == 1){
                                  $videos = $videos->where('age_restrict', '<', 18);
                              }
@@ -1066,8 +1051,8 @@ endif; ?>
                                           ->where('status', '=', '1')
                                           ->where('draft', '=', '1');
 
-                     if($getfeching !=null && $getfeching->geofencing == 'ON'){
-                        $videos = $videos  ->whereNotIn('videos.id',$blockvideos);
+                     if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+                        $videos = $videos  ->whereNotIn('videos.id',Block_videos());
                         }
                         if($Family_Mode == 1){
                            $videos = $videos->where('age_restrict', '<', 18);
@@ -1084,8 +1069,8 @@ endif; ?>
                                           ->where('status', '=', '1')
                                           ->where('draft', '=', '1');
                      
-                     if($getfeching !=null && $getfeching->geofencing == 'ON'){
-                        $videos = $videos  ->whereNotIn('videos.id',$blockvideos);
+                     if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+                        $videos = $videos  ->whereNotIn('videos.id',Block_videos());
                            }
                            if($Family_Mode == 1){
                               $videos = $videos->where('age_restrict', '<', 18);
