@@ -1,6 +1,10 @@
     @partial('category_header')
 <!-- Header End -->
-
+<style>
+    .btn{
+        background-color: transparent!important;
+    }
+</style>
 <!-- MainContent -->
 <?php if(!empty($data['password_hash'])) { $id = Auth::user()->id ; } else { $id = 0 ; } 
 

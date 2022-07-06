@@ -322,6 +322,45 @@ input:checked + .sliderk:before {
                                  </li>
                               </ul>-->
                                <ul id="top-menu" class="nav navbar-nav <?php if ( Session::get('locale') == 'arabic') { echo "navbar-right"; } else { echo "navbar-left";}?>">
+                                    <?php if(Auth::guest()){ ?>
+
+                                                <li class="menu-item dk" style="display:none;">
+                                                   <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
+                                                      <div class="media align-items-center">
+                                                      <div class="right-icon"></div>
+                                                            <div class="media-body">
+                                                                  <h6 class="mb-0 ">Signin</h6>
+                                                            </div>
+                                                         </div>
+                                                   </a>
+                                                </li>
+
+                                                <li class="menu-item dk" style="display:none">
+                                                   <a href="<?php echo URL::to('signup') ?>" class="iq-sub-card">
+                                                      <div class="media align-items-center">
+                                                         <div class="right-icon"></div>
+                                                         <div class="media-body">
+                                                            <h6 class="mb-0 ">Signup</h6>
+                                                         </div>
+                                                      </div>
+                                                   </a>
+                                                </li>
+
+                                          <?php }elseif(Auth::user()){ ?>
+
+                                             <li class="menu-item dk" style="display:none;">
+                                                <a href="<?php echo URL::to('myprofile') ?>" class="iq-sub-card">
+                                                   <div class="media align-items-center">
+                                                      <div class="right-icon"></div>
+                                                      <div class="media-body">
+                                                         <h6 class="mb-0 ">My Profile</h6>
+                                                      </div>
+                                                   </div>
+                                                </a>
+                                             </li>
+                                             
+                                          <?php } ?>
+
                                           <?php
                                         $stripe_plan = SubscriptionPlan();
                                        //  $menus = App\Menu::all();
@@ -332,6 +371,8 @@ input:checked + .sliderk:before {
                                         if ( $menu->in_menu == "video") { 
                                         $cat = App\VideoCategory::all();
                                         ?>
+                                    
+                                        
                                        <li class="dropdown menu-item">
                                             <a class="dropdown-toggle" id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
                                               <?php echo __($menu->name);?> <i class="fa fa-angle-down"></i>
@@ -409,45 +450,6 @@ input:checked + .sliderk:before {
                                             <!-- </li> -->
 
                                             <!-- signup Mobile view -->
-
-                                          <?php if(Auth::guest()){ ?>
-
-                                                <li class="menu-item dk" style="margin-top:80px;display:none;">
-                                                   <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
-                                                      <div class="media align-items-center">
-                                                      <div class="right-icon"></div>
-                                                            <div class="media-body">
-                                                                  <h6 class="mb-0 ">Signin</h6>
-                                                            </div>
-                                                         </div>
-                                                   </a>
-                                                </li>
-
-                                                <li class="menu-item dk" style="display:none">
-                                                   <a href="<?php echo URL::to('signup') ?>" class="iq-sub-card">
-                                                      <div class="media align-items-center">
-                                                         <div class="right-icon"></div>
-                                                         <div class="media-body">
-                                                            <h6 class="mb-0 ">Signup</h6>
-                                                         </div>
-                                                      </div>
-                                                   </a>
-                                                </li>
-
-                                          <?php }elseif(Auth::user()){ ?>
-
-                                             <li class="menu-item dk" style="margin-top:80px;display:none;">
-                                                <a href="<?php echo URL::to('myprofile') ?>" class="iq-sub-card">
-                                                   <div class="media align-items-center">
-                                                      <div class="right-icon"></div>
-                                                      <div class="media-body">
-                                                         <h6 class="mb-0 ">My Profile</h6>
-                                                      </div>
-                                                   </div>
-                                                </a>
-                                             </li>
-                                             
-                                          <?php } ?>
 
                                           <!-- signup End  -->
                                         </ul>
