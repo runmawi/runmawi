@@ -75,7 +75,7 @@ $series = $series_data ;
                   
 					<!--<div class="col-md-6 p-0">
 						<select class="form-control" id="season_id" name="season_id">
-							<?php foreach($season as $key => $seasons): ?>
+							<?php foreach($season_trailer as $key => $seasons): ?>
 								<option value="season_<?= $seasons->id;?>">Season <?= $key+1; ?></option>
 							<?php endforeach; ?>
 						</select>
@@ -380,17 +380,19 @@ var publishable_key = $('#publishable_key').val();
 
 $(document).ready(function () {  
 
-	var imageseason = '<?= $season ?>' ;
+	var imageseason = '<?= $season_trailer ?>' ;
 // console.log(imageseason)
 
 
 var obj = JSON.parse(imageseason);
-// console.log(obj)
+console.log(obj)
 var season_id = $('#season_id').val();
 
 $.each(obj, function(i, $val)
 {
 if('season_'+$val.id == season_id){
+alert($('#season_id').val())	
+
 	console.log('season_'+$val.id)
 	$("#videoPlayer1").attr("src", $val.trailer);
 }
