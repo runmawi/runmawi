@@ -7030,4 +7030,27 @@ public function Adstatus_upate(Request $request)
      return response()->json($response, 200); 
      
   }
+
+  public function audio_shufffle(Request $request)
+  {
+
+    try {
+      $album_id = $request->album_id;
+
+      $audios = Audio::where('album_id',$album_id)->inRandomOrder()->get();
+
+      $status = "true";
+  
+    } 
+    catch (\Throwable $th) {
+       $status = "fail";
+    }
+   
+    $response = array(
+      'status'=> $status,
+      'audio_shufffle' => $audios,
+    );
+    
+     return response()->json($response, 200); 
+  }
 }

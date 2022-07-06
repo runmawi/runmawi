@@ -1,59 +1,66 @@
-<!doctype html>
-<html lang="en-US">
-   <head>
+<head>
       
-<?php
-    
-// dd($video_category);
+   <?php
+      
+      $theme_mode = App\SiteTheme::pluck('theme_mode')->first();
 
-   $theme_mode = App\SiteTheme::pluck('theme_mode')->first();
+      if(!empty(Auth::User()->id)){
 
-   if(!empty(Auth::User()->id)){
-      $id = Auth::User()->id;
-      $users = App\User::find($id);
-      $date = date_create($users->created_at);
-      $created_at = date_format($date,"Y-m-d");
-      $filldate = date('Y-m-d', strtotime($created_at. ' + 10 day'));
-      $currentdate = date('Y-m-d');
-      $DOB = $users->DOB;
-   }else{
-      $currentdate = null ;
-      $filldate = null ;
-      $DOB = null;
-   }
-// dd($currentdate);
+         $id = Auth::User()->id;
+         $users = App\User::find($id);
+         $date = date_create($users->created_at);
+         $created_at = date_format($date,"Y-m-d");
+         $filldate = date('Y-m-d', strtotime($created_at. ' + 10 day'));
+         $currentdate = date('Y-m-d');
+         $DOB = $users->DOB;
 
-$data = Session::all();
+      }else{
 
-$uri_path = $_SERVER['REQUEST_URI']; 
-$uri_parts = explode('/', $uri_path);
-$request_url = end($uri_parts);
-$uppercase =  ucfirst($request_url);
-if(!empty($data['password_hash']) && empty($uppercase) || empty($data['password_hash']) && empty($uppercase)){
-// dd($uppercase);
-   $uppercase = "Home" ;
-}else{
+         $currentdate = null ;
+         $filldate = null ;
+         $DOB = null;
+         
+      }
 
-}
+      $data = Session::all();
 
-// exit();UA-42534483-14
-$data = Session::all();
+      $uri_path = $_SERVER['REQUEST_URI']; 
+      $uri_parts = explode('/', $uri_path);
+      $request_url = end($uri_parts);
+      $uppercase =  ucfirst($request_url);
 
+      if(!empty($data['password_hash']) && empty($uppercase) || empty($data['password_hash']) && empty($uppercase)){
+         $uppercase = "Home" ;
+      }else{ }
 
-      ?>
+      $data = Session::all();
+
+   ?>
   <!-- Required meta tags -->
-  <?php $settings = App\Setting::first(); //echo $settings->website_name;?>
 
-    
-    <?php if(!empty($data['password_hash'])){  $videos_data = App\Video::where('slug',$request_url)->first(); } //echo $settings->website_name; ?>
-    <?php if(!empty($data['password_hash'])){ $series = App\Series::where('title',$request_url)->first(); } //echo $settings->website_name; ?>
-    <?php if(!empty($data['password_hash'])){ $episdoe = App\Episode::where('title',$request_url)->first(); } //echo $settings->website_name; ?>
-    <?php if(!empty($data['password_hash'])){ $livestream = App\LiveStream::where('slug',$request_url)->first(); } //echo $settings->website_name; ?>
+   <?php $settings = App\Setting::first();?>
+
+   <?php if (!empty($data["password_hash"])) {
+      $videos_data = App\Video::where("slug", $request_url)->first();
+      }
+   ?>
+   <?php if (!empty($data["password_hash"])) {
+      $series = App\Series::where("title", $request_url)->first();
+      }
+   ?>
+   <?php if (!empty($data["password_hash"])) {
+      $episdoe = App\Episode::where("title", $request_url)->first();
+      }
+   ?>
+
+   <?php if (!empty($data["password_hash"])) {
+      $livestream = App\LiveStream::where("slug", $request_url)->first();
+      }
+   ?>
 
 
     <meta charset="UTF-8">
     <title><?php
-   //  dd($data['password_hash']);
       if(!empty($videos_data)){  echo $videos_data->title .' | '. $settings->website_name ;
        }
       elseif(!empty($series)){ echo $series->title .' | '. $settings->website_name ; }
@@ -69,7 +76,6 @@ $data = Session::all();
     else{ echo $settings->website_description   ;} //echo $settings; ?>" />
 
     <meta property="og:title" content="<?php
-   //  dd($data['password_hash']);
       if(!empty($videos_data)){  echo $videos_data->title .' | '. $settings->website_name ;
        }
       elseif(!empty($series)){ echo $series->title .' | '. $settings->website_name ; }
@@ -99,8 +105,11 @@ $data = Session::all();
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-   <input type="hidden" value="<?php echo $settings->google_tracking_id ; ?>" name="tracking_id" id="tracking_id">
-    <!-- Favicon -->
+
+      <!-- Favicon -->
+        <link rel="shortcut icon" href="<?php echo getFavicon();?>" type="image/gif" sizes="16x16">
+
+       <input type="hidden" value="<?php echo $settings->google_tracking_id ; ?>" name="tracking_id" id="tracking_id">
            
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 

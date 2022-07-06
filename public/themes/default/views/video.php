@@ -166,8 +166,7 @@ h2{
       }
 .img__description_layer {
   position: absolute;
- padding: 29px 20px;
-    top: 0;
+ padding: 30px 20px;
   bottom: 0;
   left: 0;
   right: 0;
@@ -176,12 +175,11 @@ h2{
   visibility: hidden;
   opacity: 0;
     width: 300px;
+    height: 100%;
   display: flex;
     flex-direction: column;
-    /* flex-direction: column-reverse; */
-    align-self: center;
-    align-items: center;
-height: 100%;
+    justify-content: center;
+
   /* transition effect. not necessary */
   transition: opacity .2s, visibility .2s;
 }
@@ -898,66 +896,73 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
   <!--End Intro Skip and Recap Skip -->
 
 
-  <!-- Trailer Description -->
-  <?php if(!empty($video->trailer_description) ) { ?>
-      <div class="col-md-7 p-0 trailer_description">
-          <h4>Trailer Description</h4>
-          <div class="text-white">
-              <p class="trending-dec w-100 mb-0 text-white mt-2"><?php echo __($video->trailer_description); ?></p>
-          </div>
-      </div>
-      <br>
-  <?php  }?>
+<!-- Trailer  -->
 
-  <div class="col-sm-4 p-0">
+    <div class="col-sm-4 p-0">
         <div>     
             <?php if($video->trailer != '' && $ThumbnailSetting->trailer == 1 ){ ?>
             
             <div class="img__wrap">
-  <img class="img__img " src="<?php echo URL::to('/').'/public/uploads/images/'.$video->player_image;  ?>" class="img-fluid" alt="" / height="200" width="300">
-  <div class="img__description_layer">
-    <p class="img__description"><h6 class="text-center"><?php echo __($video->title); ?></h6>
-                                       <div class="movie-time  align-items-center my-2">
-                                          <div class="badge badge-secondary p-1 mr-2"><?php echo $video->age_restrict.' '.'+' ?></div>
-                                          <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $video->duration); ?></span>
-                                       </div>
-                                       <div class="hover-buttons">
-                                           <a data-video="<?php echo $video->trailer;  ?>" data-toggle="modal" data-target="#videoModal">	
-                                          <span class="text-white">
-                                          <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                          Play Now
-                                          </span>
-                                           </a>
-                                       </div>
-      </p>
-  </div>
-</div>
-      <div class="modal fade modal-xl" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <div class="modal-body">
-        
-            
-         <video id="videoPlayer1" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $video->trailer; ?>"  type="video/mp4" >
-            </video>
-        </div>
-      </div>
-    </div>
-  </div>
-       <script src="https://cdn.plyr.io/3.5.10/plyr.js"></script>
-      
-      <script>  const player = new Plyr('#videoPlayer1'); </script>
-                                        
-                                       
-                <!-- <div id="videoplay" class="btn1 btn-outline-primary  watch_trailer"><i class="ri-film-line"></i> Watch Trailer</div>
-                <div id="close_trailer" class="btn1 btn-outline-danger  close_trailer"><i class="ri-film-line"></i> Close Trailer</div>
-                <div style=" display: none;" class="skiptrailer btn btn-default skip"> Skip</div> -->
-               <!-- <img class="w-100" src="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image  ?>" alt="" data-toggle="modal" data-target="#modal1" id="b1">-->
-                </div>
-            
-            <?php } ?>
+              <img class="img__img " src="<?php echo URL::to('/').'/public/uploads/images/'.$video->player_image;  ?>" class="img-fluid" alt="" height="200" width="300">
+              <div class="img__description_layer">
+                <p class="img__description">
+                    <h6 class="text-center"> <?php  echo (strlen($video->title) > 50) ? substr($video->title,0,51).'...' : $video->title; ?></h6>
+                   
+                    <div class="movie-time  align-items-center my-2">
+                      <p class="text-center">
+                           <?php  echo (strlen($video->trailer_description) > 60) ? substr($video->trailer_description,0,61).'...' : $video->trailer_description; ?>
+                      </p>
+                    </div>
+
+                    <div class="hover-buttons text-center">
+                        <a data-video="<?php echo $video->trailer;  ?>" data-toggle="modal" data-target="#videoModal">	
+                          <span class="text-white">
+                            <i class="fa fa-play mr-1" aria-hidden="true"></i> Play Now
+                          </span>
+                        </a>
+                    </div>
+                </p>
               </div>
+            </div>
+
+          <div class="modal fade modal-xl" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <div class="modal-body">
+              
+                  <?php  if($video->trailer_type !=null && $video->trailer_type == "video_mp4" || $video->trailer_type == "mp4_url"  ){ ?>
+
+                    <video id="videoPlayer1" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
+                        controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
+                        type="video/mp4" src="<?php echo $video->trailer;?>">
+                    </video>
+                      
+                    <?php }elseif($video->trailer_type !=null && $video->trailer_type == "m3u8_url" ){ ?>
+
+                      <video  id="videoPlayer1" class=""  poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
+                          controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
+                          type="application/x-mpegURL">
+                      </video>
+
+                    <?php }elseif($video->trailer_type !=null && $video->trailer_type == "embed_url" ){ ?>
+
+                      <div id="videoPlayer1" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" >
+                        <iframe src="<?php echo $video->trailer ?>" allowfullscreen allowtransparency allow="autoplay">
+                        </iframe>
+                      </div>
+
+                  <?php  } ?>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <?php } ?>
+    </div>
+
+<!-- Trailer End  -->
 
   <?php if(!empty($video->description) ) { ?>
     <div class="col-md-7 p-0" style="margin-top: 2%;">
@@ -1774,14 +1779,18 @@ location.reload();
 
 <!-- Trailer m3u8 -->
 
+<script src="https://cdn.plyr.io/3.5.10/plyr.js"></script>
+
 <script>
+
+  const player = new Plyr('#videoPlayer1'); 
 
   var trailer_video_m3u8 = <?php echo json_encode($video->trailer) ; ?> ;
   var trailer_video_type =  <?php echo json_encode($video->trailer_type) ; ?> ;
 
   if(trailer_video_type == "m3u8_url"){
     (function () {
-      var video = document.querySelector('.videoPlayers');
+      var video = document.querySelector('#videoPlayer1');
 
       if (Hls.isSupported()) {
           var hls = new Hls();

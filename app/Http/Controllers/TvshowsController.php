@@ -420,6 +420,9 @@ class TvshowsController extends Controller
        
         // $series = Series::findOrFail($id);
         $season = SeriesSeason::where('series_id','=',$id)->with('episodes')->get();
+
+        $season_trailer = SeriesSeason::where('series_id','=',$id)->get();
+
         // dd($series);
 
         // dd($season);
@@ -449,6 +452,7 @@ class TvshowsController extends Controller
                 'currency' => $currency,
                 'ppv_exits' => $ppv_exits,
                 'season' => $season,
+                'season_trailer' => $season_trailer,
                 'publishable_key' => $publishable_key,
                 'settings' => $settings,
                 'episodenext' => $episodefirst,
@@ -467,6 +471,7 @@ class TvshowsController extends Controller
                 'currency' => $currency,
                 'ppv_exits' => $ppv_exits,
                 'season' => $season,
+                'season_trailer' => $season_trailer,
                 'publishable_key' => $publishable_key,
                 'settings' => $settings,
                 'episodenext' => $episodefirst,

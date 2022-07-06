@@ -269,7 +269,7 @@ data: {
 										</div> 
 									</div>
 								</div>
-								<div class="col-sm-3">
+								<div class="col-md-6">
 									<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 										<div class="panel-title"><label>Slug</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 										<div class="panel-body" style="display: block;"> 
@@ -281,7 +281,7 @@ data: {
 								@if(!empty($audio->created_at))
 
 
-								<div class="col-sm-3">
+								<div class="col-md-6">
 									<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 										<div class="panel-title"><label>Created Date</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 										<div class="panel-body" style="display: block;"> 
@@ -295,7 +295,7 @@ data: {
 							</div>
 						<div class="row">
 							<div class="col-md-6">
-							<div class="panel panel-primary col-sm-6 p-0 mt-3" data-collapsed="0"> <div class="panel-heading"> 
+							<div class="panel panel-primary  p-0 mt-3" data-collapsed="0"> <div class="panel-heading"> 
 														<div class="panel-title"><label>Audio Image Cover</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 														<div class="panel-body" style="display: block;"> 
 															@if(!empty($audio->image))
@@ -308,7 +308,7 @@ data: {
 													</div>
 							</div>
 							<div class="col-md-6">
-							<div class="panel panel-primary col-sm-6 p-0 mt-3" data-collapsed="0"> <div class="panel-heading"> 
+							<div class="panel panel-primary  p-0 mt-3" data-collapsed="0"> <div class="panel-heading"> 
 														<div class="panel-title"><label>Player Image Cover</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 														<div class="panel-body" style="display: block;"> 
 															@if(!empty($audio->player_image))

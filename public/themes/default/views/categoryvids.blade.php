@@ -1,4 +1,7 @@
-    @partial('category_header')
+
+<?php
+include(public_path('themes/default/views/header.php'));
+?>
 <!-- Header End -->
 <style>
     .btn{
@@ -8,8 +11,8 @@
 <!-- MainContent -->
 <?php if(!empty($data['password_hash'])) { $id = Auth::user()->id ; } else { $id = 0 ; } 
 
-$category_id = App\VideoCategory::where('name',$data['category_title'])->pluck('id')->first();
-$category_slug = App\VideoCategory::where('name',$data['category_title'])->pluck('slug')->first();
+$category_id = App\VideoCategory::where('name',$categoryVideos['category_title'])->pluck('id')->first();
+$category_slug = App\VideoCategory::where('name',$categoryVideos['category_title'])->pluck('slug')->first();
 
 ?>
 
@@ -19,7 +22,7 @@ $category_slug = App\VideoCategory::where('name',$data['category_title'])->pluck
                <div class="row pageheight">
                   <div class="col-sm-12 overflow-hidden">
                     <div class="iq-main-header align-items-center d-flex justify-content-between">
-                        <h2 class=""><?php echo __($data['category_title']);?></h2>
+                        <h2 class=""><?php echo __($categoryVideos['category_title']);?></h2>
                     </div>
 
                     {{-- filter Option --}}
@@ -37,7 +40,7 @@ $category_slug = App\VideoCategory::where('name',$data['category_title'])->pluck
 
                             <div class="col-md-3">
                                 <select class="selectpicker" multiple title="Age" name="age[]" id="age" data-live-search="true">
-                                    @foreach($data['age_categories'] as $age)
+                                    @foreach($categoryVideos['age_categories'] as $age)
                                         <option value="{{ $age->age  }}">{{ $age->slug }}</option>
                                     @endforeach
                                 </select>
@@ -180,4 +183,12 @@ $('.mywishlist').click(function(){
 
 
 </script>
+
+<style>
+
+    button.btn.dropdown-toggle.bs-placeholder.btn-light {
+        background: white !important;
+    }
+
+</style>
 
