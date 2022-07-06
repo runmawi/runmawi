@@ -101,19 +101,12 @@ class ChannelController extends Controller
                               ->where('category_id','=',$category_id)->where('active', '=', '1')->count();
 
         if ($categoryVideos_count > 0) {
-      // blocked videos
-              $block_videos= \App\BlockVideo::where('country_id',$countryName)->get();
-              if(!$block_videos->isEmpty()){
-                foreach($block_videos as $block_video){
-                    $blockvideos[]=$block_video->video_id;
-                }
-              }    
-              $blockvideos[]='';
+     
               $categoryVideos = Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
                                 ->where('category_id','=',$category_id)->where('active', '=', '1');
 
               if($getfeching !=null && $getfeching->geofencing == 'ON'){
-                 $categoryVideos = $categoryVideos  ->whereNotIn('videos.id',$blockvideos);
+                 $categoryVideos = $categoryVideos  ->whereNotIn('videos.id',Block_videos());
                  }
                $categoryVideos = $categoryVideos->orderBy('videos.created_at','desc')->get();
               
@@ -133,7 +126,12 @@ class ChannelController extends Controller
              $ppv_gobal_price = null ;
          }
          $currency = CurrencySetting::first();
-        
+
+         $series =  Series::join('series_categories', 'series_categories.series_id', '=', 'series.id')
+                    ->where('series_categories.category_id','=',$category_id)
+                    ->where('active', '=', '1')
+                    ->get();
+         
         $data = array(
                 'currency'=> $currency,
                 'category_title'=>$category_title[0],
@@ -141,7 +139,7 @@ class ChannelController extends Controller
                 'ppv_gobal_price' => $ppv_gobal_price,
                 'ThumbnailSetting' => $ThumbnailSetting,
                 'age_categories' => AgeCategory::get(),
-
+                'series'   => $series,
             );
        return Theme::view('categoryvids',['categoryVideos'=>$data]);
 
