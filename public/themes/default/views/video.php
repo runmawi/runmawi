@@ -166,17 +166,22 @@ h2{
       }
 .img__description_layer {
   position: absolute;
- padding: 0px 20px;
+ padding: 29px 20px;
+    top: 0;
   bottom: 0;
   left: 0;
   right: 0;
- background-image: linear-gradient(to bottom, rgba(4,8,15,0), rgba(0,0,0,0.9), rgba(0,0,0,0.9), rgba(0,0,0,0.9));
+ background-image: linear-gradient(to bottom, rgba(4,8,15,0.9), rgba(0,0,0,0.9), rgba(0,0,0,0.9), rgba(0,0,0,0.9));
   color: #fff;
   visibility: hidden;
   opacity: 0;
     width: 300px;
-  
-
+  display: flex;
+    flex-direction: column;
+    /* flex-direction: column-reverse; */
+    align-self: center;
+    align-items: center;
+height: 100%;
   /* transition effect. not necessary */
   transition: opacity .2s, visibility .2s;
 }
@@ -911,7 +916,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
             <div class="img__wrap">
   <img class="img__img " src="<?php echo URL::to('/').'/public/uploads/images/'.$video->player_image;  ?>" class="img-fluid" alt="" / height="200" width="300">
   <div class="img__description_layer">
-    <p class="img__description"><h6><?php echo __($video->title); ?></h6>
+    <p class="img__description"><h6 class="text-center"><?php echo __($video->title); ?></h6>
                                        <div class="movie-time  align-items-center my-2">
                                           <div class="badge badge-secondary p-1 mr-2"><?php echo $video->age_restrict.' '.'+' ?></div>
                                           <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $video->duration); ?></span>
