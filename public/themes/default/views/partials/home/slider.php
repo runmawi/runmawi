@@ -116,70 +116,56 @@ endif; ?>
 <?php if(isset($video_banners)) :
     foreach($video_banners as $key => $videos): ?>
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
-            <div class="slide slick-bg s-bg-1 lazyload"
-            data-bgset="<?php echo URL::to('/').'/public/uploads/images/' .$videos->player_image;?>" style="background-position: right;">
-            <div class="container-fluid position-relative h-100" style="padding:0px 100px">
-                <div class="slider-inner h-100">
-                    <div class="row align-items-center bl h-100">
-                        <div class="col-xl-6 col-lg-12 col-md-12">
-                        <h1 class="text-white mb-3" data-animation-in="fadeInLeft"
-                        data-delay-in="0.6">
-                        <?php 
-                        // $title = $videos->title;
-                        // $slidertitle = substr($title, 0, 80);                
-                                echo (strlen($videos->title) > 15) ? substr($videos->title,0,80).'...' : $videos->title;
-                        // echo ($slidertitle.'...');
-                        ?>
-                    </h1>
-                    <p class="desc" data-animation-in="fadeInUp" data-delay-in="1.2"
-                        style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
-                        -webkit-line-clamp: 3;
-                        -webkit-box-orient: vertical;  
-                        overflow: hidden;">
-                       <?php echo __($videos->description); ?>
-                        </p>
-                        <div class="d-flex justify-content-evenly align-items-center r-mb-23" data-animation-in="fadeInUp"
-                            data-delay-in="1.2">
-                            <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"
-                                class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play</a>
-                                <a class="btn bd ml-2" href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"><i class="fa fa-info" aria-hidden="true"></i> More details</a>
+            <div class="slide slick-bg s-bg-1 lazyload" data-bgset="<?php echo URL::to('/').'/public/uploads/images/' .$videos->player_image;?>" style="background-position: right;">
+                <div class="container-fluid position-relative h-100" style="padding:0px 100px">
+                    <div class="slider-inner h-100">
+                        <div class="row align-items-center bl h-100">
+                            <div class="col-xl-6 col-lg-12 col-md-12">
+                                <h1 class="text-white mb-3" data-animation-in="fadeInLeft"  data-delay-in="0.6">
+                                    <?php echo (strlen($videos->title) > 15) ? substr($videos->title,0,80).'...' : $videos->title; ?>
+                                </h1>
+
+                            <p class="desc" data-animation-in="fadeInUp" data-delay-in="1.2"
+                                style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
+                                -webkit-line-clamp: 3;  -webkit-box-orient: vertical;     overflow: hidden;">
+                                <?php echo __($videos->description); ?>
+                            </p>
+
+                            <div class="d-flex justify-content-evenly align-items-center r-mb-23" data-animation-in="fadeInUp"  data-delay-in="1.2">
+                                <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>" class="btn bd">
+                                    <i class="fa fa-play mr-2" aria-hidden="true"></i> Play
+                                </a>
+                                <a class="btn bd ml-2" href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>">
+                                    <i class="fa fa-info" aria-hidden="true"></i> More details
+                                </a>
                             </div>    
-                </div>
-                </div>
-                <div class="trailor-video">
-                        <a href="#video-trailer"
-                            class="video-open playbtn">
-                            <svg class="gt" version="1.1" xmlns="http://www.w3.org/2000/svg"
-                            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px"
-                            viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
-                                    <style type="text/css">
-                        .gt{
-                            height: 60px!important;
-                        }
-                                        </style>
-                            <polygon class='triangle' fill="none" stroke-width="7" stroke-linecap="round"
-                            stroke-linejoin="round" stroke-miterlimit="10"
-                            points="73.5,62.5 148.5,105.8 73.5,149.1 " />
-                            <circle class='circle' fill="none" stroke-width="7" stroke-linecap="round"
-                            stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" />
-                        </svg>
-                        <span class="w-trailor">Watch Trailer</span>
-                    </a>
+                        </div>
                     </div>
+
+                     <div class="trailor-video">
+                        <a href="#video-trailer" class="video-open playbtn">
+                            <svg class="gt" version="1.1" xmlns="http://www.w3.org/2000/svg"  xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px"
+                                 viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                    <style type="text/css"> .gt{  height: 60px!important; } </style>
+                                <polygon class='triangle' fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"
+                                 points="73.5,62.5 148.5,105.8 73.5,149.1 " />
+                                <circle class='circle' fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" />
+                            </svg>
+                            <span class="w-trailor">Watch Trailer</span>
+                        </a>
+                    </div>
+
                     <div class="col-md-12">
-            <div id="video-trailer" class="mfp-hide">
-             <video id="videoPlayer" poster="<?php echo URL::to('/').'/public/uploads/images/' .$videos->player_image;?>"  class="" controls src="<?= $videos->trailer; ?>"  type="application/x-mpegURL" ></video>
+                        <div id="video-trailer" class="mfp-hide">
+                            <video id="videoPlayer" poster="<?php echo URL::to('/').'/public/uploads/images/' .$videos->player_image;?>"  class="" controls src="<?= $videos->trailer; ?>"  type="application/x-mpegURL" ></video>
+                        </div>
                     </div>
-            </div>
+                </div>
             </div>
         </div>
-    </div>
 </div>
 
-    
-<?php  ?>
 <?php endforeach;endif; ?>
-
 
 <!-- Catogery Slider -->
 <?php
