@@ -943,7 +943,17 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                         controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
                         type="video/mp4" src="<?php echo $video->trailer;?>">
                     </video>
-                      
+                    <?php }elseif($video->trailer_type !=null && $video->trailer_type == "m3u8" ){ ?>
+
+                        <video  id="videos" class=""  poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
+                            controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
+                            type="application/x-mpegURL">
+                            <source 
+                              type="application/x-mpegURL" 
+                              src="<?php echo $video->trailer;?>"
+                            >
+                        </video>
+
                     <?php }elseif($video->trailer_type !=null && $video->trailer_type == "m3u8_url" ){ ?>
 
                       <video  id="videoPlayer1" class=""  poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
@@ -1812,8 +1822,10 @@ location.reload();
   }else if(trailer_video_type == "m3u8"){
   // alert(trailer_video_type);
   document.addEventListener("DOMContentLoaded", () => {
-  const video = document.querySelector('.videoPlayers');
+  const video = document.querySelector('#videos');
+  // alert(video);
   const source = video.getElementsByTagName("source")[0].src;
+  // alert(source);
   
   // For more options see: https://github.com/sampotts/plyr/#options
   // captions.update is required for captions to work with hls.js
