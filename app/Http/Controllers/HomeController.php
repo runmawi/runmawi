@@ -58,6 +58,7 @@ use App\ThumbnailSetting;
 use App\SiteTheme;
 use Theme;
 use App\Series;
+use App\Artist;
 
 class HomeController extends Controller
 {
@@ -413,6 +414,7 @@ class HomeController extends Controller
                 'Family_Mode' => $Family_Mode = 2,
                 'Kids_Mode' => $Kids_Mode = 2,
                 'ThumbnailSetting' => $ThumbnailSetting,
+                'artist' => [],
             );
             return Theme::view('home', $data);
         }
@@ -1191,6 +1193,7 @@ class HomeController extends Controller
                         'Kids_Mode' => $Kids_Mode,
                         'Mode' => $Mode,
                         'ThumbnailSetting' => $ThumbnailSetting,
+                        'artist' => Artist::all(),
                     );
 
                     //echo "<pre>";print_r($data['latest_videos']);exit;
@@ -2075,6 +2078,7 @@ class HomeController extends Controller
                     'Mode' => $Mode,
                     'ThumbnailSetting' => $ThumbnailSetting,
                     'latest_series' => $latest_series,
+                    'artist' => Artist::all(),
                 );
                
                 return Theme::view('home', $data);
