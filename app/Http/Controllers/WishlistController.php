@@ -168,5 +168,59 @@ class WishlistController extends Controller
 
     }
 
+    public function episode_wishlist(Request $request)
+    {
+
+       if(Auth::guest()){
+
+         $data = array(
+           "message" => "guest" ,
+         );
+
+         return $data ;
+
+       }else{
+
+         $watchlater = Wishlist::where('user_id',Auth::user()->id)->where('episode_id',$request->episode_id)->get();
+       
+         if(count($watchlater) == 0){
+ 
+            Wishlist::create([
+             'user_id'  => Auth::user()->id,
+             'episode_id' => $request->episode_id,
+             'type'     => 0,
+           ]);
+ 
+           $data = array(
+             "message" => "Remove the Watch list" ,
+           );
+ 
+         }else{
+           
+            Wishlist::where('user_id',Auth::user()->id)->where('episode_id',$request->episode_id)->delete();
+ 
+             $data = array(
+               "message" => "Add the Watch list" ,
+             );
+         }
+          return $data ;
+         
+       }
+
+    }   
+
+    public function episode_wishlist_remove(Request $request)
+    {
+        Wishlist::where('user_id',Auth::user()->id)->where('episode_id',$request->episode_id)->delete();
+    
+        $data = array(
+          "message" => "Add the Watch list" ,
+        );
+  
+        return $data ;
+    }
+
+
+
 }
 

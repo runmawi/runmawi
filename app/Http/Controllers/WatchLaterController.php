@@ -127,4 +127,58 @@ class WatchLaterController extends Controller
           return Theme::view('myppv', $data);
         } 
     
+        
+      public function episode_watchlist(Request $request)
+      {
+ 
+         if(Auth::guest()){
+ 
+           $data = array(
+             "message" => "guest" ,
+           );
+ 
+           return $data ;
+ 
+         }else{
+ 
+           $watchlater = Watchlater::where('user_id',Auth::user()->id)->where('episode_id',$request->episode_id)->get();
+         
+           if(count($watchlater) == 0){
+   
+             Watchlater::create([
+               'user_id'  => Auth::user()->id,
+               'episode_id' => $request->episode_id,
+               'type'     => 0,
+             ]);
+   
+             $data = array(
+               "message" => "Remove the Watch list" ,
+             );
+   
+           }else{
+             
+             Watchlater::where('user_id',Auth::user()->id)->where('episode_id',$request->episode_id)->delete();
+   
+               $data = array(
+                 "message" => "Add the Watch list" ,
+               );
+           }
+            return $data ;
+           
+         }
+ 
+      }   
+ 
+      public function episode_watchlist_remove(Request $request)
+      {
+          Watchlater::where('user_id',Auth::user()->id)->where('episode_id',$request->episode_id)->delete();
+      
+          $data = array(
+            "message" => "Add the Watch list" ,
+          );
+    
+          return $data ;
+      }
+
+
 }
