@@ -93,7 +93,7 @@ class ChannelController extends Controller
       $countryName = $geoip->getCountry();
       $ThumbnailSetting = ThumbnailSetting::first();
 
-      try {
+      // try {
 
         $vpp = VideoPerPage();
         $category_id = \App\VideoCategory::where('slug',$cid)->pluck('id');
@@ -127,10 +127,17 @@ class ChannelController extends Controller
          }
          $currency = CurrencySetting::first();
 
-         $series =  Series::join('series_categories', 'series_categories.series_id', '=', 'series.id')
-                    ->where('series_categories.category_id','=',$category_id)
-                    ->where('active', '=', '1')
-                    ->get();
+         $Episode_videos =  Series::select('episodes.*','series.title as series_name')
+                            ->join('series_categories', 'series_categories.series_id', '=', 'series.id')
+                            ->join('episodes', 'episodes.series_id', '=', 'series.id')
+                            ->where('series_categories.category_id','=',$category_id)
+                            ->where('episodes.active', '=', '1')
+                            ->where('series.active', '=', '1')
+                            ->groupBy('episodes.id')
+                            ->latest('episodes.created_at')
+                            ->get();
+        
+   
          
         $data = array(
                 'currency'=> $currency,
@@ -139,15 +146,15 @@ class ChannelController extends Controller
                 'ppv_gobal_price' => $ppv_gobal_price,
                 'ThumbnailSetting' => $ThumbnailSetting,
                 'age_categories' => AgeCategory::get(),
-                'series'   => $series,
+                'Episode_videos'   => $Episode_videos,
             );
        return Theme::view('categoryvids',['categoryVideos'=>$data]);
 
-      } catch (\Throwable $th) {
+      // } catch (\Throwable $th) {
 
-        return abort(404);
+      //   return abort(404);
 
-      }
+      // }
 
     } 
     
