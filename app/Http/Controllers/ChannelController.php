@@ -93,7 +93,7 @@ class ChannelController extends Controller
       $countryName = $geoip->getCountry();
       $ThumbnailSetting = ThumbnailSetting::first();
 
-      // try {
+      try {
 
         $vpp = VideoPerPage();
         $category_id = \App\VideoCategory::where('slug',$cid)->pluck('id');
@@ -150,11 +150,11 @@ class ChannelController extends Controller
             );
        return Theme::view('categoryvids',['categoryVideos'=>$data]);
 
-      // } catch (\Throwable $th) {
+      } catch (\Throwable $th) {
 
-      //   return abort(404);
+        return abort(404);
 
-      // }
+      }
 
     } 
     
