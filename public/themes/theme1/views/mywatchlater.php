@@ -1,23 +1,16 @@
- <?php include('header.php');?>
+<?php
+    include(public_path('themes/theme1/views/header.php'));
+?>
 
-      <!-- loader Start -->
-      <!--<div id="loading">
-         <div id="loading-center">
-         </div>
-      </div>-->
-      <!-- loader END -->
-
-
+    
 <!-- MainContent -->
- <div class="main-content" style="background: linear-gradient(135.05deg, rgba(136, 136, 136, 0.48) 1.85%, rgba(64, 32, 32, 0.13) 38.53%, rgba(81, 57, 57, 0.12) 97.89%);
-    padding: 0px 60px 40px;!important;">
+ <div class="main-content" style="background: linear-gradient(135.05deg, rgba(136, 136, 136, 0.48) 1.85%, rgba(64, 32, 32, 0.13) 38.53%, rgba(81, 57, 57, 0.12) 97.89%); padding: 0px 60px 40px;!important;">
      <div class="container-fluid">
           <div class="row justify-content-center">
-     <div class="col-sm-12 overflow-hidden">
-        <div class="iq-main-header d-flex align-items-center justify-content-between">
-           <!-- <h4 class="Continue Watching">Media in My Watchlater</h4>-->
-        </div>
-     </div>
+                <div class="col-sm-12 overflow-hidden">
+                    <div class="iq-main-header d-flex align-items-center justify-content-between"></div>
+                </div>
+                
      <section class="movie-detail ">
          <div class="row">
             <?php if(count($channelwatchlater) > 0): 
@@ -30,23 +23,7 @@
                         <video  width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$video->image; ?>"  data-play="hover" >
                             <source src="<?php echo $video->trailer;  ?>" type="video/mp4">
                         </video>
-                   
-<!--
-                    <div class="corner-text-wrapper">
-                        <div class="corner-text">
-                            <p class="p-tag1">
-                                <?php /*if(!empty($video->ppv_price)) {
-                                    echo $video->ppv_price.' '.$currency->symbol ; 
-                                    } elseif(!empty($video->global_ppv) && $video->ppv_price == null) {
-                                    echo $video->global_ppv .' '.$currency->symbol;
-                                    } elseif(empty($video->global_ppv) && $video->ppv_price == null) {
-                                    echo "Free"; 
-                                }*/
-                                ?>
-                            </p>
-                        </div>
-                    </div>
--->
+
                         <div class="block-description">
                             <h3><?php echo __($video->title); ?></h3>
                             <div class="movie-time d-flex align-items-center my-2">
@@ -177,4 +154,6 @@ header.classList.remove("sticky");
 <script src="https://cdn.jsdelivr.net/npm/videojs-seek-buttons/dist/videojs-seek-buttons.min.js"></script>
 <script src="<?php echo URL::to('/').'/assets/js/videojs.hotkeys.js';?>"></script>
 
-<?php include('footer.blade.php');?>
+<?php 
+    include(public_path('themes/theme1/views/footer.blade.php'));
+?>
