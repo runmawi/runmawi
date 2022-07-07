@@ -211,20 +211,20 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 			</span>
 			</div>-->
 
-				<!-- Watchlater & Wishlist -->
+				                <!-- Watchlater & Wishlist -->
 				<div class="col-md-5">
 					<?php if($episode_watchlater == null){ ?>
-						<i id="<?php echo 'episode_add_watchlist_'.$episode->id ; ?>" class="ml-2 btn bd video-open playbtn mb-2 slider_add_watchlist"  aria-hidden="true" data-list="<?php echo $episode->id ; ?>" data-myval="10" data-video-id="<?php echo $episode->id ; ?>" onclick="episodewatchlater(this)" > Add to Watch Later </i>
+						<div id="<?php echo 'episode_add_watchlist_'.$episode->id ; ?>" class="ml-2 btn bd video-open playbtn mb-2 slider_add_watchlist"  aria-hidden="true" data-list="<?php echo $episode->id ; ?>" data-myval="10" data-video-id="<?php echo $episode->id ; ?>" onclick="episodewatchlater(this)" > Add to Watch Later </div>
 					<?php }else{?>
-						<i id="<?php echo 'episode_add_watchlist_'.$episode->id ; ?>" class="ml-2 btn bd video-open playbtn mb-2 slider_add_watchlist"  aria-hidden="true" data-list="<?php echo $episode->id ; ?>" data-myval="10"  data-video-id="<?php echo $episode->id ; ?>"  onclick="episodewatchlater(this)"> Remove to Watch Later </i>
+						<div id="<?php echo 'episode_add_watchlist_'.$episode->id ; ?>" class="ml-2 btn bd video-open playbtn mb-2 slider_add_watchlist"  aria-hidden="true" data-list="<?php echo $episode->id ; ?>" data-myval="10"  data-video-id="<?php echo $episode->id ; ?>"  onclick="episodewatchlater(this)"> Remove to Watch Later </div>
 					<?php } ?>
 
 					<?php if($episode_Wishlist == null){ ?>
-						<i id="<?php echo 'episode_add_wishlist_'.$episode->id ; ?>" class="ml-2 btn bd video-open playbtn mb-2 episode_add_wishlist_"  aria-hidden="true" data-list="<?php echo $episode->id ; ?>" data-myval="10" data-video-id="<?php echo $episode->id ; ?>" onclick="episodewishlist(this)" > Add to wish list </i>
+						<div id="<?php echo 'episode_add_wishlist_'.$episode->id ; ?>" class="ml-2 btn bd video-open playbtn mb-2 episode_add_wishlist_"  aria-hidden="true" data-list="<?php echo $episode->id ; ?>" data-myval="10" data-video-id="<?php echo $episode->id ; ?>" onclick="episodewishlist(this)" > Add to Wish list </div>
 					<?php }else{?>
-						<i id="<?php echo 'episode_add_wishlist_'.$episode->id ; ?>" class="ml-2 btn bd video-open playbtn mb-2 episode_add_wishlist_"  aria-hidden="true" data-list="<?php echo $episode->id ; ?>" data-myval="10"  data-video-id="<?php echo $episode->id ; ?>"  onclick="episodewishlist(this)"> Remove to Wish list </i>
+						<div id="<?php echo 'episode_add_wishlist_'.$episode->id ; ?>" class="ml-2 btn bd video-open playbtn mb-2 episode_add_wishlist_"  aria-hidden="true" data-list="<?php echo $episode->id ; ?>" data-myval="10"  data-video-id="<?php echo $episode->id ; ?>"  onclick="episodewishlist(this)"> Remove to Wish list </div>
 					<?php } ?>
-			</div>
+				</div>
  								
 			<!-- <div>
 			<?php //if ( $episode->ppv_status != null && Auth::User()!="admin" || $episode->ppv_price != null  && Auth::User()->role!="admin") { ?>
@@ -710,7 +710,7 @@ function episodewatchlater(ele)
 
                      $(id).data('myval'); 
                      $(id).data('myval','remove');
-                     $(id).text("Remove the Wish Later");
+                     $(id).text("Remove the Wish list");
 
                   }else if(data.message == "Add the Watch list"){
                      $(id).data('myval'); 
