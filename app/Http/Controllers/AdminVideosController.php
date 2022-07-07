@@ -1949,6 +1949,8 @@ if(!empty($artistsdata)){
              $video->trailer_type = $data['trailer_type'];
 
              if($data['trailer_type'] == 'video_mp4'){
+                
+                $settings = Setting::first();
 
                 if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1) {
                     
