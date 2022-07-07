@@ -3,7 +3,11 @@
 include(public_path('themes/default/views/header.php'));
 ?>
 <!-- Header End -->
-
+<style>
+    .btn{
+        background-color: transparent!important;
+    }
+</style>
 <!-- MainContent -->
 <?php if(!empty($data['password_hash'])) { $id = Auth::user()->id ; } else { $id = 0 ; } 
 

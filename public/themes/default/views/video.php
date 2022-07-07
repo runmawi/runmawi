@@ -166,16 +166,19 @@ h2{
       }
 .img__description_layer {
   position: absolute;
- padding: 0px 20px;
+ padding: 30px 20px;
   bottom: 0;
   left: 0;
   right: 0;
- background-image: linear-gradient(to bottom, rgba(4,8,15,0), rgba(0,0,0,0.9), rgba(0,0,0,0.9), rgba(0,0,0,0.9));
+ background-image: linear-gradient(to bottom, rgba(4,8,15,0.9), rgba(0,0,0,0.9), rgba(0,0,0,0.9), rgba(0,0,0,0.9));
   color: #fff;
   visibility: hidden;
   opacity: 0;
     width: 300px;
-  
+    height: 100%;
+  display: flex;
+    flex-direction: column;
+    justify-content: center;
 
   /* transition effect. not necessary */
   transition: opacity .2s, visibility .2s;
@@ -903,15 +906,15 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
               <img class="img__img " src="<?php echo URL::to('/').'/public/uploads/images/'.$video->player_image;  ?>" class="img-fluid" alt="" height="200" width="300">
               <div class="img__description_layer">
                 <p class="img__description">
-                    <h6> <?php  echo (strlen($video->title) > 50) ? substr($video->title,0,51).'...' : $video->title; ?></h6>
+                    <h6 class="text-center"> <?php  echo (strlen($video->title) > 50) ? substr($video->title,0,51).'...' : $video->title; ?></h6>
                    
                     <div class="movie-time  align-items-center my-2">
-                      <p class="">
+                      <p class="text-center">
                            <?php  echo (strlen($video->trailer_description) > 60) ? substr($video->trailer_description,0,61).'...' : $video->trailer_description; ?>
                       </p>
                     </div>
 
-                    <div class="hover-buttons">
+                    <div class="hover-buttons text-center">
                         <a data-video="<?php echo $video->trailer;  ?>" data-toggle="modal" data-target="#videoModal">	
                           <span class="text-white">
                             <i class="fa fa-play mr-1" aria-hidden="true"></i> Play Now
