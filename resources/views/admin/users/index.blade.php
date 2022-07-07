@@ -8,6 +8,10 @@
 <?php //dd(URL::to('/') . '/public/uploads/avatars/thumb-2.jpg'); ?>
 <script src="//cdn.datatables.net/1.11.0/css/jquery.dataTables.min.css"></script>
 		<script src="//cdn.datatables.net/1.11.0/js/jquery.dataTables.min.js"></script>
+
+    <link rel="stylesheet" href="cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+    <script src="cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+
   <div id="content-page" class="content-page">
             <div class="container-fluid">
                <div class="row ">
@@ -75,7 +79,7 @@
                         </div>
                         <div class="iq-card-body">
                            <div class="table-view">
-                              <table class="data-tables table movie_table text-center" style="width:100%">
+                              <table id="users_table" class="table movie_table text-center" style="width:100%">
                                  <thead>
                                     <tr class="r1">
                                        <th style="width: 10%;">Profile</th>
@@ -133,6 +137,9 @@
 
 		$ = jQuery;
 		$(document).ready(function(){
+
+        $('#users_table').DataTable();
+
 			$('.delete').click(function(e){
 				e.preventDefault();
 				if (confirm("Are you sure you want to delete this user?")) {
