@@ -1,11 +1,8 @@
-<?php include('header.php');?>
+<?php
+    include(public_path('themes/default/views/header.php'));
+?>
 
- <!-- loader Start -->
- <!--<div id="loading">
-    <div id="loading-center">
-    </div>
- </div>-->
- <!-- loader END -->
+
 
  <!-- MainContent -->
  <div class="main-content" style="background: linear-gradient(135.05deg, rgba(136, 136, 136, 0.48) 1.85%, rgba(64, 32, 32, 0.13) 38.53%, rgba(81, 57, 57, 0.12) 97.89%); padding: 15px 60px 40px;!important;">
@@ -208,4 +205,6 @@ header.classList.remove("sticky");
 <script src="https://cdn.jsdelivr.net/npm/videojs-seek-buttons/dist/videojs-seek-buttons.min.js"></script>
 <script src="<?php echo URL::to('/').'/assets/js/videojs.hotkeys.js';?>"></script>
 
-<?php include('footer.blade.php');?>
+<?php 
+    include(public_path('themes/default/views/footer.blade.php'));
+?>

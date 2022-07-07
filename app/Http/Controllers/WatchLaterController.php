@@ -13,6 +13,8 @@ use App\HomeSetting;
 use Auth;
 use View;
 use Theme;
+use App\Episode;
+use App\ThumbnailSetting;
 
 class WatchLaterController extends Controller
 {
@@ -86,10 +88,16 @@ class WatchLaterController extends Controller
              
             $videos = Video::where('active', '=', '1')->whereIn('id', $channel_watchlater_array)->paginate(12);
             $ppvvideos = PpvVideo::where('active', '=', '1')->whereIn('id', $ppv_watchlater_array)->paginate(12);
-      
-             $data = array(
+            
+            $episode_videos = Episode::join('watchlaters','watchlaters.episode_id','=','episodes.id')
+                                      ->where('active','=','1')->latest('episodes.created_at')
+                                      ->get();
+             
+            $data = array(
                      'ppvwatchlater' => $ppvvideos,
-                     'channelwatchlater' => $videos
+                     'channelwatchlater' => $videos,
+                     'episode_videos' => $episode_videos,
+                     'ThumbnailSetting' => ThumbnailSetting::first(),
               );
 
              return Theme::view('mywatchlater', $data);

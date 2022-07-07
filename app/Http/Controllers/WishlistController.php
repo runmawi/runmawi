@@ -11,6 +11,8 @@ use View;
 use Session;
 use Theme;
 use App\LiveStream;
+use App\Episode;
+use App\ThumbnailSetting;
 
 class WishlistController extends Controller
 {
@@ -122,10 +124,16 @@ class WishlistController extends Controller
         $ppvvideos = PpvVideo::where('active', '=', '1')->whereIn('id', $ppv_watchlater_array)->paginate(12);
         $livevideos = LiveStream::where('active', '=', '1')->whereIn('id', $live_watchlater_array)->paginate(12);
         
+        $episode_videos = Episode::join('mywishlists','mywishlists.episode_id','=','episodes.id')
+                            ->where('active','=','1')->latest('episodes.created_at')
+                            ->get();
+
         $data = array(
             'ppvwatchlater'     =>  $ppvvideos,
             'channelwatchlater' =>  $videos,
             'livevideos'        =>  $livevideos,
+            'ThumbnailSetting' => ThumbnailSetting::first(),
+            'episode_videos' => $episode_videos,
         );
 
         return Theme::view('mywhislist', $data);
