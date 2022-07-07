@@ -69,9 +69,10 @@
 			</div>
          <?php if($audios_count > 0){   include('partials/pagination.php'); }else{} ?>
 </div>
+
 <div class="container mt-2 mb-5">
 
-		<div class="block-space">
+		<!-- <div class="block-space">
            <div class="row">
               <div class="col-sm-12 overflow-hidden">
                  <div class="iq-main-header d-flex align-items-center justify-content-between">
@@ -82,8 +83,9 @@
                  </div>
               </div>
            </div>
-        </div>
-		<div class="row nomargin">
+        </div> -->
+
+		<!-- <div class="row nomargin">
 
 			<?php 
 			if(isset($artists)) { 
@@ -115,9 +117,11 @@
 			} ?> 
 			
 
-		</div>
+		</div> -->
 
-      <?php if($audios_count > 0){   include('partials/pagination.php'); }else{} ?>
+      <!-- <?php if($audios_count > 0){   
+         // include('partials/pagination.php'); 
+         }else{} ?> -->
 </div>
 
 
