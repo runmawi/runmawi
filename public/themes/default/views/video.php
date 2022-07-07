@@ -677,11 +677,17 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
           <div class=" page-height">
               <div id="watch_trailer" class="fitvid" atyle="z-index: 9999;">
                
-                <?php  if($video->trailer_type !=null && $video->trailer_type == "video_mp4" || $video->trailer_type == "mp4_url"  ){ ?>
+                <?php  if($video->trailer_type !=null && $video->trailer_type == "video_mp4" || $video->trailer_type == "mp4_url" ){ ?>
 
                     <video  class="videoPlayers" 
                           controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
                           type="video/mp4" src="<?php echo $video->trailer;?>">
+                    </video>
+                    <?php }elseif($video->trailer_type !=null && $video->trailer_type == "m3u8" ){ ?>
+
+                    <video  class="videoPlayers" 
+                          controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
+                          type="application/x-mpegURL">
                     </video>
 
 
@@ -1773,6 +1779,7 @@ location.reload();
 
   var trailer_video_m3u8 = <?php echo json_encode($video->trailer) ; ?> ;
   var trailer_video_type =  <?php echo json_encode($video->trailer_type) ; ?> ;
+  
 
   if(trailer_video_type == "m3u8_url"){
     (function () {
@@ -1787,6 +1794,55 @@ location.reload();
       }
       
     })();
+
+  }else if(trailer_video_type == "m3u8"){
+  // alert(trailer_video_type);
+  document.addEventListener("DOMContentLoaded", () => {
+  const video = document.querySelector('.videoPlayers');
+  const source = video.getElementsByTagName("source")[0].src;
+  
+  // For more options see: https://github.com/sampotts/plyr/#options
+  // captions.update is required for captions to work with hls.js
+  const defaultOptions = {};
+
+  if (Hls.isSupported()) {
+    // For more Hls.js options, see https://github.com/dailymotion/hls.js
+    const hls = new Hls();
+    hls.loadSource(source);
+
+    // From the m3u8 playlist, hls parses the manifest and returns
+    // all available video qualities. This is important, in this approach,
+    // we will have one source on the Plyr player.
+    hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+
+      // Transform available levels into an array of integers (height values).
+      const availableQualities = hls.levels.map((l) => l.height)
+
+      // Add new qualities to option
+      defaultOptions.quality = {
+        default: availableQualities[0],
+        options: availableQualities,
+        // this ensures Plyr to use Hls to update quality level
+        forced: true,        
+        onChange: (e) => updateQuality(e),
+      }
+
+      // Initialize here
+      const player = new Plyr(video, defaultOptions);
+    });
+    hls.attachMedia(video);
+    window.hls = hls;
+  }
+
+  function updateQuality(newQuality) {
+    window.hls.levels.forEach((level, levelIndex) => {
+      if (level.height === newQuality) {
+        console.log("Found quality match with " + newQuality);
+        window.hls.currentLevel = levelIndex;
+      }
+    });
+  }
+});
 
   }
    
