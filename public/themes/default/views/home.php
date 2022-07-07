@@ -195,6 +195,21 @@ if($home_settings->albums == 1){ ?>
 </section>
 <?php } } ?>
 
+<?php 
+      if($value->video_name == 'albums'){
+
+         if($home_settings->albums == 1){ ?>
+            <section id="iq-favorites">
+               <div class="container-fluid">
+                  <div class="row">
+                     <div class="col-sm-12 overflow-hidden">
+                        <?php include('partials/home/artist-videos.php'); ?>
+                     </div>
+                  </div>
+               </div>
+         </section>
+<?php } } ?>
+
 
 
 <?php 
@@ -1079,9 +1094,21 @@ endif; ?>
                               $videos = $videos->where('age_restrict', '<', 10);
                           }
                      $videos = $videos->orderBy('videos.created_at','desc')->get();
+
+
+                     $Episode_videos =  App\Series::select('episodes.*','series.title as series_name')
+                              ->join('series_categories', 'series_categories.series_id', '=', 'series.id')
+                              ->join('episodes', 'episodes.series_id', '=', 'series.id')
+                              ->where('series_categories.category_id','=',$category->id)
+                              ->where('episodes.active', '=', '1')
+                              ->where('series.active', '=', '1')
+                              ->groupBy('episodes.id')
+                              ->latest('episodes.created_at')
+                              ->get();
+
                      }
                 ?>
-                        <?php if (count($videos) > 0) { 
+                        <?php if (count($videos) > 0 || count($Episode_videos) > 0) { 
                             include('partials/category-videoloop.php');
                         } else { ?>
                         <p class="no_video"> <!--<?php echo __('No Video Found');?>--></p>
