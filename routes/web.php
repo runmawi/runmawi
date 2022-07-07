@@ -178,13 +178,22 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
     Route::post('/subscribe-now', 'HomeController@StripeSubscription');
 
     Route::post('/paypal_subscription', 'HomeController@PaypalSubscription');  
-//Route::post('/registerSubmit', 'StripeController@PostcreddateStep1');    
+//Route::post('/registerSubmit', 'StripeController@PostcreddateStep1');   
+
+// Episode watchlater and wishlist
+
+    Route::get('episode_watchlist', 'WatchLaterController@episode_watchlist');
+    Route::get('episode_watchlist_remove', 'WatchLaterController@episode_watchlist_remove');
+
+    Route::get('episode_wishlist', 'WishlistController@episode_wishlist');
+    Route::get('episode_wishlist_remove', 'WishlistController@episode_wishlist_remove');
+
 });
 
 
 Route::get('serieslist', array('uses' => 'ChannelController@series', 'as' => 'series') );
 Route::get('series/category/{id}', 'ChannelController@series_genre' );
-Route::get('watchlater', 'WatchLaterController@show_watchlaters');
+Route::get('watchlater', 'WatchLaterController@mywishlists');
 Route::get('myprofile', 'AdminUsersController@myprofile');
 Route::get('refferal', 'AdminUsersController@refferal');
 Route::post('/profile/update', 'AdminUsersController@profileUpdate');   

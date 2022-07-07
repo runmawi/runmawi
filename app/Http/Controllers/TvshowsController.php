@@ -170,9 +170,25 @@ class TvshowsController extends Controller
 
    public function play_episode($series_name,$episode_name)//
    {
-    $Theme = HomeSetting::pluck('theme_choosen')->first();
-    Theme::uses( $Theme );
-   	$settings = Setting::first();
+        $Theme = HomeSetting::pluck('theme_choosen')->first();
+        Theme::uses( $Theme );
+        $settings = Setting::first();
+
+        $auth_user = Auth::user();
+
+        if($auth_user == null){
+                $auth_user_id = null ;
+        }else{
+            $auth_user_id = Auth::user()->id ;
+        }
+
+        $episodess = Episode::where('slug','=',$episode_name)->orderBy('id', 'DESC')->first();    
+
+        $episode_watchlater = Watchlater::where('episode_id',$episodess->id)->where('user_id',$auth_user_id)->first();
+
+        $episode_Wishlist = Wishlist::where('episode_id',$episodess->id)->where('user_id',$auth_user_id)->first();
+
+
         if(Auth::guest() && $settings->access_free == 0):
             return Redirect::to('/login');    
             endif;
@@ -327,6 +343,8 @@ class TvshowsController extends Controller
                 'view_increment' => $view_increment,
                 'series_categories' => Genre::all(),
                 'pages' => Page::where('active', '=', 1)->get(),
+                'episode_watchlater' => $episode_watchlater,
+                'episode_Wishlist'   => $episode_Wishlist
                 );
 
             if(Auth::guest() && $settings->access_free == 1){
@@ -355,6 +373,8 @@ class TvshowsController extends Controller
                     'view_increment' => $view_increment,
                     'series_categories' => Genre::all(),
                     'pages' => Page::where('active', '=', 1)->get(),
+                    'episode_watchlater' => $episode_watchlater,
+                    'episode_Wishlist'   => $episode_Wishlist
                     );
 
                     if(Auth::guest() && $settings->access_free == 1){

@@ -119,7 +119,9 @@ class AdminUsersController extends Controller
                 ->get();
         else:
             // $users = User::orderBy('created_at', 'desc')->take(9000)->get();
-            $allUsers = User::orderBy('created_at', 'desc')->paginate(10);
+            // $allUsers = User::orderBy('created_at', 'desc')->paginate(10);
+            $allUsers = User::orderBy('created_at', 'desc')->get();
+
         endif;
         // print_r($total_revenew);
         // exit();
