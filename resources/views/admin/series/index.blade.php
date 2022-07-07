@@ -72,7 +72,7 @@ border-radius: 0px 4px 4px 0px;
 			<th><label>Operation</label></th>
 			@foreach($series as $key=>$series_value)
 			<tr>
-				<td>{{$series_value->id}}</td>
+				<td>{{$key + 1}}</td>
 				<td><img src="{{ URL::to('/') . '/public/uploads/images/' . $series_value->image }}" width="100"></td>
 				<td valign="bottom"><p>{{ $series_value->title }}</p></td>
 				<td valign="bottom"><p>{{ $series_value->genre_id }}</p></td>

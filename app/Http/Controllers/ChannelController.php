@@ -127,10 +127,17 @@ class ChannelController extends Controller
          }
          $currency = CurrencySetting::first();
 
-         $series =  Series::join('series_categories', 'series_categories.series_id', '=', 'series.id')
-                    ->where('series_categories.category_id','=',$category_id)
-                    ->where('active', '=', '1')
-                    ->get();
+         $Episode_videos =  Series::select('episodes.*','series.title as series_name')
+                            ->join('series_categories', 'series_categories.series_id', '=', 'series.id')
+                            ->join('episodes', 'episodes.series_id', '=', 'series.id')
+                            ->where('series_categories.category_id','=',$category_id)
+                            ->where('episodes.active', '=', '1')
+                            ->where('series.active', '=', '1')
+                            ->groupBy('episodes.id')
+                            ->latest('episodes.created_at')
+                            ->get();
+        
+   
          
         $data = array(
                 'currency'=> $currency,
@@ -139,7 +146,7 @@ class ChannelController extends Controller
                 'ppv_gobal_price' => $ppv_gobal_price,
                 'ThumbnailSetting' => $ThumbnailSetting,
                 'age_categories' => AgeCategory::get(),
-                'series'   => $series,
+                'Episode_videos'   => $Episode_videos,
             );
        return Theme::view('categoryvids',['categoryVideos'=>$data]);
 
@@ -1570,6 +1577,29 @@ class ChannelController extends Controller
 
         $categoryVideos = $categoryVideos->get();
 
+        $Episode_videos =  Series::select('episodes.*','series.title as series_name')
+                ->join('series_categories', 'series_categories.series_id', '=', 'series.id')
+                ->join('episodes', 'episodes.series_id', '=', 'series.id')
+                ->where('series_categories.category_id','=',$request->category_id)
+                ->where('episodes.active', '=', '1')
+                ->where('series.active', '=', '1')
+                ->groupBy('episodes.id')
+                ->latest('episodes.created_at');
+
+                if(!empty($request->rating) ){
+                  $Episode_videos = $Episode_videos->WhereIn('episodes.rating',$request->rating);
+                }
+        
+                if(!empty($request->age)  ){
+                  $Episode_videos = $Episode_videos->WhereIn('episodes.age_restrict',$request->age);
+                }
+        
+                if(!empty($request->sorting )  ){
+                
+                  $Episode_videos = $Episode_videos->orderBy('episodes.created_at','DESC');
+                }
+
+          $Episode_videos = $Episode_videos->get();
            
         $data = array(
           'currency'=> CurrencySetting::first(),
@@ -1578,6 +1608,7 @@ class ChannelController extends Controller
           'age_categories' => AgeCategory::get(),
           'categoryVideos'=>$categoryVideos,
           'ppv_gobal_price' => $ppv_gobal_price,
+          'Episode_videos' => $Episode_videos,
         );
 
         $theme = Theme::uses( $this->Theme);
