@@ -169,10 +169,10 @@ border-radius: 0px 4px 4px 0px;
                         <small>(Dimensions: 180px X 29px)</small></label>
                     </div>
 
-                    <div class="panel-options">
+                    <div class="panel-options d-flex justify-content-between">
                         <input type="radio"  name="logo_size" value="square" @if($settings->logo_size != null)
-                                {{ $settings->logo_size == "square" ? 'checked' : '' }} @else {{ 'checked' }}  @endif ><label >Square Size </label>
-                        <input type="radio"  name="logo_size" value="rectangle" {{ $settings->logo_size == "rectangle" ? 'checked' : '' }} ><label >Rectangular size</label>
+                                {{ $settings->logo_size == "square" ? 'checked' : '' }} @else {{ 'checked' }}  @endif ><p class="mt-3">Square Size </p>
+                        <input type="radio"  name="logo_size" value="rectangle" {{ $settings->logo_size == "rectangle" ? 'checked' : '' }} ><p class="mt-3">Rectangular size</p>
                     </div>
 
                     <div class="panel-options">
