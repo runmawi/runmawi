@@ -414,7 +414,8 @@ class HomeController extends Controller
                 'Family_Mode' => $Family_Mode = 2,
                 'Kids_Mode' => $Kids_Mode = 2,
                 'ThumbnailSetting' => $ThumbnailSetting,
-                'artist' => [],
+                'artist' => Artist::all(),
+
             );
             return Theme::view('home', $data);
         }

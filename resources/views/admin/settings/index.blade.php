@@ -246,6 +246,24 @@ border-radius: 0px 4px 4px 0px;
                         </div>
                     </div>
                 </div>
+
+
+                <div class="panel-heading">
+                    <div class="panel-title"><label> Horizontal Default Image</label></div>
+                    <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
+                </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="default_horizontal_image" style="margin: auto;">
+                                @if(!empty($settings->default_horizontal_image))
+                                    <img src="{{ URL::to('/') . '/public/uploads/images/' . $settings->default_horizontal_image }}" style="max-height: 25%; max-width: 25%" />
+                                @endif
+                            </div>
+                            
+                            <p class="p1">Upload Your Default Image:</p>
+                            <input type="file" multiple="true" class="form-control" name="default_horizontal_image" id="default_horizontal_image" />
+                        </div>
+                    </div>
             </div>
         </div>
 

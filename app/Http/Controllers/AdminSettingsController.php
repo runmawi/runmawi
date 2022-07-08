@@ -366,6 +366,21 @@ class AdminSettingsController extends Controller
             $settings->default_video_image = $filename;
       }
 
+
+      if(!empty($input['default_horizontal_image'])){
+        $defaultImage_setting =  Setting::pluck('default_horizontal_image')->first();
+        $files = $input['default_horizontal_image'];
+        $format=$files->getClientOriginalExtension();
+        $filename ='default_horizontal_image'.'.' . 'jpg';
+        if(file_exists(public_path().'/uploads/images/'.$defaultImage_setting)){
+          if(!empty($defaultImage_setting)){
+            unlink( public_path().'/uploads/images/'.$defaultImage_setting); // Remove Image
+          }
+        }
+        Image::make($files)->save(base_path().'/public/uploads/images/'.$filename )->encode('jpg', 80);
+        $settings->default_horizontal_image = $filename;
+  }
+
       $settings->default_ads_url = $request['default_ads_url'];
    
       $settings->save();
