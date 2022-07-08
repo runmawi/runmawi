@@ -178,7 +178,16 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
     Route::post('/subscribe-now', 'HomeController@StripeSubscription');
 
     Route::post('/paypal_subscription', 'HomeController@PaypalSubscription');  
-//Route::post('/registerSubmit', 'StripeController@PostcreddateStep1');    
+//Route::post('/registerSubmit', 'StripeController@PostcreddateStep1');   
+
+// Episode watchlater and wishlist
+
+    Route::get('episode_watchlist', 'WatchLaterController@episode_watchlist');
+    Route::get('episode_watchlist_remove', 'WatchLaterController@episode_watchlist_remove');
+
+    Route::get('episode_wishlist', 'WishlistController@episode_wishlist');
+    Route::get('episode_wishlist_remove', 'WishlistController@episode_wishlist_remove');
+
 });
 
 

@@ -212,10 +212,27 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 			<?php else: ?><?= $episode->views ?><?php endif; ?> Views 
 			</span>
 			</div>
-			<div class="col-md-5 text-right">
-            <div class="watchlater btn btn-primary text-white  <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-episodeid="<?= $episode->id ?>"><?php if(isset($watchlatered->id)): ?><i class="fa fa-check"></i><?php else: ?><i class="fa fa-clock-o"></i><?php endif; ?> Watch Later</div>
-			<div class="mywishlist btn btn-primary text-white  <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-episodeid="<?= $episode->id ?>" style="margin-left:10px;"><?php if(isset($mywishlisted->id)): ?><i class="fa fa-check"></i>Wishlisted<?php else: ?><i class="fa fa-plus"></i>Add Wishlist<?php endif; ?> </div>			
-			</div>
+			
+
+			
+				                <!-- Watchlater & Wishlist -->
+								
+				<div class="col-md-5 text-right">
+
+					<?php if($episode_watchlater == null){ ?>
+						<div id="<?php echo 'episode_add_watchlist_'.$episode->id ; ?>" class="watchlater btn btn-primary text-white"  aria-hidden="true" data-list="<?php echo $episode->id ; ?>" data-myval="10" data-video-id="<?php echo $episode->id ; ?>" onclick="episodewatchlater(this)" >  Watch Later </div>
+					<?php }else{?>
+						<div id="<?php echo 'episode_add_watchlist_'.$episode->id ; ?>" class="watchlater btn btn-primary text-white"  aria-hidden="true" data-list="<?php echo $episode->id ; ?>" data-myval="10"  data-video-id="<?php echo $episode->id ; ?>"  onclick="episodewatchlater(this)"> Remove Watch Later </div>
+					<?php } ?>
+
+					<?php if($episode_Wishlist == null){ ?>
+						<div id="<?php echo 'episode_add_wishlist_'.$episode->id ; ?>" class="mywishlist btn btn-primary text-white"  aria-hidden="true" data-list="<?php echo $episode->id ; ?>" data-myval="10" data-video-id="<?php echo $episode->id ; ?>" onclick="episodewishlist(this)" > Add  Wishlist </div>
+					<?php }else{?>
+						<div id="<?php echo 'episode_add_wishlist_'.$episode->id ; ?>" class="mywishlist btn btn-primary text-white"  aria-hidden="true" data-list="<?php echo $episode->id ; ?>" data-myval="10"  data-video-id="<?php echo $episode->id ; ?>"  onclick="episodewishlist(this)"> Remove Wishlist </div>
+					<?php } ?>
+				
+				</div>
+
 			<!-- <div>
 			<?php //if ( $episode->ppv_status != null && Auth::User()!="admin" || $episode->ppv_price != null  && Auth::User()->role!="admin") { ?>
 			<button  data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary rent-episode">
@@ -636,6 +653,92 @@ input.skips,input#Recaps_Skip{
               }
     });
 </script>
+
+<!-- Watchlater & wishlist -->
+
+<script>
+
+function episodewatchlater(ele) 
+		{
+			var episode_id = $(ele).attr('data-video-id');
+			var key_value = $(ele).attr('data-list');
+            var id = '#episode_add_watchlist_'+ key_value;
+            var my_value =  $(id).data('myval');
+
+			if(my_value != "remove"){
+				var url = '<?= URL::to('/episode_watchlist');?>';
+			}else if(my_value == "remove"){
+				var url = '<?= URL::to('/episode_watchlist_remove');?>';
+			}
+
+            $.ajax({
+					url:url,
+					type:'get',
+					data:{
+						episode_id:episode_id, 
+                    },
+					success:function(data){
+
+                  if(data.message == "Remove the Watch list"){
+
+                     $(id).data('myval'); 
+                     $(id).data('myval','remove');
+                     $(id).text("Remove Watch Later");
+
+                  }else if(data.message == "Add the Watch list"){
+                     $(id).data('myval'); 
+                     $(id).data('myval','add');
+                     $(id).text("Add  Watch Later");
+                  }
+                  else if (data.message == "guest"){
+                    window.location.replace('<?php echo URL::to('/login'); ?>');
+                  }
+					}
+				})
+		}
+
+
+		function episodewishlist(ele) 
+		{
+			var episode_id = $(ele).attr('data-video-id');
+			var key_value = $(ele).attr('data-list');
+            var id = '#episode_add_wishlist_'+ key_value;
+            var my_value =  $(id).data('myval');
+
+			if(my_value != "remove"){
+				var url = '<?= URL::to('/episode_wishlist');?>';
+			}else if(my_value == "remove"){
+				var url = '<?= URL::to('/episode_wishlist_remove');?>';
+			}
+
+            $.ajax({
+					url:url,
+					type:'get',
+					data:{
+						episode_id:episode_id, 
+                    },
+					success:function(data){
+
+                  if(data.message == "Remove the Watch list"){
+
+                     $(id).data('myval'); 
+                     $(id).data('myval','remove');
+                     $(id).text("Remove  Wishlist");
+
+                  }else if(data.message == "Add the Watch list"){
+                     $(id).data('myval'); 
+                     $(id).data('myval','add');
+                     $(id).text("Add  Wishlist");
+                  }
+                  else if (data.message == "guest"){
+                    window.location.replace('<?php echo URL::to('/login'); ?>');
+                  }
+					}
+				})
+		}
+
+</script>
+
 	
 <?php include('footer.blade.php'); ?>
 
