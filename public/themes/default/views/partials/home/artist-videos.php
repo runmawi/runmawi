@@ -1,3 +1,5 @@
+<?php if(count($artist) > 0 ) {?>
+
     <div class="iq-main-header d-flex align-items-center justify-content-between">
             <h4 class="main-title"><a href=""> Artist </a></h4>                      
     </div>
@@ -36,3 +38,5 @@
                 <?php endforeach; endif; ?>
         </ul>
     </div>
+
+<?php } ?>

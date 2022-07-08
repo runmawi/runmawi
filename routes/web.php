@@ -188,6 +188,9 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
     Route::get('episode_wishlist', 'WishlistController@episode_wishlist');
     Route::get('episode_wishlist_remove', 'WishlistController@episode_wishlist_remove');
 
+// Become subscriber - single page
+    Route::get('become_subscriber', 'PaymentController@become_subscriber');
+
 });
 
 
