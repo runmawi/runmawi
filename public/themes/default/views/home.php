@@ -196,9 +196,7 @@ if($home_settings->albums == 1){ ?>
 <?php } } ?>
 
 <?php 
-      if($value->video_name == 'albums'){
-
-         if($home_settings->albums == 1){ ?>
+      if('artist' == 'artist'){ ?>
             <section id="iq-favorites">
                <div class="container-fluid">
                   <div class="row">
@@ -208,7 +206,7 @@ if($home_settings->albums == 1){ ?>
                   </div>
                </div>
          </section>
-<?php } } ?>
+<?php } ?>
 
 
 
