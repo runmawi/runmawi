@@ -892,7 +892,7 @@ class AdminAudioController extends Controller
         $path = public_path().'/uploads/audios/';
         $image_path = public_path().'/uploads/images/';
         if(empty($data['player_image'])){
-                $player_image ="Default.png";
+            $player_image = "default_horizontal_image.jpg";
         } else {
             $image = $data['player_image'];
             if($image != ''  && $image != null){

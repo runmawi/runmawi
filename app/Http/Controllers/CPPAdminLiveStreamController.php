@@ -184,8 +184,8 @@ class CPPAdminLiveStreamController extends Controller
 
  
           } else{
-            $player_image = "Defualt.jpg";
-          }
+            $player_image = "default_horizontal_image.jpg";
+        }
         
         // $data['user_id'] = Auth::user()->id;
         
