@@ -507,11 +507,28 @@ function Country_name(){
     $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
     $userIp = $geoip->getip();
     $countryName = $geoip->getCountry();
-    $regionName = $geoip->getregion();
-    $cityName = $geoip->getcity();
 
     return $countryName;
 }
+
+function city_name(){
+    
+    $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+    $userIp = $geoip->getip();
+    $cityName = $geoip->getcity();
+
+    return $cityName;
+}
+
+function Region_name(){
+    
+    $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+    $userIp = $geoip->getip();
+    $regionName = $geoip->getregion();
+
+    return $regionName;
+}
+
 
 function Block_videos(){
      // blocked videos

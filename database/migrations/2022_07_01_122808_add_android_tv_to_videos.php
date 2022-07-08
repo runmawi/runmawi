@@ -28,7 +28,7 @@ class AddAndroidTvToVideos extends Migration
     {
         Schema::table('app_settings', function (Blueprint $table) {
             //
-            $table->dropColumn('app_settings');
+            $table->dropColumn('android_tv');
         });
     }
 }

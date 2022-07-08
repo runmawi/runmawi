@@ -166,6 +166,7 @@ h2{
       }
 .img__description_layer {
   position: absolute;
+    cursor: pointer;
  padding: 30px 20px;
   bottom: 0;
   left: 0;
@@ -911,6 +912,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
             <div class="img__wrap">
               <img class="img__img " src="<?php echo URL::to('/').'/public/uploads/images/'.$video->player_image;  ?>" class="img-fluid" alt="" height="200" width="300">
               <div class="img__description_layer">
+                   <a data-video="<?php echo $video->trailer;  ?>" data-toggle="modal" data-target="#videoModal">
                 <p class="img__description">
                     <h6 class="text-center"> <?php  echo (strlen($video->title) > 50) ? substr($video->title,0,51).'...' : $video->title; ?></h6>
                    
@@ -928,6 +930,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                         </a>
                     </div>
                 </p>
+                  </a>
               </div>
             </div>
 

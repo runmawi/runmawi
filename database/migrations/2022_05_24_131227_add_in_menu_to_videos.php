@@ -28,7 +28,8 @@ class AddInMenuToVideos extends Migration
     {
         Schema::table('live_categories', function (Blueprint $table) {
             //
-            $table->dropColumn('live_categories');
+            $table->dropColumn('signup_payment_content');
+
         });
     }
 }

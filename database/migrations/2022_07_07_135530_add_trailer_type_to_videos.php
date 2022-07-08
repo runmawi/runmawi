@@ -28,7 +28,7 @@ class AddTrailerTypeToVideos extends Migration
     {
         Schema::table('series_seasons', function (Blueprint $table) {
             //
-            $table->dropColumn('series_seasons');
+            $table->dropColumn('trailer_type');
         });
     }
 }

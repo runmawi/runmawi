@@ -32,7 +32,11 @@ class AddPlayerLocalityToPlayerAnalytics extends Migration
     {
         Schema::table('player_analytics', function (Blueprint $table) {
             //
-            $table->dropColumn('player_analytics');
+            $table->dropColumn('country_name');
+            $table->dropColumn('state_name');
+            $table->dropColumn('city_name');
+            $table->dropColumn('locality');
+
         });
     }
 }
