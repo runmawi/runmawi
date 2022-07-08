@@ -1,18 +1,15 @@
-@php
-    include(public_path('themes/default/views/header.php'));
-@endphp
+
 <?php
-$series = App\series::first();
 
+    include(public_path('themes/default/views/header.php'));
+    $series = App\series::first();
 ?>
-
-<?php 
+<?php
 $series= App\series::where('id',$episode->series_id)->first();
 $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
-
+// dd($SeriesSeason);
 ?>
-<input type="hidden" value="<?php echo $episode->type; ?>" id='episode_type'>
-
+<input type="hidden" value="<?php echo URL::to('/');?>" id="base_url" >
 <input type="hidden" value="<?php echo URL::to('/'); ?>" id="base_url" >
 <input type="hidden" id="videoslug" value="<?php if (isset($episode->path))
 {
@@ -22,6 +19,8 @@ else
 {
     echo "0";
 } ?>">
+<input type="hidden" value="<?php echo $episode->type; ?>" id='episode_type'>
+
 	<div id="series_bg">
 		<div class="">
 			
@@ -44,8 +43,8 @@ if (Auth::guest())
 					<?php
             elseif ($episode->type == 'file' || $episode->type == 'upload'): ?>
 						<div id="series_container">
-						<video id="videoPlayer"  class="video-js vjs-default-skin" poster="<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' width="100%" style="width:100%;" type="video/mp4"  data-authenticated="<?=!Auth::guest() ?>">
 
+						 <video id="videoPlayer"  class="video-js vjs-default-skin" poster="<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' width="100%" style="width:100%;" type="video/mp4"  data-authenticated="<?=!Auth::guest() ?>">
 							<source src="<?=$episode->mp4_url; ?>" type='video/mp4' label='auto' >
 							<source src="<?=$episode->webm_url; ?>" type='video/webm' label='auto' >
 							<source src="<?=$episode->ogg_url; ?>" type='video/ogg' label='auto' >
@@ -76,7 +75,7 @@ if (Auth::guest())
 								<?php } } ?>
 								</video>
 								</div>
-					<?php            else: ?>                                  
+					<?php  else: ?>                                  
 						<div id="series_container">
 						<video id="videoPlayer"    class="video-js vjs-default-skin" controls preload="auto" poster="<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>" data-setup="{}" width="100%" style="width:100%;" data-authenticated="<?=!Auth::guest() ?>">
                            
@@ -100,20 +99,21 @@ if (Auth::guest())
 					<?php
             endif; ?>
 					
-						<!-- Intro Skip and Recap Skip -->
-
+	<!-- Intro Skip and Recap Skip -->
+		
 			<div class="col-sm-12 intro_skips">
 				<input type="button" class="skips" value="Skip Intro" id="intro_skip">
 				<input type="button" class="skips" value="Auto Skip in 5 Secs" id="Auto_skip">
-			</div>
+			</div>	
 
-  			<div class="col-sm-12 Recap_skip">
+			<div class="col-sm-12 Recap_skip">
      			 <input type="button" class="Recaps" value="Recap Intro" id="Recaps_Skip" style="display:none;">
   			</div>
-						<!-- Intro Skip and Recap Skip -->
 
+  	<!-- Intro Skip and Recap Skip -->
 
-			<?php        else: ?>
+			<?php
+        else: ?>
 
                 <div id="subscribers_only"style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
 					<h2>Sorry, this series is only available to <?php if ($series->access == 'subscriber'): ?>Subscribers<?php
@@ -124,7 +124,8 @@ if (Auth::guest())
 						<form method="get" action="<?=URL::to('/') ?>/user/<?=Auth::user()->username ?>/upgrade_subscription">
 							<button id="button">Become a subscriber to watch this episode</button>
 						</form>
-					<?php            else: ?>
+					<?php
+            else: ?>
 						<form method="get" action="<?=URL::to('signup') ?>">
 							<button id="button">Signup Now <?php if ($series->access == 'subscriber'): ?>to Become a Subscriber<?php
                 elseif ($series->access == 'registered'): ?>for Free!<?php
@@ -190,9 +191,9 @@ if (Auth::guest())
 ?>">
 <br>
 
-	<div class="container series-details">
+	<div class="container-fluid series-details">
 	<div id="series_title">
-		<div class="container">
+		<div class="">
             <div class="row align-items-center">
 			<?php if ($free_episode > 0 || $ppv_exits > 0 || Auth::user()->role == 'admin' || Auth::guest())
 {
@@ -222,14 +223,15 @@ else
 	<br>
 	<br>
 	<br>
-                <div class="col-md-5">
-			<span class="text-white" style="font-size: 129%;font-weight: 700;">You're watching:</span>
-      <p style=";font-size: 130%;color: white;"><?php if(!empty($series)){ echo 'Series'.' '.$series->id.' ';}
-			if(!empty($SeriesSeason)){ echo 'Season'.' '.$SeriesSeason->id.' ';} 
-			if(!empty($episode)){ echo 'Episode'.' '.$episode->id;} ?>
-       <p style=";font-size: 130%;color: white;"><?=$episode->title
+                <div class="col-md-6">
+			<span class="text-white" style="font-size: 120%;font-weight: 700;">You're watching:</span> 
+                     
+      <p class="mb-0" style=";font-size: 80%;color: white;"><?php 
+			if(!empty($SeriesSeason)){ echo 'Season'.' '.$SeriesSeason->id.' ';} if(!empty($episode)){ echo 'Episode'.' '.$episode->id;} ?>
+    
+                    </p>
+                     <p class="" style=";font-size: 100%;color: white;font-weight: 700;"><?=$episode->title
 ?></p>
-		
 	</div>
                 
 		<!---<h3 style="color:#000;margin: 10px;"><?=$episode->title
@@ -239,7 +241,7 @@ else
 		</h3>-->
 		
 			<div class="col-md-2 text-center text-white">
-			<span class="view-count " style="float:right;">
+			<span class="view-count  " style="float:right;">
 			<i class="fa fa-eye"></i> 
 			<?php if (isset($view_increment) && $view_increment == true): ?><?=$episode->views + 1 ?>
 			<?php
@@ -247,16 +249,12 @@ else: ?><?=$episode->views ?><?php
 endif; ?> Views 
 			</span>
 			</div>
-			<div class="col-md-5 text-right">
-            <div class="watchlater btn btn-primary text-white  <?php if (isset($watchlatered->id)): ?>active<?php
-endif; ?>" data-authenticated="<?=!Auth::guest() ?>" data-episodeid="<?=$episode->id ?>"><?php if (isset($watchlatered->id)): ?><i class="fa fa-check"></i><?php
-else: ?><i class="fa fa-clock-o"></i><?php
-endif; ?> Watch Later</div>
-			<div class="mywishlist btn btn-primary text-white  <?php if (isset($mywishlisted->id)): ?>active<?php
-endif; ?>" data-authenticated="<?=!Auth::guest() ?>" data-episodeid="<?=$episode->id ?>" style="margin-left:10px;"><?php if (isset($mywishlisted->id)): ?><i class="fa fa-check"></i>Wishlisted<?php
-else: ?><i class="fa fa-plus"></i>Add Wishlist<?php
-endif; ?> </div>			
+
+			<div class="col-md-4">
+						<div class="ml-2 btn bd video-open playbtn mb-2 "  aria-hidden="true"  onclick="episodewishlist(this)"> Add to Watch Later </div>
+						<div class="ml-2 btn bd video-open playbtn mb-2 "  aria-hidden="true"  onclick="episodewishlist(this)" > Add to Wish list </div>
 			</div>
+
 			<!-- <div>
 			<?php //if ( $episode->ppv_status != null && Auth::User()!="admin" || $episode->ppv_price != null  && Auth::User()->role!="admin") {
  ?>
@@ -271,7 +269,7 @@ endif; ?> </div>
 <!-- <div class="clear" style="display:flex;justify-content: space-between;
     align-items: center;">
     <div> -->
-		<h2 id="tags">Tags: 
+		<h4 id="tags">Tags: 
 		<?php if (isset($episode->tags))
 {
     foreach ($episode->tags as $key => $tag): ?>
@@ -286,7 +284,7 @@ endif; ?> </div>
 }
 ?>
             
-		</h2>
+		</h4>
         </div>
 
 		
@@ -310,71 +308,54 @@ elseif (isset($episodeprev))
 		<?php
 } ?>
 
-		<div class="iq-main-header container d-flex align-items-center justify-content-between">
+		<div class="iq-main-header ">
   <h4 class="main-title">Season</h4>                      
 </div>
-<div class="favorites-contens">
-  <ul class="favorites-slider list-inline  row p-0 mb-0">
-    <?php
-foreach ($season as $key => $seasons):
-    foreach ($seasons->episodes as $key => $episodes):
-        if ($episodes->id != $episode->id): ?>
-        <li class="slide-item p-2">
-		<a class="block-thumbnail" href="<?=($settings->enable_https) ? secure_url('episodes') : URL::to('episode') . '/' . @$episodes
-                ->series_title->title . '/' . $episodes->slug; ?>">
-				<div class="thumbnail-overlay"></div>
-<!--				<img src="<= ImageHandler::getImage($episodes->image, 'medium')  ?>">-->
-				<img src="<?php echo URL::to('/') . '/public/uploads/images/' . $episodes->image; ?>" width="200">
-				<div class="details">
-				<h4><?=$episodes->title; ?> <span><br><?=gmdate("H:i:s", $episodes->duration); ?></span></h4>
-				</div></a>
-              <div class="block-contents">
-			  <p class="date" style="color:#fff;"><?=date("F jS, Y", strtotime($episodes->created_at)); ?>
-				<?php if ($episodes->access == 'guest'): ?>
+<div class="favorites-contens ml-2">
+                        <ul class="favorites-slider list-inline row mb-0">
+                             <?php  
+	foreach($season as $key => $seasons):
+      foreach($seasons->episodes as $key => $episodes):
+		if($episodes->id != $episode->id): ?>
+                           <li class="slide-item">
+                              <a href="<?= ($settings->enable_https) ? secure_url('episodes') : URL::to('episode').'/'.@$episodes->series_title->title.'/'.$episodes->slug; ?>">
+                                 <div class="block-images position-relative">
+                                    <div class="img-box">
+                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class="w-100">
+                                    </div>
+                                    <div class="block-description">
+                                      <h6><?= $episodes->title; ?> </h6>
+                                        <p class="date" style="color:#fff;font-size:14px;"><?= date("F jS, Y", strtotime($episodes->created_at)); ?>
+				<?php if($episodes->access == 'guest'): ?>
 				<span class="label label-info">Free</span>
-				<?php
-            elseif ($episodes->access == 'subscriber'): ?>
+				<?php elseif($episodes->access == 'subscriber'): ?>
 				<span class="label label-success">Subscribers Only</span>
-				<?php
-            elseif ($episodes->access == 'registered'): ?>
+				<?php elseif($episodes->access == 'registered'): ?>
 				<span class="label label-warning">Registered Users</span>
-				<?php
-            endif; ?>
+				<?php endif; ?>
 				</p>
-				<p class="desc"><?php if (strlen($episodes->description) > 90)
-            {
-                echo substr($episodes->description, 0, 90) . '...';
-            }
-            else
-            {
-                echo $episodes->description;
-            } ?></p>
-                <!-- <div class="movie-time d-flex align-items-center my-2"> -->
-                  <!-- <div class="badge badge-secondary p-1 mr-2">13+</div>
-                  <span class="text-white"><i class="fa fa-clock-o"></i> <? // gmdate('H:i:s', $latest_serie->duration);
-             ?></span>
-                </div> -->
-                <!-- <div class="hover-buttons">
-                  <a class="btn btn-primary btn-hover" href="<?php //echo URL::to('/play_series'.'/'.$latest_serie->title)
-             ?>/<? // $latest_serie->id
-             ?>" >
-                    <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                    Play Now
-                  </a>
-                </div> -->
-				<!-- </div> -->
-          <!-- </a> -->
-        </li>
-		<?php
-        endif;
-    endforeach; ?>
-      <?php
-endforeach;
-?>
-  </ul>
-</div>
-</div>
+                                       <div class="hover-buttons">
+                                           <a  href="<?php echo URL::to('category')?><?='/videos/' .$episode->slug ?>">	
+                                          <span class="text-white">
+                                          <i class="fa fa-play mr-1" aria-hidden="true"></i>
+                                          Play Now
+                                          </span>
+                                           </a>
+                                       </div>
+                                     </div>
+                                 </div>
+                              </a>
+                           </li>
+                           
+                            <?php 
+                            endif;
+                            endforeach; 
+                            endforeach
+		                           ?>
+                        </ul>
+                     </div> </div>
  </div>
+</div>
 		<div class="clear">
 		<h2 id="tags">
 		<?php if (isset($episode->tags))
@@ -579,8 +560,7 @@ location.reload();
 
 
              handler.open({
-               name: '<?php $settings = App\Setting::first();
-echo $settings->website_name; ?>',
+               name: '<?php $settings = App\Setting::first(); echo $settings->website_name; ?>',
                description: 'Rent a Episode',
                amount: amount * 100
              });
@@ -615,10 +595,6 @@ echo $settings->website_name; ?>',
     padding: 5% !important;
 	border-radius: 5px;
 	}
-    .btn-primary{
-        background: rgba(45, 44, 44, 1)!important;
-        border-color: #6c757d!important;
-    }
 		p.Subscribe {
     font-size: 48px !important; 
     font-family: emoji;
@@ -638,6 +614,9 @@ echo $settings->website_name; ?>',
     margin-left: 80%;
     margin-right: 0;
 }
+    #videoPlayer{
+        height: 500px;
+    }
 input.skips,input#Recaps_Skip{
   background-color: #21252952;
     color: white;
@@ -651,10 +630,6 @@ input.skips,input#Recaps_Skip{
 #Auto_skip{
 	display: none;
 }
-    .slick-track{
-        width: 0 auto!important;
-        
-    }
 	</style>
 
 <!-- INTRO SKIP  -->
@@ -772,8 +747,15 @@ $RecapEndSec = $RecapEndParse['hour'] * 60 * 60 + $RecapEndParse['minute'] * 60 
                   $("#Recaps_Skip").remove();   // Button Shows only one tym
               }
     });
+
+
+function episodewishlist(ele) 
+		{
+      var redirect_page = "<?php echo URL::to('/login')?>";
+      window.location.replace(redirect_page);
+		}
 </script>
 	
-@php
+<?php
     include(public_path('themes/default/views/footer.blade.php'));
-@endphp
+?>

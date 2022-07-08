@@ -1,17 +1,15 @@
-@php
-    include(public_path('themes/default/views/header.php'));
-@endphp
 <?php
-$series = App\series::first();
-
+  include(public_path('themes/default/views/header.php'));
+  $series = App\series::first();
 ?>
 
 <?php 
 $series= App\series::where('id',$episode->series_id)->first();
 $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
-?>
 
+?>
 <input type="hidden" value="<?php echo $episode->type; ?>" id='episode_type'>
+
 <input type="hidden" value="<?php echo URL::to('/'); ?>" id="base_url" >
 <input type="hidden" id="videoslug" value="<?php if (isset($episode->path))
 {
@@ -21,8 +19,7 @@ else
 {
     echo "0";
 } ?>">
-<div class="container-fluid">
-	<div id="series_bg" class=" mt-3">
+	<div id="series_bg">
 		<div class="">
 			
 			<?php
@@ -139,8 +136,7 @@ if (Auth::guest())
     }
     else
     { //dd($season);
-        
-?>
+         ?>
 			<div id="series_container">
 			<video id="videoPlayer"   class="video-js vjs-default-skin" controls preload="auto" poster="<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>"  data-setup="{}" width="100%" style="width:100%;" data-authenticated="<?=!Auth::guest() ?>">
 				<source src="<?=$season[0]->trailer; ?>" type='video/mp4' label='auto' >
@@ -161,26 +157,21 @@ if (Auth::guest())
         endif; ?></h2>
 				<div class="clear"></div>
 				<?php //if(!Auth::guest() ):
-        
-?>
+         ?>
 					<form method="get" action="<?
         // URL::to('/')
         
 ?>/user/<?
         // Auth::user()->username
-        
-?>/upgrade_subscription">
+         ?>/upgrade_subscription">
 						<button id="button">Purchase to Watch <?php //$currency->symbol.' '.$episode->ppv_price
-        
-?></button>
+         ?></button>
 					</form>
 				<?php //else:
-        
-?>
+         ?>
 
 				<?php //endif;
-        
-?> -->
+         ?> -->
 			</div>
 			<div>
 			</div>
@@ -216,8 +207,7 @@ else
 	<div class="col-md-6">
 		<?php if (!empty($season))
     { // dd($season[0]->ppv_price) ;
-        
-?>
+         ?>
 		<input type="hidden" id="season_id" name="season_id" value="<?php echo $season[0]->id; ?>">
 
 			<button class="btn btn-primary" onclick="pay(<?php echo $season[0]->ppv_price; ?>)" >
@@ -254,27 +244,19 @@ else: ?><?=$episode->views ?><?php
 endif; ?> Views 
 			</span>
 			</div>
-			<div class="col-md-5 text-right">
-            <div class="watchlater btn btn-primary text-white  <?php if (isset($watchlatered->id)): ?>active<?php
-endif; ?>" data-authenticated="<?=!Auth::guest() ?>" data-episodeid="<?=$episode->id ?>"><?php if (isset($watchlatered->id)): ?><i class="fa fa-check"></i><?php
-else: ?><i class="fa fa-clock-o"></i><?php
-endif; ?> Watch Later</div>
-			<div class="mywishlist btn btn-primary text-white  <?php if (isset($mywishlisted->id)): ?>active<?php
-endif; ?>" data-authenticated="<?=!Auth::guest() ?>" data-episodeid="<?=$episode->id ?>" style="margin-left:10px;"><?php if (isset($mywishlisted->id)): ?><i class="fa fa-check"></i>Wishlisted<?php
-else: ?><i class="fa fa-plus"></i>Add Wishlist<?php
-endif; ?> </div>			
-			</div>
+
+      <div class="col-md-5 text-right">
+        <div class="watchlater btn btn-primary text-white"  aria-hidden="true" onclick="episodewishlist(this)" >  Watch Later </div>
+        <div class="mywishlist btn btn-primary text-white"  aria-hidden="true" onclick="episodewishlist(this)" > Add  Wishlist </div>
+    </div>
 			<!-- <div>
 			<?php //if ( $episode->ppv_status != null && Auth::User()!="admin" || $episode->ppv_price != null  && Auth::User()->role!="admin") {
-
-?>
+ ?>
 			<button  data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary rent-episode">
 			<?php // echo __('Purchase for').' '.$currency->symbol.' '.$episode->ppv_price;
-
-?> </button>
+ ?> </button>
 			<?php //}
-
-?>
+ ?>
             <br>
 			</div> -->
         </div>
@@ -362,16 +344,12 @@ foreach ($season as $key => $seasons):
                 <!-- <div class="movie-time d-flex align-items-center my-2"> -->
                   <!-- <div class="badge badge-secondary p-1 mr-2">13+</div>
                   <span class="text-white"><i class="fa fa-clock-o"></i> <? // gmdate('H:i:s', $latest_serie->duration);
-            
-?></span>
+             ?></span>
                 </div> -->
                 <!-- <div class="hover-buttons">
                   <a class="btn btn-primary btn-hover" href="<?php //echo URL::to('/play_series'.'/'.$latest_serie->title)
-            
-?>/<?
-            // $latest_serie->id
-            
-?>" >
+             ?>/<? // $latest_serie->id
+             ?>" >
                     <i class="fa fa-play mr-1" aria-hidden="true"></i>
                     Play Now
                   </a>
@@ -441,14 +419,11 @@ $Auth = Auth::guest();
                  <span class="badge badge-secondary p-2"><?php echo __($episodes->title); ?></span>
                  <span class="badge badge-secondary p-2"><?php echo __($episodes->age_restrict) . ' ' . '+'; ?></span>
                 <!-- <span class="badge badge-secondary p-2"><?php //echo __($video->categories->name);
-
-?></span>
+ ?></span>
                 <span class="badge badge-secondary p-2"><?php //echo __($video->languages->name);
-
-?></span> -->
+ ?></span> -->
                 <span class="badge badge-secondary p-2"><?php //echo __($video->duration);
-
-?></span>
+ ?></span>
                 <span class="trending-year"><?php if ($episode->year == 0)
 {
     echo "";
@@ -533,7 +508,7 @@ else
        </div>
      </div>
    </div>
-</div>
+
        
 		<div class="clear"></div>
 
@@ -654,7 +629,6 @@ echo $settings->website_name; ?>',
     margin-bottom: 0;
     margin-left: 80%;
     margin-right: 0;
-        display: none;
 }
 input.skips,input#Recaps_Skip{
   background-color: #21252952;
@@ -662,7 +636,6 @@ input.skips,input#Recaps_Skip{
     padding: 15px 32px;
     text-align: center;
     margin: 4px 2px;
-    display: none;
 }
 #intro_skip{
 	display: none;
@@ -673,11 +646,6 @@ input.skips,input#Recaps_Skip{
     .slick-track{
         width: 0 auto!important;
         
-    }
-    #series_bg{
-         padding: 20px;
-          background: #202933;
-border-radius: 20px;
     }
 	</style>
 
@@ -796,8 +764,14 @@ $RecapEndSec = $RecapEndParse['hour'] * 60 * 60 + $RecapEndParse['minute'] * 60 
                   $("#Recaps_Skip").remove();   // Button Shows only one tym
               }
     });
+
+function episodewishlist(ele) 
+		{
+      var redirect_page = "<?php echo URL::to('/login')?>";
+      window.location.replace(redirect_page);
+		}
 </script>
 	
-@php
+<?php
     include(public_path('themes/default/views/footer.blade.php'));
-@endphp
+?>

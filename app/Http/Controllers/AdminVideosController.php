@@ -55,6 +55,7 @@ use App\Adscategory;
 use App\VideoSearchTag;
 use App\RelatedVideo;
 use Streaming\Representation;
+use App\Jobs\ConvertVideoTrailer;
 
 
 
@@ -1993,21 +1994,22 @@ if(!empty($artistsdata)){
                                     $trailer->move(public_path('uploads/trailer/'), $trailer_Video);
                                     $trailer_video_name = strtok($trailer_Video, '.');
                                     $M3u8_save_path = $trailer_path.'/'.$trailer_video_name.'.m3u8';
+                                    $storepath  = URL::to('public/uploads/trailer/');
                                     
-                                    $ffmpeg = \Streaming\FFMpeg::create();
-                                    $videos = $ffmpeg->open('public/uploads/trailer'.'/'.$trailer_Video);
+                                    // $ffmpeg = \Streaming\FFMpeg::create();
+                                    // $video = $ffmpeg->open('public/uploads/trailer'.'/'.$trailer_Video);
                                     
-                                    $r_144p  = (new Representation)->setKiloBitrate(95)->setResize(256, 144);
-                                    $r_240p  = (new Representation)->setKiloBitrate(150)->setResize(426, 240);
-                                    $r_360p  = (new Representation)->setKiloBitrate(276)->setResize(640, 360);
-                                    $r_480p  = (new Representation)->setKiloBitrate(750)->setResize(854, 480);
-                                    $r_720p  = (new Representation)->setKiloBitrate(2048)->setResize(1280, 720);
-                                    $r_1080p = (new Representation)->setKiloBitrate(4096)->setResize(1920, 1080);
+                                    // $r_144p  = (new Representation)->setKiloBitrate(95)->setResize(256, 144);
+                                    // $r_240p  = (new Representation)->setKiloBitrate(150)->setResize(426, 240);
+                                    // $r_360p  = (new Representation)->setKiloBitrate(276)->setResize(640, 360);
+                                    // $r_480p  = (new Representation)->setKiloBitrate(750)->setResize(854, 480);
+                                    // $r_720p  = (new Representation)->setKiloBitrate(2048)->setResize(1280, 720);
+                                    // $r_1080p = (new Representation)->setKiloBitrate(4096)->setResize(1920, 1080);
                                     
-                                    $videos->hls()
-                                            ->x264()
-                                            ->addRepresentations($convertresolution)
-                                            ->save('public/uploads/trailer'.'/'.$trailer_video_name.'.m3u8');
+                                    // $videos->hls()
+                                    //         ->x264()
+                                    //         ->addRepresentations($convertresolution)
+                                    //         ->save('public/uploads/trailer'.'/'.$trailer_video_name.'.m3u8');
                                     
                                     $data['trailer'] = $M3u8_save_path;
                                     $data['trailer_type']  = 'm3u8';
@@ -2177,7 +2179,9 @@ if(!empty($artistsdata)){
            
              $video->update($data);
             //  dd($video);
-
+            if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1) {
+            ConvertVideoTrailer::dispatch($video,$storepath,$convertresolution,$trailer_video_name,$trailer_Video);
+            }
              $video = Video::findOrFail($id);
             //  $users = User::all();
             //  if($video['draft'] == 1){
