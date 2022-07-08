@@ -117,6 +117,20 @@ $series = $series_data ;
             
          <video id="videoPlayer1" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $series->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src=""  type="video/mp4" >
             </video>
+
+
+
+            <video  id="videos" class=""  
+            poster="<?= URL::to('/') . '/public/uploads/images/' . $series->player_image ?>"
+                            controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
+                            type="application/x-mpegURL">
+
+                            <source id="m3u8urlsource"
+                              type="application/x-mpegURL" 
+                              src=""
+                            >
+
+                        </video>
         </div>
       </div>
     </div>
@@ -360,6 +374,9 @@ $series = $series_data ;
 
    <input type="hidden" name="publishable_key" id="publishable_key" value="<?= $publishable_key ?>">
    <input type="hidden" name="series_id" id="series_id" value="<?= $series->id ?>">
+   
+   <input type="hidden" name="m3u8url_datasource" id="m3u8url_datasource" value="">
+
 
    <script src="https://checkout.stripe.com/checkout.js"></script>
 	
@@ -382,21 +399,36 @@ $(document).ready(function () {
 
 	var imageseason = '<?= $season_trailer ?>' ;
 // console.log(imageseason)
-
+$("#videoPlayer1").hide();
+$("#videos").hide();
 
 var obj = JSON.parse(imageseason);
 console.log(obj)
 var season_id = $('#season_id').val();
-
 $.each(obj, function(i, $val)
 {
 if('season_'+$val.id == season_id){
-// alert($('#season_id').val())	
-
+// alert($val.trailer_type)	
 	console.log('season_'+$val.id)
-	$("#videoPlayer1").attr("src", $val.trailer);
+  if( $val.trailer_type == 'mp4_url' || $val.trailer_type == null){
+    $("#videoPlayer1").show();
+    $("#videos").hide();
+    $("#videoPlayer1").attr("src", $val.trailer);
+  }else{
+    $("#videoPlayer1").hide();
+    $("#videos").show();
+   $("#m3u8urlsource").attr("src", $val.trailer);
+  }
 }
 });
+
+
+
+
+
+
+
+
 
 $('#season_id').change(function(){
 	var season_id = $('#season_id').val();
@@ -407,7 +439,17 @@ if('season_'+$val.id == season_id){
 	console.log('season_'+$val.id)
 	// $("#theDiv").append("<img id='theImg' src=$val.image/>");
 	$("#myImage").attr("src", $val.image);
-	$("#videoPlayer1").attr("src", $val.trailer);
+	// $("#videoPlayer1").attr("src", $val.trailer);
+  if( $val.trailer_type == 'mp4_url' || $val.trailer_type == null){
+    $("#videoPlayer1").show();
+    $("#videos").hide();
+
+    $("#videoPlayer1").attr("src", $val.trailer);
+  }else{
+    $("#videoPlayer1").hide();
+    $("#videos").show();
+    $("#m3u8urlsource").attr("src", $val.trailer);
+  }
 
   $(".sea").empty();
   // alert($val.id);
@@ -534,4 +576,174 @@ amount: amount * 100
 		$(".episodes_div").hide();
 		$("."+this.value).show();
 	});
+</script>
+
+<script>
+
+var imageseason = '<?= $season_trailer ?>' ;
+// console.log(imageseason)
+$("#videoPlayer1").hide();
+$("#videos").hide();
+
+var obj = JSON.parse(imageseason);
+console.log(obj)
+var season_id = $('#season_id').val();
+
+$.each(obj, function(i, $val)
+{
+
+  if( $val.trailer_type == 'm3u8_url'){
+
+    // alert($('#videos').attr("src"));
+    // alert(sourcevaltrailer);
+  
+  document.addEventListener("DOMContentLoaded", () => {
+
+    // alert(sourcevaltrailer);
+    var video = document.querySelector('#videos');
+    // var sourcess = video.getElementsByTagName("source")[0].src;
+    // alert(sourcess);
+    var source = $val.trailer;
+    // alert(source);
+
+    const defaultOptions = {};
+  
+  if (Hls.isSupported()) {
+    // For more Hls.js options, see https://github.com/dailymotion/hls.js
+
+    const hls = new Hls();
+    hls.loadSource(source);
+
+    // From the m3u8 playlist, hls parses the manifest and returns
+    // all available video qualities. This is important, in this approach,
+    // we will have one source on the Plyr player.
+    hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+
+      // Transform available levels into an array of integers (height values).
+      const availableQualities = hls.levels.map((l) => l.height)
+
+      // Add new qualities to option
+      defaultOptions.quality = {
+        default: availableQualities[0],
+        options: availableQualities,
+        // this ensures Plyr to use Hls to update quality level
+        forced: true,        
+        onChange: (e) => updateQuality(e),
+      }
+
+      // Initialize here
+      const player = new Plyr(video, defaultOptions);
+    });
+    hls.attachMedia(video);
+    window.hls = hls;
+  }
+
+  function updateQuality(newQuality) {
+    window.hls.levels.forEach((level, levelIndex) => {
+      if (level.height === newQuality) {
+        console.log("Found quality match with " + newQuality);
+        window.hls.currentLevel = levelIndex;
+      }
+    });
+  }
+});
+
+
+  }
+});
+
+
+
+
+
+
+
+
+
+
+$('#season_id').change(function(){
+	var season_id = $('#season_id').val();
+$.each(obj, function(i, $val)
+{
+if('season_'+$val.id == season_id){
+	console.log('season_'+$val.id)
+	$("#myImage").attr("src", $val.image);
+  if( $val.trailer_type == 'mp4_url' || $val.trailer_type == null){
+    $("#videoPlayer1").show();
+    $("#videos").hide();
+    $("#videoPlayer1").attr("src", $val.trailer);
+  }else{
+    $("#videoPlayer1").hide();
+    $("#videos").show();
+    $("#m3u8urlsource").attr("src", $val.trailer);
+    
+  if( $val.trailer_type == 'm3u8_url'){
+
+// alert($('#videos').attr("src"));
+// alert(sourcevaltrailer);
+
+document.addEventListener("DOMContentLoaded", () => {
+
+// alert(sourcevaltrailer);
+var video = document.querySelector('#videos');
+// var sourcess = video.getElementsByTagName("source")[0].src;
+// alert(sourcess);
+var source = $val.trailer;
+// alert(source);
+
+const defaultOptions = {};
+
+if (Hls.isSupported()) {
+// For more Hls.js options, see https://github.com/dailymotion/hls.js
+
+const hls = new Hls();
+hls.loadSource(source);
+
+// From the m3u8 playlist, hls parses the manifest and returns
+// all available video qualities. This is important, in this approach,
+// we will have one source on the Plyr player.
+hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+
+  // Transform available levels into an array of integers (height values).
+  const availableQualities = hls.levels.map((l) => l.height)
+
+  // Add new qualities to option
+  defaultOptions.quality = {
+    default: availableQualities[0],
+    options: availableQualities,
+    // this ensures Plyr to use Hls to update quality level
+    forced: true,        
+    onChange: (e) => updateQuality(e),
+  }
+
+  // Initialize here
+  const player = new Plyr(video, defaultOptions);
+});
+hls.attachMedia(video);
+window.hls = hls;
+}
+
+function updateQuality(newQuality) {
+window.hls.levels.forEach((level, levelIndex) => {
+  if (level.height === newQuality) {
+    console.log("Found quality match with " + newQuality);
+    window.hls.currentLevel = levelIndex;
+  }
+});
+}
+});
+
+
+}
+  }
+
+  $(".sea").empty();
+  // alert($val.id);
+  var id = $val.id;
+	$(".sea").html(id);
+}
+});
+
+})
+
 </script>

@@ -54,6 +54,7 @@ use App\PpvPurchase as PpvPurchase;
 use App\Adscategory;
 use App\VideoSearchTag;
 use App\RelatedVideo;
+use Streaming\Representation;
 
 
 
@@ -1800,7 +1801,8 @@ if(!empty($artistsdata)){
   
   
            } else {
-               $player_image = $video->image;
+            //    $player_image = $video->player_image;
+            $player_image = "default_horizontal_image.jpg";
            }
 
             if(empty($data['active'])){
@@ -1948,6 +1950,70 @@ if(!empty($artistsdata)){
              $video->trailer_type = $data['trailer_type'];
 
              if($data['trailer_type'] == 'video_mp4'){
+                
+                $settings = Setting::first();
+
+                if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1) {
+                    
+                    $settings = Setting::first();
+                    // $resolution = explode(",",$settings->transcoding_resolution);
+                    if($settings->transcoding_resolution != null){
+                            $convertresolution=array();
+                            $resolution = explode(",",$settings->transcoding_resolution);
+                                foreach($resolution as $value){
+                                    if($value == "240p"){
+                                        $r_240p  = (new Representation)->setKiloBitrate(150)->setResize(426, 240);
+                                        array_push($convertresolution,$r_240p);
+                                    }
+                                    if($value == "360p"){
+                                        $r_360p  = (new Representation)->setKiloBitrate(276)->setResize(640, 360);
+                                        array_push($convertresolution,$r_360p);
+    
+                                    }
+                                    if($value == "480p"){
+                                        $r_480p  = (new Representation)->setKiloBitrate(750)->setResize(854, 480);
+                                        array_push($convertresolution,$r_480p);
+    
+                                    }
+                                    if($value == "720p"){
+                                        $r_720p  = (new Representation)->setKiloBitrate(2048)->setResize(1280, 720);
+                                        array_push($convertresolution,$r_720p);
+    
+                                    }
+                                    if($value == "1080p"){
+                                        $r_1080p  = (new Representation)->setKiloBitrate(750)->setResize(854, 480);
+                                        array_push($convertresolution,$r_1080p);
+                                    }
+                            }
+                        
+                        }
+                                    $trailer = $data['trailer'];
+                                    $trailer_path  = URL::to('public/uploads/trailer/');
+                                    $trailer_Video =  time().'_'.$trailer->getClientOriginalName();  
+                                    $trailer->move(public_path('uploads/trailer/'), $trailer_Video);
+                                    $trailer_video_name = strtok($trailer_Video, '.');
+                                    $M3u8_save_path = $trailer_path.'/'.$trailer_video_name.'.m3u8';
+                                    
+                                    $ffmpeg = \Streaming\FFMpeg::create();
+                                    $videos = $ffmpeg->open('public/uploads/trailer'.'/'.$trailer_Video);
+                                    
+                                    $r_144p  = (new Representation)->setKiloBitrate(95)->setResize(256, 144);
+                                    $r_240p  = (new Representation)->setKiloBitrate(150)->setResize(426, 240);
+                                    $r_360p  = (new Representation)->setKiloBitrate(276)->setResize(640, 360);
+                                    $r_480p  = (new Representation)->setKiloBitrate(750)->setResize(854, 480);
+                                    $r_720p  = (new Representation)->setKiloBitrate(2048)->setResize(1280, 720);
+                                    $r_1080p = (new Representation)->setKiloBitrate(4096)->setResize(1920, 1080);
+                                    
+                                    $videos->hls()
+                                            ->x264()
+                                            ->addRepresentations($convertresolution)
+                                            ->save('public/uploads/trailer'.'/'.$trailer_video_name.'.m3u8');
+                                    
+                                    $data['trailer'] = $M3u8_save_path;
+                                    $data['trailer_type']  = 'm3u8';
+                                    
+                }else{
+
                  if($trailer != '') {   
                      //code for remove old file
                      if($trailer != ''  && $trailer != null){
@@ -1966,7 +2032,7 @@ if(!empty($artistsdata)){
                 } else {
                     $data['trailer'] = $video->trailer;
                 }  
- 
+            }
              }elseif($data['trailer_type'] == 'm3u8_url'){
                  $data['trailer'] = $data['m3u8_trailer'];
              }

@@ -1594,8 +1594,8 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
               
               
                        } else {
-                           $player_image = "default.png";
-                       }
+                        $player_image = "default_horizontal_image.jpg";
+                    }
 
 
 
