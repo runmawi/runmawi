@@ -29,7 +29,8 @@ class AddBannerImageToVideoCategories extends Migration
     {
         Schema::table('video_categories', function (Blueprint $table) {
             //
-        Schema::dropIfExists('video_categories');
+            $table->dropColumn('banner');
+            $table->dropColumn('banner_image');
         });
     }
 }

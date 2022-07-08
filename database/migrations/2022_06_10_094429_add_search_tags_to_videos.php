@@ -28,7 +28,7 @@ class AddSearchTagsToVideos extends Migration
     {
         Schema::table('videos', function (Blueprint $table) {
             //
-            $table->dropColumn('videos');
+            $table->dropColumn('search_tags');
         });
     }
 }

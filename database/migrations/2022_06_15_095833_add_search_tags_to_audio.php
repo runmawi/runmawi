@@ -28,7 +28,7 @@ class AddSearchTagsToAudio extends Migration
     {
         Schema::table('audio', function (Blueprint $table) {
             //
-            $table->dropColumn('audio');
+            $table->dropColumn('search_tags');
         });
     }
 }
