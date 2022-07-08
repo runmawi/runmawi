@@ -749,8 +749,7 @@ public function RentPaypal(Request $request)
             $intent_key =  $intent_stripe->createSetupIntent()->client_secret ;
             session()->put('intent_stripe_key',$intent_key);
 
-
-            return Theme::view('register.upgrade_payment', compact(['register', 'plans_data']));
+            return Theme::view('register.upgrade_payment', compact(['plans_data']));
 
           }else{
                 return Theme::view('register.upgrade', [
@@ -764,7 +763,7 @@ public function RentPaypal(Request $request)
           }
 
           }else{
-            return View::make('auth.login');
+            return Theme::view('auth.login');
           }
 
         }
@@ -1248,45 +1247,53 @@ $response = array('status' => 'success');
 
         public function become_subscriber(Request $request)
         {
-              $stripe = new \Stripe\StripeClient(
-                env('STRIPE_SECRET')
-              );
-          
-              $paymentMethod = $request->get('py_id');
-              $stripe_plan = SubscriptionPlan();
-              $plan = $request->get('plan');
 
-              $user=User::where('id',Auth::user()->id)->first();
-              $subscription_details = $user->newSubscription( $stripe_plan, $plan )->create( $paymentMethod );
-              $subscription = $stripe->subscriptions->retrieve( $subscription_details->stripe_id );
+          try {
+                $stripe = new \Stripe\StripeClient(
+                  env('STRIPE_SECRET')
+                );
+            
+                $paymentMethod = $request->get('py_id');
+                $stripe_plan = SubscriptionPlan();
+                $plan = $request->get('plan');
 
-              $Sub_Startday  = Carbon::createFromTimestamp($subscription['current_period_start'])->toDateTimeString(); 
-              $Sub_Endday    = Carbon::createFromTimestamp($subscription['current_period_end'])->toDateTimeString(); 
-              $trial_ends_at = Carbon::createFromTimestamp($subscription['current_period_end'])->toDateTimeString(); 
-      
-                Subscription::create([
-                  'user_id'        =>  Auth::user()->id,
-                  'name'           =>  $subscription->plan['product'],
-                  'price'          =>  $subscription->plan['amount_decimal'] / 100,   // Amount Paise to Rupees
-                  'stripe_id'      =>  $subscription['id'],
-                  'stripe_status'  =>  $subscription['status'],
-                  'stripe_plan'    =>  $subscription->plan['id'],
-                  'quantity'       =>  $subscription['quantity'],
-                  'countryname'    =>  Country_name(),
-                  'regionname'     =>  city_name(),
-                  'cityname'       =>  Region_name(),
-                  'PaymentGateway' =>  'Stripe',
-                  'trial_ends_at'  =>  $trial_ends_at,
-                  'ends_at'        =>  $trial_ends_at,
-              ]);
-      
-              User::where('id',Auth::user()->id)->update([
-                  'role'                  =>  'subscriber',
-                  'stripe_id'             =>  $subscription['customer'],
-                  'subscription_start'    =>  $Sub_Startday,
-                  'subscription_ends_at'  =>  $Sub_Endday,
-              ]);
+                $user=User::where('id',Auth::user()->id)->first();
+                $subscription_details = $user->newSubscription( $stripe_plan, $plan )->create( $paymentMethod );
+                $subscription = $stripe->subscriptions->retrieve( $subscription_details->stripe_id );
 
-              return Redirect::route('home');
+                $Sub_Startday  = Carbon::createFromTimestamp($subscription['current_period_start'])->toDateTimeString(); 
+                $Sub_Endday    = Carbon::createFromTimestamp($subscription['current_period_end'])->toDateTimeString(); 
+                $trial_ends_at = Carbon::createFromTimestamp($subscription['current_period_end'])->toDateTimeString(); 
+        
+                  Subscription::create([
+                    'user_id'        =>  Auth::user()->id,
+                    'name'           =>  $subscription->plan['product'],
+                    'price'          =>  $subscription->plan['amount_decimal'] / 100,   // Amount Paise to Rupees
+                    'stripe_id'      =>  $subscription['id'],
+                    'stripe_status'  =>  $subscription['status'],
+                    'stripe_plan'    =>  $subscription->plan['id'],
+                    'quantity'       =>  $subscription['quantity'],
+                    'countryname'    =>  Country_name(),
+                    'regionname'     =>  city_name(),
+                    'cityname'       =>  Region_name(),
+                    'PaymentGateway' =>  'Stripe',
+                    'trial_ends_at'  =>  $trial_ends_at,
+                    'ends_at'        =>  $trial_ends_at,
+                ]);
+        
+                User::where('id',Auth::user()->id)->update([
+                    'role'                  =>  'subscriber',
+                    'stripe_id'             =>  $subscription['customer'],
+                    'subscription_start'    =>  $Sub_Startday,
+                    'subscription_ends_at'  =>  $Sub_Endday,
+                ]);
+
+                return Redirect::route('home');
+
+          } catch (\Throwable $th) {
+
+                    return Redirect::route('login');
+          }
+           
         }
 }
