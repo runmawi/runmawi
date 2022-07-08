@@ -195,20 +195,22 @@ if($home_settings->albums == 1){ ?>
 </section>
 <?php } } ?>
 
-<?php 
-      if('artist' == 'artist'){ ?>
-            <section id="iq-favorites">
-               <div class="container-fluid">
-                  <div class="row">
-                     <div class="col-sm-12 overflow-hidden">
-                        <?php include('partials/home/artist-videos.php'); ?>
-                     </div>
-                  </div>
+
+ <!-- Artist -->
+ <?php 
+       if($value->video_name == 'artist'){
+    
+   if($home_settings->artist == 1){ ?>
+      <section id="iq-favorites">
+         <div class="container-fluid">
+            <div class="row">
+               <div class="col-sm-12 overflow-hidden">
+                  <?php include('partials/home/artist-videos.php'); ?>
                </div>
-         </section>
-<?php } ?>
-
-
+            </div>
+         </div>
+      </section>
+<?php } } ?>
 
 <?php 
        if($value->video_name == 'series'){

@@ -27,6 +27,7 @@ class HomesettingTableSeeder extends Seeder
                     'albums' => 1,
                     'Recommendation' => 0,
                     'AutoIntro_skip' => null,
+                    'artist' => '1',
                     'user_id' => null,
                     'theme_choosen' => 'default',
                     'created_at' => Carbon::now(),
