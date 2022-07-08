@@ -29,7 +29,7 @@ class AddPlayerImageToEpisodes extends Migration
     {
         Schema::table('episodes', function (Blueprint $table) {
             //
-            $table->dropColumn('episodes');
+            $table->dropColumn('player_image');
 
         });
     }

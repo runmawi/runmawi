@@ -14,7 +14,7 @@ class AddArtistToHomeSettingsTable extends Migration
     public function up()
     {
         Schema::table('home_settings', function (Blueprint $table) {
-            $table->string('artist')->default(1);
+            $table->tinyInteger('artist')->default(1);
         });
     }
 

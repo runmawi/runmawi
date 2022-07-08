@@ -29,7 +29,7 @@ class AddHomeGenreToVideos extends Migration
     {
         Schema::table('video_categories', function (Blueprint $table) {
             //
-            $table->dropColumn('video_categories');
+            $table->dropColumn('home_genre');
         });
     }
 }

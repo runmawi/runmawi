@@ -29,7 +29,7 @@ class AddSearchTagsToLiveStreams extends Migration
     {
         Schema::table('live_streams', function (Blueprint $table) {
             //
-            $table->dropColumn('live_streams');
+            $table->dropColumn('search_tags');
         });
     }
 }
