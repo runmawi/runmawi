@@ -2179,8 +2179,9 @@ if(!empty($artistsdata)){
            
              $video->update($data);
             //  dd($video);
+            if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1) {
             ConvertVideoTrailer::dispatch($video,$storepath,$convertresolution,$trailer_video_name,$trailer_Video);
-
+            }
              $video = Video::findOrFail($id);
             //  $users = User::all();
             //  if($video['draft'] == 1){

@@ -888,9 +888,10 @@ class AdminSeriesController extends Controller
         $series->ppv_price = $ppv_price;
         $series->ppv_interval = $ppv_interval;
         $series->save();
-
+        
+        if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1) {
         ConvertSerieTrailer::dispatch($series,$storepath,$convertresolution,$trailer_video_name,$trailer_Video);
-
+        }
         // $series = SeriesSeason::create($data);
         // return Redirect::to('admin/series/edit' . '/' . $id)->with(array('note' => 'Successfully Created Season!', 'note_type' => 'success') );
         return Redirect::back();
