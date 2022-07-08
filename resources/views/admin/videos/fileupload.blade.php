@@ -1729,12 +1729,15 @@ $(document).ready(function($){
     } );
        // console.log(value)
        this.on("success", function(file, value) {
-             console.log(value.video_title);
-             $('#Next').show();
+         console.log(value.video_title);
+         if(value.success == 2){
+            swal("File not uploaded !");   
+            location.reload();
+         }else{
+            $('#Next').show();
             $('#video_id').val(value.video_id);
             $('#title').val(value.video_title);
-   
-            
+         }
          });
    
      }); 

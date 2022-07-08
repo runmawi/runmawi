@@ -1801,7 +1801,8 @@ if(!empty($artistsdata)){
   
   
            } else {
-               $player_image = $video->image;
+            //    $player_image = $video->player_image;
+            $player_image = "default_horizontal_image.jpg";
            }
 
             if(empty($data['active'])){
