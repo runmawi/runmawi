@@ -121,6 +121,12 @@ class HomeSettingsController extends Controller
             $settings->Recommendation = 0;
         }
 
+        if($request->artist !=null){
+            $settings->artist = 1;
+        }else{
+            $settings->artist = 0;
+        }
+
         if($request->AutoIntro_skip !=null){
             $settings->AutoIntro_skip = 1;
         }else{
