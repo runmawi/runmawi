@@ -763,7 +763,7 @@ public function RentPaypal(Request $request)
           }
 
           }else{
-            return Theme::view('auth.login');
+            return Redirect::route('login');
           }
 
         }

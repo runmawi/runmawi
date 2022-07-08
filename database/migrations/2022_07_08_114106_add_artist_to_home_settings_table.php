@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddAndroidTvToVideos extends Migration
+class AddArtistToHomeSettingsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class AddAndroidTvToVideos extends Migration
      */
     public function up()
     {
-        Schema::table('app_settings', function (Blueprint $table) {
-            //android_tv
-            $table->string('android_tv')->nullable();
+        Schema::table('home_settings', function (Blueprint $table) {
+            $table->string('artist')->default(1);
         });
     }
 
@@ -26,9 +25,8 @@ class AddAndroidTvToVideos extends Migration
      */
     public function down()
     {
-        Schema::table('app_settings', function (Blueprint $table) {
-            //
-            $table->dropColumn('android_tv');
+        Schema::table('home_settings', function (Blueprint $table) {
+            $table->dropColumn('artist');
         });
     }
 }

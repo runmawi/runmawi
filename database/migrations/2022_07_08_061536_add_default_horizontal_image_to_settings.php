@@ -28,7 +28,7 @@ class AddDefaultHorizontalImageToSettings extends Migration
     {
         Schema::table('settings', function (Blueprint $table) {
             //
-            $table->dropColumn('settings');
+            $table->dropColumn('default_horizontal_image');
         });
     }
 }
