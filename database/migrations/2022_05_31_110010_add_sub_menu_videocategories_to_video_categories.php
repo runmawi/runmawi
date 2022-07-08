@@ -28,7 +28,7 @@ class AddSubMenuVideocategoriesToVideoCategories extends Migration
     {
         Schema::table('video_categories', function (Blueprint $table) {
             //
-        Schema::dropIfExists('video_categories');
+        Schema::dropIfExists('in_menu');
 
         });
     }

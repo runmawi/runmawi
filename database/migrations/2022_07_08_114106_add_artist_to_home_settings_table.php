@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddSearchTagsToAudio extends Migration
+class AddArtistToHomeSettingsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class AddSearchTagsToAudio extends Migration
      */
     public function up()
     {
-        Schema::table('audio', function (Blueprint $table) {
-            //
-            $table->string('search_tags')->nullable();
+        Schema::table('home_settings', function (Blueprint $table) {
+            $table->tinyInteger('artist')->default(1);
         });
     }
 
@@ -26,9 +25,8 @@ class AddSearchTagsToAudio extends Migration
      */
     public function down()
     {
-        Schema::table('audio', function (Blueprint $table) {
-            //
-            $table->dropColumn('search_tags');
+        Schema::table('home_settings', function (Blueprint $table) {
+            $table->dropColumn('artist');
         });
     }
 }

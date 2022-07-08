@@ -1,6 +1,11 @@
 @extends('layouts.app')
-@include('/header')
+
+@php
+    include(public_path('themes/default/views/header.php'));
+@endphp
+
 @section('content')
+
 
     <script src="https://www.paypal.com/sdk/js?client-id=Aclkx_Wa7Ld0cli53FhSdeDt1293Vss8nSH6HcSDQGHIBCBo42XyfhPFF380DjS8N0qXO_JnR6Gza5p2&vault=true&intent=subscription" data-sdk-integration-source="button-factory">
     </script>
@@ -758,5 +763,8 @@ i.fa.fa-google-plus {
     }
 </script>
 
-@include('footer')
+@php
+    include(public_path('themes/default/views/footer.blade.php'));
+@endphp
+
 @endsection 
