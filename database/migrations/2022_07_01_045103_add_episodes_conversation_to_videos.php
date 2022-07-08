@@ -31,7 +31,10 @@ class AddEpisodesConversationToVideos extends Migration
     {
         Schema::table('episodes', function (Blueprint $table) {
             //
-            $table->dropColumn('episodes');
+            $table->dropColumn('disk');
+            $table->dropColumn('stream_path');
+            $table->dropColumn('processed_low');
+            $table->dropColumn('converted_for_streaming_at');
         });
     }
 }
