@@ -1,8 +1,8 @@
-@php
-    include(public_path('themes/default/views/header.php'));
-@endphp
+
 <?php
-$series = App\series::first();
+
+    include(public_path('themes/default/views/header.php'));
+    $series = App\series::first();
 ?>
 <?php
 $series= App\series::where('id',$episode->series_id)->first();
@@ -248,15 +248,10 @@ endif; ?> Views
 			</span>
 			</div>-->
 			<div class="col-md-4">
-            <div class="watchlater btn btn-primary text-white  <?php if (isset($watchlatered->id)): ?>active<?php
-endif; ?>" data-authenticated="<?=!Auth::guest() ?>" data-episodeid="<?=$episode->id ?>"><?php if (isset($watchlatered->id)): ?><i class="fa fa-check"></i><?php
-else: ?><i class="fa fa-clock-o"></i><?php
-endif; ?> Watch Later</div>
-			<div class="mywishlist btn btn-primary text-white  <?php if (isset($mywishlisted->id)): ?>active<?php
-endif; ?>" data-authenticated="<?=!Auth::guest() ?>" data-episodeid="<?=$episode->id ?>" style="margin-left:10px;"><?php if (isset($mywishlisted->id)): ?><i class="fa fa-check"></i>Wishlisted<?php
-else: ?><i class="fa fa-plus"></i>Add Wishlist<?php
-endif; ?> </div>			
+						<div class="ml-2 btn bd video-open playbtn mb-2 "  aria-hidden="true"  onclick="episodewishlist(this)"> Add to Watch Later </div>
+						<div class="ml-2 btn bd video-open playbtn mb-2 "  aria-hidden="true"  onclick="episodewishlist(this)" > Add to Wish list </div>
 			</div>
+
 			<!-- <div>
 			<?php //if ( $episode->ppv_status != null && Auth::User()!="admin" || $episode->ppv_price != null  && Auth::User()->role!="admin") {
  ?>
@@ -562,8 +557,7 @@ location.reload();
 
 
              handler.open({
-               name: '<?php $settings = App\Setting::first();
-echo $settings->website_name; ?>',
+               name: '<?php $settings = App\Setting::first(); echo $settings->website_name; ?>',
                description: 'Rent a Episode',
                amount: amount * 100
              });
@@ -750,8 +744,15 @@ $RecapEndSec = $RecapEndParse['hour'] * 60 * 60 + $RecapEndParse['minute'] * 60 
                   $("#Recaps_Skip").remove();   // Button Shows only one tym
               }
     });
+
+
+function episodewishlist(ele) 
+		{
+      var redirect_page = "<?php echo URL::to('/login')?>";
+      window.location.replace(redirect_page);
+		}
 </script>
 	
-@php
+<?php
     include(public_path('themes/default/views/footer.blade.php'));
-@endphp
+?>
