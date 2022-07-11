@@ -7036,9 +7036,24 @@ public function Adstatus_upate(Request $request)
   {
 
     try {
+
       $album_id = $request->album_id;
 
-      $audios = Audio::where('album_id',$album_id)->inRandomOrder()->get();
+      $audios_count = Audio::where('album_id',$album_id)->get();
+
+      $audio_album_id = Audio::Select('audio_albums.*')
+                      ->Join('audio_albums','audio_albums.id','=','audio.album_id')
+                      ->groupBy('id')->inRandomOrder()->pluck('id')->first();
+
+
+        if(count($audios_count) > 0 ){
+
+          $audios = Audio::where('album_id',$album_id)->inRandomOrder()->get();
+          
+        }
+        else{
+          $audios = Audio::where('album_id',$audio_album_id)->inRandomOrder()->get();
+        }
 
       $status = "true";
   
