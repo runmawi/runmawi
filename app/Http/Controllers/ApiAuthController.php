@@ -3700,11 +3700,11 @@ public function upnextAudio(Request $request){
         ->count();
         
         // $album_id = \Audio::where('id','=',$audio_id)->where('active','=','1')->where('status','=','1')->pluck('album_id');
-        
-        //$album_id = $request->album_id;
-    // $album_first = \Audio::where('album_id','=',$album_id)->where('active','=','1')->where('status','=','1')->limit(1)->get();
-        
-    // $album_all_audios = \Audio::where('album_id','=',$album_id)->where('id','!=',$audio_id)->where('active','=','1')->where('status','=','1')->orderBy('created_at', 'desc')->get();
+  
+  //$album_id = $request->album_id;
+// $album_first = \Audio::where('album_id','=',$album_id)->where('active','=','1')->where('status','=','1')->limit(1)->get();
+  
+// $album_all_audios = \Audio::where('album_id','=',$album_id)->where('id','!=',$audio_id)->where('active','=','1')->where('status','=','1')->orderBy('created_at', 'desc')->get();
 if($upnext_audios > 0){
   $album_all_audios =  Audio::join('category_audios', 'audio.id', '=', 'category_audios.audio_id')
   ->select('audio.*')
@@ -5042,50 +5042,64 @@ return response()->json($response, 200);
 
       $next_audio_id = Audio::where('id', '>', $currentaudio_id)->where('status','=','1')->where('active','=','1')->min('id');
 
-      if($next_audio_id){
-        $audio= Audio::where('id','=',$next_audio_id)->where('status','=','1')->where('active','=','1')->get()->map(function ($item) {
-          $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-           return $item;
-      });
+        if( $next_audio_id != null ){
+
+              $audio= Audio::where('id','=',$next_audio_id)->where('status','=','1')->where('active','=','1')->get()->map(function ($item) {
+                $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+                return $item;
+              });
+        
+        }else{
+
+            $next_audio_id = Audio::where('status','=','1')->where('active','=','1')->pluck('id')->first();
+
+            $audio= Audio::where('id','=',$next_audio_id)->where('status','=','1')->where('active','=','1')->get()->map(function ($item) {
+              $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+              return $item;
+            });
+        }
+
         $response = array(
           'status' => true,
           'next_audio_id' => $next_audio_id,
           'audio' => $audio
         );
-      }else{
-        $response = array(
-          'status' => false,
-          'message' => 'No Data Found'
-        );
-      }
-      return response()->json($response, 200);
+        return response()->json($response, 200);
     }
 
 
     public function prev_audio(Request $request){
 
-    $currentaudio_id = $request->audio_id;
-    $prev_audio_id = Audio::where('id', '<', $currentaudio_id)->where('status','=','1')->where('active','=','1')->orderBy('id','desc')->first();
+        $currentaudio_id = $request->audio_id;
 
-    if($prev_audio_id){
-        $prev_audio_id = $prev_audio_id->id;
-        $audio= Audio::where('id','=',$prev_audio_id)->where('status','=','1')->where('active','=','1')->get()->map(function ($item) {
-            $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-             return $item;
-        });
-        $response = array(
-          'status' => "true",
-          'prev_audio_id' => $prev_audio_id,
-          'audio' => $audio
-        );
-      }else{
-        $response = array(
-          'status' => "false",
-          'message' => 'No Data Found'
-        );
-      }
-      return response()->json($response, 200);
-  
+        $prev_audio_id = Audio::where('id', '<', $currentaudio_id)->where('status','=','1')->where('active','=','1')->orderBy('id','desc')->first();
+
+          if($prev_audio_id){
+
+                $prev_audio_id = $prev_audio_id->id;
+
+                $audio= Audio::where('id','=',$prev_audio_id)->where('status','=','1')->where('active','=','1')->get()->map(function ($item) {
+                    $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+                    return $item;
+                });
+            
+          }else{
+
+              $prev_audio_id = Audio::where('status','=','1')->where('active','=','1')->latest()->pluck('id')->first();
+
+              $audio= Audio::where('id','=',$prev_audio_id)->where('status','=','1')->where('active','=','1')->get()->map(function ($item) {
+                $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+                return $item;
+            });
+          }
+
+          $response = array(
+            'status' => "true",
+            'prev_audio_id' => $prev_audio_id,
+            'audio' => $audio
+          );
+
+          return response()->json($response, 200);
     }
 
     public function relatedaudios(Request $request) {
