@@ -1,7 +1,7 @@
 <?php if(count($artist) > 0 ) {?>
 
     <div class="iq-main-header d-flex align-items-center justify-content-between">
-            <h4 class="main-title"><a href=""> Artist </a></h4>                      
+            <h4 class="main-title"><a href="<?php echo URL::to('Artist-list') ?>"> Artist </a></h4>                      
     </div>
 
     <div class="favorites-contens">
@@ -10,7 +10,7 @@
                     foreach($artist as $artist_details):  ?>
 
                 <li class="slide-item">
-                    <a href="<?php echo URL::to('home') ?>">
+                    <a href="<?php echo URL::to('Artist-list') ?>">
                             <div class="block-images position-relative">
                                 <div class="img-box">
                                     <a  href="<?php echo URL::to('artist') ?><?= '/' . $artist_details->id ?>">
