@@ -1,4 +1,7 @@
-<?php include('header.php'); ?>
+<?php 
+    include(public_path('themes/default/views/header.php'));
+?>
+
  <!-- MainContent -->
 <section id="iq-favorites">
             <div class="container-fluid">
@@ -121,4 +124,4 @@
                </div>
             </div>
 
-<?php include('footer.blade.php'); ?>
+<?php include(public_path('themes/default/views/footer.blade.php'));  ?>
