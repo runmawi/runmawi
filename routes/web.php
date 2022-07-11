@@ -202,6 +202,7 @@ Route::get('refferal', 'AdminUsersController@refferal');
 Route::post('/profile/update', 'AdminUsersController@profileUpdate');   
 Route::get('/latest-videos', 'HomeController@LatestVideos');
 Route::get('/language/{lanid}/{language}', 'HomeController@LanguageVideo');
+Route::get('featured-videos', 'HomeController@Featured_videos');
 Route::post('mywishlist', 'WishlistController@mywishlist');
 Route::post('ppvWishlist', 'WishlistController@ppvWishlist');
 Route::get('mywishlists', 'WishlistController@show_mywishlists');
