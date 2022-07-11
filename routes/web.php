@@ -1455,9 +1455,7 @@ Route::get('Movie-list', 'ChannelController@MovieList')->name('MovieList');
 Route::get('Live-list', 'ChannelController@liveList')->name('liveList');
 Route::get('Series-list', 'ChannelController@Series_List')->name('SeriesList');
 Route::get('Series/Genre/{id}', 'ChannelController@Series_genre_list')->name('Series_genre_list');
-
-
-
+Route::get('Artist-list', 'ChannelController@artist_list')->name('artist_list');
 
     // Filter 
 Route::get('categoryfilter', 'ChannelController@categoryfilter')->name('categoryfilter');
