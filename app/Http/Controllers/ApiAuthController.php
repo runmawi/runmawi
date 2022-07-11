@@ -3698,12 +3698,13 @@ public function upnextAudio(Request $request){
         ->select('audio.*')
         ->where('category_id', $album_id)
         ->count();
+        
         // $album_id = \Audio::where('id','=',$audio_id)->where('active','=','1')->where('status','=','1')->pluck('album_id');
-        
-        //$album_id = $request->album_id;
-    // $album_first = \Audio::where('album_id','=',$album_id)->where('active','=','1')->where('status','=','1')->limit(1)->get();
-        
-    // $album_all_audios = \Audio::where('album_id','=',$album_id)->where('id','!=',$audio_id)->where('active','=','1')->where('status','=','1')->orderBy('created_at', 'desc')->get();
+  
+  //$album_id = $request->album_id;
+// $album_first = \Audio::where('album_id','=',$album_id)->where('active','=','1')->where('status','=','1')->limit(1)->get();
+  
+// $album_all_audios = \Audio::where('album_id','=',$album_id)->where('id','!=',$audio_id)->where('active','=','1')->where('status','=','1')->orderBy('created_at', 'desc')->get();
 if($upnext_audios > 0){
   $album_all_audios =  Audio::join('category_audios', 'audio.id', '=', 'category_audios.audio_id')
   ->select('audio.*')
@@ -5041,50 +5042,64 @@ return response()->json($response, 200);
 
       $next_audio_id = Audio::where('id', '>', $currentaudio_id)->where('status','=','1')->where('active','=','1')->min('id');
 
-      if($next_audio_id){
-        $audio= Audio::where('id','=',$next_audio_id)->where('status','=','1')->where('active','=','1')->get()->map(function ($item) {
-          $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-           return $item;
-      });
+        if( $next_audio_id != null ){
+
+              $audio= Audio::where('id','=',$next_audio_id)->where('status','=','1')->where('active','=','1')->get()->map(function ($item) {
+                $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+                return $item;
+              });
+        
+        }else{
+
+            $next_audio_id = Audio::where('status','=','1')->where('active','=','1')->pluck('id')->first();
+
+            $audio= Audio::where('id','=',$next_audio_id)->where('status','=','1')->where('active','=','1')->get()->map(function ($item) {
+              $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+              return $item;
+            });
+        }
+
         $response = array(
           'status' => true,
           'next_audio_id' => $next_audio_id,
           'audio' => $audio
         );
-      }else{
-        $response = array(
-          'status' => false,
-          'message' => 'No Data Found'
-        );
-      }
-      return response()->json($response, 200);
+        return response()->json($response, 200);
     }
 
 
     public function prev_audio(Request $request){
 
-    $currentaudio_id = $request->audio_id;
-    $prev_audio_id = Audio::where('id', '<', $currentaudio_id)->where('status','=','1')->where('active','=','1')->orderBy('id','desc')->first();
+        $currentaudio_id = $request->audio_id;
 
-    if($prev_audio_id){
-        $prev_audio_id = $prev_audio_id->id;
-        $audio= Audio::where('id','=',$prev_audio_id)->where('status','=','1')->where('active','=','1')->get()->map(function ($item) {
-            $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-             return $item;
-        });
-        $response = array(
-          'status' => "true",
-          'prev_audio_id' => $prev_audio_id,
-          'audio' => $audio
-        );
-      }else{
-        $response = array(
-          'status' => "false",
-          'message' => 'No Data Found'
-        );
-      }
-      return response()->json($response, 200);
-  
+        $prev_audio_id = Audio::where('id', '<', $currentaudio_id)->where('status','=','1')->where('active','=','1')->orderBy('id','desc')->first();
+
+          if($prev_audio_id){
+
+                $prev_audio_id = $prev_audio_id->id;
+
+                $audio= Audio::where('id','=',$prev_audio_id)->where('status','=','1')->where('active','=','1')->get()->map(function ($item) {
+                    $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+                    return $item;
+                });
+            
+          }else{
+
+              $prev_audio_id = Audio::where('status','=','1')->where('active','=','1')->latest()->pluck('id')->first();
+
+              $audio= Audio::where('id','=',$prev_audio_id)->where('status','=','1')->where('active','=','1')->get()->map(function ($item) {
+                $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+                return $item;
+            });
+          }
+
+          $response = array(
+            'status' => "true",
+            'prev_audio_id' => $prev_audio_id,
+            'audio' => $audio
+          );
+
+          return response()->json($response, 200);
     }
 
     public function relatedaudios(Request $request) {
@@ -7035,9 +7050,24 @@ public function Adstatus_upate(Request $request)
   {
 
     try {
+
       $album_id = $request->album_id;
 
-      $audios = Audio::where('album_id',$album_id)->inRandomOrder()->get();
+      $audios_count = Audio::where('album_id',$album_id)->get();
+
+      $audio_album_id = Audio::Select('audio_albums.*')
+                      ->Join('audio_albums','audio_albums.id','=','audio.album_id')
+                      ->groupBy('id')->inRandomOrder()->pluck('id')->first();
+
+
+        if(count($audios_count) > 0 ){
+
+          $audios = Audio::where('album_id',$album_id)->inRandomOrder()->get();
+          
+        }
+        else{
+          $audios = Audio::where('album_id',$audio_album_id)->inRandomOrder()->get();
+        }
 
       $status = "true";
   
@@ -7052,5 +7082,104 @@ public function Adstatus_upate(Request $request)
     );
     
      return response()->json($response, 200); 
+  }
+
+  public function Audiolike_ios(Request $request)
+  {
+    $user_id = $request->user_id;
+    $audio_id = $request->audio_id;
+
+    $like_count = Likedislike::where("audio_id",$audio_id)->where("user_id",$user_id)->count();
+    $like_counts = Likedislike::where("audio_id",$audio_id)->where("user_id",$user_id)->where('liked','=' ,'1')->count();
+    $unlike_count = Likedislike::where("audio_id",$audio_id)->where("user_id",$user_id)->where('liked', 0)->count();
+
+    if($like_count > 0){
+
+      if($like_counts > 0){
+        Likedislike::where("audio_id",$audio_id)->where("user_id",$user_id)->where('liked','=' ,'1')
+        ->update([
+                'user_id'  => $user_id ,
+                'audio_id' => $audio_id ,
+                'liked'    => '0' ,
+                'disliked'    => '0',
+              ]);
+
+      }elseif( $unlike_count > 0){
+          Likedislike::where("audio_id",$audio_id)->where("user_id",$user_id)->where('liked',0)
+          ->update([
+                  'user_id'  => $user_id ,
+                  'audio_id' => $audio_id ,
+                  'liked'    => '1' ,
+                  'disliked'    => '0',
+                ]);
+      }
+      
+    }
+    else{
+        Likedislike::create([
+          'user_id'  => $user_id ,
+          'audio_id' => $audio_id ,
+          'liked'    => '1' ,
+          'disliked'    => '0' ,
+        ]);
+    }
+
+    $response = array(
+      'status'=>'true',
+      'like'  =>  Likedislike::where("audio_id",$audio_id)->where("user_id",$user_id)->pluck('liked')->first(),
+      'dislike'  =>   Likedislike::where("audio_id",$audio_id)->where("user_id",$user_id)->pluck('disliked')->first(),
+    );
+    
+    return response()->json($response, 200); 
+
+  }
+
+  public function Audiodislike_ios(Request $request)
+  {
+      $user_id = $request->user_id;
+      $audio_id = $request->audio_id;
+
+      $dislike_count = Likedislike::where("audio_id",$audio_id)->where("user_id",$user_id)->count();
+      $dislike_counts = Likedislike::where("audio_id",$audio_id)->where("user_id",$user_id)->where('disliked',1)->count();
+      $undislike_count = Likedislike::where("audio_id",$audio_id)->where("user_id",$user_id)->where('disliked', 0)->count();
+
+      if($dislike_count > 0){
+
+        if($dislike_counts > 0){
+          Likedislike::where("audio_id",$audio_id)->where("user_id",$user_id)->where('disliked','=' ,'1')
+          ->update([
+                  'user_id'  => $user_id ,
+                  'audio_id' => $audio_id ,
+                  'liked'    => '0' ,
+                  'disliked'    => '0',
+                ]);
+  
+        }elseif( $undislike_count > 0){
+            Likedislike::where("audio_id",$audio_id)->where("user_id",$user_id)->where('disliked',0)
+            ->update([
+                    'user_id'  => $user_id ,
+                    'audio_id' => $audio_id ,
+                    'liked'    => '0' ,
+                    'disliked'    => '1',
+                  ]);
+        }
+
+        
+      }else{
+          Likedislike::create([
+            'user_id'  => $user_id ,
+            'audio_id' => $audio_id ,
+            'liked'    => '0',
+            'disliked'    => '1',
+          ]);
+      }
+
+      $response = array(
+        'status'=>'true',
+        'like'  =>  Likedislike::where("audio_id",$audio_id)->where("user_id",$user_id)->pluck('liked')->first(),
+        'dislike'  =>   Likedislike::where("audio_id",$audio_id)->where("user_id",$user_id)->pluck('disliked')->first(),
+      );
+      
+      return response()->json($response, 200); 
   }
 }

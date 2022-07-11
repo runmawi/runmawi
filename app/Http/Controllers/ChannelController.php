@@ -1710,4 +1710,21 @@ class ChannelController extends Controller
 
           return Theme::view('Series_genre_list',$data); 
       }
+
+      public function artist_list(Request $request)
+      {
+        
+        try {
+          $data =array(
+            "artist_list" => Artist::all() ,
+            'ThumbnailSetting' => ThumbnailSetting::first() ,
+          );
+
+           return Theme::view('artist-list',$data); 
+        } 
+        catch (\Throwable $th) {
+           return abort(404);
+        }
+        
+      }
 }

@@ -2776,6 +2776,40 @@ class HomeController extends Controller
         return View('auth.mobile-login');
     }
 
+    public function Featured_videos(Request $request)
+    {
+        $ThumbnailSetting = ThumbnailSetting::first();
+        $currency = CurrencySetting::first();
+        $PPV_settings = Setting::where('ppv_status', '=', 1)->first();
+
+        if (!empty($PPV_settings))
+        {
+            $ppv_gobal_price = $PPV_settings->ppv_price;
+        }
+        else
+        {
+            $ppv_gobal_price = null;
+        }
+
+        $featured_videos = Video::where('videos.active', '=', '1')->where('videos.status', '=', '1')
+                             ->where('videos.draft', '=', '1')->where('videos.featured','=','1');
+
+        if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+            $featured_videos = $featured_videos  ->whereNotIn('videos.id',Block_videos());
+        }
+
+        $featured_videos = $featured_videos->orderBy('videos.created_at','desc')->get();
+
+        $data = array(
+            'featured_videos' => $featured_videos,
+            'ppv_gobal_price' => $ppv_gobal_price,
+            'currency' => $currency,
+            'ThumbnailSetting' => $ThumbnailSetting,
+        );
+
+        return Theme::view('featured', $data);
+    }
+
     public function LatestVideos()
     {
 
@@ -3516,6 +3550,8 @@ class HomeController extends Controller
         return $theme_modes;
       
     }
+
+  
 
 }
 
