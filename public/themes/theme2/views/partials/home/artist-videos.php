@@ -2,7 +2,7 @@
 
 
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-    <h4 class="main-title"><a href="<?php echo URL::to('Artist-list') ?>"> Artist </a></h4>
+    <h4 class="main-title"><a href="<?php echo URL::to('artist-list') ?>"> Artist </a></h4>
 </div>
 <div class="favorites-contens">
     <ul class="favorites-slider list-inline row p-0 mb-0">
@@ -11,7 +11,7 @@
                 ?>
 
         <li class="slide-item">
-            <a href="<?php echo URL::to('Artist-list') ?>">
+            <a href="<?php echo URL::to('artist-list') ?>">
                 <div class="block-images position-relative">
                     <div class="img-box">
                         <a href="<?php echo URL::to('artist') ?><?= '/' . $artist_details->id ?>">

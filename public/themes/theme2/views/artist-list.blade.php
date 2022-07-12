@@ -15,7 +15,7 @@
                                     @foreach($artist_list as $artist_lists)
 
                                         <li class="slide-item col-sm-2 col-md-2 col-xs-12">
-                                            <a href="<?php echo URL::to('Artist-list') ?>">
+                                            <a href="<?php echo URL::to('artist-list') ?>">
                                                 <div class="block-images position-relative">
                                                     <div class="img-box">
                                                         <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/artists/'.$artist_lists->image;  ?>" class="img-fluid loading" alt=""> 
