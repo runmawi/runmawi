@@ -112,7 +112,10 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
     Route::get('FamilyModeOff', 'HomeController@FamilyModeOff')->name('FamilyModeOff');
     Route::post('theme-mode', 'HomeController@ThemeModeSave');
 
-    
+    // Reels 
+
+    Route::get('/reels', 'AdminReelsVideo@index');
+
 
     Route::get('/home', 'HomeController@index')->name('home');
 
