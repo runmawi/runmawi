@@ -142,9 +142,12 @@ endif; ?>
                         </div>
                     </div>
 
-                     <div class="trailor-video">
-                        <a href="#video-trailer" class="video-open playbtn">
-                            <svg class="gt" version="1.1" xmlns="http://www.w3.org/2000/svg"  xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px"
+                    
+                                <!-- watch Trailer -->
+                    <div class="trailor-video">
+                        <a href="#video-trailer" class="video-open playbtn" data-trailer-url="<?= $videos->trailer ?>" data-trailer-type="<?= $videos->trailer_type ?>" onclick="trailer_slider_videos(this)"  >
+                          
+                           <svg class="gt" version="1.1" xmlns="http://www.w3.org/2000/svg"  xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px"
                                  viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
                                     <style type="text/css"> .gt{  height: 60px!important; } </style>
                                 <polygon class='triangle' fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"
@@ -157,9 +160,13 @@ endif; ?>
 
                     <div class="col-md-12">
                         <div id="video-trailer" class="mfp-hide">
-                            <video id="videoPlayer" poster="<?php echo URL::to('/').'/public/uploads/images/' .$videos->player_image;?>"  class="" controls src="<?= $videos->trailer; ?>"  type="application/x-mpegURL" ></video>
+                            <video  id="Trailer-videos" class=""  poster="<?= URL::to('/') . '/public/uploads/images/' . $videos->player_image ?>"
+                                controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' type="application/x-mpegURL">
+                                <source  type="application/x-mpegURL"  src="<?php echo $videos->trailer;?>">
+                            </video>
                         </div>
                     </div>
+                    
                 </div>
             </div>
         </div>
@@ -229,22 +236,26 @@ if(Route::current()->getName() == "home"){
                             </div>
 
                             <div class="trailor-video">
-                                    <a href="#video-trailer"    class="video-open playbtn">
-                                        <svg class="gt" version="1.1" xmlns="http://www.w3.org/2000/svg"   xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px"
-                                            viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
-                                                <style type="text/css">  .gt{     height: 60px!important;    }     </style>
-                                            <polygon class='triangle' fill="none" stroke-width="7" stroke-linecap="round"    stroke-linejoin="round" stroke-miterlimit="10"
-                                                points="73.5,62.5 148.5,105.8 73.5,149.1 " />
-                                            <circle class='circle' fill="none" stroke-width="7" stroke-linecap="round"
-                                            stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" />
-                                        </svg>
-                                        <span class="w-trailor">Watch Trailer</span>
-                                    </a>
+                                <a href="#video-trailer"    class="video-open playbtn" data-trailer-url="<?= $videos_categorys->trailer ?>" data-trailer-type="<?= $videos_categorys->trailer_type ?>" onclick="trailer_slider_videos(this)" >
+                                       
+                                    <svg class="gt" version="1.1" xmlns="http://www.w3.org/2000/svg"   xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px"
+                                         viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                        <style type="text/css">  .gt{     height: 60px!important;    }     </style>
+                                        <polygon class='triangle' fill="none" stroke-width="7" stroke-linecap="round"    stroke-linejoin="round" stroke-miterlimit="10"
+                                            points="73.5,62.5 148.5,105.8 73.5,149.1 " />
+                                        <circle class='circle' fill="none" stroke-width="7" stroke-linecap="round"
+                                                stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" />
+                                    </svg>
+                                    <span class="w-trailor">Watch Trailer</span>
+                                </a>
                             </div>
 
                             <div class="col-md-12">
                                 <div id="video-trailer" class="mfp-hide">
-                                    <video id="videoPlayer" poster="<?php echo URL::to('/').'/public/uploads/images/' .$videos_categorys->player_image;?>"  class="" controls src="<?= $videos_categorys->trailer; ?>"  type="application/x-mpegURL" ></video>
+                                    <video  id="Trailer-videos" class=""  poster="<?= URL::to('/') . '/public/uploads/images/' . $videos_categorys->player_image ?>"
+                                            controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' type="application/x-mpegURL">
+                                            <source  type="application/x-mpegURL"  src="<?php echo $videos_categorys->trailer;?>">
+                                    </video>
                                 </div>
                             </div>
                         </div>
@@ -459,4 +470,68 @@ if(Route::current()->getName() == "home"){
 <?php endforeach;  endif; ?>
 
 
+<!-- M3U8 - Player  -->
+
+<script src="https://cdn.plyr.io/3.5.10/plyr.js"></script>
+<script src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
+
+<script>
+
+    const player = new Plyr('#Trailer-videos',{
+            controls: [
+                'play-large','restart','rewind','play','fast-forward','progress',
+                'current-time','mute','volume','captions','settings',
+                'pip','airplay','fullscreen'
+            ],
+                    
+    });
+
+    
+    function trailer_slider_videos(ele) 
+        {
+            var trailer_url   = $(ele).attr('data-trailer-url');
+            var trailer_type = $(ele).attr('data-trailer-type');
+
+            if( trailer_type == "m3u8_url" || trailer_type == "m3u8" ){
+                    
+                const video = document.querySelector('#Trailer-videos');
+                const source = trailer_url ;
+                const defaultOptions = {};
+
+                if (Hls.isSupported()) {
+                        const hls = new Hls();
+                        hls.loadSource(source);
+
+                        hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+                        const availableQualities = hls.levels.map((l) => l.height)
+
+                        defaultOptions.quality = {
+                            default: availableQualities[0],
+                            options: availableQualities,
+                            forced: true,        
+                            onChange: (e) => updateQuality(e),
+                        }
+
+                        const player = new Plyr(video, defaultOptions);
+                        });
+                        hls.attachMedia(video);
+                        window.hls = hls;
+                }
+
+                function updateQuality(newQuality) {
+                    window.hls.levels.forEach((level, levelIndex) => {
+                    if (level.height === newQuality) {
+                        console.log("Found quality match with " + newQuality);
+                        window.hls.currentLevel = levelIndex;
+                    }
+                    });
+                }
+
+            }else if(trailer_type == "mp4_url" || trailer_type == "video_mp4"  ){
+                    
+                $('#Trailer-videos').attr('src', trailer_url);
+            }
+
+    }
+</script>
 
