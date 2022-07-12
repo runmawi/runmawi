@@ -26,6 +26,9 @@ background: #2bc5b4!important;}
 p{
 color: #fff;
 }
+    .slick-track{
+        width: 45%!important;
+    }
 .fa-heart{color: red !important;}
 .flexlink{
 position: relative;
