@@ -4,7 +4,7 @@
         <h2 class="font-weight-bold"><?php echo $artist->artist_name;?></h2>
         <!-- <p>8,239,0056 Monthly viewers</p> -->
     </div>
-    <div class="m-5 mt-3">
+    <div class="container-fluid mt-3">
         <div class="d-flex align-items-center">
             <div>
                 <i  class="fa fa-play-circle-o" aria-hidden="true" style="color:#fff!important;"></i>
@@ -18,21 +18,21 @@
             </div>
         </div>
     </div>
-    <div class="mt-3">
-        <div class="d-flex justify-content-between m-4 align-items-center">
-            <div>
+    <div class="mt-3 container-fluid">
+        <div class="row justify-content-between m-4 align-items-center">
+            <div class="col-md-6">
                 <img src="<?php echo URL::to('/').'/public/uploads/artists/'.$artist->image;?>" alt="" width="250" >
             </div>
-            <div class="abu p-2">
+            <div class=" col-md-6 abu p-2">
                 <h2>About</h2>
                 <p><?php echo $artist->description;?></p>
             </div>
         </div>
     </div>
-    <div class="m-4 mt-3">
-        <h2>Lastest Release</h2>
+    <div class="container-fluid mt-3">
+        <h4 class="main-title">Lastest Release</h4>
     </div>
-    <div class="container">
+    <div class="container-fluid mt-2">
         <div class="row mb-5">
         	<?php foreach ($latest_audios as $key => $latest_audio) { 
         		?>
@@ -57,10 +57,10 @@
         <?php } ?>
         </div>
     </div>
-    <div class="m-4 mt-3">
-        <h2>Album</h2>
+    <div class="container-fluid mt-3">
+        <h4 class="main-title">Album</h4>
     </div>
-    <div class="container">
+    <div class="container-fluid mt-2">
         <div class="row mb-5">
         	<?php foreach ($albums as $key => $album) { ?>
         		
@@ -84,10 +84,10 @@
         </div>
     </div>
   
-    <div class="m-4 mt-3">
-        <h2>Audio</h2>
+    <div class="container-fluid mt-3">
+        <h4 class="main-title">Audio</h4>
     </div>
-    <div class="container">
+    <div class="container-fluid mt-2">
         <div class="row mb-5">
         	<?php  foreach ($artist_audios as $key => $artist_audio) { 
         		?>
@@ -112,10 +112,10 @@
         <?php } ?>
         </div>
     </div>
-    <div class="m-4 mt-3">
-        <h2>Series</h2>
+    <div class="container-fluid mt-3">
+        <h4 class="main-title">Series</h4>
     </div>
-    <div class="container">
+    <div class="container-fluid mt-2">
         <div class="row mb-5">
         	<?php  foreach ($artist_series as $key => $artist_serie) { 
         		?>
@@ -140,10 +140,10 @@
         <?php } ?>
         </div>
     </div>
-    <div class="m-4 mt-3">
-        <h2>Videos</h2>
+    <div class="container-fluid mt-3">
+        <h4 class="main-title">Videos</h4>
     </div>
-    <div class="container">
+    <div class="container-fluid mt-2">
         <div class="row mb-5">
             <?php  foreach ($artist_videos as $key => $artist_video) { 
                 ?>

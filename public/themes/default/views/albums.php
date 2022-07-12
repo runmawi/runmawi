@@ -150,7 +150,7 @@ border-bottom: 1px solid #141414;
 <div class="album_container">
 <div class="blur"></div>
 <div class="overlay_blur">
- <h2 class="hero-title album"> <?= $album->albumname; ?></h2>
+ <h4 class="hero-title album"> <?= $album->albumname; ?></h4>
     <!-- <p class="mt-2">Music by    <br>A. R. Rahman</p> -->
     <div class="d-flex" style="justify-content: space-between;width: 40%;align-items: center;">
         <button class="btn bd" id="vidbutton"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play</button>
