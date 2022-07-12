@@ -49,6 +49,13 @@ class ConvertVideoTrailer implements ShouldQueue
      */
     public function handle()
     {
+
+
+        $this->video->update([
+            // 'path' =>  $vid_name,
+            'status' => 0
+        ]);
+
         $video = $this->video->trailer;
         $storepath = $this->storepath;
         $convertresolution = $this->convertresolution;
