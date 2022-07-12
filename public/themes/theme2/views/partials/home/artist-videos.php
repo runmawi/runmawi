@@ -14,7 +14,7 @@
             <a href="<?php echo URL::to('artist-list') ?>">
                 <div class="block-images position-relative">
                     <div class="img-box">
-                        <a href="<?php echo URL::to('artist') ?><?= '/' . $artist_details->id ?>">
+                        <a href="<?php echo URL::to('artist') ?><?= '/' . $artist_details->artist_slug ?>">
                              <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$artist_details->image;  ?>" class="img-fluid" alt="">
                         </a>
                     </div>
@@ -22,7 +22,7 @@
 
                 <div class="block-description">
                     <div class="hover-buttons">
-                        <a class="text-white btn-cl" href="<?php echo URL::to('artist') ?><?= '/' . $artist_details->id ?>">
+                        <a class="text-white btn-cl" href="<?php echo URL::to('artist') ?><?= '/' . $artist_details->artist_slug ?>">
                          <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> 
                         </a>
                     </div>
