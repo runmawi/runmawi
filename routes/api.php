@@ -303,5 +303,5 @@ Route::group([
     // Audio Like & dislike - IOS
     Route::post('Audiolike_ios', 'ApiAuthController@Audiolike_ios');
     Route::post('Audiodislike_ios', 'ApiAuthController@Audiodislike_ios');
-
+    Route::get('ReelsVideo', 'ApiAuthController@ReelsVideo');
 });
