@@ -7,7 +7,7 @@
         <div class="row">
             <div class="col-sm-12 page-height">
                 <div class="iq-main-header align-items-center justify-content-between">
-                    <h3 class="vid-title">{{ "Artist List" }}</h3>                     
+                    <h4 class="vid-title">{{ "Artist List" }}</h4>                     
                 </div>
                 <div class="favorites-contens">
                     <ul class="category-page list-inline row p-0 mb-0">

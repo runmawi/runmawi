@@ -966,7 +966,10 @@ if(!empty($artistsdata)){
         ]);
 
             $id = $request->videos_id;
-
+        // dd($data);
+        $package = User::where('id',1)->first();
+        $pack = $package->package;
+        $settings = Setting::first();
 
             /*Advertisement Video update starts*/
             // if($data['ads_id'] != 0){
@@ -1026,7 +1029,52 @@ if(!empty($artistsdata)){
             $path = public_path().'/uploads/videos/';
 
             $video->trailer_type = $data['trailer_type'];
-
+            if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1 && $data['trailer_type'] == 'video_mp4') {
+                
+                if($settings->transcoding_resolution != null){
+                    $convertresolution=array();
+                    $resolution = explode(",",$settings->transcoding_resolution);
+                        foreach($resolution as $value){
+                            if($value == "240p"){
+                                $r_240p  = (new Representation)->setKiloBitrate(150)->setResize(426, 240);
+                                array_push($convertresolution,$r_240p);
+                            }
+                            if($value == "360p"){
+                                $r_360p  = (new Representation)->setKiloBitrate(276)->setResize(640, 360);
+                                array_push($convertresolution,$r_360p);
+    
+                            }
+                            if($value == "480p"){
+                                $r_480p  = (new Representation)->setKiloBitrate(750)->setResize(854, 480);
+                                array_push($convertresolution,$r_480p);
+    
+                            }
+                            if($value == "720p"){
+                                $r_720p  = (new Representation)->setKiloBitrate(2048)->setResize(1280, 720);
+                                array_push($convertresolution,$r_720p);
+    
+                            }
+                            if($value == "1080p"){
+                                $r_1080p  = (new Representation)->setKiloBitrate(750)->setResize(854, 480);
+                                array_push($convertresolution,$r_1080p);
+                            }
+                    }
+                
+                }
+                $trailer = $data['trailer'];
+                $trailer_path  = URL::to('public/uploads/trailer/');
+                $trailer_Video =  time().'_'.$trailer->getClientOriginalName();  
+                $trailer->move(public_path('uploads/trailer/'), $trailer_Video);
+                $trailer_video_name = strtok($trailer_Video, '.');
+                $M3u8_save_path = $trailer_path.'/'.$trailer_video_name.'.m3u8';
+                $storepath  = URL::to('public/uploads/trailer/');
+                
+                $data['trailer'] = $M3u8_save_path;
+                $video->trailer_type  = 'm3u8';
+                // dd($convertresolution);
+            }
+            else{
+                
             if($data['trailer_type'] == 'video_mp4'){
 
                if(!empty($trailer)) {   
@@ -1063,7 +1111,9 @@ if(!empty($artistsdata)){
 
                 $video->trailer = $data['embed_trailer'];
             }
-                   
+        }
+
+
            
            $update_mp4 = $request->get('video');
 
@@ -1442,6 +1492,9 @@ if(!empty($artistsdata)){
         $video->search_tags =  $searchtags;      
         $video->save();
 
+        if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1) {
+            ConvertVideoTrailer::dispatch($video,$storepath,$convertresolution,$trailer_video_name,$trailer_Video);
+            }
 
                         // Related Video 
         if(!empty($data['related_videos'])){
