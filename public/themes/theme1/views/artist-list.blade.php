@@ -15,7 +15,7 @@
                                     @foreach($artist_list as $artist_lists)
 
                                         <li class="slide-item col-sm-2 col-md-2 col-xs-12">
-                                            <a href="<?php echo URL::to('Artist-list') ?>">
+                                            <a href="{{ URL::to('artist').'/'.$artist_lists->artist_slug }}">
                                                 <div class="block-images position-relative">
                                                     <div class="img-box">
                                                         <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/artists/'.$artist_lists->image;  ?>" class="img-fluid loading" alt=""> 
@@ -23,7 +23,7 @@
 
                                                     <div class="block-description">
                                                         <div class="hover-buttons">
-                                                            <a href="{{ URL::to('artist').'/'.$artist_lists->id   }}">
+                                                            <a href="{{ URL::to('artist').'/'.$artist_lists->artist_slug   }}">
                                                                 <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.svg';  ?>">                                  
                                                             </a>
                                                         <div>

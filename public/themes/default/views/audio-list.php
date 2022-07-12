@@ -11,7 +11,7 @@
         height:10%;
     }
 </style>
-<div class="container mt-4 audio-list-page">
+<div class="container-fluid mt-4 audio-list-page">
 
        <div class="block-space1">
            <div class="row">
@@ -32,7 +32,7 @@
       <?php if($audios_count > 0){   include('partials/pagination.php'); }else{} ?>
 
 </div>
-<div class="container mt-2">
+<div class="container-fluid mt-2">
        <div class="block-space1">
            <div class="row">
               <div class="col-sm-12 overflow-hidden">
@@ -45,19 +45,20 @@
               </div>
            </div>
         </div>
-		<div class="row nomargin">
+		<div class="">
 
 			
-					<div class="iq-main-header col-md-3 d-flex align-items-center justify-content-between">
+					<div class="iq-main-header ">
 						<div class="favorites-contens">
-				           <ul class="favorites-slider list-inline  row p-0 mb-0 ">
-                               <?php 
+                                <?php 
 			if(isset($albums)) { 
 				foreach($albums as $album): ?>
-  <li class="slide-item ">
+				           <ul class="favorites-slider list-inline  row p-0 mb-0 ">
+                           
+  <li class="slide-item">
                              <div class="block-images position-relative">
                                    <div class="img-box">
-                                   <img src="<?php echo URL::to('/').'/public/uploads/albums/'.$album->album;?>" class="img-fluid img-zoom" alt="">
+                                   <img src="<?php echo URL::to('/').'/public/uploads/albums/'.$album->album;?>" class="img-fluid w-100" alt="">
                                  </div>
                                   
                                
@@ -71,8 +72,9 @@
                                 </div>
       </div>
                                </li>
-                               <?php endforeach; } ?>
+                             
                             </ul>
+                              <?php endforeach; } ?>
                             </div>
 						</div>
 					</div>

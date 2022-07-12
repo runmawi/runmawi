@@ -150,50 +150,63 @@ class AdminArtistsController extends Controller
      public function store(Request $request)
     {
         $data = Session::all();
+
         if (!empty($data['password_hash'])) {
-        $package_id = auth()->user()->id;
-        $user_package =     User::where('id', $package_id)->first();
-        $package = $user_package->package;
 
-        if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
-    	$data = $request->all();
+            $package_id = auth()->user()->id;
+            $user_package =     User::where('id', $package_id)->first();
+            $package = $user_package->package;
 
-        $image_path = public_path().'/uploads/artists/';
-        $image = (isset($data['image'])) ? $data['image'] : '';
-        if(!empty($image)){  
-              //code for remove old file
-              if($image != ''  && $image != null){
-                   $file_old = $image_path.$image;
-                  if (file_exists($file_old)){
-                   unlink($file_old);
-                  }
-              }
-              //upload new file
-              $file = $image;
-            //   $data['image']  = $file->getClientOriginalName();
-              $data['image'] = str_replace(' ', '_', $file->getClientOriginalName());
+            if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
+                    $data = $request->all();
+                    $image_path = public_path().'/uploads/artists/';
+                    $image = (isset($data['image'])) ? $data['image'] : '';
 
-              $file->move($image_path, $data['image']);
+                    if(!empty($image)){  
+                        if($image != ''  && $image != null){
+                            $file_old = $image_path.$image;
+                            if (file_exists($file_old)){
+                                unlink($file_old);
+                            }
+                        }
+                        //upload new file
+                        $file = $image;
+                        $data['image'] = str_replace(' ', '_', $file->getClientOriginalName());
+                        $file->move($image_path, $data['image']);
 
-         } else {
-             $data['image']  = 'default.jpg';
-         } 
-       
-        $artist = Artist::create($data);
-        $artist_id = $artist->id;
+            } else {
+                $data['image']  = 'default.jpg';
+            } 
+        
+
+            if($data['artist_slug'] == null ){
+
+                $artist_slug = preg_replace('/\s+/', '_', $data['artist_name']);
+            }else{
+                $artist_slug = preg_replace('/\s+/', '_', $data['artist_slug']);
+            }
+
+            $artist = Artist::create([
+                "artist_name" => $data['artist_name'] ,
+                "description" => $data['description'] ,
+                "image"       => $data['image'] ,
+                "artist_slug" => $artist_slug ,
+            ]);
+
+            $artist_id = $artist->id;
 
         return Redirect::to('admin/artists')->with(array('message' => 'New Artist Successfully Added!', 'note_type' => 'success') );
-    }else if($package == "Basic"){
+       
+        }else if($package == "Basic"){
+            return view('blocked');
+        }
+        }
+        else{
+            $system_settings = SystemSetting::first();
+            $user = User::where('id','=',1)->first();
+            return view('auth.login',compact('system_settings','user'));
 
-        return view('blocked');
-
-    }
-}else{
-    $system_settings = SystemSetting::first();
-    $user = User::where('id','=',1)->first();
-    return view('auth.login',compact('system_settings','user'));
-
-  }
+        }
     }
 
     public function edit($id)
@@ -260,50 +273,67 @@ class AdminArtistsController extends Controller
     public function update(Request $request)
     {
         $data = Session::all();
+
         if (!empty($data['password_hash'])) {
-        $package_id = auth()->user()->id;
-        $user_package =     User::where('id', $package_id)->first();
-        $package = $user_package->package;
 
-        if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
-        $data = $request->all();
-        $id = $request->id;
-        $artist = Artist::findOrFail($id);
-        $image_path = public_path().'/uploads/artists/';
-        $image = (isset($data['image'])) ? $data['image'] : '';
-        if(empty($data['image'])){
-            unset($data['image']);
-        } else {
-            //code for remove old file
-        	if($image != ''  && $image != null){
-        		$file_old = $image_path.$image;
-        		if (file_exists($file_old)){
-        			unlink($file_old);
-        		}
-        	}
-              //upload new file
-        	$file = $image;
-        	// $data['image']  = $file->getClientOriginalName();
-            $data['image'] = str_replace(' ', '_', $file->getClientOriginalName());
-        	$file->move($image_path, $data['image']);
+            $package_id = auth()->user()->id;
+            $user_package =     User::where('id', $package_id)->first();
+            $package = $user_package->package;
+
+            if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
+
+                $data = $request->all();
+                $id = $request->id;
+                $artist = Artist::findOrFail($id);
+                $image_path = public_path().'/uploads/artists/';
+                $image = (isset($data['image'])) ? $data['image'] : '';
+
+                if(empty($data['image'])){
+                    unset($data['image']);
+                }
+                else {
+                    if($image != ''  && $image != null){
+                        $file_old = $image_path.$image;
+                        if (file_exists($file_old)){
+                            unlink($file_old);
+                        }
+                    }
+                    $file = $image;
+                    $data['image'] = str_replace(' ', '_', $file->getClientOriginalName());
+                    $file->move($image_path, $data['image']);
+                }
+
+            if($data['artist_slug'] == null ){
+
+                $artist_slug = preg_replace('/\s+/', '_', $data['artist_name']);
+            }else{
+                $artist_slug = preg_replace('/\s+/', '_', $data['artist_slug']);
+            }
+            
+           
+                $artist->update([
+                    "artist_name" => $data['artist_name'] ,
+                    "description" => $data['description'] ,
+                    "artist_slug" => $artist_slug ,
+                ]);
+
+                if(!empty($data['image'])){
+                    $artist->update([
+                        "image"   =>  $data['image']  ,
+                    ]);
+                }
+
+            return Redirect::to('admin/artists/edit' . '/' . $id)->with(array('message' => 'Successfully Updated Artist!', 'note_type' => 'success') );
+        
+            }else if($package == "Basic"){
+                return view('blocked');
+            }
+        }else{
+            $system_settings = SystemSetting::first();
+            $user = User::where('id','=',1)->first();
+            return view('auth.login',compact('system_settings','user'));
         }
-
-
-        $artist->update($data);
-
-        return Redirect::to('admin/artists/edit' . '/' . $id)->with(array('message' => 'Successfully Updated Artist!', 'note_type' => 'success') );
-    }else if($package == "Basic"){
-
-        return view('blocked');
-
     }
-}else{
-    $system_settings = SystemSetting::first();
-    $user = User::where('id','=',1)->first();
-    return view('auth.login',compact('system_settings','user'));
-
-  }
- }
 
     public function destroy($id)
     {
@@ -339,5 +369,27 @@ class AdminArtistsController extends Controller
         if(file_exists(public_path().'/uploads/artists/' . $artist->image) && $artist->image != 'placeholder.jpg'){
             @unlink(public_path().'/uploads/artists/' . $artist->image);
         }
+    }
+
+    public function artist_slug_validation(Request $request)
+    {
+            $artist_slug = $request->get('artist_slug');
+
+            $button_type = $request->get('button_type');
+
+
+            if($button_type == "Update Artist"){
+
+                $artist_slug = Artist::where('artist_slug',$artist_slug)->get();
+
+                $message = (count($artist_slug) < 2) ?  "true" : "false";
+
+            }elseif($button_type == "Add New Artist"){
+
+                $artist_slug = Artist::where('artist_slug',$artist_slug)->first();
+                $message = ($artist_slug == null) ?  "true" : "false";
+            }
+            
+            return $message;
     }
 }
