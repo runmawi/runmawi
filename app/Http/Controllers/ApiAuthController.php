@@ -7182,4 +7182,28 @@ public function Adstatus_upate(Request $request)
       
       return response()->json($response, 200); 
   }
+
+  public function ReelsVideo(){
+
+    $reel_videos = Video::Join('reelsvideo','reelsvideo.video_id','=','videos.id')
+    ->get()->map(function ($item) {
+      $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+      $item['video_url'] = URL::to('/').'/storage/app/public/';
+      $item['reelvideo_url'] = URL::to('/').'/public/uploads/reelsVideos/'.$item->reelvideo;
+      $item['pdf_files_url'] = URL::to('/').'/public/uploads/videoPdf/'.$item->pdf_files;
+      $item['mobile_image_url'] = URL::to('/').'/public/uploads/images/'.$item->mobile_image;
+      $item['tablet_image_url'] = URL::to('/').'/public/uploads/images/'.$item->tablet_image;
+      $item['reel_videos'] =  URL::to('public/uploads/reelsVideos').'/'.$item->reels_videos;
+      return $item;
+    });
+
+
+    $response = array(
+      'status'=>'true',
+      'Reel_videos'  =>  $reel_videos,
+    );
+    
+    return response()->json($response, 200); 
+  }
+
 }
