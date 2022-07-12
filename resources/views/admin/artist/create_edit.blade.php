@@ -66,16 +66,23 @@ border-radius: 0px 4px 4px 0px;
                             <input type="text" class="form-control" name="artist_name" id="artist_name" value="@if(!empty($artist->artist_name)){{ $artist->artist_name }}@endif" />
                         </div>
                     </div>
+                    
+                    <div class="col-sm-6 mt-3" data-collapsed="0">
+                        <label class="m-0">Artist Slug</label>
+                        <div class="panel-body">
+                            <input type="text" class="form-control" name="artist_slug" id="artist_slug" value="@if(!empty($artist->artist_slug)){{ $artist->artist_slug }}@endif" />                        </div>
+                        </div>
+                    </div>
+                </div>
 
+                <div class="row mt-3">
                     <div class="col-sm-6 mt-3" data-collapsed="0">
                         <label class="m-0">Description</label>
                         <div class="panel-body">
                             <textarea class="form-control" name="description" id="description">@if(!empty($artist->description)){{ $artist->description }}@endif</textarea>
                         </div>
                     </div>
-                </div>
 
-                <div class="row mt-3">
                     <div class="col-sm-6 mt-3" data-collapsed="0">
                         <label class="m-0">Picture</label>
                         <p class="p1">Select the artist image (300x300 px or 2:2 ratio):</p>
@@ -149,6 +156,18 @@ border-radius: 0px 4px 4px 0px;
             parent_id: {
                 required: true,
             },
+            artist_slug: {
+                    remote: {
+                        url:"{{ URL::to('admin/artist_slug_validation') }}",
+                        type: "get",
+                        data: {
+                            _token: "{{csrf_token()}}" ,
+                            button_type : "{{ $button_text }}",
+                            success: function() {
+                            return $('#artist_slug').val(); }
+                        }
+                    }
+                },
         },
         messages: {
             title: "This field is required",
@@ -156,6 +175,10 @@ border-radius: 0px 4px 4px 0px;
             parent_id: {
                 required: "This field is required",
             },
+            artist_slug: {
+                     required: "Please Enter the Artist Slug",
+                     remote: "Name already in taken ! Please try another Artist Slug"
+                },
         },
         submitHandler: function (form) {
             form.submit();
