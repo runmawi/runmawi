@@ -25,6 +25,13 @@
   #home-slider .slick-bg { height: 100%; }
 }
 @media(max-width:991px) {
+    .h-100{
+        height: 250px!important;
+        padding: 0px 20px!important;
+    }
+    .slick-bg:before{
+        
+    }
   li.slide-item .block-description .parallax-ratting span, li.slide-item .block-description .movie-time span, li.slide-item .block-description .ratting-start, .block-description .movie-content li { font-size: 12px; }
   .hover-buttons .btn { font-size: 10px; }
   #home-slider .slick-bg { padding: 50px 0; }

@@ -2,6 +2,11 @@
 
 @section('css')
 	<link rel="stylesheet" href="{{ URL::to('/assets/admin/css/sweetalert.css') }}">
+<style>
+    label{
+        font-size: 16px;
+    }
+</style>
 @endsection
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
   <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
@@ -93,17 +98,16 @@
                                     <td> @if(isset($video->languages->name)) {{ $video->languages->name }} @endif</td>
                                     <td>
                                        <!--<p> {{ substr($video->description, 0, 50) . '...' }} </p>-->
-                                        {{ $video->views }}<i class="lar la-eye "></i>
+                                        {{ $video->views }}<img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>">
                                     </td>
                                     <td>
                                        <div class="flex align-items-center list-user-action">
                                           <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="View" href="{{ URL::to('/cpp/category/videos') . '/' . $video->slug }}"><i class="lar la-eye"></i></a>
+                                             data-original-title="View" href="{{ URL::to('/cpp/category/videos') . '/' . $video->slug }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>"></a>
                                           <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Edit" href="{{ URL::to('/cpp/videos/edit') . '/' . $video->id }}"><i class="ri-pencil-line"></i></a>
+                                             data-original-title="Edit" href="{{ URL::to('/cpp/videos/edit') . '/' . $video->id }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
                                           <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Delete" onclick="return confirm('Are you sure?')" href="{{ URL::to('/cpp/videos/delete') . '/' . $video->id }}"><i
-                                                class="ri-delete-bin-line"></i></a>
+                                             data-original-title="Delete" onclick="return confirm('Are you sure?')" href="{{ URL::to('/cpp/videos/delete') . '/' . $video->id }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
                                        </div>
                                     </td>
                                  </tr>

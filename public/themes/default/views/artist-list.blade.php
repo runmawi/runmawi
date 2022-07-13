@@ -10,15 +10,15 @@
                     <h4 class="vid-title">{{ "Artist List" }}</h4>                     
                 </div>
                 <div class="favorites-contens">
-                    <ul class="favorites-slider list-inline  row p-0 mb-0 ">
+                    <ul class="category-page list-inline row p-0 mb-0">
                         @if(count($artist_list) > 0 )
                             @if(isset($artist_list)) 
                                 @foreach($artist_list as $artist_lists)
-                                    <li class="slide-item ">
+                                    <li class="slide-item col-sm-2 col-md-2 col-xs-12">
                                         <a href=" {{ URL::to('home') }} ">
                                             <div class="block-images position-relative">
                                                 <div class="img-box">
-                                                    <a  href="<?php echo URL::to('artist') ?><?= '/' . $artist_lists->artist_slug ?>">
+                                                    <a href="<?php echo URL::to('artist') ?><?= '/' . $artist_lists->artist_slug ?>">
                                                         <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/artists/'.$artist_lists->image;  ?>" class="img-fluid w-100" alt=""> 
                                                     </a>
                                                 </div>
