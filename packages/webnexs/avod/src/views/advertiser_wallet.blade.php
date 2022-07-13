@@ -6,8 +6,8 @@
             <div class="container-fluid">
                <div class="row">
                   <div class="col-lg-12">
-                     <div class="iq-card-body">
-                        <h2 class="text-center">Ads Campaign</h2>
+                     <div class="iq-card">
+                        <h2 class="text-center mb-4">Ads Campaign</h2>
                         <div id="nestable" class="nested-list dd with-margins">
                            <div class="panel panel-default ">
                               <div class="row">
@@ -36,8 +36,8 @@
                                       <div class="form-card">
                                        <h2 class="fs-title">Payment</h2>
                                        <div class="col-md-6">
-                                          <div class="d-flex">
-                                             <input type="radio" name="gateway_payment" value="razorpay" style="width: 10px;">
+                                          <div class="d-flex align-items-baseline">
+                                             <input type="radio" name="gateway_payment" value="razorpay" style="width: 15px;">
                                              <h5 class="ml-4">Razorpay Payment Gateway</h5>
                                           </div>
                                           <div class="action_block razorpay" style="display:none;">
@@ -64,8 +64,8 @@
                                     </div>
 
                                     <div class="col-md-6">
-                                       <div class="d-flex">
-                                          <input type="radio" name="gateway_payment" value="stripe" style="width: 10px;">
+                                       <div class="d-flex align-items-baseline">
+                                          <input type="radio" name="gateway_payment" value="stripe" style="width: 15px;">
                                           <h5 class="ml-4">Stripe Payment Gateway</h5>
 
                                        </div>

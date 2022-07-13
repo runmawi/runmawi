@@ -44,8 +44,8 @@
                      				<td>{{ $album->albumname }}</td>
                      				<td><?php if($album->album != '') { ?><img src="{{ URL::to('/public/uploads/albums/') . '/'.$album->album }}" width="50"><?php }else{} ?></td>
                      				<td class="list-user-action">
-                                        <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" href="{{ URL::to('/cpp/audios/albums/edit/') }}/{{ $album->id }}" class="edit"><i class="ri-pencil-line"></i></a> 
-                     				<a href="{{ URL::to('/cpp/audios/albums/delete/') }}/{{ $album->id }}" onclick="return confirm('Are you sure?')"   class=" iq-bg-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="ri-delete-bin-line"></i></a></td>
+                                        <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" href="{{ URL::to('/cpp/audios/albums/edit/') }}/{{ $album->id }}" class="edit"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a> 
+                     				<a href="{{ URL::to('/cpp/audios/albums/delete/') }}/{{ $album->id }}" onclick="return confirm('Are you sure?')"   class=" iq-bg-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a></td>
                      			</tr>
 
 								@endforeach

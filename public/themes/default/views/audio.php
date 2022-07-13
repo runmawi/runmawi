@@ -81,8 +81,8 @@ border-radius: 50%;
 .audioPlayer .jp-jplayer, #jplayer-audio-container {}
 .audioPlayer .jp-controls button {text-indent: 0;}
 .jp-audio, .jp-video {background: black;font-family: sans-serif;font-size: .75rem;max-width: 85rem;width: 100%;position: fixed;
-    top: 85%;
-    z-index: 5;margin-left: -110px;}
+    top: 80%;
+    z-index: 5;margin-left: -65px;}
     .jp-btn{background-color: red;border-radius: 50%;}
 .jp-type-playlist {display: -webkit-box;display: -moz-box;display: -ms-flexbox;display: -webkit-flex;display: flex;-webkit-flex-direction: column;-moz-flex-direction: column;-ms-flex-direction: column;flex-direction: column;height: 100%;}
 .jp-type-playlist .jp-close {-webkit-flex-grow: 0;-moz-flex-grow: 0;-ms-flex-grow: 0;flex-grow: 0;}
@@ -157,7 +157,7 @@ border-radius: 50%;
 <input type="hidden" value="<?php echo URL('/');?>" id="base_url">
 <div id="audio_bg" >
 <div id="audio_bg_dim" <?php if($audio->access == 'guest' || ($audio->access == 'subscriber' && !Auth::guest()) ): ?><?php else: ?>class="darker"<?php endif; ?>></div>
-<div class="container">
+<div class="container-fluid">
 
 <?php if($audio->access == 'guest' || ( ($audio->access == 'subscriber' || $audio->access == 'registered') && !Auth::guest() && Auth::user()->subscribed()) || (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) || (!Auth::guest() && $audio->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered') || (($audio->access == 'subscriber' || $audio->access == 'registered') && $ppv_status == 1)): ?>
 
@@ -280,7 +280,7 @@ Your browser does not support the audio element.
 <div class="clear"></div>  
 
 <?php } ?>
-<div class="container">
+<div class="container-fluid">
 <div class="row album-top-30 mt-3">  
 <div class="col-sm-12">
     

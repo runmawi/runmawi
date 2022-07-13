@@ -166,7 +166,7 @@ Index Of Script
 			{
 				breakpoint: 1200,
 				settings: {
-				slidesToShow: 3,
+				slidesToShow: 5,
 				slidesToScroll: 1,
 				infinite: true,
 				dots: true
