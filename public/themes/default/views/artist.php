@@ -5,11 +5,23 @@
     }
 </style>
 
-<div class="aud" style="background-image:url(<?php echo URL::to('/').'/public/uploads/artists/'.$artist->image;?>)">
+<!--<div class="aud" style="background-image:url(<?php echo URL::to('/').'/public/uploads/artists/'.$artist->image;?>)">
         <h2 class="font-weight-bold"><?php echo $artist->artist_name;?></h2>
-        <!-- <p>8,239,0056 Monthly viewers</p> -->
+        <!-- <p>8,239,0056 Monthly viewers</p>
+    </div> -->
+    
+    <div class="mt-5 container-fluid">
+        <div class="row justify-content-between  align-items-center">
+            <div class="col-md-4">
+                <img src="<?php echo URL::to('/').'/public/uploads/artists/'.$artist->image;?>" alt="" class="w-100">
+            </div>
+            <div class=" col-md-8 abu p-0">
+                <h2>About</h2>
+                <p><?php echo $artist->description;?></p>
+            </div>
+        </div>
     </div>
-    <div class="container-fluid mt-3">
+<div class="container-fluid mt-3 mb-5">
         <div class="d-flex align-items-center">
             <div>
                 <i  class="fa fa-play-circle-o" aria-hidden="true" style="color:#fff!important;"></i>
@@ -20,17 +32,6 @@
             </div>
             <div class="flw">
                 <i class="fa fa-share-square-o" aria-hidden="true" style="color:#fff!important;"></i>
-            </div>
-        </div>
-    </div>
-    <div class="mt-5 container-fluid">
-        <div class="row justify-content-between  align-items-center">
-            <div class="col-md-4">
-                <img src="<?php echo URL::to('/').'/public/uploads/artists/'.$artist->image;?>" alt="" class="w-100">
-            </div>
-            <div class=" col-md-8 abu p-0">
-                <h2>About</h2>
-                <p><?php echo $artist->description;?></p>
             </div>
         </div>
     </div>
