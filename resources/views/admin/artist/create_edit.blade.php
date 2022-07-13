@@ -59,7 +59,7 @@ border-radius: 0px 4px 4px 0px;
 
         <form id="artist_form" method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
             <div class="@if(!empty($artist->created_at)) col-sm-12 @else col-sm-12 @endif">
-                <div class="row mt-3">
+                <div class="row mt-3 p-0">
                     <div class="col-sm-6 mt-3" data-collapsed="0">
                         <label class="m-0">Artist</label>
                         <div class="panel-body">
@@ -75,7 +75,7 @@ border-radius: 0px 4px 4px 0px;
                     </div>
                 </div>
 
-                <div class="row mt-3">
+                <div class="row mt-3 p-3 align-items-center">
                     <div class="col-sm-6 mt-3" data-collapsed="0">
                         <label class="m-0">Description</label>
                         <div class="panel-body">
