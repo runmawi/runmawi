@@ -136,7 +136,7 @@
     <?php 
     if(count($Script) > 0){
     foreach($Script as $Scriptheader){ 
-      echo $Scriptheader;
+      // echo $Scriptheader;
      } 
    } ?>
    </head>

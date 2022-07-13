@@ -338,7 +338,7 @@
       $footer_script = App\Script::pluck('footer_script')->toArray();
       if(count($footer_script) > 0){
         foreach($Script as $Scriptfooter){ 
-        echo $Scriptfooter;
+        // echo $Scriptfooter;
       } 
     }
      ?>
