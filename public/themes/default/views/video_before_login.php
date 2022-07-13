@@ -9,6 +9,50 @@
       .modal {
           top:40px;
       }
+         .img__wrap {
+  position: relative;
+         height: 200px;
+         widows: 250px;
+ 
+}
+      .img__wrap{
+          transform: scale(1.0);
+      }
+.img__description_layer {
+  position: absolute;
+    cursor: pointer;
+ padding: 30px 20px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+ background-image: linear-gradient(to bottom, rgba(4,8,15,0.9), rgba(0,0,0,0.9), rgba(0,0,0,0.9), rgba(0,0,0,0.9));
+  color: #fff;
+  visibility: hidden;
+  opacity: 0;
+    width: 300px;
+    height: 100%;
+  display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+  /* transition effect. not necessary */
+  transition: opacity .2s, visibility .2s;
+}
+
+.img__wrap:hover .img__description_layer {
+  visibility: visible;
+  opacity: 1;
+}
+
+.img__description {
+  transition: .2s;
+  transform: translateY(1em);
+}
+
+.img__wrap:hover .img__description {
+  transform: translateY(0);
+}
+
 </style>
 <?php 
 
@@ -268,7 +312,7 @@ if(!empty($request_url)){
             
 
   <input type="hidden" class="videocategoryid" data-videocategoryid="<?= $video->video_category_id ?>" value="<?= $video->video_category_id ?>">
-    <div class="container-fluid video-details" style="width:90%!important;">
+    <div class="container-fluid video-details" >
         <div class="trending-info g-border p-0">
             <div class="row">
                 <div class="col-sm-9 col-md-9 col-xs-12">
@@ -610,7 +654,7 @@ $artists = [];
     </div>
 -->
         
-    <div class="video-list you-may-like">
+    <div class="video-list you-may-like container-fluid">
             <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Recomended Videos');?></h4>
                 <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>   
                 <?php include('partials/video-loop.php');?>

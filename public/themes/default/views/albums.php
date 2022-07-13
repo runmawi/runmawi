@@ -65,8 +65,8 @@ border-bottom: 1px solid #141414;
 .audioPlayer .jp-jplayer, #jplayer-audio-container {}
 .audioPlayer .jp-controls button {text-indent: 0;}
 .jp-audio, .jp-video {background: black;font-family: sans-serif;font-size: .75rem;max-width: 85rem;width: 100%;position: fixed;
-    top: 85%;
-    z-index: 5;margin-left: -110px;}
+    top:78%;
+    z-index: 5;margin-left: -70px;}
     .jp-btn{background-color: red;border-radius: 50%;}
 .jp-type-playlist {display: -webkit-box;display: -moz-box;display: -ms-flexbox;display: -webkit-flex;display: flex;-webkit-flex-direction: column;-moz-flex-direction: column;-ms-flex-direction: column;flex-direction: column;height: 100%;}
 .jp-type-playlist .jp-close {-webkit-flex-grow: 0;-moz-flex-grow: 0;-ms-flex-grow: 0;flex-grow: 0;}
@@ -140,18 +140,18 @@ border-bottom: 1px solid #141414;
 
 <input type="hidden" value="<?php echo URL('/');?>" id="base_url">
 <div id="audio_bg" >
-<div class="container">
+<div class="container-fluid">
 <div class="row album-top-30 mt-4 align-items-center">
-<div class="col-sm-4 ">
-<img src="<?= URL::to('/').'/public/uploads/albums/'. $album->album ?>"  class="img-responsive" / width="350">
+<div class="col-sm-3 ">
+<img src="<?= URL::to('/').'/public/uploads/albums/'. $album->album ?>"  class="img-responsive" width="250" height="250">
 </div>
 <div class="col-sm-8 col-md-8 col-xs-8">
 <div class="album_bg">
 <div class="album_container">
 <div class="blur"></div>
 <div class="overlay_blur">
- <h4 class="hero-title album"> <?= $album->albumname; ?></h4>
-    <!-- <p class="mt-2">Music by    <br>A. R. Rahman</p> -->
+ <h4 class="hero-title album mb-2"> <?= $album->albumname; ?></h4>
+     <p class="mt-2">Music by    <br>A. R. Rahman</p>
     <div class="d-flex" style="justify-content: space-between;width: 40%;align-items: center;">
         <button class="btn bd" id="vidbutton"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play</button>
         <a aria-hidden="true" class="albumfavorite <?php echo albumfavorite($album->id);?>" data-authenticated="<?= !Auth::guest() ?>" data-album_id="<?= $album->id ?>"><?php if(albumfavorite($album->id) == "active"): ?><i id="ff" class="fa fa-heart" aria-hidden="true"></i><?php else: ?><i id="ff" class="fa fa-heart-o" aria-hidden="true"></i><?php endif; ?></a>
@@ -211,27 +211,43 @@ border-bottom: 1px solid #141414;
 <div class="clear"></div>  
 
 <?php } ?>
-<div class="container">
-<div class="row album-top-30 mt-3">  
+<div class="container-fluid">
+<div class="row album-top-30 mt-3 p-0">  
 <div class="col-sm-12">
 <p  class="album-title">Other Albums </p>
-<ul class="album_list mt-3" style="display: flex;">
-    <?php foreach ($other_albums as $other_album) { ?>
-        <li>
-            <?php if($other_album->album != ''){ ?>
-                <a href="<?php echo URL('/').'/album/'.$other_album->slug;?>">
-                <img src="<?= URL::to('/').'/public/uploads/albums/' . $other_album->album ?>"  class="img-responsive" width="200" height="150"/>
-              
+<div class="favorites-contens">
+                    <ul class="favorites-slider list-inline  row p-0 mb-0">
+ <?php foreach ($other_albums as $other_album) { ?>
+                       <li class="slide-item">
+                            <a href="<?php echo URL('/').'/album/'.$other_album->slug;?>">
+                             <div class="block-images position-relative">
+                             <!-- block-images -->
+                                <div class="img-box">
+                                <img loading="lazy" data-src="<?= URL::to('/').'/public/uploads/albums/' . $other_album->album ?>" alt="" class="img-fluid loading w-100">
 
-                <div class="play-block">
-                    <a href=""> <i class="fa fa-play flexlink" aria-hidden="true"></i> </a>
-                </div>
-            </a>
-            <p><?php echo ucfirst($other_album->albumname);?>
-            <?php  } ?>
-        </li>
-    <?php }?>
-</ul>
+                                       
+                                 </div>
+                             
+
+                                <div class="block-description">
+                                 
+                                
+                                  <div class="hover-buttons text-white">
+                                           <a class="d-flex" href="<?php echo URL('/').'/album/'.$other_album->slug;?>">
+                                                <i class="fa fa-play mr-1" aria-hidden="true"></i> 
+                                               <p><?php echo ucfirst($other_album->albumname);?></p>
+                                           
+                                        </a>
+                                 
+                                    </div>
+                                </div>
+                              </div>
+                          </a>
+                       </li>
+                       <?php } ?>
+                    </ul>
+                 </div>
+
   
 
 

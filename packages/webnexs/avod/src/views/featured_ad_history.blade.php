@@ -8,7 +8,7 @@
                <div class="row">
                <div class="col-lg-12 ">
                   <div class="iq-card-body">
-                     <h2 class="text-center">Featured Ads Transaction History</h2>
+                     <h2 class="text-center mb-4">Featured Ads Transaction History</h2>
                      <div id="nestable" class="nested-list dd with-margins">
                         <table class="data-tables table audio_table mt-4" style="width:100%">
                            <thead>
