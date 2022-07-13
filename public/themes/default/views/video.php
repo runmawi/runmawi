@@ -44,7 +44,7 @@ if(!empty($request_url)){
   <input type="hidden" id="videoslug" value="<?php if(isset($video->slug)) { echo $video->slug; } else{ echo "0";}?>">
   <input type="hidden" id="base_url" value="<?php echo URL::to('/');?>">
   <input type="hidden" id="video_type" value="<?php echo $video->type;?>">
-  <input type="hidden" id="video_video" value="video">
+  <input type="hidden" id="video_video" class="video_video" value="video">
   <input type="hidden" id="adsurl" value="<?php if(isset($ads->ads_id)){echo get_adurl($ads->ads_id);}?>">
   <style>
     .vjs-error .vjs-error-display .vjs-modal-dialog-content {
@@ -933,7 +933,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                   </a>
               </div>
             </div>
-
+<?php //dd($video->trailer_type); ?>
           <div class="modal fade modal-xl" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
@@ -1825,27 +1825,18 @@ location.reload();
   }else if(trailer_video_type == "m3u8"){
   // alert(trailer_video_type);
   document.addEventListener("DOMContentLoaded", () => {
-  const video = document.querySelector('#videos');
+  const videos = document.querySelector('#videos');
   // alert(video);
-  const source = video.getElementsByTagName("source")[0].src;
-  // alert(source);
-  
-  // For more options see: https://github.com/sampotts/plyr/#options
-  // captions.update is required for captions to work with hls.js
+  const sources = videos.getElementsByTagName("source")[0].src;
+  // alert(sources);
   const defaultOptions = {};
 
   if (Hls.isSupported()) {
-    // For more Hls.js options, see https://github.com/dailymotion/hls.js
-    const hls = new Hls();
-    hls.loadSource(source);
+    const hlstwo = new Hls();
+    hlstwo.loadSource(sources);
+    hlstwo.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
 
-    // From the m3u8 playlist, hls parses the manifest and returns
-    // all available video qualities. This is important, in this approach,
-    // we will have one source on the Plyr player.
-    hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
-
-      // Transform available levels into an array of integers (height values).
-      const availableQualities = hls.levels.map((l) => l.height)
+      const availableQualities = hlstwo.levels.map((l) => l.height)
 
       // Add new qualities to option
       defaultOptions.quality = {
@@ -1857,17 +1848,17 @@ location.reload();
       }
 
       // Initialize here
-      const player = new Plyr(video, defaultOptions);
+      const player = new Plyr(videos, defaultOptions);
     });
-    hls.attachMedia(video);
-    window.hls = hls;
+    hlstwo.attachMedia(videos);
+    window.hlstwo = hlstwo;
   }
 
   function updateQuality(newQuality) {
-    window.hls.levels.forEach((level, levelIndex) => {
+    window.hlstwo.levels.forEach((level, levelIndex) => {
       if (level.height === newQuality) {
         console.log("Found quality match with " + newQuality);
-        window.hls.currentLevel = levelIndex;
+        window.hlstwo.currentLevel = levelIndex;
       }
     });
   }

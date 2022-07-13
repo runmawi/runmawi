@@ -5,7 +5,7 @@
     <div class="container-fluid">
      <div class="row">
       <div class="col-lg-12">
-       <div class="iq-card-body">
+       <div class="iq-card">
         @yield('content')
         <canvas id="canvas" height="280" width="600"></canvas>
         <canvas id="canvas1" height="280" width="600"></canvas>

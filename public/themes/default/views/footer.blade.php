@@ -238,6 +238,16 @@ function myFunction() {
   }
 }
 </script>-->
+<?php 
+      $footer_script = App\Script::pluck('footer_script')->toArray();
+      if(count($footer_script) > 0){
+        foreach($footer_script as $Scriptfooter){ ?>
+        <!-- // echo $Scriptfooter; -->
+        <?= $Scriptfooter ?>
+
+      <?php } 
+    }
+     ?>
 
 <script src="https://afarkas.github.io/lazysizes/plugins/bgset/ls.bgset.min.js"></script>
 <script src="https://afarkas.github.io/lazysizes/lazysizes.min.js"></script>
@@ -269,7 +279,7 @@ function myFunction() {
     var request_url = $('#request_url').val();
     var live = $('live').val();
     // var live = $('live').val();
-    var video_video = $('video_video').val();
+    var video_video = $('#video_video').val();
     var user_logged_out =  $('#user_logged_out').val();
     var hls =  $('#hls').val();
     var ads_path_tag =  $('#ads_path_tag').val();

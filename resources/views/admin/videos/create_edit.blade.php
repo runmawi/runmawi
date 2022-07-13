@@ -757,10 +757,11 @@ border-radius: 0px 4px 4px 0px;
                            <label class="m-0">Video Trailer Type:</label>
                            <select  class="trailer_type form-control"  style="width: 100%;" class="" name="trailer_type" id="trailer_type">    
                               <option   value="null"> Select the Video Trailer Type </option>
-                              <option {{ $video->trailer_type == 'video_mp4' ? 'selected' : '' }}  value="video_mp4"> Video Upload </option>
-                              <option {{ $video->trailer_type == 'm3u8_url' ? 'selected'  : '' }}   value="m3u8_url">  m3u8 Url </option>
-                              <option {{ $video->trailer_type == 'mp4_url' ? 'selected'   : '' }}   value="mp4_url">   mp4 Url</option>
-                              <option {{ $video->trailer_type == 'embed_url' ? 'selected' : '' }}   value="embed_url">  Embed Code</option>
+                              <option  @if( $video->trailer_type == 'video_mp4' || $video->trailer_type == 'm3u8' ) {{ 'selected' }} @endif value="video_mp4" >Video Upload</option>
+                              <!-- <option {{ $video->trailer_type == 'video_mp4' ? 'selected' : '' }}  value="video_mp4"> Video Upload </option> -->
+                              <option @if( $video->trailer_type == 'm3u8_url' ) {{ 'selected' }} @endif   value="m3u8_url">  m3u8 Url </option>
+                              <option @if( $video->trailer_type == 'mp4_url' ) {{ 'selected' }} @endif    value="mp4_url">   mp4 Url</option>
+                              <option @if( $video->trailer_type == 'embed_url' ) {{ 'selected' }} @endif  value="embed_url">  Embed Code</option>
                            </select>
                         </div>
                      </div>
@@ -769,9 +770,8 @@ border-radius: 0px 4px 4px 0px;
                            <div class="col-sm-6 form-group" >
                               <label class="m-0"> Trailer m3u8 Url :</label>
                               <input type="text" class="form-control" name="m3u8_trailer" id="" value="@if(!empty($video->trailer) && $video->trailer_type == 'm3u8_url' ){{ $video->trailer }}@endif">
-
-                              @if(!empty($video->trailer) && $video->trailer != '' && $video->trailer_type != null &&  $video->trailer_type != 'm3u8_url' )
-                                 <video width="560" height="315" controls>
+                              @if($video->trailer_type !=null && $video->trailer_type == "m3u8_url" )
+                                 <video id="videoPlayer1" width="560" height="315" controls>
                                     <source src="{{ $video->trailer }}" type="application/x-mpegURL">
                                  </video>
                               @endif
@@ -822,6 +822,10 @@ border-radius: 0px 4px 4px 0px;
                               @if(!empty($video->trailer) && $video->trailer != '' && $video->trailer_type != null &&  $video->trailer_type == 'video_mp4' )
                               <video width="200" height="200" controls>
                                   <source src="{{ $video->trailer }}" type="video/mp4" />
+                              </video>
+                              @elseif(!empty($video->trailer) && $video->trailer != '' && $video->trailer_type != null &&  $video->trailer_type == 'm3u8' )
+                              <video  id="videom3u8"width="50" height="50" controls type="application/x-mpegURL">
+                            <source type="application/x-mpegURL" src="{{ $video->trailer }}">
                               </video>
                               @endif
                           </div>
@@ -1916,6 +1920,44 @@ $('#error_video_Category').hide();
          $('.trailer_embed_url').show();
       }
 
+
+
+
+
+
+
+      var trailer_type = $('.trailer_type').val();
+
+      if(trailer_type == 'video_mp4' ){
+   $('.trailer_video_upload').show();
+   $('.trailer_m3u8_url').hide();
+   $('.trailer_mp4_url').hide();
+   $('.trailer_embed_url').hide();
+}
+else if(trailer_type == 'm3u8_url'){
+   $('.trailer_video_upload').hide();
+   $('.trailer_m3u8_url').show();
+   $('.trailer_mp4_url').hide();
+   $('.trailer_embed_url').hide();
+}
+else if(trailer_type == 'mp4_url'){
+   $('.trailer_video_upload').hide();
+   $('.trailer_m3u8_url').hide();
+   $('.trailer_mp4_url').show();
+   $('.trailer_embed_url').hide();
+}
+else if(trailer_type == 'embed_url'){
+   $('.trailer_video_upload').hide();
+   $('.trailer_m3u8_url').hide();
+   $('.trailer_mp4_url').hide();
+   $('.trailer_embed_url').show();
+}
+else if(trailer_type == 'null' ){
+            $('.trailer_video_upload').hide();
+            $('.trailer_m3u8_url').hide();
+            $('.trailer_mp4_url').hide();
+            $('.trailer_embed_url').hide();
+         }      
 $(".trailer_type").change(function(){
 var trailer_type = $('.trailer_type').val();
 
@@ -1950,6 +1992,8 @@ else if(trailer_type == 'null' ){
             $('.trailer_embed_url').hide();
          }
 });
+
+
 });
 
      // https://github.com/k-ivan/Tags
@@ -2282,6 +2326,81 @@ if(this.textContent === 'destroy') {
 
 
 </script>
+
+
+
+
+<script src="https://cdn.plyr.io/3.5.10/plyr.js"></script>
+
+<script>
+
+  const player = new Plyr('#videoPlayer1'); 
+
+  var trailer_video_m3u8 = <?php echo json_encode($video->trailer) ; ?> ;
+  var trailer_video_type =  <?php echo json_encode($video->trailer_type) ; ?> ;
+  
+
+  if(trailer_video_type == "m3u8_url"){
+    (function () {
+      var video = document.querySelector('#videoPlayer1');
+
+      if (Hls.isSupported()) {
+          var hls = new Hls();
+          hls.loadSource(trailer_video_m3u8);
+          hls.attachMedia(video);
+          hls.on(Hls.Events.MANIFEST_PARSED,function() {
+        });
+      }
+      
+    })();
+
+  }else if(trailer_video_type == "m3u8"){
+  document.addEventListener("DOMContentLoaded", () => {
+  const videom3u8 = document.querySelector('#videom3u8');
+  // alert(video);
+  const sources = videom3u8.getElementsByTagName("source")[0].src;
+//   alert(sources);
+  const defaultOptions = {};
+
+  if (Hls.isSupported()) {
+    const hlstwo = new Hls();
+    hlstwo.loadSource(sources);
+    hlstwo.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+
+      const availableQualities = hlstwo.levels.map((l) => l.height)
+
+      // Add new qualities to option
+      defaultOptions.quality = {
+        default: availableQualities[0],
+        options: availableQualities,
+        // this ensures Plyr to use Hls to update quality level
+        forced: true,        
+        onChange: (e) => updateQuality(e),
+      }
+
+      // Initialize here
+      const player = new Plyr(videom3u8, defaultOptions);
+    });
+    hlstwo.attachMedia(videom3u8);
+    window.hlstwo = hlstwo;
+  }
+
+  function updateQuality(newQuality) {
+    window.hlstwo.levels.forEach((level, levelIndex) => {
+      if (level.height === newQuality) {
+        console.log("Found quality match with " + newQuality);
+        window.hlstwo.currentLevel = levelIndex;
+      }
+    });
+  }
+});
+
+  }
+   
+
+</script>
+
+
 @section('javascript')
 @stop
 @stop

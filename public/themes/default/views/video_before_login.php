@@ -1,5 +1,59 @@
 <?php include('header.php'); ?>
+<style>
+        .modal-content{
+          background-color: transparent;
+      }
+      .modal-dialog{
+          max-width:900px!important;
+      }
+      .modal {
+          top:40px;
+      }
+         .img__wrap {
+  position: relative;
+         height: 200px;
+         widows: 250px;
+ 
+}
+      .img__wrap{
+          transform: scale(1.0);
+      }
+.img__description_layer {
+  position: absolute;
+    cursor: pointer;
+ padding: 30px 20px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+ background-image: linear-gradient(to bottom, rgba(4,8,15,0.9), rgba(0,0,0,0.9), rgba(0,0,0,0.9), rgba(0,0,0,0.9));
+  color: #fff;
+  visibility: hidden;
+  opacity: 0;
+    width: 300px;
+    height: 100%;
+  display: flex;
+    flex-direction: column;
+    justify-content: center;
 
+  /* transition effect. not necessary */
+  transition: opacity .2s, visibility .2s;
+}
+
+.img__wrap:hover .img__description_layer {
+  visibility: visible;
+  opacity: 1;
+}
+
+.img__description {
+  transition: .2s;
+  transform: translateY(1em);
+}
+
+.img__wrap:hover .img__description {
+  transform: translateY(0);
+}
+
+</style>
 <?php 
 
 $ads_details = App\AdsVideo::join('advertisements','advertisements.id','ads_videos.ads_id') 
@@ -258,7 +312,7 @@ if(!empty($request_url)){
             
 
   <input type="hidden" class="videocategoryid" data-videocategoryid="<?= $video->video_category_id ?>" value="<?= $video->video_category_id ?>">
-    <div class="container-fluid video-details" style="width:90%!important;">
+    <div class="container-fluid video-details" >
         <div class="trending-info g-border p-0">
             <div class="row">
                 <div class="col-sm-9 col-md-9 col-xs-12">
@@ -392,14 +446,161 @@ if(!empty($request_url)){
                 </div>
             </div>
             <?php   }?>
+            <div class="col-sm-12 Recap_skip">
+      <input type="button" class="Recaps" value="Recap Intro" id="Recaps_Skip" style="display:none;">
+  </div>
 
+<!-- Trailer  -->
+<div class="col-sm-4 p-0">
+        <div>     
+            <?php if($video->trailer != '' && $ThumbnailSetting->trailer == 1 ){ ?>
+            
+            <div class="img__wrap">
+              <img class="img__img " src="<?php echo URL::to('/').'/public/uploads/images/'.$video->player_image;  ?>" class="img-fluid" alt="" height="200" width="300">
+              <div class="img__description_layer">
+                   <a data-video="<?php echo $video->trailer;  ?>" data-toggle="modal" data-target="#videoModal">
+                <p class="img__description">
+                    <h6 class="text-center"> <?php  echo (strlen($video->title) > 50) ? substr($video->title,0,51).'...' : $video->title; ?></h6>
+                   
+                    <div class="movie-time  align-items-center my-2">
+                      <p class="text-center">
+                           <?php  echo (strlen($video->trailer_description) > 60) ? substr($video->trailer_description,0,61).'...' : $video->trailer_description; ?>
+                      </p>
+                    </div>
+
+                    <div class="hover-buttons text-center">
+                        <a data-video="<?php echo $video->trailer;  ?>" data-toggle="modal" data-target="#videoModal">	
+                          <span class="text-white">
+                            <i class="fa fa-play mr-1" aria-hidden="true"></i> Play Now
+                          </span>
+                        </a>
+                    </div>
+                </p>
+                  </a>
+              </div>
+            </div>
+
+          <div class="modal fade modal-xl" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <div class="modal-body">
+              
+                  <?php if($video->trailer_type !=null && $video->trailer_type == "video_mp4" || $video->trailer_type == "mp4_url"  ){ ?>
+
+                    <video id="videoPlayer1" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
+                        controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
+                        type="video/mp4" src="<?php echo $video->trailer;?>">
+                    </video>
+                    <?php }elseif($video->trailer_type !=null && $video->trailer_type == "m3u8" ){ ?>
+
+                        <video  id="videos" class=""  poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
+                            controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
+                            type="application/x-mpegURL">
+                            <source 
+                              type="application/x-mpegURL" 
+                              src="<?php echo $video->trailer;?>"
+                            >
+                        </video>
+
+                    <?php }elseif($video->trailer_type !=null && $video->trailer_type == "m3u8_url" ){ ?>
+
+                      <video  id="videoPlayer1" class=""  poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
+                          controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
+                          type="application/x-mpegURL">
+                      </video>
+
+                    <?php }elseif($video->trailer_type !=null && $video->trailer_type == "embed_url" ){ ?>
+
+                      <div id="videoPlayer1" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" >
+                        <iframe src="<?php echo $video->trailer ?>" allowfullscreen allowtransparency allow="autoplay">
+                        </iframe>
+                      </div>
+
+                  <?php  }else{ ?>
+                    <video  id="videos" class=""  poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
+                            controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
+                            type="application/x-mpegURL">
+                            <source 
+                              type="application/x-mpegURL" 
+                              src="<?php echo $video->trailer;?>"
+                            >
+                        </video>
+                    <?php } ?>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <?php } ?>
+    </div>
+
+<!-- Trailer End  -->
+
+  <?php if(!empty($video->description) ) { ?>
+    <div class="col-md-7 p-0" style="margin-top: 2%;">
+      <h4>Description</h4>
+      <div class="text-white">
+          <p class="trending-dec w-100 mb-0 text-white mt-2"><?php echo __($video->description); ?></p>
+          <p class="trending-dec w-100 mb-0 text-white mt-2">Starring : <span class="sta"><?php echo $artistsname; ?></span></p>
+          <p class="trending-dec w-100 mb-0 text-white mt-2">Genres : <span class="sta"><?php echo $genres_name; ?></span></p>
+          <p class="trending-dec w-100 mb-0 text-white mt-2">This Movie is :</p>
+          <p class="trending-dec w-100 mb-0 text-white mt-2">Subtitles : <?php echo $subtitles_name; ?></p>
+          <p class="trending-dec w-100 mb-0 text-white mt-2">Audio Languages : <?php echo $lang_name; ?></p>
+      </div>
+    </div>
+  <?php  }?>
+<br>
+
+<?php if(!empty($video->details) ) { ?>
+
+<h4>Links & details</h4>
+           
+<div class="col-md-7 text-white p-0" style="font-size:18px;width:80%;">
+      <?php    $details = html_entity_decode($video->details) ; 
+                        $detail = strip_tags($details); ?>
+    <p class="trending-dec w-100 mb-0  mt-2" ><?php echo __($video->details); ?></p>
+</div>
+<?php  }?>
+
+<?php if(!empty($video->pdf_files) ) { ?>
+<h4>E-Paper:</h4>
+<p class="p1">Download the E-Paper</p> 
+<div class="text-white">
+    <a  href="<?php echo __(URL::to('/') . '/public/uploads/videoPdf/' . $video->pdf_files); ?>" style="font-size:48px; color: #a51212 !important;" class="fa fa-file-pdf-o video_pdf" width="" height="" download></a>
+</div>
+<?php  }?>
+
+
+           <?php if(Auth::guest()){
+$artists = [];
+}else{
+
+}
+ if(count($artists) > 0 ) { ?>
+ <h4 style="margin-left: -15px;">Cast & crew</h4>
+       
+          
+          <div class="row">
+                <?php foreach($artists as $key => $artist){  ?>
+            <div class="mt-6 ml-3 d-flex">
+              <a  href="<?php echo __(URL::to('/') . '/Artist/' . $artist->artist_name); ?>"  >
+                <img src="<?= URL::to('/') . '/public/uploads/artists/'.$artist->image ?>" alt=""width="60" height="70">
+                <p class="trending-dec w-100 mb-0 text-white mt-2" ><?php echo $artist->artist_name ; ?> </p>
+              </a>
+            </div>
+                 <?php } }  ?>
+          </div>
+       
+     
 <!-- logo In player -->
 
-        <div class="logo_player"> </div>
+        <!-- <div class="logo_player"> </div> -->
         
-        <div class="text-white">
-            <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->description); ?></p>
-        </div>
+        <!-- <div class="text-white"> -->
+            <!-- <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->description); ?></p> -->
+        <!-- </div> -->
    <!-- Button trigger modal -->
 
     <!-- Modal -->
@@ -453,7 +654,7 @@ if(!empty($request_url)){
     </div>
 -->
         
-    <div class="video-list you-may-like">
+    <div class="video-list you-may-like container-fluid">
             <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Recomended Videos');?></h4>
                 <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>   
                 <?php include('partials/video-loop.php');?>
@@ -461,7 +662,7 @@ if(!empty($request_url)){
     
     </div>
     <script type="text/javascript"> 
-        videojs('videoPlayer').videoJsResolutionSwitcher(); 
+        // videojs('videoPlayer').videoJsResolutionSwitcher(); 
     </script>
     <script src="https://checkout.stripe.com/checkout.js"></script>
     <div class="clear"></div>
@@ -644,3 +845,83 @@ $(document).ready(function(){
 
   <?php include('footer.blade.php');?>
 
+
+  <script src="https://cdn.plyr.io/3.5.10/plyr.js"></script>
+
+<script>
+
+  const player = new Plyr('#videoPlayer1'); 
+
+  var trailer_video_m3u8 = <?php echo json_encode($video->trailer) ; ?> ;
+  var trailer_video_type =  <?php echo json_encode($video->trailer_type) ; ?> ;
+  
+
+  if(trailer_video_type == "m3u8_url"){
+    (function () {
+      var video = document.querySelector('#videoPlayer1');
+
+      if (Hls.isSupported()) {
+          var hls = new Hls();
+          hls.loadSource(trailer_video_m3u8);
+          hls.attachMedia(video);
+          hls.on(Hls.Events.MANIFEST_PARSED,function() {
+        });
+      }
+      
+    })();
+
+  }else if(trailer_video_type == "m3u8"){
+  // alert(trailer_video_type);
+  document.addEventListener("DOMContentLoaded", () => {
+  const video = document.querySelector('#videos');
+  // alert(video);
+  const source = video.getElementsByTagName("source")[0].src;
+  // alert(source);
+  
+  // For more options see: https://github.com/sampotts/plyr/#options
+  // captions.update is required for captions to work with hls.js
+  const defaultOptions = {};
+
+  if (Hls.isSupported()) {
+    // For more Hls.js options, see https://github.com/dailymotion/hls.js
+    const hls = new Hls();
+    hls.loadSource(source);
+
+    // From the m3u8 playlist, hls parses the manifest and returns
+    // all available video qualities. This is important, in this approach,
+    // we will have one source on the Plyr player.
+    hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+
+      // Transform available levels into an array of integers (height values).
+      const availableQualities = hls.levels.map((l) => l.height)
+
+      // Add new qualities to option
+      defaultOptions.quality = {
+        default: availableQualities[0],
+        options: availableQualities,
+        // this ensures Plyr to use Hls to update quality level
+        forced: true,        
+        onChange: (e) => updateQuality(e),
+      }
+
+      // Initialize here
+      const player = new Plyr(video, defaultOptions);
+    });
+    hls.attachMedia(video);
+    window.hls = hls;
+  }
+
+  function updateQuality(newQuality) {
+    window.hls.levels.forEach((level, levelIndex) => {
+      if (level.height === newQuality) {
+        console.log("Found quality match with " + newQuality);
+        window.hls.currentLevel = levelIndex;
+      }
+    });
+  }
+});
+
+  }
+   
+
+</script>

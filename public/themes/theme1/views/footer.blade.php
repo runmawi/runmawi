@@ -254,6 +254,16 @@
       <!-- Custom JS-->
 
       <script type="text/javascript" src="<?php echo URL::to('public/themes/theme1/assets/js/custom.js'); ?>"></script>
+      <?php 
+      $footer_script = App\Script::pluck('footer_script')->toArray();
+      if(count($footer_script) > 0){
+        foreach($footer_script as $Scriptfooter){ ?>
+        <!-- // echo $Scriptfooter; -->
+        <?= $Scriptfooter ?>
+
+      <?php } 
+    }
+     ?>
 
        <script>
     $(document).ready(function () {
