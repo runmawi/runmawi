@@ -130,7 +130,7 @@ $data = Session::all();
       $Script = App\Script::pluck('header_script')->toArray();
       if(count($Script) > 0){
          foreach($Script as $Scriptheader){ 
-           echo $Scriptheader;
+         //   echo $Scriptheader;
           } 
         } 
      ?>
