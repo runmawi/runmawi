@@ -7,7 +7,7 @@
         <div class="row">
             <div class="col-sm-12 page-height">
                 <div class="iq-main-header align-items-center justify-content-between">
-                    <h4 class="vid-title">{{ "Artist List" }}</h4>                     
+                    <h4 class="vid-title text-center mt-3 mb-3">{{ "Artist List" }}</h4>                     
                 </div>
                 <div class="favorites-contens">
                     <ul class="category-page list-inline row p-0 mb-0">
@@ -27,6 +27,7 @@
                                                     <?php if($ThumbnailSetting->title == 1) { ?>            <!-- Title -->
                                                         <a  href="<?php echo URL::to('artist') ?><?= '/' . $artist_lists->artist_slug ?>">
                                                             <h6><?php  echo (strlen($artist_lists->artist_name) > 17) ? substr($artist_lists->artist_name,0,18).'...' : $artist_lists->artist_name; ?></h6>
+                                                            <p class="text-white mt-2">View Profile</p>
                                                         </a>
                                                     <?php } ?> 
                                                     <div class="hover-buttons"><div>
