@@ -1,7 +1,8 @@
 <head>
       
    <?php
-      
+      $Script = App\Script::pluck('header_script')->toArray();
+      // dd(($Script[2]));
       $theme_mode = App\SiteTheme::pluck('theme_mode')->first();
 
       if(!empty(Auth::User()->id)){
@@ -132,7 +133,12 @@
        
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.js"></script>
-
+    <?php 
+    if(count($Script) > 0){
+    foreach($Script as $Scriptheader){ 
+      echo $Scriptheader;
+     } 
+   } ?>
    </head>
     <style>
          svg{
