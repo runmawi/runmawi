@@ -1,4 +1,7 @@
-<?php include('header.php'); ?>
+<?php 
+    include(public_path('themes/theme2/views/header.php'));
+?>
+
  <!-- MainContent -->
 <section id="iq-favorites">
       <h3 class="vid-title text-center mt-4 mb-5">Latest Videos</h3> 
@@ -128,4 +131,4 @@
                </div>
             </div>
 
-<?php include('footer.blade.php'); ?>
+<?php include(public_path('themes/theme2/views/footer.blade.php'));  ?>

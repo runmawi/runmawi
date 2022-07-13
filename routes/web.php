@@ -112,7 +112,10 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
     Route::get('FamilyModeOff', 'HomeController@FamilyModeOff')->name('FamilyModeOff');
     Route::post('theme-mode', 'HomeController@ThemeModeSave');
 
-    
+    // Reels 
+
+    Route::get('/reels', 'AdminReelsVideo@index');
+
 
     Route::get('/home', 'HomeController@index')->name('home');
 
@@ -202,6 +205,7 @@ Route::get('refferal', 'AdminUsersController@refferal');
 Route::post('/profile/update', 'AdminUsersController@profileUpdate');   
 Route::get('/latest-videos', 'HomeController@LatestVideos');
 Route::get('/language/{lanid}/{language}', 'HomeController@LanguageVideo');
+Route::get('featured-videos', 'HomeController@Featured_videos');
 Route::post('mywishlist', 'WishlistController@mywishlist');
 Route::post('ppvWishlist', 'WishlistController@ppvWishlist');
 Route::get('mywishlists', 'WishlistController@show_mywishlists');
@@ -543,6 +547,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::get('/artists/edit/{id}', 'AdminArtistsController@edit');
     Route::post('/artists/update', 'AdminArtistsController@update');
     Route::get('/artists/delete/{id}','AdminArtistsController@destroy');
+    Route::get('/artist_slug_validation','AdminArtistsController@artist_slug_validation');
     Route::post('/audios/audioupdate', array('before' => 'demo', 'uses' => 'AdminAudioController@audioupdate'));
 
 //Admin Audio Albums
@@ -1455,9 +1460,7 @@ Route::get('Movie-list', 'ChannelController@MovieList')->name('MovieList');
 Route::get('Live-list', 'ChannelController@liveList')->name('liveList');
 Route::get('Series-list', 'ChannelController@Series_List')->name('SeriesList');
 Route::get('Series/Genre/{id}', 'ChannelController@Series_genre_list')->name('Series_genre_list');
-
-
-
+Route::get('artist-list', 'ChannelController@artist_list')->name('artist_list');
 
     // Filter 
 Route::get('categoryfilter', 'ChannelController@categoryfilter')->name('categoryfilter');

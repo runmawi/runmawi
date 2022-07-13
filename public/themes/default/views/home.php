@@ -1235,5 +1235,11 @@ $( document ).ready(function() {
 });
  </script>
 
+<!-- Trailer -->
+
+<?php
+    include(public_path('themes/default/views/partials/home/Trailer-script.php'));
+?>
+
   <?php include('footer.blade.php');?>
 <!-- End Of MainContent -->

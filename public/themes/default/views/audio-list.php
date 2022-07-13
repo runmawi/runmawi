@@ -6,10 +6,14 @@
     .main-title{
         padding-bottom: 0px!important;
     }
+    .ply{
+        width: 10%;
+        height:10%;
+    }
 </style>
-<div class="container mt-4 audio-list-page">
+<div class="container-fluid mt-4 audio-list-page">
 
-       <div class="block-space">
+       <div class="block-space1">
            <div class="row">
               <div class="col-sm-12 overflow-hidden">
                  <div class="iq-main-header d-flex align-items-center justify-content-between">
@@ -21,15 +25,15 @@
               </div>
            </div>
         </div>
-		<div class="row nomargin">
+		<div class="">
 			<?php if(isset($audios) ||  isset($audios_category)) { include('partials/audio.php'); } ?>
 			
 		</div>
       <?php if($audios_count > 0){   include('partials/pagination.php'); }else{} ?>
 
 </div>
-<div class="container mt-2">
-       <div class="block-space">
+<div class="container-fluid mt-2">
+       <div class="block-space1">
            <div class="row">
               <div class="col-sm-12 overflow-hidden">
                  <div class="iq-main-header d-flex align-items-center justify-content-between">
@@ -41,25 +45,24 @@
               </div>
            </div>
         </div>
-		<div class="row nomargin">
+		<div class="">
 
-			<?php 
+			
+					<div class="iq-main-header ">
+						<div class="favorites-contens">
+                                <?php 
 			if(isset($albums)) { 
 				foreach($albums as $album): ?>
-					<div class="iq-main-header col-md-3 d-flex align-items-center justify-content-between">
-						<div class="favorites-contens">
-				            <div class="epi-box">
-                                <div class="epi-img position-relative">
-                                   <img src="<?php echo URL::to('/').'/public/uploads/albums/'.$album->album;?>" class="img-fluid img-zoom" alt="">
-                                   <div class="episode-play-info">
-                                      <div class="episode-play">
-                                         <a href="<?= URL::to('album') ?><?= '/' . $album->slug ?>">
-                                            <i class="ri-play-fill"></i>
-                                         </a>
-                                      </div>
-                                   </div>
-                                </div>
-                                <div class="epi-desc p-3"> 
+				           <ul class="favorites-slider list-inline  row p-0 mb-0 ">
+                           
+  <li class="slide-item">
+                             <div class="block-images position-relative">
+                                   <div class="img-box">
+                                   <img src="<?php echo URL::to('/').'/public/uploads/albums/'.$album->album;?>" class="img-fluid w-100" alt="">
+                                 </div>
+                                  
+                               
+                               <div class="block-description">
                                    <a href="<?= URL::to('album') ?><?= '/' . $album->slug ?>">
                                       <h6 class="epi-name text-white mb-0"><?php echo $album->albumname; ?></h6>
                                    </a>
@@ -67,12 +70,17 @@
                                       <span class="text-white"><small><?php if($audios_count > 0){  echo get_audio_artist($audio->id); }else{}  ?></small></span>
                                    </div>
                                 </div>
+      </div>
+                               </li>
+                             
+                            </ul>
+                              <?php endforeach; } ?>
                             </div>
 						</div>
 					</div>
 
 
-				<?php endforeach; } ?>
+				
 			</div>
          <?php if($audios_count > 0){   include('partials/pagination.php'); }else{} ?>
 </div>

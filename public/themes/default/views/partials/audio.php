@@ -1,33 +1,43 @@
-<?php if(isset($audios)) :
-foreach($audios as $audio): ?>
-<div class="iq-main-header col-md-3 d-flex align-items-center justify-content-between">
-    <div class="favorites-contens">           
-        <div class="epi-box">
-              <a href="<?= URL::to('audio') ?><?= '/' . $audio->slug ?>">
-            <div class="epi-img position-relative">
-               <img src="<?php echo URL::to('/').'/public/uploads/images/'.$audio->player_image;?>" class="img-fluid img-zoom" alt="">
-               <div class="episode-play-info">
-                  <div class="episode-play">
-                     <a href="<?= URL::to('audio') ?><?= '/' . $audio->slug ?>">
-                       <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" />
-                     </a>
-                  </div>
-               </div>
-            </div>
-            <div class="epi-desc p-3"> 
-               <a href="<?= URL::to('audio') ?><?= '/' . $audio->slug ?>">
+
+
+ <div class="favorites-contens">
+                    <ul class="favorites-slider list-inline  row p-0 mb-0 ">
+                        <?php if(isset($audios)) :
+                        foreach($audios as $audio): ?>
+                       <li class="slide-item ">
+                         <a href="<?= URL::to('audio') ?><?= '/' . $audio->slug ?>">
+                             <div class="block-images position-relative">
+                             <!-- block-images -->
+                                <div class="img-box">
+                                
+                                  <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$audio->image;?>" class="img-fliud w-100" alt="">
+                                 
+                                     
+                              
+                                       
+                                 </div>
+                              
+                                <div class="block-description">
+                                 
+                               <a href="<?= URL::to('audio') ?><?= '/' . $audio->slug ?>">
                   <h6 class="epi-name text-white mb-0"><?php echo $audio->title; ?></h6>
-               </a>
-                <div class="d-flex align-items-center ">
-                    <span class="text-white"><small><?php echo get_audio_artist($audio->id); ?></small></span>
-                    <span class="text-primary"><small><?php echo gmdate('H:i:s', $audio->duration); ?>m</small></span>
-               </div>
-            </div>
-            </a>
-        </div>
-    </div>
-</div>
+               </a>   
+                                
+                                
 
+                                  <div class="hover-buttons text-white">
+                                                            <a class="d-flex align-items-center" href="<?= URL::to('audio') ?><?= '/' . $audio->slug ?>">
+                       <img class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> Play Now
+                     </a>
 
-<?php endforeach; 
-endif; ?>
+                                  
+                                    </div>
+                                </div>
+                             </div>
+                          </a>
+                       </li>
+                       <?php                     
+                        endforeach; 
+                                   endif; ?>
+                    </ul>
+                 </div>
