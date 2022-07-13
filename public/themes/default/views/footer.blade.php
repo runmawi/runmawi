@@ -269,7 +269,7 @@ function myFunction() {
     var request_url = $('#request_url').val();
     var live = $('live').val();
     // var live = $('live').val();
-    var video_video = $('video_video').val();
+    var video_video = $('#video_video').val();
     var user_logged_out =  $('#user_logged_out').val();
     var hls =  $('#hls').val();
     var ads_path_tag =  $('#ads_path_tag').val();
