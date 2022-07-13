@@ -1071,7 +1071,7 @@ if(!empty($artistsdata)){
                 
                 $data['trailer'] = $M3u8_save_path;
                 $video->trailer_type  = 'm3u8';
-                // dd($convertresolution);
+                // dd($data['trailer']);
             }
             else{
                 
@@ -1096,7 +1096,7 @@ if(!empty($artistsdata)){
                    } 
                    else 
                    {
-                       $data['trailer'] = $video->trailer;
+                    //    $data['trailer'] = $video->trailer;
                    }  
    
             }elseif($data['trailer_type'] == 'm3u8_url'){
@@ -1114,6 +1114,7 @@ if(!empty($artistsdata)){
         }
 
 
+                
            
            $update_mp4 = $request->get('video');
 
@@ -1451,11 +1452,13 @@ if(!empty($artistsdata)){
         }else{
             $searchtags = $video->searchtags;
         }
+        // dd($data['trailer']);
 
         $video->ads_category =  $data['ads_category'];   
         $shortcodes = $request['short_code'];        
         $languages=$request['sub_language'];
         $video->mp4_url =  $data['mp4_url'];
+        $video->trailer =  $data['trailer'];
         $video->duration = $data['duration'];
         $video->language=$request['language'];
         $video->skip_recap =  $request['skip_recap'];

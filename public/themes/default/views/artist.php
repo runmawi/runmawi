@@ -7,14 +7,41 @@
     <div class="container-fluid mt-3">
         <div class="d-flex align-items-center">
             <div>
-                <i  class="fa fa-play-circle-o" aria-hidden="true" style="color:#fff!important;"></i>
+                <!-- <i  class="fa fa-play-circle-o" aria-hidden="true" style="color:#fff!important;"></i> -->
+            </div>
+            <?php if($artist_following == 0){ ?>
+            <div class="flw" id="followingone" >
+                <button type="button" id="follow" class="btn btn-outline-secondary">Follow</button>
+            </div>
+            <?php } ?>
+            <?php if($artist_following > 0){ ?>
+            <div class="flw" id="removefollowingone">
+                <button type="button" id="removefollow" class="btn btn-outline-Danger">Remove Follow</button>
+            </div>
+            <?php } ?>
+            <div class="flw" id="following" >
+                <button type="button" id="follow" class="btn btn-outline-secondary">Follow</button>
+            </div>
+            <div class="flw" id="removefollowing" >
+                <button type="button" id="removefollow" class="btn btn-outline-Danger">Remove Follow</button>
             </div>
             <div class="flw">
-                <button type="button" class="btn btn-outline-secondary">Follow</button>
+                <!-- <i class="fa fa-share-square-o" aria-hidden="true" style="color:#fff!important;"></i> -->
+                <?php $media_url = URL::to('/').'/artist/'.$artist->artist_name; ?>
+                <input type="hidden" value="<?= $media_url ?>" id="media_url">
+                <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
+                <li class="share">
+                    <span><i class="ri-share-fill"></i></span>
+                        <div class="share-box">
+                        <div class="d-flex align-items-center"> 
+                            <a href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" class="share-ico"><i class="ri-facebook-fill"></i></a>
+                            <a href="https://twitter.com/intent/tweet?text=<?= $media_url ?>" class="share-ico"><i class="ri-twitter-fill"></i></a>
+                            <a href="#"onclick="Copy();" class="share-ico"><i class="ri-links-fill"></i></a>
+                        </div>
+                    </div>
+                </li>
+                 </ul>
 
-            </div>
-            <div class="flw">
-                <i class="fa fa-share-square-o" aria-hidden="true" style="color:#fff!important;"></i>
             </div>
         </div>
     </div>
@@ -169,3 +196,56 @@
         </div>
     </div>
 <?php include('footer.blade.php'); ?>
+
+<script>
+
+
+function Copy() {
+    var media_path = $('#media_url').val();
+  var url =  navigator.clipboard.writeText(window.location.href);
+  var path =  navigator.clipboard.writeText(media_path);
+  $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Copied URL</div>');
+               setTimeout(function() {
+                $('.add_watch').slideUp('fast');
+               }, 3000);
+}
+
+            $('#following').hide();
+            $('#removefollowing').hide();
+    $('#follow').click(function(){
+        var artist_id = '<?=  $artist->id ?>';
+        // alert(artist_id);
+         $.post('<?= URL::to('artist/following') ?>', { artist_id : artist_id, following : 1, _token: '<?= csrf_token(); ?>' },
+          function(data){
+            $('#following').hide();
+            $('#followingone').hide();
+            $('#removefollowing').show();
+            // followingone removefollowingone
+          });
+               $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Artist Added To Your Following List </div>');
+               setTimeout(function() {
+                $('.add_watch').slideUp('fast');
+               }, 3000);
+              //  alert();             
+     });
+
+
+
+
+     $('#removefollow').click(function(){
+        var artist_id = '<?=  $artist->id ?>';
+        // alert(artist_id);
+         $.post('<?= URL::to('artist/following') ?>', { artist_id : artist_id, following : 0, _token: '<?= csrf_token(); ?>' },
+          function(data){
+            $('#following').show();
+            $('#removefollowing').hide();
+            $('#removefollowingone').hide();
+          });
+          $("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">Artist Removed To Your Following List</div>');
+               setTimeout(function() {
+                $('.add_watch').slideUp('fast');
+               }, 3000);
+              //  alert();             
+     });
+
+</script>
