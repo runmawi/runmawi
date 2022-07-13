@@ -116,8 +116,13 @@ border-radius: 0px 4px 4px 0px;
                                    
                                     </td> -->
                                     <td>@if(isset($video->cppuser->username)) Uploaded by {{ $video->cppuser->username }} @else  Admin @endif</td>
+                                    <td>@if(isset($video->type) && $video->type == "") M3u8 Converted Video  
+                                       @elseif(isset($video->type) && $video->type == "mp4_url") MP4 Video
+                                       @elseif(isset($video->type) && $video->type == "m3u8_url") M3u8 URL Video
+                                       @elseif(isset($video->type) && $video->type == "embed") Embed Video
+                                       @endif</td>
 
-                                    <td>{{ $video->type }}</td>
+                                    <!-- <td>{{ $video->type }}</td> -->
 
                                     <td>{{ $video->access }}</td>
                                    
