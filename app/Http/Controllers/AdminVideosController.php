@@ -1102,15 +1102,20 @@ if(!empty($artistsdata)){
             }elseif($data['trailer_type'] == 'm3u8_url'){
 
                 $video->trailer = $data['m3u8_trailer'];
+                $data['trailer'] = $data['m3u8_trailer'];
+                // http://localhost/flicknexs/storage/app/public/4XGJiKONAQfCe4eV.mp4
             }
             elseif($data['trailer_type'] == 'mp4_url'){
 
                 $video->trailer = $data['mp4_trailer'];
+                $data['trailer'] = $data['mp4_trailer'];
             }
             elseif($data['trailer_type'] == 'embed_url'){
 
                 $video->trailer = $data['embed_trailer'];
+                $data['trailer'] = $data['embed_trailer'];
             }
+            // $data['trailer'] = "";
         }
 
 
