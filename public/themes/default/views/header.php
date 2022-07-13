@@ -135,9 +135,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.js"></script>
     <?php 
     if(count($Script) > 0){
-    foreach($Script as $Scriptheader){ 
-      // echo $Scriptheader;
-     } 
+    foreach($Script as $Scriptheader){   ?>
+   <?= $Scriptheader ?>
+    <?php } 
    } ?>
    </head>
     <style>
