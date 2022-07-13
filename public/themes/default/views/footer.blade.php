@@ -238,6 +238,14 @@ function myFunction() {
   }
 }
 </script>-->
+<?php 
+      $footer_script = App\Script::pluck('footer_script')->toArray();
+      if(count($footer_script) > 0){
+        foreach($Script as $Scriptfooter){ 
+        echo $Scriptfooter;
+      } 
+    }
+     ?>
 
 <script src="https://afarkas.github.io/lazysizes/plugins/bgset/ls.bgset.min.js"></script>
 <script src="https://afarkas.github.io/lazysizes/lazysizes.min.js"></script>
