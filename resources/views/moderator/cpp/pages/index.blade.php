@@ -60,9 +60,9 @@
 				<td>
 					<div class="align-items-center list-user-action">
 						<a href="{{ URL::to('cpp/pages/edit') . '/' . $page->id }}" class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Edit"><i class="ri-pencil-line"></i></a>
+                                             data-original-title="Edit"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
 						<a href="{{ URL::to('cpp/pages/delete') . '/' . $page->id }}" class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Delete"><i class="ri-delete-bin-line"></i></a>
+                                             data-original-title="Delete"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
 					</div>
 				</td>
 			</tr>
