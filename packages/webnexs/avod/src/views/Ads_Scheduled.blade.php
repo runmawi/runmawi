@@ -17,12 +17,12 @@
     <div id="content-page" class="content-page">
         <div class="iq-card">
             <div class="container-fluid">
-                <div class=" row col-sm-12">
+                <div class=" row mb-5">
                     <div class="col-sm-9">
                         <h5>Ads Schedule Calender</h5>
                     </div>
 
-                    <div class="col-sm-3">
+                    <div class="col-sm-3 text-right">
                         <a href="{{ URL::to('advertiser/Ads-Events') }}" class="btn btn-primary">Add Scheduling Time</a>
                     </div>
 

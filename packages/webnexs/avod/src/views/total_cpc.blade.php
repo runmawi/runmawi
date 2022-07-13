@@ -6,7 +6,7 @@
       <div class="row">
          <div class="col-lg-12">
             <div class="iq-card-body">
-               <h2 class="text-center">Total Cost per Click</h2>
+               <h2 class="text-center mb-4">Total Cost per Click</h2>
                <div id="nestable" class="nested-list dd with-margins">
                   <div class="panel panel-default ">
                      <div class="row">

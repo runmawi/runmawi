@@ -1,7 +1,12 @@
 @extends('moderator.master')
-
+<style>
+    label{
+        font-size: 14px!important;
+    }
+</style>
 @section('css')
 	<link rel="stylesheet" href="{{ URL::to('/assets/admin/css/sweetalert.css') }}">
+
 @endsection
 
 @section('content')
@@ -51,17 +56,16 @@
                                     <td>@if(isset($audio->categories->name)) {{ $audio->categories->name }} @endif</td>
                                   
                                     <td>
-                                        {{ $audio->views }}<i class="lar la-eye "></i>
+                                        {{ $audio->views }} <img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>">
                                     </td>
                                     <td>
                                        <div class=" align-items-center list-user-action">
                                           <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="View" href="{{ URL::to('/cpp/audio') . '/' . $audio->slug }}"><i class="lar la-eye"></i></a>
+                                             data-original-title="View" href="{{ URL::to('/cpp/audio') . '/' . $audio->slug }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>"></a>
                                           <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Edit" href="{{ URL::to('/cpp/audios/edit') . '/' . $audio->id }}"><i class="ri-pencil-line"></i></a>
+                                             data-original-title="Edit" href="{{ URL::to('/cpp/audios/edit') . '/' . $audio->id }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
                                           <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" onclick="return confirm('Are you sure?')"
-                                             data-original-title="Delete" href="{{ URL::to('/cpp/audios/delete') . '/' . $audio->id }}"><i
-                                                class="ri-delete-bin-line"></i></a>
+                                             data-original-title="Delete" href="{{ URL::to('/cpp/audios/delete') . '/' . $audio->id }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
                                        </div>
                                     </td>
                                  </tr>

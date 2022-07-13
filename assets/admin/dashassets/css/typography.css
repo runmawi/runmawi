@@ -232,7 +232,7 @@ Background Color
 .bg-dark, .badge-dark { color: var(--iq-white); background-color: var(--iq-dark) !important; }
 a.bg-primary:focus, a.bg-primary:hover, button.bg-primary:focus, button.bg-primary:hover { background-color: var(--iq-primary-hover) !important; color: var(--iq-white); }
 a.text-primary:focus, a.text-primary:hover { color: var(--iq-primary) !important; }
-.table-header th label{font-weight: 500;}
+.table-header th label{font-weight: 600;font-size: 14px!important;}
 /*----------------------------------------------
 Background Color Opacity
 ------------------------------------------------*/

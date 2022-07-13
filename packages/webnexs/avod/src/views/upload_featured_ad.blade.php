@@ -224,8 +224,8 @@
                       <div class="form-card">
                         <h2 class="fs-title">Payment</h2>
                         <div class="col-md-6">
-                           <div class="d-flex">
-                              <input type="radio" name="gateway_payment" value="razorpay" style="width: 10px;">
+                           <div class="d-flex align-items-baseline">
+                              <input type="radio" name="gateway_payment" value="razorpay" style="width: 15px;">
                               <h5 class="ml-4">Razorpay Payment Gateway</h5>
                            </div>
                            <div class="action_block razorpay">
@@ -234,8 +234,8 @@
                      </div>
 
                      <div class="col-md-6">
-                        <div class="d-flex">
-                           <input type="radio" name="gateway_payment" value="stripe" style="width: 10px;">
+                        <div class="d-flex align-items-baseline">
+                           <input type="radio" name="gateway_payment" value="stripe" style="width: 15px;">
                            <h5 class="ml-4">Stripe Payment Gateway</h5>
 
                         </div>
