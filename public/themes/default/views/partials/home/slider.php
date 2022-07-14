@@ -177,8 +177,7 @@ endif; ?>
 <!-- Catogery Slider -->
 <?php
 
-
-if(Route::current()->getName() == "home"){
+if(Route::current()->getName() == "home" || Route::current()->getName() == null ){
 
 
             $parentCategories = App\VideoCategory::where('banner',1)->get();
