@@ -396,7 +396,45 @@ if(!empty($request_url)){
 <!-- logo In player -->
 
         <div class="logo_player"> </div>
-        
+        <!-- url link -->
+<div class=" page-height">
+<div id="watch_trailer" class="fitvid" atyle="z-index: 9999;">
+               
+               <?php  if($video->trailer_type !=null && $video->trailer_type == "video_mp4" || $video->trailer_type == "mp4_url"  ){ ?>
+
+                   <video  class="videoPlayer1" 
+                         controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
+                         type="video/mp4" src="<?php echo $video->trailer;?>">
+                   </video>
+                   <?php }elseif($video->trailer_type !=null && $video->trailer_type == "m3u8" ){ ?>
+
+                      <video  id="videos" class=""  poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
+                          controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
+                          type="application/x-mpegURL">
+                          <source 
+                            type="application/x-mpegURL" 
+                            src="<?php echo $video->trailer;?>"
+                          >
+                      </video>
+
+               <?php }elseif($video->trailer_type !=null && $video->trailer_type == "m3u8_url" ){ ?>
+
+                   <video  class="videoPlayer1" 
+                         controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
+                         type="application/x-mpegURL">
+                   </video>
+
+               <?php }elseif($video->trailer_type !=null && $video->trailer_type == "embed_url" ){ ?>
+
+                       <div class="videoPlayer1" id="">
+                         <iframe src="<?php echo $video->trailer ?>" allowfullscreen allowtransparency
+                           allow="autoplay">
+                         </iframe>
+                       </div>
+
+               <?php  } ?>
+             </div>
+
         <div class="text-white">
             <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->description); ?></p>
         </div>
@@ -643,4 +681,77 @@ $(document).ready(function(){
   </div>
 
   <?php include('footer.blade.php');?>
+
+  <script src="https://cdn.plyr.io/3.5.10/plyr.js"></script>
+
+<script>
+
+  const player = new Plyr('#videoPlayer1'); 
+
+  var trailer_video_m3u8 = <?php echo json_encode($video->trailer) ; ?> ;
+  var trailer_video_type =  <?php echo json_encode($video->trailer_type) ; ?> ;
+  
+
+  if(trailer_video_type == "m3u8_url"){
+    (function () {
+      var video = document.querySelector('#videoPlayer1');
+
+      if (Hls.isSupported()) {
+          var hls = new Hls();
+          hls.loadSource(trailer_video_m3u8);
+          hls.attachMedia(video);
+          hls.on(Hls.Events.MANIFEST_PARSED,function() {
+        });
+      }
+      
+    })();
+
+  }else if(trailer_video_type == "m3u8"){
+  // alert(trailer_video_type);
+  document.addEventListener("DOMContentLoaded", () => {
+  const videos = document.querySelector('#videos');
+  // alert(video);
+  const sources = videos.getElementsByTagName("source")[0].src;
+  // alert(sources);
+  const defaultOptions = {};
+
+  if (Hls.isSupported()) {
+    const hlstwo = new Hls();
+    hlstwo.loadSource(sources);
+    hlstwo.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+
+      const availableQualities = hlstwo.levels.map((l) => l.height)
+
+      // Add new qualities to option
+      defaultOptions.quality = {
+        default: availableQualities[0],
+        options: availableQualities,
+        // this ensures Plyr to use Hls to update quality level
+        forced: true,        
+        onChange: (e) => updateQuality(e),
+      }
+
+      // Initialize here
+      const player = new Plyr(videos, defaultOptions);
+    });
+    hlstwo.attachMedia(videos);
+    window.hlstwo = hlstwo;
+  }
+
+  function updateQuality(newQuality) {
+    window.hlstwo.levels.forEach((level, levelIndex) => {
+      if (level.height === newQuality) {
+        console.log("Found quality match with " + newQuality);
+        window.hlstwo.currentLevel = levelIndex;
+      }
+    });
+  }
+});
+
+  }
+   
+
+   
+
+</script>
 

@@ -35,6 +35,8 @@
                         <li><a href="<?php echo URL::to('/advertiser/register') ;?>">Advertiser Portal</a></li>
                         <li><a href="<?php echo URL::to('/channel/register') ;?>">Channel Portal</a></li>
                       <?php }else{ }?>
+                     <li><a href="<?php echo URL::to('/contact-us/') ;?>">Contact us</a></li>
+
                     </ul>
 
                      <div class="mt-2 p-2">
