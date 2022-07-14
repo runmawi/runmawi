@@ -6,8 +6,8 @@
 
 <div class="iq-main-header d-flex align-items-center justify-content-between">
    <h4 class="main-title">
-    Recently Added Series
-    <a href="<?php echo URL::to('/Series-list' ) ?>">
+    <!-- Recently Added Series -->
+    <a href="<?php if ($order_settings_list[4]->header_name) { echo URL::to('/').'/'.$order_settings_list[4]->url ;} else { echo "" ; } ?>">
       <?php if ($order_settings_list[4]->header_name) { echo $order_settings_list[4]->header_name ;} else { echo "" ; } ?>
     </a>
   </h4>                      

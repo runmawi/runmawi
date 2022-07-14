@@ -64,7 +64,7 @@
     </div>
 
     <div class="container-fluid mt-3">
-        <h4 class="main-title">Lastest Release</h4>
+        <h4 class="main-title">Latest Release</h4>
     </div>
     <div class="container-fluid mt-2">
        <div class="favorites-contens">
