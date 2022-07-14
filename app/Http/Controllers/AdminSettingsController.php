@@ -62,9 +62,12 @@ class AdminSettingsController extends Controller
         }else{
           $resolution = [];
         }
+        $script =  Script::first();
+        // dd($script);
         $data = array(
             'admin_user' => Auth::user(),
             'app_settings' => $app_settings ,   
+            'script' => $script ,   
             'resolution' => $resolution ,   
 			      'settings' => $setting,
             'rtmp_url'  => RTMP::all(),
@@ -635,12 +638,20 @@ if($watermark != '') {
 
         if(!empty($input)){
         // foreach($input as $key => $value){
-          $script = new Script;
+          // $script = new Script;
+          $script =  Script::first();
+          if(!empty($script)){
           $script->header_script = $input['header_script'];
           $script->footer_script = $input['footer_script'];
           $script->user_id = Auth::User()->id;
           $script->save();
-          // }
+          }else{
+            $script = new Script;
+            $script->header_script = $input['header_script'];
+            $script->footer_script = $input['footer_script'];
+            $script->user_id = Auth::User()->id;
+            $script->save();
+          }
         }else{
           return Redirect::to('admin/settings')->with(array('message' => 'Please Give Script CDN!', 'note_type' => 'success') );
 
