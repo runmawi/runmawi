@@ -198,6 +198,7 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 		
 		
 	</div>
+            
                 
             
 	

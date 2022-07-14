@@ -17,7 +17,7 @@ class CreateOrderHomesettingsTable extends Migration
             $table->id();
             $table->integer('user_id')->nullable();
             $table->integer('order_id')->nullable();
-            $table->integer('url')->nullable();
+            $table->string('url')->nullable();
             $table->string('video_name')->nullable();
             $table->timestamps();
         });
