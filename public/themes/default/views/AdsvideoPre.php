@@ -10,7 +10,7 @@
     // ->whereTime('start', '<=', $current_time)
     // ->whereTime('end', '>=', $current_time)
     ->where('ads_events.status',1)
-    ->where('advertisements.status',10)
+    ->where('advertisements.status',1)
     ->where('videos.ads_category',$video->ads_category)
     ->where('ads_position','pre')
     ->get();
@@ -78,6 +78,7 @@
   var ads_end_tym     = <?php  echo json_encode($Ads_duration_Sec)  ;?>;
   var Ads_count       = <?php echo count($AdsVideos); ?> ;
   var Ads_type        = <?php echo json_encode($ads_type); ?> ;
+  var ads_videoplayer_id  = <?php echo json_encode($video_type_id); ?> ;
 
 
   if( Ads_count >= 1 && Ads_type != null){
@@ -93,7 +94,7 @@
             
                 $('.adstime_url').attr('src', Ads_videos);
 
-                document.getElementById('videoPlayer').addEventListener('loadedmetadata', function() {
+                document.getElementById(ads_videoplayer_id).addEventListener('loadedmetadata', function() {
                     this.currentTime = 0;
                 }, true);
                 
@@ -114,7 +115,7 @@
                   $(".plyr__volume").removeAttr("style");
                   
 
-                  document.getElementById('videoPlayer').addEventListener('loadedmetadata', function() {
+                  document.getElementById(ads_videoplayer_id).addEventListener('loadedmetadata', function() {
                       this.currentTime = 0;
                     }, true);
 
