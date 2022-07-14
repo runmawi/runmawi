@@ -12,7 +12,7 @@ $currency = App\CurrencySetting::first();
 
       <div class="main-content">
          <section id="iq-favorites">
-            <div class="container">
+            <div class="container-fluid">
                <div class="row pageheight">
                   <div class="col-sm-12 overflow-hidden">
                      <div class="iq-main-header align-items-center">

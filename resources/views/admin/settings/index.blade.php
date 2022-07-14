@@ -904,12 +904,15 @@ border-radius: 0px 4px 4px 0px;
 	        <form method="POST" action="{{ URL::to('admin/settings/script_settings') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" >
             <div class="col-md-12">
                 <h5>Header Script CDN:</h5>
-                <textarea  rows="5" class="form-control" name="header_script" id="summaryheader"
-                    placeholder="Header Script"></textarea>
+                <textarea  rows="5" class="form-control" name="header_script"  
+                    placeholder="Header Script">
+                    @if(!empty($script->header_script)){{ $script->header_script }}@endif</textarea>
+                    <!-- id="summaryheader" -->
             
                 <h5 class="mt-3">Footer Script CDN:</h5>
-                <textarea  rows="5" class="form-control" name="footer_script" id="summaryfooter"
-                    placeholder="Footer Script"></textarea>
+                <textarea  rows="5" class="form-control" name="footer_script" 
+                    placeholder="Footer Script">@if(!empty($script->footer_script)){{ $script->footer_script }}@endif</textarea>
+                    <!-- id="summaryfooter" -->
                    </div>
                     <div class="col-md-12 mt-3">
                 <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
