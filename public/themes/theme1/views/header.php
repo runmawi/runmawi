@@ -131,10 +131,10 @@ $data = Session::all();
     <?php 
       $Script = App\Script::pluck('header_script')->toArray();
       if(count($Script) > 0){
-         foreach($Script as $Scriptheader){ 
-         //   echo $Scriptheader;
-          } 
-        }  ?>
+         foreach($Script as $Scriptheader){   ?>
+        <?= $Scriptheader ?>
+         <?php } 
+        } ?>
    </head>
     <style>
         svg{
