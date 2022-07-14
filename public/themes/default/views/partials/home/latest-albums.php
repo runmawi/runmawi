@@ -1,6 +1,6 @@
 <?php  if(count($albums) > 0) : ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-    <h4 class="main-title"><a href="<?php echo URL::to('/audios') ?>">
+    <h4 class="main-title"><a href="<?php if ($order_settings_list[6]->header_name) { echo URL::to('/').'/'.$order_settings_list[6]->url ;} else { echo "" ; } ?>">
     <?php if ($order_settings_list[6]->header_name) { echo $order_settings_list[6]->header_name ;} else { echo "" ; } ?>
     <!-- Albums -->
 </a></h4>                      

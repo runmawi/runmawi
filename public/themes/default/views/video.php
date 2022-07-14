@@ -716,7 +716,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 
 
  <input type="hidden" class="videocategoryid" data-videocategoryid="<?= $video->video_category_id ?>" value="<?= $video->video_category_id ?>">
-   <div class="container-fluid video-details" style="width:90%!important;">
+   <div class="container-fluid video-details" >
        <div class="trending-info g-border p-0">
            <div class="row align-items-center">
                <div class="col-sm-8 col-md-8 col-xs-12">
@@ -987,7 +987,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
     <div class="col-md-7 p-0" style="margin-top: 2%;">
       <h4>Description</h4>
       <div class="text-white">
-          <p class="trending-dec w-100 mb-0 text-white mt-2"><?php echo __($video->description); ?></p>
+          <p class="trending-dec w-100 mb-0 text-white mt-2 text-justify"><?php echo __($video->description); ?></p>
           <p class="trending-dec w-100 mb-0 text-white mt-2">Starring : <span class="sta"><?php echo $artistsname; ?></span></p>
           <p class="trending-dec w-100 mb-0 text-white mt-2">Genres : <span class="sta"><?php echo $genres_name; ?></span></p>
           <p class="trending-dec w-100 mb-0 text-white mt-2">This Movie is :</p>
@@ -1024,21 +1024,51 @@ $artists = [];
 
 }
  if(count($artists) > 0 ) { ?>
- <h4 style="margin-left: -15px;">Cast & crew</h4>
+ <h4 >Cast & crew</h4>
        
           
           <div class="row">
-                <?php foreach($artists as $key => $artist){  ?>
-            <div class="mt-6 ml-3 d-flex">
-              <a  href="<?php echo __(URL::to('/') . '/Artist/' . $artist->artist_name); ?>"  >
-                <img src="<?= URL::to('/') . '/public/uploads/artists/'.$artist->image ?>" alt=""width="60" height="70">
-                <p class="trending-dec w-100 mb-0 text-white mt-2" ><?php echo $artist->artist_name ; ?> </p>
-              </a>
-            </div>
-                 <?php } }  ?>
+                <div class="favorites-contens">
+                    
+                    <ul class="category-page list-inline row p-0 mb-0 m-3">
+                       <?php foreach($artists as $key => $artist){  ?>
+                       <li class="slide-item col-sm-1 col-md-1 col-xs-12">
+                        <a  href="<?php echo __(URL::to('/') . '/Artist/' . $artist->artist_name); ?>"  >
+                             <div class="block-images position-relative">
+                             <!-- block-images -->
+                                <div class="img-box">
+                                
+                                    <img src="<?= URL::to('/') . '/public/uploads/artists/'.$artist->image ?>" alt="" class="w-100">
+                                 
+                                     <div class="p-tag2">
+                                           <p class="trending-dec w-100 mb-0 text-white mt-2" ><?php echo $artist->artist_name ; ?> </p>
+                                    </div>
+                              
+                                       
+                                 </div>
+                               
+                                <div class="">
+                                 
+                               <a  href="<?php echo __(URL::to('/') . '/Artist/' . $artist->artist_name); ?>"  >
+                 
+               </a>   
+                                
+                                
+
+                                 
+                                </div>
+                            </div>
+                            
+                          </a>
+                       </li>
+                         <?php } }  ?>
+                    </ul>
+                     
+                 </div>
           </div>
        
      
+
            
        <!-- <div class="text-white">
            <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->description); ?></p>
@@ -1166,9 +1196,9 @@ $artists = [];
            </div>
    </div>
 <?php } ?>
+</div>
 
-
-   <div class=" container video-list you-may-like">
+   <div class=" container-fluid video-list you-may-like">
        <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Recomended Videos');?></h4>
            <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>   
                <?php include('partials/video-loop.php');?>

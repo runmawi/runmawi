@@ -24,20 +24,25 @@
                                                 </div>
                                     
                                                 <div class="block-description" >
-                                                    <?php if($ThumbnailSetting->title == 1) { ?>            <!-- Title -->
+                                                  
+                                                    <div class="hover-buttons">
+                                                          <?php if($ThumbnailSetting->title == 1) { ?>            <!-- Title -->
                                                         <a  href="<?php echo URL::to('artist') ?><?= '/' . $artist_lists->artist_slug ?>">
                                                             <h6><?php  echo (strlen($artist_lists->artist_name) > 17) ? substr($artist_lists->artist_name,0,18).'...' : $artist_lists->artist_name; ?></h6>
                                                             <p class="text-white mt-2">View Profile</p>
                                                         </a>
                                                     <?php } ?> 
-                                                    <div class="hover-buttons"><div>
+                                                        <div>
                                                 </div>
                                             </div>
                                             <div>
-                                                <button type="button" class="show-details-button" data-toggle="modal" data-target="#myModal<?= $artist_lists->artist_slug  ;?>">
+                                             
+                                            </div> </div>
+                                                 
+                                            </div>
+                                              <button type="button" class="show-details-button" data-toggle="modal" data-target="#myModal<?= $artist_lists->artist_slug  ;?>">
                                                     <span class="text-center thumbarrow-sec"></span>
                                                 </button>
-                                            </div> </div> </div>
                                         </a>
                                     </li>
                                 @endforeach

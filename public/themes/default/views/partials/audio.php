@@ -41,3 +41,12 @@
                                    endif; ?>
                     </ul>
                  </div>
+
+
+ <div class="episode-play-info">
+                                      <div class="episode-play">
+                                         <a href="<?= URL::to('album') ?><?= '/' . $album->slug ?>">
+                                            <i class="ri-play-fill"></i>
+                                         </a>
+                                      </div>
+                                   </div>
