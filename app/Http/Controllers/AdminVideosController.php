@@ -1096,7 +1096,7 @@ if(!empty($artistsdata)){
                    } 
                    else 
                    {
-                    //    $data['trailer'] = $video->trailer;
+                       $data['trailer'] = $video->trailer;
                    }  
    
             }elseif($data['trailer_type'] == 'm3u8_url'){
@@ -1114,11 +1114,13 @@ if(!empty($artistsdata)){
 
                 $video->trailer = $data['embed_trailer'];
                 $data['trailer'] = $data['embed_trailer'];
+            }else{
+                $data['trailer'] = $video->trailer;
             }
             // $data['trailer'] = "";
         }
 
-
+        // dd($video->trailer);
                 
            
            $update_mp4 = $request->get('video');
