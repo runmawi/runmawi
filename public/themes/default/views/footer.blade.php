@@ -262,6 +262,8 @@ function myFunction() {
  <script src="plyr-plugin-capture.js"></script>
  <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/plyr-plugin-capture.js';?>"></script>
  <script src="https://cdn.plyr.io/3.5.10/plyr.js"></script>
+<!--<script src="https://cdn.plyr.io/3.7.2/plyr.js"></script>-->
+
       <script src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
 <script>
     function loadJS(u) {
