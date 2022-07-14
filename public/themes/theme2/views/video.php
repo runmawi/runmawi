@@ -703,14 +703,14 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                        </div>
              </div>
              <div class="col-sm-5 col-md-5 col-xs-12 text-right mt-4">
-               <!--  <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
-                     Watchlater 
+                 <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
                     <li><span class="watchlater <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if(isset($watchlatered->id)): ?> class="ri-add-circle-fill" <?php else: ?> class="ri-add-circle-line" <?php endif; ?>></i></span></li>
                      <!-- Wishlist 
                     <li><span class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line" <?php endif; ?> ></i></span></li>
-                     <!-- Social Share, Like Dislike
+                     <!-- Social Share, Like Dislike-->
+                      <?php include('partials/social-share.php'); ?>   
                                            
-                 </ul>-->
+                 </ul>
                  <div class="row justify-content-end">
            <div class="col-sm-8 col-md-8 col-xs-4 text-right p-0">
                    <div class=" d-flex justify-content-end">     
