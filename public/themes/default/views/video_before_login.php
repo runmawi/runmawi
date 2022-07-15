@@ -579,7 +579,7 @@ $artists = [];
 
 }
  if(count($artists) > 0 ) { ?>
- <h4 style="margin-left: -15px;">Cast & crew</h4>
+ <h4 >Cast & Crew</h4>
        
           
           <div class="row">
@@ -873,27 +873,18 @@ $(document).ready(function(){
   }else if(trailer_video_type == "m3u8"){
   // alert(trailer_video_type);
   document.addEventListener("DOMContentLoaded", () => {
-  const video = document.querySelector('#videos');
+  const videos = document.querySelector('#videos');
   // alert(video);
-  const source = video.getElementsByTagName("source")[0].src;
-  // alert(source);
-  
-  // For more options see: https://github.com/sampotts/plyr/#options
-  // captions.update is required for captions to work with hls.js
+  const sources = videos.getElementsByTagName("source")[0].src;
+  // alert(sources);
   const defaultOptions = {};
 
   if (Hls.isSupported()) {
-    // For more Hls.js options, see https://github.com/dailymotion/hls.js
-    const hls = new Hls();
-    hls.loadSource(source);
+    const hlstwo = new Hls();
+    hlstwo.loadSource(sources);
+    hlstwo.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
 
-    // From the m3u8 playlist, hls parses the manifest and returns
-    // all available video qualities. This is important, in this approach,
-    // we will have one source on the Plyr player.
-    hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
-
-      // Transform available levels into an array of integers (height values).
-      const availableQualities = hls.levels.map((l) => l.height)
+      const availableQualities = hlstwo.levels.map((l) => l.height)
 
       // Add new qualities to option
       defaultOptions.quality = {
@@ -905,23 +896,25 @@ $(document).ready(function(){
       }
 
       // Initialize here
-      const player = new Plyr(video, defaultOptions);
+      const player = new Plyr(videos, defaultOptions);
     });
-    hls.attachMedia(video);
-    window.hls = hls;
+    hlstwo.attachMedia(videos);
+    window.hlstwo = hlstwo;
   }
 
   function updateQuality(newQuality) {
-    window.hls.levels.forEach((level, levelIndex) => {
+    window.hlstwo.levels.forEach((level, levelIndex) => {
       if (level.height === newQuality) {
         console.log("Found quality match with " + newQuality);
-        window.hls.currentLevel = levelIndex;
+        window.hlstwo.currentLevel = levelIndex;
       }
     });
   }
 });
 
   }
+   
+
    
 
 </script>

@@ -82,6 +82,8 @@
                           <li><a href="<?php echo URL::to('/channel/register') ;?>">Channel Portal</a></li>
 
                         <?php }else{ }?>
+                     <li><a href="<?php echo URL::to('/contact-us/') ;?>">Contact us</a></li>
+
                     </ul>
                 </div>
                 <div class="col-sm-3 small m-0 text-white exp"><p class="ml-2">Company</p>
