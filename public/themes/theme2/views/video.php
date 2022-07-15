@@ -856,7 +856,7 @@ $artists = [];
                     <ul class="category-page list-inline row p-0 mb-0 m-3">
                        <?php foreach($artists as $key => $artist){  ?>
                           <li class="slide-item ">
-                            <a  href="<?php echo __(URL::to('/') . '/Artist/' . $artist->artist_slug); ?>"  >
+                            <a  href="<?php echo __(URL::to('/') . '/artist/' . $artist->artist_slug); ?>"  >
                                 <div class="block-images position-relative">
                                     <!-- block-images -->
                                     <div class="img-box">
@@ -868,7 +868,7 @@ $artists = [];
                                     </div>
                                   
                                     <div class="">
-                                      <a  href="<?php echo __(URL::to('/') . '/Artist/' . $artist->artist_slug); ?>"  ></a>   
+                                      <a  href="<?php echo __(URL::to('/') . '/artist/' . $artist->artist_slug); ?>"  ></a>   
                                     </div>
                                 </div>
                               </a>
