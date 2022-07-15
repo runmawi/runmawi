@@ -176,7 +176,6 @@ class AdminSeriesController extends Controller
      */
     public function store(Request $request)
     {
-       
           $validatedData = $request->validate([
                 'title' => ['required', 'string'],
             ]);
@@ -300,6 +299,21 @@ class AdminSeriesController extends Controller
         }else{
             $ppv_status = 0;
         }
+
+        if(!empty($data['season_trailer'])){
+
+            $season_trailer = $data['season_trailer'];
+        }else{
+            $season_trailer = null;
+        }
+
+        if(!empty($data['series_trailer'])){
+
+            $series_trailer = $data['series_trailer'];
+        }else{
+            $series_trailer = 0;
+        }
+
         $series->slug =  $slug;
         $series = Series::find($series->id);
         $series->slug = $slug;
@@ -308,6 +322,8 @@ class AdminSeriesController extends Controller
         $series->banner = empty($data['banner']) ? 0 : 1;
         $series->search_tag =$data['search_tag'];
         $series->details =strip_tags($data['details']);
+        $series->season_trailer = $season_trailer ;
+        $series->series_trailer = $series_trailer ;
         $series->save();  
 
 
@@ -531,8 +547,23 @@ class AdminSeriesController extends Controller
                 $update_url->save();  
         }
 
+        if(!empty($data['season_trailer'])){
+
+            $season_trailer = $data['season_trailer'];
+        }else{
+            $season_trailer = null;
+        }
+
+        if(!empty($data['series_trailer'])){
+
+            $series_trailer = $data['series_trailer'];
+        }else{
+            $series_trailer = 0;
+        }
+
         
-        
+        $series->season_trailer = $season_trailer ;
+        $series->series_trailer = $series_trailer ;
         $series->player_image = $player_image;
         $series->banner = empty($data['banner']) ? 0 : 1;
         $series->update($data);
