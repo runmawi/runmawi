@@ -981,6 +981,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
         <?php } ?>
     </div>
 </div>
+</div>
 <!-- Trailer End  -->
 
   <?php if(!empty($video->description) ) { ?>
