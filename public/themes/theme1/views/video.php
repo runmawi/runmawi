@@ -1,6 +1,6 @@
 
 <?php
-include('header.php'); ?>
+ include(public_path('themes/theme1/views/header.php')); ?>
 
 <?php 
 
@@ -847,29 +847,17 @@ $artists = [];
                     <ul class="category-page list-inline row p-0 mb-0 m-3">
                        <?php foreach($artists as $key => $artist){  ?>
                        <li class="slide-item ">
-                        <a  href="<?php echo __(URL::to('/') . '/Artist/' . $artist->artist_name); ?>"  >
+                        <a  href="<?php echo __(URL::to('/') . '/Artist/' . $artist->artist_slug); ?>"  >
                              <div class="block-images position-relative">
-                             <!-- block-images -->
+                                  <!-- block-images -->
                                 <div class="img-box">
-                                
                                     <img src="<?= URL::to('/') . '/public/uploads/artists/'.$artist->image ?>" alt="" width="100">
-                                 
                                      <div class="p-tag2">
                                            <p class="trending-dec w-100 mb-0 text-white mt-2" ><?php echo $artist->artist_name ; ?> </p>
                                     </div>
-                              
-                                       
                                  </div>
-                               
                                 <div class="">
-                                 
-                               <a  href="<?php echo __(URL::to('/') . '/Artist/' . $artist->artist_name); ?>"  >
-                 
-               </a>   
-                                
-                                
-
-                                 
+                                    <a  href="<?php echo __(URL::to('/') . '/Artist/' . $artist->artist_slug); ?>"  > </a>   
                                 </div>
                             </div>
                             
@@ -1548,7 +1536,7 @@ location.reload();
 
 </script>
 
-<?php include('footer.blade.php');?>
+<?php include(public_path('themes/theme1/views/footer.blade.php')); ?>
 
 <!-- Trailer m3u8 -->
 

@@ -1100,6 +1100,22 @@ class ChannelController extends Controller
           $subtitles = "No Subtitles Added";
           }
 
+          $artistscount = Videoartist::join("artists","video_artists.artist_id", "=", "artists.id")
+          ->select("artists.*")
+          ->where("video_artists.video_id", "=", $vid)
+          ->count();
+          
+          if($artistscount > 0){
+              $artists = Videoartist::join("artists","video_artists.artist_id", "=", "artists.id")
+                    ->select("artists.*")
+                    ->where("video_artists.video_id", "=", $vid)
+                    ->get();
+          }
+          else{
+              $artists = [];
+          }
+
+
             $data = array(
                  'currency' => $currency,
                  'video' => $categoryVideos,
@@ -1117,6 +1133,7 @@ class ChannelController extends Controller
                  'artistsname'  => $artistsname,
                  'lang_name'  => $lang_name,
                  'subtitles_name'  => $subtitles,
+                 'artists' => $artists,
             );
 
         } 
