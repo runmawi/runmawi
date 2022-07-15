@@ -37,7 +37,9 @@
         p.p-tag1 {
                 background-color: {{ button_bg_color() .'!important' }} ;
         }
-
+.sta{
+        color: {{ button_bg_color() .'!important' }} ;
+    }
         .circle {
                
                 stroke-dasharray: 650;
