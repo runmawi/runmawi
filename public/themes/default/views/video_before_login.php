@@ -532,9 +532,10 @@ if(!empty($request_url)){
               </div>
             </div>
           </div>
-        </div>
+       
         <?php } ?>
-    </div>
+</div>
+</div>
 
 <!-- Trailer End  -->
 
@@ -583,14 +584,43 @@ $artists = [];
        
           
           <div class="row">
-                <?php foreach($artists as $key => $artist){  ?>
-            <div class="mt-6 ml-3 d-flex">
-              <a  href="<?php echo __(URL::to('/') . '/Artist/' . $artist->artist_name); ?>"  >
-                <img src="<?= URL::to('/') . '/public/uploads/artists/'.$artist->image ?>" alt=""width="60" height="70">
-                <p class="trending-dec w-100 mb-0 text-white mt-2" ><?php echo $artist->artist_name ; ?> </p>
-              </a>
-            </div>
-                 <?php } }  ?>
+                <div class="favorites-contens">
+                    
+                    <ul class="category-page list-inline row p-0 mb-0 m-3">
+                       <?php foreach($artists as $key => $artist){  ?>
+                       <li class="slide-item col-sm-1 col-md-1 col-xs-12">
+                        <a  href="<?php echo __(URL::to('/') . '/Artist/' . $artist->artist_name); ?>"  >
+                             <div class="block-images position-relative">
+                             <!-- block-images -->
+                                <div class="img-box">
+                                
+                                    <img src="<?= URL::to('/') . '/public/uploads/artists/'.$artist->image ?>" alt="" class="w-100">
+                                 
+                                     <div class="p-tag2">
+                                           <p class="trending-dec w-100 mb-0 text-white mt-2" ><?php echo $artist->artist_name ; ?> </p>
+                                    </div>
+                              
+                                       
+                                 </div>
+                               
+                                <div class="">
+                                 
+                               <a  href="<?php echo __(URL::to('/') . '/Artist/' . $artist->artist_name); ?>"  >
+                 
+               </a>   
+                                
+                                
+
+                                 
+                                </div>
+                            </div>
+                            
+                          </a>
+                       </li>
+                         <?php } }  ?>
+                    </ul>
+                     
+                 </div>
           </div>
        
      
@@ -833,7 +863,7 @@ $(document).ready(function(){
             left: 80%;
             z-index: 2;
             content: '';
-            height: 100px;
+            height: 200px;
             width: 10%;
             background: url(<?php echo URL::to($logo_url) ; ?>) no-repeat;
             background-size: 100px auto, auto;
@@ -873,18 +903,27 @@ $(document).ready(function(){
   }else if(trailer_video_type == "m3u8"){
   // alert(trailer_video_type);
   document.addEventListener("DOMContentLoaded", () => {
-  const videos = document.querySelector('#videos');
+  const video = document.querySelector('#videos');
   // alert(video);
-  const sources = videos.getElementsByTagName("source")[0].src;
-  // alert(sources);
+  const source = video.getElementsByTagName("source")[0].src;
+  // alert(source);
+  
+  // For more options see: https://github.com/sampotts/plyr/#options
+  // captions.update is required for captions to work with hls.js
   const defaultOptions = {};
 
   if (Hls.isSupported()) {
-    const hlstwo = new Hls();
-    hlstwo.loadSource(sources);
-    hlstwo.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+    // For more Hls.js options, see https://github.com/dailymotion/hls.js
+    const hls = new Hls();
+    hls.loadSource(source);
 
-      const availableQualities = hlstwo.levels.map((l) => l.height)
+    // From the m3u8 playlist, hls parses the manifest and returns
+    // all available video qualities. This is important, in this approach,
+    // we will have one source on the Plyr player.
+    hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+
+      // Transform available levels into an array of integers (height values).
+      const availableQualities = hls.levels.map((l) => l.height)
 
       // Add new qualities to option
       defaultOptions.quality = {
@@ -896,25 +935,23 @@ $(document).ready(function(){
       }
 
       // Initialize here
-      const player = new Plyr(videos, defaultOptions);
+      const player = new Plyr(video, defaultOptions);
     });
-    hlstwo.attachMedia(videos);
-    window.hlstwo = hlstwo;
+    hls.attachMedia(video);
+    window.hls = hls;
   }
 
   function updateQuality(newQuality) {
-    window.hlstwo.levels.forEach((level, levelIndex) => {
+    window.hls.levels.forEach((level, levelIndex) => {
       if (level.height === newQuality) {
         console.log("Found quality match with " + newQuality);
-        window.hlstwo.currentLevel = levelIndex;
+        window.hls.currentLevel = levelIndex;
       }
     });
   }
 });
 
   }
-   
-
    
 
 </script>

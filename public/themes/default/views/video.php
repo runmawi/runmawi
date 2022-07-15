@@ -980,7 +980,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
         </div>
         <?php } ?>
     </div>
-
+</div>
 <!-- Trailer End  -->
 
   <?php if(!empty($video->description) ) { ?>
@@ -1741,8 +1741,8 @@ $(document).ready(function(){
             left: 80%;
             z-index: 2;
             content: '';
-            height: 100px;
-            width: 100px;
+            height: 200px;
+            width: 10%;
             background: url(<?php echo URL::to($logo_url) ; ?>) no-repeat;
             background-size: 100px auto, auto;
             }
