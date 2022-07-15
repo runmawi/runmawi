@@ -24,9 +24,9 @@
                                                         </a>
                     
                                                         <!-- PPV price -->   
-                                                        <div class="corner-text-wrapper">
+                                                      
                                                             @if($ThumbnailSetting->free_or_cost_label == 1) 
-                                                                <div class="corner-text">
+                                                                
                                                                     @if(!empty($artists_videos->ppv_price))
                                                                         <p class="p-tag1">
                                                                             {{  $currency->symbol.' '.$artists_videos->ppv_price }}
@@ -40,9 +40,9 @@
                                                                         {{  "Free" }}
                                                                         </p>
                                                                 @endif
-                                                                </div>
+                                                              
                                                             @endif
-                                                        </div>
+                                                       
                                                     </div>
                     
                                                     <div class="block-description">
