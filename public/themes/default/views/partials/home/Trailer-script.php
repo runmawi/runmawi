@@ -61,4 +61,11 @@
             }
 
     }
+
+    function trailer_slider_season(ele) 
+         {
+            var trailer_url   = $(ele).attr('data-trailer-url');
+                  
+            $('#Trailer-videos').attr('src', trailer_url);
+        }
 </script>
