@@ -532,9 +532,10 @@ if(!empty($request_url)){
               </div>
             </div>
           </div>
-        </div>
+       
         <?php } ?>
-    </div>
+</div>
+</div>
 
 <!-- Trailer End  -->
 
