@@ -3,6 +3,12 @@
     .main-title{
         padding-bottom: 0px!important;
     }
+    #removefollow{
+        color: #ff4444;
+    }
+    #follow{
+         color: #007E33;
+    }
 </style>
 
 <!--<div class="aud" style="background-image:url(<?php echo URL::to('/').'/public/uploads/artists/'.$artist->image;?>)">
@@ -12,10 +18,10 @@
     
     <div class="mt-5 container-fluid">
         <div class="row justify-content-between  align-items-center">
-            <div class="col-md-4">
-                <img src="<?php echo URL::to('/').'/public/uploads/artists/'.$artist->image;?>" alt=""  class="">
+            <div class="col-md-3">
+                <img src="<?php echo URL::to('/').'/public/uploads/artists/'.$artist->image;?>" alt=""  class="w-100">
             </div>
-            <div class=" col-md-8 abu p-0">
+            <div class=" col-md-9 abu p-0">
                 <h2>About</h2>
                 <p><?php echo $artist->description;?></p>
                 <div class=" mt-3 mb-5">
@@ -29,27 +35,35 @@
             <?php if(Auth::User() != null ){ ?>
                 <?php if($artist_following == 0){ ?>
                     <div class="flw" id="followingone" >
-                        <button type="button" id="follow" class="btn btn-outline-secondary">Follow</button>
+                        <i class="fa fa-user-plus" id="follow" aria-hidden="true"></i>
+
+                       
                     </div>
                 <?php } ?>
 
                 <?php if($artist_following > 0){ ?>
                     <div class="flw" id="removefollowingone">
-                        <button type="button" id="removefollow" class="btn btn-outline-Danger">Remove Follow</button>
+                         <i class="fa fa-user-plus" id="removefollow" aria-hidden="true"></i>
+
+                      
                     </div>
                 <?php } ?>
 
                 <div class="flw" id="following" >
-                    <button type="button" id="follow" class="btn btn-outline-secondary">Follow</button>
+                       <i class="fa fa-user-plus" id="follow" aria-hidden="true"></i>
+
                 </div>
 
                 <div class="flw" id="removefollowing" >
-                    <button type="button" id="removefollow" class="btn btn-outline-Danger">Remove Follow</button>
+                   <i class="fa fa-user-plus" id="removefollow" aria-hidden="true"></i>
+
                 </div>
             <?php }else{ ?>
 
                 <div class="flw" id="" >
-                    <button type="button" id="sign_in_follow" class="btn btn-outline-secondary">Follow</button>
+                      <i class="fa fa-user-plus" id="sign_in_follow" aria-hidden="true"></i>
+
+                  
                 </div>
 
             <?php }?>
