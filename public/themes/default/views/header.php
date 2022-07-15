@@ -505,15 +505,18 @@ input:checked + .sliderk:before {
                                  </a>
 
                                  <div class="search-box iq-search-bar d-search">
-                                    <form action="<?php echo URL::to('/').'/searchResult';?>" method="post" class="searchbox">
-                                        <input name="_token" type="hidden" value="<?php echo csrf_token(); ?>">
-                                       <div class="form-group position-relative">
-                                          <input type="text" name="search" class="text search-input font-size-12 searches"
-                                             placeholder="Type here to Search Videos">
-                                          <i class="search-link ri-search-line"></i>
-                                       </div>
+                                    <form action="<?php echo URL::to("/") ."/searchResult"; ?>" method="post" class="searchbox">
+                                        <input name="_token" type="hidden" value="<?php echo csrf_token(); ?>" />
+                                        <div class="form-group position-relative">
+                                            <input type="text" name="search" class="text search-input font-size-12 searches" placeholder="Type here to Search Videos" />
+                                            <i class="search-link ri-search-line"></i>
+
+                                            <?php  include 'public/themes/default/partials/Search_content.php'; ?>
+
+                                        </div>
                                     </form>
                                  </div>
+
                                   <div class="iq-sub-dropdown search_content overflow-auto" id="sidebar-scrollbar" >
                                        <div class="iq-card-body">
                                    <div id="search_list" class="search_list search-toggle device-search" >

@@ -495,16 +495,20 @@ input:checked + .sliderk:before {
                         <div class="navbar-right menu-right">
                            <ul class="d-flex align-items-center list-inline m-0">
                               <li class="nav-item nav-icon">
-                                  <div class="search-box iq-search-bar d-search">
-                                    <form action="<?php echo URL::to('/').'/searchResult';?>" method="post" class="searchbox">
-                                        <input name="_token" type="hidden" value="<?php echo csrf_token(); ?>">
-                                       <div class="form-group position-relative">
-                                          <input type="text" name="search" class="text search-input font-size-12 searches"
-                                             placeholder="Search movies,series">
-                                          <i class="search-link ri-search-line"></i>
-                                       </div>
+
+                              <div class="search-box iq-search-bar d-search">
+                                    <form action="<?php echo URL::to("/") ."/searchResult"; ?>" method="post" class="searchbox">
+                                        <input name="_token" type="hidden" value="<?php echo csrf_token(); ?>" />
+                                        <div class="form-group position-relative">
+                                            <input type="text" name="search" class="text search-input font-size-12 searches" placeholder="Type here to Search Videos" />
+                                            <i class="search-link ri-search-line"></i>
+
+                                            <?php  include 'public/themes/default/partials/Search_content.php'; ?>
+
+                                        </div>
                                     </form>
                                  </div>
+                                 
                                  <a href="<?php echo URL::to('/').'/searchResult';?>" class="search-toggle device-search">
                                      
                                  <i class="ri-search-line"></i>
