@@ -22,8 +22,7 @@
                      
         <div class="d-flex align-items-center">
             <div>
-            <i class="ri-thumb-up-line"></i>
-            <i class="ri-thumb-down-line"></i>
+           
                 <!-- <i  class="fa fa-play-circle-o" aria-hidden="true" style="color:#fff!important;"></i> -->
             </div>
 
