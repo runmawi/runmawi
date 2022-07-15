@@ -583,40 +583,25 @@ if(!empty($request_url)){
                     <ul class="category-page list-inline row p-0 mb-0 m-3">
                        <?php foreach($artists as $key => $artist){  ?>
                        <li class="slide-item col-sm-1 col-md-1 col-xs-12">
-                        <a  href="<?php echo __(URL::to('/') . '/Artist/' . $artist->artist_slug); ?>"  >
+                          <a  href="<?php echo __(URL::to('/') . '/artist/' . $artist->artist_slug); ?>"  >
                              <div class="block-images position-relative">
-                             <!-- block-images -->
+                                   <!-- block-images -->
                                 <div class="img-box">
-                                
                                     <img src="<?= URL::to('/') . '/public/uploads/artists/'.$artist->image ?>" alt="" class="w-100">
-                                 
                                      <div class="p-tag2">
                                            <p class="trending-dec w-100 mb-0 text-white mt-2" ><?php echo $artist->artist_slug ; ?> </p>
                                     </div>
-                              
-                                       
                                  </div>
-                               
                                 <div class="">
-                                 
-                               <a  href="<?php echo __(URL::to('/') . '/Artist/' . $artist->artist_name); ?>"  >
-                 
-               </a>   
-                                
-                                
-
-                                 
+                               <a  href="<?php echo __(URL::to('/') . '/artist/' . $artist->artist_name); ?>"  > </a>   
                                 </div>
                             </div>
-                            
                           </a>
                        </li>
                          <?php } }  ?>
                     </ul>
-                     
                  </div>
           </div>
-       
      
 <!-- logo In player -->
 
