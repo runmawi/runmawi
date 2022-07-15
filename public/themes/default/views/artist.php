@@ -76,201 +76,222 @@
         </div>
     </div>
 
-    <div class="container-fluid mt-3">
-        <h4 class="main-title">Latest Release</h4>
-    </div>
-    <div class="container-fluid mt-2">
-       <div class="favorites-contens">
-                    <ul class="favorites-slider list-inline  row p-0 mb-0">
-<?php foreach ($latest_audios as $key => $latest_audio) { 
-        		?>
-                       <li class="slide-item">
-                            <a href="<?php echo URL::to('/').'/audio/'.$latest_audio[0]['slug'];?>">
-                             <div class="block-images position-relative">
-                             <!-- block-images -->
-                                <div class="img-box">
-                                <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_audio[0]['image'];?>" alt="" class="img-fluid loading w-100">
+                <!-- Latest Videos -->
 
-                                       
-                                 </div>
-                             
+        <?php if(count($latest_audios) > 0) { ?>
 
-                                <div class="block-description">
-                                 
+            <div class="container-fluid mt-3">
+                <h4 class="main-title">Latest Release</h4>
+            </div>
+
+            <div class="container-fluid mt-2">
+                <div class="favorites-contens">
+                        <ul class="favorites-slider list-inline  row p-0 mb-0">
+                            <?php foreach ($latest_audios as $key => $latest_audio) {  ?>
+                        <li class="slide-item">
+                                <a href="<?php echo URL::to('/').'/audio/'.$latest_audio[0]['slug'];?>">
+                                <div class="block-images position-relative">
+                                <!-- block-images -->
+                                    <div class="img-box">
+                                    <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_audio[0]['image'];?>" alt="" class="img-fluid loading w-100">
+
+                                        
+                                    </div>
                                 
-                                  <div class="hover-buttons text-white">
-                                           <a href="<?php echo URL::to('/').'/audio/'.$latest_audio[0]['slug'];?>">
-                                           <h6 class="dc"><?php echo $latest_audio[0]['title'];?></h6>
-                            <p><?php echo $latest_audio[0]['year'];?></p>
-                                        </a>
-                                   <i class="fa fa-eye" aria-hidden="true"></i>
+
+                                    <div class="block-description">
+                                    
+                                    
+                                    <div class="hover-buttons text-white">
+                                            <a href="<?php echo URL::to('/').'/audio/'.$latest_audio[0]['slug'];?>">
+                                            <h6 class="dc"><?php echo $latest_audio[0]['title'];?></h6>
+                                <p><?php echo $latest_audio[0]['year'];?></p>
+                                            </a>
+                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                        </div>
                                     </div>
                                 </div>
-                              </div>
-                          </a>
-                       </li>
-                       <?php } ?>
-                    </ul>
-                 </div>
+                            </a>
+                        </li>
+                        <?php } ?>
+                        </ul>
+                    </div>
+                </div>
+        <?php } ?>
 
+          <!-- Album Videos -->
 
+        <?php if(count($albums) > 0) { ?>
 
+            <div class="container-fluid mt-3">
+                <h4 class="main-title">Album</h4>
+            </div>
 
-    </div>
-    <div class="container-fluid mt-3">
-        <h4 class="main-title">Album</h4>
-    </div>
-    <div class="container-fluid mt-2">
-        <div class="favorites-contens">
-                    <ul class="favorites-slider list-inline  row p-0 mb-0">
-<?php foreach ($albums as $key => $album) { ?>
-                       <li class="slide-item">
-                          <a href="<?php echo URL::to('/').'/album/'.$album->slug;?>">
-                             <div class="block-images position-relative">
-                             <!-- block-images -->
-                                <div class="img-box">
-                                <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/albums/'.$album->album;?>" alt="" class="img-fluid loading w-100">
+            <div class="container-fluid mt-2">
+                <div class="favorites-contens">
+                            <ul class="favorites-slider list-inline  row p-0 mb-0">
+                            <?php foreach ($albums as $key => $album) { ?>
+                            <li class="slide-item">
+                                <a href="<?php echo URL::to('/').'/album/'.$album->slug;?>">
+                                    <div class="block-images position-relative">
+                                    <!-- block-images -->
+                                        <div class="img-box">
+                                        <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/albums/'.$album->album;?>" alt="" class="img-fluid loading w-100">
 
-                                       
-                                 </div>
-                             
+                                            
+                                        </div>
+                                    
 
-                                <div class="block-description">
-                                 
-                                
-                                  <div class="hover-buttons text-white">
-                                          <a href="<?php echo URL::to('/').'/album/'.$album->slug;?>">
-                                            <h6 class=""><?php echo $album->albumname;?></h6>
-                                        </a>
-                                   <i class="fa fa-eye" aria-hidden="true"></i>
+                                        <div class="block-description">
+                                        
+                                        
+                                        <div class="hover-buttons text-white">
+                                                <a href="<?php echo URL::to('/').'/album/'.$album->slug;?>">
+                                                    <h6 class=""><?php echo $album->albumname;?></h6>
+                                                </a>
+                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                              </div>
-                          </a>
-                       </li>
-                       <?php } ?>
-                    </ul>
-                 </div>
-    </div>
+                                </a>
+                            </li>
+                            <?php } ?>
+                            </ul>
+                        </div>
+            </div>
+
+        <?php } ?>
   
-    <div class="container-fluid mt-3">
-        <h4 class="main-title">Audio</h4>
-    </div>
-    <div class="container-fluid mt-2">
-       <div class="favorites-contens">
-                    <ul class="favorites-slider list-inline  row p-0 mb-0">
-<?php  foreach ($artist_audios as $key => $artist_audio) { 
-        		?>
-                       <li class="slide-item">
-                         <a href="<?php echo URL::to('/').'/audio/'.$artist_audio->slug;?>">
-                             <div class="block-images position-relative">
-                             <!-- block-images -->
-                                <div class="img-box">
-                                <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$artist_audio->image;?>" alt="" class="img-fluid loading w-100">
+             <!-- Artist Audios -->
 
-                                       
-                                 </div>
-                             
+        <?php if(count($artist_audios) > 0) { ?>
+            <div class="container-fluid mt-3">
+                <h4 class="main-title">Audio</h4>
+            </div>
 
-                                <div class="block-description">
-                                 
-                                
-                                  <div class="hover-buttons text-white">
-                                          <a href="<?php echo URL::to('/').'/audio/'.$artist_audio->slug;?>">
-                                             <h6 class="dc"><?php echo $artist_audio->title;?></h6>
-                            <p><?php echo $artist_audio->year;?></p>
-                                        </a>
-                                   <i class="fa fa-eye" aria-hidden="true"></i>
+            <div class="container-fluid mt-2">
+                <div class="favorites-contens">
+                            <ul class="favorites-slider list-inline  row p-0 mb-0">
+                                <?php  foreach ($artist_audios as $key => $artist_audio) { ?>
+                            <li class="slide-item">
+                                <a href="<?php echo URL::to('/').'/audio/'.$artist_audio->slug;?>">
+                                    <div class="block-images position-relative">
+                                    <!-- block-images -->
+                                        <div class="img-box">
+                                        <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$artist_audio->image;?>" alt="" class="img-fluid loading w-100">
+
+                                            
+                                        </div>
+                                    
+
+                                        <div class="block-description">
+                                        
+                                        
+                                        <div class="hover-buttons text-white">
+                                                <a href="<?php echo URL::to('/').'/audio/'.$artist_audio->slug;?>">
+                                                    <h6 class="dc"><?php echo $artist_audio->title;?></h6>
+                                    <p><?php echo $artist_audio->year;?></p>
+                                                </a>
+                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                              </div>
-                          </a>
-                       </li>
-                       <?php } ?>
-                    </ul>
-                 </div>
+                                </a>
+                            </li>
+                            <?php } ?>
+                            </ul>
+                </div>
+            </div>
+        <?php } ?>
 
-    </div>
-    <div class="container-fluid mt-3">
-        <h4 class="main-title">Series</h4>
-    </div>
-    <div class="container-fluid mt-2">
-       <div class="favorites-contens">
-                    <ul class="favorites-slider list-inline  row p-0 mb-0">
-                      <?php  foreach ($artist_series as $key => $artist_serie) { 
-        		?>
-                       <li class="slide-item">
-                        <a href="<?php echo URL::to('/').'/play_series/'.$artist_serie->id;?>">
-                             <div class="block-images position-relative">
-                             <!-- block-images -->
-                                <div class="img-box">
-                                <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$artist_serie->image;?>" alt="" class="img-fluid loading w-100">
+            <!-- Artist Series -->
 
-                                       
-                                 </div>
-                             
+        <?php if(count($artist_series) > 0) { ?>
 
-                                <div class="block-description">
-                                 
-                                
-                                  <div class="hover-buttons text-white">
-                                         <a href="<?php echo URL::to('/').'/play_series/'.$artist_serie->id;?>">
-                                              <h6 class=""><?php echo $artist_serie->title;?></h6>
-                            <p><?php echo $artist_serie->year;?></p>
-                                          
-                                        </a>
-                                   <i class="fa fa-eye" aria-hidden="true"></i>
+            <div class="container-fluid mt-3">
+                <h4 class="main-title">Series</h4>
+            </div>
+
+            <div class="container-fluid mt-2">
+            <div class="favorites-contens">
+                            <ul class="favorites-slider list-inline  row p-0 mb-0">
+                            <?php  foreach ($artist_series as $key => $artist_serie) { 
+                        ?>
+                            <li class="slide-item">
+                                <a href="<?php echo URL::to('/').'/play_series/'.$artist_serie->id;?>">
+                                    <div class="block-images position-relative">
+                                    <!-- block-images -->
+                                        <div class="img-box">
+                                        <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$artist_serie->image;?>" alt="" class="img-fluid loading w-100">
+
+                                            
+                                        </div>
+                                    
+
+                                        <div class="block-description">
+                                        
+                                        
+                                        <div class="hover-buttons text-white">
+                                                <a href="<?php echo URL::to('/').'/play_series/'.$artist_serie->id;?>">
+                                                    <h6 class=""><?php echo $artist_serie->title;?></h6>
+                                    <p><?php echo $artist_serie->year;?></p>
+                                                
+                                                </a>
+                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                              </div>
-                          </a>
-                       </li>
-                       <?php } ?>
-                    </ul>
-                 </div>
+                                </a>
+                            </li>
+                            <?php } ?>
+                            </ul>
+                        </div>
+            </div>
+        <?php } ?>
 
+          <!-- Artist videos -->
 
+        <?php if(count($artist_videos) > 0) { ?>
 
+            <div class="container-fluid mt-3">
+                <h4 class="main-title">Videos</h4>
+            </div>
 
-    </div>
-    <div class="container-fluid mt-3">
-        <h4 class="main-title">Videos</h4>
-    </div>
-    <div class="container-fluid mt-2">
-        <div class="favorites-contens">
-                    <ul class="favorites-slider list-inline  row p-0 mb-0">
-                       <?php  foreach ($artist_videos as $key => $artist_video) { 
-                ?>  
-                       <li class="slide-item">
-                         <a href="<?php echo URL::to('/').'/category/videos/'.$artist_video->slug;?>">
-                             <div class="block-images position-relative">
-                             <!-- block-images -->
-                                <div class="img-box">
-                                <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$artist_video->image;?>" alt="" class="img-fluid loading w-100">
+            <div class="container-fluid mt-2">
+                <div class="favorites-contens">
+                            <ul class="favorites-slider list-inline  row p-0 mb-0">
+                            <?php  foreach ($artist_videos as $key => $artist_video) { 
+                        ?>  
+                            <li class="slide-item">
+                                <a href="<?php echo URL::to('/').'/category/videos/'.$artist_video->slug;?>">
+                                    <div class="block-images position-relative">
+                                    <!-- block-images -->
+                                        <div class="img-box">
+                                        <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$artist_video->image;?>" alt="" class="img-fluid loading w-100">
 
-                                       
-                                 </div>
-                             
-
-                                <div class="block-description">
-                                 
-                                
-                                  <div class="hover-buttons text-white">
-                                        <a href="<?php echo URL::to('/').'/category/videos/'.$artist_video->slug;?>">
-                                             <h6 class="dc"><?php echo $artist_video->title;?></h6>
-                                            <p><?php echo $artist_video->year;?></p>
-                                          
-                                        </a>
-                                   <i class="fa fa-eye" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="block-description">
+                                        
+                                        
+                                        <div class="hover-buttons text-white">
+                                                <a href="<?php echo URL::to('/').'/category/videos/'.$artist_video->slug;?>">
+                                                    <h6 class="dc"><?php echo $artist_video->title;?></h6>
+                                                    <p><?php echo $artist_video->year;?></p>
+                                                
+                                                </a>
+                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                              </div>
-                          </a>
-                       </li>
-                       <?php } ?>
-                    </ul>
-                 </div>
-    </div>
+                                </a>
+                            </li>
+                            <?php } ?>
+                            </ul>
+                        </div>
+            </div>
+
+        <?php } ?>
+
 <?php include('footer.blade.php'); ?>
 
 <script>
