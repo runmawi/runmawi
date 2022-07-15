@@ -15,15 +15,14 @@
     @endif
 <div id="content-page" class="content-page">
          <div class="container-fluid">
-	<div class="admin-section-title">
+	<div class="">
           <div class="">
 		<div class="row">
-			<div class="col-md-12" style="margin-left: 45%;">
-				<h4><i class="entypo-archive"></i> CONTACT US </h4>
+			<div class="col-md-12 text-center" >
+				<h4 class="font-weight-bold"><i class="entypo-archive"></i> CONTACT US </h4>
 			</div>
 		</div>
-<div class="clear"></div>
-<div class="row justify-content-center">
+<div class="row justify-content-center mt-4 mb-5">
     <div class="col-xl-8 col-lg-8">
         <div class="login-form">
             <form method="POST" action="{{ URL::to('/contact-us/store/') }}" enctype="multipart/form-data">
@@ -111,7 +110,7 @@
                         <div class="form-group">
                             <label for="name" class="col-form-label text-md-right">{{ __('Attach Screenshot') }}</label>
 
-                            <input type="file" accept="image/*" class="form-control @error('screenshot') is-invalid @enderror" name="screenshot" autofocus>
+                            <input type="file" accept="image/*" class="form-control @error('screenshot') is-invalid @enderror" name="screenshot" autofocus style="line-height: 27px!important;">
 
                         </div>
                     </div>
@@ -128,7 +127,9 @@
         </div>
     </div>
 </div>
-
+        </div>
+             </div>
+    </div>
 @php
     include(public_path('themes/default/views/footer.blade.php'));
 @endphp
