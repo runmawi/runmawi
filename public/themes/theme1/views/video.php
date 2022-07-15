@@ -576,7 +576,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                
                <?php  if($video->trailer_type !=null && $video->trailer_type == "video_mp4" || $video->trailer_type == "mp4_url"  ){ ?>
 
-                   <video  class="videoPlayers" 
+                   <video  class="videoPlayer1" 
                          controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
                          type="video/mp4" src="<?php echo $video->trailer;?>">
                    </video>
@@ -594,14 +594,14 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 
                <?php }elseif($video->trailer_type !=null && $video->trailer_type == "m3u8_url" ){ ?>
 
-                   <video  class="videoPlayers" 
+                   <video  class="videoPlayer1" 
                          controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
                          type="application/x-mpegURL">
                    </video>
 
                <?php }elseif($video->trailer_type !=null && $video->trailer_type == "embed_url" ){ ?>
 
-                       <div class="videoPlayers" id="">
+                       <div class="videoPlayer1" id="">
                          <iframe src="<?php echo $video->trailer ?>"  
                            allow="autoplay"  data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  >
                          </iframe>

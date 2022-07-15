@@ -296,14 +296,50 @@ $settings  = App\Setting::first();?>
 								<input type="checkbox" @if(!empty($series->featured) && $series->featured == 1){{ 'checked="checked"' }}@endif name="featured" value="1" id="featured" />
 							</div>
 							<div class="clear"></div>
+
 							<div class="d-flex align-items-baseline">
 								<label class="p2" for="active" style="float:left; display:block; margin-right:10px;">Is this series Active:</label>
 								<input type="checkbox" @if(!empty($series->active) && $series->active == 1){{ 'checked="checked"' }}@elseif(!isset($series->active)){{ 'checked="checked"' }}@endif name="active" value="1" id="active" />
 							</div>
+
 							<div class="d-flex align-items-baseline">
 								<label class="p2" for="featured" style="float:left; display:block; margin-right:10px;">Enable this series as Slider:</label>
 								<input type="checkbox" @if(!empty($series->banner) && $series->banner == 1){{ 'checked="checked"' }}@elseif(!isset($series->banner)){{ 'checked="checked"' }}@endif name="banner" value="1" id="banner" />
 							</div>
+
+									{{-- Trailer option --}}
+							<div class="d-flex align-items-baseline">
+								<label class="p2" for="active" style="float:left; display:block; margin-right:10px;">Season Trailer:</label>
+								<input type="checkbox" @if(!empty($series->series_trailer) && $series->series_trailer == 1){{ 'checked="checked"' }}@elseif(!isset($series->series_trailer)){{ 'checked="checked"' }}@endif name="series_trailer" value="1" id="series_trailer" />
+							</div>
+
+							@if( $button_text == "Add New Series" )
+
+								<div class="d-flex align-items-baseline season_trailer">
+									<label class="p2" for="active" style="float:left; display:block; margin-right:10px;">Season 1 :</label>
+									<input type="radio" name="season_trailer" value="1" checked> 
+								</div>
+
+							@elseif($button_text == "Update Series" )
+
+							@php
+								$season_id = App\Series::Select('series_seasons.id','series.season_trailer','series.id as series_id')
+											->Join('series_seasons','series_seasons.series_id','=','series.id')
+											->where('series_id',$series->id)
+											->get();
+							@endphp
+
+								<div class="d-flex align-items-baseline season_trailer">
+										@forelse ($season_id as $key => $item)
+											<label class="p2" for="active" style="float:left; display:block; margin-right:10px;">Season {{ $key + 1 }} :</label>
+											<input type="radio" name="season_trailer" value="{{ $item->id }}" @if( $item->id  == $series->season_trailer ) {{ 'checked' }} @endif  > 
+										@empty
+											
+										@endforelse
+								</div>
+							
+							@endif
+
 						</div> 
 					</div>
 				</div>

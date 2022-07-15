@@ -595,8 +595,15 @@ class ThemeAudioController extends Controller{
     
             // $artist_audios = DB::table('audio_artists')->select('audio_id')->where('artist_id',$artist_id)->get()->toArray();
             // $audios[] = Audioartist::where('artist_id',$artist_id)->orderBy('created_at', 'desc')->get();
-            $artist_following = DB::table('artist_favourites')->where('artist_id',$artist_id)->where('user_id',Auth::User()->id)->where('following',1)->count();
-            // dd($artist_following);
+          
+            if(Auth::User() != null ){
+                $artist_following = DB::table('artist_favourites')->where('artist_id',$artist_id)->where('user_id',Auth::User()->id)->where('following',1)->count();
+
+            }else{
+                $artist_following = 0;
+
+            }
+           
             $data = array(
                 'artist' => Artist::where('id',$artist_id)->first(),
                 'latest_audios' => $audios,
