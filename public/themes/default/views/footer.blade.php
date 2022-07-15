@@ -86,14 +86,14 @@
                         
                         <?php  } ?>
 
-                        <?php if($user->package == 'Pro' && empty($session['password_hash']) || empty($session['password_hash']) ){ ?> 
-                          <li><a href="<?php echo URL::to('/cpp/signup') ;?>">Content Partner Portal</a></li>
-                          <li><a href="<?php echo URL::to('/advertiser/register') ;?>">Advertiser Portal</a></li>
-                          <!-- <li><a href="<?php echo URL::to('/channel/register') ;?>">Channel Portal</a></li> -->
+                        <?php if($user->package == 'Business' && !empty($session['password_hash']) || empty($session['password_hash']) ){ ?> 
+                          <!-- <li><a href="<?php //echo URL::to('/cpp/signup') ;?>">Content Partner Portal</a></li>
+                          <li><a href="<?php //echo URL::to('/advertiser/register') ;?>">Advertiser Portal</a></li> -->
+                          <!-- <li><a href="<?php //echo URL::to('/channel/register') ;?>">Channel Portal</a></li> -->
                         <?php }else{ }?>
                      
 
-                     <li><a href="<?php echo URL::to('/contact-us/') ;?>">Contact us</a></li>
+                     <!-- <li><a href="<?php //echo URL::to('/contact-us/') ;?>">Contact us</a></li> -->
                      </ul>
 
 
