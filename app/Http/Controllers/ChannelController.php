@@ -592,7 +592,7 @@ class ChannelController extends Controller
              }else{
               $new_date = null;
              }
-
+            //  dd($recomended);
              $currency = CurrencySetting::first();
                  $data = array(
                       'currency' => $currency,
