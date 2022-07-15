@@ -425,7 +425,9 @@ border-radius: 0px 4px 4px 0px;
                     </div>
                 </div>
                </div> <input type="button" name="next" id="next2" class="next action-button" value="Next" /><input type="button" name="previous" class="previous action-button-previous" value="Previous" />
-               <button type="submit" style = "margin-left: 26%;position: absolute;margin-top: .8%;" class="btn btn-primary" value="{{ $button_text }}">{{ $button_text }}</button>
+               <button type="submit" style = "float: right;
+    margin: 10px 5px 10px 0px;
+    vertical-align: middle;" class="btn btn-primary" value="{{ $button_text }}">{{ $button_text }}</button>
                
                </fieldset>
                <fieldset class="Next3" id="videocategory_data">
