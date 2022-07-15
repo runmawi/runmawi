@@ -574,22 +574,16 @@ if(!empty($request_url)){
 <?php  }?>
 
 
-           <?php if(Auth::guest()){
-$artists = [];
-}else{
-
-}
+           <?php 
  if(count($artists) > 0 ) { ?>
  <h4 >Cast & Crew</h4>
-       
-          
           <div class="row">
                 <div class="favorites-contens">
                     
                     <ul class="category-page list-inline row p-0 mb-0 m-3">
                        <?php foreach($artists as $key => $artist){  ?>
                        <li class="slide-item col-sm-1 col-md-1 col-xs-12">
-                        <a  href="<?php echo __(URL::to('/') . '/Artist/' . $artist->artist_name); ?>"  >
+                        <a  href="<?php echo __(URL::to('/') . '/Artist/' . $artist->artist_slug); ?>"  >
                              <div class="block-images position-relative">
                              <!-- block-images -->
                                 <div class="img-box">
@@ -597,7 +591,7 @@ $artists = [];
                                     <img src="<?= URL::to('/') . '/public/uploads/artists/'.$artist->image ?>" alt="" class="w-100">
                                  
                                      <div class="p-tag2">
-                                           <p class="trending-dec w-100 mb-0 text-white mt-2" ><?php echo $artist->artist_name ; ?> </p>
+                                           <p class="trending-dec w-100 mb-0 text-white mt-2" ><?php echo $artist->artist_slug ; ?> </p>
                                     </div>
                               
                                        

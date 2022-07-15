@@ -454,14 +454,20 @@ class ChannelController extends Controller
            
           if(count($latestviews) <= 15){
            if(!empty($recomendeds)){
-            foreach($recomendeds as $category){
-              if(in_array($category->categories_id, $categoryvideo)){
-               $recomended[] = $category;
+            // foreach($recomendeds as $category){
+              // if(in_array($category->categories_id, $categoryvideo)){
+              //  $recomended[] = $category;
+              $recomended = Video::select('videos.*','video_categories.name as categories_name','categoryvideos.category_id as categories_id')
+              ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
+              ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+              ->where('videos.id','!=',$vid)
+              ->limit(10)->get();
+
               //  $recomended = array_unique($recomended, SORT_REGULAR);
               // $endcardvideo[] = $category;
               // $recomended = array_map("unserialize", array_unique(array_map("serialize", $recomended)));
-              }            
-            }
+              // }            
+            // }
            }else{
              $recomended = [];
             //  $endcardvideo = [];
@@ -586,7 +592,7 @@ class ChannelController extends Controller
              }else{
               $new_date = null;
              }
-
+            //  dd($recomended);
              $currency = CurrencySetting::first();
                  $data = array(
                       'currency' => $currency,
@@ -712,11 +718,123 @@ class ChannelController extends Controller
 
               $categoryVideos = \App\Video::where('id',$vid)->first();
               $category_id = \App\Video::where('id',$vid)->pluck('video_category_id');
-              $recomended = \App\Video::where('video_category_id','=',$category_id)->where('id','!=',$vid)->limit(10)->get();
+              // $recomended = \App\Video::where('video_category_id','=',$category_id)->where('id','!=',$vid)->limit(10)->get();
               $playerui = Playerui::first();
               $subtitle = MoviesSubtitles::where('movie_id','=',$vid)->get();
               $currency = CurrencySetting::first();
-
+              $category_id = CategoryVideo::where('video_id', $vid)->get();
+              $categoryvideo = CategoryVideo::where('video_id', $vid)->pluck('category_id')->toArray();
+              $languages_id = LanguageVideo::where('video_id', $vid)->pluck('language_id')->toArray();
+                   
+                         // Recomendeds And Endcard
+              foreach($category_id as $key => $value){
+             
+               $recomendeds = Video::select('videos.*','video_categories.name as categories_name','categoryvideos.category_id as categories_id')
+                       ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
+                       ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+                       ->where('videos.id','!=',$vid)
+                       ->limit(10)->get();
+   
+                       $endcardvideo = Video::select('videos.*','video_categories.name as categories_name','categoryvideos.category_id as categories_id')
+                       ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
+                       ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+                       ->where('videos.id','!=',$vid)
+                       ->limit(5)->get();
+              }
+   
+              if(!Auth::guest()){
+                 $latestRecentView = RecentView::where('user_id','!=',Auth::user()->id)->distinct()->limit(30)->pluck('video_id');
+                 if(count($latestRecentView) > 10){
+                   $latestviews = [];
+              }
+              else{
+   
+                 $latestviews = Video::select('videos.*','video_categories.name as categories_name','categoryvideos.category_id as categories_id')
+                             ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
+                             ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+                             ->whereIn('videos.id', $latestRecentView)
+                             ->groupBy('videos.id')
+                             ->get();
+               }
+   
+              }
+              else{
+                     $latestRecentView = [];
+                     $latestviews = [];
+                     $recomendeds = $recomendeds;
+              }
+             
+             $related_videos = Video::select('videos.*','related_videos.id as related_videos_id','related_videos.related_videos_title as related_videos_title')
+                                   ->Join('related_videos', 'videos.id', '=', 'related_videos.related_videos_id')
+                                   ->where('related_videos.video_id','=',$vid)
+                                   ->limit(5)->get();
+             
+             
+              if(count($related_videos) > 0 ){
+                $endcardvideo = $related_videos;
+              }
+              elseif(!empty($endcardvideo)){
+                 $endcardvideo = $endcardvideo;
+              }
+              else{
+                 $endcardvideo = [];
+              }
+   
+              if($get_video_id->type == "mp4_url"){
+               // $ffprobe = FFProbe::create();
+               // $endtimevideos = $ffprobe->format($get_video_id->mp4_url) // extracts file informations
+               //    ->get('duration');
+               //    $endtimevideo = $endtimevideos - 5;
+               $endtimevideo = '';
+   
+              }elseif($get_video_id->type == "m3u8_url"){
+               // $ffprobe = FFProbe::create();
+               // $endtimevideos = $ffprobe->format($get_video_id->m3u8_url) // extracts file informations
+               //    ->get('duration');
+               //    $endtimevideo = $endtimevideos - 5;
+               $endtimevideo = '';
+   
+              }elseif($get_video_id->type == ""){
+               // $ffprobe = FFProbe::create();
+               // $endtimevideos = $ffprobe->format($get_video_id->mp4_url) // extracts file informations
+               //    ->get('duration');
+               //    $endtimevideo = $endtimevideos - 5;
+               $endtimevideo = '';
+   
+              }else{
+               $endtimevideo = '';
+              }
+              
+             if(count($latestviews) <= 15){
+              if(!empty($recomendeds)){
+               // foreach($recomendeds as $category){
+                 // if(in_array($category->categories_id, $categoryvideo)){
+                 //  $recomended[] = $category;
+                 $recomended = Video::select('videos.*','video_categories.name as categories_name','categoryvideos.category_id as categories_id')
+                 ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
+                 ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+                 ->where('videos.id','!=',$vid)
+                 ->limit(10)->get();
+   
+                 //  $recomended = array_unique($recomended, SORT_REGULAR);
+                 // $endcardvideo[] = $category;
+                 // $recomended = array_map("unserialize", array_unique(array_map("serialize", $recomended)));
+                 // }            
+               // }
+              }else{
+                $recomended = [];
+               //  $endcardvideo = [];
+              }
+             }else{
+               $recomended = $latestviews;
+             }
+   
+              if(!empty($recomended)){
+                 $recomended = $recomended;
+              }
+              else{
+                  $recomended =[] ;
+              }
               $category_name = CategoryVideo::select('video_categories.name as categories_name')
                             ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
                             ->where('categoryvideos.video_id',$vid)
@@ -982,6 +1100,22 @@ class ChannelController extends Controller
           $subtitles = "No Subtitles Added";
           }
 
+          $artistscount = Videoartist::join("artists","video_artists.artist_id", "=", "artists.id")
+          ->select("artists.*")
+          ->where("video_artists.video_id", "=", $vid)
+          ->count();
+          
+          if($artistscount > 0){
+              $artists = Videoartist::join("artists","video_artists.artist_id", "=", "artists.id")
+                    ->select("artists.*")
+                    ->where("video_artists.video_id", "=", $vid)
+                    ->get();
+          }
+          else{
+              $artists = [];
+          }
+
+
             $data = array(
                  'currency' => $currency,
                  'video' => $categoryVideos,
@@ -999,6 +1133,7 @@ class ChannelController extends Controller
                  'artistsname'  => $artistsname,
                  'lang_name'  => $lang_name,
                  'subtitles_name'  => $subtitles,
+                 'artists' => $artists,
             );
 
         } 
