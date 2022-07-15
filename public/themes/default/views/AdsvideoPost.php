@@ -82,6 +82,7 @@ var ads_end_tym_Post     =  <?php  echo json_encode($Ads_duration_Sec_Post)  ;?>
 var Ads_count_Post       = <?php echo count($AdsVideosPost); ?> ;
 var Ads_type_Post        = <?php echo json_encode($ads_type_Post); ?> ;
 var post_tym             = <?php echo json_encode($post_tym); ?> ;
+var ads_post_videoplayer_id  = <?php echo json_encode($video_type_id); ?> ;
 
 
 if( Ads_count_Post >= 1 &&  Ads_type_Post != null ){
@@ -97,7 +98,7 @@ this.videoads_tym_Post.addEventListener('timeupdate', (e) => {
           
               $('.adstime_url').attr('src', Ads_videos_Post);
 
-                document.getElementById('videoPlayer').addEventListener('loadedmetadata', function() {
+                document.getElementById(ads_post_videoplayer_id).addEventListener('loadedmetadata', function() {
                     this.currentTime = 0;
                 }, true);
 
@@ -116,7 +117,7 @@ this.videoads_tym_Post.addEventListener('timeupdate', (e) => {
                 $(".plyr__controls__item").css("display", "block");
                 $(".plyr__volume").removeAttr("style");
 
-                document.getElementById('videoPlayer').addEventListener('loadedmetadata', function() {
+                document.getElementById(ads_post_videoplayer_id).addEventListener('loadedmetadata', function() {
                     this.currentTime = post_tym;
                   }, true);
 

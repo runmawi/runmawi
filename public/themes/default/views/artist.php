@@ -23,22 +23,35 @@
             <div>
                 <!-- <i  class="fa fa-play-circle-o" aria-hidden="true" style="color:#fff!important;"></i> -->
             </div>
-            <?php if($artist_following == 0){ ?>
-            <div class="flw" id="followingone" >
-                <button type="button" id="follow" class="btn btn-outline-secondary">Follow</button>
-            </div>
-            <?php } ?>
-            <?php if($artist_following > 0){ ?>
-            <div class="flw" id="removefollowingone">
-                <button type="button" id="removefollow" class="btn btn-outline-Danger">Remove Follow</button>
-            </div>
-            <?php } ?>
-            <div class="flw" id="following" >
-                <button type="button" id="follow" class="btn btn-outline-secondary">Follow</button>
-            </div>
-            <div class="flw" id="removefollowing" >
-                <button type="button" id="removefollow" class="btn btn-outline-Danger">Remove Follow</button>
-            </div>
+
+            <?php if(Auth::User() != null ){ ?>
+                <?php if($artist_following == 0){ ?>
+                    <div class="flw" id="followingone" >
+                        <button type="button" id="follow" class="btn btn-outline-secondary">Follow</button>
+                    </div>
+                <?php } ?>
+
+                <?php if($artist_following > 0){ ?>
+                    <div class="flw" id="removefollowingone">
+                        <button type="button" id="removefollow" class="btn btn-outline-Danger">Remove Follow</button>
+                    </div>
+                <?php } ?>
+
+                <div class="flw" id="following" >
+                    <button type="button" id="follow" class="btn btn-outline-secondary">Follow</button>
+                </div>
+
+                <div class="flw" id="removefollowing" >
+                    <button type="button" id="removefollow" class="btn btn-outline-Danger">Remove Follow</button>
+                </div>
+            <?php }else{ ?>
+
+                <div class="flw" id="" >
+                    <button type="button" id="sign_in_follow" class="btn btn-outline-secondary">Follow</button>
+                </div>
+
+            <?php }?>
+
             <div class="flw">
                 <!-- <i class="fa fa-share-square-o" aria-hidden="true" style="color:#fff!important;"></i> -->
                 <?php $media_url = URL::to('/').'/artist/'.$artist->artist_name; ?>
@@ -310,5 +323,11 @@ function Copy() {
                }, 3000);
               //  alert();             
      });
+
+     $("#sign_in_follow").click(function(){
+        
+        window.location.href = "<?php echo URL::to('/login') ; ?>";
+
+    });
 
 </script>

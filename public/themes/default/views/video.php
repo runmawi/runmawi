@@ -260,7 +260,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
          <?php  elseif($video->type == ''): ?>
           <div id="video_container" class="fitvid" atyle="z-index: 9999;">
 
-          <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+          <video id="video" class="adstime_url" controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
       <source 
         type="application/x-mpegURL" 
         src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>"
@@ -401,7 +401,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
     ?>
           <div id="video_container" class="fitvid" atyle="z-index: 9999;">
                <!-- Current time: <div id="current_time"></div> -->
-               <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+               <video id="video"  class="adstime_url" controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
       <source 
         type="application/x-mpegURL" 
         src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>"
@@ -425,7 +425,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 /* For Registered User */       
    else {  
     ?>      
-       <div id="video" class="fitvid" style="margin: 0 auto;">
+       <div id="video" class="adstime_url" class="fitvid" style="margin: 0 auto;">
        
        <!-- <video id="videoPlayer" class="video-js vjs-default-skin vjs-big-play-centered" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $video->trailer; ?>"  type="video/mp4" > -->
        <video   id="videoPlayer" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $video->trailer; ?>"  type="video/mp4" >
@@ -488,7 +488,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
      <?php } ?>
 <!-- For Guest users -->      
  <?php if(Auth::guest()) {  ?>
-   <div id="video" class="fitvid" style="margin: 0 auto;">
+   <div id="video" class="adstime_url" class="fitvid" style="margin: 0 auto;">
        
        <video id="videoPlayer" class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $video->trailer; ?>"  type="video/mp4" >
            <source src="<?= $video->trailer; ?>" type='video/mp4' label='Auto' res='auto' />
