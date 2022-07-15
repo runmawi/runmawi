@@ -457,7 +457,7 @@ class ChannelController extends Controller
             // foreach($recomendeds as $category){
               // if(in_array($category->categories_id, $categoryvideo)){
               //  $recomended[] = $category;
-              $recomendeds = Video::select('videos.*','video_categories.name as categories_name','categoryvideos.category_id as categories_id')
+              $recomended = Video::select('videos.*','video_categories.name as categories_name','categoryvideos.category_id as categories_id')
               ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
               ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
               ->where('videos.id','!=',$vid)
@@ -810,7 +810,7 @@ class ChannelController extends Controller
                // foreach($recomendeds as $category){
                  // if(in_array($category->categories_id, $categoryvideo)){
                  //  $recomended[] = $category;
-                 $recomendeds = Video::select('videos.*','video_categories.name as categories_name','categoryvideos.category_id as categories_id')
+                 $recomended = Video::select('videos.*','video_categories.name as categories_name','categoryvideos.category_id as categories_id')
                  ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
                  ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
                  ->where('videos.id','!=',$vid)
