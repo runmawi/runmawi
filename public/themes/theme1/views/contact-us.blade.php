@@ -1,5 +1,5 @@
 @php
-    include(public_path('themes/default/views/header.php'));
+    include(public_path('themes/theme1/views/header.php'));
 @endphp
     
     @if (Session::has('message'))
@@ -130,7 +130,7 @@
 </div>
 
 @php
-    include(public_path('themes/default/views/footer.blade.php'));
+    include(public_path('themes/theme1/views/footer.blade.php'));
 @endphp
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="jquery-3.5.1.min.js"></script>
