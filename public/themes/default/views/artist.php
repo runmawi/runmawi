@@ -13,14 +13,16 @@
     <div class="mt-5 container-fluid">
         <div class="row justify-content-between  align-items-center">
             <div class="col-md-4">
-                <img src="<?php echo URL::to('/').'/public/uploads/artists/'.$artist->image;?>" alt="" height="300" class="w-100">
+                <img src="<?php echo URL::to('/').'/public/uploads/artists/'.$artist->image;?>" alt=""  class="">
             </div>
             <div class=" col-md-8 abu p-0">
                 <h2>About</h2>
                 <p><?php echo $artist->description;?></p>
                 <div class=" mt-3 mb-5">
+                     
         <div class="d-flex align-items-center">
             <div>
+           
                 <!-- <i  class="fa fa-play-circle-o" aria-hidden="true" style="color:#fff!important;"></i> -->
             </div>
 

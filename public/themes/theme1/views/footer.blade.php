@@ -301,12 +301,12 @@ function about(evt , id) {
 //document.getElementById("defaultOpen").click();
 </script>
 
+
 <script type="text/javascript">
   $(document).ready(function () {
     $('.searches').on('keyup',function() {
       var query = $(this).val();
-      //alert(query);
-      // alert(query);
+      
        if (query !=''){
       $.ajax({
         url:"<?php echo URL::to('/search');?>",
@@ -315,6 +315,7 @@ function about(evt , id) {
           'country':query}
         ,
         success:function (data) {
+          $(".home-search").hide();
           $('.search_list').html(data);
         }
       }
@@ -328,6 +329,8 @@ function about(evt , id) {
       var value = $(this).text();
       $('.search').val(value);
       $('.search_list').html("");
+      $(".home-search").show();
+
     }
                   );
   }

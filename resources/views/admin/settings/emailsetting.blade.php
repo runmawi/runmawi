@@ -157,7 +157,7 @@ border-radius: 0px 4px 4px 0px;
                               </div>
                            </div>
                            <div class="panel-body" style="display: block;">
-                              <input type="password" class="form-control" name="password" id="password" value="" value="@if(!empty($email_settings->email_password)){{ $email_settings->email_password }}@endif" />
+                              <input type="password" class="form-control" name="password" id="password" value="@if(!empty($email_settings->email_password)){{ $email_settings->email_password }}@endif" />
                            </div>
                      </div>
                   </div>
