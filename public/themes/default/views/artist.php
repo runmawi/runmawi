@@ -12,10 +12,10 @@
     
     <div class="mt-5 container-fluid">
         <div class="row justify-content-between  align-items-center">
-            <div class="col-md-4">
-                <img src="<?php echo URL::to('/').'/public/uploads/artists/'.$artist->image;?>" alt=""  class="">
+            <div class="col-md-3">
+                <img src="<?php echo URL::to('/').'/public/uploads/artists/'.$artist->image;?>" alt=""  class="w-100">
             </div>
-            <div class=" col-md-8 abu p-0">
+            <div class=" col-md-9 abu p-0">
                 <h2>About</h2>
                 <p><?php echo $artist->description;?></p>
                 <div class=" mt-3 mb-5">
