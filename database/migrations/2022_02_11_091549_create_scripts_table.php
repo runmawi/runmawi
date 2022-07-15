@@ -15,8 +15,8 @@ class CreateScriptsTable extends Migration
     {
         Schema::create('scripts', function (Blueprint $table) {
             $table->id();
-            $table->string('header_script')->nullable();
-            $table->string('footer_script')->nullable();
+            $table->longText('header_script')->nullable();
+            $table->longText('footer_script')->nullable();
             $table->integer('user_id')->nullable();
             $table->timestamps();
         });

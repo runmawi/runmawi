@@ -595,7 +595,8 @@ class ThemeAudioController extends Controller{
     
             // $artist_audios = DB::table('audio_artists')->select('audio_id')->where('artist_id',$artist_id)->get()->toArray();
             // $audios[] = Audioartist::where('artist_id',$artist_id)->orderBy('created_at', 'desc')->get();
-            
+            $artist_following = DB::table('artist_favourites')->where('artist_id',$artist_id)->where('user_id',Auth::User()->id)->where('following',1)->count();
+            // dd($artist_following);
             $data = array(
                 'artist' => Artist::where('id',$artist_id)->first(),
                 'latest_audios' => $audios,
@@ -603,6 +604,7 @@ class ThemeAudioController extends Controller{
                 'artist_series' => $artist_series,
                 'artist_videos' => $artist_videos,
                 'albums' => $albums,
+                'artist_following' => $artist_following,
             );
             return Theme::view('artist', $data);
 
@@ -613,4 +615,50 @@ class ThemeAudioController extends Controller{
       
     }
 
+    public function ArtistFollow(Request $request) {
+       
+        try {
+            $data = $request->all();
+            $artist_id = $data['artist_id'];
+            $user_id = Auth::user()->id;
+            $following = $data['following'];
+            $count = DB::table('artist_favourites')->where('user_id', '=',
+            $user_id)->where('artist_id', '=', $artist_id)->count();
+            
+            if ( $count > 0 ) {
+                if($following == 1){
+                    DB::table('artist_favourites')->where('user_id', '=',
+                    $user_id)->where('artist_id', '=', $artist_id)->update(['following'=>$following]);
+
+                    $response = array(
+                        'status'=>'false',
+                        'message'=>'Artist Added From Your Favorite List'
+                    );
+                }else{
+                    DB::table('artist_favourites')->where('user_id', '=',
+                    $user_id)->where('artist_id', '=', $artist_id)->delete();
+                    $response = array(
+                        'status'=>'false',
+                        'message'=>'Artist Removed From Your Favorite List'
+                    );
+                }
+    
+            } else {
+                    if($following == 1){
+                        $data = array('user_id' => $user_id,'following' => $following, 'artist_id' => $artist_id );
+                        DB::table('artist_favourites')->insert($data);
+                        $response = array(
+                            'status'=>'false',
+                            'message'=>'Artist Added From Your Favorite List'
+                        );
+                    }
+                }
+        return response()->json($response, 200);
+
+        } catch (\Throwable $th) {
+           
+            return abort(404);
+        }
+      
+    }
 }

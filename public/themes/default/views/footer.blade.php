@@ -89,10 +89,14 @@
                         <?php if($user->package == 'Pro' && empty($session['password_hash']) || empty($session['password_hash']) ){ ?> 
                           <li><a href="<?php echo URL::to('/cpp/signup') ;?>">Content Partner Portal</a></li>
                           <li><a href="<?php echo URL::to('/advertiser/register') ;?>">Advertiser Portal</a></li>
-                          <li><a href="<?php echo URL::to('/channel/register') ;?>">Channel Portal</a></li>
-
+                          <!-- <li><a href="<?php echo URL::to('/channel/register') ;?>">Channel Portal</a></li> -->
                         <?php }else{ }?>
+                     
+
+                     <li><a href="<?php echo URL::to('/contact-us/') ;?>">Contact us</a></li>
                      </ul>
+
+
                   </div>                  
                  
                       
@@ -238,6 +242,16 @@ function myFunction() {
   }
 }
 </script>-->
+<?php 
+      $footer_script = App\Script::pluck('footer_script')->toArray();
+      if(count($footer_script) > 0){
+        foreach($footer_script as $Scriptfooter){ ?>
+        <!-- // echo $Scriptfooter; -->
+        <?= $Scriptfooter ?>
+
+      <?php } 
+    }
+     ?>
 
 <script src="https://afarkas.github.io/lazysizes/plugins/bgset/ls.bgset.min.js"></script>
 <script src="https://afarkas.github.io/lazysizes/lazysizes.min.js"></script>
@@ -248,6 +262,8 @@ function myFunction() {
  <script src="plyr-plugin-capture.js"></script>
  <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/plyr-plugin-capture.js';?>"></script>
  <script src="https://cdn.plyr.io/3.5.10/plyr.js"></script>
+<!--<script src="https://cdn.plyr.io/3.7.2/plyr.js"></script>-->
+
       <script src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
 <script>
     function loadJS(u) {
@@ -269,7 +285,7 @@ function myFunction() {
     var request_url = $('#request_url').val();
     var live = $('live').val();
     // var live = $('live').val();
-    var video_video = $('video_video').val();
+    var video_video = $('#video_video').val();
     var user_logged_out =  $('#user_logged_out').val();
     var hls =  $('#hls').val();
     var ads_path_tag =  $('#ads_path_tag').val();

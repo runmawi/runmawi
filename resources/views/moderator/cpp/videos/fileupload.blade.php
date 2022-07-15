@@ -518,8 +518,16 @@ data: {
                                 <div class="col-sm-6 form-group mt-3">
                                     <label class=""><h4>Publish Type</h4></label>
                                     
-                                    <input type="radio" id="publish_now" name="publish_type" value = "publish_now" checked="checked" >Publish Now&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
-                                    <input type="radio" id="publish_later" name="publish_type" value = "publish_later" >Publish Later
+                                    <div class="d-flex align-items-baseline">
+                                         <div> <input type="radio" id="publish_now" name="publish_type" value = "publish_now" checked="checked" ></div>
+                                 
+                                        <div><label class="ml-2">Publish Now</label></div> 
+                                   </div>
+                                    <div class="d-flex align-items-baseline"><div> <input type="radio" id="publish_later" name="publish_type" value = "publish_later" ></div> 
+                                   <div><label class="ml-2">Publish Later</label></div> 
+                                   </div>
+                                   
+                                    
                                 </div>
 
                                 <div class="col-sm-6 form-group mt-3" id="publishlater">

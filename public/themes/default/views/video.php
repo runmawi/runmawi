@@ -44,7 +44,7 @@ if(!empty($request_url)){
   <input type="hidden" id="videoslug" value="<?php if(isset($video->slug)) { echo $video->slug; } else{ echo "0";}?>">
   <input type="hidden" id="base_url" value="<?php echo URL::to('/');?>">
   <input type="hidden" id="video_type" value="<?php echo $video->type;?>">
-  <input type="hidden" id="video_video" value="video">
+  <input type="hidden" id="video_video" class="video_video" value="video">
   <input type="hidden" id="adsurl" value="<?php if(isset($ads->ads_id)){echo get_adurl($ads->ads_id);}?>">
   <style>
     .vjs-error .vjs-error-display .vjs-modal-dialog-content {
@@ -716,7 +716,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 
 
  <input type="hidden" class="videocategoryid" data-videocategoryid="<?= $video->video_category_id ?>" value="<?= $video->video_category_id ?>">
-   <div class="container-fluid video-details" style="width:90%!important;">
+   <div class="container-fluid video-details" >
        <div class="trending-info g-border p-0">
            <div class="row align-items-center">
                <div class="col-sm-8 col-md-8 col-xs-12">
@@ -933,7 +933,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                   </a>
               </div>
             </div>
-
+<?php //dd($video->trailer_type); ?>
           <div class="modal fade modal-xl" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
@@ -987,7 +987,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
     <div class="col-md-7 p-0" style="margin-top: 2%;">
       <h4>Description</h4>
       <div class="text-white">
-          <p class="trending-dec w-100 mb-0 text-white mt-2"><?php echo __($video->description); ?></p>
+          <p class="trending-dec w-100 mb-0 text-white mt-2 text-justify"><?php echo __($video->description); ?></p>
           <p class="trending-dec w-100 mb-0 text-white mt-2">Starring : <span class="sta"><?php echo $artistsname; ?></span></p>
           <p class="trending-dec w-100 mb-0 text-white mt-2">Genres : <span class="sta"><?php echo $genres_name; ?></span></p>
           <p class="trending-dec w-100 mb-0 text-white mt-2">This Movie is :</p>
@@ -1024,21 +1024,51 @@ $artists = [];
 
 }
  if(count($artists) > 0 ) { ?>
- <h4 style="margin-left: -15px;">Cast & crew</h4>
+ <h4 >Cast & crew</h4>
        
           
           <div class="row">
-                <?php foreach($artists as $key => $artist){  ?>
-            <div class="mt-6 ml-3 d-flex">
-              <a  href="<?php echo __(URL::to('/') . '/Artist/' . $artist->artist_name); ?>"  >
-                <img src="<?= URL::to('/') . '/public/uploads/artists/'.$artist->image ?>" alt=""width="60" height="70">
-                <p class="trending-dec w-100 mb-0 text-white mt-2" ><?php echo $artist->artist_name ; ?> </p>
-              </a>
-            </div>
-                 <?php } }  ?>
+                <div class="favorites-contens">
+                    
+                    <ul class="category-page list-inline row p-0 mb-0 m-3">
+                       <?php foreach($artists as $key => $artist){  ?>
+                       <li class="slide-item col-sm-1 col-md-1 col-xs-12">
+                        <a  href="<?php echo __(URL::to('/') . '/Artist/' . $artist->artist_name); ?>"  >
+                             <div class="block-images position-relative">
+                             <!-- block-images -->
+                                <div class="img-box">
+                                
+                                    <img src="<?= URL::to('/') . '/public/uploads/artists/'.$artist->image ?>" alt="" class="w-100">
+                                 
+                                     <div class="p-tag2">
+                                           <p class="trending-dec w-100 mb-0 text-white mt-2" ><?php echo $artist->artist_name ; ?> </p>
+                                    </div>
+                              
+                                       
+                                 </div>
+                               
+                                <div class="">
+                                 
+                               <a  href="<?php echo __(URL::to('/') . '/Artist/' . $artist->artist_name); ?>"  >
+                 
+               </a>   
+                                
+                                
+
+                                 
+                                </div>
+                            </div>
+                            
+                          </a>
+                       </li>
+                         <?php } }  ?>
+                    </ul>
+                     
+                 </div>
           </div>
        
      
+
            
        <!-- <div class="text-white">
            <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->description); ?></p>
@@ -1166,9 +1196,9 @@ $artists = [];
            </div>
    </div>
 <?php } ?>
+</div>
 
-
-   <div class=" container video-list you-may-like">
+   <div class=" container-fluid video-list you-may-like">
        <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Recomended Videos');?></h4>
            <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>   
                <?php include('partials/video-loop.php');?>
@@ -1825,27 +1855,18 @@ location.reload();
   }else if(trailer_video_type == "m3u8"){
   // alert(trailer_video_type);
   document.addEventListener("DOMContentLoaded", () => {
-  const video = document.querySelector('#videos');
+  const videos = document.querySelector('#videos');
   // alert(video);
-  const source = video.getElementsByTagName("source")[0].src;
-  // alert(source);
-  
-  // For more options see: https://github.com/sampotts/plyr/#options
-  // captions.update is required for captions to work with hls.js
+  const sources = videos.getElementsByTagName("source")[0].src;
+  // alert(sources);
   const defaultOptions = {};
 
   if (Hls.isSupported()) {
-    // For more Hls.js options, see https://github.com/dailymotion/hls.js
-    const hls = new Hls();
-    hls.loadSource(source);
+    const hlstwo = new Hls();
+    hlstwo.loadSource(sources);
+    hlstwo.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
 
-    // From the m3u8 playlist, hls parses the manifest and returns
-    // all available video qualities. This is important, in this approach,
-    // we will have one source on the Plyr player.
-    hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
-
-      // Transform available levels into an array of integers (height values).
-      const availableQualities = hls.levels.map((l) => l.height)
+      const availableQualities = hlstwo.levels.map((l) => l.height)
 
       // Add new qualities to option
       defaultOptions.quality = {
@@ -1857,17 +1878,17 @@ location.reload();
       }
 
       // Initialize here
-      const player = new Plyr(video, defaultOptions);
+      const player = new Plyr(videos, defaultOptions);
     });
-    hls.attachMedia(video);
-    window.hls = hls;
+    hlstwo.attachMedia(videos);
+    window.hlstwo = hlstwo;
   }
 
   function updateQuality(newQuality) {
-    window.hls.levels.forEach((level, levelIndex) => {
+    window.hlstwo.levels.forEach((level, levelIndex) => {
       if (level.height === newQuality) {
         console.log("Found quality match with " + newQuality);
-        window.hls.currentLevel = levelIndex;
+        window.hlstwo.currentLevel = levelIndex;
       }
     });
   }

@@ -14,6 +14,9 @@
     font-weight: 400;
     margin: 4px;
 }
+    label{
+        font-size: 14px!important;
+    }
 </style>
 @section('css')
 	<link rel="stylesheet" href="{{ URL::to('/assets/admin/css/sweetalert.css') }}">
@@ -101,11 +104,10 @@
 	
 							</td>
 
-						<td class="d-flex align-items-center list-user-action">
+						<td class="d-flex align-items-center list-user-action mt-4">
                             <!-- <a href="{{ URL::to('live/play/') . '/' . $video->id }}" target="_blank" class="iq-bg-warning"><i class="lar la-eye"></i></a> -->
-							<a href="{{ URL::to('cpp/livestream/edit') . '/' . $video->id }}" class="iq-bg-success"><i class="ri-pencil-line"></i></a>
-							<a href="{{ URL::to('cpp/livestream/delete') . '/' . $video->id }}" onclick="return confirm('Are you sure?')" class="iq-bg-danger"><i
-                                                class="ri-delete-bin-line"></i></a>
+							<a href="{{ URL::to('cpp/livestream/edit') . '/' . $video->id }}" class="iq-bg-success"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
+							<a href="{{ URL::to('cpp/livestream/delete') . '/' . $video->id }}" onclick="return confirm('Are you sure?')" class="iq-bg-danger"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
 						</td>
 					</tr>
 					@endforeach

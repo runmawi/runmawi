@@ -502,6 +502,7 @@ class AdminSeriesController extends Controller
                } else {
                 $player_image = $series->player_image;
                }
+            //    dd($player_image);
         if(empty($data['active'])){
             $data['active'] = 0;
         }
@@ -540,6 +541,7 @@ class AdminSeriesController extends Controller
         }else{
             $ppv_status = 1;
         }
+        $series->player_image = $player_image;
         $series->slug = $data['slug'];
         $series->ppv_status = $ppv_status;
         $series->details =strip_tags($data['details']);

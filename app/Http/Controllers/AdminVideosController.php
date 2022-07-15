@@ -1071,7 +1071,7 @@ if(!empty($artistsdata)){
                 
                 $data['trailer'] = $M3u8_save_path;
                 $video->trailer_type  = 'm3u8';
-                // dd($convertresolution);
+                // dd($data['trailer']);
             }
             else{
                 
@@ -1102,18 +1102,26 @@ if(!empty($artistsdata)){
             }elseif($data['trailer_type'] == 'm3u8_url'){
 
                 $video->trailer = $data['m3u8_trailer'];
+                $data['trailer'] = $data['m3u8_trailer'];
+                // http://localhost/flicknexs/storage/app/public/4XGJiKONAQfCe4eV.mp4
             }
             elseif($data['trailer_type'] == 'mp4_url'){
 
                 $video->trailer = $data['mp4_trailer'];
+                $data['trailer'] = $data['mp4_trailer'];
             }
             elseif($data['trailer_type'] == 'embed_url'){
 
                 $video->trailer = $data['embed_trailer'];
+                $data['trailer'] = $data['embed_trailer'];
+            }else{
+                $data['trailer'] = $video->trailer;
             }
+            // $data['trailer'] = "";
         }
 
-
+        // dd($video->trailer);
+                
            
            $update_mp4 = $request->get('video');
 
@@ -1451,11 +1459,13 @@ if(!empty($artistsdata)){
         }else{
             $searchtags = $video->searchtags;
         }
+        // dd($data['trailer']);
 
         $video->ads_category =  $data['ads_category'];   
         $shortcodes = $request['short_code'];        
         $languages=$request['sub_language'];
         $video->mp4_url =  $data['mp4_url'];
+        $video->trailer =  $data['trailer'];
         $video->duration = $data['duration'];
         $video->language=$request['language'];
         $video->skip_recap =  $request['skip_recap'];

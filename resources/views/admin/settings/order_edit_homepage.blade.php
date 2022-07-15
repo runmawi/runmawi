@@ -13,8 +13,8 @@
 	<form id="update-menu-form" accept-charset="UTF-8" action="{{ URL::to('admin/order_homepage/update_setting') }}" method="post">
         <label for="name">Home Page Header </label>
         <input name="header_name" id="header_name" placeholder="Header Name" class="form-control" value="{{ $order_settings->header_name }}" /><br />
-         <!-- <label for="slug">URL (ex. /site/url)</label> -->
-         <!-- <input name="url" id="url" placeholder="URL Slug" class="form-control" value="{{ $order_settings->video_name }}" />  -->
+         <label for="slug">URL (ex. /site/url)</label>
+         <input name="url" id="url" placeholder="URL" class="form-control" value="{{ $order_settings->url }}" /> 
             
         <input type="hidden" name="id" id="id" value="{{ $order_settings->id }}" />
         <input type="hidden" name="_token" value="<?= csrf_token() ?>" />

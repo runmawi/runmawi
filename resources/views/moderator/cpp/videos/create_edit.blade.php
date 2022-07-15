@@ -538,7 +538,7 @@
                                         <!-- <input type="text" class="form-control" id="#inputTag" name="searchtags" value="" data-role="tagsinput"> -->
                                     </div>
                                 </div>
-                                <div class="col-sm-6 form-group" >
+                                <div class="col-sm-6 form-group p-0" >
                                     <label class="m-0">Related Videos :</label>
                                     <select  name="related_videos[]" class="form-control js-example-basic-multiple" style="width: 100%;" multiple="multiple">
                                     @foreach($related_videos as $video)
@@ -550,8 +550,8 @@
                                     @endforeach
                                     </select>
                                   </div>
-                            </div>
-                            <div class="row">
+                           
+                            <div class="row align-items-center">
                                 <div class="col-sm-6 form-group mt-3" id="ppv_price">
                                     <label class="">PPV Price:</label>
                                     <input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($video->ppv_price)){{ $video->ppv_price }}@endif">
@@ -579,15 +579,16 @@
                                 <div><label class="ml-1">Disable</label></div>
                                 </div>
                                 </div>
-                         
-                        <div>
-                            <h5>Publish Type</h5>
+                            </div>
+                     
+                          
                                 
                             <div class="row mt-2 p-0">
+                                  <div class="col-sm-6 form-group mt-3" >
+                                      <h5>Publish Type</h5>
 
-                                <div class="col-sm-6 form-group mt-3" >
                                     <!-- <label class="">Choose Ad Name</label> -->
-                            <input type="radio" id="publish_now" name="publish_type" value = "publish_now" {{ !empty(($video->publish_type=="publish_now"))? "checked" : "" }}>Publish Now <br>
+                            <input type="radio" id="publish_now" name="publish_type" value = "publish_now" {{ !empty(($video->publish_type=="publish_now"))? "checked" : "" }}>Publish Now 
 							<input type="radio" id="publish_later" name="publish_type" value = "publish_later"{{ !empty(($video->publish_type=="publish_later"))? "checked" : "" }} >Publish Later
                                 </div>
                                 <div class="col-sm-6 form-group mt-3" id="publishlater">

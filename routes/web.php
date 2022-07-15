@@ -21,6 +21,13 @@ Route::get('/admin/upgrade/{plan_slug}', 'AdminDashboardController@AdminFlicknex
 Route::get('/admin/yearly/upgrade/{plan_slug}', 'AdminDashboardController@AdminFlicknexsYearly');
 
 
+Route::get('/contact-us/', 'ContactController@index');
+Route::post('/contact-us/store/', 'ContactController@Store');
+Route::get('admin/contact-us/', 'ContactController@ViewRequest');
+
+
+
+
 // Route::get('/admin/filemanager', 'FileManagerController@index');
 
 //////////// User analytics
@@ -133,6 +140,8 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
     Route::get('audios', 'ThemeAudioController@audios');
     //Route::get('audios/category/{slug}', 'ThemeAudioController@category' );
     Route::get('artist/{slug}', 'ThemeAudioController@artist' );
+
+    Route::post('artist/following', 'ThemeAudioController@ArtistFollow' );
     //Route::get('audios/tag/{tag}', 'ThemeAudioController@tag' );
     //Route::get('audio/{slug}/{name}', 'ThemeAudioController@index');
     Route::get('audio/{slug}', 'ThemeAudioController@index');

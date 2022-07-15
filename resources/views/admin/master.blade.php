@@ -608,6 +608,15 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </a>
                   </li>
                
+                  <!-- {{-- Contact Us --}} -->
+                  <li><p class="lnk">CONTACT US</p></li>
+
+                  <li><a href="{{ URL::to('admin/contact-us/') }}" class="iq-waves-effect">
+                        <img height="30" width="30" class="" src="<?php echo  URL::to('/assets/img/icon/geo.svg')?>">
+                        <span> Contact Request</span>
+                     </a>
+                  </li>
+
                   <!-- Ads Menu ends -->
                   <?php }elseif(  $package == "Business" && auth()->user()->role == "admin" || $package == "Business" && auth()->user()->role == "subscriber" || $package == "Business" && auth()->user()->role == "registered" || $package == "Pro" && auth()->user()->role == "admin"){ ?>
                      <div class="page-container sidebar-collapsed"><!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
@@ -859,6 +868,14 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </a>
                   </li>
 
+               <!-- {{-- Contact Us --}} -->
+               <li><p class="lnk">CONTACT US</p></li>
+
+                  <li><a href="{{ URL::to('admin/contact-us/') }}" class="iq-waves-effect">
+                        <img height="30" width="30" class="" src="<?php echo  URL::to('/assets/img/icon/geo.svg')?>">
+                        <span> Contact Request</span>
+                     </a>
+                  </li>
                   <!-- Ads Menu ends -->
                   <?php } elseif(auth()->user()->role == "admin" && $package == "Pro" && $package == "Business"){ ?>
                      <div class="page-container sidebar-collapsed"><!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
@@ -1101,6 +1118,16 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <span> Cache Clear</span>
                      </a>
                   </li>
+
+
+                                    <!-- {{-- Contact Us --}} -->
+                   <li><p class="lnk">CONTACT US</p></li>
+
+                        <li><a href="{{ URL::to('admin/contact-us/') }}" class="iq-waves-effect">
+                              <img height="30" width="30" class="" src="<?php echo  URL::to('/assets/img/icon/geo.svg')?>">
+                              <span> Contact Request</span>
+                           </a>
+                        </li>
                   <!-- Ads Menu ends -->
                   <?php } ?>
                     

@@ -35,6 +35,8 @@
                         <li><a href="<?php echo URL::to('/advertiser/register') ;?>">Advertiser Portal</a></li>
                         <li><a href="<?php echo URL::to('/channel/register') ;?>">Channel Portal</a></li>
                       <?php }else{ }?>
+                     <li><a href="<?php echo URL::to('/contact-us/') ;?>">Contact us</a></li>
+
                     </ul>
 
                      <div class="mt-2 p-2">
@@ -333,7 +335,17 @@
       <!-- Custom JS-->
 
       <script type="text/javascript" src="<?php echo URL::to('public/themes/theme2/assets/js/custom.js'); ?>"></script>
+      
+      <?php 
+      $footer_script = App\Script::pluck('footer_script')->toArray();
+      if(count($footer_script) > 0){
+        foreach($footer_script as $Scriptfooter){ ?>
+        <!-- // echo $Scriptfooter; -->
+        <?= $Scriptfooter ?>
 
+      <?php } 
+    }
+     ?>
        <script>
     $(document).ready(function () {
       $(".thumb-cont").hide();

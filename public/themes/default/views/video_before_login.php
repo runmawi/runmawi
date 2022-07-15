@@ -9,6 +9,50 @@
       .modal {
           top:40px;
       }
+         .img__wrap {
+  position: relative;
+         height: 200px;
+         widows: 250px;
+ 
+}
+      .img__wrap{
+          transform: scale(1.0);
+      }
+.img__description_layer {
+  position: absolute;
+    cursor: pointer;
+ padding: 30px 20px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+ background-image: linear-gradient(to bottom, rgba(4,8,15,0.9), rgba(0,0,0,0.9), rgba(0,0,0,0.9), rgba(0,0,0,0.9));
+  color: #fff;
+  visibility: hidden;
+  opacity: 0;
+    width: 300px;
+    height: 100%;
+  display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+  /* transition effect. not necessary */
+  transition: opacity .2s, visibility .2s;
+}
+
+.img__wrap:hover .img__description_layer {
+  visibility: visible;
+  opacity: 1;
+}
+
+.img__description {
+  transition: .2s;
+  transform: translateY(1em);
+}
+
+.img__wrap:hover .img__description {
+  transform: translateY(0);
+}
+
 </style>
 <?php 
 
@@ -268,7 +312,7 @@ if(!empty($request_url)){
             
 
   <input type="hidden" class="videocategoryid" data-videocategoryid="<?= $video->video_category_id ?>" value="<?= $video->video_category_id ?>">
-    <div class="container-fluid video-details" style="width:90%!important;">
+    <div class="container-fluid video-details" >
         <div class="trending-info g-border p-0">
             <div class="row">
                 <div class="col-sm-9 col-md-9 col-xs-12">
@@ -498,7 +542,7 @@ if(!empty($request_url)){
     <div class="col-md-7 p-0" style="margin-top: 2%;">
       <h4>Description</h4>
       <div class="text-white">
-          <p class="trending-dec w-100 mb-0 text-white mt-2"><?php echo __($video->description); ?></p>
+          <p class="trending-dec w-100 mb-0 text-white mt-2 text-justify"><?php echo __($video->description); ?></p>
           <p class="trending-dec w-100 mb-0 text-white mt-2">Starring : <span class="sta"><?php echo $artistsname; ?></span></p>
           <p class="trending-dec w-100 mb-0 text-white mt-2">Genres : <span class="sta"><?php echo $genres_name; ?></span></p>
           <p class="trending-dec w-100 mb-0 text-white mt-2">This Movie is :</p>
@@ -535,7 +579,7 @@ $artists = [];
 
 }
  if(count($artists) > 0 ) { ?>
- <h4 style="margin-left: -15px;">Cast & crew</h4>
+ <h4 >Cast & Crew</h4>
        
           
           <div class="row">
@@ -610,7 +654,7 @@ $artists = [];
     </div>
 -->
         
-    <div class="video-list you-may-like">
+    <div class="video-list you-may-like container-fluid">
             <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Recomended Videos');?></h4>
                 <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>   
                 <?php include('partials/video-loop.php');?>
@@ -829,27 +873,18 @@ $(document).ready(function(){
   }else if(trailer_video_type == "m3u8"){
   // alert(trailer_video_type);
   document.addEventListener("DOMContentLoaded", () => {
-  const video = document.querySelector('#videos');
+  const videos = document.querySelector('#videos');
   // alert(video);
-  const source = video.getElementsByTagName("source")[0].src;
-  // alert(source);
-  
-  // For more options see: https://github.com/sampotts/plyr/#options
-  // captions.update is required for captions to work with hls.js
+  const sources = videos.getElementsByTagName("source")[0].src;
+  // alert(sources);
   const defaultOptions = {};
 
   if (Hls.isSupported()) {
-    // For more Hls.js options, see https://github.com/dailymotion/hls.js
-    const hls = new Hls();
-    hls.loadSource(source);
+    const hlstwo = new Hls();
+    hlstwo.loadSource(sources);
+    hlstwo.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
 
-    // From the m3u8 playlist, hls parses the manifest and returns
-    // all available video qualities. This is important, in this approach,
-    // we will have one source on the Plyr player.
-    hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
-
-      // Transform available levels into an array of integers (height values).
-      const availableQualities = hls.levels.map((l) => l.height)
+      const availableQualities = hlstwo.levels.map((l) => l.height)
 
       // Add new qualities to option
       defaultOptions.quality = {
@@ -861,23 +896,25 @@ $(document).ready(function(){
       }
 
       // Initialize here
-      const player = new Plyr(video, defaultOptions);
+      const player = new Plyr(videos, defaultOptions);
     });
-    hls.attachMedia(video);
-    window.hls = hls;
+    hlstwo.attachMedia(videos);
+    window.hlstwo = hlstwo;
   }
 
   function updateQuality(newQuality) {
-    window.hls.levels.forEach((level, levelIndex) => {
+    window.hlstwo.levels.forEach((level, levelIndex) => {
       if (level.height === newQuality) {
         console.log("Found quality match with " + newQuality);
-        window.hls.currentLevel = levelIndex;
+        window.hlstwo.currentLevel = levelIndex;
       }
     });
   }
 });
 
   }
+   
+
    
 
 </script>

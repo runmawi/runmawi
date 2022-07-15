@@ -50,11 +50,11 @@
 			
 					<div class="iq-main-header ">
 						<div class="favorites-contens">
-                                <?php 
+                               
+				           <ul class="favorites-slider list-inline  row p-0 mb-0 ">
+                            <?php 
 			if(isset($albums)) { 
 				foreach($albums as $album): ?>
-				           <ul class="favorites-slider list-inline  row p-0 mb-0 ">
-                           
   <li class="slide-item">
                              <div class="block-images position-relative">
                                    <div class="img-box">
@@ -72,9 +72,9 @@
                                 </div>
       </div>
                                </li>
-                             
+                                <?php endforeach; } ?>
                             </ul>
-                              <?php endforeach; } ?>
+                           
                             </div>
 						</div>
 					</div>
