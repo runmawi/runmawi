@@ -20,7 +20,18 @@
                     </ul>
 
                     <ul class="text-white p-0 mt-3 d-flex">
-                      <?php $column3_footer = App\FooterLink::where('column_position',3)->orderBy('order')->get();  
+                      <?php  
+                      
+                        if( Auth::user() != null && Auth::user()->package == "Business" ):
+
+                        $column3_footer = App\FooterLink::where('column_position',3)->orderBy('order')->get(); 
+
+                        else:
+
+                        $column3_footer = App\FooterLink::where('column_position',3)->whereNotIn('link', ['/cpp/signup','/advertiser/register','/channel/register'])
+                                        ->orderBy('order')->get();  
+                        endif;
+
                         foreach ($column3_footer as $key => $footer_link){ ?>
                           <li><a href="<?php echo URL::to('/'.$footer_link->link) ?>">
                                   <?php echo  $footer_link->name ; ?>
@@ -29,13 +40,8 @@
                       <?php  } ?>
                     </ul>
                     
-                    <ul class="text-white p-0 mt-3 d-flex">
-                      <?php if($user->package == 'Pro' && empty($session['password_hash']) || empty($session['password_hash']) ){ ?> 
-                        <li><a href="<?php echo URL::to('/cpp/signup') ;?>">Content Partner Portal</a></li>
-                        <li><a href="<?php echo URL::to('/advertiser/register') ;?>">Advertiser Portal</a></li>
-                        <li><a href="<?php echo URL::to('/channel/register') ;?>">Channel Portal</a></li>
-                      <?php }else{ }?>
-                     <li><a href="<?php echo URL::to('/contact-us/') ;?>">Contact us</a></li>
+                 
+                         <!--   <li><a href="<?php echo URL::to('/contact-us/') ;?>">Contact us</a></li> -->
 
                     </ul>
 
