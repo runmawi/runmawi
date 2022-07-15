@@ -200,7 +200,8 @@ class HomeController extends Controller
                 $featured_episodes = Episode::where('active', '=', '1')->where('featured', '=', '1')
                     ->orderBy('id', 'DESC')
                     ->get();
-
+                $latest_series = Series::where('active', '=', '1')->orderBy('created_at', 'DESC')
+                ->get();
                 $pages = Page::all();
                 if (!Auth::guest())
                 {
@@ -239,7 +240,7 @@ class HomeController extends Controller
                                         ->get() ,
                     
                     
-
+                    'latest_series' => $latest_series,
                     'cnt_watching' => $cnt_watching,
                     'trendings' => $trending_movies,
                     'latest_videos' => $latest_videos,
@@ -321,6 +322,8 @@ class HomeController extends Controller
             $trending_episodes = Episode::where('active', '=', '1')->where('views', '>', '0')
                 ->orderBy('id', 'DESC')
                 ->get();
+            $latest_series = Series::where('active', '=', '1')->orderBy('created_at', 'DESC')
+                ->get();            
             $trendings = new \Illuminate\Database\Eloquent\Collection; //Create empty collection which we know has the merge() method
             $trendings = $trendings->merge($trending_videos);
             $trendings = $trendings->merge($trending_movies);
@@ -471,6 +474,9 @@ class HomeController extends Controller
                 $devices_check = LoggedDevice::where('user_id', '=', Auth::User()->id)
                     ->where('device_name', '=', $device_name)->first();
 
+                $latest_series = Series::where('active', '=', '1')->orderBy('created_at', 'DESC')
+                ->get();
+
                 if ($user_check >= 1 && $user_check < 4 && empty($devices_check) && Auth::User()->id != 1 || $subuser_check >= 1 && Auth::User()->id != 1 || $subuser_check < 4 && Auth::User()->id != 1)
                 {
                     $url1 = $_SERVER['REQUEST_URI'];
@@ -590,6 +596,10 @@ class HomeController extends Controller
                     $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
                     $settings = Setting::first();
                     $PPV_settings = Setting::where('ppv_status', '=', 1)->first();
+                    
+                    $latest_series = Series::where('active', '=', '1')->orderBy('created_at', 'DESC')
+                        ->get();
+
                     if (!empty($PPV_settings))
                     {
                         $ppv_gobal_price = $PPV_settings->ppv_price;
@@ -645,6 +655,10 @@ class HomeController extends Controller
                                 ->take(10)
                                 ->orderBy('created_at', 'DESC')
                                 ->count();
+
+                            $latest_series = Series::where('active', '=', '1')->orderBy('created_at', 'DESC')
+                                ->get();
+
                             if ($latest_videos_count > 0)
                             {
                                 $latest_videos = Video::where('active', '=', '1')->where('status', '=', '1')
@@ -674,6 +688,10 @@ class HomeController extends Controller
                         }
                         else
                         {
+
+                            $latest_series = Series::where('active', '=', '1')->orderBy('created_at', 'DESC')
+                                ->get();
+
                             $latest_videos_count = Video::where('active', '=', '1')->where('status', '=', '1')
                             ->where('draft', '=', '1')
                                 ->where('age_restrict', '<', 18)
@@ -1065,6 +1083,9 @@ class HomeController extends Controller
                         ->orderBy('views', 'DESC')
                         ->get();
 
+                    $latest_series = Series::where('active', '=', '1')->orderBy('created_at', 'DESC')
+                        ->get();
+                        
                     $pages = Page::all();
                     if ($multiuser != null)
                     {
@@ -1124,9 +1145,10 @@ class HomeController extends Controller
                     {
                         $livetreams = [];
                     }
-
+                    $latest_series = Series::where('active', '=', '1')->orderBy('created_at', 'DESC')
+                        ->get();
                     //  $currency->symbol
-                    //  dd($currency);
+                    //  dd($latest_series);
                     $data = array(
                         'currency' => $currency,
                         'videos' => Video::where('active', '=', '1')->where('status', '=', '1')
@@ -1156,7 +1178,7 @@ class HomeController extends Controller
                                         ->where('banner','=','1')
                                         ->latest()
                                         ->get() ,
-                                        
+                        'latest_series' => $latest_series,
                         'cnt_watching' => $cnt_watching,
                         'trendings' => $trending_movies,
                         'latest_videos' => $latest_videos,

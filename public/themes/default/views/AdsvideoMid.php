@@ -81,6 +81,7 @@
   var Ads_count_mid       = <?php echo count($AdsVideosMid); ?> ;
   var Ads_type_mid        = <?php echo json_encode($ads_type_mid); ?> ;
   var Mid_tym             = <?php echo json_encode($Mid_tym); ?> ;
+  var ads_mid_videoplayer_id  = <?php echo json_encode($video_type_id); ?> ;
 
 
   if( Ads_count_mid >= 1 &&  Ads_type_mid != null ){
@@ -96,7 +97,7 @@
             
                 $('.adstime_url').attr('src', Ads_videos_mid);
 
-                document.getElementById('videoPlayer').addEventListener('loadedmetadata', function() {
+                document.getElementById(ads_mid_videoplayer_id).addEventListener('loadedmetadata', function() {
                     this.currentTime = 0;
                 }, true);
                 
@@ -115,7 +116,7 @@
                   $(".plyr__controls__item").css("display", "block");
                   $(".plyr__volume").removeAttr("style");
 
-                  document.getElementById('videoPlayer').addEventListener('loadedmetadata', function() {
+                  document.getElementById(ads_mid_videoplayer_id).addEventListener('loadedmetadata', function() {
                       this.currentTime = Mid_tym;
                     }, true);
 

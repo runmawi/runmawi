@@ -99,6 +99,9 @@
              stroke-linejoin:round;
              stroke:{{ button_bg_color() .'!important' }}
             }
+    .sta{
+        color: {{ button_bg_color() .'!important' }} ;
+    }
     </style>
 
     
