@@ -532,9 +532,10 @@ if(!empty($request_url)){
               </div>
             </div>
           </div>
-        </div>
+       
         <?php } ?>
-    </div>
+</div>
+</div>
 
 <!-- Trailer End  -->
 
@@ -583,14 +584,43 @@ $artists = [];
        
           
           <div class="row">
-                <?php foreach($artists as $key => $artist){  ?>
-            <div class="mt-6 ml-3 d-flex">
-              <a  href="<?php echo __(URL::to('/') . '/Artist/' . $artist->artist_name); ?>"  >
-                <img src="<?= URL::to('/') . '/public/uploads/artists/'.$artist->image ?>" alt=""width="60" height="70">
-                <p class="trending-dec w-100 mb-0 text-white mt-2" ><?php echo $artist->artist_name ; ?> </p>
-              </a>
-            </div>
-                 <?php } }  ?>
+                <div class="favorites-contens">
+                    
+                    <ul class="category-page list-inline row p-0 mb-0 m-3">
+                       <?php foreach($artists as $key => $artist){  ?>
+                       <li class="slide-item col-sm-1 col-md-1 col-xs-12">
+                        <a  href="<?php echo __(URL::to('/') . '/Artist/' . $artist->artist_name); ?>"  >
+                             <div class="block-images position-relative">
+                             <!-- block-images -->
+                                <div class="img-box">
+                                
+                                    <img src="<?= URL::to('/') . '/public/uploads/artists/'.$artist->image ?>" alt="" class="w-100">
+                                 
+                                     <div class="p-tag2">
+                                           <p class="trending-dec w-100 mb-0 text-white mt-2" ><?php echo $artist->artist_name ; ?> </p>
+                                    </div>
+                              
+                                       
+                                 </div>
+                               
+                                <div class="">
+                                 
+                               <a  href="<?php echo __(URL::to('/') . '/Artist/' . $artist->artist_name); ?>"  >
+                 
+               </a>   
+                                
+                                
+
+                                 
+                                </div>
+                            </div>
+                            
+                          </a>
+                       </li>
+                         <?php } }  ?>
+                    </ul>
+                     
+                 </div>
           </div>
        
      
