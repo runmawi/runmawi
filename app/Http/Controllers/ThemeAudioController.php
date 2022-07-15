@@ -263,16 +263,13 @@ class ThemeAudioController extends Controller{
     public function audios(Request $request)
     {   
 
+
         if(Auth::guest()):
             return Redirect::to('/login');
         endif;
-        $getfeching= Geofencing::first();
-        $getfeching= Geofencing::first();
-        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-        $userIp = $geoip->getip();    
-        $countryName = $geoip->getCountry();
 
         $page =$request->get('page');
+
         if( !empty($page) ){
             $page = $request->get('page');
         } else {
@@ -280,25 +277,27 @@ class ThemeAudioController extends Controller{
         }
         $audios_count = Audio::where('active', '=', '1')->orderBy('created_at', 'DESC')->count();
 
-        // dd($audios_count);
         if ($audios_count > 0) {
                // blocked Audio
-               $block_Audio=BlockAudio::where('country',$countryName)->get();
+               $block_Audio=BlockAudio::where('country',Country_name())->get();
+
                if(!$block_Audio->isEmpty()){
                   foreach($block_Audio as $blocked_Audios){
                      $blocked_Audio[]=$blocked_Audios->audio_id;
                   }
                }    
                $blocked_Audio[]='';
+
                $audios  =  Audio::where('active', '=', '1')->orderBy('created_at', 'DESC');
-                 if($getfeching !=null && $getfeching->geofencing == 'ON'){
+
+                 if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
                       $audios = $audios  ->whereNotIn('id',$blocked_Audio);
                }
-                $audios = $audios ->simplePaginate($this->audios_per_page);   
+                $audios = $audios ->get();      
             } else {
               $audios = [];
             } 
-            
+
         $data = array(
             'audios' => $audios,
             'audios_count' => $audios_count,
@@ -315,9 +314,6 @@ class ThemeAudioController extends Controller{
 
         return Theme::view('audio-list', $data);
     }
-
-
-   
 
     public function category($slug,Request $request)
     {

@@ -6,7 +6,7 @@
            <div class="row">
               <div class="col-sm-12 overflow-hidden">
                  <div class="iq-main-header d-flex align-items-center justify-content-between">
-                    <?php if(isset($page_title)): ?>
+                 <?php if(isset($page_title) && count( $audios) > 0 ): ?>
                     <h4 class="main-title">Today Trending</h4>
                     <a href="#" class="text-primary">View all</a>
                     <?php endif; ?> 
@@ -18,7 +18,6 @@
 			<?php if(isset($audios) ||  isset($audios_category)) { include('partials/audio.php'); } ?>
 			
 		</div>
-      <?php if($audios_count > 0){   include('partials/pagination.php'); }else{} ?>
 
 </div>
 <div class="container mt-2">
@@ -26,7 +25,7 @@
            <div class="row">
               <div class="col-sm-12 overflow-hidden">
                  <div class="iq-main-header d-flex align-items-center justify-content-between">
-                    <?php if(isset($page_title)): ?>
+                 <?php if((isset($page_title))  && count( $albums) > 0 ):  ?>
                     <h4 class="main-title">Albums</h4>
                     <a href="#" class="text-primary">View all</a>
                     <?php endif; ?> 
@@ -37,7 +36,7 @@
 		<div class="row nomargin">
 
 			<?php 
-			if(isset($albums)) { 
+			if(isset($albums) && count( $albums) > 0 ) { 
 				foreach($albums as $album): ?>
 					<div class="iq-main-header col-md-3 d-flex align-items-center justify-content-between">
 						<div class="favorites-contens">
@@ -67,8 +66,15 @@
 
 				<?php endforeach; } ?>
 			</div>
-         <?php if($audios_count > 0){   include('partials/pagination.php'); }else{} ?>
 </div>
+
+            <?php  if(count( $albums) == 0 &&  count( $audios) == 0 ) {  ?> 
+               <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
+                    <p ><h3 class="text-center">No Audio Available</h3>
+                </div>
+            
+            <?php } ?>
+
 <div class="container mt-2">
 
 		<!-- <div class="block-space">
