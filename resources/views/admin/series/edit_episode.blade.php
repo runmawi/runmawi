@@ -333,7 +333,7 @@
 
             <div class="clear"></div>
         </div>
-
+    </div>
         @section('javascript')
 
         <script type="text/javascript" src="{{ URL::to('/assets/admin/js/tinymce/tinymce.min.js') }}"></script>
