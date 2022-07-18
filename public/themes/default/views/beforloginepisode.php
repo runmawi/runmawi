@@ -194,7 +194,7 @@ if (Auth::guest())
 	<div class="container-fluid series-details">
 	<div id="series_title">
 		<div class="">
-            <div class="row align-items-center justify-content-between">
+            <div class="row align-items-center">
 			<?php if ($free_episode > 0 || $ppv_exits > 0 || Auth::user()->role == 'admin' || Auth::guest())
 {
 }
@@ -220,7 +220,9 @@ else
 	<?php
     }
 } ?>
-	
+	<br>
+	<br>
+	<br>
                 <div class="col-md-6">
 			<span class="text-white" style="font-size: 120%;font-weight: 700;">You're watching:</span> 
                      
@@ -238,7 +240,7 @@ else
 
 		</h3>-->
 		
-			<!--<div class="col-md-2 text-center text-white">
+			<div class="col-md-2 text-center text-white">
 			<span class="view-count  " style="float:right;">
 			<i class="fa fa-eye"></i> 
 			<?php if (isset($view_increment) && $view_increment == true): ?><?=$episode->views + 1 ?>
@@ -246,7 +248,8 @@ else
 else: ?><?=$episode->views ?><?php
 endif; ?> Views 
 			</span>
-			</div>-->
+			</div>
+
 			<div class="col-md-4">
 						<div class="ml-2 btn bd video-open playbtn mb-2 "  aria-hidden="true"  onclick="episodewishlist(this)"> Add to Watch Later </div>
 						<div class="ml-2 btn bd video-open playbtn mb-2 "  aria-hidden="true"  onclick="episodewishlist(this)" > Add to Wish list </div>
@@ -592,6 +595,10 @@ location.reload();
     padding: 5% !important;
 	border-radius: 5px;
 	}
+    .plyr--video {
+    height: calc(90vh - 80px - 75px);
+    max-width: none;
+         width: 100%;}
 		p.Subscribe {
     font-size: 48px !important; 
     font-family: emoji;
@@ -612,7 +619,7 @@ location.reload();
     margin-right: 0;
 }
     #videoPlayer{
-        height: 500px;
+       
     }
 input.skips,input#Recaps_Skip{
   background-color: #21252952;
