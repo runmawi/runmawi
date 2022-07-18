@@ -605,7 +605,7 @@ if(!empty($request_url)){
      
 <!-- logo In player -->
 
-        <!-- <div class="logo_player"> </div> -->
+        <div class="logo_player"> </div>
         
         <!-- <div class="text-white"> -->
             <!-- <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->description); ?></p> -->
@@ -818,13 +818,13 @@ $('#videoPlayer').bind('contextmenu',function() { return false; });
 <script>
 $(document).ready(function(){
 
-  $(".logo_player").hide();
-  $('.plyr__video-wrapper').bind('contextmenu', function() {
-      $(".logo_player").show();
-      setTimeout(function() {
-            $('.logo_player').fadeOut('fast');
-        }, 30000); 
-    });
+  // $(".logo_player").hide();
+  // $('.plyr__video-wrapper').bind('contextmenu', function() {
+  //     $(".logo_player").show();
+  //     setTimeout(function() {
+  //           $('.logo_player').fadeOut('fast');
+  //       }, 30000); 
+  //   });
 
 });
 </script>

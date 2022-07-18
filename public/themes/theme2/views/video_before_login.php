@@ -679,13 +679,13 @@ $('#videoPlayer').bind('contextmenu',function() { return false; });
 <script>
 $(document).ready(function(){
 
-  $(".logo_player").hide();
-  $('.plyr__video-wrapper').bind('contextmenu', function() {
-      $(".logo_player").show();
-      setTimeout(function() {
-            $('.logo_player').fadeOut('fast');
-        }, 30000); 
-    });
+  // $(".logo_player").hide();
+  // $('.plyr__video-wrapper').bind('contextmenu', function() {
+  //     $(".logo_player").show();
+  //     setTimeout(function() {
+  //           $('.logo_player').fadeOut('fast');
+  //       }, 30000); 
+  //   });
 
 });
 </script>
