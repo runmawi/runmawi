@@ -33,12 +33,29 @@
 
 @section('javascript')
 
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
 <script>
 	$(document).ready(function(){
 		$('#submit-update-cat').click(function(){
 			$('#update-cat-form').submit();
 		});
 	});
+
+    $('form[id="update-cat-form"]').validate({
+        rules: {
+            plan_price: "required",
+            product_id: "required",
+        },
+        messages: {
+            plan_price: "This field is required",
+            product_id: "This field is required",
+        },
+        submitHandler: function (form) {
+            form.submit();
+        },
+    });
+
 </script>
 
 @stop

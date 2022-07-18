@@ -132,48 +132,40 @@
 	        <input type="hidden" id="_token" name="_token" value="<?= csrf_token() ?>" />
     </div>
 
+
 	@section('javascript')
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 
 		<script type="text/javascript">
 
-		jQuery(document).ready(function($){
+            jQuery(document).ready(function($){
 
-			$('#submit-new-cat').click(function(){
-				$('#new-cat-form').submit();
-			});
+                $('#submit-new-cat').click(function(){
+                    $('#new-cat-form').submit();
+                });
+            });
 
-			$('.actions .edit').click(function(e){
-				$('#update-category').modal('show', {backdrop: 'static'});
-				e.preventDefault();
-				href = $(this).attr('href');
-				$.ajax({
-					url: href,
-					success: function(response)
-					{
-						$('#update-category .modal-content').html(response);
-					}
-				});
-			});
+            $(document).ready(function(){
+                setTimeout(function() {
+                    $('#successMessage').fadeOut('fast');
+                }, 3000);
+            })
 
-			$('.actions .delete').click(function(e){
-				e.preventDefault();
-				if (confirm("Are you sure you want to delete this category?")) {
-			       window.location = $(this).attr('href');
-			    }
-			    return false;
-			});
+            $('form[id="new-cat-form"]').validate({
+                rules: {
+                    plan_price: "required",
+                    product_id: "required",
+                },
+                messages: {
+                    plan_price: "This field is required",
+                    product_id: "This field is required",
+                },
+                submitHandler: function (form) {
+                    form.submit();
+                },
+            });
 
-		});
+
 		</script>
-
-
-<script>
-    $(document).ready(function(){
-        setTimeout(function() {
-            $('#successMessage').fadeOut('fast');
-        }, 3000);
-    })
-</script>
 	@stop
-
 @stop
