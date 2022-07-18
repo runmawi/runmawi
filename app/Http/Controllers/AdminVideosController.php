@@ -56,6 +56,7 @@ use App\VideoSearchTag;
 use App\RelatedVideo;
 use Streaming\Representation;
 use App\Jobs\ConvertVideoTrailer;
+use App\InappPurchase;
 
 
 
@@ -555,6 +556,7 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
             'video_artist' => [],
             'page' => 'Creates',
             'ads_category' => Adscategory::all(),
+            'InappPurchase' => InappPurchase::all(),
             );
 
 
@@ -941,6 +943,7 @@ if(!empty($artistsdata)){
             'ads_rolls' => $ads_rolls ? $ads_rolls : 0 ,
             'ads_category' => $ads_category,
             'block_countries' => BlockVideo::where('video_id', $id)->pluck('country_id')->toArray(),
+            'InappPurchase' => InappPurchase::all(),
             );
 
 
@@ -954,6 +957,7 @@ if(!empty($artistsdata)){
      */
     public function update(Request $request)
     {
+
          if (!Auth::user()->role == 'admin')
         {
             return redirect('/home');
@@ -1505,7 +1509,8 @@ if(!empty($artistsdata)){
         $video->banner =  $banner;
         $video->enable =  $enable;
         $video->rating =  $request->rating;
-        $video->search_tags =  $searchtags;      
+        $video->search_tags =  $searchtags;  
+        $video->ios_ppv_price =  $request->ios_ppv_price;  
         $video->save();
 
         if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1) {
@@ -2230,14 +2235,15 @@ if(!empty($artistsdata)){
             $video->player_image =   $player_image ;
             $video->publish_type = $publish_type;
             $video->publish_time = $publish_time;
-             $video->age_restrict =  $data['age_restrict'];
+            $video->age_restrict =  $data['age_restrict'];
             $video->ppv_price =$data['ppv_price'];
-             $video->access =  $data['access'];
-             $video->banner =  $banner;
-             $video->featured =  $featured;
-             $video->country =  $data['video_country'];
+            $video->access =  $data['access'];
+            $video->banner =  $banner;
+            $video->featured =  $featured;
+            $video->country =  $data['video_country'];
             $video->enable =  1;
             $video->search_tags =  $searchtags;
+            $video->ios_ppv_price =  $data['ios_ppv_price'];
 
             if(!empty($data['default_ads'])){
                 $video->default_ads = $data['default_ads'];

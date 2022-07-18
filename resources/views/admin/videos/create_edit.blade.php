@@ -623,25 +623,45 @@ border-radius: 0px 4px 4px 0px;
                </select>
                </div>
                </div>
+
                <div class="row">
-               <div class="col-sm-6 form-group mt-3">
-               <label class="m-0">User Access</label>
-                <select id="access" name="access"  class="form-control" >
-                    <option value="guest" @if(!empty($video->access) && $video->access == 'guest'){{ 'selected' }}@endif>Guest (everyone)</option>
-                    <option value="subscriber" @if(!empty($video->access) && $video->access == 'subscriber'){{ 'selected' }}@endif>Subscriber ( Must subscribe to watch )</option>
-                    <option value="registered" @if(!empty($video->access) && $video->access == 'registered'){{ 'selected' }}@endif>Registered Users( Must register to watch )</option>   
-                    <?php if($settings->ppv_status == 1){ ?>
-                        <option value="ppv" @if(!empty($video->access) && $video->access == 'ppv'){{ 'selected' }}@endif>PPV Users (Pay per movie)</option>   
-                    <?php } else{ ?>
-                    <option value="ppv" @if(!empty($video->access) && $video->access == 'ppv'){{ 'selected' }}@endif>PPV Users (Pay per movie)</option>   
-                <?php } ?>
-                </select>
-               </div> 
-                <div class="col-sm-6 form-group mt-3" id="ppv_price">
-                    <label class="m-0">PPV Price:</label>
-                    <input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($video->ppv_price)){{ $video->ppv_price }}@endif">
-                </div>
+                  <div class="col-sm-6 form-group mt-3">
+                     <label class="m-0">User Access</label>
+                     <select id="access" name="access"  class="form-control" >
+                        <option value="guest" @if(!empty($video->access) && $video->access == 'guest'){{ 'selected' }}@endif>Guest (everyone)</option>
+
+                        <option value="subscriber" @if(!empty($video->access) && $video->access == 'subscriber'){{ 'selected' }}@endif>Subscriber ( Must subscribe to watch )</option>
+
+                        <option value="registered" @if(!empty($video->access) && $video->access == 'registered'){{ 'selected' }}@endif>Registered Users( Must register to watch )</option>   
+
+                        @if($settings->ppv_status == 1)
+                           <option value="ppv" @if(!empty($video->access) && $video->access == 'ppv'){{ 'selected' }}@endif>PPV Users (Pay per movie)</option>   
+                        @else
+                           <option value="ppv" @if(!empty($video->access) && $video->access == 'ppv'){{ 'selected' }}@endif>PPV Users (Pay per movie)</option>   
+                        @endif
+                        
+                     </select>
+                  </div> 
                </div>
+               
+                                          {{-- PPV Price --}}
+               <div class="row" id="ppv_price" >
+                     <div class="col-sm-6 form-group" >
+                        <label class="m-0">PPV Price:</label>
+                        <input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($video->ppv_price)){{ $video->ppv_price }}@endif">
+                     </div>
+
+                     <div class="col-sm-6 form-group" >
+                        <label class="m-0">IOS PPV Price:</label>
+                           <select  name="ios_ppv_price" class="form-control" id="ios_ppv_price">
+                              <option value= "" >Select IOS PPV Price: </option>
+                              @foreach($InappPurchase as $Inapp_Purchase)
+                                 <option value="{{ $Inapp_Purchase->product_id }}"  @if($video->ios_ppv_price == $Inapp_Purchase->product_id) selected='selected' @endif >{{ $Inapp_Purchase->plan_price }}</option>
+                              @endforeach
+                           </select>
+                     </div>
+               </div>
+
                <div class="row">
                    <div class="col-sm-6 form-group mt-3" id="ppv_price">
                        <?php if($settings->ppv_status == 1){ ?>
@@ -2406,3 +2426,4 @@ if(this.textContent === 'destroy') {
 @section('javascript')
 @stop
 @stop
+

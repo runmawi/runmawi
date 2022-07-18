@@ -625,7 +625,13 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::get('/videos/delete_age_edit/{id}', 'AdminAgeController@editvideo');
     Route::post('/videos/updatevideo/', 'AdminAgeController@updatevideo');
 
-    
+
+// In app purchase
+    Route::get('/inapp-purchase', 'AdminInappPurchaseController@index')->name('inapp_purchase');
+    Route::post('/inapp-purchase_store', 'AdminInappPurchaseController@store')->name('inapp_purchase_store');
+    Route::get('/inapp-purchase_edit/{id}', 'AdminInappPurchaseController@edit')->name('inapp_purchase_edit');
+    Route::post('/inapp-purchase_update', 'AdminInappPurchaseController@update')->name('inapp_purchase_update');
+    Route::get('/inapp-purchase_delete/{id}', 'AdminInappPurchaseController@delete')->name('inapp_purchase_delete');
 
      /*  Email Setting  */
 

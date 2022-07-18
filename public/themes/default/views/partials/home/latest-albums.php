@@ -14,7 +14,7 @@
          <div class="block-images position-relative">
                              <!-- block-images -->
             <div class="img-box">
-            <img src="<?php echo URL::to('/').'/public/uploads/albums/'.$album->album;?>" class="img-fluid img-zoom" alt="">
+            <img src="<?php echo URL::to('/').'/public/uploads/albums/'.$album->album;?>" class="img-fluid w-100" alt="">
             </div>
             <div class="block-description" >
             <a href="<?= URL::to('album') ?><?= '/' . $album->slug ?>">

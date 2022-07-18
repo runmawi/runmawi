@@ -20,7 +20,7 @@
                                             <div class="block-images position-relative">
                                                     <div class="img-box">
                                                         <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $artists_videos->slug ?>">
-                                                            <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$artists_videos->image;  ?>" class="img-fluid loading" alt=""> 
+                                                            <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$artists_videos->image;  ?>" class="img-fluid loading w-100" alt=""> 
                                                         </a>
                     
                                                         <!-- PPV price -->   
