@@ -232,6 +232,7 @@ else
                     </p>
                      <p class="" style=";font-size: 100%;color: white;font-weight: 700;"><?=$episode->title
 ?></p>
+                       <p class="desc"><?php echo $series->details;?></p>
 	</div>
                 
 		<!---<h3 style="color:#000;margin: 10px;"><?=$episode->title
@@ -589,6 +590,9 @@ location.reload();
 	</script>
 
 <style>
+    p{
+        color: #fff;
+    }
 	.free_content{	
     margin: 100px;
     border: 1px solid red;

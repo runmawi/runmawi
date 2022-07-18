@@ -196,6 +196,8 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
                     <p class="mb-0" style=";font-size: 80%;color: white;"><?php
 			if(!empty($SeriesSeason)){ echo 'Season'.' '.$SeriesSeason->id.' ';} if(!empty($episode)){ echo 'Episode'.' '.$episode->id;} ?>
                         	 <p class="" style=";font-size: 100%;color: white;font-weight: 700;"><?= $episode->title ?></p>
+                    
+                        <p class="desc"><?php echo $series->details;?></p>
 		
 		
 	</div>
@@ -489,6 +491,9 @@ location.reload();
 	</script>
 
 <style>
+     p{
+        color: #fff;
+    }
 	.free_content{	
     margin: 100px;
     border: 1px solid red;
