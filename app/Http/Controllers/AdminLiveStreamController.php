@@ -859,5 +859,19 @@ class AdminLiveStreamController extends Controller
             return Redirect::back()->with('message','Your video will be available shortly after we process it');
  
              }
+
+        public function livevideo_slider_update(Request $request)
+        {
+            try {
+                $video = LiveStream::where('id',$request->video_id)->update([
+                    'banner' => $request->banner_status,
+                ]);
+    
+                return response()->json(['message'=>"true"]);
+    
+            } catch (\Throwable $th) {
+                return response()->json(['message'=>"false"]);
+            }
+        }
     
 }
