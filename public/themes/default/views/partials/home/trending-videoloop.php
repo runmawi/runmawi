@@ -23,7 +23,7 @@
                                     <source src="<?php echo $watchlater_video->trailer;  ?>" type="video/mp4">
                                       </video>-->
                                         <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>"
-                                        class="img-fluid loading" alt=""> 
+                                        class="img-fluid loading w-100" alt=""> 
                                      <!-- PPV price -->
                                         
                                                 <!-- <p class="p-tag" style=""><?php //echo $watchlater_video->ppv_price ; ?></p> -->
