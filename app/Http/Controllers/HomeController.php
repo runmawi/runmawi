@@ -2838,35 +2838,13 @@ class HomeController extends Controller
     public function LatestVideos()
     {
 
-        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-        $userIp = $geoip->getip();
-        $countryName = $geoip->getCountry();
-        $regionName = $geoip->getregion();
-        $cityName = $geoip->getcity();
         $ThumbnailSetting = ThumbnailSetting::first();
 
-
-        $getfeching = Geofencing::first();
-
-        $block_videos = BlockVideo::where('country_id', $countryName)->get();
-        if (!$block_videos->isEmpty())
-        {
-            foreach ($block_videos as $block_video)
-            {
-                $blockvideos[] = $block_video->video_id;
-            }
-        }
-        else
-        {
-            $blockvideos[] = '';
-        }
-
         $date = \Carbon\Carbon::today()->subDays(30);
-        //            'videos' => Video::where('created_at', '>=', $date)->orderBy('created_at', 'DESC')->simplePaginate(10),
-        //
-        // $latest_videos = Video::where('active', '=', '1')->where('created_at','>=',$date)->get();
+       
         $latest_videos_count = Video::where('active', '=', '1')->orderBy('created_at', 'DESC')
             ->count();
+            
         if ($latest_videos_count > 0)
         {
             
@@ -2875,34 +2853,29 @@ class HomeController extends Controller
             ->where('draft', '=', '1')
             ->orderBy('created_at', 'DESC');
 
-            if ($getfeching != null && $getfeching->geofencing == 'ON')
+            if (Geofencing() != null && Geofencing()->geofencing == 'ON')
             {
-                $latest_videos = $latest_videos->whereNotIn('videos.id', $blockvideos);
+                $latest_videos = $latest_videos->whereNotIn('videos.id', Block_videos());
             }
-            $latest_videos = $latest_videos->limit(10)
-                ->get();
+                $latest_videos = $latest_videos->limit(10)->get();
         }
         else
         {
             $latest_videos = [];
         }
 
-        // $latest_videos = Video::where('active', '=', '1')->orderBy('created_at', 'DESC')->limit(10)->get();
-        // dd($latest_videos);
+      
         $settings = Setting::first();
         $PPV_settings = Setting::where('ppv_status', '=', 1)->first();
         if (!empty($PPV_settings))
         {
             $ppv_gobal_price = $PPV_settings->ppv_price;
-            //  echo "<pre>";print_r($PPV_settings->ppv_hours);exit();
-            
         }
         else
         {
-            //  echo "<pre>";print_r('ppv_status');exit();
             $ppv_gobal_price = null;
-
         }
+
         $currency = CurrencySetting::first();
 
         $data = array(
@@ -2913,7 +2886,9 @@ class HomeController extends Controller
         );
 // dd($data);
         // return view('latestvideo',$data);
-        return Theme::View('latestvideo', $data);
+        // return Theme::View('latestvideo', $data);
+
+        return Theme::view('latestvideo',['latestvideo'=>$data]);
 
     }
     public function LanguageVideo($lanid, $lan)
