@@ -232,6 +232,7 @@ else
                     </p>
                      <p class="" style=";font-size: 100%;color: white;font-weight: 700;"><?=$episode->title
 ?></p>
+                       <p class="desc"><?php echo $series->details;?></p>
 	</div>
                 
 		<!---<h3 style="color:#000;margin: 10px;"><?=$episode->title
@@ -589,12 +590,19 @@ location.reload();
 	</script>
 
 <style>
+    p{
+        color: #fff;
+    }
 	.free_content{	
     margin: 100px;
     border: 1px solid red;
     padding: 5% !important;
 	border-radius: 5px;
 	}
+    .plyr--video {
+    height: calc(90vh - 80px - 75px);
+    max-width: none;
+         width: 100%;}
 		p.Subscribe {
     font-size: 48px !important; 
     font-family: emoji;
@@ -611,11 +619,11 @@ location.reload();
     position: absolute;
     margin-top: -14%;
     margin-bottom: 0;
-    margin-left: 80%;
+    /*margin-left: 80%;*/
     margin-right: 0;
 }
     #videoPlayer{
-        height: 500px;
+       
     }
 input.skips,input#Recaps_Skip{
   background-color: #21252952;
