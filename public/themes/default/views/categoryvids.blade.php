@@ -30,16 +30,18 @@ $category_slug = App\VideoCategory::where('name',$categoryVideos['category_title
                         <div class="row mt-2 p-0 justify-content-between">
 
                             {{-- <div class="col-md-2">
-                                <select class="selectpicker" multiple title="Refine" data-live-search="true">
+                                <select class="selectpicker " multiple title="Refine" data-live-search="true">
                                     <option value="videos">Movie</option>
                                     <option value="tv_Shows">TV Shows</option>
                                     <option value="live_stream">Live stream</option>
                                     <option value="audios">Audios</option>
                                 </select>
+                         
+
                             </div> --}}
 
                             <div class="col-md-2">
-                                <select class="selectpicker" multiple title="Age" name="age[]" id="age" data-live-search="true">
+                                <select class="selectpicker " multiple title="Age" name="age[]" id="age" data-live-search="true">
                                     @foreach($categoryVideos['age_categories'] as $age)
                                         <option value="{{ $age->age  }}">{{ $age->slug }}</option>
                                     @endforeach
@@ -47,7 +49,7 @@ $category_slug = App\VideoCategory::where('name',$categoryVideos['category_title
                             </div>
 
                             <div class="col-md-2">
-                                <select class="selectpicker" multiple title="Rating" id="rating" name="rating[]" data-live-search="true">
+                                <select class="selectpicker " multiple title="Rating" id="rating" name="rating[]" data-live-search="true">
                                     <option value="1" >1</option>
                                     <option value="2">2</option>
                                     <option value="3">3</option>
@@ -187,8 +189,10 @@ $('.mywishlist').click(function(){
 <style>
 
     button.btn.dropdown-toggle.bs-placeholder.btn-light {
-        background: white !important;
+        background: transparent !important;
+        border: 1px solid #ddd!important;
+        border-radius: 10px!important;
+        color: #fff!important;
     }
-
 </style>
 
