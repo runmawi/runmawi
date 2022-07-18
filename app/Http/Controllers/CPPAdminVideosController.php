@@ -1237,6 +1237,11 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
                   $video->url_linksec =  $startSec ;
                   $video->urlEnd_linksec =  $startSec + 60 ;
               }
+            if(!empty($video->uploaded_by)){
+                $uploaded_by = $video->uploaded_by;
+            }else{
+                $uploaded_by =  Auth::user()->username.' '.'('.Auth::user()->role.')';
+            }
 
             $user = Session::get('user'); 
             $user_id = $user->id;
@@ -1251,6 +1256,7 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
          $video->publish_type = $data['publish_type'];
          $video->publish_time = $data['publish_time'];
          $video->active=1;
+         $video->uploaded_by = $uploaded_by;
         $video->player_image = $player_image ;
          $video->m3u8_url=$m3u8_url ;
          $video->mp4_url=$mp4_url ;
@@ -1790,6 +1796,7 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
 
                    $user = Session::get('user'); 
                    $user_id = $user->id;
+                   $ModeratorsUser = ModeratorsUser::where('id',$user_id)->first();
                      $shortcodes = $request['short_code'];        
                      $languages=$request['sub_language'];
                     $video->user_id =  $user_id;
@@ -1801,8 +1808,7 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
                     $video->publish_type = $data['publish_type'];
                     $video->publish_time = $data['publish_time'];
                     $video->player_image =   $player_image ;
-
-                    
+                    $video->uploaded_by = $ModeratorsUser->username.' '.'( CPP )';
                     $video->ppv_price =$data['ppv_price'];
                      $video->access =  $data['access'];
                      $video->banner =  $banner;

@@ -1463,6 +1463,11 @@ if(!empty($artistsdata)){
         }else{
             $searchtags = $video->searchtags;
         }
+        if(!empty($video->uploaded_by)){
+            $uploaded_by = $video->uploaded_by;
+        }else{
+            $uploaded_by =  Auth::user()->username.' '.'('.Auth::user()->role.')';
+        }
         // dd($data['trailer']);
 
         $video->ads_category =  $data['ads_category'];   
@@ -1485,6 +1490,7 @@ if(!empty($artistsdata)){
         $video->age_restrict=$data['age_restrict'];
         $video->access=$data['access'];
         //  $video->active=1;
+        $video->uploaded_by = $uploaded_by;
         $video->player_image = $player_image ;
         $video->year = $year ;
         $video->details = $details ;
@@ -2222,6 +2228,7 @@ if(!empty($artistsdata)){
             $video->ads_category =  $data['ads_category'];   
             $video->description = strip_tags($data['description']);
             $video->trailer_description = strip_tags($data['trailer_description']);
+            $video->uploaded_by = Auth::user()->username.' '.'('.Auth::user()->role.')';
             $video->draft = 1;
             $video->active = 1 ;
             $video->embed_code =  $embed_code ;

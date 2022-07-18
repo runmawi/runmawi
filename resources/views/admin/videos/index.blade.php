@@ -67,7 +67,8 @@ border-radius: 0px 4px 4px 0px;
                                     <th>Rating</th>
                                     <!-- <th>Category</th> -->
                                     <!-- <th>Release Year</th> -->
-                                    <th>Uploaded by</th>
+                                    <!-- <th>Uploaded by</th> -->
+                                    <th>Video Uploaded By</th>
                                     <th>Video Type</th>
                                     <th>Video Access</th>
                                     <th>Status</th>
@@ -115,7 +116,8 @@ border-radius: 0px 4px 4px 0px;
                                     <!-- <td>
                                    
                                     </td> -->
-                                    <td>@if(isset($video->cppuser->username)) Uploaded by {{ $video->cppuser->username }} @else  Admin @endif</td>
+                                    <!-- <td>@if(isset($video->cppuser->username)) Uploaded by {{ $video->cppuser->username }} @else  Admin @endif</td> -->
+                                    <td>@if(isset($video->uploaded_by)) Uploaded by {{ $video->uploaded_by }} @else  Admin @endif</td>
                                     <td>@if(isset($video->type) && $video->type == "") M3u8 Converted Video  
                                        @elseif(isset($video->type) && $video->type == "mp4_url") MP4 Video
                                        @elseif(isset($video->type) && $video->type == "m3u8_url") M3u8 URL Video

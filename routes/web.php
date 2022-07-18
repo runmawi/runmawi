@@ -64,6 +64,16 @@ Route::post('/admin/cpp_enddate_revenue', 'ModeratorsUserController@CPPEndDateRe
 Route::post('/admin/cpp_exportCsv', 'ModeratorsUserController@CPPExportCsv');
 
 
+
+
+////// CPP Video Analytics
+
+Route::get('admin/cpp/video-analytics', 'ModeratorsUserController@VideoAnalytics');
+Route::post('/admin/cpp_video_startdate_analytics', 'ModeratorsUserController@CPPVideoStartDateAnalytics');
+Route::post('/admin/cpp_video_enddate_analytics', 'ModeratorsUserController@CPPVideoEndDateAnalytics');
+Route::post('/admin/cpp_video_exportCsv', 'ModeratorsUserController@CPPVideoExportCsv');
+
+
 Route::post('/admin/cpp_startdate_analytics', 'ModeratorsUserController@CPPStartDateAnalytic');
 Route::post('/admin/cpp_enddate_analytics', 'ModeratorsUserController@CPPEndDateAnalytic');
 Route::post('/admin/cpp_analytics_exportCsv', 'ModeratorsUserController@CPPAnalyticExportCsv');
