@@ -76,24 +76,31 @@
                       
                       <?php  } ?>
 
-                    <?php if($user->package == 'Pro' && empty($session['password_hash']) || empty($session['password_hash']) ){ ?> 
-                          <li><a href="<?php echo URL::to('/cpp/signup') ;?>">Content Partner Portal</a></li>
-                          <li><a href="<?php echo URL::to('/advertiser/register') ;?>">Advertiser Portal</a></li>
-                          <li><a href="<?php echo URL::to('/channel/register') ;?>">Channel Portal</a></li>
-
-                        <?php }else{ }?>
-                     <li><a href="<?php echo URL::to('/contact-us/') ;?>">Contact us</a></li>
+                     <!--   <li><a href="<?php echo URL::to('/contact-us/') ;?>">Contact us</a></li> -->
 
                     </ul>
                 </div>
                 <div class="col-sm-3 small m-0 text-white exp"><p class="ml-2">Company</p>
                     <ul class="text-white p-0 mt-3">
-                        <?php $column3_footer = App\FooterLink::where('column_position',3)->orderBy('order')->get();  
-                        foreach ($column3_footer as $key => $footer_link){ ?>
-                          <li><a href="<?php echo URL::to('/'.$footer_link->link) ?>">
-                                  <?php echo  $footer_link->name ; ?>
-                              </a>
-                          </li>
+
+                        <?php
+                        
+                            if( Auth::user() != null && Auth::user()->package == "Business" ):
+
+                            $column3_footer = App\FooterLink::where('column_position',3)->orderBy('order')->get(); 
+
+                            else:
+
+                            $column3_footer = App\FooterLink::where('column_position',3)->whereNotIn('link', ['/cpp/signup','/advertiser/register','/channel/register'])
+                                            ->orderBy('order')->get();  
+                            endif;
+                          
+                          foreach ($column3_footer as $key => $footer_link){ ?>
+                              <li><a href="<?php echo URL::to('/'.$footer_link->link) ?>">
+                                      <?php echo  $footer_link->name ; ?>
+                                  </a>
+                              </li>
+                              
                         <?php  } ?>
                     </ul>
                 </div>

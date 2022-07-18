@@ -281,6 +281,9 @@ class HomeController extends Controller
         if ($settings->access_free == 1 && empty($data['password_hash']))
         {
 
+            $latest_series = Series::where('active', '=', '1')->orderBy('created_at', 'DESC')
+            ->get(); 
+            
             $settings = Setting::first();
             $genre = Genre::all();
             $genre_video_display = VideoCategory::all();

@@ -234,7 +234,7 @@ border-radius: 0px 4px 4px 0px;
             <form id="msform" method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
                <!-- progressbar -->
                <ul id="progressbar">
-                  @if($video->status == 1)
+                  @if($video->processed_low >= 100   && $video->type == "" || $video->type == "mp4_url"   || $video->type == "m3u8_url" || $video->type == "embed")
                   <li class="active" id="videot"><img class="" src="<?php echo  URL::to('/assets/img/icon/1.svg')?>">Video</li>
                   @endif
                   <li class="" id="account"><img class="" src="<?php echo  URL::to('/assets/img/icon/1.svg')?>">Video Details</li>
@@ -247,7 +247,7 @@ border-radius: 0px 4px 4px 0px;
                   <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
                </div>
                <br> <!-- fieldsets -->
-               @if($video->status == 1)
+               @if($video->processed_low >= 100 && $video->type == "" || $video->type == "mp4_url"   || $video->type == "m3u8_url" || $video->type == "embed")
 
                <fieldset id="player_data">
                   <div class="form-card">
@@ -425,7 +425,9 @@ border-radius: 0px 4px 4px 0px;
                     </div>
                 </div>
                </div> <input type="button" name="next" id="next2" class="next action-button" value="Next" /><input type="button" name="previous" class="previous action-button-previous" value="Previous" />
-               <button type="submit" style = "margin-left: 26%;position: absolute;margin-top: .8%;" class="btn btn-primary" value="{{ $button_text }}">{{ $button_text }}</button>
+               <button type="submit" style = "float: right;
+    margin: 10px 5px 10px 0px;
+    vertical-align: middle;" class="btn btn-primary" value="{{ $button_text }}">{{ $button_text }}</button>
                
                </fieldset>
                <fieldset class="Next3" id="videocategory_data">
