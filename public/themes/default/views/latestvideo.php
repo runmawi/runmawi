@@ -12,7 +12,7 @@
                      </div>
                      <div class="favorites-contens">
                         <ul class="category-page list-inline row p-0 mb-0">
-                            <?php if(isset($latest_videos)) :
+                            <?php if(isset($latest_videos)) : 
                            foreach($latest_videos as $latest_video): ?>
                            <li class="slide-item col-sm-2 col-md-2 col-xs-12">
                               <a href="<?php echo URL::to('home') ?>">

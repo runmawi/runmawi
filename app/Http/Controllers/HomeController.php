@@ -2869,6 +2869,7 @@ class HomeController extends Controller
             ->count();
         if ($latest_videos_count > 0)
         {
+            
             $latest_videos = Video::where('active', '=', '1')
             ->where('status', '=', '1')
             ->where('draft', '=', '1')
@@ -2910,8 +2911,10 @@ class HomeController extends Controller
             'currency' => $currency,
             'ThumbnailSetting' => $ThumbnailSetting,
         );
+// dd($data);
+        // return view('latestvideo',$data);
+        return Theme::View('latestvideo', $data);
 
-        return Theme::view('latestvideo', $data);
     }
     public function LanguageVideo($lanid, $lan)
     {
