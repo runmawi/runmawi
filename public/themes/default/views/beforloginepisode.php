@@ -595,6 +595,10 @@ location.reload();
     padding: 5% !important;
 	border-radius: 5px;
 	}
+    .plyr--video {
+    height: calc(90vh - 80px - 75px);
+    max-width: none;
+         width: 100%;}
 		p.Subscribe {
     font-size: 48px !important; 
     font-family: emoji;
@@ -611,11 +615,11 @@ location.reload();
     position: absolute;
     margin-top: -14%;
     margin-bottom: 0;
-    margin-left: 80%;
+    /*margin-left: 80%;*/
     margin-right: 0;
 }
     #videoPlayer{
-        height: 500px;
+       
     }
 input.skips,input#Recaps_Skip{
   background-color: #21252952;

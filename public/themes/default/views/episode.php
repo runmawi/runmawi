@@ -8,6 +8,7 @@ $series= App\series::first();
 
  ?>
 
+
 <!-- free content - hide & show -->
 <!-- <div class="row free_content">
 	<div class="col-md-12">
@@ -265,12 +266,14 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
   <h4 class="main-title">Season</h4>                      
 </div>
  <div class="favorites-contens ml-2">
+      
                         <ul class="favorites-slider list-inline row mb-0">
-                             <?php  
+                           <?php  
 	foreach($season as $key => $seasons):
       foreach($seasons->episodes as $key => $episodes):
 		if($episodes->id != $episode->id): ?>
                            <li class="slide-item">
+                                
                               <a href="<?= ($settings->enable_https) ? secure_url('episodes') : URL::to('episode').'/'.@$episodes->series_title->title.'/'.$episodes->slug; ?>">
                                  <div class="block-images position-relative">
                                     <div class="img-box">
@@ -308,6 +311,7 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
                         </ul>
                      </div> </div>
 </div>
+
 		<div class="clear">
 		<h2 id="tags">
 		<?php if(isset($episode->tags)) {
@@ -507,11 +511,15 @@ location.reload();
     position: absolute;
     margin-top: -14%;
     margin-bottom: 0;
-    margin-left: 80%;
+   
     margin-right: 0;
 }
+    .plyr--video {
+    height: calc(90vh - 80px - 75px);
+    max-width: none;
+         width: 100%;}
     #videoPlayer{
-        height: 500px;
+      
     }
 input.skips,input#Recaps_Skip{
   background-color: #21252952;

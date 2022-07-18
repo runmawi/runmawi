@@ -156,7 +156,7 @@ Index Of Script
 			infinite: true,
 			speed: 300,
 			autoplay: false,
-			slidesToShow: 8,
+			slidesToShow: 7,
 			slidesToScroll: 1,		
 			// appendArrows: $('#sm-slick-arrow'),
 			
@@ -834,3 +834,4 @@ document.addEventListener("DOMContentLoaded", function() {
         $('.lazy').Lazy();
     });
     
+
