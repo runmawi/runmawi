@@ -582,7 +582,7 @@ if(!empty($request_url)){
                     
                     <ul class="category-page list-inline row p-0 mb-0 m-3">
                        <?php foreach($artists as $key => $artist){  ?>
-                       <li class="slide-item col-sm-2 col-md-2 col-xs-12">
+                       <li class="slide-item" style="width:40%;">
                         <a  href="<?php echo __(URL::to('/') . '/Artist/' . $artist->artist_name); ?>"  >
                              <div class="block-images position-relative">
                                    <!-- block-images -->
