@@ -12,8 +12,8 @@
                      </div>
                      <div class="favorites-contens">
                         <ul class="category-page list-inline row p-0 mb-0">
-                            <?php if(isset($latest_videos)) :
-                           foreach($latest_videos as $latest_video): ?>
+                            <?php if(isset($latestvideo['latest_videos'])) :
+                           foreach($latestvideo['latest_videos'] as $latest_video): ?>
                            <li class="slide-item col-sm-2 col-md-2 col-xs-12">
                               <a href="<?php echo URL::to('home') ?>">
                                  <div class="block-images position-relative">
@@ -33,28 +33,28 @@
                                  
                                     <div class="block-description" >
                                     
-                                    <?php if($ThumbnailSetting->title == 1) { ?>            <!-- Title -->
+                                    <?php if( $latestvideo['ThumbnailSetting']->title == 1) { ?>            <!-- Title -->
                                         <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $latest_video->slug ?>">
                                              <h6><?php  echo (strlen($latest_video->title) > 17) ? substr($latest_video->title,0,18).'...' : $latest_video->title; ?></h6>
                                         </a>
                                     <?php } ?>  
 
                                     <div class="movie-time d-flex align-items-center pt-1">
-                                        <?php if($ThumbnailSetting->age == 1) { ?>
+                                        <?php if($latestvideo['ThumbnailSetting']->age == 1) { ?>
                                         <!-- Age -->
                                             <div class="badge badge-secondary p-1 mr-2"><?php echo $latest_video->age_restrict.' '.'+' ?></div>
                                         <?php } ?>
 
-                                        <?php if($ThumbnailSetting->duration == 1) { ?>
+                                        <?php if($latestvideo['ThumbnailSetting']->duration == 1) { ?>
                                         <!-- Duration -->
                                             <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $latest_video->duration); ?></span>
                                         <?php } ?>
                                     </div>
 
 
-                                    <?php if(($ThumbnailSetting->published_year == 1) || ($ThumbnailSetting->rating == 1)) {?>
+                                    <?php if(($latestvideo['ThumbnailSetting']->published_year == 1) || ($latestvideo['ThumbnailSetting']->rating == 1)) {?>
                                     <div class="movie-time d-flex align-items-center pt-1">
-                                        <?php if($ThumbnailSetting->rating == 1) { ?>
+                                        <?php if($latestvideo['ThumbnailSetting']->rating == 1) { ?>
                                         <!--Rating  -->
                                         <div class="badge badge-secondary p-1 mr-2">
                                             <span class="text-white">
@@ -64,7 +64,7 @@
                                         </div>
                                         <?php } ?>
 
-                                        <?php if($ThumbnailSetting->published_year == 1) { ?>
+                                        <?php if($latestvideo['ThumbnailSetting']->published_year == 1) { ?>
                                         <!-- published_year -->
                                         <div class="badge badge-secondary p-1 mr-2">
                                           <span class="text-white">
@@ -74,7 +74,7 @@
                                         </div>
                                         <?php } ?>
 
-                                        <?php if($ThumbnailSetting->featured == 1 &&  $latest_video->featured == 1) { ?>
+                                        <?php if($latestvideo['ThumbnailSetting']->featured == 1 &&  $latest_video->featured == 1) { ?>
                                         <!-- Featured -->
                                         <div class="badge badge-secondary p-1 mr-2">
                                           <span class="text-white">
