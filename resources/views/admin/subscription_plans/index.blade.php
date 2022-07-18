@@ -105,36 +105,52 @@
 		                         <label> Price ( {{ @$allCurrency->symbol }} ):</label>
 		                         <input type="text" id="price" name="price" value="" class="form-control" placeholder="Price">
                             </div>
+
 							<div class="form-group">
 		                         <label> Days :</label>
 		                         <input type="text" id="days" name="days" value="" class="form-control" placeholder="Days">
                             </div>
+
 							<div class="form-group">
 		                        <label>Video Quality:</label>
 		                        <input type="text" id="video_quality" name="video_quality" value="" class="form-control" placeholder="Quality">
 		                    </div>  
+
 							<div class="form-group">
 		                        <label>Resolution :</label>
 		                        <input type="text" id="resolution" name="resolution" value="" class="form-control" placeholder="Resolution">
 		                    </div>  
+
+							<div class="form-group">
+		                        <label> IOS Product ID :</label>
+		                        <input type="text" id="ios_product_id" name="ios_product_id" value="" class="form-control" placeholder="IOS Product ID">
+		                    </div>
+
+							<div class="form-group">
+		                        <label>IOS Plan Price ( {{ @$allCurrency->symbol }} ):</label>
+		                        <input type="text" id="ios_plan_price" name="ios_plan_price" value="" class="form-control" placeholder="IOS Plan Price">
+		                    </div>
+
 							<div>
-							<label> Devices :</label>
+								<label> Devices :</label>
 							</div>
 						
-                               @foreach($devices as $val)
+                            @foreach($devices as $val)
 							   <div class="col-md-5 " style="width:35%; float:left;" >
-							   <div class="d-flex align-items-center justify-content-around">
-								   <div>
-						<label> {{ $val->devices_name }}</label>
-						</div>
-						<div>
-						<label class="switch">
-									<input type="checkbox"  name="devices[]"  value="{{ $val->id }}">
-							<span class="slider round"></span>
-						</label></div>
-						</div>
+									<div class="d-flex align-items-center justify-content-around">
+										<div>
+												<label> {{ $val->devices_name }}</label>
+											</div>
+										<div>
+
+										<label class="switch">
+											<input type="checkbox"  name="devices[]"  value="{{ $val->id }}">
+											<span class="slider round"></span>
+										</label>
+									</div>
+								</div>
                                </div>
-                               @endForeach
+                            @endForeach
 				    </form>
 				</div>
 				

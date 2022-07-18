@@ -715,11 +715,27 @@ border-radius: 0px 4px 4px 0px;
                                     <?php } ?>
                                  </select>
                               </div>
-                              <div class="col-sm-6 form-group mt-3" id="ppv_price">
-                                 <label class="">PPV Price:</label>
-                                 <input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($video->ppv_price)){{ $video->ppv_price }}@endif">
-                              </div>
                            </div>
+                                          {{-- PPV Price --}}
+
+                              <div class="row" id="ppv_price" >
+                                 <div class="col-sm-6 form-group" >
+                                    <label class="m-0">PPV Price:</label>
+                                    <input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($video->ppv_price)){{ $video->ppv_price }}@endif">
+                                 </div>
+            
+                                 <div class="col-sm-6 form-group" >
+                                    <label class="m-0">IOS PPV Price:</label>
+                                       <select  name="ios_ppv_price" class="form-control" id="ios_ppv_price">
+                                          <option value= "" >Select IOS PPV Price: </option>
+                                          @foreach($InappPurchase as $Inapp_Purchase)
+                                             <option value="{{ $Inapp_Purchase->product_id }}" >{{ $Inapp_Purchase->plan_price }}</option>
+                                          @endforeach
+                                       </select>
+                                 </div>
+                              </div>
+
+                           
                            <div class="row">
                               <div class="col-sm-6 form-group mt-3" >
                                  <label for="">Search Tags </label>
