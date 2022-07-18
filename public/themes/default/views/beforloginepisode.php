@@ -232,6 +232,7 @@ else
                     </p>
                      <p class="" style=";font-size: 100%;color: white;font-weight: 700;"><?=$episode->title
 ?></p>
+                       <p class="desc"><?php echo $series->details;?></p>
 	</div>
                 
 		<!---<h3 style="color:#000;margin: 10px;"><?=$episode->title
@@ -589,6 +590,9 @@ location.reload();
 	</script>
 
 <style>
+    p{
+        color: #fff;
+    }
 	.free_content{	
     margin: 100px;
     border: 1px solid red;
@@ -615,7 +619,7 @@ location.reload();
     position: absolute;
     margin-top: -14%;
     margin-bottom: 0;
-    margin-left: 80%;
+    /*margin-left: 80%;*/
     margin-right: 0;
 }
     #videoPlayer{

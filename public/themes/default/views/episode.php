@@ -8,6 +8,7 @@ $series= App\series::first();
 
  ?>
 
+
 <!-- free content - hide & show -->
 <!-- <div class="row free_content">
 	<div class="col-md-12">
@@ -195,6 +196,8 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
                     <p class="mb-0" style=";font-size: 80%;color: white;"><?php
 			if(!empty($SeriesSeason)){ echo 'Season'.' '.$SeriesSeason->id.' ';} if(!empty($episode)){ echo 'Episode'.' '.$episode->id;} ?>
                         	 <p class="" style=";font-size: 100%;color: white;font-weight: 700;"><?= $episode->title ?></p>
+                    
+                        <p class="desc"><?php echo $series->details;?></p>
 		
 		
 	</div>
@@ -265,12 +268,14 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
   <h4 class="main-title">Season</h4>                      
 </div>
  <div class="favorites-contens ml-2">
+      
                         <ul class="favorites-slider list-inline row mb-0">
-                             <?php  
+                           <?php  
 	foreach($season as $key => $seasons):
       foreach($seasons->episodes as $key => $episodes):
 		if($episodes->id != $episode->id): ?>
                            <li class="slide-item">
+                                
                               <a href="<?= ($settings->enable_https) ? secure_url('episodes') : URL::to('episode').'/'.@$episodes->series_title->title.'/'.$episodes->slug; ?>">
                                  <div class="block-images position-relative">
                                     <div class="img-box">
@@ -308,6 +313,7 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
                         </ul>
                      </div> </div>
 </div>
+
 		<div class="clear">
 		<h2 id="tags">
 		<?php if(isset($episode->tags)) {
@@ -485,6 +491,9 @@ location.reload();
 	</script>
 
 <style>
+     p{
+        color: #fff;
+    }
 	.free_content{	
     margin: 100px;
     border: 1px solid red;
@@ -510,8 +519,12 @@ location.reload();
    
     margin-right: 0;
 }
+    .plyr--video {
+    height: calc(90vh - 80px - 75px);
+    max-width: none;
+         width: 100%;}
     #videoPlayer{
-        height: 500px;
+      
     }
 input.skips,input#Recaps_Skip{
   background-color: #21252952;
