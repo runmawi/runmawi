@@ -70,7 +70,7 @@ $currency = App\CurrencySetting::first();
                             <!-- block-images -->
                             <a href="<?= URL::to('/') ?><?= '/live'.'/' . $category_video->slug ?>">
                                     <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"
-                                        class="img-fluid" alt="">
+                                        class="img-fluid w-100" alt="">
                                         <!-- <video  width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"  data-play="hover" >
                                             <source src="<?php echo $category_video->trailer;  ?>" type="video/mp4">
                                             </video> -->

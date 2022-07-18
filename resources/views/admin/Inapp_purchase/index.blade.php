@@ -102,7 +102,7 @@
                                     <th><label> Action      </label></th>
                                 </tr>
                                             
-                                @foreach($Inapp_Purchase as $key => $ios_purchase)
+                                @forelse($Inapp_Purchase as $key => $ios_purchase)
                                     <td valign="bottom"><p>{{ $key+1 }}</p></td>
 
                                     <td valign="bottom"><p>{{ $ios_purchase->plan_price }}</p></td>
@@ -122,7 +122,10 @@
                                         </div>
                                     </td>
                                     </tr>
-                                @endforeach
+
+                                @empty
+                                    <td colspan="4" style="text-align: center;">{{ 'No Data Available'}}</td>
+                                @endforelse
                             </table>
                         </div>
                     </div>

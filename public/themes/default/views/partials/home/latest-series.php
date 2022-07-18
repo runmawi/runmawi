@@ -29,7 +29,7 @@
                              <!-- block-images -->
             <div class="block-images position-relative">
               <div class="img-box">
-                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_serie->image;  ?>" class="img-fluid" alt="">
+                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_serie->image;  ?>" class="img-fluid w-100" alt="">
                
                     <?php  if(!empty($latest_serie->ppv_status)){?>
                     <p class="p-tag1"><?php echo $currency->symbol.' '.$settings->ppv_price; ?></p>
