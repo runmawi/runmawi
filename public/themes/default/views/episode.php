@@ -507,7 +507,7 @@ location.reload();
     position: absolute;
     margin-top: -14%;
     margin-bottom: 0;
-    margin-left: 80%;
+   
     margin-right: 0;
 }
     #videoPlayer{
