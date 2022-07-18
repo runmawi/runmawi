@@ -60,7 +60,7 @@
                                 <div class="block-images position-relative">
                                                                 
                                     <div class="img-box">    <!-- block-images -->
-                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" class="img-fluid" alt="">
+                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" class="img-fluid w-100" alt="">
                                     
                                         <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  
                                             <p class="p-tag1">

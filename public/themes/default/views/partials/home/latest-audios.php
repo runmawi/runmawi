@@ -16,7 +16,7 @@
                              <!-- block-images -->
                              <div class="block-images position-relative">
                                 <div class="img-box">
-                                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$audio->image;?>" class="img-fluid img-zoom" alt="">
+                                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$audio->image;?>" class="img-fluid w-100" alt="">
                                 </div>
                                 <div class="block-description" >
                                 <a href="<?= URL::to('audio') ?><?= '/' . $audio->slug ?>">
