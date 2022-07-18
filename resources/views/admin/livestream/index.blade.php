@@ -90,6 +90,7 @@ border-radius: 0px 4px 4px 0px;
 						<th>Video Access</th>
 						<th>Status</th>
 						<th>Stream Type</th>
+						<th>Slider</th>
 						<th>Action</th>
 					</tr>
 				</thead>
@@ -122,6 +123,15 @@ border-radius: 0px 4px 4px 0px;
 							@endif
 
  						</td>
+
+						 <td> 
+							<div class="mt-1">
+							   <label class="switch">
+								   <input name="video_status" class="video_status" id="{{ 'video_'.$video->id }}" type="checkbox" @if( $video->banner == "1") checked  @endif data-video-id={{ $video->id }}  data-type="video" onchange="update_video_banner(this)" >
+								   <span class="slider round"></span>
+							   </label>
+						   </div>
+						 </td>
 
 						<td class=" align-items-center list-inline">								
                             <a href="{{ URL::to('live') .'/'.$video->slug }}" target="_blank" class="iq-bg-warning"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>"></a>
@@ -221,6 +231,58 @@ border-radius: 0px 4px 4px 0px;
             $('#successMessage').fadeOut('fast');
         }, 3000);
     })
+</script>
+
+<script>
+	function update_video_banner(ele){
+
+	var video_id = $(ele).attr('data-video-id');
+	var status   = '#video_'+video_id;
+	var video_Status = $(status).prop("checked");
+
+	if(video_Status == true){
+		  var banner_status  = '1';
+		  var check = confirm("Are you sure you want to active this slider?");  
+
+	}else{
+		  var banner_status  = '0';
+		  var check = confirm("Are you sure you want to remove this slider?");  
+	}
+
+
+	if(check == true){ 
+
+	   $.ajax({
+				type: "POST", 
+				dataType: "json", 
+				url: "{{ url('admin/livevideo_slider_update') }}",
+					  data: {
+						 _token  : "{{csrf_token()}}" ,
+						 video_id: video_id,
+						 banner_status: banner_status,
+				},
+				success: function(data) {
+					  if(data.message == 'true'){
+						//  location.reload();
+					  }
+					  else if(data.message == 'false'){
+						 swal.fire({
+						 title: 'Oops', 
+						 text: 'Something went wrong!', 
+						 allowOutsideClick:false,
+						 icon: 'error',
+						 title: 'Oops...',
+						 }).then(function() {
+							location.href = '{{ URL::to('admin/ActiveSlider') }}';
+						 });
+					  }
+				   },
+			 });
+	}else if(check == false){
+	   $(status).prop('checked', true);
+
+	}
+	}
 </script>
 	@stop
 

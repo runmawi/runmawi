@@ -380,7 +380,7 @@ $('#cpp_user_videos').change(function(){
                   },
                   success: function(data) {
                         if(data.message == 'true'){
-                           location.reload();
+                           // location.reload();
                         }
                         else if(data.message == 'false'){
                            swal.fire({

@@ -1,6 +1,10 @@
+<?php  if(isset($featured_episodes)) : ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
   <h4 class="main-title"> Featured Episodes</h4>                      
 </div>
+<?php
+ endif;
+?>
 <?php
 ?>
 <div class="favorites-contens">
