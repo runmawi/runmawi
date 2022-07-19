@@ -5,6 +5,11 @@
     <div id="content-page" class="content-page">
         <div class="container-fluid">
             <div class="iq-card">
+
+                @if (Session::has('message'))
+                    <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
+                @endif
+
                 <h4><i class="entypo-archive"></i>  Manage In App Purchase Plans </h4>
                 <div class="modal-body">
 	                <form id="update-cat-form" accept-charset="UTF-8" action="{{ route('inapp_purchase_update') }}" method="post" enctype="multipart/form-data">
@@ -55,6 +60,12 @@
             form.submit();
         },
     });
+
+    $(document).ready(function(){
+        setTimeout(function() {
+            $('#successMessage').fadeOut('fast');
+        }, 3000);
+    })
 
 </script>
 
