@@ -489,7 +489,7 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
                     'countries' => CountryCode::all(),
                     'video_artist' => [],
                     'ads' => Advertisement::where('status','=',1)->get(),
-        
+                    'InappPurchase' => InappPurchase::all(),
                     );
 
                 return View::make('moderator.cpp.videos.fileupload', $data);
@@ -1269,8 +1269,7 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
          $video->banner =  $banner;
          $video->enable =  $enable;
          $video->search_tags =  $searchtags;
-
-        //  dd($data['enable']);
+         $video->ios_ppv_price = $data['ios_ppv_price'];
          $video->save();
 
 
@@ -1816,6 +1815,7 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
                      $video->banner =  $banner;
                     $video->enable =  1;
                     $video->search_tags =  $searchtags;
+                    $video->ios_ppv_price = $data['ios_ppv_price'];
         
                      $video->update($data);
         
