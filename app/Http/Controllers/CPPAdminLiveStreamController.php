@@ -25,6 +25,7 @@ use App\LiveLanguage as LiveLanguage;
 use App\CategoryLive as CategoryLive;
 use App\RTMP;
 use Streaming\Representation;
+use App\InappPurchase;
 
 
 class CPPAdminLiveStreamController extends Controller
@@ -93,7 +94,7 @@ class CPPAdminLiveStreamController extends Controller
                 'languages_id' => [],
                 'liveStreamVideo_error' => '0',
                 'Rtmp_urls' => RTMP::all(),
-
+                'InappPurchase' => InappPurchase::all(),
                 );
             return View::make('moderator.cpp.livestream.create_edit', $data);
         }else{
@@ -329,6 +330,7 @@ class CPPAdminLiveStreamController extends Controller
         $movie->active = 0 ;
         $movie->player_image = $player_image;
         $movie->user_id = $user_id;
+        $movie->ios_ppv_price = $request->ios_ppv_price;
         $movie->save();
 
         // $movie = LiveStream::create($data);
@@ -438,6 +440,7 @@ class CPPAdminLiveStreamController extends Controller
             'Rtmp_url'  => $Rtmp_url ? $Rtmp_url : null ,
             'title' => $title ? $title : null,
             'Rtmp_urls' => RTMP::all(),
+            'InappPurchase' => InappPurchase::all(),
             );
 
         return View::make('moderator.cpp.livestream.edit', $data); 
@@ -653,6 +656,7 @@ class CPPAdminLiveStreamController extends Controller
         $video->publish_type = $request['publish_type'];
         $video->publish_time = $request['publish_time'];
         $video->user_id =  $user_id;
+        $video->ios_ppv_price =  $request->ios_ppv_price;
         $video->save();
 
         if(!empty($data['video_category_id'])){
