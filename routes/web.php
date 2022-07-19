@@ -712,6 +712,10 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/moderatorsrole/update', 'ModeratorsUserController@RoleUpdate');
 
 
+    // ExecuteShell Command For Maintanace sytsem  
+
+    // Route::get('/execute-shell', 'HomeController@ExecuteShell');
+
 
 
 
