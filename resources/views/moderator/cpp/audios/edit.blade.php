@@ -326,13 +326,36 @@
 													<option value="guest" @if(!empty($audio->access) && $audio->access == 'guest'){{ 'selected' }}@endif>Guest (everyone)</option>
 													<option value="registered" @if(!empty($audio->access) && $audio->access == 'registered'){{ 'selected' }}@endif>Registered Users (free registration must be enabled)</option>
 													<option value="subscriber" @if(!empty($audio->access) && $audio->access == 'subscriber'){{ 'selected' }}@endif>Subscriber (only paid subscription users)</option>
+													@if($settings->ppv_status == 1)
+														<option value="ppv" @if(!empty($audio->access) && $audio->access == 'ppv'){{ 'selected' }}@endif>PPV Users (Pay per movie)</option>   
+													@else
+														<option value="ppv" @if(!empty($audio->access) && $audio->access == 'ppv'){{ 'selected' }}@endif>PPV Users (Pay per movie)</option>   
+													@endif
 												</select>
 												<div class="clear"></div>
 											</div> 
 										</div>
 									</div>
 
-									<div class="col-sm-4"> 
+									<div class="row col-sm-12" id="ppv_price"> 
+										<div class="col-sm-6">
+											<label class="p2">PPV Price:</label>
+											<input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($audio->ppv_price)){{ $audio->ppv_price }}@endif">
+										</div>
+
+										<div class="col-sm-6">
+											<label class="p2"> IOS PPV Price:</label>
+											<select  name="ios_ppv_price" class="form-control" id="ios_ppv_price">
+												<option value= "" >Select IOS PPV Price: </option>
+												@foreach($InappPurchase as $Inapp_Purchase)
+													<option value="{{ $Inapp_Purchase->product_id }}"  @if($audio->ios_ppv_price == $Inapp_Purchase->product_id) selected='selected' @endif >{{ $Inapp_Purchase->plan_price }}</option>
+												@endforeach
+											 </select>										
+										</div>
+									</div>
+									<div class="clear"></div>
+
+									<div class="col-sm-6"> 
 										<div class="panel panel-primary" data-collapsed="0"> 
 											<div class="panel-heading"> <div class="panel-title"><label> Status Settings</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 											<div class="panel-body"> 
@@ -388,7 +411,32 @@
 
 		$(document).ready(function(){
 			$('.js-example-basic-multiple').select2();
+			$('#ppv_price').hide();
+			$('#global_ppv_status').hide();
 			
+
+			if($("#access").val() == 'ppv'){
+				$('#ppv_price').show();
+				$('#global_ppv_status').show();
+
+			}else{
+				$('#ppv_price').hide();		
+				$('#global_ppv_status').hide();				
+
+			}
+		$("#access").change(function(){
+			if($(this).val() == 'ppv'){
+				// alert($(this).val());
+				$('#ppv_price').show();
+				$('#global_ppv_status').show();
+
+			}else{
+				$('#ppv_price').hide();		
+				$('#global_ppv_status').hide();				
+
+			}
+		});
+
 
 			$('#type').change(function(){
 				if($(this).val() == 'file'){
