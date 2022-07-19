@@ -438,26 +438,40 @@ border-radius: 0px 4px 4px 0px;
 										</div>
 									</div>
 
-									<div class="row mt-3 p-0 align-items-center"> 
-									<div class="col-sm-6" id="ppv_price"> 
-                                    <label class="p2">PPV Price:</label>
-                                    <input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($audio->ppv_price)){{ $audio->ppv_price }}@endif">
+
+									<div class="row col-sm-12" id="ppv_price"> 
+										<div class="col-sm-6">
+											<label class="p2">PPV Price:</label>
+											<input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($audio->ppv_price)){{ $audio->ppv_price }}@endif">
+										</div>
+
+										<div class="col-sm-6">
+											<label class="p2"> IOS PPV Price:</label>
+											<select  name="ios_ppv_price" class="form-control" id="ios_ppv_price">
+												<option value= "" >Select IOS PPV Price: </option>
+												@foreach($InappPurchase as $Inapp_Purchase)
+													<option value="{{ $Inapp_Purchase->product_id }}"  @if($audio->ios_ppv_price == $Inapp_Purchase->product_id) selected='selected' @endif >{{ $Inapp_Purchase->plan_price }}</option>
+												@endforeach
+											 </select>										
+										</div>
 									</div>
-									<div class="col-sm-12 ml-3" > 
-                                <?php if($settings->ppv_status == 1){ ?>
-                                    <label class="p2" for="global_ppv">Is this video Is Global PPV:</label>
-                                    <input type="checkbox" name="ppv_status" value="1" id="ppv_status"@if(!empty($audio->ppv_status) && $audio->ppv_status == 1){{ 'checked="checked"' }}@elseif(!isset($audio->ppv_status)){{ 'checked="checked"' }}@endif />
-                                    <?php } else{ ?>
-                                        <div class="global_ppv_status">
-                                        <label class="p2" for="global_ppv">Is this video Is PPV:</label>
-                                    <input type="checkbox" name="ppv_status" value="1" id="ppv_status"@if(!empty($audio->ppv_status) && $audio->ppv_status == 1){{ 'checked="checked"' }}@elseif(!isset($audio->ppv_status)){{ 'checked="checked"' }}@endif />
-                                        </div>
-                                        <?php } ?>
-                               	 </div>
-                               	 </div>
+
+									<div class="row mt-3 p-0 align-items-center"> 
+
+										<div class="col-sm-12 ml-3" > 
+											@if($settings->ppv_status == 1)
+												<label class="p2" for="global_ppv">Is this video Is Global PPV:</label>
+												<input type="checkbox" name="ppv_status" value="1" id="ppv_status"@if(!empty($audio->ppv_status) && $audio->ppv_status == 1){{ 'checked="checked"' }}@elseif(!isset($audio->ppv_status)){{ 'checked="checked"' }}@endif />
+											@else
+												<div class="global_ppv_status">
+													<label class="p2" for="global_ppv">Is this video Is PPV:</label>
+													<input type="checkbox" name="ppv_status" value="1" id="ppv_status"@if(!empty($audio->ppv_status) && $audio->ppv_status == 1){{ 'checked="checked"' }}@elseif(!isset($audio->ppv_status)){{ 'checked="checked"' }}@endif />
+												</div>
+											@endif
+										</div>
+                               		</div>
                                	 </div>
 
-								
                                     @if(!isset($audio->user_id))
 								<input type="hidden" name="user_id" id="user_id" value="{{ Auth::user()->id }}" />
 								@endif
@@ -568,7 +582,7 @@ $('#duration').mask('00:00:00');
 		$('form[id="audio_edit"]').validate({
 			rules: {
 			title : 'required',
-			image : 'required',
+			// image : 'required',
 			album_id : 'required',
 			'language[]': {
 				required: true

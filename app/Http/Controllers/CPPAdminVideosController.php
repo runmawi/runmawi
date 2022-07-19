@@ -50,7 +50,7 @@ use getID3;
 use App\AdsVideo;
 use App\VideoSearchTag;
 use App\RelatedVideo;
-
+use App\InappPurchase;
 
 
 class CPPAdminVideosController extends Controller
@@ -866,6 +866,8 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
                 'languages_id' => LanguageVideo::where('video_id', $id)->pluck('language_id')->toArray(),
                 'ads_paths' => $ads_details ? $ads_details : 0 ,
                 'ads_rolls' => $ads_rolls ? $ads_rolls : 0 ,
+                'InappPurchase' => InappPurchase::all(),
+
                 );
 
             return View::make('moderator.cpp.videos.create_edit', $data); 
