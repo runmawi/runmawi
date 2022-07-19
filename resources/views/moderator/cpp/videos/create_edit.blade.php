@@ -532,7 +532,7 @@
                                 
                             </div>
                             <div class="row">
-                            <div class="col-sm-6 form-group mt-3" id="ppv_price">
+                            <div class="col-sm-6 form-group mt-3" >
                                     <label for="">Search Tags</label>
                                         <input type="text" id="exist-values" class="tagged form-control1" data-removeBtn="true" name="searchtags" value="@if(!empty($video->search_tags)){{ $video->search_tags }}@endif" >
                                         <!-- <input type="text" class="form-control" id="#inputTag" name="searchtags" value="" data-role="tagsinput"> -->
@@ -550,23 +550,37 @@
                                     @endforeach
                                     </select>
                                   </div>
+
+                                  <div class="row" id="ppv_price">
+                                      <div class="col-sm-6 form-group mt-3" >
+                                        <label class="">PPV Price:</label>
+                                        <input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($video->ppv_price)){{ $video->ppv_price }}@endif">
+                                      </div>
+
+                                    <div class="col-sm-6 form-group mt-3" >
+                                      <label class="">IOS PPV Price:</label>
+                                          <select  name="ios_ppv_price" class="form-control" id="ios_ppv_price">
+                                            <option value= "" >Select IOS PPV Price: </option>
+                                            @foreach($InappPurchase as $Inapp_Purchase)
+                                              <option value="{{ $Inapp_Purchase->product_id }}"  @if($video->ios_ppv_price == $Inapp_Purchase->product_id) selected='selected' @endif >{{ $Inapp_Purchase->plan_price }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                  </div>
                            
                             <div class="row align-items-center">
-                                <div class="col-sm-6 form-group mt-3" id="ppv_price">
-                                    <label class="">PPV Price:</label>
-                                    <input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($video->ppv_price)){{ $video->ppv_price }}@endif">
-                                </div>
-                                <div class="col-sm-6 form-group mt-3" id="ppv_price">
-                                <?php if($settings->ppv_status == 1){ ?>
-                                    <label for="global_ppv">Get Pricing from Global PPV Rates Set:</label>
-                                    <input type="checkbox" name="global_ppv" id="global_ppv"  {{$video->global_ppv == '1' ? 'checked' : ''}}  />
-                                    <?php } else{ ?>
-                                        <div class="global_ppv_status">
+                                <div class="col-sm-6 form-group mt-3" >
+                                    @if($settings->ppv_status == 1)
                                         <label for="global_ppv">Get Pricing from Global PPV Rates Set:</label>
-                                    <input type="checkbox" name="global_ppv" id="global_ppv" {{$video->global_ppv == '1' ? 'checked' : ''}}   />
+                                        <input type="checkbox" name="global_ppv" id="global_ppv"  {{$video->global_ppv == '1' ? 'checked' : ''}}  />
+                                    @else
+                                        <div class="global_ppv_status">
+                                          <label for="global_ppv">Get Pricing from Global PPV Rates Set:</label>
+                                          <input type="checkbox" name="global_ppv" id="global_ppv" {{$video->global_ppv == '1' ? 'checked' : ''}}   />
                                         </div>
-                                        <?php } ?>
+                                    @endif
                                 </div>
+
                                 <div class="col-sm-6 form-group mt-3"> 
                                     <label for="enable">Is this video :</label>
                                         <div class="make-switch d-flex align-items-center" data-on="success" data-off="warning">
