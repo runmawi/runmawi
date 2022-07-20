@@ -335,6 +335,49 @@ border-radius: 0px 4px 4px 0px;
                 </div>
             </div>
         </div>
+
+
+        <div class="row mt-3">
+            <div class="col-sm-6" id="Pay_Per_view_Hours">
+                <div class="panel panel-primary" data-collapsed="0">
+                    <div class="panel-heading">
+                        <div class="panel-title"><label>IOS PRODUCT ID</label></div>
+                        <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <p class="p1">IOS Product Id :</p>
+                        <div class="form-group">
+                            <div class="make-switch" data-on="success" data-off="warning">
+
+                                <input type="text" class="form-control" name="ios_product_id" id="ios_product_id"
+                                    placeholder=""
+                                    value="@if(!empty($settings->ios_product_id)){{ $settings->ios_product_id }}@endif" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6" id="PPV_Global_Price">
+                <div class="panel panel-primary" data-collapsed="0">
+                    <div class="panel-heading">
+                        <div class="panel-title"><label>IOS Global Price</label> </div>
+                        <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <p class="p1">IOS Plan Price:</p>
+                        <div class="form-group">
+                            <div class="make-switch" data-on="success" data-off="warning">
+                                <input type="text" class="form-control" name="ios_plan_price" id="ios_plan_price"
+                                    placeholder="# of PPV Global IOS Price"
+                                    value="@if(!empty($settings->ios_plan_price)){{ $settings->ios_plan_price }}@endif" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
                                 <!-- video setting -->
 
