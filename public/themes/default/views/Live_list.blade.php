@@ -60,7 +60,7 @@
                                                             @endif
                                                         @endif 
                                                 </div>
-
+ 
                                                 <div class="block-description">
                     
                                                         @if($ThumbnailSetting->title == 1)          <!-- Title -->
@@ -141,7 +141,7 @@
                                                       
                                                     </div>                
                                                 </div>
-                                                 </div>
+                                                </div>
                                                  </a>
                                         </li>
 
@@ -157,6 +157,7 @@
             <?php }?>
     </div>
 </section>
+</div>
 @php
     include(public_path('themes/default/views/footer.blade.php'));
 @endphp
