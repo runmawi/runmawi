@@ -409,7 +409,7 @@ if(Route::current()->getName() == "home" || Route::current()->getName() == null 
     foreach($series_sliders as $key => $series_slider): ?>
 
     <?php 
-            $series_trailer =  App\Series::Select('series.*','series_seasons.trailer')
+            $series_trailer =  App\Series::Select('series.*','series_seasons.trailer','series_seasons.trailer_type')
                                         ->Join('series_seasons','series_seasons.series_id','=','series.id')
                                         ->where('series.id',$series_slider->id)
                                         ->where('series_seasons.id','=',$series_slider->season_trailer)
@@ -459,7 +459,7 @@ if(Route::current()->getName() == "home" || Route::current()->getName() == null 
                     <!-- watch Trailer -->
                     <?php if( $series_trailer != null ) { ?>
                         <div class="trailor-video">
-                            <a href="#video-trailer" class="video-open playbtn" data-trailer-url="<?php if( $series_trailer != null) { echo $series_trailer->trailer; }   ?>"  onclick="trailer_slider_season(this)"  >
+                            <a href="#video-trailer" class="video-open playbtn" data-trailer-url="<?php if( $series_trailer != null) { echo $series_trailer->trailer; }   ?>"  onclick="trailer_slider_season(this)" data-trailer-type = "<?php  echo $series_trailer->trailer_type ;?>"  >
                             
                             <svg class="gt" version="1.1" xmlns="http://www.w3.org/2000/svg"  xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px"
                                     viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
