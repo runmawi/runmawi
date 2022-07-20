@@ -544,12 +544,27 @@ data: {
 											</div> 
 										</div>
                                     </div>
+
+									<div class="row col-sm-12" id="ppv_price"> 
+										<div class="col-sm-6">
+											<label class="p2">PPV Price:</label>
+											<input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($audio->ppv_price)){{ $audio->ppv_price }}@endif">
+										</div>
+
+										<div class="col-sm-6">
+											<label class="p2"> IOS PPV Price:</label>
+											<select  name="ios_ppv_price" class="form-control" id="ios_ppv_price">
+												<option value= "" >Select IOS PPV Price: </option>
+												@foreach($InappPurchase as $Inapp_Purchase)
+													<option value="{{ $Inapp_Purchase->product_id }}" >{{ $Inapp_Purchase->plan_price }}</option>
+												@endforeach
+											 </select>										
+										</div>
+									</div>
+
 									<div class="row">
 									<div class="row mt-3 align-items-center ml-3"> 
-									<div class="col-sm-12" id="ppv_price"> 
-                                    <label class="p2">PPV Price:</label>
-                                    <input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($video->ppv_price)){{ $video->ppv_price }}@endif">
-                                </div>
+									
 								<div class="col-sm-12" > 
                                 <?php if($settings->ppv_status == 1){ ?>
                                     <label class="p2" for="global_ppv">Is this video Is Global PPV:</label>

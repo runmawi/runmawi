@@ -3554,8 +3554,16 @@ class HomeController extends Controller
       
     }
 
-  
+    // ExecuteShell Command For Maintanace sytsem   (Don't Use This)
 
+    // public function ExecuteShell()
+    // {
+        // dd('ExecuteShell');
+        // exec('cd D:\xampp\htdocs\flicknexs');
+        // exec('php artisan up');
+        // exec('php artisan down');
+    // }
+    
 }
 
 

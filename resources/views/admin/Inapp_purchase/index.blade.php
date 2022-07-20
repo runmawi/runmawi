@@ -21,15 +21,15 @@
     <div class="container-fluid">
         <div class="admin-section-title">
             <div class="iq-card">
-                <div class="row">
 
+                @if (Session::has('message'))
+                    <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
+                 @endif
+
+                <div class="row">
                     <div class="col-md-6">
                         <h4><i class="entypo-archive"></i> Manage In App Purchase Plans </h4>
                     </div>
-
-                    @if (Session::has('message'))
-                        <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
-                    @endif
 
                     @if(count($errors) > 0)
                         @foreach( $errors->all() as $message )

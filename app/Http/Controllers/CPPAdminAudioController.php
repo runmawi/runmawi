@@ -41,7 +41,7 @@ use DB;
 use Session;
 use App\CategoryAudio;
 use App\AudioLanguage;
-
+use App\InappPurchase;
 
 class CPPAdminAudioController extends Controller
 {
@@ -92,6 +92,8 @@ class CPPAdminAudioController extends Controller
         if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
         $user = Session::get('user'); 
         $id = $user->id;
+        $settings = Setting::first();
+
         $data = array(
             'headline' => '<i class="fa fa-plus-circle"></i> New Audio',
             'post_route' => URL::to('cpp/audios/audioupdate'),
@@ -104,6 +106,9 @@ class CPPAdminAudioController extends Controller
             'audio_artist' => [],
             'category_id' => [],
             'languages_id' => [],
+            'settings' => $settings,
+            'InappPurchase' => InappPurchase::all(),
+
             );
         return View::make('moderator.cpp.audios.create_edit', $data);
     }else{
@@ -247,7 +252,8 @@ class CPPAdminAudioController extends Controller
         $user = Session::get('user'); 
         $user_id = $user->id;
         $audio = Audio::find($id);
-
+        $settings = Setting::first();
+        
         $data = array(
             'headline' => '<i class="fa fa-edit"></i> Edit Audio',
             'audio' => $audio,
@@ -261,6 +267,8 @@ class CPPAdminAudioController extends Controller
             'audio_artist' => Audioartist::where('audio_id', $id)->pluck('artist_id')->toArray(),
             'category_id' => CategoryAudio::where('audio_id', $id)->pluck('category_id')->toArray(),
             'languages_id' => AudioLanguage::where('audio_id', $id)->pluck('language_id')->toArray(),
+            'settings' => $settings,
+            'InappPurchase' => InappPurchase::all(),
             );
 
         return View::make('moderator.cpp.audios.edit', $data);
@@ -278,6 +286,7 @@ class CPPAdminAudioController extends Controller
      */
     public function CPPupdate(Request $request)
     {
+
         $user_package =    User::where('id', 1)->first();
         $package = $user_package->package;
         if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
@@ -293,6 +302,10 @@ class CPPAdminAudioController extends Controller
         {
             return Redirect::back()->withErrors($validator)->withInput();
         }
+
+        $data['ppv_price'] = $request->ppv_price;
+        $data['ios_ppv_price'] =$request->ios_ppv_price;
+        
         /*Slug*/
         if ($audio->slug != $request->slug) {
             // $data['slug'] = $this->createSlug($request->slug, $id);
@@ -363,6 +376,7 @@ class CPPAdminAudioController extends Controller
             $data['featured'] = 0;
         }
         $data['user_id'] = $user_id;
+       
 
         $audio->update($data);
         $audio->player_image =  $player_image;
@@ -659,6 +673,8 @@ class CPPAdminAudioController extends Controller
         {
             return Redirect::back()->withErrors($validator)->withInput();
         }
+
+     
         /*Slug*/
         if ($audio->slug != $request->slug) {
             $data['slug'] = $request->slug;
@@ -728,6 +744,10 @@ class CPPAdminAudioController extends Controller
         $data['user_id'] = $user_id;
 
         $data['draft'] = 1;
+
+
+        $data['ppv_price'] = $input['ppv_price'] ;
+        $data['ios_ppv_price'] = $input['ios_ppv_price'] ;
 
         $audio->update($data);
         $audio->player_image =  $player_image;

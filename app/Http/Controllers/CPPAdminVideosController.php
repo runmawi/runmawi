@@ -50,7 +50,7 @@ use getID3;
 use App\AdsVideo;
 use App\VideoSearchTag;
 use App\RelatedVideo;
-
+use App\InappPurchase;
 
 
 class CPPAdminVideosController extends Controller
@@ -489,7 +489,7 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
                     'countries' => CountryCode::all(),
                     'video_artist' => [],
                     'ads' => Advertisement::where('status','=',1)->get(),
-        
+                    'InappPurchase' => InappPurchase::all(),
                     );
 
                 return View::make('moderator.cpp.videos.fileupload', $data);
@@ -866,6 +866,8 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
                 'languages_id' => LanguageVideo::where('video_id', $id)->pluck('language_id')->toArray(),
                 'ads_paths' => $ads_details ? $ads_details : 0 ,
                 'ads_rolls' => $ads_rolls ? $ads_rolls : 0 ,
+                'InappPurchase' => InappPurchase::all(),
+
                 );
 
             return View::make('moderator.cpp.videos.create_edit', $data); 
@@ -1267,8 +1269,7 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
          $video->banner =  $banner;
          $video->enable =  $enable;
          $video->search_tags =  $searchtags;
-
-        //  dd($data['enable']);
+         $video->ios_ppv_price = $data['ios_ppv_price'];
          $video->save();
 
 
@@ -1814,6 +1815,7 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
                      $video->banner =  $banner;
                     $video->enable =  1;
                     $video->search_tags =  $searchtags;
+                    $video->ios_ppv_price = $data['ios_ppv_price'];
         
                      $video->update($data);
         

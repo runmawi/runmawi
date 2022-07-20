@@ -514,9 +514,9 @@ location.reload();
 	}
 	.intro_skips,.Recap_skip {
     position: absolute;
-    margin-top: -14%;
+    margin-top: -10%;
     margin-bottom: 0;
-   
+   	/* z-index: -1; */
     margin-right: 0;
 }
     .plyr--video {
@@ -571,6 +571,7 @@ input.skips,input#Recaps_Skip{
   var End = <?php echo json_encode($EndSec); ?>;
   var AutoSkip = <?php echo json_encode($Auto_skip['AutoIntro_skip']); ?>;
   var IntroskipEnd = <?php echo json_encode($skipIntroTime); ?>;
+//   alert(SkipIntroPermissions);
 
   if( SkipIntroPermissions == 0 ){
   button.addEventListener("click", function(e) {
@@ -579,6 +580,8 @@ input.skips,input#Recaps_Skip{
     video.play();
   })
     if(AutoSkip != 1){
+		// alert(AutoSkip);
+
           this.video.addEventListener('timeupdate', (e) => {
             document.getElementById("intro_skip").style.display = "none";
             document.getElementById("Auto_skip").style.display = "none";
@@ -599,6 +602,7 @@ input.skips,input#Recaps_Skip{
 
             var before_Start = Start - 5;
             var trigger = Start - 1;
+
             if (before_Start <= e.target.currentTime && e.target.currentTime < Start) {
                 document.getElementById("Auto_skip").style.display = "block";
                   if(trigger  <= e.target.currentTime){

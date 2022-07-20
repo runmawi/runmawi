@@ -29,7 +29,7 @@ class AdminInappPurchaseController extends Controller
             'product_id' => $request->product_id,
         ]);
 
-        return Redirect::back();
+        return Redirect::back()->with(array('message' => 'Successfully Created In-App Purchase Plans!', 'note_type' => 'success') );
 
     }
 
@@ -46,12 +46,12 @@ class AdminInappPurchaseController extends Controller
             'product_id' => $request->product_id,
         ]);
 
-        return Redirect::back();
+        return Redirect::back()->with(array('message' => 'Successfully Updated  In-App Purchase Plans!', 'note_type' => 'success') );
     }
 
     public function delete(Request $request,$id)
     {
        InappPurchase::where('id',$id)->delete();
-       return Redirect::back();
+       return Redirect::back()->with(array('message' => 'Successfully Deleted  In-App Purchase Plans', 'note_type' => 'success') );
     }
 }
