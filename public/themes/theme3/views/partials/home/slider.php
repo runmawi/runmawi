@@ -6,7 +6,7 @@
 
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
             <div class="slide slick-bg s-bg-1 lazy"
-            style="background:linear-gradient(0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('<?php echo URL::to('/').'/public/uploads/videocategory/' .$slider_video->slider;?>') no-repeat;background-size:cover;background-position:right; ">
+            style="background:linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 4.3)), url('<?php echo URL::to('/').'/public/uploads/videocategory/' .$slider_video->slider;?>') no-repeat;background-size:cover;background-position:right; ">
             <div class="container-fluid position-relative h-100">
                 <div class="slider-inner h-100">
 
@@ -53,7 +53,7 @@ endif; ?>
 
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
             <div class="slide slick-bg s-bg-1 lazy"
-            style="background:linear-gradient(0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('<?php echo URL::to('/').'/public/uploads/images/' .$slider_video->player_image;?>') no-repeat;background-size:cover;background-position:right;  ">
+            style="background:linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 4.3)), url('<?php echo URL::to('/').'/public/uploads/images/' .$slider_video->player_image;?>') no-repeat;background-size:cover;background-position:right;  ">
             <div class="container-fluid position-relative h-100">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center bl h-100">
@@ -124,7 +124,7 @@ endif; ?>
 
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
             <div class="slide slick-bg s-bg-1 lazy"
-            style="background:linear-gradient(0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('<?php echo URL::to('/').'/public/uploads/images/' .$videos->player_image;?>'); background-repeat:no-repeat;background-size:cover;background-postion:top ;">
+            style="background:linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 4.3)), url('<?php echo URL::to('/').'/public/uploads/images/' .$videos->player_image;?>'); background-repeat:no-repeat;background-size:cover;background-postion:top ;">
             <div class="container-fluid position-relative h-100">
                 <div class="slider-inner h-100">
 
@@ -147,24 +147,7 @@ endif; ?>
                         overflow: hidden;">
                         <?php echo __($videos->description); ?>
                         </div>
-                            <div class="row justify r-mb-23  p-0 mb-4 text-center" data-animation-in="fadeInUp"
-                            data-delay-in="1.2">
-                                <div class="col-md-3">
-                                  <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"
-                                class="text-white">
-                                <div class="" style="font-size:25px;">
-                             <i class="fa fa-plus" aria-hidden="true"></i>
-
-                                      </div>
-                                Add Whislist</a></div>
-                                <div class="col-md-3">
-                                 <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"
-                                class="text-white ">
-                                <div class="" style="font-size:25px;">
-                              <i class="fa fa-share-alt" aria-hidden="true"></i>
-                                      </div>
-                                Share</a>
-                            </div></div>
+                            
                             <div class="justify r-mb-23  p-0" data-animation-in="fadeInUp"
                             data-delay-in="1.2">
                                 
@@ -179,10 +162,10 @@ endif; ?>
                         <div class="col-xl-4 col-lg-12 col-md-12 mt-5 pt-5 b2">
                         </div>
                         <div class="col-xl-4 col-lg-12 col-md-12 text-center">
-                      <!--  <div class="">
+                       <div class="">
                              <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo; ?>" class="c-logo w-100" alt="<?php echo $settings->website_name ; ?>"> </a>
-                            <h2 class="sp"></h2>
-                        </div>--></div>
+                           
+                        </div></div>
                 </div>
               <!--  <div class="trailor-video">
                         <a href="#vide
@@ -244,7 +227,7 @@ if(Route::current()->getName() == "home"){
 
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
             <div class="slide slick-bg s-bg-1 lazy"
-                 style="background:linear-gradient(0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('<?php echo URL::to('/').'/public/uploads/images/' .$videos->player_image;?>'); background-repeat:no-repeat;background-size:cover;background-postion:top ;">
+                 style="background:linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('<?php echo URL::to('/').'/public/uploads/images/' .$videos->player_image;?>'); background-repeat:no-repeat;background-size:cover;background-postion:top ;">
                 <div class="container-fluid position-relative h-100">
                     <div class="slider-inner h-100">
 
@@ -371,7 +354,7 @@ if(Route::current()->getName() == "home"){
 
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
             <div class="slide slick-bg s-bg-1 lazy"
-            style="background:linear-gradient(0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('<?php echo URL::to('/').'/public/uploads/images/' .$slider_video->player_image;?>') no-repeat;background-size:cover;background-position:center center; ">
+            style="background:linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('<?php echo URL::to('/').'/public/uploads/images/' .$slider_video->player_image;?>') no-repeat;background-size:cover;background-position:center center; ">
             <div class="container-fluid position-relative h-100">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center bl h-100">

@@ -274,6 +274,16 @@ for($i=0;$i<(count($userrolepermissiom));$i++){
                      <?php }else{ } ?>
                   </ul>
                   </li>
+                  <li>
+
+                     <a href="#analytics_managements" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src=""><span>Analytics</span><i
+                        class="ri-arrow-right-s-line iq-arrow-right"></i>
+                     </a>
+                     <ul id="analytics_managements" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="{{ URL::to('/cpp/video-analytics') }}"><i class="las la-user-plus"></i>Video Analytics </a></li>
+                     </ul>
+                  </li>
+                  
 <?php }else{ } ?> 
    <?php if( in_array( "Plans" ,$role)){ ?>
                    
@@ -327,6 +337,14 @@ for($i=0;$i<(count($userrolepermissiom));$i++){
                         <?php }else{ } ?> 
                         
 
+                     </ul>
+                  </li>
+                  <li>
+                     <a href="#analytics_managements" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/ana.svg')?>"><span>Analytics</span><i
+                        class="ri-arrow-right-s-line iq-arrow-right"></i>
+                     </a>
+                     <ul id="analytics_managements" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="{{ URL::to('/cpp/video-analytics') }}"><i class="las la-user-plus"></i>Video Analytics </a></li>
                      </ul>
                   </li>
                    <?php }else{

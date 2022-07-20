@@ -8,8 +8,15 @@
 <footer class=" py-4 mt-auto">
         <div class="container-fluid px-5">
             <div class="row align-items-center  justify-content-between ">
-                <div class="col-sm-8 small m-0 text-white exp p-0">
-                    <ul class="text-white p-0 mt-3 d-flex">
+                <div class="col-sm-12 small m-0 text-white exp p-0 text-center">
+                    <ul style="display:inline-flex;">
+                        <li>Terms Of Use</li>
+                        <li> Privacy Policy                 
+                        <li>FAQs</li>
+                        <li>Contact Us</li>
+                        <li> Advertise with Us</li>
+                    </ul>
+                   <!-- <ul class="text-white p-0 mt-3 d-flex">
                       <?php $column2_footer = App\FooterLink::where('column_position',2)->orderBy('order')->get();  
                         foreach ($column2_footer as $key => $footer_link){ ?>
                           <li><a href="<?php echo URL::to('/'.$footer_link->link) ?>">
@@ -41,12 +48,12 @@
                     </ul>
                     
                  
-                         <!--   <li><a href="<?php echo URL::to('/contact-us/') ;?>">Contact us</a></li> -->
+                         <!--   <li><a href="<?php echo URL::to('/contact-us/') ;?>">Contact us</a></li> 
 
                     </ul>
 
                      <div class="mt-2 p-2">
-                    <div class="small m-0 text-white"><p>The Best Streaming Platform</p></div>
+                   
                     <div class="d-flex p-0 text-white icon mt-4">
 <p>Social :</p>
                     <?php if(!empty($settings->facebook_page_id)){?>
@@ -183,18 +190,19 @@
                 </div>-->
                 <?php $app_settings = App\AppSetting::where('id','=',1)->first();  ?>     
 
-                <div class="col-sm-4 small m-0 text-white text-right"><h3 class="font-weight-bold mb-2">Download App</h3>
-                    <p>Available on Play Store</p>
-                    <!-- <img src="<?php //echo URL::to('assets/img/gp2.png') ?> " alt="Play store" class="w-50"> -->
-                    <?php if(!empty($app_settings->android_url)){ ?> 
-                    <img class="" height="80" width="140" src="<?php echo  URL::to('/assets/img/apps1.png')?>" style="margin-top:-20px;">
-                    <?php } ?>
-                    <?php if(!empty($app_settings->ios_url)){ ?> 
-                    <img class="" height="80" width="140" src="<?php echo  URL::to('/assets/img/apps.png')?>" style="margin-top:-20px;">
-                    <?php } ?>
-                    <?php if(!empty($app_settings->android_tv)){ ?> 
-                    <img class="" height="100" width="150" src="<?php echo  URL::to('/assets/img/and.png')?>" style="margin-top:-20px;">
-                    <?php } ?>
+                <div class="col-sm-12 small m-0 text-white text-center">
+                    <a href="<?php echo $settings->facebook_page_id; ?>" target="_blank"  class="text-center icn">
+                      <i class="fa fa-facebook" aria-hidden="true"></i>
+
+                        </a>
+                      <a href="<?php echo $settings->twitter_page_id; ?>" class="text-center icn">
+                       <i class="fa fa-twitter" aria-hidden="true"></i>
+
+                        </a>
+                    <a href="<?php echo $settings->youtube_page_id; ?>" class="text-center icn">
+                      <i class="fa fa-youtube-play" aria-hidden="true"></i>
+
+                        </a>
                 </div>
             </div>
         </div>
@@ -340,7 +348,7 @@
       <script src="<?= URL::to('/'). '/assets/js/slick-animation.min.js';?>"></script>
       <!-- Custom JS-->
 
-      <script type="text/javascript" src="<?php echo URL::to('public/themes/theme2/assets/js/custom.js'); ?>"></script>
+      <script type="text/javascript" src="<?php echo URL::to('public/themes/theme3/assets/js/custom.js'); ?>"></script>
       
       <?php 
       $footer_script = App\Script::pluck('footer_script')->toArray();

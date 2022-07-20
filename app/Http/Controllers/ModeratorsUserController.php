@@ -6161,6 +6161,9 @@ class ModeratorsUserController extends Controller
         $total_contents = Video::join('moderators_users', 'moderators_users.id', '=', 'videos.user_id')
         ->groupBy('videos.id')
         ->get([
+            'videos.*',
+            \DB::raw("moderators_users.username as cppusername"),
+            \DB::raw("moderators_users.email as cppemail"),
             \DB::raw("COUNT(*) as count"),
             \DB::raw("MONTHNAME(videos.created_at) as month_name"),
             \DB::raw("MONTHNAME(videos.created_at) as month_name")

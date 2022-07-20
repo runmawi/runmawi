@@ -736,7 +736,7 @@ border-radius: 0px 4px 4px 0px;
                               </div>
 
                            
-                           <div class="row">
+                           <div class="row align-items-center">
                               <div class="col-sm-6 form-group mt-3" >
                                  <label for="">Search Tags </label>
                                     <!-- <input type="text" class="form-control" id="#inputTag" name="searchtags" value="" data-role="tagsinput"> -->

@@ -51,31 +51,36 @@ Import CSS
 /*---------------------------------------------------------------------
 Font
 -----------------------------------------------------------------------*/
-@import url('http://fonts.cdnfonts.com/css/proxima-nova-2');
-
+@font-face {
+      font-family: 'Gilroy-Regular';
+  src: url(Gilroy-Regular.woff);
+    
+}
 /*---------------------------------------------------------------------
 General
 -----------------------------------------------------------------------*/
 *::-moz-selection { background: var(--iq-primary); color: var(--iq-white); text-shadow: none; }
 ::-moz-selection { background: var(--iq-primary); color: var(--iq-white); text-shadow: none; }
 ::selection { background: var(--iq-primary); color: var(--iq-white); text-shadow: none; }
-body { font-family:  'Proxima Nova'!important;
+body {   font-family: 'Gilroy-Regular';
 font-style: normal;
-font-weight: normal;font-weight: 400; font-style: normal; font-size: 16px; line-height: 1.5; padding: 0; margin: 0; color: var(--iq-body-text); /*background: var(--iq-body-bg);*/ }
+font-weight: normal;font-weight: 400; font-style: normal; font-size: 16px; line-height: 1.5; padding: 0; margin: 0; color: var(--iq-body-text); /*background: var(--iq-body-bg);*/background: linear-gradient(180deg, #22093C -35.59%, #200362 173.05%);
+
+ }
 a, .btn { -webkit-transition: all 0.5s ease-out 0s; -moz-transition: all 0.5s ease-out 0s; -ms-transition: all 0.5s ease-out 0s; -o-transition: all 0.5s ease-out 0s; transition: all 0.5s ease-out 0s; }
 a, button, input, btn { outline: medium none; }
 a { color: var(--iq-body-text); text-decoration: none; }
 a:hover { text-decoration: none; }
 a.text-primary:focus, a.text-primary:hover { color: var(--iq-primary) !important; }
 hr { border-color: var(--iq-border-light); }
-h1, h2, h3, h4, h5, h6 { font-weight: 500; margin: 0px; line-height: 1.2; color: var(--iq-white);font-family: 'Proxima Nova'; }
+h1, h2, h3, h4, h5, h6 { font-weight: 500; margin: 0px; line-height: 1.2; color: var(--iq-white);      font-family: 'Gilroy-Regular';}
 h1 a, h2 a, h3 a, h4 a, h5 a, h6 a { color: inherit; }
-label { font-weight: normal;font-family: 'Proxima Nova'; }
-h1, .h1 { font-size: 3.052em;font-family: 'Proxima Nova'; }
-h2, .h2 { font-size: 2.300em; font-family: 'Proxima Nova';}
-h3, .h3 { font-size: 1.953em;font-family: 'Proxima Nova'; }
-h4, .h4 { font-size: 1.400em; font-family: 'Proxima Nova';}
-h5, .h5 { font-size: 1.200em; font-family: 'Proxima Nova';}
+label { font-weight: normal;      font-family: 'Gilroy-Regular';}
+h1, .h1 { font-size: 3.052em;      font-family: 'Gilroy-Regular';}
+h2, .h2 { font-size: 2.300em;       font-family: 'Gilroy-Regular';}
+h3, .h3 { font-size: 1.953em;      font-family: 'Gilroy-Regular';}
+h4, .h4 { font-size: 1.400em;       font-family: 'Gilroy-Regular';}
+h5, .h5 { font-size: 1.200em;       font-family: 'Gilroy-Regular';}
 h6, .h6 { font-size: 1.0em; }
 .container-fluid { padding: 0 50px; }
 .fluid{padding: 5px 20px;   min-width: 100%;overflow: visible;position: relative;
@@ -88,7 +93,7 @@ h6, .h6 { font-size: 1.0em; }
 }
 .height-100-vh { height: 100vh; }
 .w-20 { width: 20px; }
-.big-title { font-family: 'Proxima Nova';}
+.big-title {       font-family: 'Gilroy-Regular';}
 .badge { border-radius: 0 !important; }
 .iq-mb-30 { margin-bottom: 30px; }
 
@@ -255,7 +260,7 @@ Select 2
 .select2-container--bootstrap4.select2-container--focus .select2-selection { box-shadow: none; }
 .select2-search--dropdown .select2-search__field { border-radius: 0; border: none; background: rgba(85, 85, 85, 0.65); color: var(--iq-white); }
 .select2-container--bootstrap4 .select2-selection--single .select2-selection__arrow b { border: none; }
-.select2-container--bootstrap4 .select2-selection--single .select2-selection__arrow b:before { content: '\ea41'; position: absolute; font-family: 'Proxima Nova'; top: 50%; transform: translateY(-50%); right: 1px; color: var(--iq-white); font-size: 16px; z-index: 99; transition: all 0.4s ease; }
+.select2-container--bootstrap4 .select2-selection--single .select2-selection__arrow b:before { content: '\ea41'; position: absolute;       font-family: 'Gilroy-Regular';top: 50%; transform: translateY(-50%); right: 1px; color: var(--iq-white); font-size: 16px; z-index: 99; transition: all 0.4s ease; }
 .select2-container--bootstrap4.select2-container--open .select2-selection__arrow b:before { transform: translateY(-50%) rotate(180deg); }
 .select2-container--bootstrap4 .select2-selection--single .select2-selection__arrow b { margin-top: 0; }
 .select2-container--bootstrap4 .select2-selection--single .select2-selection__arrow { width: auto; }
