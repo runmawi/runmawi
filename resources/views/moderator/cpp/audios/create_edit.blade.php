@@ -1,4 +1,4 @@
-@extends('moderator.master')
+@extends('c.master')
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="csrf-token" content="{{ csrf_token() }}">

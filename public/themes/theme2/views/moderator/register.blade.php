@@ -84,6 +84,10 @@
                                 <input type="file" multiple="true" class="form-control" style="padding: 0px;" name="picture" id="picture" />
                                  </div>
                                  <div class="col-md-12">
+                                <label for="" style="color: white;">Intro Video :</label>
+                                <input type="file" multiple="true" class="form-control" style="padding: 0px;" accept="video/mp4,video/x-m4v,video/*" name="intro_video" id="intro_video" />
+                                 </div>
+                                 <div class="col-md-12">
                                      <div class="row">
                                      <div class="col-md-12">
                                 <input id="password" type="password" placeholder="Password" class="form-control @error('password') is-invalid @enderror pwd" name="password" required autocomplete="new-password">

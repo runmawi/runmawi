@@ -890,6 +890,13 @@ Route::post('cpp/home',  'ModeratorsLoginController@Login')->name('CPPLogin');
 Route::group(['prefix' => 'cpp','middleware' => ['cpp']], function() {
 // Route::middleware(['prefix' => 'cpp' ,cpp::class])->group(function(){
 // Route::get('/Homeone',  'ModeratorsLoginController@Home');
+
+
+Route::get('video-analytics', 'CPPAnalyticsController@IndexVideoAnalytics');
+Route::post('video_startdate_analytics', 'CPPAnalyticsController@VideoStartDateAnalytics');
+Route::post('video_enddate_analytics', 'CPPAnalyticsController@VideoEndDateAnalytics');
+Route::post('video_exportCsv', 'CPPAnalyticsController@VideoExportCsv');
+
 Route::get('/dashboard', 'ModeratorsLoginController@IndexDashboard');
 Route::get('/logout', 'ModeratorsLoginController@logout');
 //  CPP Video Management
