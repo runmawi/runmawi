@@ -124,6 +124,16 @@ class AdminSettingsController extends Controller
             }else{
             $activation_email = 0;
             }
+            if(!empty($request['ios_product_id'])){
+            $ios_product_id = $request['ios_product_id'];
+            }else{
+            $ios_product_id = null;
+            }
+            if(!empty($request['ios_plan_price'])){
+            $ios_plan_price = $request['ios_plan_price'];
+            }else{
+            $ios_plan_price = null;
+            }
             // dd($activation_email);
 		$settings = Setting::find(1);
 		$settings->demo_mode = $request['demo_mode'];
@@ -170,7 +180,8 @@ class AdminSettingsController extends Controller
 		$settings->system_email = $request['system_email'];
 		$settings->discount_percentage = $request['discount_percentage'];
 		$settings->logo_size = $request['logo_size'];
-        
+    $settings->ios_plan_price = $ios_plan_price;
+		$settings->ios_product_id = $ios_product_id;
 		$settings->notification_key = $request['notification_key'];
         
         $settings->ppv_status = $request['ppv_status'];

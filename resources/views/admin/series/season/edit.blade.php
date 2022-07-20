@@ -39,7 +39,15 @@
                         <label class="m-0">PPV Price:</label>
                         <input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($season->ppv_price)){{ $season->ppv_price }}@endif" />
                     </div>
-
+                    <div class="form-group" >
+                        <label class="m-0">IOS PPV Price:</label>
+                        <select  name="ios_ppv_price" class="form-control" id="ios_ppv_price">
+                            <option value= "" >Select IOS PPV Price: </option>
+                            @foreach($InappPurchase as $Inapp_Purchase)
+                                <option value="{{ $Inapp_Purchase->product_id }}"  @if(!empty($season->product_id) && $season->product_id == $Inapp_Purchase->product_id){{ 'selected' }} @endif > {{ $Inapp_Purchase->plan_price }} </option>
+                            @endforeach
+                        </select>
+                    </div>
                     <div class="form-group {{ $errors->has('ppv_interval') ? 'has-error' : '' }}">
                         <label class="m-0">PPV Interval:</label>
                         <p class="p1">Please Mention How Many Episodes are Free:</p>
@@ -77,13 +85,15 @@
 
     jQuery(document).ready(function($){
     	$('#ppv_price').hide();
-              // alert($('#ppv_access').val());
+            // alert($('#ppv_access').val());
     	if($('#ppv_access').val() == "ppv"){
     		$('#ppv_price').show();
+    		$('#ios_ppv_price').show();
     		}
-                  $('#access').change(function(){
+            $('#access').change(function(){
     		if($('#access').val() == "ppv"){
     		$('#ppv_price').show();
+    		$('#ios_ppv_price').show();
     		}
     	});
 
