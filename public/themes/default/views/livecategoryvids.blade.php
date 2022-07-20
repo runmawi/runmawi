@@ -37,7 +37,7 @@ $currency = App\CurrencySetting::first();
                                                     <?php } ?>
                                                
                                         </div>
-                                              </div>    <!-- </div> -->
+                                                <!-- </div> -->
 
                                             <div class="block-description">
                                                     
@@ -125,7 +125,7 @@ $currency = App\CurrencySetting::first();
 
                                                 </div>
 
-                                          
+                                            </div>
                                         </a>
                                     </li>
                             
