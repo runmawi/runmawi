@@ -216,7 +216,7 @@ class ModeratorsLoginController extends Controller
 $user_package =    User::where('id', 1)->first();
 $package = $user_package->package;
 if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
-$string = Str::random(60); 
+    $string = Str::random(60); 
     $moderatorsuser = new ModeratorsUser;
     $moderatorsuser->username = $request->username;
     $moderatorsuser->email = $request->email_id;
@@ -233,6 +233,8 @@ $string = Str::random(60);
     $logopath = URL::to('/public/uploads/picture/');
     $path = public_path().'/uploads/picture/';
     $picture = $request['picture'];
+    $intro_video = (isset($request['intro_video'])) ? $request['intro_video'] : '';
+
 if($picture != '') {   
      //code for remove old file
      if($picture != ''  && $picture != null){
@@ -247,6 +249,31 @@ if($picture != '') {
      $file->move($path, $moderatorsuser->picture);
     
 }
+
+
+$logopath = URL::to('/public/uploads/moderator/');
+$path = public_path().'/uploads/moderator/';
+
+if($intro_video != '') {   
+  //code for remove old file
+  if($intro_video != ''  && $intro_video != null){
+       $file_old = $path.$intro_video;
+      if (file_exists($file_old)){
+       unlink($file_old);
+      }
+  }
+  //upload new file
+  $randval = Str::random(16);
+  $file = $intro_video;
+  $intro_video_ext  = $randval.'.'.$request->file('intro_video')->extension();
+  $file->move($path, $intro_video_ext);
+  
+  $moderatorsuser->intro_video  = URL::to('/').'/public/uploads/moderator/'.$intro_video_ext;
+
+} else {
+  $moderatorsuser->intro_video = null;
+}  
+
 if($request->picture == ""){
   $moderatorsuser->picture  = "Default.png";
 }else{

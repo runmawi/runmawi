@@ -1,7 +1,6 @@
-<!-- Page Create on 04/04/2022 -->
+<!-- Page Create on 20/07/2022 -->
 
-
-@extends('admin.master')
+@extends('moderator.master')
 
 @section('css')
 	<link rel="stylesheet" href="{{ URL::to('/assets/admin/css/sweetalert.css') }}">
@@ -50,7 +49,7 @@
                 <div class="clear"></div>
                 <br>
 
-                <h4 class="card-title">CPP Video View Through Graph :</h4>
+                <h4 class="card-title">Video View Through Graph :</h4>
                 
                 <div class="row">
                     <div class="col-md-8">
@@ -114,6 +113,8 @@
 
 
 
+
+
 <script>
 
     $.ajaxSetup({
@@ -123,12 +124,11 @@
     });
 
      $(document).ready(function(){
-        // alert();
-
+        // alert();video_startdate_analytics
         $('#start_time').change(function(){
             var start_time =  $('#start_time').val();
             var end_time =  $('#end_time').val();
-            var url = "{{ URL::to('admin/cpp_video_startdate_analytics/')  }}";
+            var url = "{{ URL::to('cpp/video_startdate_analytics/')  }}";
        
        if(start_time != "" && end_time == ""){
             $.ajax({
@@ -174,7 +174,7 @@
         $('#end_time').change(function(){
         var start_time =  $('#start_time').val();
         var end_time =  $('#end_time').val();
-        var url = "{{ URL::to('admin/cpp_video_enddate_analytics/')  }}";
+        var url = "{{ URL::to('cpp/video_enddate_analytics/')  }}";
 
        if(start_time != "" && end_time != ""){
             $.ajax({
@@ -220,8 +220,6 @@
 
      });
 
-
-     
     /////////  Export ///////////////
 
     $.ajaxSetup({
@@ -234,7 +232,7 @@
             var start_time =  $('#start_time').val();
             var end_time =  $('#end_time').val();
             var url =  $('#exportCsv_url').val();
-        var url = "{{ URL::to('admin/cpp_video_exportCsv/')  }}";
+        var url = "{{ URL::to('cpp/video_exportCsv/')  }}";
 
             $.ajax({
             url: url,
@@ -261,10 +259,7 @@
     });
 
 </script>
-
-
-
-        
+     
 <script type="text/javascript">
 
 var total_video_count   = "{{ $total_video_count }}";
@@ -279,12 +274,10 @@ function drawChart() {
 
 var data = google.visualization.arrayToDataTable([
     ['Month Name', 'Moderator Video Views'],
-
-        @php
-        foreach($total_content as $key => $d) {
-            echo "['".$d->month_name."', ".$d->views."],";
-        }
-        @endphp
+    <?php foreach ($total_content as $d) {
+        echo "['" . $d->month_name . "', " . $d->views . "],";
+    } ?>
+    
 ]);
 
 var options = {
