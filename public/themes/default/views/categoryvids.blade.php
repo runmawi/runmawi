@@ -6,7 +6,14 @@ include(public_path('themes/default/views/header.php'));
 <style>
     .btn{
         background-color: transparent!important;
+        width: 80%;
     }
+   .bootstrap-select>.dropdown-toggle{
+        background-color: transparent!important;
+      width: 88%!important;
+       
+    }
+    
 </style>
 <!-- MainContent -->
 <?php if(!empty($data['password_hash'])) { $id = Auth::user()->id ; } else { $id = 0 ; } 
@@ -27,9 +34,9 @@ $category_slug = App\VideoCategory::where('name',$categoryVideos['category_title
 
                     {{-- filter Option --}}
 
-                        <div class="row mt-2 p-0 justify-content-between">
+                        <div class="row mt-2 p-0 justify-content-end" >
 
-                            {{-- <div class="col-md-2">
+                            {{-- <div class="col-md-2 col-sm-4 mb-1">
                                 <select class="selectpicker " multiple title="Refine" data-live-search="true">
                                     <option value="videos">Movie</option>
                                     <option value="tv_Shows">TV Shows</option>
@@ -40,7 +47,7 @@ $category_slug = App\VideoCategory::where('name',$categoryVideos['category_title
 
                             </div> --}}
 
-                            <div class="col-md-2">
+                            <div class="col-md-2  col-sm-4 mb-1">
                                 <select class="selectpicker " multiple title="Age" name="age[]" id="age" data-live-search="true">
                                     @foreach($categoryVideos['age_categories'] as $age)
                                         <option value="{{ $age->age  }}">{{ $age->slug }}</option>
@@ -48,7 +55,7 @@ $category_slug = App\VideoCategory::where('name',$categoryVideos['category_title
                                 </select>
                             </div>
 
-                            <div class="col-md-2">
+                            <div class="col-md-2  col-sm-4 mb-1">
                                 <select class="selectpicker " multiple title="Rating" id="rating" name="rating[]" data-live-search="true">
                                     <option value="1" >1</option>
                                     <option value="2">2</option>
@@ -64,7 +71,7 @@ $category_slug = App\VideoCategory::where('name',$categoryVideos['category_title
                             </div>
 
                             
-                            <div class="col-md-2">
+                            <div class="col-md-2 mb-1">
                                 <select class="selectpicker " multiple  title="Newly added First" id="sorting" name="sorting" data-live-search="true">
                                     <option value="latest_videos">Latest Videos</option>
                                 </select>
@@ -72,7 +79,7 @@ $category_slug = App\VideoCategory::where('name',$categoryVideos['category_title
 
                             <input type="hidden" id="category_id" value={{ $category_id  }} name="category_id">
 
-                            <div class="col-md-2">
+                            <div class="col-md-2 text-right p-0" id="mob1">
                                 <button type="submit" class="btn btn-primary filter">Filter</button>
                             </div>
                         </div>  
