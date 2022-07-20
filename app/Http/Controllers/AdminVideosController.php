@@ -1664,7 +1664,7 @@ if(!empty($artistsdata)){
                     $subtitle_data['movie_id'] = $id;
                     $subtitle_data['url'] = URL::to('/').'/public/uploads/subtitles/'.$filename; 
                     $video_subtitle = new MoviesSubtitles;
-                    $video_subtitle->movie_id =  443 ;
+                    $video_subtitle->movie_id =  $video->id ;
                     $video_subtitle->shortcode =   $shortcodes[$key];
                     $video_subtitle->sub_language =  $languages[$key] ;
                     $video_subtitle->url =   URL::to('/').'/public/uploads/subtitles/'.$filename;
@@ -2431,7 +2431,7 @@ if(!empty($artistsdata)){
                     $subtitle_data['movie_id'] = $id;
                     $subtitle_data['url'] = URL::to('/').'/public/uploads/subtitles/'.$filename; 
                     $video_subtitle = new MoviesSubtitles;
-                    $video_subtitle->movie_id =  443 ;
+                    $video_subtitle->movie_id =  $video->id ;
                     $video_subtitle->shortcode =   $shortcodes[$key];
                     $video_subtitle->sub_language =  $languages[$key] ;
                     $video_subtitle->url =   URL::to('/').'/public/uploads/subtitles/'.$filename;
