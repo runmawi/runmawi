@@ -49,6 +49,7 @@ use GuzzleHttp\Message\Response;
 use App\SeriesGenre;
 use App\Jobs\ConvertSerieTrailer;
 use Streaming\Representation;
+use getID3;
 use App\InappPurchase;
 
 class AdminSeriesController extends Controller
@@ -1575,6 +1576,13 @@ if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1
         $request->file->storeAs('public', $path);
         $storepath  = URL::to('/storage/app/public/'.$path);
         $file = $request->file->getClientOriginalName();
+
+             //  Episode duration 
+             $getID3 = new getID3;
+             $Video_storepath  = storage_path('app/public/'.$path);       
+             $VideoInfo = $getID3->analyze($Video_storepath);
+             $Video_duration = $VideoInfo['playtime_seconds'];
+
         $newfile = explode(".mp4",$file);
         $file_folder_name = $newfile[0];       
          $original_name = ($request->file->getClientOriginalName()) ? $request->file->getClientOriginalName() : '';
@@ -1586,6 +1594,7 @@ if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1
          $episode->image = 'default_image.jpg';
          $episode->type = 'upload';
          $episode->status = 0;
+            $episode->duration = $Video_duration;
          $episode->save(); 
          $episode_id = $episode->id;
         $episode_title = Episode::find($episode_id);
@@ -1594,6 +1603,7 @@ if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1
         $value['message'] = 'Uploaded Successfully!';
         $value['episode_id'] = $episode_id;
         $value['episode_title'] = $title;
+        $value['episode_duration'] = gmdate('H:i:s', $episode_title->duration);
         return $value;
         }else {
             $value['success'] = 2;
@@ -1615,6 +1625,11 @@ if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1
          
         $storepath  = URL::to('/storage/app/public/'.$path);
 
+          //  Episode duration 
+          $getID3 = new getID3;
+          $Video_storepath  = storage_path('app/public/'.$path);       
+          $VideoInfo = $getID3->analyze($Video_storepath);
+          $Video_duration = $VideoInfo['playtime_seconds'];
 
          $video = new Episode();
          $video->title = $file_folder_name;
@@ -1629,6 +1644,7 @@ if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1
          $video->path = $path;
          $video->mp4_url = $storepath;
         //  $video->user_id = Auth::user()->id;
+        $video->duration = $Video_duration;
          $video->save();
 
          ConvertEpisodeVideo::dispatch($video,$storepath);
@@ -1640,6 +1656,8 @@ if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1
         $value['message'] = 'Uploaded Successfully!';
         $value['episode_id'] = $episode_id;
         $value['episode_title'] = $title;
+        $value['episode_duration'] = gmdate('H:i:s', $episode_title->duration);
+
         return $value;
          
           
@@ -1942,6 +1960,34 @@ if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1
         }
         return 1;
 
+    }
+
+    public function series_slider_update(Request $request)
+    {
+        try {
+            $video = Series::where('id',$request->video_id)->update([
+                'banner' => $request->banner_status,
+            ]);
+
+            return response()->json(['message'=>"true"]);
+
+        } catch (\Throwable $th) {
+            return response()->json(['message'=>"false"]);
+        }
+    }
+
+    public function episode_slider_update(Request $request)
+    {
+        try {
+            $video = Episode::where('id',$request->video_id)->update([
+                'banner' => $request->banner_status,
+            ]);
+
+            return response()->json(['message'=>"true"]);
+
+        } catch (\Throwable $th) {
+            return response()->json(['message'=>"false"]);
+        }
     }
 
 }

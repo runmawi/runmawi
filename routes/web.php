@@ -504,7 +504,12 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/video_slug_validate', 'AdminVideosController@video_slug_validate'); 
 
     // slider for live stream in index
-    Route::post('/livevideo_slider_update', 'AdminLiveStreamController@livevideo_slider_update'); 
+    Route::post('/livevideo_slider_update', 'AdminLiveStreamController@livevideo_slider_update');
+    
+    // slider - series & Episode
+    Route::post('/series_slider_update', 'AdminSeriesController@series_slider_update'); 
+    Route::post('/episode_slider_update', 'AdminSeriesController@episode_slider_update'); 
+
 
     /* Thumbnail Setting */
     Route::get('/ThumbnailSetting', 'AdminSettingsController@ThumbnailSetting')->name('ThumbnailSetting'); 
