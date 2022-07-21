@@ -77,7 +77,8 @@
             "database/factories"
         ],
         "files": [
-             "app/helper/helpers.php"
+             "app/helper/helpers.php",
+             "app/helper/LogActivity.php"
         ]
     },
     "autoload-dev": {
