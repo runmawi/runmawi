@@ -442,7 +442,8 @@
                         <table class="table table-bordered iq-card text-center" id="categorytbl">
                             <tr class="table-header r1">
                                 <th><label>Episode </label></th>
-                                <th><label>Episode  Name</label></th>
+                                <th><label>Episode Name</label></th>
+                                <th><label>Slider</label></th>
                                 <th><label>Action</label></th>
                             </tr>
 
@@ -450,6 +451,14 @@
                                 <tr id="{{ $episode->id }}">
                                     <td valign="bottom"><p> Episode {{ $episode->episode_order }}</p></td>
                                     <td valign="bottom"><p>{{ $episode->title }}</p></td>
+                                    <td valign="bottom">
+                                        <div class="mt-1">
+                                            <label class="switch">
+                                                <input name="video_status" class="video_status" id="{{ 'video_'.$episode->id }}" type="checkbox" @if( $episode->banner == "1") checked  @endif data-video-id={{ $episode->id }}  data-type="video" onchange="update_episode_banner(this)" >
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                    </td>
                                     <td>
                                         <div class=" align-items-center">
                                             <a href="{{ URL::to('admin/episode/edit') . '/' . $episode->id }}" class="btn btn-xs btn-primary"><span class="fa fa-edit"></span> Edit</a>
@@ -859,6 +868,58 @@ var tagInput1 = new TagsInput({
             }
         })
     }
+</script>
+
+<script>
+	function update_episode_banner(ele){
+
+	var video_id = $(ele).attr('data-video-id');
+	var status   = '#video_'+video_id;
+	var video_Status = $(status).prop("checked");
+
+	if(video_Status == true){
+		  var banner_status  = '1';
+		  var check = confirm("Are you sure you want to active this slider?");  
+
+	}else{
+		  var banner_status  = '0';
+		  var check = confirm("Are you sure you want to remove this slider?");  
+	}
+
+
+	if(check == true){ 
+
+	   $.ajax({
+				type: "POST", 
+				dataType: "json", 
+				url: "{{ url('admin/episode_slider_update') }}",
+					  data: {
+						 _token  : "{{csrf_token()}}" ,
+						 video_id: video_id,
+						 banner_status: banner_status,
+				},
+				success: function(data) {
+					  if(data.message == 'true'){
+						//  location.reload();
+					  }
+					  else if(data.message == 'false'){
+						 swal.fire({
+						 title: 'Oops', 
+						 text: 'Something went wrong!', 
+						 allowOutsideClick:false,
+						 icon: 'error',
+						 title: 'Oops...',
+						 }).then(function() {
+							location.href = '{{ URL::to('admin/ActiveSlider') }}';
+						 });
+					  }
+				   },
+			 });
+	}else if(check == false){
+	   $(status).prop('checked', true);
+
+	}
+	}
 </script>
 
 

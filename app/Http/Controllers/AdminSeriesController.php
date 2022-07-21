@@ -1962,4 +1962,32 @@ if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1
 
     }
 
+    public function series_slider_update(Request $request)
+    {
+        try {
+            $video = Series::where('id',$request->video_id)->update([
+                'banner' => $request->banner_status,
+            ]);
+
+            return response()->json(['message'=>"true"]);
+
+        } catch (\Throwable $th) {
+            return response()->json(['message'=>"false"]);
+        }
+    }
+
+    public function episode_slider_update(Request $request)
+    {
+        try {
+            $video = Episode::where('id',$request->video_id)->update([
+                'banner' => $request->banner_status,
+            ]);
+
+            return response()->json(['message'=>"true"]);
+
+        } catch (\Throwable $th) {
+            return response()->json(['message'=>"false"]);
+        }
+    }
+
 }
