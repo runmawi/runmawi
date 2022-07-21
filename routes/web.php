@@ -25,7 +25,8 @@ Route::get('/contact-us/', 'ContactController@index');
 Route::post('/contact-us/store/', 'ContactController@Store');
 Route::get('admin/contact-us/', 'ContactController@ViewRequest');
 
-
+Route::get('add-to-log', 'HomeController@myTestAddToLog');
+Route::get('logActivity', 'HomeController@logActivity');
 
 
 // Route::get('/admin/filemanager', 'FileManagerController@index');
@@ -473,6 +474,9 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
 
     Route::post('/theme_settings/save','AdminThemeSettingsController@SaveTheme');
 
+
+    Route::get('/linking_settings', 'AdminSettingsController@LinkingIndex');
+    Route::post('/linking/store', 'AdminSettingsController@LinkingSave');
 
     /* payment settings */
     Route::get('/payment_settings', 'AdminPaymentSettingsController@index');

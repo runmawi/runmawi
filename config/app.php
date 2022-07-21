@@ -277,6 +277,8 @@ return [
         'Theme' => Facuz\Theme\Facades\Theme::class,
         'Zip' => ZanySoft\Zip\ZipFacade::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'LogActivity' => App\Helpers\LogActivity::class,
+
 
     ],
 
