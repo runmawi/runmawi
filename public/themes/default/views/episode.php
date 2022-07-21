@@ -230,6 +230,7 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
     <div> -->
 
 	      <!-- Watchlater & Wishlist -->
+		  
 		  <div class="col-md-5">
 		  		<ul class="list-inline p-0 mt-4 share-icons music-play-lists">
 
