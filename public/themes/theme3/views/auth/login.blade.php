@@ -18,16 +18,17 @@ $system_settings = App\SystemSetting::find(1);
       <!-- Bootstrap CSS -->
       <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme1/assets/css/bootstrap.min.css')?>" rel="stylesheet">
       <!-- Typography CSS -->
-      <link href="<?php echo URL::to('public/themes/theme2/assets/css/typography.css') ?>" rel="stylesheet">
+      <link href="<?php echo URL::to('public/themes/theme3/assets/css/typography.css') ?>" rel="stylesheet">
       <!-- Style -->
-      <link href="<?php echo URL::to('public/themes/theme2/assets/css/style.css') ?>" rel="stylesheet">
-      <link href="<?php echo URL::to('public/themes/theme2/assets/css/responsive.css') ?>" rel="stylesheet">
+      <link href="<?php echo URL::to('public/themes/theme3/assets/css/style.css') ?>" rel="stylesheet">
+      <link href="<?php echo URL::to('public/themes/theme3/assets/css/responsive.css') ?>" rel="stylesheet">
 
       <!-- Responsive -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="stylesheet">
-        
+        <link href="http://fonts.cdnfonts.com/css/gilroy-bold?styles=20876,20877,20878,20879,20880" rel="stylesheet">
+                
  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
@@ -64,11 +65,17 @@ line-height: 57px;
         font-weight: 600;
         color: #fff;
         text-align: left;
-        font-family: 'Chivo';
+       font-family: 'Gilroy-Bold';
+
 
 
 
     }
+    @font-face {
+      font-family: 'Gilroy-Regular';
+  src: url(Gilroy-Regular.woff);
+    
+}
     	.input-icons i {
 			position: absolute;
             left: 20px;
@@ -89,9 +96,9 @@ line-height: 57px;
 		
 		.input-field {
 			width: 100%;
-			padding: 10px;
+			padding: 10px 0px 0px;
 			height: 59px;
-            padding-left: 55px;
+           
 		}
 	
        
@@ -99,7 +106,7 @@ line-height: 57px;
  }
     a.f-link {
     margin-bottom: 1rem;
-        margin-left: 15vw;
+      
         font-size: 14px;
     
 }
@@ -119,37 +126,70 @@ i.fa.fa-google-plus {
    .form-control::-moz-placeholder {
   color: #fff!important;
   opacity: 1;
-         letter-spacing: 0.28em;
+       
 }
 .form-control:-ms-input-placeholder {
   color: #999;
-      letter-spacing: 0.28em;
+     
 }
 .form-control::-webkit-input-placeholder {
   color: #999;
-      letter-spacing: 0.28em;
+    
 }
     .sign-in-page{
         
         padding: 40px;
         padding-top: 100px;
-        border-radius: 20px;
+      
     }  
+    .icn i{
+        border:1px solid #fff;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 5px;
+        width: 40px;
+        height: 40px;
+        color: #fff;
+    }
+    .sea{
+        font-size: 20px;
+        color: #fff;
+    }
 </style>
     </head>
 
 <body>
+  <section>
+      <div class="row p-2 align-items-center">
+          <div class="col-md-4 sea">
+              <i class="fa fa-search" aria-hidden="true"></i>
+
+          </div>
+          <div class="col-md-4 text-center">
+            <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  >
+          </div>
+          <div class="col-md-4 text-right">
+              <a href="<?= URL::to('/login')?>" class=" mr-2" style="color:#fff!important;font-weight:500!important;">SIGN IN</a>
+               <button type="submit" class="btn signup" style="color:#fff!important;font-size:16px;font-weight:700;border-radius:30px;">Subscribe Now</button>
+              
+          </div>
+      </div>
+    </section>  
 <section class="sign-in-page" style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;">
+    
    <div class="container">
       <div class="row  align-items-center justify-content-center height-self-center">
-         <div class="col-lg-6 col-12 col-md-12 align-self-center">
-             <div class="text-center">
+         <div class="col-lg-5 col-12 col-md-12 align-self-center">
+             <!--<div class="text-center">
                  <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;">
-             </div>
+             </div>-->
             <div class="sign-user_card">                    
                <div class="sign-in-page-data">
                   <div class="sign-in-from  m-auto" align="center">
-                      <h1 class="in mt-3 text-center">LOGIN</h1>
+                      <h1 class="in mt-3 text-center mb-3">Sign In</h1>
+                     
                       <?php if($settings->demo_mode == 1) { ?>
                         <div class="demo_cred">
                             <p class="links" style="font-weight: 600; border-bottom: 2px dashed #fff;">Demo Login</p>
@@ -169,6 +209,8 @@ i.fa.fa-google-plus {
                         </div>
                         @endforeach
                         @endif
+                       <a class="sig text-white mt-3" href="{{ route('signup') }}" style="">   Do you have an Flicknexs account? </a>
+                    
                      <form method="POST" action="{{ route('login') }}" class="mt-4">
                          @csrf
 						   <input type="hidden" name="previous" value="{{ url()->previous() }}">
@@ -184,35 +226,45 @@ i.fa.fa-google-plus {
 							</span>
 						@enderror
                          <div class="row justify-content-center">
-                             <div class="col-lg-8">
+                             <div class="col-lg-11">
                         <div class="form-group">  
                             <div class="input-icons">
                           <!-- <input type="email" class="form-control mb-0" id="exampleInputEmail1" placeholder="Enter email" autocomplete="off" required>-->
-                          <i class="">   
-                                <img class=" fa fa-user icon mr-3" src="<?php echo URL::to('/').'/assets/img/uss.png';  ?>"> </i>
-                            <input id="email" type="email" class=" input-field form-control @error('email') is-invalid @enderror" name="email" placeholder="{{ __('USER NAME') }}" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                     
+                            <input id="email" type="email" class=" input-field form-control @error('email') is-invalid @enderror" name="email" placeholder="{{ __('Email Address') }}" value="{{ old('email') }}" required autocomplete="email" autofocus>
                         </div></div>
-                        <div class="form-group" style="  margin-top: 30px;">                                 
+                        <div class="form-group" style="  margin-top: 20px;">                                 
                            <!--<input type="password" class="form-control mb-0" id="exampleInputPassword2" placeholder="Password" required>--><div class="input-icons">
-                           <i class=""><img class=" fa fa-user icon mr-3" src="<?php echo URL::to('/').'/assets/img/lock.png';  ?>"> 
-			</i> 
-			
+                         
                            
-                            								<input id="password" type="password" class="input-field  form-control @error('password') is-invalid @enderror" placeholder="{{ __('PASSWORD') }}" name="password" required autocomplete="current-password" >
+                            								<input id="password" type="password" class="input-field  form-control @error('Password') is-invalid @enderror" placeholder="{{ __('PASSWORD') }}" name="password" required autocomplete="current-password" >
                         </div> </div>
-                         <div class="links text-right">
+                         
+                        
+                           <div class="sign-info mt-5 mb-3">
+                              <button type="submit" class="btn signup" style="width:80%;color:#fff!important;letter-spacing: 3.5px;font-size:20px;">LOGIN</button>
+                           </div> 
+                                 <div class="links text-center mt-3">
                       @if (Route::has('password.request'))
                      <a href="{{ route('password.request') }}" class="f-link">Can't Login?</a>
                       @endif
 							
                   </div>
-                        
-                           <div class="sign-info mt-3 mb-3">
-                              <button type="submit" class="btn signup" style="width:100%;color:#fff!important;letter-spacing: 3.5px;font-size:20px;">LOGIN</button>
-                           </div> 
+                                 <div class="row align-items-center mt-3">
+                                     <div class="col-md-5 p-0"> <img class="w-100"  src="<?php echo  URL::to('/assets/img/l3.png')?>"></div>
+                                     <div class="col-md-2 mt-3 p-0"><p class="text-white">OR</p></div>
+                                     <div class="col-md-5 p-0"> <img class="w-100"  src="<?php echo  URL::to('/assets/img/l3.png')?>"></div>
+                                 </div>
+                                 <div class="row justify-content-center">
+                                     <div class="col-md-1 p-0 icn">  <i class="fa fa-google" aria-hidden="true"></i></div>
+                                     <div class="col-md-2 p-0 icn"> <i class="fa fa-facebook" aria-hidden="true"></i></div>
+                                 </div>
+                               
+                                
+</div>
                                   <div class="mt-3">
                   <div class="d-flex justify-content-center  links">
-                      <p class="text-primary text-white mb-3"><a class="sig" href="{{ route('signup') }}" style="text-decoration: underline!important;"> Create your New Account Here </a></p>
+                      <p class="text-primary text-white mb-3">
                       <p class="text-left agree">By continuing, you agree terms and conditions and privacy notes</p>
                       
                   </div>
@@ -260,9 +312,7 @@ i.fa.fa-google-plus {
 </script>
 </body>
 
-@php
-    @include(public_path('themes\theme2\views\footer.blade.php'));
-@endphp
+
       <!-- jQuery, Popper JS -->
       <script src="assets/js/jquery-3.4.1.min.js"></script>
       <script src="assets/js/popper.min.js"></script>

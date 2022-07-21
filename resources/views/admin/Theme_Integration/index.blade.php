@@ -79,9 +79,9 @@ border-radius: 0px 4px 4px 0px;
                 <div class="row data">
                     
                         @foreach ($Themes as $theme_integration)
-                            <div class="theme_image col-md-3">
+                            <div class="theme_image col-md-3 mb-3">
                                 <div class="zoom themes">
-                                    <img class="theme_img w-100" src="{{URL::asset('public/images/').'/'.$theme_integration->theme_images }}" alt="theme"  style="width:25%" id= {{ $theme_integration->id  }}>  
+                                    <img class="theme_img w-100" src="{{URL::asset('public/images/').'/'.$theme_integration->theme_images }}" alt="theme"  id= {{ $theme_integration->id  }}>  
                                 </div>
                                 <div class="theme_name">
                                    {{ $theme_integration ? ucwords($theme_integration->theme_name) : ''  }}

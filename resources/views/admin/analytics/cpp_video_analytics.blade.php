@@ -158,7 +158,7 @@
                     linechart.forEach(function (row) {
                         data.addRow([
                         row.month_name,
-                        parseInt(row.count),
+                        parseInt(row.views),
                         ]);
                     });
                     var chart = new google.visualization.LineChart(document.getElementById('google-line-chart'));
@@ -203,7 +203,7 @@
                     linechart.forEach(function (row) {
                         data.addRow([
                         row.month_name,
-                        parseInt(row.count),
+                        parseInt(row.views),
                         ]);
                     });
                     var chart = new google.visualization.LineChart(document.getElementById('google-line-chart'));

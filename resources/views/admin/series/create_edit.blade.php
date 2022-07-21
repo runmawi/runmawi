@@ -444,6 +444,16 @@ $settings  = App\Setting::first();?>
 							<label class="">PPV Price:</label>
 								<input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($video->ppv_price)){{ $video->ppv_price }}@endif">
 		                    </div>  
+
+							<div class="form-group" >
+                        <label class="m-0">IOS PPV Price:</label>
+                           <select  name="ios_ppv_price" class="form-control" id="ios_ppv_price">
+                              <option value= "" >Select IOS PPV Price: </option>
+                              @foreach($InappPurchase as $Inapp_Purchase)
+                                 <option value="{{ $Inapp_Purchase->product_id }}"  >{{ $Inapp_Purchase->plan_price }}</option>
+                              @endforeach
+                           </select>
+                     </div>
 							@if($settings->series_season == 1)
 							<div class="form-group">
 		                        <label>PPV Interval:</label>
@@ -624,6 +634,10 @@ $('#ppv_access').change(function(){
 
 	if($(this).val() == "ppv"){
 	$('#ppv_price').show();
+	$('#ios_ppv_price').show();
+	}else{
+	$('#ppv_price').hide();
+	$('#ios_ppv_price').hide();
 	}
 });
 

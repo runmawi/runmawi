@@ -50,6 +50,7 @@ use App\SeriesGenre;
 use App\Jobs\ConvertSerieTrailer;
 use Streaming\Representation;
 use getID3;
+use App\InappPurchase;
 
 class AdminSeriesController extends Controller
 {
@@ -164,6 +165,7 @@ class AdminSeriesController extends Controller
             'series_artist' => [],
             'category_id' => [],
             'languages_id' => [],
+            'InappPurchase' => InappPurchase::all(),
             
             );
         return View::make('admin.series.create_edit', $data);
@@ -431,6 +433,7 @@ class AdminSeriesController extends Controller
             'series_artist' => Seriesartist::where('series_id', $id)->pluck('artist_id')->toArray(),
             'category_id' => SeriesCategory::where('series_id', $id)->pluck('category_id')->toArray(),
             'languages_id' => SeriesLanguage::where('series_id', $id)->pluck('language_id')->toArray(),
+            'InappPurchase' => InappPurchase::all(),
             );
 
         return View::make('admin.series.create_edit', $data);
@@ -909,6 +912,11 @@ class AdminSeriesController extends Controller
         }else{
             $ppv_interval = 0;
         }
+        if(!empty($data['ios_ppv_price'])){
+            $ios_ppv_price = $data['ios_ppv_price'];
+        }else{
+            $ios_ppv_price = null;
+        }
         // $data['series_id'] = $data['series_id']; 
         // $data['access'] = $access; 
         // $data['ppv_price'] = $ppv_price; 
@@ -921,6 +929,7 @@ class AdminSeriesController extends Controller
         $series->access = $access;
         $series->ppv_price = $ppv_price;
         $series->ppv_interval = $ppv_interval;
+        $series->ios_product_id = $ios_ppv_price;
         $series->save();
         
         if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1) {
@@ -943,6 +952,7 @@ class AdminSeriesController extends Controller
         // dd($season);
         $data =array(
             'season' => $season,
+            'InappPurchase' => InappPurchase::all(),
         );
 
         return View::make('admin/series/season/edit',$data);
@@ -1067,7 +1077,11 @@ if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1
         }else{
             $ppv_interval = $series_season->ppv_interval;
         }
-    
+        if(!empty($data['ios_ppv_price'])){
+            $ios_ppv_price = $data['ios_ppv_price'];
+        }else{
+            $ios_ppv_price = $series_season->ios_ppv_price;
+        }
         $series_season->series_id = $series_season->series_id;
         $series_season->image = $data['image'];
         $series_season->trailer = $data['trailer'];
@@ -1075,6 +1089,7 @@ if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1
         $series_season->access = $access;
         $series_season->ppv_price = $ppv_price;
         $series_season->ppv_interval = $ppv_interval;
+        $series_season->ios_product_id = $ios_ppv_price;
         $series_season->save();
 
         if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1) {
@@ -1109,6 +1124,7 @@ if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1
             'admin_user' => Auth::user(),
             'age_categories' => AgeCategory::all(),
             'settings' => Setting::first(),
+            'InappPurchase' => InappPurchase::all(),
 
 
             );
