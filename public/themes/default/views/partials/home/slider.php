@@ -366,7 +366,6 @@ if(Route::current()->getName() == "home" || Route::current()->getName() == null 
                       -webkit-line-clamp: 3;
                       -webkit-box-orient: vertical;  
                       overflow: hidden;">
-                        <p>Loki, the God of Mischief, steps out of his brother's shadow to embark on an adventure that takes place after the events of "Avengers: Endgame."</p>
                     <?php echo __($slider_video->description); ?>
                     </div>
                     <div class="d-flex justify-content-evenly align-items-center r-mb-23" data-animation-in="fadeInUp"
