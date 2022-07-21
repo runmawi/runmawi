@@ -352,7 +352,7 @@ class ChannelController extends Controller
               $artistsname = implode(',', $artistsvals);
 
             }else{
-              $artistsname = "No Languages Added";
+              $artistsname = "No Starring  Added";
             }
 
             $subtitles_name = MoviesSubtitles::select('subtitles.language as language')
@@ -698,7 +698,7 @@ class ChannelController extends Controller
               }
                 $artistsname = implode(',', $artistsvals);
             }else{
-              $artistsname = "No Languages Added";
+              $artistsname = "No Starring  Added";
             }
 
             $subtitles_name = MoviesSubtitles::select('subtitles.language as language')
@@ -976,7 +976,7 @@ class ChannelController extends Controller
                 }
                   $artistsname = implode(',', $artistsvals);
               }else{
-                $artistsname = "No Languages Added";
+                $artistsname = "No Starring  Added";
               }
   
              $subtitles_name = MoviesSubtitles::select('subtitles.language as language')
@@ -1083,7 +1083,7 @@ class ChannelController extends Controller
           }
             $artistsname = implode(',', $artistsvals);
           }else{
-          $artistsname = "No Languages Added";
+          $artistsname = "No Starring  Added";
           }
 
           $subtitles_name = MoviesSubtitles::select('subtitles.language as language')
