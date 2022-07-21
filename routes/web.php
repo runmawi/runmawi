@@ -475,6 +475,9 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/theme_settings/save','AdminThemeSettingsController@SaveTheme');
 
 
+    Route::get('/linking_settings', 'AdminSettingsController@LinkingIndex');
+    Route::post('/linking/store', 'AdminSettingsController@LinkingSave');
+
     /* payment settings */
     Route::get('/payment_settings', 'AdminPaymentSettingsController@index');
     Route::post('/payment_settings', array('before' => 'demo', 'uses' => 'AdminPaymentSettingsController@save_payment_settings'));

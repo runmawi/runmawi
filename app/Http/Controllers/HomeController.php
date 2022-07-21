@@ -60,7 +60,6 @@ use Theme;
 use App\Series;
 use App\Artist;
 use App\Helpers\LogActivity;
-
 class HomeController extends Controller
 {
     /**

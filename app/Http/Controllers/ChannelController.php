@@ -352,7 +352,7 @@ class ChannelController extends Controller
               $artistsname = implode(',', $artistsvals);
 
             }else{
-              $artistsname = "No Languages Added";
+              $artistsname = "No Starring  Added";
             }
 
             $subtitles_name = MoviesSubtitles::select('subtitles.language as language')
@@ -461,6 +461,7 @@ class ChannelController extends Controller
               ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
               ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
               ->where('videos.id','!=',$vid)
+              ->groupBy('videos.id')
               ->limit(10)->get();
 
               //  $recomended = array_unique($recomended, SORT_REGULAR);
@@ -482,6 +483,7 @@ class ChannelController extends Controller
            else{
                $recomended =[] ;
            }
+          //  dd($recomended);
 
           $videocategory = [];
 
@@ -698,7 +700,7 @@ class ChannelController extends Controller
               }
                 $artistsname = implode(',', $artistsvals);
             }else{
-              $artistsname = "No Languages Added";
+              $artistsname = "No Starring  Added";
             }
 
             $subtitles_name = MoviesSubtitles::select('subtitles.language as language')
@@ -733,11 +735,13 @@ class ChannelController extends Controller
                        ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
                        ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
                        ->where('videos.id','!=',$vid)
+                        ->groupBy('videos.id')
                        ->limit(10)->get();
    
                        $endcardvideo = Video::select('videos.*','video_categories.name as categories_name','categoryvideos.category_id as categories_id')
                        ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
                        ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+                        ->groupBy('videos.id')
                        ->where('videos.id','!=',$vid)
                        ->limit(5)->get();
               }
@@ -811,9 +815,9 @@ class ChannelController extends Controller
                  // if(in_array($category->categories_id, $categoryvideo)){
                  //  $recomended[] = $category;
                  $recomended = Video::select('videos.*','video_categories.name as categories_name','categoryvideos.category_id as categories_id')
-                 ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
-                 ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+                 ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')            
                  ->where('videos.id','!=',$vid)
+                 ->groupBy('videos.id')                 
                  ->limit(10)->get();
    
                  //  $recomended = array_unique($recomended, SORT_REGULAR);
@@ -976,7 +980,7 @@ class ChannelController extends Controller
                 }
                   $artistsname = implode(',', $artistsvals);
               }else{
-                $artistsname = "No Languages Added";
+                $artistsname = "No Starring  Added";
               }
   
              $subtitles_name = MoviesSubtitles::select('subtitles.language as language')
@@ -1083,7 +1087,7 @@ class ChannelController extends Controller
           }
             $artistsname = implode(',', $artistsvals);
           }else{
-          $artistsname = "No Languages Added";
+          $artistsname = "No Starring  Added";
           }
 
           $subtitles_name = MoviesSubtitles::select('subtitles.language as language')
@@ -1116,6 +1120,7 @@ class ChannelController extends Controller
                    ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
                    ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
                    ->where('videos.id','!=',$vid)
+                    ->groupBy('videos.id')
                    ->limit(10)->get();
 
                    $endcardvideo = Video::select('videos.*','video_categories.name as categories_name','categoryvideos.category_id as categories_id')
@@ -1197,6 +1202,7 @@ class ChannelController extends Controller
              ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
              ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
              ->where('videos.id','!=',$vid)
+             ->groupBy('videos.id')
              ->limit(10)->get();
 
              //  $recomended = array_unique($recomended, SORT_REGULAR);
@@ -1728,6 +1734,7 @@ class ChannelController extends Controller
                ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
                ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
                ->where('videos.id','!=',$vid)
+              ->groupBy('videos.id')
                ->limit(10)->get();
                }
                if(!empty($recomendeds)){

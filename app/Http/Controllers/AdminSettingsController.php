@@ -21,6 +21,8 @@ use View;
 use GuzzleHttp\Client;
 use GuzzleHttp\Message\Response;
 use App\FooterLink;
+use App\LinkingSetting;
+
 
 //use Illuminate\Http\Request;
 
@@ -858,4 +860,86 @@ if($watermark != '') {
       return redirect()->route('multiuser_limit')->with(array('message' => 'Successfully Updated!', 'note_type' => 'success') );
 
     }
+
+
+    public function LinkingIndex() {
+      $user =  User::where('id',1)->first();
+      $duedate = $user->package_ends;
+      $current_date = date('Y-m-d');
+      if ($current_date > $duedate)
+      {
+        $client = new Client();
+        $url = "https://flicknexs.com/userapi/allplans";
+        $params = [
+            'userid' => 0,
+        ];
+
+        $headers = [
+            'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+        ];
+        $response = $client->request('post', $url, [
+            'json' => $params,
+            'headers' => $headers,
+            'verify'  => false,
+        ]);
+
+        $responseBody = json_decode($response->getBody());
+       $settings = Setting::first();
+       $data = array(
+        'settings' => $settings,
+        'responseBody' => $responseBody,
+);
+          return View::make('admin.expired_dashboard', $data);
+      }else{
+        $setting = Setting::first();
+        $deeplinking_setting = LinkingSetting::first();          
+        $script =  Script::first();
+        // dd($script);
+        $data = array(
+            'admin_user' => Auth::user(),
+            'deeplinking_setting' => $deeplinking_setting ,   
+            'script' => $script ,   
+			  );
+
+	    	return \View::make('admin.settings.deeplinking_setting', $data);
+      }
+    }
+
+    public function LinkingSave(Request $request)
+    {
+      $data = $request->all;
+      $Linking_Setting = LinkingSetting::first();
+      if(empty($Linking_Setting))
+      {
+        $LinkingSetting = new LinkingSetting();
+        $LinkingSetting->ios_app_store_id = $request->get('ios_app_store_id');
+        $LinkingSetting->ios_url = $request->get('ios_url');
+        $LinkingSetting->ipad_app_store_id = $request->get('ipad_app_store_id');
+        $LinkingSetting->ipad_url = $request->get('ipad_url');
+        $LinkingSetting->android_app_store_id = $request->get('android_app_store_id');
+        $LinkingSetting->android_url = $request->get('android_url');
+        $LinkingSetting->windows_phone_app_store_id = $request->get('windows_phone_app_store_id');
+        $LinkingSetting->windows_phone_url = $request->get('windows_phone_url');
+        $LinkingSetting->user_id = Auth::user()->id;
+        $LinkingSetting->save();
+      }else{
+        LinkingSetting::first()->update([
+         'ios_app_store_id' => $request->get('ios_app_store_id'),
+         'ios_url' => $request->get('ios_url'),
+         'ipad_app_store_id' => $request->get('ipad_app_store_id'),
+         'ipad_url' => $request->get('ipad_url'),
+         'android_app_store_id' => $request->get('android_app_store_id'),
+         'android_url' => $request->get('android_url'),
+         'windows_phone_app_store_id' => $request->get('windows_phone_app_store_id'),
+         'windows_phone_url' => $request->get('windows_phone_url'),
+         'user_id' => Auth::user()->id,
+        ]);
+      }
+     
+
+      return redirect('admin/linking_settings')->with(array('message' => 'Successfully Updated!', 'note_type' => 'success') );
+
+    }
+
+
 }
