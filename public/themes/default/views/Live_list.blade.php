@@ -60,7 +60,7 @@
                                                             @endif
                                                         @endif 
                                                 </div>
-
+ 
                                                 <div class="block-description">
                     
                                                         @if($ThumbnailSetting->title == 1)          <!-- Title -->
@@ -138,8 +138,9 @@
                                                              href="<?php echo URL::to('live') ?><?= '/' . $category_video->slug ?>">
                                                             <img class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
                                                         </a>
-                                                        <div class="d-flex"></div>  
+                                                      
                                                     </div>                
+                                                </div>
                                                 </div>
                                                  </a>
                                         </li>
@@ -156,6 +157,7 @@
             <?php }?>
     </div>
 </section>
+
 @php
     include(public_path('themes/default/views/footer.blade.php'));
 @endphp
