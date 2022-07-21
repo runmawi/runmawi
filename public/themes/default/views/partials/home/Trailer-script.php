@@ -5,16 +5,6 @@
 
 <script>
 
-    const player = new Plyr('#Trailer-videos',{
-            controls: [
-                'play-large','restart','rewind','play','fast-forward','progress',
-                'current-time','mute','volume','captions','settings',
-                'pip','airplay','fullscreen'
-            ],
-                    
-    });
-
-    
     function trailer_slider_videos(ele) 
         {
             var trailer_url   = $(ele).attr('data-trailer-url');
@@ -56,8 +46,16 @@
                 }
 
             }else if(trailer_type == "mp4_url" || trailer_type == "video_mp4"  ){
-                    
-                $('#Trailer-videos').attr('src', trailer_url);
+
+                const player = new Plyr('#MP4_Trailer-videos',{
+                    controls: [
+                        'play-large','restart','rewind','play','fast-forward','progress',
+                        'current-time','mute','volume','captions','settings',
+                        'pip','airplay','fullscreen'
+                    ],
+                });
+
+                $('#MP4_Trailer-videos').attr('src', trailer_url);
             }
 
     }
@@ -104,7 +102,16 @@
                 }
 
             }else{
-                $('#Trailer-videos').attr('src', trailer_url);
+                    
+                const player = new Plyr('#Series_MP4_Trailer-videos',{
+                    controls: [
+                        'play-large','restart','rewind','play','fast-forward','progress',
+                        'current-time','mute','volume','captions','settings',
+                        'pip','airplay','fullscreen'
+                    ],
+                });
+
+                $('#Series_MP4_Trailer-videos').attr('src', trailer_url);
             }
         }
 </script>
