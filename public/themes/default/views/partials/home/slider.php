@@ -262,6 +262,9 @@ if(Route::current()->getName() == "home" || Route::current()->getName() == null 
                                 </div>
                             </div>
 
+                                        <!-- watch Trailer -->
+                    <?php if( $videos_categorys->trailer != null && $videos_categorys->trailer_type == 'm3u8' ){  ?>
+
                             <div class="trailor-video">
                                 <a href="#video-trailer"    class="video-open playbtn" data-trailer-url="<?= $videos_categorys->trailer ?>" data-trailer-type="<?= $videos_categorys->trailer_type ?>" onclick="trailer_slider_videos(this)" >
                                        
@@ -277,9 +280,37 @@ if(Route::current()->getName() == "home" || Route::current()->getName() == null 
                                 </a>
                             </div>
 
+                            <?php  }elseif( $videos_categorys->trailer != null && $videos_categorys->trailer_type == 'mp4_url' ){ ?>
+
+                                <div class="trailor-video">
+                                    <a href="#MP4_videos-trailer"    class="video-open playbtn" data-trailer-url="<?= $videos_categorys->trailer ?>" data-trailer-type="<?= $videos_categorys->trailer_type ?>" onclick="trailer_slider_videos(this)" >
+                                        
+                                        <svg class="gt" version="1.1" xmlns="http://www.w3.org/2000/svg"   xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px"
+                                            viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                            <style type="text/css">  .gt{     height: 60px!important;    }     </style>
+                                            <polygon class='triangle' fill="none" stroke-width="7" stroke-linecap="round"    stroke-linejoin="round" stroke-miterlimit="10"
+                                                points="73.5,62.5 148.5,105.8 73.5,149.1 " />
+                                            <circle class='circle' fill="none" stroke-width="7" stroke-linecap="round"
+                                                    stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" />
+                                        </svg>
+                                        <span class="w-trailor">Watch Trailer</span>
+                                    </a>
+                                </div>
+
+                            <?php } ?>
+
                             <div class="col-md-12">
                                 <div id="video-trailer" class="mfp-hide">
                                     <video  id="Trailer-videos" class=""  poster="<?= URL::to('/') . '/public/uploads/images/' . $videos_categorys->player_image ?>"
+                                            controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' type="application/x-mpegURL">
+                                            <source  type="application/x-mpegURL"  src="<?php echo $videos_categorys->trailer;?>">
+                                    </video>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div id="MP4_videos-trailer" class="mfp-hide">
+                                    <video  id="MP4_Trailer-videos" class=""  poster="<?= URL::to('/') . '/public/uploads/images/' . $videos_categorys->player_image ?>"
                                             controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' type="application/x-mpegURL">
                                             <source  type="application/x-mpegURL"  src="<?php echo $videos_categorys->trailer;?>">
                                     </video>
