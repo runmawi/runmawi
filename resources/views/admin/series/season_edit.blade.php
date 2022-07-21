@@ -78,6 +78,7 @@
 
 @stop @section('content')
 
+
 <div id="content-page" class="content-page">
     <div class="container-fluid">
         <!-- This is where -->
@@ -319,7 +320,7 @@
                                 </div>
                                 <div class="panel-body">
                                     <p class="p1">Enter the episode duration in the following format (Hours : Minutes : Seconds)</p>
-                                    <input class="form-control" name="duration" id="duration" value="@if(!empty($episodes->duration)){{ gmdate('H:i:s', $episodes->duration) }}@endif" />
+                                    <input type="text" class="form-control" name="duration" id="duration" value="@if(!empty($episodes->duration)){{ gmdate('H:i:s', $episodes->duration) }}@endif"  readonly/>
                                 </div>
                             </div>
                         </div>
@@ -802,10 +803,11 @@ var tagInput1 = new TagsInput({
             formData.append("_token", CSRF_TOKEN);
             // console.log(value)
             this.on("success", function (file, value) {
-                console.log(value.video_title);
+                // console.log(value);
                 $("#buttonNext").show();
                 $("#episode_id").val(value.episode_id);
                 $("#title").val(value.episode_title);
+                $("#duration").val(value.episode_duration);
             });
         });
         $("#buttonNext").click(function () {
