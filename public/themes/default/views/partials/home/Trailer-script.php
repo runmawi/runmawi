@@ -103,7 +103,7 @@
 
             }else{
                     
-                const player = new Plyr('#Trailer-videos',{
+                const player = new Plyr('#Series_MP4_Trailer-videos',{
                     controls: [
                         'play-large','restart','rewind','play','fast-forward','progress',
                         'current-time','mute','volume','captions','settings',
@@ -111,7 +111,7 @@
                     ],
                 });
 
-                $('#Trailer-videos').attr('src', trailer_url);
+                $('#Series_MP4_Trailer-videos').attr('src', trailer_url);
             }
         }
 </script>
