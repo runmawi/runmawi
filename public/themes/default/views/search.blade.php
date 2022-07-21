@@ -1,5 +1,6 @@
 @php
     include(public_path('themes/default/views/header.php'));
+
 @endphp
 
 <section id="iq-favorites">
@@ -132,8 +133,8 @@
                      @endif
 
                     {{-- Live stream --}}
-                    @if(isset($livestreams)) 
-                        @foreach($livestreams as $livestream_search)
+                    @if(isset($Search_livestreams)) 
+                        @foreach($Search_livestreams as $livestream_search)
                             <li class="slide-item col-sm-2 col-md-2 col-xs-12">
                                 <a href=" {{ URL::to('home') }} ">
                                     <div class="block-images position-relative">
@@ -222,10 +223,9 @@
                             </li>
                         @endforeach
                     @endif
-
                     {{-- Episode --}}
-                    @if(isset($Episode)) 
-                        @foreach($Episode as $episode_search)
+                    @if(isset($Search_Episode)) 
+                        @foreach($Search_Episode as $episode_search)
                             @php
                                 $series_slug = App\Series::where('id',$episode_search->series_id)->pluck('slug')->first();
                             @endphp
@@ -326,8 +326,8 @@
 
                     {{-- Series --}}
 
-                    @if(isset($Series)) 
-                        @foreach($Series as $Series_search)
+                    @if(isset($Search_Series)) 
+                        @foreach($Search_Series as $Series_search)
                             <li class="slide-item col-sm-2 col-md-2 col-xs-12">
                                 <a href=" {{ URL::to('home') }} ">
                                     <div class="block-images position-relative">
@@ -418,10 +418,11 @@
                     @endif
 
                     {{-- Audio --}}
-                    @if(isset($audio)) 
-                    @foreach($audio as $audio_search)
+                    @if(isset($Search_audio)) 
+                    @foreach($Search_audio as $audio_search)
                         <li class="slide-item col-sm-2 col-md-2 col-xs-12">
-                            <a href=" {{ URL::to('home') }} ">
+                            <a href=" {{  URL::to('audio') .'/'.$audio_search->slug  }} ">
+
                                 <div class="block-images position-relative">
                                     <div class="img-box">
                                         <img src="<?php echo URL::to('/').'/public/uploads/images/'.$audio_search->image;  ?>" class="img-fluid" alt="">

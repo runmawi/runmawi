@@ -105,8 +105,8 @@
 
                                  {{-- Live stream --}}
 
-                            @if(isset($livestreams)) 
-                                @foreach($livestreams as $livestream_search)
+                            @if(isset($Search_livestreams)) 
+                                @foreach($Search_livestreams as $livestream_search)
 
                                     <li class="slide-item col-sm-2 col-md-2 col-xs-12">
                                         <a href="<?php echo URL::to('home') ?>">
@@ -169,8 +169,8 @@
 
                                  {{-- Episode --}}
 
-                            @if(isset($Episode)) 
-                                @foreach($Episode as $episode_search)
+                            @if(isset($Search_Episode)) 
+                                @foreach($Search_Episode as $episode_search)
                                     @php
                                         $series_slug = App\Series::where('id',$episode_search->series_id)->pluck('slug')->first();
                                     @endphp
@@ -242,8 +242,8 @@
 
                                 {{-- Series --}}
 
-                                @if(isset($Series)) 
-                                    @foreach($Series as $Series_search)
+                                @if(isset($Search_Series)) 
+                                    @foreach($Search_Series as $Series_search)
 
                                         <li class="slide-item col-sm-2 col-md-2 col-xs-12">
                                             <a href="<?php echo URL::to('home') ?>">
@@ -306,11 +306,11 @@
 
                                 {{-- Audio --}}
 
-                            @if(isset($audio)) 
-                                @foreach($audio as $latest_video)
+                            @if(isset($Search_audio)) 
+                                @foreach($Search_audio as $latest_video)
 
                                     <li class="slide-item col-sm-2 col-md-2 col-xs-12">
-                                        <a href="<?php echo URL::to('home') ?>">
+                                        <a href="{{ URL::to('audio') . '/' . $latest_video->slug }}">
                                             <div class="block-images position-relative">
                                                 <div class="img-box">
                                                     <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_video->image;  ?>" class="img-fluid" alt="">
