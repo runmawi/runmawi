@@ -27,6 +27,7 @@ use App\RTMP;
 use Streaming\Representation;
 use GuzzleHttp\Client;
 use GuzzleHttp\Message\Response;
+use App\InappPurchase;
 
 
 class AdminLiveStreamController extends Controller
@@ -139,6 +140,7 @@ class AdminLiveStreamController extends Controller
                 'languages_id' => [],
                 'liveStreamVideo_error' => '0',
                 'Rtmp_urls' => RTMP::all(),
+                'InappPurchase' => InappPurchase::all(),
                 );
             return View::make('admin.livestream.create_edit', $data);
         }
@@ -151,16 +153,8 @@ class AdminLiveStreamController extends Controller
      */
     public function store(Request $request)
     {
-
         $data = $request->all();
-        $validatedData = $request->validate([
-            // 'title' => 'required|max:255',
-            // // 'slug' => 'required|max:255',
-            // 'description' => 'required',
-            // 'details' => 'required|max:255',
-            // 'year' => 'required'
-        ]);
-       
+
         if(!empty($data['video_category_id'])){
             $category_id = $data['video_category_id'];
             unset($data['video_category_id']);
@@ -407,6 +401,7 @@ class AdminLiveStreamController extends Controller
         $movie->search_tags = $searchtags;
         $movie->player_image = $player_image;
         $movie->user_id =Auth::User()->id;
+        $movie->ios_ppv_price =$request->ios_ppv_price;
         $movie->save();
 
         // $movie = LiveStream::create($data);
@@ -514,6 +509,7 @@ class AdminLiveStreamController extends Controller
             'Rtmp_url'  => $Rtmp_url ? $Rtmp_url : null ,
             'title' => $title ? $title : null,
             'hls_url' => $hls_url ? $hls_url : null,
+            'InappPurchase' => InappPurchase::all(),
             );
 
         return View::make('admin.livestream.edit', $data); 
@@ -747,6 +743,7 @@ class AdminLiveStreamController extends Controller
         $video->active = $active;
         $video->search_tags = $searchtags;
         $video->access = $request->access;
+        $video->ios_ppv_price = $request->ios_ppv_price;
         $video->save();
 
         if(!empty($data['video_category_id'])){
@@ -859,5 +856,19 @@ class AdminLiveStreamController extends Controller
             return Redirect::back()->with('message','Your video will be available shortly after we process it');
  
              }
+
+        public function livevideo_slider_update(Request $request)
+        {
+            try {
+                $video = LiveStream::where('id',$request->video_id)->update([
+                    'banner' => $request->banner_status,
+                ]);
+    
+                return response()->json(['message'=>"true"]);
+    
+            } catch (\Throwable $th) {
+                return response()->json(['message'=>"false"]);
+            }
+        }
     
 }

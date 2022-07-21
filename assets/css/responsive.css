@@ -210,6 +210,15 @@
     align-items: center;
     align-items: center;
     }
+    .btn{
+        background-color: transparent!important;
+      width: 60%!important;
+       
+    }
+    #mob1{
+        text-align: left!important;
+         margin-left: 10px;
+    }
     .dk{
         display: block!important;
     }

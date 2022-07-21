@@ -1,7 +1,10 @@
-<?php include('header.php'); ?>
+<?php include('header.php'); 
+// dd($latest_videos);
+?>
+
  <!-- MainContent -->
-<section id="iq-favorites">
-            <div class="container-fluid" style="padding: 0px 40px!important;">
+ <section id="iq-favorites">
+            <div class="container-fluid">
                <div class="row">
                   <div class="col-sm-12 page-height">
                      <div class="iq-main-header align-items-center justify-content-between">
@@ -9,7 +12,7 @@
                      </div>
                      <div class="favorites-contens">
                         <ul class="category-page list-inline row p-0 mb-0">
-                            <?php if(isset($latest_videos)) :
+                            <?php if(isset($latest_videos)) : 
                            foreach($latest_videos as $latest_video): ?>
                            <li class="slide-item col-sm-2 col-md-2 col-xs-12">
                               <a href="<?php echo URL::to('home') ?>">
@@ -17,24 +20,70 @@
                                     <div class="img-box">
                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_video->player_image;  ?>" class="img-fluid" alt="">
                                    
-                                    <div class="corner-text-wrapper">
-                                        <div class="corner-text">
+                                   
                                           <?php  if(!empty($latest_video->ppv_price)){?>
-                                          <p class="p-tag1" style="left:2px!important"><?php echo $currency->symbol.' '.$latest_video->ppv_price; ?></p>
+                                          <p class="p-tag1" ><?php echo $currency->symbol.' '.$latest_video->ppv_price; ?></p>
                                           <?php }elseif( !empty($latest_video->global_ppv || !empty($latest_video->global_ppv) && $latest_video->ppv_price == null)){ ?>
                                             <p class="p-tag1"><?php echo $latest_video->global_ppv.' '.$currency->symbol; ?></p>
                                             <?php }elseif($latest_video->global_ppv == null && $latest_video->ppv_price == null ){ ?>
-                                            <p class="p-tag" style="left:2px!important"><?php echo "Free"; ?></p>
+                                            <p class="p-tag" ><?php echo "Free"; ?></p>
                                             <?php } ?>
-                                        </div>
-                                    </div>
+                                     
                                 </div>
-                                    <div class="block-description">
-                                       <h6><a  href="<?php echo URL::to('category') ?><?= '/videos/' . $latest_video->slug ?>"><?php echo __($latest_video->title); ?></a></h6>
-                                       <div class="movie-time d-flex align-items-center my-2">
-                                          <div class="badge badge-secondary p-1 mr-2">13+</div>
-                                          <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $latest_video->duration); ?></span>
-                                       </div>
+                                 
+                                    <div class="block-description" >
+                                    
+                                    <?php if($ThumbnailSetting->title == 1) { ?>            <!-- Title -->
+                                        <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $latest_video->slug ?>">
+                                             <h6><?php  echo (strlen($latest_video->title) > 17) ? substr($latest_video->title,0,18).'...' : $latest_video->title; ?></h6>
+                                        </a>
+                                    <?php } ?>  
+
+                                    <div class="movie-time d-flex align-items-center pt-1">
+                                        <?php if($ThumbnailSetting->age == 1) { ?>
+                                        <!-- Age -->
+                                            <div class="badge badge-secondary p-1 mr-2"><?php echo $latest_video->age_restrict.' '.'+' ?></div>
+                                        <?php } ?>
+
+                                        <?php if($ThumbnailSetting->duration == 1) { ?>
+                                        <!-- Duration -->
+                                            <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $latest_video->duration); ?></span>
+                                        <?php } ?>
+                                    </div>
+
+
+                                    <?php if(($ThumbnailSetting->published_year == 1) || ($ThumbnailSetting->rating == 1)) {?>
+                                    <div class="movie-time d-flex align-items-center pt-1">
+                                        <?php if($ThumbnailSetting->rating == 1) { ?>
+                                        <!--Rating  -->
+                                        <div class="badge badge-secondary p-1 mr-2">
+                                            <span class="text-white">
+                                                <i class="fa fa-star-half-o" aria-hidden="true"></i>
+                                                <?php echo __($latest_video->rating); ?>
+                                            </span>
+                                        </div>
+                                        <?php } ?>
+
+                                        <?php if($ThumbnailSetting->published_year == 1) { ?>
+                                        <!-- published_year -->
+                                        <div class="badge badge-secondary p-1 mr-2">
+                                          <span class="text-white">
+                                              <i class="fa fa-calendar" aria-hidden="true"></i>
+                                              <?php echo __($latest_video->year); ?>
+                                          </span>
+                                        </div>
+                                        <?php } ?>
+
+                                        <?php if($ThumbnailSetting->featured == 1 &&  $latest_video->featured == 1) { ?>
+                                        <!-- Featured -->
+                                        <div class="badge badge-secondary p-1 mr-2">
+                                          <span class="text-white">
+                                          <i class="fa fa-flag-o" aria-hidden="true"></i>
+                                          </span>
+                                        </div>
+                                        <?php } ?>
+                                    </div>
+                                <?php } ?>
                                        <div class="hover-buttons">
                                            <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $latest_video->slug ?>">	
                                           <span class="text-white">
@@ -74,5 +123,4 @@
                   </div>
                </div>
             </div>
-
 <?php include('footer.blade.php'); ?>

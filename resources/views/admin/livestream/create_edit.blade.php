@@ -344,12 +344,28 @@ border-radius: 0px 4px 4px 0px;
                                 <div class="clear"></div>
                             </div>
                         </div>
-                        <div class="col-sm-4" id="ppv_price">
+                    </div>
+
+                    <div class="row" id="ppv_price">
+                        <div class="col-sm-4">
                             <label class="m-0">PPV Price</label>
                             <p class="p1">Apply PPV Price from Global Settings?</p>
                             <div class="panel-body">
                                 <input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($video->ppv_price)){{ $video->ppv_price }}@endif" />
                                 <div class="clear"></div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <label class="m-0"> IOS PPV Price</label>
+                            <p class="p1">Apply IOS PPV Price from Global Settings?</p>
+                            <div class="panel-body">
+                                <select  name="ios_ppv_price" class="form-control" id="ios_ppv_price">
+                                    <option value= "" >Select IOS PPV Price: </option>
+                                    @foreach($InappPurchase as $Inapp_Purchase)
+                                       <option value="{{ $Inapp_Purchase->product_id }}"> {{ $Inapp_Purchase->plan_price }}</option>
+                                    @endforeach
+                                 </select>
                             </div>
                         </div>
                     </div>

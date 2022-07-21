@@ -46,8 +46,7 @@ use App\CategoryAudio;
 use App\AudioLanguage;
 use GuzzleHttp\Client;
 use GuzzleHttp\Message\Response;
-
-
+use App\InappPurchase;
 
 class AdminAudioController extends Controller
 {
@@ -180,6 +179,7 @@ class AdminAudioController extends Controller
             'settings' => Setting::first(),
             'category_id' => [],
             'languages_id' => [],
+            'InappPurchase' => InappPurchase::all(),
             );
          
         return View::make('admin.audios.create_edit', $data);
@@ -397,6 +397,7 @@ class AdminAudioController extends Controller
             'countries' => $countries,
             'category_id' => CategoryAudio::where('audio_id', $id)->pluck('category_id')->toArray(),
             'languages_id' => AudioLanguage::where('audio_id', $id)->pluck('language_id')->toArray(),
+            'InappPurchase' => InappPurchase::all(),
             );
 
         return View::make('admin.audios.edit', $data);
@@ -531,7 +532,7 @@ class AdminAudioController extends Controller
         $audio->ppv_status =  $data['ppv_status'];
         $audio->player_image =  $player_image;
         $audio->search_tags =  $searchtags;
-
+        $audio->ios_ppv_price =  $request->ios_ppv_price;
         $audio->save();
         // dd($audio->id);
 
@@ -826,38 +827,36 @@ class AdminAudioController extends Controller
     }
     public function audioupdate(Request $request)
     {
-
     
         $input = $request->all();
-        // dd('$input');
 
-        // dd($input);
         $id = $request->audio_id;
 
         $settings =Setting::first();
-        if(!empty($input['ppv_price'])){
-            $ppv_price = $input['ppv_price'];
-        }elseif(!empty($input['ppv_status']) || $settings->ppv_status == 1){
-            $ppv_price = $settings->ppv_price;
-        }
+            if(!empty($input['ppv_price'])){
+                $ppv_price = $input['ppv_price'];
+            }elseif(!empty($input['ppv_status']) || $settings->ppv_status == 1){
+                $ppv_price = $settings->ppv_price;
+            }
 
-        if(!empty($input['searchtags'])){
-            $ppv_price = $input['ppv_price'];
-        }elseif(!empty($input['ppv_status']) || $settings->ppv_status == 1){
-            $ppv_price = $settings->ppv_price;
-        }
+            if(!empty($input['searchtags'])){
+                $ppv_price = $input['ppv_price'];
+            }elseif(!empty($input['ppv_status']) || $settings->ppv_status == 1){
+                $ppv_price = $settings->ppv_price;
+            }
+
         $audio = Audio::findOrFail($id);
 
         $validator = Validator::make($data = $input, Audio::$rules);
 
-        if ($validator->fails())
-        {
-            return Redirect::back()->withErrors($validator)->withInput();
-        }
-        /*Slug*/
-        if ($audio->slug != $request->slug) {
-            $data['slug'] = $this->createSlug($request->slug, $id);
-        }
+            if ($validator->fails())
+            {
+                return Redirect::back()->withErrors($validator)->withInput();
+            }
+            /*Slug*/
+            if ($audio->slug != $request->slug) {
+                $data['slug'] = $this->createSlug($request->slug, $id);
+            }
 
         if($request->slug == '' || $audio->slug == ''){
             $data['slug'] = $this->createSlug($data['title']);    
@@ -903,14 +902,9 @@ class AdminAudioController extends Controller
               }
               //upload new file
               $player_image = $image;
-            //   $data['player_image']  = $player_image->getClientOriginalName();
-            $data['player_image'] = str_replace(' ', '_', $player_image->getClientOriginalName());
-
-              $player_image->move($image_path, $data['player_image']);
-            // $player_image =  $player_image->getClientOriginalName();
-            $player_image = str_replace(' ', '_', $player_image->getClientOriginalName());
-
-
+                $data['player_image'] = str_replace(' ', '_', $player_image->getClientOriginalName());
+                $player_image->move($image_path, $data['player_image']);
+                $player_image = str_replace(' ', '_', $player_image->getClientOriginalName());
                 }
 
         if(empty($data['active'])){
@@ -938,10 +932,8 @@ class AdminAudioController extends Controller
         $audio->search_tags =  $searchtags;
         $audio->status =  1;
         $audio->ppv_status =  $data['ppv_status'];
+        $audio->ios_ppv_price =  $data['ios_ppv_price'];
         $audio->save();
-
-
-
 
         $audio = Audio::findOrFail($id);
         $users = User::all();

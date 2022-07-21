@@ -66,6 +66,7 @@ use File;
 use App\VideoCommission as VideoCommission;
 use Mail;
 use App\EmailTemplate;
+use App\PlayerAnalytic;
 use Session;
 use View;
 use GuzzleHttp\Client;
@@ -6116,5 +6117,289 @@ class ModeratorsUserController extends Controller
 
     }
 
+
+    
+    public function VideoAnalytics()
+    {
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [
+                'userid' => 0,
+            ];
+    
+            $headers = [
+                'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+            ];
+            $response = $client->request('post', $url, [
+                'json' => $params,
+                'headers' => $headers,
+                'verify'  => false,
+            ]);
+    
+            $responseBody = json_decode($response->getBody());
+           $settings = Setting::first();
+           $data = array(
+            'settings' => $settings,
+            'responseBody' => $responseBody,
+    );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
+        $settings = Setting::first();
+        $total_content = ModeratorsUser::join('videos', 'videos.user_id', '=', 'moderators_users.id')
+            ->groupBy('videos.id')
+            ->get([\DB::raw("COUNT(*) as count"),
+            \DB::raw("MONTHNAME(videos.created_at) as month_name")
+            ,\DB::raw("videos.*")
+            ,\DB::raw("moderators_users.username as cppusername")
+            ,\DB::raw("moderators_users.email as cppemail")
+        ]);
+        $total_contents = Video::join('moderators_users', 'moderators_users.id', '=', 'videos.user_id')
+        ->groupBy('videos.id')
+        ->get([
+            'videos.*',
+            \DB::raw("moderators_users.username as cppusername"),
+            \DB::raw("moderators_users.email as cppemail"),
+            \DB::raw("COUNT(*) as count"),
+            \DB::raw("MONTHNAME(videos.created_at) as month_name"),
+            \DB::raw("MONTHNAME(videos.created_at) as month_name")
+        ]);
+        
+       $total_contentss =  $total_contents->groupBy('month_name');
+
+            
+
+        $data = array(
+            'settings' => $settings,
+            'total_content' => $total_content,
+            'total_video_count' => count($total_content),
+            'total_contentss' => $total_contentss,
+
+        );
+        return view('admin.analytics.cpp_video_analytics', $data);
+    }
+    }
+
+
+
+
+    
+    public function CPPVideoStartDateAnalytics(Request $request)
+    {
+
+        $data = $request->all();
+
+        $start_time = $data['start_time'];
+        $end_time = $data['end_time'];
+        if (!empty($start_time) && empty($end_time))
+        {
+            $settings = Setting::first();
+            $total_content = ModeratorsUser::join('videos', 'videos.user_id', '=', 'moderators_users.id')
+                ->whereDate('videos.created_at', '>=', $start_time)
+                ->groupBy('videos.id')
+
+                ->get([\DB::raw("COUNT(*) as count"),
+                \DB::raw("MONTHNAME(videos.created_at) as month_name")
+                ,\DB::raw("videos.*")
+                ,\DB::raw("moderators_users.username as cppusername")
+                ,\DB::raw("moderators_users.email as cppemail")
+            ]);
+
+        }else{
+
+        }
+
+        $output = '';
+        $i = 1;
+        if(count($total_content)> 0){
+        $total_row = $total_content->count();
+        if (!empty($total_content))
+        {
+            foreach ($total_content as $key => $row)
+            {
+                $output .= '
+              <tr>
+              <td>' . $i++ . '</td>
+              <td>' . $row->title . '</td>
+              <td>' . $row->cppemail . '</td>    
+              <td>' . $row->cppusername . '</td>    
+              <td>' . $row->views . '</td>    
+              </tr>
+              ';
+
+            }
+        }
+        else
+        {
+            $output = '
+          <tr>
+           <td align="center" colspan="5">No Data Found</td>
+          </tr>
+          ';
+        }
+        $value = array(
+            'table_data' => $output,
+            'total_data' => $total_row,
+            'total_content' => $total_content,
+        );
+
+        return $value;
+    }
+    }
+
+    public function CPPVideoEndDateAnalytics(Request $request)
+    {
+
+        $data = $request->all();
+
+        $start_time = $data['start_time'];
+        $end_time = $data['end_time'];
+
+        if (!empty($start_time) && !empty($end_time))
+        {
+
+            $total_content = ModeratorsUser::join('videos', 'videos.user_id', '=', 'moderators_users.id')
+            ->whereDate('videos.created_at', '>=', $start_time)
+            ->whereBetween('videos.created_at', [$start_time, $end_time])
+            ->groupBy('videos.id')
+            ->get([\DB::raw("COUNT(*) as count"),
+            \DB::raw("MONTHNAME(videos.created_at) as month_name")
+            ,\DB::raw("videos.*")
+            ,\DB::raw("moderators_users.username as cppusername")
+            ,\DB::raw("moderators_users.email as cppemail")
+        ]);
+            
+        }else{
+            $total_content = [];
+        }
+
+        $output = '';
+        $i = 1;
+        if(count($total_content)> 0){
+
+        $total_row = $total_content->count();
+        if (!empty($total_content))
+        {
+            foreach ($total_content as $key => $row)
+            {
+               
+                $output .= '
+              <tr>
+              <td>' . $i++ . '</td>
+              <td>' . $row->title . '</td>
+              <td>' . $row->cppemail . '</td>    
+              <td>' . $row->cppusername . '</td>    
+              <td>' . $row->views . '</td>    
+              </tr>
+              ';
+
+            }
+        }
+        else
+        {
+            $output = '
+          <tr>
+           <td align="center" colspan="5">No Data Found</td>
+          </tr>
+          ';
+        }
+        $value = array(
+            'table_data' => $output,
+            'total_data' => $total_row,
+            'total_content' => $total_content,
+        );
+
+        return $value;
+    }
+    }
+
+    public function CPPVideoExportCsv(Request $request)
+    {
+
+        $data = $request->all();
+        // dd($data);exit;
+        // if(!empty($data['start_time']) && empty($data['end_time'] 
+        // || empty($data['start_time']) && !empty($data['end_time']) 
+        // || !empty($data['start_time']) && !empty($data['end_time'])) ){
+        $start_time = $data['start_time'];
+        $end_time = $data['end_time'];
+        // }
+        if (!empty($start_time) && empty($end_time))
+        {
+
+            $total_content = ModeratorsUser::join('videos', 'videos.user_id', '=', 'moderators_users.id')
+                ->whereDate('videos.created_at', '>=', $start_time)
+                ->groupBy('videos.id')
+                ->get([\DB::raw("COUNT(*) as count"),
+                \DB::raw("MONTHNAME(videos.created_at) as month_name")
+                ,\DB::raw("videos.*")
+                ,\DB::raw("moderators_users.username as cppusername")
+                ,\DB::raw("moderators_users.email as cppemail")
+            ]);
+        }
+        elseif (!empty($start_time) && !empty($end_time))
+        {
+
+            $total_content = ModeratorsUser::join('videos', 'videos.user_id', '=', 'moderators_users.id')
+            ->whereDate('videos.created_at', '>=', $start_time)
+            ->whereBetween('videos.created_at', [$start_time, $end_time])
+            ->groupBy('videos.id')
+            ->get([\DB::raw("COUNT(*) as count"),
+            \DB::raw("MONTHNAME(videos.created_at) as month_name")
+            ,\DB::raw("videos.*")
+            ,\DB::raw("moderators_users.username as cppusername")
+            ,\DB::raw("moderators_users.email as cppemail")
+        ]);
+
+        }
+        else
+        {
+            $total_content = ModeratorsUser::join('videos', 'videos.user_id', '=', 'moderators_users.id')
+                ->groupBy('videos.id')
+                ->get([\DB::raw("COUNT(*) as count"),
+                \DB::raw("MONTHNAME(videos.created_at) as month_name")
+                ,\DB::raw("videos.*")
+                ,\DB::raw("moderators_users.username as cppusername")
+                ,\DB::raw("moderators_users.email as cppemail")
+            ]);
+        }
+        //  $file = 'CPPRevenue_' . rand(10, 100000) . '.csv';
+        $file = 'CPPVideoAnalytics.csv';
+
+        $headers = array(
+            'Content-Type' => 'application/vnd.ms-excel; charset=utf-8',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Content-Disposition' => 'attachment; filename=download.csv',
+            'Expires' => '0',
+            'Pragma' => 'public',
+        );
+        if (!File::exists(public_path() . "/uploads/csv"))
+        {
+            File::makeDirectory(public_path() . "/uploads/csv");
+        }
+        $filename = public_path("/uploads/csv/" . $file);
+        $handle = fopen($filename, 'w');
+        fputcsv($handle, ["Video Name", "Email", "Uploader Name", "Total Views",]);
+        if (count($total_content) > 0)
+        {
+            foreach ($total_content as $each_user)
+            {
+
+                fputcsv($handle, [$each_user->title, $each_user->cppemail, $each_user->cppusername, $each_user->views,
+
+                ]);
+            }
+        }
+
+        fclose($handle);
+
+        \Response::download($filename, "download.csv", $headers);
+
+        return $file;
+    }
 }
 

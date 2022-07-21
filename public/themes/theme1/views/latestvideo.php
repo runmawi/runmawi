@@ -14,8 +14,8 @@
                      </div>
                      <div class="favorites-contens">
                         <ul class="category-page list-inline row p-0 mb-0">
-                            <?php if(isset($latest_videos)) :
-                           foreach($latest_videos as $latest_video): ?>
+                        <?php if(isset($latestvideo['latest_videos'])) :
+                          foreach($latestvideo['latest_videos'] as $latest_video): ?>
                            <li class="slide-item col-sm-2 col-md-2 col-xs-12">
                               <a href="<?php echo URL::to('home') ?>">
                                  <div class="block-images position-relative">
@@ -49,11 +49,11 @@
                                   <div>
 
                                     <div class="mt-2 d-flex justify-content-between p-0">
-                                       <?php if($ThumbnailSetting->title == 1) { ?>
+                                       <?php if($latestvideo['ThumbnailSetting']->title == 1) { ?>
                                            <h6><?php  echo (strlen($latest_video->title) > 17) ? substr($latest_video->title,0,18).'...' : $latest_video->title; ?></h6>
                                        <?php } ?>
 
-                                       <?php if($ThumbnailSetting->age == 1) { ?>
+                                       <?php if($latestvideo['ThumbnailSetting']->age == 1) { ?>
                                            <div class="badge badge-secondary"><?php echo $latest_video->age_restrict.' '.'+' ?></div>
                                        <?php } ?>
                                     </div>
@@ -63,7 +63,7 @@
                       
                                        <!-- Duration -->
                   
-                                       <?php if($ThumbnailSetting->duration == 1) { ?>
+                                       <?php if($latestvideo['ThumbnailSetting']->duration == 1) { ?>
                                        <span class="text-white">
                                           <i class="fa fa-clock-o"></i>
                                           <?= gmdate('H:i:s', $latest_video->duration); ?>
@@ -72,14 +72,14 @@
                   
                                        <!-- Rating -->
                   
-                                       <?php if($ThumbnailSetting->rating == 1 && $latest_video->rating != null) { ?>
+                                       <?php if($latestvideo['ThumbnailSetting']->rating == 1 && $latest_video->rating != null) { ?>
                                        <span class="text-white">
                                           <i class="fa fa-star-half-o" aria-hidden="true"></i>
                                           <?php echo __($latest_video->rating); ?>
                                        </span>
                                        <?php } ?>
                   
-                                       <?php if($ThumbnailSetting->featured == 1 && $latest_video->featured == 1) { ?>
+                                       <?php if($latestvideo['ThumbnailSetting']->featured == 1 && $latest_video->featured == 1) { ?>
                                           <!-- Featured -->
                                           <span class="text-white">
                                              <i class="fa fa-flag" aria-hidden="true"></i>
@@ -90,7 +90,7 @@
                                     <div class="movie-time my-2">
                                           <!-- published_year -->
                      
-                                          <?php  if ( ($ThumbnailSetting->published_year == 1) && ( $latest_video->year != null ) ) { ?>
+                                          <?php  if ( ($latestvideo['ThumbnailSetting']->published_year == 1) && ( $latest_video->year != null ) ) { ?>
                                           <span class="text-white">
                                              <i class="fa fa-calendar" aria-hidden="true"></i>
                                              <?php echo __($latest_video->year); ?>
@@ -105,7 +105,7 @@
                                                       ->where('categoryvideos.video_id',$latest_video->id)
                                                       ->pluck('video_categories.name');        
                                           ?>
-                                          <?php  if ( ($ThumbnailSetting->category == 1 ) &&  ( count($CategoryThumbnail_setting) > 0 ) ) { ?>
+                                          <?php  if ( ($latestvideo['ThumbnailSetting']->category == 1 ) &&  ( count($CategoryThumbnail_setting) > 0 ) ) { ?>
                                           <span class="text-white">
                                              <i class="fa fa-list-alt" aria-hidden="true"></i>
                                              <?php

@@ -64,6 +64,16 @@ Route::post('/admin/cpp_enddate_revenue', 'ModeratorsUserController@CPPEndDateRe
 Route::post('/admin/cpp_exportCsv', 'ModeratorsUserController@CPPExportCsv');
 
 
+
+
+////// CPP Video Analytics
+
+Route::get('admin/cpp/video-analytics', 'ModeratorsUserController@VideoAnalytics');
+Route::post('/admin/cpp_video_startdate_analytics', 'ModeratorsUserController@CPPVideoStartDateAnalytics');
+Route::post('/admin/cpp_video_enddate_analytics', 'ModeratorsUserController@CPPVideoEndDateAnalytics');
+Route::post('/admin/cpp_video_exportCsv', 'ModeratorsUserController@CPPVideoExportCsv');
+
+
 Route::post('/admin/cpp_startdate_analytics', 'ModeratorsUserController@CPPStartDateAnalytic');
 Route::post('/admin/cpp_enddate_analytics', 'ModeratorsUserController@CPPEndDateAnalytic');
 Route::post('/admin/cpp_analytics_exportCsv', 'ModeratorsUserController@CPPAnalyticExportCsv');
@@ -489,6 +499,8 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/video_slider_update', 'AdminVideosController@video_slider_update'); 
     Route::post('/video_slug_validate', 'AdminVideosController@video_slug_validate'); 
 
+    // slider for live stream in index
+    Route::post('/livevideo_slider_update', 'AdminLiveStreamController@livevideo_slider_update'); 
 
     /* Thumbnail Setting */
     Route::get('/ThumbnailSetting', 'AdminSettingsController@ThumbnailSetting')->name('ThumbnailSetting'); 
@@ -613,7 +625,13 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::get('/videos/delete_age_edit/{id}', 'AdminAgeController@editvideo');
     Route::post('/videos/updatevideo/', 'AdminAgeController@updatevideo');
 
-    
+
+// In app purchase
+    Route::get('/inapp-purchase', 'AdminInappPurchaseController@index')->name('inapp_purchase');
+    Route::post('/inapp-purchase_store', 'AdminInappPurchaseController@store')->name('inapp_purchase_store');
+    Route::get('/inapp-purchase_edit/{id}', 'AdminInappPurchaseController@edit')->name('inapp_purchase_edit');
+    Route::post('/inapp-purchase_update', 'AdminInappPurchaseController@update')->name('inapp_purchase_update');
+    Route::get('/inapp-purchase_delete/{id}', 'AdminInappPurchaseController@delete')->name('inapp_purchase_delete');
 
      /*  Email Setting  */
 
@@ -693,6 +711,10 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::get('/moderatorsrole/delete/{id}', 'ModeratorsUserController@RoleDelete');
     Route::post('/moderatorsrole/update', 'ModeratorsUserController@RoleUpdate');
 
+
+    // ExecuteShell Command For Maintanace sytsem  
+
+    // Route::get('/execute-shell', 'HomeController@ExecuteShell');
 
 
 
@@ -868,6 +890,13 @@ Route::post('cpp/home',  'ModeratorsLoginController@Login')->name('CPPLogin');
 Route::group(['prefix' => 'cpp','middleware' => ['cpp']], function() {
 // Route::middleware(['prefix' => 'cpp' ,cpp::class])->group(function(){
 // Route::get('/Homeone',  'ModeratorsLoginController@Home');
+
+
+Route::get('video-analytics', 'CPPAnalyticsController@IndexVideoAnalytics');
+Route::post('video_startdate_analytics', 'CPPAnalyticsController@VideoStartDateAnalytics');
+Route::post('video_enddate_analytics', 'CPPAnalyticsController@VideoEndDateAnalytics');
+Route::post('video_exportCsv', 'CPPAnalyticsController@VideoExportCsv');
+
 Route::get('/dashboard', 'ModeratorsLoginController@IndexDashboard');
 Route::get('/logout', 'ModeratorsLoginController@logout');
 //  CPP Video Management

@@ -46,16 +46,28 @@
     }
 </style>
 @section('content')
+
+
+
 <div id="content-page" class="content-page">
     <div class="iq-card">
-        <h2>Ads Campaign </h2>
- <div class="container-fluid">
-  <div class="row mt-4 ml-5">
-    <div class="col-md-8">
-    <div id='full_calendar_events'></div></div>
+        <div class="container-fluid">
+            <div class=" row col-sm-12">
+                <div class="col-sm-9">
+                    <h5>Ads Campaign</h5>
+                    <p></p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div id="full_calendar_events"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-</div>
-</div></div>
+
 <!-- ADD EVENT MODAL -->
       
       <div class="modal fade" tabindex="-1" role="dialog" id="newEventModal">
@@ -107,10 +119,16 @@
         </div>
     </div>
 </div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.css" />
+
+
 @section('javascript')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
 <script>
     $(document).ready(function () {
         var SITEURL = "{{ url('/admin/') }}";

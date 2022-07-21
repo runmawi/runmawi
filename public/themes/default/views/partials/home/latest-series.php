@@ -29,7 +29,7 @@
                              <!-- block-images -->
             <div class="block-images position-relative">
               <div class="img-box">
-                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_serie->image;  ?>" class="img-fluid" alt="">
+                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_serie->image;  ?>" class="img-fluid w-100" alt="">
                
                     <?php  if(!empty($latest_serie->ppv_status)){?>
                     <p class="p-tag1"><?php echo $currency->symbol.' '.$settings->ppv_price; ?></p>
@@ -50,11 +50,11 @@
                   <div class="badge badge-secondary p-1 mr-2"><?php echo $latest_serie->age_restrict.' '.'+' ?></div>
                   <div class="badge badge-secondary p-1 mr-2"><?php 
                   $SeriesSeason = App\SeriesSeason::where('series_id',$latest_serie->id)->count(); 
-                  echo 'Season'.' '.$SeriesSeason
+                  echo $SeriesSeason.' '.'Season'
                   ?></div>
                   <div class="badge badge-secondary p-1 mr-2"><?php 
                   $Episode = App\Episode::where('series_id',$latest_serie->id)->count(); 
-                  echo 'Episodes'.' '.$Episode
+                  echo $Episode.' '.'Episodes'
                   ?></div>
 
                   <!--<span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $latest_serie->duration); ?></span>-->

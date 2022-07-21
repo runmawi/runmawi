@@ -56,6 +56,7 @@ use App\VideoSearchTag;
 use App\RelatedVideo;
 use Streaming\Representation;
 use App\Jobs\ConvertVideoTrailer;
+use App\InappPurchase;
 
 
 
@@ -555,6 +556,7 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
             'video_artist' => [],
             'page' => 'Creates',
             'ads_category' => Adscategory::all(),
+            'InappPurchase' => InappPurchase::all(),
             );
 
 
@@ -941,6 +943,7 @@ if(!empty($artistsdata)){
             'ads_rolls' => $ads_rolls ? $ads_rolls : 0 ,
             'ads_category' => $ads_category,
             'block_countries' => BlockVideo::where('video_id', $id)->pluck('country_id')->toArray(),
+            'InappPurchase' => InappPurchase::all(),
             );
 
 
@@ -954,6 +957,7 @@ if(!empty($artistsdata)){
      */
     public function update(Request $request)
     {
+
          if (!Auth::user()->role == 'admin')
         {
             return redirect('/home');
@@ -1459,6 +1463,11 @@ if(!empty($artistsdata)){
         }else{
             $searchtags = $video->searchtags;
         }
+        if(!empty($video->uploaded_by)){
+            $uploaded_by = $video->uploaded_by;
+        }else{
+            $uploaded_by =  Auth::user()->username.' '.'('.Auth::user()->role.')';
+        }
         // dd($data['trailer']);
 
         $video->ads_category =  $data['ads_category'];   
@@ -1481,6 +1490,7 @@ if(!empty($artistsdata)){
         $video->age_restrict=$data['age_restrict'];
         $video->access=$data['access'];
         //  $video->active=1;
+        $video->uploaded_by = $uploaded_by;
         $video->player_image = $player_image ;
         $video->year = $year ;
         $video->details = $details ;
@@ -1499,7 +1509,8 @@ if(!empty($artistsdata)){
         $video->banner =  $banner;
         $video->enable =  $enable;
         $video->rating =  $request->rating;
-        $video->search_tags =  $searchtags;      
+        $video->search_tags =  $searchtags;  
+        $video->ios_ppv_price =  $request->ios_ppv_price;  
         $video->save();
 
         if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1) {
@@ -1653,7 +1664,7 @@ if(!empty($artistsdata)){
                     $subtitle_data['movie_id'] = $id;
                     $subtitle_data['url'] = URL::to('/').'/public/uploads/subtitles/'.$filename; 
                     $video_subtitle = new MoviesSubtitles;
-                    $video_subtitle->movie_id =  443 ;
+                    $video_subtitle->movie_id =  $video->id ;
                     $video_subtitle->shortcode =   $shortcodes[$key];
                     $video_subtitle->sub_language =  $languages[$key] ;
                     $video_subtitle->url =   URL::to('/').'/public/uploads/subtitles/'.$filename;
@@ -2215,24 +2226,24 @@ if(!empty($artistsdata)){
             $video->intro_start_time =  $data['intro_start_time'];
             $video->intro_end_time =  $data['intro_end_time'];   
             $video->ads_category =  $data['ads_category'];   
-
             $video->description = strip_tags($data['description']);
             $video->trailer_description = strip_tags($data['trailer_description']);
-
+            $video->uploaded_by = Auth::user()->username.' '.'('.Auth::user()->role.')';
             $video->draft = 1;
             $video->active = 1 ;
             $video->embed_code =  $embed_code ;
             $video->player_image =   $player_image ;
             $video->publish_type = $publish_type;
             $video->publish_time = $publish_time;
-             $video->age_restrict =  $data['age_restrict'];
+            $video->age_restrict =  $data['age_restrict'];
             $video->ppv_price =$data['ppv_price'];
-             $video->access =  $data['access'];
-             $video->banner =  $banner;
-             $video->featured =  $featured;
-             $video->country =  $data['video_country'];
+            $video->access =  $data['access'];
+            $video->banner =  $banner;
+            $video->featured =  $featured;
+            $video->country =  $data['video_country'];
             $video->enable =  1;
             $video->search_tags =  $searchtags;
+            $video->ios_ppv_price =  $data['ios_ppv_price'];
 
             if(!empty($data['default_ads'])){
                 $video->default_ads = $data['default_ads'];
@@ -2420,7 +2431,7 @@ if(!empty($artistsdata)){
                     $subtitle_data['movie_id'] = $id;
                     $subtitle_data['url'] = URL::to('/').'/public/uploads/subtitles/'.$filename; 
                     $video_subtitle = new MoviesSubtitles;
-                    $video_subtitle->movie_id =  443 ;
+                    $video_subtitle->movie_id =  $video->id ;
                     $video_subtitle->shortcode =   $shortcodes[$key];
                     $video_subtitle->sub_language =  $languages[$key] ;
                     $video_subtitle->url =   URL::to('/').'/public/uploads/subtitles/'.$filename;

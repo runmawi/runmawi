@@ -282,25 +282,24 @@ public function PaypalIndex()
             }
     }
     
-            public function subscriptionstore(Request $request) {
+        public function subscriptionstore(Request $request) {
         
            $input = $request->all();
+
            $validatedData = $request->validate([
                 'plans_name' => 'required|max:255',
                 'type' => 'required',
 
             ]);  
 
-            // echo "<pre>";     
-            // print_r($request->all());exit();
+          
             $devices = $request->devices;
             if(!empty($devices)){
-            $plan_devices = implode(",",$devices);
+                $plan_devices = implode(",",$devices);
             }else{
                 $plan_devices = null;
-
             }
-            // dd($request->plan_id);
+
             if(!empty($request->plan_id)){
                 foreach($request->plan_id as $key => $value){
 
@@ -320,7 +319,9 @@ public function PaypalIndex()
                     $new_plan->resolution = $request->resolution;
                     $new_plan->devices = $plan_devices;
                     $new_plan->subscription_plan_name = $request->plans_name.$types;
-                    $new_plan->user_id = Auth::User()->id;            
+                    $new_plan->user_id = Auth::User()->id;  
+                    $new_plan->ios_product_id = $request->ios_product_id;
+                    $new_plan->ios_plan_price = $request->ios_plan_price;      
                     $new_plan->save();
                         }
                     }
@@ -368,18 +369,22 @@ public function PaypalIndex()
     
     
     public function update(Request $request) {
+
         $validatedData = $request->validate([
             'plans_name' => 'required|max:255',
             'days' => 'required|max:255',
             'price' => 'required|max:255',
             'type' => 'required|max:255',
         ]);
+
         $input = $request->all();
+
         if(!empty($request->video_quality)){
             $video_quality = $request->video_quality;
         }else{
             $video_quality = null;
         }
+
         $devices = $input['devices'];
         $plan_devices = implode(",",$devices);
 
@@ -396,7 +401,7 @@ public function PaypalIndex()
         $plans->resolution = $input['resolution'];
         $plans->devices = $plan_devices;
  		$plans->billing_interval  = $request->billing_interval;
-		$plans_count = Plan::where('plans_name', '=', $plans->plans_name)->count();
+      	$plans_count = Plan::where('plans_name', '=', $plans->plans_name)->count();
         $plans->save();
         
         return Redirect::to('admin/plans/')->with(array('note' => 'You have been successfully Added New Plan', 'note_type' => 'success'));
@@ -429,22 +434,30 @@ public function PaypalIndex()
 
 
     public function subscriptionupdate(Request $request) {
+
         $validatedData = $request->validate([
             'plans_name' => 'required|max:255',
             'plan_id' => 'required|max:255',
             'price' => 'required|max:255',
         ]);
+        
         $input = $request->all();
+
         $devices = $request['devices'];
         if(!empty($devices)){
         $plan_devices = implode(",",$devices);
         }else{
             $plan_devices = null;
         }
-        // dd($plan_devices);
+
         if(!empty($input['subscription_plan_name'])){
-        $subscription_plan_name = $input['subscription_plan_name'];
-        }else{ $subscription_plan_name = [] ; }
+            $subscription_plan_name = $input['subscription_plan_name'];
+        }
+        else
+        { 
+            $subscription_plan_name = [] ; 
+        }
+
         $planid = $input['plan_id'];
         foreach($subscription_plan_name as $value){
         $plans = SubscriptionPlan::where('subscription_plan_name',$value)->first();
@@ -454,6 +467,8 @@ public function PaypalIndex()
         $plans->video_quality = $input['video_quality'];
         $plans->resolution = $input['resolution'];
         $plans->devices = $plan_devices;
+        $plans->ios_product_id = $request->ios_product_id;
+        $plans->ios_plan_price = $request->ios_plan_price;     
         foreach($input['plan_id'] as $key => $values){
             if($key == $value){
             $plans->plan_id  = $values;
