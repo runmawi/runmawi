@@ -18,7 +18,7 @@
                       @if(isset($all_videos)) 
                         @foreach($all_videos as $video_search)
                             <li class="slide-item col-sm-2 col-md-2 col-xs-12">
-                                <a href=" {{ URL::to('home') }} ">
+                                <a href="{{ URL::to('category') . '/videos/' . $video_search->slug }}">
                                     <div class="block-images position-relative">
                                         <div class="img-box">
                                             <img src="<?php echo URL::to('/').'/public/uploads/images/'.$video_search->image;  ?>" class="img-fluid" alt="">
@@ -136,7 +136,7 @@
                     @if(isset($Search_livestreams)) 
                         @foreach($Search_livestreams as $livestream_search)
                             <li class="slide-item col-sm-2 col-md-2 col-xs-12">
-                                <a href=" {{ URL::to('home') }} ">
+                                <a href="{{  URL::to('live') .'/' .$livestream_search->slug }} ">	
                                     <div class="block-images position-relative">
                                         <div class="img-box">
                                             <img src="<?php echo URL::to('/').'/public/uploads/images/'.$livestream_search->image;  ?>" class="img-fluid" alt="">
@@ -231,7 +231,7 @@
                             @endphp
 
                             <li class="slide-item col-sm-2 col-md-2 col-xs-12">
-                                <a href=" {{ URL::to('home') }} ">
+                                <a href="{{ URL::to('episode') .'/'.$series_slug.'/'. $episode_search->slug }}"> 
                                     <div class="block-images position-relative">
                                         <div class="img-box">
                                             <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episode_search->image;  ?>" class="img-fluid" alt="">
@@ -329,7 +329,7 @@
                     @if(isset($Search_Series)) 
                         @foreach($Search_Series as $Series_search)
                             <li class="slide-item col-sm-2 col-md-2 col-xs-12">
-                                <a href=" {{ URL::to('home') }} ">
+                                <a  href="{{  URL::to('play_series') .'/' .$Series_search->slug }} ">
                                     <div class="block-images position-relative">
                                         <div class="img-box">
                                             <img src="<?php echo URL::to('/').'/public/uploads/images/'.$Series_search->image;  ?>" class="img-fluid" alt="">
