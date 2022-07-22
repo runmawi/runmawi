@@ -9,6 +9,7 @@
         {
             var trailer_url   = $(ele).attr('data-trailer-url');
             var trailer_type = $(ele).attr('data-trailer-type');
+            var poster_url = $(ele).attr('data-poster-url');
 
             if( trailer_type == "m3u8" ){
                     
@@ -55,6 +56,18 @@
                     ],
                 });
 
+                player.source = {
+                    type: 'video',
+                    sources: [
+                        {
+                            src: trailer_url,
+                            type: type,
+                            size: 720
+                        }
+                    ],
+                    poster: poster_url
+                };
+
                 $('#MP4_Trailer-videos').attr('src', trailer_url);
 
             }else if( trailer_type == "m3u8_url"){
@@ -98,6 +111,7 @@
          {
             var trailer_url   = $(ele).attr('data-trailer-url');
             var trailer_type = $(ele).attr('data-trailer-type');
+            var poster_url = $(ele).attr('data-poster-url');
                   
 
             if(trailer_type == "m3u8_url"){
@@ -137,13 +151,25 @@
 
             }else{
                     
-                const player = new Plyr('#Series_MP4_Trailer-videos',{
+                const players = new Plyr('#Series_MP4_Trailer-videos',{
                     controls: [
                         'play-large','restart','rewind','play','fast-forward','progress',
                         'current-time','mute','volume','captions','settings',
                         'pip','airplay','fullscreen'
                     ],
                 });
+
+                players.source = {
+                    type: 'video',
+                    sources: [
+                        {
+                            src: trailer_url,
+                            type: type,
+                            size: 720
+                        }
+                    ],
+                    poster: poster_url
+                }
 
                 $('#Series_MP4_Trailer-videos').attr('src', trailer_url);
             }
