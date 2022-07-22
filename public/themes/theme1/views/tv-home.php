@@ -98,6 +98,11 @@ foreach( $errors->all() as $message ){ ?>
         setTimeout(function() {
             $('#successMessage').fadeOut('fast');
         }, 3000);
+
+      $(".main-content , .main-header , .container-fluid").click(function(){
+          $(".home-search").hide();
+      });
+
     })
 </script>
 <?php include('footer.blade.php');?>
