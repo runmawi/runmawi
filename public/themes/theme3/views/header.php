@@ -95,13 +95,15 @@ $data = Session::all();
     else{  echo URL::to('/').'/public/uploads/settings/'. $settings->logo   ;} //echo $settings; ?>" />
 
 <?php  $Linking_Setting = App\LinkingSetting::first();  
-$site_url = "localhost/flicknexs/home";
+$site_url = \Request::url();
 $http_site_url = explode("http://",$site_url);
 $https_site_url = explode("https://",$site_url);
 if(!empty($http_site_url[1])){
 $site_page_url = $http_site_url[1];
 }elseif(!empty($https_site_url[1])){
    $site_page_url = $https_site_url[1];
+}else{
+   $site_page_url = "";
 }
  ?>
 <?php if(!empty($Linking_Setting->ios_app_store_id)){ ?><meta property="al:ios:app_store_id" content="<?php  echo $Linking_Setting->ios_app_store_id; ?>" /><?php } ?>
