@@ -1212,6 +1212,11 @@ $( document ).ready(function() {
    });
 
 });
+
+$(".main-content , .main-header , .container-fluid").click(function(){
+      $(".home-search").hide();
+  });
+  
  </script>
 
   <?php include('footer.blade.php');?>

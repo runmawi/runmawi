@@ -261,3 +261,9 @@
         background: black;
     }
 </style>
+
+<script>
+    $( document ).ready(function() {
+        $(".home-search").hide();
+    });
+</script>
