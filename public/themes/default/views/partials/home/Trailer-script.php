@@ -56,18 +56,6 @@
                     ],
                 });
 
-                player.source = {
-                    type: 'video',
-                    sources: [
-                        {
-                            src: trailer_url,
-                            type: type,
-                            size: 720
-                        }
-                    ],
-                    poster: poster_url
-                };
-
                 $('#MP4_Trailer-videos').attr('src', trailer_url);
 
             }else if( trailer_type == "m3u8_url"){
@@ -159,17 +147,17 @@
                     ],
                 });
 
-                players.source = {
-                    type: 'video',
-                    sources: [
-                        {
-                            src: trailer_url,
-                            type: type,
-                            size: 720
-                        }
-                    ],
-                    poster: poster_url
-                }
+                // players.source = {
+                //     type: 'video',
+                //     sources: [
+                //         {
+                //             src: trailer_url,
+                //             type: type,
+                //             size: 720
+                //         }
+                //     ],
+                //     poster: poster_url
+                // }
 
                 $('#Series_MP4_Trailer-videos').attr('src', trailer_url);
             }
