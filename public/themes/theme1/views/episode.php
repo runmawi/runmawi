@@ -214,25 +214,6 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 			</div>
 			
 
-			
-				                <!-- Watchlater & Wishlist -->
-								
-				<div class="col-md-5 text-right">
-
-					<?php if($episode_watchlater == null){ ?>
-						<div id="<?php echo 'episode_add_watchlist_'.$episode->id ; ?>" class="watchlater btn btn-primary text-white"  aria-hidden="true" data-list="<?php echo $episode->id ; ?>" data-myval="10" data-video-id="<?php echo $episode->id ; ?>" onclick="episodewatchlater(this)" >  Watch Later </div>
-					<?php }else{?>
-						<div id="<?php echo 'episode_add_watchlist_'.$episode->id ; ?>" class="watchlater btn btn-primary text-white"  aria-hidden="true" data-list="<?php echo $episode->id ; ?>" data-myval="10"  data-video-id="<?php echo $episode->id ; ?>"  onclick="episodewatchlater(this)"> Remove Watch Later </div>
-					<?php } ?>
-
-					<?php if($episode_Wishlist == null){ ?>
-						<div id="<?php echo 'episode_add_wishlist_'.$episode->id ; ?>" class="mywishlist btn btn-primary text-white"  aria-hidden="true" data-list="<?php echo $episode->id ; ?>" data-myval="10" data-video-id="<?php echo $episode->id ; ?>" onclick="episodewishlist(this)" > Add  Wishlist </div>
-					<?php }else{?>
-						<div id="<?php echo 'episode_add_wishlist_'.$episode->id ; ?>" class="mywishlist btn btn-primary text-white"  aria-hidden="true" data-list="<?php echo $episode->id ; ?>" data-myval="10"  data-video-id="<?php echo $episode->id ; ?>"  onclick="episodewishlist(this)"> Remove Wishlist </div>
-					<?php } ?>
-				
-				</div>
-
 			<!-- <div>
 			<?php //if ( $episode->ppv_status != null && Auth::User()!="admin" || $episode->ppv_price != null  && Auth::User()->role!="admin") { ?>
 			<button  data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary rent-episode">
@@ -244,6 +225,31 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 <!-- <div class="clear" style="display:flex;justify-content: space-between;
     align-items: center;">
     <div> -->
+
+	  <!-- Watchlater & Wishlist -->
+		  
+	  		<div class="col-md-5">
+		  		<ul class="list-inline p-0 mt-4 share-icons music-play-lists">
+
+				 	 <li>
+						<?php if($episode_watchlater == null){ ?>
+							<span id="<?php echo 'episode_add_watchlist_'.$episode->id ; ?>" class="slider_add_watchlist"  aria-hidden="true" data-list="<?php echo $episode->id ; ?>" data-myval="10" data-video-id="<?php echo $episode->id ; ?>" onclick="episodewatchlater(this)" > <i class="fa fa-plus-circle" aria-hidden="true"></i>  </span>
+						<?php }else{?>
+							<span id="<?php echo 'episode_add_watchlist_'.$episode->id ; ?>" class="slider_add_watchlist"  aria-hidden="true" data-list="<?php echo $episode->id ; ?>" data-myval="10"  data-video-id="<?php echo $episode->id ; ?>"  onclick="episodewatchlater(this)"> <i class="fa fa-minus-circle" aria-hidden="true"></i> </span>
+						<?php } ?>
+					</li>
+
+                    <li>
+						<?php if($episode_Wishlist == null){ ?>
+							<span id="<?php echo 'episode_add_wishlist_'.$episode->id ; ?>" class="episode_add_wishlist_"  aria-hidden="true" data-list="<?php echo $episode->id ; ?>" data-myval="10" data-video-id="<?php echo $episode->id ; ?>" onclick="episodewishlist(this)" ><i class="fa fa-heart-o" aria-hidden="true"></i>   </span>
+						<?php }else{?>
+							<span id="<?php echo 'episode_add_wishlist_'.$episode->id ; ?>" class="episode_add_wishlist_"  aria-hidden="true" data-list="<?php echo $episode->id ; ?>" data-myval="10"  data-video-id="<?php echo $episode->id ; ?>"  onclick="episodewishlist(this)"> <i class="fa  fa-heart" aria-hidden="true"></i></span>
+						<?php } ?>
+					</li>
+                 </ul>
+			</div>
+
+
 		<h2 id="tags">Tags: 
 		<?php if(isset($episode->tags)) {
 		foreach($episode->tags as $key => $tag): ?>
@@ -683,12 +689,22 @@ function episodewatchlater(ele)
 
                      $(id).data('myval'); 
                      $(id).data('myval','remove');
-                     $(id).text("Remove Watch Later");
+					 $(id).find($(".fa")).toggleClass('fa fa-plus-circle').toggleClass('fa fa-minus-circle');
+					 
+					$("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Episode added to watchlater</div>');
+					setTimeout(function() {
+						$('.add_watch').slideUp('fast');
+					}, 3000);
 
                   }else if(data.message == "Add the Watch list"){
                      $(id).data('myval'); 
                      $(id).data('myval','add');
-                     $(id).text("Add  Watch Later");
+					 $(id).find($(".fa")).toggleClass('fa fa-minus-circle').toggleClass('fa fa-plus-circle');
+
+					 $("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Episode removed from watchlater</div>');
+						setTimeout(function() {
+							$('.remove_watch').slideUp('fast');
+						}, 3000);
                   }
                   else if (data.message == "guest"){
                     window.location.replace('<?php echo URL::to('/login'); ?>');
@@ -723,12 +739,22 @@ function episodewatchlater(ele)
 
                      $(id).data('myval'); 
                      $(id).data('myval','remove');
-                     $(id).text("Remove  Wishlist");
+					 $(id).find($(".fa")).toggleClass('fa fa-heart-o').toggleClass('fa fa-heart');
+
+					 $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Episode added to wishlist</div>');
+					setTimeout(function() {
+						$('.add_watch').slideUp('fast');
+					}, 3000);
 
                   }else if(data.message == "Add the Watch list"){
                      $(id).data('myval'); 
                      $(id).data('myval','add');
-                     $(id).text("Add  Wishlist");
+                     $(id).find($(".fa")).toggleClass('fa fa-heart').toggleClass('fa fa-heart-o');
+
+					 $("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Episode removed from wishlist</div>');
+						setTimeout(function() {
+							$('.remove_watch').slideUp('fast');
+						}, 3000);
                   }
                   else if (data.message == "guest"){
                     window.location.replace('<?php echo URL::to('/login'); ?>');
@@ -738,6 +764,7 @@ function episodewatchlater(ele)
 		}
 
 </script>
+	
 
 	
 <?php include('footer.blade.php'); ?>

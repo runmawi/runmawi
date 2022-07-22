@@ -84,26 +84,24 @@ endif; ?>
                         </div>
                         </div>
                         </div>
-                        <div class="trailor-video">
-                            <a href="<?= URL::to('/') ?><?= '/live'.'/'. $slider_video->slug ?>"
-                                class="video-open playbtn">
-                                <svg class="gt" version="1.1" xmlns="http://www.w3.org/2000/svg"
-                                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px"
-                                viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
-                                    <style type="text/css">
-                                        .gt{
-                                            height: 60px!important;
-                                        }
-                            </style>
-                                    <polygon class='triangle' fill="none" stroke-width="7" stroke-linecap="round"
-                                    stroke-linejoin="round" stroke-miterlimit="10"
-                                    points="73.5,62.5 148.5,105.8 73.5,149.1 " />
-                                    <circle class='circle' fill="none" stroke-width="7" stroke-linecap="round"
-                                    stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" />
-                                </svg>
-                                <span class="w-trailor">Watch Trailer</span>
-                            </a>
-                            </div>
+                            <!-- <div class="trailor-video">
+                                <a href="<?= URL::to('/') ?><?= '/live'.'/'. $slider_video->slug ?>" class="video-open playbtn">
+                                    <svg class="gt" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px"
+                                            viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                            <style type="text/css">
+                                                .gt{  height: 60px!important;  }
+                                            </style>
+                                        <polygon class='triangle' fill="none" stroke-width="7" stroke-linecap="round"
+                                        stroke-linejoin="round" stroke-miterlimit="10"
+                                        points="73.5,62.5 148.5,105.8 73.5,149.1 " />
+                                        <circle class='circle' fill="none" stroke-width="7" stroke-linecap="round"
+                                        stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" />
+                                    </svg>
+                                    <span class="w-trailor">Watch Trailer</span>
+                                </a>
+                            </div> -->
+
                             </div>
                             </div>
                             </div>
@@ -144,29 +142,83 @@ endif; ?>
 
                     
                                 <!-- watch Trailer -->
-                    <div class="trailor-video">
-                        <a href="#video-trailer" class="video-open playbtn" data-trailer-url="<?= $videos->trailer ?>" data-trailer-type="<?= $videos->trailer_type ?>" onclick="trailer_slider_videos(this)"  >
-                          
-                           <svg class="gt" version="1.1" xmlns="http://www.w3.org/2000/svg"  xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px"
-                                 viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
-                                    <style type="text/css"> .gt{  height: 60px!important; } </style>
-                                <polygon class='triangle' fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"
-                                 points="73.5,62.5 148.5,105.8 73.5,149.1 " />
-                                <circle class='circle' fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" />
-                            </svg>
-                            <span class="w-trailor">Watch Trailer</span>
-                        </a>
-                    </div>
+                    <?php if( $videos->trailer != null && $videos->trailer_type == 'm3u8' ){  ?>
 
-                    <div class="col-md-12">
-                        <div id="video-trailer" class="mfp-hide">
-                            <video  id="Trailer-videos" class=""  poster="<?= URL::to('/') . '/public/uploads/images/' . $videos->player_image ?>"
-                                controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' type="application/x-mpegURL">
-                                <source  type="application/x-mpegURL"  src="<?php echo $videos->trailer;?>">
-                            </video>
+                        <div class="trailor-video">
+                            <a href="#video-trailer" class="video-open playbtn" data-trailer-url="<?= $videos->trailer ?>" data-trailer-type="<?= $videos->trailer_type ?>" onclick="trailer_slider_videos(this)"  >
+                            
+                            <svg class="gt" version="1.1" xmlns="http://www.w3.org/2000/svg"  xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px"
+                                    viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                        <style type="text/css"> .gt{  height: 60px!important; } </style>
+                                    <polygon class='triangle' fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"
+                                    points="73.5,62.5 148.5,105.8 73.5,149.1 " />
+                                    <circle class='circle' fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" />
+                                </svg>
+                                <span class="w-trailor">Watch Trailer</span>
+                            </a>
                         </div>
-                    </div>
-                    
+
+                    <?php }elseif($videos->trailer != null && $videos->trailer_type == 'm3u8_url' ){ ?>
+
+                        <div class="trailor-video">
+                            <a href="#M3U8_video-trailer" class="video-open playbtn" data-trailer-url="<?= $videos->trailer ?>" data-trailer-type="<?= $videos->trailer_type ?>" onclick="trailer_slider_videos(this)"  >
+                            
+                            <svg class="gt" version="1.1" xmlns="http://www.w3.org/2000/svg"  xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px"
+                                    viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                        <style type="text/css"> .gt{  height: 60px!important; } </style>
+                                    <polygon class='triangle' fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"
+                                    points="73.5,62.5 148.5,105.8 73.5,149.1 " />
+                                    <circle class='circle' fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" />
+                                </svg>
+                                <span class="w-trailor">Watch Trailer</span>
+                            </a>
+                        </div>
+
+                    <?php  }elseif( $videos->trailer != null && $videos->trailer_type == 'mp4_url' || $videos->trailer_type == 'video_mp4' ){ ?>
+
+                        <div class="trailor-video">
+                            <a href="#MP4_videos-trailer" class="video-open playbtn" data-trailer-url="<?= $videos->trailer ?>" data-trailer-type="<?= $videos->trailer_type ?>" onclick="trailer_slider_videos(this)"  >
+                            
+                            <svg class="gt" version="1.1" xmlns="http://www.w3.org/2000/svg"  xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px"
+                                    viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                        <style type="text/css"> .gt{  height: 60px!important; } </style>
+                                    <polygon class='triangle' fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"
+                                    points="73.5,62.5 148.5,105.8 73.5,149.1 " />
+                                    <circle class='circle' fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" />
+                                </svg>
+                                <span class="w-trailor">Watch Trailer</span>
+                            </a>
+                        </div>
+
+                    <?php } ?>
+
+                        <div class="col-md-12">
+                            <div id="video-trailer" class="mfp-hide">
+
+                                <video  id="Trailer-videos" class=""  poster="<?= URL::to('/') . '/public/uploads/images/' . $videos->player_image ?>"
+                                    controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' type="application/x-mpegURL">
+                                    <source  type="application/x-mpegURL"  src="<?php echo $videos->trailer;?>">
+                                </video>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div id="M3U8_video-trailer" class="mfp-hide">
+                                <video  id="M3U8_video-videos" class=""  poster="<?= URL::to('/') . '/public/uploads/images/' . $videos->player_image ?>"
+                                    controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' type="application/x-mpegURL">
+                                    <source  type="application/x-mpegURL"  src="<?php echo $videos->trailer;?>">
+                                </video>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div id="MP4_videos-trailer" class="mfp-hide">
+                                <video  id="MP4_Trailer-videos" class=""  poster="<?= URL::to('/') . '/public/uploads/images/' . $videos->player_image ?>"
+                                    controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' type="application/x-mpegURL">
+                                    <source  type="application/x-mpegURL"  src="<?php echo $videos->trailer;?>">
+                                </video>
+                            </div>
+                        </div>
                 </div>
             </div>
         </div>
@@ -234,6 +286,9 @@ if(Route::current()->getName() == "home" || Route::current()->getName() == null 
                                 </div>
                             </div>
 
+                                        <!-- watch Trailer -->
+                         <?php if( $videos_categorys->trailer != null && $videos_categorys->trailer_type == 'm3u8'  ){  ?>
+
                             <div class="trailor-video">
                                 <a href="#video-trailer"    class="video-open playbtn" data-trailer-url="<?= $videos_categorys->trailer ?>" data-trailer-type="<?= $videos_categorys->trailer_type ?>" onclick="trailer_slider_videos(this)" >
                                        
@@ -249,6 +304,43 @@ if(Route::current()->getName() == "home" || Route::current()->getName() == null 
                                 </a>
                             </div>
 
+                        <?php }elseif( $videos_categorys->trailer != null && $videos_categorys->trailer_type == 'm3u8_url' ){ ?>
+
+                            <div class="trailor-video">
+                                <a href="#M3U8_video-trailer"    class="video-open playbtn" data-trailer-url="<?= $videos_categorys->trailer ?>" data-trailer-type="<?= $videos_categorys->trailer_type ?>" onclick="trailer_slider_videos(this)" >
+                                       
+                                    <svg class="gt" version="1.1" xmlns="http://www.w3.org/2000/svg"   xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px"
+                                         viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                        <style type="text/css">  .gt{     height: 60px!important;    }     </style>
+                                        <polygon class='triangle' fill="none" stroke-width="7" stroke-linecap="round"    stroke-linejoin="round" stroke-miterlimit="10"
+                                            points="73.5,62.5 148.5,105.8 73.5,149.1 " />
+                                        <circle class='circle' fill="none" stroke-width="7" stroke-linecap="round"
+                                                stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" />
+                                    </svg>
+                                    <span class="w-trailor">Watch Trailer</span>
+                                </a>
+                            </div>
+
+
+                        <?php  }elseif( $videos_categorys->trailer != null && $videos_categorys->trailer_type == 'mp4_url' || $videos->trailer_type == "video_mp4" ){ ?>
+
+                                <div class="trailor-video">
+                                    <a href="#MP4_videos-trailer"    class="video-open playbtn" data-trailer-url="<?= $videos_categorys->trailer ?>" data-trailer-type="<?= $videos_categorys->trailer_type ?>" onclick="trailer_slider_videos(this)" >
+                                        
+                                        <svg class="gt" version="1.1" xmlns="http://www.w3.org/2000/svg"   xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px"
+                                            viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                            <style type="text/css">  .gt{     height: 60px!important;    }     </style>
+                                            <polygon class='triangle' fill="none" stroke-width="7" stroke-linecap="round"    stroke-linejoin="round" stroke-miterlimit="10"
+                                                points="73.5,62.5 148.5,105.8 73.5,149.1 " />
+                                            <circle class='circle' fill="none" stroke-width="7" stroke-linecap="round"
+                                                    stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" />
+                                        </svg>
+                                        <span class="w-trailor">Watch Trailer</span>
+                                    </a>
+                                </div>
+
+                        <?php } ?>
+
                             <div class="col-md-12">
                                 <div id="video-trailer" class="mfp-hide">
                                     <video  id="Trailer-videos" class=""  poster="<?= URL::to('/') . '/public/uploads/images/' . $videos_categorys->player_image ?>"
@@ -257,6 +349,25 @@ if(Route::current()->getName() == "home" || Route::current()->getName() == null 
                                     </video>
                                 </div>
                             </div>
+
+                            <div class="col-md-6">
+                                <div id="M3U8_video-trailer" class="mfp-hide">
+                                    <video  id="M3U8_video-videos" class=""  poster="<?= URL::to('/') . '/public/uploads/images/' . $videos->player_image ?>"
+                                        controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' type="application/x-mpegURL">
+                                        <source  type="application/x-mpegURL"  src="<?php echo $videos->trailer;?>">
+                                    </video>
+                                </div>
+                            </div>
+
+                            <div class="col-md-8">
+                                <div id="MP4_videos-trailer" class="mfp-hide">
+                                    <video  id="MP4_Trailer-videos" class=""  poster="<?= URL::to('/') . '/public/uploads/images/' . $videos_categorys->player_image ?>"
+                                        controls data-setup='{"controls": true, "aspectRatio":"4:6", "fluid": true}' type="video/mp4">
+                                        <source  type="video/mp4"  src="<?php echo $videos_categorys->trailer;?>">
+                                    </video>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -366,7 +477,6 @@ if(Route::current()->getName() == "home" || Route::current()->getName() == null 
                       -webkit-line-clamp: 3;
                       -webkit-box-orient: vertical;  
                       overflow: hidden;">
-                        <p></p>
                     <?php echo __($slider_video->description); ?>
                     </div>
                     <div class="d-flex justify-content-evenly align-items-center r-mb-23" data-animation-in="fadeInUp"
@@ -458,31 +568,67 @@ if(Route::current()->getName() == "home" || Route::current()->getName() == null 
 
                     <!-- watch Trailer -->
                     <?php if( $series_trailer != null ) { ?>
-                        <div class="trailor-video">
-                            <a href="#video-trailer" class="video-open playbtn" data-trailer-url="<?php if( $series_trailer != null) { echo $series_trailer->trailer; }   ?>"  onclick="trailer_slider_season(this)" data-trailer-type = "<?php  echo $series_trailer->trailer_type ;?>"  >
-                            
-                            <svg class="gt" version="1.1" xmlns="http://www.w3.org/2000/svg"  xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px"
-                                    viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
-                                        <style type="text/css"> .gt{  height: 60px!important; } </style>
-                                    <polygon class='triangle' fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"
-                                    points="73.5,62.5 148.5,105.8 73.5,149.1 " />
-                                    <circle class='circle' fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" />
-                                </svg>
-                                <span class="w-trailor">Watch Trailer</span>
-                            </a>
-                        </div>
+
+
+                        <?php if( $series_trailer->trailer != null && $series_trailer->trailer_type == 'm3u8_url' ){  ?>
+
+                            <div class="trailor-video">
+                                <a href="#video-trailer" class="video-open playbtn" data-trailer-url="<?php if( $series_trailer != null) { echo $series_trailer->trailer; }   ?>"  onclick="trailer_slider_season(this)" data-trailer-type = "<?php  echo $series_trailer->trailer_type ;?>"  >
+                                
+                                <svg class="gt" version="1.1" xmlns="http://www.w3.org/2000/svg"  xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px"
+                                        viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                            <style type="text/css"> .gt{  height: 60px!important; } </style>
+                                        <polygon class='triangle' fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"
+                                        points="73.5,62.5 148.5,105.8 73.5,149.1 " />
+                                        <circle class='circle' fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" />
+                                    </svg>
+                                    <span class="w-trailor">Watch Trailer</span>
+                                </a>
+                            </div>
+
+                        <?php  }elseif( $series_trailer->trailer != null && $series_trailer->trailer_type == 'mp4_url' ){ ?>
+
+                            <div class="trailor-video">
+                                <a href="#series_MP4_video-trailer" class="video-open playbtn" data-trailer-url="<?php if( $series_trailer != null) { echo $series_trailer->trailer; }   ?>"  onclick="trailer_slider_season(this)" data-trailer-type = "<?php  echo $series_trailer->trailer_type ;?>"  >
+                                
+                                <svg class="gt" version="1.1" xmlns="http://www.w3.org/2000/svg"  xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px"
+                                        viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                            <style type="text/css"> .gt{  height: 60px!important; } </style>
+                                        <polygon class='triangle' fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"
+                                        points="73.5,62.5 148.5,105.8 73.5,149.1 " />
+                                        <circle class='circle' fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" />
+                                    </svg>
+                                    <span class="w-trailor">Watch Trailer</span>
+                                </a>
+                            </div>
+
+                        <?php } ?>
+
 
                         <div class="col-md-12">
                             <div id="video-trailer" class="mfp-hide">
                                 <?php
                                     $series_image =  $series_trailer != null ? $series_trailer->season_image   :  ' ';
                                 ?>
-                                <video  id="Trailer-videos" class=""  poster="<?= URL::to('/') . '/public/uploads/season_images/' .$series_image ;?>"
-                                    controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' type="application/x-mpegURL">
-                                    <source  type="application/x-mpegURL"  src="<?php if( $series_trailer != null) { echo  $series_trailer->trailer ;} ?>">
-                                </video>
+
+                                    <video  id="Trailer-videos" class=""  poster="<?= URL::to('/') . '/public/uploads/season_images/' .$series_image ;?>"
+                                        controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' type="application/x-mpegURL">
+                                        <source  type="application/x-mpegURL"  src="<?php if( $series_trailer != null) { echo  $series_trailer->trailer ;} ?>">
+                                    </video>
                             </div>
                         </div>
+
+                        <div class="col-md-12">
+                            <div id="series_MP4_video-trailer" class="mfp-hide">
+                                <?php
+                                    $series_image =  $series_trailer != null ? $series_trailer->season_image   :  ' ';
+                                ?>
+                                <video   id="Series_MP4_Trailer-videos" class="" poster="<?= URL::to('/') . '/public/uploads/season_images/' . $series_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php if( $series_trailer != null) { echo  $series_trailer->trailer ;} ?>"  type="video/mp4" >
+                                    <source src="<?php if( $series_trailer != null) { echo  $series_trailer->trailer ;} ?>" type='video/mp4' label='Auto' res='auto' />
+                                </video> 
+                            </div>
+                        </div>
+
                     <?php } ?>
 
                     </div>

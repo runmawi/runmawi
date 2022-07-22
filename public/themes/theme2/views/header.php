@@ -94,6 +94,28 @@ $data = Session::all();
     elseif(!empty($livestream)){ echo URL::to('/public/uploads/images').'/'.$livestream->image ;}
     else{  echo URL::to('/').'/public/uploads/settings/'. $settings->logo   ;} //echo $settings; ?>" />
 
+
+<?php  $Linking_Setting = App\LinkingSetting::first();  
+$site_url = \Request::url();
+$http_site_url = explode("http://",$site_url);
+$https_site_url = explode("https://",$site_url);
+if(!empty($http_site_url[1])){
+$site_page_url = $http_site_url[1];
+}elseif(!empty($https_site_url[1])){
+   $site_page_url = $https_site_url[1];
+}else{
+   $site_page_url = "";
+}
+ ?>
+<?php if(!empty($Linking_Setting->ios_app_store_id)){ ?><meta property="al:ios:app_store_id" content="<?php  echo $Linking_Setting->ios_app_store_id; ?>" /><?php } ?>
+<meta property="al:ios:url" content="<?php echo $site_page_url  ; ?>" />
+<?php if(!empty($Linking_Setting->ipad_app_store_id)){ ?><meta property="al:ipad:app_store_id" content="<?php  echo $Linking_Setting->ipad_app_store_id  ; ?>" /><?php } ?>
+<meta property="al:ipad:url" content="<?php echo $site_page_url  ; ?>" />;
+<?php if(!empty($Linking_Setting->android_app_store_id)){ ?><meta property="al:android:package" content="<?php  echo $Linking_Setting->android_app_store_id  ; ?>" /><?php } ?>
+<meta property="al:android:url" content="<?php echo $site_page_url  ; ?>" />;
+<meta property="al:windows_phone:url" content="<?php echo $site_page_url  ; ?>" />
+<?php if(!empty($Linking_Setting->windows_phone_app_store_id)){ ?><meta property="al:windows_phone:app_id" content="<?php  echo $Linking_Setting->windows_phone_app_store_id;?>" /><?php } ?>
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
    <input type="hidden" value="<?php echo $settings->google_tracking_id ; ?>" name="tracking_id" id="tracking_id">

@@ -59,7 +59,7 @@ use App\SiteTheme;
 use Theme;
 use App\Series;
 use App\Artist;
-
+use App\Helpers\LogActivity;
 class HomeController extends Controller
 {
     /**
@@ -2659,10 +2659,10 @@ class HomeController extends Controller
             'currency' => CurrencySetting::first() ,
             'latest_videos' => $latest_videos,
             'ThumbnailSetting' =>   ThumbnailSetting::first(),
-            'audio' => $audio,
-            'livestreams' => $livestreams,
-            'Episode' => $Episode,
-            'Series' => $Series,
+            'Search_audio' => $audio,
+            'Search_livestreams' => $livestreams,
+            'Search_Episode' => $Episode,
+            'Search_Series' => $Series,
             'latest_videos' => $latest_videos,
             'latest_livestreams' => $latest_livestreams,
             'latest_audio' => $latest_audio,
@@ -2674,9 +2674,6 @@ class HomeController extends Controller
             'Most_view_episode' => $Most_view_episode,
             'Most_view_Series' => $Most_view_Series,
         );
-
-        
-
 
         return Theme::view('search', $data);
     }
@@ -3563,7 +3560,18 @@ class HomeController extends Controller
         // exec('php artisan up');
         // exec('php artisan down');
     // }
-    
+    public function myTestAddToLog()
+    {
+        \LogActivity::addToLog('My Testing Add To Log.');
+        // dd('log insert successfully.');
+    }
+
+    public function logActivity()
+    {
+        $logs = \LogActivity::logActivityLists();
+        // dd($logs);
+        return view('admin.logActivity',compact('logs'));
+    }
 }
 
 

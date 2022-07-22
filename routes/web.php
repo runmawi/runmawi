@@ -25,7 +25,8 @@ Route::get('/contact-us/', 'ContactController@index');
 Route::post('/contact-us/store/', 'ContactController@Store');
 Route::get('admin/contact-us/', 'ContactController@ViewRequest');
 
-
+Route::get('add-to-log', 'HomeController@myTestAddToLog');
+Route::get('logActivity', 'HomeController@logActivity');
 
 
 // Route::get('/admin/filemanager', 'FileManagerController@index');
@@ -474,6 +475,9 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/theme_settings/save','AdminThemeSettingsController@SaveTheme');
 
 
+    Route::get('/linking_settings', 'AdminSettingsController@LinkingIndex');
+    Route::post('/linking/store', 'AdminSettingsController@LinkingSave');
+
     /* payment settings */
     Route::get('/payment_settings', 'AdminPaymentSettingsController@index');
     Route::post('/payment_settings', array('before' => 'demo', 'uses' => 'AdminPaymentSettingsController@save_payment_settings'));
@@ -500,7 +504,12 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/video_slug_validate', 'AdminVideosController@video_slug_validate'); 
 
     // slider for live stream in index
-    Route::post('/livevideo_slider_update', 'AdminLiveStreamController@livevideo_slider_update'); 
+    Route::post('/livevideo_slider_update', 'AdminLiveStreamController@livevideo_slider_update');
+    
+    // slider - series & Episode
+    Route::post('/series_slider_update', 'AdminSeriesController@series_slider_update'); 
+    Route::post('/episode_slider_update', 'AdminSeriesController@episode_slider_update'); 
+
 
     /* Thumbnail Setting */
     Route::get('/ThumbnailSetting', 'AdminSettingsController@ThumbnailSetting')->name('ThumbnailSetting'); 
