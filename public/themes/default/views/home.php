@@ -1059,6 +1059,17 @@ endif; ?>
                                  $videos = $videos->where('age_restrict', '<', 10);
                              }
                               $videos = $videos->orderBy('videos.created_at','desc')->get();
+
+                              $Episode_videos =  App\Series::select('episodes.*','series.title as series_name')
+                                             ->join('series_categories', 'series_categories.series_id', '=', 'series.id')
+                                             ->join('episodes', 'episodes.series_id', '=', 'series.id')
+                                             ->where('series_categories.category_id','=',$category->id)
+                                             ->where('episodes.active', '=', '1')
+                                             ->where('series.active', '=', '1')
+                                             ->groupBy('episodes.id')
+                                             ->latest('episodes.created_at')
+                                             ->get();
+
                            }else{
 
                      $videos = App\Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
@@ -1076,6 +1087,17 @@ endif; ?>
                            $videos = $videos->where('age_restrict', '<', 10);
                        }
                       $videos = $videos ->get();
+
+                      $Episode_videos =  App\Series::select('episodes.*','series.title as series_name')
+                                    ->join('series_categories', 'series_categories.series_id', '=', 'series.id')
+                                    ->join('episodes', 'episodes.series_id', '=', 'series.id')
+                                    ->where('series_categories.category_id','=',$category->id)
+                                    ->where('episodes.active', '=', '1')
+                                    ->where('series.active', '=', '1')
+                                    ->groupBy('episodes.id')
+                                    ->latest('episodes.created_at')
+                                    ->get();
+
                        } } else {
                     
 
@@ -1233,6 +1255,11 @@ $( document ).ready(function() {
    });
 
 });
+
+   $(".main-content , .main-header , .container-fluid").click(function(){
+      $(".home-search").hide();
+  });
+
  </script>
 
 <!-- Trailer -->
