@@ -73,7 +73,7 @@
                             </div>
                             <!-- <div class="thriller"> <p><?// $video->genre->name;?></p></div> -->
                         </div>
-                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$video->image;  ?>">
+                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$video->player_image;  ?>">
                     </a>
                      <div class="block-contents">
                         <p class="movie-title padding"><?php echo $video->title; ?></p>

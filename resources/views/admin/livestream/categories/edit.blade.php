@@ -46,7 +46,7 @@
                         @if(!empty($categories[0]->image))
                         <img src="{{ URL::to('/') . '/public/uploads/livecategory/' . $categories[0]->image }}" class="movie-img" width="200"/>
                         @endif
-                        <p>Select the movie image (1280x720 px or 16:9 ratio):</p> 
+                        <p>Select the movie image (1080 X 1920px or 16:9 ratio):</p> 
                         <input type="file" multiple="true" class="form-control" name="image" id="image" />
 
                     </div>

@@ -277,6 +277,7 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 		<div class="iq-main-header ">
   <h4 class="main-title">Season</h4>                      
 </div>
+          <div class="col-sm-12 overflow-hidden">
  <div class="favorites-contens ml-2">
       
                         <ul class="favorites-slider list-inline row mb-0">
@@ -323,7 +324,7 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
                         </ul>
                      </div> </div>
 </div>
-
+</div>
 		<div class="clear">
 		<h2 id="tags">
 		<?php if(isset($episode->tags)) {

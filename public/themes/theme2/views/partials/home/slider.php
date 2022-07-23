@@ -13,7 +13,10 @@
                     <div class="row align-items-center bl h-100">
                         <div class="col-xl-6 col-lg-12 col-md-12">
                         <h1 class="text-white text-uppercase mb-3" style="color:#fff!important;">
-                        <?php echo __($slider_video->title); ?>
+                        <?php 
+                         echo (strlen($slider_video->title) > 15) ? substr($slider_video->title,0,80).'...' : $slider_video->title;
+                        //  echo __($slider_video->title);
+                          ?>
                     </h1>
                             <div class="mb-3">
                             <span class="fa fa-star checked"></span>
@@ -65,7 +68,10 @@ endif; ?>
 </a>-->
 <h1 class="slider-text big-title title text-uppercase text-white" data-animation-in="fadeInLeft"
 data-delay-in="0.6">
-<?php echo __($slider_video->title); ?>
+<?php
+ echo (strlen($slider_video->title) > 15) ? substr($slider_video->title,0,80).'...' : $slider_video->title;
+//  echo __($slider_video->title);
+  ?>
 </h1>
                             <div class="mb-3">
                             <span class="fa fa-star checked"></span>
@@ -133,7 +139,10 @@ endif; ?>
                         <div class="col-xl-5 col-lg-12 col-md-12">
                         <h1 class=" text-white title text-uppercase mb-3" data-animation-in="fadeInLeft"
                         data-delay-in="0.6">
-                        <?php echo __($videos->title); ?>
+                        <?php 
+                         echo (strlen($videos->title) > 15) ? substr($videos->title,0,80).'...' : $videos->title;
+                        // echo __($videos->title);
+                         ?>
                     </h1>
                             <div class="mb-3">
                             <span class="fa fa-star checked"></span>
@@ -384,7 +393,10 @@ if(Route::current()->getName() == "home"){
 </a>-->
 <h1 class="slider-text big-title title text-uppercase" data-animation-in="fadeInLeft"
 data-delay-in="0.6">
-<?php echo __($slider_video->title); ?>
+<?php
+echo (strlen($slider_video->title) > 15) ? substr($slider_video->title,0,80).'...' : $slider_video->title;
+//  echo __($slider_video->title);
+ ?>
 </h1>
 <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
 <span class=" p-2">

@@ -9,7 +9,7 @@
             <article class="block expand">
                 <a class="block-thumbnail"  href="#fm-<?= $video->id; ?>" data-toggle="tab">
                 <div class="thumbnail-overlay"></div>
-                    <img src="<?= ImageHandler::getImage($video->image, 'medium')  ?>">
+                    <img src="<?= ImageHandler::getImage($video->player_image, 'medium')  ?>">
                 </a>
                 <div class="block-overlap block-class_fm-<?= $video->id ?>" style="display: none;">
                     <div style="display:flex;align-items: center;">
@@ -55,7 +55,7 @@
     <div class="tab-content">
         <?php foreach($featured_movies as $movie): ?>
         <div class="tab-pane row" id="fm-<?= $movie->id; ?>" style="position: relative;">
-            <div class="thumbnailbg" style="background-image:url(<?= ImageHandler::getImage($movie->image, '')  ?>);">
+            <div class="thumbnailbg" style="background-image:url(<?= ImageHandler::getImage($movie->player_image, '')  ?>);">
                 <div class="imagetopdetails">
                 <p class="joker-titl padding-top-5"><?= ucfirst($movie->title);?></p>
                 <div class="movie-type">
@@ -116,7 +116,7 @@
             <article class="block">
                 <a class="block-thumbnail"  href="#fv-<?= $video->id; ?>" data-toggle="tab">
                 <div class="thumbnail-overlay"></div>
-                    <img src="<?= ImageHandler::getImage($video->image, 'medium')  ?>">
+                    <img src="<?= ImageHandler::getImage($video->player_image, 'medium')  ?>">
                 </a>
                 <div class="block-overlap block-class_fv-<?= $video->id ?>" style="display: none;">
                     <div style="display:flex;align-items: center;">
@@ -162,7 +162,7 @@
     <div class="tab-content">
         <?php foreach($featured_videos as $video): ?>
         <div class="tab-pane row" id="fv-<?= $video->id; ?>" style="position: relative;">
-            <div class="thumbnailbg" style="background-image:url(<?= ImageHandler::getImage($video->image, '')  ?>);">
+            <div class="thumbnailbg" style="background-image:url(<?= ImageHandler::getImage($video->player_image, '')  ?>);">
             <div class="imagetopdetails">
                 <p class="joker-titl padding-top-5"><?= ucfirst($video->title);?></p>
                 <div class="movie-type">

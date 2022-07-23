@@ -1472,7 +1472,7 @@ return;
             z-index: 2;
             content: '';
             height: 100px;
-            width: 10%;
+            width: 100px;
             background: url(<?php echo URL::to($logo_url) ; ?>) no-repeat;
             background-size: 100px auto, auto;
             }

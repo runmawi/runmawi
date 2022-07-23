@@ -67,7 +67,7 @@
                     </div>
         
                     <div class="form-group {{ $errors->has('image') ? 'has-error' : '' }}">
-                        <label class="m-0">Choose Category image (1280x720 px or 9:16 ratio):</label> 
+                        <label class="m-0">Choose Category image (1080 X 1920px or 9:16 ratio):</label> 
                         <input type="file" multiple="true" class="form-control" name="image" id="image" />
                     </div>
 

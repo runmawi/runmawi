@@ -85,7 +85,7 @@
                 <div class="row mb-3">
                     <div class="col-sm-6">
                         <label class="m-0">Episode Image Cover</label>
-                        <p class="p1">Select the episodes image (1280x720 px or 9:16 ratio)</p>
+                        <p class="p1">Select the episodes image (1080 X 1920px or 9:16 ratio)</p>
 
                         <div class="panel-body">
                             @if(!empty($episodes->image))
