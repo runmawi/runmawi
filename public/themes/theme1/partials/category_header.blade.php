@@ -93,29 +93,6 @@ $data = Session::all();
     elseif(!empty($livestream)){ echo URL::to('/public/uploads/images').'/'.$livestream->image ;}
     else{  echo URL::to('/').'/public/uploads/settings/'. $settings->logo   ;} //echo $settings; ?>" />
 
-
-<?php  $Linking_Setting = App\LinkingSetting::first();  
-$site_url = \Request::url();
-$http_site_url = explode("http://",$site_url);
-$https_site_url = explode("https://",$site_url);
-if(!empty($http_site_url[1])){
-$site_page_url = $http_site_url[1];
-}elseif(!empty($https_site_url[1])){
-   $site_page_url = $https_site_url[1];
-}else{
-   $site_page_url = "";
-}
- ?>
-<?php if(!empty($Linking_Setting->ios_app_store_id)){ ?><meta property="al:ios:app_store_id" content="<?php  echo $Linking_Setting->ios_app_store_id; ?>" /><?php } ?>
-<meta property="al:ios:url" content="<?php echo $site_page_url  ; ?>" />
-<?php if(!empty($Linking_Setting->ipad_app_store_id)){ ?><meta property="al:ipad:app_store_id" content="<?php  echo $Linking_Setting->ipad_app_store_id  ; ?>" /><?php } ?>
-<meta property="al:ipad:url" content="<?php echo $site_page_url  ; ?>" />;
-<?php if(!empty($Linking_Setting->android_app_store_id)){ ?><meta property="al:android:package" content="<?php  echo $Linking_Setting->android_app_store_id  ; ?>" /><?php } ?>
-<meta property="al:android:url" content="<?php echo $site_page_url  ; ?>" />;
-<meta property="al:windows_phone:url" content="<?php echo $site_page_url  ; ?>" />
-<?php if(!empty($Linking_Setting->windows_phone_app_store_id)){ ?><meta property="al:windows_phone:app_id" content="<?php  echo $Linking_Setting->windows_phone_app_store_id;?>" /><?php } ?>
-
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
    <input type="hidden" value="<?php echo $settings->google_tracking_id ; ?>" name="tracking_id" id="tracking_id">
@@ -150,14 +127,7 @@ $site_page_url = $http_site_url[1];
        
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.js"></script>
-    
-    <?php 
-      $Script = App\Script::pluck('header_script')->toArray();
-      if(count($Script) > 0){
-         foreach($Script as $Scriptheader){   ?>
-        <?= $Scriptheader ?>
-         <?php } 
-        } ?>
+
    </head>
     <style>
         svg{
@@ -518,20 +488,16 @@ input:checked + .sliderk:before {
                         <div class="navbar-right menu-right">
                            <ul class="d-flex align-items-center list-inline m-0">
                               <li class="nav-item nav-icon">
-
-                              <div class="search-box iq-search-bar d-search">
-                                    <form action="<?php echo URL::to("/") ."/searchResult"; ?>" method="post" class="searchbox">
-                                        <input name="_token" type="hidden" value="<?php echo csrf_token(); ?>" />
-                                        <div class="form-group position-relative">
-                                            <input type="text" name="search" class="text search-input font-size-12 searches" placeholder="Type here to Search Videos" />
-                                            <i class="search-link ri-search-line"></i>
-
-                                            <?php  include 'public/themes/default/partials/Search_content.php'; ?>
-
-                                        </div>
+                                  <div class="search-box iq-search-bar d-search">
+                                    <form action="<?php echo URL::to('/').'/searchResult';?>" method="post" class="searchbox">
+                                        <input name="_token" type="hidden" value="<?php echo csrf_token(); ?>">
+                                       <div class="form-group position-relative">
+                                          <input type="text" name="search" class="text search-input font-size-12 searches"
+                                             placeholder="Search movies,series">
+                                          <i class="search-link ri-search-line"></i>
+                                       </div>
                                     </form>
                                  </div>
-                                 
                                  <a href="<?php echo URL::to('/').'/searchResult';?>" class="search-toggle device-search">
                                      
                                  <i class="ri-search-line"></i>

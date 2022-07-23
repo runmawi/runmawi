@@ -582,8 +582,8 @@ if(!empty($request_url)){
                     
                     <ul class="category-page list-inline row p-0 mb-0 m-3">
                        <?php foreach($artists as $key => $artist){  ?>
-                       <li class="slide-item col-sm-1 col-md-1 col-xs-12">
-                          <a  href="<?php echo __(URL::to('/') . '/artist/' . $artist->artist_slug); ?>"  >
+                       <li class="slide-item" style="width:40%;">
+                        <a  href="<?php echo __(URL::to('/') . '/Artist/' . $artist->artist_name); ?>"  >
                              <div class="block-images position-relative">
                                    <!-- block-images -->
                                 <div class="img-box">
@@ -663,7 +663,7 @@ if(!empty($request_url)){
     </div>
 -->
         
-    <div class="video-list you-may-like container-fluid">
+    <div class="video-list you-may-like ">
             <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Recomended Videos');?></h4>
                 <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>   
                 <?php include('partials/video-loop.php');?>
@@ -880,8 +880,8 @@ $(document).ready(function(){
     })();
 
   }else if(trailer_video_type == "m3u8"){
-  // alert(trailer_video_type);
-  document.addEventListener("DOMContentLoaded", () => {
+// alert(trailer_video_type);
+document.addEventListener("DOMContentLoaded", () => {
   const videos = document.querySelector('#videos');
   // alert(video);
   const sources = videos.getElementsByTagName("source")[0].src;
@@ -922,8 +922,6 @@ $(document).ready(function(){
 });
 
   }
-   
-
    
 
 </script>

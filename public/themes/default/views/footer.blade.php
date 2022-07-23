@@ -257,19 +257,17 @@ function myFunction() {
       <?php } 
     }
      ?>
-
-<script src="https://afarkas.github.io/lazysizes/plugins/bgset/ls.bgset.min.js"></script>
-<script src="https://afarkas.github.io/lazysizes/lazysizes.min.js"></script>
- <script src="https://cdn.plyr.io/3.6.3/plyr.polyfilled.js"></script>
- <script src="https://cdn.rawgit.com/video-dev/hls.js/18bb552/dist/hls.min.js"></script>
+ <script src="<?= URL::to('/'). '/assets/js/ls.bgset.min.js';?>"></script>
+ <script src="<?= URL::to('/'). '/assets/js/lazysizes.min.js';?>"></script>
+ <script src="<?= URL::to('/'). '/assets/js/plyr.polyfilled.js';?>"></script>
+ <script src="<?= URL::to('/'). '/assets/js/hls.min.js';?>"></script>
+ <script src="<?= URL::to('/'). '/assets/js/plyr.js';?>"></script>
+ <!-- <script src="<? //URL::to('/'). '/assets/js/plyr-3-7.js';?>"></script> -->
+ <script src="<?= URL::to('/'). '/assets/js/hls.js';?>"></script>
+ <script src="<?= URL::to('/'). '/assets/js/.js';?>"></script>
           
-
- <script src="plyr-plugin-capture.js"></script>
  <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/plyr-plugin-capture.js';?>"></script>
- <script src="https://cdn.plyr.io/3.5.10/plyr.js"></script>
-<!--<script src="https://cdn.plyr.io/3.7.2/plyr.js"></script>-->
 
-      <script src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
 <script>
     function loadJS(u) {
         var r = document.getElementsByTagName("script")[0],

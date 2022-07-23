@@ -8,7 +8,7 @@
                 <form id="update-cat-form" accept-charset="UTF-8" action="{{ URL::to('admin/season/update') }}" method="post" enctype="multipart/form-data">
                     <div class="form-group {{ $errors->has('image') ? 'has-error' : '' }}">
                         <label class="m-0">Season Thumbnail </label>
-                        <p class="p1">(16:9 Ratio or 1280X720px)</p>
+                        <p class="p1">(16:9 Ratio or 1080 X 1920px)</p>
                         @if(!empty($season->image))
                         <img src="{{  $season->image }}" class="movie-img" width="200" />
                         @endif

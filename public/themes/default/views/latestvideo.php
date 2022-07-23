@@ -31,7 +31,7 @@
                                      
                                 </div>
                                  
-                                    <div class="block-description" >
+                                    <div class="block-description">
                                     
                                     <?php if( $latestvideo['ThumbnailSetting']->title == 1) { ?>            <!-- Title -->
                                         <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $latest_video->slug ?>">

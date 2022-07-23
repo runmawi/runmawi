@@ -354,40 +354,41 @@ else{
             </div>
 
 
-          
-            <div class="col-sm-6 col-md-6 col-xs-12">
-<!--
-                  <div class="d-flex align-items-center series mb-4">
-                     <a href="javascript:void();"><img src="images/trending/trending-label.png" class="img-fluid"
-                           alt=""></a>
-                     <span class="text-gold ml-3">#2 in Series Today</span>
-                  </div>
--->                 
-                <ul class="list-inline p-0 mt-4 rental-lists">
-                <!-- Subscribe -->
-                    <li>
-                        <a href="<?php echo URL::to('/login');?>"><span class="view-count btn btn-primary subsc-video"><?php echo __('Subscribe');?> </span></a>
-                    </li>
-                    <!-- PPV button -->
-                    <li>
-                        <a class="view-count btn btn-primary rent-video" href="<?php echo URL::to('/login');?>">
-                            <?php echo __('Rent');?> </a>
-                            <!-- data-toggle="modal" data-target="#exampleModalCenter" -->
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <?php   }?>
-        <div class="text-white">
-            <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->description); ?></p>
-        </div>
-        <div class="row">
-            <div class="col-sm-12 col-md-12 col-xs-12">
-                <div class="video-details-container">
-                    <?php if (!empty($video->details)) { ?>
-                        <h6 class="mt-3 mb-1">Live Details</h6>
-                        <p class="trending-dec w-100 mb-3 text-white"><?=$video->details; ?></p>
-                    <?php  } ?>
+                  
+                    <div class="col-sm-6 col-md-6 col-xs-12">
+    <!--
+                          <div class="d-flex align-items-center series mb-4">
+                             <a href="javascript:void();"><img src="images/trending/trending-label.png" class="img-fluid"
+                                   alt=""></a>
+                             <span class="text-gold ml-3">#2 in Series Today</span>
+                          </div>
+        -->                 
+                        <ul class="list-inline p-0 mt-4 rental-lists">
+                        <!-- Subscribe -->
+                            <li>
+                                <a href="<?php echo URL::to('/login');?>"><span class="view-count btn btn-primary subsc-video"><?php echo __('Subscribe');?> </span></a>
+                            </li>
+                            <!-- PPV button -->
+                            <li>
+                                <a data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary rent-video" href="<?php echo URL::to('/login');?>">
+                                    <?php echo __('Rent');?> </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <?php   }?>
+                <div class="text-white col-md-6 p-0">
+                    <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->description); ?></p>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-xs-12">
+                        <div class="video-details-container">
+                            <?php if (!empty($video->details)) { ?>
+                                <h6 class="mt-3 mb-1">Live Details</h6>
+                                <p class="trending-dec w-100 mb-3 text-white"><?=$video->details; ?></p>
+                            <?php  } ?>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

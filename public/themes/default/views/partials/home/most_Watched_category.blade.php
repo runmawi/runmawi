@@ -72,7 +72,7 @@
                         } elseif(empty($category_video->global_ppv) && $category_video->ppv_price == null) { echo "Free"; } ?>
                     </p>
                     <?php }?>
-                </div>
+             
                 <div class="block-description">
                        <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
                     <?php if($ThumbnailSetting->title == 1) { ?>
@@ -164,6 +164,7 @@
                         -->
                                </a>
                 </div>
+                       </div>
             </li>
             <?php           
                           endforeach; 

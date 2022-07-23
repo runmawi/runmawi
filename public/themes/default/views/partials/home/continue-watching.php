@@ -15,7 +15,7 @@
                              <!-- block-images -->
                                 <div class="img-box">
                                 
-                                  <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>" class="img-fluid lazyload w-100" alt="">
+                                  <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>" class="img-thumbnail lazyload w-100" alt="">
                                   
                                      
                                 <!-- PPV price -->
@@ -84,8 +84,9 @@
                                           </span>
                                         </div>
                                         <?php }?>
+                                    </div>
+
                                   <?php } ?>
-                                  </div>
 
 
                                   <div class="movie-time d-flex align-items-center pt-1">
@@ -121,7 +122,7 @@
                        </li>
                        <?php                     
                         endforeach; 
-                                   endif; ?>
+                        endif; ?>
                     </ul>
                  </div>
                  <?php endif; ?>
