@@ -333,9 +333,22 @@ if(!empty($request_url)){
             </div>
         </div>
         <!-- Year, Running time, Age -->
+
+        <?php 
+          if(!empty($video->duration)){
+              $seconds = $video->duration;
+              $H = floor($seconds / 3600);
+              $i = ($seconds / 60) % 60;
+              $s = $seconds % 60;
+              $time = sprintf("%02dh %02dm", $H, $i);
+            }else{
+                $time = "Not Defined";
+            }
+        ?>
+
           <div class="d-flex align-items-center text-white text-detail">
              <span class="badge badge-secondary p-3"><?php echo __($video->age_restrict);?></span>
-             <span class="ml-3"><?php echo __($video->duration);?></span>
+             <span class="ml-3"><?php echo __($time);?></span>
              <span class="trending-year"><?php if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span>
           </div>
             
