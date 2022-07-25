@@ -366,6 +366,8 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
             $value['video_id'] = $video_id;
             $value['video_title'] = $title;
 
+        \LogActivity::addVideoLog('Added Uploaded MP4  Video.',$video_id);
+
             return $value;
         
         }elseif($mp4_url != '' && $pack == "Business" && $settings->transcoding_access  == 1) {
@@ -425,6 +427,8 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
               $value['message'] = 'Uploaded Successfully!';
               $value['video_id'] = $video_id;
               $value['video_title'] = $title;
+
+            \LogActivity::addVideoLog('Added Uploaded M3U8  Video.',$video_id);
               
               return $value;
         }elseif($mp4_url != '' && $pack == "Business"  && $settings->transcoding_access  == 0 ) {
@@ -484,6 +488,8 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
             $value['message'] = 'Uploaded Successfully!';
             $value['video_id'] = $video_id;
             $value['video_title'] = $title;
+
+            \LogActivity::addVideoLog('Added Uploaded MP4  Video.',$video_id);
 
             return $value;
         
@@ -879,9 +885,11 @@ if(!empty($artistsdata)){
     
     public function destroy($id)
     {
+
         $video = Video::find($id);
 
-       
+            \LogActivity::addVideodeleteLog('Deleted Video.',$id);
+            // dd('log insert successfully.');    
 
         Video::destroy($id);
 //        VideoResolution::where('video_id', '=', $id)->delete();
@@ -1551,6 +1559,7 @@ if(!empty($artistsdata)){
                         $artist->video_id = $video->id;
                         $artist->artist_id = $value;
                         $artist->save();
+                        \LogActivity::addVideoArtistLog('Updated Artist for Video.',$video->id,$value);
                     }
                 }
         }else{
@@ -1584,6 +1593,9 @@ if(!empty($artistsdata)){
                     $category->video_id = $video->id;
                     $category->category_id = $value;
                     $category->save();
+
+                    \LogActivity::addVideoCategoryLog('Updated Category for Video.',$video->id,$value);
+
                 }
             }
         }else{
@@ -1629,6 +1641,9 @@ if(!empty($artistsdata)){
                     $languagevideo->video_id = $video->id;
                     $languagevideo->language_id = $value;
                     $languagevideo->save();
+                    
+                    \LogActivity::addVideoLanguageLog('Updated Language for Video.',$video->id,$value);
+
                 }
             }
         }
@@ -1673,6 +1688,7 @@ if(!empty($artistsdata)){
             }
         }
 
+        \LogActivity::addVideoUpdateLog('Update Video.',$video->id);
 
         return Redirect::to('admin/videos/edit' . '/' . $id)->with(array('message' => 'Successfully Updated Video!', 'note_type' => 'success') );
     }
@@ -2281,6 +2297,9 @@ if(!empty($artistsdata)){
                         $category->video_id = $video->id;
                         $category->category_id = $value;
                         $category->save();
+                 
+                        \LogActivity::addVideoCategoryLog('Added Category for Video.',$video->id,$value);
+
                     }
     
                 }
@@ -2349,6 +2368,7 @@ if(!empty($artistsdata)){
                         $languagevideo->video_id = $video->id;
                         $languagevideo->language_id = $value;
                         $languagevideo->save();
+                        \LogActivity::addVideoLanguageLog('Added Language for Video.',$video->id,$value);
                     }
     
                 }
@@ -2364,6 +2384,8 @@ if(!empty($artistsdata)){
                         $artist->video_id = $video->id;
                         $artist->artist_id = $value;
                         $artist->save();
+                        \LogActivity::addVideoArtistLog('Added Artist for Video.',$video->id,$value);
+
                     }
     
                 }
@@ -2450,6 +2472,7 @@ if(!empty($artistsdata)){
             // }
      /*Advertisement Video update End*/
     
+        \LogActivity::addVideoUpdateLog('Update Meta Data for Video.',$video->id);
     
             return Redirect::back()->with('message','Your video will be available shortly after we process it');
         }
@@ -2494,6 +2517,7 @@ if(!empty($artistsdata)){
             $value['success'] = 1;
             $value['message'] = 'Uploaded Successfully!';
             $value['video_id'] = $video_id;
+            \LogActivity::addVideoLog('Added Mp4 URl Video.',$video_id);
 
             return $value;  
        }
@@ -2542,6 +2566,8 @@ if(!empty($artistsdata)){
             $value['success'] = 1;
             $value['message'] = 'Uploaded Successfully!';
             $value['video_id'] = $video_id;
+
+            \LogActivity::addVideoLog('Added M3U8 URl Video.',$video_id);
 
             return $value;  
        }
@@ -2593,6 +2619,9 @@ if(!empty($artistsdata)){
             $value['success'] = 1;
             $value['message'] = 'Uploaded Successfully!';
             $value['video_id'] = $video_id;
+
+        \LogActivity::addVideoLog('Added Embeded URl Video.',$video_id);
+
             return $value;  
        }
    

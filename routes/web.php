@@ -26,7 +26,7 @@ Route::post('/contact-us/store/', 'ContactController@Store');
 Route::get('admin/contact-us/', 'ContactController@ViewRequest');
 
 Route::get('add-to-log', 'HomeController@myTestAddToLog');
-Route::get('logActivity', 'HomeController@logActivity');
+Route::get('admin/logActivity', 'HomeController@logActivity');
 
 
 // Route::get('/admin/filemanager', 'FileManagerController@index');

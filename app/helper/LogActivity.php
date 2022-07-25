@@ -37,7 +37,7 @@ class LogActivity
     	$log['ip'] = Request::ip();
     	$log['agent'] = Request::header('user-agent');
     	$log['user_id'] = auth()->check() ? auth()->user()->id : 1;
-		$log['user_id'] = $video_id;
+		$log['video_id'] = $video_id;
     	LogActivityModel::create($log);
     }
 
@@ -50,12 +50,13 @@ class LogActivity
     	$log['ip'] = Request::ip();
     	$log['agent'] = Request::header('user-agent');
     	$log['user_id'] = auth()->check() ? auth()->user()->id : 1;
-		$log['user_id'] = $video_id;
+		$log['video_id'] = $video_id;
     	LogActivityModel::create($log);
     }
 
 	public static function addVideodeleteLog($subject,$video_id)
     {
+		// dd($video_id);
     	$log = [];
     	$log['subject'] = $subject;
     	$log['url'] = Request::fullUrl();
@@ -63,8 +64,57 @@ class LogActivity
     	$log['ip'] = Request::ip();
     	$log['agent'] = Request::header('user-agent');
     	$log['user_id'] = auth()->check() ? auth()->user()->id : 1;
-		$log['user_id'] = $video_id;
+		$log['video_id'] = $video_id;
     	LogActivityModel::create($log);
     }
 	
+	public static function addVideoCategoryLog($subject,$video_id,$value)
+    {
+		// dd($video_id);
+    	$log = [];
+    	$log['subject'] = $subject;
+    	$log['url'] = Request::fullUrl();
+    	$log['method'] = Request::method();
+    	$log['ip'] = Request::ip();
+    	$log['agent'] = Request::header('user-agent');
+    	$log['user_id'] = auth()->check() ? auth()->user()->id : 1;
+		$log['video_id'] = $video_id;
+		$log['video_category_id'] = $value;
+    	LogActivityModel::create($log);
+    }
+
+
+	public static function addVideoLanguageLog($subject,$video_id,$value)
+    {
+		// dd($video_id);
+    	$log = [];
+    	$log['subject'] = $subject;
+    	$log['url'] = Request::fullUrl();
+    	$log['method'] = Request::method();
+    	$log['ip'] = Request::ip();
+    	$log['agent'] = Request::header('user-agent');
+    	$log['user_id'] = auth()->check() ? auth()->user()->id : 1;
+		$log['video_id'] = $video_id;
+		$log['video_language_id'] = $value;
+    	LogActivityModel::create($log);
+    }
+
+
+	public static function addVideoArtistLog($subject,$video_id,$value)
+    {
+		// dd($video_id);
+    	$log = [];
+    	$log['subject'] = $subject;
+    	$log['url'] = Request::fullUrl();
+    	$log['method'] = Request::method();
+    	$log['ip'] = Request::ip();
+    	$log['agent'] = Request::header('user-agent');
+    	$log['user_id'] = auth()->check() ? auth()->user()->id : 1;
+		$log['video_id'] = $video_id;
+		$log['video_artist_id'] = $value;
+    	LogActivityModel::create($log);
+    }
+
+
+
 }

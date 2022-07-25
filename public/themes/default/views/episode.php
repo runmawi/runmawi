@@ -182,7 +182,7 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 		
 	</div>
 	<div class="col-md-6">
-		<?php if (!empty($season)) { // dd($season[0]->ppv_price) ;?>
+		<?php if (!empty($season)) {   ;?>
 		<input type="hidden" id="season_id" name="season_id" value="<?php echo $season[0]->id; ?>">
 
 			<button class="btn btn-primary" onclick="pay(<?php echo $season[0]->ppv_price; ?>)" >
@@ -192,21 +192,20 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 	
                 <div class="col-md-6">
 			<span class="text-white" style="font-size: 120%;font-weight: 700;">You're watching:</span>
-                    
-                    <p class="mb-0" style=";font-size: 80%;color: white;"><?php
-			if(!empty($SeriesSeason)){ echo 'Season'.' '.$SeriesSeason->id.' ';} if(!empty($episode)){ echo 'Episode'.' '.$episode->id;} ?>
-                        	 <p class="" style=";font-size: 100%;color: white;font-weight: 700;"><?= $episode->title ?></p>
-                    
-                        <p class="desc"><?php echo $series->details;?></p>
-		
-		
+			<p class="mb-0" style=";font-size: 80%;color: white;">
+			<?php 
+			$seasons = App\SeriesSeason::where('series_id','=',$SeriesSeason->series_id)->with('episodes')->get();
+			foreach($seasons as $key=>$seasons_value){ ?>
+			<?php
+			if(!empty($SeriesSeason) && $SeriesSeason->id == $seasons_value->id){ echo 'Season'.' '. ($key+1)   .' ';}  }
+			$Episode = App\Episode::where('season_id','=',$SeriesSeason->id)->where('series_id','=',$SeriesSeason->series_id)->get();
+			foreach($Episode as $key=>$Episode_value){  ?>
+			<?php if(!empty($episode) && $episode->id == $Episode_value->id){ echo 'Episode'.' '. ($key+1)   .' ';} ?>
+			<?php } ?>
+			<p class="" style=";font-size: 100%;color: white;font-weight: 700;"><?= $episode->title ?></p>
+			<p class="desc"><?php echo $series->details;?></p>
 	</div>
             
-                
-            
-	
-
-		
 			<!--<div class="col-md-2 text-center text-white">
 			<span class="view-count  " style="float:right;">
 			<i class="fa fa-eye"></i> 
