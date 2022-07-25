@@ -192,7 +192,7 @@ $series = $series_data ;
                         if($seasons->ppv_interval > $key):
 							 ?>
                            
-                  <li class="slide-item col-sm-2 col-md-2 col-xs-12">
+                  <li class="slide-item col-sm-2 col-md-2 col-xs-12 episodes_div season_<?= $seasons->id;?>">
                       <a href="<?php echo URL::to('episode').'/'.$series->title.'/'.$episodes->slug;?>">
                            <div class="block-images position-relative episodes_div season_<?= $seasons->id;?>">
                                     <div class="img-box">
@@ -237,9 +237,9 @@ $series = $series_data ;
                             </li>
                            
                            	<?php else : ?>
-                             <li class="slide-item col-sm-2 col-md-2 col-xs-12">
+                             <li class="slide-item col-sm-2 col-md-2 col-xs-12 episodes_div season_<?= $seasons->id;?>">
                               <a href="<?php echo URL::to('episode').'/'.$series->title.'/'.$episodes->slug;?>">
-                                 <div class="block-images position-relative episodes_div season_<?= $seasons->id;?>">
+                                 <div class="block-images position-relative" >
                                     <div class="img-box">
                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class=" img-fluid w-100" >
                                    

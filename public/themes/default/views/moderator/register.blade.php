@@ -1,3 +1,4 @@
+
 @extends('layouts.app')
 
 @section('content')
@@ -54,14 +55,14 @@
                                  <div class="col-md-12">
                                             <div class="row">
                                
-                            <div class="col-sm-4">
-                              <select class="phselect" name="ccode" id="ccode" >
+                            <div class="col-sm-6">
+                              <select class="form-control p-0" name="ccode" id="ccode" >
                                 @foreach($jsondata as $code)
                                 <option data-thumbnail="images/icon-chrome.png" value="{{ $code['dial_code'] }}" <?php if($code['dial_code']) ?>> {{ $code['name'].' ('. $code['dial_code'] . ')' }}</option>
                                 @endforeach
                             </select>
                             </div>
-                            <div class="col-sm-8">
+                            <div class="col-sm-6">
                                 <input id="mobile" type="text" maxlength="10" minlength="10" class="form-control @error('email') is-invalid @enderror" name="mobile_number" placeholder="{{ __('Enter Mobile Number') }}" value="{{ old('mobile_number') }}" required autocomplete="off" autofocus> 
                                 <span class="verify-error"></span>
                                 
@@ -81,7 +82,7 @@
                                  </div>
 
                                 <div class="col-md-12">
-                                <label for="" style="color: white;">Intro Video :</label>
+                                <label for="" style="color: white;">Upload your best work  :</label>
                                 <input type="file" multiple="true" class="form-control" style="padding: 0px;" accept="video/mp4,video/x-m4v,video/*" name="intro_video" id="intro_video" />
                                  </div>
                                  <div class="col-md-12">
@@ -91,10 +92,10 @@
                                          </div>
                                          <div >
                                 <span class="input-group-btn" id="eyeSlash">
-                                   <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
+                                   <button class="btn btn-default reveal" onclick="visibility1()" type="button" style=" background: transparent !important; color:#ff0000!important "><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
                                  </span>
                                  <span class="input-group-btn" id="eyeShow" style="display: none;">
-                                   <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                                   <button class="btn btn-default reveal" onclick="visibility1()" type="button" style=" background: transparent !important; color:#ff0000!important ;"><i class="fa fa-eye" aria-hidden="true"></i></button>
                                  </span>
                                          </div>
                                 @error('password')
@@ -111,15 +112,15 @@
                                     </div>
                                     <div >
                               <span class="input-group-btn" id="eyeSlash1">
-                                   <button class="btn btn-default reveal" onclick="visibility2()" type="button"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
+                                   <button class="btn btn-default reveal" onclick="visibility2()" type="button" style=" background: transparent !important; color:#ff0000!important ; "><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
                                  </span>
                                  <span class="input-group-btn" id="eyeShow1" style="display: none;">
-                                   <button class="btn btn-default reveal" onclick="visibility2()" type="button"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                                   <button class="btn btn-default reveal" onclick="visibility2()" type="button"  style=" background: transparent !important; color:#ff0000!important ; "><i class="fa fa-eye" aria-hidden="true"></i></button>
                                  </span>
                                     </div>
                                 </div>
     
-                                <span style="color: var(--iq-white);font-size: 14px;font-style: italic;">(Password should be at least 8 characters in length and should include at least one upper case letter, one number, and one special character.)</span>
+                                <span style="color: var(--iq-white);font-size: 10px;font-style: italic;">(Password should be at least 8 characters in length and should include at least one upper case letter, one number, and one special character.)</span>
                             </div>
                                  
                             </div>
@@ -128,7 +129,7 @@
 							
 							<div class="col-md-12">
                                 <input id="password-confirm" type="checkbox" name="terms" value="1" required>
-								<label for="password-confirm" class="col-form-label text-md-right" style="display: inline-block;">{{ __('Yes') }} ,<a data-toggle="modal" data-target="#terms" style="text-decoration:none;color: #fff;"> {{ __('I Agree to Terms and  Conditions' ) }}</a></label>
+								<label for="password-confirm" class="col-form-label text-md-right" style="display: inline-block;">{{ __('Yes') }} ,<a data-toggle="modal" data-target="#terms" style="text-decoration:none;color: #fff;font-size: 12px;"> {{ __('I Agree to Terms and  Conditions' ) }}</a></label>
                             </div>
                             <div class="sign-up-buttons col-md-12" align="right">
                                   <button type="button" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile" style="display: none;"> Verify Profile</button>
@@ -290,6 +291,9 @@ i.fa.fa-google-plus {
     height: 45px !important;
     background: transparent !important;
     color: #fff !important;
+    }
+    .btn{
+      
     }
     .modal-content {
         background-color: #000000;
