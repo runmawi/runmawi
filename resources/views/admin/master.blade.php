@@ -218,7 +218,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </ul>
                       
                    </li>
-                   <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/menu.svg')?>" heigth="40" width="40"><span>Menu</span></a></li>
+                   <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/men.svg')?>" heigth="40" width="40"><span>Menu</span></a></li>
                    <li><a href="{{ URL::to('/admin/filemanager') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/file.svg')?>" heigth="40" width="40"><span>Filemanager</span></a></li>
 
                     <div class="men">
@@ -457,7 +457,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </ul>
                       
                    </li>
-                   <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/menu.svg')?>"heigth="40" width="40"><span>Menu</span></a></li>
+                   <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/men.svg')?>"heigth="40" width="40"><span>Menu</span></a></li>
                    <li><a href="{{ URL::to('/admin/filemanager') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/file.svg')?>" heigth="40" width="40"><span>Filemanager</span></a></li>
 
                     <div class="men">
@@ -608,7 +608,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                   <li><p class="lnk">Cache Management</p></li>
 
                   <li><a href="{{ URL::to('admin/clear_cache') }}" class="iq-waves-effect">
-                        <img height="30" width="30" class="" src="<?php echo  URL::to('/assets/img/icon/geo.svg')?>">
+                        <img height="30" width="30" class="" src="<?php echo  URL::to('/assets/img/icon/cc.svg')?>">
                         <span> Cache Clear</span>
                      </a>
                   </li>
@@ -617,7 +617,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                   <li><p class="lnk">CONTACT US</p></li>
 
                   <li><a href="{{ URL::to('admin/contact-us/') }}" class="iq-waves-effect">
-                        <img height="30" width="30" class="" src="<?php echo  URL::to('/assets/img/icon/geo.svg')?>">
+                        <img height="30" width="30" class="" src="<?php echo  URL::to('/assets/img/icon/cq.svg')?>">
                         <span> Contact Request</span>
                      </a>
                   </li>
@@ -654,7 +654,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
          <div id="sidebar-scrollbar">
             <nav class="iq-sidebar-menu">
                <ul id="iq-sidebar-toggle" class="iq-menu">
-                  <li class="" ><a href="<?php echo URL::to('admin') ?>" class="iq-waves-effect"> <img height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/home.svg')?>"> <span class="mt-2"> Dashboard</span></a></li>
+                  <li class="" ><a href="<?php echo URL::to('admin') ?>" class="iq-waves-effect"> <img height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/home.svg')?>"> <span class=""> Dashboard</span></a></li>
                    <div class="bod"></div>
                    <div class="men" style="">
                  
@@ -727,7 +727,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         </ul>
                      </li>
 
-                   <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/menu.svg')?>"heigth="40" width="40"><span>Menu</span></a></li>
+                   <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/men.svg')?>"heigth="40" width="40"><span>Menu</span></a></li>
                    <li><a href="{{ URL::to('/admin/filemanager') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/file.svg')?>" heigth="40" width="40"><span>Filemanager</span></a></li>
 
                     <div >
@@ -881,7 +881,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                  <li><p class="lnk">Cache Management</p></li>
 
                  <li><a href="{{ URL::to('admin/clear_cache') }}" class="iq-waves-effect">
-                     <img height="30" width="30" class="" src="<?php echo  URL::to('/assets/img/icon/geo.svg')?>">
+                     <img height="30" width="30" class="" src="<?php echo  URL::to('/assets/img/icon/cc.svg')?>">
                      <span> Cache Clear</span>
                      </a>
                   </li>
@@ -890,7 +890,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                <li><p class="lnk">CONTACT US</p></li>
 
                   <li><a href="{{ URL::to('admin/contact-us/') }}" class="iq-waves-effect">
-                        <img height="30" width="30" class="" src="<?php echo  URL::to('/assets/img/icon/geo.svg')?>">
+                        <img height="30" width="30" class="" src="<?php echo  URL::to('/assets/img/icon/cq.svg')?>">
                         <span> Contact Request</span>
                      </a>
                   </li>
@@ -926,7 +926,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
             <nav class="iq-sidebar-menu">
                <ul id="iq-sidebar-toggle" class="iq-menu">
                   <li class="views"><a href="<?php echo URL::to('home') ?>" ><i class="ri-arrow-right-line"></i><span>Visit site</span></a></li>
-                  <li ><a href="<?php echo URL::to('admin') ?>" class="iq-waves-effect"> <img height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/home.svg')?>"> <span class="mt-2"><span>Dashboard</span></a></li>
+                  <li ><a href="<?php echo URL::to('admin') ?>" class="iq-waves-effect"> <img height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/home.svg')?>"> <span class=""><span>Dashboard</span></a></li>
                    <div class="bod"></div>
                    <div style="">
                  
@@ -1143,7 +1143,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                   <li><p class="lnk">Cache Management</p></li>
 
                   <li><a href="{{ URL::to('admin/clear_cache') }}" class="iq-waves-effect">
-                     <img height="30" width="30" class="" src="<?php echo  URL::to('/assets/img/icon/geo.svg')?>">
+                     <img height="30" width="30" class="" src="<?php echo  URL::to('/assets/img/icon/cc.svg')?>">
                         <span> Cache Clear</span>
                      </a>
                   </li>
@@ -1153,7 +1153,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                    <li><p class="lnk">CONTACT US</p></li>
 
                         <li><a href="{{ URL::to('admin/contact-us/') }}" class="iq-waves-effect">
-                              <img height="30" width="30" class="" src="<?php echo  URL::to('/assets/img/icon/geo.svg')?>">
+                              <img height="30" width="30" class="" src="<?php echo  URL::to('/assets/img/icon/cq.svg')?>">
                               <span> Contact Request</span>
                            </a>
                         </li>

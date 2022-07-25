@@ -3,16 +3,20 @@
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 70 70" style="enable-background:new 0 0 70 70;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:none;stroke:#000000;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;}
+	.st0{fill:#E0E2E4;}
+	.st1{fill:none;stroke:#242830;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
 </style>
 <g>
-	<path class="st0" d="M16.6,22.1c3.1,0,5.5-2.5,5.5-5.5S19.6,11,16.6,11S11,13.5,11,16.6S13.5,22.1,16.6,22.1z"/>
-	<path class="st0" d="M22.1,16.6H59"/>
-	<path class="st0" d="M35,40.5c3.1,0,5.5-2.5,5.5-5.5c0-3.1-2.5-5.5-5.5-5.5c-3.1,0-5.5,2.5-5.5,5.5C29.5,38.1,31.9,40.5,35,40.5z"
-		/>
-	<path class="st0" d="M11,35h18.4"/>
-	<path class="st0" d="M40.5,35H59"/>
-	<path class="st0" d="M53.4,59c3.1,0,5.5-2.5,5.5-5.5c0-3.1-2.5-5.5-5.5-5.5c-3.1,0-5.5,2.5-5.5,5.5S50.4,59,53.4,59z"/>
-	<path class="st0" d="M47.9,53.4H11"/>
+	<circle class="st0" cx="17.9" cy="16.4" r="4.9"/>
+	<circle class="st0" cx="52.1" cy="50.5" r="4.9"/>
+	<g>
+		<path class="st1" d="M17.9,21.8c2.8,0,5.1-2.3,5.1-5.1s-2.3-5.1-5.1-5.1s-5.1,2.3-5.1,5.1S15,21.8,17.9,21.8z"/>
+		<path class="st1" d="M23,16.6h34.3"/>
+		<path class="st1" d="M35,38.9c2.8,0,5.1-2.3,5.1-5.1s-2.3-5.1-5.1-5.1s-5.1,2.3-5.1,5.1S32.2,38.9,35,38.9z"/>
+		<path class="st1" d="M12.7,33.8h17.1"/>
+		<path class="st1" d="M40.1,33.8h17.1"/>
+		<path class="st1" d="M52.1,56.1c2.8,0,5.1-2.3,5.1-5.1s-2.3-5.1-5.1-5.1S47,48.2,47,51S49.3,56.1,52.1,56.1z"/>
+		<path class="st1" d="M47,50.9H12.7"/>
+	</g>
 </g>
 </svg>
