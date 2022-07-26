@@ -846,7 +846,7 @@ footer, .home footer {
     color: #fff;
     background-color: #45c5e1 !important;
     border-color: #45c5e1 !important;
-        border-radius: 3px !important;
+       
 }
 .iq-card {
 background: var(--iq-light-card);
@@ -1519,7 +1519,13 @@ td{
 .accordion{
     padding: 10px;
 }
-
+.col-form-label{
+    font-style: italic;
+    font-size: 16px;
+}
+.cld{
+    background-color: transparent!important;
+}
 .card-header{
     position: relative;
 }
@@ -1536,6 +1542,16 @@ td{
 .plus4{
    margin-left: 390px;
 }
+input[type="checkbox"]:before {
+  position: relative;
+  display: block;
+  width: 11px;
+  height: 11px;
+ 
+  content: "";
+  background: transparent;
+}
+
 .plus5{
     margin-left: 480px;
 }
