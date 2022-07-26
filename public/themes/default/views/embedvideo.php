@@ -1,7 +1,3 @@
-
-
-<meta http-equiv="Content-Security-Policy"
-content="default-src; https://dev-flick.webnexs.org/; ">
 <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
 <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/style.css';?>" />
 <?php
