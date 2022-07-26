@@ -1,15 +1,16 @@
 
 @extends('layouts.app')
-
+<section class="mb-0" style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;">
 @section('content')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> -->
   <?php $jsonString = file_get_contents(base_path('assets/country_code.json'));   
 
     $jsondata = json_decode($jsonString, true); ?>
+
 @extends('moderator.header')
 
-<div class="container">
+<div class="container" >
       <div class="row justify-content-center align-items-center height-self-center">
          <div class="col-sm-9 col-md-7 col-lg-5 align-self-center">
             <div class="sign-user_card ">                    
@@ -159,12 +160,14 @@
          </div>
       </div>
    </div>
+ </section>
+    
 
-@include('footer')
+   
 @endsection
 
 <style>
-    /*.sign-user_card {
+    /*.sign-user_card @include('footer'){
         background: none !important;
     }*/
 #ck-button {
