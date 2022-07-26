@@ -136,7 +136,7 @@
             </div>
         </div>
                     {{-- Showing Episode  --}}
-        <div class="row">
+        {{-- <div class="row">
             <div class="col-sm-12 page-height">
                 <div class="iq-main-header align-items-center justify-content-between">
                     <h3 class="vid-title"> Showing  Episode for "{{  $search_value }}"</h3>                     
@@ -246,10 +246,10 @@
                     </ul>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
                     {{-- Showing Series  --}}
-        <div class="row">
+        {{-- <div class="row">
             <div class="col-sm-12 page-height">
                 <div class="iq-main-header align-items-center justify-content-between">
                     <h3 class="vid-title"> Showing  Series for "{{  $search_value }}"</h3>                     
@@ -265,20 +265,6 @@
                                     <div class="block-images position-relative">
                                         <div class="img-box">
                                             <img src="<?php echo URL::to('/').'/public/uploads/images/'.$Series_search->image;  ?>" class="img-fluid" alt="">
-                                            
-                                                {{-- @if(!empty($Series_search->ppv_price))
-                                                    <p class="p-tag1" >
-                                                        {{  $currency->symbol.' '.$Series_search->ppv_price}}
-                                                    </p>
-                                                @elseif( !empty($Series_search->global_ppv || !empty($Series_search->global_ppv) && $Series_search->ppv_price == null))
-                                                    <p class="p-tag1">
-                                                        {{ $Series_search->global_ppv.' '.$currency->symbol }}
-                                                    </p>
-                                                @elseif($Series_search->global_ppv == null && $Series_search->ppv_price == null )
-                                                    <p class="p-tag" > 
-                                                        {{  "Free"}} 
-                                                    </p>
-                                                @endif --}}
                                         </div>
                             
 
@@ -352,10 +338,10 @@
                     </ul>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
                     {{-- Showing Live Stream  --}}
-        <div class="row">
+        {{-- <div class="row">
             <div class="col-sm-12 page-height">
                 <div class="iq-main-header align-items-center justify-content-between">
                     <h3 class="vid-title"> Showing  Live Stream for "{{  $search_value }}"</h3>                     
@@ -364,8 +350,6 @@
                 <div class="favorites-contens">
                     <ul class="category-page list-inline row p-0 mb-0">
                      
-
-                    {{-- Live stream --}}
                     @if(isset($Search_livestreams)) 
                         @foreach($Search_livestreams as $livestream_search)
                             <li class="slide-item col-sm-2 col-md-2 col-xs-12">
@@ -459,11 +443,11 @@
                     </ul>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
                     {{-- Showing Audio --}}
 
-        <div class="row">
+        {{-- <div class="row">
             <div class="col-sm-12 page-height">
                 <div class="iq-main-header align-items-center justify-content-between">
                     <h3 class="vid-title"> Showing  Audios for "{{  $search_value }}"</h3>                     
@@ -567,7 +551,7 @@
                     </ul>
                 </div>
             </div>
-        </div>
+        </div> --}}
     </div>
 </section>
 

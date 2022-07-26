@@ -2141,7 +2141,13 @@ class HomeController extends Controller
     public function VerifyRequest(Request $request)
     {
 
-        return View::make('verify_request');
+        return Theme::view('emails.verify_request');
+
+    }
+
+    public function VerifyRequestNotsent(){
+
+        return Theme::view('emails.Not_sent_verify_request');
 
     }
 
@@ -2227,15 +2233,37 @@ class HomeController extends Controller
                 $new_user->activation_code = $string;
                 $new_user->save();
                 $settings = Setting::first();
-                \Mail::send('emails.verify', array(
-                    'activation_code' => $string,
-                    'website_name' => $settings->website_name
-                ) , function ($message) use ($request)
-                {
-                    $message->to($request->email, $request->name)
-                        ->subject('Verify your email address');
-                });
-                return redirect('/verify-request');
+
+                try {
+                    \Mail::send('emails.verify', array(
+                        'activation_code' => $string,
+                        'website_name' => $settings->website_name
+                    ) , function ($message) use ($request)
+                    {
+                        $message->to($request->email, $request->name)
+                            ->subject('Verify your email address');
+                    });
+                    
+                    $email_log      = 'Mail Sent Successfully from Verify';
+                    $email_template = "verify";
+                    $user_id = $new_user->id;
+        
+                    Email_sent_log($user_id,$email_log,$email_template);
+
+                    return redirect('/verify-request');
+
+               } catch (\Throwable $th) {
+        
+                    $email_log      = $th->getMessage();
+                    $email_template = "verify";
+                    $user_id = $new_user->id;
+        
+                    Email_notsent_log($user_id,$email_log,$email_template);
+
+                    return redirect('/verify-request-sent');
+
+               }
+
             }
         }else{
 

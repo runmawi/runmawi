@@ -110,9 +110,9 @@ $site_page_url = $http_site_url[1];
 <?php if(!empty($Linking_Setting->ios_app_store_id)){ ?><meta property="al:ios:app_store_id" content="<?php  echo $Linking_Setting->ios_app_store_id; ?>" /><?php } ?>
 <meta property="al:ios:url" content="<?php echo $site_page_url  ; ?>" />
 <?php if(!empty($Linking_Setting->ipad_app_store_id)){ ?><meta property="al:ipad:app_store_id" content="<?php  echo $Linking_Setting->ipad_app_store_id  ; ?>" /><?php } ?>
-<meta property="al:ipad:url" content="<?php echo $site_page_url  ; ?>" />;
+<meta property="al:ipad:url" content="<?php echo $site_page_url  ; ?>" />
 <?php if(!empty($Linking_Setting->android_app_store_id)){ ?><meta property="al:android:package" content="<?php  echo $Linking_Setting->android_app_store_id  ; ?>" /><?php } ?>
-<meta property="al:android:url" content="<?php echo $site_page_url  ; ?>" />;
+<meta property="al:android:url" content="<?php echo $site_page_url  ; ?>" />
 <meta property="al:windows_phone:url" content="<?php echo $site_page_url  ; ?>" />
 <?php if(!empty($Linking_Setting->windows_phone_app_store_id)){ ?><meta property="al:windows_phone:app_id" content="<?php  echo $Linking_Setting->windows_phone_app_store_id;?>" /><?php } ?>
 
