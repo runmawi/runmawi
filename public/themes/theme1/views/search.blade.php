@@ -111,7 +111,7 @@
         </div>
 
             {{-- Episode  --}}
-        <div class="row">
+        {{-- <div class="row">
             <div class="col-sm-12 page-height">
 
                 <div class="iq-main-header align-items-center justify-content-between"> 
@@ -192,10 +192,10 @@
                         </ul>
                     </div>
                 </div>
-        </div>
+        </div> --}}
 
              {{-- Series  --}}
-        <div class="row">
+        {{-- <div class="row">
             <div class="col-sm-12 page-height">
 
                 <div class="iq-main-header align-items-center justify-content-between"> 
@@ -267,10 +267,10 @@
                         </ul>
                     </div>
                 </div>
-        </div>
+        </div> --}}
 
             {{-- Live Stream --}}
-        <div class="row">
+        {{-- <div class="row">
             <div class="col-sm-12 page-height">
 
                 <div class="iq-main-header align-items-center justify-content-between"> 
@@ -344,10 +344,10 @@
                         </ul>
                     </div>
                 </div>
-        </div>
+        </div> --}}
 
             {{-- Audios --}}
-        <div class="row">
+        {{-- <div class="row">
             <div class="col-sm-12 page-height">
 
                 <div class="iq-main-header align-items-center justify-content-between"> 
@@ -421,7 +421,7 @@
                         </ul>
                     </div>
                 </div>
-        </div>
+        </div> --}}
 
     </div>
 </section>
