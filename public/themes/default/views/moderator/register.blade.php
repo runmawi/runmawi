@@ -1,22 +1,23 @@
 
 @extends('layouts.app')
-
+<section class="mb-0" style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;">
 @section('content')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> -->
   <?php $jsonString = file_get_contents(base_path('assets/country_code.json'));   
 
     $jsondata = json_decode($jsonString, true); ?>
+
 @extends('moderator.header')
 
-<div class="container">
+<div class="container" >
       <div class="row justify-content-center align-items-center height-self-center">
-         <div class="col-sm-9 col-md-7 col-lg-5 align-self-center">
+         <div class="col-sm-9 col-md-7 col-lg-5 align-self-center mb-5">
             <div class="sign-user_card ">                    
                <div class="sign-in-page-data">
                   <div class="sign-in-from w-100 m-auto">
                       <div align="center">
-                          <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" style="margin-bottom:1rem;">       <h3 class="mb-3 text-center">CPP Sign Up</h3>
+                          <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" style="margin-bottom:1rem;">       <h3 class="mb-5 text-center">CPP Sign Up</h3>
                       </div>
                       <div class="clear"></div>
                       @if (Session::has('message'))
@@ -34,7 +35,7 @@
                         @csrf
                             <div class="form-group">
 
-                                <div class="col-md-12">
+                                <div class="col-md-12 p-0">
                                     <input id="username" type="text"  class="form-control alphaonly  @error('name') is-invalid @enderror" name="username" value="{{ old('name') }}" placeholder="Username" required autocomplete="off" autofocus>
 
                                     @error('username')
@@ -43,7 +44,7 @@
                                         </span>
                                     @enderror
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-md-12 p-0">
                                 <input id="email_id" type="email" placeholder="Email Address"  class="form-control @error('email_id') is-invalid @enderror" name="email_id" value="{{ old('email_id') }}" required autocomplete="off">
 
                                 @error('email')
@@ -52,17 +53,17 @@
                                     </span>
                                 @enderror
                             </div>
-                                 <div class="col-md-12">
+                                 <div class="col-md-12 p-0">
                                             <div class="row">
                                
-                            <div class="col-sm-6">
-                              <select class="form-control p-0" name="ccode" id="ccode" >
+                            <div class="col-sm-5 ">
+                              <select class="form-control" name="ccode" id="ccode" style="width:165px;">
                                 @foreach($jsondata as $code)
                                 <option data-thumbnail="images/icon-chrome.png" value="{{ $code['dial_code'] }}" <?php if($code['dial_code']) ?>> {{ $code['name'].' ('. $code['dial_code'] . ')' }}</option>
                                 @endforeach
                             </select>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-7">
                                 <input id="mobile" type="text" maxlength="10" minlength="10" class="form-control @error('email') is-invalid @enderror" name="mobile_number" placeholder="{{ __('Enter Mobile Number') }}" value="{{ old('mobile_number') }}" required autocomplete="off" autofocus> 
                                 <span class="verify-error"></span>
                                 
@@ -77,15 +78,15 @@
                                 </div>
                                 
                                 
-                            <div class="col-md-12">
+                            <div class="col-md-12 p-0">
                                 <input type="file" multiple="true" class="form-control" style="padding: 0px;" name="picture" id="picture" />
                                  </div>
 
-                                <div class="col-md-12">
+                                <div class="col-md-12 p-0">
                                 <label for="" style="color: white;">Upload your best work  :</label>
                                 <input type="file" multiple="true" class="form-control" style="padding: 0px;" accept="video/mp4,video/x-m4v,video/*" name="intro_video" id="intro_video" />
                                  </div>
-                                 <div class="col-md-12">
+                                 <div class="col-md-12 p-0">
                                      <div class="row">
                                      <div class="col-md-12">
                                 <input id="password" type="password" placeholder="Password" class="form-control @error('password') is-invalid @enderror pwd" name="password" required autocomplete="new-password">
@@ -105,7 +106,7 @@
                                 @enderror
                                          </div>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-12 p-0">
                                 <div class="row">
                                      <div class="col-md-12">
                                 <input id="password-confirm" type="password" class="form-control" placeholder="Confirm Password" name="password_confirmation" required autocomplete="new-password">
@@ -120,23 +121,27 @@
                                     </div>
                                 </div>
     
-                                <span style="color: var(--iq-white);font-size: 10px;font-style: italic;">(Password should be at least 8 characters in length and should include at least one upper case letter, one number, and one special character.)</span>
+                                <p style="color: var(--iq-white);font-size: 12px;font-style: italic;">(Password should be at least 8 characters in length and should include at least one upper case letter, one number, and one special character.)</p>
                             </div>
                                  
                             </div>
                         
                         <div class="form-group" >
 							
-							<div class="col-md-12">
-                                <input id="password-confirm" type="checkbox" name="terms" value="1" required>
-								<label for="password-confirm" class="col-form-label text-md-right" style="display: inline-block;">{{ __('Yes') }} ,<a data-toggle="modal" data-target="#terms" style="text-decoration:none;color: #fff;font-size: 12px;"> {{ __('I Agree to Terms and  Conditions' ) }}</a></label>
+							<div class="col-md-12 p-0 mt-2 mb-3">
+                                <input id="password-confirm" class="cld" type="checkbox" name="terms" value="1" required>
+								<label for="password-confirm" class="col-form-label text-md-right" style="display:inline-block;"><a data-toggle="modal" data-target="#terms" style="text-decoration:none;color: #fff;font-size: 12px;">{{ __('Yes') }} , {{ __('I Agree to Terms and  Conditions' ) }}</a></label>
                             </div>
-                            <div class="sign-up-buttons col-md-12" align="right">
+                            <div class="sign-up-buttons col-md-12 p-0" align="right">
                                   <button type="button" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile" style="display: none;"> Verify Profile</button>
                                   <button class="btn btn-hover btn-primary btn-block signup" style="display: block;" type="submit" name="create-account">{{ __('Sign Up Today') }}</button>
                                 </div>
                         </div>
-                        
+                         <div class="mt-3">
+                  <div class="d-flex justify-content-center links">
+                     Already have an account? <a href="<?= URL::to('/cpp/login')?>" class="text-primary ml-2">Sign In</a>
+                  </div>                        
+               </div>
                        
 						<div class="form-group row">
 							<div class="col-md-10 col-sm-offset-1">
@@ -150,21 +155,19 @@
                     </form>
                   </div>
                </div>    
-               <div class="mt-3">
-                  <div class="d-flex justify-content-center links">
-                     Already have an account? <a href="<?= URL::to('/cpp/login')?>" class="text-primary ml-2">Sign In</a>
-                  </div>                        
-               </div>
+              
             </div>
          </div>
       </div>
    </div>
+ </section>
+    
 
-@include('footer')
+   
 @endsection
 
 <style>
-    /*.sign-user_card {
+    /*.sign-user_card @include('footer'){
         background: none !important;
     }*/
 #ck-button {
@@ -200,6 +203,16 @@
 .mobile-div {
 	margin-left: -2%;
 	margin-top: 1%;
+}
+    input::file-selector-button {
+   width: 100px;
+    padding: 0px;
+    
+}
+    input[type=checkbox] {
+  appearance: transparent;
+         
+
 }
 .modal-header {
     padding: 0px 15px;
@@ -251,6 +264,9 @@
     background: transparent !important;
     color: var(--iq-white) !important;
 }
+    .sign-user_card{
+        padding: 0px!important;
+    }
 .form-control {
     height: 45px;
     line-height: 45px;
@@ -274,6 +290,9 @@
     padding: 6px 12px;
     cursor: pointer;
 }
+    .main-header{
+        display: none;
+    }
 /*input[type="file"] {
     display: none;
 }*/
@@ -286,6 +305,19 @@ i.fa.fa-google-plus {
     option {
     background: #474644 !important;
 }
+.signup {
+   border-radius: 5px!important;
+    background-color: #ff0040!important;
+    font-weight: 700;
+}
+    .btn-hover{
+        border-radius: 5px!important;
+       height: 50px;
+        font-weight: 700;
+    }
+    .btn{
+        border-radius: 5px!important; 
+    }
     .reveal{
         margin-left: -92px !important;
     height: 45px !important;

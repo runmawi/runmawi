@@ -91,6 +91,7 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
 
     public function CPPlive_search(Request $request)
     {
+        // print_r($request->get('query'));exit;
         if($request->ajax())
      {
 
@@ -100,15 +101,22 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
          $slug = URL::to('/category/videos');
          $edit = URL::to('admin/videos/edit');
          $delete = URL::to('admin/videos/delete');
+
       if($query != '')
       {
-         $data = Video::select('videos.*','moderators_users.id','video_languages.name as languages_name','video_categories.name as categories_name')
+         $data = Video::select('videos.*','moderators_users.id')
          ->leftJoin('moderators_users', 'moderators_users.id', '=', 'videos.user_id')
-         ->leftJoin('video_languages', 'video_languages.id', '=', 'videos.language')
-         ->leftJoin('video_categories', 'video_categories.id', '=', 'videos.video_category_id')
+        //  ->leftJoin('video_languages', 'video_languages.id', '=', 'videos.language')
+        //  ->leftJoin('video_categories', 'video_categories.id', '=', 'videos.video_category_id')
          ->where('videos.title', 'like', '%'.$query.'%')
          ->paginate(9);
 
+        //  $data = Video::select('videos.*','moderators_users.id','video_languages.name as languages_name','video_categories.name as categories_name')
+        //  ->leftJoin('moderators_users', 'moderators_users.id', '=', 'videos.user_id')
+        //  ->leftJoin('video_languages', 'video_languages.id', '=', 'videos.language')
+        //  ->leftJoin('video_categories', 'video_categories.id', '=', 'videos.video_category_id')
+        //  ->where('videos.title', 'like', '%'.$query.'%')
+        //  ->paginate(9);
       }
       else
       {
@@ -1242,7 +1250,7 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
             if(!empty($video->uploaded_by)){
                 $uploaded_by = $video->uploaded_by;
             }else{
-                $uploaded_by =  Auth::user()->username.' '.'('.Auth::user()->role.')';
+                $uploaded_by =  'CPP';
             }
 
             $user = Session::get('user'); 
@@ -1809,7 +1817,7 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
                     $video->publish_type = $data['publish_type'];
                     $video->publish_time = $data['publish_time'];
                     $video->player_image =   $player_image ;
-                    $video->uploaded_by = $ModeratorsUser->username.' '.'( CPP )';
+                    $video->uploaded_by = 'CPP';
                     $video->ppv_price =$data['ppv_price'];
                      $video->access =  $data['access'];
                      $video->banner =  $banner;

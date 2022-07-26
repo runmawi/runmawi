@@ -561,7 +561,7 @@ video { display: block; width: 100%; height: 100%; }
 .iq-social-media li a { height: 30px; width: 30px; text-align: center; font-size: 18px; line-height: 30px; display: inline-block; -webkit-border-radius: 7px; -moz-border-radius: 7px; border-radius: 7px; background: var(--iq-light-primary); color: var(--iq-primary) !important; }
 .iq-social-media li a:hover { text-decoration: none; }
 .sign-in-page .btn { padding: 12px 35px; border-radius: 4px !important; }
-.sign-user_card {  border-radius: 4px; /* -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);*/ padding: 25px;  background: rgba(11, 11, 11, 0.75);
+.sign-user_card {  border-radius: 4px; /* -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);*/ padding: 25px;  background: rgba(11, 11, 11, 0.75);border-radius: 20px;
  box-shadow: 0px 0 20px 0 rgba(0, 0, 0, 0.5); -webkit-box-shadow: 0px 0 20px 0 rgba(0, 0, 0, 0.5); -moz-box-shadow: 0px 0 20px 0 rgba(0, 0, 0, 0.5); display: block; margin: 0 auto; }
 .sign-user_logo { position: absolute; top: -56px; border-radius: 50%; padding: 10px; text-align: center; }
 .sign-user_logo img { height: 100px; width: 100px; border-radius: 50%; border: 2px solid white; }
@@ -674,6 +674,7 @@ video { display: block; width: 100%; height: 100%; }
     width: 90%;
 	height: 480px;
 }
+
 .closewin{
 	background-color: #4895d1;
 	text-align: right;
@@ -845,7 +846,7 @@ footer, .home footer {
     color: #fff;
     background-color: #45c5e1 !important;
     border-color: #45c5e1 !important;
-        border-radius: 3px !important;
+       
 }
 .iq-card {
 background: var(--iq-light-card);
@@ -1518,7 +1519,13 @@ td{
 .accordion{
     padding: 10px;
 }
-
+.col-form-label{
+    font-style: italic;
+    font-size: 16px;
+}
+.cld{
+    background-color: transparent!important;
+}
 .card-header{
     position: relative;
 }
@@ -1535,6 +1542,16 @@ td{
 .plus4{
    margin-left: 390px;
 }
+input[type="checkbox"]:before {
+  position: relative;
+  display: block;
+  width: 11px;
+  height: 11px;
+ 
+  content: "";
+  background: transparent;
+}
+
 .plus5{
     margin-left: 480px;
 }
@@ -1544,6 +1561,8 @@ td{
     color: gray;
     border:none; 
     font-family: 'Roboto', sans-serif;
+    border: 1px solid rgba(241, 241, 241, 0.5)!important;
+border-radius: 2px;
 }
 .form-control {
     height: 45px;

@@ -132,7 +132,7 @@ Border Color
  Buttons Design
 ------------------------------------------------*/
 .btn { padding: 9px 30px; position: relative; display: inline-block; -webkit-border-radius: 0p; -moz-border-radius: 0; border-radius: 0 !important; cursor: pointer; z-index: 4; }
-.btn-hover { background: var(--iq-primary-hover); border: 1px solid var(--iq-primary-hover); color: var(--iq-white); transition: color 0.3s ease; display: inline-block; vertical-align: middle; -webkit-transform: perspective(1px) translateZ(0); transform: perspective(1px) translateZ(0); box-shadow: 0 0 1px rgba(0, 0, 0, 0); position: relative; border-radius: 5px; }
+.btn-hover { background: var(--iq-primary-hover); border: 1px solid var(--iq-primary-hover); color: var(--iq-white); transition: color 0.3s ease; display: inline-block; vertical-align: middle; -webkit-transform: perspective(1px) translateZ(0); transform: perspective(1px) translateZ(0); box-shadow: 0 0 1px rgba(0, 0, 0, 0); position: relative; border-radius: 5px!important; }
 .btn-hover:before { content: ""; position: absolute; z-index: -1; top: 0; bottom: 0; left: 0; right: 0; background: var(--iq-primary); border: 1px solid var(--iq-primary); -webkit-transform: scaleX(1); transform: scaleX(1); -webkit-transform-origin: 50%; transform-origin: 50%; transition: transform 0.3s ease-out; -webkit-transition: transform 0.3s ease-out; }
 
 .btn-hover:hover, .btn-hover:focus, .btn-hover:active { color:  #000000; }
