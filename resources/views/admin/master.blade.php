@@ -492,6 +492,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                          <li><a href="{{ URL::to('admin/moderator/role') }}"><i class="las la-eye"></i>Add Role</a></li>
                         <li><a href="{{ URL::to('admin/moderator/Allview') }}"><i class="las la-eye"></i>View Role</a></li>
                         <li><a href="{{ URL::to('admin/moderator/commission') }}"><i class="las la-eye"></i>Commission </a></li>
+                        <li><a href="{{ URL::to('admin/moderator/payouts') }}"><i class="las la-eye"></i>Content Partners Payout</a></li>
 
                      </ul>
                   </li>
@@ -762,6 +763,8 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                          <li><a href="{{ URL::to('admin/moderator/role') }}"><img height="30" width="30"  class="mr-2" src="<?php echo  URL::to('/assets/img/icon/c4.svg')?>">Add Role</a></li>
                          <li><a href="{{ URL::to('admin/moderator/Allview') }}"><img height="30" width="30"  class="mr-2" src="<?php echo  URL::to('/assets/img/icon/c5.svg')?>">View Role</a></li>
                          <li><a href="{{ URL::to('admin/moderator/commission') }}"><img height="30" width="30"  class="mr-2" src="<?php echo  URL::to('/assets/img/icon/c6.svg')?>">Commission </a></li>
+                        <li><a href="{{ URL::to('admin/moderator/payouts') }}"><i class="las la-eye"></i>Content Partners Payout</a></li>
+
 
                      </ul>
                   </li>
@@ -1032,6 +1035,8 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                          <li><a href="{{ URL::to('admin/moderator/role') }}"><i class="las la-eye"></i>Add Role</a></li>
                          <li><a href="{{ URL::to('admin/moderator/Allview') }}"><i class="las la-eye"></i>View Role</a></li>
                          <li><a href="{{ URL::to('admin/moderator/commission') }}"><i class="las la-eye"></i>Commission </a></li>
+                        <li><a href="{{ URL::to('admin/moderator/payouts') }}"><i class="las la-eye"></i>Content Partners Payout</a></li>
+
 
                      </ul>
                   </li>

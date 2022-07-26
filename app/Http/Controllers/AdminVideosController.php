@@ -1474,7 +1474,7 @@ if(!empty($artistsdata)){
         if(!empty($video->uploaded_by)){
             $uploaded_by = $video->uploaded_by;
         }else{
-            $uploaded_by =  Auth::user()->username.' '.'('.Auth::user()->role.')';
+            $uploaded_by =  Auth::user()->role;
         }
         // dd($data['trailer']);
 
@@ -2244,7 +2244,7 @@ if(!empty($artistsdata)){
             $video->ads_category =  $data['ads_category'];   
             $video->description = strip_tags($data['description']);
             $video->trailer_description = strip_tags($data['trailer_description']);
-            $video->uploaded_by = Auth::user()->username.' '.'('.Auth::user()->role.')';
+            $video->uploaded_by = Auth::user()->role;
             $video->draft = 1;
             $video->active = 1 ;
             $video->embed_code =  $embed_code ;

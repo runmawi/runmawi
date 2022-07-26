@@ -75,6 +75,7 @@ Route::post('/admin/cpp_video_enddate_analytics', 'ModeratorsUserController@CPPV
 Route::post('/admin/cpp_video_exportCsv', 'ModeratorsUserController@CPPVideoExportCsv');
 
 
+
 Route::post('/admin/cpp_startdate_analytics', 'ModeratorsUserController@CPPStartDateAnalytic');
 Route::post('/admin/cpp_enddate_analytics', 'ModeratorsUserController@CPPEndDateAnalytic');
 Route::post('/admin/cpp_analytics_exportCsv', 'ModeratorsUserController@CPPAnalyticExportCsv');
@@ -720,6 +721,10 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::get('/moderatorsrole/edit/{id}', 'ModeratorsUserController@RoleEdit');
     Route::get('/moderatorsrole/delete/{id}', 'ModeratorsUserController@RoleDelete');
     Route::post('/moderatorsrole/update', 'ModeratorsUserController@RoleUpdate');
+    Route::get('/moderator/payouts', 'ModeratorsUserController@Payouts'); 
+    Route::get('/moderator/edit_payouts/{id}', 'ModeratorsUserController@EditPayouts'); 
+    Route::get('/moderator/view_payouts', 'ModeratorsUserController@ViewPayouts'); 
+    Route::post('/moderator/update_payouts', 'ModeratorsUserController@UpdatePayouts'); 
 
 
     // ExecuteShell Command For Maintanace sytsem  
@@ -906,6 +911,10 @@ Route::get('video-analytics', 'CPPAnalyticsController@IndexVideoAnalytics');
 Route::post('video_startdate_analytics', 'CPPAnalyticsController@VideoStartDateAnalytics');
 Route::post('video_enddate_analytics', 'CPPAnalyticsController@VideoEndDateAnalytics');
 Route::post('video_exportCsv', 'CPPAnalyticsController@VideoExportCsv');
+
+Route::get('/view_by_region', 'ModeratorsUserController@CPPViewsRegion');
+Route::get('/regionvideos', 'ModeratorsUserController@CPPRegionVideos');
+Route::get('/Allregionvideos', 'ModeratorsUserController@CPPAllRegionVideos');
 
 Route::get('/dashboard', 'ModeratorsLoginController@IndexDashboard');
 Route::get('/logout', 'ModeratorsLoginController@logout');
