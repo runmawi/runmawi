@@ -3,12 +3,16 @@
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 70 70" style="enable-background:new 0 0 70 70;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:none;stroke:#000000;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;}
+	.st0{fill:#E0E2E4;}
+	.st1{fill:none;stroke:#242830;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
 </style>
 <g>
-	<path class="st0" d="M14,57.9h44"/>
-	<path class="st0" d="M27.5,57.9v-44H14v44"/>
-	<path class="st0" d="M41.1,57.9V34.2H27.5v23.7"/>
-	<path class="st0" d="M54.6,57.9V24H41.1v33.9"/>
+	<rect x="13" y="10.9" class="st0" width="13.5" height="44"/>
+	<g>
+		<path class="st1" d="M13,54.9h44"/>
+		<path class="st1" d="M26.5,54.9v-44H13v44"/>
+		<path class="st1" d="M40.1,54.9V31.2H26.5v23.7"/>
+		<path class="st1" d="M53.6,54.9V21H40.1v33.9"/>
+	</g>
 </g>
 </svg>

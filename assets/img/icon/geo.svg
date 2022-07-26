@@ -1,11 +1,14 @@
-<svg width="27" height="27" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M4.4231 7.73077V2.92308C4.4231 2.41305 4.6257 1.9239 4.98635 1.56326C5.347 1.20261 5.83614 1 6.34617 1H15.9616L25.5769 10.6154V24.0769C25.5769 24.587 25.3743 25.0761 25.0137 25.4367C24.653 25.7974 24.1639 26 23.6539 26H16.9231" stroke="black" stroke-width="1.71429" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M15.9615 1V10.6154H25.5769" stroke="black" stroke-width="1.71429" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M6.8269 12.5391V15.4237" stroke="black" stroke-width="1.71429" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M1 15.9043L3.5 17.3466" stroke="black" stroke-width="1.71429" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M1 22.6357L3.5 21.1934" stroke="black" stroke-width="1.71429" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M6.8269 25.9998V23.1152" stroke="black" stroke-width="1.71429" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M12.6538 22.6357L10.1538 21.1934" stroke="black" stroke-width="1.71429" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M12.6538 15.9043L10.1538 17.3466" stroke="black" stroke-width="1.71429" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M6.82687 23.1161C8.95104 23.1161 10.673 21.3942 10.673 19.27C10.673 17.1458 8.95104 15.4238 6.82687 15.4238C4.70269 15.4238 2.98071 17.1458 2.98071 19.27C2.98071 21.3942 4.70269 23.1161 6.82687 23.1161Z" stroke="black" stroke-width="1.71429" stroke-linecap="round" stroke-linejoin="round"/>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 23.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 70 70" style="enable-background:new 0 0 70 70;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:none;stroke:#242830;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+	.st1{fill:#E0E2E4;stroke:#242830;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+</style>
+<g>
+	<path class="st0" d="M32.6,5.9c-11,0-20,9-20,20c0,8.2,4.9,15.4,12.4,18.5c0.2,0.1,0.4,0.3,0.5,0.5l7.1,17.8l7.1-17.8
+		c0.1-0.2,0.2-0.4,0.5-0.5c7.6-3.1,12.4-10.3,12.4-18.5C52.6,14.9,43.6,5.9,32.6,5.9L32.6,5.9z"/>
+	<path class="st1" d="M32.6,15.6c-5.7,0-10.3,4.6-10.3,10.3S27,36.1,32.6,36.1s10.3-4.6,10.3-10.3S38.3,15.6,32.6,15.6z"/>
+</g>
 </svg>

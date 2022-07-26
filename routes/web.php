@@ -1523,6 +1523,9 @@ Route::get('artist-list', 'ChannelController@artist_list')->name('artist_list');
 Route::get('categoryfilter', 'ChannelController@categoryfilter')->name('categoryfilter');
 
 
+    // Landing page 
+Route::get('landing-page', 'LandingpageController@landing_page')->name('landing_page');
+
     // Razorpay 
 Route::group(['middleware' => ['RazorpayMiddleware']], function() {
 Route::get('Razorpay', 'RazorpayController@Razorpay');
