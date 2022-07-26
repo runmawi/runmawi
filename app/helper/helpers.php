@@ -546,3 +546,29 @@ function Block_videos(){
    return $blockvideos;
 
 }
+
+function Email_sent_log($user_id,$email_log,$email_template){
+
+    App\EmaillogsDetail::create([
+        'user_id'        =>  $user_id,
+        'email_logs'     =>  $email_log,
+        'email_status'   =>  "sent" ,
+        'email_template' =>  $email_template,
+        'color'          =>  "green" ,
+    ]);
+
+}
+
+function Email_notsent_log($user_id,$email_log,$email_template){
+
+    App\EmaillogsDetail::create([
+        'user_id'        =>  $user_id,
+        'email_logs'     =>  $email_log,
+        'email_status'   =>  "Not sent" ,
+        'email_template' =>  $email_template,
+        'color'          =>  "red" ,
+    ]);
+
+    return 'Some Error In Sending Mail, Please take support from Admin' ;
+    
+}
