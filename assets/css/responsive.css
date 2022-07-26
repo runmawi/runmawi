@@ -211,6 +211,9 @@
       width: 60%!important;
        
     }
+    .buttonClass{
+        font-size: 15px!important;
+    }
     #mob1{
         text-align: left!important;
          margin-left: 10px;
