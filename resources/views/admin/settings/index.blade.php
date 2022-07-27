@@ -131,6 +131,7 @@ border-radius: 0px 4px 4px 0px;
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="app_setting" href="#!">APP Settings</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="script_setting" href="#!">Script Settings</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="default_Image_setting" href="#!"> Default Image Settings</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="cpp_payouts_setting" href="#!"> Content Partner Payouts Settings</a>
                 </div>
             </div>
 
@@ -637,7 +638,37 @@ border-radius: 0px 4px 4px 0px;
         </div></div>
     <!-- </div> -->
 
+  <!-- Content Partner Payouts  Setting-->
+    <div class="container-fluid" id="cpp_payouts" style="">
+            <div class="row" data-collapsed="0">
+                <div class="panel-heading">
+                    <div class="panel-title"><label>Content Partner Payouts : </label></div>
+                    <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                                 <div><p class="mt-1"> Payouts Settings</p></div>
+                                 <div class="d-flex align-items-center">
 
+                        <div class="mr-2">Manual</div>
+
+                                <div class="mt-1">
+                                    <label class="switch">
+                                    <input type="checkbox" @if(!isset($settings->payout_method) ||
+                                    (isset($settings->payout_method) && $settings->payout_method))checked="checked"
+                                    value="1"@else value="0" @endif name="payout_method" id="payout_method" />
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div class="ml-2">PaymentGateWay</div>
+                            </div>                                
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <!-- </div> -->
+        <!-- </div> -->
 
 
     <!-- Series  Setting-->
@@ -676,10 +707,7 @@ border-radius: 0px 4px 4px 0px;
         </div>
     
 
-
-
-
-    <!-- Transcoding  Setting-->
+    <!-- Transcoding  Setting -->
     <div class="container-fluid" id="transcodingsetting" style="">
             <div class="panel panel-primary mt-3" data-collapsed="0">
                 <div class="panel-heading">
@@ -1119,6 +1147,7 @@ border-radius: 0px 4px 4px 0px;
         $("#transcodingsetting").hide();
         $("#seasonsetting").hide();
         $("#rtmp_url").hide();
+		$('#cpp_payouts').hide();
 
 
 	$('#site_setting').click(function(){
@@ -1139,6 +1168,7 @@ border-radius: 0px 4px 4px 0px;
         $("#seasonsetting").hide();
         $("#rtmp_url").hide();
 		$('#settingupdate').show();
+		$('#cpp_payouts').hide();
 
 	});
 
@@ -1161,6 +1191,7 @@ border-radius: 0px 4px 4px 0px;
         $("#seasonsetting").hide();
         $("#rtmp_url").hide();
 		$('#settingupdate').show();
+		$('#cpp_payouts').hide();
 
 	});
 	$('#video_setting').click(function(){
@@ -1180,6 +1211,8 @@ border-radius: 0px 4px 4px 0px;
         $("#seasonsetting").hide();
         $("#rtmp_url").hide();
 		$('#settingupdate').show();
+		$('#cpp_payouts').hide();
+
 
 	});
 	$('#registration_setting').click(function(){
@@ -1199,6 +1232,8 @@ border-radius: 0px 4px 4px 0px;
         $("#seasonsetting").hide();
         $("#rtmp_url").hide();
 		$('#settingupdate').show();
+		$('#cpp_payouts').hide();
+
 
 	});
 	$('#email_setting').click(function(){
@@ -1218,6 +1253,8 @@ border-radius: 0px 4px 4px 0px;
         $("#seasonsetting").hide();
         $("#rtmp_url").hide();
 		$('#settingupdate').show();
+		$('#cpp_payouts').hide();
+
 
 	});
 	$('#social_setting').click(function(){
@@ -1238,6 +1275,8 @@ border-radius: 0px 4px 4px 0px;
         $("#seasonsetting").hide();
         $("#rtmp_url").hide();
 		$('#settingupdate').show();
+		$('#cpp_payouts').hide();
+
 
 	});
 	$('#subscription_setting').click(function(){
@@ -1258,6 +1297,8 @@ border-radius: 0px 4px 4px 0px;
         $("#seasonsetting").hide();
         $("#rtmp_url").hide();
 		$('#settingupdate').show();
+		$('#cpp_payouts').hide();
+
 
 	});
 	$('#login_setting').click(function(){
@@ -1279,6 +1320,8 @@ border-radius: 0px 4px 4px 0px;
         $("#seasonsetting").hide();
         $("#rtmp_url").hide();
 		$('#settingupdate').show();
+		$('#cpp_payouts').hide();
+
 
 	});
 	$('#advertisement_setting').click(function(){
@@ -1299,6 +1342,8 @@ border-radius: 0px 4px 4px 0px;
         $("#seasonsetting").hide();
         $("#rtmp_url").hide();
 		$('#settingupdate').show();
+		$('#cpp_payouts').hide();
+
 
 	});
 
@@ -1323,6 +1368,8 @@ border-radius: 0px 4px 4px 0px;
         $("#seasonsetting").hide();
         $("#rtmp_url").hide();
         $("#settingupdate").hide();
+		$('#cpp_payouts').hide();
+
 
 	});
 
@@ -1346,6 +1393,8 @@ border-radius: 0px 4px 4px 0px;
         $("#transcodingsetting").hide();
         $("#seasonsetting").hide();
         $("#rtmp_url").hide();
+		$('#cpp_payouts').hide();
+
 	});
 
     $("#default_Image_setting").click(function () {
@@ -1371,6 +1420,7 @@ border-radius: 0px 4px 4px 0px;
         $("#seasonsetting").hide();
         $("#rtmp_url").hide();
         $("#settingupdate").show();
+		$('#cpp_payouts').hide();
 
     });
      
@@ -1394,6 +1444,7 @@ border-radius: 0px 4px 4px 0px;
         $("#seasonsetting").hide();
         $("#rtmp_url").hide();
 		$('#settingupdate').show();
+		$('#cpp_payouts').hide();
 
     });
     $("#series_setting").click(function () {
@@ -1416,6 +1467,7 @@ border-radius: 0px 4px 4px 0px;
         $("#seasonsetting").show();
         $("#rtmp_url").hide();
 		$('#settingupdate').show();
+		$('#cpp_payouts').hide();
 
     });
 
@@ -1441,6 +1493,32 @@ border-radius: 0px 4px 4px 0px;
         $("#seasonsetting").hide();
         $("#rtmp_url").show();
 		$('#settingupdate').hide();
+		$('#cpp_payouts').hide();
+    });
+
+    $("#cpp_payouts_setting").click(function () {
+        $("#videos_settings").hide();
+        $("#site").hide();
+        $("#ppv").hide();
+        $("#registration").hide();
+        $("#videos_settings").hide();
+        $("#email").hide();
+        $("#social").hide();
+        $("#subscription").hide();
+        $("#login").hide();
+        $("#advertisement").hide();
+        $("#script").hide();
+        $("#app").hide();
+        // $("#season_setting").hide();
+        $("#Defaut_image_setting").hide();
+        $("#ppv_setting").show();
+        $("#demo_mode").hide();
+        // $("#Pay_Per_view_Hours").hide();
+        $("#transcodingsetting").hide();
+        $("#seasonsetting").hide();
+        $("#rtmp_url").hide();
+		$('#settingupdate').hide();
+		$('#cpp_payouts').show();
 
     });
 

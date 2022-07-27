@@ -11,7 +11,9 @@
 
 
 <style>
-
+    .text-primary{
+         color: {{ button_bg_color() .'!important' }} ;
+    }
     /*Button Bg color  */
         button.btn.btn-hover.ab {
                 border: #f3ece0 !important ;

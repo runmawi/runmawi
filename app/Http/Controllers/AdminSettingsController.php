@@ -116,6 +116,12 @@ class AdminSettingsController extends Controller
         }else{
         $series_season = 0;
         }
+        if(!empty($request['payout_method'])){
+          $payout_method = $request['payout_method'];
+          }else{
+          $payout_method = 0;
+          }
+
         if(!empty($request['transcoding_access'])){
           $transcoding_access = $request['transcoding_access'];
           }else{
@@ -136,6 +142,7 @@ class AdminSettingsController extends Controller
             }else{
             $ios_plan_price = null;
             }
+
             // dd($activation_email);
 		$settings = Setting::find(1);
 		$settings->demo_mode = $request['demo_mode'];
@@ -168,6 +175,7 @@ class AdminSettingsController extends Controller
 		$settings->whatsapp_page_id = $whatsapp_page_id;
 		$settings->series_season = $series_season;
 		$settings->transcoding_access = $transcoding_access;
+		$settings->payout_method = $payout_method;
 		$settings->transcoding_resolution = $transcoding_resolution;
 		$settings->skype_page_id = $skype_page_id;
 		$settings->youtube_page_id = $request['youtube_page_id'];

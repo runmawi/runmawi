@@ -44,13 +44,13 @@
                                  <tr>
                                     <th>Title</th>
                                     <th>Rating</th>
-                                    <th>Category</th>
+                                    <!-- <th>Category</th> -->
                                     <!-- <th>Release Year</th> -->
                                     <th>Uploaded by</th>
                                     <th>Video Type</th>
                                     <th>Video Access</th>
                                     <th>Status</th>
-                                    <th>Language</th>
+                                    <!-- <th>Language</th> -->
                                     <!--<th style="width: 20%;">Description</th>-->
                                      <th>Views</th>
                                     <th>Action</th>
@@ -73,7 +73,7 @@
                                        </div>
                                     </td>
                                     <td>{{ $video->rating }}</td>
-                                    <td>@if(isset($video->categories->name)) {{ $video->categories->name }} @endif</td>
+                                    <!-- <td>@if(isset($video->categories->name)) {{ $video->categories->name }} @endif</td> -->
                                     <!-- <td>{{ $video->year }}</td> -->
                                     <!-- <td>{{ $video->draft }}</td> -->
                                     <!-- <td>
@@ -95,7 +95,7 @@
                                     
                                     
                              
-                                    <td> @if(isset($video->languages->name)) {{ $video->languages->name }} @endif</td>
+                                    <!-- <td> @if(isset($video->languages->name)) {{ $video->languages->name }} @endif</td> -->
                                     <td>
                                        <!--<p> {{ substr($video->description, 0, 50) . '...' }} </p>-->
                                         {{ $video->views }}<img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>">
@@ -134,8 +134,9 @@ $(document).ready(function(){
 
  function fetch_customer_data(query = '')
  {
+   // alert(query);
   $.ajax({
-   url:"{{ URL::to('/cpp/live_search') }}",
+   url:"{{ URL::to('/cpp/CPPlive_search') }}",
    method:'GET',
    data:{query:query},
    dataType:'json',

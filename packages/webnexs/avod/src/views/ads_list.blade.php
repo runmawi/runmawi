@@ -6,7 +6,7 @@
             <div class="container-fluid">
                <div class="row">
                <div class="col-lg-12">
-                  <div class="iq-card-body">
+                  <div class="iq-card">
                      <h2 class="text-center mb-4">Ads List</h2>
                      <div id="nestable" class="nested-list dd with-margins">
                         <table class="data-tables table audio_table " style="width:100%">
