@@ -8,37 +8,40 @@
    .row.household_Income {
       padding: 2%;
       }
+       label{
+           height: 25px;
+       }
    </style>
     
         <div id="main-admin-content">
 
            <div id="content-page" class="content-page">
                <div class="iq-card">
-            <div class="container-fluid p-0">
+            <div class="container p-0">
                <div class="row">
                <div class="col-lg-12">
                   <div class="iq-card-body">
-                     <h2 class="text-center">Upload Advertisement</h2>
-                     <div id="nestable" class="nested-list dd with-margins">
+                     <h2 class="mb-4">Upload Advertisement</h2>
+                     <div id="nestable" class="nested-list dd with-margins p-0">
                         <div class="panel panel-default ">
                         <div class="row">
-                         <div class="col-md-12 mx-0">
+                         <div class="col-md-12 mx-0 p-0">
                            <form id="msform" accept-charset="UTF-8" enctype="multipart/form-data">
                              <!-- progressbar -->
                              <ul id="progressbar">
-                               <li class="active" id="account"><strong>General</strong></li>
-                               <li id="personal"><strong>Ads</strong></li>
-                               <li id="payment"><strong>Location</strong></li>
-                               <li id="confirm"><strong>Payment</strong></li>
+                               <li class="active" id="account"><img class="" src="<?php echo  URL::to('/assets/img/icon/1.svg')?>">Ads Info</li>
+                               <li id="personal"><img class="" src="<?php echo  URL::to('/assets/img/icon/1.svg')?>">Upload Ads</li>
+                               <li id="payment"><img class="" src="<?php echo  URL::to('/assets/img/icon/1.svg')?>">Choose Region</li>
+                               <li id="confirm"><img class="" src="<?php echo  URL::to('/assets/img/icon/1.svg')?>">Pay and Publish</li>
                             </ul> <!-- fieldsets -->
                             <fieldset>
                                <div class="form-card">
-                                 <h2 class="fs-title">General Information</h2> 
+                                 <h2 class="fs-title mb-4">General Information</h2> 
 
                                  <div class="row col-md-12">
                                     <div class="form-group col-md-4">
                                      <label>Age:</label>
-                                    <p class="error-message" style="color:red">This filed is required</p>
+                                    <p class="error-message" style="color:red;font-size:10px;">This filed is required</p>
 
                                     <div class="row ages">
                                        <div class="col-sm-4"> <label for=""> 18-24 </label> </div>
@@ -92,7 +95,7 @@
                                   
                                   <div class="form-group col-md-5">
                                      <label>Household Income:</label>
-                                     <p class="error-message" style="color:red">This filed is required</p>
+                                     <p class="error-message" style="color:red;font-size:10px;">This filed is required</p>
 
                                     <div class="row household_Income">
                                        <div class="col-sm-4"> <label for="household_income_label" class="10">Top 10%</label> </div>
@@ -147,7 +150,7 @@
 
                                   <div class="form-group col-md-3">
                                     <label>Gender:</label>
-                                   <p class="error-message" style="color:red">This filed is required</p>
+                                   <p class="error-message" style="color:red;font-size:10px;">This filed is required</p>
 
                                     <select class="js-example-basic-multiple" name="gender[]" multiple="multiple" id="gender">
                                        <option value="male">Male</option>
@@ -161,11 +164,12 @@
                             </fieldset>
                             <fieldset>
                                <div class="form-card">
-                                 <h2 class="fs-title">Ads Details</h2> 
-                                 <div class="col-md-6">
+                                 <h2 class="fs-title mb-4">Ads Details</h2> 
+                                   <div class="row p-0">
+                                       <div class="col-md-6">
                                     <div class="form-group">
-                                     <label>Ads Name:</label>
-                                    <p class="error-message" style="color:red">This filed is required</p>
+                                     <label class="d-flex align-items-baseline">Ads Name: <p class="error-message" style="color:red;font-size:10px;">This filed is required</p></label>
+                                   
 
                                      <input type="text" id="ads_name" name="ads_name" required class="form-control">
                                   </div>
@@ -179,32 +183,40 @@
                                   </div>
 
                                   <div class="form-group">
-                                    <label> Ads Play:</label>
+                                    <label > Ads Play:</label>
                                     <select class="form-control" name="ads_position" id="ads_position" onchange="return showprice(this);">
                                       <option value="pre" data-val="{{$settings->featured_pre_ad}}">Pre</option>
                                       <option value="mid" data-val="{{$settings->featured_mid_ad}}">Mid</option>
                                       <option value="post" data-val="{{$settings->featured_post_ad}}">Post</option>
                                    </select>
                                </div>
-                               <div class="form-group">
+                                           
+                                   </div>
+                                       <div class="col-md-6">
+                                           
+ <div class="form-group">
                                  <label> Featured Ad Cost:</label>
                                  <input type="text" value="{{$settings->featured_pre_ad}}" class="form-control" id="price">
                               </div>
-
                               <div class="form-group">
-                                 <label> Ad Tag Url:</label>
-                                 <p class="error-message" style="color:red">This filed is required</p>
+                                 <label class="d-flex align-items-baseline"> Ad Tag Url:<p class="error-message" style="color:red;font-size:10px;">This filed is required</p></label>
+                                 
                                  <input type="text" id="ads_path" name="ads_path" required class="form-control">
                               </div>
 
                               <div class="form-group">
-                                 <label> Ads Video Upload:</label>
-                                 <p class="error-messages" style="color:red">This filed is required</p>
+                                 <label class="d-flex align-items-baseline"> Ads Video Upload:    <p class="error-messages" style="color:red;font-size:10px;">This filed is required</p></label>
+                              
                                  <input type="file" id="ads_video" name="ads_video" required class="form-control">
                               </div>
 
-                           </div> </div> <input type="button" name="previous" class="previous action-button-previous" value="Previous" /> 
-                           <input type="button" name="next" class="next action-button" value="Next Step" id="Next2" />
+                                       </div>
+                                   </div>
+                              
+                           </div>
+                                <div class="d-flex justify-content-end">
+                                <input type="button" name="previous" class="previous action-button-previous" value="Previous" /> 
+                           <input type="button" name="next" class="next action-button" value="Next Step" id="Next2" /></div>
                         </fieldset>
                         <fieldset>
                          <div class="form-card">
