@@ -20,6 +20,7 @@
            <?php  elseif($video->type == '' && $video->processed_low != 100 || $video->processed_low == null ): ?>
                         <div id="video_container" class="fitvid" atyle="z-index: 9999;">
                <video id="videoPlayer"  class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
+               <source src="<?php if(!empty($video->mp4_url)){   echo $video->mp4_url; }else {  echo $video->trailer; } ?>"  type='video/mp4' label='auto' > 
                </video>
  
            </div>
@@ -37,7 +38,6 @@
            <?php  elseif($video->type == 'mp4_url'):  ?>           
                  <div id="video_container" class="fitvid" atyle="z-index: 9999;">
                <video id="videoPlayer"  class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
-                  <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default />
                    <source src="<?php if(!empty($video->mp4_url)){   echo $video->mp4_url; }else {  echo $video->trailer; } ?>"  type='video/mp4' label='auto' >  
                </video>
            </div>

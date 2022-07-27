@@ -62,4 +62,9 @@ class ModeratorsUser extends Model
     public function total_videos(){
         return $this->belongsTo('App\Video','id','user_id');
     }
+
+    public function payouts_name(){
+        return $this->belongsTo('App\ModeratorPayout','id','user_id');
+    }
+
 }
