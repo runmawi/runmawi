@@ -1617,7 +1617,7 @@ class ChannelController extends Controller
             $data['password_hash'] = "";
             $data = session()->all();
            
-            if(!empty($data['password_hash'])){
+            if(!empty($data['password_hash']) || empty($data['password_hash'])){
     
             $get_video_id = \App\Video::where('slug',$slug)->first(); 
     
