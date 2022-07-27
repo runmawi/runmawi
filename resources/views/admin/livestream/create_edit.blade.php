@@ -144,7 +144,7 @@ border-radius: 0px 4px 4px 0px;
                    
                                         <div class="">
                                             <label class="m-0">Video Image Cover</label>
-                                            <p class="p1">Select the video image (1080X1920px or 16:9 ratio):</p>
+                                            <p class="p1">Select the video image ( 9:16 Ratio or 1080X1920px ):</p>
 
                                             <div class="panel-body">
                                                 <input type="file" multiple="true" class="form-group" name="image" id="image" />
@@ -164,7 +164,7 @@ border-radius: 0px 4px 4px 0px;
                     <div class="row mt-3">
                                         <div class="">
                                             <label class="m-0">Player Image Cover</label>
-                                            <p class="p1">Select the video image(1280x720 px or 9:16 ratio):</p>
+                                            <p class="p1">Select the video image( 16:9 Ratio or 1280X720px ):</p>
 
                                             <div class="panel-body">
                                                 <input type="file" multiple="true" class="form-group" name="player_image" id="player_image" />
@@ -518,7 +518,7 @@ border-radius: 0px 4px 4px 0px;
             }else{
                 return false;
             }
-        },'Please upload an image with 1260 x 720 pixels dimension');
+        },'Please upload an image with 1280 x 720 pixels dimension');
 
 
         $('#image').change(function() {

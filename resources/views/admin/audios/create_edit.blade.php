@@ -301,7 +301,7 @@ data: {
 															@if(!empty($audio->image))
 															<img src="{{ URL::to('/'). '/public/uploads/images/' . $audio->image }}" class="audio-img" width="200"/>
 															@endif
-															<p class="p1">Select the audio image (1080x1920 px or 9:16 ratio):</p> 
+															<p class="p1">Select the audio image ( 9:16 Ratio or 1080X1920px ):</p> 
 															<input type="file" multiple="true" class="form-control" name="image" id="image" />
 
 														</div> 
@@ -314,7 +314,7 @@ data: {
 															@if(!empty($audio->player_image))
 															<img src="{{ URL::to('/'). '/public/uploads/images/' . $audio->player_image }}" class="audio-img" width="200"/>
 															@endif
-															<p class="p1">Select the audio image (1280x720 px or 16:9 ratio):</p> 
+															<p class="p1">Select the audio image ( 16:9 Ratio or 1280X720px ):</p> 
 															<input type="file" multiple="true" class="form-control" name="player_image" id="player_image" />
 
 														</div> 
@@ -767,7 +767,7 @@ $('#duration').mask('00:00:00');
             }else{
                 return false;
             }
-        },'Please upload an image with 1260 x 720 pixels dimension');
+        },'Please upload an image with 1280 x 720 pixels dimension');
 
 
         $('#image').change(function() {
