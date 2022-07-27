@@ -255,11 +255,12 @@ border-radius: 0px 4px 4px 0px;
                         <div class="col-6">
                            <h2 class="fs-title p-0">Video Player</h2>
                         </div>
-
+                        @if($video->access != 'ppv')
                         <div class="col-6">
                             <label for=""><h3 class="fs-title m-0">Player Embed Link:</h3></label>
                             <p>Click <a href="#"onclick="EmbedCopy();" class="share-ico"><i class="ri-links-fill"></i> here</a> to get the Embedded URL</p>
                         </div>
+                        @endif
 
                       <div id="video_container" class="fitvid col-sm-12" atyle="z-index: 9999;" >
                         @if($video->type == 'mp4_url')
