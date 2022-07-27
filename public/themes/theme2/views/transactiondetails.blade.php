@@ -1,8 +1,10 @@
 
 
-@include('header')
+@php
+    include(public_path('themes/theme2/views/header.php'));
+@endphp
 
-<!--<div class="container mt-4 mb-4" style="background-color: white;border-radius: 10px; padding:20px;box-shadow: 0px 4px 20px rgb(0 0 0 / 5%);">
+<div class="container mt-4 mb-4" style="background-color: white;border-radius: 10px; padding:20px;box-shadow: 0px 4px 20px rgb(0 0 0 / 5%);">
     <div class="row justify-content-center page-height">	
         	<div class="col-md-12 ">
                 
@@ -17,9 +19,7 @@
                     <div class="d-flex justify-content-between">
                         <div >
                         <h5 style="color: black;">Make payment</h5></div>
-                        <div>
-                            <a class="show">Show more transaction</a>
-                        </div>
+                        
                         
                     </div>
                 <div class="row mt-3 p-1" id="">
@@ -27,7 +27,7 @@
                         <img src="{{ URL::to('/assets/img/PayPal-Logo.png') }}" class="w-100 pt-5">
                     </div>
                     <div class="col-sm-3 bg-white ">
-                    <img src="{{ URL::to('/assets/img/apple.png') }}" width="" class="w-100 pt-4" >
+                    <img src="{{ URL::to('/assets/img/apple.jpg') }}" width="" class="w-100 pt-4" >
                     </div>
                     <div class="col-sm-3 bg-white">
                            <img src="{{ URL::to('/assets/img/stripe.png') }}" class="w-100 pt-4" >
@@ -73,7 +73,7 @@
                                 </tr>
                             </tbody>
                             </table>
-                </div> 
+                </div> -->
                 
                <div class="mt-5">
                <table class="table table-bordered text-center">
@@ -90,7 +90,7 @@
                         <th>stripe plan</th>
                         <th>quantity</th>
                         <th>created_at</th>
-                        <th>updated_at</th>
+                        <th>updated_at</th> -->
                         </tr>
                       </thead>
                   <?php  if(!empty($subscriptions)){ ?>
@@ -116,7 +116,7 @@
                             <td>{{ $subscription->created_at}}</td>
                             <td>Card</td>
 
-                            <!-- <td>{{ $subscription->updated_at }}</td>
+                            <!-- <td>{{ $subscription->updated_at }}</td> -->
                            </tr>
                             @endforeach
                             
@@ -163,134 +163,9 @@
                 
                 </div>
         </div>
-    </div>-->
-<div class="" style="background:#4b4a4b;padding:20px 30px!important;">
-    <div class="container mt-5">
-    <h2 class="text-white mt-3 mb-3">My Balance Details</h2>
-    <div class="row align-items-center" style="background:#342d2f;padding:15px;">
-        <div class="col-md-6 bg-col mt-2"> 
-           <h4>Invite your friend</h4>
-            <p class="text-white">Invite your friend & receive 10% of his deposits to your balance Lifetime</p>
-        </div>
-        <div class="col-md-6">
-            <input type="text" style="border:1px solid #fff;" class="form-control" value="https://invite ur friend/flicknexs">
-        </div>
     </div>
-    
-    <div class="row mt-5 pt-5 justify-content-around">
-        <div class="col-md-3 bg-col" style="background:#342d2f;padding:15px;"> 
-           
-            <p class="text-white text-center mt-3"> <img class="ply mr-3" src="<?php echo URL::to('/').'/assets/img/hm.png';  ?>"> Total added <span>$265</span></p>
-        </div>
-        <div class="col-md-3" style="background:#342d2f;padding:15px;">
-            <p class="text-white text-center mt-3"><img class="ply mr-3" src="<?php echo URL::to('/').'/assets/img/pp.png';  ?>">Total spent <span>$265</span></p>
-        </div> 
-        <div class="col-md-3" style="background:#342d2f;padding:15px;">
-            <p class="text-white text-center mt-3"><img class="ply mr-3" src="<?php echo URL::to('/').'/assets/img/bn.png';  ?>">Balance <span>$265</span></p>
-        </div>
-    </div>
-     <div class="row mt-3 pt-3 justify-content-around">
-        <div class="col-md-3 bg-col" style="background:#342d2f;padding:15px;"> 
-           <p class="text-white text-center mt-3">Total Purchased <span>$265</span></p>
-        </div>
-        <div class="col-md-3" style="background:#342d2f;padding:15px;">
-            <p class="text-white text-center mt-3">Total archieved<span>$265</span></p>
-        </div> 
-        <div class="col-md-3" style="background:#342d2f;padding:15px;">
-             <p class="text-white text-center mt-3">Total Cashback <span>$265</span></p>
-        </div>
-    </div>
-     <div class="mt-5">
-               <table class="table" style="color:#fff!important;">
-                      <thead>
-                        <tr>
-                        
-                       
-                        <th scope="col" style="color:#fff!important">Date</th>
-                              <th scope="col" style="color:#fff!important">Amount</th>
-                        <th scope="col" style="color:#fff!important">Payment type</th>
-                           
-                            <th scope="col" style="color:#fff!important">Status</th>
-                        <!-- <th>Price</th>
-                        <th>days</th>
-                        <th>stripe id</th>
-                        <th>stripe status</th>
-                        <th>stripe plan</th>
-                        <th>quantity</th>
-                        <th>created_at</th>
-                        <th>updated_at</th> -->
-                        </tr>
-                      </thead>
-                  <?php  if(!empty($subscriptions)){ ?>
-                      <tbody>
-
-                            @foreach($subscriptions as $key => $subscription )
-                              <td>{{ $subscription->created_at}}</td>
-                            <td>{{ $subscription->price }}</td>
-
-                            <!-- <td>{{ $subscription->days }}</td>
-                            <td>{{ $subscription->stripe_id }}</td>
-                            <td>{{ $subscription->stripe_status }}</td>
-                            <td>{{ $subscription->stripe_plan }}</td>
-                            <td>{{ $subscription->quantity}}</td> -->
-                         
-                            <td>Card</td>
-                            
-                            <?php if($subscription->stripe_status == 'active'){ ?>
-                            <td class = "bg-success"> <?php echo "Approved"; ?></td>
-                            <?php }elseif($subscription->stripe_status == 'inactive'){ ?>
-                                <td class = "bg-success"> <?php  echo "Canceled"; ?></td>
-                            <?php }else{ ?>
-                                <td class = "bg-warning"> <?php  echo "Pending"; ?></td>
-                            <?php }?>
-                            <!-- <td>{{ $subscription->updated_at }}</td> -->
-                           
-                            @endforeach
-                            
-                            <?php }if(!empty($ppvcharse)){ //dd('test');?>
-                               
-                            @foreach($ppvcharse as $key => $ppv )
-                           <tr>
-                               
-                            <td>{{ $ppv->created_at}}</td>
-                            <td>{{ $ppv->total_amount }}</td>
-                            
-                            <td>Card</td>
-                               <?php if($ppv->status == 'active'){ ?>
-                            <td class = "bg-success"> <?php echo "Approved"; ?></td>
-                            <?php }elseif($ppv->status == 'inactive'){ ?>
-                                <td class = "bg-success"> <?php  echo "Canceled"; ?></td>
-                            <?php }else{ ?>
-                                <td class = "bg-warning"> <?php  echo "Pending"; ?></td>
-                            <?php }?>
-                           </tr>
-                          
-         
-                            @endforeach
-                           <?php  }if(!empty($livepurchase)){ ?>
-                                
-                            @foreach($livepurchase as $key => $live )
-                           <tr>
-                            <?php if($live->status == 1){ ?>
-                            <td class = "bg-success"> <?php echo "Approved"; ?></td>
-                            <?php }elseif($live->status == 2){ ?>
-                                <td class = "bg-success"> <?php  echo "Canceled"; ?></td>
-                            <?php }else{ ?>
-                                <td class = "bg-warning"> <?php  echo "Pending"; ?></td>
-                            <?php }?>
-                            <td>{{ $live->amount }}</td>
-           
-                            <td>{{ $live->created_at}}</td>
-                            <td>Card</td>
-                           </tr>
-                            @endforeach
-                        <?php    } ?>
-    
-                      </tbody>
-                    </table>
-                    </div> 
-                    </div>
-
 </div>
 
-@extends('footer')
+@php
+    include(public_path('themes/theme2/views/footer.blade.php'));
+@endphp

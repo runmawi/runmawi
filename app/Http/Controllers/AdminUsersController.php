@@ -2843,7 +2843,7 @@ class AdminUsersController extends Controller
                 $video = [];
             }
             $data = array(
-                'videos' => $video,
+                'recent_videos' => $video,
                 'videocategory' => $videocategory,
                 'plans' => $plans,
                 'devices_name' => $devices_name,
@@ -2851,11 +2851,13 @@ class AdminUsersController extends Controller
                 'role_plan' => $role_plan,
                 'user_role' => $user_role,
                 'post_route' => URL::to('/profile/update') ,
-                'language' => $language,
+                'preference_languages' => $language,
                 'profile_details' => $profile_details,
                 'Multiuser' => $Multiuser,
                 'alldevices' => $alldevices,
             );
+
+            // dd($data['videocategory']);
 
             return Theme::view('myprofile', $data);
         }

@@ -2,7 +2,7 @@
 
 @section('content')
 @php
-    include(public_path('themes\theme1\views\header.php'));
+    include(public_path('themes\theme2\views\header.php'));
 @endphp
 
 <head>
@@ -577,7 +577,7 @@ your password.</p>
         </script>
 
 @php
-    include(public_path('themes\theme1\views\footer.blade.php'));
+    include(public_path('themes\theme2\views\footer.blade.php'));
 @endphp
 
 @endsection 

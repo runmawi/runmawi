@@ -1,4 +1,8 @@
-<?php include('header.php'); ?>
+<?php include(public_path('themes/default/views/header.php'));  
+
+$audio = $audios ;
+
+?>
 <style type="text/css">
 .audio-js *, .audio-js :after, .audio-js :before {box-sizing: inherit;display: grid;}
 .vjs-big-play-button{
@@ -150,8 +154,9 @@ border-radius: 50%;
 </style>
 
 <?php if (isset($error)) { ?>
-<h2 class="text-center"><?php echo $message;?></h2>
-
+                <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
+                    <p ><h3 class="text-center"><?php echo $message;?></h3>
+                </div>
 <?php } else { ?>
 
 <input type="hidden" value="<?php echo URL('/');?>" id="base_url">
@@ -491,4 +496,4 @@ window.location = '<?= URL::to('login') ?>';
         $(".jp-play").trigger("click");
     });
 </script>
-<?php include('footer.blade.php'); ?>
+<?php include(public_path('themes/default/views/footer.blade.php')); ?>

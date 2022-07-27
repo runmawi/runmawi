@@ -768,24 +768,50 @@ public function RentPaypal(Request $request)
 
         }
          public function TransactionDetails(){  
-           if(!Auth::guest()){
-          $user_id = Auth::user()->id;
-          // dd($user_id);
-          $subscriptions = Subscription::where('user_id',$user_id)->get(); 
-          // $subscriptions = Subscription::where('user_id',$user_id)->get(); 
-          $ppvcharse = PpvPurchase::where('user_id',$user_id)->get(); 
-          $livepurchase = LivePurchase::where('user_id',$user_id)->get(); 
-          if(!empty($subscriptions)){ $subscriptionspurchase = $subscriptions; }else{ $subscriptionspurchase =[]; }
-          if(!empty($ppvcharse)){ $ppvcharses = $ppvcharse; }else{ $ppvcharses =[]; }
-          if(!empty($livepurchase)){ $livepurchases = $livepurchase; }else{ $livepurchases =[]; }
-            return view('transactiondetails',['subscriptions'=>$subscriptions,'ppvcharse'=>$ppvcharses,'livepurchase'=>$livepurchases]);
-          }else{
-            return View::make('auth.login');
 
+          $Theme = HomeSetting::pluck('theme_choosen')->first();
+          Theme::uses(  $Theme );
+
+           if(!Auth::guest()){
+
+            $user_id = Auth::user()->id;
+            $subscriptions = Subscription::where('user_id',$user_id)->get(); 
+            // $subscriptions = Subscription::where('user_id',$user_id)->get(); 
+            $ppvcharse = PpvPurchase::where('user_id',$user_id)->get(); 
+            $livepurchase = LivePurchase::where('user_id',$user_id)->get(); 
+
+              if(!empty($subscriptions)){ 
+                $subscriptionspurchase = $subscriptions; 
+              }
+              else{ 
+                $subscriptionspurchase =[];
+              }
+
+              if(!empty($ppvcharse)){ 
+                $ppvcharses = $ppvcharse; 
+              }
+              else{ 
+                  $ppvcharses =[]; 
+              }
+
+              if(!empty($livepurchase)){
+                $livepurchases = $livepurchase;
+              }
+              else{ 
+                  $livepurchases =[]; 
+              }
+
+            return Theme::view('transactiondetails',
+                                [ 'subscriptions'=>$subscriptions,
+                                  'ppvcharse'=>$ppvcharses,
+                                  'livepurchase'=>$livepurchases
+                                ]);
+          }
+          else{
+            return Theme::view('auth.login');
           }
     }
 
-     
          public function saveSubscription(Request $request) {
         
                 /* $user_email = Auth::user()->email;
