@@ -157,7 +157,7 @@ class ThemeAudioController extends Controller{
               $albumID = $check_audio_details->album_id;
                 
               if (!empty($check_audio_details) && empty($name)) {
-            //   echo "<pre>";print_r($albumID);exit();
+            //   echo "<pre>";dd($albumID);exit();
 
                   $audio_details = Audio::where('slug','=',$slug)->where('status','=',1)->first();
                    
@@ -205,7 +205,9 @@ class ThemeAudioController extends Controller{
              } else {
                   $data = array(
                 'message' => 'No Audio Found',
-                'error' =>'error'
+                'error' =>'error',
+                'json_list' => null ,
+                'audios'  => null ,
                 );
 
                 return Theme::view('audio', $data);
@@ -220,7 +222,7 @@ class ThemeAudioController extends Controller{
 
             $json = array('title' => $audio_details->title,'mp3'=>$audio_details->mp3_url);  
             $data = array(
-                'audio' => Audio::findOrFail($audio),
+                'audios' => Audio::findOrFail($audio),
                 'json_list' => json_encode($json),
                 'album_name' => AudioAlbums::findOrFail($albumID)->albumname,
                 'album_slug' => AudioAlbums::findOrFail($albumID)->slug,
@@ -247,13 +249,8 @@ class ThemeAudioController extends Controller{
                 );
                 
             }
-        //     echo '<pre>';
-        // print_r($data);
-        // exit();
-           
             return Theme::view('audio', $data);
 
-        
     }
 
     /*
