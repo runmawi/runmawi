@@ -485,13 +485,15 @@ i.fa.fa-google-plus {
 						</div>
                         
                     </form>
-                  </div>
-               </div>    
-               <div class="mt-3">
+                       <div class="mt-3">
                   <div class="d-flex justify-content-center links">
                      Already have an account? <a href="<?= URL::to('/login')?>" class="text-primary ml-2">Sign In</a>
                   </div>                        
                </div>
+                  </div>
+                  
+               </div>    
+               
             </div>
          </div>
       </div>
