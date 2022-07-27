@@ -219,8 +219,7 @@ border-radius: 0px 4px 4px 0px;
             </div>
         </div>
    </div>
-           <div>
-	</div>
+          
 
     <!-- Default Image Setting-->
      <div class="container-fluid" id="Defaut_image_setting" style="">
@@ -274,9 +273,7 @@ border-radius: 0px 4px 4px 0px;
 
 
         <!-- <div class="container-fluid" id="ppv" > -->
-        <div class="row">
-            <input type="hidden" value="0" name="demo_mode" id="demo_mode" />
-        </div>
+       
         <div class="container-fluid row align-items-center mt-3" id="ppv">
             <div class="col-sm-6">
                 <div class="panel panel-primary" data-collapsed="0">
@@ -639,7 +636,7 @@ border-radius: 0px 4px 4px 0px;
     <!-- </div> -->
 
   <!-- Content Partner Payouts  Setting-->
-    <div class="container-fluid" id="cpp_payouts" style="">
+    <div class="container-fluid" id="cpp_payouts" style="padding:15px;">
             <div class="row" data-collapsed="0">
                 <div class="panel-heading">
                     <div class="panel-title"><label>Content Partner Payouts : </label></div>
@@ -961,7 +958,7 @@ border-radius: 0px 4px 4px 0px;
                
           
       
-
+     
    
         <div class="d-flex justify-content-end">
     <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
