@@ -5895,13 +5895,135 @@ class ModeratorsUserController extends Controller
 
             $total_contentss = $total_contents->groupBy("month_name");
 
+
+            $ppv_purchases = PpvPurchase::join(
+                "videos",
+                "videos.id",
+                "=",
+                "ppv_purchases.video_id"
+            )
+            ->join("moderators_users", "moderators_users.id", "=", "videos.user_id")
+            ->where("videos.uploaded_by", "CPP")
+            ->get([
+                    "ppv_purchases.created_at as purchases_created_at" ,
+                    "ppv_purchases.user_id as ",
+                    "ppv_purchases.admin_commssion","ppv_purchases.moderator_commssion","ppv_purchases.total_amount",
+                    "ppv_purchases.created_at as purchases_created_at" ,
+                    "videos.*",
+                    \DB::raw("moderators_users.username as cppusername"),
+                    \DB::raw("MONTHNAME(ppv_purchases.created_at) as month_name"),
+                ]);
+                
+            $ModeratorsUser = ModeratorsUser::get();
+            // dd($payouts);
             $data = [
                 "settings" => $settings,
                 "total_content" => $total_content,
                 "total_video_count" => count($total_content),
                 "total_contentss" => $total_contentss,
+                "ppv_purchases" => $ppv_purchases,
+                "ModeratorsUser" => $ModeratorsUser,
             ];
             return view("admin.analytics.cpp_video_analytics", $data);
+        }
+    }
+
+    public function CPPVideoFilter(Request $request)
+    {
+        $data = $request->all();
+
+        $user_id = $data["user_id"];
+
+        if (!empty($user_id)) {
+            $total_content = ModeratorsUser::join(
+                "videos",
+                "videos.user_id",
+                "=",
+                "moderators_users.id"
+            )
+                ->where("videos.user_id", $user_id)
+                ->groupBy("videos.id")
+                ->get([
+                    \DB::raw("COUNT(*) as count"),
+                    \DB::raw("MONTHNAME(videos.created_at) as month_name"),
+                    \DB::raw("videos.*"),
+                    \DB::raw("moderators_users.username as cppusername"),
+                    \DB::raw("moderators_users.email as cppemail"),
+                ]);
+                $ppv_purchases = PpvPurchase::join(
+                    "videos",
+                    "videos.id",
+                    "=",
+                    "ppv_purchases.video_id"
+                )
+                ->join("moderators_users", "moderators_users.id", "=", "videos.user_id")
+                ->where("videos.uploaded_by", "CPP")
+                ->where("videos.user_id", $user_id)
+                    ->get([
+                        "ppv_purchases.created_at as purchases_created_at" ,
+                        "ppv_purchases.user_id as ",
+                        "ppv_purchases.admin_commssion","ppv_purchases.moderator_commssion","ppv_purchases.total_amount",
+                        "ppv_purchases.created_at as purchases_created_at" ,
+                        "videos.*",
+                        \DB::raw("moderators_users.username as cppusername"),
+                        \DB::raw("MONTHNAME(ppv_purchases.created_at) as month_name"),
+                    ]);
+        } else {
+            $total_content = [];
+            $ppv_purchases = [];
+
+        }
+
+        $output = "";
+        $i = 1;
+        if (count($ppv_purchases) > 0) {
+            $total_row = $total_content->count();
+            if (!empty($ppv_purchases)) {
+                foreach ($ppv_purchases as $key => $row) {
+                    $output .=
+                        '
+              <tr>
+              <td>' .
+                        $i++ .
+                        '</td>
+              <td>' .
+                        $row->title .
+                        '</td>
+              <td>' .
+                        $row->cppusername .
+                        '</td>    
+              <td>' .
+                        $row->total_amount .
+                        '</td>    
+              <td>' .
+                        $row->admin_commssion .
+                        '</td>    
+                <td>' .
+                        $row->moderator_commssion .
+                        '</td>   
+                <td>' .
+                        $row->views .
+                        '</td>   
+                <td>' .
+                        $row->purchases_created_at .
+                        '</td>   
+              </tr>
+              ';
+                }
+            } else {
+                $output = '
+          <tr>
+           <td align="center" colspan="5">No Data Found</td>
+          </tr>
+          ';
+            }
+            $value = [
+                "table_data" => $output,
+                "total_data" => $total_row,
+                "total_content" => $total_content,
+            ];
+
+            return $value;
         }
     }
 
@@ -5929,15 +6051,35 @@ class ModeratorsUserController extends Controller
                     \DB::raw("moderators_users.username as cppusername"),
                     \DB::raw("moderators_users.email as cppemail"),
                 ]);
+                $ppv_purchases = PpvPurchase::join(
+                    "videos",
+                    "videos.id",
+                    "=",
+                    "ppv_purchases.video_id"
+                )
+                ->whereDate("ppv_purchases.created_at", ">=", $start_time)
+                ->join("moderators_users", "moderators_users.id", "=", "videos.user_id")
+                ->where("videos.uploaded_by", "CPP")
+                    ->get([
+                        "ppv_purchases.created_at as purchases_created_at" ,
+                        "ppv_purchases.user_id as ",
+                        "ppv_purchases.admin_commssion","ppv_purchases.moderator_commssion","ppv_purchases.total_amount",
+                        "ppv_purchases.created_at as purchases_created_at" ,
+                        "videos.*",
+                        \DB::raw("moderators_users.username as cppusername"),
+                        \DB::raw("MONTHNAME(ppv_purchases.created_at) as month_name"),
+                    ]);
+                    
         } else {
+            $ppv_purchases = [];
         }
 
         $output = "";
         $i = 1;
-        if (count($total_content) > 0) {
+        if (count($ppv_purchases) > 0) {
             $total_row = $total_content->count();
-            if (!empty($total_content)) {
-                foreach ($total_content as $key => $row) {
+            if (!empty($ppv_purchases)) {
+                foreach ($ppv_purchases as $key => $row) {
                     $output .=
                         '
               <tr>
@@ -5948,13 +6090,22 @@ class ModeratorsUserController extends Controller
                         $row->title .
                         '</td>
               <td>' .
-                        $row->cppemail .
-                        '</td>    
-              <td>' .
                         $row->cppusername .
                         '</td>    
               <td>' .
+                        $row->total_amount .
+                        '</td>    
+              <td>' .
+                        $row->admin_commssion .
+                        '</td>    
+                <td>' .
+                        $row->moderator_commssion .
+                        '</td>   
+                <td>' .
                         $row->views .
+                        '</td>   
+                <td>' .
+                        $row->purchases_created_at .
                         '</td>    
               </tr>
               ';
@@ -5990,7 +6141,7 @@ class ModeratorsUserController extends Controller
                 "=",
                 "moderators_users.id"
             )
-                ->whereDate("videos.created_at", ">=", $start_time)
+                // ->whereDate("videos.created_at", ">=", $start_time)
                 ->whereBetween("videos.created_at", [$start_time, $end_time])
                 ->groupBy("videos.id")
                 ->get([
@@ -6000,16 +6151,36 @@ class ModeratorsUserController extends Controller
                     \DB::raw("moderators_users.username as cppusername"),
                     \DB::raw("moderators_users.email as cppemail"),
                 ]);
+                $ppv_purchases = PpvPurchase::join(
+                    "videos",
+                    "videos.id",
+                    "=",
+                    "ppv_purchases.video_id"
+                )
+                ->whereBetween("ppv_purchases.created_at", [$start_time, $end_time])
+                ->join("moderators_users", "moderators_users.id", "=", "videos.user_id")
+                ->where("videos.uploaded_by", "CPP")
+                    ->get([
+                        "ppv_purchases.created_at as purchases_created_at" ,
+                        "ppv_purchases.user_id as ",
+                        "ppv_purchases.admin_commssion","ppv_purchases.moderator_commssion","ppv_purchases.total_amount",
+                        "ppv_purchases.created_at as purchases_created_at" ,
+                        "videos.*",
+                        \DB::raw("moderators_users.username as cppusername"),
+                        \DB::raw("MONTHNAME(ppv_purchases.created_at) as month_name"),
+                    ]);
         } else {
             $total_content = [];
+            $ppv_purchases = [];
+
         }
 
         $output = "";
         $i = 1;
-        if (count($total_content) > 0) {
+        if (count($ppv_purchases) > 0) {
             $total_row = $total_content->count();
-            if (!empty($total_content)) {
-                foreach ($total_content as $key => $row) {
+            if (!empty($ppv_purchases)) {
+                foreach ($ppv_purchases as $key => $row) {
                     $output .=
                         '
               <tr>
@@ -6020,14 +6191,23 @@ class ModeratorsUserController extends Controller
                         $row->title .
                         '</td>
               <td>' .
-                        $row->cppemail .
-                        '</td>    
-              <td>' .
                         $row->cppusername .
                         '</td>    
               <td>' .
-                        $row->views .
+                        $row->total_amount .
                         '</td>    
+              <td>' .
+                        $row->admin_commssion .
+                        '</td>    
+                <td>' .
+                        $row->moderator_commssion .
+                        '</td>   
+                <td>' .
+                        $row->views .
+                        '</td>   
+                <td>' .
+                        $row->purchases_created_at .
+                        '</td>   
               </tr>
               ';
                 }
@@ -6074,6 +6254,24 @@ class ModeratorsUserController extends Controller
                     \DB::raw("moderators_users.username as cppusername"),
                     \DB::raw("moderators_users.email as cppemail"),
                 ]);
+                $ppv_purchases = PpvPurchase::join(
+                    "videos",
+                    "videos.id",
+                    "=",
+                    "ppv_purchases.video_id"
+                )
+                ->whereDate("ppv_purchases.created_at", ">=", $start_time)
+                ->join("moderators_users", "moderators_users.id", "=", "videos.user_id")
+                ->where("videos.uploaded_by", "CPP")
+                ->get([
+                        "ppv_purchases.created_at as purchases_created_at" ,
+                        "ppv_purchases.user_id as ",
+                        "ppv_purchases.admin_commssion","ppv_purchases.moderator_commssion","ppv_purchases.total_amount",
+                        "ppv_purchases.created_at as purchases_created_at" ,
+                        "videos.*",
+                        \DB::raw("moderators_users.username as cppusername"),
+                        \DB::raw("MONTHNAME(ppv_purchases.created_at) as month_name"),
+                    ]);
         } elseif (!empty($start_time) && !empty($end_time)) {
             $total_content = ModeratorsUser::join(
                 "videos",
@@ -6081,7 +6279,7 @@ class ModeratorsUserController extends Controller
                 "=",
                 "moderators_users.id"
             )
-                ->whereDate("videos.created_at", ">=", $start_time)
+                // ->whereDate("videos.created_at", ">=", $start_time)
                 ->whereBetween("videos.created_at", [$start_time, $end_time])
                 ->groupBy("videos.id")
                 ->get([
@@ -6091,6 +6289,25 @@ class ModeratorsUserController extends Controller
                     \DB::raw("moderators_users.username as cppusername"),
                     \DB::raw("moderators_users.email as cppemail"),
                 ]);
+                $ppv_purchases = PpvPurchase::join(
+                    "videos",
+                    "videos.id",
+                    "=",
+                    "ppv_purchases.video_id"
+                )
+                ->whereBetween("ppv_purchases.created_at", [$start_time, $end_time])
+                ->join("moderators_users", "moderators_users.id", "=", "videos.user_id")
+                ->where("videos.uploaded_by", "CPP")
+                ->get([
+                        "ppv_purchases.created_at as purchases_created_at" ,
+                        "ppv_purchases.user_id as ",
+                        "ppv_purchases.admin_commssion","ppv_purchases.moderator_commssion","ppv_purchases.total_amount",
+                        "ppv_purchases.created_at as purchases_created_at" ,
+                        "videos.*",
+                        \DB::raw("moderators_users.username as cppusername"),
+                        \DB::raw("MONTHNAME(ppv_purchases.created_at) as month_name"),
+                    ]);
+                
         } else {
             $total_content = ModeratorsUser::join(
                 "videos",
@@ -6106,6 +6323,23 @@ class ModeratorsUserController extends Controller
                     \DB::raw("moderators_users.username as cppusername"),
                     \DB::raw("moderators_users.email as cppemail"),
                 ]);
+                $ppv_purchases = PpvPurchase::join(
+                    "videos",
+                    "videos.id",
+                    "=",
+                    "ppv_purchases.video_id"
+                )
+                ->join("moderators_users", "moderators_users.id", "=", "videos.user_id")
+                ->where("videos.uploaded_by", "CPP")
+                ->get([
+                        "ppv_purchases.created_at as purchases_created_at" ,
+                        "ppv_purchases.user_id as ",
+                        "ppv_purchases.admin_commssion","ppv_purchases.moderator_commssion","ppv_purchases.total_amount",
+                        "ppv_purchases.created_at as purchases_created_at" ,
+                        "videos.*",
+                        \DB::raw("moderators_users.username as cppusername"),
+                        \DB::raw("MONTHNAME(ppv_purchases.created_at) as month_name"),
+                    ]);
         }
         //  $file = 'CPPRevenue_' . rand(10, 100000) . '.csv';
         $file = "CPPVideoAnalytics.csv";
@@ -6124,17 +6358,23 @@ class ModeratorsUserController extends Controller
         $handle = fopen($filename, "w");
         fputcsv($handle, [
             "Video Name",
-            "Email",
             "Uploader Name",
+            "Total Commission",
+            "Admin Commission",
+            "Moderator Commission",
             "Total Views",
+            "Purchased Date",
         ]);
-        if (count($total_content) > 0) {
-            foreach ($total_content as $each_user) {
+        if (count($ppv_purchases) > 0) {
+            foreach ($ppv_purchases as $each_user) {
                 fputcsv($handle, [
                     $each_user->title,
-                    $each_user->cppemail,
                     $each_user->cppusername,
+                    $each_user->total_amount,
+                    $each_user->admin_commssion,
+                    $each_user->moderator_commssion,
                     $each_user->views,
+                    $each_user->purchases_created_at,
                 ]);
             }
         }
