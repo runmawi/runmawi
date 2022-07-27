@@ -1904,7 +1904,15 @@ class ChannelController extends Controller
                 }
      
            return Theme::view('embedvideo', $data); 
+        }else{
+             
+          $data = array(
+            'video' => \App\Video::where('slug',$slug)->first(),
+       );
+          return Theme::view('iframeembedvideo', $data); 
+
         }
+
             }
 
       public function Reals_videos(Request $request,$slug)
