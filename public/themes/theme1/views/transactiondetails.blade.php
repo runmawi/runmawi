@@ -12,7 +12,7 @@
 
             <h2 class="my_profile" style="color: black;">
                 <i class="fa fa-edit"></i> 
-                <?php echo __('Transacton History');?>
+                {{  'Transaction History' }}
             </h2>
                 <hr>
                 <div class="bg-strip">
