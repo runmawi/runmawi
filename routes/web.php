@@ -723,7 +723,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/moderatorsrole/update', 'ModeratorsUserController@RoleUpdate');
     Route::get('/moderator/payouts', 'ModeratorsUserController@Payouts'); 
     Route::get('/moderator/edit_payouts/{id}', 'ModeratorsUserController@EditPayouts'); 
-    Route::get('/moderator/view_payouts', 'ModeratorsUserController@ViewPayouts'); 
+    Route::get('/moderator/view_payouts/{id}', 'ModeratorsUserController@ViewPayouts'); 
     Route::post('/moderator/update_payouts', 'ModeratorsUserController@UpdatePayouts'); 
 
 

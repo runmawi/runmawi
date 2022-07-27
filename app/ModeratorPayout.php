@@ -10,4 +10,7 @@ class ModeratorPayout extends Model
 
 	protected $table = 'moderator_payouts';
 
+    public function name(){
+        return $this->belongsTo('App\ModeratorsUser','user_id','id');
+    }
 }

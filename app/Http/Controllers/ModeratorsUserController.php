@@ -6583,4 +6583,83 @@ class ModeratorsUserController extends Controller
             return \Redirect::to('/admin/moderator/payouts');
         }
     }
+
+    public function ViewPayouts($id)
+    {
+        $user = User::where("id", 1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date("Y-m-d");
+        if ($current_date > $duedate) {
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [
+                "userid" => 0,
+            ];
+
+            $headers = [
+                "api-key" => "k3Hy5qr73QhXrmHLXhpEh6CQ",
+            ];
+            $response = $client->request("post", $url, [
+                "json" => $params,
+                "headers" => $headers,
+                "verify" => false,
+            ]);
+
+            $responseBody = json_decode($response->getBody());
+            $settings = Setting::first();
+            $data = [
+                "settings" => $settings,
+                "responseBody" => $responseBody,
+            ];
+            return View::make("admin.expired_dashboard", $data);
+        } else {
+            $payouts = PpvPurchase::where("video_id", "!=", null)
+                ->join("videos", "videos.id", "=", "ppv_purchases.video_id")
+                ->join(
+                    "moderators_users",
+                    "moderators_users.id",
+                    "=",
+                    "ppv_purchases.user_id"
+                )
+                ->where("videos.uploaded_by", "CPP")
+                ->where("ppv_purchases.user_id", $id)
+                ->groupBy("ppv_purchases.user_id")
+                ->get([
+                    "ppv_purchases.user_id",
+                    "moderators_users.username",
+                    DB::raw(
+                        "sum(ppv_purchases.moderator_commssion) as moderator_commssion"
+                    ),
+                    DB::raw(
+                        "sum(ppv_purchases.admin_commssion) as admin_commssion"
+                    ),
+                    DB::raw("sum(ppv_purchases.total_amount) as total_amount"),
+                    DB::raw("COUNT(ppv_purchases.video_id) as count"),
+                ]);
+            // dd($payouts);
+
+            $commission = VideoCommission::first();
+            
+            $settings = Setting::first();
+
+            $last_paid_amount = ModeratorPayout::where('user_id',$id)->get([
+                DB::raw(
+                    "sum(moderator_payouts.commission_paid) as commission_paid"
+                ) 
+            ]);
+            
+            $ModeratorPayout = ModeratorPayout::where('user_id',$id)->get();
+            
+            if(count($last_paid_amount) > 0){ $last_paid = intval($last_paid_amount[0]->commission_paid) ; }else{ $last_paid = 0; }
+
+            $data = [
+                "commission" => $commission,
+                "payouts" => $payouts,
+                "last_paid" => $last_paid,
+                "ModeratorPayout" => $ModeratorPayout,
+
+            ];
+                return view("moderator.payouts.view_payouts", $data);
+        }
+    }
 }
