@@ -113,8 +113,8 @@ $settings  = App\Setting::first();?>
 				<div class="col-md-6">
 				<div class="panel panel-primary mt-3" data-collapsed="0"> <div class="panel-heading"> 
 				<div class="panel-title font-weight-bold"><label class="m-0">Series Image Cover</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-				<div class="panel-body col-sm-6 p-0" style="display: block;"> 
-                    <p class="p1">Select the series image (1080 X 1920px or 9:16 ratio):</p> 
+				<div class="panel-body col-sm-8 p-0" style="display: block;"> 
+                    <p class="p1">Select the series image ( 9:16 Ratio or 1080X1920px ):</p> 
 					@if(!empty($series->image))
 						<img src="{{ URL::to('/') . '/public/uploads/images/' . $series->image }}" class="series-img" width="200"/>
 					@endif
@@ -129,8 +129,8 @@ $settings  = App\Setting::first();?>
 			<div class="col-md-6">
 		<div class="panel panel-primary mt-3" data-collapsed="0"> <div class="panel-heading"> 
 				<div class="panel-title font-weight-bold"><label class="m-0">Series Player Image </label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-				<div class="panel-body col-sm-6 p-0" style="display: block;"> 
-                    <p class="p1">Select the Player image (16:9 Ratio or 1280X720px):</p> 
+				<div class="panel-body col-sm-8 p-0" style="display: block;"> 
+                    <p class="p1">Select the Player image ( 16:9 Ratio or 1280X720px ):</p> 
 					@if(!empty($series->player_image))
 						<img src="{{ URL::to('/') . '/public/uploads/images/' . $series->player_image }}" class="series-img" width="200"/>
 					@endif
@@ -651,40 +651,112 @@ $('#submit-new-cat').click(function(){
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 <script>
 
-$('form[id="series_form"]').validate({
-	rules: {
-		title: 'required',
-		image: {
-			required: '#check_image:blank'
-		},
-		'language[]': {
-					required: true
-		},
-		player_image: {
-			required: '#player_check_image:blank'
-		},
-	},
-	
-	messages: {
-	  title: 'This field is required',
-	  image: 'This field is required',
-	},
-	submitHandler: function(form) {
-	  form.submit();
-	}
-  });
+			// Image upload dimention validation
+		$.validator.addMethod('dimention', function(value, element, param) {
+            if(element.files.length == 0){
+                return true; 
+            }
+
+            var width = $(element).data('imageWidth');
+            var height = $(element).data('imageHeight');
+            if(width == param[0] && height == param[1]){
+                return true;
+            }else{
+                return false;
+            }
+        },'Please upload an image with 1080 x 1920 pixels dimension');
+
+                // player Image upload validation
+        $.validator.addMethod('player_dimention', function(value, element, param) {
+            if(element.files.length == 0){
+                return true; 
+            }
+
+            var width = $(element).data('imageWidth');
+            var height = $(element).data('imageHeight');
+
+            if(width == param[0] && height == param[1]){
+                return true;
+            }else{
+                return false;
+            }
+        },'Please upload an image with 1260 x 720 pixels dimension');
+
+
+        $('#image').change(function() {
+
+            $('#image').removeData('imageWidth');
+            $('#image').removeData('imageHeight');
+
+            var file = this.files[0];
+            var tmpImg = new Image();
+
+            tmpImg.src=window.URL.createObjectURL( file ); 
+            tmpImg.onload = function() {
+                width = tmpImg.naturalWidth,
+                height = tmpImg.naturalHeight;
+                $('#image').data('imageWidth', width);
+                $('#image').data('imageHeight', height);
+            }
+        });
+
+        $('#player_image').change(function() {
+
+            $('#player_image').removeData('imageWidth');
+            $('#player_image').removeData('imageHeight');
+
+            var file = this.files[0];
+            var tmpImg = new Image();
+
+            tmpImg.src=window.URL.createObjectURL( file ); 
+            tmpImg.onload = function() {
+                width = tmpImg.naturalWidth,
+                height = tmpImg.naturalHeight;
+                $('#player_image').data('imageWidth', width);
+                $('#player_image').data('imageHeight', height);
+            }
+        });
+
+
+		$('form[id="series_form"]').validate({
+			rules: {
+				title: 'required',
+
+				image: {
+					required: '#check_image:blank',
+					dimention:[1080,1920]
+				},
+
+				'language[]': {
+							required: true
+				},
+				
+
+				player_image: {
+					required: '#player_check_image:blank',
+					player_dimention:[1280,720]
+            	},
+			},
+			
+			messages: {
+				title: 'This field is required',
+			},
+			submitHandler: function(form) {
+				form.submit();
+			}
+		});
 
 
 $('form[id="new-cat-form"]').validate({
 	rules: {
 		trailer: 'required',
-	  image: 'required',
-
+		image: {
+				required:true,
+				// dimention:[1080,1920]
+			},
 		},
 	messages: {
 		trailer: 'This field is required',
-	  image: 'This field is required',
-
 	},
 	submitHandler: function(form) {
 	  form.submit();
