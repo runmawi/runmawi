@@ -123,6 +123,7 @@ if (!empty($data['password_hash'])) {
 /* validate */
     .error {
     color: red !important;
+    font-size : 14px !important;
 }
 </style>
 
