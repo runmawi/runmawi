@@ -144,7 +144,7 @@ border-radius: 0px 4px 4px 0px;
                    
                                         <div class="">
                                             <label class="m-0">Video Image Cover</label>
-                                            <p class="p1">Select the video image (1080X1920px or 16:9 ratio):</p>
+                                            <p class="p1">Select the video image ( 9:16 Ratio or 1080X1920px ):</p>
 
                                             <div class="panel-body">
                                                 <input type="file" multiple="true" class="form-group" name="image" id="image" />
@@ -164,7 +164,7 @@ border-radius: 0px 4px 4px 0px;
                     <div class="row mt-3">
                                         <div class="">
                                             <label class="m-0">Player Image Cover</label>
-                                            <p class="p1">Select the video image(1280x720 px or 9:16 ratio):</p>
+                                            <p class="p1">Select the video image( 16:9 Ratio or 1280X720px ):</p>
 
                                             <div class="panel-body">
                                                 <input type="file" multiple="true" class="form-group" name="player_image" id="player_image" />
@@ -448,7 +448,6 @@ border-radius: 0px 4px 4px 0px;
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
-<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
 <script src="<?= URL::to('/assets/js/jquery.mask.min.js');?>"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
@@ -463,13 +462,14 @@ border-radius: 0px 4px 4px 0px;
 
 <script type="text/javascript">
     
-   $ = jQuery;
+        $ = jQuery;
 
-   $(document).ready(function($){
-    $("#duration").mask("00:00:00");
-    $("#inputTag").tagsinput('items');
-   });
+        $(document).ready(function($){
+            $("#duration").mask("00:00:00");
+            $("#inputTag").tagsinput('items');
+        });
 
+            // Live Stream Validation
         $(document).on('change', '.url_type', function() {
 
             if($(".url_type").val() == "Encode_video"){
@@ -489,10 +489,76 @@ border-radius: 0px 4px 4px 0px;
             }
         });
 
+                // Image upload dimention validation
+        $.validator.addMethod('dimention', function(value, element, param) {
+            if(element.files.length == 0){
+                return true; 
+            }
+
+            var width = $(element).data('imageWidth');
+            var height = $(element).data('imageHeight');
+            if(width == param[0] && height == param[1]){
+                return true;
+            }else{
+                return false;
+            }
+        },'Please upload an image with 1080 x 1920 pixels dimension');
+
+                // player Image upload validation
+        $.validator.addMethod('player_dimention', function(value, element, param) {
+            if(element.files.length == 0){
+                return true; 
+            }
+
+            var width = $(element).data('imageWidth');
+            var height = $(element).data('imageHeight');
+
+            if(width == param[0] && height == param[1]){
+                return true;
+            }else{
+                return false;
+            }
+        },'Please upload an image with 1280 x 720 pixels dimension');
+
+
+        $('#image').change(function() {
+
+            $('#image').removeData('imageWidth');
+            $('#image').removeData('imageHeight');
+
+            var file = this.files[0];
+            var tmpImg = new Image();
+
+            tmpImg.src=window.URL.createObjectURL( file ); 
+            tmpImg.onload = function() {
+                width = tmpImg.naturalWidth,
+                height = tmpImg.naturalHeight;
+                $('#image').data('imageWidth', width);
+                $('#image').data('imageHeight', height);
+            }
+        });
+
+        $('#player_image').change(function() {
+
+            $('#player_image').removeData('imageWidth');
+            $('#player_image').removeData('imageHeight');
+
+            var file = this.files[0];
+            var tmpImg = new Image();
+
+            tmpImg.src=window.URL.createObjectURL( file ); 
+            tmpImg.onload = function() {
+                width = tmpImg.naturalWidth,
+                height = tmpImg.naturalHeight;
+                $('#player_image').data('imageWidth', width);
+                $('#player_image').data('imageHeight', height);
+            }
+        });
+
+
     $('form[id="live_video"]').validate({
         rules: {
             title: "required",
-            image: "required",
             url_type: "required",
             'language[]': {
                 required: true
@@ -507,6 +573,16 @@ border-radius: 0px 4px 4px 0px;
                         return false;
                     }
                 },
+            },
+
+            image: {
+                required: true,
+                dimention:[1080,1920]
+            },
+
+            player_image: {
+                required: true,
+                player_dimention:[1280,720]
             },
 
             live_stream_video: {
@@ -546,6 +622,9 @@ border-radius: 0px 4px 4px 0px;
             title: "This field is required",
             image: "This field is required",
             mp4_url: "This field is required",
+            image: {
+                required: "This field is required",
+            },
         },
         submitHandler: function (form) {
             form.submit();

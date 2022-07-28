@@ -301,7 +301,7 @@ data: {
 															@if(!empty($audio->image))
 															<img src="{{ URL::to('/'). '/public/uploads/images/' . $audio->image }}" class="audio-img" width="200"/>
 															@endif
-															<p class="p1">Select the audio image (1280x720 px or 9:16 ratio):</p> 
+															<p class="p1">Select the audio image ( 9:16 Ratio or 1080X1920px ):</p> 
 															<input type="file" multiple="true" class="form-control" name="image" id="image" />
 
 														</div> 
@@ -314,7 +314,7 @@ data: {
 															@if(!empty($audio->player_image))
 															<img src="{{ URL::to('/'). '/public/uploads/images/' . $audio->player_image }}" class="audio-img" width="200"/>
 															@endif
-															<p class="p1">Select the audio image (1280x720 px or 16:9 ratio):</p> 
+															<p class="p1">Select the audio image ( 16:9 Ratio or 1280X720px ):</p> 
 															<input type="file" multiple="true" class="form-control" name="player_image" id="player_image" />
 
 														</div> 
@@ -737,21 +737,100 @@ $('#duration').mask('00:00:00');
 
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 <script>
-$('form[id="audio_form"]').validate({
-	rules: {
-	  title : 'required',
-	  image : 'required',
-	  album_id : 'required',
-	  'language[]': {
-        required: true
-    },
-	},
-	
 
-	submitHandler: function(form) {
-	  form.submit();
-	}
-  });
+				// Image upload dimention validation
+		$.validator.addMethod('dimention', function(value, element, param) {
+            if(element.files.length == 0){
+                return true; 
+            }
+
+            var width = $(element).data('imageWidth');
+            var height = $(element).data('imageHeight');
+            if(width == param[0] && height == param[1]){
+                return true;
+            }else{
+                return false;
+            }
+        },'Please upload an image with 1080 x 1920 pixels dimension');
+
+                // player Image upload validation
+        $.validator.addMethod('player_dimention', function(value, element, param) {
+            if(element.files.length == 0){
+                return true; 
+            }
+
+            var width = $(element).data('imageWidth');
+            var height = $(element).data('imageHeight');
+
+            if(width == param[0] && height == param[1]){
+                return true;
+            }else{
+                return false;
+            }
+        },'Please upload an image with 1280 x 720 pixels dimension');
+
+
+        $('#image').change(function() {
+
+            $('#image').removeData('imageWidth');
+            $('#image').removeData('imageHeight');
+
+            var file = this.files[0];
+            var tmpImg = new Image();
+
+            tmpImg.src=window.URL.createObjectURL( file ); 
+            tmpImg.onload = function() {
+                width = tmpImg.naturalWidth,
+                height = tmpImg.naturalHeight;
+                $('#image').data('imageWidth', width);
+                $('#image').data('imageHeight', height);
+            }
+        });
+
+        $('#player_image').change(function() {
+
+            $('#player_image').removeData('imageWidth');
+            $('#player_image').removeData('imageHeight');
+
+            var file = this.files[0];
+            var tmpImg = new Image();
+
+            tmpImg.src=window.URL.createObjectURL( file ); 
+            tmpImg.onload = function() {
+                width = tmpImg.naturalWidth,
+                height = tmpImg.naturalHeight;
+                $('#player_image').data('imageWidth', width);
+                $('#player_image').data('imageHeight', height);
+            }
+        });
+
+
+		$('form[id="audio_form"]').validate({
+			rules: {
+			title : 'required',
+			
+			album_id : 'required',
+			'language[]': {
+				required: true
+			},
+
+			image: {
+                required: true,
+                dimention:[1080,1920]
+            },
+
+            player_image: {
+                required: true,
+                player_dimention:[1280,720]
+            },
+
+			},
+			
+
+			submitHandler: function(form) {
+			form.submit();
+			}
+		});
 
   $(document).ready(function(){
 		$('#audio_form').on('mouseup keypress blur change keydown', function(e) {
