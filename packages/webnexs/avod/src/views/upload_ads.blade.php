@@ -744,15 +744,20 @@ window.onload=function(){
 
       $('.form-card').on('keyup keypress blur change click mouseover', function(event) {
 
-      var age_validation = $(".age").prop("checked");
-      var household_income_val = $(".household_income").prop("checked");
+      var household_income_val = $("input[type='radio'][name='household_income']:checked").val();
       var gender_val = $("#gender").val();
+
+      var age_validation = new Array();
+      $('.age:checked').each(function() {
+        age_validation.push($(this).val());
+      });
+
       var ads_name_val = $("#ads_name").val();
       var ads_path_val = $("#ads_path").val();
       var ads_video_val = $("#ads_video").val();
       var Ads_type   = $(".ads_type").val();
-      
-      if(age_validation == true && household_income_val == true  && gender_val != null ){
+
+      if(age_validation != null  && household_income_val != null  && gender_val != null ){
          document.getElementsByClassName("error-message")[0].style.display = "none";
          document.getElementsByClassName('error-message')[1].style.display = 'none';
          document.getElementsByClassName('error-message')[2].style.display = 'none';
