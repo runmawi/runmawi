@@ -685,16 +685,90 @@ var tagInput1 = new TagsInput({
 
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
     <script>
+
+        // Image upload dimention validation
+		$.validator.addMethod('dimention', function(value, element, param) {
+            if(element.files.length == 0){
+                return true; 
+            }
+
+            var width = $(element).data('imageWidth');
+            var height = $(element).data('imageHeight');
+            if(width == param[0] && height == param[1]){
+                return true;
+            }else{
+                return false;
+            }
+        },'Please upload an image with 1080 x 1920 pixels dimension');
+
+                // player Image upload validation
+        $.validator.addMethod('player_dimention', function(value, element, param) {
+            if(element.files.length == 0){
+                return true; 
+            }
+
+            var width = $(element).data('imageWidth');
+            var height = $(element).data('imageHeight');
+
+            if(width == param[0] && height == param[1]){
+                return true;
+            }else{
+                return false;
+            }
+        },'Please upload an image with 1280 x 720 pixels dimension');
+
+
+        $('#image').change(function() {
+
+            $('#image').removeData('imageWidth');
+            $('#image').removeData('imageHeight');
+
+            var file = this.files[0];
+            var tmpImg = new Image();
+
+            tmpImg.src=window.URL.createObjectURL( file ); 
+            tmpImg.onload = function() {
+                width = tmpImg.naturalWidth,
+                height = tmpImg.naturalHeight;
+                $('#image').data('imageWidth', width);
+                $('#image').data('imageHeight', height);
+            }
+        });
+
+        $('#player_image').change(function() {
+
+            $('#player_image').removeData('imageWidth');
+            $('#player_image').removeData('imageHeight');
+
+            var file = this.files[0];
+            var tmpImg = new Image();
+
+            tmpImg.src=window.URL.createObjectURL( file ); 
+            tmpImg.onload = function() {
+                width = tmpImg.naturalWidth,
+                height = tmpImg.naturalHeight;
+                $('#player_image').data('imageWidth', width);
+                $('#player_image').data('imageHeight', height);
+            }
+        });
+
+
         $('form[id="Episode_new"]').validate({
             rules: {
                 title: "required",
-                image: "required",
-                player_image: "required",
+
+                image: {
+                    required: true,
+                    dimention:[1080,1920]
+                },
+
+                player_image: {
+                    required: true,
+                    player_dimention:[1280,720]
+                },
             },
             messages: {
                 title: "This field is required",
-                image: "This field is required",
-                player_image: "This field is required",
             },
             submitHandler: function (form) {
                 form.submit();

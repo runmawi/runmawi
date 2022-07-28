@@ -1908,6 +1908,8 @@ class ChannelController extends Controller
              
           $data = array(
             'video' => \App\Video::where('slug',$slug)->first(),
+            'settings' => Setting::first() ,
+
        );
           return Theme::view('iframeembedvideo', $data); 
 
