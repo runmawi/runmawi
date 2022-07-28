@@ -550,7 +550,7 @@ data: {
 
                       </div> <input type="button" name="next" class="next action-button ml-3" value="Next" />
                     </fieldset>
-                    <fieldset>
+                    <fieldset class="Next3">
                         <div class="form-card">
                             <div class="row">
                                 <div class="col-7">
@@ -572,6 +572,7 @@ data: {
                                     <option value="{{ $category->id }}">{{ $category->name }}</option>
                                     @endforeach
                                 </select>
+                                <span><p id="error_video_Category" style="color:red;" >* Choose the Video Category </p></span>
                             </div>
                             <div class="col-sm-6 form-group" >                               
                                 <div class="panel panel-primary" data-collapsed="0"> 
@@ -608,6 +609,7 @@ data: {
                                             <option value="{{ $language->id }}">{{ $language->name }}</option>
                                             @endforeach
                                         </select>
+                                        <span><p id="error_language" style="color:red;" >* Choose the Language </p></span>
                                     </div>
 
                                     <div class="col-sm-6 form-group">
@@ -659,7 +661,7 @@ data: {
                                     </div> 
                                 </div>
                             </div>
-                        </div> <input type="button" name="next" class="next action-button" value="Next" /> <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+                        </div> <input type="button" name="next" id="next3" class="next action-button" value="Next" /> <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                     </fieldset>
             
                     <fieldset>
@@ -817,6 +819,7 @@ data: {
                             <div class="col-sm-6 form-group">
                               <label class="mb-1">Video Thumbnail <span>(16:9 Ratio or 720X1080px)</span></label><br>
                                  <input type="file" name="image" id="image" >
+                                 <span><p id="image_error_msg" style="color:red;" >* Please upload an image with 1080 x 1920 pixels dimension </p></span>
                                  @if(!empty($video->image))
                                  <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" class="video-img" width="200" height="200"/>
                                  @endif
@@ -824,6 +827,7 @@ data: {
                               <div class="col-sm-6 form-group">
                               <label class="mb-1">Player Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br>
                               <input type="file" name="player_image" id="player_image" >
+                              <span><p id="player_image_error_msg" style="color:red;" >* Please upload an image with 1280 x 720 pixels dimension </p></span>
                               @if(!empty($video->player_image))
                               <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->player_image }}" class="video-img" width="200" height="200"/>
                               @endif
@@ -853,7 +857,7 @@ data: {
                                     </div>
                                 </div>
                         </div> 
-                        <input type="button" name="next" class="next action-button" value="Next" />
+                        <input type="button" name="next" class="next action-button update_upload_img" value="Next" />
                          <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                     </fieldset>
                     <fieldset>
@@ -1862,4 +1866,99 @@ if(this.textContent === 'destroy') {
 });
 
 </script>
+
+<script>
+
+$(document).ready(function(){
+
+   $('#error_video_Category').hide();
+   $('#error_language').hide();
+   $('#image_error_msg').hide();
+   $('#player_image_error_msg').hide();
+
+   $('.Next3').on('keyup keypress blur change click mouseover', function(event) {
+
+    if( $('#language').val() == null || $('#video_category_id').val() == null ){
+
+        if($('#language').val() == null){
+            $('#error_language').show();
+        }else{
+            $('#error_language').hide();
+        }
+
+        if($('#video_category_id').val() == null){
+            $('#error_video_Category').show();
+        }else{
+            $('#error_video_Category').hide();
+        }
+        
+        $('#next3').attr('disabled','disabled');
+    }  
+    else{
+        $('#error_language').hide();
+        $('#error_video_Category').hide();
+
+        $('#next3').removeAttr('disabled');
+    }
+
+    });
+
+
+    $('#image').on('change', function(event) {
+ 
+          $('#image').removeData('imageWidth');
+          $('#image').removeData('imageHeight');
+ 
+          var file = this.files[0];
+          var tmpImg = new Image();
+ 
+          tmpImg.src=window.URL.createObjectURL( file ); 
+          tmpImg.onload = function() {
+              width = tmpImg.naturalWidth,
+              height = tmpImg.naturalHeight;
+              $('#image').data('imageWidth', width);
+              $('#image').data('imageHeight', height);
+ 
+              if(width == '1080' && height == '1920' ){
+                $('.update_upload_img').removeAttr('disabled');
+                $('#image_error_msg').hide();
+              }
+              else{
+                $('.update_upload_img').attr('disabled','disabled');
+                $('#image_error_msg').show();
+              }
+          }
+      });
+ 
+      
+    $('#player_image').on('change', function(event) {
+ 
+       
+       $('#player_image').removeData('imageWidth');
+       $('#player_image').removeData('imageHeight');
+ 
+       var file = this.files[0];
+       var tmpImg = new Image();
+ 
+       tmpImg.src=window.URL.createObjectURL( file ); 
+       tmpImg.onload = function() {
+          width = tmpImg.naturalWidth,
+          height = tmpImg.naturalHeight;
+          $('#player_image').data('imageWidth', width);
+          $('#player_image').data('imageHeight', height);
+ 
+          if(width == '1280' && height == '720' ){
+             $('.update_upload_img').removeAttr('disabled');
+             $('#player_image_error_msg').hide();
+          }
+          else{
+             $('.update_upload_img').attr('disabled','disabled');
+             $('#player_image_error_msg').show();
+          }
+       }
+    });
+});
+
+ </script>
+
 	@stop
