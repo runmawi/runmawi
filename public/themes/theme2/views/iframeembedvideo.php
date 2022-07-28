@@ -8,6 +8,13 @@
     top: 6%;
     left: 2%;
   }
+  #videofavicon{
+    position: absolute;
+    z-index: +1;
+    color: white;
+    top: 10%;
+    left: 2%;
+  }
 </style>
 <input type="hidden" id="video_type" value="<?php echo $video->type;?>">
 <?php if( $video->access == "guest"  && $video->type == 'embed'): ?>
@@ -15,7 +22,8 @@
              <?php
               if(!empty($video->embed_code)){?>
               <div class="plyr__video-embed" id="player">
-              <span id="videotitle"><?php echo $video->title ?></span>
+              <span id="videotitle"><a href="<?= URL::to('/'). 'category/videos/'. $video->slug; ?>" target="_blank"><?php echo $video->title ?></a></span>
+              <span id="videofavicon"><image src="<?= URL::to('/'). '/public/uploads/settings/'. $settings->favicon; ?>" /></span>
             <iframe
               src="<?php if(!empty($video->embed_code)){ echo $video->embed_code; }else { echo $video->trailer;} ?>"
               allowfullscreen
@@ -28,7 +36,7 @@
         
            <?php  elseif($video->type == '' && $video->processed_low != 100 || $video->type == '' && $video->processed_low == null ): ?>
                         <div id="video_container" class="fitvid" atyle="z-index: 9999;">
-                  <span id="videotitle"><?php echo $video->title ?></span>
+                        <span id="videotitle"><a href="<?= URL::to('/'). '/category/videos/'. $video->slug; ?>" target="_blank"><?php echo $video->title ?></a></span>
                <video id="videoPlayer"  class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
               </video>
  
@@ -37,7 +45,8 @@
            
              
            <div id="video_container" class="fitvid" atyle="z-index: 9999;">
-           <span id="videotitle"><?php echo $video->title ?></span>
+           <span id="videotitle"><a href="<?= URL::to('/'). '/category/videos/'. $video->slug; ?>" target="_blank"><?php echo $video->title ?></a></span>
+           <span id="videofavicon"><image src="<?= URL::to('/'). '/public/uploads/settings/'. $settings->favicon; ?>" /></span>
          <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
             <source 
               type="application/x-mpegURL" 
@@ -47,14 +56,16 @@
      </div>
            <?php  elseif($video->type == 'mp4_url'):  ?>           
                  <div id="video_container" class="fitvid" atyle="z-index: 9999;">
-                  <span id="videotitle"><?php echo $video->title ?></span>
+                 <span id="videotitle"><a href="<?= URL::to('/'). '/category/videos/'. $video->slug; ?>" target="_blank"><?php echo $video->title ?></a></span>
+                  <span id="videofavicon"><image src="<?= URL::to('/'). '/public/uploads/settings/'. $settings->favicon; ?>" /></span>
                <video id="videoPlayer"  class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
                    <source src="<?php if(!empty($video->mp4_url)){   echo $video->mp4_url; }else {  echo $video->trailer; } ?>"  type='video/mp4' label='auto' >  
                </video>
            </div>
    <?php  else: ?>
                <div id="video_container" class="fitvid" atyle="z-index: 9999;">
-               <span id="videotitle"><?php echo $video->title ?></span>
+               <span id="videotitle"><a href="<?= URL::to('/'). '/category/videos/'. $video->slug; ?>" target="_blank"><?php echo $video->title ?></a></span>
+               <span id="videofavicon"><image src="<?= URL::to('/'). '/public/uploads/settings/'. $settings->favicon; ?>" /></span>
                <video  id="videoPlayer" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
                    <source src="<?php if(!empty($video->m3u8_url)){ echo $video->m3u8_url; }else { echo $video->trailer;} ?>"  type='application/x-mpegURL' label='auto' > 
                </video>
