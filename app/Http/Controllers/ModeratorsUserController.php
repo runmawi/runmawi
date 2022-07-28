@@ -6906,8 +6906,11 @@ class ModeratorsUserController extends Controller
     public function CPPMyProfile()
     {
         $data = Session::all();
+        $id = $data['user']->id;
+        $ModeratorsUser = ModeratorsUser::where('id',$id)->first();
+
         $data = [
-            "user" => $data['user'],
+            "user" => $ModeratorsUser,
         ];
         // dd($data['user']);
         return view("moderator.cpp.myprofile",$data);
@@ -6964,9 +6967,9 @@ class ModeratorsUserController extends Controller
             $IFSC_Code = $ModeratorsUser->IFSC_Code;
         }    
 
-        $picture = $data['picture'];
+        $picture = (isset($data['picture'])) ? $data['picture'] : '';
 
-        $cancelled_cheque = $data['cancelled_cheque'];
+        $cancelled_cheque = (isset($data['cancelled_cheque'])) ? $data['cancelled_cheque'] : '';
 
         $logopath = URL::to("/public/uploads/moderator_albums/");
         $path = public_path() . "/uploads/moderator_albums/";

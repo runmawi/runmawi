@@ -11,9 +11,15 @@
 
 @section('css')
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+
 @stop
 
-
+<style>
+    .error{
+        color: red;
+    }
+</style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 
 <div id="content-page" class="content-page">
@@ -59,6 +65,9 @@
                                     <div class="col-md-6 form-group">
                                         <label> Profile Picture:</label>
                                         <input type="file" multiple="true" class="form-control" style="padding: 0px;" name="picture" id="picture" />
+                                        @if(!empty($user->picture))
+                                            <img src="{{ URL::to('/') . '/public/uploads/moderator_albums/' . @$user->picture }}" class="video-img" width="200" height="200"/>
+                                        @endif
                                     </div>
                                 </div>
 
@@ -88,7 +97,9 @@
                                     <div class="col-md-6 form-group">
                                         <label> Cancelled Cheque:</label>
                                         <input type="file" multiple="true" class="form-control" style="padding: 0px;" name="cancelled_cheque" id="cancelled_cheque" />
-
+                                        @if(!empty($user->cancelled_cheque))
+                                            <img src="{{ URL::to('/') . '/public/uploads/moderator_albums/' . @$user->cancelled_cheque }}" class="video-img" width="200" height="200"/>
+                                        @endif
                                     </div>
                                 </div>
 							</div>
@@ -116,7 +127,6 @@
 
  
 @stop
-
 @section('javascript')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
@@ -126,24 +136,50 @@
         }, 3000);
     })
 </script>
+
+
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 <script>
+
+ var  cheque = "{{ $user->cancelled_cheque }}";
+
+//  alert(image);
    $('form[id="user_update"]').validate({
    	rules: {
         bank_name : 'required',
         branch_name : 'required',
         account_number : 'required',
         IFSC_Code : 'required',
-        cancelled_cheque : 'required',
-        picture : 'required',
+        cancelled_cheque: {
+                required: function (element) {
+                    var  cheque = "{{ $user->cancelled_cheque }}";
+                    if (cheque == "") {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                },
+            },
+            picture: {
+                required: function (element) {
+                    var  image = "{{ $user->picture }}";
+                    if (image == "") {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                },
+            },
+        // cancelled_cheque : 'required',
+        // picture : 'required',
    	},
    	messages: {
         bank_name: 'This field is required',
    	    branch_name: 'This field is required',
         account_number : 'This field is required',
         IFSC_Code : 'This field is required',
-        cancelled_cheque : 'This field is required',
-        picture : 'This field is required',
+        // cancelled_cheque : 'This field is required',
+        // picture : 'This field is required',
    	},
    	submitHandler: function(form) {
    	  form.submit();
@@ -157,6 +193,3 @@
 
 
 @stop
-
-
-

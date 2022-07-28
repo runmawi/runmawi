@@ -144,6 +144,7 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
     /*TV-shows */ 
     Route::get('tv-shows', 'TvshowsController@index');
     Route::get('episode/{series_name}/{episode_name}', 'TvshowsController@play_episode');
+    Route::get('episode/embed/{series_name}/{episode_name}', 'TvshowsController@Embedplay_episode');
     Route::get('episode/{episode_name}', 'TvshowsController@PlayEpisode');
     // Route::get('episode/{series_name}/{episode_name}/{id}', 'TvshowsController@play_episode');
 
@@ -214,6 +215,12 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
 
     Route::get('episode_wishlist', 'WishlistController@episode_wishlist');
     Route::get('episode_wishlist_remove', 'WishlistController@episode_wishlist_remove');
+
+    Route::post('/like-episode', 'TvshowsController@LikeVideo');
+    Route::post('/remove_like-episode', 'TvshowsController@RemoveLikeEpideo');
+
+    Route::post('/dislike-episode', 'TvshowsController@DisLikeEpisode');
+    Route::post('/remove_dislike-episode', 'TvshowsController@RemoveDisLikeEpideo');
 
 // Become subscriber - single page
     Route::get('become_subscriber', 'PaymentController@become_subscriber');

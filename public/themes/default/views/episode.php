@@ -229,6 +229,12 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
     <div> -->
 
 	      <!-- Watchlater & Wishlist -->
+
+		  <?php
+			$media_url = URL::to('/episode/').'/'.$series->title.'/'.$episode->slug;
+			$embed_media_url = URL::to('/episode/embed').'/'.$series->title.'/'.$episode->slug;
+			$url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowfullscreen></iframe>';
+			?>
 		  
 		  <div class="col-md-5">
 		  		<ul class="list-inline p-0 mt-4 share-icons music-play-lists">
@@ -248,6 +254,38 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 							<span id="<?php echo 'episode_add_wishlist_'.$episode->id ; ?>" class="episode_add_wishlist_"  aria-hidden="true" data-list="<?php echo $episode->id ; ?>" data-myval="10"  data-video-id="<?php echo $episode->id ; ?>"  onclick="episodewishlist(this)"> <i class="fa  fa-heart" aria-hidden="true"></i></span>
 						<?php } ?>
 					</li>
+
+					<li>
+						<?php if($like_dislike->liked == 0){ ?>
+							<span id="<?php echo 'episode_like_'.$episode->id ; ?>" class="episode_like_"  aria-hidden="true" data-list="<?php echo $episode->id ; ?>" data-myval="10" data-video-id="<?php echo $episode->id ; ?>" onclick="episodelike(this)" ><i class="ri-thumb-up-line" aria-hidden="true"></i>   </span>
+						<?php }else{?>
+							<span id="<?php echo 'episode_like_'.$episode->id ; ?>" class="episode_like_"  aria-hidden="true" data-list="remove" data-myval="10"  data-video-id="<?php echo $episode->id ; ?>"  onclick="episodelike(this)"> <i class="ri-thumb-up-fill" aria-hidden="true"></i></span>
+						<?php } ?>
+					</li>
+
+					<li>
+						<?php if($like_dislike->disliked == 0){ ?>
+							<span id="<?php echo 'episode_dislike_'.$episode->id ; ?>" class="episode_dislike_"  aria-hidden="true" data-list="<?php echo $episode->id ; ?>" data-myval="10" data-video-id="<?php echo $episode->id ; ?>" onclick="episodedislike(this)" ><i class="ri-thumb-down-line" aria-hidden="true"></i>   </span>
+
+						<?php }else{?>
+							<span id="<?php echo 'episode_dislike_'.$episode->id ; ?>" class="episode_dislike_"  aria-hidden="true" data-list="remove" data-myval="10"  data-video-id="<?php echo $episode->id ; ?>"  onclick="episodedislike(this)"> <i class="ri-thumb-down-fill" aria-hidden="true"></i></span>
+
+						<?php } ?>
+					</li>
+					<li class="share">
+						<span><i class="ri-share-fill"></i></span>
+							<div class="share-box">
+							<div class="d-flex align-items-center"> 
+								<a href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" class="share-ico"><i class="ri-facebook-fill"></i></a>
+								<a href="https://twitter.com/intent/tweet?text=<?= $media_url ?>" class="share-ico"><i class="ri-twitter-fill"></i></a>
+								<a href="#"onclick="Copy();" class="share-ico"><i class="ri-links-fill"></i></a>
+							</div>
+							</div>
+						</li>
+					<li>
+						<a href="#"onclick="EmbedCopy();" class="share-ico"><span><i class="ri-links-fill mt-1"></i></span></a>
+					</li>
+					
                  </ul>
 			</div>
 
@@ -773,7 +811,136 @@ function episodewatchlater(ele)
 				})
 		}
 
+
+
+		function episodelike(ele) 
+		{
+			var episode_id = $(ele).attr('data-video-id');
+			var key_value = $(ele).attr('data-list');
+            var id = '#episode_like_dislike_'+ key_value;
+            var my_value =  $(id).data('myval');
+			// alert(key_value);
+
+			// alert(my_value);
+			if(key_value != "remove"){
+				var url = '<?= URL::to('/like-episode');?>';
+			}else if(key_value == "remove"){
+				var url = '<?= URL::to('/remove_like-episode');?>';
+			}
+            $.ajax({
+					url:url,
+					type:'post',
+					data:{
+						episode_id:episode_id, 
+						_token: '<?= csrf_token(); ?>'
+                    },
+					success:function(data){
+
+                  if(data.message == "Removed from Liked Episode"){
+
+                     $(id).data('myval'); 
+                     $(id).data('myval','remove');
+					 $(id).find($(".fa")).toggleClass('ri-thumb-up-fill').toggleClass('ri-thumb-up-line');
+
+
+					$("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Removed from Liked Episode</div>');
+						setTimeout(function() {
+							$('.remove_watch').slideUp('fast');
+						}, 3000);
+
+                  }else if(data.message == "Added to Like Episode"){
+                     $(id).data('myval'); 
+                     $(id).data('myval','add');
+                     $(id).find($(".fa")).toggleClass('ri-thumb-up-line').toggleClass('fri-thumb-up-fill');
+
+					 $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Added to Like Episode</div>');
+					setTimeout(function() {
+						$('.add_watch').slideUp('fast');
+					}, 3000);
+                  }
+                  else if (data.message == "guest"){
+                    window.location.replace('<?php echo URL::to('/login'); ?>');
+                  }
+					}
+				})
+		}
+
+
+		function episodedislike(ele) 
+		{
+			var episode_id = $(ele).attr('data-video-id');
+			var key_value = $(ele).attr('data-list');
+            var id = '#episode_like_dislike_'+ key_value;
+            var my_value =  $(id).data('myval');
+			// alert(key_value);
+
+			// alert(my_value);
+			if(key_value != "remove"){
+				var url = '<?= URL::to('/dislike-episode');?>';
+			}else if(key_value == "remove"){
+				var url = '<?= URL::to('/remove_dislike-episode');?>';
+			}
+            $.ajax({
+					url:url,
+					type:'post',
+					data:{
+						episode_id:episode_id, 
+						_token: '<?= csrf_token(); ?>'
+                    },
+					success:function(data){
+
+                  if(data.message == "Removed from DisLiked Episode"){
+
+                     $(id).data('myval'); 
+                     $(id).data('myval','remove');
+					 $(id).find($(".fa")).toggleClass('ri-thumb-down-fill').toggleClass('ri-thumb-down-line');
+
+
+					$("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Removed from DisLiked Episode</div>');
+						setTimeout(function() {
+							$('.remove_watch').slideUp('fast');
+						}, 3000);
+
+                  }else if(data.message == "Added to DisLike Episode"){
+                     $(id).data('myval'); 
+                     $(id).data('myval','add');
+                     $(id).find($(".fa")).toggleClass('ri-thumb-down-line').toggleClass('fri-thumb-down-fill');
+
+					 $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Added to DisLike Episode</div>');
+					setTimeout(function() {
+						$('.add_watch').slideUp('fast');
+					}, 3000);
+                  }
+                  else if (data.message == "guest"){
+                    window.location.replace('<?php echo URL::to('/login'); ?>');
+                  }
+					}
+				})
+		}
+
+
+
+	function Copy() {
+    	var media_path = '<?= $media_url ?>';;
+		var url =  navigator.clipboard.writeText(window.location.href);
+		var path =  navigator.clipboard.writeText(media_path);
+		$("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Copied URL</div>');
+			setTimeout(function() {
+				$('.add_watch').slideUp('fast');
+			}, 3000);
+		}
+	function EmbedCopy() {
+		var media_path = '<?= $url_path ?>';
+		var url =  navigator.clipboard.writeText(window.location.href);
+		var path =  navigator.clipboard.writeText(media_path);
+		$("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Copied Embed URL</div>');
+			setTimeout(function() {
+				$('.add_watch').slideUp('fast');
+			}, 3000);
+		}
 </script>
+
+
 	
 <?php include('footer.blade.php'); ?>
 
