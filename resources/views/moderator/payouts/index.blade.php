@@ -28,6 +28,7 @@
                                             <!-- <th>Video Title</th> -->
                                             <th>Purchases Count</th>
                                             <th>Total Commission</th>
+                                            <th>Admin Commission</th>
                                             <th>Moderator Commission</th>
                                             <th>Paid Amount</th>
                                             <th>Action</th>
@@ -41,6 +42,7 @@
                                         <td>{{ $payout->username  }}</td>   
                                         <td>{{ $payout->count  }}</td>   
                                         <td>{{ $payout->total_amount  }}</td>   
+                                        <td>{{ $payout->admin_commssion  }}</td>   
                                         <td>{{ $payout->moderator_commssion  }}</td>   
                                         <td>
                                             @foreach($last_paid_amount as $keys => $paid_amount)

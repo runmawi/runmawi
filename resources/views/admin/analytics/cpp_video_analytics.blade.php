@@ -60,8 +60,18 @@
                 
                  </div> -->
                 </div>
-            
-
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="">Filter Moderator</label>
+                    <select class="form-control"  name="cpp_userid" id="cpp_userid">
+                        <option value="">Choose Moderator</option>
+                        @foreach($ModeratorsUser as $Moderators)
+                        <option value="{{ $Moderators->id}}"> {{ $Moderators->username}}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+                
                         <div class="row">
                             <div class="col-md-12">
                                 <table class="table text-center" id="cpp_video_analytics_table" style="width:100%">
@@ -69,21 +79,26 @@
                                         <tr class="r1">
                                             <th>#</th>
                                             <th>Video Name</th>
-                                            <th>Email</th>
                                             <th>Uploader Name</th>
+                                            <th>Total Commission</th>
+                                            <th>Admin Commission</th>
+                                            <th>Moderator Commission</th>
                                             <th>Total Views</th>
-                                            <!-- <th>Total Comments</th> -->
+                                            <th>Purchased Date</th>
                                         </tr>
                                     </thead>
                                 <tbody>
                                 <tr>
-                                    @foreach($total_content as $key => $videos)
+                                    @foreach($ppv_purchases as $key => $videos)
                                         <td>{{ $key+1  }}</td>   
                                         <td>{{ $videos->title  }}</td>   
-                                        <td>{{ $videos->cppemail  }}</td>   
                                         <td>{{ $videos->cppusername  }}</td>   
+                                        <td>{{ $videos->total_amount  }}</td>   
+                                        <td>{{ $videos->admin_commssion  }}</td>   
+                                        <td>{{ $videos->moderator_commssion  }}</td>   
+                                        <!-- <td>{{ $videos->cppemail  }}</td>    -->
                                         <td>{{ $videos->views  }}</td>   
-                                        <!-- <td>{{ $videos->count }}</td>  -->
+                                        <td>{{ date('Y-m-d', strtotime($videos->purchases_created_at))  }}</td>   
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -123,6 +138,52 @@
     });
 
      $(document).ready(function(){
+
+
+        $('#cpp_userid').change(function(){
+
+            var url = "{{ URL::to('admin/cpp_video_fliter/')  }}";
+            var cpp_userid =  $('#cpp_userid').val();
+            // alert(cpp_userid);
+            $.ajax({
+                url: url,
+                type: "post",
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        user_id: cpp_userid,
+                    },      
+                    success: function(value){       
+                    // console.log(value);
+
+                    $('tbody').html(value.table_data);
+                    $('#cpp_video_analytics_table').DataTable();
+                    google.charts.load('current', {'packages':['corechart']});
+                    google.charts.setOnLoadCallback(drawChart);
+            
+                    function drawChart() {
+                    var linechart = value.total_content;
+                    var data = new google.visualization.DataTable(linechart);
+                    var data = new google.visualization.DataTable();
+                    data.addColumn('string', 'Month');
+                    data.addColumn('number', 'Video Views Count');
+
+                    linechart.forEach(function (row) {
+                        data.addRow([
+                        row.month_name,
+                        parseInt(row.views),
+                        ]);
+                    });
+                    var chart = new google.visualization.LineChart(document.getElementById('google-line-chart'));
+                    chart.draw(data, {
+                        // width: 400,
+                        // height: 240
+                    });
+                    }
+                }
+            });
+        });
+
+        
         // alert();
 
         $('#start_time').change(function(){

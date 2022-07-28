@@ -11,7 +11,6 @@
                     <h4 class="card-title">Content Partners Payouts :</h4>
                 </div>
             </div>
-             
 <br>
                 <div class="clear"></div>
 
