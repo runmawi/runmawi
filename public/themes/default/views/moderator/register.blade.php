@@ -57,7 +57,7 @@
                                             <div class="row">
                                
                             <div class="col-sm-5 ">
-                              <select class="form-control" name="ccode" id="ccode" style="width:165px;">
+                              <select class="form-control" name="ccode" id="ccode" style="width:170px;">
                                 @foreach($jsondata as $code)
                                 <option data-thumbnail="images/icon-chrome.png" value="{{ $code['dial_code'] }}" <?php if($code['dial_code']) ?>> {{ $code['name'].' ('. $code['dial_code'] . ')' }}</option>
                                 @endforeach
@@ -205,7 +205,7 @@
 	margin-top: 1%;
 }
     input::file-selector-button {
-   width: 100px;
+   width: 120px;
     padding: 0px;
     
 }
@@ -214,6 +214,11 @@
          
 
 }
+    select{
+       
+  
+    }
+    
 .modal-header {
     padding: 0px 15px;
     border-bottom: 1px solid #e5e5e5 !important;
@@ -242,6 +247,10 @@
     }
     .panel-heading {
     margin-bottom: 1rem;
+}
+    .select:after {
+  
+   padding-right: 15px;
 }
    /* .form-control {
     background-color: var(--iq-body-text) !important;
