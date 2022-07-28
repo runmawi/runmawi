@@ -914,6 +914,11 @@ Route::post('video_startdate_analytics', 'CPPAnalyticsController@VideoStartDateA
 Route::post('video_enddate_analytics', 'CPPAnalyticsController@VideoEndDateAnalytics');
 Route::post('video_exportCsv', 'CPPAnalyticsController@VideoExportCsv');
 
+
+Route::get('myprofile', 'ModeratorsUserController@CPPMyProfile');
+Route::post('update-myprofile', 'ModeratorsUserController@CPPUpdateMyProfile');
+
+
 Route::get('/view_by_region', 'ModeratorsUserController@CPPViewsRegion');
 Route::get('/regionvideos', 'ModeratorsUserController@CPPRegionVideos');
 Route::get('/Allregionvideos', 'ModeratorsUserController@CPPAllRegionVideos');

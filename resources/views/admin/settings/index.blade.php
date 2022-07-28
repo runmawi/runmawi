@@ -1514,8 +1514,9 @@ border-radius: 0px 4px 4px 0px;
         $("#transcodingsetting").hide();
         $("#seasonsetting").hide();
         $("#rtmp_url").hide();
-		$('#settingupdate').hide();
 		$('#cpp_payouts').show();
+		$('#settingupdate').show();
+
 
     });
 
