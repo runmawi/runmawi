@@ -194,14 +194,15 @@ i.fa.fa-google-plus {
                                 </div>
                          </div>
                      </form>
-                  </div>
-               </div>
-               <div class="">
+                       <div class="">
                   <div class="d-flex justify-content-center  links">
                      Don't have an account? <a href="{{ route('signup') }}" class="text-primary ml-2">Sign Up</a>
                   </div>
                   
                </div>
+                  </div>
+               </div>
+              
             </div>
          </div>
       </div>
