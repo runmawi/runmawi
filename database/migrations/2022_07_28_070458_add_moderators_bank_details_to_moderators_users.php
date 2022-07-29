@@ -31,13 +31,11 @@ class AddModeratorsBankDetailsToModeratorsUsers extends Migration
     public function down()
     {
         Schema::table('moderators_users', function (Blueprint $table) {
-            //
-            $table->string('bank_name')->nullable();
-            $table->string('branch_name')->nullable();
-            $table->string('account_number')->nullable();
-            $table->string('IFSC_Code')->nullable();
-            $table->string('cancelled_cheque')->nullable();
-
+            Schema::dropIfExists('bank_name');
+            Schema::dropIfExists('branch_name');
+            Schema::dropIfExists('account_number');
+            Schema::dropIfExists('IFSC_Code');
+            Schema::dropIfExists('cancelled_cheque');
         });
     }
 }

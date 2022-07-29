@@ -1702,11 +1702,17 @@ $(document).ready(function(){
 
 <!-- Ads Start -->
 
-<?php include('AdsvideoPre.php'); ?>
+<?php
 
-<?php include('AdsvideoMid.php'); ?>
+  // include('AdsvideoPre.php'); 
+  // include('AdsvideoMid.php');
+  // include('AdsvideoPost.php');
 
-<?php include('AdsvideoPost.php'); ?>
+  include('Adstagurl.php'); 
+
+?>
+
+
 
 <!-- Ads End -->
 
