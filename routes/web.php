@@ -216,11 +216,11 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
     Route::get('episode_wishlist', 'WishlistController@episode_wishlist');
     Route::get('episode_wishlist_remove', 'WishlistController@episode_wishlist_remove');
 
-    Route::post('/like-episode', 'TvshowsController@LikeVideo');
-    Route::post('/remove_like-episode', 'TvshowsController@RemoveLikeEpideo');
+    Route::post('/like-episode', 'TvshowsController@LikeEpisode');
+    Route::post('/remove_like-episode', 'TvshowsController@RemoveLikeEpisode');
 
     Route::post('/dislike-episode', 'TvshowsController@DisLikeEpisode');
-    Route::post('/remove_dislike-episode', 'TvshowsController@RemoveDisLikeEpideo');
+    Route::post('/remove_dislike-episode', 'TvshowsController@RemoveDisLikeEpisode');
 
 // Become subscriber - single page
     Route::get('become_subscriber', 'PaymentController@become_subscriber');
