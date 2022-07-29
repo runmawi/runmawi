@@ -320,6 +320,10 @@ class TvshowsController extends Controller
                 }
             }
               
+            if(!Auth::guest()):
+                $like_dislike = LikeDislike::where('user_id', '=', Auth::user()->id)->where('episode_id', '=', $id)->first();
+            endif;
+
          if((!Auth::guest() && Auth::user()->role == 'admin') || $series_ppv_status != 1 || $ppv_exits > 0 
          || $free_episode > 0){
 
@@ -344,7 +348,8 @@ class TvshowsController extends Controller
                 'series_categories' => Genre::all(),
                 'pages' => Page::where('active', '=', 1)->get(),
                 'episode_watchlater' => $episode_watchlater,
-                'episode_Wishlist'   => $episode_Wishlist
+                'episode_Wishlist'   => $episode_Wishlist,
+                'like_dislike'   => $like_dislike,
                 );
 
             if(Auth::guest() && $settings->access_free == 1){
@@ -374,7 +379,8 @@ class TvshowsController extends Controller
                     'series_categories' => Genre::all(),
                     'pages' => Page::where('active', '=', 1)->get(),
                     'episode_watchlater' => $episode_watchlater,
-                    'episode_Wishlist'   => $episode_Wishlist
+                    'episode_Wishlist'   => $episode_Wishlist,
+                    'like_dislike'   => $like_dislike,
                     );
 
                     if(Auth::guest() && $settings->access_free == 1){
@@ -382,6 +388,7 @@ class TvshowsController extends Controller
                     }else {
                     return Theme::view('episode', $data);
                     }
+
              // return Redirect::to('/tv-shows')->with(array('message' => 'Sorry, To Watch series You have to purchase.', 'note_type' => 'error'));
 
             }
@@ -582,4 +589,192 @@ class TvshowsController extends Controller
              return Redirect::to('series-list')->with(array('note' => 'Sorry, this series is no longer active.', 'note_type' => 'error'));
          }
     }
+
+
+    public function LikeEpisode(Request $request)
+    {
+
+       if(Auth::guest()){
+
+         $data = array(
+           "message" => "guest" ,
+         );
+
+         return $data ;
+
+       }else{
+        $user_id = Auth::user()->id;
+
+        $episode = LikeDisLike::where("episode_id", "=", $request->episode_id)->where("user_id", "=", $user_id)->get();
+        $episode_count = LikeDisLike::where("episode_id", "=", $request->episode_id)->where("user_id", "=", $user_id)->count();
+  
+         if($episode_count  > 0){
+
+            $episode_new = LikeDisLike::where("episode_id", "=", $request->episode_id)->where("user_id", "=", $user_id)->first();
+            $episode_new->liked = 1;
+            $episode_new->episode_id = $request->episode_id;
+            $episode_new->save();
+            $data = array(
+                "message" => "Added to Like Episode" ,
+            );
+ 
+         }else{
+
+            $user_id = Auth::user()->id;
+           
+            $episode_new = new LikeDisLike;
+            $episode_new->user_id = $user_id;
+            $episode_new->liked = 1;
+            $episode_new->episode_id = $request->episode_id;
+            $episode_new->save();
+            $episode_new->save();
+            $data = array(
+            "message" => "Added to Like Episode" ,
+            );
+         }
+          return $data ;
+         
+       }
+
+    }   
+
+    public function RemoveLikeEpideo(Request $request)
+    {
+        $user_id = Auth::user()->id;
+
+        $episode = LikeDisLike::where("episode_id", "=", $request->episode_id)->where("user_id", "=", $user_id)->get();
+        $episode_count = LikeDisLike::where("episode_id", "=", $request->episode_id)->where("user_id", "=", $user_id)->count();
+        if($episode_count  > 0){
+
+            $episode_new = LikeDisLike::where("episode_id", "=", $request->episode_id)->where("user_id", "=", $user_id)->first();
+            $episode_new->liked = 0;
+            $episode_new->episode_id = $request->episode_id;
+            $episode_new->save();
+           $data = array(
+             "message" => "Removed from Liked Episode" ,
+           );
+ 
+         }else{
+            $data = array(
+                "message" => "NO Data" ,
+              );
+         }
+    
+  
+        return $data ;
+    }
+
+
+
+    public function DisLikeEpisode(Request $request)
+    {
+
+       if(Auth::guest()){
+
+         $data = array(
+           "message" => "guest" ,
+         );
+
+         return $data ;
+
+       }else{
+
+        $user_id = Auth::user()->id;
+
+        $episode = LikeDisLike::where("episode_id", "=", $request->episode_id)->where("user_id", "=", $user_id)->get();
+        $episode_count = LikeDisLike::where("episode_id", "=", $request->episode_id)->where("user_id", "=", $user_id)->count();
+  
+         if($episode_count  > 0){
+
+            $episode_new = LikeDisLike::where("episode_id", "=", $request->episode_id)->where("user_id", "=", $user_id)->first();
+            $episode_new->disliked = 1;
+            $episode_new->episode_id = $request->episode_id;
+            $episode_new->save();
+            $data = array(
+                "message" => "Added to DisLike Episode" ,
+            );
+ 
+         }else{
+
+            $user_id = Auth::user()->id;
+           
+            $episode_new = new LikeDisLike;
+            $episode_new->user_id = $user_id;
+            $episode_new->disliked = 1;
+            $episode_new->episode_id = $request->episode_id;
+            $episode_new->save();
+            $episode_new->save();
+            $data = array(
+            "message" => "Added to DisLike Episode" ,
+            );
+         }
+          return $data ;
+         
+         
+         
+       }
+
+    }   
+
+    public function RemoveDisLikeEpideo(Request $request)
+    {
+
+        $user_id = Auth::user()->id;
+
+        $episode = LikeDisLike::where("episode_id", "=", $request->episode_id)->where("user_id", "=", $user_id)->get();
+        $episode_count = LikeDisLike::where("episode_id", "=", $request->episode_id)->where("user_id", "=", $user_id)->count();
+        if($episode_count  > 0){
+
+            $episode_new = LikeDisLike::where("episode_id", "=", $request->episode_id)->where("user_id", "=", $user_id)->first();
+            $episode_new->disliked = 0;
+            $episode_new->episode_id = $request->episode_id;
+            $episode_new->save();
+           $data = array(
+             "message" => "Removed from Liked Episode" ,
+           );
+ 
+         }else{
+            $data = array(
+                "message" => "NO Data" ,
+              );
+         }
+  
+        return $data ;
+    }
+
+
+
+    public function Embedplay_episode($series_name,$episode_name)//
+    {
+         $Theme = HomeSetting::pluck('theme_choosen')->first();
+         Theme::uses( $Theme );
+         $settings = Setting::first();
+ 
+         $auth_user = Auth::user();
+ 
+         if($auth_user == null){
+                 $auth_user_id = null ;
+         }else{
+             $auth_user_id = Auth::user()->id ;
+         }
+ 
+         $episodess = Episode::where('slug','=',$episode_name)->orderBy('id', 'DESC')->first();    
+ 
+         $episode = Episode::where('slug','=',$episode_name)->orderBy('id', 'DESC')->first();    
+         $id = $episode->id;
+         $season = SeriesSeason::where('series_id','=',$episode->series_id)->with('episodes')->get();
+
+         $series = Series::find($episode->series_id);
+
+             $data = array(
+                    'episode' => $episode,
+                    'season' => $season,
+                    'series' => $series,
+                    'settings' => $settings,
+                 );
+                 return Theme::view('iframeembedepisode', $data);
+ 
+    }
+
+
 }

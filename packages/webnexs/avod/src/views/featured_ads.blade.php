@@ -8,9 +8,9 @@
                <div class="row">
                <div class="col-lg-12">
                   <div class="iq-card-body">
-                     <h2 class="text-center mb-4">Featured Ads List</h2>
+                     <h2 class="mb-4">Pay Per Ads</h2>
                      <div id="nestable" class="nested-list dd with-margins">
-                        <table class="data-tables table audio_table " style="width:100%">
+                        <table class="data-tables table audio_table text-center" style="width:100%">
                            <thead>
                               <tr>
                                  <th><label>#</label></th>
@@ -21,6 +21,7 @@
                                  <th><label>Total Views</label></th>
                                  <th><label>Status</label></th>
                                  <th><label>Created At</label></th>
+                                
                               </tr>
                            </thead>
                            <tbody>
@@ -39,7 +40,7 @@
                                    @else
                                    <p class="font-weight-bold text-info">Pending</p>
                                 @endif</td>
-                                 <td>{!! date('d/M/y', strtotime($advertisement->created_at)) !!}</td>
+                                 <td><label>{!! date('d/M/y', strtotime($advertisement->created_at)) !!}</label></td>
                               </tr>
                               @endforeach
                            </tbody>

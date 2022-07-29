@@ -199,8 +199,8 @@ class ModeratorsUserController extends Controller
                 $moderatorsuser->user_role = $request->user_role;
                 $moderatorsuser->user_permission = $permission;
 
-                $logopath = URL::to("/public/uploads/picture/");
-                $path = public_path() . "/uploads/picture/";
+                $logopath = URL::to("/public/uploads/moderator_albums/");
+                $path = public_path() . "/uploads/moderator_albums/";
                 $picture = $request["picture"];
                 if ($picture != "") {
                     //code for remove old file
@@ -6901,5 +6901,126 @@ class ModeratorsUserController extends Controller
             ];
                 return view("moderator.payouts.view_payouts", $data);
         }
+    }
+
+    public function CPPMyProfile()
+    {
+        $data = Session::all();
+        $id = $data['user']->id;
+        $ModeratorsUser = ModeratorsUser::where('id',$id)->first();
+
+        $data = [
+            "user" => $ModeratorsUser,
+        ];
+        // dd($data['user']);
+        return view("moderator.cpp.myprofile",$data);
+
+    }
+
+    public function CPPUpdateMyProfile(Request $request)
+    {
+        $Session = Session::all();
+        $data = $request->all();
+        
+        $id = $data['id'];
+        $ModeratorsUser = ModeratorsUser::where('id',$id)->first();
+        // dd($data);
+        if(!empty($data['username'])){
+            $username = $data['username'];
+        }else{
+            $username = $ModeratorsUser->username;
+        } 
+
+        if(!empty($data['email'])){
+            $email = $data['email'];
+        }else{
+            $email = $ModeratorsUser->email;
+        }  
+
+        if(!empty($data['mobile_number'])){
+            $mobile_number = $data['mobile_number'];
+        }else{
+            $mobile_number = $ModeratorsUser->mobile_number;
+        }  
+
+        if(!empty($data['bank_name'])){
+            $bank_name = $data['bank_name'];
+        }else{
+            $bank_name = $ModeratorsUser->bank_name;
+        }  
+
+        if(!empty($data['branch_name'])){
+            $branch_name = $data['branch_name'];
+        }else{
+            $branch_name = $ModeratorsUser->branch_name;
+        }    
+
+        if(!empty($data['account_number'])){
+            $account_number = $data['account_number'];
+        }else{
+            $account_number = $ModeratorsUser->account_number;
+        }    
+
+        if(!empty($data['IFSC_Code'])){
+            $IFSC_Code = $data['IFSC_Code'];
+        }else{
+            $IFSC_Code = $ModeratorsUser->IFSC_Code;
+        }    
+
+        $picture = (isset($data['picture'])) ? $data['picture'] : '';
+
+        $cancelled_cheque = (isset($data['cancelled_cheque'])) ? $data['cancelled_cheque'] : '';
+
+        $logopath = URL::to("/public/uploads/moderator_albums/");
+        $path = public_path() . "/uploads/moderator_albums/";
+
+        
+        if ($picture != "") {
+            //code for remove old file
+            if ($picture != "" && $picture != null) {
+                $file_old = $path . $picture;
+                if (file_exists($file_old)) {
+                    unemail($file_old);
+                }
+            }
+            //upload new file
+            $file = $picture;
+            $file_picture = str_replace(' ', '_', $file->getClientOriginalName());
+            $file->move($path, $file);
+        }else{
+            $file_picture = $ModeratorsUser->picture;
+        }
+
+        $logopath = URL::to("/public/uploads/moderator_albums/");
+        $path = public_path() . "/uploads/moderator_albums/";
+        if ($cancelled_cheque != "") {
+            //code for remove old file
+            if ($cancelled_cheque != "" && $cancelled_cheque != null) {
+                $file_old = $path . $cancelled_cheque;
+                if (file_exists($file_old)) {
+                    unemail($file_old);
+                }
+            }
+            //upload new file
+            $cheque = $cancelled_cheque;
+            $file_cancelled_cheque = str_replace(' ', '_', $cheque->getClientOriginalName());
+            $cheque->move($path, $cheque);
+        }else{
+            $file_cancelled_cheque = $ModeratorsUser->cancelled_cheque;
+        }
+
+        $ModeratorsUser->username = $username;
+        $ModeratorsUser->email = $email;
+        $ModeratorsUser->mobile_number = $mobile_number;
+        $ModeratorsUser->bank_name = $bank_name ;
+        $ModeratorsUser->branch_name = $branch_name ;
+        $ModeratorsUser->account_number = $account_number ;
+        $ModeratorsUser->IFSC_Code = $IFSC_Code ;
+        $ModeratorsUser->picture = $file_picture ;
+        $ModeratorsUser->cancelled_cheque = $file_cancelled_cheque ;
+        $ModeratorsUser->save();
+
+        return \Redirect::back()->with('message','Update User Profile');
+
     }
 }
