@@ -11,7 +11,7 @@
 
    
    <!-- Favicon -->
-    <link rel="shortcut icon" href="" />
+   <link rel="shortcut icon" href="<?php echo getFavicon();?>" type="image/gif" sizes="16x16">
    <!-- Bootstrap CSS -->
    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/admin/dashassets/css/bootstrap.min.css';?>" />
     
@@ -207,10 +207,10 @@
                                  <script src="https://checkout.razorpay.com/v1/checkout.js"
                                  data-key="{{ env('RAZORPAY_KEY') }}"
                                  data-amount="{{ $plan_amount }}"
-                                 data-buttontext="Pay Now"
-                                 data-name="Flicknexs"
+                                 data-buttontext="Pay Now using Razorpay Payment Gateway"
+                                 data-name="{{ $website_name }}"
                                  data-description="Advertiser Plan Upgrade"
-                                 data-image="{{URL::to('/')}}/public/uploads/settings/logo (1).png"
+                                 data-image="{{ URL::to('/').'/public/uploads/settings/'. $website_logo }}" 
                                  data-prefill.name="{{$user->company_name}}"
                                  data-prefill.email="{{$user->email_id}}"
                                  data-theme.color="#0993D2">
@@ -261,7 +261,8 @@
                      <!-- Stripe Elements Placeholder -->
                      <div id="card-element" ></div><br>
                      <div class="sign-up-buttons pay-button">
-                         <a type="button" id="card-button" class="btn btn-primary pay"  data-secret="{{ $intent->client_secret }}">Pay Now</a></div>
+                         {{-- <a type="button" id="card-button" class="btn btn-primary pay"  data-secret="{{ $intent->client_secret }}">Pay Now</a> --}}
+                     </div>
                         <input type="hidden" id="stripe_key" value="{{ env('STRIPE_KEY') }}">
                      </div>
                         
@@ -289,8 +290,8 @@
                                  </tbody>
                               </table>
                               <div class="text-right">
-                                 <a type="button" class="btn btn-primary pay" > Pay using Stripe Payment Cateway</a>
 
+                                 <a type="button" id="card-button" class="btn btn-primary pay processing_alert"  data-secret="{{ $intent->client_secret }}">Pay using Stripe Payment Cateway</a>
                               </div>
                            </div>
                         </div>
@@ -323,6 +324,7 @@
     </div>
     
 <input type="hidden" id="base_url" value="<?php echo URL::to('/').'/advertiser';?>">
+<input type="hidden" id="payment_image" value="<?php echo URL::to('/').'/public/Thumbnai_images';?>">
 
 
   <!-- Imported styles on this page -->
@@ -365,7 +367,9 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+
 <script type="text/javascript">
+
 <?php if(session('success')){ ?>
     toastr.success("<?php echo session('success'); ?>");
 <?php }else if(session('error')){  ?>
@@ -374,7 +378,6 @@
     toastr.warning("<?php echo session('warning'); ?>");
 <?php }else if(session('info')){  ?>
     toastr.info("<?php echo session('info'); ?>");
-
 <?php } ?>
 
 </script>
@@ -382,6 +385,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 <script>
        var base_url = $('#base_url').val();
+       var payment_images = $('#payment_image').val();
+
        
        var stripe_key = $("#stripe_key").val();
        const stripe = Stripe(stripe_key);
@@ -448,12 +453,18 @@
                    }, 
                 function(data){
                   if(data == 'success'){
-                    swal("You have done  Payment !");
+                    swal({
+                        title: "Success!",
+                        text: "You have done  Payment !",
+                        icon: payment_images+'/Successful_Payment.gif',
+                        closeOnClickOutside: false,
+                     });
+
                     setTimeout(function() {
-                    window.location.replace(base_url+'/billing_details');
-                        
-                  }, 2000);
-                 }else{
+                        window.location.replace(base_url+'/billing_details');
+                     }, 5000);
+                 }
+                 else{
                   swal('Error');
                   window.location.replace(base_url);
                  }
@@ -476,6 +487,19 @@ $('input[type=radio][name=gateway_payment]').change(function() {
 
     }
 });
+
+$(".processing_alert").click(function(){
+
+   swal({
+      title: "Processing Payment!",
+      text: "Please wait untill the proccessing completed!",
+      icon: payment_images+'/processing_payment.gif',
+      buttons: false,      
+      closeOnClickOutside: false,
+   });
+
+  });
 </script>
+
 </body>
 </html>
