@@ -1330,7 +1330,7 @@ if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1
               $episodes->ppv_price =  $ppv_price;
               $episodes->ppv_status =  $data['ppv_status'];
               $episodes->status =  1;
-              $episodes->episode_order = $episode = Episode::where('series_id',$data['series_id'])->max('episode_order') + 1 ;
+              $episodes->episode_order = $episode = Episode::where('season_id',$data['season_id'])->max('episode_order') + 1 ;
               $episodes->save();
 
 

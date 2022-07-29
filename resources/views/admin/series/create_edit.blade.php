@@ -118,7 +118,7 @@ $settings  = App\Setting::first();?>
 					@if(!empty($series->image))
 						<img src="{{ URL::to('/') . '/public/uploads/images/' . $series->image }}" class="series-img" width="200"/>
 					@endif
-					<input type="file" multiple="true" class="form-group" name="image" id="image" />
+					<input type="file" multiple="true" class="form-group image" name="image" id="image" />
 					{{-- for validate --}}
 					<input type="hidden" id="check_image" name="check_image" value="@if(!empty($series->image) ) {{ "validate" }} @else {{ " " }} @endif"  />
 					<input type="hidden" id="player_check_image" name="player_check_image" value="@if(!empty($series->player_image) ) {{ "validate" }} @else {{ " " }} @endif"  />
@@ -426,7 +426,7 @@ $settings  = App\Setting::first();?>
 							</div>
 							<div class="form-group">
 								<label>Season Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br>
-								<input type="file" name="image" id="image" >
+								<input type="file" class="image" name="image" id="" >
 							</div>
                                 
 						    <div class="form-group">
@@ -683,10 +683,10 @@ $('#submit-new-cat').click(function(){
         },'Please upload an image with 1260 x 720 pixels dimension');
 
 
-        $('#image').change(function() {
+        $('.image').change(function() {
 
-            $('#image').removeData('imageWidth');
-            $('#image').removeData('imageHeight');
+            $('.image').removeData('imageWidth');
+            $('.image').removeData('imageHeight');
 
             var file = this.files[0];
             var tmpImg = new Image();
@@ -695,8 +695,8 @@ $('#submit-new-cat').click(function(){
             tmpImg.onload = function() {
                 width = tmpImg.naturalWidth,
                 height = tmpImg.naturalHeight;
-                $('#image').data('imageWidth', width);
-                $('#image').data('imageHeight', height);
+                $('.image').data('imageWidth', width);
+                $('.image').data('imageHeight', height);
             }
         });
 
@@ -752,7 +752,7 @@ $('form[id="new-cat-form"]').validate({
 		trailer: 'required',
 		image: {
 				required:true,
-				// dimention:[1080,1920]
+				dimention:[1080,1920]
 			},
 		},
 	messages: {
