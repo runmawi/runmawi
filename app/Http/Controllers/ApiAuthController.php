@@ -2712,11 +2712,11 @@ $final[] = array_merge($array1,$array2,$array3,$array4);
       $paymentMethod = $request->get('py_id');
     $user->newSubscription('test', $plan)->create($paymentMethod);
        if ( $user->subscribed('test') ) { 
-      $user = User::find($userid);
+      $user = User::find($user_id);
       $user->role = 'subscriber';
       $user->active = 1;
       $user->save();
-      $users = User::find($userid);
+      $users = User::find($user_id);
       $id = $users->id;
       $role = $users->role;
       $username = $users->username;

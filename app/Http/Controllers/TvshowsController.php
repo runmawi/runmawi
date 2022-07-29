@@ -638,7 +638,7 @@ class TvshowsController extends Controller
 
     }   
 
-    public function RemoveLikeEpideo(Request $request)
+    public function RemoveLikeEpisode(Request $request)
     {
         $user_id = Auth::user()->id;
 
@@ -716,7 +716,7 @@ class TvshowsController extends Controller
 
     }   
 
-    public function RemoveDisLikeEpideo(Request $request)
+    public function RemoveDisLikeEpisode(Request $request)
     {
 
         $user_id = Auth::user()->id;
