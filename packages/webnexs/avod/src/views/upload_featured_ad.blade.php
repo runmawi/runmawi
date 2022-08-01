@@ -29,10 +29,10 @@
                            <form id="msform" accept-charset="UTF-8" enctype="multipart/form-data">
                              <!-- progressbar -->
                              <ul id="progressbar">
-                               <li class="active" id="account"><img class="" src="<?php echo  URL::to('/assets/img/icon/1.svg')?>">Ads Info</li>
-                               <li id="personal"><img class="" src="<?php echo  URL::to('/assets/img/icon/1.svg')?>">Upload Ads</li>
-                               <li id="payment"><img class="" src="<?php echo  URL::to('/assets/img/icon/1.svg')?>">Choose Region</li>
-                               <li id="confirm"><img class="" src="<?php echo  URL::to('/assets/img/icon/1.svg')?>">Pay and Publish</li>
+                               <li class="active" id="account"><img class="" src="<?php echo  URL::to('/assets/img/icon/ads1.svg')?>">Ads Info</li>
+                               <li id="personal"><img class="" src="<?php echo  URL::to('/assets/img/icon/ads2.svg')?>">Upload Ads</li>
+                               <li id="payment"><img class="" src="<?php echo  URL::to('/assets/img/icon/ads3.svg')?>">Choose Region</li>
+                               <li id="confirm"><img class="" src="<?php echo  URL::to('/assets/img/icon/ads4.svg')?>">Pay and Publish</li>
                             </ul> <!-- fieldsets -->
                             <fieldset>
                                <div class="form-card">
@@ -214,10 +214,12 @@
                                    </div>
                               
                            </div>
-                                <div class="d-flex justify-content-end">
+                               
                                 <input type="button" name="previous" class="previous action-button-previous" value="Previous" /> 
-                           <input type="button" name="next" class="next action-button" value="Next Step" id="Next2" /></div>
+                           <input type="button" name="next" class="next action-button" value="Next Step" id="Next2" />
+                        
                         </fieldset>
+                               
                         <fieldset>
                          <div class="form-card">
                            <h2 class="fs-title">Location Details</h2>
