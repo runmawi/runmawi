@@ -22,9 +22,9 @@
                         <h5>Ads Schedule Calender</h5>
                     </div>
 
-                    <div class="col-sm-3 text-right">
+                    {{-- <div class="col-sm-3 text-right">
                         <a href="{{ URL::to('advertiser/Ads-Events') }}" class="btn btn-primary">Add Scheduling Time</a>
-                    </div>
+                    </div> --}}
 
                 </div>
                 <div class="row">
