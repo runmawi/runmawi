@@ -259,12 +259,12 @@ border-radius: 0px 4px 4px 0px;
                         @if($video->access != 'ppv')
                            @if($video->active == 1 && $video->enable == 1 && $video->status == 1 && !empty($video->publish_type) || $video->active == 0  && empty($video->publish_type) || $video->enable == 0 && empty($video->publish_type) || $video->status == 0 && empty($video->publish_type) )
                         <div class="col-3">
-                            <label for=""><h3 class="fs-title m-0">Player Embed Link:</h3></label>
+                            <label for=""><h3 class="fs-title m-0">Embed Link:</h3></label>
                             <p>Click <a href="#"onclick="EmbedCopy();" class="share-ico"><i class="ri-links-fill"></i> here</a> to get the Embedded URL</p>
                             </div>
 
                             <div class="col-3">
-                            <label for=""><h3 class="fs-title m-0">Player Social Share:</h3></label>
+                            <label for=""><h3 class="fs-title m-0">Social Share:</h3></label>
                            <div class="share-box">
                                  <a href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" class="share-ico"><i class="ri-facebook-fill"></i></a>&nbsp;  <!-- Facebook -->
                                  <a href="https://twitter.com/intent/tweet?text=<?= $media_url ?>" class="share-ico"><i class="ri-twitter-fill"></i></a> <!-- Twitter -->
