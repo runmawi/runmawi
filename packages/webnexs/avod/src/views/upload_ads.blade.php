@@ -200,17 +200,17 @@
                                           </select>
                                       </div>
                                       </div>
+
                                       <div class="col-md-6">
-                                           <div class="form-group">
-                                        <label> Ads upload Type:</label>
-                                        <p class="error-message" style="color: red;font-size:10px;">This filed is required</p>
-                                        <select class="form-control ads_type" name="">
-                                            <option value="null">select Ads Type </option>
-                                            <option value="tag_url">Ad Tag Url </option>
-                                            <option value="ads_video_upload">Ads Video Upload </option>
-                                           
-                                        </select>
-                                    </div>
+                                        <div class="form-group">
+                                            <label> Ads upload Type:</label>
+                                            <p class="error-message" style="color: red;font-size:10px;">This filed is required</p>
+                                            <select class="form-control ads_type" name="">
+                                                <option value="null">select Ads Type </option>
+                                                <option value="tag_url">Ad Tag Url </option>
+                                                <option value="ads_video_upload">Ads Video Upload </option>
+                                            </select>
+                                        </div>
 
                                       <div class="form-group tag_url">
                                           <label> Ad Tag Url:</label>
@@ -221,9 +221,8 @@
                                           <label> Ads Video Upload:</label>
                                           <input type="file" id="ads_video" name="ads_video"  class="form-control" />
                                       </div>
-                                      </div>
-                                     
 
+                                    </div>
                                      
                                   </div>
                               </div>
@@ -268,7 +267,7 @@
                             <fieldset>
                                 <div class="col-md-6">
                                     <label>Set your weekly hours</label>
-                 </div>
+                                </div>
                                     <div class="row align-items-center">
                                         <div class="col-sm-2 ">
                                             <input type="checkbox" id="Monday" class="date" name="date[Monday]" value="{{ $Monday }}" @if(!empty($Monday_time['0'])) checked @endif/></div>
@@ -470,9 +469,8 @@
                                         <table class="table" id="saturday_add"> </table>
                                     </div>
                     
-                             <input type="button" name="previous" class="previous action-button-previous" value="Previous" /> 
+                                     <input type="button" name="previous" class="previous action-button-previous" value="Previous" /> 
                                     <input type="submit" class="btn btn-primary action-button" id="submit-update-cat" value="Save" />
-                                  
                             </fieldset>
                             <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
                         </form>
@@ -731,7 +729,7 @@ window.onload=function(){
      $('.tag_url').hide();
 };
 
-      $('.form-card').on('keyup keypress blur change click mouseover', function(event) {
+    $('.form-card').on('keyup keypress blur change click mouseover', function(event) {
 
       var household_income_val = $("input[type='radio'][name='household_income']:checked").val();
       var gender_val = $("#gender").val();
@@ -746,7 +744,7 @@ window.onload=function(){
       var ads_video_val = $("#ads_video").val();
       var Ads_type   = $(".ads_type").val();
 
-      if(age_validation != null  && household_income_val != null  && gender_val != null ){
+      if(age_validation != ""  && household_income_val != null  && gender_val != null ){
          document.getElementsByClassName("error-message")[0].style.display = "none";
          document.getElementsByClassName('error-message')[1].style.display = 'none';
          document.getElementsByClassName('error-message')[2].style.display = 'none';
