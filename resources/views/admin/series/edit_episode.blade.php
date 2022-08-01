@@ -105,6 +105,11 @@
                             <input type="file" multiple="true" class="form-group" name="player_image" id="player_image" />
                         </div>
                     </div>
+
+                         {{-- for validate --}} 
+                    <input type="hidden" id="check_image" name="check_image" value="@if(!empty($episodes->image) ) {{ "validate" }} @else {{ " " }} @endif"  />
+                    <input type="hidden" id="player_check_image" name="player_check_image" value="@if(!empty($episodes->player_image) ) {{ "validate" }} @else {{ " " }} @endif"  />
+
                 </div>
                 <div class="row mb-3">
 
@@ -481,11 +486,87 @@
                 return skip_recap > recap_end_time;
             });
 
+                 // Image upload dimention validation
+        $.validator.addMethod('dimention', function(value, element, param) {
+            if(element.files.length == 0){
+                return true; 
+            }
+
+            var width = $(element).data('imageWidth');
+            var height = $(element).data('imageHeight');
+            if(width == param[0] && height == param[1]){
+                return true;
+            }else{
+                return false;
+            }
+        },'Please upload an image with 1080 x 1920 pixels dimension');
+
+                // player Image upload validation
+        $.validator.addMethod('player_dimention', function(value, element, param) {
+            if(element.files.length == 0){
+                return true; 
+            }
+
+            var width = $(element).data('imageWidth');
+            var height = $(element).data('imageHeight');
+
+            if(width == param[0] && height == param[1]){
+                return true;
+            }else{
+                return false;
+            }
+        },'Please upload an image with 1280 x 720 pixels dimension');
+
+
+        $('#image').change(function() {
+
+            $('#image').removeData('imageWidth');
+            $('#image').removeData('imageHeight');
+
+            var file = this.files[0];
+            var tmpImg = new Image();
+
+            tmpImg.src=window.URL.createObjectURL( file ); 
+            tmpImg.onload = function() {
+                width = tmpImg.naturalWidth,
+                height = tmpImg.naturalHeight;
+                $('#image').data('imageWidth', width);
+                $('#image').data('imageHeight', height);
+            }
+        });
+
+        $('#player_image').change(function() {
+
+            $('#player_image').removeData('imageWidth');
+            $('#player_image').removeData('imageHeight');
+
+            var file = this.files[0];
+            var tmpImg = new Image();
+
+            tmpImg.src=window.URL.createObjectURL( file ); 
+            tmpImg.onload = function() {
+                width = tmpImg.naturalWidth,
+                height = tmpImg.naturalHeight;
+                $('#player_image').data('imageWidth', width);
+                $('#player_image').data('imageHeight', height);
+            }
+        });
+
 
         $("#Episode_edit").validate({
             rules: {
                 title: { 
                     required: true, 
+                },
+
+                image: {
+                    required: '#check_image:blank',
+                    dimention:[1080,1920]
+                },
+
+                player_image: {
+                    required: '#player_check_image:blank',
+                    player_dimention:[1280,720]
                 },
 
                 intro_start_time: {

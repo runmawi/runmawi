@@ -16,6 +16,7 @@
 <style>
     .error{
 		color:red;
+		font-size : 14px !important;
 	}
 </style>
 @section('content')
@@ -111,7 +112,7 @@
                     <div class="row mt-3">
                                         <div class="col-sm-6">
                                             <label class="m-0">Video Image Cover</label>
-                                            <p class="p1">Select the video image (1280x720 px or 16:9 ratio):</p>
+                                            <p class="p1">Select the video image (1080x1920 px or 16:9 ratio):</p>
 
                                             <div class="panel-body">
                                                 <input type="file" multiple="true" class="form-group" name="image" id="image" />
@@ -439,10 +440,77 @@
 		<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
+
+
+	// Image upload dimention validation
+		$.validator.addMethod('dimention', function(value, element, param) {
+			if(element.files.length == 0){
+				return true; 
+			}
+
+			var width = $(element).data('imageWidth');
+			var height = $(element).data('imageHeight');
+			if(width == param[0] && height == param[1]){
+				return true;
+			}else{
+				return false;
+			}
+			},'Please upload an image with 1080 x 1920 pixels dimension');
+
+				// player Image upload validation
+			$.validator.addMethod('player_dimention', function(value, element, param) {
+			if(element.files.length == 0){
+				return true; 
+			}
+
+			var width = $(element).data('imageWidth');
+			var height = $(element).data('imageHeight');
+
+			if(width == param[0] && height == param[1]){
+				return true;
+			}else{
+				return false;
+			}
+			},'Please upload an image with 1280 x 720 pixels dimension');
+
+
+			$('#image').change(function() {
+
+			$('#image').removeData('imageWidth');
+			$('#image').removeData('imageHeight');
+
+			var file = this.files[0];
+			var tmpImg = new Image();
+
+			tmpImg.src=window.URL.createObjectURL( file ); 
+			tmpImg.onload = function() {
+				width = tmpImg.naturalWidth,
+				height = tmpImg.naturalHeight;
+				$('#image').data('imageWidth', width);
+				$('#image').data('imageHeight', height);
+			}
+			});
+
+			$('#player_image').change(function() {
+
+			$('#player_image').removeData('imageWidth');
+			$('#player_image').removeData('imageHeight');
+
+			var file = this.files[0];
+			var tmpImg = new Image();
+
+			tmpImg.src=window.URL.createObjectURL( file ); 
+			tmpImg.onload = function() {
+				width = tmpImg.naturalWidth,
+				height = tmpImg.naturalHeight;
+				$('#player_image').data('imageWidth', width);
+				$('#player_image').data('imageHeight', height);
+			}
+		});
+
 	$('form[id="cpp_live_video"]').validate({				
 		rules: {
 		  title: 'required',
-		  image: 'required',
 		  url_type: 'required',
 		//   details: 'required',
 		//   year: 'required',
@@ -471,7 +539,17 @@
 				}
 			 }
 			},
-	
+
+			image: {
+                required: true,
+                dimention:[1080,1920]
+            },
+
+            player_image: {
+                required: true,
+                player_dimention:[1280,720]
+            },
+
 			embed_url: {
 					required : function(element) {
 						var action = $("#url_type").val();

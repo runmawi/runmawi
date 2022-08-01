@@ -291,7 +291,7 @@ function myFunction() {
     var video_video = $('#video_video').val();
     var user_logged_out =  $('#user_logged_out').val();
     var hls =  $('#hls').val();
-    var ads_path_tag =  $('#ads_path_tag').val();
+    var ads_path_tag =  $('#pre_ads_url').val();
     var processed_low =  $('#processed_low').val();
     var episode_type  = $('#episode_type').val();
 

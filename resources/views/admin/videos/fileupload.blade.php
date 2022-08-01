@@ -820,6 +820,7 @@ border-radius: 0px 4px 4px 0px;
                               <div class="col-sm-6 form-group">
                               <label class="mb-1">Video Thumbnail <span>(9:16 Ratio or 1080X1920px)</span></label><br>
                                  <input type="file" name="image" id="image" >
+                                 <span><p id="image_error_msg" style="color:red;" >* Please upload an image with 1080 x 1920 pixels dimension </p></span>
                                  @if(!empty($video->image))
                                     <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" class="video-img w-100" />
                                  @endif
@@ -828,6 +829,7 @@ border-radius: 0px 4px 4px 0px;
                               <div class="col-sm-6 form-group">
                                  <label class="mb-1">Player Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br>
                                  <input type="file" name="player_image" id="player_image" >
+                                 <span><p id="player_image_error_msg" style="color:red;" >* Please upload an image with 1280 x 720 pixels dimension </p></span>
                                  @if(!empty($video->player_image))
                                  <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->player_image }}" class="video-img w-100" />
                                  @endif
@@ -906,7 +908,7 @@ border-radius: 0px 4px 4px 0px;
                         </div>
 
                </div>
-               <input type="button" name="next" class="next action-button" value="Next" />
+               <input type="button" name="next" class="next action-button update_upload_img" value="Next" />
                <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                </fieldset>
                <fieldset>
@@ -1282,6 +1284,9 @@ border-radius: 0px 4px 4px 0px;
 
 $(document).ready(function(){
 
+      $('#player_image_error_msg').hide();
+      $('#image_error_msg').hide();
+      
       $('#slug_error').hide();
       $('#slug_validate').on('keyup blur keypress mouseover', function(e) {
 
@@ -2229,6 +2234,64 @@ if(this.textContent === 'destroy') {
 });
 
 </script>
+
+<script>
+   $('#image').on('change', function(event) {
+
+         $('#image').removeData('imageWidth');
+         $('#image').removeData('imageHeight');
+
+         var file = this.files[0];
+         var tmpImg = new Image();
+
+         tmpImg.src=window.URL.createObjectURL( file ); 
+         tmpImg.onload = function() {
+             width = tmpImg.naturalWidth,
+             height = tmpImg.naturalHeight;
+             $('#image').data('imageWidth', width);
+             $('#image').data('imageHeight', height);
+
+             if(width == '1080' && height == '1920' ){
+               $('.update_upload_img').removeAttr('disabled');
+               $('#image_error_msg').hide();
+             }
+             else{
+               $('.update_upload_img').attr('disabled','disabled');
+               $('#image_error_msg').show();
+             }
+         }
+     });
+
+     
+   $('#player_image').on('change', function(event) {
+
+      
+      $('#player_image').removeData('imageWidth');
+      $('#player_image').removeData('imageHeight');
+
+      var file = this.files[0];
+      var tmpImg = new Image();
+
+      tmpImg.src=window.URL.createObjectURL( file ); 
+      tmpImg.onload = function() {
+         width = tmpImg.naturalWidth,
+         height = tmpImg.naturalHeight;
+         $('#player_image').data('imageWidth', width);
+         $('#player_image').data('imageHeight', height);
+
+         if(width == '1280' && height == '720' ){
+            $('.update_upload_img').removeAttr('disabled');
+            $('#player_image_error_msg').hide();
+         }
+         else{
+            $('.update_upload_img').attr('disabled','disabled');
+            $('#player_image_error_msg').show();
+         }
+      }
+   });
+
+</script>
+
 @stop
 
 
