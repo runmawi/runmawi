@@ -31,10 +31,10 @@
                         <form id="msform" accept-charset="UTF-8" action="{{ URL::to('advertiser/store_ads') }}" method="post" enctype="multipart/form-data">
                             <!-- progressbar -->
                             <ul id="progressbar">
-                                <li class="active" id="account"><img class="" src="<?php echo  URL::to('/assets/img/icon/1.svg')?>">Ads Info</li>
-                                <li id="personal"><img class="" src="<?php echo  URL::to('/assets/img/icon/1.svg')?>">Upload Ads</li>
-                                <li id="payment"><img class="" src="<?php echo  URL::to('/assets/img/icon/1.svg')?>">Choose Region</li>
-                                <li id="payment"><img class="" src="<?php echo  URL::to('/assets/img/icon/1.svg')?>">Ads Schedule</li>
+                                <li class="active" id="account"><img class="" src="<?php echo  URL::to('/assets/img/icon/ads1.svg')?>">Ads Info</li>
+                                <li id="personal"><img class="" src="<?php echo  URL::to('/assets/img/icon/ads2.svg')?>">Upload Ads</li>
+                                <li id="payment"><img class="" src="<?php echo  URL::to('/assets/img/icon/ads3.svg')?>">Choose Region</li>
+                                <li id="payment"><img class="" src="<?php echo  URL::to('/assets/img/icon/ads4.svg')?>">Ads Schedule</li>
                             </ul>
 
                            <!--General Information  fieldsets -->

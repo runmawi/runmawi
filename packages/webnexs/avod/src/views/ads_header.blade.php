@@ -52,7 +52,7 @@
     opacity: 0.3;
 }
     #progressbar li img {
-    width: 125px;
+    width: 80px;
     display: block;
     margin: 0 auto;
 }
