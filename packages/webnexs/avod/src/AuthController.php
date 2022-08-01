@@ -227,6 +227,7 @@ class AuthController extends Controller
         $activeplan = Advertiserplanhistory::where('advertiser_id',session('advertiser_id'))->where('status','active')->count();
         $getdata = Advertiserplanhistory::where('advertiser_id','=',session('advertiser_id'))->where('status','active')->first();
         $upload_ads_cnt = $getdata->ads_limit - $getdata->no_of_uploads;
+        
         if(!empty(session('advertiser_id')) && $activeplan == 0 || $upload_ads_cnt == 0){
             $getdata->status = 'deactive';
             $getdata->save();
@@ -343,6 +344,7 @@ class AuthController extends Controller
                         $AdsTimeSlot->title = $last_ads_name;
                         $AdsTimeSlot->status = '1';
                         $AdsTimeSlot->day = "Monday";
+                        $AdsTimeSlot->advertiser_id = session('advertiser_id');
                         $AdsTimeSlot->save();
                 }
             }
@@ -363,6 +365,7 @@ class AuthController extends Controller
                         $AdsTimeSlot->title = $last_ads_name;
                         $AdsTimeSlot->day = "Tuesday";
                         $AdsTimeSlot->status = '1';
+                        $AdsTimeSlot->advertiser_id = session('advertiser_id');
                         $AdsTimeSlot->save();
                 }
             }
@@ -383,6 +386,7 @@ class AuthController extends Controller
                         $AdsTimeSlot->title = $last_ads_name;
                         $AdsTimeSlot->status = '1';
                         $AdsTimeSlot->day = "Wednesday";
+                        $AdsTimeSlot->advertiser_id = session('advertiser_id');
                         $AdsTimeSlot->save();
                 }
 
@@ -404,6 +408,7 @@ class AuthController extends Controller
                         $AdsTimeSlot->status = '1';
                         $AdsTimeSlot->day = "Thursday";
                         $AdsTimeSlot->title = $last_ads_name;
+                        $AdsTimeSlot->advertiser_id = session('advertiser_id');
                         $AdsTimeSlot->save();
                 }
 
@@ -426,6 +431,7 @@ class AuthController extends Controller
                     $AdsTimeSlot->status = '1';
                     $AdsTimeSlot->title = $last_ads_name;
                     $AdsTimeSlot->day = "Friday";
+                    $AdsTimeSlot->advertiser_id = session('advertiser_id');
                     $AdsTimeSlot->save();
             }
             }
@@ -447,6 +453,7 @@ class AuthController extends Controller
                     $AdsTimeSlot->title = $last_ads_name;
                     $AdsTimeSlot->status = '1';
                     $AdsTimeSlot->day = "Saturday";
+                    $AdsTimeSlot->advertiser_id = session('advertiser_id');
                     $AdsTimeSlot->save();
             }
             }
@@ -468,6 +475,7 @@ class AuthController extends Controller
                     $AdsTimeSlot->title = $last_ads_name;
                     $AdsTimeSlot->status = '1';
                     $AdsTimeSlot->day = "Sunday";
+                    $AdsTimeSlot->advertiser_id = session('advertiser_id');
                     $AdsTimeSlot->save();
             }
             }
@@ -501,6 +509,9 @@ class AuthController extends Controller
         $user = Advertiser::find($user_id);
         $data['intent'] = $user->createSetupIntent();
         $data['user'] = $user;
+        $data['website_logo'] = Setting::pluck('logo')->first();
+        $data['website_name'] = Setting::pluck('website_name')->first();
+
         return view('avod::stripegateway',$data);
     }
 
@@ -868,10 +879,11 @@ class AuthController extends Controller
 
    public function Ads_Scheduled(Request $request)
    {
-       
+    
     if($request->ajax()) {
        
-        $data = AdsEvent::whereDate('start', '>=', $request->start)
+        $data = AdsEvent::where('advertiser_id',session('advertiser_id'))
+                  ->whereDate('start', '>=', $request->start)
                   ->whereDate('end',   '<=', $request->end)
                   ->get(['id', 'title', 'start', 'end','ads_category_id','color']);
 

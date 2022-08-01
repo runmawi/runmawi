@@ -182,20 +182,21 @@ border-radius: 0px 4px 4px 0px;
 							</div>
 							<div class="row">
 								<div class="col-md-6">
-								<div class="panel panel-primary col-sm-6 p-0 mt-3" data-collapsed="0"> <div class="panel-heading"> 
+								<div class="panel panel-primary col-sm-8 p-0 mt-3" data-collapsed="0"> <div class="panel-heading"> 
 								<div class="panel-title"><label class="mb-1">Audio Image Cover</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 								<div class="panel-body" style="display: block;"> 
 									@if(!empty($audio->image))
 									<img src="{{ URL::to('/'). '/public/uploads/images/' . $audio->image }}" class="audio-img" width="200"/>
 									@endif
-									<p class="p1">Select the audio image(9:16 Ratio or 720X1080px):</p> 
+									<p class="p1">Select the audio image(9:16 Ratio or 1080X1920px):</p> 
 									<input type="file" multiple="true" class="form-control" name="image" id="image" />
 
 								</div> 
 							</div>
+
 								</div>
 								<div class="col-md-6">
-								<div class="col-sm-6 form-group">
+								<div class="col-sm-12 form-group">
 									
 							<label class="mb-1">Player Audio Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br>
 							<input type="file" name="player_image" id="player_image" >
@@ -208,6 +209,10 @@ border-radius: 0px 4px 4px 0px;
 								</div>
 
 							</div>
+
+									{{-- for validate --}} 
+							<input type="hidden" id="check_image" name="check_image" value="@if(!empty($audio->image) ) {{ "validate" }} @else {{ " " }} @endif"  />
+							<input type="hidden" id="player_check_image" name="player_check_image" value="@if(!empty($audio->player_image) ) {{ "validate" }} @else {{ " " }} @endif"  />
 							
 							
 							<div class="col-sm-6 p-0 mt-3">
@@ -579,14 +584,91 @@ $('#duration').mask('00:00:00');
 	<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 
 	<script>
+
+		                    // Image upload dimention validation
+	$.validator.addMethod('dimention', function(value, element, param) {
+            if(element.files.length == 0){
+                return true; 
+            }
+
+            var width = $(element).data('imageWidth');
+            var height = $(element).data('imageHeight');
+            if(width == param[0] && height == param[1]){
+                return true;
+            }else{
+                return false;
+            }
+        },'Please upload an image with 1080 x 1920 pixels dimension');
+
+                // player Image upload validation
+        $.validator.addMethod('player_dimention', function(value, element, param) {
+            if(element.files.length == 0){
+                return true; 
+            }
+
+            var width = $(element).data('imageWidth');
+            var height = $(element).data('imageHeight');
+
+            if(width == param[0] && height == param[1]){
+                return true;
+            }else{
+                return false;
+            }
+        },'Please upload an image with 1280 x 720 pixels dimension');
+
+
+        $('#image').change(function() {
+
+            $('#image').removeData('imageWidth');
+            $('#image').removeData('imageHeight');
+
+            var file = this.files[0];
+            var tmpImg = new Image();
+
+            tmpImg.src=window.URL.createObjectURL( file ); 
+            tmpImg.onload = function() {
+                width = tmpImg.naturalWidth,
+                height = tmpImg.naturalHeight;
+                $('#image').data('imageWidth', width);
+                $('#image').data('imageHeight', height);
+            }
+        });
+
+        $('#player_image').change(function() {
+
+            $('#player_image').removeData('imageWidth');
+            $('#player_image').removeData('imageHeight');
+
+            var file = this.files[0];
+            var tmpImg = new Image();
+
+            tmpImg.src=window.URL.createObjectURL( file ); 
+            tmpImg.onload = function() {
+                width = tmpImg.naturalWidth,
+                height = tmpImg.naturalHeight;
+                $('#player_image').data('imageWidth', width);
+                $('#player_image').data('imageHeight', height);
+            }
+        });
+
 		$('form[id="audio_edit"]').validate({
 			rules: {
-			title : 'required',
-			// image : 'required',
-			album_id : 'required',
-			'language[]': {
-				required: true
-			},
+				title : 'required',
+				album_id : 'required',
+				'language[]': {
+					required: true
+				},
+
+				image: {
+					required: '#check_image:blank',
+					dimention:[1080,1920]
+				},
+
+				player_image: {
+					required: '#player_check_image:blank',
+					player_dimention:[1280,720]
+				},
+
 			},
 			
 	
