@@ -34,6 +34,7 @@
                                <li class="active" id="account"><img class="" src="<?php echo  URL::to('/assets/img/icon/ads1.svg')?>">Ads Info</li>
                                <li id="personal"><img class="" src="<?php echo  URL::to('/assets/img/icon/ads2.svg')?>">Upload Ads</li>
                                <li id="payment"><img class="" src="<?php echo  URL::to('/assets/img/icon/ads3.svg')?>">Choose Region</li>
+                               <li id=""><img class="" src="<?php echo  URL::to('/assets/img/icon/ads4.svg')?>">Ads Schedule</li>
                                <li id="confirm"><img class="" src="<?php echo  URL::to('/assets/img/icon/ads4.svg')?>">Pay and Publish</li>
                             </ul> <!-- fieldsets -->
                             <fieldset>
@@ -197,8 +198,9 @@
 
                                  <div class="col-md-6">
                                     <div class="form-group">
-                                       <label> Featured Ad Cost:</label>
-                                       <input type="text" value="{{$settings->featured_pre_ad}}" class="form-control" id="price">
+                                        <label> Featured Ad Cost:</label>
+                                        <p class="error-message" style="color:red;font-size:10px;">Please add Featured Ad Cost form admin panel</p>
+                                       <input type="text" value="{{$settings->featured_pre_ad}}" class="form-control" id="price" readonly>
                                     </div>
 
                                     <div class="form-group">
@@ -237,12 +239,12 @@
 
 
                              <div class="row">
-                               <div class="col-sm-1"> <input type="radio" class="location-hide" id="" name="location" value="all_countries" /></div>
+                               <div class="col-sm-1"> <input type="radio" class="location-hide locations" id="" name="location" value="all_countries" /></div>
                                <div class="col-sm-4"> <label for="" class="">{{ ucwords('all countries & territories') }}</label></div>
                              </div>
 
                              <div class="row">
-                               <div class="col-sm-1"> <input type="radio" class="location-hide" id="" name="location" value="India" /></div>
+                               <div class="col-sm-1"> <input type="radio" class="location-hide locations" id="" name="location" value="India" /></div>
                                <div class="col-sm-1"> <label for="" class="">India</label></div>
                              </div>
 
@@ -253,7 +255,7 @@
 
                                <div class="col-md-6 location_input">
                                    <div class="form-group">
-                                       <input type="text" id="locations" name="locations"  class="form-control" placeholder="Enter the Location"/>
+                                       <input type="text" id="locations locations" name="locations"  class="form-control" placeholder="Enter the Location"/>
                                    </div>
                                </div>
                            </div>
@@ -468,9 +470,8 @@
                                </div>
                
                                 <input type="button" name="previous" class="previous action-button-previous" value="Previous" /> 
-                               <input type="submit" class="btn btn-primary action-button" id="submit-update-cat" value="Save" />
+                                <input type="button" name="next" class="next action-button" value="Next Step" id="" />
                        </fieldset>
-
 
                    <fieldset>
                       <div class="form-card">
@@ -512,9 +513,9 @@
                  <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
            </form>
                  <div class="sign-up-buttons pay-button-stripe">
-                   <a type="button" id="card-button" class="btn btn-primary pay"  data-secret="{{ $intent->client_secret }}">Pay Now</a></div>
+                   <a type="button" id="card-button" class="btn btn-primary pay processing_alert"  data-secret="{{ $intent->client_secret }}">Pay Now</a></div>
                    <div class="sign-up-buttons rzpaybtn">
-                     <a href="javascript:void(0)" class="btn btn-sm btn-primary pay buy_now">Pay Now</a> 
+                     <a href="javascript:void(0)" class="btn btn-sm btn-primary pay buy_now razorpay_btn">Pay Now</a> 
                   </div>
               </fieldset>
               
@@ -548,10 +549,10 @@
             
        </footer>
       </div>
-      
-      
    
     <input type="hidden" id="base_url" value="<?php echo URL::to('/').'/advertiser';?>">
+    <input type="hidden" id="payment_image" value="<?php echo URL::to('/').'/public/Thumbnai_images';?>">
+
 
   <!-- Imported styles on this page -->
   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/jquery.min.js';?>"></script>
@@ -613,7 +614,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 <script>
        var base_url = $('#base_url').val();
-       
+       var payment_images = $('#payment_image').val();
+       $(".razorpay_btn").hide();
+
        var stripe_key = $("#stripe_key").val();
        const stripe = Stripe(stripe_key);
         const elements = stripe.elements();
@@ -679,21 +682,37 @@
                 var age = $('input[type=checkbox]:checked').map(function(_, el) {
                      return $(el).val();
                }).get();
-                var location = $("#location").val();
+                var location = $(".locations").val();
                 var household_income = $('input[name="household_income"]:checked').val();
                 var gender = $("#gender").val();
                 var price =  $('#ads_position').find(":selected").attr('data-val');
                
                    $.post(base_url+'/buyfeaturedad_stripe', {
-                     py_id:py_id,ads_path:ads_path, ads_category:ads_category,ads_name:ads_name,ads_position:ads_position,ads_position:ads_position,price:price,age:age,location:location,household_income:household_income,gender:gender, _token: '<?= csrf_token(); ?>' 
+                        py_id:py_id,
+                        ads_path:ads_path,
+                        ads_category:ads_category,
+                        ads_name:ads_name,
+                        ads_position:ads_position,
+                        price:price,
+                        age:age,
+                        location:location,
+                        household_income:household_income,
+                        gender:gender,
+                         _token: '<?= csrf_token(); ?>' 
                    }, 
                 function(data){
                   if(data == 'success'){
-                    swal("You have done  Payment !");
+
+                    swal({
+                        title: "Success!",
+                        text: "You have done  Payment !",
+                        icon: payment_images+'/Successful_Payment.gif',
+                        closeOnClickOutside: false,
+                     });
+
                     setTimeout(function() {
-                    window.location.replace(base_url+'/featured_ads');
-                        
-                  }, 2000);
+                        window.location.replace(base_url+'/featured_ads');
+                     }, 3000);
                  }else{
                   swal('Error');
                   window.location.replace(base_url);
@@ -712,12 +731,14 @@ $('input[type=radio][name=gateway_payment]').change(function() {
         $(".rzpaybtn").css('display','none');
         $(".action_block.stripe").css('display','inline');
         $(".pay-button-stripe").css('display','inline');
+        $(".razorpay_btn").hide();
     }
     else if (this.value == 'razorpay') {
         $(".action_block.stripe").css('display','none');
         $(".pay-button-stripe").css('display','none');
         $(".action_block.razorpay").css('display','inline-flex');
         $(".rzpaybtn").css('display','inline-flex');
+        $(".razorpay_btn").show();
     }
 });
 
@@ -958,12 +979,13 @@ var autocomplete = new google.maps.places.Autocomplete(input);
      $('.ads_video_upload').hide();
      $('.tag_url').hide();
    };
+   
 
-
-   $('.form-card').on('keyup keypress blur change click mouseover', function(event) {
+   $('.form-card').on('    click mouseover', function(event) {
 
       var household_income_val = $("input[type='radio'][name='household_income']:checked").val();
       var gender_val = $("#gender").val();
+      var featured_cost_val = $("#price").val();
 
       var age_validation = new Array();
       $('.age:checked').each(function() {
@@ -989,7 +1011,7 @@ var autocomplete = new google.maps.places.Autocomplete(input);
          document.getElementById("Next1").disabled = true;
       }
 
-      if(ads_name_val != '' && Ads_type != 'null' ){
+      if(ads_name_val != '' && Ads_type != 'null' && featured_cost_val !=''){
 
          document.getElementsByClassName("error-message")[3].style.display = "none";
          document.getElementsByClassName('error-message')[4].style.display = 'none';
@@ -1023,6 +1045,16 @@ var autocomplete = new google.maps.places.Autocomplete(input);
          }
       });
 
+      $(".processing_alert").click(function(){
+
+        swal({
+        title: "Processing Payment!",
+        text: "Please wait untill the proccessing completed!",
+        icon: payment_images+'/processing_payment.gif',
+        buttons: false,      
+        closeOnClickOutside: false,
+        });
+    });
    </script>
 </body>
 </html>

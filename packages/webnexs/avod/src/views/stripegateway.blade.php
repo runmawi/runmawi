@@ -462,7 +462,7 @@
 
                     setTimeout(function() {
                         window.location.replace(base_url+'/billing_details');
-                     }, 5000);
+                     }, 3000);
                  }
                  else{
                   swal('Error');
