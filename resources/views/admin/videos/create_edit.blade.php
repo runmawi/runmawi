@@ -266,8 +266,8 @@ border-radius: 0px 4px 4px 0px;
                             <div class="col-3">
                             <label for=""><h3 class="fs-title m-0">Player Social Share:</h3></label>
                            <div class="share-box">
-                                 <a href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" class="share-ico"><i class="ri-facebook-fill">Facebook</i></a>&nbsp;
-                                 <a href="https://twitter.com/intent/tweet?text=<?= $media_url ?>" class="share-ico"><i class="ri-twitter-fill">Twitter</i></a>
+                                 <a href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" class="share-ico"><i class="ri-facebook-fill"></i></a>&nbsp;  <!-- Facebook -->
+                                 <a href="https://twitter.com/intent/tweet?text=<?= $media_url ?>" class="share-ico"><i class="ri-twitter-fill"></i></a> <!-- Twitter -->
                               </div>
                         </div>
                            @endif
