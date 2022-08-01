@@ -130,9 +130,10 @@ $site_page_url = $http_site_url[1];
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/variable.css';?>" />
     <!-- Style -->
       <link href="<?php echo URL::to('public/themes/theme3/assets/css/style.css') ?>" rel="stylesheet">
+    
        <link href="<?php echo URL::to('public/themes/theme3/assets/css/typography.css') ?>" rel="stylesheet">
        <link href="<?php echo URL::to('public/themes/theme3/assets/css/responsive.css') ?>" rel="stylesheet">
-      <link href="http://fonts.cdnfonts.com/css/gilroy-bold?styles=20876,20877,20878,20879,20880" rel="stylesheet">
+     
 
        <!-- Icon - Remixicon & fontawesome  -->
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -319,6 +320,148 @@ input:checked + .sliderk:before {
         body.light-theme span{
             color: <?php echo GetLightText(); ?>!important;
         }
+        #menuToggle
+{
+  display: block;
+  position: relative;
+ top:5px;
+  
+  z-index: 1;
+  
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+#menuToggle a
+{
+  text-decoration: none;
+  color: #232323;
+  
+  transition: color 0.3s ease;
+}
+
+#menuToggle a:hover
+{
+  color: tomato;
+}
+
+
+#menuToggle input
+{
+  display: block;
+  width: 40px;
+  height: 32px;
+  position: absolute;
+  top: -7px;
+  left: -5px;
+  
+  cursor: pointer;
+  
+  opacity: 0; /* hide this */
+  z-index: 2; /* and place it over the hamburger */
+  
+  -webkit-touch-callout: none;
+}
+
+/*
+ * Just a quick hamburger
+ */
+#menuToggle span
+{
+  display: block;
+  width: 33px;
+  height: 4px;
+  margin-bottom: 5px;
+  position: relative;
+  
+  background: #cdcdcd;
+  border-radius: 3px;
+  
+  z-index: 1;
+  
+  transform-origin: 4px 0px;
+  
+  transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
+              background 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
+              opacity 0.55s ease;
+}
+
+#menuToggle span:first-child
+{
+  transform-origin: 0% 0%;
+}
+
+#menuToggle span:nth-last-child(2)
+{
+  transform-origin: 0% 100%;
+}
+
+/* 
+ * Transform all the slices of hamburger
+ * into a crossmark.
+ */
+#menuToggle input:checked ~ span
+{
+  opacity: 1;
+  transform: rotate(45deg) translate(-2px, -1px);
+  background: #fff;
+}
+
+/*
+ * But let's hide the middle one.
+ */
+#menuToggle input:checked ~ span:nth-last-child(3)
+{
+  opacity: 0;
+  transform: rotate(0deg) scale(0.2, 0.2);
+}
+
+/*
+ * Ohyeah and the last one should go the other direction
+ */
+#menuToggle input:checked ~ span:nth-last-child(2)
+{
+  transform: rotate(-45deg) translate(0, -1px);
+}
+
+/*
+ * Make this absolute positioned
+ * at the top left of the screen
+ */
+#menu
+{
+  position: absolute;
+  width: 250px;
+  margin: -100px 0 0 -50px;
+  padding: 20px;
+  padding-top: 125px;
+  text-align: left;
+  background: #100033;
+  list-style-type: none;
+  -webkit-font-smoothing: antialiased;
+  /* to stop flickering of text in safari */
+  
+  transform-origin: 0% 0%;
+  transform: translate(-100%, 0);
+  
+  transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
+}
+
+#menu li
+{
+  padding: 10px 0;
+  font-size: 22px;
+    font-family: 'Gilroy';
+    font-weight: 300;
+}
+
+/*
+ * And let's slide it in from the left
+ */
+#menuToggle input:checked ~ ul
+{
+  transform: none;
+}
     </style>
      
    <body>
@@ -345,23 +488,13 @@ input:checked + .sliderk:before {
                               <span class="navbar-menu-icon navbar-menu-icon--bottom"></span>
                            </div>
                         </a>
-                        <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a>
-
- 
-                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                           <div class="menu-main-menu-container">
-<!--                              <ul id="top-menu" class="navbar-nav ml-auto">
-                                 <li class="menu-item">
-                                    <a href="<?php echo URL::to('home') ?>">Home</a>
-                                 </li>
-                                 <li class="menu-item">
-                                    <a href="<?php echo URL::to('home') ?>">Tv Shows</a>
-                                 </li>
-                                 <li class="menu-item">
-                                    <a href="href="<?php echo URL::to('home') ?>"">Movies</a>
-                                 </li>
-                              </ul>-->
-                               <ul id="top-menu" class="nav navbar-nav <?php if ( Session::get('locale') == 'arabic') { echo "navbar-right"; } else { echo "navbar-left";}?>">
+                        <div id="menuToggle">
+    
+                    <input type="checkbox" />
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                      <ul id="menu" class="nav navbar-nav <?php if ( Session::get('locale') == 'arabic') { echo "navbar-right"; } else { echo "navbar-left";}?>">
                                           <?php
                                         $stripe_plan = SubscriptionPlan();
                                         $menus = App\Menu::all();
@@ -487,7 +620,28 @@ input:checked + .sliderk:before {
                                             </a>-->
                                           </li>
                                         </ul>
-                           </div>
+                    </div>
+  <div class="search-box iq-search-bar d-search">
+                                    <form action="<?php echo URL::to("/") ."/searchResult"; ?>" method="post" class="searchbox">
+                                        <input name="_token" type="hidden" value="<?php echo csrf_token(); ?>" />
+                                        <div class="form-group position-relative">
+                                            <input type="text" name="search" class="text search-input font-size-12 searches" placeholder="Type here to Search Videos" />
+                                            <i class="search-link ri-search-line"></i>
+
+                                            <?php  include 'public/themes/default/partials/Search_content.php'; ?>
+
+                                        </div>
+                                    </form>
+                                 </div>
+                                 
+                                 <a href="<?php echo URL::to('/').'/searchResult';?>" class="search-toggle device-search mt-1" style="font-size:22px;margin-left:15px;">
+                                     
+                                 <i class="ri-search-line"></i>
+                                 </a>
+                               
+ 
+                        <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
+                            <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a>
                         </div>
                         <div class="mobile-more-menu">
                            <a href="javascript:void(0);" class="more-toggle" id="dropdownMenuButton"
@@ -520,23 +674,6 @@ input:checked + .sliderk:before {
                            <ul class="d-flex align-items-center list-inline m-0">
                               <li class="nav-item nav-icon">
 
-                                 <div class="search-box iq-search-bar d-search">
-                                    <form action="<?php echo URL::to("/") ."/searchResult"; ?>" method="post" class="searchbox">
-                                        <input name="_token" type="hidden" value="<?php echo csrf_token(); ?>" />
-                                        <div class="form-group position-relative">
-                                            <input type="text" name="search" class="text search-input font-size-12 searches" placeholder="Type here to Search Videos" />
-                                            <i class="search-link ri-search-line"></i>
-
-                                            <?php  include 'public/themes/default/partials/Search_content.php'; ?>
-
-                                        </div>
-                                    </form>
-                                 </div>
-                                 
-                                 <a href="<?php echo URL::to('/').'/searchResult';?>" class="search-toggle device-search">
-                                     
-                                 <i class="ri-search-line"></i>
-                                 </a>
                                  
                                   <div class="iq-sub-dropdown search_content overflow-auto" id="sidebar-scrollbar" >
                                        <div class="iq-card-body">
@@ -591,14 +728,14 @@ input:checked + .sliderk:before {
                                  </div>
                               </li>
                                <?php if(Auth::guest()): ?>
-                              <li class="nav-item nav-icon">
+                              <li class="nav-item nav-icon mr-2">
                                     <!-- <img src="<?php echo URL::to('/').'/public/uploads/avatars/lockscreen-user.png' ?>" class="img-fluid avatar-40 rounded-circle" alt="user">-->
                                     <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
                                         <div class="media align-items-center">
                                             <div class="right-icon">
                                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 70 70" style="enable-background:new 0 0 70 70" xml:space="preserve"><path class="st5" d="M13.4 33.7c0 .5.2.9.5 1.2.3.3.8.5 1.2.5h22.2l-4 4.1c-.4.3-.6.8-.6 1.3s.2 1 .5 1.3c.3.3.8.5 1.3.5s1-.2 1.3-.6l7.1-7.1c.7-.7.7-1.8 0-2.5l-7.1-7.1c-.7-.6-1.7-.6-2.4.1s-.7 1.7-.1 2.4l4 4.1H15.2c-1 .1-1.8.9-1.8 1.8z"/><path class="st5" d="M52.3 17.8c0-1.4-.6-2.8-1.6-3.7-1-1-2.3-1.6-3.7-1.6H27.5c-1.4 0-2.8.6-3.7 1.6-1 1-1.6 2.3-1.6 3.7v7.1c0 1 .8 1.8 1.8 1.8s1.8-.8 1.8-1.8v-7.1c0-1 .8-1.8 1.8-1.8H47c.5 0 .9.2 1.2.5.3.3.5.8.5 1.2v31.8c0 .5-.2.9-.5 1.2-.3.3-.8.5-1.2.5H27.5c-1 0-1.8-.8-1.8-1.8v-7.1c0-1-.8-1.8-1.8-1.8s-1.8.8-1.8 1.8v7.1c0 1.4.6 2.8 1.6 3.7 1 1 2.3 1.6 3.7 1.6H47c1.4 0 2.8-.6 3.7-1.6 1-1 1.6-2.3 1.6-3.7V17.8z"/></svg>
                                             </div>
-                                            <div class="media-body ml-3">
+                                            <div class="media-body ">
                                                 <h6 class="mb-0 ">Signin</h6>
                                             </div>
                                         </div>
@@ -610,7 +747,7 @@ input:checked + .sliderk:before {
                                         <div class="right-icon">
                                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 70 70" style="enable-background:new 0 0 70 70" xml:space="preserve"><path class="st6" d="M53.4 33.7H30.7M36.4 28.1l-5.7 5.7 5.7 5.7"/><path class="st6" d="M50.5 43.7c-2.1 3.4-5.3 5.9-9.1 7.3-3.7 1.4-7.8 1.6-11.7.4a18.4 18.4 0 0 1-9.6-28.8c2.4-3.2 5.8-5.5 9.6-6.6 3.8-1.1 7.9-1 11.7.4 3.7 1.4 6.9 4 9.1 7.3"/></svg>
                                         </div>
-                                        <div class="media-body ml-3">
+                                        <div class="media-body ">
                                            <h6 class="mb-0 ">Signup</h6>
                                         </div>
                                      </div>
@@ -1073,3 +1210,172 @@ $("#toggle").click(function(){
        <!-- MainContent End-->
      
   
+       
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                           <div class="menu-main-menu-container">
+<!--                              <ul id="top-menu" class="navbar-nav ml-auto">
+                                 <li class="menu-item">
+                                    <a href="<?php echo URL::to('home') ?>">Home</a>
+                                 </li>
+                                 <li class="menu-item">
+                                    <a href="<?php echo URL::to('home') ?>">Tv Shows</a>
+                                 </li>
+                                 <li class="menu-item">
+                                    <a href="href="<?php echo URL::to('home') ?>"">Movies</a>
+                                 </li>
+                              </ul>-->
+                               <ul id="top-menu" class="nav navbar-nav <?php if ( Session::get('locale') == 'arabic') { echo "navbar-right"; } else { echo "navbar-left";}?>">
+                                          <?php
+                                        $stripe_plan = SubscriptionPlan();
+                                        $menus = App\Menu::all();
+                                        $languages = App\Language::all();
+                                        foreach ($menus as $menu) { 
+                                        if ( $menu->in_menu == "video") { 
+                                          $cat = App\VideoCategory::orderBy("order")->where('in_home',1)->get();
+                                          ?>
+                                       <li class="dropdown menu-item">
+                                           <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown" >  
+                                                 <a class="d-flex justify-content-between" href="<?php echo  URL::to('/categoryList');?>"> <?php echo __($menu->name);?>  
+                                                   <i class="ri-arrow-down-s-line"></i>
+                                                </a>
+                                            </a>
+
+
+                                             <ul class="dropdown-menu categ-head">
+                                                   <?php foreach ( $cat->take(4) as $category) { ?>
+                                                      <li>
+                                                         <a class="dropdown-item cont-item" style="text-decoration: none!important;" href="<?php echo URL::to('/').'/category/'.$category->slug;?>"> 
+                                                            <?php echo $category->name;?> 
+                                                         </a>
+                                                      </li>
+                                                   <?php } ?>
+
+                                                   <li>
+                                                      <a class="dropdown-item cont-item" style="text-decoration: none!important;" href="<?php echo URL::to('/categoryList');?>">  
+                                                         <?php echo "More..." ;?> 
+                                                      </a>
+                                                   </li>
+
+                                             </ul>
+                                          </li>
+                                          <?php } elseif ( $menu->in_menu == "movies") { 
+                                        $cat = App\VideoCategory::all();
+                                        ?>
+                                          <li class="dropdown menu-item">
+                                           <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown" >  
+                                                 <a class="d-flex justify-content-between" href="<?php echo  URL::to('/Movie-list');?>"> <?php echo __($menu->name);?>  
+                                                   <i class="ri-arrow-down-s-line"></i>
+                                                </a>
+                                            </a>
+                                            <ul class="dropdown-menu categ-head">
+                                              <?php foreach ( $languages as $language){ ?>
+                                              <li>
+                                                <a class="dropdown-item cont-item" href="<?php echo URL::to('/').'/language/'.$language->id.'/'.$language->name;?>"> 
+                                                      <?php echo $language->name;?> 
+                                                    </a>
+                                              </li>
+                                              <?php } ?>
+                                            </ul>
+                                          </li>
+                                          <?php }elseif ( $menu->in_menu == "live") { 
+                                       //  $LiveCategory = App\LiveCategory::all();
+                                       $LiveCategory = App\LiveCategory::get();
+                                        ?>
+                                          <li class="dropdown menu-item">
+                                            <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown" >  
+                                                 <a class="d-flex justify-content-between" href="<?php echo  URL::to('/Live-list');?>"> <?php echo __($menu->name);?>  
+                                                   <i class="ri-arrow-down-s-line"></i>
+                                                </a>
+                                          </a>
+                                            <ul class="dropdown-menu categ-head">
+                                              <?php foreach ( $LiveCategory as $category){ ?>
+                                              <li>
+                                              <a class="dropdown-item cont-item" href="<?php echo URL::to('/live/category').'/'.$category->name;?>"> 
+                                                      <?php echo $category->name;?> 
+                                                    </a>
+                                              </li>
+                                              <?php } ?>
+                                            </ul>
+                                          </li>
+
+                                          <?php }elseif ( $menu->in_menu == "tv_show") { 
+                                             $LiveCategory = App\LiveCategory::get();
+                                          ?>
+
+                                          <li class="dropdown menu-item">
+                                             <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown" >  
+                                                <a class="d-flex justify-content-between" href="<?php echo  URL::to('/tv-shows');?>"> <?php echo __($menu->name);?>  
+                                                   <i class="ri-arrow-down-s-line"></i>
+                                                </a>
+                                             </a>
+
+                                             <ul class="dropdown-menu categ-head">
+                                                <?php foreach ( $LiveCategory as $category){ ?>
+                                                   <li>
+                                                      <a class="dropdown-item cont-item" href="<?php echo URL::to('/Series/Genre').'/'.$category->id;?>"> 
+                                                         <?php echo $category->name;?> 
+                                                      </a>
+                                                   </li>
+                                                <?php } ?>
+                                             </ul>
+                                          </li>
+
+                                          <?php } else { ?>
+                                          <li class="menu-item">
+                                            <a href="<?php echo URL::to('/').$menu->url;?>">
+                                              <?php echo __($menu->name);?>
+                                            </a>
+                                          </li>
+                                          <?php } } ?>
+                                          <!-- <li class="nav-item dropdown menu-item"> -->
+                                            <!-- <a class="dropdown-toggle" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">   -->
+                                              <!-- Movies <i class="fa fa-angle-down"></i> -->
+                                            <!-- </a> -->
+                                              <!-- <ul class="dropdown-menu categ-head"> -->
+                                                  <?php //foreach ( $languages as $language) { ?>
+                                                  <li>
+                                                    <!-- <a class="dropdown-item cont-item" href="<?php //echo URL::to('/').'/language/'.$language->id.'/'.$language->name;?>">  -->
+                                                      <?php //echo $language->name;?> 
+                                                    <!-- </a> -->
+                                                  <!-- </li> -->
+
+                                                <?php //} ?>
+                                                <!-- </ul> -->
+                                            <!-- </li> -->
+                                          <li class="">
+                                            <!--<a href="<?php echo URL::to('refferal') ?>" style="color: #4895d1 !important;list-style: none;
+                                                                                               font-weight: bold;
+                                                                                               font-size: 16px;">
+                                              <?php echo __('Refer and Earn');?>
+                                            </a>-->
+                                          </li>
+                                        </ul>
+                           </div>
+                        </div>
+                        <div class="mobile-more-menu">
+                           <a href="javascript:void(0);" class="more-toggle" id="dropdownMenuButton"
+                              data-toggle="more-toggle" aria-haspopup="true" aria-expanded="false">
+                           <i class="ri-more-line"></i>
+                           </a>
+                           <div class="more-menu" aria-labelledby="dropdownMenuButton">
+                              <div class="navbar-right position-relative">
+                                 <ul class="d-flex align-items-center justify-content-end list-inline m-0">
+                                    
+                                <li class="hidden-xs">
+                                          <div id="navbar-search-form">
+                                            <form role="search" action="<?php echo URL::to('/').'/searchResult';?>" method="POST">
+                                              <input name="_token" type="hidden" value="<?php echo csrf_token(); ?>">
+                                              <div>
+                                                <i class="fa fa-search">
+                                                </i>
+                                                <input type="text" name="search" class="searches" id="searches" autocomplete="off" placeholder="Search movies,series">
+                                              </div>
+                                            </form>
+                                          </div>
+                                          <div id="search_list" class="search_list" style="position: absolute;">
+                                          </div> 
+                                        </li>
+                                 </ul>
+                              </div>
+                           </div>
+                        </div>
