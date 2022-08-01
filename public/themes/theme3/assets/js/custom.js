@@ -119,11 +119,11 @@ Index Of Script
 			Slick Slider
 		----------------------------------------------------------------------- */
 		$('#home-slider').slick({
-			autoplay: false,
-			speed: 800,
+			autoplay: true,
+			speed: 900,
 			lazyLoad: 'progressive',
 			arrows: false,
-			dots: true,
+			dots: false,
 			prevArrow: '<div class="slick-nav prev-arrow"><i></i><svg><use xlink:href="#circle"></svg></div>',
 			nextArrow: '<div class="slick-nav next-arrow"><i></i><svg><use xlink:href="#circle"></svg></div>',
 			responsive: [

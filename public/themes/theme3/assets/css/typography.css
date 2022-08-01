@@ -51,18 +51,14 @@ Import CSS
 /*---------------------------------------------------------------------
 Font
 -----------------------------------------------------------------------*/
-@font-face {
-      font-family: 'Gilroy-Regular';
-  src: url(Gilroy-Regular.woff);
-    
-}
+
 /*---------------------------------------------------------------------
 General
 -----------------------------------------------------------------------*/
 *::-moz-selection { background: var(--iq-primary); color: var(--iq-white); text-shadow: none; }
 ::-moz-selection { background: var(--iq-primary); color: var(--iq-white); text-shadow: none; }
 ::selection { background: var(--iq-primary); color: var(--iq-white); text-shadow: none; }
-body {   font-family: 'Gilroy-Regular';
+body {   font-family: 'Gilroy';
 font-style: normal;
 font-weight: normal;font-weight: 400; font-style: normal; font-size: 16px; line-height: 1.5; padding: 0; margin: 0; color: var(--iq-body-text); /*background: var(--iq-body-bg);*/background: linear-gradient(180deg, #22093C -35.59%, #200362 173.05%);
 
@@ -73,16 +69,20 @@ a { color: var(--iq-body-text); text-decoration: none; }
 a:hover { text-decoration: none; }
 a.text-primary:focus, a.text-primary:hover { color: var(--iq-primary) !important; }
 hr { border-color: var(--iq-border-light); }
-h1, h2, h3, h4, h5, h6 { font-weight: 500; margin: 0px; line-height: 1.2; color: var(--iq-white);      font-family: 'Gilroy-Regular';}
+h1, h2, h3, h4, h5, h6 { font-weight: 500; margin: 0px; line-height: 1.2; color: var(--iq-white);      font-family: 'Gilroy';}
 h1 a, h2 a, h3 a, h4 a, h5 a, h6 a { color: inherit; }
-label { font-weight: normal;      font-family: 'Gilroy-Regular';}
-h1, .h1 { font-size: 3.052em;      font-family: 'Gilroy-Regular';}
-h2, .h2 { font-size: 2.300em;       font-family: 'Gilroy-Regular';}
-h3, .h3 { font-size: 1.953em;      font-family: 'Gilroy-Regular';}
-h4, .h4 { font-size: 1.400em;       font-family: 'Gilroy-Regular';}
-h5, .h5 { font-size: 1.200em;       font-family: 'Gilroy-Regular';}
+label { font-weight: normal;      font-family: 'Gilroy';}
+h1, .h1 { font-size: 3.052em;      font-family: 'Gilroy';font-weight: 600;}
+h2, .h2 { font-size: 2.300em;       font-family: 'Gilroy';}
+h3, .h3 { font-size: 1.953em;      font-family: 'Gilroy';}
+h4, .h4 {font-family: 'Gilroy';
+font-style: normal;
+font-weight: 600;
+font-size: 30px;
+line-height: 43px;}
+h5, .h5 { font-size: 1.200em;       font-family: 'Gilroy';}
 h6, .h6 { font-size: 1.0em; }
-.container-fluid { padding: 0 50px; }
+.container-fluid { padding: 0 50px; font-family: 'Gilroy';}
 .fluid{padding: 5px 20px;   min-width: 100%;overflow: visible;position: relative;
     top: 0;
     left: 0;

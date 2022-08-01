@@ -1,6 +1,6 @@
 
 <?php
-    include(public_path('themes/theme2/views/header.php'));
+    include(public_path('themes/theme3/views/header.php'));
 ?>
 
 <?php 
@@ -994,7 +994,7 @@ $artists = [];
 <?php } ?>
 
 
-   <div class="video-list you-may-like">
+   <div class="video-list you-may-like container-fluid">
        <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Recomended Videos');?></h4>
            <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>   
                <?php include('partials/video-loop.php');?>
@@ -1556,7 +1556,7 @@ location.reload();
 
 </script>
 
-<?php     include(public_path('themes/theme2/views/footer.blade.php')); ?>
+<?php     include(public_path('themes/theme3/views/footer.blade.php')); ?>
 
 <!-- Trailer m3u8 -->
 
