@@ -29,7 +29,7 @@
                                 <?php }elseif($video->ppv_price == null ){ ?>
                                 <p class="p-tag"><?php echo "Free"; ?></p>
                                 <?php } ?>
-                            </div>
+                           
                          <?php } ?>   
                        
                 </div>
@@ -112,6 +112,7 @@
                                 Live Now
                         </a>
                     </div>
+                </div>
                 </div>
             </a>
         </li>

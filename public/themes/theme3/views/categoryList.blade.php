@@ -1,10 +1,10 @@
 @php
-    include(public_path('themes/theme2/views/header.php'));
+    include(public_path('themes/theme3/views/header.php'));
 @endphp
 
 <section id="iq-favorites">
     <h3 class="vid-title text-center mt-4 mb-5">{{  "Category List" }}</h3>
-    <div class="container-fluid" style="padding: 0px 40px!important;background: linear-gradient(135.05deg, rgba(136, 136, 136, 0.48) 1.85%, rgba(64, 32, 32, 0.13) 38.53%, rgba(81, 57, 57, 0.12) 97.89%);">
+    <div class="container-fluid" >
         <div class="row">
             <div class="col-sm-12 page-height">
                 <div class="iq-main-header align-items-center justify-content-between"> </div>
@@ -45,5 +45,5 @@
         </div>
 </section>
 @php
-    include(public_path('themes/theme2/views/footer.blade.php'));
+    include(public_path('themes/theme3/views/footer.blade.php'));
 @endphp

@@ -323,7 +323,9 @@ class TvshowsController extends Controller
             if(!Auth::guest()):
                 $like_dislike = LikeDislike::where('user_id', '=', Auth::user()->id)->where('episode_id', '=', $id)->first();
             endif;
-
+            if(Auth::guest()):
+                $like_dislike = [];
+            endif;
          if((!Auth::guest() && Auth::user()->role == 'admin') || $series_ppv_status != 1 || $ppv_exits > 0 
          || $free_episode > 0){
 
