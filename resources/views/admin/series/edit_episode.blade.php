@@ -31,6 +31,14 @@
     cursor: pointer;
 }
 </style>
+
+<?php
+$series = App\Series::where('id',$episodes->series_id)->first()  ;
+// dd($series->title);
+$media_url = URL::to('/episode/').'/'.$series->title.'/'.$episodes->slug;
+$embed_media_url = URL::to('/episode/embed').'/'.$series->title.'/'.$episodes->slug;
+$url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowfullscreen></iframe>';
+?>
 <link rel="stylesheet" href="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.css') }}" />
 @stop @section('content')
 <div id="content-page" class="content-page">
@@ -47,6 +55,18 @@
                 </div>
                 @endif
             </div>
+            <div class="col-md-6">
+                <label for=""><h3 class="fs-title m-0">Player Embed Link:</h3></label>
+                <p>Click <a href="#"onclick="EmbedCopy();" class="share-ico"><i class="ri-links-fill"></i> here</a> to get the Embedded URL</p>
+            <div>
+            <div class="col-md-6">
+                <label for=""><h3 class="fs-title m-0">Player Social Share:</h3></label>
+                <div class="share-box">
+                    <a href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" class="share-ico"><i class="ri-facebook-fill"></i></a>&nbsp;  <!-- Facebook -->
+                    <a href="https://twitter.com/intent/tweet?text=<?= $media_url ?>" class="share-ico"><i class="ri-twitter-fill"></i></a> <!-- Twitter -->
+                </div>
+            </div>
+
             <hr />
             <div class="clear"></div>
 
@@ -873,6 +893,20 @@ tagInput1.addData([])
         }
 
 		
+
+        function EmbedCopy() {
+   // var media_path = $('#media_url').val();
+   var media_path = '<?= $url_path ?>';
+   var url =  navigator.clipboard.writeText(window.location.href);
+   var path =  navigator.clipboard.writeText(media_path);
+   $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Copied Embed URL</div>');
+              setTimeout(function() {
+               $('.add_watch').slideUp('fast');
+              }, 3000);
+   // console.log(url);
+   // console.log(media_path);
+   // console.log(path);
+   }
         </script>
         @stop @stop @stop
     </div>

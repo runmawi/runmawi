@@ -65,7 +65,7 @@ line-height: 57px;
         font-weight: 600;
         color: #fff;
         text-align: left;
-       font-family: 'Gilroy-Bold';
+       font-family: 'Gilroy';
 
 
 
@@ -106,7 +106,8 @@ line-height: 57px;
  }
     a.f-link {
     margin-bottom: 1rem;
-      
+             font-family: 'Gilroy';
+
         font-size: 14px;
     
 }
@@ -162,6 +163,7 @@ i.fa.fa-google-plus {
 
 <body>
   <section>
+      <div class="container-fluid">
       <div class="row p-2 align-items-center">
           <div class="col-md-4 sea">
               <i class="fa fa-search" aria-hidden="true"></i>
@@ -171,11 +173,12 @@ i.fa.fa-google-plus {
             <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  >
           </div>
           <div class="col-md-4 text-right">
-              <a href="<?= URL::to('/login')?>" class=" mr-2" style="color:#fff!important;font-weight:500!important;">SIGN IN</a>
-               <button type="submit" class="btn signup" style="color:#fff!important;font-size:16px;font-weight:700;border-radius:30px;">Subscribe Now</button>
+              <a   data-bs-toggle="modal" data-bs-target="#staticBackdrop" href="<?= URL::to('/login')?>" class=" mr-2" style="color:#fff!important;font-weight:500!important;">SIGN IN</a>
+               <button  type="submit" class="btn signup" style="color:#fff!important;font-size:16px;font-weight:700;border-radius:30px;">Subscribe Now</button>
               
           </div>
       </div>
+          </div>
     </section>  
 <section class="sign-in-page" style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;">
     
@@ -274,7 +277,7 @@ i.fa.fa-google-plus {
                           </div>
                </div>
                         </div>
-                         </div>
+                      
                          <!-- <h5 class="mb-3 text-center">Sign in by using</h5>
                          <div class="form-group row mb-0">
 						@if ( config('social.google') == 1 )
@@ -298,8 +301,30 @@ i.fa.fa-google-plus {
          </div>
           
       </div>
+ <!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Understood</button>
+      </div>
+    </div>
+  </div>
+</div>
    </div>
 </section>
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
                     <script src="jquery-3.5.1.min.js"></script>
 <script>
@@ -310,6 +335,9 @@ i.fa.fa-google-plus {
         }, 3000);
     })
 </script>
+    @php
+    @include(public_path('themes\theme3\views\footer.blade.php'));
+@endphp
 </body>
 
 

@@ -240,17 +240,17 @@
 
                               <div class="row">
                                 <div class="col-sm-1"> <input type="radio" class="location-hide" id="" name="location" value="all_countries" /></div>
-                                <div class="col-sm-4"> <label for="" class="">{{ ucwords('all countries & territories') }}</label></div>
+                                <div class="col-sm-4" style="margin-left:-30px;"> <label for="" class="">{{ ucwords('all countries & territories') }}</label></div>
                               </div>
 
                               <div class="row">
                                 <div class="col-sm-1"> <input type="radio" class="location-hide" id="" name="location" value="India" /></div>
-                                <div class="col-sm-1"> <label for="" class="">India</label></div>
+                                <div class="col-sm-1" style="margin-left:-30px;"> <label for="" class="">India</label></div>
                               </div>
 
                               <div class="row">
                                 <div class="col-sm-1"> <input type="radio" class="location-show" id="" name="location" value="enter_location" /></div>
-                                <div class="col-sm-4"> <label for="" class="">{{ ucwords('enter the location') }}</label></div>
+                                <div class="col-sm-4" style="margin-left:-30px;"> <label for="" class="">{{ ucwords('enter the location') }}</label></div>
                               </div>
 
                                 <div class="col-md-6 location_input">
@@ -266,18 +266,25 @@
 
                            <!--Schedule Ads Details fieldsets -->
                             <fieldset>
+                                 <div class="form-card p-0">
+                                     <h2 class="fs-title">Set your weekly hours</h2>
                                 <div class="col-md-6">
-                                    <label>Set your weekly hours</label>
+                                 
                  </div>
                                     <div class="row align-items-center">
-                                        <div class="col-sm-2 ">
+                                        <div class="col-sm-6 d-flex justify-content-between">
+                                            <div>  <div></div>
                                             <input type="checkbox" id="Monday" class="date" name="date[Monday]" value="{{ $Monday }}" @if(!empty($Monday_time['0'])) checked @endif/></div>
-                                        <div class="col-sm-4">
-                                            <label for="">Monday</label></div>
-                                        <div class="col-sm-4">
-                                            <span id="" class="Monday_add ml-4">
+                                            <div> <label for="">Monday</label></div>
+                                            <div> <span id="" class="Monday_add ml-4">
                                                 <i class="fa-solid fa-plus"></i>
-                                            </span></div>
+                                            </span>
+                                            </div>
+                                          
+                                             
+                                           
+                                        </div>
+                                       
                                         </div>
 
                                         @forelse ($Monday_time as $Monday_times)
@@ -306,14 +313,14 @@
                                    
 
                                     <div class="row align-items-center">
-                                        <div class="col-sm-2 ">
-                                            <input type="checkbox" id="Tuesday" class="date" name="date[Tuesday]" value="{{ $Tuesday }}" @if(!empty($Tuesday_time['0'])) checked @endif /></div>
-                                        <div class="col-sm-4">
-                                            <label for=""> Tuesday </label></div>
-                                        <div class="col-sm-4">
-                                            <span id="" class="Tuesday_add ml-4">
+                                        <div class="col-sm-6 d-flex justify-content-between">
+                                            <div> <input type="checkbox" id="Tuesday" class="date" name="date[Tuesday]" value="{{ $Tuesday }}" @if(!empty($Tuesday_time['0'])) checked @endif /></div>
+                                            <div> <label for=""> Tuesday </label></div>
+                                            <div> <span id="" class="Tuesday_add ml-4">
                                                 <i class="fa-solid fa-plus"></i>
                                             </span></div>
+                                           </div>
+                                       
                                         
 
                                         @forelse ($Tuesday_time as $tuesday_tym)
@@ -339,14 +346,14 @@
                                     </div>
                     
                                     <div class="row align-items-center">
-                                        <div class="col-sm-2 ">
-                                            <input type="checkbox" class="date" id="Wednesday" name="date[Wednesday]" value="{{ $Wednesday }}" @if(!empty($Wednesday_time['0'])) checked @endif /></div>
-                                        <div class="col-sm-4">
-                                            <label for=""> Wednesday </label></div>
-                                        <div class="col-sm-4">
-                                            <span  class="wednesday_add ml-4">
+                                        <div class="col-sm-6 d-flex justify-content-between">
+                                            <div> <input type="checkbox" class="date" id="Wednesday" name="date[Wednesday]" value="{{ $Wednesday }}" @if(!empty($Wednesday_time['0'])) checked @endif /></div>
+                                            <div>   <label for=""> Wednesday </label></div>
+                                            <div>  <span  class="wednesday_add ml-4">
                                                 <i class="fa-solid fa-plus"></i>
                                             </span></div>
+                                           </div>
+                                        
                                       
 
                                         @forelse ($Wednesday_time as $tym)
@@ -371,14 +378,14 @@
                                     </div>
                     
                                     <div class="row align-items-center">
-                                        <div class="col-sm-2">
-                                            <input type="checkbox" class="date" id="thrusday" name="date[thrusday]" value="{{ $Thrusday }}"  @if(!empty($Thursday_time['0'])) checked @endif /></div>
-                                        <div class="col-sm-4">
-                                            <label for=""> Thrusday </label></div>
-                                        <div class="col-sm-4">
-                                            <span id="add" class="thrusday_add">
+                                        <div class="col-sm-6 d-flex justify-content-between">
+                                            <div> <input type="checkbox" class="date" id="thrusday" name="date[thrusday]" value="{{ $Thrusday }}"  @if(!empty($Thursday_time['0'])) checked @endif /></div>
+                                            <div>  <label for=""> Thrusday </label></div>
+                                            <div> <span id="add" class="thrusday_add">
                                                 <i class="fa-solid fa-plus"></i>
                                             </span></div>
+                                           </div>
+                                       
                                         
 
                                         @forelse ($Thursday_time as $tym)
@@ -403,14 +410,14 @@
                                     </div>
                     
                                     <div class="row align-items-center">
-                                        <div class="col-sm-2">
-                                            <input type="checkbox" class="date" id="friday" name="date[friday]" value="{{ $Friday }}"  @if(!empty($Friday_time['0'])) checked @endif /></div>
-                                        <div class="col-sm-4">
-                                            <label for="">Friday </label></div>
-                                        <div class="col-sm-4">
-                                            <span id="add" class="friday_add ml-4">
+                                        <div class="col-sm-6  d-flex justify-content-between">
+                                            <div> <input type="checkbox" class="date" id="friday" name="date[friday]" value="{{ $Friday }}"  @if(!empty($Friday_time['0'])) checked @endif /></div>
+                                            <div>     <label for="">Friday </label></div>
+                                            <div> <span id="add" class="friday_add ml-4">
                                                 <i class="fa-solid fa-plus"></i>
                                             </span></div>
+                                           </div>
+                                      
                                       
 
                                         @forelse ($Friday_time as $tym)
@@ -439,14 +446,14 @@
                                     </div>
                     
                                     <div class="row align-items-center">
-                                        <div class="col-sm-2">
-                                            <input type="checkbox" class="date" id="saturday" name="date[saturday]" value="{{ $Saturday }}" @if(!empty($Saturday_time['0'])) checked @endif /></div>
-                                        <div class="col-sm-4">
-                                            <label for="">Saturday </label></div>
-                                        <div class="col-sm-4">
-                                            <span id="add" class="saturday_add">
+                                        <div class="col-sm-6 d-flex justify-content-between">
+                                            <div> <input type="checkbox" class="date" id="saturday" name="date[saturday]" value="{{ $Saturday }}" @if(!empty($Saturday_time['0'])) checked @endif /></div>
+                                            <div> <label for="">Saturday </label></div>
+                                            <div>  <span id="add" class="saturday_add">
                                                 <i class="fa-solid fa-plus"></i>
                                             </span></div>
+                                           </div>
+                                      
                                        
 
                                         @forelse ($Saturday_time as $tym)
@@ -473,7 +480,8 @@
                              <input type="button" name="previous" class="previous action-button-previous" value="Previous" /> 
                                     <input type="submit" class="btn btn-primary action-button" id="submit-update-cat" value="Save" />
                                   
-                            </fieldset>
+                            
+                                     </div></fieldset>
                             <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
                         </form>
                     </div>

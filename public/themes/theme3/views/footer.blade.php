@@ -8,8 +8,8 @@
 <footer class=" py-4 mt-auto">
         <div class="container-fluid px-5">
             <div class="row align-items-center  justify-content-between ">
-                <div class="col-sm-12 small m-0 text-white exp p-0 text-center">
-                    <ul style="display:inline-flex;">
+                <div class="col-sm-12 small m-0 exp p-0 text-center">
+                    <ul style="display:inline-flex;color:#957EFF;">
                         <li>Terms Of Use</li>
                         <li> Privacy Policy                 
                         <li>FAQs</li>
@@ -191,21 +191,36 @@
                 <?php $app_settings = App\AppSetting::where('id','=',1)->first();  ?>     
 
                 <div class="col-sm-12 small m-0 text-white text-center">
-                    <a href="<?php echo $settings->facebook_page_id; ?>" target="_blank"  class="text-center icn">
+                    <a href="<?php echo $settings->facebook_page_id; ?>" target="_blank"  class="text-center icn1">
                       <i class="fa fa-facebook" aria-hidden="true"></i>
 
                         </a>
-                      <a href="<?php echo $settings->twitter_page_id; ?>" class="text-center icn">
+                      <a href="<?php echo $settings->twitter_page_id; ?>" class="text-center icn1">
                        <i class="fa fa-twitter" aria-hidden="true"></i>
 
                         </a>
-                    <a href="<?php echo $settings->youtube_page_id; ?>" class="text-center icn">
-                      <i class="fa fa-youtube-play" aria-hidden="true"></i>
+                    <a href="<?php echo $settings->youtube_page_id; ?>" class="text-center icn1">
+                    <i class="fa fa-instagram" aria-hidden="true"></i>
+
+
+
+                        </a>
+                     <a href="<?php echo $settings->youtube_page_id; ?>" class="text-center icn1">
+                     <i class="fa fa-linkedin" aria-hidden="true"></i>
+
 
                         </a>
                 </div>
             </div>
         </div>
+            <div class="row">
+                    <div class="col-lg-6">
+                         <p class="mb-0 font-size-16 text-body" style="color:#957EFF!important;"><?php echo $settings->website_name ; ?> - <?php echo Carbon::now()->year ; ?> All Rights Reserved</p>
+                    </div>
+                    <div class="col-lg-6 text-right">
+                         <img class=""  src="<?php echo  URL::to('/assets/img/frame.png')?>" >
+                    </div>
+                </div>
     </footer>
 <!--<footer class="mb-0">
          <div class="container-fluid">
@@ -321,13 +336,9 @@
                   
                    </div>
                </div>
-            </div>
-         <div class="copyright py-2">
-            <div class="container-fluid">
-               <p class="mb-0 text-center font-size-14 text-body" style="color:#fff!important;"><?php echo $settings->website_name ; ?> - <?php echo Carbon::now()->year ; ?> All Rights Reserved</p>
-            </div>
-        
-      </footer>-->
+            </div>-->
+         
+      </footer>
 
           <!-- back-to-top End -->
      <!-- back-to-top End -->

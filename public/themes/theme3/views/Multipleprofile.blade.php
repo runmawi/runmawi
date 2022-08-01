@@ -9,7 +9,7 @@
         <title> {{ $Website_name ? $Website_name->website_name : 'Website Name' }} </title>
     <style>
         li{list-style:none;}
-        body{background: linear-gradient(180deg, #121C28 -35.59%, rgba(11, 18, 28, 0.36) 173.05%);padding: 20px;vertical-align: middle;height: 100%;}
+        body{background: linear-gradient(180deg, #22093C -35.59%, #200362 173.05%);padding: 20px;vertical-align: middle;height: 100%;}
 
     </style>
 </head>
