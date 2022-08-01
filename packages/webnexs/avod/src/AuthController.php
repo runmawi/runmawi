@@ -670,8 +670,28 @@ class AuthController extends Controller
         $user = Advertiser::find($user_id);
         $data['intent'] = $user->createSetupIntent();
         $data['user'] = $user;
-        $data['activeplan'] = Advertiserplanhistory::where('advertiser_id',session('advertiser_id'))->where('status','active')->count();
 
+        // Ads scheduling
+
+            $now = Carbon::now();
+
+            $data  ['Monday_time' ]  = AdsTimeSlot::where('day','Monday')->get();
+            $data  ['Tuesday_time'] =AdsTimeSlot::where('day','Tuesday')->get();
+            $data  ['Wednesday_time'] =AdsTimeSlot::where('day','Wednesday')->get();
+            $data  ['Thursday_time'] =AdsTimeSlot::where('day','Thrusday')->get();
+            $data  ['Friday_time']=AdsTimeSlot::where('day','Friday')->get();
+            $data  ['Saturday_time'] =AdsTimeSlot::where('day','Saturday')->get();
+            $data  ['Sunday_time'] =AdsTimeSlot::where('day','Sunday')->get();
+            $data  ['Monday']  =  $now->startOfWeek(Carbon::MONDAY)->format('Y-m-d');
+            $data  ['Tuesday'] =  $now->endOfWeek(Carbon::TUESDAY)->format('Y-m-d');
+            $data  ['Wednesday'] =  $now->endOfWeek(Carbon::WEDNESDAY)->format('Y-m-d');
+            $data  ['Thrusday'] =  $now->endOfWeek(Carbon::THURSDAY)->format('Y-m-d');
+            $data  ['Friday']  = $now->endOfWeek(Carbon::FRIDAY)->format('Y-m-d');
+            $data  ['Saturday'] = $now->endOfWeek(Carbon::SATURDAY)->format('Y-m-d');
+            $data  ['Sunday']   = $now->endOfWeek(Carbon::SUNDAY)->format('Y-m-d');
+    
+        $data['activeplan'] = Advertiserplanhistory::where('advertiser_id',session('advertiser_id'))->where('status','active')->count();
+           
         return view('avod::upload_featured_ad',$data);
     }
 
