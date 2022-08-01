@@ -25,13 +25,13 @@ $uppercase =  ucfirst($request_url);
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 
     <!-- Bootstrap CSS -->
-         <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme2/assets/css/bootstrap.min.css') ?>" />
+         <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme3/assets/css/bootstrap.min.css') ?>" />
 
     <!-- Typography CSS -->
-         <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme2/assets/css/typography.css') ?>" />
+         <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme3/assets/css/typography.css') ?>" />
          
     <!-- Style -->
-         <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme2/assets/css/style.css') ?>" />
+         <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme3/assets/css/style.css') ?>" />
   
     <!-- font awesome Icon -->
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
@@ -49,7 +49,7 @@ $uppercase =  ucfirst($request_url);
 <style>
         .error {
     color: brown;
-    font-family: 'Chivo' !important;
+    
     }
     .sign-user_card {
        background: linear-gradient(rgba(136, 136, 136, 0.1) , rgba(64, 32, 32, 0.13), rgba(81, 57, 57, 0.12));!important;
@@ -69,6 +69,10 @@ $uppercase =  ucfirst($request_url);
 }
     .text-primary{
         text-decoration: underline!important;
+    }
+    .hbo{
+        font-size: 12px;
+        color: #fff;
     }
 #ck-button label span {
     text-align:center;
@@ -136,6 +140,9 @@ $uppercase =  ucfirst($request_url);
     color: var(--iq-body-text);
     text-decoration: none;
 }*/
+    select.form-control {
+    -webkit-appearance: menulist;
+}
     .form-control {
     height: 45px!important;
     line-height: 45px;
@@ -147,8 +154,7 @@ $uppercase =  ucfirst($request_url);
     border-radius: 0;
     margin-bottom: 1rem !important;
     border: none!important;
-  font-family: 'Proxima Nova';
-font-style: normal;
+ 
 font-weight: 400;
 font-size: 20px;
 
@@ -165,10 +171,11 @@ color: #FFFFFF;
         border: none;
     }
 .phselect{
-   width: 140px;
-   background: rgba(40, 40, 40, 1) !important;
+  
+   background: transparent !important;
     color: var(--iq-white) !important;
-    border:none;
+    border:1px solid #fff!important;
+    border-radius: 10px;
 }
     
 .form-control {
@@ -203,7 +210,8 @@ color: #FFFFFF;
     padding-right: 150px !important;
 }
     .sign-user_card input{
-       background: rgba(196, 196, 196, 0.2)!important;
+       background: transparent!important;
+        border-bottom: 1px solid #fff!important;
     }
 i.fa.fa-google-plus {
     padding: 10px !important;
@@ -212,8 +220,8 @@ i.fa.fa-google-plus {
     background: #474644 !important;
 }
     .reveal{
-        margin-left: -92px !important;
-        margin-top: 18px;
+        margin-left: 59px !important;
+        margin-top: -46px!important;
     height: 45px !important;
     background: transparent !important;
     color: #fff !important;
@@ -222,16 +230,14 @@ i.fa.fa-google-plus {
     .sign-in-page{
         
         padding: 40px;
-        border-radius: 20px;
+      
         
     } 
-    ::placeholder { color: #fff!important; opacity: 1; font-size: 14px!important;letter-spacing: 1px;font-weight: 400!important;text-transform: uppercase; }
-:-ms-input-placeholder { color: #d9d5d5 !important;  }
-::-ms-input-placeholder { color: #d9d5d5 !important; }
+    
 
 </style>
 
-<section class="sign-in-page" style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;">
+<section class="sign-in-page" >
 @section('content')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -376,7 +382,7 @@ i.fa.fa-google-plus {
 <div class="container">
       <div class="row justify-content-center align-items-center height-self-center">
           
-         <div class="col-sm-10 col-md-7 col-lg-6 align-self-center text-center">
+         <div class="col-sm-10 col-md-7 col-lg-8 align-self-center text-center">
              <div class="text-center">
                <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" style="margin-bottom:1rem;">  
           </div>
@@ -384,16 +390,16 @@ i.fa.fa-google-plus {
                <div class="sign-in-page-data">
                   <div class="sign-in-from w-100 m-auto">
                       <div align="center">
-                               <h3 class="mb-3 text-center text-white">SIGNUP</h3>
+                               <h3 class="mb-3 text-center text-white">Create Your Account</h3>
+                          <p class="hbo">You are one step closer to enjoying the best entertainment that HBO Max has to offer</p>
                       </div>
                       <form action="<?php if (isset($ref) ) { echo URL::to('/').'/register1?ref='.$ref.'&coupon='.$coupon; } else { echo URL::to('/').'/register1'; } ?>" method="POST" id="stripe_plan" class="stripe_plan" name="member_signup" enctype="multipart/form-data">
                         @csrf
                           <div class="row justify-content-center">
                               <div class="col-lg-10">
-                            <div class="form-group">
-                                <!--<label for="username" class="col-md-4 col-sm-offset-1 col-form-label text-md-right">{{ __('Username') }} <span style="color:#4895d1">*</span></label>-->
-
-                                <div class="col-md-12 lab" style=" ">
+                                  <div class="row align-items-center">
+                                      <div class="col-lg-6">
+                                           <div class="lab" style=" ">
                             
                                     <input id="username" type="text"  class="form-control alphaonly  @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" placeholder="ACCOUNT ID" required autocomplete="off" autofocus>
 
@@ -403,7 +409,11 @@ i.fa.fa-google-plus {
                                         </span>
                                     @enderror
                                 </div>
-                                <div class="col-md-12 lab mt-3">
+                                      </div>
+                                      
+                                  
+                                  <div class="col-lg-6">
+                                      <div class=" lab ">
                                 <input id="email" type="email" placeholder="EMAIL_ID"  class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="off">
                                 <span class="invalid-feedback" id="email_error" role="alert">Email Already Exits
                                 </span>
@@ -414,10 +424,9 @@ i.fa.fa-google-plus {
                                     </span>
                                 @enderror
                             </div>
-                                 <div class="col-md-12 mt-3">
-                                            <div class="row p-0 ">
-                               
-                           <div class="col-sm-4 ">
+                                  </div>
+                                  <div class="col-lg-6 mt-3">
+                                       <div class="">
                               <select class="phselect form-control" name="ccode" id="ccode" >
                                 @foreach($jsondata as $code)
                                 <option value="{{  $code['dial_code'] }}" {{ $code['name'] == "United States" ? 'selected' : ''}}>{{ $code['name'].' ('. $code['dial_code'] . ')' }}</option>
@@ -425,7 +434,13 @@ i.fa.fa-google-plus {
                                 @endforeach
                             </select>
                             </div>
-                            <div class="col-sm-8">
+                                  </div>
+                                      <div class="col-lg-6">
+                                            <div class="lab mt-3">
+                                           
+                               
+                          
+                            <div class="">
                                 <input id="mobile" type="text" maxlength="10" minlength="10" class="form-control @error('email') is-invalid @enderror" name="mobile" placeholder="{{ __('Moblie') }}" value="{{ old('mobile') }}" required autocomplete="off" autofocus> 
                                 <span class="verify-error"></span>
                                 
@@ -434,18 +449,19 @@ i.fa.fa-google-plus {
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror                                    
-                            </div></div>
-						
+                            </div>						
 
                                 </div>
-                                
-                                
-                            <div class="col-md-12 lab mt-3">
+                                      </div>
+                                      <div class="col-lg-12">
+                                          <div class=" lab mt-3">
                                <input type="file" multiple="true" class="form-control" style="padding: 0px;" name="avatar" id="avatar" />
                                  </div>
-                                 <div class="col-md-12">
-                                     <div class="row">
-                                     <div class="col-md-12 lab mt-3">
+                                      </div>
+                                      <div class="col-lg-6">
+                                       
+                                   
+                                     <div class=" lab mt-3">
                                 <input id="password" type="password" placeholder="PASSWORD" class="form-control @error('password') is-invalid @enderror pwd" name="password" required autocomplete="new-password">
                                          </div>
                                          <div >
@@ -461,11 +477,11 @@ i.fa.fa-google-plus {
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
-                                         </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="row">
-                                     <div class="col-md-12 lab mt-3">
+                                        
+                                      </div>
+                                      <div class="col-lg-6">
+
+                                     <div class=" lab mt-3">
                                 <input id="password-confirm" type="password" class="form-control" placeholder="Confirm Password" name="password_confirmation" required autocomplete="new-password">
                                     </div>
                                     <div >
@@ -475,11 +491,23 @@ i.fa.fa-google-plus {
                                  <span class="input-group-btn" id="eyeShow1" style="display: none;">
                                    <button class="btn btn-default reveal" onclick="visibility2()" type="button"><i class="fa fa-eye" aria-hidden="true"></i></button>
                                  </span>
-                                    </div>
-                                </div>
+                                   
     
 
                             </div>
+                                      </div>
+                                  </div> 
+                            <div class="form-group">
+                                <!--<label for="username" class="col-md-4 col-sm-offset-1 col-form-label text-md-right">{{ __('Username') }} <span style="color:#4895d1">*</span></label>-->
+
+                                
+                                
+                               
+                                
+                                
+                            
+                                 
+                           
                                  
                             </div>
                           
@@ -1009,7 +1037,7 @@ $( "#stripe_plan" ).validate({
 
 
 @php
-    @include(public_path('themes\theme2\views\footer.blade.php'));
+    @include(public_path('themes\theme3\views\footer.blade.php'));
 @endphp
 
 @endsection 
