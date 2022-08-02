@@ -160,7 +160,6 @@ class ChannelController extends Controller
     
       public function play_videos($slug)
     {
-
           $data['password_hash'] = "";
           $data = session()->all();
           $getfeching = \App\Geofencing::first();
@@ -234,7 +233,6 @@ class ChannelController extends Controller
             $countryName = $geoip->getCountry();
             $regionName = $geoip->getregion();
             $cityName = $geoip->getcity();
-
 
             $view = new RecentView;
             $view->video_id  = $vid;

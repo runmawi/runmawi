@@ -10,7 +10,10 @@ $pre_ads_url = App\AdsEvent::Join('advertisements','advertisements.id','=','ads_
     ->where('advertisements.status',1)
     ->where('advertisements.ads_position','pre')
     ->where('videos.ads_category',$video->ads_category)
-    ->pluck('ads_path')->random();
+    ->pluck('ads_path');
+    if(count($pre_ads_url) > 0){
+        $pre_ads_url =  $pre_ads_url->random();
+    }
 ?>
 
 <input type="hidden" id="pre_ads_url" name="pre_ads_url" value="<?= $pre_ads_url ; ?>">
