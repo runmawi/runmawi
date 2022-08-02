@@ -278,9 +278,12 @@ class HomeController extends Controller
         $Recomended = HomeSetting::first();
         $ThumbnailSetting = ThumbnailSetting::first();
 
+        if($settings->enable_landing_page == 1 && empty($data['password_hash'])){
+            return redirect()->route('landing_page');
+        }
+
         if ($settings->access_free == 1 && empty($data['password_hash']))
         {
-
             $latest_series = Series::where('active', '=', '1')->orderBy('created_at', 'DESC')
             ->get(); 
             
