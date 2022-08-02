@@ -15,10 +15,8 @@ class CreateAdminLandingPagesTable extends Migration
     {
         Schema::create('admin_landing_pages', function (Blueprint $table) {
             $table->id();
-            $table->longText('content_1')->nullable();
-            $table->longText('content_2')->nullable();
-            $table->longText('content_3')->nullable();
-            $table->longText('content_4')->nullable();
+            $table->longText('content')->nullable();
+            $table->string('section')->nullable();
             $table->timestamps();
         });
     }

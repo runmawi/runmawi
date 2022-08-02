@@ -13,13 +13,12 @@ class AdminLandingpageController extends Controller
 
     public function create_edit(Request $request)
     {
-        $landing_page_details = AdminLandingPage::latest()->first();
 
         $data = [
-            'post_route' => $landing_page_details == null ? 'landing_page_store' : 'landing_page_update' ,
-            'button_text' => $landing_page_details == null ? 'Add New' : 'Update' ,
-            'landing_page_details' => $landing_page_details ,
-            'Header_title' => $landing_page_details == null ? 'Add New Landing Page' : 'Edit Landing Page' ,
+            'section_1' =>  AdminLandingPage::where('section',1)->get(),
+            'section_2' =>  AdminLandingPage::where('section',2)->get(),
+            'section_3' =>  AdminLandingPage::where('section',3)->get(),
+            'section_4' =>  AdminLandingPage::where('section',4)->get(),
         ];
 
         return view('admin.Landing_page.create_edit',$data);
@@ -27,12 +26,56 @@ class AdminLandingpageController extends Controller
 
     public function store(Request $request)
     {
-        AdminLandingPage::create([
-            'content_1' => $request->content_1 ,
-            'content_2' => $request->content_2 ,
-            'content_3' => $request->content_3 ,
-            'content_4' => $request->content_4 ,
-        ]);
+        AdminLandingPage::truncate();
+
+
+        if($request->section_1  != null ){
+
+            $section_1 = count($request['section_1']);
+    
+            for ($i=0; $i<$section_1; $i++){
+                    $AdminLandingPage = new AdminLandingPage;
+                    $AdminLandingPage->content = $request['section_1'][$i];
+                    $AdminLandingPage->section = "1";
+                    $AdminLandingPage->save();
+            }
+          }
+    
+          if($request->section_2  != null  ){
+    
+            $section_2 = count($request['section_2']);
+    
+            for ($i=0; $i<$section_2; $i++){
+                    $AdminLandingPage = new AdminLandingPage;
+                    $AdminLandingPage->content = $request['section_2'][$i];
+                    $AdminLandingPage->section = "2";
+                    $AdminLandingPage->save();
+            }
+          }
+    
+          if($request->section_3  != null ){
+    
+            $section_3 = count($request['section_3']);
+    
+            for ($i=0; $i<$section_3; $i++){
+                    $AdminLandingPage = new AdminLandingPage;
+                    $AdminLandingPage->content = $request['section_3'][$i];
+                    $AdminLandingPage->section = "3";
+                    $AdminLandingPage->save();
+            }
+          }
+
+          if($request->section_4  != null ){
+    
+            $section_4 = count($request['section_4']);
+    
+            for ($i=0; $i<$section_4; $i++){
+                    $AdminLandingPage = new AdminLandingPage;
+                    $AdminLandingPage->content = $request['section_4'][$i];
+                    $AdminLandingPage->section = "4";
+                    $AdminLandingPage->save();
+            }
+          }
 
         return Redirect::back()->with('message', 'Successfully! Created Landing Page');
     }

@@ -2,81 +2,232 @@
 
 @include('admin.favicon')
 
+    @section('css')
+        <link rel="stylesheet" href="{{ URL::to('/assets/admin/css/sweetalert.css') }}">
+    @endsection
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
+
+{{-- Font Awesome --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
 @section('content')
-    <div id="content-page" class="content-page">
-        <div class="container-fluid p-0">
-            <div class="iq-card">
-                <div id="admin-container" style="padding: 15px;">
 
-                            {{-- Header Title --}}
-                    <div class="admin-section-title">
-                        <h5><i class="entypo-plus"></i> {{ $Header_title }}</h5>
-                        <hr/>
+<div id="content-page" class="content-page">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="iq-card">
+                    <div class="iq-card-header d-flex justify-content-between">
+                        <div class="iq-header-title">
+                            <h4 class="card-title">Landing Page</h4>
+                        </div>
                     </div>
-
-                    @if (Session::has('message'))
-                        <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
-                    @endif 
-                    
-                    <div class="clear"></div>
-
-                    <form method="POST" action="{{ route( $post_route )  }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" style="" id="live_video">
+                    <div class="iq-card-body table-responsive">
+                        <form  accept-charset="UTF-8" action="{{ route('landing_page_store') }}" method="post" >
                         @csrf
-
-                        <div class="row mt-3">
-                            <div class="col-sm-6">
-                                <label class="m-0">Content 1 </label>
-                                <div class="panel-body">
-                                    <input type="text" class="form-control" name="content_1" id="content_1" placeholder="" value="@if(!empty($landing_page_details->content_1)){{ $landing_page_details->content_1 }}@endif" />
-                                </div>
-                            </div>
-
-                             <div class="col-sm-6">
-                                <label class="m-0">Content 2</label>
-                                <div class="panel-body">
-                                    <input type="text" class="form-control" name="content_2" id="content_2" placeholder=" " value="@if(!empty($landing_page_details->content_2)){{ $landing_page_details->content_2 }}@endif" />
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row mt-3">
-                            <div class="col-sm-6">
-                                <label class="m-0">Content 3 </label>
-                                <div class="panel-body">
-                                    <input type="text" class="form-control" name="content_3" id="content_3" placeholder="" value="@if(!empty($landing_page_details->content_3)){{ $landing_page_details->content_3 }}@endif" />
-                                </div>
-                            </div>
-
-                             <div class="col-sm-6">
-                                <label class="m-0">Content 4</label>
-                                <div class="panel-body">
-                                    <input type="text" class="form-control" name="content_4" id="content_4" placeholder=" " value="@if(!empty($landing_page_details->content_4)){{ $landing_page_details->content_4 }}@endif" />
-                                </div>
-                            </div>
-                        </div>
-
-                        </div>
-
+                        <fieldset>
+                            <div class="form-card">
+                                <div class="col-md-10">
+                                    <div class="form-group">
                     
-                        <div class="d-flex justify-content-end">
-                            <input type="submit" value="{{ $button_text }}" class="btn btn-primary" />
-                        </div>
-                    </form>
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <input type="checkbox" id="sections_1" class="date" name="date[]" value="section_1" @if(!empty($section_1['0'])) checked @endif/>
+                                                <label for="">Section 1</label>
+                                                <span id="" class="section_1 ">
+                                                    <i class="fa-solid fa-plus"></i>
+                                                </span>
+                                            </div>
 
-                    <div class="clear"></div>
+                                            @forelse ($section_1 as $sections_1)
+                                                <table class="table col-md-12" id=""> 
+                                                    <tr>
+                                                        <td>
+                                                            <div class="container">
+                                                                <div class="col-md-12 p-0 d-flex align-items-center">
+                                                                    <textarea  rows="5" class="form-control mt-2 summary-ckeditor" name="section_1[]"  placeholder="">
+                                                                        @if(!empty($sections_1->content)){{ ( $sections_1->content  ) }}@endif
+                                                                    </textarea>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td><i class="fa-solid fa-trash-can remove-tr"> </i></td>
+                                                    </tr>
+                                                </table>
+                                            @empty
+
+                                            @endforelse
+
+                                            <table class="table col-md-12" id="section_1"> </table>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <input type="checkbox" id="sections_2" class="date" name="date[]" value="section_2" @if(!empty($section_2['0'])) checked @endif />
+                                                <label for=""> Section 2 </label>
+                                                <span id="" class="Section_2 ">
+                                                    <i class="fa-solid fa-plus"></i>
+                                                </span>
+                                            </div>
+
+                                            @forelse ($section_2 as $sections_2)
+                                                <table class="table col-md-12" id=""> 
+                                                    <tr>
+                                                        <td>
+                                                            <div class="container">
+                                                                <div class="col-md-12 p-0 d-flex align-items-center">
+                                                                    <textarea  rows="5" class="form-control mt-2 summary-ckeditor" name="section_2[]"  placeholder="">
+                                                                        @if(!empty($sections_2->content)){{ ( $sections_2->content  ) }}@endif
+                                                                    </textarea>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td><i class="fa-solid fa-trash-can remove-tr"> </i></td>
+                                                    </tr>
+                                                </table>
+                                            @empty
+                                                
+                                            @endforelse
+
+                                            <table class="table col-md-12" id="Section_2"> </table>
+                                        </div>
+                        
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <input type="checkbox" class="date" id="sections_3" name="date[]" value="section_3" @if(!empty($section_3['0'])) checked @endif />
+                                                <label for=""> Section 3 </label>
+                                                <span  class="Section_3">
+                                                    <i class="fa-solid fa-plus"></i>
+                                                </span>
+                                            </div>
+
+                                            @forelse ($section_3 as $sections_3)
+                                                <table class="table col-md-12" id=""> 
+                                                    <tr>
+                                                        <td>
+                                                            <div class="container">
+                                                                <div class="col-md-12 p-0 d-flex align-items-center">
+                                                                    <textarea  rows="5" class="form-control mt-2 summary-ckeditor" name="section_3[]"  placeholder="">
+                                                                        @if(!empty($sections_3->content)){{ ( $sections_3->content  ) }}@endif
+                                                                    </textarea>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td></td>
+                                                        <td><i class="fa-solid fa-trash-can remove-tr"> </i></td>
+                                                    </tr>
+                                                </table>
+                                            @empty
+                                            @endforelse
+
+                                            <table class="table col-md-12" id="Section_3"> </table>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-8">
+                                                <input type="checkbox" class="date" id="sections_4" name="date[]" value="section_4" @if(!empty($section_4['0'])) checked @endif />
+                                                <label for=""> Section 4 </label>
+                                                <span  class="Section_4">
+                                                    <i class="fa-solid fa-plus"></i>
+                                                </span>
+                                            </div>
+
+                                            @forelse ($section_4 as $sections_4)
+                                                <table class="table col-md-12" id=""> 
+                                                    <tr>
+                                                        <td>
+                                                            <div class="container">
+                                                                <div class="row">
+                                                                    <div class="col-md-12 p-0 d-flex align-items-center">
+                                                                        <textarea  rows="5" class="form-control mt-2 summary-ckeditor" name="sections_4[]"  placeholder="">
+                                                                            @if(!empty($sections_4->content)){{ ( $sections_4->content  ) }}@endif
+                                                                        </textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td></td>
+                                                        <td><i class="fa-solid fa-trash-can remove-tr"> </i></td>
+                                                    </tr>
+                                                </table>
+                                            @empty
+                                            @endforelse
+
+                                            <table class="table col-md-12" id="Section_4"> </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="submit" class="btn btn-primary action-button" id="" value="Save" />
+                        </fieldset>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
- 
-    @section('javascript')
-        <script>
-            $(document).ready(function () {
-                setTimeout(function () {
-                    $("#successMessage").fadeOut("fast");
-                }, 3000);
+<script>
+        var i = 0;
+
+        $(".section_1").click(function(){
+                ++i;
+                $('#sections_1').prop('checked', true);
+                $("#section_1").append('<tr> <td> <div class="container"> <div class="row"> <div class="col-md-12 p-0  align-items-center"> <textarea  rows="5" class="form-control mt-2 summary-ckeditors" name="section_1[]"  placeholder=""></textarea> </div>  </div> </div> </td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td>  </tr>');
             });
-        </script>
-    @stop
+
+        $(".Section_2").click(function(){
+                ++i;
+                $('#sections_2').prop('checked', true);
+                $("#Section_2").append('<tr> <td> <div class="container"> <div class="row"> <div class="col-md-8 p-0  align-items-center"> <textarea  rows="5" name="section_2[]" class="form-control mt-2 summary-ckeditors" /> </textarea> </div> </div> </div> <td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td>   </tr>');
+            });
+
+       $(".Section_3").click(function(){
+           ++i;
+           $('#sections_3').prop('checked', true);
+           $("#Section_3").append('<tr> <td> <div class="container"> <div class="row"> <div class="col-md-8 p-0  align-items-center"> <textarea  rows="5" name="section_3[]" class="form-control mt-2 summary-ckeditors" /> </textarea> </div> </div> </div> <td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td>   </tr>');
+       });
+
+       $(".Section_4").click(function(){
+           ++i;
+           $('#sections_4').prop('checked', true);
+           $("#Section_4").append('<tr> <td> <div class="container"> <div class="row"> <div class="col-md-8 p-0  align-items-center"> <textarea  rows="5" name="section_4[]" class="form-control mt-2 summary-ckeditors" /> </textarea> </div> </div> </div> <td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td>   </tr>');
+       });
+
+      
+       $(document).on('click', '.remove-tr', function(){
+
+            if( $(this).closest('tr').is('tr:only-child') ) {
+
+                $(this).closest('tr').remove();
+            }
+            else {
+                $(this).closest('tr').remove();
+            }
+
+       }); 
+     
+       CKEDITOR.replaceAll( 'summary-ckeditor', {
+                toolbar : 'simple'
+        });
+
+        $(".section_1,.Section_2, .Section_3,.Section_4").click(function(){
+            CKEDITOR.replaceAll( 'summary-ckeditors', {
+                toolbar : 'simple'
+            });
+        });
+
+</script>
+
+
+
+
+
+
+
+
+
 
