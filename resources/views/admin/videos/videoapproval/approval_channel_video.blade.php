@@ -38,17 +38,17 @@ border-radius: 0px 4px 4px 0px;
                   <div class="iq-card">
                      <div class="iq-card-header d-flex justify-content-between">
                        
-                        <div class="row">
-                           <div class="col-md-5">
-                              <a href="{{ URL::to('/admin/CPPVideosIndex') }}"><button type="button" class="btn btn-default">CPP Uploaded Videos</button></a>
-                           </div>
-                           <div class="col-md-5">
-                              <a href="{{ URL::to('/admin/ChannelVideosIndex') }}"><button type="button" class="btn btn-default" >Channel Uploaded Videos</button></a>
-                           </div>
-                        <div>
-                           <br>
-                        <h4>CPP Uploaded Videos</h4>
-                           
+                     <div class="col-md-12">
+                  <div class="row">
+                     <div class="col-md-6">
+                        <a href="{{ URL::to('/admin/CPPVideosIndex') }}"><button type="button" class="btn btn-default">CPP Uploaded Videos</button></a>
+                     </div>
+                     <div class="col-md-6">
+                        <a href="{{ URL::to('/admin/ChannelVideosIndex') }}"><button type="button" class="btn btn-default" >Channel Uploaded Videos</button></a>
+                     </div>
+                  </div>
+               </div>
+                        <h4>Channel Uploaded Videos</h4>
                          <div class="iq-card-header-toolbar d-flex align-items-baseline">
                              <div class="form-group mr-2">
                     <!-- <input type="text" name="search" id="search" class="form-control" placeholder="Search Data" /> -->
@@ -66,7 +66,6 @@ border-radius: 0px 4px 4px 0px;
                                     <th>Video Type</th>
                                     <th>Uploaded Date</th>
                                     <th>Video Duration</th>
-                                    <th>Video Category</th>
                                     <th>Video Meta</th>
                                     <th>Status</th>
                                     <th >Action</th>
@@ -107,9 +106,9 @@ border-radius: 0px 4px 4px 0px;
                                     <td colspan="2">
                                        <div class="flex align-items-center list-user-action">
                                           <a class="iq-bg-warning" 
-                                          onclick="return confirm('Are You Approving Video ?')"  href="{{ URL::to('admin/CPPVideosApproval') . '/' . $video->id }}">  <i class="fa fa-check-circle" style="font-size:24px;color:blue"></i></span></a>
+                                          onclick="return confirm('Are You Approving Video ?')"  href="{{ URL::to('admin/ChannelVideosApproval') . '/' . $video->id }}">  <i class="fa fa-check-circle" style="font-size:24px;color:blue"></i></span></a>
                                           <a class="iq-bg-success" 
-                                              onclick="return confirm('Are You Rejecting Video ?')" href="{{ URL::to('admin/CPPVideosReject') . '/' . $video->id }}"> <i class="fa fa-close" style="font-size:24px;color:white;background:red;border-radius:50%"></i></span></a>
+                                              onclick="return confirm('Are You Rejecting Video ?')" href="{{ URL::to('admin/ChannelVideosReject') . '/' . $video->id }}"> <i class="fa fa-close" style="font-size:24px;color:white;background:red;border-radius:50%"></i></span></a>
                                        </div>
                                     </td>
                                  </tr>

@@ -46,7 +46,7 @@
                                         <td>{{ $payout->moderator_commssion  }}</td>   
                                         <td>
                                             @foreach($last_paid_amount as $keys => $paid_amount)
-                                                @if ($payout->user_id == $keys && $paid_amount  )
+                                                @if ($payout->moderator_id == $keys && $paid_amount  )
                                                     {{ $paid_amount }}
                                                     <!-- @break -->
                                                     @break
@@ -57,9 +57,9 @@
                                         </td>  
                                         <!-- <td>{{ @$last_paid }}</td>    -->
                                         <td>
-                                            <a href="{{ URL::to('/admin/moderator/view_payouts/') }}/{{ $payout->user_id }}"  class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
+                                            <a href="{{ URL::to('/admin/moderator/view_payouts/') }}/{{ $payout->moderator_id }}"  class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
                                             data-original-title="Edit"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>"></a>
-                                            <a href="{{ URL::to('/admin/moderator/edit_payouts/') }}/{{ $payout->user_id }}"  class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
+                                            <a href="{{ URL::to('/admin/moderator/edit_payouts/') }}/{{ $payout->moderator_id }}"  class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
                                             data-original-title="Edit"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
                                         </td>  
                                     </tr>
