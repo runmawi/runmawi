@@ -18,7 +18,6 @@ class LandingpageController extends Controller
 
    public function landing_page()
    {
-    return abort (404);
     return Theme::view('landing.index');
    }
 }
