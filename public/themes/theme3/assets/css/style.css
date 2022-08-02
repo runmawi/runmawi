@@ -381,7 +381,7 @@ border-radius: 10px!important;
     padding: 5px;
 }
 .icn1{
-    font-size: 40px;
+    font-size: 25px;
      padding: 5px;
 }
 footer { background: #030328;
@@ -918,9 +918,9 @@ padding: 20px 20px;
     }
   }
 }
-.h-100 {height: 400px !important;}
+.h-100 {height: 500px !important;}
 .h-slider{
-    height: 500px;
+    height: 400px;
 }
 a {color: var(--iq-body-text) !important;}
 li.list-group-item a:hover{color: var(--iq-primary) !important;}
@@ -1590,8 +1590,8 @@ td{
     color: gray;
     border:none; 
   border-radius: 0px!important;
-
     border-bottom: 1px solid #fff;
+    padding-left: 0px;
 }
 input:focus{
      outline: none;

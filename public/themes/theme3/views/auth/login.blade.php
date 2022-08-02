@@ -71,11 +71,7 @@ line-height: 57px;
 
 
     }
-    @font-face {
-      font-family: 'Gilroy-Regular';
-  src: url(Gilroy-Regular.woff);
-    
-}
+  
     	.input-icons i {
 			position: absolute;
             left: 20px;
