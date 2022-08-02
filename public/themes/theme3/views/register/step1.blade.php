@@ -165,16 +165,16 @@ color: #FFFFFF;
        
 }
     input[type=file]::file-selector-button{
-        background-color: #282828;
+        background-color: #fff;
         outline: none;
-        color: #fff;
+        color: #000;
         border: none;
     }
 .phselect{
   
    background: transparent !important;
     color: var(--iq-white) !important;
-    border:1px solid #fff!important;
+    border-bottom:1px solid #fff!important;
     border-radius: 10px;
 }
     
@@ -401,7 +401,7 @@ i.fa.fa-google-plus {
                                       <div class="col-lg-6">
                                            <div class="lab" style=" ">
                             
-                                    <input id="username" type="text"  class="form-control alphaonly  @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" placeholder="ACCOUNT ID" required autocomplete="off" autofocus>
+                                    <input id="username" type="text"  class="form-control alphaonly  @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" placeholder="Account id" required autocomplete="off" autofocus>
 
                                     @error('username')
                                         <span class="invalid-feedback" role="alert">
@@ -414,7 +414,7 @@ i.fa.fa-google-plus {
                                   
                                   <div class="col-lg-6">
                                       <div class=" lab ">
-                                <input id="email" type="email" placeholder="EMAIL_ID"  class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="off">
+                                <input id="email" type="email" placeholder="Email id"  class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="off">
                                 <span class="invalid-feedback" id="email_error" role="alert">Email Already Exits
                                 </span>
 

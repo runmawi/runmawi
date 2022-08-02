@@ -433,7 +433,7 @@ border-radius: 0px 4px 4px 0px;
                             <div><label class="mt-1">Enable Free Registration </label></div>
                             <div class="d-flex justify-content-between">
 
-                                <div>ON</div>
+                                <div>OFF</div>
 
                                 <div class="mt-1">
                                     <label class="switch">
@@ -444,7 +444,7 @@ border-radius: 0px 4px 4px 0px;
                                         <span class="slider round"></span>
                                     </label>
                                 </div>
-                                <div>OFF</div>
+                                <div>ON</div>
                             </div>
                         </div>
                     </div>
@@ -453,7 +453,7 @@ border-radius: 0px 4px 4px 0px;
                             style="width: ;">
                             <label class="mt-1"> Require users to verify account by email: </label>
                             <div class="d-flex">
-                            <div>ON</div>
+                            <div>OFF</div>
                             <div class="mt-1">
                                 <label class="switch">
                                 <input type="checkbox" @if(!isset($settings->activation_email) ||
@@ -462,7 +462,7 @@ border-radius: 0px 4px 4px 0px;
                                     <span class="slider round"></span>
                                 </label>
                             </div>
-                            <div>OFF</div>
+                            <div>ON</div>
                         </div>
                         </div></div>
                     <div class="col-sm-10">
@@ -470,7 +470,7 @@ border-radius: 0px 4px 4px 0px;
                             style="width: ;">
                             <label class="mt-1"> Enable registered users ability to upgrade to subscriber:</label>
                             <div class="d-flex">
-                            <div>ON</div>
+                            <div>OFF</div>
                             <div class="mt-1">
                                 <label class="switch">
                                     <input type="checkbox" @if(!isset($settings->premium_upgrade) ||
@@ -479,7 +479,7 @@ border-radius: 0px 4px 4px 0px;
                                     <span class="slider round"></span>
                                 </label>
                             </div>
-                            <div>OFF</div>
+                            <div>ON</div>
                             </div></div>
                     </div>
                     <div class="col-sm-10">
@@ -487,7 +487,7 @@ border-radius: 0px 4px 4px 0px;
                             style="width: ;">
                             <div><label class="mt-1">Can Access Free Content: </label></div>
                             <div class="d-flex justify-content-between">
-                                <div>ON</div>
+                                <div>OFF</div>
                                 <div class="mt-1">
                                     <label class="switch">
                                         <input type="checkbox" @if(!isset($settings->access_free) ||
@@ -496,10 +496,30 @@ border-radius: 0px 4px 4px 0px;
                                         <span class="slider round"></span>
                                     </label>
                                 </div>
-                                <div>OFF</div>
+                                <div>ON</div>
                             </div>
                         </div>
                     </div>
+
+                    <div class="col-sm-10">
+                        <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                            style="width: ;">
+                            <div><label class="mt-1">Enable Landing Page: </label></div>
+                            <div class="d-flex justify-content-between">
+                                <div>OFF</div>
+                                <div class="mt-1">
+                                    <label class="switch">
+                                        <input type="checkbox" @if(!isset($settings->enable_landing_page) ||
+                                        (isset($settings->enable_landing_page) && $settings->enable_landing_page))checked="checked"
+                                        value="1"@else value="0"@endif name="enable_landing_page" id="enable_landing_page" />
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div>ON</div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -1644,6 +1664,7 @@ $('form[id="Setting_rtmpURL"]').validate({
         });
  
 </script>
+
 
 @stop
 
