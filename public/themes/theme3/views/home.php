@@ -19,8 +19,9 @@ $order_settings_list = App\OrderHomeSetting::get();
     </symbol>
      
  </svg>
-<div class="main-content">
-    <section id="iq-continue" >
+</section>
+<div class="main-content position-relative">
+    <section id="iq-continue" style="margin-top:-140px;">
         <div class="fluid" >
            <div class="row">
               <div class="col-sm-12 overflow-hidden">

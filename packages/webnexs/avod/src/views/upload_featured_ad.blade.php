@@ -13,6 +13,9 @@
        label{
            height: 25px;
        }
+       #progressbar li{
+           width: 20%;
+       }
    </style>
     
         <div id="main-admin-content">
