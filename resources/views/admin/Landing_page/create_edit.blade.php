@@ -176,26 +176,30 @@
         $(".section_1").click(function(){
                 ++i;
                 $('#sections_1').prop('checked', true);
-                $("#section_1").append('<tr> <td> <div class="container"> <div class="row"> <div class="col-md-12 p-0  align-items-center"> <textarea  rows="5" class="form-control mt-2 summary-ckeditors" name="section_1[]"  placeholder=""></textarea> </div>  </div> </div> </td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td>  </tr>');
+                $("#section_1").append('<tr> <td> <div class="container"> <div class="row"> <div class="col-md-12 p-0  align-items-center"> <textarea  rows="5" class="form-control mt-2" name="section_1[]" id= '+ 'ck_editor_section1-' + i  +'  placeholder=""></textarea> </div>  </div> </div> </td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td>  </tr>');
+                CKEDITOR.replace( 'ck_editor_section1-'+ i );
             });
 
         $(".Section_2").click(function(){
                 ++i;
                 $('#sections_2').prop('checked', true);
-                $("#Section_2").append('<tr> <td> <div class="container"> <div class="row"> <div class="col-md-8 p-0  align-items-center"> <textarea  rows="5" name="section_2[]" class="form-control mt-2 summary-ckeditors" /> </textarea> </div> </div> </div> <td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td>   </tr>');
+                $("#Section_2").append('<tr> <td> <div class="container"> <div class="row"> <div class="col-md-12 p-0  align-items-center"> <textarea  rows="5" name="section_2[]" class="form-control mt-2" id= '+ 'ck_editor_section2-' + i  +' /> </textarea> </div> </div> </div> <td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td>   </tr>');
+                CKEDITOR.replace( 'ck_editor_section2-'+ i );
             });
 
        $(".Section_3").click(function(){
            ++i;
            $('#sections_3').prop('checked', true);
-           $("#Section_3").append('<tr> <td> <div class="container"> <div class="row"> <div class="col-md-8 p-0  align-items-center"> <textarea  rows="5" name="section_3[]" class="form-control mt-2 summary-ckeditors" /> </textarea> </div> </div> </div> <td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td>   </tr>');
-       });
+           $("#Section_3").append('<tr> <td> <div class="container"> <div class="row"> <div class="col-md-12 p-0  align-items-center"> <textarea  rows="5" name="section_3[]" class="form-control mt-2" id= '+ 'ck_editor_section3-' + i  +' /> </textarea> </div> </div> </div> <td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td>   </tr>');
+           CKEDITOR.replace( 'ck_editor_section3-'+ i );
+        });
 
        $(".Section_4").click(function(){
            ++i;
            $('#sections_4').prop('checked', true);
-           $("#Section_4").append('<tr> <td> <div class="container"> <div class="row"> <div class="col-md-8 p-0  align-items-center"> <textarea  rows="5" name="section_4[]" class="form-control mt-2 summary-ckeditors" /> </textarea> </div> </div> </div> <td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td>   </tr>');
-       });
+           $("#Section_4").append('<tr> <td> <div class="container"> <div class="row"> <div class="col-md-12 p-0  align-items-center"> <textarea  rows="5" name="section_4[]" class="form-control mt-2" id= '+ 'ck_editor_section4-' + i  +' /> </textarea> </div> </div> </div> <td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td>   </tr>');
+           CKEDITOR.replace( 'ck_editor_section4-'+ i );
+        });
 
       
        $(document).on('click', '.remove-tr', function(){
@@ -212,12 +216,6 @@
      
        CKEDITOR.replaceAll( 'summary-ckeditor', {
                 toolbar : 'simple'
-        });
-
-        $(".section_1,.Section_2, .Section_3,.Section_4").click(function(){
-            CKEDITOR.replaceAll( 'summary-ckeditors', {
-                toolbar : 'simple'
-            });
         });
 
 </script>
