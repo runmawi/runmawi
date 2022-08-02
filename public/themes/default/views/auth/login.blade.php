@@ -242,6 +242,8 @@ i.fa.fa-google-plus {
       <script src="assets/js/slick-animation.min.js"></script>
       <!-- Custom JS-->
       <script src="assets/js/custom.js"></script>
+    <script src="assets/js/jquery.lazy.js"></script>
+      <script src="assets/js/jquery.lazy.min.js"></script>
 
 </html>
 

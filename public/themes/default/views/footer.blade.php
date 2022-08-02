@@ -165,6 +165,8 @@
       <script src="<?= URL::to('/'). '/assets/js/slick-animation.min.js';?>"></script>
       <!-- Custom JS-->
       <script src="<?= URL::to('/'). '/assets/js/custom.js';?>"></script>
+<script src="<?= URL::to('/'). '/assets/js/jquery.lazy.js';?>"></script>
+      <script src="<?= URL::to('/'). '/assets/js/jquery.lazy.min.js';?>"></script>
        <script>
     $(document).ready(function () {
       $(".thumb-cont").hide();
@@ -264,9 +266,7 @@ function myFunction() {
  <script src="<?= URL::to('/'). '/assets/js/plyr.js';?>"></script>
  <!-- <script src="<? //URL::to('/'). '/assets/js/plyr-3-7.js';?>"></script> -->
  <script src="<?= URL::to('/'). '/assets/js/hls.js';?>"></script>
- <script src="<?= URL::to('/'). '/assets/js/.js';?>"></script>
           
- <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/plyr-plugin-capture.js';?>"></script>
 
 <script>
     function loadJS(u) {
