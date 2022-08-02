@@ -6601,35 +6601,50 @@ class ModeratorsUserController extends Controller
             ];
             return View::make("admin.expired_dashboard", $data);
         } else {
-            $payouts = PpvPurchase::where("video_id", "!=", null)
-                ->join("videos", "videos.id", "=", "ppv_purchases.video_id")
-                // ->leftjoin("moderator_payouts", "moderator_payouts.user_id", "=", "ppv_purchases.user_id")
-                ->join(
-                    "moderators_users",
-                    "moderators_users.id",
-                    "=",
-                    "ppv_purchases.user_id"
-                )
-                ->where("videos.uploaded_by", "CPP")
-                // ->groupBy('videos.id')
-                ->groupBy("ppv_purchases.user_id")
-                
-                ->get([
-                    "ppv_purchases.user_id",
-                    "moderators_users.username",
-                    DB::raw(
-                        "sum(ppv_purchases.moderator_commssion) as moderator_commssion"
-                    ),
-                    DB::raw(
-                        "sum(ppv_purchases.admin_commssion) as admin_commssion"
-                    ),
-                    DB::raw("sum(ppv_purchases.total_amount) as total_amount"),
-                    DB::raw("COUNT(ppv_purchases.video_id) as count"),
-                    // DB::raw(
-                    //     "sum(moderator_payouts.commission_paid) as commission_paid"
-                    // ),
-
-                ]);
+            // $payouts = PpvPurchase::where("video_id", "!=", null)
+            //     ->join("videos", "videos.id", "=", "ppv_purchases.video_id")
+            //     ->join(
+            //         "moderators_users",
+            //         "moderators_users.id",
+            //         "=",
+            //         "ppv_purchases.user_id"
+            //     )
+            //     ->where("videos.uploaded_by", "CPP")
+            //     ->groupBy("ppv_purchases.user_id")
+            //     ->get([
+            //         "ppv_purchases.user_id",
+            //         "moderators_users.username",
+            //         DB::raw(
+            //             "sum(ppv_purchases.moderator_commssion) as moderator_commssion"
+            //         ),
+            //         DB::raw(
+            //             "sum(ppv_purchases.admin_commssion) as admin_commssion"
+            //         ),
+            //         DB::raw("sum(ppv_purchases.total_amount) as total_amount"),
+            //         DB::raw("COUNT(ppv_purchases.video_id) as count"),
+            //     ]);
+            $payouts = PpvPurchase::where("moderator_id", "!=", null)
+            // ->join("videos", "videos.id", "=", "ppv_purchases.video_id")
+            ->join(
+                "moderators_users",
+                "moderators_users.id",
+                "=",
+                "ppv_purchases.moderator_id"
+            )
+            // ->where("videos.uploaded_by", "CPP")
+            ->groupBy("ppv_purchases.moderator_id")
+            ->get([
+                "ppv_purchases.moderator_id",
+                "moderators_users.username",
+                DB::raw(
+                    "sum(ppv_purchases.moderator_commssion) as moderator_commssion"
+                ),
+                DB::raw(
+                    "sum(ppv_purchases.admin_commssion) as admin_commssion"
+                ),
+                DB::raw("sum(ppv_purchases.total_amount) as total_amount"),
+                DB::raw("COUNT(ppv_purchases.video_id) as count"),
+            ]);
 
             $last_paid_amount = ModeratorPayout::groupBy('user_id')
             ->selectRaw('sum(moderator_payouts.commission_paid) as commission_paid, user_id') // do the sum query here
@@ -6677,17 +6692,14 @@ class ModeratorsUserController extends Controller
             ];
             return View::make("admin.expired_dashboard", $data);
         } else {
-            $payouts = PpvPurchase::where("video_id", "!=", null)
-                ->join("videos", "videos.id", "=", "ppv_purchases.video_id")
-                ->join(
-                    "moderators_users",
-                    "moderators_users.id",
-                    "=",
-                    "ppv_purchases.user_id"
-                )
-                ->where("videos.uploaded_by", "CPP")
-                ->where("ppv_purchases.user_id", $id)
-                ->groupBy("ppv_purchases.user_id")
+            $payouts = PpvPurchase::where("moderator_id", "!=", null)
+            ->join(
+                "moderators_users",
+                "moderators_users.id",
+                "=",
+                "ppv_purchases.moderator_id"
+            )
+                ->where("ppv_purchases.moderator_id", $id)
                 ->get([
                     "ppv_purchases.user_id",
                     "moderators_users.username",
@@ -6713,6 +6725,7 @@ class ModeratorsUserController extends Controller
             ]);
             
             if(count($last_paid_amount) > 0){ $last_paid = intval($last_paid_amount[0]->commission_paid) ; }else{ $last_paid = 0; }
+            // dd($last_paid);
 
             $data = [
                 "commission" => $commission,
@@ -6936,7 +6949,16 @@ class ModeratorsUserController extends Controller
         }else{
             $email = $ModeratorsUser->email;
         }  
-
+        if(!empty($data['upi_id'])){
+            $upi_id = $data['upi_id'];
+        }else{
+            $upi_id = $ModeratorsUser->upi_id;
+        }  
+        if(!empty($data['upi_mobile_number'])){
+            $upi_mobile_number = $data['upi_mobile_number'];
+        }else{
+            $upi_mobile_number = $ModeratorsUser->upi_mobile_number;
+        }  
         if(!empty($data['mobile_number'])){
             $mobile_number = $data['mobile_number'];
         }else{
@@ -7012,12 +7034,15 @@ class ModeratorsUserController extends Controller
         $ModeratorsUser->username = $username;
         $ModeratorsUser->email = $email;
         $ModeratorsUser->mobile_number = $mobile_number;
-        $ModeratorsUser->bank_name = $bank_name ;
-        $ModeratorsUser->branch_name = $branch_name ;
-        $ModeratorsUser->account_number = $account_number ;
-        $ModeratorsUser->IFSC_Code = $IFSC_Code ;
-        $ModeratorsUser->picture = $file_picture ;
-        $ModeratorsUser->cancelled_cheque = $file_cancelled_cheque ;
+        // $ModeratorsUser->bank_name = $bank_name ;
+        // $ModeratorsUser->branch_name = $branch_name ;
+        // $ModeratorsUser->account_number = $account_number ;
+        // $ModeratorsUser->IFSC_Code = $IFSC_Code ;
+        // $ModeratorsUser->picture = $file_picture ;
+        // $ModeratorsUser->cancelled_cheque = $file_cancelled_cheque ;
+        $ModeratorsUser->upi_id = $upi_id ;
+        $ModeratorsUser->upi_mobile_number = $upi_mobile_number ;
+
         $ModeratorsUser->save();
 
         return \Redirect::back()->with('message','Update User Profile');

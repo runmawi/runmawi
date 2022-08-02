@@ -854,6 +854,10 @@ Route::get('/CPPLiveVideosIndex',  'AdminLiveStreamController@CPPLiveVideosIndex
 Route::get('/CPPLiveVideosApproval/{id}',  'AdminLiveStreamController@CPPLiveVideosApproval');
 Route::get('/CPPLiveVideosReject/{id}',  'AdminLiveStreamController@CPPLiveVideosReject');
 
+Route::get('/ChannelVideosIndex',  'AdminVideosController@ChannelVideosIndex');
+Route::get('/ChannelVideosApproval/{id}',  'AdminVideosController@ChannelVideosApproval');
+Route::get('/ChannelVideosReject/{id}',  'AdminVideosController@ChannelVideosReject');
+
 });
 Route::get('admin/cpp/pendingusers',  'ModeratorsUserController@PendingUsers');
 
@@ -1043,11 +1047,122 @@ Route::post('channel/store',  'ChannelLoginController@Store');
 Route::get('/channel/verify-request', 'ChannelLoginController@VerifyRequest');
 Route::get('/channel/verify/{activation_code}', 'ChannelLoginController@Verify');
 Route::get('/channel/emailvalidation', 'SignupController@EmailValidation');
-Route::get('/channel/home',  'ChannelLoginController@Login');
+Route::post('/channel/home',  'ChannelLoginController@Login');
 
 Route::group(['prefix' => 'channel','middleware' => ['channel']], function() {
     
     Route::get('/logout',  'ChannelLoginController@Logout');
+    
+Route::get('video-analytics', 'ChannelAnalyticsController@IndexVideoAnalytics');
+Route::post('video_startdate_analytics', 'ChannelAnalyticsController@VideoStartDateAnalytics');
+Route::post('video_enddate_analytics', 'ChannelAnalyticsController@VideoEndDateAnalytics');
+Route::post('video_exportCsv', 'ChannelAnalyticsController@VideoExportCsv');
+
+
+Route::get('myprofile', 'ModeratorsUserController@ChannelMyProfile');
+Route::post('update-myprofile', 'ModeratorsUserController@ChannelUpdateMyProfile');
+
+
+Route::get('/view_by_region', 'ModeratorsUserController@ChannelViewsRegion');
+Route::get('/regionvideos', 'ModeratorsUserController@ChannelRegionVideos');
+Route::get('/Allregionvideos', 'ModeratorsUserController@ChannelAllRegionVideos');
+
+Route::get('/dashboard', 'ChannelLoginController@IndexDashboard');
+Route::get('/logout', 'ChannelLoginController@logout');
+//  Channel Video Management
+Route::get('/videos', 'ChannelVideosController@Channelindex');
+Route::get('/videos/edit/{id}', 'ChannelVideosController@Channeledit');
+Route::get('/videos/delete/{id}', array('before' => 'demo', 'uses' => 'ChannelVideosController@Channeldestroy'));
+Route::get('/videos/create', 'ChannelVideosController@Channelcreate');
+Route::post('/videos/fileupdate', array('before' => 'demo', 'uses' => 'ChannelVideosController@Channelfileupdate'));
+Route::post('/videos/store', array('before' => 'demo', 'uses' => 'ChannelVideosController@Channelstore'));
+Route::post('/videos/update', array('before' => 'demo', 'uses' => 'ChannelVideosController@Channelupdate'));
+
+Route::get('/Channelusers_videodata', 'ChannelVideosController@ChannelVideo');
+Route::get('/Channellive_search', 'ChannelVideosController@Channellive_search');
+Route::post('/m3u8url',  'ChannelVideosController@Channelm3u8url');
+Route::post('/embededcode',  'ChannelVideosController@ChannelEmbededcode');
+Route::post('/mp4url',  'ChannelVideosController@ChannelMp4url');
+Route::post('/uploadFile',  'ChannelVideosController@ChanneluploadFile');
+
+// Channel Video Categories 
+
+Route::post('/videos/categories/store', array('before' => 'demo', 'uses' => 'ChannelVideoCategoriesController@Channelstore'));
+Route::post('/videos/categories/order', array('before' => 'demo', 'uses' => 'ChannelVideoCategoriesController@Channelorder'));
+Route::get('/videos/categories/edit/{id}', 'ChannelVideoCategoriesController@Channeledit');
+Route::post('/videos/categories/update','ChannelVideoCategoriesController@Channelupdate');
+Route::get('/videos/categories/delete/{id}', array('before' => 'demo', 'uses' => 'ChannelVideoCategoriesController@Channeldestroy'));
+Route::post('/category_order', 'ChannelVideoCategoriesController@Channelcategory_order');
+Route::get('/videos/categories', 'ChannelVideoCategoriesController@Channelindex');
+
+
+// Channel Audios Categories 
+
+Route::get('/audios', 'ChannelAudioController@Channelindex');
+Route::get('/audios/edit/{id}', 'ChannelAudioController@Channeledit');
+Route::post('/audios/update', array('before' => 'demo', 'uses' => 'ChannelAudioController@Channelupdate'));
+Route::get('/audios/delete/{id}', array('before' => 'demo', 'uses' => 'ChannelAudioController@Channeldestroy'));
+Route::get('/audios/create', 'ChannelAudioController@Channelcreate');
+Route::post('/audios/store', array('before' => 'demo', 'uses' => 'ChannelAudioController@Channelstore'));
+Route::post('/uploadAudio',  'ChannelAudioController@ChanneluploadAudio');
+Route::post('/Audiofile',  'ChannelAudioController@ChannelAudiofile');
+Route::post('/audios/audioupdate', array('before' => 'demo', 'uses' => 'ChannelAudioController@Channelaudioupdate'));
+
+
+//Channel Audio Categories
+Route::get('/audios/categories', 'ChannelAudioCategoriesController@Channelindex');
+Route::post('/audios/categories/store', array('before' => 'demo', 'uses' => 'ChannelAudioCategoriesController@Channelstore'));
+Route::post('/audios/categories/order', array('before' => 'demo', 'uses' => 'ChannelAudioCategoriesController@Channelorder'));
+Route::get('/audios/categories/edit/{id}', 'ChannelAudioCategoriesController@Channeledit');
+Route::post('/audios/categories/update', array('before' => 'demo', 'uses' => 'ChannelAudioCategoriesController@Channelupdate'));
+Route::get('/audios/categories/delete/{id}', array('before' => 'demo', 'uses' => 'ChannelAudioCategoriesController@Channeldestroy'));
+
+
+//Artist Routes
+Route::get('/artists', 'ChannelArtistsController@Channelindex');
+Route::get('/artists/create', 'ChannelArtistsController@Channelcreate');
+Route::post('/artists/store',  'ChannelArtistsController@Channelstore');
+Route::get('/artists/edit/{id}', 'ChannelArtistsController@Channeledit');
+Route::post('/Channel/artists/update', 'ChannelArtistsController@Channelupdate');
+Route::get('/artists/delete/{id}','ChannelArtistsController@Channeldestroy');
+Route::post('/audios/audioupdate', array('before' => 'demo', 'uses' => 'ChannelAudioController@Channelaudioupdate'));
+
+// Audio Albums
+    Route::get('/audios/albums', 'ChannelAudioCategoriesController@ChannelalbumIndex');
+    Route::post('/audios/albums/store', array('before' => 'demo', 'uses' => 'ChannelAudioCategoriesController@ChannelstoreAlbum'));
+    Route::post('/audios/albums/order', array('before' => 'demo', 'uses' => 'ChannelAudioCategoriesController@ChannelorderAlbum'));
+    Route::get('/audios/albums/edit/{id}', 'ChannelAudioCategoriesController@ChanneleditAlbum');
+    Route::post('/audios/albums/update', array('before' => 'demo', 'uses' => 'ChannelAudioCategoriesController@ChannelupdateAlbum'));
+    Route::get('/audios/albums/delete/{id}', array('before' => 'demo', 'uses' => 'ChannelAudioCategoriesController@ChanneldestroyAlbum'));
+
+// Channel Page 
+
+    Route::get('/pages', 'ChannelPageController@Channelindex');
+    Route::get('/pages/create', 'ChannelPageController@Channelcreate');
+    Route::post('/pages/store', 'ChannelPageController@Channelstore');
+    Route::get('/pages/edit/{id}', 'ChannelPageController@Channeledit');
+    Route::post('/pages/update', 'ChannelPageController@Channelupdate');
+    Route::get('/pages/delete/{id}','ChannelPageController@Channeldestroy');
+
+// Channel Livestream 
+
+    Route::get('/livestream', 'ChannelLiveStreamController@Channelindex');
+    Route::get('/livestream/edit/{id}', 'ChannelLiveStreamController@Channeledit');
+    Route::post('/livestream/update','ChannelLiveStreamController@Channelupdate');
+    Route::get('/livestream/delete/{id}', array('before' => 'demo', 'uses' => 'ChannelLiveStreamController@Channeldestroy'));
+    Route::get('/livestream/create', 'ChannelLiveStreamController@Channelcreate');
+
+    Route::post('/livestream/store', array('before' => 'demo', 'uses' => 'ChannelLiveStreamController@Channelstore'));
+
+// Channel Livestream Categories
+
+    Route::get('/livestream/categories', array('before' => 'demo', 'uses' => 'ChannelLiveCategoriesController@Channelindex'));
+    Route::post('/livestream/categories/store', array('before' => 'demo', 'uses' => 'ChannelLiveCategoriesController@Channelstore'));
+    Route::post('/livestream/categories/order', array('before' => 'demo', 'uses' => 'ChannelLiveCategoriesController@Channelorder'));
+    Route::get('/livestream/categories/edit/{id}', 'ChannelLiveCategoriesController@Channeledit');
+    Route::post('/livestream/categories/update','ChannelLiveCategoriesController@Channelupdate');
+    Route::get('/livestream/categories/delete/{id}', array('before' => 'demo', 'uses' => 'ChannelLiveCategoriesController@Channeldestroy'));
+
 
 });
 
@@ -1560,6 +1675,12 @@ Route::POST('/RazorpayVideoRent_Payment', 'RazorpayController@RazorpayVideoRent_
 
 Route::get('/RazorpayLiveRent/{live_id}/{amount}', 'RazorpayController@RazorpayLiveRent')->name('RazorpayLiveRent');
 Route::POST('/RazorpayLiveRent_Payment', 'RazorpayController@RazorpayLiveRent_Payment')->name('RazorpayLiveRent_Payment');
+
+// Route::get('/RazorpayModeratorPayouts/{user_id}/{amount}', 'RazorpayController@RazorpayModeratorPayouts')->name('RazorpayModeratorPayouts');
+Route::POST('/RazorpayModeratorPayouts', 'RazorpayController@RazorpayModeratorPayouts')->name('RazorpayModeratorPayouts');
+Route::POST('/RazorpayModeratorPayouts_Payment', 'RazorpayController@RazorpayModeratorPayouts_Payment')->name('RazorpayModeratorPayouts_Payment');
+
+
 });
 
 

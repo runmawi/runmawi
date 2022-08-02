@@ -2671,6 +2671,7 @@ if(!empty($artistsdata)){
             ->join('video_categories', 'video_categories.id', '=', 'categoryvideos.category_id')
             ->select('moderators_users.username', 'videos.*','video_categories.name')
             ->groupby('videos.id')
+            ->where("videos.uploaded_by", "CPP")
             ->orderBy('videos.created_at', 'DESC')->paginate(9);
         }
             $data = array(
@@ -3120,5 +3121,87 @@ if(!empty($artistsdata)){
         }
        return response()->json(['message'=>$validate_status]);
     }
+
+
+
+    public function ChannelVideosIndex()
+    {         
+       $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [
+                'userid' => 0,
+            ];
+    
+            $headers = [
+                'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+            ];
+            $response = $client->request('post', $url, [
+                'json' => $params,
+                'headers' => $headers,
+                'verify'  => false,
+            ]);
+    
+            $responseBody = json_decode($response->getBody());
+           $settings = Setting::first();
+           $data = array(
+            'settings' => $settings,
+            'responseBody' => $responseBody,
+    );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
+
+        $videos = Video::where('active', '=',1)->orderBy('created_at', 'DESC')->paginate(9);
+
+        $videocategories = VideoCategory::select('id','image')->get()->toArray();
+        $myData = array();
+        foreach ($videocategories as $key => $videocategory) {
+          $videocategoryid = $videocategory['id'];
+        $videos = Video::where('active', '=',0)
+            ->join('channels', 'videos.user_id', '=', 'channels.id')
+            ->select('channels.channel_name', 'videos.*')
+            ->groupby('videos.id')
+            ->where("videos.uploaded_by", "Channel")
+            ->orderBy('videos.created_at', 'DESC')->paginate(9);
+        }
+            $data = array(
+                'videos' => $videos,
+                );
+    // dd($videos);
+            return View('admin.videos.videoapproval.approval_channel_video', $data);
+        }
+       }
+       public function ChannelVideosApproval($id)
+       {
+   
+        //    echo "<pre>";
+        //    print_r($id);
+        //    exit();
+
+           $video = Video::findOrFail($id);
+           $video->active = 1;
+           $video->save();
+           
+
+           return Redirect::back()->with('message','Your video will be available shortly after we process it');
+
+
+          }
+
+          public function ChannelVideosReject($id)
+          {
+      
+            $video = Video::findOrFail($id);
+            $video->active = 2;
+            $video->save();            
+ 
+            return Redirect::back()->with('message','Your video will be available shortly after we process it');
+ 
+   
+             }
 
 }

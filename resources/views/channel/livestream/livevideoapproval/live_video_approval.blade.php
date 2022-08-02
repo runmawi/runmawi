@@ -1,73 +1,38 @@
-@extends('admin.master')
-<style>
-    .black{
-        color: #000;
-        background: #f2f5fa;
-        padding: 20px 20px;
-border-radius: 0px 4px 4px 0px;
-    }
-    .black:hover{
-        background: #fff;
-         padding: 20px 20px;
-        color: rgba(66, 149, 210, 1);
+@extends('channel.master')
 
-    }
-</style>
 @section('css')
 	<link rel="stylesheet" href="{{ URL::to('/assets/admin/css/sweetalert.css') }}">
 @endsection
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
   <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
-<link rel="stylesheet" href="cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
-
 @section('content')
 
      <div id="content-page" class="content-page">
-         <div class="mt-5 d-flex">
-                        <a class="black" href="{{ URL::to('admin/videos') }}">All Videos</a>
-                        <a class="black" href="{{ URL::to('admin/videos/create') }}">Add New Video</a>
-                        <a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/CPPVideosIndex') }}">Videos For Approval</a>
-                        <a class="black" href="{{ URL::to('admin/Masterlist') }}" class="iq-waves-effect"> Master Video List</a>
-                       <a class="black" href="{{ URL::to('admin/videos/categories') }}">Manage Video Categories</a>
-                       <a class="black"  href="{{ URL::to('admin/ActiveSlider') }}">Active Slider List</a></div>
-
-                       
-         <div class="container-fluid p-0">
+         <div class="container-fluid">
             <div class="row">
                <div class="col-sm-12">
                   <div class="iq-card">
                      <div class="iq-card-header d-flex justify-content-between">
-                       
-                        <div class="row">
-                           <div class="col-md-5">
-                              <a href="{{ URL::to('/admin/CPPVideosIndex') }}"><button type="button" class="btn btn-default">CPP Uploaded Videos</button></a>
-                           </div>
-                           <div class="col-md-5">
-                              <a href="{{ URL::to('/admin/ChannelVideosIndex') }}"><button type="button" class="btn btn-default" >Channel Uploaded Videos</button></a>
-                           </div>
-                        <div>
-                           <br>
-                        <h4>CPP Uploaded Videos</h4>
-                           
+                        <div class="iq-header-title">
+                           <h4 class="card-title">Live Video Lists</h4>
+                        </div>
+
                          <div class="iq-card-header-toolbar d-flex align-items-baseline">
                              <div class="form-group mr-2">
                     <!-- <input type="text" name="search" id="search" class="form-control" placeholder="Search Data" /> -->
                     </div>
                         </div>
                      </div>
-                     <div class="iq-card-body table-responsive p-0">
+                     <div class="iq-card-body table-responsive">
                         <div class="table-view">
-                           <table class="table text-center table-striped table-bordered table movie_table iq-card"id="videocpp" style="width:100%">
+                           <table class="table table-striped table-bordered table movie_table " style="width:100%">
                               <thead>
                                  <tr>
                                      
                                     <th>Title</th>
-                                    <th>Video Uploaded By</th>
-                                    <th>Video Type</th>
-                                    <th>Uploaded Date</th>
-                                    <th>Video Duration</th>
-                                    <th>Video Category</th>
-                                    <th>Video Meta</th>
+                                    <th>User Name</th>
+                                    <th>Year</th>
+                                    <th>Video Access</th>
                                     <th>Status</th>
                                     <th >Action</th>
                                  </tr>
@@ -88,28 +53,21 @@ border-radius: 0px 4px 4px 0px;
                                        </div>
                                     </td>
                                     <td>{{ $video->username }}</td>
-                                    <td>{{ $video->type }}</td>
-                                    <td>{{ $video->created_at }}</td>
-                                    <td>{{ gmdate('H:i:s', $video->duration) }}</td>
-                                    <td>{{ $video->name }}</td>
-                                    <td>{{ $video->description }}</td>
-                                    <!-- <td>{{ $video->access }}</td> -->
-                                    
-                                    <td>
-                                    <?php if($video->active == 0){
-                                        echo "Pending"; ?>
-                                    <?php }elseif($video->active == 1){
-                                        echo "Approved"; ?>
-                                    <?php }elseif($video->active == 2){ 
-                                        echo "Rejected";?>
-                                    <?php }?>
-                                   </td>                                
+                                    <td>{{ $video->year }}</td>
+                                    <td>{{ $video->access }}</td>
+                                    <?php if($video->active == 0){ ?>
+                                       <td class="bg-warning"> <?php echo "Pending"; ?></td>
+                                    <?php }elseif($video->active == 1){ ?>
+                                       <td class="bg-success"> <?php  echo "Approved"; ?></td>
+                                    <?php }elseif($video->active == 2){ ?>
+                                       <td class="bg-danger"> <?php  echo "Rejected"; ?></td>
+                                    <?php }?>                              
                                     <td colspan="2">
                                        <div class="flex align-items-center list-user-action">
                                           <a class="iq-bg-warning" 
-                                          onclick="return confirm('Are You Approving Video ?')"  href="{{ URL::to('admin/CPPVideosApproval') . '/' . $video->id }}">  <i class="fa fa-check-circle" style="font-size:24px;color:blue"></i></span></a>
+                                          onclick="return confirm('Do you want to approve this Live Stream ?')"  href="{{ URL::to('/CPPLiveVideosApproval') . '/' . $video->id }}">  <i class="fa fa-check-circle" style="font-size:24px;color:green;"></i></span></a>
                                           <a class="iq-bg-success" 
-                                              onclick="return confirm('Are You Rejecting Video ?')" href="{{ URL::to('admin/CPPVideosReject') . '/' . $video->id }}"> <i class="fa fa-close" style="font-size:24px;color:white;background:red;border-radius:50%"></i></span></a>
+                                              onclick="return confirm('Do you want to reject this Live Stream  ?')" href="{{ URL::to('/CPPLiveVideosReject') . '/' . $video->id }}"> <i class="fa fa-close" style="font-size:20px;color:white;background:red;border-radius:50%;"></i></span></a>
                                        </div>
                                     </td>
                                  </tr>
@@ -125,11 +83,9 @@ border-radius: 0px 4px 4px 0px;
                </div>
             </div>
          </div>
-<script src="cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
       
          <script>
 $(document).ready(function(){
-   $('#videocpp').DataTable();
 
  fetch_customer_data();
 
@@ -185,7 +141,7 @@ $('#cpp_user_videos').change(function(){
    var val = $('#cpp_user_videos').val();
    if(val == "cpp_videos"){
 	$.ajax({
-   url:"{{ URL::to('admin/cppusers_videodata') }}",
+   url:"{{ URL::to('/cppusers_videodata') }}",
    method:'get',
    data:{query:val},
    dataType:'json',
