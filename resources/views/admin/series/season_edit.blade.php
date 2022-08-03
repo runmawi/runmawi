@@ -160,7 +160,7 @@
                                     @if(!empty($episodes->image))
                                     <img src="{{ Config::get('site.uploads_dir') . 'images/' . $episodes->image }}" class="episodes-img" width="200" />
                                     @endif
-                                    <p class="p1">Select the episodes image (1080 X 1920px or 16:9 ratio):</p>
+                                    <p class="p1">Select the episodes image (1080 X 1920px or 9:16 ratio):</p>
                                     <input type="file" multiple="true" class="form-control" name="image" id="image" />
                                 </div>
                             </div>
@@ -168,7 +168,7 @@
                         
                         <div class="col-sm-6">
                         <label class="m-0">Episode Player Image</label>
-                        <p class="p1">Select the player image (9:16 Ratio or 1280X720px)</p>
+                        <p class="p1">Select the player image ( 1280 X 720px or 16:9 Ratio )</p>
 
                         <div class="panel-body">
                             @if(!empty($episodes->player_image))
@@ -699,7 +699,7 @@ var tagInput1 = new TagsInput({
             }else{
                 return false;
             }
-        },'Please upload an image with 1080 x 1920 pixels dimension or 16:9 Ratio ');
+        },'Please upload an image with 1080 x 1920 pixels dimension or 9:16 Ratio ');
 
                 // player Image upload validation
         $.validator.addMethod('player_dimention', function(value, element, param) {
@@ -715,7 +715,7 @@ var tagInput1 = new TagsInput({
             }else{
                 return false;
             }
-        },'Please upload an image with 1280 x 720 pixels dimension  or 9:16 Ratio');
+        },'Please upload an image with 1280 x 720 pixels dimension  or 16:9 Ratio');
 
 
         $('#image').change(function() {

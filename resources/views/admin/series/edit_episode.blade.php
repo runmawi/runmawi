@@ -104,8 +104,8 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
 
                 <div class="row mb-3">
                     <div class="col-sm-6">
-                        <label class="m-0">Episode Image Cover</label>
-                        <p class="p1">Select the episodes image (1080 X 1920px or 9:16 ratio)</p>
+                        <label class="m-1">Episode Image Cover</label>
+                        <p class="p1">Select the episodes image (9:16 ratio or 1080 X 1920px )</p>
 
                         <div class="panel-body">
                             @if(!empty($episodes->image))
@@ -116,7 +116,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                     </div>
                     <div class="col-sm-6">
                         <label class="m-0">Episode Player Image</label>
-                        <p class="p1">Select the player image (9:16 Ratio or 1280X720px)</p>
+                        <p class="p1">Select the player image ( 16:9 Ratio or 1280X720px)</p>
 
                         <div class="panel-body">
                             @if(!empty($episodes->player_image))
@@ -521,7 +521,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
             }else{
                 return false;
             }
-        },'Please upload an image with 1080 x 1920 pixels dimension  or 16:9 Ratio ');
+        },'Please upload an image with 1080 x 1920 pixels dimension  or 9:16 Ratio ');
 
                 // player Image upload validation
         $.validator.addMethod('player_dimention', function(value, element, param) {
@@ -538,7 +538,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
             }else{
                 return false;
             }
-        },'Please upload an image with 1280 x 720 pixels dimension  or 9:16 Ratio');
+        },'Please upload an image with 1280 x 720 pixels dimension  or 16:9 Ratio');
 
 
         $('#image').change(function() {
