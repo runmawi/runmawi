@@ -7,7 +7,7 @@
 </div>-->
 <div class="iq-card">
 <div class="modal-body">
-	<form id="update-cat-form" accept-charset="UTF-8" action="{{ URL::to('cpp/livestream/categories/update') }}" method="post" enctype="multipart/form-data">
+	<form id="update-cat-form" accept-charset="UTF-8" action="{{ URL::to('channel/livestream/categories/update') }}" method="post" enctype="multipart/form-data">
        
                     <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
 
@@ -77,7 +77,7 @@
 </div>
 
 <div class="modal-footer">
-	<a type="button" class="btn btn-primary" data-dismiss="modal" href="{{ URL::to('cpp/livestream/categories') }}">Close</a>
+	<a type="button" class="btn btn-primary" data-dismiss="modal" href="{{ URL::to('channel/livestream/categories') }}">Close</a>
 	<button type="button" class="btn btn-primary" id="submit-update-cat">Update</button>
 </div>
              </div></div></div>

@@ -137,13 +137,13 @@ $channel = Session::get('channel');
             </ul>
           </li>
 
-          <li><a href="#artists" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-user"></i><span>Artist Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+          <!-- <li><a href="#artists" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-user"></i><span>Artist Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
             <ul id="artists" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
               <li><a href="{{ URL::to('/channel/artists') }}"><i class="las la-user-plus"></i>All Artists</a></li>
               <li><a href="{{ URL::to('/channel/artists/create') }}"><i class="las la-eye"></i>Add New Artist</a></li>
 
             </ul>
-          </li>
+          </li> -->
 
 
         
