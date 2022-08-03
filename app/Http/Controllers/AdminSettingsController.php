@@ -167,6 +167,7 @@ class AdminSettingsController extends Controller
     $settings->cpv_admin = $request['cpv_admin'];
 		$settings->premium_upgrade = $request['premium_upgrade'];
 		$settings->access_free = $request['access_free'];
+    $settings->enable_landing_page = $request['enable_landing_page'];
 		$settings->facebook_page_id = $request['facebook_page_id'];
 		$settings->google_page_id = $request['google_page_id'];
 		$settings->twitter_page_id = $request['twitter_page_id'];
@@ -375,6 +376,10 @@ class AdminSettingsController extends Controller
 		} 
     if(empty($settings->access_free)){
 			$settings->access_free = 0;
+		} 
+
+    if(empty($settings->enable_landing_page)){
+			$settings->enable_landing_page = 0;
 		} 
         
 

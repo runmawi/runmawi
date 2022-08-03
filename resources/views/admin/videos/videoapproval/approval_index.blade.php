@@ -30,14 +30,25 @@ border-radius: 0px 4px 4px 0px;
                         <a class="black" href="{{ URL::to('admin/Masterlist') }}" class="iq-waves-effect"> Master Video List</a>
                        <a class="black" href="{{ URL::to('admin/videos/categories') }}">Manage Video Categories</a>
                        <a class="black"  href="{{ URL::to('admin/ActiveSlider') }}">Active Slider List</a></div>
+
+                       
          <div class="container-fluid p-0">
             <div class="row">
                <div class="col-sm-12">
                   <div class="iq-card">
                      <div class="iq-card-header d-flex justify-content-between">
                        
-                        
-                        
+                        <div class="row">
+                           <div class="col-md-5">
+                              <a href="{{ URL::to('/admin/CPPVideosIndex') }}"><button type="button" class="btn btn-default">CPP Uploaded Videos</button></a>
+                           </div>
+                           <div class="col-md-5">
+                              <a href="{{ URL::to('/admin/ChannelVideosIndex') }}"><button type="button" class="btn btn-default" >Channel Uploaded Videos</button></a>
+                           </div>
+                        <div>
+                           <br>
+                        <h4>CPP Uploaded Videos</h4>
+                           
                          <div class="iq-card-header-toolbar d-flex align-items-baseline">
                              <div class="form-group mr-2">
                     <!-- <input type="text" name="search" id="search" class="form-control" placeholder="Search Data" /> -->

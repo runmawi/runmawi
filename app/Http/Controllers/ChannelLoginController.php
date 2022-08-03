@@ -81,6 +81,34 @@ class ChannelLoginController extends Controller
     $user_package =  User::where('id', 1)->first();
     $package = $user_package->package;
     if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
+
+        $intro_video = (isset($input['intro_video'])) ? $input['intro_video'] : '';
+
+
+        $logopath = URL::to("/public/uploads/channel/");
+        $path = public_path() . "/uploads/channel/";
+
+        if($intro_video != '') {   
+            //code for remove old file
+            if($intro_video != ''  && $intro_video != null){
+                 $file_old = $path.$intro_video;
+                if (file_exists($file_old)){
+                 unlink($file_old);
+                }
+            }
+            //upload new file
+            $randval = Str::random(16);
+            $file = $intro_video;
+            $intro_video_ext  = $randval.'.'.$request->file('intro_video')->extension();
+            $file->move($path, $intro_video_ext);
+            
+            $intro_video  = URL::to('/').'/public/uploads/channel/'.$intro_video_ext;
+          
+          } else {
+            $intro_video = null;
+          }  
+        // dd($intro_video);
+
         $string = Str::random(60); 
         $channel = new Channel;
         $channel->channel_name = $request->channel_name;
@@ -89,6 +117,7 @@ class ChannelLoginController extends Controller
         $channel->mobile_number = $request->mobile_number;
         $channel->ccode = $request->ccode;
         $channel->activation_code = $string;
+        $channel->intro_video = $intro_video;
         $channel->status = 0 ;
         $channel->save();
   
@@ -187,4 +216,54 @@ class ChannelLoginController extends Controller
         }
 
   
+        public function IndexDashboard()
+        {
+          $user_package =    User::where('id', 1)->first();
+          $package = $user_package->package;
+          if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
+
+        try {
+
+            $data = \Session::get('channel');
+
+            $channel = Channel::where('email','=',$data['email'])->first();
+
+            if(!empty($channel)){
+                
+
+                $settings = Setting::first();
+                $data = array(
+                    'settings' => $settings, 
+                    'channel' => $channel, 
+                );
+                Session::put('channel', $channel);
+                return \View::make('channel.dashboard',$data);
+
+            }
+        } catch (\Exception $e) {
+
+            return Redirect::to('/blocked');
+        }
+            
+                }
+    }
+    
+      public function ChannelLogout(Request $request)
+      {
+        $user_package =    User::where('id', 1)->first();
+        $package = $user_package->package;
+        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
+        request()->session()->regenerate(true);
+        request()->session()->flush();
+        $settings = Setting::first();
+        $system_settings = SystemSetting::first();
+        $user = User::where('id','=',1)->first();
+        return redirect('/cpp/login')->with('message', 'Successfully Logged Out.');
+    
+        return view('moderator.login',compact('system_settings','user','settings'));
+        // return \View::make('auth.login');
+    }else{
+      return Redirect::to('/blocked');
+    }
+}
 }

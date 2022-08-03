@@ -153,6 +153,8 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
          <div id="sidebar-scrollbar">
             <nav class="iq-sidebar-menu">
                <ul id="iq-sidebar-toggle" class="iq-menu">
+               <!-- <li><a href="{{ URL::to('admin/age/index') }}" class="iq-waves-effect"><img class="" src="<?php //echo  URL::to('/assets/img/icon/menu.svg')?>" heigth="40" width="40"><span>Manage Age</span></a></li> -->
+
                   <li class="views"><a href="<?php echo URL::to('home') ?>" ><i class="ri-arrow-right-line"></i><span></span></a></li>
                   <li  ><a href="<?php echo URL::to('admin') ?>"  class="iq-waves-effect"><img height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/home.svg')?>"> <span class="mt-2">Dashboard</span></a></li>
                    <div class="bod"></div>
@@ -265,6 +267,8 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </a>
                      <ul id="pages" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/pages') }}"><i class="las la-user-plus"></i>All Pages</a></li>
+                        <li><a href="{{ route('landing_page_index') }}">Landing Page</a></li>
+                        <li><a href="{{ route('landing_page_create') }}">Add Landind Page</a></li>
                      </ul>
                   </li>
                    
@@ -421,10 +425,6 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                          <li><a href="{{ URL::to('admin/livestream/categories') }}"><i class="las la-eye"></i>Manage Live Video Categories</a></li>
                      </ul>
                   </li>
-          <div class="men" style=""> 
-          <p class="lnk" >Manage Age</p>
-            </div>
-            <li><a href="{{ URL::to('admin/age/index') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/menu.svg')?>" heigth="40" width="40"><span>Age</span></a></li>
 
                     <div class="men" style="">
                   
@@ -502,6 +502,8 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </a>
                      <ul id="pages" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/pages') }}"><i class="las la-user-plus"></i>All Pages</a></li>
+                        <li><a href="{{ route('landing_page_index') }}">Landing Page</a></li>
+                        <li><a href="{{ route('landing_page_create') }}">Add Landind Page</a></li>
                      </ul>
                   </li>
                    
@@ -555,6 +557,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <li  data-tour="step: 4; title: Storefront Settings; content: Go to Settings to choose different monetization methods Subscription, Pay Per View, PPV Bundles, Coupons, etc for your content or make them free" class=" " data-tour="step: 4; title: Promo code; content: Go to Settings to choose different monetization methods Subscription, Pay Per View, PPV Bundles, Coupons, etc for your content or make them free" ><a href="{{ URL::to('admin/settings') }}"><i class="las la-eye"></i>Storefront Settings</a></li>
                             <li><a href="{{ URL::to('admin/home-settings') }}"><i class="las la-eye"></i>HomePage Settings</a></li>
                             <li><a href="{{ URL::to('admin/linking_settings/') }}"><i class="las la-eye"></i>Link Settings</a></li>
+                           <li><a href="{{ URL::to('admin/age/index') }}" class="iq-waves-effect">Manage Age</a></li>
                             <!-- <li><a href="{{ URL::to('admin/order-home-settings') }}"><i class="las la-eye"></i>Order HomePage Settings</a></li> -->
                             <li><a href="{{ URL::to('admin/theme_settings') }}"><i class="las la-eye"></i>Theme Settings</a></li>
                             {{-- <li><a href="{{ URL::to('admin/payment_settings') }}"><i class="las la-eye"></i>Payment Settings</a></li> --}}
@@ -690,9 +693,6 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </ul>
                   </li>
                   <div class="men" style=""> 
-          <p class="lnk" >Manage Age</p>
-            </div>
-            <li><a href="{{ URL::to('admin/age/index') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/menu.svg')?>" heigth="40" width="40"><span>Age</span></a></li>
 
                     <div class="men" style="">
                   
@@ -773,6 +773,8 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </a>
                      <ul id="pages" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/pages') }}">All Pages</a></li>
+                        <li><a href="{{ route('landing_page_index') }}">Landing Page</a></li>
+                        <li><a href="{{ route('landing_page_create') }}">Add Landind Page</a></li>
                      </ul>
                   </li>
                    
@@ -829,6 +831,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                             <li><a href="{{ URL::to('admin/home-settings') }}">HomePage Settings</a></li>
                             <!-- <li><a href="{{ URL::to('admin/order-home-settings') }}"><i class="las la-eye"></i>Order HomePage Settings</a></li> -->
                             <li><a href="{{ URL::to('admin/linking_settings/') }}">Link Settings</a></li>
+                           <li><a href="{{ URL::to('admin/age/index') }}" class="iq-waves-effect">Manage Age</a></li>
                             <li><a href="{{ URL::to('admin/theme_settings') }}">Theme Settings</a></li>
                             {{-- <li><a href="{{ URL::to('admin/payment_settings') }}">Payment Settings</a></li> --}}
                             <li><a href="{{ URL::to('admin/email_settings') }}">Email Settings</a></li>
@@ -963,10 +966,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                          <li><a href="{{ URL::to('admin/livestream/categories') }}"><i class="las la-eye"></i>Manage Live Video Categories</a></li>
                      </ul>
                   </li>
-                  <div class="men" style=""> 
-          <p class="lnk" >Manage Age</p>
-            </div>
-            <li><a href="{{ URL::to('admin/age/index') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/menu.svg')?>" heigth="40" width="40"><span>Age</span></a></li>
+
 
                     <div style="">
                   
@@ -1000,7 +1000,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </ul>
                       
                    </li>
-                   <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/menu.svg')?>" heigth="40" width="40"><span>Menu</span></a></li>
+                   <li><a href="{{ URL::to('admin/menu') }}" class="iq-waves-effect"><span>Menu</span></a></li>
                    <li><a href="{{ URL::to('/admin/filemanager') }}" class="iq-waves-effect"><i class="la la-list"></i><span>Filemanager</span></a></li>
                     <div class="men">
                 
@@ -1045,6 +1045,8 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </a>
                      <ul id="pages" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/pages') }}"><i class="las la-user-plus"></i>All Pages</a></li>
+                        <li><a href="{{ route('landing_page_index') }}">Landing Page</a></li>
+                        <li><a href="{{ route('landing_page_create') }}">Add Landind Page</a></li>
                      </ul>
                   </li>
                    
@@ -1095,6 +1097,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <li  data-tour="step: 4; title: Storefront Settings; content: Go to Settings to choose different monetization methods Subscription, Pay Per View, PPV Bundles, Coupons, etc for your content or make them free" class=" " data-tour="step: 4; title: Promo code; content: Go to Settings to choose different monetization methods Subscription, Pay Per View, PPV Bundles, Coupons, etc for your content or make them free" ><a href="{{ URL::to('admin/settings') }}"><i class="las la-eye"></i>Storefront Settings</a></li>
                             <li><a href="{{ URL::to('admin/home-settings') }}"><i class="las la-eye"></i>HomePage Settings</a></li>
                             <li><a href="{{ URL::to('admin/linking_settings/') }}"><i class="las la-eye"></i>Link Settings</a></li>
+                            <li><a href="{{ URL::to('admin/age/index') }}" class="iq-waves-effect">Manage Age</a></li>
                             <!-- <li><a href="{{ URL::to('admin/order-home-settings') }}"><i class="las la-eye"></i>Order HomePage Settings</a></li> -->
                             <li><a href="{{ URL::to('admin/theme_settings') }}"><i class="las la-eye"></i>Theme Settings</a></li>
                             {{-- <li><a href="{{ URL::to('admin/payment_settings') }}"><i class="las la-eye"></i>Payment Settings</a></li> --}}

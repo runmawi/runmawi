@@ -387,7 +387,7 @@ public function RentPaypal(Request $request)
 
     // $video_id = $request->get('video_id');
     // print_r($video_id);exit();
-    $video = Video::where('id','=',$video_id)->first();
+    $video = Video::where('id','=',$video_id)->where('uploaded_by','CPP')->first();
     if(!empty($video)){
       $moderators_id = $video->user_id;
      }
@@ -398,8 +398,9 @@ public function RentPaypal(Request $request)
       $commssion = VideoCommission::first();
       $percentage = $commssion->percentage; 
       $ppv_price = $video->ppv_price;
-      $admin_commssion = ($percentage/100) * $ppv_price ;
+      // $admin_commssion = ($percentage/100) * $ppv_price ;
       $moderator_commssion = $ppv_price - $percentage;
+      $admin_commssion =  $ppv_price - $moderator_commssion;
       $moderator_id = $moderators_id;
     }else{
       $total_amount = $video->ppv_price;
