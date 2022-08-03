@@ -53,157 +53,178 @@ use Theme;
 class ChannelLoginController extends Controller
 {
 
-   public function index(Request $request)
-	{
+    public function index(Request $request)
+    {
         $settings = Setting::first();
         $data = array(
-            'settings' => $settings, 
+            'settings' => $settings,
         );
-		return \View::make('channel.login', $data);
+        return \View::make('channel.login', $data);
     }
 
     public function register(Request $request)
-	{
-    $settings = Setting::first();
+    {
+        $settings = Setting::first();
         $data = array(
-            'settings' => $settings, 
+            'settings' => $settings,
         );
-		return \View::make('channel.register', $data);
+        return \View::make('channel.register', $data);
     }
     public function Store(Request $request)
     {
         $input = $request->all();
-        $request->validate([
-        'email_id' => 'required|email|unique:channels,email',
-        'password' => 'min:6',
-        ]);
-    // dd($input);
-    $user_package =  User::where('id', 1)->first();
-    $package = $user_package->package;
-    if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
+        $request->validate(['email_id' => 'required|email|unique:channels,email', 'password' => 'min:6', ]);
+        // dd($input);
+        $user_package = User::where('id', 1)->first();
+        $package = $user_package->package;
+        if (!empty($package) && $package == "Pro" || !empty($package) && $package == "Business")
+        {
 
-        $intro_video = (isset($input['intro_video'])) ? $input['intro_video'] : '';
+            $intro_video = (isset($input['intro_video'])) ? $input['intro_video'] : '';
 
+            $logopath = URL::to("/public/uploads/channel/");
+            $path = public_path() . "/uploads/channel/";
 
-        $logopath = URL::to("/public/uploads/channel/");
-        $path = public_path() . "/uploads/channel/";
-
-        if($intro_video != '') {   
-            //code for remove old file
-            if($intro_video != ''  && $intro_video != null){
-                 $file_old = $path.$intro_video;
-                if (file_exists($file_old)){
-                 unlink($file_old);
+            if ($intro_video != '')
+            {
+                //code for remove old file
+                if ($intro_video != '' && $intro_video != null)
+                {
+                    $file_old = $path . $intro_video;
+                    if (file_exists($file_old))
+                    {
+                        unlink($file_old);
+                    }
                 }
+                //upload new file
+                $randval = Str::random(16);
+                $file = $intro_video;
+                $intro_video_ext = $randval . '.' . $request->file('intro_video')
+                    ->extension();
+                $file->move($path, $intro_video_ext);
+
+                $intro_video = URL::to('/') . '/public/uploads/channel/' . $intro_video_ext;
+
             }
-            //upload new file
-            $randval = Str::random(16);
-            $file = $intro_video;
-            $intro_video_ext  = $randval.'.'.$request->file('intro_video')->extension();
-            $file->move($path, $intro_video_ext);
-            
-            $intro_video  = URL::to('/').'/public/uploads/channel/'.$intro_video_ext;
-          
-          } else {
-            $intro_video = null;
-          }  
-        // dd($intro_video);
+            else
+            {
+                $intro_video = null;
+            }
+            // dd($intro_video);
+            $string = Str::random(60);
+            $channel = new Channel;
+            $channel->channel_name = $request->channel_name;
+            $channel->email = $request->email_id;
+            $channel->password = Hash::make($request->password);
+            $channel->mobile_number = $request->mobile_number;
+            $channel->ccode = $request->ccode;
+            $channel->activation_code = $string;
+            $channel->intro_video = $intro_video;
+            $channel->status = 0;
+            $channel->save();
 
-        $string = Str::random(60); 
-        $channel = new Channel;
-        $channel->channel_name = $request->channel_name;
-        $channel->email = $request->email_id;
-        $channel->password = Hash::make($request->password);
-        $channel->mobile_number = $request->mobile_number;
-        $channel->ccode = $request->ccode;
-        $channel->activation_code = $string;
-        $channel->intro_video = $intro_video;
-        $channel->status = 0 ;
-        $channel->save();
-  
-  
-        $template = EmailTemplate::where('id','=',13)->first();
-        $heading =$template->heading; 
-        $settings = Setting::first();
+            $template = EmailTemplate::where('id', '=', 13)->first();
+            $heading = $template->heading;
+            $settings = Setting::first();
             Mail::send('emails.channel_verify', array(
-            'activation_code'=> $string, 
-            'website_name' => $settings->website_name, 
+                'activation_code' => $string,
+                'website_name' => $settings->website_name,
 
-            ), function($message) use ($request,$template,$heading) {
-            $message->from(AdminMail(),'Flicknexs');
-            $message->to($request->email_id, $request->channel_name)->subject($heading.$request->channel_name);
+            ) , function ($message) use ($request, $template, $heading)
+            {
+                $message->from(AdminMail() , 'Flicknexs');
+                $message->to($request->email_id, $request->channel_name)
+                    ->subject($heading . $request->channel_name);
             });
-        return redirect('/channel/verify-request')->with('message', 'Successfully Users saved!.');
-        
-    }else{
+            return redirect('/channel/verify-request')
+                ->with('message', 'Successfully Users saved!.');
 
-        return Redirect::to('/blocked');
+        }
+        else
+        {
+
+            return Redirect::to('/blocked');
         }
     }
-  
+
     public function VerifyRequest(Request $request)
     {
-    
-     return Theme::view('verify_request');
-    
-    }
-  
-    public function Verify($activation_code){
-      $user = Channel::where('activation_code', '=', $activation_code)->first();
-      $fetch_user = Channel::where('activation_code', '=', $activation_code)->first();
-      if($user){
-        // $user = Channel::where('activation_code', '=', $activation_code)->first();
-        //   $mobile = $fetch_user->mobile;
-        session()->put('register.email',$fetch_user->email);
-            return redirect('/channel/login')->with('message', 'You have successfully verified your account. Please login If You Approved below.');
-        } 
-        else {
-            return redirect('/channel/login')->with('message', 'Invalid Activation.');
-      }
-     
-  }
 
+        return Theme::view('verify_request');
+
+    }
+
+    public function Verify($activation_code)
+    {
+        $user = Channel::where('activation_code', '=', $activation_code)->first();
+        $fetch_user = Channel::where('activation_code', '=', $activation_code)->first();
+        if ($user)
+        {
+            // $user = Channel::where('activation_code', '=', $activation_code)->first();
+            //   $mobile = $fetch_user->mobile;
+            session()->put('register.email', $fetch_user->email);
+            return redirect('/channel/login')
+                ->with('message', 'You have successfully verified your account. Please login If You Approved below.');
+        }
+        else
+        {
+            return redirect('/channel/login')
+                ->with('message', 'Invalid Activation.');
+        }
+
+    }
 
     public function Login(Request $request)
     {
-        $user_package =    User::where('id', 1)->first();
+        $user_package = User::where('id', 1)->first();
         $package = $user_package->package;
         $input = $request->all();
-        $channel = Channel::where('email','=',$input['email'])->first();
+        $channel = Channel::where('email', '=', $input['email'])->first();
 
-            if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
+        if (!empty($package) && $package == "Pro" || !empty($package) && $package == "Business")
+        {
 
-        if (Hash::check($input['password'], $channel->password)) {
-            // dd($channel_password);
-            $channel = Channel::where('email','=',$input['email'])->first();
-            if(!empty($channel) && $channel->status == 0 || $channel->status == 1){
-                $settings = Setting::first();
-                $data = array(
-                    'settings' => $settings, 
-                    'channel' => $channel, 
-                );
-                Session::put('channel', $channel);
-                return \View::make('channel.dashboard',$data);
-            }elseif(!empty($channel) && $channel->status == 0){
-                return redirect('/channel/login')->with('message', 'Please Wait For Apporval');
-            }else{
-                return redirect('/channel/login')->with('message', 'Miss Match Login Credentials');
+            if (Hash::check($input['password'], $channel->password))
+            {
+                // dd($channel_password);
+                $channel = Channel::where('email', '=', $input['email'])->first();
+                if (!empty($channel) && $channel->status == 0 || $channel->status == 1)
+                {
+                    $settings = Setting::first();
+                    $data = array(
+                        'settings' => $settings,
+                        'channel' => $channel,
+                    );
+                    Session::put('channel', $channel);
+                    return \View::make('channel.dashboard', $data);
+                }
+                elseif (!empty($channel) && $channel->status == 0)
+                {
+                    return redirect('/channel/login')
+                        ->with('message', 'Please Wait For Apporval');
+                }
+                else
+                {
+                    return redirect('/channel/login')
+                        ->with('message', 'Miss Match Login Credentials');
+                }
             }
-        }else{
-            return redirect('/channel/login')->with('message', 'Miss Match Login Credentials');
+            else
+            {
+                return redirect('/channel/login')
+                    ->with('message', 'Miss Match Login Credentials');
             }
 
-           
-             
-            }
+        }
     }
     public function Home(Request $request)
     {
-        $user_package =    User::where('id', 1)->first();
+        $user_package = User::where('id', 1)->first();
         $package = $user_package->package;
-        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
+        if (!empty($package) && $package == "Pro" || !empty($package) && $package == "Business")
+        {
 
-        return \View::make('channel.dashboard');
+            return \View::make('channel.dashboard');
         }
     }
     public function Logout(Request $request)
@@ -213,57 +234,69 @@ class ChannelLoginController extends Controller
         unset($data['channel']['password']);
         \Session::flush();
         return redirect('/channel/login')->with('message', 'Logged Out Succefully');
-        }
+    }
 
-  
-        public function IndexDashboard()
+    public function IndexDashboard()
+    {
+        $user_package = User::where('id', 1)->first();
+        $package = $user_package->package;
+        if (!empty($package) && $package == "Pro" || !empty($package) && $package == "Business")
         {
-          $user_package =    User::where('id', 1)->first();
-          $package = $user_package->package;
-          if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
 
-        try {
+            try
+            {
 
-            $data = \Session::get('channel');
+                $data = \Session::get('channel');
 
-            $channel = Channel::where('email','=',$data['email'])->first();
+                $channel = Channel::where('email', '=', $data['email'])->first();
 
-            if(!empty($channel)){
-                
+                if (!empty($channel))
+                {
 
-                $settings = Setting::first();
-                $data = array(
-                    'settings' => $settings, 
-                    'channel' => $channel, 
-                );
-                Session::put('channel', $channel);
-                return \View::make('channel.dashboard',$data);
+                    $settings = Setting::first();
+                    $data = array(
+                        'settings' => $settings,
+                        'channel' => $channel,
+                    );
+                    Session::put('channel', $channel);
+                    return \View::make('channel.dashboard', $data);
 
+                }
             }
-        } catch (\Exception $e) {
+            catch(\Exception $e)
+            {
 
+                return Redirect::to('/blocked');
+            }
+
+        }
+    }
+
+    public function ChannelLogout(Request $request)
+    {
+        $user_package = User::where('id', 1)->first();
+        $package = $user_package->package;
+        if (!empty($package) && $package == "Pro" || !empty($package) && $package == "Business")
+        {
+            request()->session()
+                ->regenerate(true);
+            request()
+                ->session()
+                ->flush();
+            $settings = Setting::first();
+            $system_settings = SystemSetting::first();
+            $user = User::where('id', '=', 1)->first();
+            return redirect('/cpp/login')
+                ->with('message', 'Successfully Logged Out.');
+
+            return view('moderator.login', compact('system_settings', 'user', 'settings'));
+            // return \View::make('auth.login');
+            
+        }
+        else
+        {
             return Redirect::to('/blocked');
         }
-            
-                }
-    }
-    
-      public function ChannelLogout(Request $request)
-      {
-        $user_package =    User::where('id', 1)->first();
-        $package = $user_package->package;
-        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
-        request()->session()->regenerate(true);
-        request()->session()->flush();
-        $settings = Setting::first();
-        $system_settings = SystemSetting::first();
-        $user = User::where('id','=',1)->first();
-        return redirect('/cpp/login')->with('message', 'Successfully Logged Out.');
-    
-        return view('moderator.login',compact('system_settings','user','settings'));
-        // return \View::make('auth.login');
-    }else{
-      return Redirect::to('/blocked');
     }
 }
-}
+

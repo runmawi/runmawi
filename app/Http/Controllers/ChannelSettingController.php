@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 use \App\User as User;
 use \Redirect as Redirect;
@@ -53,106 +52,139 @@ use App\RelatedVideo;
 use App\InappPurchase;
 use App\Channel;
 
-
-
-
 class ChannelSettingController extends Controller
 {
 
-    public function Accountindex(){
-        $user_package =    User::where('id', 1)->first();
+    public function Accountindex()
+    {
+        $user_package = User::where('id', 1)->first();
         $package = $user_package->package;
-        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
+        if (!empty($package) && $package == "Pro" || !empty($package) && $package == "Business")
+        {
             $user = \Session::get('channel');
             $user_id = $user->id;
-            $user = Channel::where('id',$user_id)->first();
-            
-            $data = array (
-                'user_id'=>$user_id,
-                'user'=>$user,
+            $user = Channel::where('id', $user_id)->first();
+
+            $data = array(
+                'user_id' => $user_id,
+                'user' => $user,
             );
-            
-            return view('channel.settings.index',$data);
-        }else{
+
+            return view('channel.settings.index', $data);
+        }
+        else
+        {
             return Redirect::to('/blocked');
         }
-      }
+    }
 
-      public function SaveAccount(Request $request){
-        $user_package =    User::where('id', 1)->first();
+    public function SaveAccount(Request $request)
+    {
+        $user_package = User::where('id', 1)->first();
         $package = $user_package->package;
         $data = $request->all();
 
-        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
+        if (!empty($package) && $package == "Pro" || !empty($package) && $package == "Business")
+        {
             $user = \Session::get('channel');
             $id = $data['id'];
 
             $data = $request->all();
 
-            $Channel = Channel::where('id',$id)->first();
+            $Channel = Channel::where('id', $id)->first();
             // dd($data);
-            if(!empty($data['channel_name'])){
+            if (!empty($data['channel_name']))
+            {
                 $channel_name = $data['channel_name'];
-            }else{
+            }
+            else
+            {
                 $channel_name = $Channel->channel_name;
-            } 
-    
-            if(!empty($data['email'])){
+            }
+
+            if (!empty($data['email']))
+            {
                 $email = $data['email'];
-            }else{
+            }
+            else
+            {
                 $email = $Channel->email;
-            }  
-            if(!empty($data['upi_id'])){
+            }
+            if (!empty($data['upi_id']))
+            {
                 $upi_id = $data['upi_id'];
-            }else{
+            }
+            else
+            {
                 $upi_id = $Channel->upi_id;
-            }  
-            if(!empty($data['upi_mobile_number'])){
+            }
+            if (!empty($data['upi_mobile_number']))
+            {
                 $upi_mobile_number = $data['upi_mobile_number'];
-            }else{
+            }
+            else
+            {
                 $upi_mobile_number = $Channel->upi_mobile_number;
-            }  
-            if(!empty($data['mobile_number'])){
+            }
+            if (!empty($data['mobile_number']))
+            {
                 $mobile_number = $data['mobile_number'];
-            }else{
+            }
+            else
+            {
                 $mobile_number = $Channel->mobile_number;
-            }  
-    
-            if(!empty($data['bank_name'])){
+            }
+
+            if (!empty($data['bank_name']))
+            {
                 $bank_name = $data['bank_name'];
-            }else{
+            }
+            else
+            {
                 $bank_name = $Channel->bank_name;
-            }  
-    
-            if(!empty($data['branch_name'])){
+            }
+
+            if (!empty($data['branch_name']))
+            {
                 $branch_name = $data['branch_name'];
-            }else{
+            }
+            else
+            {
                 $branch_name = $Channel->branch_name;
-            }    
-    
-            if(!empty($data['account_number'])){
+            }
+
+            if (!empty($data['account_number']))
+            {
                 $account_number = $data['account_number'];
-            }else{
+            }
+            else
+            {
                 $account_number = $Channel->account_number;
-            }    
-    
-            if(!empty($data['IFSC_Code'])){
+            }
+
+            if (!empty($data['IFSC_Code']))
+            {
                 $IFSC_Code = $data['IFSC_Code'];
-            }else{
+            }
+            else
+            {
                 $IFSC_Code = $Channel->IFSC_Code;
-            }    
-    
+            }
+
             $picture = (isset($data['picture'])) ? $data['picture'] : '';
-    
+
             $cancelled_cheque = (isset($data['cancelled_cheque'])) ? $data['cancelled_cheque'] : '';
-    
+
             $logopath = URL::to("/public/uploads/channel/");
             $path = public_path() . "/uploads/channel/";
-            if ($cancelled_cheque != "") {
+            if ($cancelled_cheque != "")
+            {
                 //code for remove old file
-                if ($cancelled_cheque != "" && $cancelled_cheque != null) {
+                if ($cancelled_cheque != "" && $cancelled_cheque != null)
+                {
                     $file_old = $path . $cancelled_cheque;
-                    if (file_exists($file_old)) {
+                    if (file_exists($file_old))
+                    {
                         unemail($file_old);
                     }
                 }
@@ -160,138 +192,168 @@ class ChannelSettingController extends Controller
                 $cheque = $cancelled_cheque;
                 $file_cancelled_cheque = str_replace(' ', '_', $cheque->getClientOriginalName());
                 $cheque->move($path, $cheque);
-            }else{
+            }
+            else
+            {
                 $file_cancelled_cheque = $Channel->cancelled_cheque;
             }
-    
+
             $Channel->channel_name = $channel_name;
             $Channel->email = $email;
             $Channel->mobile_number = $mobile_number;
-            $Channel->bank_name = $bank_name ;
-            $Channel->branch_name = $branch_name ;
-            $Channel->account_number = $account_number ;
-            $Channel->IFSC_Code = $IFSC_Code ;
-            $Channel->cancelled_cheque = $file_cancelled_cheque ;
-            $Channel->upi_id = $upi_id ;
-            $Channel->upi_mobile_number = $upi_mobile_number ;
-    
+            $Channel->bank_name = $bank_name;
+            $Channel->branch_name = $branch_name;
+            $Channel->account_number = $account_number;
+            $Channel->IFSC_Code = $IFSC_Code;
+            $Channel->cancelled_cheque = $file_cancelled_cheque;
+            $Channel->upi_id = $upi_id;
+            $Channel->upi_mobile_number = $upi_mobile_number;
+
             $Channel->save();
-    
-            return \Redirect::back()->with('message','Update User Profile');
-    
+
+            return \Redirect::back()
+                ->with('message', 'Update User Profile');
 
             $user_id = $user->id;
-            
-            $data = array (
-                'user_id'=>$user_id,
-                'user'=>$user,
+
+            $data = array(
+                'user_id' => $user_id,
+                'user' => $user,
             );
-            
-            return view('channel.settings.index',$data);
-        }else{
+
+            return view('channel.settings.index', $data);
+        }
+        else
+        {
             return Redirect::to('/blocked');
         }
     }
-    public function Aboutindex(){
-        $user_package =    User::where('id', 1)->first();
+    public function Aboutindex()
+    {
+        $user_package = User::where('id', 1)->first();
         $package = $user_package->package;
-        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
+        if (!empty($package) && $package == "Pro" || !empty($package) && $package == "Business")
+        {
             $user = \Session::get('channel');
             $user_id = $user->id;
-            $user = Channel::where('id',$user_id)->first();
-            
-            $data = array (
-                'user_id'=>$user_id,
-                'user'=>$user,
+            $user = Channel::where('id', $user_id)->first();
+
+            $data = array(
+                'user_id' => $user_id,
+                'user' => $user,
             );
-            
-            return view('channel.settings.Aboutindex',$data);
-        }else{
+
+            return view('channel.settings.Aboutindex', $data);
+        }
+        else
+        {
             return Redirect::to('/blocked');
         }
-      }
+    }
 
-      public function UpdateChannel(Request $request){
-        $user_package =    User::where('id', 1)->first();
+    public function UpdateChannel(Request $request)
+    {
+        $user_package = User::where('id', 1)->first();
         $package = $user_package->package;
         $data = $request->all();
 
-        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
+        if (!empty($package) && $package == "Pro" || !empty($package) && $package == "Business")
+        {
             $user = \Session::get('channel');
             $id = $data['id'];
 
             $data = $request->all();
 
-            $Channel = Channel::where('id',$id)->first();
-            if(!empty($data['channel_name'])){
+            $Channel = Channel::where('id', $id)->first();
+            if (!empty($data['channel_name']))
+            {
                 $channel_name = $data['channel_name'];
-            }else{
+            }
+            else
+            {
                 $channel_name = $Channel->channel_name;
-            } 
-    
-            if(!empty($data['channel_about'])){
+            }
+
+            if (!empty($data['channel_about']))
+            {
                 $channel_about = $data['channel_about'];
-            }else{
+            }
+            else
+            {
                 $channel_about = $Channel->channel_about;
-            }  
-    
+            }
+
             $channel_logo = (isset($data['channel_logo'])) ? $data['channel_logo'] : '';
-    
+
             $intro_video = (isset($data['intro_video'])) ? $data['intro_video'] : '';
-    
+
             $logopath = URL::to("/public/uploads/channel/");
             $path = public_path() . "/uploads/channel/";
-    
-            if($intro_video != '') {   
+
+            if ($intro_video != '')
+            {
                 //code for remove old file
-                if($intro_video != ''  && $intro_video != null){
-                     $file_old = $path.$intro_video;
-                    if (file_exists($file_old)){
-                     unlink($file_old);
+                if ($intro_video != '' && $intro_video != null)
+                {
+                    $file_old = $path . $intro_video;
+                    if (file_exists($file_old))
+                    {
+                        unlink($file_old);
                     }
                 }
                 //upload new file
                 $randval = Str::random(16);
                 $file = $intro_video;
-                $intro_video_ext  = $randval.'.'.$request->file('intro_video')->extension();
+                $intro_video_ext = $randval . '.' . $request->file('intro_video')
+                    ->extension();
                 $file->move($path, $intro_video_ext);
-                
-                $intro_video  = URL::to('/').'/public/uploads/channel/'.$intro_video_ext;
-            
-            } else {
-            $intro_video = $Channel->intro_video;
-            }  
+
+                $intro_video = URL::to('/') . '/public/uploads/channel/' . $intro_video_ext;
+
+            }
+            else
+            {
+                $intro_video = $Channel->intro_video;
+            }
 
             $logopath = URL::to("/public/uploads/channel/");
             $path = public_path() . "/uploads/channel/";
-            if ($channel_logo != "") {
+            if ($channel_logo != "")
+            {
                 //code for remove old file
-                if ($channel_logo != "" && $channel_logo != null) {
+                if ($channel_logo != "" && $channel_logo != null)
+                {
                     $file_old = $path . $channel_logo;
-                    if (file_exists($file_old)) {
+                    if (file_exists($file_old))
+                    {
                         unemail($file_old);
                     }
                 }
                 //upload new file
                 $logo = $channel_logo;
                 $file_channel_logos = str_replace(' ', '_', $logo->getClientOriginalName());
-                $file_channel_logo  = URL::to('/').'/public/uploads/channel/'.$file_channel_logos;
+                $file_channel_logo = URL::to('/') . '/public/uploads/channel/' . $file_channel_logos;
                 $logo->move($path, $logo);
-            }else{
+            }
+            else
+            {
                 $file_channel_logo = $Channel->channel_logo;
             }
-    
+
             $Channel->channel_name = $channel_name;
             $Channel->channel_about = $channel_about;
             $Channel->channel_logo = $file_channel_logo;
-            $Channel->intro_video = $intro_video ;    
+            $Channel->intro_video = $intro_video;
             $Channel->save();
             // dd($Channel);
-    
-            return \Redirect::back()->with('message','Update User Profile');
+            return \Redirect::back()
+                ->with('message', 'Update User Profile');
 
-        }else{
+        }
+        else
+        {
             return Redirect::to('/blocked');
         }
     }
 }
+
