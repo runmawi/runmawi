@@ -130,10 +130,10 @@ border-radius: 0px 4px 4px 0px;
                             <input type="file" name="theme_image" id="theme_image" accept="image/*" >
                         </div>
 
-                        <div class="control-group">
+                        {{-- <div class="control-group">
                              <label for="theme_zip">Theme Zip File</label><br>
                             <input type="file" name="theme_zip" id="theme_zip" >
-                        </div>
+                        </div> --}}
 
 				        <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
                         
@@ -205,9 +205,9 @@ $( document ).ready(function() {
                 theme_image: {
                     required: true,
                 },
-                theme_zip: {
-                    required: true,
-                },
+                // theme_zip: {
+                //     required: true,
+                // },
                 theme_name: {
                     required: true,
                     remote: {
