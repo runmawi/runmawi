@@ -1696,7 +1696,7 @@ Route::get('categoryfilter', 'ChannelController@categoryfilter')->name('category
 
 
     // Landing page 
-Route::get('landing-page', 'LandingpageController@landing_page')->name('landing_page');
+Route::get('{landing_page_slug}', 'LandingpageController@landing_page')->name('landing_page');
 
     // Razorpay 
 Route::group(['middleware' => ['RazorpayMiddleware']], function() {

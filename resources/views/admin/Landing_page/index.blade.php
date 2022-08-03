@@ -31,7 +31,7 @@
                              <tr class="r1">
                                 <th>S.No</th>
                                 <th>Name</th>
-                                <th>Status</th>
+                                <th> {{ ucwords('Set as Front Page') }} </th>
                                 <th>Action</th>
                              </tr>
                           </thead>
@@ -39,7 +39,7 @@
                            @forelse ($landing_pages as $key => $landing_page)
                               <tbody>
                                  <td> {{ $key + 1 }} </td>
-                                 <td> {{ 'Landing Page '.$landing_page->landing_page_id }} </td>
+                                 <td> {{ $landing_page->title ? $landing_page->title  :  ucwords("no title") }} </td>
                                  <td> 
                                     <div class="mt-1">
                                         <label class="switch">

@@ -39,6 +39,8 @@ class AdminLandingpageController extends Controller
                     $AdminLandingPage->content = $request['section_1'][$i];
                     $AdminLandingPage->section = "1";
                     $AdminLandingPage->landing_page_id = $landing_page_id;
+                    $AdminLandingPage->title = $request->title;
+                    $AdminLandingPage->slug =  $request->slug;
                     $AdminLandingPage->save();
             }
           }
@@ -52,6 +54,8 @@ class AdminLandingpageController extends Controller
                     $AdminLandingPage->content = $request['section_2'][$i];
                     $AdminLandingPage->section = "2";
                     $AdminLandingPage->landing_page_id = $landing_page_id;
+                    $AdminLandingPage->title = $request->title;
+                    $AdminLandingPage->slug =  $request->slug;
                     $AdminLandingPage->save();
             }
           }
@@ -65,6 +69,8 @@ class AdminLandingpageController extends Controller
                     $AdminLandingPage->content = $request['section_3'][$i];
                     $AdminLandingPage->section = "3";
                     $AdminLandingPage->landing_page_id = $landing_page_id;
+                    $AdminLandingPage->title = $request->title;
+                    $AdminLandingPage->slug =  $request->slug;
                     $AdminLandingPage->save();
             }
           }
@@ -78,6 +84,8 @@ class AdminLandingpageController extends Controller
                     $AdminLandingPage->content = $request['section_4'][$i];
                     $AdminLandingPage->section = "4";
                     $AdminLandingPage->landing_page_id = $landing_page_id;
+                    $AdminLandingPage->title = $request->title;
+                    $AdminLandingPage->slug =  $request->slug;
                     $AdminLandingPage->save();
             }
           }
@@ -93,6 +101,8 @@ class AdminLandingpageController extends Controller
             'section_3' =>  AdminLandingPage::where('landing_page_id',$id)->where('section',3)->get(),
             'section_4' =>  AdminLandingPage::where('landing_page_id',$id)->where('section',4)->get(),
             'landing_page_id' => $id ,
+            'title' => AdminLandingPage::where('landing_page_id',$id)->pluck('title')->first(),
+            'slug'  => AdminLandingPage::where('landing_page_id',$id)->pluck('slug')->first(),
         ];
 
         return view('admin.Landing_page.edit',$data);
@@ -112,6 +122,8 @@ class AdminLandingpageController extends Controller
                 $AdminLandingPage->content = $request['section_1'][$i];
                 $AdminLandingPage->section = "1";
                 $AdminLandingPage->landing_page_id = $request->landing_page_id;
+                $AdminLandingPage->title = $request->title;
+                $AdminLandingPage->slug =  $request->slug;
                 $AdminLandingPage->save();
         }
       }
@@ -125,6 +137,8 @@ class AdminLandingpageController extends Controller
                 $AdminLandingPage->content = $request['section_2'][$i];
                 $AdminLandingPage->section = "2";
                 $AdminLandingPage->landing_page_id = $request->landing_page_id;
+                $AdminLandingPage->title = $request->title;
+                $AdminLandingPage->slug =  $request->slug;
                 $AdminLandingPage->save();
         }
       }
@@ -138,6 +152,8 @@ class AdminLandingpageController extends Controller
                 $AdminLandingPage->content = $request['section_3'][$i];
                 $AdminLandingPage->section = "3";
                 $AdminLandingPage->landing_page_id = $request->landing_page_id;
+                $AdminLandingPage->title = $request->title;
+                $AdminLandingPage->slug =  $request->slug;
                 $AdminLandingPage->save();
         }
       }
@@ -151,6 +167,8 @@ class AdminLandingpageController extends Controller
                 $AdminLandingPage->content = $request['section_4'][$i];
                 $AdminLandingPage->section = "4";
                 $AdminLandingPage->landing_page_id = $request->landing_page_id;
+                $AdminLandingPage->title = $request->title;
+                $AdminLandingPage->slug =  $request->slug;
                 $AdminLandingPage->save();
         }
       }

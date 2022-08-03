@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Theme;
 use App\HomeSetting;
+use App\AdminLandingPage;
 
 class LandingpageController extends Controller
 {
@@ -16,8 +17,11 @@ class LandingpageController extends Controller
         Theme::uses($this->Theme);
     }
 
-   public function landing_page()
+   public function landing_page( $landing_page_slug )
    {
-    return Theme::view('landing.index');
+        $data = [
+            'title' => AdminLandingPage::where('status',1)->pluck('title')->first(),
+        ];
+        return Theme::view('landing.index',$data);
    }
 }
