@@ -864,6 +864,21 @@ Route::get('/ChannelVideosIndex',  'AdminVideosController@ChannelVideosIndex');
 Route::get('/ChannelVideosApproval/{id}',  'AdminVideosController@ChannelVideosApproval');
 Route::get('/ChannelVideosReject/{id}',  'AdminVideosController@ChannelVideosReject');
 
+Route::get('/ChannelLiveVideosIndex',  'AdminLiveStreamController@ChannelLiveVideosIndex');
+Route::get('/ChannelLiveVideosApproval/{id}',  'AdminLiveStreamController@ChannelLiveVideosApproval');
+Route::get('/ChannelLiveVideosReject/{id}',  'AdminLiveStreamController@ChannelLiveVideosReject');
+
+
+Route::get('/ChannelSeriesIndex',  'AdminSeriesController@ChannelSeriesIndex');
+Route::get('/ChannelSeriesApproval/{id}',  'AdminSeriesController@ChannelSeriesApproval');
+Route::get('/ChannelSeriesReject/{id}',  'AdminSeriesController@ChannelSeriesReject');
+
+
+Route::get('/CPPSeriesIndex',  'AdminSeriesController@CPPSeriesIndex');
+Route::get('/CPPSeriesApproval/{id}',  'AdminSeriesController@CPPSeriesApproval');
+Route::get('/CPPSeriesReject/{id}',  'AdminSeriesController@CPPSeriesReject');
+
+
 });
 Route::get('admin/cpp/pendingusers',  'ModeratorsUserController@PendingUsers');
 

@@ -1990,4 +1990,137 @@ if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1
         }
     }
 
+    public function ChannelSeriesIndex()
+    {
+
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [
+                'userid' => 0,
+            ];
+    
+            $headers = [
+                'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+            ];
+            $response = $client->request('post', $url, [
+                'json' => $params,
+                'headers' => $headers,
+                'verify'  => false,
+            ]);
+    
+            $responseBody = json_decode($response->getBody());
+           $settings = Setting::first();
+           $data = array(
+            'settings' => $settings,
+            'responseBody' => $responseBody,
+    );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
+
+            $videos =    Series::where('active', '=',0)
+            ->join('channels', 'channels.id','=','series.user_id')
+            ->select( 'series.*','channels.channel_name as username')
+            ->where("series.uploaded_by", "Channel")
+            ->orderBy('series.created_at', 'DESC')->paginate(9);
+
+            // dd($videos);
+            $data = array(
+                'videos' => $videos,
+                // 'channelvideos' => $channelvideos,
+                );
+
+            return View('admin.series.SeriesApproval.CppSeriesApproval', $data);
+        }
+    }
+       public function ChannelSeriesApproval($id)
+       {
+           $video = Series::findOrFail($id);
+           $video->active = 1;
+           $video->save();
+           return Redirect::back()->with('message','Your video will be available shortly after we process it');
+
+          }
+
+          public function ChannelSeriesReject($id)
+          {
+            $video = Series::findOrFail($id);
+            $video->active = 2;
+            $video->save();            
+            return Redirect::back()->with('message','Your video will be available shortly after we process it');
+ 
+             }
+
+
+        public function CPPSeriesIndex()
+        {
+    
+            $user =  User::where('id',1)->first();
+            $duedate = $user->package_ends;
+            $current_date = date('Y-m-d');
+            if ($current_date > $duedate)
+            {
+                $client = new Client();
+                $url = "https://flicknexs.com/userapi/allplans";
+                $params = [
+                    'userid' => 0,
+                ];
+        
+                $headers = [
+                    'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+                ];
+                $response = $client->request('post', $url, [
+                    'json' => $params,
+                    'headers' => $headers,
+                    'verify'  => false,
+                ]);
+        
+                $responseBody = json_decode($response->getBody());
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,
+                'responseBody' => $responseBody,
+        );
+                return View::make('admin.expired_dashboard', $data);
+            }else{
+            // $videos = LiveStream::orderBy('created_at', 'DESC')->paginate(9);
+    
+            $videos =    Series::where('active', '=',0)
+            ->join('moderators_users', 'moderators_users.id','=','series.user_id')
+            ->select('moderators_users.username', 'series.*')
+            ->where("series.uploaded_by", "CPP")
+            ->orderBy('series.created_at', 'DESC')->paginate(9);
+                // dd($videos);
+                $data = array(
+                    'videos' => $videos,
+                    // 'channelvideos' => $channelvideos,
+                    );
+    // dd($videos);
+    
+    return View('admin.series.SeriesApproval.CppSeriesApproval', $data);
+
+            }
+        }
+    public function CPPSeriesApproval($id)
+    {
+        $video = Series::findOrFail($id);
+        $video->active = 1;
+        $video->save();
+        return Redirect::back()->with('message','Your video will be available shortly after we process it');
+
+        }
+
+        public function CPPSeriesReject($id)
+        {
+            $video = Series::findOrFail($id);
+            $video->active = 2;
+            $video->save();            
+            return Redirect::back()->with('message','Your video will be available shortly after we process it');
+
+            }
+
 }

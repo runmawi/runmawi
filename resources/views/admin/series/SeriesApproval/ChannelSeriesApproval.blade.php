@@ -33,15 +33,15 @@ border-radius: 0px 4px 4px 0px;
                      <div class="iq-card-header d-flex justify-content-between">
                      <div class="row">
                            <div class="col-md-5">
-                              <a href="{{ URL::to('/admin/CPPLiveVideosIndex') }}"><button type="button" class="btn btn-default">CPP Uploaded Live Videos</button></a>
+                              <a href="{{ URL::to('/admin/CPPSeriesIndex') }}"><button type="button" class="btn btn-default">CPP Uploaded Live Videos</button></a>
                            </div>
                            <div class="col-md-5">
-                              <a href="{{ URL::to('/admin/ChannelLiveVideosIndex') }}"><button type="button" class="btn btn-default" >Channel Uploaded Live Videos</button></a>
+                              <a href="{{ URL::to('/admin/ChannelSeriesIndex') }}"><button type="button" class="btn btn-default" >Channel Uploaded Live Videos</button></a>
                            </div>
                         <div>
                            <br>
                         <div class="iq-header-title">
-                           <h4 class="card-title">CPP Live Video Lists</h4>
+                           <h4 class="card-title">Channel Series Video Lists</h4>
                         </div>
 
                          <div class="iq-card-header-toolbar d-flex align-items-baseline">
@@ -92,9 +92,9 @@ border-radius: 0px 4px 4px 0px;
                                     <td colspan="2">
                                        <div class="flex align-items-center list-user-action">
                                           <a class="iq-bg-warning" 
-                                          onclick="return confirm('Do you want to approve this Live Stream ?')"  href="{{ URL::to('admin/CPPLiveVideosApproval') . '/' . $video->id }}">  <i class="fa fa-check-circle" style="font-size:24px;color:green;"></i></a>
+                                          onclick="return confirm('Do you want to approve this Live Stream ?')"  href="{{ URL::to('admin/ChannelSeriesApproval') . '/' . $video->id }}">  <i class="fa fa-check-circle" style="font-size:24px;color:green;"></i></a>
                                           <a class="iq-bg-success" 
-                                              onclick="return confirm('Do you want to reject this Live Stream  ?')" href="{{ URL::to('admin/CPPLiveVideosReject') . '/' . $video->id }}"> <i class="fa fa-close" style="font-size:20px;color:white;background:red;border-radius:50%;"></i></a>
+                                              onclick="return confirm('Do you want to reject this Live Stream  ?')" href="{{ URL::to('admin/ChannelSeriesReject') . '/' . $video->id }}"> <i class="fa fa-close" style="font-size:20px;color:white;background:red;border-radius:50%;"></i></a>
                                        </div>
                                     </td>
                                  </tr>
@@ -154,36 +154,7 @@ $(document).ready(function(){
 
 	</script>
 
-<script>
-$.ajaxSetup({
-           headers: {
-                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-    });
 
-
-	$(document).ready(function(){
-
-$('#cpp_user_videos').change(function(){
-   var val = $('#cpp_user_videos').val();
-   if(val == "cpp_videos"){
-	$.ajax({
-   url:"{{ URL::to('admin/cppusers_videodata') }}",
-   method:'get',
-   data:{query:val},
-   dataType:'json',
-   success:function(data)
-   {
-    $('tbody').html(data.table_data);
-    $('#total_records').text(data.total_data);
-   }
-    });
-   }
-})
-
-});
-	
-</script>
 	@stop
 
 @stop

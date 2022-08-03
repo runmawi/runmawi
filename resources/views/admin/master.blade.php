@@ -409,6 +409,8 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
               <li><a href="{{ URL::to('admin/series-list') }}"><i class="las la-user-plus"></i>Series List</a></li>
               <li><a href="{{ URL::to('admin/series/create') }}"><i class="las la-eye"></i>Add New Series</a></li>
               <li data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories" class=" " data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories"><a href="{{ URL::to('admin/Series/Genre') }}"><img class="mr-2" height="30" width="30" src="<?php echo  URL::to('/assets/img/icon/video-approval.svg')?>">Manage Series Genre</a></li>                    
+              <li><a href="{{ URL::to('admin/CPPSeriesIndex') }}">Series For Approval</a></li>
+
 
 
             </ul>
@@ -677,6 +679,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
             <ul id="series" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
               <li><a href="{{ URL::to('admin/series-list') }}">Series List</a></li>
               <li data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories" class=" " data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories"><a href="{{ URL::to('admin/Series/Genre') }}">Manage Series Genre</a></li>                    
+              <li><a href="{{ URL::to('admin/CPPSeriesIndex') }}">Series For Approval</a></li>
 
             </ul>
           </li>
@@ -951,6 +954,8 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
               <li><a href="{{ URL::to('admin/series-list') }}"><i class="las la-user-plus"></i>Series List</a></li>
               <li><a href="{{ URL::to('admin/series/create') }}"><i class="las la-eye"></i>Add New Series</a></li>
               <li data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories" class=" " data-tour="step: 2; title: Video Category; content: Go to 'Manage Categories' to setup your content categories"><a href="{{ URL::to('admin/Series/Genre') }}"><img class="mr-2" height="30" width="30" src="<?php echo  URL::to('/assets/img/icon/video-approval.svg')?>">Manage Series Genre</a></li>                    
+              <li><a href="{{ URL::to('admin/CPPSeriesIndex') }}">Series For Approval</a></li>
+
 
             </ul>
           </li>
