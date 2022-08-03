@@ -25,15 +25,13 @@
                         </div>
                     </div>
                     <div class="iq-card-body table-responsive">
-                        <form  accept-charset="UTF-8" action="{{ route('landing_page_store') }}" method="post" >
+                        <form  accept-charset="UTF-8" action="{{ route('landing_page_update') }}" method="post" >
                         @csrf
                         <fieldset>
                             <div class="form-card">
                                 <div class="col-md-10">
                                     <div class="form-group">
-                    
                                         
-
                                         <div class="row">
                                             <div class="col-sm-4">
                                                 <input type="checkbox" id="sections_1" class="date" name="date[]" value="section_1" @if(!empty($section_1['0'])) checked @endif/>
@@ -148,7 +146,7 @@
                                                             <div class="container">
                                                                 <div class="row">
                                                                     <div class="col-md-12 p-0  align-items-center">
-                                                                        <textarea  rows="5" class="form-control mt-2 summary-ckeditor" name="sections_4[]"  >
+                                                                        <textarea  rows="5" class="form-control mt-2 summary-ckeditor" name="section_4[]"  >
                                                                             @if(!empty($sections_4->content)){{ ( $sections_4->content  ) }}@endif
                                                                         </textarea>
                                                                     </div>
@@ -166,6 +164,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <input type="hidden" value={{ $landing_page_id }} name="landing_page_id" >
                             <input type="submit" class="btn btn-primary action-button" id="" value="Save" />
                         </fieldset>
                         </form>

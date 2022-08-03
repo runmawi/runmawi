@@ -527,9 +527,15 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/ThumbnailSetting_Store', 'AdminSettingsController@ThumbnailSetting_Store'); 
 
     // Admin Landing page 
-    Route::get('/landing-page/create_edit', 'AdminLandingpageController@create_edit')->name('landing_page_create_edit');
+
+    Route::get('/landing-page/index', 'AdminLandingpageController@index')->name('landing_page_index');
+    Route::get('/landing-page/create', 'AdminLandingpageController@create')->name('landing_page_create');
+    Route::get('/landing-page/edit/{id}', 'AdminLandingpageController@edit')->name('landing_page_edit');
     Route::post('/landing-page/store', 'AdminLandingpageController@store')->name('landing_page_store'); 
     Route::post('/landing-page/update', 'AdminLandingpageController@update')->name('landing_page_update'); 
+    Route::get('/landing-page/delete/{id}', 'AdminLandingpageController@delete')->name('landing_page_delete'); 
+    Route::post('/landing-page/update_status', 'AdminLandingpageController@update_status')->name('landing_page_update_status'); 
+
 
     // Footer Link
     Route::get('/footer_menu', 'AdminSettingsController@footer_link')->name('footer_link'); 

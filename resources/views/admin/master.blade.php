@@ -267,6 +267,8 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </a>
                      <ul id="pages" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/pages') }}"><i class="las la-user-plus"></i>All Pages</a></li>
+                        <li><a href="{{ route('landing_page_index') }}">Landing Page</a></li>
+                        <li><a href="{{ route('landing_page_create') }}">Add Landind Page</a></li>
                      </ul>
                   </li>
                    
@@ -500,6 +502,8 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </a>
                      <ul id="pages" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/pages') }}"><i class="las la-user-plus"></i>All Pages</a></li>
+                        <li><a href="{{ route('landing_page_index') }}">Landing Page</a></li>
+                        <li><a href="{{ route('landing_page_create') }}">Add Landind Page</a></li>
                      </ul>
                   </li>
                    
@@ -769,6 +773,8 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </a>
                      <ul id="pages" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/pages') }}">All Pages</a></li>
+                        <li><a href="{{ route('landing_page_index') }}">Landing Page</a></li>
+                        <li><a href="{{ route('landing_page_create') }}">Add Landind Page</a></li>
                      </ul>
                   </li>
                    
@@ -1039,6 +1045,8 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </a>
                      <ul id="pages" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/pages') }}"><i class="las la-user-plus"></i>All Pages</a></li>
+                        <li><a href="{{ route('landing_page_index') }}">Landing Page</a></li>
+                        <li><a href="{{ route('landing_page_create') }}">Add Landind Page</a></li>
                      </ul>
                   </li>
                    
