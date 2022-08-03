@@ -43,36 +43,36 @@ use App\CategoryAudio;
 use App\AudioLanguage;
 use App\InappPurchase;
 
-class CPPAdminAudioController extends Controller
+class ChannelAudioController extends Controller
 {
    /**
      * Display a listing of audios
      *
      * @return Response
      */
-    public function CPPindex(Request $request)
+    public function Channelindex(Request $request)
     {
         $user_package =    User::where('id', 1)->first();
         $package = $user_package->package;
         if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
-        $user = Session::get('user'); 
-        $id = $user->id;
+        $user = Session::get('channel'); 
+        $user_id = $user->id;
       $search_value = $request->get('s');
         
         if(!empty($search_value)):
-            $audios = Audio::where('title', 'LIKE', '%'.$search_value.'%')->where('user_id','=',$id)->orderBy('created_at', 'desc')->paginate(9);
+            $audios = Audio::where('title', 'LIKE', '%'.$search_value.'%')->where('user_id','=',$id)->where('uploaded_by','Channel')->orderBy('created_at', 'desc')->paginate(9);
         else:
-            $audios = Audio::orderBy('created_at', 'DESC')->where('user_id','=',$id)->paginate(9);
+            $audios = Audio::orderBy('created_at', 'DESC')->where('user_id','=',$user_id)->where('uploaded_by','Channel')->paginate(9);
         endif;
         
         // $user = Auth::user();
 
         $data = array(
             'audios' => $audios,
-            // 'user' => $user,
+            'user' => $user,
             );
 
-        return View::make('moderator.cpp.audios.index', $data);
+        return View::make('channel.audios.index', $data);
     }else{
         return Redirect::to('/blocked');
       }
@@ -85,18 +85,18 @@ class CPPAdminAudioController extends Controller
      *
      * @return Response
      */
-    public function CPPcreate()
+    public function Channelcreate()
     {
         $user_package =    User::where('id', 1)->first();
         $package = $user_package->package;
         if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
-        $user = Session::get('user'); 
-        $id = $user->id;
+        $user = Session::get('channel'); 
+        $user_id = $user->id;
         $settings = Setting::first();
 
         $data = array(
             'headline' => '<i class="fa fa-plus-circle"></i> New Audio',
-            'post_route' => URL::to('cpp/audios/audioupdate'),
+            'post_route' => URL::to('channel/audios/audioupdate'),
             'button_text' => 'Add New Audio',
             // 'admin_user' => Auth::user(),
             'languages' => Language::all(),
@@ -110,7 +110,7 @@ class CPPAdminAudioController extends Controller
             'InappPurchase' => InappPurchase::all(),
 
             );
-        return View::make('moderator.cpp.audios.create_edit', $data);
+        return View::make('channel.audios.create_edit', $data);
     }else{
         return Redirect::to('/blocked');
       }
@@ -125,12 +125,12 @@ class CPPAdminAudioController extends Controller
      *
      * @return Response
      */
-    public function CPPstore(Request $request)
+    public function Channelstore(Request $request)
     {
         $user_package =    User::where('id', 1)->first();
         $package = $user_package->package;
         if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
-        $user = Session::get('user'); 
+        $user = Session::get('channel'); 
         $user_id = $user->id;
         $validator = Validator::make($data = $request->all(), Audio::$rules);
         
@@ -244,12 +244,12 @@ class CPPAdminAudioController extends Controller
      * @param  int  $id
      * @return Response
      */
-     public function CPPedit($id)
+     public function Channeledit($id)
     {
         $user_package =    User::where('id', 1)->first();
         $package = $user_package->package;
         if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
-        $user = Session::get('user'); 
+        $user = Session::get('channel'); 
         $user_id = $user->id;
         $audio = Audio::find($id);
         $settings = Setting::first();
@@ -257,7 +257,7 @@ class CPPAdminAudioController extends Controller
         $data = array(
             'headline' => '<i class="fa fa-edit"></i> Edit Audio',
             'audio' => $audio,
-            'post_route' => URL::to('/cpp/audios/update'),
+            'post_route' => URL::to('/channel/audios/update'),
             'button_text' => 'Update Audio',
             // 'admin_user' => Auth::user(),
             'languages' => Language::all(),
@@ -271,7 +271,7 @@ class CPPAdminAudioController extends Controller
             'InappPurchase' => InappPurchase::all(),
             );
 
-        return View::make('moderator.cpp.audios.edit', $data);
+        return View::make('channel.audios.edit', $data);
     }else{
         return Redirect::to('/blocked');
       }
@@ -284,13 +284,13 @@ class CPPAdminAudioController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function CPPupdate(Request $request)
+    public function Channelupdate(Request $request)
     {
 
         $user_package =    User::where('id', 1)->first();
         $package = $user_package->package;
         if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
-        $user = Session::get('user'); 
+        $user = Session::get('channel'); 
         $user_id = $user->id;
         $input = $request->all();
         $id = $request->id;
@@ -479,7 +479,7 @@ class CPPAdminAudioController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function CPPdestroy($id)
+    public function Channeldestroy($id)
     {
 
         $user_package =    User::where('id', 1)->first();
@@ -501,7 +501,7 @@ class CPPAdminAudioController extends Controller
 }
 
 
-    private function CPPdeleteAudioImages($audio){
+    private function ChanneldeleteAudioImages($audio){
         $ext = pathinfo($audio->image, PATHINFO_EXTENSION);
         if(file_exists(public_path().'/uploads/images/' . $audio->image) && $audio->image != 'placeholder.jpg'){
             @unlink(public_path().'/uploads/images/' . $audio->image);
@@ -520,7 +520,7 @@ class CPPAdminAudioController extends Controller
         }
     }
 
-    public function CPPcreateSlug($title, $id = 0)
+    public function ChannelcreateSlug($title, $id = 0)
     {
         // Normalize the title
         $slug = str_slug($title);
@@ -545,21 +545,23 @@ class CPPAdminAudioController extends Controller
         throw new \Exception('Can not create a unique slug');
     }
 
-    protected function CPPgetRelatedSlugs($slug, $id = 0)
+    protected function ChannelgetRelatedSlugs($slug, $id = 0)
     {
         return Audio::select('slug')->where('slug', 'like', $slug.'%')
             ->where('id', '<>', $id)
             ->get();
     }
-    public function CPPAudiofile(Request $request)
+    public function ChannelAudiofile(Request $request)
     {
         $user_package =    User::where('id', 1)->first();
         $package = $user_package->package;
         if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
-        $user = Session::get('user'); 
+        $user = Session::get('channel'); 
         $user_id = $user->id;
     $audio = new Audio();
     $audio->mp3_url = $request['mp3'];
+    $audio->user_id = $user_id;
+    $audio->uploaded_by = 'Channel';
     $audio->save(); 
     $audio_id = $audio->id;
 
@@ -572,12 +574,12 @@ class CPPAdminAudioController extends Controller
   }
 
     }                    
-    public function CPPuploadAudio(Request $request)
+    public function ChanneluploadAudio(Request $request)
     {
         $user_package =    User::where('id', 1)->first();
         $package = $user_package->package;
         if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
-        $user = Session::get('user'); 
+        $user = Session::get('channel'); 
         $user_id = $user->id;
         $audio_upload = $request->file('file');
         $ext = $audio_upload->extension();
@@ -623,7 +625,8 @@ class CPPAdminAudioController extends Controller
                   //   $update_url = Audio::find($audio_id);
 
                     $update_url->mp3_url = $data['mp3_url'];
-        
+                    $update_url->user_id = $user_id;
+                    $update_url->uploaded_by = 'Channel';
                     $update_url->save();  
              
                      $value['success'] = 1;
@@ -652,27 +655,21 @@ class CPPAdminAudioController extends Controller
             
 
     }
-    public function CPPaudioupdate(Request $request)
+    public function Channelaudioupdate(Request $request)
     {
         $user_package =    User::where('id', 1)->first();
         $package = $user_package->package;
         if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
-        $user = Session::get('user'); 
+        $user = Session::get('channel'); 
         $user_id = $user->id;
         $input = $request->all();
+        $data = $request->all();
+
       
         $id = $request->audio_id;
-        // echo"<pre>";
-        // print_r($id );
-        // exit();
+
         $audio = Audio::findOrFail($id);
-
-        $validator = Validator::make($data = $input, Audio::$rules);
-
-        if ($validator->fails())
-        {
-            return Redirect::back()->withErrors($validator)->withInput();
-        }
+// dd($input);
 
      
         /*Slug*/
@@ -734,9 +731,12 @@ class CPPAdminAudioController extends Controller
 
                 }
 
-        if(empty($data['active'])){
+        if($audio->active == 0){
             $data['active'] = 0;
+        }else{
+            $data['active'] = 1;
         }
+
 
         if(empty($data['featured'])){
             $data['featured'] = 0;
@@ -754,16 +754,7 @@ class CPPAdminAudioController extends Controller
 
 
         $audio = Audio::findOrFail($id);
-        $users = User::all();
-        if($audio['draft'] == 1){
-            foreach ($users as $key => $user) {
-                $userid[]= $user->id;
-           // send_password_notification('Notification From FLICKNEXS','New Videp Added','',$user->id);
-            }
-            foreach ($userid as $key => $user_id) {
-          send_password_notification('Notification From FLICKNEXS','New Audio Added','',$user_id);
-           }
-       }
+
         if(!empty($data['artists'])){
             $artistsdata = $data['artists'];
             unset($data['artists']);
