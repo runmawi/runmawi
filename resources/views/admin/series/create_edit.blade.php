@@ -425,8 +425,8 @@ $settings  = App\Setting::first();?>
 								</div>
 							</div>
 							<div class="form-group">
-								<label>Season Thumbnail <span>(16:9 Ratio or 1080X1920px)</span></label><br>
-								<input type="file" class="image" name="image" id="" >
+								<label>Season Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br>
+								<input type="file" class="season_image" name="image" id="" >
 							</div>
                                 
 						    <div class="form-group">
@@ -651,6 +651,26 @@ $('#submit-new-cat').click(function(){
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 <script>
 
+// 
+
+		// Season Image upload dimention validation
+		$.validator.addMethod('season_dimention', function(value, element, param) {
+				if(element.files.length == 0){
+					return true; 
+				}
+
+				var width = $(element).data('imageWidth');
+				var height = $(element).data('imageHeight');
+				var ratio = $(element).data('imageratio');
+
+				if( ratio == '1.78'|| width == param[0] && height == param[1]){
+					return true;
+				}else{
+					return false;
+				}
+			},'Please upload an image with 1280X720px  pixels dimension or 16:9 Ratio ');
+
+
 			// Image upload dimention validation
 		$.validator.addMethod('dimention', function(value, element, param) {
             if(element.files.length == 0){
@@ -666,7 +686,8 @@ $('#submit-new-cat').click(function(){
             }else{
                 return false;
             }
-        },'Please upload an image with 1080 x 1920 pixels dimension or 16:9 Ratio ');
+        },'Please upload an image with 1080 x 1920 pixels dimension or 9:16 Ratio ');
+
 
                 // player Image upload validation
         $.validator.addMethod('player_dimention', function(value, element, param) {
@@ -683,14 +704,35 @@ $('#submit-new-cat').click(function(){
             }else{
                 return false;
             }
-        },'Please upload an image with 1280 x 720 pixels dimension or 9:16 Ratio' );
+        },'Please upload an image with 1280 x 720 pixels dimension or 16:9 Ratio' );
+
+		$('.image').change(function() {
+
+			$('.image').removeData('imageWidth');
+			$('.image').removeData('imageHeight');
+			$('.image').removeData('imageratio');
+
+			var file = this.files[0];
+			var tmpImg = new Image();
+
+			tmpImg.src=window.URL.createObjectURL( file ); 
+			tmpImg.onload = function() {
+				width = tmpImg.naturalWidth,
+				height = tmpImg.naturalHeight;
+				ratio =  Number(width/height).toFixed(2) ;
+				$('.image').data('imageWidth', width);
+				$('.image').data('imageHeight', height);
+				$('.image').data('imageratio', ratio);
+
+			}
+		});
 
 
-        $('.image').change(function() {
+        $('.season_image').change(function() {
 
-            $('.image').removeData('imageWidth');
-            $('.image').removeData('imageHeight');
-            $('.image').removeData('imageratio');
+            $('.season_image').removeData('imageWidth');
+            $('.season_image').removeData('imageHeight');
+            $('.season_image').removeData('imageratio');
 
             var file = this.files[0];
             var tmpImg = new Image();
@@ -700,10 +742,9 @@ $('#submit-new-cat').click(function(){
                 width = tmpImg.naturalWidth,
                 height = tmpImg.naturalHeight;
 				ratio =  Number(width/height).toFixed(2) ;
-                $('.image').data('imageWidth', width);
-                $('.image').data('imageHeight', height);
-                $('.image').data('imageratio', ratio);
-
+                $('.season_image').data('imageWidth', width);
+                $('.season_image').data('imageHeight', height);
+                $('.season_image').data('imageratio', ratio);
             }
         });
 
@@ -762,7 +803,7 @@ $('form[id="new-cat-form"]').validate({
 		trailer: 'required',
 		image: {
 				required:true,
-				dimention:[1080,1920]
+				season_dimention:[1280,720]
 			},
 		},
 	messages: {
