@@ -65,9 +65,9 @@
                                     <td colspan="2">
                                        <div class="flex align-items-center list-user-action">
                                           <a class="iq-bg-warning" 
-                                          onclick="return confirm('Do you want to approve this Live Stream ?')"  href="{{ URL::to('/CPPLiveVideosApproval') . '/' . $video->id }}">  <i class="fa fa-check-circle" style="font-size:24px;color:green;"></i></span></a>
+                                          onclick="return confirm('Do you want to approve this Live Stream ?')"  href="{{ URL::to('/channleLiveVideosApproval') . '/' . $video->id }}">  <i class="fa fa-check-circle" style="font-size:24px;color:green;"></i></span></a>
                                           <a class="iq-bg-success" 
-                                              onclick="return confirm('Do you want to reject this Live Stream  ?')" href="{{ URL::to('/CPPLiveVideosReject') . '/' . $video->id }}"> <i class="fa fa-close" style="font-size:20px;color:white;background:red;border-radius:50%;"></i></span></a>
+                                              onclick="return confirm('Do you want to reject this Live Stream  ?')" href="{{ URL::to('/channleLiveVideosReject') . '/' . $video->id }}"> <i class="fa fa-close" style="font-size:20px;color:white;background:red;border-radius:50%;"></i></span></a>
                                        </div>
                                     </td>
                                  </tr>

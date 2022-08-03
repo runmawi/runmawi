@@ -16,17 +16,17 @@ use DB;
 use Session;
 
 
-class CPPAdminLiveCategoriesController extends Controller
+class ChannelLiveCategoriesController extends Controller
 {
-      public function CPPindex(){
+      public function Channelindex(){
         $user_package =    User::where('id', 1)->first();
         $package = $user_package->package;
         if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
-        $user = Session::get('user'); 
+        $user = Session::get('channel'); 
         $user_id = $user->id;
-        $categories = LiveCategory::where('user_id','=',$user_id)->where('parent_id', '=', 0)->get();
+        $categories = LiveCategory::where('user_id','=',$user_id)->where('uploaded_by','Channel')->where('parent_id', '=', 0)->get();
 
-        $allCategories = LiveCategory::where('user_id','=',$user_id)->get();
+        $allCategories = LiveCategory::where('user_id','=',$user_id)->where('uploaded_by','Channel')->get();
           
           
           
@@ -34,7 +34,7 @@ class CPPAdminLiveCategoriesController extends Controller
             'allCategories'=>$allCategories
           );
          
-        return view('moderator.cpp.livestream.categories.index',$data);
+        return view('channel.livestream.categories.index',$data);
       }else{
         return Redirect::to('/blocked');
       }
@@ -42,12 +42,12 @@ class CPPAdminLiveCategoriesController extends Controller
   }
     
     
-     public function CPPstore(Request $request){
+     public function Channelstore(Request $request){
       $user_package =    User::where('id', 1)->first();
       $package = $user_package->package;
       if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
          
-        $user = Session::get('user'); 
+        $user = Session::get('channel'); 
         $user_id = $user->id;
             $input = $request->all();
             
@@ -107,6 +107,7 @@ class CPPAdminLiveCategoriesController extends Controller
         } else {
           $in_menu  = 0;
         }
+
             // LiveCategory::create($input);
             $LiveCategory  = new LiveCategory;
           
@@ -117,6 +118,8 @@ class CPPAdminLiveCategoriesController extends Controller
             $LiveCategory->parent_id = $input['parent_id'];
             $LiveCategory->image = $input['image'];
             $LiveCategory->in_menu = $in_menu;
+            $LiveCategory->user_id = $user_id;
+            $LiveCategory->uploaded_by = 'Channel';            
             $LiveCategory->save();
             return back()->with('message', 'New Category added successfully.');
           }else{
@@ -125,16 +128,16 @@ class CPPAdminLiveCategoriesController extends Controller
 
        }
     
-    public function CPPedit($id){
+    public function Channeledit($id){
       $user_package =    User::where('id', 1)->first();
       $package = $user_package->package;
       if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
-        $user = Session::get('user'); 
+        $user = Session::get('channel'); 
         $user_id = $user->id;
-            $categories = LiveCategory::where('id', '=', $id)->get();
+            $categories = LiveCategory::where('id', '=', $id)->where('uploaded_by','Channel')->get();
 
             $allCategories = LiveCategory::all();
-            return view('moderator.cpp.livestream.categories.edit',compact('categories','allCategories'));
+            return view('channel.livestream.categories.edit',compact('categories','allCategories'));
           }else{
             return Redirect::to('/blocked');
           }
@@ -142,11 +145,11 @@ class CPPAdminLiveCategoriesController extends Controller
       }
     
     
-        public function CPPupdate(Request $request){
+        public function Channelupdate(Request $request){
           $user_package =    User::where('id', 1)->first();
           $package = $user_package->package;
           if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
-            $user = Session::get('user'); 
+            $user = Session::get('channel'); 
             $user_id = $user->id;
             $input = $request->all();
             
@@ -200,7 +203,7 @@ class CPPAdminLiveCategoriesController extends Controller
             
             $category->save();
 
-            return Redirect::to('cpp/livestream/categories')->with(array('message' => 'Successfully Updated Category', 'note_type' => 'success') );
+            return Redirect::to('channel/livestream/categories')->with(array('message' => 'Successfully Updated Category', 'note_type' => 'success') );
           }else{
             return Redirect::to('/blocked');
           }
@@ -209,7 +212,7 @@ class CPPAdminLiveCategoriesController extends Controller
     
         
     
-        public function CPPdestroy($id){
+        public function Channeldestroy($id){
           $user_package =    User::where('id', 1)->first();
           $package = $user_package->package;
           if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){

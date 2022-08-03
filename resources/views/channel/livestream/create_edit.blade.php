@@ -596,7 +596,7 @@
             text: 'While Converting the Live Stream video, Something went wrong!',
             }).then(function (result) {
             if (result.value) {
-                location.href = '{{ URL::to('cpp/livestream/create') }}';
+                location.href = '{{ URL::to('channel/livestream/create') }}';
             }
             })
         }

@@ -42,7 +42,7 @@
 				</div>
 				
 				<div class="modal-body">
-					<form id="new-cat-form" accept-charset="UTF-8" action="{{ URL::to('cpp/livestream/categories/store') }}" method="post" enctype="multipart/form-data">
+					<form id="new-cat-form" accept-charset="UTF-8" action="{{ URL::to('channel/livestream/categories/store') }}" method="post" enctype="multipart/form-data">
 						<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 				        <!-- <label for="name">Enter the new category name below</label>
 				        <input name="name" id="name" placeholder="Category Name" class="form-control" value="" /><br />
@@ -154,8 +154,8 @@
                     <tr>
                         <td valign="bottom"><p>{{ $category->name }}</p></td>
                         <td>
-                            <div class="align-items-center list-user-action"><a href="{{ URL::to('cpp/livestream/categories/edit/') }}/{{$category->id}}" class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Edit"><i class="ri-pencil-line"></i></a> <a href="{{ URL::to('cpp/livestream/categories/delete/') }}/{{$category->id}}" class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
+                            <div class="align-items-center list-user-action"><a href="{{ URL::to('channel/livestream/categories/edit/') }}/{{$category->id}}" class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
+                                             data-original-title="Edit"><i class="ri-pencil-line"></i></a> <a href="{{ URL::to('channel/livestream/categories/delete/') }}/{{$category->id}}" class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
                                              data-original-title="Delete"><i class="ri-delete-bin-line"></i></a></div>
                            
                         </td>
@@ -230,7 +230,7 @@
 
 			$('.dd').on('change', function(e) {
     			$('.category-panel').addClass('reloading');
-    			$.post('<?= URL::to('cpp/videos/categories/order');?>', { order : JSON.stringify($('.dd').nestable('serialize')), _token : $('#_token').val()  }, function(data){
+    			$.post('<?= URL::to('channle/videos/categories/order');?>', { order : JSON.stringify($('.dd').nestable('serialize')), _token : $('#_token').val()  }, function(data){
     				console.log(data);
     				$('.category-panel').removeClass('reloading');
     			});
