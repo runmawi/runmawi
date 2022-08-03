@@ -116,7 +116,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                     </div>
                     <div class="col-sm-6">
                         <label class="m-0">Episode Player Image</label>
-                        <p class="p1">Select the player image (16:9 Ratio or 1280X720px)</p>
+                        <p class="p1">Select the player image (9:16 Ratio or 1280X720px)</p>
 
                         <div class="panel-body">
                             @if(!empty($episodes->player_image))
@@ -514,12 +514,14 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
 
             var width = $(element).data('imageWidth');
             var height = $(element).data('imageHeight');
-            if(width == param[0] && height == param[1]){
+            var ratio = $(element).data('imageratio');
+
+            if( ratio == '0.56'|| width == param[0] && height == param[1]){
                 return true;
             }else{
                 return false;
             }
-        },'Please upload an image with 1080 x 1920 pixels dimension');
+        },'Please upload an image with 1080 x 1920 pixels dimension  or 16:9 Ratio ');
 
                 // player Image upload validation
         $.validator.addMethod('player_dimention', function(value, element, param) {
@@ -529,19 +531,21 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
 
             var width = $(element).data('imageWidth');
             var height = $(element).data('imageHeight');
+            var ratio = $(element).data('imageratio');
 
-            if(width == param[0] && height == param[1]){
+            if( ratio == '1.78'||  width == param[0] && height == param[1]){
                 return true;
             }else{
                 return false;
             }
-        },'Please upload an image with 1280 x 720 pixels dimension');
+        },'Please upload an image with 1280 x 720 pixels dimension  or 9:16 Ratio');
 
 
         $('#image').change(function() {
 
             $('#image').removeData('imageWidth');
             $('#image').removeData('imageHeight');
+            $('#image').removeData('imageratio');
 
             var file = this.files[0];
             var tmpImg = new Image();
@@ -550,8 +554,11 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
             tmpImg.onload = function() {
                 width = tmpImg.naturalWidth,
                 height = tmpImg.naturalHeight;
+				ratio =  Number(width/height).toFixed(2) ;
                 $('#image').data('imageWidth', width);
                 $('#image').data('imageHeight', height);
+                $('#image').data('imageratio', ratio);
+
             }
         });
 
@@ -559,6 +566,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
 
             $('#player_image').removeData('imageWidth');
             $('#player_image').removeData('imageHeight');
+            $('#player_image').removeData('imageratio');
 
             var file = this.files[0];
             var tmpImg = new Image();
@@ -567,8 +575,10 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
             tmpImg.onload = function() {
                 width = tmpImg.naturalWidth,
                 height = tmpImg.naturalHeight;
+				ratio =  Number(width/height).toFixed(2) ;
                 $('#player_image').data('imageWidth', width);
                 $('#player_image').data('imageHeight', height);
+                $('#player_image').data('imageratio', ratio);
             }
         });
 
