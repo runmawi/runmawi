@@ -26,7 +26,7 @@
 	<div class="clear"></div>
 
 
-                    <form method="POST" action="{{ URL::to('/cpp/audios/categories/update') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="cpp_audio">
+                    <form method="POST" action="{{ URL::to('/channel/audios/categories/update') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="cpp_audio">
                         @csrf
                         <div class="row justify-content-between p-2">
                         <div class="col-md-5" style="">

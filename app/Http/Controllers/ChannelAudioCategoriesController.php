@@ -17,26 +17,26 @@ use Image;
 use DB;
 use Session;
 
-class CPPAdminAudioCategoriesController extends Controller
+class ChannelAudioCategoriesController extends Controller
 {
-      public function CPPindex(){
+      public function Channelindex(){
         $user_package =    User::where('id', 1)->first();
         $package = $user_package->package;
         if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
-        $user = Session::get('user'); 
+        $user = Session::get('channel'); 
         $user_id = $user->id;
-        $categories = AudioCategory::where('user_id','=',$user_id)->where('parent_id', '=', 0)->get();
+        $allCategories = AudioCategory::where('user_id','=',$user_id)->where('uploaded_by','Channel')->get();
 
-        $allCategories = AudioCategory::all();
+        $categories = AudioCategory::all();
           
-          
+        //   dd($user_id);
           
         $data = array (
             'allCategories'=>$allCategories,
             'categories'=>$categories,
           );
          
-        return view('moderator.cpp.audios.categories.index',$data);
+        return view('channel.audios.categories.index',$data);
     }else{
         return Redirect::to('/blocked');
       }
@@ -44,11 +44,11 @@ class CPPAdminAudioCategoriesController extends Controller
       }
     
     
-     public function CPPstore(Request $request){
+     public function Channelstore(Request $request){
         $user_package =    User::where('id', 1)->first();
         $package = $user_package->package;
         if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
-        $user = Session::get('user'); 
+        $user = Session::get('channel'); 
         $user_id = $user->id;
             $input = $request->all();
             
@@ -93,6 +93,9 @@ class CPPAdminAudioCategoriesController extends Controller
            }
            $input['user_id'] = $user_id;
 
+           $input['uploaded_by'] = 'Channel';
+
+
           
             AudioCategory::create($input);
             return back()->with('message', 'New Category added successfully.');
@@ -102,16 +105,16 @@ class CPPAdminAudioCategoriesController extends Controller
                                                                                                 
        }
     
-    public function CPPedit($id){
+    public function Channeledit($id){
         $user_package =    User::where('id', 1)->first();
         $package = $user_package->package;
         if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
-        $user = Session::get('user'); 
+        $user = Session::get('channel'); 
         $user_id = $user->id;
             $categories = AudioCategory::where('id', '=', $id)->get();
 
             $allCategories = AudioCategory::all();
-            return view('moderator.cpp.audios.categories.edit',compact('categories','allCategories'));
+            return view('channel.audios.categories.edit',compact('categories','allCategories'));
         }else{
             return Redirect::to('/blocked');
           }
@@ -119,12 +122,12 @@ class CPPAdminAudioCategoriesController extends Controller
         }
     
     
-        public function CPPupdate(Request $request){
+        public function Channelupdate(Request $request){
             $user_package =    User::where('id', 1)->first();
             $package = $user_package->package;
             if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
             
-            $user = Session::get('user'); 
+            $user = Session::get('channel'); 
             $user_id = $user->id;
             $input = $request->all();
             
@@ -184,11 +187,11 @@ class CPPAdminAudioCategoriesController extends Controller
     
         
     
-        public function CPPdestroy($id){
+        public function Channeldestroy($id){
             $user_package =    User::where('id', 1)->first();
             $package = $user_package->package;
             if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
-            $user = Session::get('user'); 
+            $user = Session::get('channel'); 
             $user_id = $user->id;
                 
             AudioCategory::destroy($id);
@@ -208,29 +211,29 @@ class CPPAdminAudioCategoriesController extends Controller
     
          /*Albums section */
     
-    public function CPPalbumIndex(){
+    public function ChannelalbumIndex(){
         $user_package =    User::where('id', 1)->first();
         $package = $user_package->package;
         if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
-        $user = Session::get('user'); 
+        $user = Session::get('channel'); 
         $user_id = $user->id;
-        $allAlbums = AudioAlbums::where('user_id','=',$user_id)->get();
-        $allCategories = AudioCategory::all();
+        $allAlbums = AudioAlbums::where('user_id','=',$user_id)->where('uploaded_by','Channel')->get();
+        $allCategories = AudioCategory::where('uploaded_by','Channel')->get();
         $data = array(
             'audioCategories' => $allCategories,
             'allAlbums' => $allAlbums,
         );
-        return view('moderator.cpp.audios.albums.index',$data);
+        return view('channel.audios.albums.index',$data);
     }else{
         return Redirect::to('/blocked');
       }
     }
 
-    public function CPPstoreAlbum(Request $request){
+    public function ChannelstoreAlbum(Request $request){
         $user_package =    User::where('id', 1)->first();
         $package = $user_package->package;
         if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
-        $user = Session::get('user'); 
+        $user = Session::get('channel'); 
         $user_id = $user->id;
         $input = $request->all();
         
@@ -270,6 +273,8 @@ class CPPAdminAudioCategoriesController extends Controller
             }
 
             $input['user_id'] = $user_id;
+            $input['uploaded_by'] = 'Channel';
+
 
         AudioAlbums::create($input);
         return back()->with('message', 'New Album added successfully.');
@@ -278,11 +283,11 @@ class CPPAdminAudioCategoriesController extends Controller
       }
     }
 
-    public function CPPupdateAlbum(Request $request){
+    public function ChannelupdateAlbum(Request $request){
         $user_package =    User::where('id', 1)->first();
         $package = $user_package->package;
         if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
-        $user = Session::get('user'); 
+        $user = Session::get('channel'); 
         $user_id = $user->id;
                
         $request = $request->all();
@@ -334,11 +339,11 @@ class CPPAdminAudioCategoriesController extends Controller
       }
     }
 
-    public function CPPdestroyAlbum($id){
+    public function ChanneldestroyAlbum($id){
         $user_package =    User::where('id', 1)->first();
         $package = $user_package->package;
         if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
-        $user = Session::get('user'); 
+        $user = Session::get('channel'); 
         $user_id = $user->id;
 
         AudioAlbums::destroy($id);
@@ -349,11 +354,11 @@ class CPPAdminAudioCategoriesController extends Controller
       }
 }
 
-    public function CPPeditAlbum($id){
+    public function ChanneleditAlbum($id){
         $user_package =    User::where('id', 1)->first();
         $package = $user_package->package;
         if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
-        $user = Session::get('user'); 
+        $user = Session::get('channel'); 
         $user_id = $user->id;
 
         $categories = AudioAlbums::where('id', '=', $id)->get();
@@ -365,13 +370,13 @@ class CPPAdminAudioCategoriesController extends Controller
                 'categories' => $categories
             );
         
-        return view('moderator.cpp.audios.albums.edit',$data);
+        return view('channel.audios.albums.edit',$data);
     }else{
         return Redirect::to('/blocked');
       }
  }
 
-     public function CPPcreateAlbumSlug($title, $id = 0)
+     public function ChannelcreateAlbumSlug($title, $id = 0)
             {
                 // Normalize the title
                 $slug = str_slug($title);

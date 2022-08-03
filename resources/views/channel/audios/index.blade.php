@@ -21,7 +21,7 @@
                            <h4 class="card-title">Audio Lists</h4>
                         </div>
                         <div class="iq-card-header-toolbar d-flex align-items-center">
-                           <a href="{{ URL::to('/cpp/audios/create') }}" class="btn btn-primary">Add Audio</a>
+                           <a href="{{ URL::to('/channel/audios/create') }}" class="btn btn-primary">Add Audio</a>
                         </div>
                      </div>
                      <div class="iq-card-body">
@@ -61,11 +61,11 @@
                                     <td>
                                        <div class=" align-items-center list-user-action">
                                           <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="View" href="{{ URL::to('/cpp/audio') . '/' . $audio->slug }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>"></a>
+                                             data-original-title="View" href="{{ URL::to('/channel/audio') . '/' . $audio->slug }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>"></a>
                                           <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Edit" href="{{ URL::to('/cpp/audios/edit') . '/' . $audio->id }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
+                                             data-original-title="Edit" href="{{ URL::to('/channel/audios/edit') . '/' . $audio->id }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
                                           <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" onclick="return confirm('Are you sure?')"
-                                             data-original-title="Delete" href="{{ URL::to('/cpp/audios/delete') . '/' . $audio->id }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
+                                             data-original-title="Delete" href="{{ URL::to('/channel/audios/delete') . '/' . $audio->id }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
                                        </div>
                                     </td>
                                  </tr>
