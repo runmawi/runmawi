@@ -28,10 +28,10 @@ use Streaming\Representation;
 use App\InappPurchase;
 
 
-class CPPAdminLiveStreamController extends Controller
+class ChannelLiveStreamController extends Controller
 {
     
-    public function CPPindex()
+    public function Channelindex()
         {
             $Stream_key = Session::get('Stream_key');
             $Stream_error =Session::get('Stream_error');
@@ -41,7 +41,7 @@ class CPPAdminLiveStreamController extends Controller
             $user_package =    User::where('id', 1)->first();
             $package = $user_package->package;
             if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
-            $user = Session::get('user'); 
+            $user = Session::get('channel'); 
             $user_id = $user->id;
 
             $all = LiveStream::all();
@@ -66,7 +66,7 @@ class CPPAdminLiveStreamController extends Controller
                 'title' => $title ? $title : null,
                 );
 
-            return View('moderator.cpp.livestream.index', $data);
+            return View('channel.livestream.index', $data);
         }else{
             return Redirect::to('/blocked');
           }
@@ -76,16 +76,16 @@ class CPPAdminLiveStreamController extends Controller
      *
      * @return Response
      */
-       public function CPPcreate()
+       public function Channelcreate()
         {
             $user_package =    User::where('id', 1)->first();
             $package = $user_package->package;
             if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
-            $user = Session::get('user'); 
-            $user_id = $user->id;
+                $user = Session::get('channel'); 
+                $user_id = $user->id;
             $data = array(
                 'headline' => '<i class="fa fa-plus-circle"></i> New Video',
-                'post_route' => URL::to('cpp/livestream/store'),
+                'post_route' => URL::to('channel/livestream/store'),
                 'button_text' => 'Add New Video',
                 // 'admin_user' => Auth::user(),
                 'video_categories' => LiveCategory::all(),
@@ -96,7 +96,7 @@ class CPPAdminLiveStreamController extends Controller
                 'Rtmp_urls' => RTMP::all(),
                 'InappPurchase' => InappPurchase::all(),
                 );
-            return View::make('moderator.cpp.livestream.create_edit', $data);
+            return View::make('channel.livestream.create_edit', $data);
         }else{
             return Redirect::to('/blocked');
           }
@@ -107,14 +107,14 @@ class CPPAdminLiveStreamController extends Controller
      *
      * @return Response
      */
-    public function CPPstore(Request $request)
+    public function Channelstore(Request $request)
     {
 
         $user_package =    User::where('id', 1)->first();
         $package = $user_package->package;
         if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
         
-        $user = Session::get('user'); 
+        $user = Session::get('channel'); 
         $user_id = $user->id;
         
         $data = $request->all();
@@ -330,6 +330,7 @@ class CPPAdminLiveStreamController extends Controller
         $movie->active = 0 ;
         $movie->player_image = $player_image;
         $movie->user_id = $user_id;
+        $movie->uploaded_by = 'Channel';
         $movie->ios_ppv_price = $request->ios_ppv_price;
         $movie->save();
 
@@ -362,14 +363,14 @@ class CPPAdminLiveStreamController extends Controller
 
         }
         if(!empty($data['url_type']) && $data['url_type'] == "Encode_video" ){
-            return Redirect::to('cpp/livestream')->with( [
+            return Redirect::to('channel/livestream')->with( [
                                                     'Stream_key' => $Stream_key ,
                                                     'Stream_error' => '1',
                                                     'Rtmp_url' => $data['Rtmp_url'],
                                                     'title' => $data['title']
                                                 ] );
         }else{
-            return Redirect::to('cpp/livestream')->with(array('message' => 'New PPV Video Successfully Added!', 'note_type' => 'success') );
+            return Redirect::to('channel/livestream')->with(array('message' => 'New PPV Video Successfully Added!', 'note_type' => 'success') );
         }
         
         }else{
@@ -407,12 +408,12 @@ class CPPAdminLiveStreamController extends Controller
                 ->get();
         }  
 
-    public function CPPedit($id)
+    public function Channeledit($id)
     {
         $user_package =    User::where('id', 1)->first();
         $package = $user_package->package;
         if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
-        $user = Session::get('user'); 
+        $user = Session::get('channel'); 
         $user_id = $user->id;
        $video = LiveStream::find($id);
 
@@ -425,7 +426,7 @@ class CPPAdminLiveStreamController extends Controller
         $data = array(
             'headline' => '<i class="fa fa-edit"></i> Edit Video',
             'video' => $video,
-            'post_route' => URL::to('cpp/livestream/update'),
+            'post_route' => URL::to('channel/livestream/update'),
             'button_text' => 'Update Video',
             // 'admin_user' => Auth::user(),
             'video_categories' => LiveCategory::all(),
@@ -443,13 +444,13 @@ class CPPAdminLiveStreamController extends Controller
             'InappPurchase' => InappPurchase::all(),
             );
 
-        return View::make('moderator.cpp.livestream.edit', $data); 
+        return View::make('channel.livestream.edit', $data); 
     }else{
         return Redirect::to('/blocked');
       }
     }
     
-    public function CPPdestroy($id)
+    public function Channeldestroy($id)
     {
     //  LiveStream::
     $user_package =    User::where('id', 1)->first();
@@ -463,12 +464,12 @@ class CPPAdminLiveStreamController extends Controller
         return Redirect::to('/blocked');
       }
     }
-     public function CPPupdate(Request $request)
+     public function Channelupdate(Request $request)
     {
         $user_package =    User::where('id', 1)->first();
         $package = $user_package->package;
         if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
-        $user = Session::get('user'); 
+        $user = Session::get('channel'); 
         $user_id = $user->id;
         $data = $request->all();       
         $id = $data['id'];
@@ -692,7 +693,7 @@ class CPPAdminLiveStreamController extends Controller
        
         if(!empty($data['url_type']) && $video['url_type'] == "Encode_video" &&  $data['url_type'] == "Encode_video"   ){
 
-            return Redirect::to('cpp/livestream/edit' . '/' . $id)->with(
+            return Redirect::to('channel/livestream/edit' . '/' . $id)->with(
                                                     [ 'Stream_key' => $video['Stream_key'],
                                                       'Stream_error' => '1',
                                                       'Rtmp_url' => $data['Rtmp_url'] ? $data['Rtmp_url'] : $video['rtmp_url']  ,
@@ -700,7 +701,7 @@ class CPPAdminLiveStreamController extends Controller
                                                     ]);
         }else{
 
-            return Redirect::to('cpp/livestream/edit' . '/' . $id)->with(array('message' => 'Successfully Updated Video!', 'note_type' => 'success') );
+            return Redirect::to('channel/livestream/edit' . '/' . $id)->with(array('message' => 'Successfully Updated Video!', 'note_type' => 'success') );
         }
 
     }else{
@@ -708,7 +709,7 @@ class CPPAdminLiveStreamController extends Controller
       }
     }
     
-    public function CPPLiveVideosIndex()
+    public function ChannelLiveVideosIndex()
     {
         $user_package =    User::where('id', 1)->first();
         $package = $user_package->package;
@@ -724,12 +725,12 @@ class CPPAdminLiveStreamController extends Controller
                 'videos' => $videos,
                 );
 
-            return View('moderator.cpp.livestream.livevideoapproval.live_video_approval', $data);
+            return View('channel.livestream.livevideoapproval.live_video_approval', $data);
         }else{
             return Redirect::to('/blocked');
           }
        }
-       public function CPPLiveVideosApproval($id)
+       public function ChannelLiveVideosApproval($id)
        {
         $user_package =    User::where('id', 1)->first();
         $package = $user_package->package;
@@ -743,7 +744,7 @@ class CPPAdminLiveStreamController extends Controller
           }
           }
 
-          public function CPPLiveVideosReject($id)
+          public function ChannelLiveVideosReject($id)
           {
             $user_package =    User::where('id', 1)->first();
             $package = $user_package->package;
