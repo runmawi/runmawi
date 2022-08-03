@@ -32,6 +32,8 @@
                                 <div class="col-md-10">
                                     <div class="form-group">
                     
+                                        
+
                                         <div class="row">
                                             <div class="col-sm-4">
                                                 <input type="checkbox" id="sections_1" class="date" name="date[]" value="section_1" @if(!empty($section_1['0'])) checked @endif/>
@@ -46,10 +48,12 @@
                                                     <tr>
                                                         <td>
                                                             <div class="container">
-                                                                <div class="col-md-12 p-0 d-flex align-items-center">
-                                                                    <textarea  rows="5" class="form-control mt-2 summary-ckeditor" name="section_1[]"  placeholder="">
-                                                                        @if(!empty($sections_1->content)){{ ( $sections_1->content  ) }}@endif
-                                                                    </textarea>
+                                                                <div class="row">
+                                                                    <div class="col-md-12 p-0 align-items-center">
+                                                                        <textarea  rows="5" class="form-control mt-2 summary-ckeditor" name="section_1[]"  >
+                                                                            @if(!empty($sections_1->content)){{ ( $sections_1->content  ) }}@endif
+                                                                        </textarea>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -77,10 +81,12 @@
                                                     <tr>
                                                         <td>
                                                             <div class="container">
-                                                                <div class="col-md-12 p-0 d-flex align-items-center">
-                                                                    <textarea  rows="5" class="form-control mt-2 summary-ckeditor" name="section_2[]"  placeholder="">
-                                                                        @if(!empty($sections_2->content)){{ ( $sections_2->content  ) }}@endif
-                                                                    </textarea>
+                                                                <div class="row">
+                                                                    <div class="col-md-12 p-0  align-items-center">
+                                                                        <textarea  rows="5" class="form-control mt-2 summary-ckeditor" name="section_2[]" >
+                                                                            @if(!empty($sections_2->content)){{ ( $sections_2->content  ) }}@endif
+                                                                        </textarea>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -108,14 +114,15 @@
                                                     <tr>
                                                         <td>
                                                             <div class="container">
-                                                                <div class="col-md-12 p-0 d-flex align-items-center">
-                                                                    <textarea  rows="5" class="form-control mt-2 summary-ckeditor" name="section_3[]"  placeholder="">
-                                                                        @if(!empty($sections_3->content)){{ ( $sections_3->content  ) }}@endif
-                                                                    </textarea>
+                                                                <div class="row">
+                                                                    <div class="col-md-12 p-0 align-items-center">
+                                                                        <textarea  rows="5" class="form-control mt-2 summary-ckeditor" name="section_3[]" >
+                                                                            @if(!empty($sections_3->content)){{ ( $sections_3->content  ) }}@endif
+                                                                        </textarea>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        <td></td>
                                                         <td><i class="fa-solid fa-trash-can remove-tr"> </i></td>
                                                     </tr>
                                                 </table>
@@ -126,7 +133,7 @@
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-sm-8">
+                                            <div class="col-sm-12">
                                                 <input type="checkbox" class="date" id="sections_4" name="date[]" value="section_4" @if(!empty($section_4['0'])) checked @endif />
                                                 <label for=""> Section 4 </label>
                                                 <span  class="Section_4">
@@ -135,20 +142,19 @@
                                             </div>
 
                                             @forelse ($section_4 as $sections_4)
-                                                <table class="table col-md-12" id=""> 
+                                                <table class="table col-md-12" id="Section_4"> 
                                                     <tr>
                                                         <td>
                                                             <div class="container">
                                                                 <div class="row">
-                                                                    <div class="col-md-12 p-0 d-flex align-items-center">
-                                                                        <textarea  rows="5" class="form-control mt-2 summary-ckeditor" name="sections_4[]"  placeholder="">
+                                                                    <div class="col-md-12 p-0  align-items-center">
+                                                                        <textarea  rows="5" class="form-control mt-2 summary-ckeditor" name="sections_4[]"  >
                                                                             @if(!empty($sections_4->content)){{ ( $sections_4->content  ) }}@endif
                                                                         </textarea>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        <td></td>
                                                         <td><i class="fa-solid fa-trash-can remove-tr"> </i></td>
                                                     </tr>
                                                 </table>
@@ -176,28 +182,28 @@
         $(".section_1").click(function(){
                 ++i;
                 $('#sections_1').prop('checked', true);
-                $("#section_1").append('<tr> <td> <div class="container"> <div class="row"> <div class="col-md-12 p-0  align-items-center"> <textarea  rows="5" class="form-control mt-2" name="section_1[]" id= '+ 'ck_editor_section1-' + i  +'  placeholder=""></textarea> </div>  </div> </div> </td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td>  </tr>');
+                $("#section_1").append('<tr> <td> <div class="container"> <div class="row"> <div class="col-md-12 p-0  align-items-center"> <textarea  rows="5" name="section_1[]" class="form-control mt-2" id= '+ 'ck_editor_section1-' + i  +' placeholder="" > </textarea> </div> </div> </div> </td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td> </tr>');
                 CKEDITOR.replace( 'ck_editor_section1-'+ i );
             });
 
         $(".Section_2").click(function(){
                 ++i;
                 $('#sections_2').prop('checked', true);
-                $("#Section_2").append('<tr> <td> <div class="container"> <div class="row"> <div class="col-md-12 p-0  align-items-center"> <textarea  rows="5" name="section_2[]" class="form-control mt-2" id= '+ 'ck_editor_section2-' + i  +' /> </textarea> </div> </div> </div> <td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td>   </tr>');
+                $("#Section_2").append('<tr> <td> <div class="container"> <div class="row"> <div class="col-md-12 p-0  align-items-center"> <textarea  rows="5" name="section_2[]" class="form-control mt-2" id= '+ 'ck_editor_section2-' + i  +' /> </textarea> </div> </div> </div> </td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td>   </tr>');
                 CKEDITOR.replace( 'ck_editor_section2-'+ i );
             });
 
        $(".Section_3").click(function(){
            ++i;
            $('#sections_3').prop('checked', true);
-           $("#Section_3").append('<tr> <td> <div class="container"> <div class="row"> <div class="col-md-12 p-0  align-items-center"> <textarea  rows="5" name="section_3[]" class="form-control mt-2" id= '+ 'ck_editor_section3-' + i  +' /> </textarea> </div> </div> </div> <td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td>   </tr>');
+           $("#Section_3").append('<tr> <td> <div class="container"> <div class="row"> <div class="col-md-12 p-0  align-items-center"> <textarea  rows="5" name="section_3[]" class="form-control mt-2" id= '+ 'ck_editor_section3-' + i  +' /> </textarea> </div> </div> </div> </td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td>   </tr>');
            CKEDITOR.replace( 'ck_editor_section3-'+ i );
         });
 
        $(".Section_4").click(function(){
            ++i;
            $('#sections_4').prop('checked', true);
-           $("#Section_4").append('<tr> <td> <div class="container"> <div class="row"> <div class="col-md-12 p-0  align-items-center"> <textarea  rows="5" name="section_4[]" class="form-control mt-2" id= '+ 'ck_editor_section4-' + i  +' /> </textarea> </div> </div> </div> <td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td>   </tr>');
+           $("#Section_4").append('<tr> <td> <div class="container"> <div class="row"> <div class="col-md-12 p-0  align-items-center"> <textarea  rows="5" name="section_4[]" class="form-control mt-2" id= '+ 'ck_editor_section4-' + i  +' /> </textarea> </div> </div> </div> </td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td>   </tr>');
            CKEDITOR.replace( 'ck_editor_section4-'+ i );
         });
 
