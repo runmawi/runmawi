@@ -828,8 +828,9 @@ class AdminLiveStreamController extends Controller
         }else{
         // $videos = LiveStream::orderBy('created_at', 'DESC')->paginate(9);
         $videos =    LiveStream::where('active', '=',0)
-            // ->join('moderators_users', 'moderators_users.id','=','live_streams.user_id')
+            ->join('moderators_users', 'moderators_users.id','=','live_streams.user_id')
             ->select('moderators_users.username', 'live_streams.*')
+            ->where("live_streams.uploaded_by", "CPP")
             ->orderBy('live_streams.created_at', 'DESC')->paginate(9);
             // dd($videos);
             $data = array(
@@ -870,5 +871,69 @@ class AdminLiveStreamController extends Controller
                 return response()->json(['message'=>"false"]);
             }
         }
+        public function ChannelLiveVideosIndex()
+    {
+
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [
+                'userid' => 0,
+            ];
     
+            $headers = [
+                'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+            ];
+            $response = $client->request('post', $url, [
+                'json' => $params,
+                'headers' => $headers,
+                'verify'  => false,
+            ]);
+    
+            $responseBody = json_decode($response->getBody());
+           $settings = Setting::first();
+           $data = array(
+            'settings' => $settings,
+            'responseBody' => $responseBody,
+    );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
+        // $videos = LiveStream::orderBy('created_at', 'DESC')->paginate(9);
+
+            $videos =    LiveStream::where('active', '=',0)
+            ->join('channels', 'channels.id','=','live_streams.user_id')
+            ->select( 'live_streams.*','channels.channel_name as username')
+            ->where("live_streams.uploaded_by", "Channel")
+            ->orderBy('live_streams.created_at', 'DESC')->paginate(9);
+
+            // dd($videos);
+            $data = array(
+                'videos' => $videos,
+                // 'channelvideos' => $channelvideos,
+                );
+
+            return View('admin.livestream.livevideoapproval.channel_live_approval', $data);
+        }
+       }
+       public function ChannelLiveVideosApproval($id)
+       {
+           $video = LiveStream::findOrFail($id);
+           $video->active = 1;
+           $video->save();
+           return Redirect::back()->with('message','Your video will be available shortly after we process it');
+
+          }
+
+          public function ChannelLiveVideosReject($id)
+          {
+            $video = LiveStream::findOrFail($id);
+            $video->active = 2;
+            $video->save();            
+            return Redirect::back()->with('message','Your video will be available shortly after we process it');
+ 
+             }
 }

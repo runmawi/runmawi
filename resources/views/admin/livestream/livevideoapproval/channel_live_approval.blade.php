@@ -41,7 +41,7 @@ border-radius: 0px 4px 4px 0px;
                         <div>
                            <br>
                         <div class="iq-header-title">
-                           <h4 class="card-title">CPP Live Video Lists</h4>
+                           <h4 class="card-title">Channel Live Video Lists</h4>
                         </div>
 
                          <div class="iq-card-header-toolbar d-flex align-items-baseline">
@@ -92,9 +92,9 @@ border-radius: 0px 4px 4px 0px;
                                     <td colspan="2">
                                        <div class="flex align-items-center list-user-action">
                                           <a class="iq-bg-warning" 
-                                          onclick="return confirm('Do you want to approve this Live Stream ?')"  href="{{ URL::to('admin/CPPLiveVideosApproval') . '/' . $video->id }}">  <i class="fa fa-check-circle" style="font-size:24px;color:green;"></i></a>
+                                          onclick="return confirm('Do you want to approve this Live Stream ?')"  href="{{ URL::to('admin/ChannelLiveVideosApproval') . '/' . $video->id }}">  <i class="fa fa-check-circle" style="font-size:24px;color:green;"></i></a>
                                           <a class="iq-bg-success" 
-                                              onclick="return confirm('Do you want to reject this Live Stream  ?')" href="{{ URL::to('admin/CPPLiveVideosReject') . '/' . $video->id }}"> <i class="fa fa-close" style="font-size:20px;color:white;background:red;border-radius:50%;"></i></a>
+                                              onclick="return confirm('Do you want to reject this Live Stream  ?')" href="{{ URL::to('admin/ChannelLiveVideosReject') . '/' . $video->id }}"> <i class="fa fa-close" style="font-size:20px;color:white;background:red;border-radius:50%;"></i></a>
                                        </div>
                                     </td>
                                  </tr>
