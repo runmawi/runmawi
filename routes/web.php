@@ -1216,6 +1216,12 @@ Route::post('/audios/audioupdate', array('before' => 'demo', 'uses' => 'CPPAdmin
     Route::post('artists/update', 'ChannelArtistsController@update');
     Route::get('artists/delete/{id}','ChannelArtistsController@destroy');
 
+    Route::get('setting/bank_setting', 'ChannelSettingController@Accountindex');
+    Route::get('setting/about_channel_setting','ChannelSettingController@Aboutindex');
+    Route::post('setting/update-myprofile','ChannelSettingController@SaveAccount');
+    Route::post('setting/update-channel','ChannelSettingController@UpdateChannel');
+
+
 });
 
 
