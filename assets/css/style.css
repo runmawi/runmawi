@@ -22,11 +22,6 @@ NOTE: This file contains the styling for responsive Template.
 /*---------------------------------------------------------------------
                     Header
 -----------------------------------------------------------------------*/
-* {
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-}
-
 @media (min-width: 411px){
     .tvsec {
        text-align: center;
@@ -164,7 +159,7 @@ header .navbar ul li:last-child { margin-right: 0; }
 #home-slider li { position: relative;  }
 .slider-description { position: absolute; top: 15%; left: 80px; }
 #home-slider h1.slider-text { font-size: 50px; margin: 15px 0; }
-#home-slider p { margin: 20px 0; /*width: 75%;*/color:#fff; }
+#home-slider p { margin: 20px 0; width: 75%; col}
 #home-slider .slick-bg { /*padding: 100px 0 50px;*/width:100%; background-size: contain;background-position: center center; background-repeat: no-repeat; /*height: 90vh;*/ position: relative; z-index: 1;}
 
 .trailor-video { position: absolute; bottom: 75px !important; right: 0; z-index: 999; }
@@ -793,6 +788,9 @@ a.title-dec{
     text-align: center;
     list-style: none;
     background-color: #000 !important;
+    overflow: scroll;
+    height: 300px;
+}
    
 }
 /*header .navbar ul li.menu-item a {
