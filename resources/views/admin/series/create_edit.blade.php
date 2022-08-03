@@ -425,7 +425,7 @@ $settings  = App\Setting::first();?>
 								</div>
 							</div>
 							<div class="form-group">
-								<label>Season Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br>
+								<label>Season Thumbnail <span>(16:9 Ratio or 1080X1920px)</span></label><br>
 								<input type="file" class="image" name="image" id="" >
 							</div>
                                 
@@ -680,7 +680,7 @@ $('#submit-new-cat').click(function(){
             }else{
                 return false;
             }
-        },'Please upload an image with 1260 x 720 pixels dimension');
+        },'Please upload an image with 1280 x 720 pixels dimension');
 
 
         $('.image').change(function() {
