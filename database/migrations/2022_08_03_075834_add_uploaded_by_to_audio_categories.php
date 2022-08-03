@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddInMenuToVideos extends Migration
+class AddUploadedByToAudioCategories extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class AddInMenuToVideos extends Migration
      */
     public function up()
     {
-        Schema::table('live_categories', function (Blueprint $table) {
+        Schema::table('audio_categories', function (Blueprint $table) {
             //
-            $table->string('in_menu')->nullable();
+            $table->string('uploaded_by')->nullable();
         });
     }
 
@@ -26,10 +26,9 @@ class AddInMenuToVideos extends Migration
      */
     public function down()
     {
-        Schema::table('live_categories', function (Blueprint $table) {
+        Schema::table('audio_categories', function (Blueprint $table) {
             //
-            $table->dropColumn('in_menu');
-
+            Schema::dropIfExists('uploaded_by');
         });
     }
 }

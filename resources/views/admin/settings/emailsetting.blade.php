@@ -127,8 +127,8 @@ border-radius: 0px 4px 4px 0px;
                            </div>
                            <div class="panel-body" style="display: block;">
                               <select id="secure" name="secure" class="form-control" required>
-                                 <option value="ssl" @if(!empty($email_settings->secure) && $email_settings->secure == 'SSL'){{ 'selected' }}@endif> TRUE</option>
-                                 <option value="tls" @if(!empty($email_settings->secure) && $email_settings->secure == 'TLS'){{ 'selected' }}@endif >FALSE</option>
+                                 <option value="ssl" @if(!empty($email_settings->secure) && $email_settings->secure == 'ssl'){{ 'selected' }}@endif> TRUE</option>
+                                 <option value="tls" @if(!empty($email_settings->secure) && $email_settings->secure == 'tls'){{ 'selected' }}@endif >FALSE</option>
                               </select>
                            </div>
                      </div>

@@ -28,7 +28,7 @@
                         </div>
                      </div>
 <div class="modal-body">
-	<form id="update-cat-form" accept-charset="UTF-8" action="{{ URL::to('cpp/audios/albums/update') }}" method="post" enctype="multipart/form-data">
+	<form id="update-cat-form" accept-charset="UTF-8" action="{{ URL::to('channel/audios/albums/update') }}" method="post" enctype="multipart/form-data">
        
          <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
 

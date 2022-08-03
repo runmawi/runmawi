@@ -48,7 +48,7 @@
                     <div class="col-md-8" align="right">
                         <div id="optionradio"  >
                             <div style="" id="optionradio">
-                                <form action="{{URL::to('/cpp/Audiofile')}}" method= "post"  >
+                                <form action="{{URL::to('/channel/Audiofile')}}" method= "post"  >
 
                                 <input type="radio" value="audio_upload" id="audio_upload" name="audiofile" checked="checked"> Audio Upload &nbsp; &nbsp; &nbsp; &nbsp;
                                 <input type="radio" value="audiofile"  id="audiofile" name="audiofile"> Audio File
@@ -74,7 +74,7 @@
                                 <div class='content file'>
                                     <h4 class="card-title">Upload Audio</h4>
                                     <!-- Dropzone -->
-                                    <form action="{{URL::to('/cpp/uploadAudio')}}" method= "post" class='dropzone' ></form> 
+                                    <form action="{{URL::to('/channel/uploadAudio')}}" method= "post" class='dropzone' ></form> 
                                 </div> 
                                 <div>
 <!--                                    <input type="button" id="Next" value='Next' class='btn btn-secondary'>-->
@@ -84,7 +84,7 @@
                             <div class="text-center" style="margin-top: 30px;">
                                 <input type="button" id="Next" value='Proceed to Next Step' class='btn btn-primary'>
                             </div>
-                            <input type="hidden" id="base_url" value="<?php echo URL::to('/cpp/Audiofile');?>">
+                            <input type="hidden" id="base_url" value="<?php echo URL::to('/channel/Audiofile');?>">
                         </div>
                     <hr />
                 </div>

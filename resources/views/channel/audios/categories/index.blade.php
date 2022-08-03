@@ -53,9 +53,9 @@
                      				<td><?php if($category->image != '') { ?><img src="{{ URL::to('/public/uploads/audios/') . '/'.$category->image }}" width="50"><?php }else{} ?></td>
                      				<td><label>{{ ucfirst($category->name) }}</label></td>
                      				<td class=" list-user-action"> 
-                     					<a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" class="edit" href="{{ URL::to('/cpp/audios/categories/edit/') }}/{{$category->id}}"><i class="ri-pencil-line"></i></a>
+                     					<a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" class="edit" href="{{ URL::to('/channel/audios/categories/edit/') }}/{{$category->id}}"><i class="ri-pencil-line"></i></a>
 
-                     					<a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" href="{{ URL::to('/cpp/audios/categories/delete/') }}/{{$category->id}}"><i class="ri-delete-bin-line"></i></a>
+                     					<a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" href="{{ URL::to('/channel/audios/categories/delete/') }}/{{$category->id}}"><i class="ri-delete-bin-line"></i></a>
                      				</td>
                      			</tr>
                      			@endforeach
@@ -81,7 +81,7 @@
 				</div>
 				
 				<div class="modal-body">
-					<form id="new-cat-form" accept-charset="UTF-8" action="{{ URL::to('/cpp/audios/categories/store') }}" method="post" enctype="multipart/form-data">
+					<form id="new-cat-form" accept-charset="UTF-8" action="{{ URL::to('/channel/audios/categories/store') }}" method="post" enctype="multipart/form-data">
 						<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 				        <!-- <label for="name">Enter the new category name below</label>
 				        <input name="name" id="name" placeholder="Category Name" class="form-control" value="" /><br />
@@ -218,7 +218,7 @@
 
 			$('.dd').on('change', function(e) {
     			$('.category-panel').addClass('reloading');
-    			$.post('<?= URL::to('/cpp/audios/categories/order');?>', { order : JSON.stringify($('.dd').nestable('serialize')), _token : $('#_token').val()  }, function(data){
+    			$.post('<?= URL::to('/channel/audios/categories/order');?>', { order : JSON.stringify($('.dd').nestable('serialize')), _token : $('#_token').val()  }, function(data){
     				console.log(data);
     				$('.category-panel').removeClass('reloading');
     			});

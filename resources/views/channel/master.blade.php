@@ -123,8 +123,8 @@ $channel = Session::get('channel');
                         </ul></li>
                   <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-star-half-alt"></i><span>Series & Episodes </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                   <ul id="series" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                  <li><a href="{{ URL::to('series_list') }}"><i class="las la-user-plus"></i>Series List</a></li>
-                  <li><a href="{{ URL::to('series_create') }}"><i class="las la-eye"></i>Add New Series</a></li>
+                  <li><a href="{{ URL::to('/channel/series_list') }}"><i class="las la-user-plus"></i>Series List</a></li>
+                  <li><a href="{{ URL::to('/channel/series_create') }}"><i class="las la-eye"></i>Add New Series</a></li>
                   </ul>
                </li>   
            

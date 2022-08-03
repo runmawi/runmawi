@@ -527,9 +527,15 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/ThumbnailSetting_Store', 'AdminSettingsController@ThumbnailSetting_Store'); 
 
     // Admin Landing page 
-    Route::get('/landing-page/create_edit', 'AdminLandingpageController@create_edit')->name('landing_page_create_edit');
+
+    Route::get('/landing-page/index', 'AdminLandingpageController@index')->name('landing_page_index');
+    Route::get('/landing-page/create', 'AdminLandingpageController@create')->name('landing_page_create');
+    Route::get('/landing-page/edit/{id}', 'AdminLandingpageController@edit')->name('landing_page_edit');
     Route::post('/landing-page/store', 'AdminLandingpageController@store')->name('landing_page_store'); 
     Route::post('/landing-page/update', 'AdminLandingpageController@update')->name('landing_page_update'); 
+    Route::get('/landing-page/delete/{id}', 'AdminLandingpageController@delete')->name('landing_page_delete'); 
+    Route::post('/landing-page/update_status', 'AdminLandingpageController@update_status')->name('landing_page_update_status'); 
+
 
     // Footer Link
     Route::get('/footer_menu', 'AdminSettingsController@footer_link')->name('footer_link'); 
@@ -1163,6 +1169,38 @@ Route::post('/audios/audioupdate', array('before' => 'demo', 'uses' => 'ChannelA
     Route::post('/livestream/categories/update','ChannelLiveCategoriesController@Channelupdate');
     Route::get('/livestream/categories/delete/{id}', array('before' => 'demo', 'uses' => 'ChannelLiveCategoriesController@Channeldestroy'));
 
+
+
+
+
+//Channel Series  Manage
+
+    Route::get('/series-list', 'ChannelSeriesController@index');
+    Route::get('/series_list', 'ChannelSeriesController@index');
+    Route::get('/series/create', 'ChannelSeriesController@create');
+    Route::get('/series_create', 'ChannelSeriesController@create');
+    Route::post('/series/store', 'ChannelSeriesController@store');
+    Route::get('/series/edit/{id}', 'ChannelSeriesController@edit');
+    Route::post('/series/update', 'ChannelSeriesController@update');
+    Route::get('/series/delete/{id}', 'ChannelSeriesController@destroy');
+    Route::get('/titlevalidation', 'ChannelSeriesController@TitleValidation');
+    Route::post('/episode_order', 'ChannelSeriesController@episode_order');
+
+//Channel Series Season Manage
+    // Route::get('/season/create/{id}', 'ChannelSeriesController@create_season');
+    Route::post('/season/create/', 'ChannelSeriesController@create_season');
+    Route::get('/season/edit/{series_id}/{season_id}', 'ChannelSeriesController@manage_season');
+    Route::get('/season/edit/{season_id}', 'ChannelSeriesController@Edit_season');
+    Route::post('/season/update', 'ChannelSeriesController@Update_season');
+    Route::get('/season/delete/{id}', 'ChannelSeriesController@destroy_season');
+
+//Channel Series Episode Manage
+
+    Route::post('/episode/create', 'ChannelSeriesController@create_episode');
+    Route::get('/episode/delete/{id}', 'ChannelSeriesController@destroy_episode');
+    Route::get('/episode/edit/{id}', 'ChannelSeriesController@edit_episode');
+    Route::post('/episode/update', 'ChannelSeriesController@update_episode');
+    Route::post('/episode_upload',  'ChannelSeriesController@EpisodeUpload');
 
 });
 
