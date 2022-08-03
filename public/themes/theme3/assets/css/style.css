@@ -829,7 +829,7 @@ a.title-dec{
 }*/
 .cont-item:hover{
     color: #fff !important;
-    background-color: #000 !important;
+    background-color: #883FC5 !important;
 }
 .dropdown-menu.categ-head{
     color: #fff !important;
@@ -846,6 +846,7 @@ a.title-dec{
 
 header .navbar ul li.menu-item .dropdown-item{
    /* line-height: 40px !important;*/
+    padding: 0;
 }
 a.dropdown-item.cont-item {
     background-color: transparent;
@@ -854,6 +855,27 @@ footer, .home footer {
     position: relative;
     height: auto;
     width: 100%;
+}
+.overflow-scroll{
+    overflow-x: hidden!important;
+}
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
 }
 /*
 .navbar-nav.navbar-left li a {
