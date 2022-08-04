@@ -537,7 +537,7 @@ if(!empty($request_url)){
                 <?php include('partials/video-loop.php');?>
                 </div>
     
-    </div>
+    </div></div>
     <script type="text/javascript"> 
         // videojs('videoPlayer').videoJsResolutionSwitcher(); 
     </script>

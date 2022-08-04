@@ -58,15 +58,15 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
             <div class="col-md-6">
                 <label for=""><h3 class="fs-title m-0">Embed Link:</h3></label>
                 <p>Click <a href="#"onclick="EmbedCopy();" class="share-ico"><i class="ri-links-fill"></i> here</a> to get the Embedded URL</p>
-            <div>
-            <div class="col-md-6">
+                <div></div>
+            <div class="col-md-8 p-0">
                 <label for=""><h3 class="fs-title m-0">Social Share:</h3></label>
                 <div class="share-box">
                     <a href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" class="share-ico"><i class="ri-facebook-fill"></i></a>&nbsp;  <!-- Facebook -->
                     <a href="https://twitter.com/intent/tweet?text=<?= $media_url ?>" class="share-ico"><i class="ri-twitter-fill"></i></a> <!-- Twitter -->
                 </div>
             </div>
-
+            </div>
             <hr />
             <div class="clear"></div>
 
