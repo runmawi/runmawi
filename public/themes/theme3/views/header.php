@@ -522,6 +522,7 @@ input:checked + .sliderk:before {
                                         if ( $menu->in_menu == "video") { 
                                           $cat = App\VideoCategory::orderBy("order")->where('in_home',1)->get();
                                           ?>
+                          
                                        <li class="dropdown menu-item">
                                            <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown" >  
                                                  <a class="d-flex justify-content-between" href="<?php echo  URL::to('/categoryList');?>"> <?php echo __($menu->name);?>  

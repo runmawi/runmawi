@@ -860,7 +860,7 @@ footer, .home footer {
     overflow-x: hidden!important;
 }
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 5px;
 }
 
 /* Track */
@@ -954,7 +954,7 @@ li.list-group-item a:hover{color: var(--iq-primary) !important;}
 #sidebar-scrollbar::-webkit-scrollbar-thumb { background-color: var(--iq-primary); }
 /*#sidebar-scrollbar { height: calc(100vh - 153px) !important; }*/
 #sidebar-scrollbar::-webkit-scrollbar-track { background-color: var(--iq-light-primary); }
-::-webkit-scrollbar { width: 8px; height: 8px; border-radius: 5px; }
+::-webkit-scrollbar { width: 5px; height: 8px; border-radius: 5px; }
             li.list-group-item {
               background-color: transparent !important;
                padding-right: unset !important;
