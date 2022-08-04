@@ -60,6 +60,8 @@ use Theme;
 use App\Series;
 use App\Artist;
 use App\Helpers\LogActivity;
+use App\AdminLandingPage;
+
 class HomeController extends Controller
 {
     /**
@@ -279,7 +281,10 @@ class HomeController extends Controller
         $ThumbnailSetting = ThumbnailSetting::first();
 
         if($settings->enable_landing_page == 1 && empty($data['password_hash'])){
-            return redirect()->route('landing_page');
+
+            $landing_page_slug = AdminLandingPage::where('status',1)->pluck('slug')->first() ? AdminLandingPage::where('status',1)->pluck('slug')->first() : "landing-page" ;
+
+            return redirect()->route('landing_page', $landing_page_slug );
         }
 
         if ($settings->access_free == 1 && empty($data['password_hash']))

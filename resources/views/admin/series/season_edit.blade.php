@@ -694,6 +694,9 @@ var tagInput1 = new TagsInput({
 
             var width = $(element).data('imageWidth');
             var height = $(element).data('imageHeight');
+            var ratio = $(element).data('imageratio');
+
+
             if( ratio == '0.56' || width == param[0] && height == param[1]){
                 return true;
             }else{
@@ -709,6 +712,7 @@ var tagInput1 = new TagsInput({
 
             var width = $(element).data('imageWidth');
             var height = $(element).data('imageHeight');
+            var ratio = $(element).data('imageratio');
 
             if( ratio == '1.78'|| width == param[0] && height == param[1]){
                 return true;
@@ -719,7 +723,6 @@ var tagInput1 = new TagsInput({
 
 
         $('#image').change(function() {
-
             $('#image').removeData('imageWidth');
             $('#image').removeData('imageHeight');
             $('#image').removeData('imageratio');
@@ -734,7 +737,8 @@ var tagInput1 = new TagsInput({
 				ratio =  Number(width/height).toFixed(2) ;
                 $('#image').data('imageWidth', width);
                 $('#image').data('imageHeight', height);
-                $('#image').data('imageHeight', ratio);
+                $('#image').data('imageratio', ratio);
+                alert(ratio);
 
             }
         });
@@ -756,7 +760,7 @@ var tagInput1 = new TagsInput({
 
                 $('#player_image').data('imageWidth', width);
                 $('#player_image').data('imageHeight', height);
-                $('#player_image').data('imageHeight', ratio);
+                $('#player_image').data('imageratio', ratio);
 
             }
         });

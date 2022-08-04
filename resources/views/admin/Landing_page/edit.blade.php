@@ -21,7 +21,7 @@
                 <div class="iq-card">
                     <div class="iq-card-header d-flex justify-content-between">
                         <div class="iq-header-title">
-                            <h4 class="card-title">Landing Page</h4>
+                            <h4 class="card-title"> {{ 'Landing Page' }}</h4>
                         </div>
                     </div>
                     <div class="iq-card-body table-responsive">
@@ -32,6 +32,18 @@
                                 <div class="col-md-10">
                                     <div class="form-group">
                                         
+                                        <div class="row">
+                                            <div class="col-sm-6 form-group" >
+                                                <label class="m-0"> Title :</label>
+                                                <input type="text"  class="form-control" name="title" id="title" placeholder=" Landing Page Title" value="{{ $title }}">
+                                             </div>
+    
+                                            <div class="col-sm-6 form-group" >
+                                                <label class="m-0"> Slug :</label>
+                                                <input type="text"  class="form-control" name="slug" id="slug" placeholder=" Landing Page Slug" value="{{ $slug }}" >
+                                             </div>
+                                        </div>
+
                                         <div class="row">
                                             <div class="col-sm-4">
                                                 <input type="checkbox" id="sections_1" class="date" name="date[]" value="section_1" @if(!empty($section_1['0'])) checked @endif/>
