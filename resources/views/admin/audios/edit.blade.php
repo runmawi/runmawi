@@ -183,12 +183,11 @@ border-radius: 0px 4px 4px 0px;
 							<div class="row">
 								<div class="col-md-6">
 								<div class="panel panel-primary col-sm-8 p-0 mt-3" data-collapsed="0"> <div class="panel-heading"> 
-								<div class="panel-title"><label class="mb-1">Audio Image Cover</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+								<div class="panel-title"><label class="mb-1">Audio Image Cover <span>( 9:16 Ratio or 1080X1920px )</span> </label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 								<div class="panel-body" style="display: block;"> 
 									@if(!empty($audio->image))
 									<img src="{{ URL::to('/'). '/public/uploads/images/' . $audio->image }}" class="audio-img" width="200"/>
 									@endif
-									<p class="p1">Select the audio image(9:16 Ratio or 1080X1920px):</p> 
 									<input type="file" multiple="true" class="form-control" name="image" id="image" />
 
 								</div> 
@@ -593,12 +592,14 @@ $('#duration').mask('00:00:00');
 
             var width = $(element).data('imageWidth');
             var height = $(element).data('imageHeight');
-            if(width == param[0] && height == param[1]){
+            var ratio = $(element).data('imageratio');
+
+            if( ratio == '0.56' || width == param[0] && height == param[1]){
                 return true;
             }else{
                 return false;
             }
-        },'Please upload an image with 1080 x 1920 pixels dimension');
+        },'Please upload an image with 1080 x 1920 pixels dimension or 9:16 ratio');
 
                 // player Image upload validation
         $.validator.addMethod('player_dimention', function(value, element, param) {
@@ -608,19 +609,21 @@ $('#duration').mask('00:00:00');
 
             var width = $(element).data('imageWidth');
             var height = $(element).data('imageHeight');
+            var ratio = $(element).data('imageratio');
 
-            if(width == param[0] && height == param[1]){
+            if( ratio == '1.78' || width == param[0] && height == param[1]){
                 return true;
             }else{
                 return false;
             }
-        },'Please upload an image with 1280 x 720 pixels dimension');
+        },'Please upload an image with 1280 x 720 pixels dimension or 16:9 ratio');
 
 
         $('#image').change(function() {
 
             $('#image').removeData('imageWidth');
             $('#image').removeData('imageHeight');
+            $('#image').removeData('imageratio');
 
             var file = this.files[0];
             var tmpImg = new Image();
@@ -629,8 +632,12 @@ $('#duration').mask('00:00:00');
             tmpImg.onload = function() {
                 width = tmpImg.naturalWidth,
                 height = tmpImg.naturalHeight;
+				ratio =  Number(width/height).toFixed(2) ;
+
                 $('#image').data('imageWidth', width);
                 $('#image').data('imageHeight', height);
+                $('#image').data('imageratio', ratio);
+
             }
         });
 
@@ -638,6 +645,7 @@ $('#duration').mask('00:00:00');
 
             $('#player_image').removeData('imageWidth');
             $('#player_image').removeData('imageHeight');
+            $('#player_image').removeData('imageratio');
 
             var file = this.files[0];
             var tmpImg = new Image();
@@ -646,8 +654,12 @@ $('#duration').mask('00:00:00');
             tmpImg.onload = function() {
                 width = tmpImg.naturalWidth,
                 height = tmpImg.naturalHeight;
+				ratio =  Number(width/height).toFixed(2) ;
+
                 $('#player_image').data('imageWidth', width);
                 $('#player_image').data('imageHeight', height);
+                $('#player_image').data('imageratio', ratio);
+
             }
         });
 
