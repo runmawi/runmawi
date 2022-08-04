@@ -489,6 +489,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::get('/linking_settings', 'AdminSettingsController@LinkingIndex');
     Route::post('/linking/store', 'AdminSettingsController@LinkingSave');
 
+
     /* payment settings */
     Route::get('/payment_settings', 'AdminPaymentSettingsController@index');
     Route::post('/payment_settings', array('before' => 'demo', 'uses' => 'AdminPaymentSettingsController@save_payment_settings'));
@@ -555,6 +556,11 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
 
     // Theme Integration 
     Route::get('ThemeIntegration', 'ThemeIntegrationController@index')->name('ThemeIntegration');
+
+    // Compress Image
+    Route::get('/compress-image-setting', 'AdminSettingsController@compress_image')->name('compress_image');
+    Route::post('/compress-image-store', 'AdminSettingsController@compress_image_store')->name('compress_image_store');
+
 
     Route::get('/languages', 'LanguageTranslationController@index')->name('languages');
     Route::post('/translations/update', 'LanguageTranslationController@transUpdate')->name('translation.update.json');
