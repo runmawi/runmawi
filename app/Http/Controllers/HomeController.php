@@ -2558,264 +2558,270 @@ class HomeController extends Controller
 
     public function searchResult(Request $request)
     {
-        $search_value = $request['search'];
+        try {
+            
+            $search_value = $request['search'];
 
-        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-        $userIp = $geoip->getip();
-        $countryName = $geoip->getCountry();
-        $regionName = $geoip->getregion();
-        $cityName = $geoip->getcity();
-        
-        $getfeching = Geofencing::first();
+            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+            $userIp = $geoip->getip();
+            $countryName = $geoip->getCountry();
+            $regionName = $geoip->getregion();
+            $cityName = $geoip->getcity();
+            
+            $getfeching = Geofencing::first();
 
-        $block_videos = BlockVideo::where('country_id', $countryName)->get();
-        if (!$block_videos->isEmpty())
-        {
-            foreach ($block_videos as $block_video)
+            $block_videos = BlockVideo::where('country_id', $countryName)->get();
+            if (!$block_videos->isEmpty())
             {
-                $blockvideos[] = $block_video->video_id;
+                foreach ($block_videos as $block_video)
+                {
+                    $blockvideos[] = $block_video->video_id;
+                }
             }
-        }
-        else
-        {
-            $blockvideos[] = '';
-        }
+            else
+            {
+                $blockvideos[] = '';
+            }
 
 
-        // $ppv_videos_count = PpvVideo::where('title', 'LIKE', '%' . $search_value . '%')->count();
+            // $ppv_videos_count = PpvVideo::where('title', 'LIKE', '%' . $search_value . '%')->count();
 
-        // $video_category_count = VideoCategory::where('name', 'LIKE', '%' . $search_value . '%')->count();
+            // $video_category_count = VideoCategory::where('name', 'LIKE', '%' . $search_value . '%')->count();
 
-        // $ppv_category_count = PpvCategory::where('name', 'LIKE', '%' . $search_value . '%')->count();
+            // $ppv_category_count = PpvCategory::where('name', 'LIKE', '%' . $search_value . '%')->count();
 
-      
+        
 
-        // if ($ppv_videos_count > 0)
-        // {
+            // if ($ppv_videos_count > 0)
+            // {
 
-        //     $ppv_videos = Video::where('title', 'LIKE', '%' . $search_value . '%')->orderBy('created_at', 'desc')
-        //         ->paginate(9);
+            //     $ppv_videos = Video::where('title', 'LIKE', '%' . $search_value . '%')->orderBy('created_at', 'desc')
+            //         ->paginate(9);
 
-        // }
-        // else
-        // {
-        //     $ppv_videos = 0;
-        // }
+            // }
+            // else
+            // {
+            //     $ppv_videos = 0;
+            // }
 
-        // if ($video_category_count > 0)
-        // {
-        //     $video_category = Video::select("videos.*")
-        //     ->join("categoryvideos", "categoryvideos.video_id", "=", "videos.id")
-        //     ->join("video_categories", "video_categories.id", "=", "categoryvideos.category_id")
-        //     ->where('video_categories.name', 'LIKE', '%' . $search_value . '%')
-        //     ->orderBy('created_at', 'desc')
-        //     ->paginate(9);
-        // }
-        // else
-        // {
-        //     $video_category = 0;
-        // }
+            // if ($video_category_count > 0)
+            // {
+            //     $video_category = Video::select("videos.*")
+            //     ->join("categoryvideos", "categoryvideos.video_id", "=", "videos.id")
+            //     ->join("video_categories", "video_categories.id", "=", "categoryvideos.category_id")
+            //     ->where('video_categories.name', 'LIKE', '%' . $search_value . '%')
+            //     ->orderBy('created_at', 'desc')
+            //     ->paginate(9);
+            // }
+            // else
+            // {
+            //     $video_category = 0;
+            // }
 
-        // if ($ppv_category_count > 0)
-        // {
+            // if ($ppv_category_count > 0)
+            // {
 
-        //     $ppv_category = PpvCategory::where('name', 'LIKE', '%' . $search_value . '%')->orderBy('created_at', 'desc')
-        //         ->paginate(9);
+            //     $ppv_category = PpvCategory::where('name', 'LIKE', '%' . $search_value . '%')->orderBy('created_at', 'desc')
+            //         ->paginate(9);
 
-        // }
-        // else
-        // {
-        //     $ppv_category = 0;
-        // }
+            // }
+            // else
+            // {
+            //     $ppv_category = 0;
+            // }
 
-        // Latest videos
+            // Latest videos
 
-        $latest_videos = Video::orwhere('search_tags', 'LIKE', '%' . $search_value . '%')
-                            ->orwhere('title', 'LIKE', '%' . $search_value . '%')
-                            ->where('active', '=', '1')
-                            ->where('status', '=', '1')
-                            ->where('draft', '=', '1')
-                            ->orderBy('created_at', 'desc')
-                            ->take(10);
-                            if ($getfeching != null && $getfeching->geofencing == 'ON')
-                            {
-                                $latest_videos = $latest_videos->whereNotIn('videos.id', $blockvideos);
-                            }
-                            $latest_videos = $latest_videos->get();
-
-
-
-        $latest_livestreams = LiveStream::orwhere('search_tags', 'LIKE', '%' . $search_value . '%')
-                                ->orwhere('title', 'LIKE', '%' . $search_value . '%')
-                                ->orwhere('title', 'LIKE', '%' . $search_value . '%')
-                                ->limit('10')
-                                ->latest()
-                                ->get();
-
-
-
-        $latest_audio = Audio::orwhere('search_tags', 'LIKE', '%' . $search_value . '%')
+            $latest_videos = Video::orwhere('search_tags', 'LIKE', '%' . $search_value . '%')
                                 ->orwhere('title', 'LIKE', '%' . $search_value . '%')
                                 ->where('active', '=', '1')
                                 ->where('status', '=', '1')
+                                ->where('draft', '=', '1')
+                                ->orderBy('created_at', 'desc')
+                                ->take(10);
+                                if ($getfeching != null && $getfeching->geofencing == 'ON')
+                                {
+                                    $latest_videos = $latest_videos->whereNotIn('videos.id', $blockvideos);
+                                }
+                                $latest_videos = $latest_videos->get();
+
+
+
+            $latest_livestreams = LiveStream::orwhere('search_tags', 'LIKE', '%' . $search_value . '%')
+                                    ->orwhere('title', 'LIKE', '%' . $search_value . '%')
+                                    ->orwhere('title', 'LIKE', '%' . $search_value . '%')
+                                    ->limit('10')
+                                    ->latest()
+                                    ->get();
+
+
+
+            $latest_audio = Audio::orwhere('search_tags', 'LIKE', '%' . $search_value . '%')
+                                    ->orwhere('title', 'LIKE', '%' . $search_value . '%')
+                                    ->where('active', '=', '1')
+                                    ->where('status', '=', '1')
+                                    ->limit('10')
+                                    ->latest()
+                                    ->get();
+
+            $latest_Episode = Episode::orwhere('search_tags', 'LIKE', '%' . $search_value . '%')
+                                    ->orwhere('episodes.title', 'LIKE', '%' . $search_value . '%')
+                                    ->where('active', '=', '1')
+                                    ->where('status', '=', '1')
+                                    ->limit('10')
+                                    ->latest()
+                                    ->get();   
+
+            $latest_Series = Series::orwhere('search_tag', 'LIKE', '%' . $search_value . '%')
+                                ->orwhere('title', 'LIKE', '%' . $search_value . '%')
+                                    ->where('active', '=', '1')
+                                    ->limit('10')
+                                    ->latest()
+                                    ->get();  
+        // Most watched videos - TOP VIDEOS
+
+            $Most_view_videos = RecentView::Join('videos','videos.id','=','recent_views.video_id')
+                                ->orwhere('videos.search_tags', 'LIKE', '%' . $search_value . '%')
+                                ->orwhere('videos.title', 'LIKE', '%' . $search_value . '%')
+                                ->where('videos.active', '=', '1')
+                                ->where('videos.status', '=', '1')
+                                ->where('videos.draft', '=', '1')
+                                ->groupBy('video_id')
                                 ->limit('10')
+                                ->latest('videos.created_at');
+                                if ($getfeching != null && $getfeching->geofencing == 'ON')
+                                {
+                                    $Most_view_videos = $Most_view_videos->whereNotIn('videos.id', $blockvideos);
+                                }
+                                $Most_view_videos = $Most_view_videos->get();
+                            
+
+            $Most_view_audios = RecentView::Join('audio','audio.id','=','recent_views.audio_id')
+                                ->orwhere('audio.search_tags', 'LIKE', '%' . $search_value . '%')
+                                ->orwhere('audio.title', 'LIKE', '%' . $search_value . '%')
+                                ->where('audio.active', '=', '1')
+                                ->where('audio.status', '=', '1')
+                                ->limit('10')
+                                ->latest('audio.created_at')
+                                ->groupBy('audio_id')
+                                ->get();
+
+            $Most_view_live   = RecentView::Join('live_streams','live_streams.id','=','recent_views.live_id')
+                                ->orwhere('live_streams.search_tags', 'LIKE', '%' . $search_value . '%')
+                                ->orwhere('live_streams.title', 'LIKE', '%' . $search_value . '%')
+                                ->where('live_streams.active', '=', '1')
+                                ->limit('10')
+                                ->latest('live_streams.created_at')
+                                ->groupBy('live_id')
+                                ->get();
+
+            $Most_view_episode  = RecentView::Join('episodes','episodes.id','=','recent_views.episode_id')
+                                ->orwhere('episodes.search_tags', 'LIKE', '%' . $search_value . '%')
+                                ->orwhere('episodes.title', 'LIKE', '%' . $search_value . '%')
+                                ->where('episodes.active', '=', '1')
+                                ->where('episodes.status', '=', '1')
+                                ->limit('10')
+                                ->latest('episodes.created_at')
+                                ->groupBy('episode_id')
+                                ->get();
+
+            $Most_view_Series  = RecentView::select('series.*')
+                                ->Join('episodes','episodes.id','=','recent_views.episode_id')
+                                ->Join('series','series.id','=','episodes.series_id')
+                                ->orwhere('series.search_tag', 'LIKE', '%' . $search_value . '%')
+                                ->orwhere('series.title', 'LIKE', '%' . $search_value . '%')
+                                ->where('series.active', '=', '1')
+                                ->limit('20')
+                                ->latest('series.created_at')
+                                ->groupBy('series.id')
+                                ->get();
+
+            //  All videos 
+
+            $videos_count = Video::orwhere('videos.search_tags', 'LIKE', '%' . $search_value . '%')
+                            ->orwhere('videos.title', 'LIKE', '%' . $search_value . '%')->count();
+
+            if ($videos_count > 0)
+            {
+                $videos = Video::orwhere('videos.search_tags', 'LIKE', '%' . $search_value . '%')
+                                ->orwhere('videos.title', 'LIKE', '%' . $search_value . '%')
+                                ->where('active', '=', '1')
+                                ->where('status', '=', '1')
+                                ->where('draft', '=', '1')
+                                ->orderBy('created_at', 'desc')
+                                ->take(20);
+                                if ($getfeching != null && $getfeching->geofencing == 'ON')
+                                {
+                                    $videos = $videos->whereNotIn('videos.id', $blockvideos);
+                                }
+                                $videos = $videos->get();
+            }
+            else
+            {
+                $videos = [];
+            }
+
+
+            $livestreams = LiveStream::where('active', '=', '1')
+                                ->where(function ($query) use($search_value) {
+                                    $query->orwhere('search_tags', 'LIKE', '%' . $search_value . '%')
+                                    ->orwhere('title', 'LIKE', '%' . $search_value . '%');
+                                })
+                                ->limit('20')
                                 ->latest()
                                 ->get();
 
-        $latest_Episode = Episode::orwhere('search_tags', 'LIKE', '%' . $search_value . '%')
+            $audio = Audio::orwhere('search_tags', 'LIKE', '%' . $search_value . '%')
+                                ->orwhere('audio.title', 'LIKE', '%' . $search_value . '%')
+                                ->where('active', '=', '1')
+                                ->where('status', '=', '1')
+                                ->limit('20')
+                                ->latest()
+                                ->get();
+
+            $Episode = Episode::orwhere('search_tags', 'LIKE', '%' . $search_value . '%')
                                 ->orwhere('episodes.title', 'LIKE', '%' . $search_value . '%')
                                 ->where('active', '=', '1')
                                 ->where('status', '=', '1')
-                                ->limit('10')
+                                ->limit('20')
                                 ->latest()
-                                ->get();   
-
-        $latest_Series = Series::orwhere('search_tag', 'LIKE', '%' . $search_value . '%')
-                               ->orwhere('title', 'LIKE', '%' . $search_value . '%')
+                                ->get();    
+            
+            $Series = Series::orwhere('search_tag', 'LIKE', '%' . $search_value . '%')
+                                ->orwhere('title', 'LIKE', '%' . $search_value . '%')
                                 ->where('active', '=', '1')
-                                ->limit('10')
+                                ->limit('20')
                                 ->latest()
                                 ->get();  
-    // Most watched videos - TOP VIDEOS
 
-        $Most_view_videos = RecentView::Join('videos','videos.id','=','recent_views.video_id')
-                            ->orwhere('videos.search_tags', 'LIKE', '%' . $search_value . '%')
-                            ->orwhere('videos.title', 'LIKE', '%' . $search_value . '%')
-                            ->where('videos.active', '=', '1')
-                            ->where('videos.status', '=', '1')
-                            ->where('videos.draft', '=', '1')
-                            ->groupBy('video_id')
-                            ->limit('10')
-                            ->latest('videos.created_at');
-                            if ($getfeching != null && $getfeching->geofencing == 'ON')
-                            {
-                                $Most_view_videos = $Most_view_videos->whereNotIn('videos.id', $blockvideos);
-                            }
-                            $Most_view_videos = $Most_view_videos->get();
-                          
 
-        $Most_view_audios = RecentView::Join('audio','audio.id','=','recent_views.audio_id')
-                            ->orwhere('audio.search_tags', 'LIKE', '%' . $search_value . '%')
-                            ->orwhere('audio.title', 'LIKE', '%' . $search_value . '%')
-                            ->where('audio.active', '=', '1')
-                            ->where('audio.status', '=', '1')
-                            ->limit('10')
-                            ->latest('audio.created_at')
-                            ->groupBy('audio_id')
-                            ->get();
+            $data = array(
+                'all_videos' => $videos,
+                'search_value' => $search_value,
+                'currency' => CurrencySetting::first() ,
+                'latest_videos' => $latest_videos,
+                'ThumbnailSetting' =>   ThumbnailSetting::first(),
+                'Search_audio' => $audio,
+                'Search_livestreams' => $livestreams,
+                'Search_Episode' => $Episode,
+                'Search_Series' => $Series,
+                'latest_videos' => $latest_videos,
+                'latest_livestreams' => $latest_livestreams,
+                'latest_audio' => $latest_audio,
+                'latest_Episode'=> $latest_Episode,
+                'latest_Series'=> $latest_Series,
+                'Most_view_videos' => $Most_view_videos,
+                'Most_view_audios' => $Most_view_audios,
+                'Most_view_live' => $Most_view_live,
+                'Most_view_episode' => $Most_view_episode,
+                'Most_view_Series' => $Most_view_Series,
+            );
 
-        $Most_view_live   = RecentView::Join('live_streams','live_streams.id','=','recent_views.live_id')
-                            ->orwhere('live_streams.search_tags', 'LIKE', '%' . $search_value . '%')
-                            ->orwhere('live_streams.title', 'LIKE', '%' . $search_value . '%')
-                            ->where('live_streams.active', '=', '1')
-                            ->limit('10')
-                            ->latest('live_streams.created_at')
-                            ->groupBy('live_id')
-                            ->get();
+            return Theme::view('search', $data);
 
-        $Most_view_episode  = RecentView::Join('episodes','episodes.id','=','recent_views.episode_id')
-                            ->orwhere('episodes.search_tags', 'LIKE', '%' . $search_value . '%')
-                            ->orwhere('episodes.title', 'LIKE', '%' . $search_value . '%')
-                            ->where('episodes.active', '=', '1')
-                            ->where('episodes.status', '=', '1')
-                            ->limit('10')
-                            ->latest('episodes.created_at')
-                            ->groupBy('episode_id')
-                            ->get();
-
-        $Most_view_Series  = RecentView::select('series.*')
-                            ->Join('episodes','episodes.id','=','recent_views.episode_id')
-                            ->Join('series','series.id','=','episodes.series_id')
-                            ->orwhere('series.search_tag', 'LIKE', '%' . $search_value . '%')
-                            ->orwhere('series.title', 'LIKE', '%' . $search_value . '%')
-                            ->where('series.active', '=', '1')
-                            ->limit('20')
-                            ->latest('series.created_at')
-                            ->groupBy('series.id')
-                            ->get();
-
-        //  All videos 
-
-        $videos_count = Video::orwhere('videos.search_tags', 'LIKE', '%' . $search_value . '%')
-                        ->orwhere('videos.title', 'LIKE', '%' . $search_value . '%')->count();
-
-        if ($videos_count > 0)
-        {
-            $videos = Video::orwhere('videos.search_tags', 'LIKE', '%' . $search_value . '%')
-                            ->orwhere('videos.title', 'LIKE', '%' . $search_value . '%')
-                            ->where('active', '=', '1')
-                            ->where('status', '=', '1')
-                            ->where('draft', '=', '1')
-                            ->orderBy('created_at', 'desc')
-                            ->take(20);
-                            if ($getfeching != null && $getfeching->geofencing == 'ON')
-                            {
-                                $videos = $videos->whereNotIn('videos.id', $blockvideos);
-                            }
-                            $videos = $videos->get();
+        } catch (\Exception $e) {
+           return abort (404);
         }
-        else
-        {
-            $videos = [];
-        }
-
-
-        $livestreams = LiveStream::where('active', '=', '1')
-                            ->where(function ($query) use($search_value) {
-                                $query->orwhere('search_tags', 'LIKE', '%' . $search_value . '%')
-                                ->orwhere('title', 'LIKE', '%' . $search_value . '%');
-                            })
-                            ->limit('20')
-                            ->latest()
-                            ->get();
-
-        $audio = Audio::orwhere('search_tags', 'LIKE', '%' . $search_value . '%')
-                            ->orwhere('audio.title', 'LIKE', '%' . $search_value . '%')
-                            ->where('active', '=', '1')
-                            ->where('status', '=', '1')
-                            ->limit('20')
-                            ->latest()
-                            ->get();
-
-        $Episode = Episode::orwhere('search_tags', 'LIKE', '%' . $search_value . '%')
-                            ->orwhere('episodes.title', 'LIKE', '%' . $search_value . '%')
-                            ->where('active', '=', '1')
-                            ->where('status', '=', '1')
-                            ->limit('20')
-                            ->latest()
-                            ->get();    
-        
-        $Series = Series::orwhere('search_tag', 'LIKE', '%' . $search_value . '%')
-                            ->orwhere('title', 'LIKE', '%' . $search_value . '%')
-                            ->where('active', '=', '1')
-                            ->limit('20')
-                            ->latest()
-                            ->get();  
-
-
-        $data = array(
-            'all_videos' => $videos,
-            'search_value' => $search_value,
-            'currency' => CurrencySetting::first() ,
-            'latest_videos' => $latest_videos,
-            'ThumbnailSetting' =>   ThumbnailSetting::first(),
-            'Search_audio' => $audio,
-            'Search_livestreams' => $livestreams,
-            'Search_Episode' => $Episode,
-            'Search_Series' => $Series,
-            'latest_videos' => $latest_videos,
-            'latest_livestreams' => $latest_livestreams,
-            'latest_audio' => $latest_audio,
-            'latest_Episode'=> $latest_Episode,
-            'latest_Series'=> $latest_Series,
-            'Most_view_videos' => $Most_view_videos,
-            'Most_view_audios' => $Most_view_audios,
-            'Most_view_live' => $Most_view_live,
-            'Most_view_episode' => $Most_view_episode,
-            'Most_view_Series' => $Most_view_Series,
-        );
-
-        return Theme::view('search', $data);
     }
 
     public function SendOTP(Request $request, \Nexmo\Client $nexmo)

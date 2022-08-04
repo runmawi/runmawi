@@ -190,7 +190,7 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
     Route::get('/data', 'SignupController@index');
     Route::get('stripe1', 'PaymentController@stripe');
     Route::post('stripe', 'PaymentController@stripePost')->name('stripe.post');
-    Route::post('searchResult', 'HomeController@searchResult');
+    Route::post('searchResult', 'HomeController@searchResult')->name('searchResult');;
     Route::get('search','HomeController@search');
     Route::get('showPayperview', 'WatchLaterController@showPayperview');
     Route::post('watchlater', 'WatchLaterController@watchlater');
@@ -1724,7 +1724,7 @@ Route::get('categoryfilter', 'ChannelController@categoryfilter')->name('category
 
 
     // Landing page 
-Route::get('{landing_page_slug}', 'LandingpageController@landing_page')->name('landing_page');
+Route::get('pages/{landing_page_slug}', 'LandingpageController@landing_page')->name('landing_page');
 
     // Razorpay 
 Route::group(['middleware' => ['RazorpayMiddleware']], function() {
