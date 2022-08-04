@@ -22,6 +22,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Message\Response;
 use App\FooterLink;
 use App\LinkingSetting;
+use App\CompressImage;
 
 
 //use Illuminate\Http\Request;
@@ -952,6 +953,37 @@ if($watermark != '') {
 
       return redirect('admin/linking_settings')->with(array('message' => 'Successfully Updated!', 'note_type' => 'success') );
 
+    }
+
+    public function compress_image(Request $request)
+    {
+        $Compress_image = CompressImage::first();
+        return view ('admin.settings.compress_image',compact('Compress_image',$Compress_image));
+    }
+
+    public function compress_image_store(Request $request)
+    {
+      $CompressImage = CompressImage::first();
+
+      if($CompressImage == null){
+
+          CompressImage::create([
+            'compress_resolution_size' => $request->compress_resolution_size,
+            'compress_resolution_format' => $request->compress_resolution_format,
+            'enable_compress_image'   => ( $request->enable_compress_image == null ) ? '0' : '1'  ,
+          ]);
+
+      }else{
+
+        CompressImage::first()->update([
+            'compress_resolution_size' => $request->compress_resolution_size,
+            'compress_resolution_format' => $request->compress_resolution_format,
+            'enable_compress_image'   => ( $request->enable_compress_image == null ) ? '0' : '1'  ,
+        ]);
+
+      }
+     
+      return redirect()->route('compress_image')->with(array('message' => 'Successfully Updated!', 'note_type' => 'success') );
     }
 
 

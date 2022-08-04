@@ -547,6 +547,21 @@ function Block_videos(){
 
 }
 
+ function compress_image_resolution( )
+{
+    # code...
+}
+
+ function compress_image_format( )
+{
+    # code...
+}
+
+ function compress_image_enable( )
+{
+    # code...
+}
+
 function Email_sent_log($user_id,$email_log,$email_template){
 
     App\EmaillogsDetail::create([

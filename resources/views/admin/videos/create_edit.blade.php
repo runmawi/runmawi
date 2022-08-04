@@ -762,7 +762,7 @@ border-radius: 0px 4px 4px 0px;
                               <div class="col-sm-6 form-group">
                                  <label class="mb-1">Video Thumbnail <span>(9:16 Ratio or 1080X1920px)</span></label><br />
                                  <input type="file" name="image" id="image" />
-                                 <span><p id="image_error_msg" style="color:red;" >* Please upload an image with 1080 x 1920 pixels dimension </p></span>
+                                 <span><p id="image_error_msg" style="color:red;" >* Please upload an image with 1080 x 1920 pixels dimension or 9:16 ratio </p></span>
                                     @if(!empty($video->image))
                                        <div class="col-sm-8 p-0">
                                           <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" class="video-img w-100 mt-1" />
@@ -773,7 +773,7 @@ border-radius: 0px 4px 4px 0px;
                               <div class="col-sm-6 form-group">
                                  <label class="mb-1">Player Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br />
                                  <input type="file" name="player_image" id="player_image" />
-                                 <span><p id="player_image_error_msg" style="color:red;" >* Please upload an image with 1280 x 720 pixels dimension </p></span>
+                                 <span><p id="player_image_error_msg" style="color:red;" >* Please upload an image with 1280 x 720 pixels dimension or 16:9 ratio </p></span>
                                     @if(!empty($video->player_image))
                                        <div class="col-sm-8 p-0">
                                           <img src="{{ URL::to('/') . '/public/uploads/images/' .$video->player_image }}" class="video-img w-100 mt-1" />
@@ -2444,6 +2444,7 @@ if(this.textContent === 'destroy') {
 
             $('#image').removeData('imageWidth');
             $('#image').removeData('imageHeight');
+            $('#image').removeData('imageratio');
 
             var file = this.files[0];
             var tmpImg = new Image();
@@ -2452,10 +2453,13 @@ if(this.textContent === 'destroy') {
             tmpImg.onload = function() {
                 width = tmpImg.naturalWidth,
                 height = tmpImg.naturalHeight;
+				    ratio =  Number(width/height).toFixed(2) ;
+
                 $('#image').data('imageWidth', width);
                 $('#image').data('imageHeight', height);
+                $('#image').data('imageratio', ratio);
 
-                if(width == '1080' && height == '1920' ){
+                if( ratio == '0.56'|| width == '1080' && height == '1920' ){
                   $('.update_upload_img').removeAttr('disabled');
                   $('#image_error_msg').hide();
                 }
@@ -2472,6 +2476,7 @@ if(this.textContent === 'destroy') {
          
          $('#player_image').removeData('imageWidth');
          $('#player_image').removeData('imageHeight');
+         $('#player_image').removeData('imageratio');
 
          var file = this.files[0];
          var tmpImg = new Image();
@@ -2480,10 +2485,13 @@ if(this.textContent === 'destroy') {
          tmpImg.onload = function() {
             width = tmpImg.naturalWidth,
             height = tmpImg.naturalHeight;
+			   ratio =  Number(width/height).toFixed(2) ;
+
             $('#player_image').data('imageWidth', width);
             $('#player_image').data('imageHeight', height);
+            $('#player_image').data('imageratio', ratio);
 
-            if(width == '1280' && height == '720' ){
+            if( ratio == '1.78' || width == '1280' && height == '720' ){
                $('.update_upload_img').removeAttr('disabled');
                $('#player_image_error_msg').hide();
             }
