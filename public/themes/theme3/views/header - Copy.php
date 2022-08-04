@@ -120,7 +120,8 @@ $site_page_url = $http_site_url[1];
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
    <input type="hidden" value="<?php echo $settings->google_tracking_id ; ?>" name="tracking_id" id="tracking_id">
 
-     
+      <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/slick.css';?>" />
+       <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
            
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 
@@ -143,8 +144,7 @@ $site_page_url = $http_site_url[1];
 
     <!-- Responsive -->
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/responsive.css';?>" />
-    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/slick.css';?>" />
-       <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
+   
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
        
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -373,25 +373,6 @@ input:checked + .sliderk:before {
   height: 4px;
   margin-bottom: 5px;
   position: relative;
-  margin-left: -20px;
-  background: #cdcdcd;
-  border-radius: 3px;
-  
-  z-index: 1;
-  
-  transform-origin: 4px 0px;
-  
-  transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
-              background 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
-              opacity 0.55s ease;
-}
-#menuToggle span1
-{
-  display: block;
-  width: 20px;
-  height: 4px;
-  margin-bottom: 5px;
-  position: relative;
   
   background: #cdcdcd;
   border-radius: 3px;
@@ -404,10 +385,10 @@ input:checked + .sliderk:before {
               background 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
               opacity 0.55s ease;
 }
+
 #menuToggle span:first-child
 {
   transform-origin: 0% 0%;
-    width: 13px;
 }
 
 #menuToggle span:nth-last-child(2)
@@ -468,7 +449,7 @@ input:checked + .sliderk:before {
 
 #menu li
 {
-  padding: 0;
+  padding: 10px 0;
   font-size: 22px;
     font-family: 'Gilroy';
     font-weight: 300;
@@ -513,7 +494,7 @@ input:checked + .sliderk:before {
                     <span></span>
                     <span></span>
                     <span></span>
-                      <ul id="menu" class="overflow-scroll nav navbar-nav <?php if ( Session::get('locale') == 'arabic') { echo "navbar-right"; } else { echo "navbar-left";}?>">
+                      <ul id="menu" class="nav navbar-nav <?php if ( Session::get('locale') == 'arabic') { echo "navbar-right"; } else { echo "navbar-left";}?>">
                                           <?php
                                         $stripe_plan = SubscriptionPlan();
                                         $menus = App\Menu::all();
@@ -525,24 +506,29 @@ input:checked + .sliderk:before {
                                        <li class="dropdown menu-item">
                                            <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown" >  
                                                  <a class="d-flex justify-content-between" href="<?php echo  URL::to('/categoryList');?>"> <?php echo __($menu->name);?>  
-                                                
+                                                  
                                                 </a>
                                                <?php foreach ( $cat->take(4) as $category) { ?>
-                                                    
-                                                         <a class="dropdown-item cont-item" style="text-decoration: none!important;" href="<?php echo URL::to('/').'/category/'.$category->slug;?>"> 
-                                                            <?php echo $category->name;?> 
-                                                         </a>
-                                                   
-                                                   <?php } ?>
-
-                                                
-                                                      <a class="dropdown-item cont-item" style="text-decoration: none!important;" href="<?php echo URL::to('/categoryList');?>">  
-                                                         <?php echo "More..." ;?> 
-                                                      </a>
-                                                 
+                                                 <?php } ?>
                                             </a>
 
 
+                                             <ul class="dropdown-menu categ-head">
+                                                   
+                                                      <li>
+                                                         <a class="dropdown-item cont-item" style="text-decoration: none!important;" href="<?php echo URL::to('/').'/category/'.$category->slug;?>"> 
+                                                            <?php echo $category->name;?> 
+                                                         </a>
+                                                      </li>
+                                                 
+
+                                                   <li>
+                                                      <a class="dropdown-item cont-item" style="text-decoration: none!important;" href="<?php echo URL::to('/categoryList');?>">  
+                                                         <?php echo "More..." ;?> 
+                                                      </a>
+                                                   </li>
+
+                                             </ul>
                                           </li>
                                           <?php } elseif ( $menu->in_menu == "movies") { 
                                         $cat = App\VideoCategory::all();
@@ -550,17 +536,18 @@ input:checked + .sliderk:before {
                                           <li class="dropdown menu-item">
                                            <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown" >  
                                                  <a class="d-flex justify-content-between" href="<?php echo  URL::to('/Movie-list');?>"> <?php echo __($menu->name);?>  
-                                                 
+                                                   <i class="ri-arrow-down-s-line"></i>
                                                 </a>
-                                                <?php foreach ( $languages as $language){ ?>
-                                          
+                                            </a>
+                                            <ul class="dropdown-menu categ-head">
+                                              <?php foreach ( $languages as $language){ ?>
+                                              <li>
                                                 <a class="dropdown-item cont-item" href="<?php echo URL::to('/').'/language/'.$language->id.'/'.$language->name;?>"> 
                                                       <?php echo $language->name;?> 
                                                     </a>
-                                            
+                                              </li>
                                               <?php } ?>
-                                            </a>
-                                          
+                                            </ul>
                                           </li>
                                           <?php }elseif ( $menu->in_menu == "live") { 
                                        //  $LiveCategory = App\LiveCategory::all();
@@ -569,17 +556,18 @@ input:checked + .sliderk:before {
                                           <li class="dropdown menu-item">
                                             <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown" >  
                                                  <a class="d-flex justify-content-between" href="<?php echo  URL::to('/Live-list');?>"> <?php echo __($menu->name);?>  
-                                                  
+                                                   <i class="ri-arrow-down-s-line"></i>
                                                 </a>
-                                                  <?php foreach ( $LiveCategory as $category){ ?>
-                                          
+                                          </a>
+                                            <ul class="dropdown-menu categ-head">
+                                              <?php foreach ( $LiveCategory as $category){ ?>
+                                              <li>
                                               <a class="dropdown-item cont-item" href="<?php echo URL::to('/live/category').'/'.$category->name;?>"> 
                                                       <?php echo $category->name;?> 
                                                     </a>
-                                           
+                                              </li>
                                               <?php } ?>
-                                          </a>
-                                          
+                                            </ul>
                                           </li>
 
                                           <?php }elseif ( $menu->in_menu == "tv_show") { 

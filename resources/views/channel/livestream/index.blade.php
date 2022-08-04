@@ -53,7 +53,7 @@
                         @endif
 			<div class="col-md-6" align="right">	
 <!--				<form method="get" role="form" class="search-form-full"> <div class="form-group"> <input type="text" class="form-control" value="<?= Request::get('s'); ?>" name="s" id="search-input" placeholder="Search..."> <i class="entypo-search"></i> </div> </form>-->
-                <a href="{{ URL::to('/cpp/livestream/create') }}" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add New</a>
+                <a href="{{ URL::to('/channel/livestream/create') }}" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add New</a>
 			</div>
 		</div>    
 	
@@ -106,8 +106,8 @@
 
 						<td class="d-flex align-items-center list-user-action mt-4">
                             <!-- <a href="{{ URL::to('live/play/') . '/' . $video->id }}" target="_blank" class="iq-bg-warning"><i class="lar la-eye"></i></a> -->
-							<a href="{{ URL::to('cpp/livestream/edit') . '/' . $video->id }}" class="iq-bg-success"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
-							<a href="{{ URL::to('cpp/livestream/delete') . '/' . $video->id }}" onclick="return confirm('Are you sure?')" class="iq-bg-danger"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
+							<a href="{{ URL::to('channel/livestream/edit') . '/' . $video->id }}" class="iq-bg-success"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
+							<a href="{{ URL::to('channel/livestream/delete') . '/' . $video->id }}" onclick="return confirm('Are you sure?')" class="iq-bg-danger"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
 						</td>
 					</tr>
 					@endforeach
@@ -190,7 +190,7 @@
 						session()->forget('Rtmp_url');
 						session()->forget('title');
 				@endphp
-				location.href = "{{ URL::to('cpp/livestream')}}";
+				location.href = "{{ URL::to('channel/livestream')}}";
 			}
 			})
 		}

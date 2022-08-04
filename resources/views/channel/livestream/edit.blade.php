@@ -639,7 +639,7 @@
 						session()->forget('Stream_key');
 						session()->forget('Stream_error');
 				@endphp
-				location.href = "{{ URL::to('cpp/livestream/edit') . '/' . $video->id }}";
+				location.href = "{{ URL::to('channel/livestream/edit') . '/' . $video->id }}";
 			}
 			})
 		}

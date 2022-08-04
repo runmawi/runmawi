@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 use \App\User as User;
 use \Redirect as Redirect;
@@ -60,7 +59,7 @@ use App\Series;
 
 class ChannelController extends Controller
 {
-     /**
+    /**
      * Create a new controller instance.
      *
      * @return void
@@ -71,784 +70,900 @@ class ChannelController extends Controller
         $settings = Setting::first();
         $this->videos_per_page = $settings->videos_per_page;
 
-        $this->Theme = HomeSetting::pluck('theme_choosen')->first();
-        Theme::uses(  $this->Theme );
+        $this->Theme = HomeSetting::pluck('theme_choosen')
+            ->first();
+        Theme::uses($this->Theme);
     }
-    
+
     public function index()
     {
-       $settings = Setting::first();
-       $parentCategories = \App\VideoCategory::where('parent_id',0)->get();
-        
-       return view('channels', compact('parentCategories'));
-        
-    } 
-    
+        $settings = Setting::first();
+        $parentCategories = \App\VideoCategory::where('parent_id', 0)->get();
+
+        return view('channels', compact('parentCategories'));
+
+    }
+
     public function channelVideos($cid)
     {
 
-      $getfeching = \App\Geofencing::first();
-      $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-      $userIp = $geoip->getip();    
-      $countryName = $geoip->getCountry();
-      $ThumbnailSetting = ThumbnailSetting::first();
+        $getfeching = \App\Geofencing::first();
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+        $userIp = $geoip->getip();
+        $countryName = $geoip->getCountry();
+        $ThumbnailSetting = ThumbnailSetting::first();
 
-      try {
+        try
+        {
 
-        $vpp = VideoPerPage();
-        $category_id = \App\VideoCategory::where('slug',$cid)->pluck('id');
-        $categoryVideos_count = Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
-                              ->where('category_id','=',$category_id)->where('active', '=', '1')->count();
+            $vpp = VideoPerPage();
+            $category_id = \App\VideoCategory::where('slug', $cid)->pluck('id');
+            $categoryVideos_count = Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')->where('category_id', '=', $category_id)->where('active', '=', '1')
+                ->count();
 
-        if ($categoryVideos_count > 0) {
-     
-              $categoryVideos = Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
-                                ->where('category_id','=',$category_id)->where('active', '=', '1');
+            if ($categoryVideos_count > 0)
+            {
 
-              if($getfeching !=null && $getfeching->geofencing == 'ON'){
-                 $categoryVideos = $categoryVideos  ->whereNotIn('videos.id',Block_videos());
-                 }
-               $categoryVideos = $categoryVideos->orderBy('videos.created_at','desc')->get();
-              
-          } else {
+                $categoryVideos = Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')->where('category_id', '=', $category_id)->where('active', '=', '1');
+
+                if ($getfeching != null && $getfeching->geofencing == 'ON')
+                {
+                    $categoryVideos = $categoryVideos->whereNotIn('videos.id', Block_videos());
+                }
+                $categoryVideos = $categoryVideos->orderBy('videos.created_at', 'desc')
+                    ->get();
+
+            }
+            else
+            {
                 $categoryVideos = [];
-        }
-        // $categoryVideos = \App\Video::where('video_category_id',$category_id)->paginate();
-        $category_title = \App\VideoCategory::where('id',$category_id)->pluck('name');
-        $settings = Setting::first();
-        $PPV_settings = Setting::where('ppv_status','=',1)->first();
-        if(!empty($PPV_settings)){
+            }
+            // $categoryVideos = \App\Video::where('video_category_id',$category_id)->paginate();
+            $category_title = \App\VideoCategory::where('id', $category_id)->pluck('name');
+            $settings = Setting::first();
+            $PPV_settings = Setting::where('ppv_status', '=', 1)->first();
+            if (!empty($PPV_settings))
+            {
 
-            $ppv_gobal_price =  $PPV_settings->ppv_price;
+                $ppv_gobal_price = $PPV_settings->ppv_price;
 
-         }else{
+            }
+            else
+            {
 
-             $ppv_gobal_price = null ;
-         }
-         $currency = CurrencySetting::first();
+                $ppv_gobal_price = null;
+            }
+            $currency = CurrencySetting::first();
 
-         $Episode_videos =  Series::select('episodes.*','series.title as series_name')
-                            ->join('series_categories', 'series_categories.series_id', '=', 'series.id')
-                            ->join('episodes', 'episodes.series_id', '=', 'series.id')
-                            ->where('series_categories.category_id','=',$category_id)
-                            ->where('episodes.active', '=', '1')
-                            ->where('series.active', '=', '1')
-                            ->groupBy('episodes.id')
-                            ->latest('episodes.created_at')
-                            ->get();
-        
-   
-         
-        $data = array(
-                'currency'=> $currency,
-                'category_title'=>$category_title[0],
-                'categoryVideos'=>$categoryVideos,
+            $Episode_videos = Series::select('episodes.*', 'series.title as series_name')->join('series_categories', 'series_categories.series_id', '=', 'series.id')
+                ->join('episodes', 'episodes.series_id', '=', 'series.id')
+                ->where('series_categories.category_id', '=', $category_id)->where('episodes.active', '=', '1')
+                ->where('series.active', '=', '1')
+                ->groupBy('episodes.id')
+                ->latest('episodes.created_at')
+                ->get();
+
+            $data = array(
+                'currency' => $currency,
+                'category_title' => $category_title[0],
+                'categoryVideos' => $categoryVideos,
                 'ppv_gobal_price' => $ppv_gobal_price,
                 'ThumbnailSetting' => $ThumbnailSetting,
-                'age_categories' => AgeCategory::get(),
-                'Episode_videos'   => $Episode_videos,
+                'age_categories' => AgeCategory::get() ,
+                'Episode_videos' => $Episode_videos,
             );
-       return Theme::view('categoryvids',['categoryVideos'=>$data]);
+            return Theme::view('categoryvids', ['categoryVideos' => $data]);
 
-      } catch (\Throwable $th) {
-
-        return abort(404);
-
-      }
-
-    } 
-    
-      public function play_videos($slug)
-    {
-          $data['password_hash'] = "";
-          $data = session()->all();
-          $getfeching = \App\Geofencing::first();
-          $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-          $userIp = $geoip->getip();    
-          $countryName = $geoip->getCountry();
-          $cityName = $geoip->getcity();
-          $stateName = $geoip->getregion();
-          $ThumbnailSetting = ThumbnailSetting::first();
-
-       
-          if(!empty($data['password_hash'])){
-
-          $get_video_id = \App\Video::where('slug',$slug)->first(); 
-          try {
-            $vid = $get_video_id->id;
-
-          } catch (\Throwable $th) {
+        }
+        catch(\Throwable $th)
+        {
 
             return abort(404);
-          }
-        
-          $artistscount = Videoartist::join("artists","video_artists.artist_id", "=", "artists.id")
-                    ->select("artists.*")
-                    ->where("video_artists.video_id", "=", $vid)
-                    ->count();
-                    
-          if($artistscount > 0){
-              $artists = Videoartist::join("artists","video_artists.artist_id", "=", "artists.id")
-                    ->select("artists.*")
-                    ->where("video_artists.video_id", "=", $vid)
-                    ->get();
-          }
-          else{
-               $artists = [];
-          }
+
+        }
+
+    }
+
+    public function play_videos($slug)
+    {
+        $data['password_hash'] = "";
+        $data = session()->all();
+        $getfeching = \App\Geofencing::first();
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+        $userIp = $geoip->getip();
+        $countryName = $geoip->getCountry();
+        $cityName = $geoip->getcity();
+        $stateName = $geoip->getregion();
+        $ThumbnailSetting = ThumbnailSetting::first();
+
+        if (!empty($data['password_hash']))
+        {
+
+            $get_video_id = \App\Video::where('slug', $slug)->first();
+            try
+            {
+                $vid = $get_video_id->id;
+
+            }
+            catch(\Throwable $th)
+            {
+
+                return abort(404);
+            }
+
+            $artistscount = Videoartist::join("artists", "video_artists.artist_id", "=", "artists.id")->select("artists.*")
+                ->where("video_artists.video_id", "=", $vid)->count();
+
+            if ($artistscount > 0)
+            {
+                $artists = Videoartist::join("artists", "video_artists.artist_id", "=", "artists.id")->select("artists.*")
+                    ->where("video_artists.video_id", "=", $vid)->get();
+            }
+            else
+            {
+                $artists = [];
+            }
 
             // $cast = Videoartist::where('video_id','=',$vid)->get();
             // foreach($cast as $key => $artist){
             //   $artists[] = Artist::where('id','=',$artist->artist_id)->get();
-
             // }
-  
+            
 
-        $PPV_settings = Setting::where('ppv_status','=',1)->first();
+            $PPV_settings = Setting::where('ppv_status', '=', 1)->first();
 
-          if(!empty($PPV_settings)){
-            $ppv_rent_price =  $PPV_settings->ppv_price;
-          }
-          else{
-              $Video_ppv = Video::where('id','=',$vid)->first();
-              $ppv_rent_price = null ;
-
-              if($Video_ppv->ppv_price != ""){
-                $ppv_rent_price = $Video_ppv->ppv_price;
-              }
-              else{
-                $ppv_rent_price = $Video_ppv->ppv_price;
-              }
-          }
-
-          $current_date = date('Y-m-d h:i:s a', time()); 
-          $view_increment = $this->handleViewCount_movies($vid);
-
-        if ( !Auth::guest() ) {
-
-          $sub_user = Session::get('subuser_id');
-
-            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-            $userIp = $geoip->getip();    
-            $countryName = $geoip->getCountry();
-            $regionName = $geoip->getregion();
-            $cityName = $geoip->getcity();
-
-            $view = new RecentView;
-            $view->video_id  = $vid;
-            $view->user_id  = Auth::user()->id;
-            $view->country_name  = $countryName;
-            if($sub_user != null){
-              $view->sub_user  = $sub_user;
+            if (!empty($PPV_settings))
+            {
+                $ppv_rent_price = $PPV_settings->ppv_price;
             }
-            $view->visited_at = date('Y-m-d');
-            $view->save();
+            else
+            {
+                $Video_ppv = Video::where('id', '=', $vid)->first();
+                $ppv_rent_price = null;
 
-            $regionview = RegionView::where('user_id','=',Auth::User()->id)->where('video_id','=',$vid)->orderBy('created_at', 'DESC')->whereDate('created_at', '>=', \Carbon\Carbon::now()->today())->first();
-          
-            if(!empty($regionview)){
-                $regionview = RegionView::where('user_id','=',Auth::User()->id)->where('video_id','=',$vid)->orderBy('created_at', 'DESC')->whereDate('created_at', '>=', \Carbon\Carbon::now()->today())->delete();
-                $region = new RegionView;
-                $region->user_id = Auth::User()->id;
-                $region->user_ip = $userIp;
-                $region->video_id = $vid;
-                $region->countryname = $countryName;
-                $region->save();
-            }else{
-                $region = new RegionView;
-                $region->user_id = Auth::User()->id;
-                $region->user_ip = $userIp;
-                $region->video_id = $vid;
-                $region->countryname = $countryName;
-                $region->save();
+                if ($Video_ppv->ppv_price != "")
+                {
+                    $ppv_rent_price = $Video_ppv->ppv_price;
+                }
+                else
+                {
+                    $ppv_rent_price = $Video_ppv->ppv_price;
+                }
             }
 
-           $user_id = Auth::user()->id;
-           $watch_id = ContinueWatching::where('user_id','=',$user_id)->where('videoid','=',$vid)->orderby('created_at','desc')->first();
-           $watch_count = ContinueWatching::where('user_id','=',$user_id)->where('videoid','=',$vid)->orderby('created_at','desc')->count();
-          
-            if ($watch_count >0 ){
-                  $watchtime = $watch_id->currentTime;
-            }
-            else {
-                $watchtime = 0;
-            }
+            $current_date = date('Y-m-d h:i:s a', time());
+            $view_increment = $this->handleViewCount_movies($vid);
 
-          $ppvexist = PpvPurchase::where('video_id',$vid)
-                    ->where('user_id',$user_id)
+            if (!Auth::guest())
+            {
+
+                $sub_user = Session::get('subuser_id');
+
+                $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+                $userIp = $geoip->getip();
+                $countryName = $geoip->getCountry();
+                $regionName = $geoip->getregion();
+                $cityName = $geoip->getcity();
+
+                $view = new RecentView;
+                $view->video_id = $vid;
+                $view->user_id = Auth::user()->id;
+                $view->country_name = $countryName;
+                if ($sub_user != null)
+                {
+                    $view->sub_user = $sub_user;
+                }
+                $view->visited_at = date('Y-m-d');
+                $view->save();
+
+                $regionview = RegionView::where('user_id', '=', Auth::User()->id)
+                    ->where('video_id', '=', $vid)->orderBy('created_at', 'DESC')
+                    ->whereDate('created_at', '>=', \Carbon\Carbon::now()
+                    ->today())
+                    ->first();
+
+                if (!empty($regionview))
+                {
+                    $regionview = RegionView::where('user_id', '=', Auth::User()->id)
+                        ->where('video_id', '=', $vid)->orderBy('created_at', 'DESC')
+                        ->whereDate('created_at', '>=', \Carbon\Carbon::now()
+                        ->today())
+                        ->delete();
+                    $region = new RegionView;
+                    $region->user_id = Auth::User()->id;
+                    $region->user_ip = $userIp;
+                    $region->video_id = $vid;
+                    $region->countryname = $countryName;
+                    $region->save();
+                }
+                else
+                {
+                    $region = new RegionView;
+                    $region->user_id = Auth::User()->id;
+                    $region->user_ip = $userIp;
+                    $region->video_id = $vid;
+                    $region->countryname = $countryName;
+                    $region->save();
+                }
+
+                $user_id = Auth::user()->id;
+                $watch_id = ContinueWatching::where('user_id', '=', $user_id)->where('videoid', '=', $vid)->orderby('created_at', 'desc')
+                    ->first();
+                $watch_count = ContinueWatching::where('user_id', '=', $user_id)->where('videoid', '=', $vid)->orderby('created_at', 'desc')
+                    ->count();
+
+                if ($watch_count > 0)
+                {
+                    $watchtime = $watch_id->currentTime;
+                }
+                else
+                {
+                    $watchtime = 0;
+                }
+
+                $ppvexist = PpvPurchase::where('video_id', $vid)->where('user_id', $user_id)
+                // ->where('status','active')
+                // ->where('to_time','>',$current_date)
+                ->count();
+
+                $ppv_video = PpvPurchase::where('video_id', $vid)->where('user_id', $user_id)->first();
+
+                $user_id = Auth::user()->id;
+
+                if ($ppvexist > 0 && $ppv_video->view_count > 0 && $ppv_video->view_count != null)
+                {
+                    $ppv_exist = PpvPurchase::where('video_id', $vid)->where('user_id', $user_id)->where('status', 'active')
+                        ->where('to_time', '>', $current_date)->count();
+                }
+                elseif ($ppvexist > 0 && $ppv_video->view_count == null)
+                {
+                    $ppv_exist = PpvPurchase::where('video_id', $vid)->where('user_id', $user_id)
                     // ->where('status','active')
                     // ->where('to_time','>',$current_date)
                     ->count();
+                }
+                else
+                {
+                    $ppv_exist = 0;
+                }
 
-          $ppv_video = PpvPurchase::where('video_id',$vid)
-                  ->where('user_id',$user_id)
-                  ->first();
+                $categoryVideos = Video::with('category.categoryname')->where('id', $vid)->first();
 
-           $user_id = Auth::user()->id;
+                $category_name = CategoryVideo::select('video_categories.name as categories_name')->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+                    ->where('categoryvideos.video_id', $vid)->get();
 
-          if($ppvexist > 0 && $ppv_video->view_count > 0 && $ppv_video->view_count != null){
-            $ppv_exist = PpvPurchase::where('video_id',$vid)
-                      ->where('user_id',$user_id)
-                      ->where('status','active')
-                      ->where('to_time','>',$current_date)->count();
+                if (count($category_name) > 0)
+                {
+                    foreach ($category_name as $value)
+                    {
+                        $vals[] = $value->categories_name;
                     }
-          elseif($ppvexist > 0 && $ppv_video->view_count == null){
-            $ppv_exist = PpvPurchase::where('video_id',$vid)
-                        ->where('user_id',$user_id)
-                        // ->where('status','active')
-                        // ->where('to_time','>',$current_date)
-                        ->count();
-          }
-          else{
-            $ppv_exist = 0;
-          }
+                    $genres_name = implode(', ', $vals);
+                }
+                else
+                {
+                    $genres_name = "No Genres Added";
+                }
 
+                $lang_name = LanguageVideo::select('languages.name as name')->Join('languages', 'languagevideos.language_id', '=', 'languages.id')
+                    ->where('languagevideos.video_id', $vid)->get();
 
-           $categoryVideos = Video::with('category.categoryname')->where('id',$vid)->first();
+                if (count($lang_name) > 0)
+                {
 
-           $category_name = CategoryVideo::select('video_categories.name as categories_name')
+                    foreach ($lang_name as $value)
+                    {
+                        $languagesvals[] = $value->name;
+                    }
+                    $lang_name = implode(',', $languagesvals);
+                }
+                else
+                {
+                    $lang_name = "No Languages Added";
+                }
+
+                $artists_name = Videoartist::select('artists.artist_name as name')->Join('artists', 'video_artists.artist_id', '=', 'artists.id')
+                    ->where('video_artists.video_id', $vid)->get();
+
+                if (count($artists_name) > 0)
+                {
+
+                    foreach ($artists_name as $value)
+                    {
+                        $artistsvals[] = $value->name;
+                    }
+                    $artistsname = implode(',', $artistsvals);
+
+                }
+                else
+                {
+                    $artistsname = "No Starring  Added";
+                }
+
+                $subtitles_name = MoviesSubtitles::select('subtitles.language as language')->Join('subtitles', 'movies_subtitles.shortcode', '=', 'subtitles.short_code')
+                    ->where('movies_subtitles.movie_id', $vid)->get();
+
+                if (count($subtitles_name) > 0)
+                {
+                    foreach ($subtitles_name as $value)
+                    {
+                        $subtitlesname[] = $value->language;
+                    }
+                    $subtitles = implode(', ', $subtitlesname);
+                }
+                else
+                {
+                    $subtitles = "No Subtitles Added";
+                }
+
+                $category_id = CategoryVideo::where('video_id', $vid)->get();
+                $categoryvideo = CategoryVideo::where('video_id', $vid)->pluck('category_id')
+                    ->toArray();
+                $languages_id = LanguageVideo::where('video_id', $vid)->pluck('language_id')
+                    ->toArray();
+
+                // Recomendeds And Endcard
+                foreach ($category_id as $key => $value)
+                {
+
+                    $recomendeds = Video::select('videos.*', 'video_categories.name as categories_name', 'categoryvideos.category_id as categories_id')->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
                         ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
-                        ->where('categoryvideos.video_id',$vid)
+                        ->where('videos.id', '!=', $vid)->limit(10)
                         ->get();
 
-           if(count($category_name) > 0){
-            foreach($category_name as $value){
-              $vals[]  = $value->categories_name;  
-            }
-              $genres_name = implode(', ', $vals);
-           }
-           else{
-            $genres_name = "No Genres Added";
-           }
-
-           $lang_name = LanguageVideo::select('languages.name as name')
-                      ->Join('languages', 'languagevideos.language_id', '=', 'languages.id')
-                      ->where('languagevideos.video_id',$vid)
-                      ->get();
-
-           if(count($lang_name) > 0){
-
-              foreach($lang_name as $value){
-                $languagesvals[]  = $value->name;  
-              }
-              $lang_name = implode(',', $languagesvals);
-           }
-           else{
-            $lang_name = "No Languages Added";
-           }
-
-           $artists_name = Videoartist::select('artists.artist_name as name')
-                        ->Join('artists', 'video_artists.artist_id', '=', 'artists.id')
-                        ->where('video_artists.video_id',$vid)
+                    $endcardvideo = Video::select('videos.*', 'video_categories.name as categories_name', 'categoryvideos.category_id as categories_id')->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
+                        ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+                        ->where('videos.id', '!=', $vid)->limit(5)
                         ->get();
-           
-           if(count($artists_name) > 0){
+                }
 
-              foreach($artists_name as $value){
-                $artistsvals[]  = $value->name;  
-              }
-              $artistsname = implode(',', $artistsvals);
+                if (!Auth::guest())
+                {
+                    $latestRecentView = RecentView::where('user_id', '!=', Auth::user()->id)
+                        ->distinct()
+                        ->limit(30)
+                        ->pluck('video_id');
+                    if (count($latestRecentView) > 10)
+                    {
+                        $latestviews = [];
+                    }
+                    else
+                    {
 
-            }else{
-              $artistsname = "No Starring  Added";
-            }
+                        $latestviews = Video::select('videos.*', 'video_categories.name as categories_name', 'categoryvideos.category_id as categories_id')->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
+                            ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+                            ->whereIn('videos.id', $latestRecentView)->groupBy('videos.id')
+                            ->get();
+                    }
 
-            $subtitles_name = MoviesSubtitles::select('subtitles.language as language')
-                          ->Join('subtitles', 'movies_subtitles.shortcode', '=', 'subtitles.short_code')
-                          ->where('movies_subtitles.movie_id',$vid)
-                          ->get();
+                }
+                else
+                {
+                    $latestRecentView = [];
+                    $latestviews = [];
+                    $recomendeds = $recomendeds;
+                }
 
-            if(count($subtitles_name) > 0){
-              foreach($subtitles_name as $value){
-                $subtitlesname[]  = $value->language;  
-              }
-              $subtitles = implode(', ', $subtitlesname);
-            }else{
-              $subtitles = "No Subtitles Added";
-            }
+                $related_videos = Video::select('videos.*', 'related_videos.id as related_videos_id', 'related_videos.related_videos_title as related_videos_title')->Join('related_videos', 'videos.id', '=', 'related_videos.related_videos_id')
+                    ->where('related_videos.video_id', '=', $vid)->limit(5)
+                    ->get();
 
-           $category_id = CategoryVideo::where('video_id', $vid)->get();
-           $categoryvideo = CategoryVideo::where('video_id', $vid)->pluck('category_id')->toArray();
-           $languages_id = LanguageVideo::where('video_id', $vid)->pluck('language_id')->toArray();
-                
-                      // Recomendeds And Endcard
-           foreach($category_id as $key => $value){
-          
-            $recomendeds = Video::select('videos.*','video_categories.name as categories_name','categoryvideos.category_id as categories_id')
-                    ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
-                    ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
-                    ->where('videos.id','!=',$vid)
-                    ->limit(10)->get();
+                if (count($related_videos) > 0)
+                {
+                    $endcardvideo = $related_videos;
+                }
+                elseif (!empty($endcardvideo))
+                {
+                    $endcardvideo = $endcardvideo;
+                }
+                else
+                {
+                    $endcardvideo = [];
+                }
 
-                    $endcardvideo = Video::select('videos.*','video_categories.name as categories_name','categoryvideos.category_id as categories_id')
-                    ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
-                    ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
-                    ->where('videos.id','!=',$vid)
-                    ->limit(5)->get();
-           }
+                if ($get_video_id->type == "mp4_url")
+                {
+                    // $ffprobe = FFProbe::create();
+                    // $endtimevideos = $ffprobe->format($get_video_id->mp4_url) // extracts file informations
+                    //    ->get('duration');
+                    //    $endtimevideo = $endtimevideos - 5;
+                    $endtimevideo = '';
 
-           if(!Auth::guest()){
-              $latestRecentView = RecentView::where('user_id','!=',Auth::user()->id)->distinct()->limit(30)->pluck('video_id');
-              if(count($latestRecentView) > 10){
-                $latestviews = [];
-           }
-           else{
+                }
+                elseif ($get_video_id->type == "m3u8_url")
+                {
+                    // $ffprobe = FFProbe::create();
+                    // $endtimevideos = $ffprobe->format($get_video_id->m3u8_url) // extracts file informations
+                    //    ->get('duration');
+                    //    $endtimevideo = $endtimevideos - 5;
+                    $endtimevideo = '';
 
-              $latestviews = Video::select('videos.*','video_categories.name as categories_name','categoryvideos.category_id as categories_id')
-                          ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
-                          ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
-                          ->whereIn('videos.id', $latestRecentView)
-                          ->groupBy('videos.id')
-                          ->get();
-            }
+                }
+                elseif ($get_video_id->type == "")
+                {
+                    // $ffprobe = FFProbe::create();
+                    // $endtimevideos = $ffprobe->format($get_video_id->mp4_url) // extracts file informations
+                    //    ->get('duration');
+                    //    $endtimevideo = $endtimevideos - 5;
+                    $endtimevideo = '';
 
-           }
-           else{
-                  $latestRecentView = [];
-                  $latestviews = [];
-                  $recomendeds = $recomendeds;
-           }
-          
-          $related_videos = Video::select('videos.*','related_videos.id as related_videos_id','related_videos.related_videos_title as related_videos_title')
-                                ->Join('related_videos', 'videos.id', '=', 'related_videos.related_videos_id')
-                                ->where('related_videos.video_id','=',$vid)
-                                ->limit(5)->get();
-          
-          
-           if(count($related_videos) > 0 ){
-             $endcardvideo = $related_videos;
-           }
-           elseif(!empty($endcardvideo)){
-              $endcardvideo = $endcardvideo;
-           }
-           else{
-              $endcardvideo = [];
-           }
+                }
+                else
+                {
+                    $endtimevideo = '';
+                }
 
-           if($get_video_id->type == "mp4_url"){
-            // $ffprobe = FFProbe::create();
-            // $endtimevideos = $ffprobe->format($get_video_id->mp4_url) // extracts file informations
-            //    ->get('duration');
-            //    $endtimevideo = $endtimevideos - 5;
-            $endtimevideo = '';
+                if (count($latestviews) <= 15)
+                {
+                    if (!empty($recomendeds))
+                    {
+                        // foreach($recomendeds as $category){
+                        // if(in_array($category->categories_id, $categoryvideo)){
+                        //  $recomended[] = $category;
+                        $recomended = Video::select('videos.*', 'video_categories.name as categories_name', 'categoryvideos.category_id as categories_id')->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
+                            ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+                            ->where('videos.id', '!=', $vid)->groupBy('videos.id')
+                            ->limit(10)
+                            ->get();
 
-           }elseif($get_video_id->type == "m3u8_url"){
-            // $ffprobe = FFProbe::create();
-            // $endtimevideos = $ffprobe->format($get_video_id->m3u8_url) // extracts file informations
-            //    ->get('duration');
-            //    $endtimevideo = $endtimevideos - 5;
-            $endtimevideo = '';
+                        //  $recomended = array_unique($recomended, SORT_REGULAR);
+                        // $endcardvideo[] = $category;
+                        // $recomended = array_map("unserialize", array_unique(array_map("serialize", $recomended)));
+                        // }
+                        // }
+                        
+                    }
+                    else
+                    {
+                        $recomended = [];
+                        //  $endcardvideo = [];
+                        
+                    }
+                }
+                else
+                {
+                    $recomended = $latestviews;
+                }
 
-           }elseif($get_video_id->type == ""){
-            // $ffprobe = FFProbe::create();
-            // $endtimevideos = $ffprobe->format($get_video_id->mp4_url) // extracts file informations
-            //    ->get('duration');
-            //    $endtimevideo = $endtimevideos - 5;
-            $endtimevideo = '';
+                if (!empty($recomended))
+                {
+                    $recomended = $recomended;
+                }
+                else
+                {
+                    $recomended = [];
+                }
+                //  dd($recomended);
+                $videocategory = [];
 
-           }else{
-            $endtimevideo = '';
-           }
-           
-          if(count($latestviews) <= 15){
-           if(!empty($recomendeds)){
-            // foreach($recomendeds as $category){
-              // if(in_array($category->categories_id, $categoryvideo)){
-              //  $recomended[] = $category;
-              $recomended = Video::select('videos.*','video_categories.name as categories_name','categoryvideos.category_id as categories_id')
-              ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
-              ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
-              ->where('videos.id','!=',$vid)
-              ->groupBy('videos.id')
-              ->limit(10)->get();
-
-              //  $recomended = array_unique($recomended, SORT_REGULAR);
-              // $endcardvideo[] = $category;
-              // $recomended = array_map("unserialize", array_unique(array_map("serialize", $recomended)));
-              // }            
-            // }
-           }else{
-             $recomended = [];
-            //  $endcardvideo = [];
-           }
-          }else{
-            $recomended = $latestviews;
-          }
-
-           if(!empty($recomended)){
-              $recomended = $recomended;
-           }
-           else{
-               $recomended =[] ;
-           }
-          //  dd($recomended);
-
-          $videocategory = [];
-
-            $playerui = Playerui::first();
-            $subtitle = MoviesSubtitles::where('movie_id','=',$vid)->get();
+                $playerui = Playerui::first();
+                $subtitle = MoviesSubtitles::where('movie_id', '=', $vid)->get();
 
                 $wishlisted = false;
-                if(!Auth::guest()):
-                        $wishlisted = Wishlist::where('user_id', '=', Auth::user()->id)->where('video_id', '=', $vid)->where('type', '=', 'channel')->first();
+                if (!Auth::guest()):
+                    $wishlisted = Wishlist::where('user_id', '=', Auth::user()->id)
+                        ->where('video_id', '=', $vid)->where('type', '=', 'channel')
+                        ->first();
                 endif;
-                    $watchlater = false;
-                 if(!Auth::guest()):
-                        $watchlater = Watchlater::where('user_id', '=', Auth::user()->id)->where('video_id', '=', $vid)->where('type', '=', 'channel')->first();
-                        $like_dislike = LikeDislike::where('user_id', '=', Auth::user()->id)->where('video_id', '=', $vid)->get();
-                    endif;
+                $watchlater = false;
+                if (!Auth::guest()):
+                    $watchlater = Watchlater::where('user_id', '=', Auth::user()->id)
+                        ->where('video_id', '=', $vid)->where('type', '=', 'channel')
+                        ->first();
+                    $like_dislike = LikeDislike::where('user_id', '=', Auth::user()->id)
+                        ->where('video_id', '=', $vid)->get();
+                endif;
 
-                    
-                    $ppv_video_play = [];
+                $ppv_video_play = [];
 
-                    $ppv_video = PpvPurchase::where('user_id',Auth::user()->id)->where('status','active')->get();
-                    $ppv_setting = Setting::first();
-                    $ppv_setting_hours= $ppv_setting->ppv_hours;
-            
-                    if(!empty($ppv_video)){
-                    foreach($ppv_video as $key => $value){
-                      $to_time = $value->to_time;
-                    
-                      // $time = date('h:i:s', strtotime($date));
-                      // $ppv_hours = date('Y-m-d h:i:s a',strtotime('+'.$ppv_setting_hours.' hour',strtotime($date)));                        
-                     
+                $ppv_video = PpvPurchase::where('user_id', Auth::user()->id)
+                    ->where('status', 'active')
+                    ->get();
+                $ppv_setting = Setting::first();
+                $ppv_setting_hours = $ppv_setting->ppv_hours;
+
+                if (!empty($ppv_video))
+                {
+                    foreach ($ppv_video as $key => $value)
+                    {
+                        $to_time = $value->to_time;
+
+                        // $time = date('h:i:s', strtotime($date));
+                        // $ppv_hours = date('Y-m-d h:i:s a',strtotime('+'.$ppv_setting_hours.' hour',strtotime($date)));
                         $d = new \DateTime('now');
                         $d->setTimezone(new \DateTimeZone('Asia/Kolkata'));
                         $now = $d->format('Y-m-d h:i:s a');
 
-                      if($to_time >=  $now){
-                        if($vid == $value->video_id){
-                          $ppv_video_play = $value;
+                        if ($to_time >= $now)
+                        {
+                            if ($vid == $value->video_id)
+                            {
+                                $ppv_video_play = $value;
 
-    
-                        }else{
-                          $ppv_video_play = null;
-                        }                 
-                    }else{
-                        PpvPurchase::where('video_id', $vid)
-                                ->update([
-                                    'status' => 'inactive'
-                                    ]);
-                    }
-                    $purchased_video = Video::where('id',$value->video_id)->get();
+                            }
+                            else
+                            {
+                                $ppv_video_play = null;
+                            }
+                        }
+                        else
+                        {
+                            PpvPurchase::where('video_id', $vid)->update(['status' => 'inactive']);
+                        }
+                        $purchased_video = Video::where('id', $value->video_id)
+                            ->get();
 
                     }
-                    }
-            
-                $ads = AdsVideo::select('advertisements.*')
-                        ->Join('advertisements', 'advertisements.id', '=', 'ads_videos.ads_id')
-                        ->where('ads_videos.video_id','=',$vid)
-                        ->get();
-
-                if(!empty($ads) && (count($ads)) > 0){
-                  $ads_path = $ads[0]->ads_path;
-                }else{
-                  $ads_path = "";
                 }
 
-                $payment_settings = PaymentSetting::first();  
+                $ads = AdsVideo::select('advertisements.*')->Join('advertisements', 'advertisements.id', '=', 'ads_videos.ads_id')
+                    ->where('ads_videos.video_id', '=', $vid)->get();
 
-                $mode = $payment_settings->live_mode ;
-                  if($mode == 0){
-                      $secret_key = $payment_settings->test_secret_key ;
-                      $publishable_key = $payment_settings->test_publishable_key ;
-                  }elseif($mode == 1){
-                      $secret_key = $payment_settings->live_secret_key ;
-                      $publishable_key = $payment_settings->live_publishable_key ;
-                  }else{
-                      $secret_key= null;
-                      $publishable_key= null;
-                  }    
+                if (!empty($ads) && (count($ads)) > 0)
+                {
+                    $ads_path = $ads[0]->ads_path;
+                }
+                else
+                {
+                    $ads_path = "";
+                }
 
-            $category_name = CategoryVideo::select('video_categories.name as categories_name')
-                  ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
-                  ->where('categoryvideos.video_id',$vid)
-                  ->get();
-                     
+                $payment_settings = PaymentSetting::first();
 
-            $langague_Name = Language::join("languagevideos","languages.id", "=", "languagevideos.language_id")
-            ->where('video_id',$vid)->get();
+                $mode = $payment_settings->live_mode;
+                if ($mode == 0)
+                {
+                    $secret_key = $payment_settings->test_secret_key;
+                    $publishable_key = $payment_settings->test_publishable_key;
+                }
+                elseif ($mode == 1)
+                {
+                    $secret_key = $payment_settings->live_secret_key;
+                    $publishable_key = $payment_settings->live_publishable_key;
+                }
+                else
+                {
+                    $secret_key = null;
+                    $publishable_key = null;
+                }
 
-            $release_year = Video::where('id',$vid)->pluck('year')->first(); 
+                $category_name = CategoryVideo::select('video_categories.name as categories_name')->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+                    ->where('categoryvideos.video_id', $vid)->get();
 
-            $Reels_videos = Video::Join('reelsvideo','reelsvideo.video_id','=','videos.id')->where('videos.id',$vid)->get();
+                $langague_Name = Language::join("languagevideos", "languages.id", "=", "languagevideos.language_id")->where('video_id', $vid)->get();
 
-            if(!empty($categoryVideos->publish_time)){
-            $new_date = Carbon::parse($categoryVideos->publish_time)->format('M d ,y H:i:s');
-            $currentdate = date("M d , y H:i:s");
-            date_default_timezone_set('Asia/Kolkata');
-            $current_date = Date("M d , y H:i:s");
-            $date=date_create($current_date);
-            $currentdate = date_format($date,"M d ,y H:i:s");
-                   
-             if($currentdate < $new_date){
+                $release_year = Video::where('id', $vid)->pluck('year')
+                    ->first();
 
-              $new_date = Carbon::parse($categoryVideos->publish_time)->format('M d , y h:i:s a');
+                $Reels_videos = Video::Join('reelsvideo', 'reelsvideo.video_id', '=', 'videos.id')->where('videos.id', $vid)->get();
 
-             }else{
+                if (!empty($categoryVideos->publish_time))
+                {
+                    $new_date = Carbon::parse($categoryVideos->publish_time)
+                        ->format('M d ,y H:i:s');
+                    $currentdate = date("M d , y H:i:s");
+                    date_default_timezone_set('Asia/Kolkata');
+                    $current_date = Date("M d , y H:i:s");
+                    $date = date_create($current_date);
+                    $currentdate = date_format($date, "M d ,y H:i:s");
 
-              $new_date = null;
-            }
-             }else{
-              $new_date = null;
-             }
-            //  dd($recomended);
-             $currency = CurrencySetting::first();
-                 $data = array(
-                      'currency' => $currency,
-                     'video' => $categoryVideos,
-                     'videocategory' => $videocategory,
-                     'recomended' => $recomended,
-                     'endtimevideo' => $endtimevideo,
-                     'ads_path' => $ads_path,
-                     'ppv_exist' => $ppv_exist,
-                     'endcardvideo' => $endcardvideo,
-                     'ppv_price' => 100,
-                     'publishable_key' => $publishable_key,
-                     'watchlatered' => $watchlater,
-                     'mywishlisted' => $wishlisted,
-                     'watched_time' => $watchtime,
-                     'like_dislike' =>$like_dislike,
-                     'ppv_rent_price' =>$ppv_rent_price,
-                     'new_date' =>$new_date,
+                    if ($currentdate < $new_date)
+                    {
+
+                        $new_date = Carbon::parse($categoryVideos->publish_time)
+                            ->format('M d , y h:i:s a');
+
+                    }
+                    else
+                    {
+
+                        $new_date = null;
+                    }
+                }
+                else
+                {
+                    $new_date = null;
+                }
+                //  dd($recomended);
+                $currency = CurrencySetting::first();
+                $data = array(
+                    'currency' => $currency,
+                    'video' => $categoryVideos,
+                    'videocategory' => $videocategory,
+                    'recomended' => $recomended,
+                    'endtimevideo' => $endtimevideo,
+                    'ads_path' => $ads_path,
+                    'ppv_exist' => $ppv_exist,
+                    'endcardvideo' => $endcardvideo,
+                    'ppv_price' => 100,
+                    'publishable_key' => $publishable_key,
+                    'watchlatered' => $watchlater,
+                    'mywishlisted' => $wishlisted,
+                    'watched_time' => $watchtime,
+                    'like_dislike' => $like_dislike,
+                    'ppv_rent_price' => $ppv_rent_price,
+                    'new_date' => $new_date,
                     'playerui_settings' => $playerui,
                     'subtitles' => $subtitle,
                     'artists' => $artists,
                     'ppv_video_play' => $ppv_video_play,
-                    'ads' => \App\AdsVideo::where('video_id',$vid)->first(),
-                    'category_name'=> $category_name,
+                    'ads' => \App\AdsVideo::where('video_id', $vid)->first() ,
+                    'category_name' => $category_name,
                     'langague_Name' => $langague_Name,
-                    'release_year'  => $release_year,
-                    'Reels_videos'  => $Reels_videos,
-                    'genres_name'  => $genres_name,
-                    'artistsname'  => $artistsname,
-                    'lang_name'  => $lang_name,
-                    'subtitles_name'  => $subtitles,
+                    'release_year' => $release_year,
+                    'Reels_videos' => $Reels_videos,
+                    'genres_name' => $genres_name,
+                    'artistsname' => $artistsname,
+                    'lang_name' => $lang_name,
+                    'subtitles_name' => $subtitles,
                     'ThumbnailSetting' => $ThumbnailSetting,
                     // 'latestviews' => $latestviews,
-                 );
-             
-        } else {
+                    
+                );
 
-            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-            $userIp = $geoip->getip();    
-            $countryName = $geoip->getCountry();
-            $regionName = $geoip->getregion();
-            $cityName = $geoip->getcity();
-
-              $regionview = RegionView::where('user_id','=',Auth::User()->id)->where('video_id','=',$vid)->orderBy('created_at', 'DESC')->whereDate('created_at', '>=', \Carbon\Carbon::now()->today())->first();
-            
-              if(!empty($regionview)){
-                  $regionview = RegionView::where('user_id','=',Auth::User()->id)->where('video_id','=',$vid)->orderBy('created_at', 'DESC')->whereDate('created_at', '>=', \Carbon\Carbon::now()->today())->delete();
-                  $region = new RegionView;
-                  $region->user_id = Auth::User()->id;
-                  $region->user_ip = $userIp;
-                  $region->video_id = $vid;
-                  $region->countryname = $countryName;
-                  $region->save();
-              }else{
-                  $region = new RegionView;
-                  $region->user_id = Auth::User()->id;
-                  $region->user_ip = $userIp;
-                  $region->video_id = $vid;
-                  $region->countryname = $countryName;
-                  $region->save();
-              }
-
-              $categoryVideos = Video::with('category.categoryname')->where('id',$vid)->first();
-
-            $category_name = CategoryVideo::select('video_categories.name as categories_name')
-                              ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
-                              ->where('categoryvideos.video_id',$vid)
-                              ->get();
-
-              if(count($category_name) > 0){
-                foreach($category_name as $value){
-                  $vals[]  = $value->categories_name;  
-                }
-                  $genres_name = implode(', ', $vals);
-              }else{
-                $genres_name = "No Genres Added";
-              }
-
-            $lang_name = LanguageVideo::select('languages.name as name')
-            ->Join('languages', 'languagevideos.language_id', '=', 'languages.id')
-            ->where('languagevideos.video_id',$vid)
-            ->get();
-
-            if(count($lang_name) > 0){
-
-              foreach($lang_name as $value){
-                $languagesvals[]  = $value->name;  
-              }
-                $lang_name = implode(',', $languagesvals);
-            }else{
-              $lang_name = "No Languages Added";
             }
+            else
+            {
 
-            $artists_name = Videoartist::select('artists.artist_name as name')
-            ->Join('artists', 'video_artists.artist_id', '=', 'artists.id')
-            ->where('video_artists.video_id',$vid)
-            ->get();
-            
-            if(count($artists_name) > 0){
+                $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+                $userIp = $geoip->getip();
+                $countryName = $geoip->getCountry();
+                $regionName = $geoip->getregion();
+                $cityName = $geoip->getcity();
 
-              foreach($artists_name as $value){
-                $artistsvals[]  = $value->name;  
-              }
-                $artistsname = implode(',', $artistsvals);
-            }else{
-              $artistsname = "No Starring  Added";
-            }
+                $regionview = RegionView::where('user_id', '=', Auth::User()->id)
+                    ->where('video_id', '=', $vid)->orderBy('created_at', 'DESC')
+                    ->whereDate('created_at', '>=', \Carbon\Carbon::now()
+                    ->today())
+                    ->first();
 
-            $subtitles_name = MoviesSubtitles::select('subtitles.language as language')
-                            ->Join('subtitles', 'movies_subtitles.shortcode', '=', 'subtitles.short_code')
-                            ->where('movies_subtitles.movie_id',$vid)
-                            ->get();
-
-            //  if(!empty($subtitles_name)){
-              if(count($subtitles_name) > 0){
-                foreach($subtitles_name as $value){
-                  $subtitlesname[]  = $value->language;  
+                if (!empty($regionview))
+                {
+                    $regionview = RegionView::where('user_id', '=', Auth::User()->id)
+                        ->where('video_id', '=', $vid)->orderBy('created_at', 'DESC')
+                        ->whereDate('created_at', '>=', \Carbon\Carbon::now()
+                        ->today())
+                        ->delete();
+                    $region = new RegionView;
+                    $region->user_id = Auth::User()->id;
+                    $region->user_ip = $userIp;
+                    $region->video_id = $vid;
+                    $region->countryname = $countryName;
+                    $region->save();
                 }
-                  $subtitles = implode(', ', $subtitlesname);
-              }else{
-                $subtitles = "No Subtitles Added";
-              }
+                else
+                {
+                    $region = new RegionView;
+                    $region->user_id = Auth::User()->id;
+                    $region->user_ip = $userIp;
+                    $region->video_id = $vid;
+                    $region->countryname = $countryName;
+                    $region->save();
+                }
 
-              $categoryVideos = \App\Video::where('id',$vid)->first();
-              $category_id = \App\Video::where('id',$vid)->pluck('video_category_id');
-              // $recomended = \App\Video::where('video_category_id','=',$category_id)->where('id','!=',$vid)->limit(10)->get();
-              $playerui = Playerui::first();
-              $subtitle = MoviesSubtitles::where('movie_id','=',$vid)->get();
-              $currency = CurrencySetting::first();
-              $category_id = CategoryVideo::where('video_id', $vid)->get();
-              $categoryvideo = CategoryVideo::where('video_id', $vid)->pluck('category_id')->toArray();
-              $languages_id = LanguageVideo::where('video_id', $vid)->pluck('language_id')->toArray();
-                   
-                         // Recomendeds And Endcard
-              foreach($category_id as $key => $value){
-             
-               $recomendeds = Video::select('videos.*','video_categories.name as categories_name','categoryvideos.category_id as categories_id')
-                       ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
-                       ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
-                       ->where('videos.id','!=',$vid)
+                $categoryVideos = Video::with('category.categoryname')->where('id', $vid)->first();
+
+                $category_name = CategoryVideo::select('video_categories.name as categories_name')->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+                    ->where('categoryvideos.video_id', $vid)->get();
+
+                if (count($category_name) > 0)
+                {
+                    foreach ($category_name as $value)
+                    {
+                        $vals[] = $value->categories_name;
+                    }
+                    $genres_name = implode(', ', $vals);
+                }
+                else
+                {
+                    $genres_name = "No Genres Added";
+                }
+
+                $lang_name = LanguageVideo::select('languages.name as name')->Join('languages', 'languagevideos.language_id', '=', 'languages.id')
+                    ->where('languagevideos.video_id', $vid)->get();
+
+                if (count($lang_name) > 0)
+                {
+
+                    foreach ($lang_name as $value)
+                    {
+                        $languagesvals[] = $value->name;
+                    }
+                    $lang_name = implode(',', $languagesvals);
+                }
+                else
+                {
+                    $lang_name = "No Languages Added";
+                }
+
+                $artists_name = Videoartist::select('artists.artist_name as name')->Join('artists', 'video_artists.artist_id', '=', 'artists.id')
+                    ->where('video_artists.video_id', $vid)->get();
+
+                if (count($artists_name) > 0)
+                {
+
+                    foreach ($artists_name as $value)
+                    {
+                        $artistsvals[] = $value->name;
+                    }
+                    $artistsname = implode(',', $artistsvals);
+                }
+                else
+                {
+                    $artistsname = "No Starring  Added";
+                }
+
+                $subtitles_name = MoviesSubtitles::select('subtitles.language as language')->Join('subtitles', 'movies_subtitles.shortcode', '=', 'subtitles.short_code')
+                    ->where('movies_subtitles.movie_id', $vid)->get();
+
+                //  if(!empty($subtitles_name)){
+                if (count($subtitles_name) > 0)
+                {
+                    foreach ($subtitles_name as $value)
+                    {
+                        $subtitlesname[] = $value->language;
+                    }
+                    $subtitles = implode(', ', $subtitlesname);
+                }
+                else
+                {
+                    $subtitles = "No Subtitles Added";
+                }
+
+                $categoryVideos = \App\Video::where('id', $vid)->first();
+                $category_id = \App\Video::where('id', $vid)->pluck('video_category_id');
+                // $recomended = \App\Video::where('video_category_id','=',$category_id)->where('id','!=',$vid)->limit(10)->get();
+                $playerui = Playerui::first();
+                $subtitle = MoviesSubtitles::where('movie_id', '=', $vid)->get();
+                $currency = CurrencySetting::first();
+                $category_id = CategoryVideo::where('video_id', $vid)->get();
+                $categoryvideo = CategoryVideo::where('video_id', $vid)->pluck('category_id')
+                    ->toArray();
+                $languages_id = LanguageVideo::where('video_id', $vid)->pluck('language_id')
+                    ->toArray();
+
+                // Recomendeds And Endcard
+                foreach ($category_id as $key => $value)
+                {
+
+                    $recomendeds = Video::select('videos.*', 'video_categories.name as categories_name', 'categoryvideos.category_id as categories_id')->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
+                        ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+                        ->where('videos.id', '!=', $vid)->groupBy('videos.id')
+                        ->limit(10)
+                        ->get();
+
+                    $endcardvideo = Video::select('videos.*', 'video_categories.name as categories_name', 'categoryvideos.category_id as categories_id')->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
+                        ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
                         ->groupBy('videos.id')
-                       ->limit(10)->get();
-   
-                       $endcardvideo = Video::select('videos.*','video_categories.name as categories_name','categoryvideos.category_id as categories_id')
-                       ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
-                       ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
-                        ->groupBy('videos.id')
-                       ->where('videos.id','!=',$vid)
-                       ->limit(5)->get();
-              }
-   
-              if(!Auth::guest()){
-                 $latestRecentView = RecentView::where('user_id','!=',Auth::user()->id)->distinct()->limit(30)->pluck('video_id');
-                 if(count($latestRecentView) > 10){
-                   $latestviews = [];
-              }
-              else{
-   
-                 $latestviews = Video::select('videos.*','video_categories.name as categories_name','categoryvideos.category_id as categories_id')
-                             ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
-                             ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
-                             ->whereIn('videos.id', $latestRecentView)
-                             ->groupBy('videos.id')
-                             ->get();
-               }
-   
-              }
-              else{
-                     $latestRecentView = [];
-                     $latestviews = [];
-                     $recomendeds = $recomendeds;
-              }
-             
-             $related_videos = Video::select('videos.*','related_videos.id as related_videos_id','related_videos.related_videos_title as related_videos_title')
-                                   ->Join('related_videos', 'videos.id', '=', 'related_videos.related_videos_id')
-                                   ->where('related_videos.video_id','=',$vid)
-                                   ->limit(5)->get();
-             
-             
-              if(count($related_videos) > 0 ){
-                $endcardvideo = $related_videos;
-              }
-              elseif(!empty($endcardvideo)){
-                 $endcardvideo = $endcardvideo;
-              }
-              else{
-                 $endcardvideo = [];
-              }
-   
-              if($get_video_id->type == "mp4_url"){
-               // $ffprobe = FFProbe::create();
-               // $endtimevideos = $ffprobe->format($get_video_id->mp4_url) // extracts file informations
-               //    ->get('duration');
-               //    $endtimevideo = $endtimevideos - 5;
-               $endtimevideo = '';
-   
-              }elseif($get_video_id->type == "m3u8_url"){
-               // $ffprobe = FFProbe::create();
-               // $endtimevideos = $ffprobe->format($get_video_id->m3u8_url) // extracts file informations
-               //    ->get('duration');
-               //    $endtimevideo = $endtimevideos - 5;
-               $endtimevideo = '';
-   
-              }elseif($get_video_id->type == ""){
-               // $ffprobe = FFProbe::create();
-               // $endtimevideos = $ffprobe->format($get_video_id->mp4_url) // extracts file informations
-               //    ->get('duration');
-               //    $endtimevideo = $endtimevideos - 5;
-               $endtimevideo = '';
-   
-              }else{
-               $endtimevideo = '';
-              }
-              
-             if(count($latestviews) <= 15){
-              if(!empty($recomendeds)){
-               // foreach($recomendeds as $category){
-                 // if(in_array($category->categories_id, $categoryvideo)){
-                 //  $recomended[] = $category;
-                 $recomended = Video::select('videos.*','video_categories.name as categories_name','categoryvideos.category_id as categories_id')
-                 ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')            
-                 ->where('videos.id','!=',$vid)
-                 ->groupBy('videos.id')                 
-                 ->limit(10)->get();
-   
-                 //  $recomended = array_unique($recomended, SORT_REGULAR);
-                 // $endcardvideo[] = $category;
-                 // $recomended = array_map("unserialize", array_unique(array_map("serialize", $recomended)));
-                 // }            
-               // }
-              }else{
-                $recomended = [];
-               //  $endcardvideo = [];
-              }
-             }else{
-               $recomended = $latestviews;
-             }
-   
-              if(!empty($recomended)){
-                 $recomended = $recomended;
-              }
-              else{
-                  $recomended =[] ;
-              }
-              $category_name = CategoryVideo::select('video_categories.name as categories_name')
+                        ->where('videos.id', '!=', $vid)->limit(5)
+                        ->get();
+                }
+
+                if (!Auth::guest())
+                {
+                    $latestRecentView = RecentView::where('user_id', '!=', Auth::user()->id)
+                        ->distinct()
+                        ->limit(30)
+                        ->pluck('video_id');
+                    if (count($latestRecentView) > 10)
+                    {
+                        $latestviews = [];
+                    }
+                    else
+                    {
+
+                        $latestviews = Video::select('videos.*', 'video_categories.name as categories_name', 'categoryvideos.category_id as categories_id')->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
                             ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
-                            ->where('categoryvideos.video_id',$vid)
+                            ->whereIn('videos.id', $latestRecentView)->groupBy('videos.id')
                             ->get();
+                    }
+
+                }
+                else
+                {
+                    $latestRecentView = [];
+                    $latestviews = [];
+                    $recomendeds = $recomendeds;
+                }
+
+                $related_videos = Video::select('videos.*', 'related_videos.id as related_videos_id', 'related_videos.related_videos_title as related_videos_title')->Join('related_videos', 'videos.id', '=', 'related_videos.related_videos_id')
+                    ->where('related_videos.video_id', '=', $vid)->limit(5)
+                    ->get();
+
+                if (count($related_videos) > 0)
+                {
+                    $endcardvideo = $related_videos;
+                }
+                elseif (!empty($endcardvideo))
+                {
+                    $endcardvideo = $endcardvideo;
+                }
+                else
+                {
+                    $endcardvideo = [];
+                }
+
+                if ($get_video_id->type == "mp4_url")
+                {
+                    // $ffprobe = FFProbe::create();
+                    // $endtimevideos = $ffprobe->format($get_video_id->mp4_url) // extracts file informations
+                    //    ->get('duration');
+                    //    $endtimevideo = $endtimevideos - 5;
+                    $endtimevideo = '';
+
+                }
+                elseif ($get_video_id->type == "m3u8_url")
+                {
+                    // $ffprobe = FFProbe::create();
+                    // $endtimevideos = $ffprobe->format($get_video_id->m3u8_url) // extracts file informations
+                    //    ->get('duration');
+                    //    $endtimevideo = $endtimevideos - 5;
+                    $endtimevideo = '';
+
+                }
+                elseif ($get_video_id->type == "")
+                {
+                    // $ffprobe = FFProbe::create();
+                    // $endtimevideos = $ffprobe->format($get_video_id->mp4_url) // extracts file informations
+                    //    ->get('duration');
+                    //    $endtimevideo = $endtimevideos - 5;
+                    $endtimevideo = '';
+
+                }
+                else
+                {
+                    $endtimevideo = '';
+                }
+
+                if (count($latestviews) <= 15)
+                {
+                    if (!empty($recomendeds))
+                    {
+                        // foreach($recomendeds as $category){
+                        // if(in_array($category->categories_id, $categoryvideo)){
+                        //  $recomended[] = $category;
+                        $recomended = Video::select('videos.*', 'video_categories.name as categories_name', 'categoryvideos.category_id as categories_id')->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
+                            ->where('videos.id', '!=', $vid)->groupBy('videos.id')
+                            ->limit(10)
+                            ->get();
+
+                        //  $recomended = array_unique($recomended, SORT_REGULAR);
+                        // $endcardvideo[] = $category;
+                        // $recomended = array_map("unserialize", array_unique(array_map("serialize", $recomended)));
+                        // }
+                        // }
                         
+                    }
+                    else
+                    {
+                        $recomended = [];
+                        //  $endcardvideo = [];
+                        
+                    }
+                }
+                else
+                {
+                    $recomended = $latestviews;
+                }
 
-              $langague_Name = Language::join("languagevideos","languages.id", "=", "languagevideos.language_id")
-              ->where('video_id',$vid)->get();
+                if (!empty($recomended))
+                {
+                    $recomended = $recomended;
+                }
+                else
+                {
+                    $recomended = [];
+                }
+                $category_name = CategoryVideo::select('video_categories.name as categories_name')->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+                    ->where('categoryvideos.video_id', $vid)->get();
 
-              $release_year = Video::where('id',$vid)->pluck('year')->first(); 
+                $langague_Name = Language::join("languagevideos", "languages.id", "=", "languagevideos.language_id")->where('video_id', $vid)->get();
 
-              $Reels_videos = Video::where('id',$vid)->whereNotNull('reelvideo')->get();
+                $release_year = Video::where('id', $vid)->pluck('year')
+                    ->first();
+
+                $Reels_videos = Video::where('id', $vid)->whereNotNull('reelvideo')
+                    ->get();
 
                 $data = array(
                     'currency' => $currency,
@@ -858,488 +973,553 @@ class ChannelController extends Controller
                     'subtitles' => $subtitle,
                     'artists' => $artists,
                     'watched_time' => 0,
-                    'ads' => \App\AdsVideo::where('video_id',$vid)->first(),
-                    'category_name'=> $category_name,
+                    'ads' => \App\AdsVideo::where('video_id', $vid)->first() ,
+                    'category_name' => $category_name,
                     'langague_Name' => $langague_Name,
-                    'release_year'  => $release_year,
-                    'Reels_videos'  => $Reels_videos,
+                    'release_year' => $release_year,
+                    'Reels_videos' => $Reels_videos,
                     'ThumbnailSetting' => $ThumbnailSetting,
-                    'genres_name'  => $genres_name,
-                    'artistsname'  => $artistsname,
-                    'lang_name'  => $lang_name,
-                    'subtitles_name'  => $subtitles,
+                    'genres_name' => $genres_name,
+                    'artistsname' => $artistsname,
+                    'lang_name' => $lang_name,
+                    'subtitles_name' => $subtitles,
                 );
             }
- 
-       return Theme::view('video', $data); 
 
-    }else{
-    
-        $get_video_id = \App\Video::where('slug',$slug)->first(); 
-        $vid = $get_video_id->id;
-        $current_date = date('Y-m-d h:i:s a', time()); 
-        $currency = CurrencySetting::first();
+            return Theme::view('video', $data);
 
-        
-         $view_increment = $this->handleViewCount_movies($vid);
+        }
+        else
+        {
 
-        if ( !Auth::guest() ) {
-              $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();    
-              $view = new RecentView;
-              $view->video_id = $vid;
-              $view->user_id = Auth::user()->id;
-              $view->visited_at = date('Y-m-d');
-              $view->save();
-              $user_id = Auth::user()->id;
-              $watch_id = ContinueWatching::where('user_id','=',$user_id)->where('videoid','=',$vid)->orderby('created_at','desc')->first();
-              $watch_count = ContinueWatching::where('user_id','=',$user_id)->where('videoid','=',$vid)->orderby('created_at','desc')->count();
-        
-              if ($watch_count >0 ){
-                  $watchtime = $watch_id->currentTime;
-              }else {
-                  $watchtime = 0;
-              }
-
-            $ppv_exist = PpvPurchase::where('video_id',$vid)->where('user_id',$user_id)->where('to_time','>',$current_date)->count();
-            $user_id = Auth::user()->id;
-
-            $categoryVideos = \App\Video::where('id',$vid)->first();
-            $category_id = \App\Video::where('id',$vid)->pluck('video_category_id');
-            $videocategory = \App\VideoCategory::where('id',$category_id)->pluck('name');
-            $videocategory = $videocategory[0];
-            $recomended = \App\Video::where('video_category_id','=',$category_id)->where('id','!=',$vid)->limit(10)->get();
-            $playerui = Playerui::first();
-            $subtitle = MoviesSubtitles::where('movie_id','=',82)->get();
-
-                $wishlisted = false;
-                if(!Auth::guest()):
-                        $wishlisted = Wishlist::where('user_id', '=', Auth::user()->id)->where('video_id', '=', $vid)->where('type', '=', 'channel')->first();
-                endif;
-                    $watchlater = false;
-                 if(!Auth::guest()):
-                        $watchlater = Watchlater::where('user_id', '=', Auth::user()->id)->where('video_id', '=', $vid)->where('type', '=', 'channel')->first();
-                        $like_dislike = LikeDislike::where('user_id', '=', Auth::user()->id)->where('video_id', '=', $vid)->get();
-                    endif;
-
-             $currency = CurrencySetting::first();
-
-             $langague_Name = Language::join("languagevideos","languages.id", "=", "languagevideos.language_id")
-                                      ->where('video_id',$vid)->get();
- 
-             $release_year = Video::where('id',$vid)->pluck('year')->first(); 
- 
-             $Reels_videos = Video::where('id',$vid)->whereNotNull('reelvideo')->get();
-
-             $category_name = CategoryVideo::select('video_categories.name as categories_name')
-                              ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
-                              ->where('categoryvideos.video_id',$vid)
-                              ->get();
-          
-             $categoryVideos = Video::with('category.categoryname')->where('id',$vid)->first();
-
-                              $category_name = CategoryVideo::select('video_categories.name as categories_name')
-                              ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
-                              ->where('categoryvideos.video_id',$vid)
-                              ->get();
-
-             if(count($category_name) > 0){
-              foreach($category_name as $value){
-                $vals[]  = $value->categories_name;  
-              }
-                $genres_name = implode(', ', $vals);
-             }else{
-              $genres_name = "No Genres Added";
-             }
-  
-             $lang_name = LanguageVideo::select('languages.name as name')
-                                  ->Join('languages', 'languagevideos.language_id', '=', 'languages.id')
-                                  ->where('languagevideos.video_id',$vid)
-                                  ->get();
-                      
-             if(count($lang_name) > 0){
-                foreach($lang_name as $value){
-                  $languagesvals[]  = $value->name;  
-                }
-                $lang_name = implode(',', $languagesvals);
-             }
-             else{
-               $lang_name = "No Languages Added";
-             }
-  
-             $artists_name = Videoartist::select('artists.artist_name as name')
-                            ->Join('artists', 'video_artists.artist_id', '=', 'artists.id')
-                            ->where('video_artists.video_id',$vid)
-                            ->get();
-             
-             if(count($artists_name) > 0){
-  
-                foreach($artists_name as $value){
-                  $artistsvals[]  = $value->name;  
-                }
-                  $artistsname = implode(',', $artistsvals);
-              }else{
-                $artistsname = "No Starring  Added";
-              }
-  
-             $subtitles_name = MoviesSubtitles::select('subtitles.language as language')
-                          ->Join('subtitles', 'movies_subtitles.shortcode', '=', 'subtitles.short_code')
-                          ->where('movies_subtitles.movie_id',$vid)
-                          ->get();
-
-              if(count($subtitles_name) > 0){
-                foreach($subtitles_name as $value){
-                  $subtitlesname[]  = $value->language;  
-                }
-                  $subtitles = implode(', ', $subtitlesname);
-              }else{
-                $subtitles = "No Subtitles Added";
-              }
-
-                 $data = array(
-                    'currency' => $currency,
-                     'video' => $categoryVideos,
-                     'videocategory' => $videocategory,
-                     'recomended' => $recomended,
-                     'ppv_exist' => $ppv_exist,
-                     'ppv_price' => 100,
-                     'watchlatered' => $watchlater,
-                     'mywishlisted' => $wishlisted,
-                     'watched_time' => $watchtime,
-                     'like_dislike' =>$like_dislike,
-                      'playerui_settings' => $playerui,
-                      'subtitles' => $subtitle,
-                      'ads' => \App\AdsVideo::where('video_id',$vid)->first(),
-                      'category_name'=> $category_name,
-                      'langague_Name' => $langague_Name,
-                      'release_year'  => $release_year,
-                      'Reels_videos'  => $Reels_videos,
-                      'ThumbnailSetting' => $ThumbnailSetting,
-                      'genres_name'  => $genres_name,
-                      'artistsname'  => $artistsname,
-                      'lang_name'  => $lang_name,
-                      'subtitles_name'  => $subtitles,
-                 );
-             
-        } else {
-
-           
-            $categoryVideos = \App\Video::where('id',$vid)->first();
-            $category_id = \App\Video::where('id',$vid)->pluck('video_category_id');
-            $recomended = \App\Video::where('video_category_id','=',$category_id)->where('id','!=',$vid)->limit(10)->get();
-            $playerui = Playerui::first();
-            $subtitle = MoviesSubtitles::where('movie_id','=',$vid)->get();
+            $get_video_id = \App\Video::where('slug', $slug)->first();
+            $vid = $get_video_id->id;
+            $current_date = date('Y-m-d h:i:s a', time());
             $currency = CurrencySetting::first();
 
-            $langague_Name = Language::join("languagevideos","languages.id", "=", "languagevideos.language_id")
-              ->where('video_id',$vid)->get();
+            $view_increment = $this->handleViewCount_movies($vid);
 
-            $release_year = Video::where('id',$vid)->pluck('year')->first(); 
+            if (!Auth::guest())
+            {
+                $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+                $view = new RecentView;
+                $view->video_id = $vid;
+                $view->user_id = Auth::user()->id;
+                $view->visited_at = date('Y-m-d');
+                $view->save();
+                $user_id = Auth::user()->id;
+                $watch_id = ContinueWatching::where('user_id', '=', $user_id)->where('videoid', '=', $vid)->orderby('created_at', 'desc')
+                    ->first();
+                $watch_count = ContinueWatching::where('user_id', '=', $user_id)->where('videoid', '=', $vid)->orderby('created_at', 'desc')
+                    ->count();
 
-            $Reels_videos = Video::where('id',$vid)->whereNotNull('reelvideo')->get();
+                if ($watch_count > 0)
+                {
+                    $watchtime = $watch_id->currentTime;
+                }
+                else
+                {
+                    $watchtime = 0;
+                }
 
-            $category_name = CategoryVideo::select('video_categories.name as categories_name')
-            ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
-            ->where('categoryvideos.video_id',$vid)
-            ->get();
- 
+                $ppv_exist = PpvPurchase::where('video_id', $vid)->where('user_id', $user_id)->where('to_time', '>', $current_date)->count();
+                $user_id = Auth::user()->id;
 
-            $categoryVideos = Video::with('category.categoryname')->where('id',$vid)->first();
-            $category_name = CategoryVideo::select('video_categories.name as categories_name')
-            ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
-            ->where('categoryvideos.video_id',$vid)
-            ->get();
-
-            if(count($category_name) > 0){
-            foreach($category_name as $value){
-              $vals[]  = $value->categories_name;  
-            }
-              $genres_name = implode(', ', $vals);
-            }else{
-            $genres_name = "No Genres Added";
-            }
-
-            $lang_name = LanguageVideo::select('languages.name as name')
-                      ->Join('languages', 'languagevideos.language_id', '=', 'languages.id')
-                      ->where('languagevideos.video_id',$vid)
-                      ->get();
-
-            if(count($lang_name) > 0){
-
-            foreach($lang_name as $value){
-              $languagesvals[]  = $value->name;  
-            }
-              $lang_name = implode(',', $languagesvals);
-            }else{
-            $lang_name = "No Languages Added";
-            }
-
-          $artists_name = Videoartist::select('artists.artist_name as name')
-                        ->Join('artists', 'video_artists.artist_id', '=', 'artists.id')
-                        ->where('video_artists.video_id',$vid)
-                        ->get();
-          
-          if(count($artists_name) > 0){
-
-          foreach($artists_name as $value){
-            $artistsvals[]  = $value->name;  
-          }
-            $artistsname = implode(',', $artistsvals);
-          }else{
-          $artistsname = "No Starring  Added";
-          }
-
-          $subtitles_name = MoviesSubtitles::select('subtitles.language as language')
-                  ->Join('subtitles', 'movies_subtitles.shortcode', '=', 'subtitles.short_code')
-                  ->where('movies_subtitles.movie_id',$vid)
-                  ->get();
-
-          if(count($subtitles_name) > 0){
-          foreach($subtitles_name as $value){
-            $subtitlesname[]  = $value->language;  
-          }
-            $subtitles = implode(', ', $subtitlesname);
-          }else{
-          $subtitles = "No Subtitles Added";
-          }
-          $categoryVideos = \App\Video::where('id',$vid)->first();
-          $category_id = \App\Video::where('id',$vid)->pluck('video_category_id');
-          // $recomended = \App\Video::where('video_category_id','=',$category_id)->where('id','!=',$vid)->limit(10)->get();
-          $playerui = Playerui::first();
-          $subtitle = MoviesSubtitles::where('movie_id','=',$vid)->get();
-          $currency = CurrencySetting::first();
-          $category_id = CategoryVideo::where('video_id', $vid)->get();
-          $categoryvideo = CategoryVideo::where('video_id', $vid)->pluck('category_id')->toArray();
-          $languages_id = LanguageVideo::where('video_id', $vid)->pluck('language_id')->toArray();
-               
-                     // Recomendeds And Endcard
-          foreach($category_id as $key => $value){
-         
-           $recomendeds = Video::select('videos.*','video_categories.name as categories_name','categoryvideos.category_id as categories_id')
-                   ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
-                   ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
-                   ->where('videos.id','!=',$vid)
-                    ->groupBy('videos.id')
-                   ->limit(10)->get();
-
-                   $endcardvideo = Video::select('videos.*','video_categories.name as categories_name','categoryvideos.category_id as categories_id')
-                   ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
-                   ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
-                   ->where('videos.id','!=',$vid)
-                   ->limit(5)->get();
-          }
-
-          if(!Auth::guest()){
-             $latestRecentView = RecentView::where('user_id','!=',Auth::user()->id)->distinct()->limit(30)->pluck('video_id');
-             if(count($latestRecentView) > 10){
-               $latestviews = [];
-          }
-          else{
-
-             $latestviews = Video::select('videos.*','video_categories.name as categories_name','categoryvideos.category_id as categories_id')
-                         ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
-                         ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
-                         ->whereIn('videos.id', $latestRecentView)
-                         ->groupBy('videos.id')
-                         ->get();
-           }
-
-          }
-          else{
-                 $latestRecentView = [];
-                 $latestviews = [];
-                 $recomendeds = $recomendeds;
-          }
-         
-         $related_videos = Video::select('videos.*','related_videos.id as related_videos_id','related_videos.related_videos_title as related_videos_title')
-                               ->Join('related_videos', 'videos.id', '=', 'related_videos.related_videos_id')
-                               ->where('related_videos.video_id','=',$vid)
-                               ->limit(5)->get();
-         
-         
-          if(count($related_videos) > 0 ){
-            $endcardvideo = $related_videos;
-          }
-          elseif(!empty($endcardvideo)){
-             $endcardvideo = $endcardvideo;
-          }
-          else{
-             $endcardvideo = [];
-          }
-
-          if($get_video_id->type == "mp4_url"){
-           // $ffprobe = FFProbe::create();
-           // $endtimevideos = $ffprobe->format($get_video_id->mp4_url) // extracts file informations
-           //    ->get('duration');
-           //    $endtimevideo = $endtimevideos - 5;
-           $endtimevideo = '';
-
-          }elseif($get_video_id->type == "m3u8_url"){
-           // $ffprobe = FFProbe::create();
-           // $endtimevideos = $ffprobe->format($get_video_id->m3u8_url) // extracts file informations
-           //    ->get('duration');
-           //    $endtimevideo = $endtimevideos - 5;
-           $endtimevideo = '';
-
-          }elseif($get_video_id->type == ""){
-           // $ffprobe = FFProbe::create();
-           // $endtimevideos = $ffprobe->format($get_video_id->mp4_url) // extracts file informations
-           //    ->get('duration');
-           //    $endtimevideo = $endtimevideos - 5;
-           $endtimevideo = '';
-
-          }else{
-           $endtimevideo = '';
-          }
-          
-         if(count($latestviews) <= 15){
-          if(!empty($recomendeds)){
-           // foreach($recomendeds as $category){
-             // if(in_array($category->categories_id, $categoryvideo)){
-             //  $recomended[] = $category;
-             $recomended = Video::select('videos.*','video_categories.name as categories_name','categoryvideos.category_id as categories_id')
-             ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
-             ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
-             ->where('videos.id','!=',$vid)
-             ->groupBy('videos.id')
-             ->limit(10)->get();
-
-             //  $recomended = array_unique($recomended, SORT_REGULAR);
-             // $endcardvideo[] = $category;
-             // $recomended = array_map("unserialize", array_unique(array_map("serialize", $recomended)));
-             // }            
-           // }
-          }else{
-            $recomended = [];
-           //  $endcardvideo = [];
-          }
-         }else{
-           $recomended = $latestviews;
-         }
-
-          if(!empty($recomended)){
-             $recomended = $recomended;
-          }
-          else{
-              $recomended =[] ;
-          }
-          $artistscount = Videoartist::join("artists","video_artists.artist_id", "=", "artists.id")
-          ->select("artists.*")
-          ->where("video_artists.video_id", "=", $vid)
-          ->count();
-          
-          if($artistscount > 0){
-              $artists = Videoartist::join("artists","video_artists.artist_id", "=", "artists.id")
-                    ->select("artists.*")
-                    ->where("video_artists.video_id", "=", $vid)
+                $categoryVideos = \App\Video::where('id', $vid)->first();
+                $category_id = \App\Video::where('id', $vid)->pluck('video_category_id');
+                $videocategory = \App\VideoCategory::where('id', $category_id)->pluck('name');
+                $videocategory = $videocategory[0];
+                $recomended = \App\Video::where('video_category_id', '=', $category_id)->where('id', '!=', $vid)->limit(10)
                     ->get();
-          }
-          else{
-              $artists = [];
-          }
+                $playerui = Playerui::first();
+                $subtitle = MoviesSubtitles::where('movie_id', '=', 82)->get();
 
+                $wishlisted = false;
+                if (!Auth::guest()):
+                    $wishlisted = Wishlist::where('user_id', '=', Auth::user()->id)
+                        ->where('video_id', '=', $vid)->where('type', '=', 'channel')
+                        ->first();
+                endif;
+                $watchlater = false;
+                if (!Auth::guest()):
+                    $watchlater = Watchlater::where('user_id', '=', Auth::user()->id)
+                        ->where('video_id', '=', $vid)->where('type', '=', 'channel')
+                        ->first();
+                    $like_dislike = LikeDislike::where('user_id', '=', Auth::user()->id)
+                        ->where('video_id', '=', $vid)->get();
+                endif;
 
-            $data = array(
-                 'currency' => $currency,
-                 'video' => $categoryVideos,
-                 'recomended' => $recomended,
-                 'playerui_settings' => $playerui,
-                 'subtitles' => $subtitle,
-                 'watched_time' => 0,
-                 'ads' => \App\AdsVideo::where('video_id',$vid)->first(),
-                 'category_name'=> $category_name,
-                 'langague_Name' => $langague_Name,
-                 'release_year'  => $release_year,
-                 'Reels_videos'  => $Reels_videos,
-                 'ThumbnailSetting' => $ThumbnailSetting,
-                 'genres_name'  => $genres_name,
-                 'artistsname'  => $artistsname,
-                 'lang_name'  => $lang_name,
-                 'subtitles_name'  => $subtitles,
-                 'artists' => $artists,
-            );
+                $currency = CurrencySetting::first();
 
-        } 
-            return Theme::view('video_before_login', $data); 
-    }
+                $langague_Name = Language::join("languagevideos", "languages.id", "=", "languagevideos.language_id")->where('video_id', $vid)->get();
+
+                $release_year = Video::where('id', $vid)->pluck('year')
+                    ->first();
+
+                $Reels_videos = Video::where('id', $vid)->whereNotNull('reelvideo')
+                    ->get();
+
+                $category_name = CategoryVideo::select('video_categories.name as categories_name')->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+                    ->where('categoryvideos.video_id', $vid)->get();
+
+                $categoryVideos = Video::with('category.categoryname')->where('id', $vid)->first();
+
+                $category_name = CategoryVideo::select('video_categories.name as categories_name')->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+                    ->where('categoryvideos.video_id', $vid)->get();
+
+                if (count($category_name) > 0)
+                {
+                    foreach ($category_name as $value)
+                    {
+                        $vals[] = $value->categories_name;
+                    }
+                    $genres_name = implode(', ', $vals);
+                }
+                else
+                {
+                    $genres_name = "No Genres Added";
+                }
+
+                $lang_name = LanguageVideo::select('languages.name as name')->Join('languages', 'languagevideos.language_id', '=', 'languages.id')
+                    ->where('languagevideos.video_id', $vid)->get();
+
+                if (count($lang_name) > 0)
+                {
+                    foreach ($lang_name as $value)
+                    {
+                        $languagesvals[] = $value->name;
+                    }
+                    $lang_name = implode(',', $languagesvals);
+                }
+                else
+                {
+                    $lang_name = "No Languages Added";
+                }
+
+                $artists_name = Videoartist::select('artists.artist_name as name')->Join('artists', 'video_artists.artist_id', '=', 'artists.id')
+                    ->where('video_artists.video_id', $vid)->get();
+
+                if (count($artists_name) > 0)
+                {
+
+                    foreach ($artists_name as $value)
+                    {
+                        $artistsvals[] = $value->name;
+                    }
+                    $artistsname = implode(',', $artistsvals);
+                }
+                else
+                {
+                    $artistsname = "No Starring  Added";
+                }
+
+                $subtitles_name = MoviesSubtitles::select('subtitles.language as language')->Join('subtitles', 'movies_subtitles.shortcode', '=', 'subtitles.short_code')
+                    ->where('movies_subtitles.movie_id', $vid)->get();
+
+                if (count($subtitles_name) > 0)
+                {
+                    foreach ($subtitles_name as $value)
+                    {
+                        $subtitlesname[] = $value->language;
+                    }
+                    $subtitles = implode(', ', $subtitlesname);
+                }
+                else
+                {
+                    $subtitles = "No Subtitles Added";
+                }
+
+                $data = array(
+                    'currency' => $currency,
+                    'video' => $categoryVideos,
+                    'videocategory' => $videocategory,
+                    'recomended' => $recomended,
+                    'ppv_exist' => $ppv_exist,
+                    'ppv_price' => 100,
+                    'watchlatered' => $watchlater,
+                    'mywishlisted' => $wishlisted,
+                    'watched_time' => $watchtime,
+                    'like_dislike' => $like_dislike,
+                    'playerui_settings' => $playerui,
+                    'subtitles' => $subtitle,
+                    'ads' => \App\AdsVideo::where('video_id', $vid)->first() ,
+                    'category_name' => $category_name,
+                    'langague_Name' => $langague_Name,
+                    'release_year' => $release_year,
+                    'Reels_videos' => $Reels_videos,
+                    'ThumbnailSetting' => $ThumbnailSetting,
+                    'genres_name' => $genres_name,
+                    'artistsname' => $artistsname,
+                    'lang_name' => $lang_name,
+                    'subtitles_name' => $subtitles,
+                );
+
+            }
+            else
+            {
+
+                $categoryVideos = \App\Video::where('id', $vid)->first();
+                $category_id = \App\Video::where('id', $vid)->pluck('video_category_id');
+                $recomended = \App\Video::where('video_category_id', '=', $category_id)->where('id', '!=', $vid)->limit(10)
+                    ->get();
+                $playerui = Playerui::first();
+                $subtitle = MoviesSubtitles::where('movie_id', '=', $vid)->get();
+                $currency = CurrencySetting::first();
+
+                $langague_Name = Language::join("languagevideos", "languages.id", "=", "languagevideos.language_id")->where('video_id', $vid)->get();
+
+                $release_year = Video::where('id', $vid)->pluck('year')
+                    ->first();
+
+                $Reels_videos = Video::where('id', $vid)->whereNotNull('reelvideo')
+                    ->get();
+
+                $category_name = CategoryVideo::select('video_categories.name as categories_name')->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+                    ->where('categoryvideos.video_id', $vid)->get();
+
+                $categoryVideos = Video::with('category.categoryname')->where('id', $vid)->first();
+                $category_name = CategoryVideo::select('video_categories.name as categories_name')->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+                    ->where('categoryvideos.video_id', $vid)->get();
+
+                if (count($category_name) > 0)
+                {
+                    foreach ($category_name as $value)
+                    {
+                        $vals[] = $value->categories_name;
+                    }
+                    $genres_name = implode(', ', $vals);
+                }
+                else
+                {
+                    $genres_name = "No Genres Added";
+                }
+
+                $lang_name = LanguageVideo::select('languages.name as name')->Join('languages', 'languagevideos.language_id', '=', 'languages.id')
+                    ->where('languagevideos.video_id', $vid)->get();
+
+                if (count($lang_name) > 0)
+                {
+
+                    foreach ($lang_name as $value)
+                    {
+                        $languagesvals[] = $value->name;
+                    }
+                    $lang_name = implode(',', $languagesvals);
+                }
+                else
+                {
+                    $lang_name = "No Languages Added";
+                }
+
+                $artists_name = Videoartist::select('artists.artist_name as name')->Join('artists', 'video_artists.artist_id', '=', 'artists.id')
+                    ->where('video_artists.video_id', $vid)->get();
+
+                if (count($artists_name) > 0)
+                {
+
+                    foreach ($artists_name as $value)
+                    {
+                        $artistsvals[] = $value->name;
+                    }
+                    $artistsname = implode(',', $artistsvals);
+                }
+                else
+                {
+                    $artistsname = "No Starring  Added";
+                }
+
+                $subtitles_name = MoviesSubtitles::select('subtitles.language as language')->Join('subtitles', 'movies_subtitles.shortcode', '=', 'subtitles.short_code')
+                    ->where('movies_subtitles.movie_id', $vid)->get();
+
+                if (count($subtitles_name) > 0)
+                {
+                    foreach ($subtitles_name as $value)
+                    {
+                        $subtitlesname[] = $value->language;
+                    }
+                    $subtitles = implode(', ', $subtitlesname);
+                }
+                else
+                {
+                    $subtitles = "No Subtitles Added";
+                }
+                $categoryVideos = \App\Video::where('id', $vid)->first();
+                $category_id = \App\Video::where('id', $vid)->pluck('video_category_id');
+                // $recomended = \App\Video::where('video_category_id','=',$category_id)->where('id','!=',$vid)->limit(10)->get();
+                $playerui = Playerui::first();
+                $subtitle = MoviesSubtitles::where('movie_id', '=', $vid)->get();
+                $currency = CurrencySetting::first();
+                $category_id = CategoryVideo::where('video_id', $vid)->get();
+                $categoryvideo = CategoryVideo::where('video_id', $vid)->pluck('category_id')
+                    ->toArray();
+                $languages_id = LanguageVideo::where('video_id', $vid)->pluck('language_id')
+                    ->toArray();
+
+                // Recomendeds And Endcard
+                foreach ($category_id as $key => $value)
+                {
+
+                    $recomendeds = Video::select('videos.*', 'video_categories.name as categories_name', 'categoryvideos.category_id as categories_id')->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
+                        ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+                        ->where('videos.id', '!=', $vid)->groupBy('videos.id')
+                        ->limit(10)
+                        ->get();
+
+                    $endcardvideo = Video::select('videos.*', 'video_categories.name as categories_name', 'categoryvideos.category_id as categories_id')->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
+                        ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+                        ->where('videos.id', '!=', $vid)->limit(5)
+                        ->get();
+                }
+
+                if (!Auth::guest())
+                {
+                    $latestRecentView = RecentView::where('user_id', '!=', Auth::user()->id)
+                        ->distinct()
+                        ->limit(30)
+                        ->pluck('video_id');
+                    if (count($latestRecentView) > 10)
+                    {
+                        $latestviews = [];
+                    }
+                    else
+                    {
+
+                        $latestviews = Video::select('videos.*', 'video_categories.name as categories_name', 'categoryvideos.category_id as categories_id')->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
+                            ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+                            ->whereIn('videos.id', $latestRecentView)->groupBy('videos.id')
+                            ->get();
+                    }
+
+                }
+                else
+                {
+                    $latestRecentView = [];
+                    $latestviews = [];
+                    $recomendeds = $recomendeds;
+                }
+
+                $related_videos = Video::select('videos.*', 'related_videos.id as related_videos_id', 'related_videos.related_videos_title as related_videos_title')->Join('related_videos', 'videos.id', '=', 'related_videos.related_videos_id')
+                    ->where('related_videos.video_id', '=', $vid)->limit(5)
+                    ->get();
+
+                if (count($related_videos) > 0)
+                {
+                    $endcardvideo = $related_videos;
+                }
+                elseif (!empty($endcardvideo))
+                {
+                    $endcardvideo = $endcardvideo;
+                }
+                else
+                {
+                    $endcardvideo = [];
+                }
+
+                if ($get_video_id->type == "mp4_url")
+                {
+                    // $ffprobe = FFProbe::create();
+                    // $endtimevideos = $ffprobe->format($get_video_id->mp4_url) // extracts file informations
+                    //    ->get('duration');
+                    //    $endtimevideo = $endtimevideos - 5;
+                    $endtimevideo = '';
+
+                }
+                elseif ($get_video_id->type == "m3u8_url")
+                {
+                    // $ffprobe = FFProbe::create();
+                    // $endtimevideos = $ffprobe->format($get_video_id->m3u8_url) // extracts file informations
+                    //    ->get('duration');
+                    //    $endtimevideo = $endtimevideos - 5;
+                    $endtimevideo = '';
+
+                }
+                elseif ($get_video_id->type == "")
+                {
+                    // $ffprobe = FFProbe::create();
+                    // $endtimevideos = $ffprobe->format($get_video_id->mp4_url) // extracts file informations
+                    //    ->get('duration');
+                    //    $endtimevideo = $endtimevideos - 5;
+                    $endtimevideo = '';
+
+                }
+                else
+                {
+                    $endtimevideo = '';
+                }
+
+                if (count($latestviews) <= 15)
+                {
+                    if (!empty($recomendeds))
+                    {
+                        // foreach($recomendeds as $category){
+                        // if(in_array($category->categories_id, $categoryvideo)){
+                        //  $recomended[] = $category;
+                        $recomended = Video::select('videos.*', 'video_categories.name as categories_name', 'categoryvideos.category_id as categories_id')->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
+                            ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+                            ->where('videos.id', '!=', $vid)->groupBy('videos.id')
+                            ->limit(10)
+                            ->get();
+
+                        //  $recomended = array_unique($recomended, SORT_REGULAR);
+                        // $endcardvideo[] = $category;
+                        // $recomended = array_map("unserialize", array_unique(array_map("serialize", $recomended)));
+                        // }
+                        // }
+                        
+                    }
+                    else
+                    {
+                        $recomended = [];
+                        //  $endcardvideo = [];
+                        
+                    }
+                }
+                else
+                {
+                    $recomended = $latestviews;
+                }
+
+                if (!empty($recomended))
+                {
+                    $recomended = $recomended;
+                }
+                else
+                {
+                    $recomended = [];
+                }
+                $artistscount = Videoartist::join("artists", "video_artists.artist_id", "=", "artists.id")->select("artists.*")
+                    ->where("video_artists.video_id", "=", $vid)->count();
+
+                if ($artistscount > 0)
+                {
+                    $artists = Videoartist::join("artists", "video_artists.artist_id", "=", "artists.id")->select("artists.*")
+                        ->where("video_artists.video_id", "=", $vid)->get();
+                }
+                else
+                {
+                    $artists = [];
+                }
+
+                $data = array(
+                    'currency' => $currency,
+                    'video' => $categoryVideos,
+                    'recomended' => $recomended,
+                    'playerui_settings' => $playerui,
+                    'subtitles' => $subtitle,
+                    'watched_time' => 0,
+                    'ads' => \App\AdsVideo::where('video_id', $vid)->first() ,
+                    'category_name' => $category_name,
+                    'langague_Name' => $langague_Name,
+                    'release_year' => $release_year,
+                    'Reels_videos' => $Reels_videos,
+                    'ThumbnailSetting' => $ThumbnailSetting,
+                    'genres_name' => $genres_name,
+                    'artistsname' => $artistsname,
+                    'lang_name' => $lang_name,
+                    'subtitles_name' => $subtitles,
+                    'artists' => $artists,
+                );
+
+            }
+            return Theme::view('video_before_login', $data);
         }
-    
+    }
+
     public function PlayPpv($vid)
     {
-       
-       $categoryVideos = \App\PpvVideo::where('id',$vid)->first();
-       $user_id = Auth::user()->id;
-       $settings = Setting::first(); 
-       $ppv_exist = PpvPurchase::where('video_id',$vid)->where('user_id',$user_id)->count();
-        
+
+        $categoryVideos = \App\PpvVideo::where('id', $vid)->first();
+        $user_id = Auth::user()->id;
+        $settings = Setting::first();
+        $ppv_exist = PpvPurchase::where('video_id', $vid)->where('user_id', $user_id)->count();
+
         $wishlisted = false;
-        if(!Auth::guest()):
-                $wishlisted = Wishlist::where('user_id', '=', Auth::user()->id)->where('video_id', '=', $vid)->where('type', '=', 'ppv')->first();
+        if (!Auth::guest()):
+            $wishlisted = Wishlist::where('user_id', '=', Auth::user()->id)
+                ->where('video_id', '=', $vid)->where('type', '=', 'ppv')
+                ->first();
         endif;
 
         $watchlater = false;
-        
-         if(!Auth::guest()):
-                $watchlater = Watchlater::where('user_id', '=', Auth::user()->id)->where('video_id', '=', $vid)->where('type', '=', 'ppv')->first();
-         endif;
-      
-       $data = array(
-             'video' => $categoryVideos,
-             'ppv_exist' => $ppv_exist,
-             'ppv_price' => $settings->ppv_price,
-             'watchlatered' => $watchlater,
-             'mywishlisted' => $wishlisted
-       );
-        
-       return view('ppvvideo', $data);
-        
+
+        if (!Auth::guest()):
+            $watchlater = Watchlater::where('user_id', '=', Auth::user()->id)
+                ->where('video_id', '=', $vid)->where('type', '=', 'ppv')
+                ->first();
+        endif;
+
+        $data = array(
+            'video' => $categoryVideos,
+            'ppv_exist' => $ppv_exist,
+            'ppv_price' => $settings->ppv_price,
+            'watchlatered' => $watchlater,
+            'mywishlisted' => $wishlisted
+        );
+
+        return view('ppvvideo', $data);
+
     }
-    
+
     public function ppvVideos()
     {
         $vpp = VideoPerPage();
-        $data = PpvVideo::where('status',1)->paginate($vpp);
+        $data = PpvVideo::where('status', 1)->paginate($vpp);
         //       $data = array(
         //             'ppvVideos' => $ppvVideos,
         // );
-       return view('ppvVideos',['data'=>$data]);
-        
+        return view('ppvVideos', ['data' => $data]);
+
     }
-    
-    public function Myppv(){
-        
-        if(!Auth::user()){
-            
-           return Redirect::to('/')->with(array('note' => 'Successfully Updated Site Settings!', 'note_type' => 'success') );
+
+    public function Myppv()
+    {
+
+        if (!Auth::user())
+        {
+
+            return Redirect::to('/')->with(array(
+                'note' => 'Successfully Updated Site Settings!',
+                'note_type' => 'success'
+            ));
         }
-        
+
         $user_id = Auth::user()->id;
-        
-        $ppvVideos = PpvPurchase::where('user_id',$user_id)->get();
-        
+
+        $ppvVideos = PpvPurchase::where('user_id', $user_id)->get();
+
         $data = array(
-             'videos' => $ppvVideos,
-           );
-           return view('ppv-list', $data);
-        
+            'videos' => $ppvVideos,
+        );
+        return view('ppv-list', $data);
+
     }
-    
-    public function handleViewCount_movies($vid){
+
+    public function handleViewCount_movies($vid)
+    {
         $movie = Video::find($vid);
         $movie->views = $movie->views + 1;
         $movie->save();
-        Session::put('viewed_movie.'.$vid, time());
+        Session::put('viewed_movie.' . $vid, time());
     }
-    
+
     public function Watchlist($slug)
     {
         $video = Video::where('slug', '=', $slug)->first();
         $video_id = $video->id;
-         $count = Wishlist::where('user_id', '=', Auth::User()->id)->where('video_id', '=', $video_id)->count();
-        if ( $count > 0 ) {
-          Wishlist::where('user_id', '=', Auth::User()->id)->where('video_id', '=', $video_id)->delete();
-        } else {
-          $data = array('user_id' => Auth::User()->id, 'video_id' => $video_id );
-          Wishlist::insert($data);  
+        $count = Wishlist::where('user_id', '=', Auth::User()->id)
+            ->where('video_id', '=', $video_id)->count();
+        if ($count > 0)
+        {
+            Wishlist::where('user_id', '=', Auth::User()->id)
+                ->where('video_id', '=', $video_id)->delete();
+        }
+        else
+        {
+            $data = array(
+                'user_id' => Auth::User()->id,
+                'video_id' => $video_id
+            );
+            Wishlist::insert($data);
         }
         return Redirect::back();
     }
@@ -1349,347 +1529,398 @@ class ChannelController extends Controller
 
         $data['password_hash'] = "";
         $data = session()->all();
-       
-        if(!empty($data['password_hash'])){
-        $get_video_id = \App\Video::where('slug',$slug)->first(); 
-        $vid = $get_video_id->id;
-        $wishlist = new Wishlist;
-        $wishlist->video_id = $vid;
-        $wishlist->user_id = Auth::User()->id;
-        $wishlist->save();
 
-        $PPV_settings = Setting::where('ppv_status','=',1)->first();
-        if(!empty($PPV_settings)){
-           $ppv_rent_price =  $PPV_settings->ppv_price;
-            // echo "<pre>";print_r($PPV_settings);exit();
-        }else{
-          $Video_ppv = Video::where('id','=',$vid)->first();
-            $ppv_rent_price = null ;
-            if($Video_ppv->ppv_price != ""){
-              // echo "<pre>";print_r('$Video_ppv');exit();
-              $ppv_rent_price = $Video_ppv->ppv_price;
-            }else{
-            // echo "<pre>";print_r($Video_ppv);exit();
-            $ppv_rent_price = $Video_ppv->ppv_price;
-          }
+        if (!empty($data['password_hash']))
+        {
+            $get_video_id = \App\Video::where('slug', $slug)->first();
+            $vid = $get_video_id->id;
+            $wishlist = new Wishlist;
+            $wishlist->video_id = $vid;
+            $wishlist->user_id = Auth::User()->id;
+            $wishlist->save();
 
-        }
+            $PPV_settings = Setting::where('ppv_status', '=', 1)->first();
+            if (!empty($PPV_settings))
+            {
+                $ppv_rent_price = $PPV_settings->ppv_price;
+                // echo "<pre>";print_r($PPV_settings);exit();
+                
+            }
+            else
+            {
+                $Video_ppv = Video::where('id', '=', $vid)->first();
+                $ppv_rent_price = null;
+                if ($Video_ppv->ppv_price != "")
+                {
+                    // echo "<pre>";print_r('$Video_ppv');exit();
+                    $ppv_rent_price = $Video_ppv->ppv_price;
+                }
+                else
+                {
+                    // echo "<pre>";print_r($Video_ppv);exit();
+                    $ppv_rent_price = $Video_ppv->ppv_price;
+                }
 
+            }
 
+            $current_date = date('Y-m-d h:i:s a', time());
 
+            $view_increment = $this->handleViewCount_movies($vid);
+            if (!Auth::guest())
+            {
+                $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+                $view = new RecentView;
+                $view->video_id = $vid;
+                $view->user_id = Auth::user()->id;
+                $view->visited_at = date('Y-m-d');
+                $view->save();
+                $user_id = Auth::user()->id;
+                $watch_id = ContinueWatching::where('user_id', '=', $user_id)->where('videoid', '=', $vid)->orderby('created_at', 'desc')
+                    ->first();
+                $watch_count = ContinueWatching::where('user_id', '=', $user_id)->where('videoid', '=', $vid)->orderby('created_at', 'desc')
+                    ->count();
+                if ($watch_count > 0)
+                {
+                    $watchtime = $watch_id->currentTime;
+                }
+                else
+                {
+                    $watchtime = 0;
+                }
+                $ppv_exist = PpvPurchase::where('video_id', $vid)->where('user_id', $user_id)->where('to_time', '>', $current_date)->count();
+                $user_id = Auth::user()->id;
 
-        $current_date = date('Y-m-d h:i:s a', time()); 
-
-            
-        
-         $view_increment = $this->handleViewCount_movies($vid);
-        if ( !Auth::guest() ) {
-          $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();    
-            $view = new RecentView;
-            $view->video_id = $vid;
-            $view->user_id = Auth::user()->id;
-            $view->visited_at = date('Y-m-d');
-            $view->save();
-           $user_id = Auth::user()->id;
-           $watch_id = ContinueWatching::where('user_id','=',$user_id)->where('videoid','=',$vid)->orderby('created_at','desc')->first();
-           $watch_count = ContinueWatching::where('user_id','=',$user_id)->where('videoid','=',$vid)->orderby('created_at','desc')->count();
-          if ($watch_count >0 ){
-              $watchtime = $watch_id->currentTime;
-          }else {
-            $watchtime = 0;
-          }
-           $ppv_exist = PpvPurchase::where('video_id',$vid)->where('user_id',$user_id)->where('to_time','>',$current_date)->count();
-           $user_id = Auth::user()->id;
-
-           $categoryVideos = \App\Video::where('id',$vid)->first();
-           $category_id = \App\Video::where('id',$vid)->pluck('video_category_id');
-           $videocategory = \App\VideoCategory::where('id',$category_id)->pluck('name');
-          $videocategory = $videocategory[0];
-           $recomended = \App\Video::where('video_category_id','=',$category_id)->where('id','!=',$vid)->limit(10)->get();
-           $playerui = Playerui::first();
-           $subtitle = MoviesSubtitles::where('movie_id','=',$vid)->get();
+                $categoryVideos = \App\Video::where('id', $vid)->first();
+                $category_id = \App\Video::where('id', $vid)->pluck('video_category_id');
+                $videocategory = \App\VideoCategory::where('id', $category_id)->pluck('name');
+                $videocategory = $videocategory[0];
+                $recomended = \App\Video::where('video_category_id', '=', $category_id)->where('id', '!=', $vid)->limit(10)
+                    ->get();
+                $playerui = Playerui::first();
+                $subtitle = MoviesSubtitles::where('movie_id', '=', $vid)->get();
 
                 $wishlisted = false;
-                if(!Auth::guest()):
-                        $wishlisted = Wishlist::where('user_id', '=', Auth::user()->id)->where('video_id', '=', $vid)->where('type', '=', 'channel')->first();
+                if (!Auth::guest()):
+                    $wishlisted = Wishlist::where('user_id', '=', Auth::user()->id)
+                        ->where('video_id', '=', $vid)->where('type', '=', 'channel')
+                        ->first();
                 endif;
-                    $watchlater = false;
-                 if(!Auth::guest()):
-                        $watchlater = Watchlater::where('user_id', '=', Auth::user()->id)->where('video_id', '=', $vid)->where('type', '=', 'channel')->first();
-                        $like_dislike = LikeDislike::where('user_id', '=', Auth::user()->id)->where('video_id', '=', $vid)->get();
-                    endif;
+                $watchlater = false;
+                if (!Auth::guest()):
+                    $watchlater = Watchlater::where('user_id', '=', Auth::user()->id)
+                        ->where('video_id', '=', $vid)->where('type', '=', 'channel')
+                        ->first();
+                    $like_dislike = LikeDislike::where('user_id', '=', Auth::user()->id)
+                        ->where('video_id', '=', $vid)->get();
+                endif;
 
+                $ppv_video_play = [];
 
-                    $ppv_video_play = [];
+                $ppv_video = PpvPurchase::where('user_id', Auth::user()->id)
+                    ->where('status', 'active')
+                    ->get();
+                $ppv_setting = Setting::first();
+                $ppv_setting_hours = $ppv_setting->ppv_hours;
+                // dd($ppv_hours);
+                if (!empty($ppv_video))
+                {
+                    foreach ($ppv_video as $key => $value)
+                    {
+                        $to_time = $value->to_time;
 
-                    $ppv_video = PpvPurchase::where('user_id',Auth::user()->id)->where('status','active')->get();
-                    $ppv_setting = Setting::first();
-                    $ppv_setting_hours= $ppv_setting->ppv_hours;
-                      // dd($ppv_hours);
-            
-                    if(!empty($ppv_video)){
-                    foreach($ppv_video as $key => $value){
-                      $to_time = $value->to_time;
-                    
-                      // $time = date('h:i:s', strtotime($date));
-                      // $ppv_hours = date('Y-m-d h:i:s a',strtotime('+'.$ppv_setting_hours.' hour',strtotime($date)));                        
-                     
+                        // $time = date('h:i:s', strtotime($date));
+                        // $ppv_hours = date('Y-m-d h:i:s a',strtotime('+'.$ppv_setting_hours.' hour',strtotime($date)));
                         $d = new \DateTime('now');
                         $d->setTimezone(new \DateTimeZone('Asia/Kolkata'));
                         $now = $d->format('Y-m-d h:i:s a');
-                        // dd($to_time);                     
+                        // dd($to_time);
                         // "2021-10-28 03:19:38 pm"
                         // "2021-10-28 05:14:25 pm"
-                      if($to_time >=  $now){
-                        if($vid == $value->video_id){
-                          $ppv_video_play = $value;
-                        // dd($ppv_video_play);    
+                        if ($to_time >= $now)
+                        {
+                            if ($vid == $value->video_id)
+                            {
+                                $ppv_video_play = $value;
+                                // dd($ppv_video_play);
+                                
 
-    
-                        }else{
-                          $ppv_video_play = null;
-                        }                 
-                    }else{
-                        // dd('$now');                     
-                        PpvPurchase::where('video_id', $vid)
-                                ->update([
-                                    'status' => 'inactive'
-                                    ]);
+                                
+                            }
+                            else
+                            {
+                                $ppv_video_play = null;
+                            }
+                        }
+                        else
+                        {
+                            // dd('$now');
+                            PpvPurchase::where('video_id', $vid)->update(['status' => 'inactive']);
+                        }
+                        $purchased_video = Video::where('id', $value->video_id)
+                            ->get();
+
+                        // if($now == $ppv_hours){
+                        //   if($vid == $value->video_id){
+                        //     $ppv_video_play = $value;
+                        //   }else{
+                        //     $ppv_video_play = null;
+                        //   }
+                        // }else{
+                        //     // dd($now);
+                        //     PpvPurchase::where('video_id', $vid)
+                        //             ->update([
+                        //                 'status' => 'inactive'
+                        //                 ]);
+                        // }
+                        // $purchased_video = \DB::table('videos')->where('id',$value->video_id)->get();
+                        
                     }
-                    $purchased_video = Video::where('id',$value->video_id)->get();
+                }
 
-                    // if($now == $ppv_hours){
+                $currency = CurrencySetting::first();
 
-                    //   if($vid == $value->video_id){
-                    //     $ppv_video_play = $value;
+                $data = array(
+                    'currency' => $currency,
+                    'video' => $categoryVideos,
+                    'videocategory' => $videocategory,
+                    'recomended' => $recomended,
+                    'ppv_exist' => $ppv_exist,
+                    'ppv_price' => 100,
+                    'watchlatered' => $watchlater,
+                    'mywishlisted' => $wishlisted,
+                    'watched_time' => $watchtime,
+                    'like_dislike' => $like_dislike,
+                    'ppv_rent_price' => $ppv_rent_price,
+                    'playerui_settings' => $playerui,
+                    'subtitles' => $subtitle,
+                    'ppv_video_play' => $ppv_video_play,
 
-                    //   }else{
-                    //     $ppv_video_play = null;
-                    //   }
-                    // }else{
-                    //     // dd($now);                     
-                    //     PpvPurchase::where('video_id', $vid)
-                    //             ->update([
-                    //                 'status' => 'inactive'
-                    //                 ]);
-                    // }
-                    // $purchased_video = \DB::table('videos')->where('id',$value->video_id)->get();
-                    }
-                    }
-            
-                    $currency = CurrencySetting::first();
-
-                 $data = array(
-                      'currency' => $currency,
-                     'video' => $categoryVideos,
-                     'videocategory' => $videocategory,
-                     'recomended' => $recomended,
-                     'ppv_exist' => $ppv_exist,
-                     'ppv_price' => 100,
-                     'watchlatered' => $watchlater,
-                     'mywishlisted' => $wishlisted,
-                     'watched_time' => $watchtime,
-                     'like_dislike' =>$like_dislike,
-                     'ppv_rent_price' =>$ppv_rent_price,
-                 'playerui_settings' => $playerui,
-                 'subtitles' => $subtitle,
-    		'ppv_video_play' => $ppv_video_play,
-
-
-                 );
-             
-        } else {
-
-           
-            $categoryVideos = \App\Video::where('id',$vid)->first();
-            $category_id = \App\Video::where('id',$vid)->pluck('video_category_id');
-            $recomended = \App\Video::where('video_category_id','=',$category_id)->where('id','!=',$vid)->limit(10)->get();
-    $playerui = Playerui::first();
-    $subtitle = MoviesSubtitles::where('movie_id','=',$vid)->get();
-    $currency = CurrencySetting::first();
-
-            $data = array(
-              'currency' => $currency,
-                 'video' => $categoryVideos,
-                 'recomended' => $recomended,
-                 'playerui_settings' => $playerui,
-                 'subtitles' => $subtitle,
-                 'watched_time' => 0,
-
-            );
+                );
 
             }
- 
-       return view('video', $data);
-    }else{
-    
-        $get_video_id = \App\Video::where('slug',$slug)->first(); 
-        $vid = $get_video_id->id;
-        $current_date = date('Y-m-d h:i:s a', time()); 
-        $currency = CurrencySetting::first();
+            else
+            {
 
-            
-        
-         $view_increment = $this->handleViewCount_movies($vid);
-        if ( !Auth::guest() ) {
-          $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();    
-            $view = new RecentView;
-            $view->video_id = $vid;
-            $view->user_id = Auth::user()->id;
-            $view->visited_at = date('Y-m-d');
-            $view->save();
-           $user_id = Auth::user()->id;
-           $watch_id = ContinueWatching::where('user_id','=',$user_id)->where('videoid','=',$vid)->orderby('created_at','desc')->first();
-           $watch_count = ContinueWatching::where('user_id','=',$user_id)->where('videoid','=',$vid)->orderby('created_at','desc')->count();
-          if ($watch_count >0 ){
-              $watchtime = $watch_id->currentTime;
-          }else {
-            $watchtime = 0;
-          }
-           $ppv_exist = PpvPurchase::where('video_id',$vid)->where('user_id',$user_id)->where('to_time','>',$current_date)->count();
-           $user_id = Auth::user()->id;
+                $categoryVideos = \App\Video::where('id', $vid)->first();
+                $category_id = \App\Video::where('id', $vid)->pluck('video_category_id');
+                $recomended = \App\Video::where('video_category_id', '=', $category_id)->where('id', '!=', $vid)->limit(10)
+                    ->get();
+                $playerui = Playerui::first();
+                $subtitle = MoviesSubtitles::where('movie_id', '=', $vid)->get();
+                $currency = CurrencySetting::first();
 
-           $categoryVideos = \App\Video::where('id',$vid)->first();
-           $category_id = \App\Video::where('id',$vid)->pluck('video_category_id');
-           $videocategory = \App\VideoCategory::where('id',$category_id)->pluck('name');
-          $videocategory = $videocategory[0];
-           $recomended = \App\Video::where('video_category_id','=',$category_id)->where('id','!=',$vid)->limit(10)->get();
-           $playerui = Playerui::first();
-           $subtitle = MoviesSubtitles::where('movie_id','=',82)->get();
-           $currency = CurrencySetting::first();
+                $data = array(
+                    'currency' => $currency,
+                    'video' => $categoryVideos,
+                    'recomended' => $recomended,
+                    'playerui_settings' => $playerui,
+                    'subtitles' => $subtitle,
+                    'watched_time' => 0,
+
+                );
+
+            }
+
+            return view('video', $data);
+        }
+        else
+        {
+
+            $get_video_id = \App\Video::where('slug', $slug)->first();
+            $vid = $get_video_id->id;
+            $current_date = date('Y-m-d h:i:s a', time());
+            $currency = CurrencySetting::first();
+
+            $view_increment = $this->handleViewCount_movies($vid);
+            if (!Auth::guest())
+            {
+                $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+                $view = new RecentView;
+                $view->video_id = $vid;
+                $view->user_id = Auth::user()->id;
+                $view->visited_at = date('Y-m-d');
+                $view->save();
+                $user_id = Auth::user()->id;
+                $watch_id = ContinueWatching::where('user_id', '=', $user_id)->where('videoid', '=', $vid)->orderby('created_at', 'desc')
+                    ->first();
+                $watch_count = ContinueWatching::where('user_id', '=', $user_id)->where('videoid', '=', $vid)->orderby('created_at', 'desc')
+                    ->count();
+                if ($watch_count > 0)
+                {
+                    $watchtime = $watch_id->currentTime;
+                }
+                else
+                {
+                    $watchtime = 0;
+                }
+                $ppv_exist = PpvPurchase::where('video_id', $vid)->where('user_id', $user_id)->where('to_time', '>', $current_date)->count();
+                $user_id = Auth::user()->id;
+
+                $categoryVideos = \App\Video::where('id', $vid)->first();
+                $category_id = \App\Video::where('id', $vid)->pluck('video_category_id');
+                $videocategory = \App\VideoCategory::where('id', $category_id)->pluck('name');
+                $videocategory = $videocategory[0];
+                $recomended = \App\Video::where('video_category_id', '=', $category_id)->where('id', '!=', $vid)->limit(10)
+                    ->get();
+                $playerui = Playerui::first();
+                $subtitle = MoviesSubtitles::where('movie_id', '=', 82)->get();
+                $currency = CurrencySetting::first();
 
                 $wishlisted = false;
-                if(!Auth::guest()):
-                        $wishlisted = Wishlist::where('user_id', '=', Auth::user()->id)->where('video_id', '=', $vid)->where('type', '=', 'channel')->first();
+                if (!Auth::guest()):
+                    $wishlisted = Wishlist::where('user_id', '=', Auth::user()->id)
+                        ->where('video_id', '=', $vid)->where('type', '=', 'channel')
+                        ->first();
                 endif;
-                    $watchlater = false;
-                 if(!Auth::guest()):
-                        $watchlater = Watchlater::where('user_id', '=', Auth::user()->id)->where('video_id', '=', $vid)->where('type', '=', 'channel')->first();
-                        $like_dislike = LikeDislike::where('user_id', '=', Auth::user()->id)->where('video_id', '=', $vid)->get();
-                    endif;
-                 $data = array(
-                  'currency' => $currency,
-                     'video' => $categoryVideos,
-                     'videocategory' => $videocategory,
-                     'recomended' => $recomended,
-                     'ppv_exist' => $ppv_exist,
-                     'ppv_price' => 100,
-                     'watchlatered' => $watchlater,
-                     'mywishlisted' => $wishlisted,
-                     'watched_time' => $watchtime,
-                     'like_dislike' =>$like_dislike,
-                 'playerui_settings' => $playerui,
-                 'subtitles' => $subtitle,
+                $watchlater = false;
+                if (!Auth::guest()):
+                    $watchlater = Watchlater::where('user_id', '=', Auth::user()->id)
+                        ->where('video_id', '=', $vid)->where('type', '=', 'channel')
+                        ->first();
+                    $like_dislike = LikeDislike::where('user_id', '=', Auth::user()->id)
+                        ->where('video_id', '=', $vid)->get();
+                endif;
+                $data = array(
+                    'currency' => $currency,
+                    'video' => $categoryVideos,
+                    'videocategory' => $videocategory,
+                    'recomended' => $recomended,
+                    'ppv_exist' => $ppv_exist,
+                    'ppv_price' => 100,
+                    'watchlatered' => $watchlater,
+                    'mywishlisted' => $wishlisted,
+                    'watched_time' => $watchtime,
+                    'like_dislike' => $like_dislike,
+                    'playerui_settings' => $playerui,
+                    'subtitles' => $subtitle,
 
-                 );
-             
-        } else {
-
-           
-            $categoryVideos = \App\Video::where('id',$vid)->first();
-            $category_id = \App\Video::where('id',$vid)->pluck('video_category_id');
-            $recomended = \App\Video::where('video_category_id','=',$category_id)->where('id','!=',$vid)->limit(10)->get();
-    $playerui = Playerui::first();
-    $subtitle = MoviesSubtitles::where('movie_id','=',$vid)->get();
-    $currency = CurrencySetting::first();
-
-            $data = array(
-              'currency' => $currency,
-                 'video' => $categoryVideos,
-                 'recomended' => $recomended,
-                 'playerui_settings' => $playerui,
-                 'subtitles' => $subtitle,
-                 'watched_time' => 0,
-
-            );
+                );
 
             }
-       return view('video_before_login', $data);
-    }
+            else
+            {
+
+                $categoryVideos = \App\Video::where('id', $vid)->first();
+                $category_id = \App\Video::where('id', $vid)->pluck('video_category_id');
+                $recomended = \App\Video::where('video_category_id', '=', $category_id)->where('id', '!=', $vid)->limit(10)
+                    ->get();
+                $playerui = Playerui::first();
+                $subtitle = MoviesSubtitles::where('movie_id', '=', $vid)->get();
+                $currency = CurrencySetting::first();
+
+                $data = array(
+                    'currency' => $currency,
+                    'video' => $categoryVideos,
+                    'recomended' => $recomended,
+                    'playerui_settings' => $playerui,
+                    'subtitles' => $subtitle,
+                    'watched_time' => 0,
+
+                );
+
+            }
+            return view('video_before_login', $data);
         }
+    }
 
+    public function Embed_play_videos($slug)
+    {
 
-        public function Embed_play_videos($slug)
+        $data['password_hash'] = "";
+        $data = session()->all();
+
+        if (!empty($data['password_hash']))
         {
-    
-            $data['password_hash'] = "";
-            $data = session()->all();
-           
-            if(!empty($data['password_hash'])){
-    
-            $get_video_id = \App\Video::where('slug',$slug)->first(); 
-    
+
+            $get_video_id = \App\Video::where('slug', $slug)->first();
+
             $vid = $get_video_id->id;
-    
-            // echo "<pre>"; 
-            $artistscount = Videoartist::join("artists","video_artists.artist_id", "=", "artists.id")
-            ->select("artists.*")
-            ->where("video_artists.video_id", "=", $vid)
-            ->count();
-            if($artistscount > 0){
-            $artists = Videoartist::join("artists","video_artists.artist_id", "=", "artists.id")
-            ->select("artists.*")
-            ->where("video_artists.video_id", "=", $vid)
-            ->get();
-            // dd($artists);
-    
-          }else{
-            $artists = [];
-          }
-    
+
+            // echo "<pre>";
+            $artistscount = Videoartist::join("artists", "video_artists.artist_id", "=", "artists.id")->select("artists.*")
+                ->where("video_artists.video_id", "=", $vid)->count();
+            if ($artistscount > 0)
+            {
+                $artists = Videoartist::join("artists", "video_artists.artist_id", "=", "artists.id")->select("artists.*")
+                    ->where("video_artists.video_id", "=", $vid)->get();
+                // dd($artists);
+                
+            }
+            else
+            {
+                $artists = [];
+            }
+
             // $cast = Videoartist::where('video_id','=',$vid)->get();
             //   foreach($cast as $key => $artist){
             //     $artists[] = Artist::where('id','=',$artist->artist_id)->get();
-    
             //   }
-              // print_r();
-              // exit();
-      
-    
-            $PPV_settings = Setting::where('ppv_status','=',1)->first();
-            if(!empty($PPV_settings)){
-               $ppv_rent_price =  $PPV_settings->ppv_price;
+            // print_r();
+            // exit();
+            
+
+            $PPV_settings = Setting::where('ppv_status', '=', 1)->first();
+            if (!empty($PPV_settings))
+            {
+                $ppv_rent_price = $PPV_settings->ppv_price;
                 // echo "<pre>";print_r($PPV_settings);exit();
-            }else{
-              $Video_ppv = Video::where('id','=',$vid)->first();
-                $ppv_rent_price = null ;
-                if($Video_ppv->ppv_price != ""){
-                  // echo "<pre>";print_r('$Video_ppv');exit();
-                  $ppv_rent_price = $Video_ppv->ppv_price;
-                }else{
-                // echo "<pre>";print_r($Video_ppv);exit();
-                $ppv_rent_price = $Video_ppv->ppv_price;
-              }
-    
+                
             }
-            $current_date = date('Y-m-d h:i:s a', time()); 
-             $view_increment = $this->handleViewCount_movies($vid);
-    
-            if ( !Auth::guest() ) {
-    
-              $sub_user = Session::get('subuser_id');
-    
-              $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-              $userIp = $geoip->getip();    
-              $countryName = $geoip->getCountry();
-              $regionName = $geoip->getregion();
-              $cityName = $geoip->getcity();
-    
+            else
+            {
+                $Video_ppv = Video::where('id', '=', $vid)->first();
+                $ppv_rent_price = null;
+                if ($Video_ppv->ppv_price != "")
+                {
+                    // echo "<pre>";print_r('$Video_ppv');exit();
+                    $ppv_rent_price = $Video_ppv->ppv_price;
+                }
+                else
+                {
+                    // echo "<pre>";print_r($Video_ppv);exit();
+                    $ppv_rent_price = $Video_ppv->ppv_price;
+                }
+
+            }
+            $current_date = date('Y-m-d h:i:s a', time());
+            $view_increment = $this->handleViewCount_movies($vid);
+
+            if (!Auth::guest())
+            {
+
+                $sub_user = Session::get('subuser_id');
+
+                $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+                $userIp = $geoip->getip();
+                $countryName = $geoip->getCountry();
+                $regionName = $geoip->getregion();
+                $cityName = $geoip->getcity();
+
                 $view = new RecentView;
-                $view->video_id  = $vid;
-                $view->user_id  = Auth::user()->id;
-                $view->country_name  = $countryName;
+                $view->video_id = $vid;
+                $view->user_id = Auth::user()->id;
+                $view->country_name = $countryName;
                 // $view->videos_category_id = $get_video_id->video_category_id;
-                if($sub_user != null){
-                  $view->sub_user  = $sub_user;
+                if ($sub_user != null)
+                {
+                    $view->sub_user = $sub_user;
                 }
                 $view->visited_at = date('Y-m-d');
                 $view->save();
-    
-                $regionview = RegionView::where('user_id','=',Auth::User()->id)->where('video_id','=',$vid)->orderBy('created_at', 'DESC')->whereDate('created_at', '>=', \Carbon\Carbon::now()->today())->first();
-                if(!empty($regionview)){
+
+                $regionview = RegionView::where('user_id', '=', Auth::User()->id)
+                    ->where('video_id', '=', $vid)->orderBy('created_at', 'DESC')
+                    ->whereDate('created_at', '>=', \Carbon\Carbon::now()
+                    ->today())
+                    ->first();
+                if (!empty($regionview))
+                {
                     // dd($logged);
-                    $regionview = RegionView::where('user_id','=',Auth::User()->id)->where('video_id','=',$vid)->orderBy('created_at', 'DESC')->whereDate('created_at', '>=', \Carbon\Carbon::now()->today())->delete();
+                    $regionview = RegionView::where('user_id', '=', Auth::User()->id)
+                        ->where('video_id', '=', $vid)->orderBy('created_at', 'DESC')
+                        ->whereDate('created_at', '>=', \Carbon\Carbon::now()
+                        ->today())
+                        ->delete();
                     // dd($data);
                     $region = new RegionView;
                     $region->user_id = Auth::User()->id;
@@ -1697,7 +1928,9 @@ class ChannelController extends Controller
                     $region->video_id = $vid;
                     $region->countryname = $countryName;
                     $region->save();
-                }else{
+                }
+                else
+                {
                     $region = new RegionView;
                     $region->user_id = Auth::User()->id;
                     $region->user_ip = $userIp;
@@ -1705,167 +1938,207 @@ class ChannelController extends Controller
                     $region->countryname = $countryName;
                     $region->save();
                 }
-    
-               $user_id = Auth::user()->id;
-               $watch_id = ContinueWatching::where('user_id','=',$user_id)->where('videoid','=',$vid)->orderby('created_at','desc')->first();
-               $watch_count = ContinueWatching::where('user_id','=',$user_id)->where('videoid','=',$vid)->orderby('created_at','desc')->count();
-              if ($watch_count >0 ){
-                  $watchtime = $watch_id->currentTime;
-              }else {
-                $watchtime = 0;
-              }
-    
-               $ppv_exist = PpvPurchase::where('video_id',$vid)->where('user_id',$user_id)->where('to_time','>',$current_date)->count();
-               $user_id = Auth::user()->id;
-    
-               $categoryVideos = Video::with('category.categoryname')->where('id',$vid)->first();
-               $category_name = CategoryVideo::select('video_categories.name as categories_name')
-               ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
-               ->where('categoryvideos.video_id',$vid)
-               ->get();
-              //  dd($category_name);
-               $category_id = CategoryVideo::where('video_id', $vid)->get();
-               $categoryvideo = CategoryVideo::where('video_id', $vid)->pluck('category_id')->toArray();
-               $languages_id = LanguageVideo::where('video_id', $vid)->pluck('language_id')->toArray();
-               foreach($category_id as $key => $value){
-               $recomendeds = Video::select('videos.*','video_categories.name as categories_name','categoryvideos.category_id as categories_id')
-               ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
-               ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
-               ->where('videos.id','!=',$vid)
-              ->groupBy('videos.id')
-               ->limit(10)->get();
-               }
-               if(!empty($recomendeds)){
-                foreach($recomendeds as $category){
-                  if(in_array($category->categories_id, $categoryvideo)){
-                   $recomended[] = $category;
-                 }            
-                 }
-               }else{
-                 $recomended = [];
-               }
-               if(!empty($recomended)){
-                $recomended = $recomended;
-               }else{
-                $recomended =[] ;
-               }
-               
-              $videocategory = [];
-    
-               $playerui = Playerui::first();
-               $subtitle = MoviesSubtitles::where('movie_id','=',$vid)->get();
-    
-                    $wishlisted = false;
-                    if(!Auth::guest()):
-                            $wishlisted = Wishlist::where('user_id', '=', Auth::user()->id)->where('video_id', '=', $vid)->where('type', '=', 'channel')->first();
-                    endif;
-                        $watchlater = false;
-                     if(!Auth::guest()):
-                            $watchlater = Watchlater::where('user_id', '=', Auth::user()->id)->where('video_id', '=', $vid)->where('type', '=', 'channel')->first();
-                            $like_dislike = LikeDislike::where('user_id', '=', Auth::user()->id)->where('video_id', '=', $vid)->get();
-                        endif;
-    
-                        
-                        $ppv_video_play = [];
-    
-                        $ppv_video = PpvPurchase::where('user_id',Auth::user()->id)->where('status','active')->get();
-                        $ppv_setting = Setting::first();
-                        $ppv_setting_hours= $ppv_setting->ppv_hours;
-                          // dd($ppv_hours);
-                
-                        if(!empty($ppv_video)){
-                        foreach($ppv_video as $key => $value){
-                          $to_time = $value->to_time;
-                        
-                          // $time = date('h:i:s', strtotime($date));
-                          // $ppv_hours = date('Y-m-d h:i:s a',strtotime('+'.$ppv_setting_hours.' hour',strtotime($date)));                        
-                         
-                            $d = new \DateTime('now');
-                            $d->setTimezone(new \DateTimeZone('Asia/Kolkata'));
-                            $now = $d->format('Y-m-d h:i:s a');
-    
-                          if($to_time >=  $now){
-                            if($vid == $value->video_id){
-                              $ppv_video_play = $value;
-                            // dd($ppv_video_play);    
-    
-        
-                            }else{
-                              $ppv_video_play = null;
-                            }                 
-                        }else{
-                            // dd('$now');                     
-                            PpvPurchase::where('video_id', $vid)
-                                    ->update([
-                                        'status' => 'inactive'
-                                        ]);
+
+                $user_id = Auth::user()->id;
+                $watch_id = ContinueWatching::where('user_id', '=', $user_id)->where('videoid', '=', $vid)->orderby('created_at', 'desc')
+                    ->first();
+                $watch_count = ContinueWatching::where('user_id', '=', $user_id)->where('videoid', '=', $vid)->orderby('created_at', 'desc')
+                    ->count();
+                if ($watch_count > 0)
+                {
+                    $watchtime = $watch_id->currentTime;
+                }
+                else
+                {
+                    $watchtime = 0;
+                }
+
+                $ppv_exist = PpvPurchase::where('video_id', $vid)->where('user_id', $user_id)->where('to_time', '>', $current_date)->count();
+                $user_id = Auth::user()->id;
+
+                $categoryVideos = Video::with('category.categoryname')->where('id', $vid)->first();
+                $category_name = CategoryVideo::select('video_categories.name as categories_name')->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+                    ->where('categoryvideos.video_id', $vid)->get();
+                //  dd($category_name);
+                $category_id = CategoryVideo::where('video_id', $vid)->get();
+                $categoryvideo = CategoryVideo::where('video_id', $vid)->pluck('category_id')
+                    ->toArray();
+                $languages_id = LanguageVideo::where('video_id', $vid)->pluck('language_id')
+                    ->toArray();
+                foreach ($category_id as $key => $value)
+                {
+                    $recomendeds = Video::select('videos.*', 'video_categories.name as categories_name', 'categoryvideos.category_id as categories_id')->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
+                        ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+                        ->where('videos.id', '!=', $vid)->groupBy('videos.id')
+                        ->limit(10)
+                        ->get();
+                }
+                if (!empty($recomendeds))
+                {
+                    foreach ($recomendeds as $category)
+                    {
+                        if (in_array($category->categories_id, $categoryvideo))
+                        {
+                            $recomended[] = $category;
                         }
-                        $purchased_video = Video::where('id',$value->video_id)->get();
-    
-                        }
-                        }
-                
-                    $ads = AdsVideo::select('advertisements.*')
-                    ->Join('advertisements', 'advertisements.id', '=', 'ads_videos.ads_id')
-                    ->where('ads_videos.video_id','=',$vid)
-                    ->get();
-                    // $ads = AdsVideo::where('video_id',126)->get();
-                    if(!empty($ads) && (count($ads)) > 0){
-                      $ads_path = $ads[0]->ads_path;
-                    }else{
-                      $ads_path = "";
                     }
-                    // $artists = [];
-                    $payment_settings = PaymentSetting::first();  
-                    $mode = $payment_settings->live_mode ;
-                      if($mode == 0){
-                          $secret_key = $payment_settings->test_secret_key ;
-                          $publishable_key = $payment_settings->test_publishable_key ;
-                      }elseif($mode == 1){
-                          $secret_key = $payment_settings->live_secret_key ;
-                          $publishable_key = $payment_settings->live_publishable_key ;
-                      }else{
-                          $secret_key= null;
-                          $publishable_key= null;
-                      }    
-    
-                 $currency = CurrencySetting::first();
-                     $data = array(
-                          'currency' => $currency,
-                         'video' => $categoryVideos,
-                         'videocategory' => $videocategory,
-                         'recomended' => $recomended,
-                         'ads_path' => $ads_path,
-                         'ppv_exist' => $ppv_exist,
-                         'ppv_price' => 100,
-                        'publishable_key' => $publishable_key,
-                         'watchlatered' => $watchlater,
-                         'mywishlisted' => $wishlisted,
-                         'watched_time' => $watchtime,
-                         'like_dislike' =>$like_dislike,
-                         'ppv_rent_price' =>$ppv_rent_price,
-                     'playerui_settings' => $playerui,
-                     'subtitles' => $subtitle,
-                     'artists' => $artists,
-            'ppv_video_play' => $ppv_video_play,
-                'ads' => \App\AdsVideo::where('video_id',$vid)->first(),
-                'category_name'=> $category_name,
-    
-                     );
-                 
-            } else {
-    
-              $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-              $userIp = $geoip->getip();    
-              $countryName = $geoip->getCountry();
-              $regionName = $geoip->getregion();
-              $cityName = $geoip->getcity();
-              // dd($data);
-    
-                $regionview = RegionView::where('user_id','=',Auth::User()->id)->where('video_id','=',$vid)->orderBy('created_at', 'DESC')->whereDate('created_at', '>=', \Carbon\Carbon::now()->today())->first();
-                if(!empty($regionview)){
+                }
+                else
+                {
+                    $recomended = [];
+                }
+                if (!empty($recomended))
+                {
+                    $recomended = $recomended;
+                }
+                else
+                {
+                    $recomended = [];
+                }
+
+                $videocategory = [];
+
+                $playerui = Playerui::first();
+                $subtitle = MoviesSubtitles::where('movie_id', '=', $vid)->get();
+
+                $wishlisted = false;
+                if (!Auth::guest()):
+                    $wishlisted = Wishlist::where('user_id', '=', Auth::user()->id)
+                        ->where('video_id', '=', $vid)->where('type', '=', 'channel')
+                        ->first();
+                endif;
+                $watchlater = false;
+                if (!Auth::guest()):
+                    $watchlater = Watchlater::where('user_id', '=', Auth::user()->id)
+                        ->where('video_id', '=', $vid)->where('type', '=', 'channel')
+                        ->first();
+                    $like_dislike = LikeDislike::where('user_id', '=', Auth::user()->id)
+                        ->where('video_id', '=', $vid)->get();
+                endif;
+
+                $ppv_video_play = [];
+
+                $ppv_video = PpvPurchase::where('user_id', Auth::user()->id)
+                    ->where('status', 'active')
+                    ->get();
+                $ppv_setting = Setting::first();
+                $ppv_setting_hours = $ppv_setting->ppv_hours;
+                // dd($ppv_hours);
+                if (!empty($ppv_video))
+                {
+                    foreach ($ppv_video as $key => $value)
+                    {
+                        $to_time = $value->to_time;
+
+                        // $time = date('h:i:s', strtotime($date));
+                        // $ppv_hours = date('Y-m-d h:i:s a',strtotime('+'.$ppv_setting_hours.' hour',strtotime($date)));
+                        $d = new \DateTime('now');
+                        $d->setTimezone(new \DateTimeZone('Asia/Kolkata'));
+                        $now = $d->format('Y-m-d h:i:s a');
+
+                        if ($to_time >= $now)
+                        {
+                            if ($vid == $value->video_id)
+                            {
+                                $ppv_video_play = $value;
+                                // dd($ppv_video_play);
+                                
+
+                                
+                            }
+                            else
+                            {
+                                $ppv_video_play = null;
+                            }
+                        }
+                        else
+                        {
+                            // dd('$now');
+                            PpvPurchase::where('video_id', $vid)->update(['status' => 'inactive']);
+                        }
+                        $purchased_video = Video::where('id', $value->video_id)
+                            ->get();
+
+                    }
+                }
+
+                $ads = AdsVideo::select('advertisements.*')->Join('advertisements', 'advertisements.id', '=', 'ads_videos.ads_id')
+                    ->where('ads_videos.video_id', '=', $vid)->get();
+                // $ads = AdsVideo::where('video_id',126)->get();
+                if (!empty($ads) && (count($ads)) > 0)
+                {
+                    $ads_path = $ads[0]->ads_path;
+                }
+                else
+                {
+                    $ads_path = "";
+                }
+                // $artists = [];
+                $payment_settings = PaymentSetting::first();
+                $mode = $payment_settings->live_mode;
+                if ($mode == 0)
+                {
+                    $secret_key = $payment_settings->test_secret_key;
+                    $publishable_key = $payment_settings->test_publishable_key;
+                }
+                elseif ($mode == 1)
+                {
+                    $secret_key = $payment_settings->live_secret_key;
+                    $publishable_key = $payment_settings->live_publishable_key;
+                }
+                else
+                {
+                    $secret_key = null;
+                    $publishable_key = null;
+                }
+
+                $currency = CurrencySetting::first();
+                $data = array(
+                    'currency' => $currency,
+                    'video' => $categoryVideos,
+                    'videocategory' => $videocategory,
+                    'recomended' => $recomended,
+                    'ads_path' => $ads_path,
+                    'ppv_exist' => $ppv_exist,
+                    'ppv_price' => 100,
+                    'publishable_key' => $publishable_key,
+                    'watchlatered' => $watchlater,
+                    'mywishlisted' => $wishlisted,
+                    'watched_time' => $watchtime,
+                    'like_dislike' => $like_dislike,
+                    'ppv_rent_price' => $ppv_rent_price,
+                    'playerui_settings' => $playerui,
+                    'subtitles' => $subtitle,
+                    'artists' => $artists,
+                    'ppv_video_play' => $ppv_video_play,
+                    'ads' => \App\AdsVideo::where('video_id', $vid)->first() ,
+                    'category_name' => $category_name,
+
+                );
+
+            }
+            else
+            {
+
+                $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+                $userIp = $geoip->getip();
+                $countryName = $geoip->getCountry();
+                $regionName = $geoip->getregion();
+                $cityName = $geoip->getcity();
+                // dd($data);
+                $regionview = RegionView::where('user_id', '=', Auth::User()->id)
+                    ->where('video_id', '=', $vid)->orderBy('created_at', 'DESC')
+                    ->whereDate('created_at', '>=', \Carbon\Carbon::now()
+                    ->today())
+                    ->first();
+                if (!empty($regionview))
+                {
                     // dd($logged);
-                    $regionview = RegionView::where('user_id','=',Auth::User()->id)->where('video_id','=',$vid)->orderBy('created_at', 'DESC')->whereDate('created_at', '>=', \Carbon\Carbon::now()->today())->delete();
+                    $regionview = RegionView::where('user_id', '=', Auth::User()->id)
+                        ->where('video_id', '=', $vid)->orderBy('created_at', 'DESC')
+                        ->whereDate('created_at', '>=', \Carbon\Carbon::now()
+                        ->today())
+                        ->delete();
                     // dd($data);
                     $region = new RegionView;
                     $region->user_id = Auth::User()->id;
@@ -1873,7 +2146,9 @@ class ChannelController extends Controller
                     $region->video_id = $vid;
                     $region->countryname = $countryName;
                     $region->save();
-                }else{
+                }
+                else
+                {
                     $region = new RegionView;
                     $region->user_id = Auth::User()->id;
                     $region->user_ip = $userIp;
@@ -1881,306 +2156,331 @@ class ChannelController extends Controller
                     $region->countryname = $countryName;
                     $region->save();
                 }
-                $categoryVideos = \App\Video::where('id',$vid)->first();
-                $category_id = \App\Video::where('id',$vid)->pluck('video_category_id');
-                $recomended = \App\Video::where('video_category_id','=',$category_id)->where('id','!=',$vid)->limit(10)->get();
-        $playerui = Playerui::first();
-        $subtitle = MoviesSubtitles::where('movie_id','=',$vid)->get();
-        $currency = CurrencySetting::first();
-    
+                $categoryVideos = \App\Video::where('id', $vid)->first();
+                $category_id = \App\Video::where('id', $vid)->pluck('video_category_id');
+                $recomended = \App\Video::where('video_category_id', '=', $category_id)->where('id', '!=', $vid)->limit(10)
+                    ->get();
+                $playerui = Playerui::first();
+                $subtitle = MoviesSubtitles::where('movie_id', '=', $vid)->get();
+                $currency = CurrencySetting::first();
+
                 $data = array(
-                     'currency' => $currency,
-                     'video' => $categoryVideos,
-                     'recomended' => $recomended,
-                     'playerui_settings' => $playerui,
-                     'subtitles' => $subtitle,
-                     'artists' => $artists,
-                     'watched_time' => 0,
-                     'ads' => \App\AdsVideo::where('video_id',$vid)->first(),
+                    'currency' => $currency,
+                    'video' => $categoryVideos,
+                    'recomended' => $recomended,
+                    'playerui_settings' => $playerui,
+                    'subtitles' => $subtitle,
+                    'artists' => $artists,
+                    'watched_time' => 0,
+                    'ads' => \App\AdsVideo::where('video_id', $vid)->first() ,
                 );
-    
-                }
-     
-           return Theme::view('embedvideo', $data); 
-        }else{
-             
-          $data = array(
-            'video' => \App\Video::where('slug',$slug)->first(),
-            'settings' => Setting::first() ,
-
-       );
-          return Theme::view('iframeembedvideo', $data); 
-
-        }
 
             }
 
-      public function Reals_videos(Request $request,$slug)
-      {
-        $video_id = \App\Video::where('slug',$slug)->pluck('id')->first(); 
+            return Theme::view('embedvideo', $data);
+        }
+        else
+        {
 
-        $Reels_videos= Video::where('id',$video_id)->first();
+            $data = array(
+                'video' => \App\Video::where('slug', $slug)->first() ,
+                'settings' => Setting::first() ,
+
+            );
+            return Theme::view('iframeembedvideo', $data);
+
+        }
+
+    }
+
+    public function Reals_videos(Request $request, $slug)
+    {
+        $video_id = \App\Video::where('slug', $slug)->pluck('id')
+            ->first();
+
+        $Reels_videos = Video::where('id', $video_id)->first();
 
         $data = array(
-          'video' => $Reels_videos,
+            'video' => $Reels_videos,
         );
 
-        return Theme::view('Reelvideos',$data); 
+        return Theme::view('Reelvideos', $data);
 
-      }
+    }
 
-      public function artist_videos(Request $request,$slug)
-      {
+    public function artist_videos(Request $request, $slug)
+    {
 
-        try {
-          $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-          $countryName = $geoip->getCountry();
-          $getfeching = Geofencing::first();
+        try
+        {
+            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+            $countryName = $geoip->getCountry();
+            $getfeching = Geofencing::first();
 
-          $block_videos = BlockVideo::where('country_id', $countryName)->get();
-          if (!$block_videos->isEmpty())
-          {
-              foreach ($block_videos as $block_video)
-              {
-                  $blockvideos[] = $block_video->video_id;
-              }
-          }
-          else
-          {
-              $blockvideos[] = '';
-          }
+            $block_videos = BlockVideo::where('country_id', $countryName)->get();
+            if (!$block_videos->isEmpty())
+            {
+                foreach ($block_videos as $block_video)
+                {
+                    $blockvideos[] = $block_video->video_id;
+                }
+            }
+            else
+            {
+                $blockvideos[] = '';
+            }
 
-          $artist_id = Artist::where('artist_name',$slug)->pluck('id')->first();
+            $artist_id = Artist::where('artist_name', $slug)->pluck('id')
+                ->first();
 
-          $artist_videos = Video::Join('video_artists','video_artists.video_id','=','videos.id')
-            ->Join('artists','artists.id','=','video_artists.artist_id')
-            ->where('videos.active', '=', '1')
-            ->where('videos.status', '=', '1')
-            ->where('videos.draft', '=', '1')
-            ->where('video_artists.artist_id',$artist_id);
-              if ($getfeching != null && $getfeching->geofencing == 'ON')
+            $artist_videos = Video::Join('video_artists', 'video_artists.video_id', '=', 'videos.id')->Join('artists', 'artists.id', '=', 'video_artists.artist_id')
+                ->where('videos.active', '=', '1')
+                ->where('videos.status', '=', '1')
+                ->where('videos.draft', '=', '1')
+                ->where('video_artists.artist_id', $artist_id);
+            if ($getfeching != null && $getfeching->geofencing == 'ON')
             {
                 $artist_videos = $artist_videos->whereNotIn('videos.id', $blockvideos);
             }
-          $artist_videos =$artist_videos->get();
+            $artist_videos = $artist_videos->get();
 
-          $data = array(
-            'artist_videos'    => $artist_videos,
-            'ThumbnailSetting' => ThumbnailSetting::first() ,
-            'currency'        => CurrencySetting::first() ,
-            "artist_name"     => $slug,
+            $data = array(
+                'artist_videos' => $artist_videos,
+                'ThumbnailSetting' => ThumbnailSetting::first() ,
+                'currency' => CurrencySetting::first() ,
+                "artist_name" => $slug,
 
-          );
-  
-          return Theme::view('artists',$data); 
-          
-        } catch (\Throwable $th) {
+            );
 
-          return abort(404);
-      }
-            
-      }
+            return Theme::view('artists', $data);
 
-      public function categoryList(Request $request)
-      {
-
-        try {
-          $data =array(
-            "category_list" => VideoCategory::all() ,
-          );
-
-           return Theme::view('categoryList',$data); 
-        } 
-        catch (\Throwable $th) {
-           return abort(404);
         }
-      }
+        catch(\Throwable $th)
+        {
 
-      public function categoryfilter(Request $request)
-      {
+            return abort(404);
+        }
+
+    }
+
+    public function categoryList(Request $request)
+    {
+
+        try
+        {
+            $data = array(
+                "category_list" => VideoCategory::all() ,
+            );
+
+            return Theme::view('categoryList', $data);
+        }
+        catch(\Throwable $th)
+        {
+            return abort(404);
+        }
+    }
+
+    public function categoryfilter(Request $request)
+    {
 
         $settings = Setting::first();
-        $PPV_settings = Setting::where('ppv_status','=',1)->first();
+        $PPV_settings = Setting::where('ppv_status', '=', 1)->first();
 
-        if(!empty($PPV_settings)){
+        if (!empty($PPV_settings))
+        {
 
-            $ppv_gobal_price =  $PPV_settings->ppv_price;
+            $ppv_gobal_price = $PPV_settings->ppv_price;
 
-         }else{
+        }
+        else
+        {
 
-             $ppv_gobal_price = null ;
-         }
-
-        $categoryVideos = Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
-        ->where('category_id','=',$request->category_id)->where('active', '=', '1');
-
-        if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
-            $categoryVideos = $categoryVideos  ->whereNotIn('videos.id',Block_videos());
+            $ppv_gobal_price = null;
         }
 
-        if(!empty($request->rating) ){
-          $categoryVideos = $categoryVideos->WhereIn('videos.rating',$request->rating);
+        $categoryVideos = Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')->where('category_id', '=', $request->category_id)
+            ->where('active', '=', '1');
+
+        if (Geofencing() != null && Geofencing()->geofencing == 'ON')
+        {
+            $categoryVideos = $categoryVideos->whereNotIn('videos.id', Block_videos());
         }
 
-        if(!empty($request->age)  ){
-          $categoryVideos = $categoryVideos->WhereIn('videos.age_restrict',$request->age);
+        if (!empty($request->rating))
+        {
+            $categoryVideos = $categoryVideos->WhereIn('videos.rating', $request->rating);
         }
 
-        if(!empty($request->sorting )  ){
-        
-          $categoryVideos = $categoryVideos->orderBy('videos.created_at','DESC');
+        if (!empty($request->age))
+        {
+            $categoryVideos = $categoryVideos->WhereIn('videos.age_restrict', $request->age);
+        }
+
+        if (!empty($request->sorting))
+        {
+
+            $categoryVideos = $categoryVideos->orderBy('videos.created_at', 'DESC');
         }
 
         $categoryVideos = $categoryVideos->get();
 
-        $Episode_videos =  Series::select('episodes.*','series.title as series_name')
-                ->join('series_categories', 'series_categories.series_id', '=', 'series.id')
-                ->join('episodes', 'episodes.series_id', '=', 'series.id')
-                ->where('series_categories.category_id','=',$request->category_id)
-                ->where('episodes.active', '=', '1')
-                ->where('series.active', '=', '1')
-                ->groupBy('episodes.id')
-                ->latest('episodes.created_at');
+        $Episode_videos = Series::select('episodes.*', 'series.title as series_name')->join('series_categories', 'series_categories.series_id', '=', 'series.id')
+            ->join('episodes', 'episodes.series_id', '=', 'series.id')
+            ->where('series_categories.category_id', '=', $request->category_id)
+            ->where('episodes.active', '=', '1')
+            ->where('series.active', '=', '1')
+            ->groupBy('episodes.id')
+            ->latest('episodes.created_at');
 
-                if(!empty($request->rating) ){
-                  $Episode_videos = $Episode_videos->WhereIn('episodes.rating',$request->rating);
-                }
-        
-                if(!empty($request->age)  ){
-                  $Episode_videos = $Episode_videos->WhereIn('episodes.age_restrict',$request->age);
-                }
-        
-                if(!empty($request->sorting )  ){
-                
-                  $Episode_videos = $Episode_videos->orderBy('episodes.created_at','DESC');
-                }
+        if (!empty($request->rating))
+        {
+            $Episode_videos = $Episode_videos->WhereIn('episodes.rating', $request->rating);
+        }
 
-          $Episode_videos = $Episode_videos->get();
-           
+        if (!empty($request->age))
+        {
+            $Episode_videos = $Episode_videos->WhereIn('episodes.age_restrict', $request->age);
+        }
+
+        if (!empty($request->sorting))
+        {
+
+            $Episode_videos = $Episode_videos->orderBy('episodes.created_at', 'DESC');
+        }
+
+        $Episode_videos = $Episode_videos->get();
+
         $data = array(
-          'currency'=> CurrencySetting::first(),
-          'category_title'=> VideoCategory::where('id',$request->category_id)->pluck('name')->first(),
-          'ThumbnailSetting' => ThumbnailSetting::first(),
-          'age_categories' => AgeCategory::get(),
-          'categoryVideos'=>$categoryVideos,
-          'ppv_gobal_price' => $ppv_gobal_price,
-          'Episode_videos' => $Episode_videos,
+            'currency' => CurrencySetting::first() ,
+            'category_title' => VideoCategory::where('id', $request->category_id)
+                ->pluck('name')
+                ->first() ,
+            'ThumbnailSetting' => ThumbnailSetting::first() ,
+            'age_categories' => AgeCategory::get() ,
+            'categoryVideos' => $categoryVideos,
+            'ppv_gobal_price' => $ppv_gobal_price,
+            'Episode_videos' => $Episode_videos,
         );
 
-        $theme = Theme::uses( $this->Theme);
+        $theme = Theme::uses($this->Theme);
 
-          return $theme->load('public/themes/default/partials/categoryvids_section', [
-            'categoryVideos' => $data
-        ])->render();
+        return $theme->load('public/themes/default/partials/categoryvids_section', ['categoryVideos' => $data])->render();
 
-      }
+    }
 
-      public function MovieList()
-      {
+    public function MovieList()
+    {
 
-        try {
+        try
+        {
             $countryName = Country_name();
             $ThumbnailSetting = ThumbnailSetting::first();
-            
+
             $parentCategories = Language::get();
 
             // blocked videos
-                $block_videos = BlockVideo::where('country_id',$countryName)->get();
-                if(!$block_videos->isEmpty()){
-                    foreach($block_videos as $block_video){
-                    $blockvideos[]=$block_video->video_id;
-                  }
-              }   
-              else{
-                  $blockvideos[]='';
-              } 
+            $block_videos = BlockVideo::where('country_id', $countryName)->get();
+            if (!$block_videos->isEmpty())
+            {
+                foreach ($block_videos as $block_video)
+                {
+                    $blockvideos[] = $block_video->video_id;
+                }
+            }
+            else
+            {
+                $blockvideos[] = '';
+            }
 
-            $data =array(
-              'ThumbnailSetting' => $ThumbnailSetting,
-              'blockvideos'      => $blockvideos,
-              'parentCategories' => $parentCategories,
+            $data = array(
+                'ThumbnailSetting' => $ThumbnailSetting,
+                'blockvideos' => $blockvideos,
+                'parentCategories' => $parentCategories,
 
-            );    
+            );
 
-            return Theme::view('movie_list',$data); 
+            return Theme::view('movie_list', $data);
 
-        } catch (\Throwable $th) {
-           return abort(404);
         }
-       
-      
-      }
+        catch(\Throwable $th)
+        {
+            return abort(404);
+        }
 
-      public function liveList()
-      {
-       
+    }
+
+    public function liveList()
+    {
+
         $ThumbnailSetting = ThumbnailSetting::first();
-        
+
         $parentCategories = LiveCategory::get();
-        $parentCategories = LiveCategory::orderBy('order')->where('in_menu',1)->get();
-        $data =array(
-          'ThumbnailSetting' => $ThumbnailSetting,
-          'parentCategories' => $parentCategories,
-        );    
-
-
-           return Theme::view('Live_list',$data); 
-        
-      }
-
-      public function Series_List(Request $request)
-      {
-
-        $ThumbnailSetting = ThumbnailSetting::first();
-        
-        $parentCategories = SeriesGenre::where('in_menu',1)->orderBy('order')->get();
-
-        $data =array(
-          'ThumbnailSetting' => $ThumbnailSetting,
-          'parentCategories' => $parentCategories,
-        );    
-
-
-        return Theme::view('Series_list',$data); 
-
-      }
-
-      public function Series_genre_list(Request $request,$id)
-      {
-     
-        $ThumbnailSetting = ThumbnailSetting::first();
-
-        $series = Series::join('series_categories', 'series_categories.series_id', '=', 'series.id')
-          ->where('category_id', '=', $id) 
-          ->where('active', '=', '1')
-          ->orderBy('series.created_at','desc')
-          ->get();
-        
-        $Series_Genre_name = SeriesGenre::where('id',$id)->pluck('name')->first();
-
-        $data =array(
+        $parentCategories = LiveCategory::orderBy('order')->where('in_menu', 1)
+            ->get();
+        $data = array(
             'ThumbnailSetting' => $ThumbnailSetting,
-            'Series_Genre_name'=> $Series_Genre_name,
+            'parentCategories' => $parentCategories,
+        );
+
+        return Theme::view('Live_list', $data);
+
+    }
+
+    public function Series_List(Request $request)
+    {
+
+        $ThumbnailSetting = ThumbnailSetting::first();
+
+        $parentCategories = SeriesGenre::where('in_menu', 1)->orderBy('order')
+            ->get();
+
+        $data = array(
+            'ThumbnailSetting' => $ThumbnailSetting,
+            'parentCategories' => $parentCategories,
+        );
+
+        return Theme::view('Series_list', $data);
+
+    }
+
+    public function Series_genre_list(Request $request, $id)
+    {
+
+        $ThumbnailSetting = ThumbnailSetting::first();
+
+        $series = Series::join('series_categories', 'series_categories.series_id', '=', 'series.id')->where('category_id', '=', $id)->where('active', '=', '1')
+            ->orderBy('series.created_at', 'desc')
+            ->get();
+
+        $Series_Genre_name = SeriesGenre::where('id', $id)->pluck('name')
+            ->first();
+
+        $data = array(
+            'ThumbnailSetting' => $ThumbnailSetting,
+            'Series_Genre_name' => $Series_Genre_name,
             'videos' => $series,
-          );  
+        );
 
-          return Theme::view('Series_genre_list',$data); 
-      }
+        return Theme::view('Series_genre_list', $data);
+    }
 
-      public function artist_list(Request $request)
-      {
-        
-        try {
-          $data =array(
-            "artist_list" => Artist::all() ,
-            'ThumbnailSetting' => ThumbnailSetting::first() ,
-          );
+    public function artist_list(Request $request)
+    {
 
-           return Theme::view('artist-list',$data); 
-        } 
-        catch (\Throwable $th) {
-           return abort(404);
+        try
+        {
+            $data = array(
+                "artist_list" => Artist::all() ,
+                'ThumbnailSetting' => ThumbnailSetting::first() ,
+            );
+
+            return Theme::view('artist-list', $data);
         }
-        
-      }
+        catch(\Throwable $th)
+        {
+            return abort(404);
+        }
+
+    }
 }
+

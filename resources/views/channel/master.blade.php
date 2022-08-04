@@ -137,13 +137,13 @@ $channel = Session::get('channel');
             </ul>
           </li>
 
-          <li><a href="#artists" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-user"></i><span>Artist Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+          <!-- <li><a href="#artists" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-user"></i><span>Artist Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
             <ul id="artists" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
               <li><a href="{{ URL::to('/channel/artists') }}"><i class="las la-user-plus"></i>All Artists</a></li>
               <li><a href="{{ URL::to('/channel/artists/create') }}"><i class="las la-eye"></i>Add New Artist</a></li>
 
             </ul>
-          </li>
+          </li> -->
 
 
         
@@ -153,6 +153,16 @@ $channel = Session::get('channel');
                      <li><a href="{{ URL::to('/channel/livestream') }}"><i class="las la-user-plus"></i>All Live Videos</a></li>
                      <li><a href="{{ URL::to('/channel/livestream/create') }}"><i class="las la-eye"></i>Add New Live Video</a></li>
                      <li><a href="{{ URL::to('/channel/livestream/categories') }}"><i class="las la-eye"></i>Manage Live Video Categories</a></li>
+                  </ul>
+                  </li>
+
+
+                          
+                  <li>
+                     <a href="#settings" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-film"></i><span>Manage Channel Setting</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                     <ul id="settings" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                     <li><a href="{{ URL::to('/channel/setting/bank_setting') }}"><i class="las la-eye"></i>My Channel Settings </a></li>
+                     <li><a href="{{ URL::to('/channel/setting/about_channel_setting') }}"><i class="las la-user-plus"></i>About My Channel</a></li>
                   </ul>
                   </li>
 
