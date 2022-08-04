@@ -2,7 +2,7 @@
 <div id="player">
 <video id="" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>"
     controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'>
-            <source src="<?php echo URL::to('public/uploads/reelsVideos').'/'.$video->reelvideo;?>" type="video/mp4" label='720p' res='720'/> 
+    <source src="<?php echo URL::to('public/uploads/reelsVideos').'/'.$video->reelvideo;?>" type="video/mp4" label='720p' res='720'/> 
 </video>
 
 

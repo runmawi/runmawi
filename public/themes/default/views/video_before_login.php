@@ -549,7 +549,14 @@ if(!empty($request_url)){
         <?php } ?>
 </div>
 </div>
-
+<?php if(count($Reels_videos) > 0 && $ThumbnailSetting->reels_videos == 1 ){ ?>
+    <div class="video-list you-may-like">
+           <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>   
+               <?php include('partials/home/Reels-video.php');?>
+           </div>
+   </div>
+<?php } ?>
+</div>
 <!-- Trailer End  -->
 
   <?php if(!empty($video->description) ) { ?>

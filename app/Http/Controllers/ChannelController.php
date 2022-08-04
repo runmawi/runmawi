@@ -1399,6 +1399,7 @@ class ChannelController extends Controller
                 {
                     $artists = [];
                 }
+                $Reels_videos = Video::Join('reelsvideo', 'reelsvideo.video_id', '=', 'videos.id')->where('videos.id', $vid)->get();
 
                 $data = array(
                     'currency' => $currency,
