@@ -697,12 +697,12 @@ var tagInput1 = new TagsInput({
             var ratio = $(element).data('imageratio');
 
 
-            if( ratio == '0.56' || width == param[0] && height == param[1]){
+            if( ratio == '0.56' || ratio == '1.78' || width == param[0] && height == param[1]){
                 return true;
             }else{
                 return false;
             }
-        },'Please upload an image with 1080 x 1920 pixels dimension or 9:16 Ratio ');
+        },'Please upload an image with 1080 x 1920 pixels dimension or 9:16 Ratio or 16:9 Ratio ');
 
                 // player Image upload validation
         $.validator.addMethod('player_dimention', function(value, element, param) {
