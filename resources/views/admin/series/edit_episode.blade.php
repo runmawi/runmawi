@@ -55,23 +55,29 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                 </div>
                 @endif
             </div>
-            <div class="col-md-6">
-                <label for=""><h3 class="fs-title m-0">Embed Link:</h3></label>
-                <p>Click <a href="#"onclick="EmbedCopy();" class="share-ico"><i class="ri-links-fill"></i> here</a> to get the Embedded URL</p>
-            <div>
-            <div class="col-md-6">
-                <label for=""><h3 class="fs-title m-0">Social Share:</h3></label>
-                <div class="share-box">
-                    <a href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" class="share-ico"><i class="ri-facebook-fill"></i></a>&nbsp;  <!-- Facebook -->
-                    <a href="https://twitter.com/intent/tweet?text=<?= $media_url ?>" class="share-ico"><i class="ri-twitter-fill"></i></a> <!-- Twitter -->
-                </div>
-            </div>
 
+           
+           
             <hr />
             <div class="clear"></div>
 
             <form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="Episode_edit">
                 
+                <div class="row ">
+                    <div class="col-md-6 mb-3">
+                        <label class="m-0" ><h4 class="fs-title m-0">Embed Link:</h4></label>
+                        <p>Click <a href="#"onclick="EmbedCopy();" class="share-ico"><i class="ri-links-fill"></i> here</a> to get the Embedded URL</p>
+                    </div>
+    
+                    <div class="col-md-6 mb-3">
+                        <label class="m-0" ><h4 class="fs-title m-0">Social Share:</h4></label>
+                        <div class="share-box">
+                            <a href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" class="share-ico"><i class="ri-facebook-fill"></i></a>&nbsp;  <!-- Facebook -->
+                            <a href="https://twitter.com/intent/tweet?text=<?= $media_url ?>" class="share-ico"><i class="ri-twitter-fill"></i></a> <!-- Twitter -->
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row">
                     <div class="col-sm-6 mb-3">
                         <label class="m-0">Title</label>
@@ -516,12 +522,12 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
             var height = $(element).data('imageHeight');
             var ratio = $(element).data('imageratio');
 
-            if( ratio == '0.56'|| width == param[0] && height == param[1]){
+            if( ratio == '0.56'|| ratio == '1.78' || width == param[0] && height == param[1]){
                 return true;
             }else{
                 return false;
             }
-        },'Please upload an image with 1080 x 1920 pixels dimension  or 9:16 Ratio ');
+        },'Please upload an image with 1080 x 1920 pixels dimension  or 9:16 Ratio or 16:9 Ratio ');
 
                 // player Image upload validation
         $.validator.addMethod('player_dimention', function(value, element, param) {
