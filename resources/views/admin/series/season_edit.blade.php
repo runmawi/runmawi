@@ -738,7 +738,6 @@ var tagInput1 = new TagsInput({
                 $('#image').data('imageWidth', width);
                 $('#image').data('imageHeight', height);
                 $('#image').data('imageratio', ratio);
-                alert(ratio);
 
             }
         });
