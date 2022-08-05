@@ -825,7 +825,7 @@ data: {
                                  @endif
                               </div>
                               <div class="col-sm-6 form-group">
-                              <label class="mb-1">Player Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br>
+                              <label class="mb-1">Player Thumbnail <span>(9:16 Ratio or 1080X1920px)</span></label><br>
                               <input type="file" name="player_image" id="player_image" >
                               <span><p id="player_image_error_msg" style="color:red;" >* Please upload an image with 1280 x 720 pixels dimension or 16:9 ratio </p></span>
                               @if(!empty($video->player_image))
