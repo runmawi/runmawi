@@ -549,17 +549,33 @@ function Block_videos(){
 
  function compress_image_resolution( )
 {
-    # code...
+   $compress_image_resolution = App\CompressImage::pluck('compress_resolution_size')->first() ? App\CompressImage::pluck('compress_resolution_size')->first() : '400' ;
+   return $compress_image_resolution ;
 }
 
  function compress_image_format( )
 {
-    # code...
+    $compress_image_format = App\CompressImage::pluck('compress_resolution_format')->first() ?  App\CompressImage::pluck('compress_resolution_format')->first() : 'webp' ;
+    return $compress_image_format ;
+
 }
 
  function compress_image_enable( )
 {
-    # code...
+    $compress_image_enable = App\CompressImage::pluck('enable_compress_image')->first() ? App\CompressImage::pluck('enable_compress_image')->first() : "0";
+    return $compress_image_enable ;
+}
+
+function logo_height( )
+{
+    $logo_height = App\Setting::pluck('logo_height')->first() ? App\Setting::pluck('logo_height')->first()  : "80";
+    return $logo_height ;
+}
+
+function logo_width( )
+{
+    $logo_width = App\Setting::pluck('logo_width')->first() ? App\Setting::pluck('logo_width')->first() : "80";
+    return $logo_width ;
 }
 
 function Email_sent_log($user_id,$email_log,$email_template){

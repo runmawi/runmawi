@@ -420,19 +420,21 @@
 	<script>
 
 		                    // Image upload dimention validation
-	$.validator.addMethod('dimention', function(value, element, param) {
+		$.validator.addMethod('dimention', function(value, element, param) {
             if(element.files.length == 0){
                 return true; 
             }
 
             var width = $(element).data('imageWidth');
             var height = $(element).data('imageHeight');
-            if(width == param[0] && height == param[1]){
+            var ratio = $(element).data('imageratio');
+
+            if( ratio == '0.56' || width == param[0] && height == param[1]){
                 return true;
             }else{
                 return false;
             }
-        },'Please upload an image with 1080 x 1920 pixels dimension');
+        },'Please upload an image with 1080 x 1920 pixels dimension or 9:16 ratio');
 
                 // player Image upload validation
         $.validator.addMethod('player_dimention', function(value, element, param) {
@@ -442,19 +444,21 @@
 
             var width = $(element).data('imageWidth');
             var height = $(element).data('imageHeight');
+            var ratio = $(element).data('imageratio');
 
-            if(width == param[0] && height == param[1]){
+            if( ratio == '1.78' || width == param[0] && height == param[1]){
                 return true;
             }else{
                 return false;
             }
-        },'Please upload an image with 1280 x 720 pixels dimension');
+        },'Please upload an image with 1280 x 720 pixels dimension or 16:9 ratio');
 
 
         $('#image').change(function() {
 
             $('#image').removeData('imageWidth');
             $('#image').removeData('imageHeight');
+            $('#image').removeData('imageratio');
 
             var file = this.files[0];
             var tmpImg = new Image();
@@ -463,8 +467,12 @@
             tmpImg.onload = function() {
                 width = tmpImg.naturalWidth,
                 height = tmpImg.naturalHeight;
+				ratio =  Number(width/height).toFixed(2) ;
+
                 $('#image').data('imageWidth', width);
                 $('#image').data('imageHeight', height);
+                $('#image').data('imageratio', ratio);
+
             }
         });
 
@@ -472,6 +480,7 @@
 
             $('#player_image').removeData('imageWidth');
             $('#player_image').removeData('imageHeight');
+            $('#player_image').removeData('imageratio');
 
             var file = this.files[0];
             var tmpImg = new Image();
@@ -480,8 +489,12 @@
             tmpImg.onload = function() {
                 width = tmpImg.naturalWidth,
                 height = tmpImg.naturalHeight;
+				ratio =  Number(width/height).toFixed(2) ;
+
                 $('#player_image').data('imageWidth', width);
                 $('#player_image').data('imageHeight', height);
+                $('#player_image').data('imageratio', ratio);
+
             }
         });
 
