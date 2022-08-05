@@ -951,6 +951,10 @@ Route::group(['prefix' => 'cpp','middleware' => ['cpp']], function() {
 // Route::middleware(['prefix' => 'cpp' ,cpp::class])->group(function(){
 // Route::get('/Homeone',  'ModeratorsLoginController@Home');
 
+Route::get('payouts', 'CPPAnalyticsController@UserPayouts');
+Route::post('payouts_startdate_analytics', 'CPPAnalyticsController@PayoutsStartDateAnalytics');
+Route::post('payouts_enddate_analytics', 'CPPAnalyticsController@PayoutsEndDateAnalytics');
+Route::post('payouts_exportCsv', 'CPPAnalyticsController@PayoutsExportCsv');
 
 Route::get('video-analytics', 'CPPAnalyticsController@IndexVideoAnalytics');
 Route::post('video_startdate_analytics', 'CPPAnalyticsController@VideoStartDateAnalytics');
