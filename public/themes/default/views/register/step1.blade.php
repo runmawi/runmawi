@@ -945,6 +945,8 @@ $(document).ready(function() {
       <script src="assets/js/slick-animation.min.js"></script>
       <!-- Custom JS-->
       <script src="assets/js/custom.js"></script>
+       <script src="<?= URL::to('/'). '/assets/js/jquery.lazy.js';?>"></script>
+      <script src="<?= URL::to('/'). '/assets/js/jquery.lazy.min.js';?>"></script>
 
 
 

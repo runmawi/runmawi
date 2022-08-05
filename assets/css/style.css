@@ -801,6 +801,7 @@ a.title-dec{
 
 header .navbar ul li.menu-item .dropdown-item{
     line-height: 30px !important;
+    text-align: left;
 }
 a.dropdown-item.cont-item {
     background-color: transparent;
