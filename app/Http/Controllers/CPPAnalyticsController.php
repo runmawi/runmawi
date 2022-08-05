@@ -68,6 +68,7 @@ use App\VideoCommission as VideoCommission;
 use Mail;
 use App\EmailTemplate;
 use App\PlayerAnalytic;
+use App\ModeratorPayout;
 use Session;
 use View;
 use GuzzleHttp\Client;
@@ -402,6 +403,350 @@ class CPPAnalyticsController extends Controller
                         $each_user->cppemail,
                         $each_user->cppusername,
                         $each_user->views,
+                    ]);
+                }
+            }
+
+            fclose($handle);
+
+            \Response::download($filename, "download.csv", $headers);
+
+            return $file;
+        } else {
+            return Redirect::to("/blocked");
+        }
+    }
+
+    public function UserPayouts()
+    {
+        $user_package = User::where("id", 1)->first();
+        $package = $user_package->package;
+        if (
+            (!empty($package) && $package == "Pro") ||
+            (!empty($package) && $package == "Business")
+        ) {
+            $user = Session::get("user");
+            $user_id = $user->id;
+            $settings = Setting::first();
+            $total_content = ModeratorsUser::join(
+                "moderator_payouts",
+                "moderator_payouts.user_id",
+                "=",
+                "moderators_users.id"
+            )
+                // ->groupBy("moderators_users.id")
+                ->where("moderators_users.id", $user_id)
+                ->get([
+                    // \DB::raw("COUNT(*) as count"),
+                    \DB::raw("MONTHNAME(moderator_payouts.created_at) as month_name"),
+                    \DB::raw("moderator_payouts.*"),
+                    \DB::raw("moderators_users.username as cppusername"),
+                    \DB::raw("moderators_users.email as cppemail"),
+                    // \DB::raw("moderator_payouts.id as count"),
+                ]);
+
+
+            // dd($total_content);
+
+            $data = [
+                "settings" => $settings,
+                "total_content" => $total_content,
+                "total_video_count" => count($total_content),
+            ];
+            return view("moderator.cpp.analytics.payouts_analytics", $data);
+        } else {
+            return Redirect::to("/blocked");
+        }
+    }
+
+    public function PayoutsStartDateAnalytics(Request $request)
+    {
+        $user_package = User::where("id", 1)->first();
+        $package = $user_package->package;
+        if (
+            (!empty($package) && $package == "Pro") ||
+            (!empty($package) && $package == "Business")
+        ) {
+            $user = Session::get("user");
+            $user_id = $user->id;
+            $data = $request->all();
+
+            $start_time = $data["start_time"];
+            $end_time = $data["end_time"];
+            if (!empty($start_time) && empty($end_time)) {
+                $settings = Setting::first();
+                $total_content = ModeratorsUser::join(
+                    "moderator_payouts",
+                    "moderator_payouts.user_id",
+                    "=",
+                    "moderators_users.id"
+                )
+                    ->whereDate("moderator_payouts.created_at", ">=", $start_time)
+                    ->where("moderators_users.id", $user_id)
+                    ->get([
+                        // \DB::raw("COUNT(*) as count"),
+                        \DB::raw("MONTHNAME(moderator_payouts.created_at) as month_name"),
+                        \DB::raw("moderator_payouts.*"),
+                        \DB::raw("moderators_users.username as cppusername"),
+                        \DB::raw("moderators_users.email as cppemail"),
+                        // \DB::raw("moderator_payouts.id as count"),
+                    ]);
+            } else {
+            }
+
+            $output = "";
+            $i = 1;
+            if (count($total_content) > 0) {
+                $total_row = $total_content->count();
+                if (!empty($total_content)) {
+                    foreach ($total_content as $key => $row) {
+                        $output .=
+                            '
+              <tr>
+              <td>' .
+                            $i++ .
+                            '</td>
+              <td>' .
+                            $row->cppemail .
+                            '</td>
+              <td>' .
+                            $row->cppusername .
+                            '</td>    
+              <td>' .
+                            $row->commission_paid .
+                            '</td>    
+              <td>' .
+                            $row->commission_pending .
+                            '</td> 
+              <td>' .
+                            $row->payment_type .
+                            '</td>
+              <td>' .
+                            $row->invoice .
+                            '</td>    
+              </tr>
+              ';
+                    }
+                } else {
+                    $output = '
+          <tr>
+           <td align="center" colspan="5">No Data Found</td>
+          </tr>
+          ';
+                }
+                $value = [
+                    "table_data" => $output,
+                    "total_data" => $total_row,
+                    "total_content" => $total_content,
+                ];
+
+                return $value;
+            }
+        } else {
+            return Redirect::to("/blocked");
+        }
+    }
+
+    public function PayoutsEndDateAnalytics(Request $request)
+    {
+        $user_package = User::where("id", 1)->first();
+        $package = $user_package->package;
+        if (
+            (!empty($package) && $package == "Pro") ||
+            (!empty($package) && $package == "Business")
+        ) {
+            $user = Session::get("user");
+            $user_id = $user->id;
+            $data = $request->all();
+
+            $start_time = $data["start_time"];
+            $end_time = $data["end_time"];
+
+            if (!empty($start_time) && !empty($end_time)) {
+
+
+                $total_content = ModeratorsUser::join(
+                    "moderator_payouts",
+                    "moderator_payouts.user_id",
+                    "=",
+                    "moderators_users.id"
+                )
+                    ->whereBetween("moderator_payouts.created_at", [
+                        $start_time,
+                        $end_time,
+                    ])
+                    ->where("moderators_users.id", $user_id)
+                    ->get([
+                        // \DB::raw("COUNT(*) as count"),
+                        \DB::raw("MONTHNAME(moderator_payouts.created_at) as month_name"),
+                        \DB::raw("moderator_payouts.*"),
+                        \DB::raw("moderators_users.username as cppusername"),
+                        \DB::raw("moderators_users.email as cppemail"),
+                        // \DB::raw("moderator_payouts.id as count"),
+                    ]);
+
+            } else {
+                $total_content = [];
+            }
+
+            $output = "";
+            $i = 1;
+            if (count($total_content) > 0) {
+                $total_row = $total_content->count();
+                if (!empty($total_content)) {
+                    foreach ($total_content as $key => $row) {
+                        $output .=
+                            '
+              <tr>
+              <td>' .
+                            $i++ .
+                            '</td>
+              <td>' .
+                            $row->cppemail .
+                            '</td>
+              <td>' .
+                            $row->cppusername .
+                            '</td>    
+              <td>' .
+                            $row->commission_paid .
+                            '</td>    
+              <td>' .
+                            $row->commission_pending .
+                            '</td> 
+              <td>' .
+                            $row->payment_type .
+                            '</td>
+              <td>' .
+                            $row->invoice .
+                            '</td>     
+              </tr>
+              ';
+        }
+    } else {
+        $output = '
+          <tr>
+           <td align="center" colspan="5">No Data Found</td>
+          </tr>
+          ';
+                }
+                $value = [
+                    "table_data" => $output,
+                    "total_data" => $total_row,
+                    "total_content" => $total_content,
+                ];
+
+                return $value;
+            }
+        } else {
+            return Redirect::to("/blocked");
+        }
+    }
+
+    public function PayoutsExportCsv(Request $request)
+    {
+        $user_package = User::where("id", 1)->first();
+        $package = $user_package->package;
+        if (
+            (!empty($package) && $package == "Pro") ||
+            (!empty($package) && $package == "Business")
+        ) {
+            $user = Session::get("user");
+            $user_id = $user->id;
+            $data = $request->all();
+            // dd($data);exit;
+
+            $start_time = $data["start_time"];
+            $end_time = $data["end_time"];
+            if (!empty($start_time) && empty($end_time)) {
+                $total_content = ModeratorsUser::join(
+                    "moderator_payouts",
+                    "moderator_payouts.user_id",
+                    "=",
+                    "moderators_users.id"
+                )
+                    ->whereDate("moderator_payouts.created_at", ">=", $start_time)
+                    ->where("moderators_users.id", $user_id)
+                    ->get([
+                        // \DB::raw("COUNT(*) as count"),
+                        \DB::raw("MONTHNAME(moderator_payouts.created_at) as month_name"),
+                        \DB::raw("moderator_payouts.*"),
+                        \DB::raw("moderators_users.username as cppusername"),
+                        \DB::raw("moderators_users.email as cppemail"),
+                        // \DB::raw("moderator_payouts.id as count"),
+                    ]);
+
+            } elseif (!empty($start_time) && !empty($end_time)) {
+ 
+                    $total_content = ModeratorsUser::join(
+                        "moderator_payouts",
+                        "moderator_payouts.user_id",
+                        "=",
+                        "moderators_users.id"
+                    )
+                        ->where("moderators_users.id", $user_id)
+                        ->whereBetween("moderator_payouts.created_at", [
+                            $start_time,
+                            $end_time,
+                        ])        
+                        ->where("moderators_users.id", $user_id)
+                        ->get([
+                            // \DB::raw("COUNT(*) as count"),
+                            \DB::raw("MONTHNAME(moderator_payouts.created_at) as month_name"),
+                            \DB::raw("moderator_payouts.*"),
+                            \DB::raw("moderators_users.username as cppusername"),
+                            \DB::raw("moderators_users.email as cppemail"),
+                            // \DB::raw("moderator_payouts.id as count"),
+                        ]);
+            } else {
+                $total_content = ModeratorsUser::join(
+                    "moderator_payouts",
+                    "moderator_payouts.user_id",
+                    "=",
+                    "moderators_users.id"
+                )
+                    ->where("moderators_users.id", $user_id)
+                    ->where("moderators_users.id", $user_id)
+                    ->get([
+                        // \DB::raw("COUNT(*) as count"),
+                        \DB::raw("MONTHNAME(moderator_payouts.created_at) as month_name"),
+                        \DB::raw("moderator_payouts.*"),
+                        \DB::raw("moderators_users.username as cppusername"),
+                        \DB::raw("moderators_users.email as cppemail"),
+                        // \DB::raw("moderator_payouts.id as count"),
+                    ]);
+                    
+            }
+            $file = "CPPPayoutsAnalytics.csv";
+
+            $headers = [
+                "Content-Type" => "application/vnd.ms-excel; charset=utf-8",
+                "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+                "Content-Disposition" => "attachment; filename=download.csv",
+                "Expires" => "0",
+                "Pragma" => "public",
+            ];
+            if (!File::exists(public_path() . "/uploads/csv")) {
+                File::makeDirectory(public_path() . "/uploads/csv");
+            }
+            $filename = public_path("/uploads/csv/" . $file);
+            $handle = fopen($filename, "w");
+            fputcsv($handle, [
+                "Email",
+                "Uploader Name",
+                "Commission Paid",
+                "Commission Pending",
+                "Payment Type",
+                "Invoice",
+            ]);
+            if (count($total_content) > 0) {
+                foreach ($total_content as $each_user) {
+                    fputcsv($handle, [
+                        $each_user->cppemail,
+                        $each_user->cppusername,
+                        $each_user->commission_paid,
+                        $each_user->commission_pending,
+                        $each_user->payment_type,
+                        $each_user->invoice,
                     ]);
                 }
             }
