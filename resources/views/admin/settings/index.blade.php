@@ -170,12 +170,21 @@ border-radius: 0px 4px 4px 0px;
                         <small>(Dimensions: 180px X 29px)</small></label>
                     </div>
 
-                    <div class="panel-options d-flex justify-content-between">
-                        <input type="radio"  name="logo_size" value="square" @if($settings->logo_size != null)
-                                {{ $settings->logo_size == "square" ? 'checked' : '' }} @else {{ 'checked' }}  @endif ><p class="mt-3">Square Size </p>
-                        <input type="radio"  name="logo_size" value="rectangle" {{ $settings->logo_size == "rectangle" ? 'checked' : '' }} ><p class="mt-3">Rectangular size</p>
-                    </div>
+                    <div class="row d-flex">
 
+                        <div class="panel-body col-md-6" >
+                            <p class="p1">Enter Your Logo Width Below:</p> 
+                            <input type="text" class="form-control" name="logo_width" id="logo_width"
+                                    placeholder="Logo Width"  value="@if(!empty($settings->logo_width)){{ $settings->logo_width }}@endif" /> 
+                        </div>  <span> - </span>
+                        
+                        <div class="panel-body col-md-6" >
+                            <p class="p1">Enter Your Logo Height Below:</p>  
+                            <input type="text" class="form-control" name="logo_height" id="logo_height"
+                                    placeholder="Logo Height"  value="@if(!empty($settings->logo_height)){{ $settings->logo_height }}@endif" />
+                        </div>
+                    </div>
+                   
                     <div class="panel-options">
                         <a href="#" data-rel="collapse"><i class="entypo-down-open"></i> </a>
                     </div>
