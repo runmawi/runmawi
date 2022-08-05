@@ -34,7 +34,7 @@
                              <div class="form-group mr-2">
                     <input type="text" name="search" id="search" class="form-control" placeholder="Search Data" />
                     </div>
-                           <a href="{{ URL::to('cpp/videos/create') }}" class="btn btn-primary">Add movie</a>
+                           <a href="{{ URL::to('channel/videos/create') }}" class="btn btn-primary">Add movie</a>
                         </div>
                      </div>
                      <div class="iq-card-body table-responsive">

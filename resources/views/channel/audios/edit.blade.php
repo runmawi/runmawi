@@ -137,12 +137,11 @@
 							<div class="row">
 								<div class="col-md-6">
 								<div class="panel panel-primary col-sm-6 p-0 mt-3" data-collapsed="0"> <div class="panel-heading"> 
-								<div class="panel-title"><label class="mb-1">Audio Image Cover</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+								<div class="panel-title"><label class="mb-1">Audio Image Cover <small>( 9:16 Ratio or 1080X1920px )</small> </label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 								<div class="panel-body" style="display: block;"> 
 									@if(!empty($audio->image))
 									<img src="{{ URL::to('/'). '/public/uploads/images/' . $audio->image }}" class="audio-img" width="200"/>
 									@endif
-									<p class="p1">Select the audio image(16:9 Ratio or 1080X1920px):</p> 
 									<input type="file" multiple="true" class="form-control" name="image" id="image" />
 
 								</div> 
@@ -151,7 +150,7 @@
 								<div class="col-md-6">
 								<div class="col-sm-6 form-group">
 									
-							<label class="mb-1">Player Audio Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br>
+							<label class="mb-1">Player Audio Thumbnail <small>(16:9 Ratio or 1280X720px)</small></label><br>
 							<input type="file" name="player_image" id="player_image" >
 							@if(!empty($audio->player_image))
 								<div class="col-sm-8 p-0">
@@ -420,19 +419,21 @@
 	<script>
 
 		                    // Image upload dimention validation
-	$.validator.addMethod('dimention', function(value, element, param) {
+							$.validator.addMethod('dimention', function(value, element, param) {
             if(element.files.length == 0){
                 return true; 
             }
 
             var width = $(element).data('imageWidth');
             var height = $(element).data('imageHeight');
-            if(width == param[0] && height == param[1]){
+            var ratio = $(element).data('imageratio');
+
+            if( ratio == '0.56' || width == param[0] && height == param[1]){
                 return true;
             }else{
                 return false;
             }
-        },'Please upload an image with 1080 x 1920 pixels dimension');
+        },'Please upload an image with 1080 x 1920 pixels dimension or 9:16 ratio');
 
                 // player Image upload validation
         $.validator.addMethod('player_dimention', function(value, element, param) {
@@ -442,19 +443,21 @@
 
             var width = $(element).data('imageWidth');
             var height = $(element).data('imageHeight');
+            var ratio = $(element).data('imageratio');
 
-            if(width == param[0] && height == param[1]){
+            if( ratio == '1.78' || width == param[0] && height == param[1]){
                 return true;
             }else{
                 return false;
             }
-        },'Please upload an image with 1280 x 720 pixels dimension');
+        },'Please upload an image with 1280 x 720 pixels dimension or 16:9 ratio');
 
 
         $('#image').change(function() {
 
             $('#image').removeData('imageWidth');
             $('#image').removeData('imageHeight');
+            $('#image').removeData('imageratio');
 
             var file = this.files[0];
             var tmpImg = new Image();
@@ -463,8 +466,12 @@
             tmpImg.onload = function() {
                 width = tmpImg.naturalWidth,
                 height = tmpImg.naturalHeight;
+				ratio =  Number(width/height).toFixed(2) ;
+
                 $('#image').data('imageWidth', width);
                 $('#image').data('imageHeight', height);
+                $('#image').data('imageratio', ratio);
+
             }
         });
 
@@ -472,6 +479,7 @@
 
             $('#player_image').removeData('imageWidth');
             $('#player_image').removeData('imageHeight');
+            $('#player_image').removeData('imageratio');
 
             var file = this.files[0];
             var tmpImg = new Image();
@@ -480,8 +488,12 @@
             tmpImg.onload = function() {
                 width = tmpImg.naturalWidth,
                 height = tmpImg.naturalHeight;
+				ratio =  Number(width/height).toFixed(2) ;
+
                 $('#player_image').data('imageWidth', width);
                 $('#player_image').data('imageHeight', height);
+                $('#player_image').data('imageratio', ratio);
+
             }
         });
 
