@@ -78,7 +78,7 @@ $settings = App\Setting::find(1);
                   <div class="sign-in-from w-100 m-auto" align="center">
                       <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" style="margin-bottom:1rem;">
                       <h2 class="mb-3 text-center h">{{ __('Forgot Password') }}</h2>
-			</div>
+			
                 <div class="card-body pt-0">
                     @if (session('status'))
                         <div class="alert alert-success" role="alert" style="font-size: 15px;">
@@ -89,10 +89,9 @@ $settings = App\Setting::find(1);
                     <form method="POST" action="{{ route('password.email') }}">
                         @csrf
 
-                        <div class="form-group row">
-                            <div class=" col-sm-12">
+                       
                                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" placeholder= "email@example.com" value="{{ old('email') }}" required autocomplete="email" autofocus>
-								<p class="reset-help text-center">We will send you an email<br> with instructions on how to <br>reset your password.</p>
+								<p class="reset-help text-center">We will send you an email with instructions on how to <br>reset your password.</p>
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -102,9 +101,9 @@ $settings = App\Setting::find(1);
 								<button type="submit" class="btn btn-primary">
                                     {{ __('Send Password Reset Link') }}
                                 </button>
-                            </div>
-                        </div>
+                          
                     </form>
+                     </div>
                 </div>
             </div>
         </div>
