@@ -51,6 +51,12 @@ border-radius: 0px 4px 4px 0px;
         color: rgba(66, 149, 210, 1);
 
     }
+
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+        -webkit-appearance: none; 
+        margin: 0; 
+    }
 </style>
 @section('css')
 	<style type="text/css">
@@ -174,13 +180,13 @@ border-radius: 0px 4px 4px 0px;
 
                         <div class="panel-body col-md-6" >
                             <p class="p1">Enter Your Logo Width Below:</p> 
-                            <input type="text" class="form-control" name="logo_width" id="logo_width"
+                            <input type="number" class="form-control" name="logo_width" id="logo_width"
                                     placeholder="Logo Width"  value="@if(!empty($settings->logo_width)){{ $settings->logo_width }}@endif" /> 
-                        </div>  <span> - </span>
+                        </div>  
                         
                         <div class="panel-body col-md-6" >
                             <p class="p1">Enter Your Logo Height Below:</p>  
-                            <input type="text" class="form-control" name="logo_height" id="logo_height"
+                            <input type="number" class="form-control" name="logo_height" id="logo_height"
                                     placeholder="Logo Height"  value="@if(!empty($settings->logo_height)){{ $settings->logo_height }}@endif" />
                         </div>
                     </div>
