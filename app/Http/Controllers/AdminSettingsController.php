@@ -954,11 +954,13 @@ if($watermark != '') {
     public function compress_image(Request $request)
     {
         $Compress_image = CompressImage::first();
+
         return view ('admin.settings.compress_image',compact('Compress_image',$Compress_image));
     }
 
     public function compress_image_store(Request $request)
     {
+
       $CompressImage = CompressImage::first();
 
       if($CompressImage == null){
@@ -967,6 +969,12 @@ if($watermark != '') {
             'compress_resolution_size' => $request->compress_resolution_size,
             'compress_resolution_format' => $request->compress_resolution_format,
             'enable_compress_image'   => ( $request->enable_compress_image == null ) ? '0' : '1'  ,
+            'videos'                  => ( $request->videos == null ) ? '0' : '1'  ,
+            'live'                    => ( $request->live == null ) ? '0' : '1'  ,
+            'series'                  => ( $request->series == null ) ? '0' : '1'  ,
+            'season'                  => ( $request->season == null ) ? '0' : '1'  ,
+            'episode'                 => ( $request->episode == null ) ? '0' : '1'  ,
+            'audios'                  => ( $request->audios == null ) ? '0' : '1'  ,
           ]);
 
       }else{
@@ -975,6 +983,12 @@ if($watermark != '') {
             'compress_resolution_size' => $request->compress_resolution_size,
             'compress_resolution_format' => $request->compress_resolution_format,
             'enable_compress_image'   => ( $request->enable_compress_image == null ) ? '0' : '1'  ,
+            'videos'                  => ( $request->videos == null ) ? '0' : '1'  ,
+            'live'                    => ( $request->live == null ) ? '0' : '1'  ,
+            'series'                  => ( $request->series == null ) ? '0' : '1'  ,
+            'season'                  => ( $request->season == null ) ? '0' : '1'  ,
+            'episode'                 => ( $request->episode == null ) ? '0' : '1'  ,
+            'audios'                  => ( $request->audios == null ) ? '0' : '1'  ,
         ]);
 
       }

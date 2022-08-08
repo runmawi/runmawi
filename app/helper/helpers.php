@@ -578,6 +578,42 @@ function logo_width( )
     return $logo_width ;
 }
 
+function image_validation_videos(){
+
+    $image_validation_videos = App\CompressImage::pluck('videos')->first() ? App\CompressImage::pluck('videos')->first() : "0";
+    return $image_validation_videos ;
+}
+
+function image_validation_live(){
+
+     $image_validation_live = App\CompressImage::pluck('live')->first() ? App\CompressImage::pluck('live')->first() : "0";
+    return $image_validation_live ;
+}
+
+function image_validation_series(){
+
+    $image_validation_series = App\CompressImage::pluck('series')->first() ? App\CompressImage::pluck('series')->first() : "0";
+    return $image_validation_series ;
+}
+
+function image_validation_season(){
+
+    $image_validation_season = App\CompressImage::pluck('season')->first() ? App\CompressImage::pluck('season')->first() : "0";
+    return $image_validation_season ;
+}
+
+function image_validation_episode(){
+
+    $image_validation_episode = App\CompressImage::pluck('episode')->first() ? App\CompressImage::pluck('episode')->first() : "0";
+    return $image_validation_episode ;
+}
+
+function image_validation_audio(){
+
+    $image_validation_audio = App\CompressImage::pluck('audios')->first() ? App\CompressImage::pluck('audios')->first() : "0";
+    return  $image_validation_audio ;
+}
+
 function Email_sent_log($user_id,$email_log,$email_template){
 
     App\EmaillogsDetail::create([
@@ -603,3 +639,5 @@ function Email_notsent_log($user_id,$email_log,$email_template){
     return 'Some Error In Sending Mail, Please take support from Admin' ;
     
 }
+
+
