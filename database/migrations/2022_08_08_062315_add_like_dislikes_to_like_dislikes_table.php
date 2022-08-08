@@ -14,7 +14,7 @@ class AddLikeDislikesToLikeDislikesTable extends Migration
     public function up()
     {
         Schema::table('like_dislikes', function (Blueprint $table) {
-            $table->integer('live_id')->nullable();
+            $table->tinyInteger('live_id')->nullable()->after('audio_id');
 
         });
     }
