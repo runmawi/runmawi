@@ -50,6 +50,107 @@
                         </div>
                     </div>
 
+                    <div class="iq-card-header d-flex justify-content-between mb-3">
+                        <div class="iq-header-title">
+                           <h4 class="card-title">{{ 'Dimension Image validation' }}</h4>
+                        </div>
+                    </div>
+
+                    <div class="iq-card-body table-responsive p-0">
+                        <div class="table-view">
+                           <table class="table table-striped table-bordered table movie_table iq-card" style="width:100%" id="Thumbnail">
+                              <thead>
+                                 <tr class="r1">
+                                    <th>S.No</th>
+                                    <th>Name</th>
+                                    <th>Status</th>
+                                 </tr>
+                              </thead>
+                           @csrf 
+                                <tbody>
+                                   <td> {{ '1'}} </td>
+                                   <td> {{ 'Videos'}} </td>
+                                   <td> 
+                                       <div class="mt-1">
+                                           <label class="switch">
+                                               <input name="videos" class="videos" id="videos" type="checkbox" @if( $Compress_image != null &&  $Compress_image->videos == "1") checked   @endif>
+                                               <span class="slider round"></span>
+                                           </label>
+                                       </div>
+                                   </td>
+                                </tbody>
+
+                                <tbody>
+                                    <td> {{ "2" }} </td>
+                                    <td> {{ 'Live Videos'}} </td>
+                                    <td> 
+                                        <div class="mt-1">
+                                            <label class="switch">
+                                                <input name="live" class="live" id="live" type="checkbox" @if(  $Compress_image != null &&  $Compress_image->live == "1") checked  @endif  >
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                </tbody>
+
+
+                                <tbody>
+                                    <td> {{ "3" }} </td>
+                                    <td> {{ 'Series' }} </td>
+                                    <td> 
+                                        <div class="mt-1">
+                                            <label class="switch">
+                                                <input name="series" class="series" id="series" type="checkbox" @if(  $Compress_image != null &&  $Compress_image->series == "1") checked  @endif  >
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                </tbody>
+
+                                <tbody>
+                                    <td> {{ "4" }} </td>
+                                    <td> {{ 'Season' }} </td>
+                                    <td> 
+                                        <div class="mt-1">
+                                            <label class="switch">
+                                                <input name="season" class="season" id="season" type="checkbox" @if(  $Compress_image != null &&  $Compress_image->season == "1") checked  @endif >
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                </tbody>
+
+                                <tbody>
+                                    <td> {{ "5" }} </td>
+                                    <td> {{ 'Episode' }} </td>
+                                    <td> 
+                                        <div class="mt-1">
+                                            <label class="switch">
+                                                <input name="episode" class="episode" id="episode" type="checkbox"  @if(  $Compress_image != null &&  $Compress_image->episode == "1") checked  @endif >
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                </tbody>
+
+                                <tbody>
+                                    <td> {{ "6" }} </td>
+                                    <td> {{ 'Audio' }} </td>
+                                    <td> 
+                                        <div class="mt-1">
+                                            <label class="switch">
+                                                <input name="audios" class="audios" id="audios" type="checkbox" @if(  $Compress_image != null &&  $Compress_image->audios == "1") checked  @endif >
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                </tbody>
+
+                               </table>
+                        </div>
+                     </div>
+
+
                     <div class="col-md-12 form-group" align="right">
                         <button type="submit" class="btn btn-primary" >Update</button>
                     </div>

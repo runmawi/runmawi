@@ -53,6 +53,7 @@ class DatabaseSeeder extends Seeder
             OrderHomeSettingSeeder::class,
             MobileHomePageTableSeeder::class,
             FooterMenuSeeder::class,
+            CompressImageSeeder::class,
         ]);
     
     }
