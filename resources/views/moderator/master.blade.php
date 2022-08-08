@@ -282,6 +282,7 @@ for($i=0;$i<(count($userrolepermissiom));$i++){
                      <ul id="analytics_managements" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('/cpp/video-analytics') }}"><i class="las la-user-plus"></i>Video Analytics </a></li>
                         <li><a href="{{ URL::to('/cpp/view_by_region') }}"><i class="las la-user-plus"></i>Video View BY Region  </a></li>
+                        <li><a href="{{ URL::to('/cpp/payouts') }}"><i class="las la-user-plus"></i>Payouts </a></li>
                      </ul>
                   </li>
                   
@@ -347,6 +348,7 @@ for($i=0;$i<(count($userrolepermissiom));$i++){
                      <ul id="analytics_managements" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('/cpp/video-analytics') }}"><i class="las la-user-plus"></i>Video Analytics </a></li>
                         <li><a href="{{ URL::to('/cpp/view_by_region') }}"><i class="las la-user-plus"></i>Video View BY Region  </a></li>
+                        <li><a href="{{ URL::to('/cpp/payouts') }}"><i class="las la-user-plus"></i>Payouts </a></li>
                      </ul>
                   </li>
                    <?php }else{
