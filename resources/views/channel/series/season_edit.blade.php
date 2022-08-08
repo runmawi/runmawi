@@ -72,6 +72,10 @@
     display: inline-block;
     cursor: pointer;
 }
+.error{
+	font-size: 14px;
+    color: red;
+}
 </style>
 @section('css')
 <link rel="stylesheet" href="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.css') }}" />
@@ -160,7 +164,7 @@
                                     @if(!empty($episodes->image))
                                     <img src="{{ Config::get('site.uploads_dir') . 'images/' . $episodes->image }}" class="episodes-img" width="200" />
                                     @endif
-                                    <p class="p1">Select the episodes image (1080 X 1920px or 16:9 ratio):</p>
+                                    <p class="p1">Select the episodes image (1080X1920px / 1280X720px Or 9:16 / 16:9 Ratio):</p>
                                     <input type="file" multiple="true" class="form-control" name="image" id="image" />
                                 </div>
                             </div>
@@ -168,7 +172,7 @@
                         
                         <div class="col-sm-6">
                         <label class="m-0">Episode Player Image</label>
-                        <p class="p1">Select the player image (16:9 Ratio or 1280X720px)</p>
+                        <p class="p1">Select the player image (1280X720px 16:9 Ratio )</p>
 
                         <div class="panel-body">
                             @if(!empty($episodes->player_image))
@@ -694,12 +698,15 @@ var tagInput1 = new TagsInput({
 
             var width = $(element).data('imageWidth');
             var height = $(element).data('imageHeight');
-            if(width == param[0] && height == param[1]){
+            var ratio = $(element).data('imageratio');
+
+
+            if( ratio == '0.56' || ratio == '1.78' || width == param[0] && height == param[1]){
                 return true;
             }else{
                 return false;
             }
-        },'Please upload an image with 1080 x 1920 pixels dimension');
+        },'Please upload an image with 1080 x 1920 pixels dimension or 9:16 Ratio or 16:9 Ratio ');
 
                 // player Image upload validation
         $.validator.addMethod('player_dimention', function(value, element, param) {
@@ -709,19 +716,20 @@ var tagInput1 = new TagsInput({
 
             var width = $(element).data('imageWidth');
             var height = $(element).data('imageHeight');
+            var ratio = $(element).data('imageratio');
 
-            if(width == param[0] && height == param[1]){
+            if( ratio == '1.78'|| width == param[0] && height == param[1]){
                 return true;
             }else{
                 return false;
             }
-        },'Please upload an image with 1280 x 720 pixels dimension');
+        },'Please upload an image with 1280 x 720 pixels dimension  or 16:9 Ratio');
 
 
         $('#image').change(function() {
-
             $('#image').removeData('imageWidth');
             $('#image').removeData('imageHeight');
+            $('#image').removeData('imageratio');
 
             var file = this.files[0];
             var tmpImg = new Image();
@@ -730,8 +738,11 @@ var tagInput1 = new TagsInput({
             tmpImg.onload = function() {
                 width = tmpImg.naturalWidth,
                 height = tmpImg.naturalHeight;
+				ratio =  Number(width/height).toFixed(2) ;
                 $('#image').data('imageWidth', width);
                 $('#image').data('imageHeight', height);
+                $('#image').data('imageratio', ratio);
+
             }
         });
 
@@ -739,6 +750,7 @@ var tagInput1 = new TagsInput({
 
             $('#player_image').removeData('imageWidth');
             $('#player_image').removeData('imageHeight');
+            $('#player_image').removeData('imageratio');
 
             var file = this.files[0];
             var tmpImg = new Image();
@@ -747,10 +759,15 @@ var tagInput1 = new TagsInput({
             tmpImg.onload = function() {
                 width = tmpImg.naturalWidth,
                 height = tmpImg.naturalHeight;
+				ratio =  Number(width/height).toFixed(2) ;
+
                 $('#player_image').data('imageWidth', width);
                 $('#player_image').data('imageHeight', height);
+                $('#player_image').data('imageratio', ratio);
+
             }
         });
+
 
 
         $('form[id="Episode_new"]').validate({
