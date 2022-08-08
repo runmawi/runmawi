@@ -817,17 +817,17 @@ data: {
                             </div> 
                             <div class="row">
                             <div class="col-sm-6 form-group">
-                              <label class="mb-1">Video Thumbnail <span>(16:9 Ratio or 720X1080px)</span></label><br>
+                              <label class="mb-1">Video Thumbnail <span>(9:16 Ratio or 1080X1920px)</span></label><br>
                                  <input type="file" name="image" id="image" >
-                                 <span><p id="image_error_msg" style="color:red;" >* Please upload an image with 1080 x 1920 pixels dimension </p></span>
+                                 <span><p id="image_error_msg" style="color:red;" >* Please upload an image with 1080 x 1920 pixels dimension or 9:16 </p></span>
                                  @if(!empty($video->image))
                                  <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" class="video-img" width="200" height="200"/>
                                  @endif
                               </div>
                               <div class="col-sm-6 form-group">
-                              <label class="mb-1">Player Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br>
+                              <label class="mb-1">Player Thumbnail <span>(9:16 Ratio or 1280X720px)</span></label><br>
                               <input type="file" name="player_image" id="player_image" >
-                              <span><p id="player_image_error_msg" style="color:red;" >* Please upload an image with 1280 x 720 pixels dimension </p></span>
+                              <span><p id="player_image_error_msg" style="color:red;" >* Please upload an image with 1280 x 720 pixels dimension or 16:9 Ratio </p></span>
                               @if(!empty($video->player_image))
                               <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->player_image }}" class="video-img" width="200" height="200"/>
                               @endif
@@ -1905,58 +1905,65 @@ $(document).ready(function(){
 
 
     $('#image').on('change', function(event) {
- 
-          $('#image').removeData('imageWidth');
-          $('#image').removeData('imageHeight');
- 
-          var file = this.files[0];
-          var tmpImg = new Image();
- 
-          tmpImg.src=window.URL.createObjectURL( file ); 
-          tmpImg.onload = function() {
-              width = tmpImg.naturalWidth,
-              height = tmpImg.naturalHeight;
-              $('#image').data('imageWidth', width);
-              $('#image').data('imageHeight', height);
- 
-              if(width == '1080' && height == '1920' ){
+
+        $('#image').removeData('imageWidth');
+        $('#image').removeData('imageHeight');
+        $('#image').removeData('imageratio');
+
+        var file = this.files[0];
+        var tmpImg = new Image();
+
+        tmpImg.src=window.URL.createObjectURL( file ); 
+        tmpImg.onload = function() {
+            width = tmpImg.naturalWidth,
+            height = tmpImg.naturalHeight;
+                ratio =  Number(width/height).toFixed(2) ;
+
+            $('#image').data('imageWidth', width);
+            $('#image').data('imageHeight', height);
+            $('#image').data('imageratio', ratio);
+
+            if( ratio == '0.56'|| width == '1080' && height == '1920' ){
                 $('.update_upload_img').removeAttr('disabled');
                 $('#image_error_msg').hide();
-              }
-              else{
+            }
+            else{
                 $('.update_upload_img').attr('disabled','disabled');
                 $('#image_error_msg').show();
-              }
-          }
-      });
- 
-      
-    $('#player_image').on('change', function(event) {
- 
-       
-       $('#player_image').removeData('imageWidth');
-       $('#player_image').removeData('imageHeight');
- 
-       var file = this.files[0];
-       var tmpImg = new Image();
- 
-       tmpImg.src=window.URL.createObjectURL( file ); 
-       tmpImg.onload = function() {
-          width = tmpImg.naturalWidth,
-          height = tmpImg.naturalHeight;
-          $('#player_image').data('imageWidth', width);
-          $('#player_image').data('imageHeight', height);
- 
-          if(width == '1280' && height == '720' ){
-             $('.update_upload_img').removeAttr('disabled');
-             $('#player_image_error_msg').hide();
-          }
-          else{
-             $('.update_upload_img').attr('disabled','disabled');
-             $('#player_image_error_msg').show();
-          }
-       }
-    });
+            }
+        }
+        });
+
+
+        $('#player_image').on('change', function(event) {
+
+            $('#player_image').removeData('imageWidth');
+            $('#player_image').removeData('imageHeight');
+            $('#player_image').removeData('imageratio');
+
+            var file = this.files[0];
+            var tmpImg = new Image();
+
+            tmpImg.src=window.URL.createObjectURL( file ); 
+            tmpImg.onload = function() {
+            width = tmpImg.naturalWidth,
+            height = tmpImg.naturalHeight;
+            ratio =  Number(width/height).toFixed(2) ;
+
+            $('#player_image').data('imageWidth', width);
+            $('#player_image').data('imageHeight', height);
+            $('#player_image').data('imageratio', ratio);
+
+            if( ratio == '1.78' || width == '1280' && height == '720' ){
+                $('.update_upload_img').removeAttr('disabled');
+                $('#player_image_error_msg').hide();
+            }
+            else{
+                $('.update_upload_img').attr('disabled','disabled');
+                $('#player_image_error_msg').show();
+            }
+            }
+        });
 });
 
  </script>

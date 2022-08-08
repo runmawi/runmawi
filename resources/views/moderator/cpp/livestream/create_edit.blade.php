@@ -112,7 +112,7 @@
                     <div class="row mt-3">
                                         <div class="col-sm-6">
                                             <label class="m-0">Video Image Cover</label>
-                                            <p class="p1">Select the video image (1080x1920 px or 16:9 ratio):</p>
+                                            <p class="p1">Select the video image (1080x1920 px or 9:16 ratio):</p>
 
                                             <div class="panel-body">
                                                 <input type="file" multiple="true" class="form-group" name="image" id="image" />

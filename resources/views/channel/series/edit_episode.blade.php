@@ -55,23 +55,29 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                 </div>
                 @endif
             </div>
-            <div class="col-md-6">
-                <label for=""><h3 class="fs-title m-0">Embed Link:</h3></label>
-                <p>Click <a href="#"onclick="EmbedCopy();" class="share-ico"><i class="ri-links-fill"></i> here</a> to get the Embedded URL</p>
-            <div>
-            <div class="col-md-6">
-                <label for=""><h3 class="fs-title m-0">Social Share:</h3></label>
-                <div class="share-box">
-                    <a href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" class="share-ico"><i class="ri-facebook-fill"></i></a>&nbsp;  <!-- Facebook -->
-                    <a href="https://twitter.com/intent/tweet?text=<?= $media_url ?>" class="share-ico"><i class="ri-twitter-fill"></i></a> <!-- Twitter -->
-                </div>
-            </div>
+            
 
             <hr />
             <div class="clear"></div>
 
             <form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="Episode_edit">
                 
+
+                <div class="row ">
+                    <div class="col-md-6 mb-3">
+                        <label class="m-0" ><h4 class="fs-title m-0">Embed Link:</h4></label>
+                        <p>Click <a href="#"onclick="EmbedCopy();" class="share-ico"><i class="ri-links-fill"></i> here</a> to get the Embedded URL</p>
+                    </div>
+    
+                    <div class="col-md-6 mb-3">
+                        <label class="m-0" ><h4 class="fs-title m-0">Social Share:</h4></label>
+                        <div class="share-box">
+                            <a href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" class="share-ico"><i class="ri-facebook-fill"></i></a>&nbsp;  <!-- Facebook -->
+                            <a href="https://twitter.com/intent/tweet?text=<?= $media_url ?>" class="share-ico"><i class="ri-twitter-fill"></i></a> <!-- Twitter -->
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row">
                     <div class="col-sm-6 mb-3">
                         <label class="m-0">Title</label>
@@ -105,7 +111,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                 <div class="row mb-3">
                     <div class="col-sm-6">
                         <label class="m-0">Episode Image Cover</label>
-                        <p class="p1">Select the episodes image (1080 X 1920px or 9:16 ratio)</p>
+                        <p class="p1">Select the episodes image (1080X1920px / 1280X720px or 9:16 / 16:9 ratio)</p>
 
                         <div class="panel-body">
                             @if(!empty($episodes->image))
@@ -116,7 +122,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                     </div>
                     <div class="col-sm-6">
                         <label class="m-0">Episode Player Image</label>
-                        <p class="p1">Select the player image (16:9 Ratio or 1280X720px)</p>
+                        <p class="p1">Select the player image ( 1280X720px or 16:9 Ratio)</p>
 
                         <div class="panel-body">
                             @if(!empty($episodes->player_image))
@@ -146,7 +152,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                             <label class="m-0">Search Tags</label>
 
                                 <div class="panel-body">
-								<input type="text" id="tag-input1" name="searchtags">
+								<input type="text" id="tag-input1" class="form-control" name="searchtags">
 
                              </div>
                         </div>
@@ -158,7 +164,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                         <p class="p1">Episode Format</p>
 
                         <div class="panel-body">
-                            <select id="type" name="type">
+                            <select id="type" name="type" class="form-control">
                                 <option value="embed">Embed Code</option>
                                 <option value="file" @if(!empty($episodes->type) && $episodes->type == 'file'){{ 'selected' }}@endif>Episode File</option>
                                 <option value="upload" @if(!empty($episodes->type) && $episodes->type == 'upload'){{ 'selected' }}@endif>Upload Episode</option>
@@ -506,20 +512,22 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                 return skip_recap > recap_end_time;
             });
 
-                 // Image upload dimention validation
-        $.validator.addMethod('dimention', function(value, element, param) {
+                // Image upload dimention validation
+                $.validator.addMethod('dimention', function(value, element, param) {
             if(element.files.length == 0){
                 return true; 
             }
 
             var width = $(element).data('imageWidth');
             var height = $(element).data('imageHeight');
-            if(width == param[0] && height == param[1]){
+            var ratio = $(element).data('imageratio');
+
+            if( ratio == '0.56'|| ratio == '1.78' || width == param[0] && height == param[1]){
                 return true;
             }else{
                 return false;
             }
-        },'Please upload an image with 1080 x 1920 pixels dimension');
+        },'Please upload an image with 1080 x 1920 pixels dimension  or 9:16 Ratio or 16:9 Ratio ');
 
                 // player Image upload validation
         $.validator.addMethod('player_dimention', function(value, element, param) {
@@ -529,19 +537,21 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
 
             var width = $(element).data('imageWidth');
             var height = $(element).data('imageHeight');
+            var ratio = $(element).data('imageratio');
 
-            if(width == param[0] && height == param[1]){
+            if( ratio == '1.78'||  width == param[0] && height == param[1]){
                 return true;
             }else{
                 return false;
             }
-        },'Please upload an image with 1280 x 720 pixels dimension');
+        },'Please upload an image with 1280 x 720 pixels dimension  or 16:9 Ratio');
 
 
         $('#image').change(function() {
 
             $('#image').removeData('imageWidth');
             $('#image').removeData('imageHeight');
+            $('#image').removeData('imageratio');
 
             var file = this.files[0];
             var tmpImg = new Image();
@@ -550,8 +560,11 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
             tmpImg.onload = function() {
                 width = tmpImg.naturalWidth,
                 height = tmpImg.naturalHeight;
+				ratio =  Number(width/height).toFixed(2) ;
                 $('#image').data('imageWidth', width);
                 $('#image').data('imageHeight', height);
+                $('#image').data('imageratio', ratio);
+
             }
         });
 
@@ -559,6 +572,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
 
             $('#player_image').removeData('imageWidth');
             $('#player_image').removeData('imageHeight');
+            $('#player_image').removeData('imageratio');
 
             var file = this.files[0];
             var tmpImg = new Image();
@@ -567,10 +581,13 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
             tmpImg.onload = function() {
                 width = tmpImg.naturalWidth,
                 height = tmpImg.naturalHeight;
+				ratio =  Number(width/height).toFixed(2) ;
                 $('#player_image').data('imageWidth', width);
                 $('#player_image').data('imageHeight', height);
+                $('#player_image').data('imageratio', ratio);
             }
         });
+
 
 
         $("#Episode_edit").validate({
