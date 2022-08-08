@@ -7215,4 +7215,103 @@ public function Adstatus_upate(Request $request)
     return response()->json($response, 200); 
   }
 
+  public function livelike_ios(Request $request)
+  {
+    $user_id = $request->user_id;
+    $live_id = $request->live_id;
+
+    $like_count = Likedislike::where("live_id",$live_id)->where("user_id",$user_id)->count();
+    $like_counts = Likedislike::where("live_id",$live_id)->where("user_id",$user_id)->where('liked','=' ,'1')->count();
+    $unlike_count = Likedislike::where("live_id",$live_id)->where("user_id",$user_id)->where('liked', 0)->count();
+
+    if($like_count > 0){
+
+      if($like_counts > 0){
+        Likedislike::where("live_id",$live_id)->where("user_id",$user_id)->where('liked','=' ,'1')
+        ->update([
+                'user_id'  => $user_id ,
+                'live_id' => $live_id ,
+                'liked'    => '0' ,
+                'disliked'    => '0',
+              ]);
+
+      }elseif( $unlike_count > 0){
+          Likedislike::where("live_id",$live_id)->where("user_id",$user_id)->where('liked',0)
+          ->update([
+                  'user_id'  => $user_id ,
+                  'live_id' => $live_id ,
+                  'liked'    => '1' ,
+                  'disliked'    => '0',
+                ]);
+      }
+      
+    }
+    else{
+        Likedislike::create([
+          'user_id'  => $user_id ,
+          'live_id' => $live_id ,
+          'liked'    => '1' ,
+          'disliked'    => '0' ,
+        ]);
+    }
+
+    $response = array(
+      'status'=>'true',
+      'like'  =>  Likedislike::where("live_id",$live_id)->where("user_id",$user_id)->pluck('liked')->first(),
+      'dislike'  =>   Likedislike::where("live_id",$live_id)->where("user_id",$user_id)->pluck('disliked')->first(),
+    );
+    
+    return response()->json($response, 200); 
+
+  }
+
+  public function livedislike_ios(Request $request)
+  {
+      $user_id = $request->user_id;
+      $live_id = $request->live_id;
+
+      $dislike_count = Likedislike::where("live_id",$live_id)->where("user_id",$user_id)->count();
+      $dislike_counts = Likedislike::where("live_id",$live_id)->where("user_id",$user_id)->where('disliked',1)->count();
+      $undislike_count = Likedislike::where("live_id",$live_id)->where("user_id",$user_id)->where('disliked', 0)->count();
+
+      if($dislike_count > 0){
+
+        if($dislike_counts > 0){
+          Likedislike::where("live_id",$live_id)->where("user_id",$user_id)->where('disliked','=' ,'1')
+          ->update([
+                  'user_id'  => $user_id ,
+                  'live_id' => $live_id ,
+                  'liked'    => '0' ,
+                  'disliked'    => '0',
+                ]);
+  
+        }elseif( $undislike_count > 0){
+            Likedislike::where("live_id",$live_id)->where("user_id",$user_id)->where('disliked',0)
+            ->update([
+                    'user_id'  => $user_id ,
+                    'live_id' => $live_id ,
+                    'liked'    => '0' ,
+                    'disliked'    => '1',
+                  ]);
+        }
+
+        
+      }else{
+          Likedislike::create([
+            'user_id'  => $user_id ,
+            'live_id' => $live_id ,
+            'liked'    => '0',
+            'disliked'    => '1',
+          ]);
+      }
+
+      $response = array(
+        'status'=>'true',
+        'like'  =>  Likedislike::where("live_id",$live_id)->where("user_id",$user_id)->pluck('liked')->first(),
+        'dislike'  =>   Likedislike::where("live_id",$live_id)->where("user_id",$user_id)->pluck('disliked')->first(),
+      );
+      
+      return response()->json($response, 200); 
+  }
+
 }
