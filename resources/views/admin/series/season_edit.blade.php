@@ -695,9 +695,10 @@ var tagInput1 = new TagsInput({
             var width = $(element).data('imageWidth');
             var height = $(element).data('imageHeight');
             var ratio = $(element).data('imageratio');
+            var image_validation_status = "{{  image_validation_episode() }}" ;
 
 
-            if( ratio == '0.56' || ratio == '1.78' || width == param[0] && height == param[1]){
+            if( image_validation_status == "0" || ratio == '0.56' || ratio == '1.78' || width == param[0] && height == param[1]){
                 return true;
             }else{
                 return false;
@@ -713,8 +714,9 @@ var tagInput1 = new TagsInput({
             var width = $(element).data('imageWidth');
             var height = $(element).data('imageHeight');
             var ratio = $(element).data('imageratio');
+            var image_validation_status = "{{  image_validation_episode() }}" ;
 
-            if( ratio == '1.78'|| width == param[0] && height == param[1]){
+            if( image_validation_status == "0" || ratio == '1.78'|| width == param[0] && height == param[1]){
                 return true;
             }else{
                 return false;

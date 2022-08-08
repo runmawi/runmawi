@@ -2454,12 +2454,13 @@ if(this.textContent === 'destroy') {
                 width = tmpImg.naturalWidth,
                 height = tmpImg.naturalHeight;
 				    ratio =  Number(width/height).toFixed(2) ;
+                image_validation_status = "{{  image_validation_videos() }}" ;
 
                 $('#image').data('imageWidth', width);
                 $('#image').data('imageHeight', height);
                 $('#image').data('imageratio', ratio);
 
-                if( ratio == '0.56'|| width == '1080' && height == '1920' ){
+                if(  image_validation_status == "0" || ratio == '0.56'|| width == '1080' && height == '1920' ){
                   $('.update_upload_img').removeAttr('disabled');
                   $('#image_error_msg').hide();
                 }
@@ -2486,12 +2487,13 @@ if(this.textContent === 'destroy') {
             width = tmpImg.naturalWidth,
             height = tmpImg.naturalHeight;
 			   ratio =  Number(width/height).toFixed(2) ;
+            image_validation_status = "{{  image_validation_videos() }}" ;
 
             $('#player_image').data('imageWidth', width);
             $('#player_image').data('imageHeight', height);
             $('#player_image').data('imageratio', ratio);
 
-            if( ratio == '1.78' || width == '1280' && height == '720' ){
+            if(  image_validation_status == "0" || ratio == '1.78' || width == '1280' && height == '720' ){
                $('.update_upload_img').removeAttr('disabled');
                $('#player_image_error_msg').hide();
             }
