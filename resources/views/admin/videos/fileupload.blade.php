@@ -186,10 +186,10 @@
                            <div class="col-md-9 text-center">
                            <p class="c1" style="margin-left: 25%;">Trailers Can Be Uploaded From Video Edit Screen</p>
                            </div>
-                           <div class="col-md-3" style="display: flex;" >
+                           <!-- <div class="col-md-3" style="display: flex;" >
                            <p id="speed">speed: 0kbs</p>&nbsp;&nbsp;&nbsp;
                            <p id="average">average: 0kbs</p>
-                           </div>
+                           </div> -->
                         </div>
                      </div>
                      
