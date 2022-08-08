@@ -387,7 +387,7 @@ return view('register.step3', [
             'billing_interval' => $plandetail->billing_interval,
             /*'next_billing' => $nextPaymentAttemptDate,*/
         ), function($message) use ($request,$user){
-            $message->from(AdminMail(),'Eliteclub');
+            $message->from(AdminMail(),GetWebsiteName());
             $message->to($request->session()->get('register.email'), $user->username)->subject($request->get('subject'));
         });
         $user->role = 'subscriber';
@@ -422,7 +422,7 @@ return view('register.step3', [
             'billing_interval' => $plandetail->billing_interval,
     //                                'next_billing' => $nextPaymentAttemptDate,
         ), function($message) use ($request,$user){
-            $message->from(AdminMail(),'Eliteclub');
+            $message->from(AdminMail(),GetWebsiteName());
             $message->to($request->session()->get('register.email'), $user->username)->subject($request->get('subject'));
         });
         $user->role = 'subscriber';

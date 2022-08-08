@@ -307,7 +307,7 @@ if($request->picture == ""){
         'website_name' => $settings->website_name, 
 
         ), function($message) use ($request,$template,$heading) {
-        $message->from(AdminMail(),'Flicknexs');
+        $message->from(AdminMail(),GetWebsiteName());
         $message->to($request->email_id, $request->username)->subject($heading.$request->username);
         });
     // \Mail::send('emails.verify', array('activation_code' => $string, 'website_name' => $settings->website_name),
