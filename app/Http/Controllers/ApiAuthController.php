@@ -848,7 +848,7 @@ public function verifyandupdatepassword(Request $request)
       });
 
       $response = array(
-        'status'=>'true',
+        // 'status'=>'true',
         'latestvideos' => $latestvideos
       ); 
       return response()->json($response, 200);
