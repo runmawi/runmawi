@@ -342,19 +342,20 @@ class ChannelAudioController extends Controller
             $data['ppv_price'] = $request->ppv_price;
             $data['ios_ppv_price'] = $request->ios_ppv_price;
 
-            /*Slug*/
-            if ($audio->slug != $request->slug)
-            {
-                // $data['slug'] = $this->createSlug($request->slug, $id);
-                $data['slug'] = $request->slug;
 
-            }
+            if(  $data['slug']  == '' || $audio->slug == '' ){
 
-            if ($request->slug == '' || $audio->slug == '')
-            {
-                // $data['slug'] = $this->createSlug($data['title']);
-                $data['slug'] = $data['title'];
+                $slug = Audio::where('slug',$data['title'])->first();
+    
+                $data['slug']  = $slug == null ?  str_replace(' ', '_', $data['title']) : str_replace(' ', '_', $data['title'].'-'.$id) ;
+            }else{
+    
+                $slug = Audio::where('slug',$data['slug'])->first();
+    
+                $data['slug'] = $slug == null ?  str_replace(' ', '_', $data['slug']) : str_replace(' ', '_', $data['slug'].'-'.$id) ;
             }
+            
+
             if (isset($data['duration']))
             {
                 //$str_time = $data
@@ -756,15 +757,18 @@ class ChannelAudioController extends Controller
             
 
             /*Slug*/
-            if ($audio->slug != $request->slug)
-            {
-                $data['slug'] = $request->slug;
-            }
+            if(  $data['slug']  == '' || $audio->slug == ''){
 
-            if ($request->slug == '' || $audio->slug == '')
-            {
-                $data['slug'] = ($data['title']);
+                $slug = Audio::whereNotIn('id',[$id])->where('slug',$data['title'])->first();
+    
+                $data['slug']  = $slug == null ?  str_replace(' ', '_', $data['title']) : str_replace(' ', '_', $data['title'].'-'.$id) ;
+            }else{
+    
+                $slug = Audio::whereNotIn('id',[$id])->where('slug',$data['slug'])->first();
+    
+                $data['slug'] = $slug == null ?  str_replace(' ', '_', $data['slug']) : str_replace(' ', '_', $data['slug'].'-'.$id) ;
             }
+    
             if (isset($data['duration']))
             {
                 //$str_time = $data

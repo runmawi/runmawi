@@ -538,7 +538,7 @@ class HomeController extends Controller
 
                     ) , function ($message) use ($email, $username)
                     {
-                        $message->from(AdminMail() , 'Flicknexs');
+                        $message->from(AdminMail() , GetWebsiteName());
                         $message->to($email, $username)->subject('Buy Subscriptions Plan To Access Multiple Devices');
                     });
                     $message = 'Buy Subscriptions Plan To Access Multiple Devices.';
@@ -1449,7 +1449,7 @@ class HomeController extends Controller
 
                     ) , function ($message) use ($email, $username)
                     {
-                        $message->from(AdminMail() , 'Flicknexs');
+                        $message->from(AdminMail() , GetWebsiteName());
                         $message->to($email, $username)->subject('Buy Subscriptions Plan To Access Multiple Devices');
                     });
                     $message = 'Buy Subscriptions Plan To Access Multiple Devices.';
@@ -3318,7 +3318,7 @@ class HomeController extends Controller
             'name' => $user->username
         ) , function ($message) use ($user)
         {
-            $message->from(AdminMail() , 'Flicknexs');
+            $message->from(AdminMail() , GetWebsiteName());
             $message->to($user->email, $user->username)
                 ->subject('Subscription Renewal');
         });

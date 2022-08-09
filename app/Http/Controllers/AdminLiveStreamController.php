@@ -29,7 +29,6 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Message\Response;
 use App\InappPurchase;
 
-
 class AdminLiveStreamController extends Controller
 {
     
@@ -305,16 +304,7 @@ class AdminLiveStreamController extends Controller
             } else {
                 $searchtags  = null;
             }
-            if ($request->slug != '') {
-                $data['slug'] = $this->createSlug($request->slug);
-                }
-    
-        if($request->slug == ''){
-                $data['slug'] = $this->createSlug($data['title']);    
-        }
-        else{
-            $data['slug'] = $this->createSlug($data['slug']);    
-        }
+
         if(empty($data['embed_url'])){
             $embed_url = null;
         }else{
@@ -373,6 +363,18 @@ class AdminLiveStreamController extends Controller
             $active = 0;
         } else{
             $active = 1;
+        }
+
+        $last_id = LiveStream::latest()->pluck('id')->first() + 1;
+
+        if(  $data['slug']  == ''){
+
+            $slug = LiveStream::where('slug',$data['title'])->first();
+            $data['slug']  = $slug == null ?  str_replace(' ', '_', $data['title']) : str_replace(' ', '_', $data['title'].'-'.$last_id) ;
+        }else{
+
+            $slug = LiveStream::where('slug',$data['slug'])->first();
+            $data['slug'] = $slug == null ?  str_replace(' ', '_', $data['slug']) : str_replace(' ', '_', $data['slug'].'-'.$last_id) ;
         }
 
         $movie->title =$data['title'];
@@ -607,18 +609,20 @@ class AdminLiveStreamController extends Controller
         }else{
             $embed_url = $data['embed_url'];
         }
-        if ($request->slug == '') {
-            $slug = str_replace(' ', '_', $request->slug);
-            $data['slug'] =$slug;
-            }
-            else{
-                $data['slug'] = $request->slug;    
-            }
 
-        // if($request->slug == ''){
-        //         $slug = str_replace(' ', '_', $request->title);
-        //         $data['slug'] = $slug;    
-        // }
+        if(  $data['slug']  == '' ){
+
+            $slug = LiveStream::whereNotIn('id',[$id])->where('slug',$data['title'])->first();
+
+            $data['slug']  = $slug == null ?  str_replace(' ', '_', $data['title']) : str_replace(' ', '_', $data['title'].'-'.$id) ;
+        }else{
+
+            $slug = LiveStream::whereNotIn('id',[$id])->where('slug',$data['slug'])->first();
+
+            $data['slug'] = $slug == null ?  str_replace(' ', '_', $data['slug']) : str_replace(' ', '_', $data['slug'].'-'.$id) ;
+        }
+
+       
         if(empty($data['rating'])){
             $data['rating'] = 0;
         }

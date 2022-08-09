@@ -446,7 +446,7 @@ class HomeController extends Controller
                             
                         ) , function ($message) use ($email, $username)
                         {
-                            $message->from(AdminMail() , 'Flicknexs');
+                            $message->from(AdminMail() , GetWebsiteName());
                             $message->to($email, $username)->subject('Request to Apporve New Device');
                         });
                         $maildevice = new ApprovalMailDevice;
@@ -1020,7 +1020,7 @@ class HomeController extends Controller
                             
                         ) , function ($message) use ($email, $username)
                         {
-                            $message->from(AdminMail() , 'Flicknexs');
+                            $message->from(AdminMail() , GetWebsiteName());
                             $message->to($email, $username)->subject('Request to Apporve New Device');
                         });
                         $maildevice = new ApprovalMailDevice;

@@ -132,7 +132,7 @@ class ChannelLoginController extends Controller
 
             ) , function ($message) use ($request, $template, $heading)
             {
-                $message->from(AdminMail() , 'Flicknexs');
+                $message->from(AdminMail() , GetWebsiteName());
                 $message->to($request->email_id, $request->channel_name)
                     ->subject($heading . $request->channel_name);
             });
