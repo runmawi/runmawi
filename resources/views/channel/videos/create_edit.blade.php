@@ -878,8 +878,9 @@ $.validator.addMethod('dimention', function(value, element, param) {
             var width = $(element).data('imageWidth');
             var height = $(element).data('imageHeight');
             var ratio = $(element).data('imageratio');
+            var image_validation_status = "{{  image_validation_videos() }}" ;
 
-            if( ratio == '0.56' || width == param[0] && height == param[1]){
+            if( image_validation_status == "0" || ratio == '0.56' || width == param[0] && height == param[1]){
                 return true;
             }else{
                 return false;
@@ -895,8 +896,9 @@ $.validator.addMethod('dimention', function(value, element, param) {
             var width = $(element).data('imageWidth');
             var height = $(element).data('imageHeight');
             var ratio = $(element).data('imageratio');
+            var image_validation_status = "{{  image_validation_videos() }}" ;
 
-            if( ratio == '1.78' || width == param[0] && height == param[1]){
+            if( image_validation_status == "0" || ratio == '1.78' || width == param[0] && height == param[1]){
                 return true;
             }else{
                 return false;
@@ -917,7 +919,7 @@ $.validator.addMethod('dimention', function(value, element, param) {
             tmpImg.onload = function() {
                 width = tmpImg.naturalWidth,
                 height = tmpImg.naturalHeight;
-				ratio =  Number(width/height).toFixed(2) ;
+				        ratio =  Number(width/height).toFixed(2) ;
 
                 $('#image').data('imageWidth', width);
                 $('#image').data('imageHeight', height);
