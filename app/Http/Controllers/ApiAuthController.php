@@ -848,7 +848,7 @@ public function verifyandupdatepassword(Request $request)
       });
 
       $response = array(
-        'status'=>'true',
+        // 'status'=>'true',
         'latestvideos' => $latestvideos
       ); 
       return response()->json($response, 200);
@@ -1191,11 +1191,23 @@ public function verifyandupdatepassword(Request $request)
             $ppv_video_status = "pay_now";
             // $ppv_video_status = "can_view";
       }
-  
+      if($request->user_id != ''){
+        $like_data = LikeDisLike::where("live_id","=",$liveid)->where("user_id","=",$user_id)->where("liked","=",1)->count();
+        $dislike_data = LikeDisLike::where("live_id","=",$liveid)->where("user_id","=",$user_id)->where("disliked","=",1)->count();
+        $like = ($like_data == 1) ? "true" : "false";
+        $dislike = ($dislike_data == 1) ? "true" : "false";
+      }else{
+        $like = 'false';
+        $dislike = 'false';
+        // $userrole = '';
+      }
+
     $response = array(
       'status' => 'true',
       'shareurl' => URL::to('live').'/'.$liveid,
       'livedetail' => $livedetail,
+      'like' => $like,
+      'dislike' => $dislike,
       'ppv_video_status' => $ppv_video_status
     );
     return response()->json($response, 200);
