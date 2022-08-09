@@ -16,48 +16,50 @@
                         <div class="iq-card-body">
                            <div class="table-view">
                            <table class="table table-bordered table-striped w-auto mentors">       
-        <tr>
-          <th class="headings">Username</th>
-          <td>{{ ucwords($users->username) }}</td>
-        </tr>
-        <tr>
-          <th class="headings">User ID</th>
-          <td>Flicknexs_{{ $users->id }}</td>
-        </tr>
+                              <tr>
+                                <th class="headings">Username</th>
+                                <td>{{ ucwords($users->username) }}</td>
+                              </tr>
+                              <tr>
+                                <th class="headings">User ID</th>
+                                <td>{{ GetWebsiteName().'_'. $users->id }}</td>
+                              </tr>
 
-        <tr>
-          <th class="headings">Email</th>
-          <td>{{ $users->email }}</td>
-        </tr>
-        <tr>
-          <th class="headings">Contact Details</th>
-          <td>{{ $users->mobile }}</td>
-        </tr>
-        <tr>
-          <th class="headings">Country Name</th>
-          <td>{{ $country_name ? $country_name[0]['country_name'] : null }}</td>
-        </tr>
-<?php
+                              <tr>
+                                <th class="headings">Email</th>
+                                <td>{{ $users->email ? $users->email : '-' }}</td>
+                              </tr>
+                              <tr>
+                                <th class="headings">Contact Details</th>
+                                <td>{{ $users->mobile ? $users->mobile : "-" }}</td>
+                              </tr>
+                              <tr>
+                                <th class="headings">Country Name</th>
+                                <td>{{ $country_name ? $country_name : '-' }}</td>
+                              </tr>
+@php
+    
 
 $plans_name = ""; 
 $created_at = "";
 $end_date = "";
+
 foreach($current_plan as $plan){
     $subscription_date = $plan->created_at;
     $date = date_create($subscription_date);
     $subscription_date = date_format($date, 'Y-m-d');
     $start_date = date('Y-m-d', strtotime($subscription_date));
-$subscription_date = $plan->created_at;
-$days = $plan->days.'days';
-$date = date_create($subscription_date);
-$subscription_date = date_format($date, 'Y-m-d');
-$end_date= date('Y-m-d', strtotime($subscription_date. ' + ' .$days)); 
-$plans_name = $plan->plans_name ;
-$created_at = $start_date ;
-
+    $subscription_date = $plan->created_at;
+    $days = $plan->days.'days';
+    $date = date_create($subscription_date);
+    $subscription_date = date_format($date, 'Y-m-d');
+    $end_date= date('Y-m-d', strtotime($subscription_date. ' + ' .$days)); 
+    $plans_name = $plan->plans_name ;
+    $created_at = $start_date ;
  }
 
-?>
+@endphp
+
 
         <tr>
           <th class="headings">Current Package </th>
@@ -75,7 +77,7 @@ $created_at = $start_date ;
    
         <tr>
           <th class="headings">User Type</th>
-          <td>{{ $users->role }}</td>
+          <td>{{ ucwords($users->role) }}</td>
         </tr>
 
     </table>
