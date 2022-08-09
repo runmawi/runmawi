@@ -2813,7 +2813,7 @@ if(!empty($artistsdata)){
             $mp4_url = $data['file'];
             $settings = Setting::first();
     
-            if($mp4_url != '' && $pack != "Business" ) {
+            if($mp4_url != '' && $pack != "Business" && $settings->transcoding_access  == 0 ) {
                 // $ffprobe = \FFMpeg\FFProbe::create();
                 // $disk = 'public';
                 // $data['duration'] = $ffprobe->streams($request->file)

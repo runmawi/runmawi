@@ -54,9 +54,10 @@ NOTE: This file contains the styling for responsive Template.
    
 }
  #video .plyr.plyr--full-ui, #video-trailer .plyr.plyr--full-ui, #video_container .plyr.plyr--full-ui, #video_container .plyr__video-embed, #watch_trailer .plyr.plyr--full-ui, #watch_trailer .plyr__video-embed {
-    height: calc(90vh - 80px - 75px)!important;
+    /* height: calc(90vh - 80px - 75px)!important; */
     max-width: none;
     width: 100%;
+    height:100%;
 }
 header#main-header { position: relative; left: 0px; right: 0px; text-align: center; z-index: 99; background: rgba(20, 20, 20, 0.5) !important; }
 header .navbar-light .navbar-brand img.logo { width: 160px; }
@@ -99,9 +100,11 @@ header .navbar-light .navbar-brand img.logo { width: 160px; }
    
 }
   #video .plyr.plyr--full-ui, #video-trailer .plyr.plyr--full-ui, #video_container .plyr.plyr--full-ui, #video_container .plyr__video-embed, #watch_trailer .plyr.plyr--full-ui, #watch_trailer .plyr__video-embed {
-    height: calc(90vh - 80px - 75px);
+    /* height: calc(90vh - 80px - 75px); */
     max-width: none;
     width: 100%;
+    height:100%;
+
 }
 
 /*--
@@ -1943,18 +1946,22 @@ box-shadow: -1px 6px 13px 0px rgba(0,0,0,0.44);
 /* Player Css */
 
 #video .plyr.plyr--full-ui, #video-trailer .plyr.plyr--full-ui {
-    height: calc(90vh - 80px - 75px);
+    /* height: calc(90vh - 80px - 75px); */
     max-width: none;
     width: 100%;
+    height:100%;
+
 }
 .plyr plyr--full-ui plyr--video plyr--html5 plyr--paused plyr--stopped plyr--pip-supported plyr--fullscreen-enabled{
      
 }
 .plyr__poster {background-position: contain !important;/*background-size: 80% !important;*/}
 #video .plyr.plyr--full-ui, #video-trailer .plyr.plyr--full-ui, #video_container .plyr.plyr--full-ui, #video_container .plyr__video-embed, #watch_trailer .plyr.plyr--full-ui, #watch_trailer .plyr__video-embed{
-    height: calc(90vh - 80px - 75px);
+    /* height: calc(90vh - 80px - 75px); */
     max-width: none;
     width: 100%;
+    height:100%;
+
 }
 
 
