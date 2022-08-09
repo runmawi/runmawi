@@ -276,17 +276,14 @@ class AdminUsersController extends Controller
             ->where('role', '=', 'subscriber')
             ->where('users.id', '=', $user->id)
             ->get();
-        $country_name = CountryCode::where('phonecode', '=', $user->ccode)
-            ->get();
-        //    echo "<pre>";
-        // print_r($current_plan);
-        // exit();
+        $country_name = CountryCode::where('phonecode', '=', $user->ccode)->first();
+     
         $data = array(
-
             'current_plan' => $current_plan,
             'country_name' => $country_name,
             'users' => $user
         );
+
         return \View::make('admin.users.view', $data);
     }
     public function store(Request $request)
