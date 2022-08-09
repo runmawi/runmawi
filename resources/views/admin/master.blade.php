@@ -333,7 +333,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                             <li><a href="{{ URL::to('admin/revenue_settings/index') }}"><i class="las la-eye"></i>Revenue Settings</a></li>
                             <li><a href="{{ URL::to('admin/ChooseProfileScreen') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Profile Screen</span></a></li>
                             <li  data-tour="step: 3; title: Manage Theme; content: Go to 'Manage Template' to choose a template for our website from our catalogue" class=" " data-tour="step: 3; title: Manage Theme; content: Go to 'Manage Template' to choose a template for our website from our catalogue"><a href="{{ URL::to('admin/ThemeIntegration') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Theme</span></a></li>
-                            <li><a href="{{ route('compress_image') }}" class="iq-waves-effect">Compress Image</a></li>
+                            <li><a href="{{ route('compress_image') }}" class="iq-waves-effect"> Image Setting </a></li>
 
                      </ul>
                   </li>
@@ -573,7 +573,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                             <li><a href="{{ URL::to('admin/ThumbnailSetting') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i>Thumbnail Setting</a></li>
                             <li><a href="{{ URL::to('admin/ChooseProfileScreen') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i>Profile Screen</a></li>
                             <li  data-tour="step: 3; title: Manage Theme; content: Go to 'Manage Template' to choose a template for our website from our catalogue" class=" " data-tour="step: 3; title: Manage Theme; content: Go to 'Manage Template' to choose a template for our website from our catalogue"><a href="{{ URL::to('admin/ThemeIntegration') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i>Theme</a></li>
-                            <li><a href="{{ route('compress_image') }}" class="iq-waves-effect">Compress Image</a></li>
+                            <li><a href="{{ route('compress_image') }}" class="iq-waves-effect">Image Setting </a></li>
 
                      </ul>
                   </li>
@@ -848,7 +848,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                             <li><a href="{{ URL::to('admin/ThumbnailSetting') }}" class="iq-waves-effect">Thumbnail Setting</a></li>
                             <li><a href="{{ URL::to('admin/ChooseProfileScreen') }}" class="iq-waves-effect">Profile Screen</a></li>
                             <li  data-tour="step: 3; title: Manage Theme; content: Go to 'Manage Template' to choose a template for our website from our catalogue" class=" " data-tour="step: 3; title: Manage Theme; content: Go to 'Manage Template' to choose a template for our website from our catalogue"><a href="{{ URL::to('admin/ThemeIntegration') }}" class="iq-waves-effect">Theme</a></li>
-                            <li><a href="{{ route('compress_image') }}" class="iq-waves-effect">Compress Image</a></li>
+                            <li><a href="{{ route('compress_image') }}" class="iq-waves-effect"> Image Setting </a></li>
 
                         </ul>
                     </li>
@@ -1118,7 +1118,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                             <li><a href="{{ URL::to('admin/ThumbnailSetting') }}" ><i class="ri-price-tag-line"></i>Thumbnail Setting</a></li>
                             <li><a href="{{ URL::to('admin/ChooseProfileScreen') }}" ><i class="ri-price-tag-line"></i>Profile Screen</a></li>
                             <li  data-tour="step: 3; title: Manage Theme; content: Go to 'Manage Template' to choose a template for our website from our catalogue" class=" " data-tour="step: 3; title: Manage Theme; content: Go to 'Manage Template' to choose a template for our website from our catalogue"><a href="{{ URL::to('admin/ThemeIntegration') }}" ><i class="ri-price-tag-line"></i>Theme</a></li>
-                            <li><a href="{{ route('compress_image') }}" class="iq-waves-effect">Compress Image</a></li>
+                            <li><a href="{{ route('compress_image') }}" class="iq-waves-effect"> Image Setting </a></li>
                            </ul>
                     </li>
                     <!-- Ads Menu starts class="iq-waves-effect"-->

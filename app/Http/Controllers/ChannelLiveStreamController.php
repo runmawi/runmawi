@@ -284,14 +284,18 @@ class ChannelLiveStreamController extends Controller
 
             }
 
-            if ($request->slug == '')
-            {
-                $data['slug'] = $this->createSlug($data['title']);
+            $last_id = LiveStream::latest()->pluck('id')->first() + 1;
+
+            if(  $data['slug']  == ''){
+    
+                $slug = LiveStream::where('slug',$data['title'])->first();
+                $data['slug']  = $slug == null ?  str_replace(' ', '_', $data['title']) : str_replace(' ', '_', $data['title'].'-'.$last_id) ;
+            }else{
+    
+                $slug = LiveStream::where('slug',$data['slug'])->first();
+                $data['slug'] = $slug == null ?  str_replace(' ', '_', $data['slug']) : str_replace(' ', '_', $data['slug'].'-'.$last_id) ;
             }
-            else
-            {
-                $data['slug'] = $this->createSlug($data['slug']);
-            }
+
             if (empty($data['embed_url']))
             {
                 $embed_url = null;
@@ -561,18 +565,17 @@ class ChannelLiveStreamController extends Controller
             {
                 $data['ppv_status'] = 0;
             }
-            if ($request->slug != '')
-            {
-                $data['slug'] = $this->createSlug($request->slug);
-            }
+           
+            if(  $data['slug']  == '' ){
 
-            if ($request->slug == '')
-            {
-                $data['slug'] = $this->createSlug($data['title']);
-            }
-            else
-            {
-                $data['slug'] = $this->createSlug($data['slug']);
+                $slug = LiveStream::whereNotIn('id',[$id])->where('slug',$data['title'])->first();
+
+                $data['slug']  = $slug == null ?  str_replace(' ', '_', $data['title']) : str_replace(' ', '_', $data['title'].'-'.$id) ;
+            }else{
+
+                $slug = LiveStream::whereNotIn('id',[$id])->where('slug',$data['slug'])->first();
+
+                $data['slug'] = $slug == null ?  str_replace(' ', '_', $data['slug']) : str_replace(' ', '_', $data['slug'].'-'.$id) ;
             }
 
             if (empty($data['rating']))

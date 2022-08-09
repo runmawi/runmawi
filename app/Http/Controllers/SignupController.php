@@ -575,7 +575,7 @@ public function createStep3(Request $request)
             'heading'=> $template->heading,
             'error'=> $error,
             ), function($message) use ($request,$user,$heading) {
-            $message->from(AdminMail(),'Flicknexs');
+            $message->from(AdminMail(),GetWebsiteName());
             $message->to($request->session()->get('register.email'), $user->username)->subject($heading);
              });
 
@@ -662,7 +662,7 @@ public function createStep3(Request $request)
                     'billing_interval' => $plandetail->billing_interval,
             //                                'next_billing' => $nextPaymentAttemptDate,
                 ), function($message) use ($request,$user){
-                    $message->from(AdminMail(),'Flicknexs');
+                    $message->from(AdminMail(),GetWebsiteName());
                     $message->to($request->session()->get('register.email'), $user->username)->subject($request->get('subject'));
                 });
 
@@ -686,7 +686,7 @@ public function createStep3(Request $request)
                         'billing_interval' => $plandetail->billing_interval,
                 //                                'next_billing' => $nextPaymentAttemptDate,
                     ), function($message) use ($request,$user){
-                        $message->from(AdminMail(),'Flicknexs');
+                        $message->from(AdminMail(),GetWebsiteName());
                         $message->to($request->session()->get('register.email'), $user->username)->subject($request->get('subject'));
                     });
                     $user->role = "subscriber";
