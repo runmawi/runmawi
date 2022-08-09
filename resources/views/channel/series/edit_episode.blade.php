@@ -30,6 +30,10 @@
     display: inline-block;
     cursor: pointer;
 }
+.error{
+    font-size: 14px !important;
+    color: red !important; 
+    }
 </style>
 
 <?php
@@ -521,8 +525,9 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
             var width = $(element).data('imageWidth');
             var height = $(element).data('imageHeight');
             var ratio = $(element).data('imageratio');
+            var image_validation_status = "{{  image_validation_episode() }}" ;
 
-            if( ratio == '0.56'|| ratio == '1.78' || width == param[0] && height == param[1]){
+            if( image_validation_status == "0" ||  ratio == '0.56'|| ratio == '1.78' || width == param[0] && height == param[1]){
                 return true;
             }else{
                 return false;
@@ -538,8 +543,9 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
             var width = $(element).data('imageWidth');
             var height = $(element).data('imageHeight');
             var ratio = $(element).data('imageratio');
+            var image_validation_status = "{{  image_validation_episode() }}" ;
 
-            if( ratio == '1.78'||  width == param[0] && height == param[1]){
+            if( image_validation_status == "0" ||  ratio == '1.78'||  width == param[0] && height == param[1]){
                 return true;
             }else{
                 return false;
