@@ -528,7 +528,7 @@ $settings  = App\Setting::first();?>
 
 			
 
-		$('#title').change(function(){
+		$('#titles').change(function(){
    		//  alert(($('#title').val()));
 
 			var title = $('#title').val();

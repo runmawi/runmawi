@@ -184,16 +184,7 @@ class ChannelSeriesController extends Controller
             $genre_iddata = $data['genre_id'];
             unset($data['genre_id']);
         }
-        if ($request->slug != '')
-        {
-            $slug = str_replace(' ', '_', $request->slug);
-            $data['slug'] = $slug;
-        }
-        if ($request->slug == '')
-        {
-            $slug = str_replace(' ', '_', $request->title);
-            $data['slug'] = $slug;
-        }
+        
         if (!empty($data['language']))
         {
             $languagedata = $data['language'];
@@ -306,9 +297,20 @@ class ChannelSeriesController extends Controller
             $series_trailer = 0;
         }
 
+        if( $request->slug == ''){
+
+            $slug = Series::where('slug',$request->title)->first();
+
+            $series_slug = $slug == null ?  str_replace(' ', '_', $request->title) : str_replace(' ', '_', $request->title.'-'.$series->id) ;
+        }else{
+
+            $slug = Series::where('slug',$request->slug)->first();
+
+            $series_slug = $slug == null ?  str_replace(' ', '_', $request->slug) : str_replace(' ', '_', $request->slug.'-'.$series->id) ;
+        }
         $series->slug = $slug;
         $series = Series::find($series->id);
-        $series->slug = $slug;
+        $series->slug = $series_slug;
         $series->ppv_status = $ppv_status;
         $series->player_image = $player_image;
         $series->user_id = $id;
@@ -471,23 +473,17 @@ class ChannelSeriesController extends Controller
             $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
             $data['duration'] = $time_seconds;
         }
-        if ($request->slug != '')
-        {
-            $slug = str_replace(' ', '_', $request->slug);
-            $data['slug'] = $slug;
-        }
-        else
-        {
-            $data['slug'] = $request->slug;
-        }
-        if ($request->slug == '')
-        {
-            $slug = str_replace(' ', '_', $request->title);
-            $data['slug'] = $slug;
-        }
-        else
-        {
-            $data['slug'] = $request->slug;
+
+        if(  $data['slug']  == '' ){
+
+            $slug = Series::whereNotIn('id',[$id])->where('slug',$data['title'])->first();
+
+            $data['slug']  = $slug == null ?  str_replace(' ', '_', $data['title']) : str_replace(' ', '_', $data['title'].'-'.$id) ;
+        }else{
+
+            $slug = Series::whereNotIn('id',[$id])->where('slug',$data['slug'])->first();
+
+            $data['slug'] = $slug == null ?  str_replace(' ', '_', $data['slug']) : str_replace(' ', '_', $data['slug'].'-'.$id) ;
         }
 
         $path = public_path() . '/uploads/videos/';
@@ -1429,23 +1425,22 @@ class ChannelSeriesController extends Controller
         {
             $banner = 1;
         }
-        if ($request->slug != '')
-        {
-            $data['slug'] = $this->createSlug($request->slug);
-        }
-        if ($request->slug == '')
-        {
-            $data['slug'] = $this->createSlug($data['title']);
+
+        if( $request->slug == ''){
+
+            $slug = Episode::where('slug',$data['title'])->first();
+        
+            $episode_slug = $slug == null ?  str_replace(' ', '_', $data['title']) : str_replace(' ', '_', $data['title'].'-'.$id) ;
+        }else{
+        
+            $slug = Episode::where('slug',$request->slug)->first();
+        
+            $episode_slug = $slug == null ?  str_replace(' ', '_', $data['slug']) : str_replace(' ', '_', $data['slug'].'-'.$id) ;
         }
 
-        // if(empty($data['slug'])){
-        //   $slug =   str_replace(' ', '_', $data['title']);
-        // }else{
-        //     $slug =   str_replace(' ', '_', $data['slug']);
-        // }
-        // $episode->title =  $data['title'];
+     
         $episodes->rating = $data['rating'];
-        $episodes->slug = $data['slug'];
+        $episodes->slug = $episode_slug;
 
         $episodes->type = $type;
         $episodes->banner = $banner;
@@ -1649,14 +1644,20 @@ class ChannelSeriesController extends Controller
         {
             $episode->active = 1;
         }
-        if (empty($data['slug']))
-        {
-            $slug = str_replace(' ', '_', $episode->title);
+        
+        if(  $data['slug']  == '' ){
+
+            $slug = Episode::whereNotIn('id',[$id])->where('slug',$request->title)->first();
+
+            $data['slug']  = $slug == null ?  str_replace(' ', '_', $request->title ) : str_replace(' ', '_', $request->title .'-'.$id) ;
+        }else{
+
+            $slug = Episode::whereNotIn('id',[$id])->where('slug',$request->slug)->first();
+
+            $data['slug'] = $slug == null ?  str_replace(' ', '_', $request->slug) : str_replace(' ', '_', $request->slug.'-'.$id) ;
         }
-        else
-        {
-            $slug = str_replace(' ', '_', $data['slug']);
-        }
+
+
         if (empty($data['featured']))
         {
             $data['featured'] = 0;
@@ -1727,6 +1728,7 @@ class ChannelSeriesController extends Controller
         $episode->player_image = $player_image;
         $episode->ppv_status = $data['ppv_status'];
         $episode->status = 1;
+        $episode->slug =  $data['slug'];
         $episode->save();
 
         $episode = Episode::findOrFail($id);

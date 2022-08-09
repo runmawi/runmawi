@@ -531,7 +531,7 @@ public function RentPaypal(Request $request)
                 'ends_at' => $ends_at,
              
             ), function($message) use ($user,$heading,$plan_name){
-                $message->from(AdminMail(),'Flicknexs');
+                $message->from(AdminMail(),GetWebsiteName());
                 $message->to($user->email, $user->username)->subject($plan_name.' '.$heading);
             });
             return redirect::to('myprofile');
@@ -554,7 +554,7 @@ public function RentPaypal(Request $request)
                 'plan' => ucfirst($plandetail->plans_name),
                // 'price' => $plandetail->price,
             ), function($message) use ($user){
-                $message->from(AdminMail(),'Flicknexs');
+                $message->from(AdminMail(),GetWebsiteName());
                 $message->to($user->email, $user->username)->subject('Subscription Renewal');
             });
             
@@ -894,7 +894,7 @@ public function RentPaypal(Request $request)
                           'billing_interval' => $plandetail->billing_interval,
                           /*'next_billing' => $nextPaymentAttemptDate,*/
                       ), function($message) use ($request,$user,$plan_name,$heading){
-                          $message->from(AdminMail(),'Flicknexs');
+                          $message->from(AdminMail(),GetWebsiteName());
                           $message->to($user->email, $user->username)->subject( $plan_name .' '. $heading);
                       });
                           $user->role = 'subscriber';
@@ -926,7 +926,7 @@ public function RentPaypal(Request $request)
                                   'billing_interval' => $plandetail->billing_interval,
                                   /*'next_billing' => $nextPaymentAttemptDate,*/
                               ), function($message) use ($request,$user,$plan_name,$heading){
-                                  $message->from(AdminMail(),'Flicknexs');
+                                  $message->from(AdminMail(),GetWebsiteName());
                                   $message->to($user->email, $user->username)->subject( $plan_name .' '. $heading);
                               });
                                           $user->role = 'subscriber';
@@ -958,7 +958,7 @@ public function RentPaypal(Request $request)
                                   'billing_interval' => $plandetail->billing_interval,
                                   /*'next_billing' => $nextPaymentAttemptDate,*/
                               ), function($message) use ($request,$user,$plan_name,$heading){
-                                  $message->from(AdminMail(),'Flicknexs');
+                                  $message->from(AdminMail(),GetWebsiteName());
                                   $message->to($user->email, $user->username)->subject( $plan_name .' '. $heading);
                               });
                                           $user->role = 'subscriber';
@@ -1107,7 +1107,7 @@ public function RentPaypal(Request $request)
                             'name' => $user->username,
                             'plan' => ucfirst($plandetail->plans_name),
                         ), function($message) use ($request,$user){
-                            $message->from(AdminMail(),'Flicknexs');
+                            $message->from(AdminMail(),GetWebsiteName());
                             $message->to($user->email, $user->username)->subject('Subscription Plan Changed');
                 });
                 // return response()->json(['success'=>'Your plan has been changed.']);
@@ -1150,7 +1150,7 @@ if (isset($coupon_code) && $coupon_code !=''){
               'billing_interval' => $plandetail->billing_interval,
               /*'next_billing' => $nextPaymentAttemptDate,*/
           ), function($message) use ($request,$user){
-              $message->from(AdminMail(),'Eliteclub');
+              $message->from(AdminMail(),GetWebsiteName());
               $message->to($user->email, $user->username)->subject($request->get('subject'));
           });
           $user->role = 'subscriber';
@@ -1175,7 +1175,7 @@ if (isset($coupon_code) && $coupon_code !=''){
               'billing_interval' => $plandetail->billing_interval,
               /*'next_billing' => $nextPaymentAttemptDate,*/
           ), function($message) use ($request,$user){
-              $message->from(AdminMail(),'Eliteclub');
+              $message->from(AdminMail(),GetWebsiteName());
               $message->to($user->email, $user->username)->subject($request->get('subject'));
           });
           $user->role = 'subscriber';
@@ -1219,7 +1219,7 @@ $response = array('status' => 'success');
                                         'name' => $user->username,
                                         'plan' => ucfirst($plandetail->plans_name),
                                 ), function($message) use ($request,$user){
-                                        $message->from(AdminMail(),'Eliteclub');
+                                        $message->from(AdminMail(),GetWebsiteName());
                                         $message->to($user->email, $user->username)->subject('Subscription Plan Changed');
                                 });
                      

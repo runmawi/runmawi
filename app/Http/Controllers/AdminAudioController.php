@@ -449,17 +449,19 @@ class AdminAudioController extends Controller
             return Redirect::back()->withErrors($validator)->withInput();
         }
         /*Slug*/
-        if ($audio->slug != $request->slug) {
-            $data['slug'] = $this->createSlug($request->slug, $id);
+
+        if(  $data['slug']  == '' || $audio->slug == ''){
+
+            $slug = Audio::whereNotIn('id',[$id])->where('slug',$data['title'])->first();
+
+            $data['slug']  = $slug == null ?  str_replace(' ', '_', $data['title']) : str_replace(' ', '_', $data['title'].'-'.$id) ;
         }else{
-            $data['slug'] =  $request->slug;
+
+            $slug = Audio::whereNotIn('id',[$id])->where('slug',$data['slug'])->first();
+
+            $data['slug'] = $slug == null ?  str_replace(' ', '_', $data['slug']) : str_replace(' ', '_', $data['slug'].'-'.$id) ;
         }
 
-        if($request->slug == '' || $audio->slug == ''){
-            $data['slug'] = $this->createSlug($data['title']);    
-        }else{
-            $data['slug'] = $request->slug ;
-        }
         if(isset($data['duration'])){
                 //$str_time = $data
                 $str_time = preg_replace("/^([\d]{1,2})\:([\d]{2})$/", "00:$1:$2", $data['duration']);
@@ -853,14 +855,21 @@ class AdminAudioController extends Controller
             {
                 return Redirect::back()->withErrors($validator)->withInput();
             }
-            /*Slug*/
-            if ($audio->slug != $request->slug) {
-                $data['slug'] = $this->createSlug($request->slug, $id);
+
+            if(  $data['slug']  == ''){
+
+                $slug = Audio::where('slug',$data['title'])->first();
+    
+                $data['slug']  = $slug == null ?  str_replace(' ', '_', $data['title']) : str_replace(' ', '_', $data['title'].'-'.$id) ;
+            }else{
+    
+                $slug = Audio::where('slug',$data['slug'])->first();
+    
+                $data['slug'] = $slug == null ?  str_replace(' ', '_', $data['slug']) : str_replace(' ', '_', $data['slug'].'-'.$id) ;
             }
 
-        if($request->slug == '' || $audio->slug == ''){
-            $data['slug'] = $this->createSlug($data['title']);    
-        }
+            // dd($data['slug'] );
+
         if(isset($data['duration'])){
                 //$str_time = $data
                 $str_time = preg_replace("/^([\d]{1,2})\:([\d]{2})$/", "00:$1:$2", $data['duration']);

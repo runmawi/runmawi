@@ -257,7 +257,7 @@ class ModeratorsUserController extends Controller
                         "password" => $request->password,
                     ],
                     function ($message) use ($request, $template, $heading) {
-                        $message->from(AdminMail(), "Flicknexs");
+                        $message->from(AdminMail(), GetWebsiteName());
                         $message
                             ->to($request->email_id, $request->username)
                             ->subject($heading . $request->username);
@@ -354,7 +354,7 @@ class ModeratorsUserController extends Controller
             Mail::send("emails.cpp_approved", [], function ($message) use (
                 $users
             ) {
-                $message->from(AdminMail(), "Flicknexs");
+                $message->from(AdminMail(), GetWebsiteName());
                 $message->to($users->email)->subject("Approved As Moderator");
             });
             return \Redirect::back()->with(
