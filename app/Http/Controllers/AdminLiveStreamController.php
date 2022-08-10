@@ -16,7 +16,6 @@ use App\Tag as Tag;
 use Auth;
 use Hash;
 use Illuminate\Support\Facades\Cache;
-use Image;
 use View;
 use Session;
 use Illuminate\Support\Str;
@@ -28,6 +27,8 @@ use Streaming\Representation;
 use GuzzleHttp\Client;
 use GuzzleHttp\Message\Response;
 use App\InappPurchase;
+use Intervention\Image\Facades\Image;
+use Intervention\Image\Filters\DemoFilter;
 
 class AdminLiveStreamController extends Controller
 {
@@ -181,12 +182,20 @@ class AdminLiveStreamController extends Controller
                   }
               }
               //upload new file
-              $file = $image;
-            //   $data['image']  = $file->getClientOriginalName();
-            $data['image'] = str_replace(' ', '_', $file->getClientOriginalName());
-              $file->move($image_path, $data['image']);
-            //   $image = $file->getClientOriginalName();
-            $image = str_replace(' ', '_', $file->getClientOriginalName());
+                $file = $image;
+
+                if(compress_image_enable() == 1){
+
+                    $filename  = time().'.'.compress_image_format();
+                    $PC_image     =  'live_'.$filename ;
+
+                    $image = Image::make($file)->save(base_path().'/public/uploads/images/'.$PC_image,compress_image_resolution() );
+                }else{
+
+                    $filename  = time().'.'.$file->getClientOriginalExtension();
+                    $PC_image     =  'live_'.$filename ;
+                    Image::make($file)->save(base_path().'/public/uploads/images/'.$PC_image );
+                }
               
          }else{
             $image = "Defualt.jpg";
@@ -657,13 +666,22 @@ class AdminLiveStreamController extends Controller
               }
               //upload new file
               $file = $image;
-            //   $data['image']  = $file->getClientOriginalName();
-                $data['image'] = str_replace(' ', '_', $file->getClientOriginalName());
-              $file->move($image_path, $data['image']);
+
+            if(compress_image_enable() == 1){
+
+                $filename  = time().'.'.compress_image_format();
+                $PC_image     =  'live_'.$filename ;
+    
+                $image = Image::make($file)->save(base_path().'/public/uploads/images/'.$PC_image,compress_image_resolution() );
+            }else{
+    
+                $filename  = time().'.'.$file->getClientOriginalExtension();
+                $PC_image     =  'live_'.$filename ;
+                Image::make($file)->save(base_path().'/public/uploads/images/'.$PC_image );
+            }
 
          } 
        
-
          $player_image = ($request->file('player_image')) ? $request->file('player_image') : '';
 
          $path = public_path().'/uploads/livecategory/';
