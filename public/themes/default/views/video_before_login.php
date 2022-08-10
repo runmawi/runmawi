@@ -849,6 +849,19 @@ $(document).ready(function(){
 });
 </script>
 
+<!-- Ads Start -->
+
+<?php
+
+  // include('AdsvideoPre.php'); 
+  // include('AdsvideoMid.php');
+  // include('AdsvideoPost.php');
+
+  include('Adstagurl.php'); 
+
+?>
+
+
 <?php
   $player_ui = App\Playerui::pluck('show_logo')->first();
   $logo = App\Setting::pluck('logo')->first();
