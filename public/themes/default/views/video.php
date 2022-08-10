@@ -25,6 +25,12 @@ if($ads_details != null){
 
 <?php
 
+$category_name = App\CategoryVideo::select('video_categories.name as categories_name','video_categories.slug as categories_slug')->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+->where('categoryvideos.video_id', $video->id)->get();
+
+$Movie_name = App\LanguageVideo::select('languages.name as movie_name','languages.id as id')->Join('languages', 'languagevideos.language_id', '=', 'languages.id')
+->where('languagevideos.video_id', $video->id)->get();
+
 $str = $video->m3u8_url;
 if(!empty($str)){
 $request_url = 'm3u8';
@@ -781,8 +787,18 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
          <?php if(!empty($video->age_restrict)){ ?><span class="badge  p-3"><?php echo __($video->age_restrict).' '.'+';?></span><?php } ?>
           <?php if(!empty($time)){ ?><span class=""><?php echo $time;?></span><?php } ?>
           <?php if(!empty($video->year)){ ?><span class="trending-year"><?php if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span><?php } ?>
-          <?php if(!empty($genres_name)){ ?><span class="trending-year"><?php echo $genres_name; ?></span><?php } ?>
 
+          <?php 
+              $numItems = count($category_name);
+              $i = 0;
+              foreach($category_name as $key => $cat_name){ ?>
+              <a href="<?php echo URL::to('/category'.'/'.$cat_name->categories_slug);?>">
+                <span class="category_name" style="margin-left: 5px;">
+                  <?php echo $cat_name->categories_name;
+                    if(++$i === $numItems) { echo '' ;} else{ echo ',';}?>
+                </span>
+              </a>
+          <?php } ?>
          </div>
            
        <?php if(!Auth::guest()) { ?>
@@ -989,8 +1005,33 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
       <div class="text-white">
           <p class="trending-dec w-100 mb-0 text-white mt-2 text-justify"><?php echo __($video->description); ?></p>
           <p class="trending-dec w-100 mb-0 text-white mt-2">Starring : <span class="sta"><?php echo $artistsname; ?></span></p>
-          <p class="trending-dec w-100 mb-0 text-white mt-2">Genres : <span class="sta"><?php echo $genres_name; ?></span></p>
-          <p class="trending-dec w-100 mb-0 text-white mt-2">This Movie is :</p>
+          <p class="trending-dec w-100 mb-0 text-white mt-2">Genres : 
+              <?php 
+              $numItems = count($category_name);
+              $i = 0;
+              foreach($category_name as $key => $cat_name){ ?>
+                  <a href="<?php echo URL::to('/category'.'/'.$cat_name->categories_slug);?>">
+                    <span class="sta">
+                    <?php echo $cat_name->categories_name;
+                      if(++$i === $numItems) { echo '' ;} else{ echo ',';}?>
+                    </span>
+                  </a>
+              <?php } ?>
+          </p>
+          <p class="trending-dec w-100 mb-0 text-white mt-2">This Movie is :
+
+            <?php 
+                $numItems = count($Movie_name);
+                $i = 0;
+                foreach($Movie_name as $key => $Movie){ ?>
+                    <a href="<?php echo URL::to('/language'.'/'.$Movie->id.'/'.$Movie->movie_name);?>">
+                      <span class="sta">
+                      <?php echo $Movie->movie_name;
+                        if(++$i === $numItems) { echo '' ;} else{ echo ',';}?>
+                      </span>
+                    </a>
+              <?php } ?>
+          </p>
           <p class="trending-dec w-100 mb-0 text-white mt-2">Subtitles : <?php echo $subtitles_name; ?></p>
           <p class="trending-dec w-100 mb-0 text-white mt-2">Audio Languages : <?php echo $lang_name; ?></p>
       </div>

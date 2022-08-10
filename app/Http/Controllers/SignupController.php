@@ -567,18 +567,22 @@ public function createStep3(Request $request)
         $template = EmailTemplate::where('id','=',6)->first(); 
         $heading =$template->heading; 
 
-        Mail::send('emails.paymentfailed', array(
-            /* 'activation_code', $user->activation_code,*/
-            'name'=>$user->username, 
-            'price' => $price, 
-            'plan' => $plan, 
-            'heading'=> $template->heading,
-            'error'=> $error,
-            ), function($message) use ($request,$user,$heading) {
-            $message->from(AdminMail(),GetWebsiteName());
-            $message->to($request->session()->get('register.email'), $user->username)->subject($heading);
-             });
-
+        try {
+            Mail::send('emails.paymentfailed', array(
+                /* 'activation_code', $user->activation_code,*/
+                'name'=>$user->username,
+                'price' => $price,
+                'plan' => $plan,
+                'heading'=> $template->heading,
+                'error'=> $error,
+                ), function($message) use ($request,$user,$heading) {
+                $message->from(AdminMail(),GetWebsiteName());
+                $message->to($request->session()->get('register.email'), $user->username)->subject($heading);
+                 });
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+       
          $response = array(
             'status' => 'success'
             );
@@ -652,30 +656,8 @@ public function createStep3(Request $request)
                     );
                 }
                
-                \Mail::send('emails.subscriptionmail', array(
-                    'name' => $user->username,
-                    'uname' => $user->username,
-                    'paymentMethod' => $paymentMethod,
-                    'plan' => ucfirst($plandetail->plans_name),
-                    'price' => $plandetail->price,
-                    'plan_id' => $plandetail->plan_id,
-                    'billing_interval' => $plandetail->billing_interval,
-            //                                'next_billing' => $nextPaymentAttemptDate,
-                ), function($message) use ($request,$user){
-                    $message->from(AdminMail(),GetWebsiteName());
-                    $message->to($request->session()->get('register.email'), $user->username)->subject($request->get('subject'));
-                });
+                try {
 
-                } else {
-                    
-                    try {
-                        $user->newSubscription($stripe_plan, $plan)->create($paymentMethod);
-                    } catch (IncompletePayment $exception) {
-                        return redirect()->route(
-                            'cashier.payment',
-                            [$exception->payment->id, 'redirect' => route('home')]
-                        );
-                    }
                     \Mail::send('emails.subscriptionmail', array(
                         'name' => $user->username,
                         'uname' => $user->username,
@@ -689,6 +671,40 @@ public function createStep3(Request $request)
                         $message->from(AdminMail(),GetWebsiteName());
                         $message->to($request->session()->get('register.email'), $user->username)->subject($request->get('subject'));
                     });
+
+                } catch (\Throwable $th) {
+                    //throw $th;
+                }
+
+                } else {
+                    
+                    try {
+                        $user->newSubscription($stripe_plan, $plan)->create($paymentMethod);
+                    } catch (IncompletePayment $exception) {
+                        return redirect()->route(
+                            'cashier.payment',
+                            [$exception->payment->id, 'redirect' => route('home')]
+                        );
+                    }
+
+                    try {
+                        \Mail::send('emails.subscriptionmail', array(
+                            'name' => $user->username,
+                            'uname' => $user->username,
+                            'paymentMethod' => $paymentMethod,
+                            'plan' => ucfirst($plandetail->plans_name),
+                            'price' => $plandetail->price,
+                            'plan_id' => $plandetail->plan_id,
+                            'billing_interval' => $plandetail->billing_interval,
+                    //                                'next_billing' => $nextPaymentAttemptDate,
+                        ), function($message) use ($request,$user){
+                            $message->from(AdminMail(),GetWebsiteName());
+                            $message->to($request->session()->get('register.email'), $user->username)->subject($request->get('subject'));
+                        });
+                    } catch (\Throwable $th) {
+                        //throw $th;
+                    }
+                    
                     $user->role = "subscriber";
                     $user->payment_type = "recurring";
                     $user->card_type = "stripe";
