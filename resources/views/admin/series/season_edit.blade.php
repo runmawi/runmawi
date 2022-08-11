@@ -461,6 +461,7 @@
                                     </td>
                                     <td>
                                         <div class=" align-items-center">
+                                            <a href="{{ URL::to('admin/episode/episode_edit') . '/' . $episode->id }}" class="btn btn-xs btn-primary"><span class="fa fa-edit"></span>Episode Edit</a>
                                             <a href="{{ URL::to('admin/episode/edit') . '/' . $episode->id }}" class="btn btn-xs btn-primary"><span class="fa fa-edit"></span> Edit</a>
                                             <a href="{{ URL::to('admin/episode/delete') . '/' . $episode->id }}" class="btn btn-xs btn-danger delete"><span class="fa fa-trash"></span> Delete</a>
                                         </div>
