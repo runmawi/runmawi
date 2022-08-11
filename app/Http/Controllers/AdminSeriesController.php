@@ -2136,5 +2136,127 @@ if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1
             return Redirect::back()->with('message','Your video will be available shortly after we process it');
 
             }
+    public function EpisodeUploadEdit($id){
+        $video = Episode::findOrFail($id);
+        // dd($id);
 
+        $data = array(
+            'videos' => $video,
+            // 'channelvideos' => $channelvideos,
+            );
+
+        return View('admin.series.edit_episode_video', $data);
+    }
+
+    public function EpisodeVideoUpload(Request $request){
+
+        $value = array();
+        $data = $request->all();
+        $id = $data['Episodeid'];
+        $video = Episode::findOrFail($id);
+
+        $file = (isset($data['file'])) ? $data['file'] : '';
+
+        $package = User::where('id',1)->first();
+        $pack = $package->package;
+        $mp4_url = $data['file'];
+        $settings = Setting::first();
+
+        if($pack != "Business" || $pack == "Business" && $settings->transcoding_access  == 0){
+
+        if($file != '') {        
+        $rand = Str::random(16);
+        $path = $rand . '.' . $file->getClientOriginalExtension();
+        $request->file->storeAs('public', $path);
+        $storepath  = URL::to('/storage/app/public/'.$path);
+        $file = $request->file->getClientOriginalName();
+
+                //  Episode duration 
+                $getID3 = new getID3;
+                $Video_storepath  = storage_path('app/public/'.$path);       
+                $VideoInfo = $getID3->analyze($Video_storepath);
+                $Video_duration = $VideoInfo['playtime_seconds'];
+
+        $newfile = explode(".mp4",$file);
+        $file_folder_name = $newfile[0];       
+            $original_name = ($request->file->getClientOriginalName()) ? $request->file->getClientOriginalName() : '';
+            $episode = Episode::findOrFail($id);
+            $episode->mp4_url = $storepath;
+            $episode->type = 'upload';
+            $episode->save(); 
+            $episode_id = $episode->id;
+        $episode_title = Episode::find($episode_id);
+        $title =$episode_title->title; 
+        $value['success'] = 1;
+        $value['message'] = 'Uploaded Successfully!';
+        $value['episode_id'] = $episode_id;
+        $value['episode_title'] = $title;
+        $value['episode_duration'] = gmdate('H:i:s', $episode_title->duration);
+        return $value;
+        }else {
+            $value['success'] = 2;
+            $value['message'] = 'File not uploaded.'; 
+            return response()->json($value);
+            }
+        
+    }elseif($pack == "Business" && $settings->transcoding_access  == 1){
+        if($file != '') {     
+        $rand = Str::random(16);
+        $path = $rand . '.' . $file->getClientOriginalExtension();
+        $request->file->storeAs('public', $path);
+        $file = $request->file->getClientOriginalName();
+        $newfile = explode(".mp4",$file);
+        $file_folder_name = $newfile[0];
+        $storepath  = URL::to('/storage/app/public/'.$path);
+
+        $original_name = ($request->file->getClientOriginalName()) ? $request->file->getClientOriginalName() : '';
+            
+        $storepath  = URL::to('/storage/app/public/'.$path);
+
+            //  Episode duration 
+            $getID3 = new getID3;
+            $Video_storepath  = storage_path('app/public/'.$path);       
+            $VideoInfo = $getID3->analyze($Video_storepath);
+            $Video_duration = $VideoInfo['playtime_seconds'];
+
+            $video = Episode::findOrFail($id);
+            $video->mp4_url = $path;
+            $video->type = 'm3u8';
+            $video->status = 0;
+            $video->disk = 'public';
+            $video->path = $path;
+            $video->mp4_url = $storepath;
+            $video->duration = $Video_duration;
+            $video->save();
+
+            ConvertEpisodeVideo::dispatch($video,$storepath);
+
+        $episode_id = $video->id;
+        $episode_title = Episode::find($episode_id);
+        $title =$episode_title->title; 
+        $value['success'] = 1;
+        $value['message'] = 'Uploaded Successfully!';
+        $value['episode_id'] = $episode_id;
+        $value['episode_title'] = $title;
+        $value['episode_duration'] = gmdate('H:i:s', $episode_title->duration);
+
+        return $value;
+            
+            
+
+        }else {
+            $value['success'] = 2;
+            $value['message'] = 'File not uploaded.'; 
+            return response()->json($value);
+            }
+
+        }else {
+            $value['success'] = 2;
+            $value['message'] = 'File not uploaded.'; 
+            return response()->json($value);
+            }
+
+
+        }
+        
 }

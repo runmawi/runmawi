@@ -168,6 +168,15 @@ i.fa.fa-google-plus {
     color: brown;
     font-family: 'remixicon';
     }
+    #fileLabel{
+        position: absolute;
+        top: 8px;
+        color: #fff;
+        padding: 8px;
+        left: 114px;
+        background:rgba(11, 11, 11,1);
+        font-size: 12px;
+    }
 </style>
 
 <section style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;">
@@ -370,8 +379,9 @@ i.fa.fa-google-plus {
                                 </div>
                                 
                                 
-                            <div class="col-md-12">
+                            <div class="col-md-12" style="postion:relative;">
                                 <input type="file" multiple="true" class="form-control" style="padding: 0px;" name="avatar" id="avatar" />
+                                <label id="fileLabel">Choose Profile Image</label>
                                  </div>
                                  <div class="col-md-12">
                                      <div class="row">
