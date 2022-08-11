@@ -186,7 +186,7 @@ $settings = App\Setting::first();
         <div class="row align-items-center">
            
             <div class="col-lg-4 mb-3 bdr">
-                <h3>Account Setting</h3>
+                <h3>Account Settings</h3>
                 <div class="mt-5 text-white p-0">
                     <ul class="usk" style="margin-left: -45px;">
                       <!--  <li><a class="showSingle" target="1">User Settings</a></li>-->
@@ -196,7 +196,7 @@ $settings = App\Setting::first();
                         <li><a class="showSingle" target="2">Plan details</a></li>
                         <li><a class="showSingle" target="5">Preference for videos</a></li>
                         <li><a class="showSingle" target="6">Profile</a></li>
-                        <li><a class="showSingle" target="7">Recently Viewd Items</a></li>
+                        <li><a class="showSingle" target="7">Recently Viewed Items</a></li>
                     </ul>
                 </div>
             </div>
