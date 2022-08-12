@@ -712,6 +712,7 @@ class ApiAuthController extends Controller
         // "genre_image"   => URL::to('/').'/public/uploads/videocategory/'.$genre_image,
         "message" => $msg,
         'gener_name' =>  VideoCategory::where('id',$videocategoryid)->pluck('name')->first(),
+        'gener_name' =>  VideoCategory::where('id',$videocategoryid)->pluck('name')->first(),
         'gener_id' =>  VideoCategory::where('id',$videocategoryid)->pluck('id')->first(),
         "videos" => $videos
       );
