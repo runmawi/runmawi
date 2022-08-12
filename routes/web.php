@@ -647,6 +647,9 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::get('/episode/edit/{id}', 'AdminSeriesController@edit_episode');
     Route::post('/episode/update', 'AdminSeriesController@update_episode');
     Route::post('/episode_upload',  'AdminSeriesController@EpisodeUpload');
+    Route::get('/episode/episode_edit/{id}',  'AdminSeriesController@EpisodeUploadEdit');
+    Route::post('/EpisodeVideoUpload',  'AdminSeriesController@EpisodeVideoUpload');
+
     Route::get('/players', 'AdminSettingsController@playerui_index');
     Route::get('/players/settings', 'AdminSettingsController@playerui_settings');   
     Route::post('/players/store', 'AdminSettingsController@storeplayerui');
@@ -1216,6 +1219,8 @@ Route::post('/audios/audioupdate', array('before' => 'demo', 'uses' => 'CPPAdmin
     Route::get('/episode/edit/{id}', 'ChannelSeriesController@edit_episode');
     Route::post('/episode/update', 'ChannelSeriesController@update_episode');
     Route::post('/episode_upload',  'ChannelSeriesController@EpisodeUpload');
+    Route::post('/uploadepisodeedit',  'ChannelSeriesController@EpisodeUploadEdit');
+
 
 
     //Artist Routes
