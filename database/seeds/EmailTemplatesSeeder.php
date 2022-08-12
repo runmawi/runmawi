@@ -319,30 +319,126 @@ class EmailTemplatesSeeder extends Seeder
                             'updated_at' => null,
                         ],
 
-                        [   'template_type' => 'Reactive subscription', 
-                            'heading' => 'Subscription activated to Name',
-                            'description' => 'Dear {Name},
+                        [   'template_type' => 'Subscription - Account Registration', 
+                            'heading' => 'Subscription activated',
+                            'description' => '<p><strong>Account Registration</strong></p>
 
-                                                Welcome to {Name}!
+                                                <p>Hello {username},</p>
                                                 
-                                                Thank you for re-activating your Subscription to {Name}
+                                                <p>Welcome to your {subscription type} of&nbsp; {website name}.</p>
                                                 
-                                                We are happy to see that you have re-activated your {PlanName} subscription to {Name}!
+                                                <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</p>
                                                 
-                                                You can now s',
+                                                <table border="1" cellpadding="1" cellspacing="0" style="border-collapse:collapse; height:200px; width:500px">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td colspan="2" style="background-color:#efefef; vertical-align:top; width:110px">
+                                                            <h3>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; YOUR MEMBERSHIP</h3>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="vertical-align:top; width:110px">
+                                                            <p>&nbsp; &nbsp;Membership:</p>
+                                                            </td>
+                                                            <td style="vertical-align:top; width:360px">
+                                                            <p>&nbsp; &nbsp; &nbsp; &nbsp; {role}</p>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="vertical-align:top; width:110px">
+                                                            <p>&nbsp; &nbsp;Plan Type:</p>
+                                                            </td>
+                                                            <td style="vertical-align:top; width:360px">
+                                                            <p>&nbsp; &nbsp; &nbsp; &nbsp; {plan_type}</p>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="vertical-align:top; width:110px">
+                                                            <p>&nbsp;Current Payment:</p>
+                                                            </td>
+                                                            <td style="vertical-align:top; width:360px">
+                                                            <p>&nbsp; &nbsp; &nbsp; &nbsp; {current_payment}</p>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="vertical-align:top; width:110px">
+                                                            <p>&nbsp; Next Payment:</p>
+                                                            </td>
+                                                            <td style="vertical-align:top; width:360px">
+                                                            <p>&nbsp; &nbsp; &nbsp; &nbsp; {next_payment}</p>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                
+                                                <p>Thank you,</p>
+                                                
+                                                <p>The {website name} Team</p>',
                             'role_type' => 'Subscription' ,
                             'created_at' => Carbon::now(),
                             'updated_at' => null,
                         ],
 
-                        [   'template_type' => 'Recurring billing', 
-                            'heading' => null,
-                            'description' => 'Dear {Name},
-                                            Welcome to {Name}!
-                                            Thank you for being part of {Name}
-                                            Your {PlanName} subscription to {Name} has been renewed.
-                                            Login and continue watching your favorite videos anytime anywhere.
-                                            if y',
+                        [   'template_type' => 'Upgrade to Premium Subscription', 
+                            'heading' => 'Upgrade to Premium Subscription',
+                            'description' => '<p><strong>Upgrade to Premium Subscription</strong><br />
+                            <br />
+                            &nbsp;Hello {username},<br />
+                            <br />
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;You have upgraded your membership from Registered user to Premium user by paying ₹99 per Month by this transaction.<br />
+                            <br />
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Now you can access the unlimited video and Audios on <a href="https://dev-flick.webnexs.org/">website</a> and Android &amp; iOS apps.<br />
+                            &nbsp;</p>
+                            
+                            <table align="center" border="1" cellpadding="2" cellspacing="0" style="border-collapse:collapse; height:300px; width:500px">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2" scope="col" style="background-color:#efefef; vertical-align:top; width:110px">
+                                        <h3><strong>YOUR MEMBERSHIP</strong></h3>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="vertical-align:top; width:110px">
+                                        <p>Membership:</p>
+                                        </td>
+                                        <td style="vertical-align:top; width:360px">
+                                        <p>&nbsp; &nbsp; &nbsp;{role}</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="vertical-align:top; width:110px">
+                                        <p>Plan Type:</p>
+                                        </td>
+                                        <td style="vertical-align:top; width:360px">
+                                        <p>&nbsp; &nbsp; &nbsp;{plan_type}</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="vertical-align:top; width:110px">
+                                        <p>Current Payment:</p>
+                                        </td>
+                                        <td style="vertical-align:top; width:360px">
+                                        <p>&nbsp; &nbsp; &nbsp;{current_payment}</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="vertical-align:top; width:110px">
+                                        <p>Next Payment:</p>
+                                        </td>
+                                        <td style="vertical-align:top; width:360px">
+                                        <p>&nbsp; &nbsp; &nbsp;{next_payment}</p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+                            <p>Thank you,</p>
+                            
+                            <p>The {website name} Team</p>
+                            
+                            <p>&nbsp;</p>',
                             'role_type' => 'Subscription' ,
                             'created_at' => Carbon::now(),
                             'updated_at' => null,

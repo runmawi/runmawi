@@ -1198,7 +1198,6 @@ $response = array('status' => 'success');
                 $subscription = $user->subscription($stripe_plan);
 
                 $payment_type = $request->payment_type;
-                // dd($subscription);
                 
                  if ( $payment_type == "recurring" ) {
                             if (isset($coupon_code) && !empty($coupon_code))
@@ -1213,15 +1212,48 @@ $response = array('status' => 'success');
                               } else {
                                   $subscription->swapAndInvoice($upgrade_plan);
                               }
+
                             $plan = $request->get('plan_name');
                             $plandetail = SubscriptionPlan::where('plan_id',$plan)->first();
-                            \Mail::send('emails.changeplansubscriptionmail', array(
-                                        'name' => $user->username,
-                                        'plan' => ucfirst($plandetail->plans_name),
-                                ), function($message) use ($request,$user){
-                                        $message->from(AdminMail(),GetWebsiteName());
-                                        $message->to($user->email, $user->username)->subject('Subscription Plan Changed');
-                                });
+
+                            try {
+
+                              $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
+                              $subscriptions = $stripe->subscriptions->retrieve( $subscription->stripe_id );
+                              $nextPaymentAttemptDate =  Carbon::createFromTimeStamp( $subscriptions['current_period_end'] )->format('F jS, Y')  ;
+  
+                              $Upgrade_subject = EmailTemplate::where('id',24)->pluck('heading')->first() ;
+
+                              \Mail::send('emails.changeplansubscriptionmail', array(
+                                          'name'          => ucfirst($user->username),
+                                          'plan'          => ucfirst($plandetail->plans_name),
+                                          'plan_price'    => $subscriptions->plan['amount_decimal'] / 100 ,
+                                          'plan_id'       => $subscriptions['plan']['id'] ,
+                                          'billing_interval'  => $subscriptions['plan']['interval'] ,
+                                          'next_billing'      => $nextPaymentAttemptDate,
+                                          'subscription_type' => 'recurring',
+                                          'user_role'         => Auth::user()->role,
+  
+                                  ), function($message) use ($request,$user,$Upgrade_subject){
+                                          $message->from(AdminMail(),GetWebsiteName());
+                                          $message->to($user->email, $user->username)->subject($Upgrade_subject);
+                                  });
+
+                                  $email_log      = 'Mail Sent Successfully from Upgrade Subscription';
+                                  $email_template = "24";
+                                  $user_id = $user->id;
+                      
+                                  Email_sent_log($user_id,$email_log,$email_template);
+
+                            } catch (\Throwable $th) {
+
+                              $email_log      = $th->getMessage();
+                              $email_template = "24";
+                              $user_id = $user->id;
+                
+                              Email_notsent_log($user_id,$email_log,$email_template);
+                            }
+
                      
                             $user->role = 'subscriber';
                             $user->payment_type = 'recurring';
@@ -1313,9 +1345,50 @@ $response = array('status' => 'success');
                     'stripe_id'             =>  $subscription['customer'],
                     'subscription_start'    =>  $Sub_Startday,
                     'subscription_ends_at'  =>  $Sub_Endday,
+                    'payment_type'          => 'recurring',
                 ]);
 
-                return Redirect::route('home');
+                
+                try {
+
+                  $email_subject = EmailTemplate::where('id',23)->pluck('heading')->first() ;
+                  $plandetail = SubscriptionPlan::where('plan_id','=',$plan)->first();
+
+                  $nextPaymentAttemptDate =  Carbon::createFromTimeStamp( $subscription['current_period_end'] )->format('F jS, Y')  ;
+
+                  \Mail::send('emails.subscriptionmail', array(
+
+                      'name'          => ucwords($user->username),
+                      'paymentMethod' => $paymentMethod,
+                      'plan'          => ucfirst($plandetail->plans_name),
+                      'price'         => $subscription->plan['amount_decimal'] / 100 ,
+                      'plan_id'       => $subscription['plan']['id'] ,
+                      'billing_interval'  => $subscription['plan']['interval'] ,
+                      'next_billing'      => $nextPaymentAttemptDate,
+                      'subscription_type' => 'recurring',
+                    ), 
+
+                    function($message) use ($request,$user,$email_subject){
+                      $message->from(AdminMail(),GetWebsiteName());
+                      $message->to($user->email, $user->username)->subject($email_subject);
+                    });
+
+                  $email_log      = 'Mail Sent Successfully from Become Subscription';
+                  $email_template = "23";
+                  $user_id = $user->id;
+      
+                  Email_sent_log($user_id,$email_log,$email_template);
+
+              } catch (\Throwable $th) {
+
+                  $email_log      = $th->getMessage();
+                  $email_template = "23";
+                  $user_id = $user->id;
+     
+                  Email_notsent_log($user_id,$email_log,$email_template);
+              }
+
+              return Redirect::route('home');
 
           } catch (\Throwable $th) {
 
