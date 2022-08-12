@@ -17,7 +17,7 @@ class CreateEmailTemplatesTable extends Migration
             $table->id();
             $table->string('template_type')->nullable();
             $table->string('heading')->nullable();
-            $table->string('description')->nullable();
+            $table->longText('description')->nullable();
             $table->string('role_type')->nullable();
             $table->timestamps();
         });

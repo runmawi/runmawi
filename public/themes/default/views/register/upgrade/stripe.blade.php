@@ -166,7 +166,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                 <input type="text" value="{{ $payment_type }}" id="payment_type" name="payment_type">
+                                 <input type="hidden" value="{{ $payment_type }}" id="payment_type" name="payment_type">
                             </form>
                         @endif  
                     @endif
