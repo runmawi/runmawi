@@ -611,6 +611,8 @@ public function createStep3(Request $request)
                 endif;
             $user_data['role'] = 'registered';
         }*/
+        $email_subject = EmailTemplate::where('id',23)->pluck('heading')->first() ;
+
         $current_date = date('Y-m-d h:i:s');    
         $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
         $userIp = $geoip->getip();    
@@ -648,6 +650,13 @@ public function createStep3(Request $request)
                      $user->subscription_start = Carbon::now(); 
                      $user->save();
 
+                     $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
+                    $customer_data = $stripe->invoices->upcoming([
+                                    'customer' => $user->stripe_id ,
+                    ]);
+
+                    $nextPaymentAttemptDate =  Carbon::createFromTimeStamp($customer_data->period_end)->format('F jS, Y')  ;
+
                 } catch (IncompletePayment $exception) {
                     
                     return redirect()->route(
@@ -655,31 +664,53 @@ public function createStep3(Request $request)
                         [$exception->payment->id, 'redirect' => route('home')]
                     );
                 }
-               
+
                 try {
 
+
                     \Mail::send('emails.subscriptionmail', array(
-                        'name' => $user->username,
+                        'name' => ucwords($user->username),
                         'uname' => $user->username,
                         'paymentMethod' => $paymentMethod,
                         'plan' => ucfirst($plandetail->plans_name),
                         'price' => $plandetail->price,
                         'plan_id' => $plandetail->plan_id,
                         'billing_interval' => $plandetail->billing_interval,
-                //                                'next_billing' => $nextPaymentAttemptDate,
-                    ), function($message) use ($request,$user){
+                        'next_billing' => $nextPaymentAttemptDate,
+                        'subscription_type' => 'recurring',
+
+                    ), function($message) use ($request,$user,$email_subject){
                         $message->from(AdminMail(),GetWebsiteName());
-                        $message->to($request->session()->get('register.email'), $user->username)->subject($request->get('subject'));
+                        $message->to($request->session()->get('register.email'), $user->username)->subject($email_subject);
                     });
 
+                    $email_log      = 'Mail Sent Successfully from Register Subscription';
+                    $email_template = "23";
+                    $user_id = $user->id;
+        
+                    Email_sent_log($user_id,$email_log,$email_template);
+
                 } catch (\Throwable $th) {
-                    //throw $th;
+
+                    $email_log      = $th->getMessage();
+                    $email_template = "23";
+                    $user_id = $user->id;
+       
+                    Email_notsent_log($user_id,$email_log,$email_template);
                 }
 
                 } else {
                     
                     try {
                         $user->newSubscription($stripe_plan, $plan)->create($paymentMethod);
+
+                        $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
+                        $customer_data = $stripe->invoices->upcoming([
+                                       'customer' => $user->stripe_id ,
+                        ]);
+
+                        $nextPaymentAttemptDate =  Carbon::createFromTimeStamp($customer_data->period_end)->format('F jS, Y')  ;
+
                     } catch (IncompletePayment $exception) {
                         return redirect()->route(
                             'cashier.payment',
@@ -688,21 +719,37 @@ public function createStep3(Request $request)
                     }
 
                     try {
+
+
                         \Mail::send('emails.subscriptionmail', array(
-                            'name' => $user->username,
+                            'name' => ucwords($user->username),
                             'uname' => $user->username,
                             'paymentMethod' => $paymentMethod,
                             'plan' => ucfirst($plandetail->plans_name),
                             'price' => $plandetail->price,
                             'plan_id' => $plandetail->plan_id,
                             'billing_interval' => $plandetail->billing_interval,
-                    //                                'next_billing' => $nextPaymentAttemptDate,
-                        ), function($message) use ($request,$user){
+                            'next_billing' => $nextPaymentAttemptDate,
+                            'subscription_type' => 'recurring',
+
+                        ), function($message) use ($request,$user,$email_subject){
                             $message->from(AdminMail(),GetWebsiteName());
-                            $message->to($request->session()->get('register.email'), $user->username)->subject($request->get('subject'));
+                            $message->to($request->session()->get('register.email'), $user->username)->subject($email_subject);
                         });
+
+                        $email_log      = 'Mail Sent Successfully from Register Subscription-23';
+                        $email_template = "23";
+                        $user_id = $user->id;
+            
+                        Email_sent_log($user_id,$email_log,$email_template);
+
                     } catch (\Throwable $th) {
-                        //throw $th;
+
+                         $email_log      = $th->getMessage();
+                         $email_template = "23";
+                         $user_id = $user->id;
+            
+                         Email_notsent_log($user_id,$email_log,$email_template);
                     }
                     
                     $user->role = "subscriber";

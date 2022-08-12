@@ -65,7 +65,7 @@
     <div class="panel-title"><label>Content</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
     <div class="panel-body" style="display: block;"> 
     <textarea  rows="5" class="form-control" name="description" id="summary-ckeditor"
-    placeholder="Description">@if(!empty($email_template->description)){{ strip_tags($email_template->description) }}@endif</textarea>
+    placeholder="Description">@if(!empty($email_template->description)){{ ($email_template->description) }}@endif</textarea>
     <!-- <input type="text" class="form-control" name="description" id="description" placeholder="Description" value="@if(!empty($email_template->description)){{ $email_template->description }}@endif" /> -->
     </div> 
 </div>
