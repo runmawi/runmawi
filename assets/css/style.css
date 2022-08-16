@@ -54,7 +54,7 @@ NOTE: This file contains the styling for responsive Template.
    
 }
  #video .plyr.plyr--full-ui, #video-trailer .plyr.plyr--full-ui, #video_container .plyr.plyr--full-ui, #video_container .plyr__video-embed, #watch_trailer .plyr.plyr--full-ui, #watch_trailer .plyr__video-embed {
-    height: calc(80vh - 80px - 75px)!important;
+    height: calc(100vh - 80px - 75px)!important;
     max-width: none;
     width: 100%;
     height:100%;
