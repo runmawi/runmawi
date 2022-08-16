@@ -676,10 +676,10 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
 
      /*  Email Setting  */
 
-    Route::get('/email_settings', 'AdminEmailSettingsController@index');
+    Route::get('/email_settings', 'AdminEmailSettingsController@index')->name('email_settings');
     Route::post('/email_settings/save', 'AdminEmailSettingsController@store');
     Route::post('/Testing_EmailSettting', 'AdminEmailSettingsController@Testing_EmailSettting'); 
-
+    Route::get('/email_logs', 'AdminEmailSettingsController@email_logs')->name('email_logs'); 
   
      /*Ads Management starts*/
     Route::get('/advertisers', 'AdminAdvertiserController@advertisers');

@@ -41,6 +41,7 @@ use GifCreator\GifCreator;
 use GuzzleHttp\Client;
 use GuzzleHttp\Message\Response;
 use Mail;
+use App\EmaillogsDetail;
 
 class AdminEmailSettingsController extends Controller
 {
@@ -197,6 +198,15 @@ class AdminEmailSettingsController extends Controller
             $url = URL::to('/admin/email_settings');
             echo "<script type='text/javascript'>alert('$Error_msg'); window.location.href = '$url' </script>";
         }
+    }
+
+    public function email_logs(Request $request)
+    {
+        $data =[
+            'email_logs' =>  EmaillogsDetail::all(),
+        ];
+
+        return view('admin.Email.email_logs',$data);
     }
 
 }   
