@@ -174,6 +174,7 @@
     <input type="hidden" id="base_url" value="<?php echo URL::to('/');?>">
     <script src="https://js.stripe.com/v3/"></script>
     <input type="hidden" id="base_url" value="<?php echo URL::to('/');?>">
+        <script src="{{  URL::to('/assets/js/swalalert.min.js')  }}"> </script>
         <script src="https://js.stripe.com/v3/"></script>
         <script type="text/javascript" src="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>

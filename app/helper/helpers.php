@@ -316,8 +316,8 @@ function GetCouponPurchase($user_id){
 }
 function MailSignature()
 {
-     $settings = App\Setting::first();
-     return $settings->signature;  
+     $MailSignature = URL::to('/');
+     return "Website URL : " .$MailSignature;  
 }
 function AdminMail()
 {
