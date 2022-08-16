@@ -187,12 +187,25 @@ class AdminEmailSettingsController extends Controller
         try {
             Mail::send('admin.Email.TestingEmail', array('Testing_Email' => $username ), 
             function($message) use ($data) {
+                $message->from(AdminMail(),GetWebsiteName());
                 $message->to($data['email'], $data['username'])->subject('Testing the Email');
             });
+
+            $email_log      = 'Mail Sent Successfully from Testing E-Mail';
+            $email_template = "0";
+            $user_id = Auth::user()->id;
+
+            Email_sent_log($user_id,$email_log,$email_template);
 
             return Redirect::to('admin/email_settings')->with(array('message' => 'Message has been sent successfully!', 'note_type' => 'success') );
 
         }catch (\Exception $e) {
+
+            $email_log      = $e->getMessage();
+            $email_template = "0";
+            $user_id = Auth::user()->id;
+
+            Email_notsent_log($user_id,$email_log,$email_template);
 
             $Error_msg = "Mail Configuration or Enter Mail is Incorrect !";
             $url = URL::to('/admin/email_settings');

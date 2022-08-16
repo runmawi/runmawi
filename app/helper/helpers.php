@@ -321,8 +321,8 @@ function MailSignature()
 }
 function AdminMail()
 {
-     $settings = App\Setting::first();
-     return $settings->system_email;  
+    $settings =  env('MAIL_FROM_ADDRESS') ;
+    return $settings;  
 }
 
 //theme settings 
