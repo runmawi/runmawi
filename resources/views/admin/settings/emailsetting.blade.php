@@ -219,11 +219,8 @@ border-radius: 0px 4px 4px 0px;
                            <h4 class="card-title">Email Templates</h4>
                         </div>
                         
-                        
                          <div class="iq-card-header-toolbar d-flex align-items-baseline">
-                             <div class="form-group mr-2">
-                    <!-- <input type="text" name="search" id="search" class="form-control" placeholder="Search Data" /> -->
-                    </div>
+                             <div class="form-group mr-2"> <a href="{{ route('email_logs') }}" class="btn btn-primary" > Email Logs </a> </div>
                         </div>
                      </div>
                      <div class="iq-card-body table-responsive">
