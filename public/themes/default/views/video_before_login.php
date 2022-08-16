@@ -489,7 +489,7 @@ if(!empty($request_url)){
             <div class="img__wrap">
               <img class="img__img " src="<?php echo URL::to('/').'/public/uploads/images/'.$video->player_image;  ?>" class="img-fluid" alt="" height="200" width="300">
               <div class="img__description_layer">
-                   <a data-video="<?php echo $video->trailer;  ?>" data-toggle="modal" data-target="#videoModal">
+                   <a data-video="<?php echo $video->trailer;  ?>" data-toggle="modal" data-target="#videoModal"  data-backdrop="static" data-keyboard="false" >
                 <p class="img__description">
                     <h6 class="text-center"> <?php  echo (strlen($video->title) > 50) ? substr($video->title,0,51).'...' : $video->title; ?></h6>
                    
@@ -500,7 +500,7 @@ if(!empty($request_url)){
                     </div>
 
                     <div class="hover-buttons text-center">
-                        <a data-video="<?php echo $video->trailer;  ?>" data-toggle="modal" data-target="#videoModal">	
+                        <a data-video="<?php echo $video->trailer;  ?>" data-toggle="modal" data-target="#videoModal"  data-backdrop="static" data-keyboard="false" >	
                           <span class="text-white">
                             <i class="fa fa-play mr-1" aria-hidden="true"></i> Play Now
                           </span>
@@ -999,5 +999,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   }
    
+    // Trailer - Modal
+  $(document).ready(function(){
+    $(".close").click(function(){
+      $('#videoPlayer1')[0].pause();
+    });
+  });
 
 </script>
