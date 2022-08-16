@@ -1120,73 +1120,139 @@ public function RentPaypal(Request $request)
 }
 
 public function UpgadeSubscription(Request $request){
-  $user_email = Auth::user()->email;
-  $user_id = Auth::user()->user_id;
-  $user = User::where('email',$user_email)->first();
-  $paymentMethod = $request->get('py_id');
-  $plan = $request->get('plan');
-  $coupon_code = $request->coupon_code;
-  $payment_type = $request->payment_type;
-  $paymentMethods = $user->paymentMethods();
-  $apply_coupon = NewSubscriptionCouponCode();
-  $stripe_plan = SubscriptionPlan();
-  $plandetail = SubscriptionPlan::where('plan_id',$plan)->first();
+
+    $user_email = Auth::user()->email;
+    $user_id = Auth::user()->user_id;
+    $user = User::where('email',$user_email)->first();
+    $paymentMethod = $request->get('py_id');
+    $plan = $request->get('plan');
+    $coupon_code = $request->coupon_code;
+    $payment_type = $request->payment_type;
+    $paymentMethods = $user->paymentMethods();
+    $apply_coupon = NewSubscriptionCouponCode();
+    $stripe_plan = SubscriptionPlan();
+    $plandetail = SubscriptionPlan::where('plan_id',$plan)->first();
+    $email_subject = EmailTemplate::where('id',23)->pluck('heading')->first() ;
 
   // $plandetail = Plan::where('plan_id',$plan)->first();
-if (isset($coupon_code) && $coupon_code !=''){
-      try {
-           $user->newSubscription($stripe_plan, $plan)->withCoupon($apply_coupon)->create($paymentMethod);
-          } catch (IncompletePayment $exception) {
-              return redirect()->route(
-                  'cashier.payment',
-                  [$exception->payment->id, 'redirect' => route('home')]
-              );
-          }
-          \Mail::send('emails.subscriptionmail', array(
-              'name' => $user->username,
-              'paymentMethod' => $paymentMethod,
-              'plan' => ucfirst($plandetail->plans_name),
-              'price' => $plandetail->price,
-              'billing_interval' => $plandetail->billing_interval,
-              /*'next_billing' => $nextPaymentAttemptDate,*/
-          ), function($message) use ($request,$user){
-              $message->from(AdminMail(),GetWebsiteName());
-              $message->to($user->email, $user->username)->subject($request->get('subject'));
-          });
-          $user->role = 'subscriber';
-          $user->card_type = 'stripe';
-          $user->active = 1;
-          $user->payment_type = $payment_type;
-          $user->save();
-} else {
-     try {
-           $user->newSubscription($stripe_plan, $plan)->create($paymentMethod);
-          } catch (IncompletePayment $exception) {
-              return redirect()->route(
-                  'cashier.payment',
-                  [$exception->payment->id, 'redirect' => route('home')]
-              );
-          }
-          \Mail::send('emails.subscriptionmail', array(
-              'name' => $user->username,
-              'paymentMethod' => $paymentMethod,
-              'plan' => ucfirst($plandetail->plans_name),
-              'price' => $plandetail->price,
-              'billing_interval' => $plandetail->billing_interval,
-              /*'next_billing' => $nextPaymentAttemptDate,*/
-          ), function($message) use ($request,$user){
-              $message->from(AdminMail(),GetWebsiteName());
-              $message->to($user->email, $user->username)->subject($request->get('subject'));
-          });
-          $user->role = 'subscriber';
-          $user->card_type = 'stripe';
-          $user->active = 1;
-          $user->payment_type = $payment_type;
-          $user->save();
-}
 
-$response = array('status' => 'success');   
-}
+      if (isset($coupon_code) && $coupon_code !=''){
+
+          try {
+                $stripe = new \Stripe\StripeClient(
+                  env('STRIPE_SECRET')
+                );
+                $subscription_details =  $user->newSubscription($stripe_plan, $plan)->withCoupon($apply_coupon)->create($paymentMethod);
+                $subscription = $stripe->subscriptions->retrieve( $subscription_details->stripe_id );
+                $nextPaymentAttemptDate =  Carbon::createFromTimeStamp( $subscription['current_period_end'] )->format('F jS, Y')  ;
+
+          } 
+          catch (IncompletePayment $exception) 
+          {
+                  return redirect()->route(
+                      'cashier.payment',
+                      [$exception->payment->id, 'redirect' => route('home')]
+                  );
+          }
+
+          try {
+
+            \Mail::send('emails.subscriptionmail', array(
+
+                'name'          => ucwords($user->username),
+                'plan'          => ucfirst($plandetail->plans_name),
+                'price'         => $subscription->plan['amount_decimal'] / 100 ,
+                'plan_id'       => $subscription['plan']['id'] ,
+                'billing_interval'  => $subscription['plan']['interval'] ,
+                'next_billing'      => $nextPaymentAttemptDate,
+                'subscription_type' => 'recurring',
+
+            ), function($message) use ($request,$user){
+                $message->from(AdminMail(),GetWebsiteName());
+                $message->to($user->email, $user->username)->subject($email_subject);
+            });
+
+            $email_log      = 'Mail Sent Successfully from Become Subscription';
+            $email_template = "23";
+            $user_id = $user_id;
+      
+            Email_sent_log($user_id,$email_log,$email_template);
+
+          } catch (\Throwable $th) {
+
+                  $email_log      = $th->getMessage();
+                  $email_template = "23";
+                  $user_id = $user_id;
+     
+                  Email_notsent_log($user_id,$email_log,$email_template);
+          }
+
+
+          $user->role = 'subscriber';
+          $user->card_type = 'stripe';
+          $user->active = 1;
+          $user->payment_type = $payment_type;
+          $user->save();
+      } 
+      else 
+      {
+        try {
+            $stripe = new \Stripe\StripeClient(
+              env('STRIPE_SECRET')
+            );
+
+            $subscription_details = $user->newSubscription($stripe_plan, $plan)->create($paymentMethod);
+            $subscription = $stripe->subscriptions->retrieve( $subscription_details->stripe_id );
+            $nextPaymentAttemptDate =  Carbon::createFromTimeStamp( $subscription['current_period_end'] )->format('F jS, Y')  ;
+
+            } 
+        catch (IncompletePayment $exception) {
+                return redirect()->route(
+                    'cashier.payment',
+                    [$exception->payment->id, 'redirect' => route('home')]
+                );
+        }
+
+          try {
+
+            \Mail::send('emails.subscriptionmail', array(
+                'name'          => ucwords($user->username),
+                'plan'          => ucfirst($plandetail->plans_name),
+                'price'         => $subscription->plan['amount_decimal'] / 100 ,
+                'plan_id'       => $subscription['plan']['id'] ,
+                'billing_interval'  => $subscription['plan']['interval'] ,
+                'next_billing'      => $nextPaymentAttemptDate,
+                'subscription_type' => 'recurring',
+
+            ), function($message) use ($request,$user,$email_subject){
+                $message->from(AdminMail(),GetWebsiteName());
+                $message->to($user->email, $user->username)->subject($email_subject);
+            });
+            
+            $email_log      = 'Mail Sent Successfully from Become Subscription';
+            $email_template = "23";
+            $user_id = $user_id;
+      
+            Email_sent_log($user_id,$email_log,$email_template);
+
+          } catch (\Throwable $th) {
+
+                  $email_log      = $th->getMessage();
+                  $email_template = "23";
+                  $user_id = $user_id;
+     
+                  Email_notsent_log($user_id,$email_log,$email_template);
+          }
+
+          $user->role = 'subscriber';
+          $user->card_type = 'stripe';
+          $user->active = 1;
+          $user->payment_type = $payment_type;
+          $user->save();
+      }
+
+      $response = array('status' => 'success');   
+  }
 
 
      public function UpgradeSubscription(Request $request)
