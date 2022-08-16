@@ -3204,4 +3204,21 @@ if(!empty($artistsdata)){
    
              }
 
+            public function filedelete($id)
+            {
+                        
+            $video = Video::findOrFail($id);
+            $filename = $video->path.'.mp4';
+            $path = storage_path('app/public/'.$filename);
+
+            if (file_exists($path)){
+                unlink($path);
+            }else{
+
+            }
+            return Redirect::back()->with('message','Your video will be available shortly after we process it');
+
+    
+            }
+
 }

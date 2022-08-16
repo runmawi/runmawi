@@ -226,6 +226,17 @@ border-radius: 0px 4px 4px 0px;
 
 
 <h5 class="p-1 mt-3 ml-3" style="font-weight: normal;">Video Info Details</h5>
+<?php 
+ $filename = $video->path.'.mp4';
+ $path = storage_path('app/public/'.$filename);
+?>
+@if($video->processed_low >= 100 && $video->type == "")
+   @if (file_exists($path))
+      <a class="iq-bg-warning mt-2"  href="{{ URL::to('admin/videos/filedelete') . '/' . $video->id }}" style="margin-left: 85%;"><button class="btn btn-secondary" > Delete Original File</button></a>
+   @endif
+@endif
+
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <div >
 <div class="container-fluid">
