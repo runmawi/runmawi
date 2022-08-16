@@ -2134,11 +2134,11 @@ $final[] = array_merge($array1,$array2,$array3,$array4);
           return $item;
       });
 
-      $Splash_Screen_first = MobileApp::first();
+      $Splash_Screen_first = MobileApp::pluck('splash_image')->first();
 
       $first_Splash_Screen[] =[
-        'Splash_Screen'=> $Splash_Screen_first->splash_image,
-        'splash_url'  => URL::to('/').'/public/uploads/settings/'.$Splash_Screen_first->splash_image,
+        'Splash_Screen'=> $Splash_Screen_first,
+        'splash_url'  => URL::to('/').'/public/uploads/settings/'.$Splash_Screen_first,
       ];
 
 
