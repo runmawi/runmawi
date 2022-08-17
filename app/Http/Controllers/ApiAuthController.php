@@ -1684,7 +1684,11 @@ $final[] = array_merge($array1,$array2,$array3,$array4);
         $item['video_url'] = URL::to('/').'/storage/app/public/';
         return $item;
       });
-      $status = "true";
+      if(count($channel_videos) > 0){
+        $status = "true";
+      }else{
+        $status = "false";
+      }
     }else{
             $status = "false";
       $channel_videos = [];
@@ -1717,7 +1721,11 @@ $final[] = array_merge($array1,$array2,$array3,$array4);
         $item['video_url'] = URL::to('/').'/storage/app/public/';
         return $item;
       });
-      $status = "true";
+      if(count($channel_videos) > 0){
+        $status = "true";
+      }else{
+        $status = "false";
+      }
     }else{
             $status = "false";
       $channel_videos = [];
@@ -1750,7 +1758,11 @@ $final[] = array_merge($array1,$array2,$array3,$array4);
         $item['video_url'] = URL::to('/').'/storage/app/public/';
         return $item;
       });
-      $status = "true";
+      if(count($channel_videos) > 0){
+        $status = "true";
+      }else{
+        $status = "false";
+      }
     }else{
              $status = "false";
       $channel_videos = [];
@@ -5150,8 +5162,12 @@ return response()->json($response, 200);
           $item['mp3_url'] = $item->mp3_url;
           return $item;
         });
-        $status = "true";
-      }else{
+        if(count($channel_videos) > 0){
+          $status = "true";
+        }else{
+          $status = "false";
+        }
+            }else{
                $status = "false";
         $channel_videos = [];
       }
@@ -5182,7 +5198,11 @@ return response()->json($response, 200);
           $item['mp3_url'] = $item->mp3_url;
           return $item;
         });
-        $status = "true";
+        if(count($channel_videos) > 0){
+          $status = "true";
+        }else{
+          $status = "false";
+        }
       }else{
                $status = "false";
         $channel_videos = [];
@@ -5469,8 +5489,12 @@ public function LocationCheck(Request $request){
         $item['video_url'] = URL::to('/').'/storage/app/public/';
         return $item;
       });
-      $status = "true";
-    }else{
+      if(count($channel_videos) > 0){
+        $status = "true";
+      }else{
+        $status = "false";
+      }
+     }else{
             $status = "false";
       $channel_videos = [];
     }
@@ -5502,8 +5526,12 @@ public function LocationCheck(Request $request){
         $item['video_url'] = URL::to('/').'/storage/app/public/';
         return $item;
       });
-      $status = "true";
-    }else{
+      if(count($channel_videos) > 0){
+        $status = "true";
+      }else{
+        $status = "false";
+      }
+        }else{
              $status = "false";
       $channel_videos = [];
     }
@@ -5532,8 +5560,12 @@ public function LocationCheck(Request $request){
         $item['video_url'] = URL::to('/').'/storage/app/public/';
         return $item;
       });
-      $status = "true";
-    }else{
+      if(count($channel_videos) > 0){
+        $status = "true";
+      }else{
+        $status = "false";
+      }
+        }else{
             $status = "false";
       $channel_videos = [];
     }
