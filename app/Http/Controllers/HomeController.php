@@ -395,6 +395,7 @@ class HomeController extends Controller
                 'latest_series' => $latest_series,
                 'cnt_watching' => $cnt_watching,
                 'trendings' => $trending_movies,
+                'latest_video' => $latest_videos,
                 'latest_videos' => $latest_videos,
                 'movies' => $trending_movies,
                 'latest_movies' => $latest_movies,
@@ -1297,6 +1298,7 @@ class HomeController extends Controller
                         'cnt_watching' => $cnt_watching,
                         'trendings' => $trending_movies,
                         'latest_videos' => $latest_videos,
+                        'latest_video' => $latest_videos,
                         'movies' => $trending_movies,
                         'latest_movies' => $latest_movies,
                         'ppv_movies' => $ppv_movies,
@@ -1334,7 +1336,6 @@ class HomeController extends Controller
                         'artist' => Artist::all(),
                     );
 
-                    //echo "<pre>";print_r($data['latest_videos']);exit;
                     return Theme::view('home', $data);
                 }
             }
@@ -2180,6 +2181,7 @@ class HomeController extends Controller
                     'latest_series' => $latest_series,
                     'cnt_watching' => $cnt_watching,
                     'trendings' => $trending_movies,
+                    'latest_video' => $latest_videos,
                     'latest_videos' => $latest_videos,
                     'movies' => $trending_movies,
                     'latest_movies' => $latest_movies,

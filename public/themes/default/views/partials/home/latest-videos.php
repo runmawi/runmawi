@@ -1,5 +1,5 @@
 <?php   
-if(count($latest_videos) > 0) : ?>
+if(count($latest_video) > 0) : ?>
   <?php  if(!empty($data['password_hash'])) { 
                           $id = Auth::user()->id ; } else { $id = 0 ; } ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
@@ -9,8 +9,8 @@ if(count($latest_videos) > 0) : ?>
                  </div>
                  <div class="favorites-contens">
                     <ul class="favorites-slider list-inline  row p-0 mb-0">
-                         <?php  if(isset($latest_videos)) :
-                         foreach($latest_videos as $watchlater_video): 
+                         <?php  if(isset($latest_video)) :
+                         foreach($latest_video as $watchlater_video): 
                           ?>
                        <li class="slide-item">
                           <a href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">

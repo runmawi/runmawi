@@ -467,7 +467,7 @@ div#lottie-beil svg path, div#lottie-mail svg path, div#lottie-fullscreen svg pa
 /*---------------------------------------------------------------------
 content Page
 -----------------------------------------------------------------------*/
-.content-page { overflow: hidden; margin-left: 300px; padding: 125px 15px 0;-webkit-transition: all 0.3s ease-out 0s; -moz-transition: all 0.3s ease-out 0s; -ms-transition: all 0.3s ease-out 0s; -o-transition: all 0.3s ease-out 0s; transition: all 0.3s ease-out 0s; }
+.content-page { overflow: hidden; margin-left: 300px; padding: 80px 15px 0;-webkit-transition: all 0.3s ease-out 0s; -moz-transition: all 0.3s ease-out 0s; -ms-transition: all 0.3s ease-out 0s; -o-transition: all 0.3s ease-out 0s; transition: all 0.3s ease-out 0s; }
 .content-page1 { overflow: hidden; margin-left: 300px; padding: 60px 15px 0; -webkit-transition: all 0.3s ease-out 0s; -moz-transition: all 0.3s ease-out 0s; -ms-transition: all 0.3s ease-out 0s; -o-transition: all 0.3s ease-out 0s; transition: all 0.3s ease-out 0s; }
 .media-body{
     border-left :1px solid #f1f1f1;
