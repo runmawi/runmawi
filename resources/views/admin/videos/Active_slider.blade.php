@@ -1,4 +1,4 @@
-@extends('admin.master')
+@include('admin.master')
 
 @include('admin.favicon')
 
@@ -23,7 +23,7 @@ border-radius: 0px 4px 4px 0px;
 @section('content')
 
 <div id="content-page" class="content-page">
-      <div class="mt-5 d-flex">
+      <div class=" d-flex">
          <a class="black" href="{{ URL::to('admin/videos') }}">All Videos</a>
          <a class="black" href="{{ URL::to('admin/videos/create') }}">Add New Video</a>
          <a class="black" href="{{ URL::to('admin/CPPVideosIndex') }}">Videos For Approval</a>

@@ -120,10 +120,7 @@ border-radius: 0px 4px 4px 0px;
 		</div>
                         </div>
                      </div>
-                  </div>
-               </div>
-            </div>
-         </div>
+
 <script src="cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
       
          <script>
