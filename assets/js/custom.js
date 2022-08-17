@@ -157,7 +157,7 @@ Index Of Script
 			speed: 300,
 			autoplay: false,
              lazyLoad: 'ondemand',
-			slidesToShow: 8,
+			slidesToShow: 7,
 			slidesToScroll: 1,		
 			// appendArrows: $('#sm-slick-arrow'),
 			

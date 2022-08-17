@@ -147,7 +147,7 @@ border-radius: 0px 4px 4px 0px;
 	
             <!-- Page content wrapper-->
            <div class="container-fluid" id="site" style="padding-left:20px;">
-               <div class="row align-items-center">
+               <div class="row ">
                     <div class="panel-heading">
                     <div class="panel-title"><label>Site Name</label></div>
                     <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
@@ -176,7 +176,7 @@ border-radius: 0px 4px 4px 0px;
                         <small>(Dimensions: 180px X 29px)</small></label>
                     </div>
 
-                    <div class="row d-flex">
+                    <div class="row d-flex align-items-center">
 
                         <div class="panel-body col-md-6" >
                             <p class="p1">Enter Your Logo Width Below:</p> 
@@ -207,7 +207,7 @@ border-radius: 0px 4px 4px 0px;
 
             </div>
             <!-- </div> -->
-           <div class="col-md-6 mt-4">
+           <div class="col-md-6 mt-4 pt-3">
                 <div class="panel-body" style="display: block;">
                     <p class="p1">Enter Your Website Description Below:</p>
                     <input type="text" class="form-control" name="website_description" id="website_description"
@@ -919,15 +919,15 @@ border-radius: 0px 4px 4px 0px;
             <div class="panel-heading">
                 <div class="panel-title"><label>Advertisement</label></div>
                 <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
-            </div></div>
+            </div>
+    </div>
           
                 <div class="row">
-                 
                        <div class="col-md-6">
                             <div class="d-flex align-items-baseline">
                             <p class="p1">Enable Advertisement on Videos:</p>
 
-                            <div class="form-group ">
+                            <div class="form-group">
                                 <div class="make-switch" data-on="success" data-off="warning">
                                     <input type="checkbox" @if(!isset($settings->ads_on_videos) ||
                                     (isset($settings->ads_on_videos) && $settings->ads_on_videos))checked="checked"
@@ -990,11 +990,6 @@ border-radius: 0px 4px 4px 0px;
                         </div>
                         </div>
                     </div>
-               
-          
-      
-     
-   
         <div class="d-flex justify-content-end">
     <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
     <input type="submit" id = "settingupdate" value="Update Settings" class="mt-3 btn btn-primary pull-right" /></div>
@@ -1090,7 +1085,7 @@ border-radius: 0px 4px 4px 0px;
                                 @forelse($rtmp_url as $key => $url)
                                     <tr>  
                                         <td class="col-md-4" ><input type="text" name="addmore[0][rtmp_url]" placeholder="rtmp://75.119.145.126:1935/show/" class="form-control rtmp_urls" value="{{ $url->rtmp_url }}" readonly/></td>  
-                                        <td class="col-md-5" ><input type="text" name="addmore[0][hls_url]" placeholder="http://75.119.145.126:9090/hls/streamkey/index.m3u8" class="form-control rtmp_urls" value="{{ $url->hls_url }}" readonly/></td>  
+                                        <td class="col-md-4" ><input type="text" name="addmore[0][hls_url]" placeholder="http://75.119.145.126:9090/hls/streamkey/index.m3u8" class="form-control rtmp_urls" value="{{ $url->hls_url }}" readonly/></td>  
                                         <td class="col-md-4">
                                             <button type="button" name="add" id="add" class="btn btn-success add">Add </button>
                                             <button type="button" name="remove_url" id="remove_url" class="btn btn-danger remove_url"  data-name="{{ $url->id }}" value="{{ $url->rtmp_url }}" onclick="addRow(this)" >Remove</button>

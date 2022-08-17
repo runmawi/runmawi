@@ -523,16 +523,7 @@ input:checked + .sliderk:before {
                                           $cat = App\VideoCategory::orderBy("order")->where('in_home',1)->get();
                                           ?>
                           <div class="dropdown">
-  <a onclick="show_hide()" class="button">Choose Language</a>
-   <center>
-      <!-- dropdown list items will show when we click the drop button --> 
-      <div id="list-items">
-         <a href="#"> Hindi </a>
-         <a href="#"> English </a>
-         <a href="#"> Spanish </a>
-         <a href="#"> Chinese </a>
-         <a href="#"> Japanese </a>
-      </div>
+  
                                        <li class="dropdown menu-item">
                                            <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown" >  
                                                  <a class="d-flex justify-content-between" href="<?php echo  URL::to('/categoryList');?>"> <?php echo __($menu->name);?>  
