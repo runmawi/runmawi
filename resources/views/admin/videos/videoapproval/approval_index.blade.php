@@ -1,4 +1,9 @@
 @extends('admin.master')
+
+@section('css')
+	<link rel="stylesheet" href="{{ URL::to('/assets/admin/css/sweetalert.css') }}">
+@endsection
+
 <style>
     .black{
         color: #000;
@@ -12,13 +17,13 @@ border-radius: 0px 4px 4px 0px;
         color: rgba(66, 149, 210, 1);
 
     }
+     .content-page {
+    overflow: hidden;
+        margin-left: 300px;}
 </style>
-@section('css')
-	<link rel="stylesheet" href="{{ URL::to('/assets/admin/css/sweetalert.css') }}">
-@endsection
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-  <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
-<link rel="stylesheet" href="cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+  <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">-->
 
 @section('content')
 
@@ -125,7 +130,8 @@ border-radius: 0px 4px 4px 0px;
                </div>
             </div>
          </div>
-<script src="cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+</div>
+<!--<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>-->
       
          <script>
 $(document).ready(function(){
