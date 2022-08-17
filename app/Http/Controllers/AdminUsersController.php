@@ -2528,8 +2528,11 @@ class AdminUsersController extends Controller
             if ($query != '')
             {
 
-                $data = Subscription::select('users.username', 'plans.plans_name')->join('users', 'users.id', '=', 'subscriptions.user_id')
-                    ->join('plans', 'plans.plan_id', '=', 'subscriptions.stripe_plan')
+                // $data = Subscription::select('users.username', 'plans.plans_name')->join('users', 'users.id', '=', 'subscriptions.user_id')
+                //     ->join('plans', 'plans.plan_id', '=', 'subscriptions.stripe_plan')
+                //     ->paginate(9);
+                $data = Subscription::select('users.username', 'subscription_plans.plans_name')->join('users', 'users.id', '=', 'subscriptions.user_id')
+                    ->join('subscription_plans', 'subscription_plans.plan_id', '=', 'subscriptions.stripe_plan')
                     ->paginate(9);
 
             }
