@@ -1713,8 +1713,8 @@ Route::post('admin/clear_caches', 'ClearCacheController@clear_caches')->name('cl
 Route::post('admin/clear_view_cache', 'ClearCacheController@clear_view_cache')->name('clear_view_cache');
 
 // ENV APP DEBUG
-  Route::get('admin/Env_index', 'ClearCacheController@Env_index'); 
-  Route::Post('admin/Env_AppDebug', 'ClearCacheController@Env_AppDebug'); 
+  Route::get('admin/debug', 'ClearCacheController@Env_index')->name('env_index'); 
+  Route::Post('admin/Env_AppDebug', 'ClearCacheController@Env_AppDebug')->name('env_appdebug'); 
 
     // Reels
 Route::get('/Reals_videos/videos/{slug}', 'ChannelController@Reals_videos');
