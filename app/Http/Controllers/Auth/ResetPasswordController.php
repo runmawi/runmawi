@@ -75,34 +75,46 @@ public function reset(Request $request)
                             ->first();
 
     $user =   User::where('email','=',$request->email)->get();
-    // $to_email = $request->email;
     $template = EmailTemplate::where('id','=', 8)->get(); 
 
     foreach($template as $key => $value){
         $heading = $value->heading;
         $template_type = $value->template_type;
-
     }
-    // dd($heading);exit();
+    
     $settings = Setting::find(1);
+    $email_subject = EmailTemplate::where('id',7)->pluck('heading')->first() ;
 
+        try {
+            Mail::send('emails.changed_password', array(
+                'heading' => $heading,
+                'email' => $request->email,
+                'username' => $user[0]->username,
+                'website_name' =>  GetWebsiteName(),
+            ), 
+            function($message) use ($user,$settings,$email_subject){
+                $message->from(AdminMail(),GetWebsiteName());
+                $message->to($user[0]->email,$user[0]->username);
+                $message->subject($email_subject);
+            });
 
-      Mail::send('emails.changed_password', array(
-                            'heading' => $heading,
-                            'email' => $request->email,
-                            'username' => $user[0]->username,
-                         
-                        ), function($message) use ($user,$settings){
-                            $message->from(AdminMail(),$settings->website_name);
-                            $message->to($user[0]->email,$user[0]->username);
-                            $message->subject('Password is changed successfully');
-            
-                        });
+            $email_log      = 'Mail Sent Successfully from Change Password E-Mail';
+            $email_template = "7";
+            $user_id = $user[0]->id;
 
+            Email_sent_log($user_id,$email_log,$email_template);
 
+        } catch (\Throwable $th) {
+
+            $email_log      = $th->getMessage();
+            $email_template = "7";
+            $user_id = $user[0]->id;
+
+            Email_notsent_log($user_id,$email_log,$email_template);
+        }
+        
 
        if(!$updatePassword){
-    // dd($updatePassword);
 
             return back()->withInput()->with('error', 'Invalid token!');
         } else {

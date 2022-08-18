@@ -222,4 +222,39 @@ class AdminEmailSettingsController extends Controller
         return view('admin.Email.email_logs',$data);
     }
 
+    public function email_template_testing(Request $request){
+
+        $data = array(
+            'email' => 'manikandanwebnexs@gmail.com',
+            'username' => Auth::user()->name,
+            'email_subject' =>  EmailTemplate::where('id',1)->pluck('heading')->first() ,
+        );
+
+        try {
+            Mail::send('emails.Test', array(
+                'username' => $data['username'],
+                'website_name' => GetWebsiteName(),
+             ), 
+            function($message) use ($data) {
+                $message->from(AdminMail(),GetWebsiteName());
+                $message->to($data['email'], $data['username'])->subject($data['email_subject']);
+            });
+
+            $email_log      = 'Mail Sent Successfully from Welcome E-Mail';
+            $email_template = "1";
+            $user_id = Auth::user()->id;
+
+            Email_sent_log($user_id,$email_log,$email_template);
+
+        }catch (\Exception $e) {
+
+            $email_log      = $e->getMessage();
+            $email_template = "1";
+            $user_id = Auth::user()->id;
+
+            Email_notsent_log($user_id,$email_log,$email_template);
+
+        }
+    }
+
 }   
