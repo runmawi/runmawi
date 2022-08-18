@@ -200,6 +200,7 @@ class AdminLiveStreamController extends Controller
          }else{
             $image = "Defualt.jpg";
          } 
+
          
          $player_image = ($request->file('player_image')) ? $request->file('player_image') : '';
 
@@ -222,12 +223,12 @@ class AdminLiveStreamController extends Controller
                     $player_filename  = time().'.'.compress_image_format();
                     $player_PC_image     =  'live_'.$player_filename ;
 
-                    Image::make($player_filename)->save(base_path().'/public/uploads/images/'.$player_PC_image,compress_image_resolution() );
+                    Image::make($player_image)->save(base_path().'/public/uploads/images/'.$player_PC_image,compress_image_resolution() );
                 }else{
 
                     $player_filename  = time().'.'.$player_image->getClientOriginalExtension();
                     $player_PC_image     =  'live_'.$player_filename ;
-                    Image::make($player_filename)->save(base_path().'/public/uploads/images/'.$player_PC_image );
+                    Image::make($player_image)->save(base_path().'/public/uploads/images/'.$player_PC_image );
                 }
 
  
