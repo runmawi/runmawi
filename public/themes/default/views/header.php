@@ -430,27 +430,26 @@ input:checked + .sliderk:before {
                                             </ul>
                                           </li>
                                           <?php } elseif ( $menu->in_menu == "movies") { 
-                                        $cat = App\VideoCategory::all();
-                                        ?>
-                                          <li class="dropdown menu-item">
-                                            <a class="dropdown-toggle" id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
-                                              <?php echo __($menu->name);?> <i class="fa fa-angle-down"></i>
-                                            </a>
-                                            <ul class="dropdown-menu categ-head">
-                                              <?php foreach ( $languages as $language){ ?>
-                                              <li>
-                                                <a class="dropdown-item cont-item" href="<?php echo URL::to('/').'/language/'.$language->id.'/'.$language->name;?>"> 
-                                                      <?php echo $language->name;?> 
-                                                    </a>
-                                              </li>
-                                              <?php } ?>
-                                            </ul>
-                                          </li>
+                                             $cat = App\VideoCategory::all();
+                                           ?>
+                                             <li class="dropdown menu-item">
+                                             <a class="dropdown-toggle" id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                                                <?php echo __($menu->name);?> <i class="fa fa-angle-down"></i>
+                                             </a>
+                                             <ul class="dropdown-menu categ-head">
+                                                <?php foreach ( $languages as $language){ ?>
+                                                <li>
+                                                   <a class="dropdown-item cont-item" href="<?php echo URL::to('/').'/language/'.$language->id.'/'.$language->name;?>"> 
+                                                         <?php echo $language->name;?> 
+                                                      </a>
+                                                </li>
+                                                <?php } ?>
+                                             </ul>
+                                             </li>
                                           <?php }elseif ( $menu->in_menu == "live") { 
-                                       //  $LiveCategory = App\LiveCategory::all();
-                                       $LiveCategory = App\LiveCategory::get();
+                                             $LiveCategory = App\LiveCategory::get();
+                                          ?>
 
-                                        ?>
                                           <li class="dropdown menu-item">
                                             <a class="dropdown-toggle" id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
                                               <?php echo __($menu->name);?> <i class="fa fa-angle-down"></i>
@@ -465,6 +464,29 @@ input:checked + .sliderk:before {
                                               <?php } ?>
                                             </ul>
                                           </li>
+
+                                                   <!-- Tv show dropdown -->
+
+                                          <?php }elseif ( $menu->in_menu == "tv_show") { 
+                                             $tv_shows_series = App\Series::get();
+                                          ?>
+                                                <li class="dropdown menu-item">
+                                                   <a class="" id="" href="<?php echo URL::to('/').$menu->url;?>" >  
+                                                      <?php echo __($menu->name);?> <i class="fa fa-angle-down"></i>
+                                                   </a>
+                                                   <?php if(count($tv_shows_series) > 0 ){ ?>
+                                                         <ul class="dropdown-menu categ-head">
+                                                            <?php foreach ( $tv_shows_series as $tvshows_series){ ?>
+                                                            <li>
+                                                            <a class="dropdown-item cont-item" href="<?php echo URL::to('/play_series').'/'.$tvshows_series->slug;?>"> 
+                                                                     <?php echo $tvshows_series->title;?> 
+                                                                  </a>
+                                                            </li>
+                                                            <?php } ?>
+                                                         </ul>
+                                                   <?php } ?>
+                                                </li>
+
                                           <?php } else { ?>
                                           <li class="menu-item">
                                             <a href="<?php echo URL::to('/').$menu->url;?>">
