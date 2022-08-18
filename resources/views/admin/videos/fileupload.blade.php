@@ -1,6 +1,8 @@
+
 @extends('admin.master')
 
 @include('admin.favicon')
+
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
@@ -11,6 +13,9 @@
 <script src="{{asset('dropzone/dist/min/dropzone.min.js')}}" type="text/javascript"></script>
 @section('content')
 <style>
+    .content-page {
+    overflow: hidden;
+        margin-left: 300px;}
    #optionradio {color: #000;}
    #video_upload {margin-top: 5%;}
    .file {
