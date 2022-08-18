@@ -189,7 +189,7 @@ class AdminLiveStreamController extends Controller
                     $filename  = time().'.'.compress_image_format();
                     $PC_image     =  'live_'.$filename ;
 
-                    $image = Image::make($file)->save(base_path().'/public/uploads/images/'.$PC_image,compress_image_resolution() );
+                    Image::make($file)->save(base_path().'/public/uploads/images/'.$PC_image,compress_image_resolution() );
                 }else{
 
                     $filename  = time().'.'.$file->getClientOriginalExtension();
@@ -200,7 +200,6 @@ class AdminLiveStreamController extends Controller
          }else{
             $image = "Defualt.jpg";
          } 
-        
          
          $player_image = ($request->file('player_image')) ? $request->file('player_image') : '';
 
@@ -208,26 +207,34 @@ class AdminLiveStreamController extends Controller
          $image_path = public_path().'/uploads/images/';
            
           if($player_image != '') {   
-               //code for remove old file
                if($player_image != ''  && $player_image != null){
                     $file_old = $image_path.$player_image;
                    if (file_exists($file_old)){
                     unlink($file_old);
                    }
                }
-               //upload new file
-               $player_image = $player_image;
-            //    $data['player_image']  = $player_image->getClientOriginalName();
-            $data['player_image'] = str_replace(' ', '_', $player_image->getClientOriginalName());
-               $player_image->move($image_path, $data['player_image']);
-            //    $player_image  = $player_image->getClientOriginalName();
-            $player_image = str_replace(' ', '_', $player_image->getClientOriginalName());
+               
+                //upload new file
+                $player_image = $player_image;
+
+                if(compress_image_enable() == 1){
+
+                    $player_filename  = time().'.'.compress_image_format();
+                    $player_PC_image     =  'live_'.$player_filename ;
+
+                    Image::make($player_filename)->save(base_path().'/public/uploads/images/'.$player_PC_image,compress_image_resolution() );
+                }else{
+
+                    $player_filename  = time().'.'.$player_image->getClientOriginalExtension();
+                    $player_PC_image     =  'live_'.$player_filename ;
+                    Image::make($player_filename)->save(base_path().'/public/uploads/images/'.$player_PC_image );
+                }
 
  
-          } else{
-            $player_image = "default_horizontal_image.jpg";
-        }
-        
+            } else{
+                $player_image = "default_horizontal_image.jpg";
+            }
+            
         $data['user_id'] = Auth::user()->id;
         
 //        unset($data['tags']);
@@ -404,13 +411,13 @@ class AdminLiveStreamController extends Controller
         $movie->slug =$data['slug'];
         $movie->publish_type =$data['publish_type'];
         $movie->publish_time =$data['publish_time'];
-        $movie->image = $image;
+        $movie->image = $PC_image;
         $movie->mp4_url =$mp4_url;
         $movie->status =$status;
         $movie->year =$data['year'];
         $movie->active = $active ;
         $movie->search_tags = $searchtags;
-        $movie->player_image = $player_image;
+        $movie->player_image = $player_PC_image;
         $movie->user_id =Auth::User()->id;
         $movie->ios_ppv_price =$request->ios_ppv_price;
         $movie->save();
@@ -671,16 +678,17 @@ class AdminLiveStreamController extends Controller
 
                 $filename  = time().'.'.compress_image_format();
                 $PC_image     =  'live_'.$filename ;
-    
-                $image = Image::make($file)->save(base_path().'/public/uploads/images/'.$PC_image,compress_image_resolution() );
+               Image::make($file)->save(base_path().'/public/uploads/images/'.$PC_image,compress_image_resolution() );
             }else{
     
                 $filename  = time().'.'.$file->getClientOriginalExtension();
                 $PC_image     =  'live_'.$filename ;
                 Image::make($file)->save(base_path().'/public/uploads/images/'.$PC_image );
             }
-
-         } 
+           
+         }  else{
+            $PC_image = $video->image;
+        }
        
          $player_image = ($request->file('player_image')) ? $request->file('player_image') : '';
 
@@ -696,15 +704,24 @@ class AdminLiveStreamController extends Controller
                    }
                }
                //upload new file
+
                $player_image = $player_image;
-            //    $data['player_image']  = $player_image->getClientOriginalName();
-            $data['player_image'] = str_replace(' ', '_', $player_image->getClientOriginalName());
-                // $player_image = str_replace(' ', '_', $player_image->getClientOriginalName());
-               $player_image->move($image_path, $data['player_image']);
-            //    $player_image  = $player_image->getClientOriginalName();
-               $player_image = str_replace(' ', '_', $player_image->getClientOriginalName());
+
+               if(compress_image_enable() == 1){
+
+                   $player_filename  = time().'.'.compress_image_format();
+                   $player_PC_image     =  'live_'.$player_filename ;
+
+                   Image::make($player_image)->save(base_path().'/public/uploads/images/'.$player_PC_image,compress_image_resolution() );
+               }else{
+
+                   $player_filename  = time().'.'.$player_image->getClientOriginalExtension();
+                   $player_PC_image     =  'live_'.$player_filename ;
+                   Image::make($player_image)->save(base_path().'/public/uploads/images/'.$player_PC_image );
+               }
+            
           } else{
-              $player_image = $video->player_image;
+              $player_PC_image = $video->player_image;
           }
         
          $data['mp4_url']  = $request->get('mp4_url');
@@ -757,7 +774,8 @@ class AdminLiveStreamController extends Controller
         $video->banner = $banner;
         $video->url_type = $url_type;
         $video->ppv_price = $ppv_price;
-        $video->player_image = $player_image;
+        $video->player_image = $player_PC_image;
+        $video->image = $PC_image;
         $video->publish_status = $request['publish_status'];
         $video->publish_type = $request['publish_type'];
         $video->publish_time = $request['publish_time'];
