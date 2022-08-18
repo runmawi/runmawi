@@ -409,35 +409,43 @@ class AdminUsersController extends Controller
         //             $request['password'] = $password; }
         // //
         //         $user = User::create($input);
+
         // Welcome on sub-user registration
-        $template = EmailTemplate::where('id', '=', 10)->first();
-        $heading = $template->heading;
-        //   echo "<pre>";
-        // print_r($heading);
-        // exit();
+        $email_subject = EmailTemplate::where('id', '=', 9)->pluck('heading')->first();
+       
         $settings = Setting::find(1);
 
-        if ($input['role'] == "subscriber")
-        {
-
+        try {
             Mail::send('emails.sub_user', array(
                 /* 'activation_code', $user->activation_code,*/
                 'name' => $request['username'],
                 'email' => $request['email'],
                 'password' => $request['passwords'],
+                'parent_name' => Auth::user()->username,
+                'Role' => $input['role'] ,
+                'website_name' => GetWebsiteName() ,
 
-            ) , function ($message) use ($request, $user, $heading, $settings)
+            ) , function ($message) use ($request, $user, $email_subject, $settings)
             {
-                $message->from(AdminMail() , $settings->website_name);
-                $message->to($request['email'], $request['username'])->subject($heading . $request['username']);
+                $message->from(AdminMail() , GetWebsiteName());
+                $message->to($request['email'], $request['username'])->subject($email_subject);
             });
 
-        }
-        else
-        {
+            $email_log      = 'Mail Sent Successfully from Welcome on sub-user registration E-Mail';
+            $email_template = "9";
+            $user_id = Auth::user()->id;
 
-        }
+            Email_sent_log($user_id,$email_log,$email_template);
 
+        } catch (\Throwable $th) {
+
+            $email_log      = $th->getMessage();
+            $email_template = "9";
+            $user_id =  Auth::user()->id;
+        
+            Email_notsent_log($user_id,$email_log,$email_template);
+        }
+           
         return Redirect::to('admin/users')->with(array(
             'message' => 'Successfully Created New User',
             'note_type' => 'success'
