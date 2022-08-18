@@ -32,9 +32,9 @@
                             <div class="col-md-6">
                                 <label for=""> Compress Resolution Format </label>
                                 <select class="form-control" name="compress_resolution_format" id="compress_resolution_format" >
-                                    <option value="webp" {{ !empty($Compress_image->compress_resolution_format) == "webp" ? 'selected' :  '' }} > WebP Format </option>
-                                    <option value="jpg"  {{ !empty($Compress_image->compress_resolution_format) == "jpg" ? 'selected'  :  ''  }} > JPG  Format</option>
-                                    <option value="jpeg" {{ !empty($Compress_image->compress_resolution_format) == "jpeg" ? 'selected' :  '' }} > JPEG Format</option>
+                                    <option value="webp" {{ !empty($Compress_image->compress_resolution_format) && $Compress_image->compress_resolution_format == "webp" ? 'selected' :  '' }} > WebP Format </option>
+                                    <option value="jpg"  {{ !empty($Compress_image->compress_resolution_format) && $Compress_image->compress_resolution_format == "jpg" ? 'selected'  :  ''  }} > JPG  Format</option>
+                                    <option value="jpeg" {{ !empty($Compress_image->compress_resolution_format) && $Compress_image->compress_resolution_format == "jpeg" ? 'selected' :  '' }} > JPEG Format</option>
                                 </select>
                             </div>
 

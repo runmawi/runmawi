@@ -613,13 +613,20 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                <li><a href="{{ URL::to('admin/countries') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/geo2.svg')?>"><span>Manage Countries</span></a></li>
 
                   {{-- Clear cache  --}}
-                  <li><p class="lnk">Cache Management</p></li>
+                  <li><p class="lnk">Configurations</p></li>
 
                   <li><a href="{{ URL::to('admin/clear_cache') }}" class="iq-waves-effect">
                         <img height="30" width="30" class="" src="<?php echo  URL::to('/assets/img/icon/cc.svg')?>">
-                        <span> Cache Clear</span>
+                        <span> Cache Management </span>
                      </a>
                   </li>
+
+                  <li><a href="{{ route('env_index') }}" class="iq-waves-effect">
+                     <img height="30" width="30" class="" src="<?php echo  URL::to('/assets/img/icon/cc.svg')?>">
+                        <span> Debug  </span>
+                     </a>
+                  </li>
+
                
                   <!-- {{-- Contact Us --}} -->
                   <li><p class="lnk">CONTACT US</p></li>
@@ -889,11 +896,17 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
 
                
                  {{-- Clear cache  --}}
-                 <li><p class="lnk">Cache Management</p></li>
+                 <li><p class="lnk">Configurations </p></li>
 
                  <li><a href="{{ URL::to('admin/clear_cache') }}" class="iq-waves-effect">
                      <img height="30" width="30" class="" src="<?php echo  URL::to('/assets/img/icon/cc.svg')?>">
-                     <span> Cache Clear</span>
+                     <span> Cache Management </span>
+                     </a>
+                  </li>
+
+                  <li><a href="{{ route('env_index') }}" class="iq-waves-effect">
+                     <img height="30" width="30" class="" src="<?php echo  URL::to('/assets/img/icon/cc.svg')?>">
+                        <span> Debug  </span>
                      </a>
                   </li>
 
@@ -1156,14 +1169,19 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                <li><a href="{{ URL::to('admin/countries') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/geo2.svg')?>"><span>Manage Countries</span></a></li>
 
                   {{-- Clear cache  --}}
-                  <li><p class="lnk">Cache Management</p></li>
+                  <li><p class="lnk">Configurations </p></li>
 
                   <li><a href="{{ URL::to('admin/clear_cache') }}" class="iq-waves-effect">
                      <img height="30" width="30" class="" src="<?php echo  URL::to('/assets/img/icon/cc.svg')?>">
-                        <span> Cache Clear</span>
+                        <span> Cache Management </span>
                      </a>
                   </li>
 
+                  <li><a href="{{ route('env_index') }}" class="iq-waves-effect">
+                     <img height="30" width="30" class="" src="<?php echo  URL::to('/assets/img/icon/cc.svg')?>">
+                        <span> Debug  </span>
+                     </a>
+                  </li>
 
                                     <!-- {{-- Contact Us --}} -->
                    <li><p class="lnk">CONTACT US</p></li>
