@@ -680,6 +680,8 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/email_settings/save', 'AdminEmailSettingsController@store');
     Route::post('/Testing_EmailSettting', 'AdminEmailSettingsController@Testing_EmailSettting'); 
     Route::get('/email_logs', 'AdminEmailSettingsController@email_logs')->name('email_logs'); 
+    Route::get('/email_template_testing', 'AdminEmailSettingsController@email_template_testing')->name('email_template_testing'); 
+
   
      /*Ads Management starts*/
     Route::get('/advertisers', 'AdminAdvertiserController@advertisers');

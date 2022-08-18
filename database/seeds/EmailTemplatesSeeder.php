@@ -17,11 +17,32 @@ class EmailTemplatesSeeder extends Seeder
 
         $EmailTemplate = [
                         [   'template_type' => 'Welcome Email', 
-                            'heading' => 'Welcome to Name',
-                            'description' => 'Dear {Name},
-                                              Thank you for registering at {Name}. If you have any questions, please reply to this email and one of our team member will reply to you ASAP.
-                                              Sincerely,
-                                              Team',
+                            'heading' => 'Welcome Email',
+                            'description' => '<p>Dear {Name},&nbsp;</p>
+
+                                            <p>Thank you for registering at {Website Name}.</p>
+                                            
+                                            <p>If you have any questions, please reply to this email and one of our team members will reply to you ASAP.&nbsp;<br />
+                                            &nbsp;</p>
+                                            
+                                            <p>You have been granted access to {Name site}.</p>
+                                            
+                                            <p>Please find the following url and credentials.&nbsp;</p>
+                                            
+                                            <p>Url: {Url}&nbsp;</p>
+                                            
+                                            <p>User Name: {UserName}&nbsp;</p>
+                                            
+                                            <p>Password: {Password}&nbsp;</p>
+                                            
+                                            <p>&nbsp;</p>
+                                            
+                                            <p>Sincerely,&nbsp;</p>
+                                            
+                                            <p>Team {Website Name}.</p>
+                                            
+                                            <p>&nbsp;</p>',
+
                             'role_type' => 'General Email Triggers' ,
                             'created_at' => Carbon::now(),
                             'updated_at' => null,
@@ -56,12 +77,19 @@ class EmailTemplatesSeeder extends Seeder
 
                         [   'template_type' => 'Forgot password', 
                             'heading' => 'Reset password for your account',
-                            'description' =>    'Dear {Name},
-                                                 We have received a request to reset your password on {Name}.
-                                                 Click on the below link or copy/paste the link in your browser address bar to reset your password.
-                                                {link}
-                            
-                                                 Kindly ignore ',
+                            'description' =>    '<p>Dear {Name},&nbsp;</p>
+
+                                                <p>We have received a request to reset your password on {Date}.&nbsp;</p>
+                                                
+                                                <p>Click on the below link or copy/paste the link in your browser address bar to reset your password.&nbsp;</p>
+                                                
+                                                <p>{link}&nbsp;</p>
+                                                
+                                                <p>&nbsp;</p>
+                                                
+                                                <p>Sincerely,</p>
+                                                
+                                                <p>Team {Website Name}.</p>',
                             'role_type' => 'General Email Triggers' ,
                             'created_at' => Carbon::now(),
                             'updated_at' => null,
@@ -90,11 +118,15 @@ class EmailTemplatesSeeder extends Seeder
 
                         [   'template_type' => 'Change Password', 
                             'heading' => 'Password is changed successfully',
-                            'description' => 'Dear {Name},
-                                              Your profile password has been changed successfully on {Name}.
-                             
-                                              Sincerely,
-                                              Team {Name}',
+                            'description' => '<p>Dear {Name},&nbsp;</p>
+
+                                            <p>Your Account password has been changed successfully on {Name}.&nbsp;</p>
+                                            
+                                            <p>Sincerely,&nbsp;</p>
+                                            
+                                            <p>Team {Website Name}.</p>
+                                            
+                                            <p>&nbsp;</p>',
                             'role_type' => 'GeneralEmailTriggers' ,
                             'created_at' => Carbon::now(),
                             'updated_at' => null,
@@ -114,13 +146,24 @@ class EmailTemplatesSeeder extends Seeder
                         ],
 
                         [   'template_type' => 'Welcome on sub-user registration', 
-                            'heading' => 'Welcome to Name',
-                            'description' =>    'Dear {Name},
-                                                A new account on {Name} has been created for you by your organization admin {ParentName}.
-                                                Your login details are as below.
-                                                Login ID :{EmailAddress}
-                                                Password :{Password}
-                                                You can set a',
+                            'heading' => 'Welcome on sub-user registration',
+                            'description' =>    '<p>Dear {Name},&nbsp;</p>
+
+                                                <p>A new account on {Name} has been created for you by your organisation admin {ParentName}.</p>
+                                                
+                                                <p>&nbsp;Your login details are as below.</p>
+                                                
+                                                <p>&nbsp;Login ID :{EmailAddress}&nbsp;</p>
+                                                
+                                                <p>Password :{Password}&nbsp; (You can set a new password after login in from your user profile).<br />
+                                                <br />
+                                                Role:{Role}</p>
+                                                
+                                                <p>&nbsp;</p>
+                                                
+                                                <p>Sincerely,</p>
+                                                
+                                                <p>Team {Website Name}.</p>',
                             'role_type' => 'GeneralEmailTriggers' ,
                             'created_at' => Carbon::now(),
                             'updated_at' => null,
