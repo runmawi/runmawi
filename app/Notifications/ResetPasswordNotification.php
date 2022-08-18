@@ -5,6 +5,8 @@ namespace App\Notifications;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Lang;
+use Carbon\Carbon;
+use URL;
 
 class ResetPasswordNotification extends Notification
 {
@@ -77,8 +79,36 @@ class ResetPasswordNotification extends Notification
             'email' => $notifiable->getEmailForPasswordReset(),
         ], false));
 // dd( $url);
-       return (new MailMessage)->view('emails.reset', ['url' => $url,'email' => $notifiable->getEmailForPasswordReset(),'token' => $this->token]);
-        
+        try {
+            return (new MailMessage)->view('emails.reset', [
+                'url' => $url,
+                'email' => $notifiable->getEmailForPasswordReset(),
+                'token' => $this->token,
+                'date' => Carbon::now()->toDayDateTimeString() ,
+                'link' =>  URL::to('/').'/password/reset/'.$this->token , 
+            ]);
+
+            $email_log      = 'Mail Sent Successfully from Forget E-Mail';
+            $email_template = "4";
+            $user_id = null;
+
+            Email_sent_log($user_id,$email_log,$email_template);
+
+        } catch (\Throwable $th) {
+            return (new MailMessage)->view('emails.reset', [
+                'url' => $url,
+                'email' => $notifiable->getEmailForPasswordReset(),
+                'token' => $this->token,
+                'date' => Carbon::now()->toDayDateTimeString() ,
+                'link' =>  URL::to('/').'/password/reset/'.$this->token , 
+            ]);
+
+            $email_log      = $th->getMessage();
+            $email_template = "4";
+            $user_id = null;
+
+            Email_notsent_log($user_id,$email_log,$email_template);
+        }
     }
 
     /**
