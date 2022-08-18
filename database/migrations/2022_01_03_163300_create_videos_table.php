@@ -50,11 +50,11 @@ class CreateVideosTable extends Migration
             $table->string('intro_start_time')->nullable();
             $table->string('intro_end_time')->nullable();
             $table->string('image')->nullable();
-            $table->text('embed_code')->nullable();
-            $table->string('mp4_url')->nullable();
-            $table->string('m3u8_url')->nullable();
-            $table->string('webm_url')->nullable();
-            $table->string('ogg_url')->nullable();
+            $table->longText('embed_code')->nullable();
+            $table->longText('mp4_url')->nullable();
+            $table->longText('m3u8_url')->nullable();
+            $table->longText('webm_url')->nullable();
+            $table->longText('ogg_url')->nullable();
             $table->integer('views')->nullable();
             $table->integer('language')->nullable();
             $table->integer('year')->nullable();
