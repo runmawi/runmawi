@@ -498,7 +498,7 @@ data: {
 											<div class="panel-heading"> <div class="panel-title"><label> Duration</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 											<div class="panel-body"> 
 												<p class="p1">Enter the audio duration in the following format (Hours : Minutes : Seconds)</p> 
-												<input class="form-control" name="duration" id="duration" value="@if(!empty($audio->duration)){{ gmdate('H:i:s', $audio->duration) }}@endif">
+												<input class="form-control" name="duration" id="duration" maxlength="12" value="@if(!empty($audio->duration)){{ gmdate('H:i:s', $audio->duration) }}@endif">
 											</div> 
 										</div>
 									</div>
@@ -702,10 +702,11 @@ $('#duration').mask('00:00:00');
        formData.append("_token", CSRF_TOKEN);
     //   console.log(value)
       this.on("success", function(file, value) {
-            console.log(value.title);
+            // console.log(value);
             $('#Next').show();
            $('#audio_id').val(value.audio_id);
            $('#title').val(value.title);
+           $('#duration').val(value.audio_duration_time);
 
            
         });
