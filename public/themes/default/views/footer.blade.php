@@ -138,12 +138,9 @@
                   
                    </div>
                </div>
+              <p class="mb-0  font-size-14 text-body bb p-2"><?php echo $settings->website_name ; ?> - <?php echo Carbon::now()->year ; ?> All Rights Reserved</p>
             </div>
-         <div class="copyright py-2">
-            <div class="container-fluid">
-               <p class="mb-0 text-center font-size-14 text-body bb"><?php echo $settings->website_name ; ?> - <?php echo Carbon::now()->year ; ?> All Rights Reserved</p>
-            </div>
-         </div>
+         
       </footer>
 
            <!-- back-to-top End -->

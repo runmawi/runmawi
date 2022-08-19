@@ -16,10 +16,10 @@
 </style>
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/themes/smoothness/jquery-ui.css" />
 <div id="content-page" class="content-page">
-         <div class="container-fluid">
+         <div class="container-fluid mt-4">
 
 	<div class="admin-section-title">
-         <div class="">
+         <div class="iq-card">
 		<div class="row">
 			<div class="col-md-4">
 				<h4><i class="entypo-archive"></i> Sliders </h4>
