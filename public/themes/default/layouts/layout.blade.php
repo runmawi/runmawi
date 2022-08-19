@@ -30,10 +30,10 @@
                 background-color: {{ button_bg_color() .'!important' }} ;
             }
                 /* profile page */
-        .btn{
+        /*.btn{
             border: #f3ece0 !important ;
             background-color: {{ button_bg_color() .'!important' }} ;
-        }
+        }*/
 
                 /* price tag in homepage */
         p.p-tag1 {

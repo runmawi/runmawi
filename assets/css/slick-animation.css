@@ -13,7 +13,7 @@
 .slick-nav.animate i { -webkit-animation: arrow 1.6s ease forwards; animation: arrow 1.6s ease forwards; }
 .slick-nav.animate i:before { -webkit-animation: arrowUp 1.6s ease forwards; animation: arrowUp 1.6s ease forwards; }
 .slick-nav.animate i:after { -webkit-animation: arrowDown 1.6s ease forwards; animation: arrowDown 1.6s ease forwards; }
-@-webkit-keyframes stroke {
+/*@-webkit-keyframes stroke {
 	52% { -webkit-transform: rotate(-180deg); transform: rotate(-180deg); stroke-dashoffset: 0; }
 	52.1% { -webkit-transform: rotate(-360deg); transform: rotate(-360deg); stroke-dashoffset: 0; }
 	100% { -webkit-transform: rotate(-180deg); transform: rotate(-180deg); stroke-dashoffset: 126; }
@@ -42,7 +42,7 @@
 @keyframes arrowUp {
 	0%, 100% { -webkit-transform: rotate(-40deg) scaleX(1); transform: rotate(-40deg) scaleX(1); }
 	20%, 80% { -webkit-transform: rotate(0deg) scaleX(0.1); transform: rotate(0deg) scaleX(0.1); }
-}
+}*/
 @-webkit-keyframes arrowDown {
 	0%, 100% { -webkit-transform: rotate(40deg) scaleX(1); transform: rotate(40deg) scaleX(1); }
 	20%, 80% { -webkit-transform: rotate(0deg) scaleX(0.1); transform: rotate(0deg) scaleX(0.1); }
