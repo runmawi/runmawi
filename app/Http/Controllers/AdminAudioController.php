@@ -47,6 +47,9 @@ use App\AudioLanguage;
 use GuzzleHttp\Client;
 use GuzzleHttp\Message\Response;
 use App\InappPurchase;
+use Carbon\Carbon;
+use Carbon\CarbonInterval;
+
 
 class AdminAudioController extends Controller
 {
@@ -294,7 +297,7 @@ class AdminAudioController extends Controller
     
         
         $audio_upload = $request->file('audio_upload');
- $ext = $audio_upload->extension();
+        $ext = $audio_upload->extension();
         
         if($audio_upload){
             if($ext == 'mp3'){
@@ -425,6 +428,7 @@ class AdminAudioController extends Controller
 
     public function update(Request $request)
     {
+
         $data = Session::all();
         if (!empty($data['password_hash'])) {
         $package_id = auth()->user()->id;
@@ -609,9 +613,13 @@ class AdminAudioController extends Controller
         
         if($audio_upload){
             if($ext == 'mp3'){
-                $audio_upload->move('public/uploads/audios/', $audio->id.'.'.$ext);
+               $audio_store = $audio_upload->move('public/uploads/audios/', $audio->id.'.'.$ext);
 
                 $data['mp3_url'] = URL::to('/').'/public/uploads/audios/'.$audio->id.'.'.$ext; 
+
+                $audio_duration = new \wapmorgan\Mp3Info\Mp3Info($audio_store, true);
+                $audio_duration_time = round( $audio_duration->duration,2 ) ;
+
             }else{
                 $audio_upload->move(storage_path().'/app/', $audio_upload->getClientOriginalName());
                 
@@ -623,15 +631,16 @@ class AdminAudioController extends Controller
                 unlink(storage_path().'/app/'.$audio_upload->getClientOriginalName());
                 $data['mp3_url'] = URL::to('/').'/public/uploads/audios/'.$audio->id.'.mp3'; 
 
+                $audio_duration = new \wapmorgan\Mp3Info\Mp3Info(storage_path().'/app/public/audios/'.$audio->id. '.mp3', true);
+                $audio_duration_time = round( $audio_duration->duration,2 ) ;
+
             }
 
             $update_url = Audio::find($audio->id);
 
             $update_url->mp3_url = $data['mp3_url'];
-
+            $update_url->duration =  $audio_duration_time;
             $update_url->save();  
-
-
         }
 
         }
@@ -778,44 +787,45 @@ class AdminAudioController extends Controller
    
                     if($ext == 'mp3'){
                      
-                        $audio_upload->move('public/uploads/audios/', $audio->id.'.'.$ext);
+                        $audio_store = $audio_upload->move('public/uploads/audios/', $audio->id.'.'.$ext);
         
                         $data['mp3_url'] = URL::to('/').'/public/uploads/audios/'.$audio->id.'.'.$ext; 
+
+                        $audio_duration = new \wapmorgan\Mp3Info\Mp3Info($audio_store, true);
+                        $audio_duration_time = round( $audio_duration->duration,2 ) ;
                     }else{
                         
                         $audio_upload->move(storage_path().'/app/', $audio_upload->getClientOriginalName());
-                        // $audio_upload->move(storage_path().'/app/', str_replace(' ', '_', $audio_upload->getClientOriginalName()));
-                     
+
                         FFMpeg::open($audio_upload->getClientOriginalName())
-                        ->export()
-                        ->inFormat(new \FFMpeg\Format\Audio\Mp3)
-                        ->toDisk('public')
-                        ->save('audios/'. $audio->id.'.mp3');
+                                    ->export()
+                                    ->inFormat(new \FFMpeg\Format\Audio\Mp3)
+                                    ->toDisk('public')
+                                    ->save('audios/'. $audio->id.'.mp3');
+
                         unlink(storage_path().'/app/'.$audio_upload->getClientOriginalName());
-                        // unlink(storage_path().'/app/'.str_replace(' ', '_', $audio_upload->getClientOriginalName()));
+
                         $data['mp3_url'] = URL::to('/').'/public/uploads/audios/'.$audio->id.'.mp3'; 
-        
-                     
-                     
+
+                        $audio_duration = new \wapmorgan\Mp3Info\Mp3Info(storage_path().'/app/public/audios/'.$audio->id. '.mp3', true);
+                        $audio_duration_time = round( $audio_duration->duration,2 ) ;
                     }  
                     $update_url = Audio::find($audio_id);
                     $title =$update_url->title; 
                   //   $update_url = Audio::find($audio_id);
 
                     $update_url->mp3_url = $data['mp3_url'];
-        
+                    $update_url->duration = $audio_duration_time;
                     $update_url->save();  
              
                      $value['success'] = 1;
                      $value['message'] = 'Uploaded Successfully!';
                      $value['audio_id'] = $audio_id;
+                     $value['audio_duration_time'] =  gmdate('H:i:s', $audio_duration_time);
                      $value['title'] = $title;
              
-                     
                      return $value;  
             
-                    
-                  
                     }
                     
                     else {
@@ -870,13 +880,13 @@ class AdminAudioController extends Controller
 
             // dd($data['slug'] );
 
-        if(isset($data['duration'])){
-                //$str_time = $data
-                $str_time = preg_replace("/^([\d]{1,2})\:([\d]{2})$/", "00:$1:$2", $data['duration']);
-                sscanf($str_time, "%d:%d:%d", $hours, $minutes, $seconds);
-                $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
-                $data['duration'] = $time_seconds;
-        }
+        // if(isset($data['duration'])){
+        //         //$str_time = $data
+        //         $str_time = preg_replace("/^([\d]{1,2})\:([\d]{2})$/", "00:$1:$2", $data['duration']);
+        //         sscanf($str_time, "%d:%d:%d", $hours, $minutes, $seconds);
+        //         $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
+        //         $data['duration'] = $time_seconds;
+        // }
         $path = public_path().'/uploads/audios/';
         $image_path = public_path().'/uploads/images/';
         if(empty($data['image'])){
