@@ -205,6 +205,7 @@ class AdminAudioCategoriesController extends Controller
     
     
         public function update(Request $request){
+
             $data = Session::all();
             if (!empty($data['password_hash'])) {
             $package_id = auth()->user()->id;
