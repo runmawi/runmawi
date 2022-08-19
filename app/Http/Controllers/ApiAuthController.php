@@ -4575,6 +4575,8 @@ return response()->json($response, 200);
         $current_date = date('Y-m-d h:i:s a', time()); 
         $audiodetail = Audio::where('id',$audio_id)->orderBy('created_at', 'desc')->get()->map(function ($item) {
             $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+            $item['audio_duration'] = $item->duration >= "3600" ?  gmdate('H:i:s', $item->duration  ) :  gmdate('i:s', $item->duration  ) ; 
+
             return $item;
         });
 
@@ -4614,10 +4616,10 @@ return response()->json($response, 200);
 
         
 
-        $audio_cat_id = Audio::where('id','=',$audio_id)->pluck('audio_category_id');
+        $audio_cat_id = Audio::where('id','=',$audio_id)->pluck('audio_category_id')->first();
 
+        
         $audio_cat = AudioCategory::where('id','=',$audio_cat_id)->get();
-        // print_r(count($audio_cat));exit;
 
         if(count($audio_cat) > 0){
          $main_genre = $audio_cat[0]->name;
