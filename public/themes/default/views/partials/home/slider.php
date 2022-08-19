@@ -322,7 +322,7 @@ if(Route::current()->getName() == "home" || Route::current()->getName() == null 
                             </div>
 
 
-                        <?php  }elseif( $videos_categorys->trailer != null && $videos_categorys->trailer_type == 'mp4_url' || $videos->trailer_type == "video_mp4" ){ ?>
+                        <?php  }elseif( $videos_categorys->trailer != null && $videos_categorys->trailer_type == 'mp4_url' || $videos_categorys->trailer_type == "video_mp4" ){ ?>
 
                                 <div class="trailor-video">
                                     <a href="#MP4_videos-trailer"    class="video-open playbtn" data-poster-url="<?= URL::to('/') . '/public/uploads/images/' . $videos_categorys->player_image ?>"  data-trailer-url="<?= $videos_categorys->trailer ?>" data-trailer-type="<?= $videos_categorys->trailer_type ?>" onclick="trailer_slider_videos(this)" >
@@ -354,7 +354,7 @@ if(Route::current()->getName() == "home" || Route::current()->getName() == null 
                                 <div id="M3U8_video-trailer" class="mfp-hide">
                                     <video  id="M3U8_video-videos" class=""  poster=""
                                         controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' type="application/x-mpegURL">
-                                        <source  type="application/x-mpegURL"  src="<?php echo $videos->trailer;?>">
+                                        <source  type="application/x-mpegURL"  src="<?php echo $videos_categorys->trailer;?>">
                                     </video>
                                 </div>
                             </div>
