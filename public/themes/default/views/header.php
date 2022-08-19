@@ -290,7 +290,8 @@ input:checked + .sliderk:before {
              box-shadow: 0 0 50px #ccc;
         }
         body.light-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover{
-            color: cornflowerblue!important;
+           
+    
         }
     body.light-theme .dropdown-menu.categ-head{
              background-color: <?php echo GetLightBg(); ?>!important;  
@@ -333,7 +334,7 @@ input:checked + .sliderk:before {
                               <span class="navbar-menu-icon navbar-menu-icon--bottom"></span>
                            </div>
                         </a>
-                        <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a>
+                        <a class="navbar-brand mb-0" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a>
 
 
                         <!-- dark mode 
@@ -360,7 +361,7 @@ input:checked + .sliderk:before {
                                     <a href="href="<?php echo URL::to('home') ?>"">Movies</a>
                                  </li>
                               </ul>-->
-                               <ul id="top-menu" class="nav navbar-nav <?php if ( Session::get('locale') == 'arabic') { echo "navbar-right"; } else { echo "navbar-left";}?>">
+                               <ul id="top-menu" class=" mt-2 nav navbar-nav <?php if ( Session::get('locale') == 'arabic') { echo "navbar-right"; } else { echo "navbar-left";}?>">
                                     <?php if(Auth::guest()){ ?>
 
                                                 <li class="menu-item dk" style="display:none;">
@@ -543,9 +544,9 @@ input:checked + .sliderk:before {
                               </div>
                            </div>
                         </div>
-                        <div class="navbar-right menu-right">
+                        <div class="navbar-right menu-right pt-2">
                            <ul class="d-flex align-items-center list-inline m-0">
-                              <li class="nav-item nav-icon">
+                              <li class="nav-item nav-icon" style="margin-right:1px;">
                                  <a href="<?php echo URL::to('/').'/searchResult';?>" class="search-toggle device-search">
                                     <i class="ri-search-line"></i>
                                  </a>
@@ -646,7 +647,7 @@ input:checked + .sliderk:before {
                                     <a href="#" class="iq-user-dropdown  search-toggle p-0 d-flex align-items-center"
                                     data-toggle="search-toggle">
                                         <!-- <img src="<?php echo URL::to('/').'/public/uploads/avatars/' . Auth::user()->avatar ?>" class="img-fluid avatar-40 rounded-circle" alt="user">-->
-                                        <p class="mt-3" style="font-size: 16px;">
+                                        <p class="mt-3" style="font-size: 14px;">
                                         
                                         <?php 
                                         $subuser=Session::get('subuser_id');
