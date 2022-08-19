@@ -61,6 +61,7 @@ use App\Series;
 use App\Artist;
 use App\Helpers\LogActivity;
 use App\AdminLandingPage;
+use App\EmailTemplate;
 
 class HomeController extends Controller
 {
@@ -395,6 +396,7 @@ class HomeController extends Controller
                 'latest_series' => $latest_series,
                 'cnt_watching' => $cnt_watching,
                 'trendings' => $trending_movies,
+                'latest_video' => $latest_videos,
                 'latest_videos' => $latest_videos,
                 'movies' => $trending_movies,
                 'latest_movies' => $latest_movies,
@@ -1297,6 +1299,7 @@ class HomeController extends Controller
                         'cnt_watching' => $cnt_watching,
                         'trendings' => $trending_movies,
                         'latest_videos' => $latest_videos,
+                        'latest_video' => $latest_videos,
                         'movies' => $trending_movies,
                         'latest_movies' => $latest_movies,
                         'ppv_movies' => $ppv_movies,
@@ -1334,7 +1337,6 @@ class HomeController extends Controller
                         'artist' => Artist::all(),
                     );
 
-                    //echo "<pre>";print_r($data['latest_videos']);exit;
                     return Theme::view('home', $data);
                 }
             }
@@ -2180,6 +2182,7 @@ class HomeController extends Controller
                     'latest_series' => $latest_series,
                     'cnt_watching' => $cnt_watching,
                     'trendings' => $trending_movies,
+                    'latest_video' => $latest_videos,
                     'latest_videos' => $latest_videos,
                     'movies' => $trending_movies,
                     'latest_movies' => $latest_movies,
@@ -2346,6 +2349,7 @@ class HomeController extends Controller
                 $new_user->save();
                 $settings = Setting::first();
 
+                // verify email
                 try {
                     \Mail::send('emails.verify', array(
                         'activation_code' => $string,
@@ -2376,6 +2380,43 @@ class HomeController extends Controller
 
                }
 
+            
+            // welcome Email
+
+                try {
+
+                    $data = array(
+                        'email_subject' =>  EmailTemplate::where('id',1)->pluck('heading')->first() ,
+                    );
+
+                    Mail::send('emails.welcome', array(
+                        'username' => $name,
+                        'website_name' => GetWebsiteName(),
+                        'url' => URL::to('/'),
+                        'useremail' => $email,
+                        'password' => $get_password,
+                    ), 
+                    function($message) use ($data,$request) {
+                        $message->from(AdminMail(),GetWebsiteName());
+                        $message->to($request->email, $request->name)->subject($data['email_subject']);
+                    });
+        
+                    $email_log      = 'Mail Sent Successfully from Welcome E-Mail';
+                    $email_template = "1";
+                    $user_id = $new_user->id;
+        
+                    Email_sent_log($user_id,$email_log,$email_template);
+        
+                }catch (\Exception $e) {
+        
+                    $email_log      = $e->getMessage();
+                    $email_template = "1";
+                    $user_id = $new_user->id;
+        
+                    Email_notsent_log($user_id,$email_log,$email_template);
+        
+                }
+
             }
         }else{
 
@@ -2401,6 +2442,41 @@ class HomeController extends Controller
                 $new_user->active = 1;
                 $new_user->save();
 
+                 // welcome Email
+                
+                try {
+
+                    $data = array(
+                        'email_subject' =>  EmailTemplate::where('id',1)->pluck('heading')->first() ,
+                    );
+
+                    Mail::send('emails.welcome', array(
+                        'username' => $name,
+                        'website_name' => GetWebsiteName(),
+                        'url' => URL::to('/'),
+                        'useremail' => $email,
+                        'password' => $get_password,
+                    ), 
+                    function($message) use ($data,$request) {
+                        $message->from(AdminMail(),GetWebsiteName());
+                        $message->to($request->email, $request->name)->subject($data['email_subject']);
+                    });
+        
+                    $email_log      = 'Mail Sent Successfully from Welcome E-Mail';
+                    $email_template = "1";
+                    $user_id = $new_user->id;
+        
+                    Email_sent_log($user_id,$email_log,$email_template);
+        
+                }catch (\Exception $e) {
+        
+                    $email_log      = $e->getMessage();
+                    $email_template = "1";
+                    $user_id = $new_user->id;
+        
+                    Email_notsent_log($user_id,$email_log,$email_template);
+        
+                }
                 session()->put('register.email',$email);
                 return redirect('/register2')->with('message', 'You have successfully verified your account. Please login below.');
             }

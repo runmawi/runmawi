@@ -409,35 +409,43 @@ class AdminUsersController extends Controller
         //             $request['password'] = $password; }
         // //
         //         $user = User::create($input);
+
         // Welcome on sub-user registration
-        $template = EmailTemplate::where('id', '=', 10)->first();
-        $heading = $template->heading;
-        //   echo "<pre>";
-        // print_r($heading);
-        // exit();
+        $email_subject = EmailTemplate::where('id', '=', 9)->pluck('heading')->first();
+       
         $settings = Setting::find(1);
 
-        if ($input['role'] == "subscriber")
-        {
-
+        try {
             Mail::send('emails.sub_user', array(
                 /* 'activation_code', $user->activation_code,*/
                 'name' => $request['username'],
                 'email' => $request['email'],
                 'password' => $request['passwords'],
+                'parent_name' => Auth::user()->username,
+                'Role' => $input['role'] ,
+                'website_name' => GetWebsiteName() ,
 
-            ) , function ($message) use ($request, $user, $heading, $settings)
+            ) , function ($message) use ($request, $user, $email_subject, $settings)
             {
-                $message->from(AdminMail() , $settings->website_name);
-                $message->to($request['email'], $request['username'])->subject($heading . $request['username']);
+                $message->from(AdminMail() , GetWebsiteName());
+                $message->to($request['email'], $request['username'])->subject($email_subject);
             });
 
-        }
-        else
-        {
+            $email_log      = 'Mail Sent Successfully from Welcome on sub-user registration E-Mail';
+            $email_template = "9";
+            $user_id = Auth::user()->id;
 
-        }
+            Email_sent_log($user_id,$email_log,$email_template);
 
+        } catch (\Throwable $th) {
+
+            $email_log      = $th->getMessage();
+            $email_template = "9";
+            $user_id =  Auth::user()->id;
+        
+            Email_notsent_log($user_id,$email_log,$email_template);
+        }
+           
         return Redirect::to('admin/users')->with(array(
             'message' => 'Successfully Created New User',
             'note_type' => 'success'
@@ -747,7 +755,6 @@ class AdminUsersController extends Controller
     {
 
         $input = $request->all();
-        // dd($input);
         $id = $request['user_id'];
 
         $path = public_path() . '/uploads/avatars/';
@@ -951,7 +958,6 @@ class AdminUsersController extends Controller
     public function logout()
     {
         $data = \Session::all();
-        // dd($data);
         $agent = new Agent();
 
         $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
@@ -2528,10 +2534,13 @@ class AdminUsersController extends Controller
             if ($query != '')
             {
 
-                $data = Subscription::select('users.username', 'plans.plans_name')->join('users', 'users.id', '=', 'subscriptions.user_id')
-                    ->join('plans', 'plans.plan_id', '=', 'subscriptions.stripe_plan')
+                // $data = Subscription::select('users.username', 'plans.plans_name')->join('users', 'users.id', '=', 'subscriptions.user_id')
+                //     ->join('plans', 'plans.plan_id', '=', 'subscriptions.stripe_plan')
+                //     ->paginate(9);
+                    $data =  Subscription::select('users.username','subscription_plans.plans_name', 'subscription_plans.plan_id', 'users.id')
+                    ->join('users','users.id','=','subscriptions.user_id')
+                    ->join('subscription_plans','subscription_plans.plan_id','=','subscriptions.stripe_plan')
                     ->paginate(9);
-
             }
             else
             {
@@ -2582,10 +2591,16 @@ class AdminUsersController extends Controller
 
             if ($query != '')
             {
-                $data = Subscription::select('users.username', 'plans.plans_name')->join('users', 'users.id', '=', 'subscriptions.user_id')
-                    ->join('plans', 'plans.plan_id', '=', 'subscriptions.stripe_plan')
-                // ->where('subscriptions.regionname','=',$query)
+                // $data = Subscription::select('users.username', 'plans.plans_name')
+                // ->join('users', 'users.id', '=', 'subscriptions.user_id')
+                //     ->join('plans', 'plans.plan_id', '=', 'subscriptions.stripe_plan')
+                // // ->where('subscriptions.regionname','=',$query)
                 
+                //     ->paginate(9);
+                    $data =  Subscription::select('users.username','subscription_plans.plans_name', 'subscription_plans.plan_id', 'users.id')
+                    ->join('users','users.id','=','subscriptions.user_id')
+                    ->join('subscription_plans','subscription_plans.plan_id','=','subscriptions.stripe_plan')
+                    ->where('subscriptions.regionname','=',$query)
                     ->paginate(9);
                 // echo "<pre>"; print_r($data);exit();
                 
@@ -2639,9 +2654,17 @@ class AdminUsersController extends Controller
 
             if ($query != '')
             {
-                $data = Subscription::select('users.username', 'plans.plans_name')->join('users', 'users.id', '=', 'subscriptions.user_id')
-                    ->join('plans', 'plans.plan_id', '=', 'subscriptions.stripe_plan')
-                    ->where('subscriptions.cityname', '=', $query)->paginate(9);
+                // $data = Subscription::select('users.username', 'plans.plans_name')
+                // ->join('users', 'users.id', '=', 'subscriptions.user_id')
+                //     ->join('plans', 'plans.plan_id', '=', 'subscriptions.stripe_plan')
+                //     ->where('subscriptions.cityname', '=', $query)->paginate(9);
+
+            $data =  Subscription::select('users.username','subscription_plans.plans_name', 'subscription_plans.plan_id', 'users.id')
+            ->join('users','users.id','=','subscriptions.user_id')
+            ->join('subscription_plans','subscription_plans.plan_id','=','subscriptions.stripe_plan')
+            ->where('subscriptions.cityname', '=', $query)
+            ->paginate(9);
+
                 // echo "<pre>"; print_r($data);exit();
                 
             }
@@ -3638,8 +3661,105 @@ class AdminUsersController extends Controller
     }
 
 
+    public function update_username(Request $request)
+    {
+            User::where('id',$request->users_id)->update([
+                'username' => $request->user_name ,
+            ]);
+
+        return Redirect::back();
+        
+    }
+
+    public function update_userImage(Request $request)
+    {
+        $input = $request->all();
+        $id = $request['users_id'];
+        
+        $path = public_path() . '/uploads/avatars/';
+        $input['email'] = $request['email'];
+
+        $path = public_path() . '/uploads/avatars/';
+        $logo = $request['avatar'];
 
 
+        if ($logo != '')
+        {
+            //code for remove old file
+            if ($logo != '' && $logo != null)
+            {
+                $file_old = $path . $logo;
+                if (file_exists($file_old))
+                {
+                    unlink($file_old);
+                }
+            }
+            //upload new file
+            $file = $logo;
+            $input['avatar'] = $file->getClientOriginalName();
+            $file->move($path, $input['avatar']);
+
+            $user_update = User::find($id);
+            $user_update->avatar = $file->getClientOriginalName();
+            $user_update->save();
+
+        }
+
+        return Redirect::back();
+    }
+
+    public function update_userEmail(Request $request)
+    {
+        User::where('id',$request->users_id)->update([
+            'email' => $request->user_email ,
+        ]);
+
+        $data = \Session::all();
+        $agent = new Agent();
+
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+        $userIp = $geoip->getip();
+        $device_name = '';
+        if ($agent->isDesktop())
+        {
+            $device_name = 'desktop';
+        }
+        elseif ($agent->isTablet())
+        {
+            $device_name = 'tablet';
+        }
+        elseif ($agent->isMobile())
+        {
+            $device_name = 'mobile';
+        }
+        elseif ($agent->isMobile())
+        {
+            $device_name = 'mobile';
+        }
+        else
+        {
+            $device_name = 'tv';
+        }
+        if (!empty($device_name))
+        {
+            $devices_check = LoggedDevice::where('user_ip', '=', $userIp)->where('user_id', '=', Auth::User()
+                ->id)
+                ->where('device_name', '=', $device_name)->first();
+            if (!empty($devices_check))
+            {
+                $devices_check = LoggedDevice::where('user_ip', '=', $userIp)->where('user_id', '=', Auth::User()
+                    ->id)
+                    ->where('device_name', '=', $device_name)->delete();
+            }
+        }
+        Auth::logout();
+        unset($data['password_hash']);
+
+        \Session::flush();
+
+        return Redirect::to('/login');
+
+    }
 
 }
 

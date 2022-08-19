@@ -680,6 +680,8 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/email_settings/save', 'AdminEmailSettingsController@store');
     Route::post('/Testing_EmailSettting', 'AdminEmailSettingsController@Testing_EmailSettting'); 
     Route::get('/email_logs', 'AdminEmailSettingsController@email_logs')->name('email_logs'); 
+    Route::get('/email_template_testing', 'AdminEmailSettingsController@email_template_testing')->name('email_template_testing'); 
+
   
      /*Ads Management starts*/
     Route::get('/advertisers', 'AdminAdvertiserController@advertisers');
@@ -1711,8 +1713,8 @@ Route::post('admin/clear_caches', 'ClearCacheController@clear_caches')->name('cl
 Route::post('admin/clear_view_cache', 'ClearCacheController@clear_view_cache')->name('clear_view_cache');
 
 // ENV APP DEBUG
-  Route::get('admin/Env_index', 'ClearCacheController@Env_index'); 
-  Route::Post('admin/Env_AppDebug', 'ClearCacheController@Env_AppDebug'); 
+  Route::get('admin/debug', 'ClearCacheController@Env_index')->name('env_index'); 
+  Route::Post('admin/Env_AppDebug', 'ClearCacheController@Env_AppDebug')->name('env_appdebug'); 
 
     // Reels
 Route::get('/Reals_videos/videos/{slug}', 'ChannelController@Reals_videos');
