@@ -1911,7 +1911,6 @@ $(document).ready(function($){
 
 
    // https://github.com/k-ivan/Tags
-(function() {
 
 'use strict';
 

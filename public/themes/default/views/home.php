@@ -1029,7 +1029,7 @@ endif; ?>
             
             if ( GetCategoryVideoStatus() == 1 ) {  
                       ?>
-            <div class="container-fluid overflow-hidden">
+            <div class="">
                <?php
                
                      $Multiuser=Session('subuser_id');
