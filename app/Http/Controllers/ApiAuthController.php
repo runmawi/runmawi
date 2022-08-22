@@ -4873,7 +4873,8 @@ return response()->json($response, 200);
           $trending_audios =   $trending_audios->whereNotIn('id',$blockaudios);
         }
         $trending_audios =$trending_audios->get()->map(function ($item) {
-          $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+         $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
           return $item;
         });
         $response = array(
