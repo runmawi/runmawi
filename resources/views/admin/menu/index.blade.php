@@ -17,9 +17,9 @@
 @section('content')
 
 <div id="content-page" class="content-page">
-         <div class="container-fluid">
+         <div class="container-fluid mt-4">
 	<div class="admin-section-title">
-        <div class="">
+        <div class="iq-card">
 		<div class="row justify-content-start">
 			<div class="col-md-8 d-flex justify-content-between">
 				<h4><i class="entypo-list"></i> Menu Items</h4>

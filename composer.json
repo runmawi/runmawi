@@ -40,6 +40,7 @@
         "symfony/psr-http-message-bridge": "^2.0",
         "unisharp/laravel-filemanager": "^2.4",
         "victorybiz/geoip-location": "^1.1",
+        "wapmorgan/mp3info": "^0.0.8",
         "zanysoft/laravel-zip": "^1.0",
         "zusamarehan/tourify": "^0.5.4"
     },
