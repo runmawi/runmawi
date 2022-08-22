@@ -316,4 +316,7 @@ Route::group([
     Route::post('Episodedislike_ios', 'ApiAuthController@Episodedislike_ios');
 
     Route::get('ReelsVideo', 'ApiAuthController@ReelsVideo');
+
+    // Andriod Categories
+    Route::get('home_categorylist', 'ApiAuthController@home_categorylist');
 });
