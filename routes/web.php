@@ -1716,6 +1716,10 @@ Route::post('admin/clear_view_cache', 'ClearCacheController@clear_view_cache')->
   Route::get('admin/debug', 'ClearCacheController@Env_index')->name('env_index'); 
   Route::Post('admin/Env_AppDebug', 'ClearCacheController@Env_AppDebug')->name('env_appdebug'); 
 
+//   Home Page Popup 
+Route::get('admin/pop-up', 'AdminHomePopupController@index')->name('homepage_popup'); 
+Route::post('admin/pop-up-update', 'AdminHomePopupController@create')->name('homepage_popup_update'); 
+
     // Reels
 Route::get('/Reals_videos/videos/{slug}', 'ChannelController@Reals_videos');
 

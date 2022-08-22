@@ -7562,4 +7562,16 @@ public function Adstatus_upate(Request $request)
       
       return response()->json($response, 200); 
   }
+
+  public function home_categorylist()
+  {
+    $VideoCategory =  VideoCategory::where('in_home',1)->get();
+
+    $response = array(
+      'status'=>'true',
+      'VideoCategory'  => $VideoCategory
+    );
+    
+    return response()->json($response, 200); 
+  }
 }
