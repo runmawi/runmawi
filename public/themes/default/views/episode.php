@@ -201,7 +201,7 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 			$Episode = App\Episode::where('season_id','=',$SeriesSeason->id)->where('series_id','=',$SeriesSeason->series_id)->get();
 			// dd($Episode);
 			foreach($Episode as $key=> $Episode_value){  ?>
-			<?php if(!empty($episode) && $episode->id == $Episode_value->id){ echo 'Episode'.' '. ($episode_order)   .' ';} ?>
+			<?php if(!empty($episode) && $episode->id == $Episode_value->id){ echo 'Episode'.' '. ($episode->episode_order)   .' ';} ?>
 			<?php } ?>
 			<p class="" style=";font-size: 100%;color: white;font-weight: 700;"><?= $episode->title ?></p>
 			<p class="desc"><?php echo $series->details;?></p>
