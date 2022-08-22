@@ -10,8 +10,7 @@
                 <div class="slider-inner h-100">
                     <div class="row align-items-center bl h-100">
                         <div class="col-xl-6 col-lg-12 col-md-12">
-                        <h1 class="text-white mb-3" data-animation-in="fadeInLeft"
-                        data-delay-in="0.6">
+                        <h1 class="text-white mb-3" >
                         <?php
                         // $title = $slider_video->title;
                         // $slidertitle = substr($title, 0, 80);                        
@@ -20,8 +19,7 @@
                        //  echo __($slider_video->title); 
                         ?>
                     </h1>
-                    <div class="d-flex justify-content-evenly align-items-center r-mb-23" data-animation-in="fadeInUp"
-                    data-delay-in="1.2">
+                    <div class="d-flex justify-content-evenly align-items-center r-mb-23" >
                     <a href="<?php echo $slider_video->link; ?>"
                         class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play</a>
                     </div>
@@ -51,8 +49,7 @@ endif; ?>
                         <img src="<?php echo URL::to('/').'/assets/img/logo.png'?>" class="c-logo" alt="Flicknexs">
                         </div>
                         </a>-->
-                        <h1 class="text-white mb-3" data-animation-in="fadeInLeft"
-                        data-delay-in="0.6">
+                        <h1 class="text-white mb-3" >
                         <?php 
                         //  $title = $slider_video->title;
                         //  $slidertitle = substr($title, 0, 80);                        
@@ -62,13 +59,13 @@ endif; ?>
                          // echo __($slider_video->title);
                          ?>
                         </h1>
-                        <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
+                        <div class="d-flex align-items-center" >
                             <span class="badge badge-secondary p-2">
                                 <?php echo __($slider_video->year); ?>
                             </span>
                             <!--                      <span class="ml-3"><?php echo __($slider_video->language); ?></span>-->
                         </div>
-                        <div data-animation-in="fadeInUp" data-delay-in="1.2"
+                        <div 
                         style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
                           -webkit-line-clamp: 3;
                           -webkit-box-orient: vertical;  
@@ -118,24 +115,24 @@ endif; ?>
                 <div class="container-fluid position-relative h-100" style="padding:0px 100px">
                     <div class="slider-inner h-100">
                         <div class="row align-items-center bl h-100">
-                            <div class="col-xl-6 col-lg-12 col-md-12">
-                                <h1 class="text-white mb-3" data-animation-in="fadeInLeft"  data-delay-in="0.6">
+                            <div class="col-xl-6 col-lg-12 col-md-12 bgc">
+                                <h1 class="text-white mb-3" >
                                     <?php echo (strlen($videos->title) > 15) ? substr($videos->title,0,80).'...' : $videos->title; ?>
                                 </h1>
 
-                            <p class="desc" data-animation-in="fadeInUp" data-delay-in="1.2"
+                            <p class="desc" 
                                 style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
                                 -webkit-line-clamp: 3;  -webkit-box-orient: vertical;     overflow: hidden;">
                                 <?php echo __($videos->description); ?>
                             </p>
 
-                            <div class="d-flex justify-content-evenly align-items-center r-mb-23" data-animation-in="fadeInUp"  data-delay-in="1.2">
+                            <div class="d-flex justify-content-evenly align-items-center r-mb-23" >
                                 <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>" class="btn bd">
-                                    <i class="fa fa-play mr-2" aria-hidden="true"></i> Play
+                                    <i class="fa fa-play mr-2" aria-hidden="true"></i> WATCH
                                 </a>
-                                <a class="btn bd ml-2" href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>">
+                              <!--  <a class="btn bd ml-2" href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>">
                                     <i class="fa fa-info" aria-hidden="true"></i> More details
-                                </a>
+                                </a>-->
                             </div>    
                         </div>
                     </div>
@@ -277,7 +274,7 @@ if(Route::current()->getName() == "home" || Route::current()->getName() == null 
 
                                     <div class="d-flex justify-content-evenly align-items-center r-mb-23" data-animation-in="fadeInUp"  data-delay-in="1.2">
                                         <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos_categorys->slug ?>"
-                                            class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play
+                                            class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> WATCH
                                         </a>
                                         <a class="btn bd ml-2" href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos_categorys->slug ?>">
                                             <i class="fa fa-info" aria-hidden="true"></i> More details

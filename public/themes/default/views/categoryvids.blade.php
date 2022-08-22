@@ -25,9 +25,9 @@ $category_slug = App\VideoCategory::where('name',$categoryVideos['category_title
 
       <div class="main-content">
          <section id="iq-favorites">
-            <div class="container-fluid">
+            <div class="container-fluid overflow-hidden">
                <div class="row pageheight">
-                  <div class="col-sm-12 overflow-hidden">
+                  <div class="col-sm-12 ">
                     <div class="iq-main-header align-items-center d-flex justify-content-between">
                         <h2 class=""><?php echo __($categoryVideos['category_title']);?></h2>
                     </div>

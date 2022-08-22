@@ -60,7 +60,8 @@ General
 *::-moz-selection { background: var(--iq-primary); color: var(--iq-white); text-shadow: none; }
 ::-moz-selection { background: var(--iq-primary); color: var(--iq-white); text-shadow: none; }
 ::selection { background: var(--iq-primary); color: var(--iq-white); text-shadow: none; }
-body { font-family: 'Roboto', sans-serif; font-weight: 400; font-style: normal; font-size: 16px; line-height: 1.5; padding: 0; margin: 0; color: var(--iq-body-text); background: var(--iq-body-bg); }
+body { font-family: 'Roboto', sans-serif; font-weight: 400; font-style: normal; font-size: 16px; line-height: 1.5; padding: 0; margin: 0; color: var(--iq-body-text); background: linear-gradient(180deg, #040404 0%, #3D3D47 100%);
+ }
 a, .btn { -webkit-transition: all 0.5s ease-out 0s; -moz-transition: all 0.5s ease-out 0s; -ms-transition: all 0.5s ease-out 0s; -o-transition: all 0.5s ease-out 0s; transition: all 0.5s ease-out 0s; }
 a, button, input, btn { outline: medium none; }
 a { color: var(--iq-body-text); text-decoration: none; }
@@ -73,10 +74,10 @@ label { font-weight: normal; }
 /* h1, .h1 { font-size: 3.052em; } */
 h2, .h2 { font-size: 2.300em; }
 h3, .h3 { font-size: 1.953em; }
-h4, .h4 { font-size: 1.400em; }
+h4, .h4 { font-size: 20px;font-weight: 500; }
 h5, .h5 { font-size: 1.200em; }
 h6, .h6 { font-size: 1.0em; }
-.container-fluid { padding: 0 60px; }
+.container-fluid { padding: 0 40px; }
 .fluid{padding: 5px 20px;   min-width: 100%;overflow: visible;position: relative;
     top: 0;
     left: 0;
@@ -131,7 +132,7 @@ Border Color
 /*----------------------------------------------
  Buttons Design
 ------------------------------------------------*/
-.btn { padding: 9px 30px; position: relative; display: inline-block; -webkit-border-radius: 0p; -moz-border-radius: 0; border-radius: 0 !important; cursor: pointer; z-index: 4; }
+.btn { padding: 5px 15px; position: relative; display: inline-block; -webkit-border-radius: 0p; -moz-border-radius: 0; border-radius: 0 !important; cursor: pointer; z-index: 4; }
 .btn-hover { background: var(--iq-primary-hover); border: 1px solid var(--iq-primary-hover); color: var(--iq-white); transition: color 0.3s ease; display: inline-block; vertical-align: middle; -webkit-transform: perspective(1px) translateZ(0); transform: perspective(1px) translateZ(0); box-shadow: 0 0 1px rgba(0, 0, 0, 0); position: relative; border-radius: 5px!important; }
 .btn-hover:before { content: ""; position: absolute; z-index: -1; top: 0; bottom: 0; left: 0; right: 0; background: var(--iq-primary); border: 1px solid var(--iq-primary); -webkit-transform: scaleX(1); transform: scaleX(1); -webkit-transform-origin: 50%; transform-origin: 50%; transition: transform 0.3s ease-out; -webkit-transition: transform 0.3s ease-out; }
 
