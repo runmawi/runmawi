@@ -32,9 +32,9 @@
 </style>
 
 
-<div class="">
+<div class="container-fluid overflow-hidden">
     <div class="row">
-        <div class="col-sm-12 overflow-hidden">
+        <div class="col-sm-12 ">
             
             <div class="iq-main-header d-flex align-items-center justify-content-between">
                 <!-- <h4 class="main-title"><a href="<?php echo URL::to('home') ?>">Latest Videos</a></h4> -->
