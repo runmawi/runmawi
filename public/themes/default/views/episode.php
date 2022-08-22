@@ -199,7 +199,7 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 			<?php
 			if(!empty($SeriesSeason) && $SeriesSeason->id == $seasons_value->id){ echo 'Season'.' '. ($key+1)   .' ';}  }
 			$Episode = App\Episode::where('season_id','=',$SeriesSeason->id)->where('series_id','=',$SeriesSeason->series_id)->get();
-			dd($Episode);
+			// dd($Episode);
 			foreach($Episode as $key=> $Episode_value){  ?>
 			<?php if(!empty($episode) && $episode->id == $Episode_value->id){ echo 'Episode'.' '. ($episode_order)   .' ';} ?>
 			<?php } ?>
