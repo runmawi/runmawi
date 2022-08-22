@@ -219,7 +219,7 @@ if($home_settings->albums == 1){ ?>
     <section id="iq-favorites">
         <div class="container-fluid overflow-hidden">
            <div class="row">
-              <div class="col-sm-12 overflow-hidden">
+              <div class="col-sm-12 ">
                  <?php include('partials/home/latest-series.php'); ?>
               </div>
            </div>
@@ -1029,7 +1029,7 @@ endif; ?>
             
             if ( GetCategoryVideoStatus() == 1 ) {  
                       ?>
-            <div class="container-fluid overflow-hidden">
+            <div class="">
                <?php
                
                      $Multiuser=Session('subuser_id');
