@@ -1266,6 +1266,7 @@ $( document ).ready(function() {
 
 <?php
     include(public_path('themes/default/views/partials/home/Trailer-script.php'));
+    include(public_path('themes/default/views/partials/home/home_pop_up.php'));
 ?>
 
   <?php include('footer.blade.php');?>

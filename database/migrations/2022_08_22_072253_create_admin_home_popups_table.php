@@ -18,6 +18,7 @@ class CreateAdminHomePopupsTable extends Migration
             $table->longText('popup_header')->nullable();
             $table->longText('popup_footer')->nullable();
             $table->longText('popup_content')->nullable();
+            $table->string('popup_image')->nullable();
             $table->timestamps();
         });
     }

@@ -28,7 +28,7 @@
                     @endif
 
                     <div class="iq-card-body table-responsive">
-                        <form  accept-charset="UTF-8" action="{{ route('homepage_popup_update') }}" method="post" >
+                        <form  accept-charset="UTF-8" action="{{ route('homepage_popup_update') }}" method="post" enctype="multipart/form-data" >
                         @csrf
                         <fieldset>
                             <div class="form-card">
@@ -39,26 +39,46 @@
                                         <div class="row">
                                             <div class="col-sm-6 form-group" >
                                                 <label class="m-0"> {{ ucwords('header') }} :</label>
-                                                <input type="text"  class="form-control summary-ckeditor" name="popup_header" id="popup_header" placeholder="Pop-up Header" value="{{ $pop_up_content->popup_header }}">
+                                                <input type="text"  class="form-control summary-ckeditor" name="popup_header" id="popup_header" placeholder="Pop-up Header" value="{{  $pop_up_content ? $pop_up_content->popup_header : " " }}">
                                             </div>
     
                                             <div class="col-sm-6 form-group" >
                                                 <label class="m-0"> {{ ucwords('footer') }} :</label>
-                                                <input type="text"  class="form-control summary-ckeditor" name="popup_footer" id="popup_footer" placeholder="Pop-up Footer"value="{{ $pop_up_content->popup_footer }}" >
+                                                <input type="text"  class="form-control summary-ckeditor" name="popup_footer" id="popup_footer" placeholder="Pop-up Footer"value="{{ $pop_up_content ? $pop_up_content->popup_footer : " "}}" >
                                              </div>
+                                        </div>
+
+                                                    {{-- image --}}
+                                        <div class="row">
+                                            <div class="col-sm-6 form-group" >
+                                                <label class="m-0"> {{ ucwords('Pop-up image') }} :</label>
+                                                <input type="file"  class="form-control" name="popup_image" id="popup_image"  value="{{ $pop_up_content ? $pop_up_content->popup_image : " " }}">
+                                            </div>
+
+                                            @if ( $pop_up_content != null && $pop_up_content->popup_image != null )
+                                                <div class="col-sm-6 d-flex" >
+                                                    <img src="{{ URL::to('public/images/'. $pop_up_content->popup_image ) }}" alt="pop-up Image" width="250px" height="250px">
+                                                </div>
+                                            @endif
                                         </div>
 
                                                     {{-- Popup Content --}}
                                         <div class="row">
                                             <div class="col-sm-12 form-group" >
                                                 <label class="m-0"> {{ ucwords('content') }} :</label>
-                                                <textarea name="popup_content" class="form-control summary-ckeditor"  id="popup_content" cols="30" rows="10" value="{{ $pop_up_content->popup_content }}" > {{ html_entity_decode($pop_up_content->popup_content) }} </textarea>
+                                                <textarea name="popup_content" class="form-control summary-ckeditor"  id="popup_content" cols="30" rows="10" value="{{ $pop_up_content ? $pop_up_content->popup_content : " " }}" > {{ html_entity_decode($pop_up_content ? $pop_up_content->popup_content : " ") }} </textarea>
+                                            </div>
+                                        </div>
+
+                                                    {{--update Button  --}}
+                                        <div class="row">
+                                            <div class="col-sm-12" >
+                                                <input type="submit" class="btn btn-primary action-button" id="" value="update" style="float: right;" />
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <input type="submit" class="btn btn-primary action-button" id="" value="Save" />
                         </fieldset>
                         </form>
                     </div>
