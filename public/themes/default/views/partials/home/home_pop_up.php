@@ -6,15 +6,15 @@
 ?>
 
 <!-- Pop-up modal -->
-    <div class="modal fade bd-example-modal-lg" id="pop_up" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+    <div class="modal fade bd-example-modal-md" id="pop_up" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-md">
                             <!-- Close button -->
             <button type="button" class="btn-close" disabled aria-label="Close"> X </button>
             
-            <div class="modal-content pop_content row">
+           
                 <a href="<?php echo URL::to('/becomesubscriber') ; ?>" >
                             <!-- Pop-up Image  -->
-                    <img src="<?= $AdminHomePopup ?  URL::to('public/images/'. $AdminHomePopup->popup_image ) : URL::to('public/images/'); ?>" class="" style="width:100%;" >
+                    <img src="<?= $AdminHomePopup ?  URL::to('public/images/'. $AdminHomePopup->popup_image ) : URL::to('public/images/'); ?>" class="w-100"  >
                             
                             <!-- pop-up content  -->
                     <div>
@@ -25,7 +25,7 @@
                 </a>
             </div>
         </div>
-    </div>
+   
 
 <script>
 
@@ -46,9 +46,26 @@
 <style>
     .pop_up_content {
         position: absolute;
-        top: 37%;
-        left: 38%;
+     
         transform: translate(-50%, -50%);
         color: #181717;
     }
+    .category-heading{
+        float: right;
+       
+    }
+    .btn-close{
+        font-weight: 700;
+        color: red;
+        background-color: transparent;
+        border: none;
+        position: absolute;
+        top: 2%;
+        right: 1%;
+    }
+   
+.modal-dialog {
+    max-width: 600px!important;
+    margin: 2.00rem auto!important;
+}
 </style>
