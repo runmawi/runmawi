@@ -162,7 +162,11 @@
       </div>
    </div>
 
-@include('footer')
+                       {{-- Footer --}}
+    @php
+        include(public_path('themes/theme1/views/footer.blade.php'));
+    @endphp
+    
 @endsection
 
 <style>

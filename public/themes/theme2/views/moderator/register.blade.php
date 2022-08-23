@@ -8,7 +8,7 @@
     $jsondata = json_decode($jsonString, true); ?>
 
 @php
-    include(public_path('themes/theme1/views/moderator/header.blade.php'));
+    include(public_path('themes/theme2/views/moderator/header.blade.php'));
 @endphp
 
 
@@ -162,7 +162,10 @@
       </div>
    </div>
 
-@include('footer')
+@php
+   include(public_path('themes/theme2/views/footer.blade.php'));
+@endphp
+
 @endsection
 
 <style>
