@@ -319,4 +319,7 @@ Route::group([
 
     // Andriod Categories
     Route::get('home_categorylist', 'ApiAuthController@home_categorylist');
+
+    Route::get('Currency_setting', 'ApiAuthController@Currency_setting');
+
 });
