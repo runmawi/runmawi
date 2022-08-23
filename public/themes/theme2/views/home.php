@@ -1246,5 +1246,10 @@ $(".main-content , .main-header , .container-fluid").click(function(){
 
  </script>
 
+ 
+<?php
+    include(public_path('themes/default/views/partials/home/home_pop_up.php'));
+?>
+
   <?php include('footer.blade.php');?>
 <!-- End Of MainContent -->

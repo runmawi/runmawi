@@ -8,7 +8,10 @@
 
     $jsondata = json_decode($jsonString, true); ?>
 
-@extends('moderator.header')
+
+@php
+    include(public_path('themes/default/views/moderator/header.blade.php'));
+@endphp
 
 <div class="container" >
       <div class="row justify-content-center align-items-center height-self-center">
@@ -162,7 +165,10 @@
    </div>
  </section>
     
-
+                       {{-- Footer --}}
+    @php
+        include(public_path('themes/default/views/footer.blade.php'));
+    @endphp
    
 @endsection
 

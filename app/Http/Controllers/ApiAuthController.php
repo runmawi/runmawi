@@ -100,7 +100,7 @@ use App\MobileHomeSetting;
 use App\SiteTheme;
 use App\PlayerAnalytic;
 use App\SystemSetting;
-
+use App\CurrencySetting;
 
 class ApiAuthController extends Controller
 {
@@ -7619,6 +7619,17 @@ public function Adstatus_upate(Request $request)
       'genre_movies' => $myData,
       'main_genre' => $msg,
       'main_genre' => $main_genre,
+    );
+
+    return response()->json($response, 200);
+  }
+
+  public function Currency_setting()
+  {
+    
+    $response = array(
+      'status' => 'true',
+      'Currency_Setting' => CurrencySetting::all() ,
     );
 
     return response()->json($response, 200);

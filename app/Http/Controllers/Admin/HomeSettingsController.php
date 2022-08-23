@@ -139,6 +139,12 @@ class HomeSettingsController extends Controller
             $settings->prevent_inspect = 0;
         }
 
+        if($request->pop_up !=null){
+            $settings->pop_up = 1;
+        }else{
+            $settings->pop_up = 0;
+        }
+
         $settings->save();
         return redirect::to('/admin/home-settings');
     }
