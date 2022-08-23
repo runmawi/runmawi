@@ -31,9 +31,9 @@ foreach( $errors->all() as $message ){ ?>
 
 <!-- free Contents videos -->
 <section id="iq-favorites">
-    <div class="container-fluid">
+    <div class="container-fluid overflow-hidden">
       <div class="row">
-        <div class="col-sm-12 overflow-hidden">
+        <div class="col-sm-12 ">
           <?php include('partials/home/free_content.blade.php'); ?>
         </div>
       </div>
@@ -42,9 +42,9 @@ foreach( $errors->all() as $message ){ ?>
 
 
 <section id="iq-favorites">
-    <div class="container-fluid">
+    <div class="container-fluid overflow-hidden">
       <div class="row">
-        <div class="col-sm-12 overflow-hidden">
+        <div class="col-sm-12 ">
           <?php include('partials/home/latest-series.php'); ?>
         </div>
       </div>
@@ -52,9 +52,9 @@ foreach( $errors->all() as $message ){ ?>
   </section>
 
   <section id="iq-favorites">
-    <div class="container-fluid">
+    <div class="container-fluid overflow-hidden">
       <div class="row">
-        <div class="col-sm-12 overflow-hidden">
+        <div class="col-sm-12 ">
           <?php include('partials/home/latest-episodes.php'); ?>
         </div>
       </div>
@@ -62,16 +62,16 @@ foreach( $errors->all() as $message ){ ?>
   </section>
 
   <section id="iq-favorites">
-    <div class="container-fluid">
+    <div class="container-fluid overflow-hidden">
       <div class="row">
-        <div class="col-sm-12 overflow-hidden">
+        <div class="col-sm-12 ">
           <?php include('partials/home/featured-episodes.php'); ?>
         </div>
       </div>
     </div>
   </section>
   <section id="iq-tvthrillers" class="s-margin">
-         <div class="container-fluid">
+         <div class="container-fluid overflow-hidden">
         <?php
         $parentCategories = App\Genre::all();
         foreach($parentCategories as $category) {
