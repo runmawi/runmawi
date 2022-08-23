@@ -562,6 +562,9 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::get('/compress-image-setting', 'AdminSettingsController@compress_image')->name('compress_image');
     Route::post('/compress-image-store', 'AdminSettingsController@compress_image_store')->name('compress_image_store');
 
+    //   Home Page Popup 
+    Route::get('/pop-up', 'AdminHomePopupController@index')->name('homepage_popup'); 
+    Route::post('/pop-up-update', 'AdminHomePopupController@create')->name('homepage_popup_update'); 
 
     Route::get('/languages', 'LanguageTranslationController@index')->name('languages');
     Route::post('/translations/update', 'LanguageTranslationController@transUpdate')->name('translation.update.json');
@@ -1716,9 +1719,7 @@ Route::post('admin/clear_view_cache', 'ClearCacheController@clear_view_cache')->
   Route::get('admin/debug', 'ClearCacheController@Env_index')->name('env_index'); 
   Route::Post('admin/Env_AppDebug', 'ClearCacheController@Env_AppDebug')->name('env_appdebug'); 
 
-//   Home Page Popup 
-Route::get('admin/pop-up', 'AdminHomePopupController@index')->name('homepage_popup'); 
-Route::post('admin/pop-up-update', 'AdminHomePopupController@create')->name('homepage_popup_update'); 
+
 
     // Reels
 Route::get('/Reals_videos/videos/{slug}', 'ChannelController@Reals_videos');
