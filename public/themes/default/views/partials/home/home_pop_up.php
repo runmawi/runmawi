@@ -1,0 +1,54 @@
+<?php 
+    $AdminHomePopup = App\AdminHomePopup::first();
+    $home_Setting_popup = App\HomeSetting::pluck('pop_up')->first();
+    $auth_user_role    = Auth::user() ? Auth::user()->role : "guest"; 
+    $auth_guest_user    = Auth::guest(); 
+?>
+
+<!-- Pop-up modal -->
+    <div class="modal fade bd-example-modal-lg" id="pop_up" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+                            <!-- Close button -->
+            <button type="button" class="btn-close" disabled aria-label="Close"> X </button>
+            
+            <div class="modal-content pop_content row">
+                <a href="<?php echo URL::to('/becomesubscriber') ; ?>" >
+                            <!-- Pop-up Image  -->
+                    <img src="<?= $AdminHomePopup ?  URL::to('public/images/'. $AdminHomePopup->popup_image ) : URL::to('public/images/'); ?>" class="" style="width:100%;" >
+                            
+                            <!-- pop-up content  -->
+                    <div>
+                        <h1 class="pop_up_content">   <?= $AdminHomePopup ? $AdminHomePopup->popup_header : ' '; ?> </h1>
+                        <h5 class="pop_up_content">   <?= $AdminHomePopup ? $AdminHomePopup->popup_content : " ";?>  </h5>
+                        <h3 class="pop_up_content">   <?= $AdminHomePopup ? $AdminHomePopup->popup_content : " ";?>  </h3>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+<script>
+
+    $(window).on('load', function() {
+        var pop_up_enable =  <?php  echo ( $home_Setting_popup); ?>; 
+        var auth_user_role  = <?php  echo json_encode($auth_user_role); ?>; 
+        var auth_guest_user =  <?php  echo json_encode( $auth_guest_user); ?>; 
+
+        if( pop_up_enable == 1 ){
+            if(  auth_guest_user == true || auth_user_role == "registered"){
+                $('#pop_up').modal('show');
+            }
+        }
+    });
+
+</script>
+
+<style>
+    .pop_up_content {
+        position: absolute;
+        top: 37%;
+        left: 38%;
+        transform: translate(-50%, -50%);
+        color: #181717;
+    }
+</style>
