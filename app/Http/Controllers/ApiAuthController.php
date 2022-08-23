@@ -1169,6 +1169,7 @@ public function verifyandupdatepassword(Request $request)
     $user_id = $request->user_id;
     $livedetail = LiveStream::where('id',$liveid)->orderBy('created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
         $item['live_description'] = $item->description ? $item->description : "" ;
         return $item;
       });
@@ -4575,6 +4576,7 @@ return response()->json($response, 200);
         $current_date = date('Y-m-d h:i:s a', time()); 
         $audiodetail = Audio::where('id',$audio_id)->orderBy('created_at', 'desc')->get()->map(function ($item) {
             $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+            $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
             $item['audio_duration'] = $item->duration >= "3600" ?  gmdate('H:i:s', $item->duration  ) :  gmdate('i:s', $item->duration  ) ; 
 
             return $item;
