@@ -441,6 +441,23 @@ function myFunction() {
   }
 });
     
+
+$(window).on("beforeunload", function() { 
+
+var vid = document.getElementById("video");
+var currentTime = vid.currentTime;
+var duration = vid.duration;
+var videotype= $('#video_type').val();
+
+var videoid = $('#video_id').val();
+$.post('<?= URL::to('continue-watching') ?>', { video_id : videoid,duration : duration,currentTime:currentTime, _token: '<?= csrf_token(); ?>' }, function(data){
+        //    toastr.success(data.success);
+});
+
+// localStorage.setItem('your_video_'+video_id, currentTime);
+return;
+}); 
+
    }
    else if(hls == "hls"){
      
@@ -527,6 +544,23 @@ var seekableEnd = vid.seekable.end(vid.seekable.length - 1);
 });
 return;
 }); 
+
+
+$(window).on("beforeunload", function() { 
+
+var vid = document.getElementById("video");
+var currentTime = vid.currentTime;
+var duration = vid.duration;
+var videotype= $('#video_type').val();
+
+var videoid = $('#video_id').val();
+$.post('<?= URL::to('continue-watching') ?>', { video_id : videoid,duration : duration,currentTime:currentTime, _token: '<?= csrf_token(); ?>' }, function(data){
+        //    toastr.success(data.success);
+});
+
+// localStorage.setItem('your_video_'+video_id, currentTime);
+return;
+}); 
     
   } else {
     // default options with no quality update in case Hls is not supported
@@ -559,6 +593,23 @@ return;
                   tagUrl: ads_path_tag 
                 }
         });
+        $(window).on("beforeunload", function() { 
+
+var vid = document.getElementById("video");
+  var currentTime = vid.currentTime;
+  var duration = vid.duration;
+var bufferedTimeRanges = vid.buffered;
+var bufferedTimeRangesLength = bufferedTimeRanges.length;
+var seekableEnd = vid.seekable.end(vid.seekable.length - 1);
+  // var videotype= '<? //$video->type ?>';
+  var videotype= $('#video_type').val();
+
+  var videoid = $('#video_id').val();
+  $.post('<?= URL::to('player_analytics_store') ?>', { video_id : videoid,duration : duration,currentTime:currentTime,seekableEnd : seekableEnd,bufferedTimeRanges : bufferedTimeRangesLength,_token: '<?= csrf_token(); ?>' }, function(data){
+});
+return;
+}); 
+
 
         $(window).on("beforeunload", function() { 
 
