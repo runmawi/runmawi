@@ -1,6 +1,5 @@
 <?php if(count($artist) > 0 ) {?>
 
-
 <div class="iq-main-header d-flex align-items-center justify-content-between">
     <h4 class="main-title"><a href="<?php echo URL::to('artist-list') ?>"> Artist </a></h4>
 </div>
@@ -15,15 +14,14 @@
                 <div class="block-images position-relative">
                     <div class="img-box">
                         <a href="<?php echo URL::to('artist') ?><?= '/' . $artist_details->artist_slug ?>">
-                             <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$artist_details->image;  ?>" class="img-fluid" alt="">
+                            <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/artists/'.$artist_details->image;  ?>" class="img-fluid w-100 loading" alt=""> 
                         </a>
                     </div>
                 </div>
-
                 <div class="block-description">
                     <div class="hover-buttons">
                         <a class="text-white btn-cl" href="<?php echo URL::to('artist') ?><?= '/' . $artist_details->artist_slug ?>">
-                         <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> 
+                             <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" />
                         </a>
                     </div>
                 </div>
@@ -33,7 +31,6 @@
                         <h6><?php  echo (strlen($artist_details->artist_name) > 17) ? substr($artist_details->artist_name,0,18).'...' : $artist_details->artist_name; ?></h6>
                     <?php } ?>
                 </div>
-
             </a>
         </li>
         <?php endforeach; endif; ?>
