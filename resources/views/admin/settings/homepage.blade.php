@@ -245,8 +245,10 @@ border-radius: 0px 4px 4px 0px;
                                    
                                 </div>
                             </div>
-
-                            <div class="col-sm-4">
+                                            
+                                            {{-- This option moved to Pop-up setting  --}}
+                                            
+                            {{-- <div class="col-sm-4">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
                                 <div><label class="mt-1"> Pop up  </label></div>
                               
@@ -260,7 +262,7 @@ border-radius: 0px 4px 4px 0px;
                                     </div>
                                    
                                 </div>
-                            </div>
+                            </div> --}}
 
                         <!-- </div> -->
         </div>
