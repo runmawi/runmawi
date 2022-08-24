@@ -18,14 +18,10 @@ $system_settings = App\SystemSetting::find(1);
       <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/bootstrap.min.css'; ?>" />
       <!-- <link rel="stylesheet" href="assets/css/bootstrap.min.css" /> -->
       <!-- Typography CSS -->
-      <!-- <link rel="stylesheet" href="assets/css/typography.css" /> -->
-      <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/typography.css'; ?>" />
+      <link href="<?php echo URL::to('public/themes/theme3/assets/css/typography.css') ?>" rel="stylesheet">
       <!-- Style -->
-      <!-- <link rel="stylesheet" href="assets/css/style.css" /> -->
-      <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/style.css'; ?>" />
-      <!-- Responsive -->
-      <!-- <link rel="stylesheet" href="assets/css/responsive.css" /> -->
-      <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/responsive.css'; ?>" />
+      <link href="<?php echo URL::to('public/themes/theme3/assets/css/style.css') ?>" rel="stylesheet">
+      <link href="<?php echo URL::to('public/themes/theme3/assets/css/responsive.css') ?>" rel="stylesheet">
  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
@@ -43,7 +39,7 @@ $system_settings = App\SystemSetting::find(1);
     .nv{
         font-size: 14px;
        color: #fff;
-        margin-top: 25px;
+       
     }
     .km{
        text-align:center;
@@ -54,6 +50,12 @@ $system_settings = App\SystemSetting::find(1);
     }
     .signcont {
  }
+    .sign-in-page{
+        min-height: 100vh;
+        display: flex;
+        align-self: center;
+        justify-content: center;
+    }
     a.f-link {
     margin-bottom: 1rem;
         margin-left: 15vw;
@@ -68,22 +70,25 @@ i.fa.fa-google-plus {
 }
 
 .sign-in-from{
-    width: 50% !important;
+    padding: 40px;
     margin: 0 auto;
     display: block;
 }
+    .sign-user_card{
+        margin-top: 40px;
+    }
 </style>
 
  
 <section class="sign-in-page" style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;">
    <div class="container">
-      <div class="row  align-items-center height-self-center">
+      <div class="row  align-items-center justify-content-center height-self-center">
           <!-- <div class="col-lg-  col-md-6">
               <div class="" >
               <h1 class="km">WATCH<br> TV SHOWS &amp;<br> MOVIES <br>ANYWHERE,<br> ANYTIME</h1>
                   </div>
           </div> -->
-         <div class="col-lg-12 col-md-12 align-self-center">
+         <div class="   col-md-5  align-self-center">
             <div class="sign-user_card ">                    
                <div class="sign-in-page-data">
                   <div class="sign-in-from  m-auto" align="center">
@@ -151,7 +156,7 @@ i.fa.fa-google-plus {
                           <hr style="color:#1e1e1e;">
                            <div class="mt-3">
                               <div class="d-flex justify-content-center links">
-                                 To Content Partner Portal <a href="<?= URL::to('/cpp/signup')?>" class="text-primary ml-2">Sign Up </a> Here!
+                                 To Content Partner Portal <a href="<?= URL::to('/cpp/signup')?>" class="text-primary ml-2">Sign Up </a>  Here!
                               </div>                        
                            </div>
                      </form>

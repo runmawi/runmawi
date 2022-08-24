@@ -1,4 +1,7 @@
 @extends('layouts.app')
+@php
+    include(public_path('themes/theme3/views/moderator/header.blade.php'));
+@endphp
 
 @section('content')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -7,11 +10,9 @@
 
     $jsondata = json_decode($jsonString, true); ?>
 
-@php
-    include(public_path('themes/theme3/views/moderator/header.blade.php'));
-@endphp
 
 
+<section class="sign-in-page" style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;">
 <div class="container">
       <div class="row justify-content-center align-items-center height-self-center">
          <div class="col-sm-9 col-md-7 col-lg-5 align-self-center">
@@ -150,18 +151,20 @@
 						</div>
                         
                     </form>
-                  </div>
-               </div>    
-               <div class="mt-3">
+                      <div class="mt-3">
                   <div class="d-flex justify-content-center links">
                      Already have an account? <a href="<?= URL::to('/cpp/login')?>" class="text-primary ml-2">Sign In</a>
                   </div>                        
                </div>
+                  </div>
+                   
+               </div>    
+               
             </div>
          </div>
       </div>
    </div>
-
+</section>
 @php
    include(public_path('themes/theme3/views/footer.blade.php'));
 @endphp
@@ -201,7 +204,9 @@
     background-color:#3daae0;
     color:#fff;
 }
-    
+    main{
+        padding: 0!important;
+    }
 .mobile-div {
 	margin-left: -2%;
 	margin-top: 1%;
@@ -282,6 +287,9 @@
 /*input[type="file"] {
     display: none;
 }*/
+    .py-4{
+      padding: 0!important;  
+    }
     .catag {
     padding-right: 150px !important;
 }

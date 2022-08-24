@@ -224,6 +224,8 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
 
 // Become subscriber - single page
     Route::get('become_subscriber', 'PaymentController@become_subscriber');
+    Route::get('retrieve_stripe_coupon', 'PaymentController@retrieve_stripe_coupon')->name('retrieve_stripe_coupon');
+
 
 });
 
@@ -1775,4 +1777,5 @@ Route::POST('/RazorpayModeratorPayouts_Payment', 'RazorpayController@RazorpayMod
 // Content Partner - Home Page
 
 Route::get('content-partner', 'ContentPartnerController@index')->name('ContentPartner_index');
+Route::get('content-partner/{slug}', 'ContentPartnerController@contentparnter_details')->name('contentparnter_details');
  

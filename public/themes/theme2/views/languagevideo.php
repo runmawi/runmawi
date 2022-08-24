@@ -26,7 +26,7 @@
                 <li class="slide-item position-relative">
                 <!-- block-images -->
                    <div class="block-images position-relative">
-                       <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$video->image;  ?>" class="img-fluid" alt="">
+                       <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$video->image;  ?>" class="img-fluid w-100" alt="">
                        <!-- <video  width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$video->image; ?>"  data-play="hover" >
                             <source src="<?php echo $video->trailer;  ?>" type="video/mp4">
                         </video>
