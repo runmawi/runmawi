@@ -5,12 +5,12 @@ include(public_path('themes/default/views/header.php'));
 <!-- Header End -->
 <style>
     .btn{
-        background-color: transparent!important;
+       /* background-color: transparent!important;*/
         width: 80%;
     }
    .bootstrap-select>.dropdown-toggle{
         background-color: transparent!important;
-      width: 88%!important;
+      width: 92%!important;
        
     }
     
@@ -29,7 +29,7 @@ $category_slug = App\VideoCategory::where('name',$categoryVideos['category_title
                <div class="row pageheight">
                   <div class="col-sm-12 ">
                     <div class="iq-main-header align-items-center d-flex justify-content-between">
-                        <h2 class=""><?php echo __($categoryVideos['category_title']);?></h2>
+                        <h2 class="ml-3"><?php echo __($categoryVideos['category_title']);?></h2>
                     </div>
 
                     {{-- filter Option --}}
@@ -79,7 +79,7 @@ $category_slug = App\VideoCategory::where('name',$categoryVideos['category_title
 
                             <input type="hidden" id="category_id" value={{ $category_id  }} name="category_id">
 
-                            <div class="col-md-2 text-right p-0" id="mob1">
+                            <div class="col-md-1 text-right p-0" id="mob1">
                                 <button type="submit" class="btn btn-primary filter">Filter</button>
                             </div>
                         </div>  
