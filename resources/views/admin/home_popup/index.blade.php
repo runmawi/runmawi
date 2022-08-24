@@ -43,7 +43,7 @@
                                                     <div class="mt-1 d-flex align-items-center justify-content-around">
                                                         <div class="mr-2">OFF</div>
                                                         <label class="switch mt-2">
-                                                            <input type="checkbox" name="popup_enable" id="popup_enable"  @if ($pop_up_content->popup_enable  == 1) {{ "checked='checked'" }} @else {{ "" }} @endif >
+                                                            <input type="checkbox" name="popup_enable" id="popup_enable"  @if ($pop_up_content && $pop_up_content->popup_enable  == 1) {{ "checked='checked'" }} @else {{ "" }} @endif >
                                                             <span class="slider round"></span>
                                                         </label>
                                                         <div class="ml-2">ON</div>
