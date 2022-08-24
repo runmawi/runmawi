@@ -1,10 +1,9 @@
 <!-- Header -->
 
 @php
-    include(public_path('themes/default/views/header.php'));
+    include(public_path('themes/theme2/views/header.php'));
 @endphp
 
-<link href="<?php echo URL::to('public/themes/theme2/assets/css/style.css') ?>" rel="stylesheet">
 
 <!-- Header End -->
 <!-- MainContent -->
@@ -244,7 +243,7 @@ $category_slug = App\VideoCategory::where('name',$categoryVideos['category_title
 <!-- MainContent End-->
 
 @php
-    include(public_path('themes/theme1/views/footer.blade.php'));
+    include(public_path('themes/theme2/views/footer.blade.php'));
 @endphp
 
 {{--Multiple Select  --}}
