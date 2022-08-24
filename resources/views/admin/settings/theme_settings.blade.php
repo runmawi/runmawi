@@ -164,7 +164,7 @@ border-radius: 0px 4px 4px 0px;
                     <p>{{ ucfirst(trans('signup Agree Message')) }}</p>
                     <div class="panel-body"> 
                             <div class="col-sm-6">
-                                <input type="text" name="signup_payment_content" class="form-control signup_payment_content" id="signup_payment_content" value="@if(!empty($settings->signup_payment_content)){{ $settings->signup_payment_content }}@endif">
+                                <input type="text" placeholder="Signup Agree Message" name="signup_payment_content" class="form-control signup_payment_content" id="signup_payment_content" value="@if(!empty($settings->signup_payment_content)){{ $settings->signup_payment_content }}@endif">
                             </div>
                     </div> 
                 </div>
@@ -188,6 +188,34 @@ border-radius: 0px 4px 4px 0px;
                     </div>
                 </div> 
 
+                                                {{-- Style sheet  --}}
+
+                <div>
+                    <div class="panel-heading mt-3 "> 
+                        <div class="panel-title"> 	
+                            <h4><i class="entypo-monitor"></i> Style Sheet Link</h4> 
+                        </div>             
+                    </div> 
+    
+                    <div class="panel-body"> 
+                        <div class="col-sm-6">
+                            <input name="style_sheet_link" class="form-control" placeholder="style.css" id="" type="text" value="{{  $settings->style_sheet_link ?  $settings->style_sheet_link : ""  }}">
+                        </div>
+                    </div> 
+
+                    <div class="panel-heading mt-3 "> 
+                        <div class="panel-title"> 	
+                            <h4><i class="entypo-monitor"></i> Typography Link</h4> 
+                        </div>             
+                    </div> 
+    
+                    <div class="panel-body"> 
+                        <div class="col-sm-6">
+                            <input name="typography_link" class="form-control" placeholder="typography.css" id="" type="text" value="{{  $settings->typography_link ?  $settings->typography_link : ""  }}">
+                        </div>
+                    </div> 
+                </div>
+                                
                 <div class="panel-body" style="display: flex; justify-content: flex-end;">
                     <button type="submit" class="btn btn-primary " name="submit"> Save Settings</button>
                 </div>
