@@ -22,7 +22,7 @@ $system_settings = App\SystemSetting::find(1);
       <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/typography.css'; ?>" />
       <!-- Style -->
       <!-- <link rel="stylesheet" href="assets/css/style.css" /> -->
-      <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/style.css'; ?>" />
+      <link rel="stylesheet" href="<?= style_sheet_link() ;?>" />
       <!-- Responsive -->
       <!-- <link rel="stylesheet" href="assets/css/responsive.css" /> -->
       <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/responsive.css'; ?>" />

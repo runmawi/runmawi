@@ -640,4 +640,22 @@ function Email_notsent_log($user_id,$email_log,$email_template){
     
 }
 
+function style_sheet_link()
+{
+    $settings = App\SiteTheme::pluck('style_sheet_link')->first();
+
+    $style_sheet_link =  $settings  ?  URL::to('/'). '/assets/css/'.$settings : URL::to('/'). '/assets/css/style.css';
+
+    return $style_sheet_link;
+}
+
+function typography_link()
+{
+    $settings = App\SiteTheme::pluck('typography_link')->first();
+
+    $typography_link =  $settings  ?  URL::to('/'). '/assets/css/'.$settings : URL::to('/'). '/assets/css/typography.css';
+
+    return $typography_link;
+}
+
 
