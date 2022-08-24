@@ -1,6 +1,6 @@
 
-<link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/style.css';?>" />
-<link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/typography.css';?>" />
+<link rel="stylesheet" href="<?= style_sheet_link();?>" />
+<link rel="stylesheet" href="<?= typography_link();?>" />
 <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/bootstrap.min.css';?>" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

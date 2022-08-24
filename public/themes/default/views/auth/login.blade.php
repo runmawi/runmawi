@@ -16,9 +16,9 @@ $system_settings = App\SystemSetting::find(1);
       <!-- Bootstrap CSS -->
       <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
       <!-- Typography CSS -->
-      <link rel="stylesheet" href="assets/css/typography.css" />
+      <link rel="stylesheet" href="<?= typography_link()?>" />
       <!-- Style -->
-      <link rel="stylesheet" href="assets/css/style.css" />
+      <link rel="stylesheet" href="<?= style_sheet_link()?>" />
       <!-- Responsive -->
       <link rel="stylesheet" href="assets/css/responsive.css" />
  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>

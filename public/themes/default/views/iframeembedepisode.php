@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
-<link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/style.css';?>" />
+<link rel="stylesheet" href="<?= style_sheet_link();?>" />
 <style>
   #videotitle{
     position: absolute;
