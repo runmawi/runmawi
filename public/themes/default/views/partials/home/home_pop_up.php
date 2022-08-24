@@ -1,6 +1,6 @@
 <?php 
     $AdminHomePopup = App\AdminHomePopup::first();
-    $home_Setting_popup = App\HomeSetting::pluck('pop_up')->first();
+    $enable_popup = App\AdminHomePopup::pluck('popup_enable')->first();
     $auth_user_role    = Auth::user() ? Auth::user()->role : "guest"; 
     $auth_guest_user    = Auth::guest(); 
 ?>
@@ -11,7 +11,7 @@
                             <!-- Close button -->
             <button type="button" class="btn-close" disabled aria-label="Close"> X </button>
             
-           
+            <div class="modal-content pop_content row">
                 <a href="<?php echo URL::to('/becomesubscriber') ; ?>" >
                             <!-- Pop-up Image  -->
                     <img src="<?= $AdminHomePopup ?  URL::to('public/images/'. $AdminHomePopup->popup_image ) : URL::to('public/images/'); ?>" class="w-100"  >
@@ -25,12 +25,13 @@
                 </a>
             </div>
         </div>
+    </div>
    
 
 <script>
 
     $(window).on('load', function() {
-        var pop_up_enable =  <?php  echo ( $home_Setting_popup); ?>; 
+        var pop_up_enable =  <?php  echo ( $enable_popup); ?>; 
         var auth_user_role  = <?php  echo json_encode($auth_user_role); ?>; 
         var auth_guest_user =  <?php  echo json_encode( $auth_guest_user); ?>; 
 
@@ -46,14 +47,14 @@
 <style>
     .pop_up_content {
         position: absolute;
-     
         transform: translate(-50%, -50%);
         color: #181717;
     }
+
     .category-heading{
         float: right;
-       
     }
+    
     .btn-close{
         font-weight: 700;
         color: red;
@@ -64,8 +65,8 @@
         right: 1%;
     }
    
-.modal-dialog {
-    max-width: 600px!important;
-    margin: 2.00rem auto!important;
-}
+    .modal-dialog {
+        max-width: 600px!important;
+        margin: 2.00rem auto!important;
+    }
 </style>
