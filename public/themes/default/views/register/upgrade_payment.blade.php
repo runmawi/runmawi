@@ -557,6 +557,13 @@ i.fa.fa-google-plus {
                      <!-- Stripe Elements Placeholder -->
                      <label for="ccnum"> Card Number</label>
                      <div id="card-element" style=""></div>
+
+
+                     <div class="mt-3">
+                        <label for="fname"  style="float: right;" ></i> Add Promotion Code </label>
+                        <input id="coupon_code_stripe" type="text" class="form-control" placeholder="Add Promotion Code ">
+                     </div>
+
                 </div>
                 
                 <h4>Summary</h4>
@@ -573,11 +580,12 @@ i.fa.fa-google-plus {
                  </p>
             </div>
 
-                    <button id="card-button" class="btn1  btn-lg btn-block font-weight-bold text-white mt-3"   data-secret="{{ session()->get('intent_stripe_key')  }}">
+                    <button id="card-button" class="btn1  btn-lg btn-block font-weight-bold text-white mt-3 processing_alert"   data-secret="{{ session()->get('intent_stripe_key')  }}">
                         Pay Now
                     </button>
                     
                     {{-- <button type="button" class="btn1  btn-lg btn-block font-weight-bold text-white mt-3">Start Your Free Trial</button> --}}
+                    <input type="hidden" id="payment_image" value="<?php echo URL::to('/').'/public/Thumbnai_images';?>">
 
             </div>           
     </div>
@@ -614,7 +622,7 @@ i.fa.fa-google-plus {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://checkout.stripe.com/checkout.js"></script>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 
   <script>
     function plan_details(ele){
@@ -725,7 +733,7 @@ i.fa.fa-google-plus {
         	
             var plan_data = $("#plan_name").val();
             console.log(plan_data);
-            var coupon_code = $("#coupon_code").val();
+            var coupon_code = $("#coupon_code_stripe").val();
             var payment_type = $("#payment_type").val();
             var final_payment = $(".final_payment").val();
             
@@ -740,6 +748,7 @@ i.fa.fa-google-plus {
                      payment_type:payment_type, 
                      amount:final_payment,
                      plan:plan_data,
+                     coupon_code:coupon_code,
                      _token:'<?= csrf_token(); ?>' 
                    }, 
 
@@ -758,9 +767,26 @@ i.fa.fa-google-plus {
 </script>
 
 <script>
-  window.onload = function(){ 
+
+    window.onload = function(){ 
         $('#active2' ).addClass('actives');
     }
+            // Processing Alert 
+    var payment_images = $('#payment_image').val();
+
+
+    $(".processing_alert").click(function(){
+
+        swal({
+        title: "Processing Payment!",
+        text: "Please wait untill the proccessing completed!",
+        icon: payment_images+'/processing_payment.gif',
+        buttons: false,      
+        closeOnClickOutside: false,
+        });
+
+    });
+                    
 </script>
 
 @php
