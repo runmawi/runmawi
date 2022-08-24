@@ -21,6 +21,7 @@ class AdminHomePopupController extends Controller
 
    public function create(Request $request){
 
+
       $popup = AdminHomePopup::first();
 
          if( $popup == null){
@@ -40,6 +41,7 @@ class AdminHomePopupController extends Controller
                'popup_footer'  => $request->popup_footer,
                'popup_image'   => $filename,
                'popup_content' => strip_tags($request->popup_content),
+               'popup_enable'  => !empty($request->popup_enable) ?  "1" : "0" ,
             ]);
          }
          else{
@@ -59,6 +61,7 @@ class AdminHomePopupController extends Controller
                'popup_footer'  => $request->popup_footer,
                'popup_image'   => $filename,
                'popup_content' => strip_tags($request->popup_content),
+               'popup_enable'  => !empty($request->popup_enable) ?  "1" : "0" ,
             ]);
          }
 
