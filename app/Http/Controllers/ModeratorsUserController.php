@@ -349,14 +349,27 @@ class ModeratorsUserController extends Controller
             return View::make("admin.expired_dashboard", $data);
         } else {
             $users = ModeratorsUser::findOrFail($id);
+
             $users->status = 1;
             $users->save();
-            Mail::send("emails.cpp_approved", [], function ($message) use (
-                $users
-            ) {
-                $message->from(AdminMail(), GetWebsiteName());
+            Mail::send('emails.cpp_approved', array(
+                /* 'activation_code', $user->activation_code,*/
+                'users'=> $users, 
+        
+                ),function($message) use ($users) {
+
+                $message->from(AdminMail(),GetWebsiteName());
                 $message->to($users->email)->subject("Approved As Moderator");
-            });
+                });
+
+        // dd($users);
+
+            // Mail::send("emails.cpp_approved", [], function ($message) use (
+            //     $users
+            // ) {
+            //     $message->from(AdminMail(), GetWebsiteName());
+            //     $message->to($users->email)->subject("Approved As Moderator");
+            // });
             return \Redirect::back()->with(
                 "message",
                 "User Has Been Approved "
