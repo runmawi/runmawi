@@ -10,28 +10,16 @@
     <script src="https://www.paypal.com/sdk/js?client-id=Aclkx_Wa7Ld0cli53FhSdeDt1293Vss8nSH6HcSDQGHIBCBo42XyfhPFF380DjS8N0qXO_JnR6Gza5p2&vault=true&intent=subscription" data-sdk-integration-source="button-factory">
     </script>
     <style>
-        .round{
-            background-color: #8a0303!important;
-            color: #fff!important;
-            padding: 14px 20px;
-        }
-        #coupon_code_stripe{
-            background-color: #ddd;
-        }
     * {
       box-sizing: border-box;
     }
-        .collapsed{
-            font-size: 18px!important;
-        }
+
     .columns {
       float: left;
       width: 25%;
       padding: 8px;
     }
-        .promo{
-            font-size: 18px;
-        }
+
     .price {
       list-style-type: none;
 
@@ -569,23 +557,6 @@ i.fa.fa-google-plus {
                      <!-- Stripe Elements Placeholder -->
                      <label for="ccnum"> Card Number</label>
                      <div id="card-element" style=""></div>
-
-
-                     <div class="mt-3">
-                       
-                            <label for="fname"  style="float: right;" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"  class="promo"> Add Promotion Code </label>
-                        
-                        <div class="collapse" id="collapseExample">
-  <div class="row p-0">
-      <div class="col-lg-6 p-0"><input id="coupon_code_stripe" type="text" class="form-control" placeholder=" "></div>
-          <div class="col-lg-6 p-0"><a type="button" class="btn round update_userEmail">Update</a></div>
-      
-    
-  </div>
-</div>
-                        <input id="coupon_code_stripe" type="text" class="form-control" placeholder="Add Promotion Code ">
-                     </div>
-
                 </div>
                 
                 <h4>Summary</h4>
@@ -602,12 +573,11 @@ i.fa.fa-google-plus {
                  </p>
             </div>
 
-                    <button id="card-button" class="btn1  btn-lg btn-block font-weight-bold text-white mt-3 processing_alert"   data-secret="{{ session()->get('intent_stripe_key')  }}">
+                    <button id="card-button" class="btn1  btn-lg btn-block font-weight-bold text-white mt-3"   data-secret="{{ session()->get('intent_stripe_key')  }}">
                         Pay Now
                     </button>
                     
                     {{-- <button type="button" class="btn1  btn-lg btn-block font-weight-bold text-white mt-3">Start Your Free Trial</button> --}}
-                    <input type="hidden" id="payment_image" value="<?php echo URL::to('/').'/public/Thumbnai_images';?>">
 
             </div>           
     </div>
@@ -644,7 +614,7 @@ i.fa.fa-google-plus {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://checkout.stripe.com/checkout.js"></script>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.js"></script>
 
   <script>
     function plan_details(ele){
@@ -755,7 +725,7 @@ i.fa.fa-google-plus {
         	
             var plan_data = $("#plan_name").val();
             console.log(plan_data);
-            var coupon_code = $("#coupon_code_stripe").val();
+            var coupon_code = $("#coupon_code").val();
             var payment_type = $("#payment_type").val();
             var final_payment = $(".final_payment").val();
             
@@ -770,7 +740,6 @@ i.fa.fa-google-plus {
                      payment_type:payment_type, 
                      amount:final_payment,
                      plan:plan_data,
-                     coupon_code:coupon_code,
                      _token:'<?= csrf_token(); ?>' 
                    }, 
 
@@ -789,26 +758,9 @@ i.fa.fa-google-plus {
 </script>
 
 <script>
-
-    window.onload = function(){ 
+  window.onload = function(){ 
         $('#active2' ).addClass('actives');
     }
-            // Processing Alert 
-    var payment_images = $('#payment_image').val();
-
-
-    $(".processing_alert").click(function(){
-
-        swal({
-        title: "Processing Payment!",
-        text: "Please wait untill the proccessing completed!",
-        icon: payment_images+'/processing_payment.gif',
-        buttons: false,      
-        closeOnClickOutside: false,
-        });
-
-    });
-                    
 </script>
 
 @php
