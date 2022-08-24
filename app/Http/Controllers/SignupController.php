@@ -625,7 +625,7 @@ public function createStep3(Request $request)
         $paymentMethod = $request->get('py_id');
         $plan = $request->get('plan');
         $paymentMethods = $user->paymentMethods();
-        $apply_coupon = NewSubscriptionCouponCode();
+        $apply_coupon = $request->get('coupon_code') ?  $request->get('coupon_code') : null ;
         $stripe_plan = SubscriptionPlan();
         $plandetail = SubscriptionPlan::where('plan_id','=',$plan)->first();
         $payment_type = $plandetail->payment_type;
@@ -637,7 +637,7 @@ public function createStep3(Request $request)
             $paymentMethod = $request->get('py_id');
             $plan = $request->get('plan');
             $paymentMethods = $user->paymentMethods();
-            $apply_coupon = NewSubscriptionCouponCode();
+            $apply_coupon = $request->get('coupon_code') ?  $request->get('coupon_code') : null ;
             $stripe_plan = SubscriptionPlan();
             $plandetail = SubscriptionPlan::where('plan_id',$plan)->first();
             if ( NewSubscriptionCoupon() == 1 ) {                      

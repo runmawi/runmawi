@@ -1469,13 +1469,34 @@ public function UpgadeSubscription(Request $request){
         $stripe = new \Stripe\StripeClient(
           env('STRIPE_SECRET')
         );
-        try {
-          $coupon = $stripe->coupons->retrieve('kH98CHkw', []);
-        }
-         catch (\Throwable $th) {
-          $coupon = "Invalid Coupon" ;
-        }
 
-        dd($coupon);
+        if($request->coupon_code == null )
+        {
+            $data = array(
+              'status' => "false",
+              'message' => "Please! Enter the Coupon Code",
+              'color'   => "#d70b0b",
+            );
+        }
+        else{
+            try {
+              $coupon = $stripe->coupons->retrieve( $request->coupon_code , []);
+
+              $data = array(
+                'status' => "true",
+                'message' => "A coupon for ".$coupon->percent_off."% off was successfully applied" ,
+                'color'   => "#008b00",
+              );
+            }
+            catch (\Throwable $th) {
+
+              $data = array(
+                'status' => "false",
+                'message' => "Invalid Coupon! Please Enter the Valid Coupon Code"  ,
+                'color'   => "#d70b0b",
+              );
+            }
+        }
+        return response()->json($data, 200);
       }
 }
