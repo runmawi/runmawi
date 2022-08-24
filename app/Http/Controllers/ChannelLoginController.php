@@ -188,7 +188,7 @@ class ChannelLoginController extends Controller
             {
                 // dd($channel_password);
                 $channel = Channel::where('email', '=', $input['email'])->first();
-                if (!empty($channel) && $channel->status == 0 || $channel->status == 1)
+                if (!empty($channel) && $channel->status == 1 || $channel->status == 1)
                 {
                     $settings = Setting::first();
                     $data = array(
@@ -298,5 +298,147 @@ class ChannelLoginController extends Controller
             return Redirect::to('/blocked');
         }
     }
+
+    public function PendingUsers()
+    {
+        $user = User::where("id", 1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date("Y-m-d");
+        if ($current_date > $duedate) {
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [
+                "userid" => 0,
+            ];
+
+            $headers = [
+                "api-key" => "k3Hy5qr73QhXrmHLXhpEh6CQ",
+            ];
+            $response = $client->request("post", $url, [
+                "json" => $params,
+                "headers" => $headers,
+                "verify" => false,
+            ]);
+
+            $responseBody = json_decode($response->getBody());
+            $settings = Setting::first();
+            $data = [
+                "settings" => $settings,
+                "responseBody" => $responseBody,
+            ];
+            return View::make("admin.expired_dashboard", $data);
+        } else {
+            // $videos = LiveStream::orderBy('created_at', 'DESC')->paginate(9);
+            $users = Channel::where("status", "=", 0)
+                ->orderBy("created_at", "DESC")
+                ->paginate(9);
+            // dd($videos);
+            $data = [
+                "users" => $users,
+            ];
+
+            return View("channel.userapproval", $data);
+        }
+    }
+
+    public function ChannelUsersApproval($id)
+    {
+        $user = User::where("id", 1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date("Y-m-d");
+        if ($current_date > $duedate) {
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [
+                "userid" => 0,
+            ];
+
+            $headers = [
+                "api-key" => "k3Hy5qr73QhXrmHLXhpEh6CQ",
+            ];
+            $response = $client->request("post", $url, [
+                "json" => $params,
+                "headers" => $headers,
+                "verify" => false,
+            ]);
+
+            $responseBody = json_decode($response->getBody());
+            $settings = Setting::first();
+            $data = [
+                "settings" => $settings,
+                "responseBody" => $responseBody,
+            ];
+            return View::make("admin.expired_dashboard", $data);
+        } else {
+            $users = Channel::findOrFail($id);
+
+            $users->status = 1;
+            $users->save();
+            Mail::send('emails.channel_approved', array(
+                /* 'activation_code', $user->activation_code,*/
+                'users'=> $users, 
+        
+                ),function($message) use ($users) {
+
+                $message->from(AdminMail(),GetWebsiteName());
+                $message->to($users->email)->subject("Approved You're Channel");
+                });
+
+            return \Redirect::back()->with(
+                "message",
+                "User Has Been Approved "
+            );
+        }
+    }
+
+    public function ChannelUsersReject($id)
+    {
+        $user = User::where("id", 1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date("Y-m-d");
+        if ($current_date > $duedate) {
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [
+                "userid" => 0,
+            ];
+
+            $headers = [
+                "api-key" => "k3Hy5qr73QhXrmHLXhpEh6CQ",
+            ];
+            $response = $client->request("post", $url, [
+                "json" => $params,
+                "headers" => $headers,
+                "verify" => false,
+            ]);
+
+            $responseBody = json_decode($response->getBody());
+            $settings = Setting::first();
+            $data = [
+                "settings" => $settings,
+                "responseBody" => $responseBody,
+            ];
+            return View::make("admin.expired_dashboard", $data);
+        } else {
+            $users = Channel::findOrFail($id);
+            $users->status = 2;
+            $users->save();
+
+            Mail::send('emails.channel_rejected', array(
+            /* 'activation_code', $user->activation_code,*/
+            'users'=> $users, 
+    
+            ),function($message) use ($users) {
+
+            $message->from(AdminMail(),GetWebsiteName());
+            $message->to($users->email)->subject("Rejected You're Channel");
+            });
+
+            return \Redirect::back()->with("message", "User Has Been Rejected");
+        }
+    }
+
+
+
 }
 
