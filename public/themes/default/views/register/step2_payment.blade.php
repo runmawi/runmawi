@@ -1,12 +1,34 @@
 @extends('layouts.app')
-@include('/header')
+
+@php
+    include(public_path('themes/default/views/header.php'));
+@endphp
+
 @section('content')
 
     <script src="https://www.paypal.com/sdk/js?client-id=Aclkx_Wa7Ld0cli53FhSdeDt1293Vss8nSH6HcSDQGHIBCBo42XyfhPFF380DjS8N0qXO_JnR6Gza5p2&vault=true&intent=subscription" data-sdk-integration-source="button-factory">
     </script>
     <style>
+
+    .round{
+            background-color: #8a0303!important;
+            color: #fff!important;
+            padding: 14px 20px;
+        }
+        #coupon_code_stripe{
+            background-color: #ddd;
+        }
+
     * {
       box-sizing: border-box;
+    }
+
+    .collapsed{
+        font-size: 18px!important;
+    }
+
+    .promo{
+        font-size: 18px;
     }
 
     .columns {
@@ -551,6 +573,24 @@ i.fa.fa-google-plus {
                      <!-- Stripe Elements Placeholder -->
                      <label for="ccnum"> Card Number</label>
                      <div id="card-element" style=""></div>
+
+                     @if( get_coupon_code() == 1)
+                                    <!-- Add Promotion Code -->
+                        <div class="mt-3">
+                            <label for="fname"  style="float: right; " data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"  class="promo"> Add Promotion Code </label>
+                            <div class="collapse" id="collapseExample">
+                                <div class="row p-0">
+                                    <div class="col-lg-6 p-0" >
+                                        <input id="coupon_code_stripe" type="text" class="form-control" placeholder="Add Promotion Code" >
+                                        <input id="final_coupon_code_stripe" name="final_coupon_code_stripe" type="hidden" >
+                                        </div>
+                                    <div class="col-lg-6 p-0"><a type="button" id="couple_apply" class="btn round">Apply</a></div>
+                                    <span id="coupon_message"></span>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+
                  </div>
                 
                  <h4>Summary</h4>
@@ -578,9 +618,11 @@ i.fa.fa-google-plus {
                  </p>
              </div>
 
-                    <button id="card-button" class="btn1  btn-lg btn-block font-weight-bold text-white mt-3"   data-secret="{{ session()->get('intent_stripe_key')  }}">
+                    <button id="card-button" class="btn1  btn-lg btn-block font-weight-bold text-white mt-3 processing_alert"   data-secret="{{ session()->get('intent_stripe_key')  }}">
                         Pay Now
                     </button>
+                    
+                    <input type="hidden" id="payment_image" value="<?php echo URL::to('/').'/public/Thumbnai_images';?>">
                     
                     {{-- <button type="button" class="btn1  btn-lg btn-block font-weight-bold text-white mt-3">Start Your Free Trial</button> --}}
 
@@ -981,8 +1023,8 @@ for (var i = 0; i < btns.length; i++) {
     <script type="text/javascript" src="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://checkout.stripe.com/checkout.js"></script>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 
   <script>
     function plan_details(ele){
@@ -1092,13 +1134,14 @@ for (var i = 0; i < btns.length; i++) {
     } else {
         	
             var plan_data = $("#plan_name").val();
-            console.log(plan_data);
             var coupon_code = $("#coupon_code").val();
             var payment_type = $("#payment_type").val();
             var final_payment = $(".final_payment").val();
-            
             var py_id = setupIntent.payment_method;
-                
+            var final_coupon_code_stripe = $("#final_coupon_code_stripe").val();
+
+            console.log(plan_data);
+            
             stripe.createToken(cardElement).then(function(result) {
                  console.log(result.token.id);
             var stripToken = result.token.id;
@@ -1108,13 +1151,21 @@ for (var i = 0; i < btns.length; i++) {
                      payment_type:payment_type, 
                      amount:final_payment,
                      plan:plan_data,
+                     coupon_code:final_coupon_code_stripe,
                      _token:'<?= csrf_token(); ?>' 
                    }, 
 
                 function(data){
                         $('#loader').css('display','block');
-                            swal("Subscription Purchased Successfully!", "Your Payment done Successfully!", "success");
-                            $("#card-button").html('Pay Now');
+                        swal({
+                            title: "Subscription Purchased Successfully!",
+                            text: "Your Payment done Successfully!",
+                            icon: payment_images+'/Successful_Payment.gif',
+                            buttons: false,      
+                            closeOnClickOutside: false,
+                        });
+
+                        $("#card-button").html('Pay Now');
                         setTimeout(function() {
                             window.location.replace(base_url+'/login');
                     }, 2000);
@@ -1129,7 +1180,52 @@ for (var i = 0; i < btns.length; i++) {
   window.onload = function(){ 
         $('#active1' ).addClass('actives');
     }
+
+    
+        // Processing Alert 
+    var payment_images = $('#payment_image').val();
+
+    $(".processing_alert").click(function(){
+
+        swal({
+        title: "Processing Payment!",
+        text: "Please wait untill the proccessing completed!",
+        icon: payment_images+'/processing_payment.gif',
+        buttons: false,      
+        closeOnClickOutside: false,
+        });
+
+    });
+
+    // Couple validation 
+    $("#couple_apply").click(function(){
+
+        var coupon_code = $("#coupon_code_stripe").val();
+
+        $.ajax({
+            url: "{{ route('retrieve_stripe_coupon') }}",
+            type: "get",
+            data: {
+                    _token: '{{ csrf_token() }}',
+                    coupon_code : coupon_code ,
+                },       
+                success: function(data){
+                    console.log(data.message);
+                    $("#coupon_message").text(data.message);
+                    $("#coupon_message").css('color', data.color );
+                    
+                    if(data.status == 'true'){
+                        var final_coupon_code = $('#coupon_code_stripe').val();
+                        $('#final_coupon_code_stripe').replaceWith('<input type="hidden" name="final_coupon_code_stripe" id="final_coupon_code_stripe" value="'+ final_coupon_code +'">');
+                    }
+                } 
+            });
+    });
+
 </script>
 
-@include('footer')
+@php
+    include(public_path('themes/default/views/footer.blade.php'));
+@endphp
+
 @endsection 

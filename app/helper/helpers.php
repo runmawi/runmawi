@@ -658,4 +658,11 @@ function typography_link()
     return $typography_link;
 }
 
+function get_coupon_code(){
+
+    $get_coupon_code = App\Setting::pluck('coupon_status')->first();
+
+    return $get_coupon_code;
+}
+
 
