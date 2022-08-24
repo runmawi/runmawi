@@ -10,16 +10,28 @@
     <script src="https://www.paypal.com/sdk/js?client-id=Aclkx_Wa7Ld0cli53FhSdeDt1293Vss8nSH6HcSDQGHIBCBo42XyfhPFF380DjS8N0qXO_JnR6Gza5p2&vault=true&intent=subscription" data-sdk-integration-source="button-factory">
     </script>
     <style>
+        .round{
+            background-color: #8a0303!important;
+            color: #fff!important;
+            padding: 14px 20px;
+        }
+        #coupon_code_stripe{
+            background-color: #ddd;
+        }
     * {
       box-sizing: border-box;
     }
-
+        .collapsed{
+            font-size: 18px!important;
+        }
     .columns {
       float: left;
       width: 25%;
       padding: 8px;
     }
-
+        .promo{
+            font-size: 18px;
+        }
     .price {
       list-style-type: none;
 
@@ -558,11 +570,22 @@ i.fa.fa-google-plus {
                      <label for="ccnum"> Card Number</label>
                      <div id="card-element" style=""></div>
 
-
-                     <div class="mt-3">
-                        <label for="fname"  style="float: right;" ></i> Add Promotion Code </label>
-                        <input id="coupon_code_stripe" type="text" class="form-control" placeholder="Add Promotion Code ">
-                     </div>
+                    @if( get_coupon_code() == 1)
+                                    <!-- Add Promotion Code -->
+                        <div class="mt-3">
+                            <label for="fname"  style="float: right; " data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"  class="promo"> Add Promotion Code </label>
+                            <div class="collapse" id="collapseExample">
+                                <div class="row p-0">
+                                    <div class="col-lg-6 p-0" >
+                                        <input id="coupon_code_stripe" type="text" class="form-control" placeholder="Add Promotion Code" >
+                                        <input id="final_coupon_code_stripe" name="final_coupon_code_stripe" type="hidden" >
+                                         </div>
+                                    <div class="col-lg-6 p-0"><a type="button" id="couple_apply" class="btn round">Apply</a></div>
+                                    <span id="coupon_message"></span>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
 
                 </div>
                 
@@ -732,15 +755,17 @@ i.fa.fa-google-plus {
     } else {
         	
             var plan_data = $("#plan_name").val();
-            console.log(plan_data);
-            var coupon_code = $("#coupon_code_stripe").val();
+            var final_coupon_code_stripe = $("#final_coupon_code_stripe").val();
             var payment_type = $("#payment_type").val();
             var final_payment = $(".final_payment").val();
-            
             var py_id = setupIntent.payment_method;
                 
+            console.log(plan_data);
+
+
             stripe.createToken(cardElement).then(function(result) {
                  console.log(result.token.id);
+
             var stripToken = result.token.id;
             $.get(base_url+'/become_subscriber', {
                      py_id:py_id, 
@@ -748,13 +773,19 @@ i.fa.fa-google-plus {
                      payment_type:payment_type, 
                      amount:final_payment,
                      plan:plan_data,
-                     coupon_code:coupon_code,
+                     coupon_code:final_coupon_code_stripe,
                      _token:'<?= csrf_token(); ?>' 
                    }, 
 
                 function(data){
                         $('#loader').css('display','block');
-                            swal("Subscription Purchased Successfully!", "Your Payment done Successfully!", "success");
+                        swal({
+                            title: "Subscription Purchased Successfully!",
+                            text: "Your Payment done Successfully!",
+                            icon: payment_images+'/Successful_Payment.gif',
+                            buttons: false,      
+                            closeOnClickOutside: false,
+                        });
                             $("#card-button").html('Pay Now');
                         setTimeout(function() {
                             window.location.replace(base_url+'/login');
@@ -771,9 +802,9 @@ i.fa.fa-google-plus {
     window.onload = function(){ 
         $('#active2' ).addClass('actives');
     }
+
             // Processing Alert 
     var payment_images = $('#payment_image').val();
-
 
     $(".processing_alert").click(function(){
 
@@ -786,7 +817,32 @@ i.fa.fa-google-plus {
         });
 
     });
+
+        // Couple validation 
+    $("#couple_apply").click(function(){
+
+        var coupon_code = $("#coupon_code_stripe").val();
+
+        $.ajax({
+            url: "{{ route('retrieve_stripe_coupon') }}",
+            type: "get",
+            data: {
+                    _token: '{{ csrf_token() }}',
+                    coupon_code : coupon_code ,
+                },       
+                success: function(data){
+                    console.log(data.message);
+                    $("#coupon_message").text(data.message);
+                    $("#coupon_message").css('color', data.color );
                     
+                    if(data.status == 'true'){
+                        var final_coupon_code = $('#coupon_code_stripe').val();
+                        $('#final_coupon_code_stripe').replaceWith('<input type="hidden" name="final_coupon_code_stripe" id="final_coupon_code_stripe" value="'+ final_coupon_code +'">');
+                    }
+                } 
+            });
+        });
+        
 </script>
 
 @php
