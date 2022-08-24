@@ -24,7 +24,7 @@
                                         <div class="img-box">
                                         <a href="<?php echo URL::to('/play_series').'/'.$category->id;?>">
         
-<img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_series->image;  ?>"class="img-fluid" alt=""> 
+<img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_series->image;  ?>"class="img-fluid w-100" alt=""> 
   
     </a>
 

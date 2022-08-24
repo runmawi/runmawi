@@ -1,9 +1,8 @@
 
 @php
-include(public_path('themes/default/views/header.php'));
+include(public_path('themes/theme1/views/header.php'));
 @endphp
 
-<link href="<?php echo URL::to('public/themes/theme1/assets/css/style.css') ?>" rel="stylesheet">
 
 <!-- Header End -->
 <!-- MainContent -->
