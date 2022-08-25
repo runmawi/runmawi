@@ -1381,9 +1381,10 @@ public function UpgadeSubscription(Request $request){
                 $paymentMethod = $request->get('py_id');
                 $stripe_plan = SubscriptionPlan();
                 $plan = $request->get('plan');
+                $apply_coupon = $request->get('coupon_code') ?  $request->get('coupon_code') : null ;
 
                 $user=User::where('id',Auth::user()->id)->first();
-                $subscription_details = $user->newSubscription( $stripe_plan, $plan )->create( $paymentMethod );
+                $subscription_details = $user->newSubscription( $stripe_plan, $plan )->withCoupon($apply_coupon)->create( $paymentMethod );
                 $subscription = $stripe->subscriptions->retrieve( $subscription_details->stripe_id );
 
                 $Sub_Startday  = Carbon::createFromTimestamp($subscription['current_period_start'])->toDateTimeString(); 
@@ -1462,4 +1463,19 @@ public function UpgadeSubscription(Request $request){
           }
            
         }
+
+      public function retrieve_stripe_coupon(Request $request)
+      {
+        $stripe = new \Stripe\StripeClient(
+          env('STRIPE_SECRET')
+        );
+        try {
+          $coupon = $stripe->coupons->retrieve('kH98CHkw', []);
+        }
+         catch (\Throwable $th) {
+          $coupon = "Invalid Coupon" ;
+        }
+
+        dd($coupon);
+      }
 }

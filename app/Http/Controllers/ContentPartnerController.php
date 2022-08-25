@@ -23,4 +23,22 @@ class ContentPartnerController extends Controller
        );
        return Theme::view('ContentPartner.index',$content_partner);
     }
+
+    public function contentparnter_details( Request $request,$username )
+    {
+        try {
+
+            $content_partner_id = ModeratorsUser::where('username',$username)->pluck('id')->first();
+
+            $content_partner = array(
+                'ModeratorUsers_list' => ModeratorsUser::where('status',1)->where('id',$content_partner_id)->get() ,
+            );
+
+            return Theme::view('ContentPartner.content_partners',$content_partner);
+
+        } catch (\Throwable $th) {
+
+            return abort(404);
+        }
+    }
 }
