@@ -116,7 +116,7 @@ class ChannelLoginController extends Controller
             $channel->channel_name = $request->channel_name;
             $channel->email = $request->email_id;
             $channel->password = Hash::make($request->password);
-            $channel->unhased_password = $request->unhased_password;
+            $channel->unhased_password = $request->password;
             $channel->mobile_number = $request->mobile_number;
             $channel->ccode = $request->ccode;
             $channel->activation_code = $string;
