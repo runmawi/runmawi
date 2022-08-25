@@ -14,7 +14,7 @@ class AddPopupenableToAdminHomePopupsTable extends Migration
     public function up()
     {
         Schema::table('admin_home_popups', function (Blueprint $table) {
-            $table->tinyInteger('popup_enable')->default('0')->after('popup_image');
+            $table->tinyInteger('popup_enable')->default('0')->after('popup_content');
         });
     }
 
