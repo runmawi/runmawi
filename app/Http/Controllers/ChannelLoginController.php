@@ -116,6 +116,7 @@ class ChannelLoginController extends Controller
             $channel->channel_name = $request->channel_name;
             $channel->email = $request->email_id;
             $channel->password = Hash::make($request->password);
+            $channel->unhased_password = $request->password;
             $channel->mobile_number = $request->mobile_number;
             $channel->ccode = $request->ccode;
             $channel->activation_code = $string;
@@ -187,10 +188,17 @@ class ChannelLoginController extends Controller
         if (!empty($package) && $package == "Pro" || !empty($package) && $package == "Business")
         {
 
-            if (Hash::check($input['password'], $channel->password))
+            $user = Channel::where('email', '=', $input['email'])
+                ->where('unhased_password', '=', $input['password'])
+                ->first();
+
+            // if (Hash::check($input['password'], $channel->password))
+
+            if(!empty($user) )
+
             {
-                // dd($channel_password);
                 $channel = Channel::where('email', '=', $input['email'])->first();
+
                 if (!empty($channel) && $channel->status == 1 || $channel->status == 1)
                 {
                     $settings = Setting::first();

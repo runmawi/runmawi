@@ -58,26 +58,53 @@ class SystemSettingController extends Controller
         $data = $request->all();
 
         $settings = SystemSetting::find(1);
-        if (!empty($request->facebook)){
-         $settings->facebook = $request->facebook;   
-        } else {
-            $settings->facebook = 0;  
+        if(empty($settings)){
+
+        $settings = new SystemSetting;
+
+            if (!empty($request->facebook)){
+                $settings->facebook = $request->facebook;   
+                } else {
+                    $settings->facebook = 0;  
+                }
+                
+                if (!empty($request->google)){
+                $settings->google = $request->google;   
+                } else {
+                    $settings->google = 0;  
+                }
+                
+                $settings->facebook_client_id = $request->facebook_client_id;
+                $settings->facebook_secrete_key = $request->facebook_secrete_key;
+                $settings->facebook_callback = $request->facebook_callback;
+                $settings->google_client_id = $request->google_client_id;
+                $settings->google_secrete_key = $request->google_secrete_key;
+                $settings->google_callback = $request->google_callback;
+                $settings->save();
+                return Redirect::back();
+
+        }else{
+
+            if (!empty($request->facebook)){
+            $settings->facebook = $request->facebook;   
+            } else {
+                $settings->facebook = 0;  
+            }
+            
+            if (!empty($request->google)){
+            $settings->google = $request->google;   
+            } else {
+                $settings->google = 0;  
+            }
+            
+            $settings->facebook_client_id = $request->facebook_client_id;
+            $settings->facebook_secrete_key = $request->facebook_secrete_key;
+            $settings->facebook_callback = $request->facebook_callback;
+            $settings->google_client_id = $request->google_client_id;
+            $settings->google_secrete_key = $request->google_secrete_key;
+            $settings->google_callback = $request->google_callback;
+            $settings->save();
+            return Redirect::back();
         }
-        
-        if (!empty($request->google)){
-         $settings->google = $request->google;   
-        } else {
-            $settings->google = 0;  
-        }
-        
-        $settings->facebook_client_id = $request->facebook_client_id;
-        $settings->facebook_secrete_key = $request->facebook_secrete_key;
-        $settings->facebook_callback = $request->facebook_callback;
-        $settings->google_client_id = $request->google_client_id;
-        $settings->google_secrete_key = $request->google_secrete_key;
-        $settings->google_callback = $request->google_callback;
-        $settings->save();
-        return Redirect::back();
-        
     }
 }
