@@ -225,8 +225,7 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
 // Become subscriber - single page
     Route::get('become_subscriber', 'PaymentController@become_subscriber');
     Route::get('retrieve_stripe_coupon', 'PaymentController@retrieve_stripe_coupon')->name('retrieve_stripe_coupon');
-
-
+    Route::get('retrieve_stripe_invoice', 'PaymentController@retrieve_stripe_invoice')->name('retrieve_stripe_invoice');
 });
 
 

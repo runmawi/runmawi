@@ -1499,4 +1499,23 @@ public function UpgadeSubscription(Request $request){
         }
         return response()->json($data, 200);
       }
+
+      public function retrieve_stripe_invoice(Request $request)
+      {
+
+        $stripe = new \Stripe\StripeClient(
+          env('STRIPE_SECRET')
+        );
+
+        $stripe_plan = SubscriptionPlan();
+
+        dd($stripe_plan);
+
+        $ded = $stripe->invoices->upcoming([
+          'customer' => SubscriptionPlan(),
+        ]);
+
+        dd($ded);
+
+      }
 }
