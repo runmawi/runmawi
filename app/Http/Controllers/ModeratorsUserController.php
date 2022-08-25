@@ -248,21 +248,58 @@ class ModeratorsUserController extends Controller
                 //   echo "<pre>";
                 // print_r($heading);
                 // exit();
-                Mail::send(
-                    "emails.partner_registration",
-                    [
-                        /* 'activation_code', $user->activation_code,*/
-                        "name" => $request->username,
-                        "email" => $request->email_id,
-                        "password" => $request->password,
-                    ],
-                    function ($message) use ($request, $template, $heading) {
-                        $message->from(AdminMail(), GetWebsiteName());
-                        $message
-                            ->to($request->email_id, $request->username)
-                            ->subject($heading . $request->username);
+                // Mail::send(
+                //     "emails.partner_registration",
+                //     [
+                //         /* 'activation_code', $user->activation_code,*/
+                //         "name" => $request->username,
+                //         "email" => $request->email_id,
+                //         "password" => $request->password,
+                //     ],
+                //     function ($message) use ($request, $template, $heading) {
+                //         $message->from(AdminMail(), GetWebsiteName());
+                //         $message
+                //             ->to($request->email_id, $request->username)
+                //             ->subject($heading . $request->username);
+                //     }
+                // );
+
+
+                
+                    // Mail for Content Partner Welcome Email
+
+                    try {
+
+                        $data = array(
+                            'email_subject' =>  EmailTemplate::where('id',11)->pluck('heading')->first() ,
+                        );
+    
+                        Mail::send('emails.partner_welcome', array(
+                            'username' => $request->username,
+                            'website_name' => GetWebsiteName(),
+                        ), 
+                        function($message) use ($data,$request) {
+                            $message->from(AdminMail(),GetWebsiteName());
+                            $message->to($request->email_id, $request->username)->subject($data['email_subject']);
+                        });
+    
+                        $email_log      = 'Mail Sent Successfully from Welcome on Partner’s Registration';
+                        $email_template = "11";
+                        $user_id = $moderatorsuser->id;
+    
+                        Email_sent_log($user_id,$email_log,$email_template);
+    
                     }
-                );
+                    catch (\Exception $e) {
+    
+                        $email_log      = $e->getMessage();
+                        $email_template = "11";
+                        $user_id = $moderatorsuser->id;
+    
+                        Email_notsent_log($user_id,$email_log,$email_template);
+    
+                    }
+
 
                 return back()->with("message", "Successfully Users saved!.");
 
@@ -347,29 +384,50 @@ class ModeratorsUserController extends Controller
                 "responseBody" => $responseBody,
             ];
             return View::make("admin.expired_dashboard", $data);
-        } else {
-            $users = ModeratorsUser::findOrFail($id);
+        }
+        else{
 
+            $users = ModeratorsUser::findOrFail($id);
             $users->status = 1;
             $users->save();
-            Mail::send('emails.cpp_approved', array(
-                /* 'activation_code', $user->activation_code,*/
-                'users'=> $users, 
-        
-                ),function($message) use ($users) {
 
-                $message->from(AdminMail(),GetWebsiteName());
-                $message->to($users->email)->subject("Approved As Moderator");
+            try {
+
+                $email_template_subject =  EmailTemplate::where('id',12)->pluck('heading')->first() ;
+                $email_subject  = str_replace("{ContentName}", "$users->username", $email_template_subject);
+
+                $data = array(
+                   'email_subject' => $email_subject,
+                );
+
+                Mail::send('emails.cpp_approved', array(
+                    'username' => $users->username,
+                    'website_name' => GetWebsiteName(),
+                    'ContentPermalink' => URL::to('/cpp') ,
+                    'ContentName'  =>  $users->username,
+                ), 
+                function($message) use ($data,$users) {
+                    $message->from(AdminMail(),GetWebsiteName());
+                    $message->to($users->email, $users->username)->subject($data['email_subject']);
                 });
 
-        // dd($users);
+                $email_log      = 'Mail Sent Successfully from Partner Content Approval Congratulations! {ContentName} is published Successfully.';
+                $email_template = "12";
+                $user_id = $users->id;
 
-            // Mail::send("emails.cpp_approved", [], function ($message) use (
-            //     $users
-            // ) {
-            //     $message->from(AdminMail(), GetWebsiteName());
-            //     $message->to($users->email)->subject("Approved As Moderator");
-            // });
+                Email_sent_log($user_id,$email_log,$email_template);
+
+            }
+            catch (\Exception $e) {
+
+                $email_log      = $e->getMessage();
+                $email_template = "12";
+                $user_id = $users->id;
+
+                Email_notsent_log($user_id,$email_log,$email_template);
+
+            }
+
             return \Redirect::back()->with(
                 "message",
                 "User Has Been Approved "
@@ -405,10 +463,49 @@ class ModeratorsUserController extends Controller
                 "responseBody" => $responseBody,
             ];
             return View::make("admin.expired_dashboard", $data);
-        } else {
+        } 
+        else {
+
             $users = ModeratorsUser::findOrFail($id);
             $users->status = 2;
             $users->save();
+
+            try {
+
+                $email_template_subject =  EmailTemplate::where('id',13)->pluck('heading')->first() ;
+                $email_subject  = str_replace("{ContentName}", "$users->username", $email_template_subject);
+
+                $data = array(
+                   'email_subject' => $email_subject,
+                );
+
+                Mail::send('emails.cpp_reject', array(
+                    'username' => $users->username,
+                    'website_name' => GetWebsiteName(),
+                    'ContentName'  =>  $users->username,
+                ), 
+                function($message) use ($data,$users) {
+                    $message->from(AdminMail(),GetWebsiteName());
+                    $message->to($users->email, $users->username)->subject($data['email_subject']);
+                });
+
+                $email_log      = 'Mail Sent Successfully from Partner Content Reject ';
+                $email_template = "13";
+                $user_id = $users->id;
+
+                Email_sent_log($user_id,$email_log,$email_template);
+
+            }
+            catch (\Exception $e) {
+
+                $email_log      = $e->getMessage();
+                $email_template = "13";
+                $user_id = $users->id;
+
+                Email_notsent_log($user_id,$email_log,$email_template);
+
+            }
+
             return \Redirect::back()->with("message", "User Has Been Rejected");
         }
     }
@@ -679,6 +776,7 @@ class ModeratorsUserController extends Controller
 
     public function update(Request $request)
     {
+
         $data = Session::all();
         if (!empty($data["password_hash"])) {
             $package_id = auth()->user()->id;
@@ -757,6 +855,44 @@ class ModeratorsUserController extends Controller
                     $userrolepermissiom->save();
                 }
 
+
+                     // Partner Content Update - admin
+                try {
+
+                    $email_template_subject =  EmailTemplate::where('id',14)->pluck('heading')->first() ;
+                    $email_subject  = str_replace("{ContentName}", "$moderatorsuser->username", $email_template_subject);
+        
+                    $data = array(
+                        'email_subject' => $email_subject,
+                    );
+        
+                        Mail::send('emails.cpp_update', array(
+                            'username' => $moderatorsuser->username,
+                            'website_name' => GetWebsiteName(),
+                            'ContentPermalink' => URL::to('/cpp') ,
+                            'ContentName'  =>  $moderatorsuser->username,
+                        ), 
+                        function($message) use ($data,$moderatorsuser) {
+                            $message->from(AdminMail(),GetWebsiteName());
+                            $message->to($moderatorsuser->email, $moderatorsuser->username)->subject($data['email_subject']);
+                        });
+        
+                        $email_log      = 'Mail Sent Successfully from Partner Content Update';
+                        $email_template = "14";
+                        $user_id = $moderatorsuser->id;
+        
+                        Email_sent_log($user_id,$email_log,$email_template);
+        
+                }
+                catch (\Exception $e) {
+        
+                    $email_log      = $e->getMessage();
+                    $email_template = "14";
+                    $user_id = $moderatorsuser->id;
+        
+                    Email_notsent_log($user_id,$email_log,$email_template);
+                }
+        
                 return back()->with("message", "Successfully User Updated!.");
 
                 return \Redirect::back();
@@ -810,29 +946,64 @@ class ModeratorsUserController extends Controller
 
     public function delete($id)
     {
-        // print_r($id);
-        // exit();
+
         $data = Session::all();
+
         if (!empty($data["password_hash"])) {
-            $package_id = auth()->user()->id;
-            $user_package = DB::table("users")
-                ->where("id", $package_id)
-                ->first();
-            $package = $user_package->package;
-            if (
-                $package == "Pro" ||
-                $package == "Business" ||
-                ($package == "" && Auth::User()->role == "admin")
-            ) {
+                $package_id = auth()->user()->id;
+                $user_package = DB::table("users")->where("id", $package_id)->first();
+                $package = $user_package->package;
+                
+            if ( $package == "Pro" || $package == "Business" ||($package == "" && Auth::User()->role == "admin")) {
+                
                 $moderators = ModeratorsUser::find($id);
+
+                         // Partner Content Delete - admin
+                try {
+
+                    $email_template_subject =  EmailTemplate::where('id',15)->pluck('heading')->first() ;
+                    $email_subject  = str_replace("{ContentName}", "$moderators->username", $email_template_subject);
+
+                    $data = array(
+                    'email_subject' => $email_subject,
+                    );
+
+                    Mail::send('emails.cpp_detete', array(
+                        'username' => $moderators->username,
+                        'website_name' => GetWebsiteName(),
+                        'ContentName'  =>  $moderators->username,
+                    ), 
+                    function($message) use ($data,$moderators) {
+                        $message->from(AdminMail(),GetWebsiteName());
+                        $message->to($moderators->email, $moderators->username)->subject($data['email_subject']);
+                    });
+
+                    $email_log      = 'Mail Sent Successfully from Partner Content Delete.';
+                    $email_template = "15";
+                    $user_id = $id;
+
+                    Email_sent_log($user_id,$email_log,$email_template);
+
+                }
+                catch (\Exception $e) {
+
+                    $email_log      = $e->getMessage();
+                    $email_template = "15";
+                    $user_id = $id;
+
+                    Email_notsent_log($user_id,$email_log,$email_template);
+                }
 
                 ModeratorsUser::destroy($id);
 
                 return \Redirect::back();
-            } elseif ($package == "Basic") {
+            } 
+            elseif ($package == "Basic") {
                 return view("blocked");
             }
-        } else {
+        } 
+        else {
+
             $system_settings = SystemSetting::first();
             $user = User::where("id", "=", 1)->first();
             return view("auth.login", compact("system_settings", "user"));

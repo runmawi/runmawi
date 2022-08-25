@@ -1,7 +1,7 @@
 <?php 
-            // Partner Content Approval Tempalte
+            // Partner Content Partner Content Update
             
-    $template = App\EmailTemplate::where('id','=',12)->first(); 
+    $template = App\EmailTemplate::where('id','=',14)->first(); 
     $template_description = $template->description ;
 
     $template_change = array( 

@@ -1,20 +1,15 @@
 <?php 
-            // Partner Content Approval Tempalte
-            
-    $template = App\EmailTemplate::where('id','=',12)->first(); 
+            // Partner Welcome Template - signup
+    $template = App\EmailTemplate::where('id','=',11)->first(); 
     $template_description = $template->description ;
 
     $template_change = array( 
         "{Name}", 
-        "{ContentName}",
-        "{ContentPermalink}",
         "{Website Name}", 
     );
 
     $template_content= array( 
         $username,
-        $ContentName,
-        $ContentPermalink,
         $website_name ,
     ) ;
 
