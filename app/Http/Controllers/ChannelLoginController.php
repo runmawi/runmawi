@@ -126,18 +126,21 @@ class ChannelLoginController extends Controller
             $template = EmailTemplate::where('id', '=', 13)->first();
             $heading = $template->heading;
             $settings = Setting::first();
-            Mail::send('emails.channel_verify', array(
-                'activation_code' => $string,
-                'website_name' => $settings->website_name,
+            // Mail::send('emails.channel_verify', array(
+            //     'activation_code' => $string,
+            //     'website_name' => $settings->website_name,
 
-            ) , function ($message) use ($request, $template, $heading)
-            {
-                $message->from(AdminMail() , GetWebsiteName());
-                $message->to($request->email_id, $request->channel_name)
-                    ->subject($heading . $request->channel_name);
-            });
-            return redirect('/channel/verify-request')
-                ->with('message', 'Successfully Users saved!.');
+            // ) , function ($message) use ($request, $template, $heading)
+            // {
+            //     $message->from(AdminMail() , GetWebsiteName());
+            //     $message->to($request->email_id, $request->channel_name)
+            //         ->subject($heading . $request->channel_name);
+            // });
+            // return redirect('/channel/verify-request')
+            //     ->with('message', 'Successfully Users saved!.');
+
+            return redirect('/channel/login')
+                ->with('message', 'You have successfully registered. Please login If You Approved below.');
 
         }
         else
