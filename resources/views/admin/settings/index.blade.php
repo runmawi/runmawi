@@ -131,7 +131,7 @@ border-radius: 0px 4px 4px 0px;
                     <?php if(Auth::User()->role =="admin" && Auth::User()->package =="Business"){  ?>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="transcoding_setting" href="#!"> Transcoding Settings</a>
                     <?php } ?>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="subscription_setting" href="#!">New Subscription Settings</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="subscription_setting" href="#!">Coupon Code Settings</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="login_setting" href="#!">Login Page Settings</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="advertisement_setting" href="#!">Advertisement Settings</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="app_setting" href="#!">APP Settings</a>
@@ -793,7 +793,7 @@ border-radius: 0px 4px 4px 0px;
         <div style="padding:15px;">
             <div class="panel panel-primary" data-collapsed="0">
                 <div class="panel-heading">
-                    <div class="panel-title"> <label>Settings For New Subscription</label> </div>
+                    <div class="panel-title"> <label>Settings For New Subscription Coupon Code </label> </div>
                     <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
                     </div>
                 </div>

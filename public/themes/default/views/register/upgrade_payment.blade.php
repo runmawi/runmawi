@@ -570,11 +570,28 @@ i.fa.fa-google-plus {
                      <label for="ccnum"> Card Number</label>
                      <div id="card-element" style=""></div>
 
+                    @if( get_coupon_code() == 1)
+                                    <!-- Add Promotion Code -->
+                        <div class="mt-3">
+                            <label for="fname"  style="float: right; " data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"  class="promo"> Add Promotion Code </label>
+                            <div class="collapse" id="collapseExample">
+                                <div class="row p-0">
+                                    <div class="col-lg-6 p-0" >
+                                        <input id="coupon_code_stripe" type="text" class="form-control" placeholder="Add Promotion Code" >
+                                        <input id="final_coupon_code_stripe" name="final_coupon_code_stripe" type="hidden" >
+                                         </div>
+                                    <div class="col-lg-6 p-0"><a type="button" id="couple_apply" class="btn round">Apply</a></div>
+                                    <span id="coupon_message"></span>
 
-                     <div class="mt-3">
-                        <label for="fname"  style="float: right;" ></i> Add Promotion Code </label>
-                        <input id="coupon_code_stripe" type="text" class="form-control" placeholder="Add Promotion Code ">
-                     </div>
+                                                {{-- Coupon Code from backend(admin) --}}
+                                    @if( NewSubscriptionCouponCode() != '0' )
+                                        <span id="">  {{ "Recommend a Coupon Code for you - " . NewSubscriptionCouponCode() }} </span>
+                                    @endif
+
+                                </div>
+                            </div>
+                        </div>
+                    @endif
 
                 </div>
                 

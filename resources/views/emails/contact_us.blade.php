@@ -1,21 +1,19 @@
 <?php 
             // Partner Content Approval Tempalte
             
-    $template = App\EmailTemplate::where('id','=',12)->first(); 
+    $template = App\EmailTemplate::where('id','=',6)->first(); 
     $template_description = $template->description ;
 
     $template_change = array( 
-        "{Name}", 
-        "{ContentName}",
-        "{ContentPermalink}",
+        "{EndUserName}", 
         "{Website Name}", 
+        "{originalMessage}",
     );
 
     $template_content= array( 
         $username,
-        $ContentName,
-        $ContentPermalink,
         $website_name ,
+        $originalMessage,
     ) ;
 
     $Template_description = str_replace($template_change, $template_content, $template_description);

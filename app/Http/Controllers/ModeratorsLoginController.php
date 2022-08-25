@@ -295,6 +295,39 @@ if($request->picture == ""){
     }
 
 
+    // Mail for Content Partner Welcome Email
+
+      try {
+
+        $data = array(
+            'email_subject' =>  EmailTemplate::where('id',11)->pluck('heading')->first() ,
+        );
+
+        Mail::send('emails.partner_welcome', array(
+            'username' => $request->username,
+            'website_name' => GetWebsiteName(),
+        ), 
+        function($message) use ($data,$request) {
+            $message->from(AdminMail(),GetWebsiteName());
+            $message->to($request->email_id, $request->username)->subject($data['email_subject']);
+        });
+
+        $email_log      = 'Mail Sent Successfully from Welcome on Partner’s Registration';
+        $email_template = "11";
+        $user_id = $moderatorsuser->id;
+
+        Email_sent_log($user_id,$email_log,$email_template);
+
+    }
+    catch (\Exception $e) {
+
+        $email_log      = $e->getMessage();
+        $email_template = "11";
+        $user_id = $moderatorsuser->id;
+
+        Email_notsent_log($user_id,$email_log,$email_template);
+
+    }
 
 
     $template = EmailTemplate::where('id','=',13)->first();
