@@ -105,12 +105,19 @@ class EmailTemplatesSeeder extends Seeder
 
                         [   'template_type' => 'Contact us', 
                             'heading' => '{Name }: Thank you for contacting us',
-                            'description' => 'Dear {EndUserName},
-                                             Thank you for contacting us. We will get back to you shortly.
-                                             Regards,
-                                             Name
-                                             Your Message
-                                            {"originalMessage"}',
+                            'description' => '<p>Dear {EndUserName},&nbsp;</p>
+
+                                            <p>Thank you for contacting us. We will get back to you shortly.&nbsp;</p>
+                                            
+                                            <p>Sincerely,&nbsp;</p>
+                                            
+                                            <p>Team {Website Name}&nbsp;</p>
+                                            
+                                            <p>Your Message {originalMessage}</p>
+                                            
+                                            <p>&nbsp;</p>
+                                            
+                                            <p>&nbsp;</p>',
                             'role_type' => 'GeneralEmailTriggers' ,
                             'created_at' => Carbon::now(),
                             'updated_at' => null,

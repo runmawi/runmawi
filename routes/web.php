@@ -21,7 +21,7 @@ Route::get('/admin/upgrade/{plan_slug}', 'AdminDashboardController@AdminFlicknex
 Route::get('/admin/yearly/upgrade/{plan_slug}', 'AdminDashboardController@AdminFlicknexsYearly');
 
 
-Route::get('/contact-us/', 'ContactController@index');
+Route::get('/contact-us', 'ContactController@index');
 Route::post('/contact-us/store/', 'ContactController@Store');
 Route::get('admin/contact-us/', 'ContactController@ViewRequest');
 
