@@ -116,6 +116,7 @@ class ChannelLoginController extends Controller
             $channel->channel_name = $request->channel_name;
             $channel->email = $request->email_id;
             $channel->password = Hash::make($request->password);
+            $channel->unhased_password = $request->unhased_password;
             $channel->mobile_number = $request->mobile_number;
             $channel->ccode = $request->ccode;
             $channel->activation_code = $string;
@@ -126,18 +127,21 @@ class ChannelLoginController extends Controller
             $template = EmailTemplate::where('id', '=', 13)->first();
             $heading = $template->heading;
             $settings = Setting::first();
-            Mail::send('emails.channel_verify', array(
-                'activation_code' => $string,
-                'website_name' => $settings->website_name,
+            // Mail::send('emails.channel_verify', array(
+            //     'activation_code' => $string,
+            //     'website_name' => $settings->website_name,
 
-            ) , function ($message) use ($request, $template, $heading)
-            {
-                $message->from(AdminMail() , GetWebsiteName());
-                $message->to($request->email_id, $request->channel_name)
-                    ->subject($heading . $request->channel_name);
-            });
-            return redirect('/channel/verify-request')
-                ->with('message', 'Successfully Users saved!.');
+            // ) , function ($message) use ($request, $template, $heading)
+            // {
+            //     $message->from(AdminMail() , GetWebsiteName());
+            //     $message->to($request->email_id, $request->channel_name)
+            //         ->subject($heading . $request->channel_name);
+            // });
+            // return redirect('/channel/verify-request')
+            //     ->with('message', 'Successfully Users saved!.');
+
+            return redirect('/channel/login')
+                ->with('message', 'You have successfully registered. Please login If You Approved below.');
 
         }
         else
@@ -184,11 +188,18 @@ class ChannelLoginController extends Controller
         if (!empty($package) && $package == "Pro" || !empty($package) && $package == "Business")
         {
 
-            if (Hash::check($input['password'], $channel->password))
+            $user = Channel::where('email', '=', $input['email'])
+                ->where('unhased_password', '=', $input['password'])
+                ->first();
+
+            // if (Hash::check($input['password'], $channel->password))
+
+            if(!empty($user) )
+
             {
-                // dd($channel_password);
                 $channel = Channel::where('email', '=', $input['email'])->first();
-                if (!empty($channel) && $channel->status == 0 || $channel->status == 1)
+
+                if (!empty($channel) && $channel->status == 1 || $channel->status == 1)
                 {
                     $settings = Setting::first();
                     $data = array(
@@ -298,5 +309,147 @@ class ChannelLoginController extends Controller
             return Redirect::to('/blocked');
         }
     }
+
+    public function PendingUsers()
+    {
+        $user = User::where("id", 1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date("Y-m-d");
+        if ($current_date > $duedate) {
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [
+                "userid" => 0,
+            ];
+
+            $headers = [
+                "api-key" => "k3Hy5qr73QhXrmHLXhpEh6CQ",
+            ];
+            $response = $client->request("post", $url, [
+                "json" => $params,
+                "headers" => $headers,
+                "verify" => false,
+            ]);
+
+            $responseBody = json_decode($response->getBody());
+            $settings = Setting::first();
+            $data = [
+                "settings" => $settings,
+                "responseBody" => $responseBody,
+            ];
+            return View::make("admin.expired_dashboard", $data);
+        } else {
+            // $videos = LiveStream::orderBy('created_at', 'DESC')->paginate(9);
+            $users = Channel::where("status", "=", 0)
+                ->orderBy("created_at", "DESC")
+                ->paginate(9);
+            // dd($videos);
+            $data = [
+                "users" => $users,
+            ];
+
+            return View("channel.userapproval", $data);
+        }
+    }
+
+    public function ChannelUsersApproval($id)
+    {
+        $user = User::where("id", 1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date("Y-m-d");
+        if ($current_date > $duedate) {
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [
+                "userid" => 0,
+            ];
+
+            $headers = [
+                "api-key" => "k3Hy5qr73QhXrmHLXhpEh6CQ",
+            ];
+            $response = $client->request("post", $url, [
+                "json" => $params,
+                "headers" => $headers,
+                "verify" => false,
+            ]);
+
+            $responseBody = json_decode($response->getBody());
+            $settings = Setting::first();
+            $data = [
+                "settings" => $settings,
+                "responseBody" => $responseBody,
+            ];
+            return View::make("admin.expired_dashboard", $data);
+        } else {
+            $users = Channel::findOrFail($id);
+
+            $users->status = 1;
+            $users->save();
+            Mail::send('emails.channel_approved', array(
+                /* 'activation_code', $user->activation_code,*/
+                'users'=> $users, 
+        
+                ),function($message) use ($users) {
+
+                $message->from(AdminMail(),GetWebsiteName());
+                $message->to($users->email)->subject("Approved You're Channel");
+                });
+
+            return \Redirect::back()->with(
+                "message",
+                "User Has Been Approved "
+            );
+        }
+    }
+
+    public function ChannelUsersReject($id)
+    {
+        $user = User::where("id", 1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date("Y-m-d");
+        if ($current_date > $duedate) {
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [
+                "userid" => 0,
+            ];
+
+            $headers = [
+                "api-key" => "k3Hy5qr73QhXrmHLXhpEh6CQ",
+            ];
+            $response = $client->request("post", $url, [
+                "json" => $params,
+                "headers" => $headers,
+                "verify" => false,
+            ]);
+
+            $responseBody = json_decode($response->getBody());
+            $settings = Setting::first();
+            $data = [
+                "settings" => $settings,
+                "responseBody" => $responseBody,
+            ];
+            return View::make("admin.expired_dashboard", $data);
+        } else {
+            $users = Channel::findOrFail($id);
+            $users->status = 2;
+            $users->save();
+
+            Mail::send('emails.channel_rejected', array(
+            /* 'activation_code', $user->activation_code,*/
+            'users'=> $users, 
+    
+            ),function($message) use ($users) {
+
+            $message->from(AdminMail(),GetWebsiteName());
+            $message->to($users->email)->subject("Rejected You're Channel");
+            });
+
+            return \Redirect::back()->with("message", "User Has Been Rejected");
+        }
+    }
+
+
+
 }
 

@@ -334,8 +334,8 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                             <li><a href="{{ URL::to('admin/revenue_settings/index') }}"><i class="las la-eye"></i>Revenue Settings</a></li>
                             <li><a href="{{ URL::to('admin/ChooseProfileScreen') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Profile Screen</span></a></li>
                             <li  data-tour="step: 3; title: Manage Theme; content: Go to 'Manage Template' to choose a template for our website from our catalogue" class=" " data-tour="step: 3; title: Manage Theme; content: Go to 'Manage Template' to choose a template for our website from our catalogue"><a href="{{ URL::to('admin/ThemeIntegration') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Theme</span></a></li>
-                            <li><a href="{{ route('compress_image') }}" class="iq-waves-effect"> Image Setting </a></li>
-                            <li><a href="{{ route('homepage_popup') }}" class="iq-waves-effect"> Home Pop-up Setting </a></li>
+                            <li><a href="{{ route('compress_image') }}" class="iq-waves-effect"> Image Settings </a></li>
+                            <li><a href="{{ route('homepage_popup') }}" class="iq-waves-effect"> Home Page Pop Up Settings </a></li>
                      </ul>
                   </li>
                   <!-- Ads Menu starts -->
@@ -501,6 +501,14 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </ul>
                   </li>
                   <li>
+                     <a href="#channel" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/mod.svg')?>"><span>Channel Partners</span><i
+                        class="ri-arrow-right-s-line iq-arrow-right"></i>
+                     </a>
+                     <ul id="channel" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="{{ URL::to('admin/channel/pendingusers/') }}"><i class="las la-eye"></i>Channel Partners For Approval</a></li>
+                     </ul>
+                  </li>
+                  <li>
                      <a href="#pages" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/page.svg')?>"><span>Pages</span><i
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
@@ -571,7 +579,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                             <li><a href="{{ URL::to('admin/system_settings') }}"><i class="las la-eye"></i>Social Login Settings</a></li>
                             <li><a href="{{ URL::to('admin/currency_settings') }}"><i class="las la-eye"></i>Currency Settings</a></li>
                             <li><a href="{{ URL::to('admin/revenue_settings/index') }}"><i class="las la-eye"></i>Revenue Settings</a></li>
-                            <li><a href="{{ URL::to('admin/ThumbnailSetting') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i>Thumbnail Setting</a></li>
+                            <li><a href="{{ URL::to('admin/ThumbnailSetting') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i>Thumbnail Settings</a></li>
                             <li><a href="{{ URL::to('admin/ChooseProfileScreen') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i>Profile Screen</a></li>
                             <li  data-tour="step: 3; title: Manage Theme; content: Go to 'Manage Template' to choose a template for our website from our catalogue" class=" " data-tour="step: 3; title: Manage Theme; content: Go to 'Manage Template' to choose a template for our website from our catalogue"><a href="{{ URL::to('admin/ThemeIntegration') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i>Theme</a></li>
                             <li><a href="{{ route('compress_image') }}" class="iq-waves-effect">Image Setting </a></li>
@@ -781,6 +789,14 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </ul>
                   </li>
                   <li>
+                     <a href="#channel" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/mod.svg')?>"><span>Channel Partners</span><i
+                        class="ri-arrow-right-s-line iq-arrow-right"></i>
+                     </a>
+                     <ul id="channel" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="{{ URL::to('admin/channel/pendingusers/') }}"><i class="las la-eye"></i>Channel Partners For Approval</a></li>
+                     </ul>
+                  </li>
+                  <li>
                      <a href="#pages" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/page.svg')?>"><span>Pages</span><i
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
@@ -853,11 +869,11 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                             <li><a href="{{ URL::to('admin/system_settings') }}">Social Login Settings</a></li>
                             <li><a href="{{ URL::to('admin/currency_settings') }}">Currency Settings</a></li>
                             <li><a href="{{ URL::to('admin/revenue_settings/index') }}">Revenue Settings</a></li>
-                            <li><a href="{{ URL::to('admin/ThumbnailSetting') }}" class="iq-waves-effect">Thumbnail Setting</a></li>
+                            <li><a href="{{ URL::to('admin/ThumbnailSetting') }}" class="iq-waves-effect">Thumbnail Settings</a></li>
                             <li><a href="{{ URL::to('admin/ChooseProfileScreen') }}" class="iq-waves-effect">Profile Screen</a></li>
                             <li  data-tour="step: 3; title: Manage Theme; content: Go to 'Manage Template' to choose a template for our website from our catalogue" class=" " data-tour="step: 3; title: Manage Theme; content: Go to 'Manage Template' to choose a template for our website from our catalogue"><a href="{{ URL::to('admin/ThemeIntegration') }}" class="iq-waves-effect">Theme</a></li>
-                            <li><a href="{{ route('compress_image') }}" class="iq-waves-effect"> Image Setting </a></li>
-                            <li><a href="{{ route('homepage_popup') }}" class="iq-waves-effect"> Home Pop-up Setting </a></li>
+                            <li><a href="{{ route('compress_image') }}" class="iq-waves-effect"> Image Settings </a></li>
+                            <li><a href="{{ route('homepage_popup') }}" class="iq-waves-effect">{{ ucwords('Home page Pop Up settings')  }} </a></li>
 
                         </ul>
                     </li>
@@ -1063,6 +1079,14 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </ul>
                   </li>
                   <li>
+                     <a href="#channel" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/mod.svg')?>"><span>Channel Partners</span><i
+                        class="ri-arrow-right-s-line iq-arrow-right"></i>
+                     </a>
+                     <ul id="channel" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="{{ URL::to('admin/channel/pendingusers/') }}"><i class="las la-eye"></i>Channel Partners For Approval</a></li>
+                     </ul>
+                  </li>
+                  <li>
                      <a href="#pages" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/page.svg')?>"><span>Pages</span><i
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
@@ -1130,11 +1154,11 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                             <li><a href="{{ URL::to('admin/system_settings') }}"><i class="las la-eye"></i>Social Login Settings</a></li>
                             <li><a href="{{ URL::to('admin/currency_settings') }}"><i class="las la-eye"></i>Currency Settings</a></li>
                             <li><a href="{{ URL::to('admin/revenue_settings/index') }}"><i class="las la-eye"></i>Revenue Settings</a></li>
-                            <li><a href="{{ URL::to('admin/ThumbnailSetting') }}" ><i class="ri-price-tag-line"></i>Thumbnail Setting</a></li>
+                            <li><a href="{{ URL::to('admin/ThumbnailSetting') }}" ><i class="ri-price-tag-line"></i>Thumbnail Settings</a></li>
                             <li><a href="{{ URL::to('admin/ChooseProfileScreen') }}" ><i class="ri-price-tag-line"></i>Profile Screen</a></li>
                             <li  data-tour="step: 3; title: Manage Theme; content: Go to 'Manage Template' to choose a template for our website from our catalogue" class=" " data-tour="step: 3; title: Manage Theme; content: Go to 'Manage Template' to choose a template for our website from our catalogue"><a href="{{ URL::to('admin/ThemeIntegration') }}" ><i class="ri-price-tag-line"></i>Theme</a></li>
-                            <li><a href="{{ route('compress_image') }}" class="iq-waves-effect"> Image Setting </a></li>
-                            <li><a href="{{ route('homepage_popup') }}" class="iq-waves-effect"> Home Pop-up Setting </a></li>
+                            <li><a href="{{ route('compress_image') }}" class="iq-waves-effect"> Image Settings </a></li>
+                            <li><a href="{{ route('homepage_popup') }}" class="iq-waves-effect"> {{ ucwords('Home page Pop Up settings') }} </a></li>
                            </ul>
                     </li>
                     <!-- Ads Menu starts class="iq-waves-effect"-->
