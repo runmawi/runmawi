@@ -187,10 +187,12 @@ class ChannelLoginController extends Controller
         if (!empty($package) && $package == "Pro" || !empty($package) && $package == "Business")
         {
 
-            if (Hash::check($input['password'], $channel->password))
+            // if (Hash::check($input['password'], $channel->password))
+            if( Hash::check( $channel->password , $input['password'] ) )
+
             {
-                // dd($channel_password);
                 $channel = Channel::where('email', '=', $input['email'])->first();
+
                 if (!empty($channel) && $channel->status == 1 || $channel->status == 1)
                 {
                     $settings = Setting::first();
