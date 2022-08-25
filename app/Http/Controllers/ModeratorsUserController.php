@@ -248,21 +248,58 @@ class ModeratorsUserController extends Controller
                 //   echo "<pre>";
                 // print_r($heading);
                 // exit();
-                Mail::send(
-                    "emails.partner_registration",
-                    [
-                        /* 'activation_code', $user->activation_code,*/
-                        "name" => $request->username,
-                        "email" => $request->email_id,
-                        "password" => $request->password,
-                    ],
-                    function ($message) use ($request, $template, $heading) {
-                        $message->from(AdminMail(), GetWebsiteName());
-                        $message
-                            ->to($request->email_id, $request->username)
-                            ->subject($heading . $request->username);
+                // Mail::send(
+                //     "emails.partner_registration",
+                //     [
+                //         /* 'activation_code', $user->activation_code,*/
+                //         "name" => $request->username,
+                //         "email" => $request->email_id,
+                //         "password" => $request->password,
+                //     ],
+                //     function ($message) use ($request, $template, $heading) {
+                //         $message->from(AdminMail(), GetWebsiteName());
+                //         $message
+                //             ->to($request->email_id, $request->username)
+                //             ->subject($heading . $request->username);
+                //     }
+                // );
+
+
+                
+                    // Mail for Content Partner Welcome Email
+
+                    try {
+
+                        $data = array(
+                            'email_subject' =>  EmailTemplate::where('id',11)->pluck('heading')->first() ,
+                        );
+    
+                        Mail::send('emails.partner_welcome', array(
+                            'username' => $request->username,
+                            'website_name' => GetWebsiteName(),
+                        ), 
+                        function($message) use ($data,$request) {
+                            $message->from(AdminMail(),GetWebsiteName());
+                            $message->to($request->email_id, $request->username)->subject($data['email_subject']);
+                        });
+    
+                        $email_log      = 'Mail Sent Successfully from Welcome on Partner’s Registration';
+                        $email_template = "11";
+                        $user_id = $moderatorsuser->id;
+    
+                        Email_sent_log($user_id,$email_log,$email_template);
+    
                     }
-                );
+                    catch (\Exception $e) {
+    
+                        $email_log      = $e->getMessage();
+                        $email_template = "11";
+                        $user_id = $moderatorsuser->id;
+    
+                        Email_notsent_log($user_id,$email_log,$email_template);
+    
+                    }
+
 
                 return back()->with("message", "Successfully Users saved!.");
 
@@ -829,9 +866,10 @@ class ModeratorsUserController extends Controller
                         'email_subject' => $email_subject,
                     );
         
-                        Mail::send('emails.cpp_detete', array(
+                        Mail::send('emails.cpp_update', array(
                             'username' => $moderatorsuser->username,
                             'website_name' => GetWebsiteName(),
+                            'ContentPermalink' => URL::to('/cpp') ,
                             'ContentName'  =>  $moderatorsuser->username,
                         ), 
                         function($message) use ($data,$moderatorsuser) {
