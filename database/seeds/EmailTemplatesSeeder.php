@@ -105,12 +105,19 @@ class EmailTemplatesSeeder extends Seeder
 
                         [   'template_type' => 'Contact us', 
                             'heading' => '{Name }: Thank you for contacting us',
-                            'description' => 'Dear {EndUserName},
-                                             Thank you for contacting us. We will get back to you shortly.
-                                             Regards,
-                                             Name
-                                             Your Message
-                                            {"originalMessage"}',
+                            'description' => '<p>Dear {EndUserName},&nbsp;</p>
+
+                                            <p>Thank you for contacting us. We will get back to you shortly.&nbsp;</p>
+                                            
+                                            <p>Sincerely,&nbsp;</p>
+                                            
+                                            <p>Team {Website Name}&nbsp;</p>
+                                            
+                                            <p>Your Message {originalMessage}</p>
+                                            
+                                            <p>&nbsp;</p>
+                                            
+                                            <p>&nbsp;</p>',
                             'role_type' => 'GeneralEmailTriggers' ,
                             'created_at' => Carbon::now(),
                             'updated_at' => null,
@@ -183,47 +190,57 @@ class EmailTemplatesSeeder extends Seeder
                             'updated_at' => null,
                         ],
 
-                        [   'template_type' => "Welcome on partner's registration", 
-                            'heading' => 'Welcome to Name',
-                            'description' => 'Dear {Name},
-                                            Thank you for registering as a Partner at {Name}. If you have any questions, please reply to this email and one of our team members will reply to you ASAP.
-                                            
-                                            Sincerely,
-                                            Team {Name}
-                                            
-                                            ',
+                        [   'template_type' => "Welcome on Partner’s Registration", 
+                            'heading' => 'Welcome on Partner’s Registration',
+                            'description' => '<p>Dear {Name},&nbsp;</p>
+
+                                                <p>Thank you for registering as a Partner at {Website Name}.&nbsp;</p>
+                                                
+                                                <p>If you have any questions, please reply to this email and one of our team members will reply to you ASAP.&nbsp;</p>
+                                                
+                                                <p>Sincerely,&nbsp;</p>
+                                                
+                                                <p>Team {Website Name}.</p>
+                                                
+                                                <p>&nbsp;</p>',
                             'role_type' => 'GeneralEmailTriggers' ,
                             'created_at' => Carbon::now(),
                             'updated_at' => null,
                         ],
                         
-                        [   'template_type' => 'Partner Content ApprovalCongratulations! {ContentName} is published Successfully.', 
+                        [   'template_type' => 'Partner Content Approval Congratulations! {ContentName} is published Successfully.', 
                             'heading' => 'Congratulations! {ContentName} is published Successfully.',
-                            'description' => 'Hi {Name}
+                            'description' => '<p>Dear {Name},</p>
 
-                                            Congratulations!
-                                            {ContentName} has been published successfully. Please check your content by clicking on the following link.
-                                            
-                                            Link: {ContentPermalink}
-                                            
-                                            Regards,
-                                            Team {Name}
-                                            ',
+                                                <p>Congratulations!&nbsp;</p>
+                                                
+                                                <p>Your {ContentName} has been published successfully.&nbsp;</p>
+                                                
+                                                <p>Please check your content by clicking on the following link.&nbsp;</p>
+                                                
+                                                <p>Link: {ContentPermalink}</p>
+                                                
+                                                <p>&nbsp;Regards,&nbsp;</p>
+                                                
+                                                <p>Team {Website Name}.</p>
+                                                
+                                                <p>&nbsp;</p>',
                             'role_type' => 'GeneralEmailTriggers' ,
                             'created_at' => Carbon::now(),
                             'updated_at' => null,
                         ],
 
-                        [   'template_type' => 'Partner Content Reject', 
+                        [   'template_type' => 'Partner content Reject', 
                             'heading' => 'Sorry! Title {ContentName} could not be published',
-                            'description' => "Hi {Name}
+                            'description' => "<p>Dear {Name},</p>
 
-                                            Sorry,Title {ContentName} couldn't be published successfully.
-                                            Reject Reason: {RejectReason}
+                                            <p>Sorry, your {ContentName} couldn&#39;t be published successfully.&nbsp;</p>
                                             
-                                            Regards,
-                                            Team {Name}
-                                            ",
+                                            <p>Regards,&nbsp;</p>
+                                            
+                                            <p>Team {Website Name}.</p>
+                                            
+                                            <p>&nbsp;</p>",
                             'role_type' => 'GeneralEmailTriggers' ,
                             'created_at' => Carbon::now(),
                             'updated_at' => null,
@@ -231,17 +248,19 @@ class EmailTemplatesSeeder extends Seeder
 
                         [   'template_type' => 'Partner Content Update', 
                             'heading' => '{ContentName} has been Edited ',
-                            'description' => 'Hi {Name}
+                            'description' => '<p>Dear {Name},</p>
 
-                                            {ContentName} has been edited.
-                                            Please check your content by clicking on the following link.
+                                            <p>Your {ContentName} has been edited.</p>
                                             
-                                            Link: {ContentPermalink}
+                                            <p>Please check your content by clicking on the following link.</p>
                                             
-                                            Regards,
-                                            Team {Name}
+                                            <p>Link: {ContentPermalink}&nbsp;</p>
                                             
-                                            ',
+                                            <p>Regards,&nbsp;</p>
+                                            
+                                            <p>Team {Website Name}.</p>
+                                            
+                                            <p>&nbsp;</p>',
                             'role_type' => 'GeneralEmailTriggers' ,
                             'created_at' => Carbon::now(),
                             'updated_at' => null,
@@ -249,15 +268,17 @@ class EmailTemplatesSeeder extends Seeder
 
                         [   'template_type' => 'Partner Content Delete', 
                             'heading' => '{ContentName} has been Deleted',
-                            'description' => 'Hi {Name}
+                            'description' => '<p>Dear {Name},</p>
 
-                                            {Name} has been deleted.
-                                            Please contact your store administrator for more information
-                                            
-                                            
-                                            Regards,
-                                            Team {Name}
-                                            ',
+                                                <p>Your {ContentName} has been deleted.&nbsp;</p>
+                                                
+                                                <p>Please contact your administrator for more information.</p>
+                                                
+                                                <p>&nbsp;Regards,&nbsp;</p>
+                                                
+                                                <p>Team {Website Name}.</p>
+                                                
+                                                <p>&nbsp;</p>',
                             'role_type' => 'GeneralEmailTriggers' ,
                             'created_at' => Carbon::now(),
                             'updated_at' => null,

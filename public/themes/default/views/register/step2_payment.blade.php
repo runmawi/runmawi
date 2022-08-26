@@ -586,6 +586,12 @@ i.fa.fa-google-plus {
                                         </div>
                                     <div class="col-lg-6 p-0"><a type="button" id="couple_apply" class="btn round">Apply</a></div>
                                     <span id="coupon_message"></span>
+
+                                                {{-- Coupon Code from backend(admin) --}}
+                                    @if( NewSubscriptionCouponCode() != '0' )
+                                        <span id="">  {{ "Recommend a Coupon Code for you - " . NewSubscriptionCouponCode() }} </span>
+                                    @endif
+                                    
                                 </div>
                             </div>
                         </div>
