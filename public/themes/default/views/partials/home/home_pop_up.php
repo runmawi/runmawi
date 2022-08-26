@@ -1,8 +1,11 @@
 <?php 
-    $AdminHomePopup = App\AdminHomePopup::first();
-    $enable_popup = App\AdminHomePopup::pluck('popup_enable')->first();
-    $auth_user_role    = Auth::user() ? Auth::user()->role : "guest"; 
-    $auth_guest_user    = Auth::guest(); 
+    $AdminHomePopup  = App\AdminHomePopup::first();
+    $enable_popup    = App\AdminHomePopup::pluck('popup_enable')->first();
+    $auth_user_role  = Auth::user() ? Auth::user()->role : "guest"; 
+    $auth_guest_user = Auth::guest(); 
+    $guest_user_redirection =  App\AdminHomePopup::pluck('before_login_link')->first() ? '/'.App\AdminHomePopup::pluck('before_login_link')->first() : "/signup";
+    $auth_user_redirection  =  App\AdminHomePopup::pluck('after_login_link')->first()  ? '/'.App\AdminHomePopup::pluck('after_login_link')->first() : "/becomesubscriber" ;
+
 ?>
 
 <!-- Pop-up modal -->
@@ -12,7 +15,7 @@
             <button type="button" class="btn-close" disabled aria-label="Close"> X </button>
             
             <div class="modal-content pop_content row">
-                <a href="<?php echo URL::to('/becomesubscriber') ; ?>" >
+                <a href="<?php if($auth_guest_user == true ) { echo URL::to( $guest_user_redirection ) ; } else { echo URL::to( $auth_user_redirection ) ; }  ?>" >
                             <!-- Pop-up Image  -->
                     <img src="<?= $AdminHomePopup ?  URL::to('public/images/'. $AdminHomePopup->popup_image ) : URL::to('public/images/'); ?>" class="w-100"  >
                             
