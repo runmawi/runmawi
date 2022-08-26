@@ -42,6 +42,8 @@ class AdminHomePopupController extends Controller
                'popup_image'   => $filename,
                'popup_content' => strip_tags($request->popup_content),
                'popup_enable'  => !empty($request->popup_enable) ?  "1" : "0" ,
+               'before_login_link'  => $request->before_login_link,
+               'after_login_link'  => $request->after_login_link,
             ]);
          }
          else{
@@ -62,6 +64,8 @@ class AdminHomePopupController extends Controller
                'popup_image'   => $filename,
                'popup_content' => strip_tags($request->popup_content),
                'popup_enable'  => !empty($request->popup_enable) ?  "1" : "0" ,
+               'before_login_link'  => $request->before_login_link,
+               'after_login_link'  => $request->after_login_link,
             ]);
          }
 
