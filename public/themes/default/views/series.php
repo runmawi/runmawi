@@ -289,13 +289,13 @@ $series = $series_data ;
 						?>
 				</div> 
 
-          <div  style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $series->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
+          <!-- <div  style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $series->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;"> -->
 			<div class="col-sm-12">
 					<div id="ppv">
 				<h2 class="text-center" style="margin-top:80px;">Purchase to Watch the Series <?php if($series->access == 'subscriber'): ?>Subscribers<?php elseif($series->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
 				<div class="clear"></div>
 				</div> 
-				</div> 
+				<!-- </div>  -->
 
 
 				<div class="col-md-2 text-center text-white">
