@@ -121,7 +121,7 @@ endif; ?>
                                 </h1>
 
                             <p class="desc" 
-                                style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
+                                style="overflow: hidden !important;text-overflow: ellipsis !important; color:#fff;display: -webkit-box;
                                 -webkit-line-clamp: 3;  -webkit-box-orient: vertical;     overflow: hidden;">
                                 <?php echo __($videos->description); ?>
                             </p>
