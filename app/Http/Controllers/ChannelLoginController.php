@@ -48,6 +48,7 @@ use App\HomeSetting;
 use App\WelcomeScreen;
 use App\SubscriptionPlan;
 use App\Channel;
+use App\VideoCommission;
 use Theme;
 
 class ChannelLoginController extends Controller
@@ -488,6 +489,72 @@ class ChannelLoginController extends Controller
         }
     }
 
+
+    public function Commission(Request $request)
+    {
+        $user = User::where("id", 1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date("Y-m-d");
+        if ($current_date > $duedate) {
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [
+                "userid" => 0,
+            ];
+
+            $headers = [
+                "api-key" => "k3Hy5qr73QhXrmHLXhpEh6CQ",
+            ];
+            $response = $client->request("post", $url, [
+                "json" => $params,
+                "headers" => $headers,
+                "verify" => false,
+            ]);
+
+            $responseBody = json_decode($response->getBody());
+            $settings = Setting::first();
+            $data = [
+                "settings" => $settings,
+                "responseBody" => $responseBody,
+            ];
+            return View::make("admin.expired_dashboard", $data);
+        } else {
+            $commission = VideoCommission::where('type','Channel')->first();
+
+            $data = [
+                "commission" => $commission,
+            ];
+
+            return view("channel.commission", $data);
+
+        }
+    }
+
+    public function AddCommission(Request $request)
+    {
+        $data = $request->all();
+        // echo "<pre>";
+        // print_r($data);exit();
+        $id = $data['id'];
+        if(!empty($id)){
+        $commission = VideoCommission::find($id);
+        // $commission = new VideoCommission();
+        $commission->type = "Channel";
+        $commission->percentage = $data["percentage"];
+        $commission->user_id = Auth::user()->id;
+        $commission->save();
+        }else{
+        $commission = new VideoCommission();
+        $commission->type = "Channel";
+        $commission->percentage = $data["percentage"];
+        $commission->user_id = Auth::user()->id;
+        $commission->save();
+        }
+        return \Redirect::back()->with(
+            "message",
+            "Successfully Updated Percentage!"
+        );
+    }
 
 }
 
