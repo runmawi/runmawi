@@ -263,8 +263,8 @@ input:checked + .sliderk:before {
 }
 
 /* Dark mode and light Mode */
-      body.light-theme {
-	      background-color: <?php echo GetLightBg(); ?>;
+      body .light-theme {
+	      background-color: <?php echo GetLightBg(); ?>!important;
       }
 
       body.light-theme h4, body.light-theme p {
@@ -671,6 +671,8 @@ input:checked + .sliderk:before {
                                        <div class="iq-card-body p-0 pl-3 pr-3">
                                                                           <!-- dark mode -->
                                            <div class="toggle mt-3 text-right">
+                                                       <i class="fas fa-sun"></i>
+
                          <label class="switch toggle mt-3">
   <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
   <span class="sliderk round"></span>
@@ -805,12 +807,15 @@ input:checked + .sliderk:before {
   <input type="checkbox" id="toggle" />
   <label for="toggle"></label>
 </div> -->                                                  <!-- dark mode -->
-                           <div class="toggle mt-3 text-right">
+                           <div class="toggle mt-3 text-left">
+                                      
+   <i class="fas fa-moon"></i>
                               <label class="switch toggle mt-3">
                                  <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?> 
                                  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
                                  <span class="sliderk round"></span>
                               </label>
+                               <i class="fas fa-sun"></i>
                            </div>
                                            </a>
 
