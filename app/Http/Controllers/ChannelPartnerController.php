@@ -8,7 +8,7 @@ use App\HomeSetting;
 use App\ModeratorsUser;
 use Theme;
 
-class ContentPartnerController extends Controller
+class ChannelPartnerController extends Controller
 {
     public function __construct()
     {
@@ -16,15 +16,15 @@ class ContentPartnerController extends Controller
         Theme::uses($this->Theme);
     }
 
-    public function index(Request $request)
+    public function channelparnter(Request $request)
     {
-       $content_partner = array(
-            'ModeratorUsers_list' => ModeratorsUser::where('status',1)->get() ,
+       $channel_partner = array(
+            'channel_partner_list' => ModeratorsUser::where('status',1)->get() ,
        );
-       return Theme::view('ContentPartner.index',$content_partner);
+       return Theme::view('ChannelPartner.Channelpartners',$channel_partner);
     }
 
-    public function contentparnter_details( Request $request,$username )
+    public function unique_channelparnter( Request $request,$username )
     {
         try {
 
