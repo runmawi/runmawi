@@ -899,6 +899,8 @@ Route::get('/CPPSeriesReject/{id}',  'AdminSeriesController@CPPSeriesReject');
 });
 
 Route::get('admin/channel/pendingusers',  'ChannelLoginController@PendingUsers');
+Route::get('admin/channel/view-channel-members',  'ChannelLoginController@ViewChannelMembers');
+
 
 Route::get('admin/ChannelUsersApproval/{id}',  'ChannelLoginController@ChannelUsersApproval');
 Route::get('admin/ChannelUsersReject/{id}',  'ChannelLoginController@ChannelUsersReject');

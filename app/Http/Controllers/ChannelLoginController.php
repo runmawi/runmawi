@@ -449,6 +449,44 @@ class ChannelLoginController extends Controller
         }
     }
 
+    public function ViewChannelMembers()
+    {
+        $user = User::where("id", 1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date("Y-m-d");
+        if ($current_date > $duedate) {
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [
+                "userid" => 0,
+            ];
+
+            $headers = [
+                "api-key" => "k3Hy5qr73QhXrmHLXhpEh6CQ",
+            ];
+            $response = $client->request("post", $url, [
+                "json" => $params,
+                "headers" => $headers,
+                "verify" => false,
+            ]);
+
+            $responseBody = json_decode($response->getBody());
+            $settings = Setting::first();
+            $data = [
+                "settings" => $settings,
+                "responseBody" => $responseBody,
+            ];
+            return View::make("admin.expired_dashboard", $data);
+        } else {
+            $users = Channel::orderBy("created_at", "DESC")
+                ->paginate(9);
+            $data = [
+                "users" => $users,
+            ];
+
+            return View("channel.viewchannelmembers", $data);
+        }
+    }
 
 
 }

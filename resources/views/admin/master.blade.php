@@ -505,6 +505,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="channel" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="{{ URL::to('admin/channel/view-channel-members/') }}"><i class="las la-eye"></i>View Channel Partners </a></li>
                         <li><a href="{{ URL::to('admin/channel/pendingusers/') }}"><i class="las la-eye"></i>Channel Partners For Approval</a></li>
                      </ul>
                   </li>
@@ -793,6 +794,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="channel" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                     <li><a href="{{ URL::to('admin/channel/view-channel-members/') }}"><i class="las la-eye"></i>View Channel Partners </a></li>
                         <li><a href="{{ URL::to('admin/channel/pendingusers/') }}"><i class="las la-eye"></i>Channel Partners For Approval</a></li>
                      </ul>
                   </li>
@@ -1083,6 +1085,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="channel" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                     <li><a href="{{ URL::to('admin/channel/view-channel-members/') }}"><i class="las la-eye"></i>View Channel Partners </a></li>
                         <li><a href="{{ URL::to('admin/channel/pendingusers/') }}"><i class="las la-eye"></i>Channel Partners For Approval</a></li>
                      </ul>
                   </li>
