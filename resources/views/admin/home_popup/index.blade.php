@@ -65,6 +65,19 @@
                                              </div>
                                         </div>
 
+                                                    {{-- Popup before Login & After Login Link --}}
+                                        <div class="row">
+                                            <div class="col-sm-6 form-group" >
+                                                <label class="m-0"> {{ ucwords('Before Login Link') }} :</label>
+                                                <input type="text"  class="form-control" name="before_login_link" id="before_login_link" placeholder="signup" value="{{  $pop_up_content ? $pop_up_content->before_login_link : " " }}">
+                                            </div>
+    
+                                            <div class="col-sm-6 form-group" >
+                                                <label class="m-0"> {{ ucwords('After Login Link') }} :</label>
+                                                <input type="text"  class="form-control" name="after_login_link" id="after_login_link" placeholder="becomesubscriber" value="{{ $pop_up_content ? $pop_up_content->after_login_link : " "}}" >
+                                             </div>
+                                        </div>
+
                                                     {{-- image --}}
                                         <div class="row">
                                             <div class="col-sm-6 form-group" >
