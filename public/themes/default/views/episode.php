@@ -122,7 +122,7 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 
 			<?php else: ?>
 
-                <div id="subscribers_only"style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
+                <div id="subscribers_only"style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 1.3)), url(<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 100vh; margin-top: 20px;display: flex;    justify-content: center;    flex-direction: column;    align-items: center;">
 					<h2>Sorry, this series is only available to <?php if($series->access == 'subscriber'): ?>Subscribers<?php elseif($series->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
 					<div class="clear"></div>
 					<?php if(!Auth::guest() && $series->access == 'subscriber'): ?>
@@ -130,8 +130,8 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 							<button id="button">Become a subscriber to watch this episode</button>
 						</form>
 					<?php else: ?>
-						<form method="get" action="<?= URL::to('signup') ?>">
-							<button id="button">Signup Now <?php if($series->access == 'subscriber'): ?>to Become a Subscriber<?php elseif($series->access == 'registered'): ?>for Free!<?php endif; ?></button>
+						<form method="get" action="<?= URL::to('signup') ?>" class="mt-4">
+							<button id="button" class="btn bd">Signup Now <?php if($series->access == 'subscriber'): ?>to Become a Subscriber<?php elseif($series->access == 'registered'): ?>for Free!<?php endif; ?></button>
 						</form>
 					<?php endif; ?>
 				</div>

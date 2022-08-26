@@ -4879,8 +4879,8 @@ class ModeratorsUserController extends Controller
             ];
             return View::make("admin.expired_dashboard", $data);
         } else {
-            $commission = VideoCommission::first();
-
+            $commission = VideoCommission::where('type', 'CPP')->first();
+            // dd($commission);
             $data = [
                 "commission" => $commission,
             ];
@@ -4891,19 +4891,21 @@ class ModeratorsUserController extends Controller
     public function AddCommission(Request $request)
     {
         $data = $request->all();
-        // echo "<pre>";
-        // print_r($data);exit();
-        $commission = VideoCommission::find(1);
-        // $commission = new VideoCommission();
+        $id = $data['id'];
+        if(!empty($id)){
+        $commission = VideoCommission::find($id);
+        $commission->type = "CPP";
         $commission->percentage = $data["percentage"];
         $commission->user_id = Auth::user()->id;
         $commission->save();
-
-        $commission = VideoCommission::first();
-        $data = [
-            "commission" => $commission,
-        ];
-        return view("moderator.commission", $data)->with(
+        }else{
+        $commission = new VideoCommission();
+        $commission->type = "CPP";
+        $commission->percentage = $data["percentage"];
+        $commission->user_id = Auth::user()->id;
+        $commission->save();
+        }
+        return  \Redirect::back()->with(
             "message",
             "Successfully Updated Percentage!"
         );
