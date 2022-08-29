@@ -15,7 +15,7 @@
                 <div class="block-images position-relative">
                     <div class="img-box">
                         <a href="<?php echo URL::to('artist') ?><?= '/' . $artist_details->artist_slug ?>">
-                             <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$artist_details->image;  ?>" class="img-fluid" alt="">
+                             <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$artist_details->image;  ?>" class="img-fluid w-100" alt="">
                         </a>
                     </div>
                 </div>

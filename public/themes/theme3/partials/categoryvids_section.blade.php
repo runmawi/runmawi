@@ -112,8 +112,8 @@
                     </li>
                 @endforeach
             @elseif(count($categoryVideos['Episode_videos']) == 0 && count($categoryVideos['categoryVideos']) == 0)
-                <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:cover;height: 500px!important;">
-                    <p><h2 style="position: absolute;top: 50%;left: 50%;color: white;">No video Available</h2>
+                <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
+                    <h2 class="text-center" style="color: white;">No video Available</h2>
                 </div>
             @endif
 

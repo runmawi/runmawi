@@ -169,16 +169,16 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 <input type="hidden" class="seriescategoryid" data-seriescategoryid="<?= $episode->genre_id ?>" value="<?= $episode->genre_id ?>">
 <br>
 
-	<div class="container series-details">
+	<div class="container-fluid series-details">
 	<div id="series_title">
-		<div class="container">
+		<div class="">
             <div class="row align-items-center">
 			<?php if($free_episode > 0 ||  $ppv_exits > 0 || Auth::user()->role == 'admin' ||  Auth::guest()){ 
 			}else{ ?>
 			<div class="col-md-6">
 			<span class="text-white" style="font-size: 129%;font-weight: 700;">Purchase to Watch the Series:</span>
 			<?php if($series->access == 'subscriber'): ?>Subscribers<?php elseif($series->access == 'registered'): ?>Registered Users<?php endif; ?>
-			</p>
+			
 		
 	</div>
 	<div class="col-md-6">
@@ -189,10 +189,8 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 			Purchase For <?php echo $currency->symbol.' '.$season[0]->ppv_price; ?></button>
 	</div>
 	<?php	} } ?>
-	<br>
-	<br>
-	<br>
-                <div class="col-md-5">
+	
+                <div class="col-md-5 p-0">
 			<span class="text-white" style="font-size: 129%;font-weight: 700;">You're watching:</span>
 			<p style=";font-size: 130%;color: white;">
 			<?php 
@@ -243,10 +241,10 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 			$embed_media_url = URL::to('/episode/embed').'/'.$series->title.'/'.$episode->slug;
 			$url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowfullscreen></iframe>';
 		?>
-			<div class="col-md-5">
+			<div class="col-md-5 p-0">
 		  		<ul class="list-inline p-0 mt-4 share-icons music-play-lists">
 
-				 	 <li>
+				 	<!-- <li>
 						<?php if($episode_watchlater == null){ ?>
 							<span id="<?php echo 'episode_add_watchlist_'.$episode->id ; ?>" class="slider_add_watchlist"  aria-hidden="true" data-list="<?php echo $episode->id ; ?>" data-myval="10" data-video-id="<?php echo $episode->id ; ?>" onclick="episodewatchlater(this)" > <i class="fa fa-plus-circle" aria-hidden="true"></i>  </span>
 						<?php }else{?>
@@ -260,7 +258,8 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 						<?php }else{?>
 							<span id="<?php echo 'episode_add_wishlist_'.$episode->id ; ?>" class="episode_add_wishlist_"  aria-hidden="true" data-list="<?php echo $episode->id ; ?>" data-myval="10"  data-video-id="<?php echo $episode->id ; ?>"  onclick="episodewishlist(this)"> <i class="fa  fa-heart" aria-hidden="true"></i></span>
 						<?php } ?>
-					</li>
+					</li>-->
+                    <li>
 					<?php if(empty($like_dislike->liked) ||  !empty($like_dislike->liked) && $like_dislike->liked == 0){ ?>
 							<span id="<?php echo 'episode_like_'.$episode->id ; ?>" class="episode_like_"  aria-hidden="true" data-list="<?php echo $episode->id ; ?>" data-myval="10" data-video-id="<?php echo $episode->id ; ?>" onclick="episodelike(this)" ><i class="ri-thumb-up-line" aria-hidden="true"></i>   </span>
 						<?php }else{?>
