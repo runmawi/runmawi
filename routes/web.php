@@ -549,6 +549,16 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/footer_update', 'AdminSettingsController@footer_update'); 
 
 
+    // Mobile Side Link
+    Route::get('/mobile/side_menu', 'AdminMobileSideMenu@Side_link')->name('Side_link'); 
+    Route::post('/mobile/side_link_store', 'AdminMobileSideMenu@Side_link_store'); 
+    Route::post('/mobile/side_order_update', 'AdminMobileSideMenu@Side_order_update'); 
+    Route::get('/mobile/side_delete/{id}', 'AdminMobileSideMenu@Side_delete'); 
+    Route::get('/mobile/side_menu_edit/{id}', 'AdminMobileSideMenu@Side_edit'); 
+    Route::post('/mobile/side_update', 'AdminMobileSideMenu@Side_update'); 
+    
+    
+
     //Select video delete
     Route::get('/VideoBulk_delete', 'AdminVideosController@VideoBulk_delete')->name('VideoBulk_delete'); 
 
