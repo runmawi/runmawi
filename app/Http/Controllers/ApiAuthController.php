@@ -101,6 +101,8 @@ use App\SiteTheme;
 use App\PlayerAnalytic;
 use App\SystemSetting;
 use App\CurrencySetting;
+use App\MobileSideMenu;
+
 
 class ApiAuthController extends Controller
 {
@@ -3221,8 +3223,15 @@ public function checkEmailExists(Request $request)
          $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
          return $item;
        });
-      //  print_r($episode);exit;
-       
+       if(count($episode) > 0){
+       $series_id =  $episode[0]->series_id;
+       $season_id = $episode[0]->season_id;
+
+       $Season = SeriesSeason::where('series_id',$series_id)->where('id',$season_id)->first();
+       }else{
+        $Season = '';
+       }
+      //  print_r($Season->id);exit;
       if($request->user_id != ''){
         $user_id = $request->user_id;
         $cnt = Wishlist::select('episode_id')->where('user_id','=',$user_id)->where('episode_id','=',$request->episodeid)->count();
@@ -3334,6 +3343,7 @@ public function checkEmailExists(Request $request)
         'status'=>'true',
         'message'=>'success',
         'episode' => $episode,
+        'season' => $Season,
         'ppv_video_status' => $ppv_video_status,
         'wishlist' => $wishliststatus,
         'watchlater' => $watchlaterstatus,
@@ -7636,4 +7646,39 @@ public function Adstatus_upate(Request $request)
 
     return response()->json($response, 200);
   }
+
+  public function MobileSideMenu()
+  {
+    
+    $response = array(
+      'status' => 'true',
+      'MobileSideMenu' => MobileSideMenu::orderBy('order')->get() ,
+    );
+
+    return response()->json($response, 200);
+  }
+
+
+  public function Series_SeasonsEpisodes(Request $request)
+  {
+
+    
+    $series_id = $request->series_id;
+    $season_id = $request->season_id;
+
+    $episodes = Episode::where('series_id',$series_id)->where('season_id',$season_id)
+    ->orderBy('episode_order')->get()->map(function ($item) {
+      $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
+      $item['episode_order'] = 'Episode '.$item->episode_order;
+      return $item;
+    });
+    $response = array(
+      'status' => 'true',
+      'episodes' => $episodes,
+    );
+
+    return response()->json($response, 200);
+  }
+
+
 }

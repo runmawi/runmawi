@@ -38,6 +38,8 @@ use App\LiveStream;
 use Theme;
 use Laravel\Cashier\Cashier;
 use App\SiteTheme;
+use App\Channel;
+
 
 class PaymentController extends Controller
 {
@@ -388,21 +390,42 @@ public function RentPaypal(Request $request)
     // $video_id = $request->get('video_id');
     // print_r($video_id);exit();
     $video = Video::where('id','=',$video_id)->where('uploaded_by','CPP')->first();
+
+    $channelvideo = Video::where('id','=',$video_id)->where('Channel','CPP')->first();
+
     if(!empty($video)){
       $moderators_id = $video->user_id;
      }
+
     if(!empty($moderators_id)){
       $moderator = ModeratorsUser::where('id','=',$moderators_id)->first();  
       $total_amount = $video->ppv_price;
       $title =  $video->title;
-      $commssion = VideoCommission::first();
+      // $commssion = VideoCommission::first();
+      $commission = VideoCommission::where('type', 'CPP')->first();
       $percentage = $commssion->percentage; 
       $ppv_price = $video->ppv_price;
       // $admin_commssion = ($percentage/100) * $ppv_price ;
       $moderator_commssion = $ppv_price - $percentage;
       $admin_commssion =  $ppv_price - $moderator_commssion;
       $moderator_id = $moderators_id;
-    }else{
+    }elseif(!empty($channelvideo)){
+      if(!empty($channelvideo)){
+        $channelvideo_id = $video->user_id;
+       }
+       $Channel = Channel::where('id','=',$channelvideo_id)->first();  
+       $total_amount = $video->ppv_price;
+       $title =  $video->title;
+       $commssion = VideoCommission::where('type','Channel')->first();;
+       $percentage = $commssion->percentage; 
+       $ppv_price = $video->ppv_price;
+       // $admin_commssion = ($percentage/100) * $ppv_price ;
+       $moderator_commssion = $ppv_price - $percentage;
+       $admin_commssion =  $ppv_price - $moderator_commssion;
+       $channel_id = $channelvideo_id;
+
+    }
+    else{
       $total_amount = $video->ppv_price;
       $title =  $video->title;
       $commssion = VideoCommission::first();
