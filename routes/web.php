@@ -777,6 +777,12 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
 
     // Route::get('/execute-shell', 'HomeController@ExecuteShell');
 
+    // Channel Payouts 
+
+    Route::get('/channel/payouts', 'ChannelPayoutController@Payouts'); 
+    Route::get('/channel/edit_payouts/{id}', 'ChannelPayoutController@EditPayouts'); 
+    Route::get('/channel/view_payouts/{id}', 'ChannelPayoutController@ViewPayouts'); 
+    Route::post('/channel/update_payouts', 'ChannelPayoutController@UpdatePayouts');
 
 
 
@@ -1783,6 +1789,10 @@ Route::POST('/RazorpayLiveRent_Payment', 'RazorpayController@RazorpayLiveRent_Pa
 Route::POST('/RazorpayModeratorPayouts', 'RazorpayController@RazorpayModeratorPayouts')->name('RazorpayModeratorPayouts');
 Route::POST('/RazorpayModeratorPayouts_Payment', 'RazorpayController@RazorpayModeratorPayouts_Payment')->name('RazorpayModeratorPayouts_Payment');
 
+
+
+Route::POST('/RazorpayChannelPayouts', 'RazorpayController@RazorpayChannelPayouts')->name('RazorpayChannelPayouts');
+Route::POST('/RazorpayChannelPayouts_Payment', 'RazorpayController@RazorpayChannelPayouts_Payment')->name('RazorpayChannelPayouts_Payment');
 
 });
 

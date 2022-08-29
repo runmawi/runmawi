@@ -30,6 +30,10 @@ use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
 use AmrShawky\LaravelCurrency\Facade\Currency as PaymentCurreny;
 use App\ModeratorPayout;
+use App\ChannelPayout;
+use App\Channel;
+
+
 
 
 class RazorpayController extends Controller
@@ -622,5 +626,125 @@ dd($carbon);
             return view('Razorpay.Payout_message',compact('respond'),$respond);
         }
     }
+
+
+    
+    public function RazorpayChannelPayouts(Request $request){
+
+        $data = $request->all();
+        // dd($data);
+        $recept_id = Str::random(10);
+        $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
+
+        $orderData = [
+            'receipt'         => $recept_id,
+            'amount'          => $request->commission_paid * 100, 
+            'currency'        => 'INR',
+            'payment_capture' => 1 ,
+        ];
+        
+        $razorpayOrder = $api->order->create($orderData);
+
+        if(!empty($data['id'])){
+        $user = Channel::where('id',$data['id'])->first();
+        $name  = $user->channel_name ;
+        }
+        $response=array(
+            'razorpaykeyId'  =>   $this->razorpaykeyId,
+            'name'           =>   $name,
+            'currency'       =>  'INR',
+            'amount'         =>  $request->commission_paid * 100 ,
+            'orderId'        =>  $razorpayOrder['id'],
+            'user_id'        =>  $data['id'] ? $data['id'] : null ,
+            'phone_number'   =>  $user['upi_mobile_number'] ? $user['upi_mobile_number'] : null ,
+            'upi_id'         =>  $user['upi_id'] ? $user['upi_id'] : null ,
+            'email'          =>  $user['email'] ? $user['email'] : null ,
+            'user'           =>  $user ? $user : null ,
+            'name'           =>  $user['username'] ? $user['username'] : null ,
+            'description'    =>   null,
+            'address'        =>   null ,
+            'commission'     =>  $data['commission'] ? $data['commission'] : null ,
+            'payment_type'     =>  $data['payment_type'] ? $data['payment_type'] : null ,
+
+
+        );
+
+        return view('Razorpay.channel_payouts',compact('response'),$response);
+
+    }
+
+    public function RazorpayChannelPayouts_Payment(Request $request)
+    {
+        $data = $request->all();
+
+
+       $setting = Setting::first();  
+
+        try {
+            $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
+            
+            $attributes  = array(
+                'razorpay_signature'   => $request->rzp_signature,  
+                'razorpay_payment_id'  => $request->rzp_paymentid ,  
+                'razorpay_order_id'    => $request->rzp_orderid
+            );
+            $order  = $api->utility->verifyPaymentSignature($attributes);
+
+            $commission_paid = $data['amount']/100;
+
+            $last_paid_amount = ChannelPayout::where('user_id',$data['user_id'])->get([
+                DB::raw(
+                    "sum(channel_payouts.commission_paid) as commission_paid"
+                ) 
+            ]);
+            if(count($last_paid_amount) > 0){ $last_paid = intval($last_paid_amount[0]->commission_paid) ; }else{ $last_paid = 0; }
+
+        if (
+            !empty($data["payment_type"]) &&
+            $data["payment_type"] == "Partial_amount"
+        ) {
+
+            if ( $data["commission"] != $commission_paid) {
+
+                $paid_amount =   $data["commission"] - $commission_paid - $last_paid ;
+            } else {
+                $paid_amount = $commission_paid;
+            }
+        } elseif (
+            !empty($data["payment_type"]) &&
+            $data["payment_type"] == "full_amount"
+        ) {
+            if ($commission_paid == $data["commission"]) {
+                $paid_amount = $commission_paid;
+            } else {
+                $paid_amount =  $data["commission"] - $commission_paid - $last_paid;
+            }
+        }
+
+            // dd($paid_amount);
+
+            $respond=array(
+                'status'  => 'true',
+            );
+        
+            $ChannelPayout = new ChannelPayout();
+            $ChannelPayout->user_id = $data["user_id"];
+            $ChannelPayout->commission_paid = $commission_paid;
+            $ChannelPayout->commission_pending = $paid_amount;
+            $ChannelPayout->payment_type = $data["payment_type"];
+            $ChannelPayout->save();
+
+            return view('Razorpay.Channel_Payout_message',compact('respond'),$respond);
+
+        } catch (\Exception $e) {
+
+            $respond=array(
+                'status'  => 'false',
+            );
+
+            return view('Razorpay.Channel_Payout_message',compact('respond'),$respond);
+        }
+    }
+
 
 }

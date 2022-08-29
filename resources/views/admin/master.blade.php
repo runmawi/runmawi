@@ -508,6 +508,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <li><a href="{{ URL::to('admin/channel/view-channel-members/') }}"><i class="las la-eye"></i>View Channel Partners </a></li>
                         <li><a href="{{ URL::to('admin/channel/pendingusers/') }}"><i class="las la-eye"></i>Channel Partners For Approval</a></li>
                         <li><a href="{{ URL::to('admin/channel/commission') }}"><i class="las la-eye"></i>Commission </a></li>
+                        <li><a href="{{ URL::to('admin/channel/payouts') }}"><i class="las la-eye"></i>Channel Partners Payout</a></li>
                      </ul>
                   </li>
                   <li>
@@ -798,6 +799,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      <li><a href="{{ URL::to('admin/channel/view-channel-members/') }}"><i class="las la-eye"></i>View Channel Partners </a></li>
                         <li><a href="{{ URL::to('admin/channel/pendingusers/') }}"><i class="las la-eye"></i>Channel Partners For Approval</a></li>
                         <li><a href="{{ URL::to('admin/channel/commission') }}"><i class="las la-eye"></i>Commission </a></li>
+                        <li><a href="{{ URL::to('admin/channel/payouts') }}"><i class="las la-eye"></i>Channel Partners Payout</a></li>
                      </ul>
                   </li>
                   <li>
@@ -1090,6 +1092,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      <li><a href="{{ URL::to('admin/channel/view-channel-members/') }}"><i class="las la-eye"></i>View Channel Partners </a></li>
                         <li><a href="{{ URL::to('admin/channel/pendingusers/') }}"><i class="las la-eye"></i>Channel Partners For Approval</a></li>
                         <li><a href="{{ URL::to('admin/channel/commission') }}"><i class="las la-eye"></i>Commission </a></li>
+                        <li><a href="{{ URL::to('admin/channel/payouts') }}"><i class="las la-eye"></i>Channel Partners Payout</a></li>
                      </ul>
                   </li>
                   <li>
