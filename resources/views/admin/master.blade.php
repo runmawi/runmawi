@@ -507,6 +507,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      <ul id="channel" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/channel/view-channel-members/') }}"><i class="las la-eye"></i>View Channel Partners </a></li>
                         <li><a href="{{ URL::to('admin/channel/pendingusers/') }}"><i class="las la-eye"></i>Channel Partners For Approval</a></li>
+                        <li><a href="{{ URL::to('admin/channel/commission') }}"><i class="las la-eye"></i>Commission </a></li>
                      </ul>
                   </li>
                   <li>
@@ -796,6 +797,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      <ul id="channel" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                      <li><a href="{{ URL::to('admin/channel/view-channel-members/') }}"><i class="las la-eye"></i>View Channel Partners </a></li>
                         <li><a href="{{ URL::to('admin/channel/pendingusers/') }}"><i class="las la-eye"></i>Channel Partners For Approval</a></li>
+                        <li><a href="{{ URL::to('admin/channel/commission') }}"><i class="las la-eye"></i>Commission </a></li>
                      </ul>
                   </li>
                   <li>
@@ -1087,6 +1089,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      <ul id="channel" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                      <li><a href="{{ URL::to('admin/channel/view-channel-members/') }}"><i class="las la-eye"></i>View Channel Partners </a></li>
                         <li><a href="{{ URL::to('admin/channel/pendingusers/') }}"><i class="las la-eye"></i>Channel Partners For Approval</a></li>
+                        <li><a href="{{ URL::to('admin/channel/commission') }}"><i class="las la-eye"></i>Commission </a></li>
                      </ul>
                   </li>
                   <li>
