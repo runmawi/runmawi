@@ -450,7 +450,7 @@ input:checked + .sliderk:before {
 #menu
 {
   position: absolute;
-  width: 250px;
+  width: 300px;
   margin: -100px 0 0 -50px;
   padding: 20px;
   padding-top: 125px;

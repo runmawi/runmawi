@@ -128,7 +128,7 @@ border-radius: 20px;
 
 // $ppv_video = \DB::table('ppv_purchases')->where('user_id',Auth::user()->id)->get();
 // exit();
-// echo "<pre>";
+// echo "<pre>"
 // print_r($ppv_video_play); exit();
 // dd($recomended);
 
@@ -627,7 +627,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 
 
  <input type="hidden" class="videocategoryid" data-videocategoryid="<?= $video->video_category_id ?>" value="<?= $video->video_category_id ?>">
-   <div class="container-fluid video-details" style="width:90%!important;">
+   <div class="container-fluid video-details" style="">
        <div class="trending-info g-border p-0">
            <div class="row">
                <div class="col-sm-9 col-md-9 col-xs-12">
@@ -692,7 +692,15 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                     </div>
                 </div>
 
-              <div class="col-sm-12 mt-4 p-0" style="margin-top: 2%;">
+              <div class="col-sm-12 mt-4 p-0" style="">
+                  <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
+                    <li><span class="watchlater <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if(isset($watchlatered->id)): ?> class="ri-add-circle-fill" <?php else: ?> class="ri-add-circle-line" <?php endif; ?>></i></span></li>
+                     <!-- Wishlist 
+                    <li><span class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line" <?php endif; ?> ></i></span></li>
+                     <!-- Social Share, Like Dislike-->
+                      <?php include('partials/social-share.php'); ?>   
+                                           
+                 </ul>
                  <?php if(!empty($video->description) ) { ?>
 
                     <h5>Description:</h5>
@@ -700,6 +708,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                         <p class="trending-dec w-100 mb-0 text-white mt-3"><?php echo __($video->description); ?></p>
                     </div>
                     <?php  }?>
+                  
               </div>
 
 
@@ -713,14 +722,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                        </div>
              </div>
              <div class="col-sm-5 col-md-5 col-xs-12 text-right mt-4">
-                 <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
-                    <li><span class="watchlater <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if(isset($watchlatered->id)): ?> class="ri-add-circle-fill" <?php else: ?> class="ri-add-circle-line" <?php endif; ?>></i></span></li>
-                     <!-- Wishlist 
-                    <li><span class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line" <?php endif; ?> ></i></span></li>
-                     <!-- Social Share, Like Dislike-->
-                      <?php include('partials/social-share.php'); ?>   
-                                           
-                 </ul>
+                 
                  <div class="row justify-content-end">
            <div class="col-sm-8 col-md-8 col-xs-4 text-right p-0">
                    <div class=" d-flex justify-content-end">     
@@ -994,7 +996,7 @@ $artists = [];
 <?php } ?>
 
 
-   <div class="video-list you-may-like container-fluid">
+   <div class="video-list you-may-like container-fluid overflow-hidden">
        <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Recomended Videos');?></h4>
            <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>   
                <?php include('partials/video-loop.php');?>
