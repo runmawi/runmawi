@@ -121,7 +121,7 @@ input[type="number"] {
          </div>
     </div>
 @stop
-<input type="hidden" id="url" name="url" value="{{ URL::to('cpp/Allregionvideos') }}">
+<input type="hidden" id="url" name="url" value="{{ URL::to('channel/Allregionvideos') }}">
 <script>
 
 
@@ -191,7 +191,7 @@ $.ajaxSetup({
    } else {
 
     $.ajax({
-   url:"{{ URL::to('cpp/regionvideos') }}",
+   url:"{{ URL::to('channel/regionvideos') }}",
    method:'get',
    data:{query:country},
    dataType:'json',
@@ -254,7 +254,7 @@ $.ajaxSetup({
 //    alert(country);
    if(country == 'allcountry'){
 	$.ajax({
-   url:"{{ URL::to('cpp/Allregionvideos') }}",
+   url:"{{ URL::to('channel/Allregionvideos') }}",
    method:'get',
    data:{query:country},
    dataType:'json',

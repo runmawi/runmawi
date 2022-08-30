@@ -1126,12 +1126,18 @@ Route::post('/audios/audioupdate', array('before' => 'demo', 'uses' => 'CPPAdmin
     Route::post('video_exportCsv', 'ChannelAnalyticsController@VideoExportCsv');
 
 
+    Route::get('payouts', 'ChannelAnalyticsController@UserPayouts');
+    Route::post('payouts_startdate_analytics', 'ChannelAnalyticsController@PayoutsStartDateAnalytics');
+    Route::post('payouts_enddate_analytics', 'ChannelAnalyticsController@PayoutsEndDateAnalytics');
+    Route::post('payouts_exportCsv', 'ChannelAnalyticsController@PayoutsExportCsv');
+
+
     Route::get('myprofile', 'ModeratorsUserController@ChannelMyProfile');
     Route::post('update-myprofile', 'ModeratorsUserController@ChannelUpdateMyProfile');
 
-    Route::get('/view_by_region', 'ModeratorsUserController@ChannelViewsRegion');
-    Route::get('/regionvideos', 'ModeratorsUserController@ChannelRegionVideos');
-    Route::get('/Allregionvideos', 'ModeratorsUserController@ChannelAllRegionVideos');
+    Route::get('/view_by_region', 'ChannelAnalyticsController@ChannelViewsRegion');
+    Route::get('/regionvideos', 'ChannelAnalyticsController@ChannelRegionVideos');
+    Route::get('/Allregionvideos', 'ChannelAnalyticsController@ChannelAllRegionVideos');
 
     Route::get('/dashboard', 'ChannelLoginController@IndexDashboard');
     Route::get('/logout', 'ChannelLoginController@logout');
