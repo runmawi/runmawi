@@ -599,10 +599,28 @@ i.fa.fa-google-plus {
 
                 <div class="bg-white mt-4 dgk">
                      <h4> Due today: <span class='plan_price'> {{ $SubscriptionPlan ? '$'.$SubscriptionPlan->price : '$0:0' }} </span> </h4>
+                     
+                    @if( get_coupon_code() == 1)
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <div>
+                                <p> Amount Deducted for Promotion Code   </p>
+                                <p> The Payment Amount  </p>
+                            </div>
+
+                            <div>
+                                <p id="promo_code_amt" > {{  '$0'  }} </p>
+                                <p id="coupon_amt_deduction"> {{ $SubscriptionPlan ? '$'.$SubscriptionPlan->price : '$0:0'  }} </p>
+                            </div>
+                        </div>
+                    @endif
+
                      <hr/>
                      {{-- <h6 class="text-black text-center font-weight-bold">You will be charged $56.99 for an annual membership on 05/18/2022. Cancel anytime.</h6> --}}
                     <p class="text-center mt-3">All state sales taxes apply</p>
                 </div>
+
+               
+
 
                  <p class="text-white mt-3 dp">
                          {{ $signup_payment_content ? $signup_payment_content : " " }}
@@ -828,6 +846,7 @@ i.fa.fa-google-plus {
     $("#couple_apply").click(function(){
 
         var coupon_code = $("#coupon_code_stripe").val();
+        var plan_price  =  $(".plan_price").text();
 
         $.ajax({
             url: "{{ route('retrieve_stripe_coupon') }}",
@@ -835,12 +854,16 @@ i.fa.fa-google-plus {
             data: {
                     _token: '{{ csrf_token() }}',
                     coupon_code : coupon_code ,
+                    plan_price  : plan_price ,
                 },       
+                
                 success: function(data){
                     console.log(data.message);
                     $("#coupon_message").text(data.message);
                     $("#coupon_message").css('color', data.color );
-                    
+                    $("#coupon_amt_deduction").text(data.discount_amt);
+                    $("#promo_code_amt").text(data.promo_code_amt);
+
                     if(data.status == 'true'){
                         var final_coupon_code = $('#coupon_code_stripe').val();
                         $('#final_coupon_code_stripe').replaceWith('<input type="hidden" name="final_coupon_code_stripe" id="final_coupon_code_stripe" value="'+ final_coupon_code +'">');
