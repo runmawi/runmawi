@@ -267,7 +267,7 @@ Waves Effect
 .iq-sidebar-menu .iq-menu { margin: 0; padding: 0; list-style-type: none; }
 .iq-sidebar-menu .iq-menu li { list-style-type: none; position: relative; white-space: nowrap; }
 .iq-sidebar-menu .iq-menu li li { margin: 0; background: transparent !important; }
-.iq-sidebar-menu .iq-menu li a { font-size: 16px; white-space: nowrap; display: block; color: /*var(--iq-body-text)*/#000000; position: relative; padding: 15px 20px 10px 35px; line-height: 24px; display: -webkit-box; display: -ms-flexbox; display: flex; -webkit-box-align: center; -ms-flex-align: center; align-items: center; overflow: hidden; border-radius: 0px; text-transform: capitalize;font-weight: 400; }
+.iq-sidebar-menu .iq-menu li a { font-size: 16px; white-space: nowrap; display: block; color: /*var(--iq-body-text)*/#000000; position: relative; padding: 15px 20px 10px 35px; line-height: 24px; display: -webkit-box; display: -ms-flexbox; display: flex; -webkit-box-align: center; -ms-flex-align: center; align-items: center; overflow: hidden; border-radius: 0px; text-transform: capitalize;font-weight: 400;padding: 5px 12px 6px 25px; }
 .iq-sidebar-menu .iq-menu li li a { font-size: 14px;height: 40px; }
 .iq-sidebar-menu .iq-menu li a i { font-size: 20px; margin-right: 10px; vertical-align: middle; width: 20px; display: inline-block; float: left; }
 .iq-sidebar-menu .iq-menu li ul li a:hover{
@@ -303,10 +303,10 @@ height: 45px;
     font-family: 'Inter', sans-serif;
     font-style: normal;
 font-weight: 600;
-font-size: 18px;
+font-size: 16px;
 line-height: 30px;
-padding-left: 30px;
-height: 35px;
+padding-left: 28px;
+height: 10px;
 margin-top: 30px;
     color: #161616;
 
@@ -321,8 +321,8 @@ margin-top: 30px;
 }
 .iq-sidebar-menu .iq-menu li a span { white-space: nowrap; padding: 0; display: inline-block; float: left; -webkit-transition: all 0.3s ease-out 0s; -moz-transition: all 0.3s ease-out 0s; -ms-transition: all 0.3s ease-out 0s; -o-transition: all 0.3s ease-out 0s; transition: all 0.3s ease-out 0s; transition: none; font-style: normal;
 font-weight: 500!important;
-font-size: 16px;
-line-height: 24px;padding-left: 15px;
+font-size: 14px;
+line-height: 15px;padding-left: 10px;
     
 
 color: #303030;}

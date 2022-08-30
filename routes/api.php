@@ -322,4 +322,8 @@ Route::group([
 
     Route::get('Currency_setting', 'ApiAuthController@Currency_setting');
 
+    Route::get('mobile_side_menu', 'ApiAuthController@MobileSideMenu');
+
+    Route::post('series_season_episodes', 'ApiAuthController@Series_SeasonsEpisodes');
+
 });

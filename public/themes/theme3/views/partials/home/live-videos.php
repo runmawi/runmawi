@@ -19,7 +19,7 @@
                         <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
                             <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$video->image;  ?>" class="img-fluid w-100" alt="" />
                         </a>
-                        
+                         
                       <!-- PPV price -->
                        
                         <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  
@@ -32,8 +32,8 @@
                            
                          <?php } ?>   
                        
-                </div>
-                <div class="block-description" style="top: 40px !important;"></div>
+                    </div></div>
+                <div class="block-description" >
                
                 <div class="hover-buttons">
                     <div class="d-flex align-items-center justify-content-between">
@@ -106,14 +106,15 @@
                     </span>
                     <?php } ?>
                     
-                    <div class="hover-buttons">
-                        <a class="text-white d-flex align-items-center" href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
+                   
+                </div>
+                </div>
+                 <div class="hover-buttons mt-2">
+                       <a class="text-white d-flex align-items-center" href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
                             <img class="ply mr-2" style="width: 13%; height: 13%;" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" />
                                 Live Now
                         </a>
-                    </div>
-                </div>
-                </div>
+                    </div>    
             </a>
         </li>
 

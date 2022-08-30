@@ -39,7 +39,7 @@
                         @endif
 					<div class="iq-card-body">
 						<h5></h5>
-						<form method="POST" action="{{ URL::to('admin/add/commission') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
+						<form method="POST" action="{{ URL::to('admin/channel/add/commission') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
 
 							<div class="row mt-12 align-items-center">
 								<div class="col-md-6 p-0">

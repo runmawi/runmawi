@@ -549,6 +549,16 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/footer_update', 'AdminSettingsController@footer_update'); 
 
 
+    // Mobile Side Link
+    Route::get('/mobile/side_menu', 'AdminMobileSideMenu@Side_link')->name('Side_link'); 
+    Route::post('/mobile/side_link_store', 'AdminMobileSideMenu@Side_link_store'); 
+    Route::post('/mobile/side_order_update', 'AdminMobileSideMenu@Side_order_update'); 
+    Route::get('/mobile/side_delete/{id}', 'AdminMobileSideMenu@Side_delete'); 
+    Route::get('/mobile/side_menu_edit/{id}', 'AdminMobileSideMenu@Side_edit'); 
+    Route::post('/mobile/side_update', 'AdminMobileSideMenu@Side_update'); 
+    
+    
+
     //Select video delete
     Route::get('/VideoBulk_delete', 'AdminVideosController@VideoBulk_delete')->name('VideoBulk_delete'); 
 
@@ -767,6 +777,12 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
 
     // Route::get('/execute-shell', 'HomeController@ExecuteShell');
 
+    // Channel Payouts 
+
+    Route::get('/channel/payouts', 'ChannelPayoutController@Payouts'); 
+    Route::get('/channel/edit_payouts/{id}', 'ChannelPayoutController@EditPayouts'); 
+    Route::get('/channel/view_payouts/{id}', 'ChannelPayoutController@ViewPayouts'); 
+    Route::post('/channel/update_payouts', 'ChannelPayoutController@UpdatePayouts');
 
 
 
@@ -899,7 +915,8 @@ Route::get('/CPPSeriesReject/{id}',  'AdminSeriesController@CPPSeriesReject');
 
 Route::get('admin/channel/pendingusers',  'ChannelLoginController@PendingUsers');
 Route::get('admin/channel/view-channel-members',  'ChannelLoginController@ViewChannelMembers');
-
+Route::get('admin/channel/commission', 'ChannelLoginController@Commission');
+Route::post('admin/channel/add/commission', 'ChannelLoginController@AddCommission');
 
 Route::get('admin/ChannelUsersApproval/{id}',  'ChannelLoginController@ChannelUsersApproval');
 Route::get('admin/ChannelUsersReject/{id}',  'ChannelLoginController@ChannelUsersReject');
@@ -1772,6 +1789,10 @@ Route::POST('/RazorpayLiveRent_Payment', 'RazorpayController@RazorpayLiveRent_Pa
 Route::POST('/RazorpayModeratorPayouts', 'RazorpayController@RazorpayModeratorPayouts')->name('RazorpayModeratorPayouts');
 Route::POST('/RazorpayModeratorPayouts_Payment', 'RazorpayController@RazorpayModeratorPayouts_Payment')->name('RazorpayModeratorPayouts_Payment');
 
+
+
+Route::POST('/RazorpayChannelPayouts', 'RazorpayController@RazorpayChannelPayouts')->name('RazorpayChannelPayouts');
+Route::POST('/RazorpayChannelPayouts_Payment', 'RazorpayController@RazorpayChannelPayouts_Payment')->name('RazorpayChannelPayouts_Payment');
 
 });
 

@@ -67,7 +67,7 @@ $series = $series_data ;
 		<?php if( $ppv_exits > 0 || $series->access == 'guest' && $series->ppv_status != 1 || ( ($series->access == 'subscriber' && $series->ppv_status != 1 || $series->access == 'registered' && $series->ppv_status != 1 ) 
 		&& !Auth::guest() && Auth::user()->subscribed()) && $series->ppv_status != 1 || (!Auth::guest() && (Auth::user()->role == 'demo' && $series->ppv_status != 1 || 
 	 	Auth::user()->role == 'admin') ) || (!Auth::guest() && $series->access == 'registered' && 
-		$settings->free_registration && Auth::user()->role != 'registered' && $series->ppv_status != 1) ): ?>
+		$settings->free_registration && Auth::user()->role != 'registered' && $series->ppv_status != 1) ):  ?>
 		<div class="col-md-7 p-0">
 			<div id="series_title">
 				<div class="container">
@@ -283,22 +283,26 @@ $series = $series_data ;
 						                      endforeach; ?>
                         </ul>
                      </div>
-			<?php 
+			<?php elseif( Auth::guest() && $series->access == "subscriber"):
 						
 					// }
-						?><!--style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $series->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;"-->
-			<div >
+						?>
+				</div> 
+
+          <!-- <div  style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $series->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;"> -->
+			<div class="col-sm-12">
 					<div id="ppv">
-				<!-- <h2>Purchase to Watch the Series <?php if($series->access == 'subscriber'): ?>Subscribers<?php elseif($series->access == 'registered'): ?>Registered Users<?php endif; ?></h2> -->
-				<!-- <div class="clear"></div> -->
-				<!-- </div> --> 
+				<h2 class="text-center" style="margin-top:80px;">Purchase to Watch the Series <?php if($series->access == 'subscriber'): ?>Subscribers<?php elseif($series->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
+				<div class="clear"></div>
+				</div> 
+				<!-- </div>  -->
 
-				<!-- <div class="col-md-2 text-center text-white">
-                <div class="col-md-4"> -->
+
+				<div class="col-md-2 text-center text-white">
+                <div class="col-md-4">
 			<?php if ( $series->ppv_status == 1 && Auth::User()->role !="admin") { ?>
-			<!-- <button class="btn btn-primary" onclick="pay(<?php echo $settings->ppv_price; ?>)" >
-			Purchase For <?php echo $currency->symbol.' '.$settings->ppv_price; ?></button> -->
-
+			<button class="btn btn-primary" onclick="pay(<?php echo $settings->ppv_price; ?>)" >
+			Purchase For <?php echo $currency->symbol.' '.$settings->ppv_price; ?></button>
 			<?php } ?>
             <br>
 			<!-- </div> -->

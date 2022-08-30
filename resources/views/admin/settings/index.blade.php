@@ -137,7 +137,8 @@ border-radius: 0px 4px 4px 0px;
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="app_setting" href="#!">APP Settings</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="script_setting" href="#!">Script Settings</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="default_Image_setting" href="#!"> Default Image Settings</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="cpp_payouts_setting" href="#!"> Content Partner Payouts Settings</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="cpp_payouts_setting" href="#!">  Payouts Settings</a> 
+                    <!-- Content Partner -->
                 </div>
             </div>
 
@@ -674,7 +675,9 @@ border-radius: 0px 4px 4px 0px;
     <div class="container-fluid" id="cpp_payouts" style="padding:15px;">
             <div class="row" data-collapsed="0">
                 <div class="panel-heading">
-                    <div class="panel-title"><label>Content Partner Payouts : </label></div>
+                    <div class="panel-title">
+                        <!-- <label>Content Partner Payouts : </label> -->
+                    </div>
                     <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
                 </div>
                 <div class="panel-body">
