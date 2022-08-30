@@ -3228,6 +3228,25 @@ public function checkEmailExists(Request $request)
        $season_id = $episode[0]->season_id;
 
        $Season = SeriesSeason::where('series_id',$series_id)->where('id',$season_id)->first();
+
+       $AllSeason = SeriesSeason::where('series_id',$series_id)->get();
+                if(count($AllSeason) > 0){
+
+
+                    foreach($AllSeason as $key => $Season){
+
+                        if($season_id ==  $Season->id){
+
+                          $name = $key+1;
+                          $Season_Name = 'Season '. $name;
+                        }
+                    }
+
+                  }else{
+                    $Season_Name = '';
+
+                  }
+
        }else{
         $Season = '';
        }
@@ -3274,7 +3293,6 @@ public function checkEmailExists(Request $request)
     }
 
     $series_id = Episode::where('id','=',$episodeid)->pluck('series_id');
-
     if(!empty($series_id)){
       $series_id = $series_id[0];
       
@@ -3317,7 +3335,7 @@ public function checkEmailExists(Request $request)
     $season = SeriesSeason::where('id',$episode[0]->season_id)->first();
     // print_r();exit;
     $ppv_exist = PpvPurchase::where('user_id',$user_id)
-    ->where('season_id',$episode[0]->season_id)
+    // ->where('season_id',$episode[0]->season_id)
     ->where('series_id',$episode[0]->series_id)
     ->count();
   } else {
@@ -3343,6 +3361,7 @@ public function checkEmailExists(Request $request)
         'status'=>'true',
         'message'=>'success',
         'episode' => $episode,
+        'Season_Name' => $Season_Name,
         'season' => $Season,
         'ppv_video_status' => $ppv_video_status,
         'wishlist' => $wishliststatus,
@@ -7680,5 +7699,23 @@ public function Adstatus_upate(Request $request)
     return response()->json($response, 200);
   }
 
+
+  public function relatedseries(Request $request)
+  {
+    
+    $series_id = $request->series_id;
+
+    $series = Series::where('id','!=', $series_id)
+      ->get()->map(function ($item) {
+      $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
+      return $item;
+    });
+    $response = array(
+      'status' => 'true',
+      'series' => $series,
+    );
+
+    return response()->json($response, 200);
+  }
 
 }
