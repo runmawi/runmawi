@@ -56,6 +56,13 @@ border-radius: 0px 4px 4px 0px;
  
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+<?php
+   $embed_url = URL::to('/live/embed');
+   $embed_media_url = $embed_url . '/' . $video->slug;
+   $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'" frameborder="0" allowfullscreen></iframe>';
+   $media_url = URL::to('/live').'/'.$video->slug;
+   ?>
+
 @section('content')
 <div id="content-page" class="content-page">
      <div class=" d-flex">
@@ -110,7 +117,13 @@ border-radius: 0px 4px 4px 0px;
                         @endif
 	<div class="clear"></div>
 
-	
+                    @if($video->active == 1  && $video->status == 1 )
+                        <div class="col-3">
+                            <label for=""><h3 class="fs-title m-0">Embed Link:</h3></label>
+                            <p>Click <a href="#"onclick="EmbedCopy();" class="share-ico"><i class="ri-links-fill"></i> here</a> to get the Embedded URL</p>
+                            </div>
+                           @endif
+
 
 		<form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" style="padding: 15px;" id="liveEdit_video">
             
@@ -1068,6 +1081,17 @@ tagInput1.addData([])
 	    });
 	}
 	});
+
+    function EmbedCopy() {
+   // var media_path = $('#media_url').val();
+   var media_path = '<?= $url_path ?>';
+   var url =  navigator.clipboard.writeText(window.location.href);
+   var path =  navigator.clipboard.writeText(media_path);
+   $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Copied Embed URL</div>');
+              setTimeout(function() {
+               $('.add_watch').slideUp('fast');
+              }, 3000);
+   }
 	
 </script>
 

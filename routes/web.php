@@ -269,6 +269,8 @@ Route::get('/ppvVideos', 'ChannelController@ppvVideos');
 Route::get('/live', 'LiveStreamController@Index');
 // Route::get('/live/{play}/{id}', 'LiveStreamController@Play');
 Route::get('/live/{id}', 'LiveStreamController@Play');
+Route::get('/live/embed/{id}', 'LiveStreamController@EmbedLivePlay');
+
 
 Route::post('purchase-live', 'PaymentController@StoreLive')->name('stripe.store'); 
 Route::post('purchase-video', 'PaymentController@purchaseVideo');
