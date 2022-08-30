@@ -133,7 +133,7 @@ endif; ?>
             <div class="slide slick-bg s-bg-1 lazy"
             style="background:linear-gradient(0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('<?php echo URL::to('/').'/public/uploads/images/' .$videos->player_image;?>'); background-repeat:no-repeat;background-size:cover;background-postion:top ;">
             <div class="container-fluid position-relative h-100">
-                <div class="slider-inner h-100">
+                <div class="slider-inner ">
 
                     <div class="row align-items-center bl h-100">
                         <div class="col-xl-5 col-lg-12 col-md-12">
