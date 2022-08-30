@@ -126,11 +126,11 @@ for($i=0;$i<(count($userrolepermissiom));$i++){
                   <!-- <li><a href="<?php echo URL::to('home') ?>" class="text-primary"><i class="ri-arrow-right-line"></i><span>Visit site</span></a></li> -->
                   <?php if( in_array( "Dashboard" ,$role)){ ?>
                      
-                  <li class="active active-menu"><a href="<?php echo URL::to('/cpp/dashboard') ?>" class="iq-waves-effect"><i class="las la-home iq-arrow-left"></i><span>Dashboard</span></a></li>
+                  <li class="active active-menu"><a href="<?php echo URL::to('/cpp/dashboard') ?>" class="iq-waves-effect"><img height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/home.svg')?>"><span>Dashboard</span></a></li>
                   <?php }else{ } ?>
                   <?php if( in_array( "Video Management" ,$role)){ ?>
 
- <li><a href="#video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-star-half-alt"></i><span>Video Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+ <li><a href="#video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" height="40" width="40" src="<?php echo  URL::to('/assets/img/sidemenu/vi.svg')?>"><span>Video Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
  <ul id="video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
  <?php if( in_array( "All Videos" ,$role)){ ?>
        <li><a href="{{ URL::to('/cpp/videos') }}"><i class="las la-user-plus"></i>All Videos</a></li>
@@ -158,7 +158,7 @@ for($i=0;$i<(count($userrolepermissiom));$i++){
            <?php }else{ } ?>    
            
            <?php if( in_array( "Audio Management" ,$role)){ ?>
-           <li><a href="#audios" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-music"></i><span>Audio Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+           <li><a href="#audios" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/music.svg')?>"><span>Audio Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
             <ul id="audios" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
             <?php if( in_array( "Audio List" ,$role)){ ?>
               <li><a href="{{ URL::to('/cpp/audios') }}"><i class="las la-music"></i>Audio List</a></li>
@@ -194,7 +194,7 @@ for($i=0;$i<(count($userrolepermissiom));$i++){
    <?php if( in_array( "Manage Live Videos" ,$role)){ ?>
         
                    <li>
-                     <a href="#live-video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-film"></i><span>Manage Live Videos</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                     <a href="#live-video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/live.svg')?>"><span>Manage Live Videos</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                      <ul id="live-video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
        <?php if( in_array( "All Live Videos" ,$role)){ ?>  
                      <li><a href="{{ URL::to('/cpp/livestream') }}"><i class="las la-user-plus"></i>All Live Videos</a></li>
@@ -264,8 +264,7 @@ for($i=0;$i<(count($userrolepermissiom));$i++){
    <?php if( in_array( "Pages" ,$role)){ ?>
                   
                   <li>
-                     <a href="#pages" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i
-                       class="las la-file-alt iq-arrow-left"></i><span>Pages</span><i
+                     <a href="#pages" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/page.svg')?>"><span>Pages</span><i
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="pages" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -276,7 +275,8 @@ for($i=0;$i<(count($userrolepermissiom));$i++){
                   </li>
                   <li>
 
-                     <a href="#analytics_managements" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src=""><span>Analytics</span><i
+                     <a href="#analytics_managements" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/ana.svg')?>">
+<span>Analytics</span><i
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="analytics_managements" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -342,7 +342,7 @@ for($i=0;$i<(count($userrolepermissiom));$i++){
                      </ul>
                   </li>
                   <li>
-                     <a href="#analytics_managements" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/ana.svg')?>"><span>Analytics</span><i
+                     <a href="#analytics_managements" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/ana.svg')?>"><span>Analytics</span><i
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="analytics_managements" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">

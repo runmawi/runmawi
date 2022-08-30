@@ -1798,6 +1798,6 @@ Route::POST('/RazorpayChannelPayouts_Payment', 'RazorpayController@RazorpayChann
 
 // Content Partner - Home Page
 
-Route::get('content-partner', 'ContentPartnerController@index')->name('ContentPartner_index');
-Route::get('content-partner/{slug}', 'ContentPartnerController@contentparnter_details')->name('contentparnter_details');
+Route::get('channel-partner', 'ChannelPartnerController@channelparnter')->name('channelparnter_index');
+Route::get('channel-partner/{slug}', 'ChannelPartnerController@unique_channelparnter')->name('channelparnter_details');
  
