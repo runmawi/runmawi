@@ -6,20 +6,22 @@
 
     <section class="sign-in-page" style="background: linear-gradient(86.02deg, #04152C 12.81%, rgba(0, 0, 0, 0) 95.61%), url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover; ">
         
-            @forelse ($channel_partner_list as  $key => $channel_partners)
+           
                     <div class="cpp">
                         <div class="container-fluid">
                             <p class="text-white"> Subscription Plans</p>
                             <div class="col-lg-8 p-0">
                                 <h1 class="">Introducing bundled subscription plans at special introductory prices</h1>
                             </div>
-
+ 
                             <div class="col-lg-4 p-0">
                                 <img class="w-100" src="<?php echo  URL::to('/assets/img/pink.png')?>" >
                             </div>
 
                             <div class="row justify-content-between mt-4">
+                                @forelse ($channel_partner_list as  $key => $channel_partners)
                                 <div class="col-lg-6 p-0">
+                                    
                                     <div class="row dm align-items-center">
                                         <div class="col-md-6">
                                         <h2>Power Play</h2>
@@ -44,9 +46,10 @@
                                     </div>
                                 </div>
                             </div>
+                                   @empty
                         </div>
                     </div>
-            @empty
+         
 
                 <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:cover;height: 500px!important;">
                     <p ><h2 style="position: absolute;top: 50%;left: 50%;color: white;">No Channels Available Now </h2>
