@@ -326,4 +326,6 @@ Route::group([
 
     Route::post('series_season_episodes', 'ApiAuthController@Series_SeasonsEpisodes');
 
+    Route::post('relatedseries','ApiAuthController@relatedseries');
+
 });

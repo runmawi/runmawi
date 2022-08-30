@@ -24,7 +24,7 @@
         <div class="col-md-12">
             <div class="iq-card-header  justify-content-between">
                 <div class="iq-header-title">
-                    <h4 class="card-title">Content Partners Video Analytics :</h4>
+                    <h4 class="card-title">Channel Partners Video Analytics :</h4>
                 </div>
             </div>
              
@@ -64,7 +64,7 @@
 
                         <div class="row">
                             <div class="col-md-12">
-                                <table class="table text-center" id="cpp_video_analytics_table" style="width:100%">
+                                <table class="table text-center" id="channel_video_analytics_table" style="width:100%">
                                     <thead>
                                         <tr class="r1">
                                             <th>#</th>
@@ -80,8 +80,8 @@
                                     @foreach($total_content as $key => $videos)
                                         <td>{{ $key+1  }}</td>   
                                         <td>{{ $videos->title  }}</td>   
-                                        <td>{{ $videos->cppemail  }}</td>   
-                                        <td>{{ $videos->cppusername  }}</td>   
+                                        <td>{{ $videos->channelemail  }}</td>   
+                                        <td>{{ $videos->channel_name  }}</td>   
                                         <td>{{ $videos->views  }}</td>   
                                         <!-- <td>{{ $videos->count }}</td>  -->
                                         </tr>
@@ -106,7 +106,7 @@
     });
 
      $(document).ready(function(){
-        $('#cpp_video_analytics_table').DataTable();
+        $('#channel_video_analytics_table').DataTable();
      });
         </script>
 
@@ -129,7 +129,7 @@
         $('#start_time').change(function(){
             var start_time =  $('#start_time').val();
             var end_time =  $('#end_time').val();
-            var url = "{{ URL::to('cpp/video_startdate_analytics/')  }}";
+            var url = "{{ URL::to('channel/video_startdate_analytics/')  }}";
        
        if(start_time != "" && end_time == ""){
             $.ajax({
@@ -175,7 +175,7 @@
         $('#end_time').change(function(){
         var start_time =  $('#start_time').val();
         var end_time =  $('#end_time').val();
-        var url = "{{ URL::to('cpp/video_enddate_analytics/')  }}";
+        var url = "{{ URL::to('channel/video_enddate_analytics/')  }}";
 
        if(start_time != "" && end_time != ""){
             $.ajax({
@@ -233,7 +233,7 @@
             var start_time =  $('#start_time').val();
             var end_time =  $('#end_time').val();
             var url =  $('#exportCsv_url').val();
-        var url = "{{ URL::to('cpp/video_exportCsv/')  }}";
+        var url = "{{ URL::to('channel/video_exportCsv/')  }}";
 
             $.ajax({
             url: url,
@@ -274,7 +274,7 @@ google.charts.setOnLoadCallback(drawChart);
 function drawChart() {
 
 var data = google.visualization.arrayToDataTable([
-    ['Month Name', 'Moderator Video Views'],
+    ['Month Name', 'Channel Video Views'],
     <?php foreach ($total_content as $d) {
         echo "['" . $d->month_name . "', " . $d->views . "],";
     } ?>
@@ -282,7 +282,7 @@ var data = google.visualization.arrayToDataTable([
 ]);
 
 var options = {
-  title: 'Total Moderator Video Views',
+  title: 'Total Channel Video Views',
   curveType: 'function',
   legend: { position: 'bottom' }
 };

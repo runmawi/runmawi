@@ -51,7 +51,7 @@ class ChannelArtistsController extends Controller
             }
             else
             {
-                dd('index');
+                // dd('index');
                 if ($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role == "admin")
                 {
 

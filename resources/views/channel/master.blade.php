@@ -166,6 +166,17 @@ $channel = Session::get('channel');
                   </ul>
                   </li>
 
+                  <li>
+                     <a href="#analytics_managements" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-film"></i><span>Analytics</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                     <ul id="analytics_managements" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                     <li><a href="{{ URL::to('/channel/video-analytics') }}"><i class="las la-eye"></i>Video Analytics </a></li>
+                     <li><a href="{{ URL::to('/channel/view_by_region') }}"><i class="las la-user-plus"></i>Video View BY Region</a></li>
+                     <li><a href="{{ URL::to('/channel/payouts') }}"><i class="las la-user-plus"></i>Payouts</a></li>
+
+                  </ul>
+                  </li>
+
+
                   <!-- <li><a href="#user" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-user-friends"></i><span>Users</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                        <ul id="user" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                        <li><a href="{{ URL::to('users') }}"><i class="las la-user-plus"></i>All Users</a></li>
