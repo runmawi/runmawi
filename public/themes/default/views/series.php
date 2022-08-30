@@ -68,7 +68,7 @@ $series = $series_data ;
 		&& !Auth::guest() && Auth::user()->subscribed()) && $series->ppv_status != 1 || (!Auth::guest() && (Auth::user()->role == 'demo' && $series->ppv_status != 1 || 
 	 	Auth::user()->role == 'admin') ) || (!Auth::guest() && $series->access == 'registered' && 
 		$settings->free_registration && Auth::user()->role != 'registered' && $series->ppv_status != 1) ):  ?>
-		<div class="col-md-7 p-0">
+		<div class="col-md-7">
 			<div id="series_title">
 				<div class="container">
 					 <h1><?= $series->title ?></h1>
@@ -163,11 +163,11 @@ $series = $series_data ;
 </div>
 </div>
 <section id="tabs" class="project-tab">
-	<div class="container-fluid">
+	<div class="">
 		<div class="row">
 			<div class="col-md-12 mt-4">
 				<nav class="nav-justified">
-					<div class="nav nav-tabs nav-fill " id="nav-tab" role="tablist">
+					<div class="nav nav-tabs nav-fill container-fluid " id="nav-tab" role="tablist">
                         <h4>Episode</h4>
 						<!--<a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Episode</a>
 						<!--<a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Related</a>
@@ -177,7 +177,7 @@ $series = $series_data ;
 				<div >
 					<div >
 <!-- $series->title -->
-						
+						<div class="container-fluid">
 				<div class="favorites-contens">
                     <div class="col-md-3 p-0">
                     <select class="form-control" id="season_id" name="season_id">
@@ -185,7 +185,7 @@ $series = $series_data ;
 								<option value="season_<?= $seasons->id;?>">Season <?= $key+1; ?></option>
 							<?php endforeach; ?>
 						</select></div>
-          <ul class="category-page list-inline row p-0 mb-0">
+          <ul class="category-page list-inline row p-3 mb-0">
               <?php 
                     foreach($season as $key => $seasons):  
                       foreach($seasons->episodes as $key => $episodes):
@@ -282,7 +282,7 @@ $series = $series_data ;
                            <?php endif;	endforeach; 
 						                      endforeach; ?>
                         </ul>
-                     </div>
+                     </div></div>
 			<?php elseif( Auth::guest() && $series->access == "subscriber"):
 						
 					// }
@@ -313,7 +313,7 @@ $series = $series_data ;
                 </div>
             </div>
         </div>
-    </div>
+        </div></div>
 		</section>
 		
 				<?php endif;?>

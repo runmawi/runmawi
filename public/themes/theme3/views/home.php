@@ -22,9 +22,9 @@ $order_settings_list = App\OrderHomeSetting::get();
 </section>
 <div class="main-content position-relative">
     <section id="iq-continue" style="margin-top:-140px;">
-        <div class="fluid" >
+        <div class="fluid overflow-hidden" >
            <div class="row">
-              <div class="col-sm-12 overflow-hidden">
+              <div class="col-sm-12 ">
                   <?php include('partials/home/continue-watching.php'); ?>
               </div>
            </div>
@@ -45,9 +45,9 @@ $order_settings_list = App\OrderHomeSetting::get();
          if($value->video_name == 'Recommendation'){
     if(count($top_most_watched) > 0){ ?>
        <section id="iq-favorites">
-            <div class="fluid">
+            <div class="fluid overflow-hidden">
                <div class="row">
-                  <div class="col-sm-12 overflow-hidden">
+                  <div class="col-sm-12 ">
                      <?php include('partials/home/Top_videos.blade.php'); ?>
                   </div>
                </div>
@@ -59,9 +59,9 @@ $order_settings_list = App\OrderHomeSetting::get();
 <!-- Most Watched Videos User -->
     <?php if(count($most_watch_user) > 0){ ?>
        <section id="iq-favorites">
-            <div class="fluid">
+            <div class="fluid overflow-hidden">
                <div class="row">
-                  <div class="col-sm-12 overflow-hidden">
+                  <div class="col-sm-12 ">
                      <?php include('partials/home/most_watched_user.blade.php'); ?>
                   </div>
                </div>
@@ -74,9 +74,9 @@ $order_settings_list = App\OrderHomeSetting::get();
    <?php 
       if(count($Most_watched_country) > 0){ ?>
        <section id="iq-favorites">
-            <div class="fluid">
+            <div class="fluid overflow-hidden">
                <div class="row">
-                  <div class="col-sm-12 overflow-hidden">
+                  <div class="col-sm-12 ">
                      <?php include('partials/home/most_watched_country.php'); ?>
                   </div>
                </div>
@@ -89,9 +89,9 @@ $order_settings_list = App\OrderHomeSetting::get();
    <?php 
       if(($preference_genres) != null && count($preference_genres) > 0){ ?>
          <section id="iq-favorites">
-            <div class="fluid">
+            <div class="fluid overflow-hidden">
                <div class="row">
-                  <div class="col-sm-12 overflow-hidden">
+                  <div class="col-sm-12 ">
                      <?php include('partials/home/preference_genres.php'); ?>
                   </div>
                </div>
@@ -103,9 +103,9 @@ $order_settings_list = App\OrderHomeSetting::get();
    <?php 
    if(($preference_Language) != null && count($preference_Language) > 0 ){ ?>
    <section id="iq-favorites">
-            <div class="fluid">
+            <div class="fluid overflow-hidden">
                <div class="row">
-                  <div class="col-sm-12 overflow-hidden">
+                  <div class="col-sm-12 ">
                      <?php include('partials/home/preference_Language.php'); ?>
                   </div>
                </div>
@@ -119,9 +119,9 @@ $order_settings_list = App\OrderHomeSetting::get();
        if($value->video_name == 'latest_videos'){
          if($home_settings->latest_videos == 1){ ?>
       <section id="iq-favorites">
-         <div class="fluid">
+         <div class="fluid overflow-hidden">
             <div class="row">
-               <div class="col-sm-12 overflow-hidden">
+               <div class="col-sm-12 ">
                   <?php include('partials/home/latest-videos.php'); ?>
                </div>
             </div>
@@ -134,9 +134,9 @@ $order_settings_list = App\OrderHomeSetting::get();
  if($value->video_name == 'live_videos'){
 if($home_settings->live_videos == 1){ ?>
     <section id="iq-favorites">
-        <div class="fluid">
+        <div class="fluid overflow-hidden">
            <div class="row">
-              <div class="col-sm-12 overflow-hidden">
+              <div class="col-sm-12 ">
                  <?php include('partials/home/live-videos.php'); ?>
               </div>
            </div>
@@ -149,9 +149,9 @@ if($home_settings->live_videos == 1){ ?>
        if($value->video_name == 'audios'){
 if($home_settings->audios == 1){ ?>
     <section id="iq-favorites">
-        <div class="fluid">
+        <div class="fluid overflow-hidden">
            <div class="row">
-              <div class="col-sm-12 overflow-hidden">
+              <div class="col-sm-12 ">
                  <?php include('partials/home/latest-audios.php'); ?>
               </div>
            </div>
@@ -164,9 +164,9 @@ if($home_settings->audios == 1){ ?>
        if($value->video_name == 'albums'){
 if($home_settings->albums == 1){ ?>
     <section id="iq-favorites">
-        <div class="fluid">
+        <div class="fluid overflow-hidden">
            <div class="row">
-              <div class="col-sm-12 overflow-hidden">
+              <div class="col-sm-12 ">
                  <?php include('partials/home/latest-albums.php'); ?>
               </div>
            </div>
@@ -181,9 +181,9 @@ if($home_settings->albums == 1){ ?>
     
    if($home_settings->artist == 1){ ?>
       <section id="iq-favorites">
-         <div class="container-fluid">
+         <div class="container-fluid overflow-hidden">
             <div class="row">
-               <div class="col-sm-12 overflow-hidden">
+               <div class="col-sm-12 ">
                   <?php include('partials/home/artist-videos.php'); ?>
                </div>
             </div>
@@ -197,9 +197,9 @@ if($home_settings->albums == 1){ ?>
        if($value->video_name == 'series'){
          if($home_settings->series == 1){ ?>
     <section id="iq-favorites">
-        <div class="container-fluid">
+        <div class="container-fluid overflow-hidden">
            <div class="row">
-              <div class="col-sm-12 overflow-hidden">
+              <div class="col-sm-12 ">
                  <?php include('partials/home/latest-series.php'); ?>
               </div>
            </div>
@@ -213,9 +213,9 @@ if($home_settings->albums == 1){ ?>
        if($value->video_name == 'featured_videos'){
 if ( GetTrendingVideoStatus() == 1 ) { ?>
   <section id="iq-favorites">
-    <div class="fluid">
+    <div class="fluid overflow-hidden">
       <div class="row">
-        <div class="col-sm-12 overflow-hidden">
+        <div class="col-sm-12 ">
           <?php if ( count($featured_videos) > 0 ) { 
             include('partials/home/trending-videoloop.php');
           } else {  ?>
@@ -1002,7 +1002,7 @@ endif; ?>
             <?php 
        if($value->video_name == 'category_videos'){
          if ( GetCategoryVideoStatus() == 1 ) { ?>
-            <div class="fluid">
+            <div class="fluid overflow-hidden">
                <?php
                      $getfeching = App\Geofencing::first();
                      $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
