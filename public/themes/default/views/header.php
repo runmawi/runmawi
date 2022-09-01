@@ -263,8 +263,9 @@ input:checked + .sliderk:before {
 }
 
 /* Dark mode and light Mode */
-      body .light-theme {
-	      background-color: <?php echo GetLightBg(); ?>!important;
+      body.light-theme {
+	     background: <?php echo GetLightBg(); ?>!important;
+        
       }
 
       body.light-theme h4, body.light-theme p {
@@ -276,7 +277,7 @@ input:checked + .sliderk:before {
              box-shadow: 0 0 50px #ccc;
         }
         body.light-theme footer{
-            background-color: <?php echo GetLightBg(); ?>!important;  
+            background: <?php echo GetLightBg(); ?>!important;  
             color: <?php echo GetLightText(); ?>;
                      box-shadow: 0 0 50px #ccc;
 
@@ -309,6 +310,7 @@ input:checked + .sliderk:before {
         body.light-theme .slick-nav i{
              color: <?php echo GetLightText(); ?>!important;
         }
+       
     </style>
      
    <body>
