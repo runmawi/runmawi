@@ -328,4 +328,7 @@ Route::group([
 
     Route::post('relatedseries','ApiAuthController@relatedseries');
 
+    Route::get('cpanelstorage','ApiAuthController@cpanelstorage');
+
+
 });
