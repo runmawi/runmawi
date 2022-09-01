@@ -49,7 +49,7 @@
                                             <div class="block-images position-relative">
                                                 <!-- block-images -->
                                                 <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
-                                                    <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" class="img-fluid" alt=""> 
+                                                    <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" class="img-fluid w-100" alt=""> 
                                                 </a>
                                             
                                                 @if($ThumbnailSetting->free_or_cost_label == 1) 
