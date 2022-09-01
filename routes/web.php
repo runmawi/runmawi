@@ -579,6 +579,14 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::get('/pop-up', 'AdminHomePopupController@index')->name('homepage_popup'); 
     Route::post('/pop-up-update', 'AdminHomePopupController@create')->name('homepage_popup_update'); 
 
+    // Admin Channel Package
+    Route::get('/channel-package-index', 'AdminChannelPackageController@index')->name('channel_package_index');
+    Route::get('/channel-package-create', 'AdminChannelPackageController@create')->name('channel_package_create');
+    Route::post('/channel-package-store', 'AdminChannelPackageController@store')->name('channel_package_store');
+    Route::get('/channel-package-edit/{id}', 'AdminChannelPackageController@edit')->name('channel_package_edit');
+    Route::post('/channel-package-update/{id}', 'AdminChannelPackageController@update')->name('channel_package_update');
+    Route::get('/channel-package-delete/{id}', 'AdminChannelPackageController@delete')->name('channel_package_delete');
+
     Route::get('/languages', 'LanguageTranslationController@index')->name('languages');
     Route::post('/translations/update', 'LanguageTranslationController@transUpdate')->name('translation.update.json');
     Route::post('/translations/updateKey', 'LanguageTranslationController@transUpdateKey')->name('translation.update.json.key');
@@ -1753,11 +1761,8 @@ Route::post('admin/clear_view_cache', 'ClearCacheController@clear_view_cache')->
   Route::get('admin/debug', 'ClearCacheController@Env_index')->name('env_index'); 
   Route::Post('admin/Env_AppDebug', 'ClearCacheController@Env_AppDebug')->name('env_appdebug'); 
 
-
-
     // Reels
 Route::get('/Reals_videos/videos/{slug}', 'ChannelController@Reals_videos');
-
 
     // Cast & crew
 Route::get('/Artist/{slug}', 'ChannelController@artist_videos');
