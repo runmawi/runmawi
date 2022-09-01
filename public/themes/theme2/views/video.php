@@ -683,13 +683,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
               <?php  }?>
 
               <div class="col-sm-4 p-0">
-                    <div>     
-                        <?php if($video->trailer != '' && $ThumbnailSetting->trailer == 1 ){ ?>
-                            <div id="videoplay" class="btn1 btn-outline-primary  watch_trailer"><i class="ri-film-line"></i> Watch Trailer</div>
-                            <div id="close_trailer" class="btn1 btn-outline-danger  close_trailer"><i class="ri-film-line"></i> Close Trailer</div>
-                            <div style=" display: none;" class="skiptrailer btn btn-default skip"> Skip</div>
-                        <?php } ?>
-                    </div>
+                    
                 </div>
 
               <div class="col-sm-12 mt-4 p-0" style="margin-top: 2%;">
@@ -741,6 +735,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                             <?php } ?>
 
                    </div> 
+               
                </div></div>
            </div>
          </div>
@@ -994,7 +989,7 @@ $artists = [];
 <?php } ?>
 
 
-   <div class="container-fluid video-list you-may-like">
+   <div class="container-fluid video-list you-may-like overflow-hidden">
        <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Recomended Videos');?></h4>
            <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>   
                <?php include('partials/video-loop.php');?>

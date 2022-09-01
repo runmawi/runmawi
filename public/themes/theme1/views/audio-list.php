@@ -1,10 +1,10 @@
 <?php include('header.php'); ?>
 
-<div class="container mt-4 audio-list-page">
+<div class="container-fluid mt-4 audio-list-page overflow-hidden">
 
        <div class="block-space">
            <div class="row">
-              <div class="col-sm-12 overflow-hidden">
+              <div class="col-sm-12 ">
                  <div class="iq-main-header d-flex align-items-center justify-content-between">
                  <?php if(isset($page_title) && count( $audios) > 0 ): ?>
                     <h4 class="main-title">Today Trending</h4>
@@ -20,10 +20,10 @@
 		</div>
 
 </div>
-<div class="container mt-2">
+<div class="container-fluid overflow-hidden mt-2">
        <div class="block-space">
            <div class="row">
-              <div class="col-sm-12 overflow-hidden">
+              <div class="col-sm-12 ">
                  <div class="iq-main-header d-flex align-items-center justify-content-between">
                  <?php if((isset($page_title))  && count( $albums) > 0 ):  ?>
                     <h4 class="main-title">Albums</h4>
@@ -42,7 +42,7 @@
 						<div class="favorites-contens">
 				            <div class="epi-box">
                                 <div class="epi-img position-relative">
-                                   <img src="<?php echo URL::to('/').'/public/uploads/albums/'.$album->album;?>" class="img-fluid img-zoom" alt="">
+                                   <img src="<?php echo URL::to('/').'/public/uploads/albums/'.$album->album;?>" class="img-fluid img-zoom w-100" alt="">
                                    <div class="episode-play-info">
                                       <div class="episode-play">
                                          <a href="<?= URL::to('album') ?><?= '/' . $album->slug ?>">

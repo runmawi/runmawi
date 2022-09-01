@@ -328,4 +328,9 @@ Route::group([
 
     Route::post('relatedseries','ApiAuthController@relatedseries');
 
+    Route::post('related_livestream','ApiAuthController@relatedlive');
+
+    Route::get('cpanelstorage','ApiAuthController@cpanelstorage');
+
+
 });

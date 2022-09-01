@@ -71,6 +71,8 @@ use App\PlayerAnalytic;
 use App\ModeratorPayout;
 use App\ChannelPayout;
 use App\Channel;
+use App\Region;
+use App\RegionView;
 use Session;
 use View;
 use GuzzleHttp\Client;
@@ -89,29 +91,37 @@ class ChannelAnalyticsController extends Controller
             $user = Session::get("channel");
             $user_id = $user->id;
             $settings = Setting::first();
+
+ 
+
             $total_content = Channel::join(
                 "videos",
                 "videos.user_id",
                 "=",
                 "channels.id"
             )
-                // ->where("videos.uploaded_by ", "Channel")
-                ->groupBy("videos.id")
-                ->where("channels.id", $user_id)
-                ->get();
-                dd($total_content);
+            ->where("channels.id", $user_id)
+            ->where("videos.uploaded_by", "=", 'channel')
+                ->get([
+                    \DB::raw("videos.*"),
+
+                    \DB::raw("COUNT(*) as count"),
+                    \DB::raw("MONTHNAME(videos.created_at) as month_name"),
+                    \DB::raw("channels.channel_name as channel_name"),
+                    \DB::raw("channels.email as channelemail"),
+                ]);
             $total_content = Video::join(
                 "channels",
                 "channels.id",
                 "=",
                 "videos.user_id"
             )
-                ->groupBy("videos.id")
+                // ->groupBy("videos.id")
                 ->where("channels.id", $user_id)
+                ->where("videos.uploaded_by", 'Channel')
                 ->get([
                     "videos.*",
                     \DB::raw("COUNT(*) as count"),
-                    \DB::raw("MONTHNAME(videos.created_at) as month_name"),
                     \DB::raw("MONTHNAME(videos.created_at) as month_name"),
                     \DB::raw("channels.channel_name as channel_name"),
                     \DB::raw("channels.email as channelemail"),
@@ -140,7 +150,7 @@ class ChannelAnalyticsController extends Controller
             (!empty($package) && $package == "Pro") ||
             (!empty($package) && $package == "Business")
         ) {
-            $user = Session::get("user");
+            $user = Session::get("channel");
             $user_id = $user->id;
             $data = $request->all();
 
@@ -148,23 +158,25 @@ class ChannelAnalyticsController extends Controller
             $end_time = $data["end_time"];
             if (!empty($start_time) && empty($end_time)) {
                 $settings = Setting::first();
-                $total_content = ModeratorsUser::join(
-                    "videos",
-                    "videos.user_id",
+                $total_content = Video::join(
+                    "channels",
+                    "channels.id",
                     "=",
-                    "moderators_users.id"
+                    "videos.user_id"
                 )
-                    ->where("moderators_users.id", $user_id)
                     ->whereDate("videos.created_at", ">=", $start_time)
-                    ->groupBy("videos.id")
+                    ->where("channels.id", $user_id)
+                    ->where("videos.uploaded_by", 'Channel')
                     ->get([
+                        "videos.*",
                         \DB::raw("COUNT(*) as count"),
                         \DB::raw("MONTHNAME(videos.created_at) as month_name"),
-                        \DB::raw("videos.*"),
-                        \DB::raw("moderators_users.username as cppusername"),
-                        \DB::raw("moderators_users.email as cppemail"),
+                        \DB::raw("channels.channel_name as channel_name"),
+                        \DB::raw("channels.email as channelemail"),
                     ]);
-            } else {
+           
+                    // echo "<pre>";print_r($total_content);exit;
+            } else {    
             }
 
             $output = "";
@@ -183,10 +195,10 @@ class ChannelAnalyticsController extends Controller
                             $row->title .
                             '</td>
               <td>' .
-                            $row->cppemail .
+                            $row->channelemail .
                             '</td>    
               <td>' .
-                            $row->cppusername .
+                            $row->channel_name .
                             '</td>    
               <td>' .
                             $row->views .
@@ -222,7 +234,7 @@ class ChannelAnalyticsController extends Controller
             (!empty($package) && $package == "Pro") ||
             (!empty($package) && $package == "Business")
         ) {
-            $user = Session::get("user");
+            $user = Session::get("channel");
             $user_id = $user->id;
             $data = $request->all();
 
@@ -230,24 +242,25 @@ class ChannelAnalyticsController extends Controller
             $end_time = $data["end_time"];
 
             if (!empty($start_time) && !empty($end_time)) {
-                $total_content = ModeratorsUser::join(
-                    "videos",
-                    "videos.user_id",
-                    "=",
-                    "moderators_users.id"
-                )
-                    ->where("moderators_users.id", $user_id)
+               
+                    $total_content = Video::join(
+                        "channels",
+                        "channels.id",
+                        "=",
+                        "videos.user_id"
+                    )
+                    ->where("channels.id", $user_id)
+                    ->where("videos.uploaded_by", 'Channel')
                     ->whereBetween("videos.created_at", [
                         $start_time,
                         $end_time,
                     ])
-                    ->groupBy("videos.id")
                     ->get([
+                        "videos.*",
                         \DB::raw("COUNT(*) as count"),
                         \DB::raw("MONTHNAME(videos.created_at) as month_name"),
-                        \DB::raw("videos.*"),
-                        \DB::raw("moderators_users.username as cppusername"),
-                        \DB::raw("moderators_users.email as cppemail"),
+                        \DB::raw("channels.channel_name as channel_name"),
+                        \DB::raw("channels.email as channelemail"),
                     ]);
             } else {
                 $total_content = [];
@@ -269,10 +282,10 @@ class ChannelAnalyticsController extends Controller
                             $row->title .
                             '</td>
               <td>' .
-                            $row->cppemail .
+                            $row->channelemail .
                             '</td>    
               <td>' .
-                            $row->cppusername .
+                            $row->channel_name .
                             '</td>    
               <td>' .
                             $row->views .
@@ -308,72 +321,70 @@ class ChannelAnalyticsController extends Controller
             (!empty($package) && $package == "Pro") ||
             (!empty($package) && $package == "Business")
         ) {
-            $user = Session::get("user");
+            $user = Session::get("channel");
             $user_id = $user->id;
             $data = $request->all();
-            // dd($data);exit;
-            // if(!empty($data['start_time']) && empty($data['end_time']
-            // || empty($data['start_time']) && !empty($data['end_time'])
-            // || !empty($data['start_time']) && !empty($data['end_time'])) ){
+
             $start_time = $data["start_time"];
             $end_time = $data["end_time"];
-            // }
+            
             if (!empty($start_time) && empty($end_time)) {
-                $total_content = ModeratorsUser::join(
-                    "videos",
-                    "videos.user_id",
-                    "=",
-                    "moderators_users.id"
-                )
+
+                    $total_content = Video::join(
+                        "channels",
+                        "channels.id",
+                        "=",
+                        "videos.user_id"
+                    )
+                    ->where("channels.id", $user_id)
+                    ->where("videos.uploaded_by", 'Channel')
                     ->whereDate("videos.created_at", ">=", $start_time)
-                    ->where("moderators_users.id", $user_id)
-                    ->groupBy("videos.id")
                     ->get([
+                        "videos.*",
                         \DB::raw("COUNT(*) as count"),
                         \DB::raw("MONTHNAME(videos.created_at) as month_name"),
-                        \DB::raw("videos.*"),
-                        \DB::raw("moderators_users.username as cppusername"),
-                        \DB::raw("moderators_users.email as cppemail"),
+                        \DB::raw("channels.channel_name as channel_name"),
+                        \DB::raw("channels.email as channelemail"),
                     ]);
             } elseif (!empty($start_time) && !empty($end_time)) {
-                $total_content = ModeratorsUser::join(
-                    "videos",
-                    "videos.user_id",
-                    "=",
-                    "moderators_users.id"
-                )
-                    ->where("moderators_users.id", $user_id)
-                    ->whereBetween("videos.created_at", [
-                        $start_time,
-                        $end_time,
-                    ])
-                    ->groupBy("videos.id")
-                    ->get([
-                        \DB::raw("COUNT(*) as count"),
-                        \DB::raw("MONTHNAME(videos.created_at) as month_name"),
-                        \DB::raw("videos.*"),
-                        \DB::raw("moderators_users.username as cppusername"),
-                        \DB::raw("moderators_users.email as cppemail"),
-                    ]);
+
+                        $total_content = Video::join(
+                            "channels",
+                            "channels.id",
+                            "=",
+                            "videos.user_id"
+                        )
+                        ->where("channels.id", $user_id)
+                        ->where("videos.uploaded_by", 'Channel')
+                        ->whereBetween("videos.created_at", [
+                            $start_time,
+                            $end_time,
+                        ])
+                        ->get([
+                            "videos.*",
+                            \DB::raw("COUNT(*) as count"),
+                            \DB::raw("MONTHNAME(videos.created_at) as month_name"),
+                            \DB::raw("channels.channel_name as channel_name"),
+                            \DB::raw("channels.email as channelemail"),
+                        ]);
             } else {
-                $total_content = ModeratorsUser::join(
-                    "videos",
-                    "videos.user_id",
+                $total_content = Video::join(
+                    "channels",
+                    "channels.id",
                     "=",
-                    "moderators_users.id"
+                    "videos.user_id"
                 )
-                    ->where("moderators_users.id", $user_id)
-                    ->groupBy("videos.id")
-                    ->get([
-                        \DB::raw("COUNT(*) as count"),
-                        \DB::raw("MONTHNAME(videos.created_at) as month_name"),
-                        \DB::raw("videos.*"),
-                        \DB::raw("moderators_users.username as cppusername"),
-                        \DB::raw("moderators_users.email as cppemail"),
-                    ]);
+                ->where("channels.id", $user_id)
+                ->where("videos.uploaded_by", 'Channel')
+                ->get([
+                    "videos.*",
+                    \DB::raw("COUNT(*) as count"),
+                    \DB::raw("MONTHNAME(videos.created_at) as month_name"),
+                    \DB::raw("channels.channel_name as channel_name"),
+                    \DB::raw("channels.email as channelemail"),
+                ]);
             }
-            //  $file = 'CPPRevenue_' . rand(10, 100000) . '.csv';
-            $file = "CPPVideoAnalytics.csv";
+            $file = "ChannelVideoAnalytics.csv";
 
             $headers = [
                 "Content-Type" => "application/vnd.ms-excel; charset=utf-8",
@@ -397,8 +408,8 @@ class ChannelAnalyticsController extends Controller
                 foreach ($total_content as $each_user) {
                     fputcsv($handle, [
                         $each_user->title,
-                        $each_user->cppemail,
-                        $each_user->cppusername,
+                        $each_user->channelemail,
+                        $each_user->channel_name,
                         $each_user->views,
                     ]);
                 }
@@ -422,24 +433,24 @@ class ChannelAnalyticsController extends Controller
             (!empty($package) && $package == "Pro") ||
             (!empty($package) && $package == "Business")
         ) {
-            $user = Session::get("user");
+            $user = Session::get("channel");
             $user_id = $user->id;
             $settings = Setting::first();
-            $total_content = ModeratorsUser::join(
-                "moderator_payouts",
-                "moderator_payouts.user_id",
+            $total_content = Channel::join(
+                "channel_payouts",
+                "channel_payouts.user_id",
                 "=",
-                "moderators_users.id"
+                "channels.id"
             )
-                // ->groupBy("moderators_users.id")
-                ->where("moderators_users.id", $user_id)
+                // ->groupBy("channels.id")
+                ->where("channels.id", 3)
                 ->get([
                     // \DB::raw("COUNT(*) as count"),
-                    \DB::raw("MONTHNAME(moderator_payouts.created_at) as month_name"),
-                    \DB::raw("moderator_payouts.*"),
-                    \DB::raw("moderators_users.username as cppusername"),
-                    \DB::raw("moderators_users.email as cppemail"),
-                    // \DB::raw("moderator_payouts.id as count"),
+                    \DB::raw("MONTHNAME(channel_payouts.created_at) as month_name"),
+                    \DB::raw("channel_payouts.*"),
+                    \DB::raw("channels.channel_name as channel_name"),
+                    \DB::raw("channels.email as channelemail"),
+                    // \DB::raw("channel_payouts.id as count"),
                 ]);
 
 
@@ -450,7 +461,7 @@ class ChannelAnalyticsController extends Controller
                 "total_content" => $total_content,
                 "total_video_count" => count($total_content),
             ];
-            return view("moderator.cpp.analytics.payouts_analytics", $data);
+            return view("channel.analytics.payouts_analytics", $data);
         } else {
             return Redirect::to("/blocked");
         }
@@ -464,7 +475,7 @@ class ChannelAnalyticsController extends Controller
             (!empty($package) && $package == "Pro") ||
             (!empty($package) && $package == "Business")
         ) {
-            $user = Session::get("user");
+            $user = Session::get("channel");
             $user_id = $user->id;
             $data = $request->all();
 
@@ -472,21 +483,21 @@ class ChannelAnalyticsController extends Controller
             $end_time = $data["end_time"];
             if (!empty($start_time) && empty($end_time)) {
                 $settings = Setting::first();
-                $total_content = ModeratorsUser::join(
-                    "moderator_payouts",
-                    "moderator_payouts.user_id",
+                $total_content = Channel::join(
+                    "channel_payouts",
+                    "channel_payouts.user_id",
                     "=",
-                    "moderators_users.id"
+                    "channels.id"
                 )
-                    ->whereDate("moderator_payouts.created_at", ">=", $start_time)
-                    ->where("moderators_users.id", $user_id)
+                    ->whereDate("channel_payouts.created_at", ">=", $start_time)
+                    ->where("channels.id", $user_id)
                     ->get([
                         // \DB::raw("COUNT(*) as count"),
-                        \DB::raw("MONTHNAME(moderator_payouts.created_at) as month_name"),
-                        \DB::raw("moderator_payouts.*"),
-                        \DB::raw("moderators_users.username as cppusername"),
-                        \DB::raw("moderators_users.email as cppemail"),
-                        // \DB::raw("moderator_payouts.id as count"),
+                        \DB::raw("MONTHNAME(channel_payouts.created_at) as month_name"),
+                        \DB::raw("channel_payouts.*"),
+                        \DB::raw("channels.channel_name as channel_name"),
+                        \DB::raw("channels.email as channelemail"),
+                        // \DB::raw("channel_payouts.id as count"),
                     ]);
             } else {
             }
@@ -504,10 +515,10 @@ class ChannelAnalyticsController extends Controller
                             $i++ .
                             '</td>
               <td>' .
-                            $row->cppemail .
+                            $row->channelemail .
                             '</td>
               <td>' .
-                            $row->cppusername .
+                            $row->channel_name .
                             '</td>    
               <td>' .
                             $row->commission_paid .
@@ -552,7 +563,7 @@ class ChannelAnalyticsController extends Controller
             (!empty($package) && $package == "Pro") ||
             (!empty($package) && $package == "Business")
         ) {
-            $user = Session::get("user");
+            $user = Session::get("channel");
             $user_id = $user->id;
             $data = $request->all();
 
@@ -562,24 +573,24 @@ class ChannelAnalyticsController extends Controller
             if (!empty($start_time) && !empty($end_time)) {
 
 
-                $total_content = ModeratorsUser::join(
-                    "moderator_payouts",
-                    "moderator_payouts.user_id",
+                $total_content = Channel::join(
+                    "channel_payouts",
+                    "channel_payouts.user_id",
                     "=",
-                    "moderators_users.id"
+                    "channels.id"
                 )
-                    ->whereBetween("moderator_payouts.created_at", [
+                    ->whereBetween("channel_payouts.created_at", [
                         $start_time,
                         $end_time,
                     ])
-                    ->where("moderators_users.id", $user_id)
+                    ->where("channels.id", $user_id)
                     ->get([
                         // \DB::raw("COUNT(*) as count"),
-                        \DB::raw("MONTHNAME(moderator_payouts.created_at) as month_name"),
-                        \DB::raw("moderator_payouts.*"),
-                        \DB::raw("moderators_users.username as cppusername"),
-                        \DB::raw("moderators_users.email as cppemail"),
-                        // \DB::raw("moderator_payouts.id as count"),
+                        \DB::raw("MONTHNAME(channel_payouts.created_at) as month_name"),
+                        \DB::raw("channel_payouts.*"),
+                        \DB::raw("channels.channel_name as channel_name"),
+                        \DB::raw("channels.email as channelemail"),
+                        // \DB::raw("channel_payouts.id as count"),
                     ]);
 
             } else {
@@ -599,10 +610,10 @@ class ChannelAnalyticsController extends Controller
                             $i++ .
                             '</td>
               <td>' .
-                            $row->cppemail .
+                            $row->channelemail .
                             '</td>
               <td>' .
-                            $row->cppusername .
+                            $row->channel_name .
                             '</td>    
               <td>' .
                             $row->commission_paid .
@@ -647,7 +658,7 @@ class ChannelAnalyticsController extends Controller
             (!empty($package) && $package == "Pro") ||
             (!empty($package) && $package == "Business")
         ) {
-            $user = Session::get("user");
+            $user = Session::get("channel");
             $user_id = $user->id;
             $data = $request->all();
             // dd($data);exit;
@@ -655,61 +666,61 @@ class ChannelAnalyticsController extends Controller
             $start_time = $data["start_time"];
             $end_time = $data["end_time"];
             if (!empty($start_time) && empty($end_time)) {
-                $total_content = ModeratorsUser::join(
-                    "moderator_payouts",
-                    "moderator_payouts.user_id",
+                $total_content = Channel::join(
+                    "channel_payouts",
+                    "channel_payouts.user_id",
                     "=",
-                    "moderators_users.id"
+                    "channels.id"
                 )
-                    ->whereDate("moderator_payouts.created_at", ">=", $start_time)
-                    ->where("moderators_users.id", $user_id)
+                    ->whereDate("channel_payouts.created_at", ">=", $start_time)
+                    ->where("channels.id", $user_id)
                     ->get([
                         // \DB::raw("COUNT(*) as count"),
-                        \DB::raw("MONTHNAME(moderator_payouts.created_at) as month_name"),
-                        \DB::raw("moderator_payouts.*"),
-                        \DB::raw("moderators_users.username as cppusername"),
-                        \DB::raw("moderators_users.email as cppemail"),
-                        // \DB::raw("moderator_payouts.id as count"),
+                        \DB::raw("MONTHNAME(channel_payouts.created_at) as month_name"),
+                        \DB::raw("channel_payouts.*"),
+                        \DB::raw("channels.channel_name as channel_name"),
+                        \DB::raw("channels.email as channelemail"),
+                        // \DB::raw("channel_payouts.id as count"),
                     ]);
 
             } elseif (!empty($start_time) && !empty($end_time)) {
  
-                    $total_content = ModeratorsUser::join(
-                        "moderator_payouts",
-                        "moderator_payouts.user_id",
+                    $total_content = Channel::join(
+                        "channel_payouts",
+                        "channel_payouts.user_id",
                         "=",
-                        "moderators_users.id"
+                        "channels.id"
                     )
-                        ->where("moderators_users.id", $user_id)
-                        ->whereBetween("moderator_payouts.created_at", [
+                        ->where("channels.id", $user_id)
+                        ->whereBetween("channel_payouts.created_at", [
                             $start_time,
                             $end_time,
                         ])        
-                        ->where("moderators_users.id", $user_id)
+                        ->where("channels.id", $user_id)
                         ->get([
                             // \DB::raw("COUNT(*) as count"),
-                            \DB::raw("MONTHNAME(moderator_payouts.created_at) as month_name"),
-                            \DB::raw("moderator_payouts.*"),
-                            \DB::raw("moderators_users.username as cppusername"),
-                            \DB::raw("moderators_users.email as cppemail"),
-                            // \DB::raw("moderator_payouts.id as count"),
+                            \DB::raw("MONTHNAME(channel_payouts.created_at) as month_name"),
+                            \DB::raw("channel_payouts.*"),
+                            \DB::raw("channels.channel_name as channel_name"),
+                            \DB::raw("channels.email as channelemail"),
+                            // \DB::raw("channel_payouts.id as count"),
                         ]);
             } else {
-                $total_content = ModeratorsUser::join(
-                    "moderator_payouts",
-                    "moderator_payouts.user_id",
+                $total_content = Channel::join(
+                    "channel_payouts",
+                    "channel_payouts.user_id",
                     "=",
-                    "moderators_users.id"
+                    "channels.id"
                 )
-                    ->where("moderators_users.id", $user_id)
-                    ->where("moderators_users.id", $user_id)
+                    ->where("channels.id", $user_id)
+                    ->where("channels.id", $user_id)
                     ->get([
                         // \DB::raw("COUNT(*) as count"),
-                        \DB::raw("MONTHNAME(moderator_payouts.created_at) as month_name"),
-                        \DB::raw("moderator_payouts.*"),
-                        \DB::raw("moderators_users.username as cppusername"),
-                        \DB::raw("moderators_users.email as cppemail"),
-                        // \DB::raw("moderator_payouts.id as count"),
+                        \DB::raw("MONTHNAME(channel_payouts.created_at) as month_name"),
+                        \DB::raw("channel_payouts.*"),
+                        \DB::raw("channels.channel_name as channel_name"),
+                        \DB::raw("channels.email as channelemail"),
+                        // \DB::raw("channel_payouts.id as count"),
                     ]);
                     
             }
@@ -738,8 +749,8 @@ class ChannelAnalyticsController extends Controller
             if (count($total_content) > 0) {
                 foreach ($total_content as $each_user) {
                     fputcsv($handle, [
-                        $each_user->cppemail,
-                        $each_user->cppusername,
+                        $each_user->channelemail,
+                        $each_user->channel_name,
                         $each_user->commission_paid,
                         $each_user->commission_pending,
                         $each_user->payment_type,
@@ -757,4 +768,192 @@ class ChannelAnalyticsController extends Controller
             return Redirect::to("/blocked");
         }
     }
+
+
+    public function ChannelViewsRegion()
+    {
+        // dd('cpp/view_by_region');
+        $user = User::where("id", 1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date("Y-m-d");
+        if ($current_date > $duedate) {
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [
+                "userid" => 0,
+            ];
+
+            $headers = [
+                "api-key" => "k3Hy5qr73QhXrmHLXhpEh6CQ",
+            ];
+            $response = $client->request("post", $url, [
+                "json" => $params,
+                "headers" => $headers,
+                "verify" => false,
+            ]);
+
+            $responseBody = json_decode($response->getBody());
+            $settings = Setting::first();
+            $data = [
+                "settings" => $settings,
+                "responseBody" => $responseBody,
+            ];
+            return View::make("admin.expired_dashboard", $data);
+        } else {
+            $Country = Region::get();
+
+            $data = [
+                "Country" => $Country,
+            ];
+            return \View::make(
+                "channel.analytics.views_by_region",
+                $data
+            );
+        }
+    }
+
+    public function ChannelRegionVideos(Request $request)
+    {
+        if ($request->ajax()) {
+            $output = "";
+            $query = $request->get("query");
+
+            if ($query != "") {
+                $regions = Region::where("id", "=", $query)->first();
+
+                $region_views = RegionView::leftjoin(
+                    "videos",
+                    "region_views.video_id",
+                    "=",
+                    "videos.id"
+                )
+                    ->where("region_views.countryname", "=", $regions->name)
+                    ->where("uploaded_by", "Channel")
+                    ->get();
+
+                $data = $region_views->groupBy("countryname");
+                $data1 = Video::select("videos.*", "region_views.countryname")
+                    ->join(
+                        "region_views",
+                        "region_views.video_id",
+                        "=",
+                        "videos.id"
+                    )
+                    ->orderBy("created_at", "desc")
+                    ->where("uploaded_by", "Channel")
+                    ->where("region_views.countryname", "=", $regions->name)
+                    ->paginate(19);
+            } else {
+            }
+            $i = 1;
+            $total_row = $data1->count();
+            if ($total_row > 0) {
+                foreach ($data as $row) {
+                    $output .=
+                        '
+        <tr>
+        <td>' .
+                        $i++ .
+                        '</td>
+         <td>' .
+                        $row[0]->title .
+                        '</td>
+         <td>' .
+                        $row[0]->countryname .
+                        '</td>
+         <td>' .
+                        $row[0]->user_ip .
+                        '</td>
+         <td>' .
+                        count($row) .
+                        '</td>
+        </tr>
+        ';
+                }
+            } else {
+                $output = '
+       <tr>
+        <td align="center" colspan="5">No Data Found</td>
+       </tr>
+       ';
+            }
+            $data = [
+                "table_data" => $output,
+                "total_data" => $total_row,
+            ];
+
+            echo json_encode($data);
+        }
+    }
+
+    public function ChannelAllRegionVideos(Request $request)
+    {
+        if ($request->ajax()) {
+            $output = "";
+            $query = $request->get("query");
+
+            if ($query != "") {
+                $region_views = RegionView::leftjoin(
+                    "videos",
+                    "region_views.video_id",
+                    "=",
+                    "videos.id"
+                )
+                    ->where("uploaded_by", "Channel")
+                    ->get();
+                $data = $region_views->groupBy("countryname");
+
+                $data1 = Video::select("videos.*", "region_views.countryname")
+                    ->join(
+                        "region_views",
+                        "region_views.video_id",
+                        "=",
+                        "videos.id"
+                    )
+                    ->orderBy("created_at", "desc")
+                    ->where("uploaded_by", "Channel")
+                    ->paginate(9);
+            } else {
+            }
+            $i = 1;
+            $total_row = $data1->count();
+            if ($total_row > 0) {
+                foreach ($data as $key => $row) {
+                    $output .=
+                        '
+        <tr>
+        <td>' .
+                        $i++ .
+                        '</td>
+         <td>' .
+                        $row[0]->title .
+                        '</td>
+         <td>' .
+                        $row[0]->countryname .
+                        '</td>
+         <td>' .
+                        $row[0]->user_ip .
+                        '</td>
+         <td>' .
+                        count($row) .
+                        '</td>
+        </tr>
+        ';
+                }
+            } else {
+                $output = '
+       <tr>
+        <td align="center" colspan="5">No Data Found</td>
+       </tr>
+       ';
+            }
+            $data = [
+                "table_data" => $output,
+                "total_data" => $total_row,
+            ];
+
+            echo json_encode($data);
+        }
+    }
+
 }

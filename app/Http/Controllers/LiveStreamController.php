@@ -206,4 +206,54 @@ class LiveStreamController extends Controller
            return Theme::view('livecategoryvids',$data);
             
         } 
+
+
+
+
+        public function EmbedLivePlay($vid)
+        {
+
+          $Theme = HomeSetting::pluck('theme_choosen')->first();
+          Theme::uses( $Theme );
+
+          // dd($Theme );
+          $categoryVideos = LiveStream::where('slug',$vid)->first();
+          $vid =  $categoryVideos->id;
+           $settings = Setting::first(); 
+
+
+            $wishlisted = false;
+            $watchlater = false;
+             $session = Session::all();
+
+
+             $currency = CurrencySetting::first();
+             if(!empty($categoryVideos->publish_time)){
+             $new_date = Carbon::parse($categoryVideos->publish_time)->format('M d , y H:i:s');
+             $currentdate = date("M d , y H:i:s");
+
+             if($currentdate < $new_date){
+              $new_date = Carbon::parse($categoryVideos->publish_time)->format('M d , y h:i:s');
+
+             }else{
+              $new_date = null;
+            }
+             }else{
+              $new_date = null;
+             }
+
+           $data = array(
+                 'currency' => $currency,
+                 'video' => $categoryVideos,
+                 'ppv_price' => $categoryVideos->ppv_price,
+                 'watchlatered' => $watchlater,
+                 'mywishlisted' => $wishlisted,
+                 'settings' => $settings,
+           );
+
+           return Theme::view('embedlivevideo', $data);
+
+        }
+
+
 }

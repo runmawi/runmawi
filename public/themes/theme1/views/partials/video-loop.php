@@ -12,7 +12,7 @@
     opacity: 1;
     z-index: 9;
     top: -28px;
-    background: var(--iq-primary) 0% 0% no-repeat padding-box;
+   
     margin: 0 0 0 20px;
     line-height: 5px;
     box-shadow: 0px 9px 19px #01041b0d;
@@ -117,7 +117,7 @@ overflow-hidden {
 <section id="iq-favorites">
             <div class="">
                <div class="row">
-                  <div class="col-sm-12 overflow-hidden">
+                  <div class="col-sm-12">
                      <div class="iq-main-header align-items-center justify-content-between">
                         <!--<h4 class="main-title"><a href="<?php echo URL::to('home') ?>">Latest Videos</a></h4> -->                     
                      </div>
@@ -129,7 +129,7 @@ overflow-hidden {
                               <a href="<?php echo URL::to('category')?><?='/videos/' .$watchlater_video->slug ?>">
                                  <div class="block-images position-relative">
                                     <div class="img-box">
-                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid" alt="">
+                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid w-100" alt="">
                                     </div></div>
                                     <div class="block-description">
                                        

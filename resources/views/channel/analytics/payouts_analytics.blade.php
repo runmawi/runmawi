@@ -1,6 +1,3 @@
-<!-- Page Create on 20/07/2022 -->
-
-
 @extends('channel.master')
 
 @section('css')
@@ -24,7 +21,7 @@
         <div class="col-md-12">
             <div class="iq-card-header  justify-content-between">
                 <div class="iq-header-title">
-                    <h4 class="card-title">Channel Partners Video Analytics :</h4>
+                    <h4 class="card-title">Channel Partners Payouts Analytics :</h4>
                 </div>
             </div>
              
@@ -50,7 +47,7 @@
                 <div class="clear"></div>
                 <br>
 
-                <h4 class="card-title">Video View Through Graph :</h4>
+                <h4 class="card-title">PAyouts View Through Graph :</h4>
                 
                 <div class="row">
                     <div class="col-md-8">
@@ -64,26 +61,28 @@
 
                         <div class="row">
                             <div class="col-md-12">
-                                <table class="table text-center" id="channel_video_analytics_table" style="width:100%">
+                                <table class="table text-center" id="cpp_payouts_analytics_table" style="width:100%">
                                     <thead>
                                         <tr class="r1">
                                             <th>#</th>
-                                            <th>Video Name</th>
                                             <th>Email</th>
-                                            <th>Channel Name</th>
-                                            <th>Total Views</th>
-                                            <!-- <th>Total Comments</th> -->
+                                            <th>Uploader Name</th>
+                                            <th>Commission Paid</th>
+                                            <th>Commission Pending</th>
+                                            <th>Payment Type</th>
+                                            <th>Invoice</th>
                                         </tr>
                                     </thead>
                                 <tbody>
                                 <tr>
-                                    @foreach($total_content as $key => $videos)
+                                    @foreach($total_content as $key => $payouts)
                                         <td>{{ $key+1  }}</td>   
-                                        <td>{{ $videos->title  }}</td>   
-                                        <td>{{ $videos->channelemail  }}</td>   
-                                        <td>{{ $videos->channel_name  }}</td>   
-                                        <td>{{ $videos->views  }}</td>   
-                                        <!-- <td>{{ $videos->count }}</td>  -->
+                                        <td>{{ $payouts->channelemail  }}</td>   
+                                        <td>{{ $payouts->channel_name  }}</td>   
+                                        <td>{{ $payouts->commission_paid  }}</td> 
+                                        <td>{{ $payouts->commission_pending  }}</td>   
+                                        <td>{{ $payouts->payment_type }}</td> 
+                                        <td><a href ="{{ $payouts->invoice }}" attributes-list download >Invoice </a>  </td> 
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -106,7 +105,7 @@
     });
 
      $(document).ready(function(){
-        $('#channel_video_analytics_table').DataTable();
+        $('#cpp_payouts_analytics_table').DataTable();
      });
         </script>
 
@@ -129,7 +128,7 @@
         $('#start_time').change(function(){
             var start_time =  $('#start_time').val();
             var end_time =  $('#end_time').val();
-            var url = "{{ URL::to('channel/video_startdate_analytics/')  }}";
+            var url = "{{ URL::to('channel/payouts_startdate_analytics/')  }}";
        
        if(start_time != "" && end_time == ""){
             $.ajax({
@@ -145,7 +144,7 @@
                     // console.log(value);
 
                     $('tbody').html(value.table_data);
-                    $('#cpp_video_analytics_table').DataTable();
+                    $('#cpp_payouts_analytics_table').DataTable();
                     google.charts.load('current', {'packages':['corechart']});
                     google.charts.setOnLoadCallback(drawChart);
             
@@ -156,10 +155,10 @@
                     data.addColumn('string', 'Month');
                     data.addColumn('number', 'Video Views Count');
 
-                    linechart.forEach(function (row) {
+                    linechart.forEach(function (key,row) {
                         data.addRow([
                         row.month_name,
-                        parseInt(row.views),
+                        parseInt(row.key),
                         ]);
                     });
                     var chart = new google.visualization.LineChart(document.getElementById('google-line-chart'));
@@ -175,7 +174,7 @@
         $('#end_time').change(function(){
         var start_time =  $('#start_time').val();
         var end_time =  $('#end_time').val();
-        var url = "{{ URL::to('channel/video_enddate_analytics/')  }}";
+        var url = "{{ URL::to('channel/payouts_enddate_analytics/')  }}";
 
        if(start_time != "" && end_time != ""){
             $.ajax({
@@ -190,7 +189,7 @@
                 success: function(value){
                     console.log(value);
                     $('tbody').html(value.table_data);
-                    $('#cpp_video_analytics_table').DataTable();
+                    $('#cpp_payouts_analytics_table').DataTable();
                     google.charts.load('current', {'packages':['corechart']});
                     google.charts.setOnLoadCallback(drawChart);
             
@@ -199,12 +198,12 @@
                     var data = new google.visualization.DataTable(linechart);
                     var data = new google.visualization.DataTable();
                     data.addColumn('string', 'Month');
-                    data.addColumn('number', 'Video Views Count');
+                    data.addColumn('number', 'Payouts');
 
-                    linechart.forEach(function (row) {
+                    linechart.forEach(function (key,row) {
                         data.addRow([
                         row.month_name,
-                        parseInt(row.views),
+                        parseInt(row.key),
                         ]);
                     });
                     var chart = new google.visualization.LineChart(document.getElementById('google-line-chart'));
@@ -233,7 +232,7 @@
             var start_time =  $('#start_time').val();
             var end_time =  $('#end_time').val();
             var url =  $('#exportCsv_url').val();
-        var url = "{{ URL::to('channel/video_exportCsv/')  }}";
+        var url = "{{ URL::to('channel/payouts_exportCsv/')  }}";
 
             $.ajax({
             url: url,
@@ -274,15 +273,15 @@ google.charts.setOnLoadCallback(drawChart);
 function drawChart() {
 
 var data = google.visualization.arrayToDataTable([
-    ['Month Name', 'Channel Video Views'],
-    <?php foreach ($total_content as $d) {
-        echo "['" . $d->month_name . "', " . $d->views . "],";
+    ['Month Name', 'Moderator Video Views'],
+    <?php foreach ($total_content as $key => $d) {
+        echo "['" . $d->month_name . "', " . $key++ . "],";
     } ?>
     
 ]);
 
 var options = {
-  title: 'Total Channel Video Views',
+  title: 'Total Moderator Payouts',
   curveType: 'function',
   legend: { position: 'bottom' }
 };
