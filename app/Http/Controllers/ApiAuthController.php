@@ -3207,6 +3207,7 @@ public function checkEmailExists(Request $request)
          return $item;
        });
       
+       
       $response = array(
         'status'=>'true',
         'message'=>'success',
