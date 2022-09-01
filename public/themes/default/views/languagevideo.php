@@ -12,7 +12,7 @@
                             <?php if(isset($lang_videos)) :
                            foreach($lang_videos as $video): ?>
                            <li class="slide-item col-sm-2 col-md-2 col-xs-12">
-                              <a href="<?php echo URL::to('home') ?>">
+                          <a href="<?php echo URL::to('category') ?><?= '/videos/' . $video->slug ?>">
                                  <div class="block-images position-relative">
                                     <div class="img-box">
                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$video->image;  ?>" class="img-fluid" alt="">

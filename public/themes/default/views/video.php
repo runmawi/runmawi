@@ -79,13 +79,13 @@ input.skips,input#Recaps_Skip{
 	display: none;
 }
       .modal-content{
-          background-color: transparent;
+          background-color: #fff;
       }
       .modal-dialog{
-          max-width:900px!important;
+          max-width:500px!important;
       }
       .modal {
-          top:40px;
+          top:2%;
       }
 #end_card_video{
   /* end_card_video */
@@ -1109,17 +1109,17 @@ $artists = [];
          </div>
          <div class="modal-body">
              <div class="row">
-                 <div class="col-sm-2" style="width:52%;">
+                 <!--<div class="col-sm-2" style="">
                    <span id="paypal-button"></span> 
-                 </div>
+                 </div>-->
                  
                   <div class="col-sm-10">
                   <span class="badge badge-secondary p-2"><?php echo __($video->title);?></span>
                   <span class="badge badge-secondary p-2"><?php echo __($video->age_restrict).' '.'+';?></span>
                   <span class="badge badge-secondary p-2"><?php echo __(isset($video->categories->name));?></span>
                   <span class="badge badge-secondary p-2"><?php echo __(isset($video->languages->name));?></span>
-                  <span class="badge badge-secondary p-2"><?php echo __($video->duration);?></span>
-                  <span class="trending-year"><?php if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span>
+                  <span class="badge badge-secondary p-2"><?php echo __($video->duration);?></span><br>
+                  <span class="trending-year mt-2"><?php if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span>
                   <button type="button" class="btn btn-primary"  data-dismiss="modal"><?php echo __($currency->symbol.' '.$video->ppv_price);?></button>
                   <label for="method"><h3>Payment Method</h3></label>
                  
