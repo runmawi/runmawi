@@ -1,5 +1,5 @@
 <?php
-  include(public_path('themes/default/views/header.php'));
+  include(public_path('themes/theme1/views/header.php'));
   $series = App\series::first();
 ?>
 
@@ -187,9 +187,9 @@ if (Auth::guest())
 ?>">
 <br>
 
-	<div class="container series-details">
+	<div class=" series-details">
 	<div id="series_title">
-		<div class="container">
+		<div class="container-fluid">
             <div class="row align-items-center">
 			<?php if ($free_episode > 0 || $ppv_exits > 0 || Auth::user()->role == 'admin' || Auth::guest())
 {
@@ -773,5 +773,5 @@ function episodewishlist(ele)
 </script>
 	
 <?php
-    include(public_path('themes/default/views/footer.blade.php'));
+    include(public_path('themes/theme1/views/footer.blade.php'));
 ?>

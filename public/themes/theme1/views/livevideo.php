@@ -218,7 +218,7 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()  || $video->access == "guest" &
             
             <input type="hidden" class="videocategoryid" data-videocategoryid="<?=$video->video_category_id; ?>" value="<?=$video->video_category_id; ?>">
 
-            <div class="container video-details">
+            <div class="container-fluid video-details">
                 <div class="row">
                     <div class="col-sm-6 col-md-6 col-xs-12">
                         <h1 class="trending-text big-title text-uppercase mt-3"><?php echo __($video->title);?> <?php if( Auth::guest() ) { ?>  <?php } ?></h1>
