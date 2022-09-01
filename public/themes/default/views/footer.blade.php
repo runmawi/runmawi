@@ -678,6 +678,10 @@ return;
                 alert("This function has been disabled ");   // Prevent Ctrl + Shift + J
                 return false;
             }
+            else if(event.ctrlKey && event.shiftKey && event.keyCode == 'C'.charCodeAt(0)){
+                alert("This function has been disabled ");   // Prevent Ctrl + Shift + c
+                return false;
+            }
             else if(event.ctrlKey && event.keyCode == 'U'.charCodeAt(0)){
                 alert("This function has been disabled ");  // Prevent  Ctrl + U
                 return false;
