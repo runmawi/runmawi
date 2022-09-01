@@ -18,7 +18,7 @@
                              <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$artist_details->image;  ?>" class="img-fluid w-100" alt="">
                         </a>
                     </div>
-                </div>
+               
 
                 <div class="block-description">
                     <div class="hover-buttons">
@@ -33,7 +33,7 @@
                         <h6><?php  echo (strlen($artist_details->artist_name) > 17) ? substr($artist_details->artist_name,0,18).'...' : $artist_details->artist_name; ?></h6>
                     <?php } ?>
                 </div>
-
+ </div>
             </a>
         </li>
         <?php endforeach; endif; ?>
