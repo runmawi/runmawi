@@ -15,7 +15,7 @@
 }
 @media (min-width:1200px) {
   li.slide-item.slick-active + li.slide-item.slick-active + li.slide-item.slick-active + li.slide-item.slick-active:hover .block-images { transform: scale(1.1);
-    transform-origin: 40% 80%!important; }
+    transform-origin: 40% 85%!important; }
   .watch-title { position: absolute; top: 50%; left: -20%; transform: translateY(-50%); font-size: 17px; letter-spacing: 3.5px; font-weight: 600; color: var(--iq-white); }
   .watch-title:before { content: ''; position: absolute; top: 50%; left: -36%; transform: translateY(-50%); background: var(--iq-white); width: 52px; height: 2px; }
   .col-1-5 { -ms-flex: 0 0 20%; flex: 0 0 20%; max-width: 20%; }
