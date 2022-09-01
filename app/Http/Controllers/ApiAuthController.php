@@ -3207,7 +3207,7 @@ public function checkEmailExists(Request $request)
          return $item;
        });
       
-       
+
       $response = array(
         'status'=>'true',
         'message'=>'success',
@@ -7717,6 +7717,25 @@ public function Adstatus_upate(Request $request)
     $response = array(
       'status' => 'true',
       'series' => $series,
+    );
+
+    return response()->json($response, 200);
+  }
+
+
+  public function relatedlive(Request $request)
+  {
+    
+    $live_id = $request->live_id;
+
+    $livestream = LiveStream::where('id','!=', $live_id)
+      ->get()->map(function ($item) {
+      $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
+      return $item;
+    });
+    $response = array(
+      'status' => 'true',
+      'livestream' => $livestream,
     );
 
     return response()->json($response, 200);
