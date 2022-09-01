@@ -3167,7 +3167,10 @@ public function checkEmailExists(Request $request)
     
               $ppv_video_status = "can_view";
     
-          } else {
+          }elseif(!empty($series) && $series[0]->ppv_status == 0 ) {
+            $ppv_video_status = "can_view";
+          } 
+          else {
                 $ppv_video_status = "pay_now";
           }
       $seasonfirst = SeriesSeason::where('series_id','=',$seriesid)->first();
@@ -7716,6 +7719,50 @@ public function Adstatus_upate(Request $request)
     );
 
     return response()->json($response, 200);
+  }
+
+  public function cpanelstorage(Request $request)
+  {
+
+
+    $Domain_Name = "domain";
+    $username    = 'manoj';
+    $password    = 't94d24w32F8W';
+    $host    = '75.119.145.126';
+    $port = '2083';
+    
+    $user = "user";
+    $domain = "domain.com";
+   // Instantiate the CPANEL object.
+  //  require_once "/usr/local/cpanel/php/cpanel.php";
+
+   require('cpanel/cpanel/cPanel.php');
+
+    // establish connection to CPanel
+    $cpanel = new CPANEL();
+    // get email account informations
+    $response = $cpanel->uapi(
+        'Email',
+       'get_disk_usage',
+           array (
+              //  'user' => $user,
+              //  'domain' => $domain,
+               'name'       => 'manoj_'.$Domain_Name,
+               'password'   => 'CHennai@01',
+           )
+       );
+
+// Handle the response
+if ($response['cpanelresult']['result']['status']) {
+    $data = $response['cpanelresult']['result']['data'];
+    // Do something with the $data
+}
+else {
+    // Report errors and do things  
+}
+// Disconnect from cPanel - only do this once.
+$cpanel->end();
+
   }
 
 }
