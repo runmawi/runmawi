@@ -757,18 +757,28 @@ return;
   }
 </script>
 
-
-<?php   $Prevent_inspect = App\SiteTheme::pluck('prevent_inspect')->first();
-if( $Prevent_inspect == 1){
+                {{-- Prevent Inspect --}}
+<?php  
+  $Prevent_inspect = App\SiteTheme::pluck('prevent_inspect')->first();
+  if( $Prevent_inspect == 1){
 ?>
 
 <script>
         $(document).keydown(function (event) {
-            if (event.keyCode == 123) { // Prevent F12
-                alert("This function has been disabled");
+            if (event.keyCode == 123) { 
+                alert("This function has been disabled"); // Prevent F12
                 return false;
-            } else if (event.ctrlKey && event.shiftKey && event.keyCode == 73) { // Prevent Ctrl+Shift+I 
-              alert("This function has been disabled ");       
+            } 
+            else if(event.ctrlKey && event.shiftKey && event.keyCode == 'I'.charCodeAt(0)){ 
+                alert("This function has been disabled ");   // Prevent Ctrl + Shift + I
+                return false;
+            }
+            else if(event.ctrlKey && event.shiftKey && event.keyCode == 'J'.charCodeAt(0)){
+                alert("This function has been disabled ");   // Prevent Ctrl + Shift + J
+                return false;
+            }
+            else if(event.ctrlKey && event.keyCode == 'U'.charCodeAt(0)){
+                alert("This function has been disabled ");  // Prevent  Ctrl + U
                 return false;
             }
         });

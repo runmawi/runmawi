@@ -921,7 +921,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 
 <!-- Trailer  -->
 
-    <div class="col-sm-4 p-0">
+    <div class="col-sm-9 p-0">
         <div>     
             <?php if($video->trailer != '' && $ThumbnailSetting->trailer == 1 ){ ?>
             
@@ -948,7 +948,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                 </p>
                   </a>
               </div>
-            </div>
+        </div>  </div></div>
 <?php //dd($video->trailer_type); ?>
           <div class="modal fade modal-xl" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -993,12 +993,12 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
               </div>
             </div>
           </div>
-        </div>
+      
         <?php } ?>
-        </div></div>
+      
 
 <!-- Trailer End  -->
-
+<div class="">
   <?php if(!empty($video->description) ) { ?>
     <div class="col-md-7 p-0" style="margin-top: 2%;">
       <h4>Description</h4>
@@ -1037,7 +1037,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
       </div>
     </div>
   <?php  }?>
-<br>
+<br></div>
 
 <?php if(!empty($video->details) ) { ?>
 

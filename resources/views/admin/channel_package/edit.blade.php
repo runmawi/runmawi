@@ -97,7 +97,7 @@
                                 <label class="m-0">Package Name</label>
                                 <p class="p1">Add the Channel Package Name in the textbox below:</p>
                                 <div class="panel-body">
-                                    <input type="text" class="form-control" name="channel_package_name" id="channel_package_name" placeholder="Package Name" value="" />
+                                    <input type="text" class="form-control" name="channel_package_name" id="channel_package_name" placeholder="Package Name" value="{{ $Channel_package->channel_package_name }}" />
                                 </div>
                             </div>
 
@@ -106,11 +106,13 @@
                                 <p class="p1">Select the List Of Channel in the textbox below:</p>
 
                                 <select name="add_channels[]" id="add_channels" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
-                                    @forelse ($Channel_list as $Channel_lists) 
-                                        <option value="{{ $Channel_lists->id }}" >{{ $Channel_lists->channel_name }}</option>
-                                    @empty
-                                        <option value="{{ "No Channel Found" }}" >{{ "No Channel Found" }}</option>
-                                    @endforelse
+                                    @foreach ($Channel_list as $Channel_lists) 
+                                        @if(in_array($Channel_lists->id, $channel_list_selected))
+                                            <option value="{{ $Channel_lists->id }}" selected="true">{{ $Channel_lists->channel_name }}</option>
+                                        @else
+                                            <option value="{{ $Channel_lists->id }}" >{{ $Channel_lists->channel_name }}</option>
+                                        @endif 
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -120,7 +122,7 @@
                                 <label class="m-0">Package Plan ID</label>
                                 <p class="p1">Add the Channel Package plan id in the textbox below:</p>
                                 <div class="panel-body">
-                                    <input type="text" class="form-control" name="channel_package_plan_id" id="channel_package_plan_id" placeholder="Package Plan ID" value="" />
+                                    <input type="text" class="form-control" name="channel_package_plan_id" id="channel_package_plan_id" placeholder="Package Plan ID" value="{{ $Channel_package->channel_package_plan_id }}" />
                                 </div>
                             </div>
 
@@ -128,7 +130,7 @@
                                 <label class="m-0">Package Price</label>
                                 <p class="p1">Add the Channel Package Price in the textbox below:</p>
                                 <div class="panel-body">
-                                    <input type="text" class="form-control" name="channel_package_price" id="channel_package_price" placeholder="Package Price" value="" />
+                                    <input type="text" class="form-control" name="channel_package_price" id="channel_package_price" placeholder="Package Price" value="{{ $Channel_package->channel_package_price }}" />
                                 </div>
                             </div>
                         </div>
@@ -138,7 +140,7 @@
                                 <label class="m-0">Plan Interval</label>
                                 <p class="p1">Add the Channel Plan Interval in the textbox below:</p>
                                 <div class="panel-body">
-                                    <input type="text" class="form-control" name="channel_plan_interval" id="channel_plan_interval" placeholder="Plan Interval" value="" />
+                                    <input type="text" class="form-control" name="channel_plan_interval" id="channel_plan_interval" placeholder="Plan Interval" value="{{ $Channel_package->channel_plan_interval }}" />
                                 </div>
                             </div>
 
@@ -147,16 +149,17 @@
                                 <p class="p1">Enable the Status for Channel Package:</p>
                                 <div class="mt-1">
                                     <label class="switch">
-                                        <input name="status" id="status" class="status" type="checkbox" >
+                                        <input name="status" id="status" class="status" type="checkbox" @if( $Channel_package->status == 1) checked @endif>
                                         <span class="slider round"></span>
                                     </label>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                         
                     <div class="d-flex justify-content-end">
-                        <input type="submit" value="{{ 'Save'}}" class="btn btn-primary" />
+                        <input type="submit" value="{{ 'Update'}}" class="btn btn-primary" />
                     </div>
 
                     </form>
@@ -167,4 +170,5 @@
     </div>
  @stop
 
- @include('admin.channel_package.channel_package_script')
+@include('admin.channel_package.channel_package_script')
+
