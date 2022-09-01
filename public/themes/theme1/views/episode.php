@@ -168,9 +168,9 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 <input type="hidden" class="seriescategoryid" data-seriescategoryid="<?= $episode->genre_id ?>" value="<?= $episode->genre_id ?>">
 <br>
 
-	<div class="container series-details">
+	<div class=" series-details">
 	<div id="series_title">
-		<div class="container">
+		<div class="container-fluid">
             <div class="row align-items-center">
 			<?php if($free_episode > 0 ||  $ppv_exits > 0 || Auth::user()->role == 'admin' ||  Auth::guest()){ 
 			}else{ ?>
@@ -242,29 +242,14 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 	  		<div class="col-md-5">
 		  		<ul class="list-inline p-0 mt-4 share-icons music-play-lists">
 
-				 	 <li>
-						<?php if($episode_watchlater == null){ ?>
-							<span id="<?php echo 'episode_add_watchlist_'.$episode->id ; ?>" class="slider_add_watchlist"  aria-hidden="true" data-list="<?php echo $episode->id ; ?>" data-myval="10" data-video-id="<?php echo $episode->id ; ?>" onclick="episodewatchlater(this)" > <i class="fa fa-plus-circle" aria-hidden="true"></i>  </span>
-						<?php }else{?>
-							<span id="<?php echo 'episode_add_watchlist_'.$episode->id ; ?>" class="slider_add_watchlist"  aria-hidden="true" data-list="<?php echo $episode->id ; ?>" data-myval="10"  data-video-id="<?php echo $episode->id ; ?>"  onclick="episodewatchlater(this)"> <i class="fa fa-minus-circle" aria-hidden="true"></i> </span>
-						<?php } ?>
-					</li>
-
-                    <li>
-						<?php if($episode_Wishlist == null){ ?>
-							<span id="<?php echo 'episode_add_wishlist_'.$episode->id ; ?>" class="episode_add_wishlist_"  aria-hidden="true" data-list="<?php echo $episode->id ; ?>" data-myval="10" data-video-id="<?php echo $episode->id ; ?>" onclick="episodewishlist(this)" ><i class="fa fa-heart-o" aria-hidden="true"></i>   </span>
-						<?php }else{?>
-							<span id="<?php echo 'episode_add_wishlist_'.$episode->id ; ?>" class="episode_add_wishlist_"  aria-hidden="true" data-list="<?php echo $episode->id ; ?>" data-myval="10"  data-video-id="<?php echo $episode->id ; ?>"  onclick="episodewishlist(this)"> <i class="fa  fa-heart" aria-hidden="true"></i></span>
-						<?php } ?>
-					</li>
-
+				 	
+<li>
 					<?php if(empty($like_dislike->liked) ||  !empty($like_dislike->liked) && $like_dislike->liked == 0){ ?>
 							<span id="<?php echo 'episode_like_'.$episode->id ; ?>" class="episode_like_"  aria-hidden="true" data-list="<?php echo $episode->id ; ?>" data-myval="10" data-video-id="<?php echo $episode->id ; ?>" onclick="episodelike(this)" ><i class="ri-thumb-up-line" aria-hidden="true"></i>   </span>
 						<?php }else{?>
 							<span id="<?php echo 'episode_like_'.$episode->id ; ?>" class="episode_like_"  aria-hidden="true" data-list="remove" data-myval="10"  data-video-id="<?php echo $episode->id ; ?>"  onclick="episodelike(this)"> <i class="ri-thumb-up-fill" aria-hidden="true"></i></span>
 						<?php } ?>
-					</li>
-
+                </li>
 					<li>
 						<?php if(empty($like_dislike->disliked) ||  !empty($like_dislike->disliked) && $like_dislike->disliked == 0){ ?>
 							<span id="<?php echo 'episode_dislike_'.$episode->id ; ?>" class="episode_dislike_"  aria-hidden="true" data-list="<?php echo $episode->id ; ?>" data-myval="10" data-video-id="<?php echo $episode->id ; ?>" onclick="episodedislike(this)" ><i class="ri-thumb-down-line" aria-hidden="true"></i>   </span>

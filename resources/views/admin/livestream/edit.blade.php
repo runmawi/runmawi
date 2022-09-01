@@ -117,12 +117,10 @@ border-radius: 0px 4px 4px 0px;
                         @endif
 	<div class="clear"></div>
 
-                    @if($video->active == 1  && $video->status == 1 )
                         <div class="col-3">
                             <label for=""><h3 class="fs-title m-0">Embed Link:</h3></label>
                             <p>Click <a href="#"onclick="EmbedCopy();" class="share-ico"><i class="ri-links-fill"></i> here</a> to get the Embedded URL</p>
                             </div>
-                           @endif
 
 
 		<form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" style="padding: 15px;" id="liveEdit_video">
