@@ -394,7 +394,7 @@ border-radius: 20px;
                         </div>
                 </div>
                 </div>
-
+                </div>
                 <hr style="color:#fff;">
                 <div class="col-md-8 targetDiv" id="div2">
                     <div class="d-flex justify-content-around text-white">
@@ -548,7 +548,7 @@ border-radius: 20px;
        
             </div></div>
          
-       
+        </div>
     </section>
     
     <!--<section  class="m-profile setting-wrapper pt-0  mt-4">
@@ -1283,38 +1283,6 @@ function myFunction() {
    ?>
 
 
-	<!-- Imported styles on this page -->
-	 <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/jquery.min.js';?>"></script>
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/popper.min.js';?>"></script>
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/css/bootstrap.min.css';?>"></script>
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/jquery.dataTables.min.js';?>"></script>
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/dataTables.bootstrap4.min.js';?>"></script>
-   <!-- Appear JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/jquery.appear.js';?>"></script>
-   <!-- Countdown JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/countdown.min.js';?>"></script>
-   <!-- Select2 JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/select2.min.js';?>"></script>
-   <!-- Counterup JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/waypoints.min.js';?>"></script>
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/jquery.counterup.min.js';?>"></script>
-   <!-- Wow JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/wow.min.js';?>"></script>
-   <!-- Slick JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/slick.min.js';?>"></script>
-   <!-- Owl Carousel JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/owl.carousel.min.js';?>"></script>
-   <!-- Magnific Popup JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/jquery.magnific-popup.min.js';?>"></script>
-   <!-- Smooth Scrollbar JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/smooth-scrollbar.js';?>"></script>
-   <!-- apex Custom JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/apexcharts.js';?>"></script>
-   <!-- Chart Custom JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/chart-custom.js';?>"></script>
-   <!-- Custom JavaScript -->
-   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/custom.js';?>"></script>
-	<!-- End Notifications -->
 
 	<!--@yield('javascript')-->
      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

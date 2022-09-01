@@ -655,8 +655,8 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
        <!-- Year, Running time, Age --> 
          <div class="row align-items- text-white text-detail justify-content-between">
              <div class="col-sm-6 col-md-6 col-xs-12">
-            <span class="badge badge-secondary p-3"><?php echo __($video->age_restrict).' '.'+';?></span>
-            <span class="ml-3"><?php echo __(gmdate('H:i:s', $video->duration));?></span>
+            <span class="badge badge-secondary p-2"><?php echo __($video->age_restrict).' '.'+';?></span>
+            <span class="ml-2 small"><?php echo __(gmdate('H:i:s', $video->duration));?></span>
             <?php if (empty($video->year)) { ?>  <?php } else { ?><span class="trending-year"> <?php echo $video->year;} ?></span>
             <span class="trending-year"><?php
             foreach($category_name as $value){
@@ -888,7 +888,7 @@ $artists = [];
                  <span class="badge badge-secondary p-2"><?php echo __($video->age_restrict).' '.'+';?></span>
                 <span class="badge badge-secondary p-2"><?php echo __(isset($video->categories->name));?></span>
                 <span class="badge badge-secondary p-2"><?php echo __(isset($video->languages->name));?></span>
-                <span class="badge badge-secondary p-2"><?php echo __($video->duration);?></span>
+                <span class="badge badge-secondary p-2 small"><?php echo __($video->duration);?></span>
                 <span class="trending-year"><?php if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span>
                <button type="button" class="btn btn-primary"  data-dismiss="modal"><?php echo __($currency->symbol.' '.$video->ppv_price);?></button>
                  <label for="method"><h3>Payment Method</h3></label>
@@ -979,7 +979,7 @@ $artists = [];
 <?php } ?>
 
 
-   <div class="container-fluid video-list you-may-like">
+   <div class="container-fluid video-list you-may-like  overflow-hidden">
        <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Recomended Videos');?></h4>
            <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>   
                <?php include('partials/video-loop.php');?>
