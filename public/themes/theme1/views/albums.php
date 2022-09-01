@@ -140,7 +140,7 @@ border-bottom: 1px solid #141414;
 
 <input type="hidden" value="<?php echo URL('/');?>" id="base_url">
 <div id="audio_bg" >
-<div class="container">
+<div class="container-fluid">
 <div class="row album-top-30 mt-4 align-items-center">
 <div class="col-sm-4 ">
 <img src="<?= URL::to('/').'/public/uploads/albums/'. $album->album ?>"  class="img-responsive" / width="350">
