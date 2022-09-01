@@ -608,7 +608,7 @@ i.fa.fa-google-plus {
                         <div class="d-flex justify-content-between align-items-center mt-2">
                             <div>
                                 <p> Amount Deducted for Promotion Code   </p>
-                                <p> The Payment Amount  </p>
+                                <p> Payable Amount    </p>
                             </div>
                             <div>
                                 <p id="promo_code_amt" > {{  '$0'  }} </p>

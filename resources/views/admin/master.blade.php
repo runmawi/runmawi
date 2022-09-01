@@ -509,6 +509,8 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <li><a href="{{ URL::to('admin/channel/pendingusers/') }}"><i class="las la-eye"></i>Channel Partners For Approval</a></li>
                         <li><a href="{{ URL::to('admin/channel/commission') }}"><i class="las la-eye"></i>Commission </a></li>
                         <li><a href="{{ URL::to('admin/channel/payouts') }}"><i class="las la-eye"></i>Channel Partners Payout</a></li>
+                        <li><a href="{{ route('channel_package_index') }}"><i class="las la-eye"></i>Channel Package</a></li>
+                        <li><a href="{{ route('channel_package_index') }}"><i class="las la-eye"></i>Channel Package</a></li>
                      </ul>
                   </li>
                   <li>
@@ -800,6 +802,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <li><a href="{{ URL::to('admin/channel/pendingusers/') }}"><i class="las la-eye"></i>Channel Partners For Approval</a></li>
                         <li><a href="{{ URL::to('admin/channel/commission') }}"><i class="las la-eye"></i>Commission </a></li>
                         <li><a href="{{ URL::to('admin/channel/payouts') }}"><i class="las la-eye"></i>Channel Partners Payout</a></li>
+                        <li><a href="{{ route('channel_package_index') }}"><i class="las la-eye"></i>Channel Package</a></li>
                      </ul>
                   </li>
                   <li>
@@ -1093,6 +1096,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <li><a href="{{ URL::to('admin/channel/pendingusers/') }}"><i class="las la-eye"></i>Channel Partners For Approval</a></li>
                         <li><a href="{{ URL::to('admin/channel/commission') }}"><i class="las la-eye"></i>Commission </a></li>
                         <li><a href="{{ URL::to('admin/channel/payouts') }}"><i class="las la-eye"></i>Channel Partners Payout</a></li>
+                        <li><a href="{{ route('channel_package_index') }}"><i class="las la-eye"></i>Channel Package</a></li>
                      </ul>
                   </li>
                   <li>
