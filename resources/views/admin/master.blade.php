@@ -558,6 +558,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      <ul id="analytics_managements" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/analytics/revenue') }}"><i class="las la-user-plus"></i>Users Analytics </a></li>
                         <li><a href="{{ URL::to('admin/users/revenue') }}"><i class="las la-user-plus"></i>Users Revenue </a></li>
+                        <li><a href="{{ URL::to('admin/video/purchased-analytics') }}"><i class="las la-user-plus"></i>Purchased Video Analytics </a></li>
                         <li><a href="{{ URL::to('admin/cpp/analytics') }}"><i class="las la-user-plus"></i>CPP Analytics </a></li>
                         <li><a href="{{ URL::to('admin/cpp/video-analytics') }}"><i class="las la-user-plus"></i>CPP Video Analytics </a></li>
                         <li><a href="{{ URL::to('admin/cpp/revenue') }}"><i class="las la-user-plus"></i>CPP Revenue </a></li>
@@ -850,6 +851,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      <ul id="analytics_managements" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/analytics/revenue') }}">Users Analytics </a></li>
                         <li><a href="{{ URL::to('admin/users/revenue') }}">Users Revenue </a></li>
+                        <li><a href="{{ URL::to('admin/video/purchased-analytics') }}"><i class="las la-user-plus"></i>Purchased Video Analytics </a></li>
                         <li><a href="{{ URL::to('admin/cpp/analytics') }}">CPP Analytics </a></li>
                         <li><a href="{{ URL::to('admin/cpp/video-analytics') }}">CPP Video Analytics </a></li>
                         <li><a href="{{ URL::to('admin/cpp/revenue') }}">CPP Revenue </a></li>
@@ -1143,6 +1145,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      <ul id="analytics_managements" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/analytics/revenue') }}"><i class="las la-user-plus"></i>Users Analytics </a></li>
                         <li><a href="{{ URL::to('admin/users/revenue') }}"><i class="las la-user-plus"></i>Users Revenue </a></li>
+                        <li><a href="{{ URL::to('admin/video/purchased-analytics') }}"><i class="las la-user-plus"></i>Purchased Video Analytics </a></li>
                         <li><a href="{{ URL::to('admin/cpp/analytics') }}"><i class="las la-user-plus"></i>CPP Analytics </a></li>
                         <li><a href="{{ URL::to('admin/cpp/video-analytics') }}"><i class="las la-user-plus"></i>CPP Video Analytics </a></li>
                         <li><a href="{{ URL::to('admin/cpp/revenue') }}"><i class="las la-user-plus"></i>CPP Revenue </a></li>

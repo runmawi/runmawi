@@ -136,7 +136,9 @@ $site_page_url = $http_site_url[1];
        <input type="hidden" value="<?php echo $settings->google_tracking_id ; ?>" name="tracking_id" id="tracking_id">
            
     <link async rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
-
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
     <link rel="shortcut icon" type="image/png" href="<?= URL::to('/'). '/public/uploads/settings/'. $settings->favicon; ?>" />
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/bootstrap.min.css';?>" />
@@ -317,6 +319,19 @@ input:checked + .sliderk:before {
             color: <?php echo GetLightText(); ?>!important;
         } 
         body.light-theme .vid-title{
+            color: <?php echo GetLightText(); ?>!important;
+        }
+         body.light-theme .trending-info h1{
+            color: <?php echo GetLightText(); ?>!important;
+        }body.light-theme .text-detail{
+            color: <?php echo GetLightText(); ?>!important;
+        }body.light-theme .share-icons.music-play-lists li span i{
+            color: <?php echo GetLightText(); ?>!important;
+        }body.light-theme .btn1{
+           border: 1px solid <?php echo GetLightText(); ?>!important;
+            color: <?php echo GetLightText(); ?>!important;
+        }body.light-theme .trending-dec{
+          
             color: <?php echo GetLightText(); ?>!important;
         }
     </style>
