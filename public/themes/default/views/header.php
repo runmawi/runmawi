@@ -310,7 +310,15 @@ input:checked + .sliderk:before {
         body.light-theme .slick-nav i{
              color: <?php echo GetLightText(); ?>!important;
         }
-       
+        body h2{
+            color: <?php echo GetLightText(); ?>!important;
+        }
+        body.light-theme .filter-option-inner-inner{
+            color: <?php echo GetLightText(); ?>!important;
+        } 
+        body.light-theme .vid-title{
+            color: <?php echo GetLightText(); ?>!important;
+        }
     </style>
      
    <body>
