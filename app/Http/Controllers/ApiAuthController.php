@@ -2337,7 +2337,9 @@ $final[] = array_merge($array1,$array2,$array3,$array4);
 
       $response = array(
         'status'=>'true',
-        'plans' => $plans
+        'Currency_Symbol'=> CurrencySetting::pluck('symbol')->first() ,
+        'plans' => $plans ,
+        'Currency_Setting' => CurrencySetting::all() ,
       ); 
       return response()->json($response, 200);
     } 
