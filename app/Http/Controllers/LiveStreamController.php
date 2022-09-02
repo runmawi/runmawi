@@ -160,6 +160,7 @@ class LiveStreamController extends Controller
                  'new_date' => $new_date,
                  'payment_setting' => $payment_setting,
                  'Razorpay_payment_setting' => $Razorpay_payment_setting,
+                 'Related_videos' => LiveStream::whereNotIn('id',[$vid])->inRandomOrder()->get(),
            );
 
            return Theme::view('livevideo', $data);
