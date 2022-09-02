@@ -587,6 +587,10 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::get('/pop-up', 'AdminHomePopupController@index')->name('homepage_popup'); 
     Route::post('/pop-up-update', 'AdminHomePopupController@create')->name('homepage_popup_update'); 
 
+    // Admin Live Event for artist
+    Route::get('/live-event-artist', 'AdminLiveEventArtist@index')->name('live_event_artist');
+    Route::get('/live-event-create', 'AdminLiveEventArtist@create')->name('live_event_create');
+
     // Admin Channel Package
     Route::get('/channel-package-index', 'AdminChannelPackageController@index')->name('channel_package_index');
     Route::get('/channel-package-create', 'AdminChannelPackageController@create')->name('channel_package_create');
