@@ -1021,10 +1021,16 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 
             <p class="trending-dec w-100 mb-0 text-white mt-2">Starring :
               <?php 
+                    $numartists = count($artists);
+                    $k = 0;
                     foreach($artists as $key => $artist){  ?>
-                <a  href="<?php echo __(URL::to('/artist') .'/'. $artist->artist_slug); ?>"  >
-                      <span class="sta"><?php echo $artist->artist_slug.',' ; ?></span>
-                </a>
+                      <a  href="<?php echo __(URL::to('/artist') .'/'. $artist->artist_slug); ?>"  >
+                          <span class="sta">
+                            <?php echo $artist->artist_slug ;
+                              if(++$k === $numartists) { echo '' ;} else{ echo ',';}
+                            ?>
+                          </span>
+                      </a>
               <?php } ?>
             </p>
           <?php } ?>
