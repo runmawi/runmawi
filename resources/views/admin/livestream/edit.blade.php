@@ -118,7 +118,7 @@ border-radius: 0px 4px 4px 0px;
 	<div class="clear"></div>
 
                         <div class="col-3">
-                            <label for=""><h3 class="fs-title m-0">Embed Link:</h3></label>
+                            <label for=""><h5 class="fs-title m-0">Embed Link:</h5></label>
                             <p>Click <a href="#"onclick="EmbedCopy();" class="share-ico"><i class="ri-links-fill"></i> here</a> to get the Embedded URL</p>
                             </div>
 
