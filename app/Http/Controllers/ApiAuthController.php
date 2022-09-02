@@ -6962,7 +6962,7 @@ public function Adstatus_upate(Request $request)
     $socialsetting = SystemSetting::first();
 
     if($socialsetting != null){
-        $socialsetting =  $socialsetting ;
+        $socialsetting =  SystemSetting::get() ;
     }else{
         $socialsetting =  'No data' ;
     }
