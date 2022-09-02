@@ -263,8 +263,9 @@ input:checked + .sliderk:before {
 }
 
 /* Dark mode and light Mode */
-      body .light-theme {
-	      background-color: <?php echo GetLightBg(); ?>!important;
+      body.light-theme {
+	     background: <?php echo GetLightBg(); ?>!important;
+        
       }
 
       body.light-theme h4, body.light-theme p {
@@ -276,7 +277,7 @@ input:checked + .sliderk:before {
              box-shadow: 0 0 50px #ccc;
         }
         body.light-theme footer{
-            background-color: <?php echo GetLightBg(); ?>!important;  
+            background: <?php echo GetLightBg(); ?>!important;  
             color: <?php echo GetLightText(); ?>;
                      box-shadow: 0 0 50px #ccc;
 
@@ -308,6 +309,15 @@ input:checked + .sliderk:before {
         }
         body.light-theme .slick-nav i{
              color: <?php echo GetLightText(); ?>!important;
+        }
+        body h2{
+            color: <?php echo GetLightText(); ?>!important;
+        }
+        body.light-theme .filter-option-inner-inner{
+            color: <?php echo GetLightText(); ?>!important;
+        } 
+        body.light-theme .vid-title{
+            color: <?php echo GetLightText(); ?>!important;
         }
     </style>
      
@@ -670,13 +680,12 @@ input:checked + .sliderk:before {
                                     <div class="iq-card shadow-none m-0">
                                        <div class="iq-card-body p-0 pl-3 pr-3">
                                                                           <!-- dark mode -->
-                                           <div class="toggle mt-3 text-right">
-                                                       <i class="fas fa-sun"></i>
-
+                                           <div class="toggle mt-3 ">
+                                                <i class="fas fa-moon"></i>      
                          <label class="switch toggle mt-3">
   <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
   <span class="sliderk round"></span>
-                                               </label></div>
+                                               </label>  <i class="fas fa-sun"></i></div>
                                           <a href="<?php echo  URL::to('myprofile') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
