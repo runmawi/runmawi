@@ -582,7 +582,24 @@ if(!empty($request_url)){
       <h4>Description</h4>
       <div class="text-white">
           <p class="trending-dec w-100 mb-0 text-white mt-2 text-justify"><?php echo __($video->description); ?></p>
-          <p class="trending-dec w-100 mb-0 text-white mt-2">Starring : <span class="sta"><?php echo $artistsname; ?></span></p>
+            
+          <?php  if(count($artists) > 0 ) { ?> 
+              <p class="trending-dec w-100 mb-0 text-white mt-2">Starring :
+                <?php 
+                      $numartists = count($artists);
+                      $k = 0;
+                      foreach($artists as $key => $artist){  ?>
+                        <a  href="<?php echo __(URL::to('/artist') .'/'. $artist->artist_slug); ?>"  >
+                            <span class="sta">
+                              <?php echo $artist->artist_slug ;
+                                if(++$k === $numartists) { echo '' ;} else{ echo ',';}
+                              ?>
+                            </span>
+                        </a>
+                <?php } ?>
+              </p>
+          <?php } ?>
+          
           <p class="trending-dec w-100 mb-0 text-white mt-2">Genres : 
               <?php 
               $numItems = count($category_name);
