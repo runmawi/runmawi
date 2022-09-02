@@ -792,8 +792,7 @@ img.thumb-img {
 video.play-video {
     width: 100%;
    
-    object-fit: cover;
-    object-position: center;
+    object-fit: none;
 }
 .play-block {display: inline-block;vertical-align: top;width: 15%;}
 .flexlink {border: 2px solid #fff;border-radius: 25px;width: 35px;height: 35px;display: block;padding: 8px 10px;font-size: 16px;margin-right: 10px;display: inline-block;line-height: normal;color: #fff;transition: 0.5s;}
