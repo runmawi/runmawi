@@ -71,6 +71,13 @@ input.skips,input#Recaps_Skip{
 }
       .modal-header {
           padding: 10px!important;
+          
+      }.modal-title{
+          color: #000;
+          font-weight: 700;
+font-size: 24px!important;
+line-height: 33px;
+          
       }
        .modal-footer {
           padding: 10px!important;
@@ -79,6 +86,19 @@ input.skips,input#Recaps_Skip{
           color: #000;
           background: rgb(128,128,128,0.1);
           border-radius: 5px;
+          font-weight: 700;
+font-size: 14px;
+line-height: 21px;
+      }
+      .modal-body a{
+          font-weight: 400;
+font-size: 18px;
+line-height: 23px;
+      }
+      .movie{
+          font-weight: 700;
+font-size: 24px!important;
+line-height: 21px;
       }
 #intro_skip{
 	display: none;
@@ -155,7 +175,7 @@ h2{
   margin-top: 0px;
 }
       .btn1{
-          padding: 9px 30px;
+          padding: 9px 30px!important;
           font-weight: 400;
     text-align: center;
     white-space: nowrap;
@@ -214,6 +234,10 @@ h2{
 
 .img__wrap:hover .img__description {
   transform: translateY(0);
+}
+      input[type=radio] {
+    width: 18px;
+    height: 18px;
 }
   </style>
 <?php
@@ -1115,7 +1139,7 @@ $artists = [];
      <div class="modal-dialog modal-dialog-centered" role="document">
        <div class="modal-content">
          <div class="modal-header">
-           <h4 class="modal-title text-center" id="exampleModalLongTitle" style="color:#000;font-weight: 700;">Rent Now</h4>
+           <h4 class="modal-title text-center" id="exampleModalLongTitle" style="">Rent Now</h4>
           
          </div>
          <div class="modal-body">
@@ -1126,14 +1150,14 @@ $artists = [];
                  </div>
                  
                   <div class="col-sm-8 p-0">
-                  <h4 class=" text-black"><?php echo __($video->title);?> ,   <span class="trending-year mt-2"><?php if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span></h4>
+                  <h4 class=" text-black movie"><?php echo __($video->title);?> ,   <span class="trending-year mt-2"><?php if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span></h4>
                   <span class="badge badge-secondary p-2 mt-2"><?php echo __($video->age_restrict).' '.'+';?></span>
                   <span class="badge badge-secondary p-2"><?php echo __(isset($video->categories->name));?></span>
                   <span class="badge badge-secondary p-2"><?php echo __(isset($video->languages->name));?></span>
                   <span class="badge badge-secondary p-2"><?php echo __($video->duration);?></span><br>
                
-                  <a type="button" class="mt-2"  data-dismiss="modal">Amount:<span class="font-weight-bold " style="font-size:20px;"> <?php echo __($currency->symbol.' '.$video->ppv_price);?></span></a><br>
-                  <label for="method"><h5 style="font-size:14px;" class="font-weight-bold text-black">Payment Method : </h5></label>
+                  <a type="button" class="mt-2"  data-dismiss="modal">Amount:<span class="" style="font-size:20px;font-weight:700;"> <?php echo __($currency->symbol.' '.$video->ppv_price);?></span></a><br>
+                  <label for="method"><h5 style="font-size:14px;" class="font-weight-bold text-black mt-2">Payment Method : </h5></label>
                  
                  <?php $payment_type = App\PaymentSetting::get(); ?>
 
@@ -1147,7 +1171,7 @@ $artists = [];
                                 <?php if(!empty($payment->stripe_lable)){ echo $payment->stripe_lable ; }else{ echo $payment->payment_type ; } ?>
                      
                   </label>
-                  
+                  <br>
                 <!-- paypal -->
                   <?php }elseif($payment->paypal_live_mode == 1 && $payment->paypal_status == 1){ ?>
 
@@ -1155,12 +1179,12 @@ $artists = [];
                      <input type="radio" class="payment_btn"  id="important" name="payment_method" value="{{ $payment->payment_type }}"  data-value="paypal" >
                       <?php if(!empty($payment->paypal_lable)){ echo $payment->paypal_lable ; }else{ echo $payment->payment_type ; } ?>
                   </label>
-
+<br>
                   <?php }elseif($payment->live_mode == 0 && $payment->stripe_status == 1){ ?>
                       <input type="radio" class="payment_btn" id="tres_important" checked name="payment_method" value="{{ $payment->payment_type }}"  data-value="stripe" >  <!--<img class="" height="20" width="40" src="<?php echo  URL::to('/assets/img/stripe.png')?>" style="margin-top:-5px" >-->
                       <?php if(!empty($payment->stripe_lable)){ echo $payment->stripe_lable ; }else{ echo $payment->payment_type ; } ?>
                 </label><br>
-
+<br>
                             <?php 
                   }elseif( $payment->paypal_live_mode == 0 && $payment->paypal_status == 1){ ?>
                       <input type="radio" class="payment_btn" id="important" name="payment_method" value="{{ $payment->payment_type }}"  data-value="paypal" >
