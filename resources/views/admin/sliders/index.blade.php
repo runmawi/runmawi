@@ -47,7 +47,7 @@
 				      
 
                     <div class="form-group {{ $errors->has('slider') ? 'has-error' : '' }}">
-                        <label>Selece the Slider Image (1280x720 px or 16:9 ratio):</label>
+                        <label>Select the Slider Image (1280x720 px or 16:9 ratio):</label>
                         <input type="file" multiple="true" class="form-control" name="slider" id="slider" />
                     </div> 
 
