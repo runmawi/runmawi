@@ -16,8 +16,8 @@ class RTMLSeeder extends Seeder
         RTMP::truncate();
 
         $rtml_url = [
-            [   'rtmp_url'   => 'rtmp://75.119.145.126:1935/show/', 
-                'hls_url'   => 'http://75.119.145.126:9090/hls/streamkey/index.m3u8', 
+            [   'rtmp_url'   => 'rtmp://107.152.234.218:1935/show/', 
+                'hls_url'   => 'http://107.152.234.218:9090/hls/demo123/streamkey.m3u8', 
                 'created_at' => Carbon::now(),
                 'updated_at' => null,
             ],

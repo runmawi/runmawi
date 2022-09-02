@@ -351,8 +351,16 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()  || $video->access == "guest" &
                         </div>
                     </div>
                 </div>
-
-
+                
+                        <!-- Related Videos -->
+                <div class="row">
+                    <div class="container-fluid video-list you-may-like overflow-hidden">
+                        <h4 class="" style="color:#fffff;"><?php echo __('Related Videos');?></h4>
+                        <div class="slider">   
+                            <?php include('partials/live_related_video.blade.php');?>
+                        </div>
+                    </div>
+                </div>
                 
 <!-- <div style="text-align:right;padding:5px 0";>
 <span class="view-count" style="margin-right:10px";><i class="fa fa-eye"></i> <?php if (isset($view_increment) && $view_increment == true): ?><?=$video->views + 1 ?><?php
