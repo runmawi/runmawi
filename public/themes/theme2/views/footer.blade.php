@@ -834,8 +834,8 @@ return;
 </script>
 
 
-                {{-- Prevent Inspect --}}
 <?php  
+                  //  Prevent Inspect 
   $Prevent_inspect = App\SiteTheme::pluck('prevent_inspect')->first();
   if( $Prevent_inspect == 1){
 ?>
