@@ -33,8 +33,7 @@ echo (strlen($slider_video->title) > 15) ? substr($slider_video->title,0,80).'..
                         class="btn bd ml-2"><i class="fa fa-play ml-2" aria-hidden="true"></i> Watch Trailer</a></div>
                 </div>
                         <div class="col-xl-2 col-lg-12 col-md-6 mt-5 pt-5 b2">
-                        <div class="justify align-items-left r-mb-23 mt-5" data-animation-in="fadeInUp"
-                            data-delay-in="1.2">
+                        <div class="justify align-items-left r-mb-23 mt-5" >
                           
                                
                             </div></div>
@@ -69,8 +68,7 @@ endif; ?>
 <img src="<?php echo URL::to('/').'/assets/img/logo.png'?>" class="c-logo" alt="Flicknexs">
 </div>
 </a>-->
-<h1 class="slider-text big-title title text-uppercase text-white" data-animation-in="fadeInLeft"
-data-delay-in="0.6">
+<h1 class="slider-text big-title title text-uppercase text-white" >
 <?php
 echo (strlen($slider_video->title) > 15) ? substr($slider_video->title,0,80).'...' : $slider_video->title;
 // echo __($slider_video->title); 
@@ -88,7 +86,7 @@ echo (strlen($slider_video->title) > 15) ? substr($slider_video->title,0,80).'..
     </span>
     <!--                      <span class="ml-3"><?php echo __($slider_video->language); ?></span>-->
 </div>
-<div data-animation-in="fadeInUp" data-delay-in="1.2"
+<div 
 style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;  
@@ -140,7 +138,7 @@ endif; ?>
 
                     <div class="row align-items-center bl h-100">
                         <div class="col-xl-4 col-lg-12 col-md-12">
-                            <h1 class=" text-white title text-uppercase mb-3" data-animation-in="fadeInLeft" data-delay-in="0.6">
+                            <h1 class=" text-white title text-uppercase mb-3" >
                                     <?php echo __($videos->title); ?>
                             </h1>
 
@@ -152,13 +150,13 @@ endif; ?>
                                 <span class="fa fa-star"></span>
                             </div>
 
-                            <div data-animation-in="fadeInUp" data-delay-in="1.2" style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
+                            <div  style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
                                 -webkit-line-clamp: 3;   -webkit-box-orient: vertical;  overflow: hidden;">
                                 <?php echo __($videos->description); ?>
                             </div>
 
                                               <!-- Trailer  -->
-                            <div class="justify r-mb-23  p-0" data-animation-in="fadeInUp"  data-delay-in="1.2">
+                            <div class="justify r-mb-23  p-0" >
                                 <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"  class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now</a>
                                     <a href="#theme1-trailer"  class="theme1-trailer btn bd ml-2" data-trailer-url="<?= $videos->trailer ?>" data-trailer-type="<?= $videos->trailer_type ?>" onclick="trailer_slider_video(this)" >
                                         <i class="fa fa-info" aria-hidden="true"></i> Watch Trailer
@@ -360,7 +358,7 @@ endif; ?>
                         <div class="row align-items-center bl h-100">
                             <div class="col-xl-5 col-lg-12 col-md-12">
 
-                                <h1 class="slider-text big-title title text-uppercase text-white" data-animation-in="fadeInLeft" data-delay-in="0.6">
+                                <h1 class="slider-text big-title title text-uppercase text-white" >
                                     <?php echo __($series_slider->title); ?>
                                 </h1>
 
@@ -372,19 +370,19 @@ endif; ?>
                                     <span class="fa fa-star"></span>
                                 </div>
 
-                                <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
+                                <div class="d-flex align-items-center" >
                                     <span class="badge badge-secondary p-2">
                                         <?php echo __($series_slider->year); ?>
                                     </span>
                                 </div>
 
-                                <div data-animation-in="fadeInUp" data-delay-in="1.2"
+                                <div 
                                     style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
                                         -webkit-line-clamp: 3;   -webkit-box-orient: vertical;      overflow: hidden;">
                                     <?php echo __($series_slider->description); ?>
                                 </div>
 
-                                <div class="d-flex justify-content-evenly align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1.2">
+                                <div class="d-flex justify-content-evenly align-items-center r-mb-23" >
                         
                                     <a href="<?= URL::to('/') ?><?= '/play_series'.'/'. $series_slider->slug ?>"  class="btn bd">
                                         <i class="fa fa-play mr-2" aria-hidden="true"></i> Play

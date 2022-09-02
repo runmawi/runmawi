@@ -137,8 +137,7 @@ endif; ?>
 
                     <div class="row align-items-center bl h-100">
                         <div class="col-xl-5 col-lg-12 col-md-12">
-                        <h1 class=" text-white title text-uppercase mb-3" data-animation-in="fadeInLeft"
-                        data-delay-in="0.6">
+                        <h1 class=" text-white title text-uppercase mb-3">
                         <?php 
                          echo (strlen($videos->title) > 15) ? substr($videos->title,0,80).'...' : $videos->title;
                         // echo __($videos->title);
@@ -150,15 +149,13 @@ endif; ?>
 <span class="fa fa-star checked"></span>
 <span class="fa fa-star"></span>
 <span class="fa fa-star"></span></div>
-                    <div data-animation-in="fadeInUp" data-delay-in="1.2"
-                        style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
+                    <div  style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
                         -webkit-line-clamp: 3;
                         -webkit-box-orient: vertical;  
                         overflow: hidden;">
                         <?php echo __($videos->description); ?>
                         </div>
-                            <div class="row justify r-mb-23  p-0 mb-4 text-center" data-animation-in="fadeInUp"
-                            data-delay-in="1.2">
+                            <div class="row justify r-mb-23  p-0 mb-4 text-center" >
                                 <div class="col-md-3">
                                   <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"
                                 class="text-white">
@@ -175,8 +172,7 @@ endif; ?>
                                       </div>
                                 Share</a>
                             </div></div>
-                            <div class="justify r-mb-23  p-0" data-animation-in="fadeInUp"
-                            data-delay-in="1.2">
+                            <div class="justify r-mb-23  p-0" >
                                 
                             <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"
                                 class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Start Watching</a>
@@ -482,7 +478,7 @@ endif; ?>
 
                     <div class="row align-items-center bl h-100">
                         <div class="col-xl-5 col-lg-12 col-md-12">
-                            <h1 class=" text-white title text-uppercase mb-3" data-animation-in="fadeInLeft" data-delay-in="0.6">
+                            <h1 class=" text-white title text-uppercase mb-3" >
                                 <?php echo __($series_slider->title); ?>
                             </h1>
 
@@ -494,14 +490,14 @@ endif; ?>
                                 <span class="fa fa-star"></span>
                             </div>
 
-                            <div data-animation-in="fadeInUp" data-delay-in="1.2"
+                            <div 
                                 style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
                                         -webkit-line-clamp: 3;  -webkit-box-orient: vertical; overflow: hidden;">
                                 <?php echo __($series_slider->description); ?>
                             </div>
 
 
-                            <div class="justify r-mb-23  p-0" data-animation-in="fadeInUp"   data-delay-in="1.2">    
+                            <div class="justify r-mb-23  p-0" >    
                                 <a href="<?php echo URL::to('/') ?><?= '/play_series'.'/'. $series_slider->slug ?>" class="btn bd">
                                     <i class="fa fa-play mr-2" aria-hidden="true"></i> Start Watching
                                 </a>

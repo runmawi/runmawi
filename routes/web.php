@@ -55,6 +55,14 @@ Route::post('/admin/payperview_start_date_url', 'AdminUsersController@PayPerview
 Route::post('/admin/payperview_end_date_url', 'AdminUsersController@PayPerviewRevenueStartEndDateRecord');
 Route::post('/admin/payperview_exportCsv', 'AdminUsersController@PayPerviewRevenueExportCsv');
 
+////// Video Purchased Analytics
+
+Route::get('admin/video/purchased-analytics', 'AdminVideosController@PurchasedVideoAnalytics');
+// Route::get('admin/video/purchased-analytics', 'AdminVideosController@purchased-analyticsRevenue');
+Route::post('/admin/video/purchased-analytics_startdate_revenue', 'AdminVideosController@PurchasedVideoStartDateRevenue');
+Route::post('/admin/video/purchased-analytics_enddate_revenue', 'AdminVideosController@PurchasedVideoEndDateRevenue');
+Route::post('/admin/video/purchased-analytics_exportCsv', 'AdminVideosController@PurchasedVideoExportCsv');
+
 
 ////// CPP revenue
 
