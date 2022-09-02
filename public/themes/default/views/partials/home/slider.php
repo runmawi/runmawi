@@ -532,17 +532,17 @@ if(Route::current()->getName() == "home" || Route::current()->getName() == null 
                         <div class="row align-items-center bl h-100">
                             <div class="col-xl-6 col-lg-12 col-md-12">
                         
-                                <h1 class="text-white mb-3" data-animation-in="fadeInLeft"    data-delay-in="0.6">
+                                <h1 class="text-white mb-3"    >
                                     <?php  echo (strlen($series_slider->title) > 15) ? substr($series_slider->title,0,80).'...' : $series_slider->title;    ?>
                                 </h1>
 
-                                <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
+                                <div class="d-flex align-items-center"  >
                                     <span class="badge badge-secondary p-2">
                                         <?php echo __($series_slider->year); ?>
                                     </span>
                                 </div>
 
-                                <div data-animation-in="fadeInUp" data-delay-in="1.2"
+                                <div data-animation-in="fadeInUp"
                                         style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
                                         -webkit-line-clamp: 3;
                                         -webkit-box-orient: vertical;  
@@ -550,7 +550,7 @@ if(Route::current()->getName() == "home" || Route::current()->getName() == null 
                                     <?php echo __($series_slider->description); ?>
                                 </div>
 
-                                <div class="d-flex justify-content-evenly align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1.2">
+                                <div class="d-flex justify-content-evenly align-items-center r-mb-23"  >
                                         <a href="<?= URL::to('/') ?><?= '/play_series'.'/'. $series_slider->slug ?>"
                                             class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play
                                         </a>
