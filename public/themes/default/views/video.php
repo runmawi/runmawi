@@ -90,13 +90,13 @@ line-height: 21px;
           border:none;
       }
        .modal-footer {
-          padding: 10px!important;
+       
            border-top: 1px solid rgba(0, 0, 0, 0.2)!important;
             border:none;
       }
       .badge-secondary{
           color: #000;
-          background: rgb(128,128,128,0.1);
+       background: #F1F1F1;
           border-radius: 5px;
           font-weight: 700;
 font-size: 18px;
@@ -111,7 +111,7 @@ line-height:30px;
       .movie{
           font-weight: 700;
 font-size: 30px!important;
-line-height: 21px;
+line-height: 38px;
       }
 #intro_skip{
 	display: none;
@@ -206,6 +206,14 @@ h2{
    
     font-size: 1rem;
     line-height: 1.5;
+      }
+      .btn2{
+          padding: 13px 45px!important;
+          font-weight: 400;
+    
+  border: 1px solid;
+   
+   
       }
       .subsc-video{
          font-size: 18px!important;   
@@ -1162,26 +1170,26 @@ $artists = [];
           
          </div>
          <div class="modal-body">
-             <div class="row">
+             <div class="row justify-content-between">
                 <div class="col-sm-4 p-0" style="">
                    <!-- <span id="paypal-button"></span> -->
                     <img class="img__img w-100" src="<?php echo URL::to('/').'/public/uploads/images/'.$video->image;  ?>" class="img-fluid" alt="" >
                  </div>
                  
-                  <div class="col-sm-8 p-3">
+                  <div class="col-sm-8">
                   <h4 class=" text-black movie mb-3"><?php echo __($video->title);?> ,   <span class="trending-year mt-2"><?php if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span></h4>
                   <span class="badge badge-secondary   mb-2"><?php echo __($video->age_restrict).' '.'+';?></span>
                   <span class="badge badge-secondary  mb-2"><?php echo __(isset($video->categories->name));?></span>
                   <span class="badge badge-secondary  mb-2"><?php echo __(isset($video->languages->name));?></span>
-                  <span class="badge badge-secondary  mb-2"><?php echo __($video->duration);?></span><br>
+                  <span class="badge badge-secondary  mb-2 ml-1"><?php echo __($video->duration);?></span><br>
                
-                  <a type="button" class="mb-2"  data-dismiss="modal" style="font-weight:400;">Amount:   <span class="pl-2" style="font-size:20px;font-weight:700;"> <?php echo __($currency->symbol.' '.$video->ppv_price);?></span></a><br>
-                  <label class="mb-0" for="method"><h5 style="font-size:20px;" class="font-weight-bold text-black mb-2">Payment Method : </h5></label>
+                  <a type="button" class="mb-3 mt-3"  data-dismiss="modal" style="font-weight:400;">Amount:   <span class="pl-2" style="font-size:20px;font-weight:700;"> <?php echo __($currency->symbol.' '.$video->ppv_price);?></span></a><br>
+                  <label class="mb-0 mt-3 p-0" for="method"><h5 style="font-size:20px;line-height: 23px;" class="font-weight-bold text-black mb-2">Payment Method : </h5></label>
                  
                  <?php $payment_type = App\PaymentSetting::get(); ?>
 
                  <!-- Stripe --><br>
-                  <label class="radio-inline mb-0 mr-2 d-flex align-items-center ">
+                  <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
                      <?php  foreach($payment_type as $payment){
 
                             if( $payment->payment_type == "Razorpay"  || $payment->stripe_status == 1 || $payment->paypal_status == 1 ){ 
@@ -1194,7 +1202,7 @@ $artists = [];
                 <!-- paypal -->
                   <?php }elseif($payment->paypal_live_mode == 1 && $payment->paypal_status == 1){ ?>
 
-                  <label class="radio-inline mb-0 mt-2 d-flex align-items-center" >
+                  <label class="radio-inline mb-0 mt-3 d-flex align-items-center" >
                      <input type="radio" class="payment_btn"  id="important" name="payment_method" value="{{ $payment->payment_type }}"  data-value="paypal" >
                       <?php if(!empty($payment->paypal_lable)){ echo $payment->paypal_lable ; }else{ echo $payment->payment_type ; } ?>
                   </label>
@@ -1232,7 +1240,7 @@ $artists = [];
             <!-- Stripe Button -->
             <div class="Stripe_button">
                 <a onclick="pay(<?php echo $video->ppv_price;?>)">
-                          <button type="button" class="btn1  btn-outline-primary" >Continue</button>
+                          <button type="button" class="btn2  btn-outline-primary" >Continue</button>
                 </a>
             </div>
                
