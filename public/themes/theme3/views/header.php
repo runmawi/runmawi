@@ -142,7 +142,7 @@ $site_page_url = $http_site_url[1];
 
 
     <!-- Responsive -->
-    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/responsive.css';?>" />
+ 
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/slick.css';?>" />
        <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -1369,10 +1369,10 @@ $("#toggle").click(function(){
                            </div>
                         </div>
                         <div class="mobile-more-menu">
-                           <a href="javascript:void(0);" class="more-toggle" id="dropdownMenuButton"
+                         <!--  <a href="javascript:void(0);" class="more-toggle" id="dropdownMenuButton"
                               data-toggle="more-toggle" aria-haspopup="true" aria-expanded="false">
                            <i class="ri-more-line"></i>
-                           </a>
+                           </a>-->
                            <div class="more-menu" aria-labelledby="dropdownMenuButton">
                               <div class="navbar-right position-relative">
                                  <ul class="d-flex align-items-center justify-content-end list-inline m-0">
