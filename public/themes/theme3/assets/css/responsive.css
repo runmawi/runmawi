@@ -30,6 +30,7 @@
   .hover-buttons .btn { font-size: 10px; }
   #home-slider .slick-bg { padding: 50px 0; }
   .r-mb-23 { margin-bottom: 23px; }
+   
   header .navbar-light .navbar-brand img.logo { width: 100px; }
   .navbar-collapse { position: fixed; top: 0; left: 0; padding-bottom: 15px; width: 260px; height: 100vh; background: var(--iq-bg1); padding-top: 40px; -webkit-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.2); box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.2); }
   .vertical_s { position: static; }
@@ -60,7 +61,7 @@
   .device-margin { margin-top: 15px; }
   #home-slider h1.slider-text { font-size: 35px;}
   header .navbar ul li{display:block;}
-  .iq-main-slider{padding-top:60px!important;}
+  .iq-main-slider{padding-top:0px!important;}
   .m-profile {padding-top: 100px;padding-bottom: 60px;}
   .trending-info .trending-dec{width: 52%;}
 }
@@ -74,6 +75,15 @@
   .type { padding: 9px 10px; font-size: 13px; }
 }
 @media (max-width:767px) {
+     #menuToggle{
+        display: none;
+    }
+    #menu{
+        display: none;
+    }
+    #menuToggle span{
+        display: none!important;
+    }
   .parallax-window { padding: 60px 0; }
   .banner-wrapper { height: 100%; padding: 100px 0; }
   .trending-content { padding: 0; }
@@ -89,7 +99,7 @@
   #home-slider p { margin: 22px 0; }
   .r-mt-20 { margin-top: 20px; }
   .p-btns { flex-direction: column; }
-  .main-title { font-size: 1em; }
+  h4{ font-size: 1em; }
   .sign-info { flex-direction: column; }
   .sign-info .btn { margin-bottom: 15px; }
   .banner-caption, .overlay-s-name { left: 15px; }
@@ -125,6 +135,34 @@
   #trending-slider-nav .slick-arrow:hover{background: none;}
   .favorites-slider .slick-prev,
   #trending-slider-nav .slick-prev{right:37px;}
+    .navbar-nav{padding: 10px 10px 10px 30px;
+    color: #fff;}
+    .menu-item{
+        padding: 10px;
+    }
+    #video .plyr.plyr--full-ui, #video-trailer .plyr.plyr--full-ui, #video_container .plyr.plyr--full-ui, #video_container .plyr__video-embed{
+        height: 200px!important;
+    }
+    h-100{
+        height: 300px!important;
+    }
+    h1{
+        font-size: 22px;
+    }
+    #home-slider .slick-bg.s-bg-1{
+        background-size: cover!important;
+    }
+    #home-slider .slick-dots li button{
+        display: none;
+    }
+    .btn{
+        font-size: 10px;
+        padding: 10px 10px;
+    }
+    .btn1{
+       
+        padding: 10px 10px!important;
+    }
 }
 @media (min-width:576px) {
   .iq-search-bar a.search-toggle { display: none; }

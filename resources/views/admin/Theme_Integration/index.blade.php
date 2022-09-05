@@ -17,7 +17,7 @@
         margin: 0 15px;
     }
     .theme_name {
-        color: #c92727;
+        color: #000;
         
         text-align: center;
        /* font-family: 'FontAwesome';*/

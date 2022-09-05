@@ -60,9 +60,11 @@ NOTE: This file contains the styling for responsive Template.
 }
 video {
     object-fit: cover;
-    height: 400px;
-    width: 900px;
+     min-width: 100%;
+  min-height: 100%;
+    
 }
+
 body{
     background: linear-gradient(180deg, #040404 0%, #3D3D47 100%);
 }
