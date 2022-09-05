@@ -317,9 +317,14 @@ class ApiAuthController extends Controller
                             $email = $input['email'];
                             $uname = $input['username'];
 
-                            Mail::send('emails.verify', array('activation_code' => $user->activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
-                                $message->to($email,$uname)->subject('Verify your email address');
-                            });
+                            // try {
+                            //     Mail::send('emails.verify', array('activation_code' => $user->activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
+                            //       $message->to($email,$uname)->subject('Verify your email address');
+                            //   });
+                            // } catch (\Throwable $th) {
+                            //   //throw $th;
+                            // }
+                           
                                 $response = array(
                                 'status' => 'true',
                                 'message' => 'Registered Successfully.',
@@ -399,18 +404,18 @@ class ApiAuthController extends Controller
                        $next_date = $plan_details->days;
                        $current_date = date('Y-m-d h:i:s');
                        $date = Carbon::parse($current_date)->addDays($next_date);
-                      Mail::send('emails.subscriptionmail', array(
-                               /* 'activation_code', $user->activation_code,*/
-                                'name'=>$user->username, 
-                          'days' => $plan_details->days, 
-                          'price' => $plan_details->price,
-                          'plan_id' => $plan_details->plan_id, 
-                          'ends_at' => $date,
-                          'created_at' => $current_date), function($message) use ($request,$user) {
-                                                $message->from(AdminMail(),'Flicknexs');
-                                                //  $message->to($request->session()->get('register.email'), $user->username)->subject($request->get('subject'));
-                                                $message->to($user->email, $user->username)->subject($request->get('subject'));
-                                            });
+
+                      // Mail::send('emails.subscriptionmail', array(
+                      //          /* 'activation_code', $user->activation_code,*/
+                      //           'name'=>$user->username, 
+                      //     'days' => $plan_details->days, 
+                      //     'price' => $plan_details->price,
+                      //     'plan_id' => $plan_details->plan_id, 
+                      //     'ends_at' => $date,
+                      //     'created_at' => $current_date), function($message) use ($request,$user) {
+                      //                           $message->from(AdminMail(),'Flicknexs');
+                      //                           $message->to($user->email, $user->username)->subject($request->get('subject'));
+                      //                       });
 
             send_password_notification('Notification From FLICKNEXS','Your Payment has been done Successfully','Your Your Payment has been done Successfully','',$user->id);
         }
