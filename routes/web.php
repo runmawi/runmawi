@@ -595,11 +595,6 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/live-event-update/{id}', 'AdminLiveEventArtist@update')->name('live_event_update');
     Route::get('/live-event-destroy/{id}', 'AdminLiveEventArtist@destroy')->name('live_event_destroy');
 
-    // Live Event For artist 
-    // Route::get('/live-artist-event', 'AdminLiveEventArtist@create')->name('live_event_create');
-
-
-
     // Admin Channel Package
     Route::get('/channel-package-index', 'AdminChannelPackageController@index')->name('channel_package_index');
     Route::get('/channel-package-create', 'AdminChannelPackageController@create')->name('channel_package_create');
@@ -1835,3 +1830,6 @@ Route::POST('/RazorpayChannelPayouts_Payment', 'RazorpayController@RazorpayChann
 Route::get('channel-partner', 'ChannelPartnerController@channelparnter')->name('channelparnter_index');
 Route::get('channel-partner/{slug}', 'ChannelPartnerController@unique_channelparnter')->name('channelparnter_details');
  
+// Live Event For artist 
+Route::get('/live-artists-event', 'LiveEventArtistStream@index')->name('LiveEventArtistStream_index');
+Route::get('/live-artist-event/{slug}', 'LiveEventArtistStream@live_event_play')->name('live_event_play');
