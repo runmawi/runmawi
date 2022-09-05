@@ -70,10 +70,8 @@
 @section('content')
     <div id="content-page" class="content-page">    
         <div class="d-flex">
-            <a class="black" href="{{ URL::to('admin/livestream') }}">All Live Videos</a>
-            <a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/livestream/create') }}">Add New Live Video</a>
-            <a class="black" href="{{ URL::to('admin/CPPLiveVideosIndex') }}">Live Videos For Approval</a>
-            <a class="black" href="{{ URL::to('admin/livestream/categories') }}">Manage Live Video Categories</a>
+            <a class="black" href="{{ route('live_event_artist') }}">All Live Event Artist Videos</a>
+            <a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/livestream/create') }}">Add New Live Event Artist Videos</a>
         </div>
 
         <div class="container-fluid p-0">

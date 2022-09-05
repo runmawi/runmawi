@@ -427,6 +427,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <li><a href="{{ URL::to('admin/livestream/create') }}"><i class="las la-eye"></i>Add New Live Video</a></li>
                         <li><a href="{{ URL::to('admin/CPPLiveVideosIndex') }}"><i class="las la-eye"></i>Live Videos For Approval</a></li>
                          <li><a href="{{ URL::to('admin/livestream/categories') }}"><i class="las la-eye"></i>Manage Live Video Categories</a></li>
+                         <li><a href="{{ route('live_event_artist') }}"> Live Event Artist </a></li>
                      </ul>
                   </li>
 
@@ -717,6 +718,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <li><a href="{{ URL::to('admin/livestream/create') }}">Add New Live Video</a></li>
                         <li><a href="{{ URL::to('admin/CPPLiveVideosIndex') }}">Live Videos For Approval</a></li>
                          <li><a href="{{ URL::to('admin/livestream/categories') }}">Manage Live Video Categories</a></li>
+                         <li><a href="{{ route('live_event_artist') }}"> Live Event Artist </a></li>
                      </ul>
                   </li>
                   <div class="men" style=""> 
@@ -1014,6 +1016,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <li><a href="{{ URL::to('admin/livestream/create') }}"><i class="las la-eye"></i>Add New Live Video</a></li>
                         <li><a href="{{ URL::to('admin/CPPLiveVideosIndex') }}"><i class="las la-eye"></i>Live Videos For Approval</a></li>
                          <li><a href="{{ URL::to('admin/livestream/categories') }}"><i class="las la-eye"></i>Manage Live Video Categories</a></li>
+                         <li><a href="{{ route('live_event_artist') }}"> Live Event Artist </a></li>
                      </ul>
                   </li>
 
