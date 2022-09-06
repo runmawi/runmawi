@@ -665,4 +665,3 @@ function get_coupon_code(){
     return $get_coupon_code;
 }
 
-

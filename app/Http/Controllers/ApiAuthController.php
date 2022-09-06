@@ -4957,8 +4957,8 @@ return response()->json($response, 200);
       }else{
         $response = array(
           'status'=>'false',
-          'audioalbums'=> 'No Albums Added',
-          'audio'=>'No Audio Albums Added',
+          'audioalbums'=> array(),
+          'audio'=>array(),
       );
       }
         return response()->json($response, 200);
