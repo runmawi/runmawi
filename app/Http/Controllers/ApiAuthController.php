@@ -7792,4 +7792,171 @@ $cpanel->end();
 
   }
 
+
+  public function episodedetailsAndriod(Request $request){
+      
+    $episodeid = $request->episodeid;
+
+    $episode = Episode::where('id',$episodeid)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+       $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
+       return $item;
+     });
+    //  if(count($episode) > 0){
+    //  $series_id =  $episode[0]->series_id;
+    //  $season_id = $episode[0]->season_id;
+
+    //  $Season = SeriesSeason::where('series_id',$series_id)->where('id',$season_id)->first();
+
+    //  $AllSeason = SeriesSeason::where('series_id',$series_id)->get();
+    //           if(count($AllSeason) > 0){
+
+
+    //               foreach($AllSeason as $key => $Season){
+
+    //                   if($season_id ==  $Season->id){
+
+    //                     $name = $key+1;
+    //                     $Season_Name = 'Season '. $name;
+    //                   }
+    //               }
+
+    //             }else{
+    //               $Season_Name = '';
+
+    //             }
+
+    //  }else{
+    //   $Season = '';
+    //  }
+    //  print_r($Season->id);exit;
+    if($request->user_id != ''){
+      $user_id = $request->user_id;
+      $cnt = Wishlist::select('episode_id')->where('user_id','=',$user_id)->where('episode_id','=',$request->episodeid)->count();
+      $wishliststatus =  ($cnt == 1) ? "true" : "false";
+      // $userrole = User::find($user_id)->pluck('role');
+    }else{
+      $wishliststatus = 'false';
+      // $userrole = '';
+    } 
+    if(!empty($request->user_id)){
+      $user_id = $request->user_id;
+      $cnt = Watchlater::select('episode_id')->where('user_id','=',$user_id)->where('episode_id','=',$request->episodeid)->count();
+      $watchlaterstatus =  ($cnt == 1) ? "true" : "false";
+      // $userrole = User::find($user_id)->pluck('role');
+    }else{
+      $watchlaterstatus = 'false';
+      // $userrole = '';
+    }
+    if($request->user_id != ''){
+    $like_data = LikeDisLike::where("episode_id","=",$episodeid)->where("user_id","=",$user_id)->where("liked","=",1)->count();
+    $dislike_data = LikeDisLike::where("episode_id","=",$episodeid)->where("user_id","=",$user_id)->where("disliked","=",1)->count();
+    $favoritestatus = Favorite::where("episode_id","=",$episodeid)->where("user_id","=",$user_id)->count();
+    $like = ($like_data == 1) ? "true" : "false";
+    $dislike = ($dislike_data == 1) ? "true" : "false";
+    $favorite = ($favoritestatus > 0) ? "true" : "false";
+    // $userrole = User::find($user_id)->pluck('role');
+
+  }else{
+    $like = 'false';
+    $dislike = 'false';
+    $favorite = 'false';
+    // $userrole = '';
+  }
+  if(!empty($request->user_id)){
+    $user_id = $request->user_id;
+    $users = User::where('id','=',$user_id)->first();
+    $userrole = $users->role;
+  }else{
+    $userrole = '';
+  }
+
+  $series_id = Episode::where('id','=',$episodeid)->pluck('series_id');
+  if(!empty($series_id)){
+    $series_id = $series_id[0];
+    
+  $main_genre = SeriesCategory::Join('genres','genres.id','=','series_categories.category_id')
+  ->where('series_categories.series_id',$series_id)->get('name');
+
+  $languages = SeriesLanguage::Join('languages','languages.id','=','series_languages.language_id')
+  ->where('series_languages.series_id',$series_id)->get('name');
+  }
+
+  if(!empty($series_id) && !empty($main_genre)){
+  foreach($main_genre as $value){
+    $category[] = $value['name']; 
+  }
+}else{
+  $category = [];
 }
+// echo "<pre>";print_r($category);exit;
+
+  if(!empty($category)){
+  $main_genre = implode(",",$category);
+  }else{
+    $main_genre = "";
+  }
+
+  // echo "<pre>"; print_r($languages);exit;
+  if(!empty($series_id) && !empty($languages)){
+  foreach($languages as $value){
+    $language[] = $value['name']; 
+  }
+}else{
+  $language = "";
+}
+  if(!empty($language)){
+  $languages = implode(",",$language);
+  }else{
+    $languages = "";
+  }
+  if (!empty($episode)) {
+  $season = SeriesSeason::where('id',$episode[0]->season_id)->first();
+  // print_r();exit;
+  $ppv_exist = PpvPurchase::where('user_id',$user_id)
+  // ->where('season_id',$episode[0]->season_id)
+  ->where('series_id',$episode[0]->series_id)
+  ->count();
+} else {
+  $ppv_exist = 0;
+}
+  if ($ppv_exist > 0) {
+
+        $ppv_video_status = "can_view";
+
+    } else if (!empty($season) && $season->access != "ppv" || $season->access == "free") {
+      $ppv_video_status = "can_view";
+    }
+    else {
+          $ppv_video_status = "pay_now";
+    }
+
+
+
+
+
+
+    $response = array(
+      'status'=>'true',
+      'message'=>'success',
+      'episode' => $episode,
+      // 'Season_Name' => $Season_Name,
+      // 'season' => $Season,
+      'ppv_video_status' => $ppv_video_status,
+      'wishlist' => $wishliststatus,
+      'watchlater' => $watchlaterstatus,
+      'userrole' => $userrole,
+      'favorite' => $favorite,                               
+      'like' => $like,
+      'dislike' => $dislike,
+      'main_genre' =>preg_replace( "/\r|\n/", "", $main_genre ),
+      'languages' => $languages,
+
+    );
+    return response()->json($response, 200);
+  } 
+
+
+
+}
+
+
