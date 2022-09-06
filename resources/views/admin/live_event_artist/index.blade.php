@@ -120,7 +120,7 @@ border-radius: 0px 4px 4px 0px;
 						 </td>
 
 						<td class=" align-items-center list-inline">								
-                            {{-- <a href="{{ URL::to('live') .'/'.$video->slug }}" target="_blank" class="iq-bg-warning"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>"></a> --}}
+                            <a href="{{ route('live_event_play',$video->slug ) }}" target="_blank" class="iq-bg-warning"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>"></a>
 							<a href="{{ route('live_event_edit' ,$video->id)  }}" class="iq-bg-success ml-2 mr-2"><img class="ply " src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
 							<a href="{{ route('live_event_destroy' ,$video->id)  }}" onclick="return confirm('Are you sure?')" class="iq-bg-danger"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
 						</td>
