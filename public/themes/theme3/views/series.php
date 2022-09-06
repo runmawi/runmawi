@@ -244,7 +244,11 @@ var publishable_key = $('#publishable_key').val();
 
 $(document).ready(function () {  
 
-	
+	$('.videoModalClose').click(function (){
+  $('#videoPlayer1')[0].pause();
+  $('#videos')[0].pause();
+
+});
 	var imageseason = '<?= $season ?>' ;
     // console.log(imageseason)
     
