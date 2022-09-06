@@ -58,7 +58,7 @@ use Streaming\Representation;
 use App\Jobs\ConvertVideoTrailer;
 use App\InappPurchase;
 use App\CurrencySetting as CurrencySetting;
-
+use App\VideoEvents as VideoEvents;
 
 
 class AdminVideosController extends Controller
@@ -3630,6 +3630,52 @@ if(!empty($artistsdata)){
                     return $file;
                 } else {
                     return Redirect::to("/blocked");
+                }
+            }
+            public function calendarEvent(Request $request)
+            {
+                if($request->ajax()) {  
+                    $data = VideoEvents::whereDate('start', '>=', $request->start)
+                        ->whereDate('end',   '<=', $request->end)
+                        ->get(['id', 'title', 'start', 'end']);
+                    return response()->json($data);
+                }
+                return view('admin.videos.video_calendar');
+            }
+         
+            public function calendarEventsAjax(Request $request)
+            {
+         
+                switch ($request->type) {
+                   case 'create':
+                      $event = VideoEvents::create([
+                          'title' => $request->title,
+                          'start' => $request->start,
+                          'end' => $request->end,
+                      ]);
+         
+                      return response()->json($event);
+                     break;
+          
+                   case 'edit':
+                      $event = VideoEvents::find($request->id)->update([
+                          'title' => $request->title,
+                          'start' => $request->start,
+                          'end' => $request->end,
+                      ]);
+         
+                      return response()->json($event);
+                     break;
+          
+                   case 'delete':
+                      $event = VideoEvents::find($request->id)->delete();
+          
+                      return response()->json($event);
+                     break;
+                     
+                   default:
+                     # ...
+                     break;
                 }
             }
 
