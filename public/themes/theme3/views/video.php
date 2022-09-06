@@ -154,7 +154,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
        <input type="button" class="skips" value="Skip Intro" id="intro_skip">
        <input type="button" class="skips" value="Auto Skip in 5 Secs" id="Auto_skip">
   </div>
-   <div class=" page-height mt-1">
+   <div class=" page-height">
      <?php 
            $paypal_id = Auth::user()->paypal_id;
            if (!empty($paypal_id) && !empty(PaypalSubscriptionStatus() )  ) {
