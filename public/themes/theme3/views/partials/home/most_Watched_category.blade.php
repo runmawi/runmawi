@@ -1,5 +1,5 @@
-<div class="fluid">
-    <div class="col-sm-12 overflow-hidden p-0">
+<div class="fluid overflow-hidden">
+    <div class="col-sm-12  p-0">
         <div class="iq-main-header d-flex align-items-center justify-content-between">
             <!-- <h4 class="main-title"><a href="<?php echo URL::to('home') ?>">Latest Videos</a></h4> -->
             <a href="<?php echo URL::to('/category/').'/'.$category->slug;?>" class="category-heading" style="text-decoration: none; color: #fff;">

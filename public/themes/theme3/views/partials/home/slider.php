@@ -130,7 +130,7 @@ endif; ?>
                 <div class="slider-inner h-slider mt-5">
 
                     <div class="row align-items-center bl h-100">
-                        <div class="col-xl-5 col-lg-12 col-md-12">
+                        <div class="col-xl-7 col-lg-12 col-md-12">
                         <h1 class=" text-white title text-uppercase mb-3" data-animation-in="fadeInLeft"
                         data-delay-in="0.6">
                         <?php echo __($videos->title); ?>

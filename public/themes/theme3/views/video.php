@@ -112,13 +112,13 @@ h2{
   font-size: 60px;
   margin-top: 0px;
 }
-      #video_container{
+     /* #video_container{
           padding: 20px;
           background: #202933;
 border-radius: 20px;
 
       }
-
+*/
       #end_card_video{
   /* end_card_video */
 	display: none;
@@ -154,7 +154,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
        <input type="button" class="skips" value="Skip Intro" id="intro_skip">
        <input type="button" class="skips" value="Auto Skip in 5 Secs" id="Auto_skip">
   </div>
-   <div class="container-fluid page-height mt-3">
+   <div class=" page-height mt-1">
      <?php 
            $paypal_id = Auth::user()->paypal_id;
            if (!empty($paypal_id) && !empty(PaypalSubscriptionStatus() )  ) {
