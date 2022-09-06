@@ -121,10 +121,11 @@ Index Of Script
 		$('#home-slider').slick({
 			autoplay: true,
 			speed:500,
+            useTransform: true,
             autoplaySpeed:7000,
             infinite: true,
-            cssEase: 'linear',
-			   lazyLoad: 'ondemand',
+            cssEase: 'ease-out',
+            lazyLoad: 'ondemand',
 			arrows: true,
 			dots: true,
 			prevArrow: '<div class="slick-nav prev-arrow"><svg width="18" height="32" xmlns="http://www.w3.org/2000/svg"><path d="M14.763 17.237v-2.474l-14 14a1.748 1.748 0 0 0 0 2.474c.683.684 1.79.684 2.474 0l14-14a1.748 1.748 0 0 0 0-2.474l-14-14A1.75 1.75 0 0 0 .763 3.237l14 14z" fill="#EFF1F1"/></svg></div>',
