@@ -19,7 +19,7 @@
                             @foreach($artist_live_event['artist_live_event'] as $artist_live_events)
 
                            <li class="slide-item col-sm-2 col-md-2 col-xs-12">
-                                <a href="<?php echo URL::to('home') ?>">
+                                <a  href="{{ route('live_event_play',$artist_live_events->slug ) }}" >	
                                     <div class="block-images position-relative">
                                         <div class="img-box">
                                         <img src="<?php echo URL::to('/').'/public/uploads/images/'.$artist_live_events->image;  ?>" class="img-fluid w-100" alt="">
