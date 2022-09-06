@@ -2413,13 +2413,12 @@ class ChannelController extends Controller
     public function liveList()
     {
 
-        $ThumbnailSetting = ThumbnailSetting::first();
-
-        $parentCategories = LiveCategory::get();
         $parentCategories = LiveCategory::orderBy('order')->where('in_menu', 1)
             ->get();
+
         $data = array(
-            'ThumbnailSetting' => $ThumbnailSetting,
+            'ThumbnailSetting' => ThumbnailSetting::first(),
+            'currency'         => CurrencySetting::first(),
             'parentCategories' => $parentCategories,
         );
 

@@ -1,7 +1,6 @@
-
-<?php include ('header.php'); 
-//    dd($data);
-  ?>
+<?php 
+    include(public_path('themes/default/views/header.php'));
+?>
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <style type="text/css">
@@ -37,7 +36,7 @@ font-weight: 400;
     /* width: 100%; */
 }
     .plyr--video{
-         height: calc(100vh - 80px - 75px);
+         height: calc(80vh - 80px - 75px);
     max-width: none;
     width: 100%;
     }  
@@ -273,7 +272,27 @@ else{
                  <li class="text-white"><?//= $videocategory ;?></li>
                 </ul>
             </div>
+            
             <div class="col-sm-3 col-md-3 col-xs-12">
+
+                @if(  $video->tips == 1 )
+                                {{--Tips  --}}
+                    <div class="d-flex mt-2">
+                        <button class="btn btn-primary" id="tips" onclick="tips_hide()" >{{  $video->donations_label ? $video->donations_label : "TIPS" }} TIPS </button>
+                    </div>
+
+                    <form action="{{ route('live_event_tips') }}" method="post">
+                        @csrf
+                        <div class=" mt-4" id="live_event_amount">
+                            
+                            <input type="hidden" name="live_event_video_slug" class="form-control" required  value="{{ $video->slug  }}">
+                            <input type="text" name="live_event_amount" class="form-control" placeholder="Please Enter the Amount" required>
+                            <button class="btn btn-primary" > Amount Pay </button>
+                        </div>
+                    </form>
+                @endif
+
+                                {{-- views --}}
                 <div class=" d-flex mt-4 pull-right"> 
                     <div class="views">
                         <span class="view-count"><i class="fa fa-eye"></i> 
@@ -392,14 +411,15 @@ else{
                 </div>
             </div>
 
-            <div class="row">
+            {{-- <div class="row">
                 <div class=" container-fluid video-list you-may-like overflow-hidden">
                     <h4 class="" style="color:#fffff;"><?php echo __('Related Videos');?></h4>
                     <div class="slider">   
-                        <?php include('partials/live_related_video.blade.php');?>
+                        <?php include('partials/live_related_video');?>
+
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
 
 <!-- <div style="text-align:right;padding:5px 0";>
@@ -589,14 +609,12 @@ var livepayment = $('#purchase_url').val();
 var publishable_key = $('#publishable_key').val();
 
 
-// alert(livepayment);
-
 $(document).ready(function () {  
-$.ajaxSetup({
-headers: {
-'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-}
-});
+        $.ajaxSetup({
+        headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
 });
 
 function pay(amount) {
@@ -607,52 +625,31 @@ var handler = StripeCheckout.configure({
 key: publishable_key,
 locale: 'auto',
 token: function (token) {
-// You can access the token ID with `token.id`.
-// Get the token ID to your server-side code for use.
 console.log('Token Created!!');
 console.log(token);
 $('#token_response').html(JSON.stringify(token));
+
 $.ajax({
 url: '<?php echo URL::to("purchase-live") ;?>',
 method: 'post',
-data: {"_token": "<?= csrf_token(); ?>",tokenId:token.id, amount: amount , video_id: video_id },
+data: {"_token": 
+        "<?= csrf_token(); ?>",
+        tokenId:token.id, 
+        amount: amount , 
+        video_id: video_id 
+},
 success: (response) => {
-alert("You have done  Payment !");
-setTimeout(function() {
-location.reload();
+    alert("You have done  Payment !");
+    setTimeout(function() {
+    location.reload();
 }, 2000);
-
 },
 error: (error) => {
 swal('error');
-//swal("Oops! Something went wrong");
-/* setTimeout(function() {
-location.reload();
-}, 2000);*/
 }
 })
-// $.ajax({
-// url: livepayment,
-// method: 'post',
-// data: {  _token: '<?= csrf_token(); ?>',tokenId: token.id, amount: amount , video_id: video_id },
-// success: (response) => {
-// swal("You have done  Payment !");
-// setTimeout(function() {
-// location.reload();
-// }, 2000);
-
-// },
-// error: (error) => {
-// swal('error');
-// //swal("Oops! Something went wrong");
-// /* setTimeout(function() {
-// location.reload();
-// }, 2000);*/
-// }
-// })
 }
 });
-
 
 handler.open({
 name: '<?php $settings = App\Setting::first(); echo $settings->website_name;?>',
@@ -660,6 +657,16 @@ description: 'PAY PeR VIEW',
 amount: amount * 100
 });
 }
+
+        // Tips 
+
+$(document).ready(function(){
+    $('#live_event_amount').hide();
+
+    $("#tips").click(function(){
+        $("#live_event_amount").toggle();
+    });
+});
 </script>
 
 <script type="text/javascript" src="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.min.js"></script>
@@ -729,4 +736,5 @@ document.getElementById("demo").innerHTML = "EXPIRED";
 }, 1000);
 </script>
 
-<?php include ('footer.blade.php'); ?>
+<?php include(public_path('themes/default/views/footer.blade.php'));  ?>
+
