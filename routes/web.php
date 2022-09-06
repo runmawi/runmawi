@@ -1833,3 +1833,6 @@ Route::get('channel-partner/{slug}', 'ChannelPartnerController@unique_channelpar
 // Live Event For artist 
 Route::get('/live-artists-event', 'LiveEventArtistStream@index')->name('LiveEventArtistStream_index');
 Route::get('/live-artist-event/{slug}', 'LiveEventArtistStream@live_event_play')->name('live_event_play');
+
+Route::post('/live_event_tips', 'LiveEventArtistStream@live_event_tips')->name('live_event_tips');
+Route::post('/stripePayment-Tips', 'LiveEventArtistStream@stripePaymentTips')->name('stripePaymentTips');

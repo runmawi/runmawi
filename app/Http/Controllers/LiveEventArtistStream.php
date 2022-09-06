@@ -17,6 +17,7 @@ use App\PaymentSetting;
 use App\RecentView;
 use Carbon\Carbon;
 use App\LiveStream;
+use App\LiveEventPaymentDetails;
 use Theme;
 use URL;
 use Auth;
@@ -24,6 +25,8 @@ use View;
 use Hash;
 use DB;
 use Session;
+use Cartalyst\Stripe\Stripe;
+use Laravel\Cashier\Cashier;
 
 class LiveEventArtistStream extends Controller
 {
@@ -148,5 +151,58 @@ class LiveEventArtistStream extends Controller
          );
 
          return Theme::view('live_artist_event.live_event_videos', $data);
+    }
+
+    
+    public function live_event_tips(Request $request)
+    {
+
+        $data = [
+            'publish_key' => env('STRIPE_KEY'),
+            'amount'      => $request->live_event_amount ,
+            'live_event_video_slug' => $request->live_event_video_slug ,
+        ];
+        return Theme::view('live_artist_event.live_event_stripe',$data);
+    }
+
+    public function stripePaymentTips(Request $request)
+    {
+
+        $secret_key = env('STRIPE_SECRET');
+
+        $stripe = Stripe::make($secret_key, '2020-03-02');
+
+        try {
+            $charge = $stripe->charges()->create([
+                'source' => $request->get('tokenId'),
+                'currency' => 'USD',
+                'amount' => $request->get('amount')
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Oops!! Payment issues']);
+        }
+
+       try {
+         LiveEventPaymentDetails::create([
+            'payment_mode'  => "Stripe",
+            'user_id'       => Auth::user() ? Auth::user()->id : "guest",
+            'charge_id'     => $charge['id'],
+            'amount_tip'    => $charge['amount'] / 100,
+            'currency_type' => $charge['currency'],
+            'pay_type'      => $charge['payment_method_details']['type'],
+            'name'          => $charge['billing_details']['name'],
+            'email'         => $charge['billing_details']['email'],
+            'last_card_no'  => $charge['payment_method_details']['card']['last4'],
+            'card_band'     => $charge['payment_method_details']['card']['brand'],
+            'card_type'     => $charge['payment_method_details']['card']['funding'],
+        ]);
+
+            return response()->json(['message' => 'Payment Done Successfully']);
+
+       } catch (\Throwable $th) {
+
+            return response()->json(['message' => 'Issues In updating Data ! Please contact Admin']);
+       }
+  
     }
 }

@@ -274,6 +274,25 @@ else{
             </div>
             
             <div class="col-sm-3 col-md-3 col-xs-12">
+
+                @if(  $video->tips == 1 )
+                                {{--Tips  --}}
+                    <div class="d-flex mt-2">
+                        <button class="btn btn-primary" id="tips" onclick="tips_hide()" >{{  $video->donations_label ? $video->donations_label : "TIPS" }} TIPS </button>
+                    </div>
+
+                    <form action="{{ route('live_event_tips') }}" method="post">
+                        @csrf
+                        <div class=" mt-4" id="live_event_amount">
+                            
+                            <input type="hidden" name="live_event_video_slug" class="form-control" required  value="{{ $video->slug  }}">
+                            <input type="text" name="live_event_amount" class="form-control" placeholder="Please Enter the Amount" required>
+                            <button class="btn btn-primary" > Amount Pay </button>
+                        </div>
+                    </form>
+                @endif
+
+                                {{-- views --}}
                 <div class=" d-flex mt-4 pull-right"> 
                     <div class="views">
                         <span class="view-count"><i class="fa fa-eye"></i> 
@@ -638,6 +657,16 @@ description: 'PAY PeR VIEW',
 amount: amount * 100
 });
 }
+
+        // Tips 
+
+$(document).ready(function(){
+    $('#live_event_amount').hide();
+
+    $("#tips").click(function(){
+        $("#live_event_amount").toggle();
+    });
+});
 </script>
 
 <script type="text/javascript" src="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.min.js"></script>
