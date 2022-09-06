@@ -9,13 +9,14 @@
         <div class="container-fluid px-5">
             <div class="row align-items-center  justify-content-between ">
                 <div class="col-sm-12 small m-0 exp p-0 text-center">
-                    <ul style="display:inline-flex;color:#957EFF;">
-                        <li>Terms Of Use</li>
-                        <li> Privacy Policy                 
-                        <li>FAQs</li>
-                        <li>Contact Us</li>
-                        <li> Advertise with Us</li>
-                    </ul>
+                    <div class="row justify-content-center foot mt-2 mb-2" style="color:#957EFF;">
+                        <div class="col-lg-2">Terms Of Use</div>
+                        <div class="col-lg-2">Privacy Policy   </div>
+                        <div class="col-lg-1">FAQs</div>
+                        <div class="col-lg-2">Contact Us</div>
+                        <div class="col-lg-2">Advertise with Us</div>
+                       
+                    </div>
                    <!-- <ul class="text-white p-0 mt-3 d-flex">
                       <?php $column2_footer = App\FooterLink::where('column_position',2)->orderBy('order')->get();  
                         foreach ($column2_footer as $key => $footer_link){ ?>
@@ -190,7 +191,7 @@
                 </div>-->
                 <?php $app_settings = App\AppSetting::where('id','=',1)->first();  ?>     
 
-                <div class="col-sm-12 small m-0 text-white text-center">
+                <div class="col-sm-12 small m-0 mt-4 text-white text-center">
                     <a href="<?php echo $settings->facebook_page_id; ?>" target="_blank"  class="text-center icn1">
                       <i class="fa fa-facebook" aria-hidden="true"></i>
 

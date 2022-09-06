@@ -37,7 +37,7 @@ font-weight: 400;
     /* width: 100%; */
 }
     .plyr--video{
-         height: calc(80vh - 80px - 75px);
+         height: calc(100vh - 80px - 75px);
     max-width: none;
     width: 100%;
     }  

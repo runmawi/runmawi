@@ -590,6 +590,15 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     // Admin Live Event for artist
     Route::get('/live-event-artist', 'AdminLiveEventArtist@index')->name('live_event_artist');
     Route::get('/live-event-create', 'AdminLiveEventArtist@create')->name('live_event_create');
+    Route::post('/live-event-store', 'AdminLiveEventArtist@store')->name('live_event_store');
+    Route::get('/live-event-edit/{id}', 'AdminLiveEventArtist@edit')->name('live_event_edit');
+    Route::post('/live-event-update/{id}', 'AdminLiveEventArtist@update')->name('live_event_update');
+    Route::get('/live-event-destroy/{id}', 'AdminLiveEventArtist@destroy')->name('live_event_destroy');
+
+    // Live Event For artist 
+    // Route::get('/live-artist-event', 'AdminLiveEventArtist@create')->name('live_event_create');
+
+
 
     // Admin Channel Package
     Route::get('/channel-package-index', 'AdminChannelPackageController@index')->name('channel_package_index');

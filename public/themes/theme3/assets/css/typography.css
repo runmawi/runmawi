@@ -72,7 +72,7 @@ hr { border-color: var(--iq-border-light); }
 h1, h2, h3, h4, h5, h6 { font-weight: 500; margin: 0px; line-height: 1.2; color: var(--iq-white);      font-family: 'Gilroy';}
 h1 a, h2 a, h3 a, h4 a, h5 a, h6 a { color: inherit; }
 label { font-weight: normal;      font-family: 'Gilroy';}
-h1, .h1 { font-size: 3.052em;      font-family: 'Gilroy';font-weight: 600;}
+h1, .h1 { font-size: 2.500em;      font-family: 'Gilroy';font-weight: 600;}
 h2, .h2 { font-size: 2.300em;       font-family: 'Gilroy';}
 h3, .h3 { font-size: 1.953em;      font-family: 'Gilroy';}
 h4, .h4 {font-family: 'Gilroy';

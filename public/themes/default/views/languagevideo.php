@@ -15,7 +15,7 @@
                           <a href="<?php echo URL::to('category') ?><?= '/videos/' . $video->slug ?>">
                                  <div class="block-images position-relative">
                                     <div class="img-box">
-                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$video->image;  ?>" class="img-fluid" alt="">
+                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$video->image;  ?>" class="img-fluid w-100" alt="">
                                    
                                    
                                           <?php  if(!empty($video->ppv_price)){?>
