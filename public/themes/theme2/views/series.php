@@ -109,10 +109,10 @@ $series = $series_data ;
 
 
                             </div>
-                            <div class="modal fade modal-xl" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal fade modal-xl" id="videoModal" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <button type="button" class="close videoModalClose" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <div class="modal-body">
         
             
@@ -166,14 +166,14 @@ $series = $series_data ;
 	<div class="">
 		<div class="row">
 			<div class="col-md-12 mt-4">
-				
-					<div class="container-fluid">
-                        <h4 class="ml-3">Episode</h4>
+				<nav class="nav-justified">
+					<div class="nav nav-tabs nav-fill container-fluid " id="nav-tab" role="tablist">
+                        <h4>Episode</h4>
 						<!--<a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Episode</a>
 						<!--<a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Related</a>
 						<a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Detail</a>-->
 					</div>
-				
+				</nav>
 				<div >
 					<div >
 <!-- $series->title -->
@@ -402,6 +402,12 @@ var publishable_key = $('#publishable_key').val();
 
 $(document).ready(function () {  
 
+ $('.videoModalClose').click(function (){
+  $('#videoPlayer1')[0].pause();
+  $('#videos')[0].pause();
+
+});
+
 	var imageseason = '<?= $season_trailer ?>' ;
 // console.log(imageseason)
 $("#videoPlayer1").hide();
@@ -419,10 +425,22 @@ if('season_'+$val.id == season_id){
     $("#videoPlayer1").show();
     $("#videos").hide();
     $("#videoPlayer1").attr("src", $val.trailer);
+
+
+    $('.videoModalClose').click(function (){
+      $('#videoPlayer1')[0].pause();
+    });
+
   }else{
     $("#videoPlayer1").hide();
     $("#videos").show();
    $("#m3u8urlsource").attr("src", $val.trailer);
+  
+  
+   $('.videoModalClose').click(function (){
+      $('#videos')[0].pause();
+    });
+
   }
 }
 });
