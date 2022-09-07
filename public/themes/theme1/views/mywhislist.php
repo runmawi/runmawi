@@ -1,5 +1,5 @@
 <?php
-    include(public_path('themes/default/views/header.php'));
+    include(public_path('themes/theme1/views/header.php'));
 ?>
 
 
@@ -206,5 +206,5 @@ header.classList.remove("sticky");
 <script src="<?php echo URL::to('/').'/assets/js/videojs.hotkeys.js';?>"></script>
 
 <?php 
-    include(public_path('themes/default/views/footer.blade.php'));
+    include(public_path('themes/theme1/views/footer.blade.php'));
 ?>

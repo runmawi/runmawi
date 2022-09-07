@@ -9,6 +9,9 @@
     #follow{
          color: #007E33;
     }
+    .abu h2{
+        color: #fff!important;
+    }
 </style>
 
 <!--<div class="aud" style="background-image:url(<?php echo URL::to('/').'/public/uploads/artists/'.$artist->image;?>)">
