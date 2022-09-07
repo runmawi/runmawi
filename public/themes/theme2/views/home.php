@@ -58,7 +58,7 @@ $order_settings_list = App\OrderHomeSetting::get();
                 <div class="block-description">
                     <div class="hover-buttons text-white">
                       
-                        <div></div>
+                        <div><button>play</button></div>
                     </div>
                 </div>
               </div>
