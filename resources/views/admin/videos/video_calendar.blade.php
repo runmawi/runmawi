@@ -110,7 +110,7 @@
             selectable: true,
             selectHelper: true,
             select: function (start, end, allDay) {
-                var title = prompt('Surge Price:');
+                var title = prompt('Video Schedule:');
                 if (title) {
                     var start = $.fullCalendar.formatDate(start, "Y-MM-DD HH:mm:ss");
                     var end = $.fullCalendar.formatDate(end, "Y-MM-DD HH:mm:ss");
