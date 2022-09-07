@@ -331,6 +331,7 @@ class ApiAuthController extends Controller
                               $response = array(
                                 'status' => 'false',
                                 'message' => 'Subscription Not done',
+                                'error_message' =>   $th,
                                 'user_id' =>  $userid
                             );
 
