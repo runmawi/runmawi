@@ -108,6 +108,54 @@ endif; ?>
 endif; ?>
                             <!-- Video Sliders -->
 
+                            
+                <!-- Live Event Banners -->
+
+<?php $live_event_banners = App\LiveEventArtist::where('active',1)->where('banner',1)->get() ?>
+<?php if(isset($live_event_banners)) :
+
+    foreach($live_event_banners as $key => $live_event_banner): ?>
+        <div class="item <?php if($key == 0){echo 'active';}?> header-image">
+            <div class="slide slick-bg s-bg-1 lazyload"
+                data-bgset="<?php echo URL::to('/').'/public/uploads/images/' .$live_event_banner->player_image;?>"  style="background-position: right;   ">
+                <div class="container-fluid position-relative h-100" style="padding:0px 100px">
+                    <div class="slider-inner h-100">
+                        <div class="row align-items-center bl h-100">
+                            <div class="col-xl-6 col-lg-12 col-md-12">
+                                <h1 class="text-white mb-3" >
+                                    <?php  echo (strlen($live_event_banner->title) > 15) ? substr($live_event_banner->title,0,80).'...' : $live_event_banner->title; ?>
+                                </h1>
+
+                                <div class="d-flex align-items-center" >
+                                    <span class="badge badge-secondary p-2">
+                                        <?php echo __($live_event_banner->year); ?>
+                                    </span>
+                                </div>
+
+                                <div
+                                    style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
+                                    -webkit-line-clamp: 3; -webkit-box-orient: vertical;  overflow: hidden;">
+                                    <?php echo __($live_event_banner->description); ?>
+                                </div>
+                                
+                                <div class="d-flex justify-content-evenly align-items-center r-mb-23" data-animation-in="fadeInUp"
+                                    data-delay-in="1.2">
+                                    <a href="<?= route('live_event_play',$live_event_banner->slug)  ?>" class="btn bd">
+                                        <i class="fa fa-play mr-2" aria-hidden="true"></i> Play
+                                    </a>
+                                    <a class="btn bd ml-2" href="<?= route('live_event_play',$live_event_banner->slug) ?>">
+                                        <i class="fa fa-info" aria-hidden="true"></i> More details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<?php endforeach; endif; ?>
+                             <!-- Live Event Banners -->
+
 <?php if(isset($video_banners)) :
     foreach($video_banners as $key => $videos): ?>
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
