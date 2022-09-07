@@ -1836,3 +1836,4 @@ Route::get('/live-artist-event/{slug}', 'LiveEventArtistStream@live_event_play')
 
 Route::post('/live_event_tips', 'LiveEventArtistStream@live_event_tips')->name('live_event_tips');
 Route::post('/stripePayment-Tips', 'LiveEventArtistStream@stripePaymentTips')->name('stripePaymentTips');
+Route::post('/purchase-live-artist-event', 'LiveEventArtistStream@rent_live_artist_event')->name('rent_live_artist_event'); 
