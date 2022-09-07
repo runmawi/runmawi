@@ -22,6 +22,7 @@ NOTE: This file contains the styling for responsive Template.
 /*---------------------------------------------------------------------
                     Header
 -----------------------------------------------------------------------*/
+
 @media (min-width: 411px){
     .tvsec {
        text-align: center;
@@ -63,6 +64,24 @@ video {
      min-width: 100%;
   min-height: 100%;
     
+}
+.img-box{
+    width: inherit;
+    background: rgba(0,0,0,0.5);
+    overflow: hidden;
+    position: relative;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border-radius: 5px;
+    -webkit-transition: transform .25s cubic-bezier(0.33, 0.04, 0.63, 0.93);
+    -o-transition: transform .25s cubic-bezier(0.33, 0.04, 0.63, 0.93);
+    -webkit-transition: -webkit-transform .25s cubic-bezier(0.33, 0.04, 0.63, 0.93);
+    transition: -webkit-transform .25s cubic-bezier(0.33, 0.04, 0.63, 0.93);
+    -o-transition: -o-transform .25s cubic-bezier(0.33, 0.04, 0.63, 0.93);
+    transition: transform .25s cubic-bezier(0.33, 0.04, 0.63, 0.93);
+    transition: transform .25s cubic-bezier(0.33, 0.04, 0.63, 0.93), -webkit-transform .25s cubic-bezier(0.33, 0.04, 0.63, 0.93), -o-transform .25s cubic-bezier(0.33, 0.04, 0.63, 0.93);
 }
 
 body{

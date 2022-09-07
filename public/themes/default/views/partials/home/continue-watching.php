@@ -13,6 +13,7 @@
                           <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $cont_video->slug ?>">
                              <div class="block-images position-relative">
                              <!-- block-images -->
+                                 <div class="border-bg">
                                 <div class="img-box">
                                 
                                   <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>" class="img-fluid lazyload w-100" alt="">
@@ -31,7 +32,7 @@
                                           <?php } ?>
                                        
                                  </div>
-                             
+                             </div>
 
                                 <div class="block-description">
                                  
