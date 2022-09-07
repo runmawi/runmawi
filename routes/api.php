@@ -101,7 +101,7 @@ Route::group([
     Route::post('seasonlist', 'ApiAuthController@seasonlist');
     Route::post('seriesepisodes', 'ApiAuthController@seriesepisodes');
     Route::post('episodedetails', 'ApiAuthController@episodedetails');
-    Route::post('episodedetails-andriod', 'ApiAuthController@episodedetailsAndriod');
+    Route::post('episodedetails_android', 'ApiAuthController@episodedetailsAndriod');
     Route::post('relatedepisodes', 'ApiAuthController@relatedepisodes');
     Route::post('seasonepisodes', 'ApiAuthController@SeasonsEpisodes');
     Route::post('user_notifications', 'ApiAuthController@seasonepisodes');

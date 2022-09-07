@@ -167,8 +167,8 @@ $series = $series_data ;
 		<div class="row">
 			<div class="col-md-12 mt-4">
 				<nav class="nav-justified">
-					<div class="nav nav-tabs nav-fill container-fluid " id="nav-tab" role="tablist">
-                        <h4>Episode</h4>
+					<div class="container-fluid " id="nav-tab" role="tablist">
+                        <h4 class="ml-3">Episode</h4>
 						<!--<a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Episode</a>
 						<!--<a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Related</a>
 						<a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Detail</a>-->
