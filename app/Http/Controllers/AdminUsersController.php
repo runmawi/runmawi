@@ -521,7 +521,8 @@ class AdminUsersController extends Controller
         }
         else
         {
-            $input['passwords'] = $request['passwords'];
+            // $input['passwords'] = $request['passwords'];
+            $input['passwords'] = Hash::make($request['passwords']);
         }
 
         if (empty($input['active']))
@@ -548,7 +549,7 @@ class AdminUsersController extends Controller
                     'email' => $input['email'],
                     'ccode' => $input['ccode'],
                     'mobile' => $input['mobile'],
-                    'password' => Hash::make($input['passwords']),
+                    'password' => $input['passwords'],
                     'role' => $input['role'],
                     'active' => $active_status,
                     'terms' => $input['terms'],
@@ -600,7 +601,7 @@ class AdminUsersController extends Controller
             'admin_user' => Auth::user() ,
             'button_text' => 'Update User',
         );
-        return View::make('admin.users.create_edit', $data);
+        return View::make('admin.users.edit', $data);
     }
     }
 

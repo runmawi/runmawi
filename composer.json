@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.2.5",
+        "acaronlex/laravel-calendar": "^1.6",
         "alexusmai/laravel-file-manager": "^2.5",
         "aminyazdanpanah/php-ffmpeg-video-streaming": "^1.2",
         "amrshawky/laravel-currency": "^5.0",

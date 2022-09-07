@@ -5,14 +5,13 @@ use Episode;
 
 use Illuminate\Database\Eloquent\Model;
 
-class VideoEvents extends Model
+class VideoSchedules extends Model
 {
     protected $guarded = array();
 
-	protected $table = 'video_events';
+	protected $table = 'video_schedules';
 	
 	public static $rules = array();
-
 
 
 }

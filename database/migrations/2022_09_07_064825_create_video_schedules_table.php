@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateVideoEventsTable extends Migration
+class CreateVideoSchedulesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateVideoEventsTable extends Migration
      */
     public function up()
     {
-        Schema::create('video_events', function (Blueprint $table) {
+        Schema::create('video_schedules', function (Blueprint $table) {
             $table->id();
-            $table->string('title')->nullable();
-            $table->string('start')->nullable();
-            $table->string('end')->nullable();
+            $table->string('name')->nullable();
+            $table->string('description')->nullable();
+            $table->integer('user_id')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class CreateVideoEventsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('video_events');
+        Schema::dropIfExists('video_schedules');
     }
 }
