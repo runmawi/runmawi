@@ -225,7 +225,7 @@ class ApiAuthController extends Controller
               $userdata = User::where('email', '=', $request->get('email'))->first();
               $userid = $userdata->id;
 
-              send_password_notification('Notification From FLICKNEXS','Your Account  has been Created Successfully','Your Account  has been Created Successfully','',$userid);
+              send_password_notification('Notification From '.GetWebsiteName() ,'Your Account  has been Created Successfully','Your Account  has been Created Successfully','',$userid);
                 
         } 
         else {
@@ -417,7 +417,7 @@ class ApiAuthController extends Controller
                       //                           $message->to($user->email, $user->username)->subject($request->get('subject'));
                       //                       });
 
-            send_password_notification('Notification From FLICKNEXS','Your Payment has been done Successfully','Your Your Payment has been done Successfully','',$user->id);
+            send_password_notification('Notification From '. GetWebsiteName(),'Your Payment has been done Successfully','Your Your Payment has been done Successfully','',$user->id);
         }
       }
       else{
@@ -635,7 +635,7 @@ class ApiAuthController extends Controller
       $user = User::find($user_id->id);
       $user->password = Hash::make($request->password);
       $user->save();
-          send_password_notification('Notification From Flicknexs','Password has been Updated Successfully','Password Update Done','',$user_id->id);
+          send_password_notification('Notification From '. GetWebsiteName(),'Password has been Updated Successfully','Password Update Done','',$user_id->id);
       $response = array(
         'status'=>'true',
         'message'=>'Password changed successfully.'
@@ -812,7 +812,7 @@ public function verifyandupdatepassword(Request $request)
           'status'=>'true',
           'message'=>'Password changed successfully.'
         );
-                  send_password_notification('Notification From Flicknexs','Password has been Updated Successfully','Password Update Done','',$user_id);
+                  send_password_notification('Notification From '. GetWebsiteName(),'Password has been Updated Successfully','Password Update Done','',$user_id);
 
       } else {
         $response = array(
@@ -2051,7 +2051,7 @@ $final[] = array_merge($array1,$array2,$array3,$array4);
         DB::table('ppv_purchases')->insert(
           ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date ]
         );
-        send_password_notification('Notification From Flicknexs','You have rented a video','You have rented a video','',$user_id);
+        send_password_notification('Notification From '. GetWebsiteName(),'You have rented a video','You have rented a video','',$user_id);
       } else {
         DB::table('ppv_purchases')->where('video_id', $video_id)->where('user_id', $user_id)->update(['to_time' => $date]);
       }
@@ -5378,7 +5378,7 @@ public function AddRecentAudio(Request $request){
         $ends_at = $user->subscription($stripe_plan)->ends_at->format('dS M Y');
         $end_date= date('d-m-Y', strtotime($ends_at. ' - ' ."7 days")); 
         if(!empty($end_date)){
-          send_password_notification('Notification From FLICKNEXS','Your Subscription Auto Renewal Before 7 days','',$user->id);
+          send_password_notification('Notification From'. GetWebsiteName(),'Your Subscription Auto Renewal Before 7 days','',$user->id);
         }else{
         }
     }else{
@@ -7005,7 +7005,7 @@ public function Adstatus_upate(Request $request)
         DB::table('ppv_purchases')->insert(
           ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date ]
         );
-        send_password_notification('Notification From Flicknexs','You have rented a video','You have rented a video','',$user_id);
+        send_password_notification('Notification From ' . GetWebsiteName(),'You have rented a video','You have rented a video','',$user_id);
       } else {
         DB::table('ppv_purchases')->where('video_id', $video_id)->where('user_id', $user_id)->update(['to_time' => $date]);
       }

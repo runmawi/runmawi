@@ -13,6 +13,12 @@ bottom: 0;
 left: 0;
 right: 0;
 }
+    .bd{
+        font-weight: 700;
+    }
+    .form-control{
+        height: 35px;
+    }
 .countdown {
 text-align: center;
 font-size: 60px;
@@ -264,8 +270,8 @@ else{
     <input type="hidden" class="videocategoryid" data-videocategoryid="<?=$video->video_category_id; ?>" value="<?=$video->video_category_id; ?>">
 
     <div class="container-fluid video-details">
-        <div class="row">
-            <div class="col-sm-9 col-md-9 col-xs-12">
+        <div class="row align-items-center">
+            <div class="col-sm-7 col-md-7 col-xs-12">
                 <h1 class="trending-text big-title text-uppercase mt-3"><?php echo __($video->title);?> <?php if( Auth::guest() ) { ?>  <?php } ?></h1>
                     <!-- Category -->
                 <ul class="p-0 list-inline d-flex align-items-center movie-content">
@@ -273,33 +279,38 @@ else{
                 </ul>
             </div>
             
-            <div class="col-sm-3 col-md-3 col-xs-12">
+            <div class="col-sm-4 col-md-4 col-xs-12">
 
                 @if(  $video->tips == 1 )
                                 {{--Tips  --}}
-                    <div class="d-flex mt-2">
-                        <button class="btn btn-primary" id="tips" onclick="tips_hide()" >{{  $video->donations_label ? $video->donations_label : "TIPS" }} TIPS </button>
-                    </div>
-
-                    <form action="{{ route('live_event_tips') }}" method="post">
+                    <div class="d-flex justify-content-end mt-2">
+                        <div> <button class="btn bd btn-primary" id="tips" onclick="tips_hide()" >{{  $video->donations_label ? $video->donations_label : "TIPS" }} TIPS </button></div> </div>
+                        <div><form action="{{ route('live_event_tips') }}" method="post">
                         @csrf
-                        <div class=" mt-4" id="live_event_amount">
+                        <div class=" mt-2" id="live_event_amount">
+                            <div class="d-flex justify-content-end">
+                                <div><input type="hidden" name="live_event_video_slug" class="form-control " required  value="{{ $video->slug  }}">
+                            <input type="text" name="live_event_amount" class="form-control " placeholder="Please Enter the Amount" required></div>
+                                <div>  <button class="btn btn-primary" > Amount Pay </button></div>
                             
-                            <input type="hidden" name="live_event_video_slug" class="form-control" required  value="{{ $video->slug  }}">
-                            <input type="text" name="live_event_amount" class="form-control" placeholder="Please Enter the Amount" required>
-                            <button class="btn btn-primary" > Amount Pay </button>
+                          </div>
                         </div>
-                    </form>
+                    </form></div>
+                       
+                       
+                   
+
+                    
                 @endif
 
                                 {{-- views --}}
-                <div class=" d-flex mt-4 pull-right"> 
+               <!-- <div class=" d-flex mt-4 pull-right"> 
                     <div class="views">
                         <span class="view-count"><i class="fa fa-eye"></i> 
                             <?php if(isset($view_increment) && $view_increment == true ): ?><?= $video->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?> 
                         </span>
                     </div>
-                </div>
+                </div>-->
             </div>        
         </div>
         <!-- Year, Running time, Age -->
@@ -630,7 +641,7 @@ console.log(token);
 $('#token_response').html(JSON.stringify(token));
 
 $.ajax({
-url: '<?php echo URL::to("purchase-live") ;?>',
+url: '<?php echo route("rent_live_artist_event") ;?>',
 method: 'post',
 data: {"_token": 
         "<?= csrf_token(); ?>",
