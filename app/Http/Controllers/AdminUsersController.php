@@ -54,6 +54,10 @@ use Theme;
 use Response;
 use File;
 use GuzzleHttp\Client;
+use App\ContinueWatching;
+use App\Wishlist;
+use App\Watchlater;
+
 
 class AdminUsersController extends Controller
 {
@@ -1008,8 +1012,14 @@ class AdminUsersController extends Controller
 
     public function destroy($id)
     {
+        ContinueWatching::where('user_id',$id)->delete();
 
-        User::destroy($id);
+        Wishlist::where('user_id',$id)->delete();
+
+        Watchlater::where('user_id',$id)->delete();
+
+        User::find($id)->delete();
+
         return Redirect::to('admin/users')->with(array(
             'message' => 'Successfully Deleted User',
             'note_type' => 'success'
