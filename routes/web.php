@@ -717,6 +717,18 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
 
      /*  Videos Setting  */
 
+    Route::get('/video-schedule', 'AdminVideosController@ScheduleVideo');
+    Route::post('/video-schedule/store', 'AdminVideosController@ScheduleStore');
+    Route::get('/video-schedule/edit/{id}', 'AdminVideosController@ScheduleEdit');
+    Route::get('/video-schedule/delete/{id}', 'AdminVideosController@ScheduleDelete');
+    Route::post('/video-schedule/update', 'AdminVideosController@ScheduleUpdate');
+
+
+    Route::get('/manage/schedule/{id}', 'AdminVideosController@ManageSchedule');
+
+    
+
+
     Route::get('/video-event', 'AdminVideosController@calendarEvent');
     Route::post('/video-crud-ajax', 'AdminVideosController@calendarEventsAjax');
 

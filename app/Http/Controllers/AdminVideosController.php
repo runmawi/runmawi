@@ -58,8 +58,7 @@ use Streaming\Representation;
 use App\Jobs\ConvertVideoTrailer;
 use App\InappPurchase;
 use App\CurrencySetting as CurrencySetting;
-use App\VideoEvents as VideoEvents;
-
+use App\VideoSchedules as VideoSchedules;
 
 class AdminVideosController extends Controller
 {
@@ -3632,6 +3631,91 @@ if(!empty($artistsdata)){
                     return Redirect::to("/blocked");
                 }
             }
+
+            public function ScheduleVideo(Request $request)
+            {
+
+                $VideoSchedules = VideoSchedules::get();
+                $settings = Setting::first();
+
+                $data = array(
+                    'settings' => $settings,
+                    'VideoSchedules' => $VideoSchedules,
+                );
+                return view('admin.schedule.video_schedule',$data);
+            }
+
+            public function ScheduleStore(Request $request)
+            {
+                $data = $request->all();
+
+                $Schedules = new VideoSchedules;
+                $Schedules->name = $request['name'];
+                $Schedules->description = $request['description'];
+                $Schedules->user_id = Auth::user()->id;
+                $Schedules->save();
+                
+                return Redirect::back()->with(array('note' => 'You have been successfully Added New Schedules', 'note_type' => 'success'));
+            }
+
+            public function ScheduleEdit($id)
+            {
+
+                $VideoSchedules = VideoSchedules::get();
+                $settings = Setting::first();
+
+                $VideoSchedules =  VideoSchedules::where('id', '=', $id)->first();
+         
+                $data = array(
+                      'schedule' => $VideoSchedules
+                   );
+                //    dd($VideoSchedules);
+               return view('admin.schedule.videoEdit_schedule',$data);
+
+            }
+
+            public function ScheduleDelete($id)
+            {
+
+                VideoSchedules::where('id',$id)->delete();
+
+                return Redirect::back()->with(array('note' => 'You have been successfully Added New Coupon', 'note_type' => 'success'));
+        
+            }
+
+            public function ScheduleUpdate(Request $request)
+            {
+
+                $input = $request->all();
+                $id = $request['id'];
+
+                $Schedules = VideoSchedules::find($id);
+                $Schedules->name = $request['name'];
+                $Schedules->description = $request['description'];
+                $Schedules->user_id = Auth::user()->id;
+                $Schedules->save();
+                
+                return Redirect::back()->with(array('note' => 'You have been successfully Added New Coupon', 'note_type' => 'success'));
+            }
+
+
+            public function ManageSchedule($id)
+            {
+
+                $VideoSchedules = VideoSchedules::get();
+                $settings = Setting::first();
+
+                $VideoSchedules =  VideoSchedules::where('id', '=', $id)->first();
+         
+                $data = array(
+                      'schedule' => $VideoSchedules,
+                      'settings' => $settings,
+                   );
+                //    dd($VideoSchedules);
+               return view('admin.schedule.manage_schedule',$data);
+
+            }
+
             public function calendarEvent(Request $request)
             {
                 if($request->ajax()) {  
