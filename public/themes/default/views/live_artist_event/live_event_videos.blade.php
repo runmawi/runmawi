@@ -641,7 +641,7 @@ console.log(token);
 $('#token_response').html(JSON.stringify(token));
 
 $.ajax({
-url: '<?php echo URL::to("purchase-live") ;?>',
+url: '<?php echo route("rent_live_artist_event") ;?>',
 method: 'post',
 data: {"_token": 
         "<?= csrf_token(); ?>",

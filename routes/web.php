@@ -714,6 +714,12 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/inapp-purchase_update', 'AdminInappPurchaseController@update')->name('inapp_purchase_update');
     Route::get('/inapp-purchase_delete/{id}', 'AdminInappPurchaseController@delete')->name('inapp_purchase_delete');
 
+
+     /*  Videos Setting  */
+
+    Route::get('/video-event', 'AdminVideosController@calendarEvent');
+    Route::post('/video-crud-ajax', 'AdminVideosController@calendarEventsAjax');
+
      /*  Email Setting  */
 
     Route::get('/email_settings', 'AdminEmailSettingsController@index')->name('email_settings');
@@ -1836,3 +1842,4 @@ Route::get('/live-artist-event/{slug}', 'LiveEventArtistStream@live_event_play')
 
 Route::post('/live_event_tips', 'LiveEventArtistStream@live_event_tips')->name('live_event_tips');
 Route::post('/stripePayment-Tips', 'LiveEventArtistStream@stripePaymentTips')->name('stripePaymentTips');
+Route::post('/purchase-live-artist-event', 'LiveEventArtistStream@rent_live_artist_event')->name('rent_live_artist_event'); 
