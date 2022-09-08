@@ -423,6 +423,16 @@ input:checked + .sliderk:before {
                                                    </div>
                                                 </a>
                                              </li>
+                                   <li class="menu-item dk" style="display:none;">
+                                                <a href="<?php echo URL::to('myprofile') ?>" class="iq-sub-card">
+                                                   <div class="media align-items-center">
+                                                      <div class="right-icon"></div>
+                                                      <div class="media-body">
+                                                         <h6 class="mb-0 ">Logout</h6>
+                                                      </div>
+                                                   </div>
+                                                </a>
+                                             </li>
                                              
                                           <?php } ?>
 
