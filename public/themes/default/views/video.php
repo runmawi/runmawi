@@ -496,7 +496,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
        <div id="video" class="adstime_url" class="fitvid" style="margin: 0 auto;">
        
        <!-- <video id="videoPlayer" class="video-js vjs-default-skin vjs-big-play-centered" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $video->trailer; ?>"  type="video/mp4" > -->
-       <video   id="videoPlayer" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $video->trailer; ?>"  type="video/mp4" >
+       <video   id="videoPlayer" class="pop_up_register_user" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $video->trailer; ?>"  type="video/mp4" >
            <source src="<?= $video->trailer; ?>" type='video/mp4' label='Auto' res='auto' />
 
            <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
@@ -2009,13 +2009,16 @@ location.reload();
 });
 
   }
-   
+ 
   // Trailer - Modal
   $(document).ready(function(){
     $(".close").click(function(){
       $('#videoPlayer1')[0].pause();
     });
-  });
 
+    $(".pop_up_register_user").click(function(){
+     alert('This content is only available for registered users. Please signin / signup !');
+      });
+  });
 </script>
 
