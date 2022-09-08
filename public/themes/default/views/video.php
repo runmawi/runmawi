@@ -1013,8 +1013,8 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
         </div>  </div></div>
 <?php //dd($video->trailer_type); ?>
           <div class="modal fade modal-xl" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
+            <div class="modal-dialog" >
+              <div class="modal-content" style="background-color: transparent;border:none;">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <div class="modal-body">
               
