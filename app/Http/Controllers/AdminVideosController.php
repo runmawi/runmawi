@@ -59,6 +59,7 @@ use App\Jobs\ConvertVideoTrailer;
 use App\InappPurchase;
 use App\CurrencySetting as CurrencySetting;
 use App\VideoSchedules as VideoSchedules;
+use App\ScheduleVideos as ScheduleVideos;
 
 class AdminVideosController extends Controller
 {
@@ -3715,6 +3716,26 @@ if(!empty($artistsdata)){
                return view('admin.schedule.manage_schedule',$data);
 
             }
+
+            public function CalendarSchedule(Request $request)
+            {
+
+                $data = $request->all();
+                $id = $data['schedule_id'];
+                // dd($data['schedule_id']);
+                $VideoSchedules =  VideoSchedules::where('id', '=', $id)->first();
+                $settings = Setting::first();
+         
+                $data = array(
+                      'schedule' => $VideoSchedules,
+                      'settings' => $settings,
+                      'Calendar' => $data,
+                   );
+                //    dd($data );
+               return view('admin.schedule.schedule_videos',$data);
+
+            }
+
 
             public function calendarEvent(Request $request)
             {
