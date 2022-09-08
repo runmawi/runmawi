@@ -17,7 +17,7 @@ right: 0;
         font-weight: 700;
     }
     .form-control{
-        height: 35px;
+        height: 33px;
     }
 .countdown {
 text-align: center;
@@ -291,7 +291,7 @@ else{
                             <div class="d-flex justify-content-end">
                                 <div><input type="hidden" name="live_event_video_slug" class="form-control " required  value="{{ $video->slug  }}">
                             <input type="text" name="live_event_amount" class="form-control " placeholder="Please Enter the Amount" required></div>
-                                <div>  <button class="btn btn-primary" > Amount Pay </button></div>
+                                <div class="ml-1">  <button class="btn bd btn-primary" > Amount Pay </button></div>
                             
                           </div>
                         </div>

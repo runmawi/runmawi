@@ -312,7 +312,7 @@ input:checked + .sliderk:before {
         body.light-theme .slick-nav i{
              color: <?php echo GetLightText(); ?>!important;
         }
-        body h2{
+        body.light-theme h2{
             color: <?php echo GetLightText(); ?>!important;
         }
         body.light-theme .filter-option-inner-inner{
@@ -419,6 +419,17 @@ input:checked + .sliderk:before {
                                                       <div class="right-icon"></div>
                                                       <div class="media-body">
                                                          <h6 class="mb-0 ">My Profile</h6>
+                                                      </div>
+                                                   </div>
+                                                </a>
+                                             </li>
+                                             
+                                             <li class="menu-item dk" style="display:none;">
+                                                <a href="<?php echo URL::to('/logout') ?>" class="iq-sub-card">
+                                                   <div class="media align-items-center">
+                                                      <div class="right-icon"></div>
+                                                      <div class="media-body">
+                                                         <h6 class="mb-0 ">Logout</h6>
                                                       </div>
                                                    </div>
                                                 </a>

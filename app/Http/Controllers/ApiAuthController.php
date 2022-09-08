@@ -308,15 +308,35 @@ class ApiAuthController extends Controller
 
                     if ( $payment_type == "recurring") {
                              $plan = $input['plan']; 
-                            $user->newSubscription($stripe_plan, $plan)->create($paymentMethod);
-                                        $user = User::find($user->id);
-                                        $user->role = 'subscriber';
-                                        $user->payment_type = 'recurring';
-                                        $user->card_type = 'stripe';
-                                        $user->save();
-                            $email = $input['email'];
-                            $uname = $input['username'];
 
+                           try {
+                              $stripe_payment = $user->newSubscription($stripe_plan, $plan)->create($paymentMethod);
+
+                              $user = User::find($user->id);
+                              $user->role = 'subscriber';
+                              $user->payment_type = 'recurring';
+                              $user->card_type = 'stripe';
+                              $user->save();
+                              $email = $input['email'];
+                              $uname = $input['username'];
+
+                              $response = array(
+                                'status' => 'true',
+                                'message' => 'Subscription Done & user Registered Successfully.',
+                                'user_id' =>  $userid
+                            );
+
+                           } catch (\Throwable $th) {
+
+                              $response = array(
+                                'status' => 'false',
+                                'message' => 'Subscription Not done',
+                                'error_message' =>   $th,
+                                'user_id' =>  $userid
+                            );
+
+                           }
+                            
                             // try {
                             //     Mail::send('emails.verify', array('activation_code' => $user->activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
                             //       $message->to($email,$uname)->subject('Verify your email address');
@@ -325,11 +345,7 @@ class ApiAuthController extends Controller
                             //   //throw $th;
                             // }
                            
-                                $response = array(
-                                'status' => 'true',
-                                'message' => 'Registered Successfully.',
-                                'user_id' =>  $userid
-                            );
+
                         
                     } else  {
                             $price = $input['amount'];
