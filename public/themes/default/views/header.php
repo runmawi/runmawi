@@ -312,7 +312,7 @@ input:checked + .sliderk:before {
         body.light-theme .slick-nav i{
              color: <?php echo GetLightText(); ?>!important;
         }
-        body h2{
+        body.light-theme h2{
             color: <?php echo GetLightText(); ?>!important;
         }
         body.light-theme .filter-option-inner-inner{
