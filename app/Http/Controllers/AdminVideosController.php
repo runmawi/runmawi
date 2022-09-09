@@ -3722,7 +3722,7 @@ if(!empty($artistsdata)){
 
                 $data = $request->all();
                 $id = $data['schedule_id'];
-                // dd($data['schedule_id']);
+                // dd($data);
                 $VideoSchedules =  VideoSchedules::where('id', '=', $id)->first();
                 $settings = Setting::first();
          
@@ -3736,6 +3736,176 @@ if(!empty($artistsdata)){
 
             }
 
+
+            public function ScheduleUploadFile(Request $request)
+            {
+        
+                $value = array();
+                $data = $request->all();
+                echo "<pre>";
+                // print_r($data);exit();
+                $validator = Validator::make($request->all(), [
+                   'file' => 'required|mimes:video/mp4,video/x-m4v,video/*',
+                   
+                ]);
+                $mp4_url = (isset($data['file'])) ? $data['file'] : '';
+                
+                $path = public_path().'/uploads/videos/';
+                
+                $file = $request->file->getClientOriginalName();
+                $newfile = explode(".mp4",$file);
+                $file_folder_name = $newfile[0];
+           
+                $package = User::where('id',1)->first();
+                $pack = $package->package;
+                $mp4_url = $data['file'];
+                $settings = Setting::first();
+        
+                if($mp4_url != '' && $pack != "Business" ) {
+                    print_r('1');exit();
+
+                    $rand = Str::random(16);
+                    $path = $rand . '.' . $request->file->getClientOriginalExtension();
+                
+                    $request->file->storeAs('public', $path);
+                    $thumb_path = 'public';                           
+                    $original_name = ($request->file->getClientOriginalName()) ? $request->file->getClientOriginalName() : '';
+                    $storepath  = URL::to('/storage/app/public/'.$path);
+                    //  Video duration 
+                    $getID3 = new getID3;
+                    $Video_storepath  = storage_path('app/public/'.$path);       
+                    $VideoInfo = $getID3->analyze($Video_storepath);
+                    $Video_duration = $VideoInfo['playtime_seconds'];
+        
+                    $video = new Video();
+                    $video->title = $file_folder_name;
+                    $video->type = 'mp4_url';
+                    $video->active	 = 1;
+                    $video->original_name = 'public';
+                    $video->disk = 'public';
+                    $video->mp4_url = $storepath;
+                    $video->path = $path;
+                    $video->shedule_date = 'default_image.jpg'; 
+                    $video->shedule_time = 'default_image.jpg';     
+                    $video->video_order = 'default_image.jpg';        
+                    $video->schedule_id = 'default_image.jpg';        
+                    $video->duration  = $Video_duration;
+                    $video->status  = 1;
+                    $video->save(); 
+                    
+                
+                    $video_id = $video->id;
+                    $video_title = Video::find($video_id);
+                    $title =$video_title->title; 
+        
+                    $value['success'] = 1;
+                    $value['message'] = 'Uploaded Successfully!';
+                    $value['video_id'] = $video_id;
+                    $value['video_title'] = $title;
+        
+        
+                    return $value;
+                
+                }elseif($mp4_url != '' && $pack == "Business" && $settings->transcoding_access  == 1) {
+                    print_r('2');exit();
+        
+                    $rand = Str::random(16);
+                    $path = $rand . '.' . $request->file->getClientOriginalExtension();
+                    $request->file->storeAs('public', $path);
+                     
+                     $original_name = ($request->file->getClientOriginalName()) ? $request->file->getClientOriginalName() : '';
+                     
+                    $storepath  = URL::to('/storage/app/public/'.$path);
+        
+        
+                    //  Video duration 
+                    $getID3 = new getID3;
+                    $Video_storepath  = storage_path('app/public/'.$path);       
+                    $VideoInfo = $getID3->analyze($Video_storepath);
+                    $Video_duration = $VideoInfo['playtime_seconds'];
+                     
+                     $video = new Video();
+                     $video->disk = 'public';
+                     $video->status = 0;
+                     $video->original_name = 'public';
+                     $video->path = $path;
+                     $video->title = $file_folder_name;
+                     $video->mp4_url = $storepath;
+                     $video->draft = 0;
+                     $video->image = 'default_image.jpg';
+        
+                    
+                     $video->duration  = $Video_duration;
+                     $video->user_id = Auth::user()->id;
+                     $video->save();
+        
+                    //  ConvertVideoForStreaming::dispatch($video);
+                     $video_id = $video->id;
+                     $video_title = Video::find($video_id);
+                     $title =$video_title->title; 
+              
+                      $value['success'] = 1;
+                      $value['message'] = 'Uploaded Successfully!';
+                      $value['video_id'] = $video_id;
+                      $value['video_title'] = $title;
+        
+                      
+                      return $value;
+                }elseif($mp4_url != '' && $pack == "Business"  && $settings->transcoding_access  == 0 ) {
+                    
+                    print_r('3');exit();
+        
+                    $rand = Str::random(16);
+                    $path = $rand . '.' . $request->file->getClientOriginalExtension();
+                
+                    $request->file->storeAs('public', $path);
+                    $thumb_path = 'public';                           
+                    $original_name = ($request->file->getClientOriginalName()) ? $request->file->getClientOriginalName() : '';
+                    $storepath  = URL::to('/storage/app/public/'.$path);
+                    //  Video duration 
+                    $getID3 = new getID3;
+                    $Video_storepath  = storage_path('app/public/'.$path);       
+                    $VideoInfo = $getID3->analyze($Video_storepath);
+                    $Video_duration = $VideoInfo['playtime_seconds'];
+        
+                    $video = new Video();
+                    $video->title = $file_folder_name;
+                    $video->type = 'mp4_url';
+                    $video->active	 = 1;
+                    $video->original_name = 'public';
+                    $video->disk = 'public';
+                    $video->mp4_url = $storepath;
+                    $video->path = $path;
+                    $video->shedule_date = 'default_image.jpg'; 
+                    $video->shedule_time = 'default_image.jpg';     
+                    $video->video_order = 'default_image.jpg';        
+                    $video->schedule_id = 'default_image.jpg';        
+                    $video->duration  = $Video_duration;
+                    $video->status  = 1;
+                    $video->save(); 
+                    
+                
+                    $video_id = $video->id;
+                    $video_title = Video::find($video_id);
+                    $title =$video_title->title; 
+        
+                    $value['success'] = 1;
+                    $value['message'] = 'Uploaded Successfully!';
+                    $value['video_id'] = $video_id;
+                    $value['video_title'] = $title;
+        
+        
+                    return $value;
+                
+                }
+                else {
+                     $value['success'] = 2;
+                     $value['message'] = 'File not uploaded.'; 
+                    return response()->json($value);
+                }
+        
+                // return response()->json($value);
+            }
 
             public function calendarEvent(Request $request)
             {

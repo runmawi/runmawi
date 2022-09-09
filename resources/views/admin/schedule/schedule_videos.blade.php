@@ -82,6 +82,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     
     <script type="text/javascript">
+        var month = '{{ $Calendar['month'] }}';
+        var year = '{{ $Calendar['year'] }}';
+        var date = '{{ $Calendar['date'] }}';
+        var schedule_id = '{{ $Calendar['schedule_id'] }}';
+        var CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
 
         Dropzone.autoDiscover = false;
             var myDropzone = new Dropzone(".dropzone",{ 
@@ -91,11 +96,14 @@
             });
         myDropzone.on("sending", function(file, xhr, formData) {
             formData.append("_token", CSRF_TOKEN);
+            formData.append("month", month);
+            formData.append("year", year);
+            formData.append("date", date);
+            formData.append("schedule_id", schedule_id);
             // console.log(value)
             this.on("success", function(file, value) {
                 console.log(value.video_title);
             });
-        
         }); 
     </script>
 
