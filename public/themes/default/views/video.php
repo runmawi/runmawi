@@ -266,6 +266,13 @@ h2{
     height: 18px;
          margin-right: 5px;
 }
+      .swal2-container.swal2-center>.swal2-popup{
+         background: linear-gradient(180deg, #C4C4C4 50%, rgba(196, 196, 196, 0) 100%);
+
+      }
+      .swal2-html-container{
+          color: #fff!important;
+      }
   </style>
 <?php
 
@@ -2024,12 +2031,16 @@ location.reload();
 <script>
   $(document).ready(function(){
       $(".pop_up_register_user").click(function(){
+          
         Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'This content is only available for registered users. Please signin / signup !',
+                    imageUrl: "<?php echo URL::to('/public/Thumbnai_images/Horror-7.png') ?> " ,
+                    imageWidth: 200,
+                    imageHeight: 250,
+                    imageAlt: 'Custom image',
+         
+          text: 'Please Subscribe Watch !',
           timer: 15000 ,
-          content:'link'
+          content:''
         })
       });
   });

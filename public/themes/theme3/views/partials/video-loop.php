@@ -111,6 +111,14 @@ overflow-hidden {
                 border-top: 0px !important;
    
 }
+     .slick-next:before {
+    content: '→';
+         display: none;
+}
+      .slick-prev:before {
+    content: '→';
+         display: none;
+}
        </style>
  
  <!-- MainContent -->
@@ -122,14 +130,14 @@ overflow-hidden {
                         <!--<h4 class="main-title"><a href="<?php echo URL::to('home') ?>">Latest Videos</a></h4> -->                     
                      </div>
                      <div class="favorites-contens">
-                        <ul class="favorites-slider list-inline row p-0 mb-0">
+                        <ul class="favorites-slider1 list-inline row p-0 mb-0">
                             <?php if(isset($recomended)) :
                            foreach($recomended as $watchlater_video): ?>
                            <li class="slide-item">
                               <a href="<?php echo URL::to('category')?><?='/videos/' .$watchlater_video->slug ?>">
                                  <div class="block-images position-relative">
                                     <div class="img-box">
-                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid w-100" alt="">
+                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->player_image;  ?>" class="img-fluid w-100" alt="">
                                     </div></div>
                                     <div class="block-description">
                                        
@@ -146,16 +154,16 @@ overflow-hidden {
                                                 </span>
                                                     </button></div>-->
                                         </div>
-                                     <div class="">
+                                    <div>  <h6><?php  echo (strlen($watchlater_video->title) > 15) ? substr($watchlater_video->title,0,15).'...' : $watchlater_video->title; ?></h6>
+</div>
                                         
                                        <div class="movie-time  align-items-center d-flex justify-content-between">
-                                           <div>  <h6><?php  echo (strlen($watchlater_video->title) > 15) ? substr($watchlater_video->title,0,15).'...' : $watchlater_video->title; ?></h6>
-</div>
-                                          <div class="badge badge-secondary p-1 mr-2"><?php echo $watchlater_video->age_restrict.' '.'+' ?></div>
+                                          
+                                         <!-- <div class="badge badge-secondary p-1 mr-2"><?php echo $watchlater_video->age_restrict.' '.'+' ?></div>-->
                                         
                                        </div>
-                                           <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $watchlater_video->duration); ?></span>
-                                     </div>
+                                          <!-- <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $watchlater_video->duration); ?></span>-->
+                                    
                                 <!--    <div class="block-social-info">
                                        <ul class="list-inline p-0 m-0 music-play-lists">
                                           <li><span><i class="ri-volume-mute-fill"></i></span></li>
