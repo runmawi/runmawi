@@ -823,7 +823,7 @@ border-radius: 0px 4px 4px 0px;
 
                            <div class="row">
                               <div class="col-sm-6 form-group">
-                              <label class="mb-1">Video Thumbnail <span>(9:16 Ratio or 1080X1920px)</span></label><br>
+                                 <label class="mb-1">Video Thumbnail <span>(9:16 Ratio or 1080X1920px)</span></label><br>
                                  <input type="file" name="image" id="image" >
                                  <span><p id="image_error_msg" style="color:red;" >* Please upload an image with 1080 x 1920 pixels dimension or ratio 9:16 </p></span>
                                  @if(!empty($video->image))
@@ -838,6 +838,28 @@ border-radius: 0px 4px 4px 0px;
                                  @if(!empty($video->player_image))
                                  <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->player_image }}" class="video-img w-100" />
                                  @endif
+                              </div>
+                           </div>
+
+                                          {{-- Video Title Thumbnail --}}
+
+                           <div class="row">
+                              <div class="col-sm-6 form-group">
+                                 <label class="mb-1"> Video Title Thumbnail </label><br>
+                                 <input type="file" name="video_title_image" id="video_title_image" >
+                                 @if(!empty($video->video_title_image))
+                                    <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->video_title_image }}" class="video-img w-100" />
+                                 @endif
+                              </div>
+
+                              <div class="col-sm-6 form-group">
+                                 <label class="mb-1">Enable Video Title Thumbnail</label><br>
+                                 <div class="mt-1">
+                                    <label class="switch">
+                                       <input name="enable_video_title_image" class="" id="enable_video_title_image" type="checkbox" >
+                                       <span class="slider round"></span>
+                                    </label>
+                                 </div>
                               </div>
                            </div>
 
@@ -1911,6 +1933,8 @@ $(document).ready(function($){
 
 
    // https://github.com/k-ivan/Tags
+
+(function() {
 
 'use strict';
 
