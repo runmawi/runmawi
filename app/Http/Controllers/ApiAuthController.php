@@ -7971,8 +7971,43 @@ $cpanel->end();
     return response()->json($response, 200);
   } 
 
+  public function albumlist_ios(Request $request)
 
+  {
+      $audioalbums_count = AudioAlbums::get()->count();
 
+        if($audioalbums_count > 0){
+          $audioalbums = AudioAlbums::orderBy('created_at', 'desc')->get();
+          $audioalbums = AudioAlbums::orderBy('created_at', 'desc')->get()->map(function ($item) {
+            $item['image_url'] = URL::to('/').'/public/uploads/albums/'.$item->album;
+            return $item;
+          });
+
+          foreach($audioalbums as $val){
+
+            $audio[$val->albumname] = Audio::where('album_id',$val->id)
+            ->orderBy('created_at', 'desc')
+            ->get()->map(function ($item) {
+              $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+              $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;     
+              return $item;
+            });
+
+              $response = array(
+                'status'=>'true',
+                'audioalbums'=>$audioalbums,
+              );
+      }
+      }
+      else{
+        $response = array(
+          'status'=>'false',
+          'audioalbums'=> array(),
+          'audio'=>array(),
+      );
+      }
+        return response()->json($response, 200);
+    }
 }
 
 
