@@ -491,8 +491,12 @@ i.fa.fa-google-plus {
                         <h5> Payment Method</h5>
 
                         <div class="d-flex align-items-center">
-                            <input type="checkbox" id="" name="" value="" checked>
-                            <label class="mt-2 ml-2" for="" > Stripe</label><br />
+                            <input type="checkbox" id="Stripe_lable" name="payment_lable" value="Stripe_lable" checked>
+                            <label class="mt-2 ml-2" for="" > Stripe</label><br />&nbsp;&nbsp;
+                            <input type="checkbox" id="Paypal_lable" name="payment_lable" value="Paypal_lable" >
+                            <label class="mt-2 ml-2 " for="" > Paypal</label><br />&nbsp;&nbsp;
+                            <!-- <input type="checkbox" id="Razorpay_lable" name="payment_lable" value="Razorpay_lable" >
+                            <label class="mt-2 ml-2 " for="" > Razorpay</label><br /> -->
                         </div>
 
           </div>      
@@ -504,7 +508,7 @@ i.fa.fa-google-plus {
                                   $plan_name = $plan[0]->plans_name;
                              @endphp
 
-                             <div style="margin-top:20px;" class="col-md-6 plan_details"  data-plan-id={{ 'active'.$plan[0]->id  }}  data-plan-price={{ $plan[0]->price }} data-plan_id={{  $plan[0]->plan_id  }} data-payment-type={{ $plan[0]->payment_type }} onclick="plan_details(this)">
+                             <div style="margin-top:20px;" class="col-md-6 plan_details stripe_plan_details"  data-plan-id={{ 'active'.$plan[0]->id  }}  data-plan-price={{ $plan[0]->price }} data-plan_id={{  $plan[0]->plan_id  }} data-payment-type={{ $plan[0]->payment_type }} onclick="plan_details(this)">
 
                                  <div class="d-flex justify-content-between align-items-center dg"  id={{ 'active'.$plan[0]->id  }}>
                                      <div class="bgk">
@@ -518,13 +522,28 @@ i.fa.fa-google-plus {
                                      </div>
                                  </div>
                              </div>
+
+                             <div style="margin-top:20px;" class="col-md-6 plan_details paypal_plan_details"  data-plan-id={{ 'active'.$plan[0]->id  }}  data-plan-price={{ $plan[0]->price }} data-plan_id={{  $plan[1]->plan_id  }} data-payment-type={{ $plan[1]->payment_type }} onclick="paypalplan_details(this)">
+
+                                <div class="d-flex justify-content-between align-items-center dg"  id={{ 'active'.$plan[0]->id  }}>
+                                    <div class="bgk">
+                                        <h4 class="text-black font-weight-bold"> {{ $plan[0]->plans_name  }} </h4>
+                                        <p>{{ $plan[0]->plans_name  }} Membership</p>
+                                    </div>
+                                    <div class="vl"></div>
+                                    <div style="border-left: 1px solid #fff; padding: 5px;">
+                                        <h4 class="text-black">{{ "$".$plan[0]->price }}</h4>
+                                        <p>Billed as {{ "$".$plan[0]->price }}</p>
+                                    </div>
+                                </div>
+                                </div>
                           @endforeach
 
                          
                         </div>
                     </div>
 
-                    <div class="col-md-12 mt-5">
+                    <div class="col-md-12 mt-5 Stripe_Payment">
                         <div class="cont">
       
                          <div class="d-flex justify-content-between align-items-center">
@@ -585,7 +604,32 @@ i.fa.fa-google-plus {
                     
                     {{-- <button type="button" class="btn1  btn-lg btn-block font-weight-bold text-white mt-3">Start Your Free Trial</button> --}}
 
-            </div>           
+            </div>         
+            <div class="col-md-12 mt-5 PaypalPayment" id="Paypal_Payment">
+                    
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h3>Payment</h3>
+                        </div>
+
+                        <div>
+                            <label for="fname">Accepted Cards</label>
+                            <div class="icon-container">
+                                <i class="fa fa-cc-visa" style="color: navy;"></i>
+                                <i class="fa fa-cc-amex" style="color: blue;"></i>
+                                <i class="fa fa-cc-mastercard" style="color: red;"></i>
+                                <i class="fa fa-cc-discover" style="color: orange;"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-3"></div>
+
+                    <!-- <div id="paypal-button-container"></div> -->
+                    <div id="paypal-button-container-P-6XA79361YH9914942MMPN3BQ"></div>
+
+                </div> 
+  
     </div>
     </div>
     </div>
@@ -1124,6 +1168,109 @@ for (var i = 0; i < btns.length; i++) {
         }
     });
 
+</script>
+
+<!-- paypay script -->
+
+
+<script src="https://www.paypal.com/sdk/js?client-id=AVGcAgzu_FN6jiaO8AAqyaXxFPeVfWMBG9OK2CJbnbgqDpnAsNqEpOQ12-Sor5eK0NRduzL4RddazjoV&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
+
+<script>
+
+    
+function paypalplan_details(ele){
+            var plans_id          = $(ele).attr('data-plan_id');
+            var plan_payment_type = $(ele).attr('data-payment-type');
+            var plan_price  = $(ele).attr('data-plan-price');
+            var plan_id_class = $(ele).attr('data-plan-id');
+            alert(plans_id);
+            var classname = 'paypal-button-container-'+plans_id
+            $('#paypal-button-container').addClass(classname)
+                alert(classname);
+                $("#paypal-button-container").append('<div class:'+classname+';></div>');
+
+            $('#payment_type').replaceWith('<input type="hidden" name="payment_type" id="payment_type" value="'+ plan_payment_type+'">');
+            $('#plan_name').replaceWith('<input type="hidden" name="plan_name" id="plan_name" value="'+ plans_id +'">');
+            $('.plan_price').empty(plan_price);
+            $('.plan_price').append('$'+plan_price);
+
+            $('.dg' ).removeClass('actives');
+            $('#'+plan_id_class ).addClass('actives');
+
+  paypal.Buttons({
+      style: {
+          shape: 'pill',
+          color: 'white',
+          layout: 'vertical',
+          label: 'subscribe'
+      },
+      createSubscription: function(data, actions) {
+        return actions.subscription.create({
+          /* Creates the subscription */
+          plan_id: plans_id
+        });
+      },
+      onApprove: function(data, actions) {
+        // alert(data.subscriptionID); // You can add optional success message for the subscriber here
+        if(!empty(data.subscriptionID)){
+            $.post(base_url+'/paypal-subscription', {
+                        payment_type:payment_type, 
+                        amount:final_payment,
+                        plan:plan_data,
+                        plans_id:plans_id,
+                        subscriptionID:data.subscriptionID,
+                        coupon_code:final_coupon_code_stripe,
+                        _token:'<?= csrf_token(); ?>' 
+                    }, 
+
+                    function(data){
+                            $('#loader').css('display','block');
+                            swal({
+                                title: "Subscription Purchased Successfully!",
+                                text: "Your Payment done Successfully!",
+                                icon: payment_images+'/Successful_Payment.gif',
+                                buttons: false,      
+                                closeOnClickOutside: false,
+                            });
+                            setTimeout(function() {
+                                window.location.replace(base_url+'/login');
+                        }, 2000);
+                });
+        }
+      }
+  }).render('#paypal-button-container-'+plans_id); // Renders the PayPal button
+
+}    
+
+</script>	
+
+<script>
+
+        $('.PaypalPayment').hide();
+        $('.paypal_plan_details').hide();
+
+        
+        // Razorpay_lable
+        $(document).ready(function(){
+            $('#Stripe_lable').click(function() {
+                if ($('#Stripe_lable').val($(this).is(':checked'))) {
+                    $('#Paypal_lable').prop('checked', false);
+                    $('.Stripe_Payment').show();
+                    $('.stripe_plan_details').show();
+                    $('.paypal_plan_details').hide();
+                    $('.PaypalPayment').hide();
+                }
+            });
+            $('#Paypal_lable').click(function() {
+                if ($(this).val() == 'Paypal_lable') {
+                    $('#Stripe_lable').prop('checked', false);
+                    $('.PaypalPayment').show();
+                    $('.paypal_plan_details').show();
+                    $('.stripe_plan_details').hide();
+                    $('.Stripe_Payment').hide();
+                }
+            });
+        })
 </script>
 
 <script>

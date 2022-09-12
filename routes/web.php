@@ -190,8 +190,12 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
     Route::get('/register3', 'SignupController@createStep3');
 
     Route::post('/register3', 'SignupController@PostcreateStep3');
+
+    Route::post('/paypal-subscription', 'PaypalController@PayPalSubscription');
+
     Route::post('/submitpaypal', 'SignupController@submitpaypal');
     Route::post('/subscribepaypal', 'SignupController@subscribepaypal');
+
 
     Route::post('/remove-image', 'SignupController@removeImage');
     Route::post('/store', 'SignupController@store');

@@ -45,21 +45,20 @@
                                 <input type="text" id="name" name="plans_name" value="{{ $edit_plan[0]->plans_name }}" class="form-control" placeholder="Enter ">
                             </div>
 
-                            <!-- @foreach($edit_plan as $plan)
+                            @foreach($edit_plan as $plan)
                                 <div class="form-group">
                                     <label>{{ $plan->type }} Plan ID:</label>
                                     <input type="text" id="plans_id" name="plan_id[{{ $plan->subscription_plan_name }}]" value="{{ $plan->plan_id }}" class="form-control" placeholder="Plan ID">
                                 </div> 
-                            @endforeach -->
+                            @endforeach
 
-                            @foreach($payment_settings as $payment_setting)
+                            <!-- @foreach($payment_settings as $payment_setting)
 							@if($payment_setting->status == 1)
 								<label>{{ $payment_setting->payment_type }} Plan ID:</label>
-		                        <!-- <input type="text" id="plan_id" name="plan_id[]" value="" class="form-control" placeholder="Plan ID"> -->
                                 <input type="text" id="plans_id" name="plan_id[{{ $edit_plan[0]->subscription_plan_name }}]" value="{{ $edit_plan[0]->plan_id }}" class="form-control" placeholder="Plan ID">
 								<p>* Get Plan Key From {{ $payment_setting->payment_type }}</p>
                             @endif
-						    @endForeach
+						    @endForeach -->
 
                             <div class="form-group">
                                 <label>IOS Plan Price ( {{ @$allCurrency->symbol }} ):</label>
