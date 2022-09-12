@@ -1,6 +1,6 @@
 <?php include('header.php'); ?>
 
-<div class="container mt-4 audio-list-page">
+<div class="container-fluid mt-4 audio-list-page">
 
        <div class="block-space">
            <div class="row">
@@ -20,7 +20,7 @@
 		</div>
 
 </div>
-<div class="container mt-2">
+<div class="container-fluid mt-2">
        <div class="block-space">
            <div class="row">
               <div class="col-sm-12 overflow-hidden">
@@ -75,7 +75,7 @@
             
             <?php } ?>
 
-<div class="container mt-2">
+<div class="container-fluid mt-2">
 
 		<!-- <div class="block-space">
            <div class="row">

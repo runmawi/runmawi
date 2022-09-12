@@ -1,6 +1,6 @@
 
 @php
-include(public_path('themes/theme1/views/header.php'));
+include(public_path('themes/theme3/views/header.php'));
 @endphp
 
 <div class="main-content">
@@ -122,6 +122,6 @@ include(public_path('themes/theme1/views/header.php'));
 </div>
 
 @php
-    include(public_path('themes/theme1/views/footer.blade.php'));
+    include(public_path('themes/theme3/views/footer.blade.php'));
 @endphp
   
