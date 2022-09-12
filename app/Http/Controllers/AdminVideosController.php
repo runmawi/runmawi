@@ -1046,7 +1046,7 @@ if(!empty($artistsdata)){
 
                 Image::make($data['video_title_image'])->save(base_path().'/public/uploads/images/'.$video_title_images,80 );
               
-                $video->video_title_images = $video_title_images;
+                $video->video_title_image = $video_title_images;
 
             }else {
                 $data['video_title_image'] = $video->video_title_image;
@@ -1054,7 +1054,7 @@ if(!empty($artistsdata)){
 
             // Enable Video Title Thumbnail 
 
-            $data['enable_video_title_image']  = $request->enable_video_title_image ? '1' : '0' ;
+                $video->enable_video_title_image = $request->enable_video_title_image ? '1' : '0' ;
 
             // Trailer Update
 
