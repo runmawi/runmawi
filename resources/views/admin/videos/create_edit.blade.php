@@ -790,9 +790,32 @@ border-radius: 0px 4px 4px 0px;
                                           <img src="{{ URL::to('/') . '/public/uploads/images/' .$video->player_image }}" class="video-img w-100 mt-1" />
                                        </div>
                                     @endif
-                           </div>
+                              </div>
+
                         </div>
 
+                                          {{-- Video Title Thumbnail --}}
+                        <div class="row">
+                           <div class="col-sm-6 form-group">
+                              <label class="mb-1"> Video Title Thumbnail </label><br>
+                              <input type="file" name="video_title_image" id="video_title_image" >
+                              @if(!empty($video->video_title_image))
+                                 <div class="col-sm-8 p-0">
+                                    <img src="{{ URL::to('/') . '/public/uploads/images/' .$video->video_title_image }}" class="video-img w-100 mt-1" />
+                                 </div>
+                              @endif
+                           </div>
+
+                           <div class="col-sm-6 form-group">
+                              <label class="mb-1">Enable Video Title Thumbnail </label><br>
+                              <div class="mt-1">
+                                 <label class="switch">
+                                    <input name="enable_video_title_image" class="" id="enable_video_title_image" type="checkbox" @if( $video->enable_video_title_image == "1") checked  @endif >
+                                    <span class="slider round"></span>
+                                 </label>
+                              </div>
+                           </div>
+                        </div>
                   
                       <div class="row">
 

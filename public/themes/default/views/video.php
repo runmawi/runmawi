@@ -1937,7 +1937,6 @@ location.reload();
     </script>
 
 
-
 <?php include('footer.blade.php');?>
 
 <!-- Trailer m3u8 -->
@@ -2009,15 +2008,29 @@ location.reload();
 });
 
   }
- 
+
+
   // Trailer - Modal
   $(document).ready(function(){
     $(".close").click(function(){
       $('#videoPlayer1')[0].pause();
     });
+  });
+</script>
 
-    $(".pop_up_register_user").click(function(){
-     alert('This content is only available for registered users. Please signin / signup !');
+<!-- Pop-up For register -->
+<script src="<?= URL::to('/assets/admin/js/sweetalertfire.min.js') ?>"></script>
+
+<script>
+  $(document).ready(function(){
+      $(".pop_up_register_user").click(function(){
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'This content is only available for registered users. Please signin / signup !',
+          timer: 15000 ,
+          content:'link'
+        })
       });
   });
 </script>

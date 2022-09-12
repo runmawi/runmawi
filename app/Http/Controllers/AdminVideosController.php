@@ -1011,33 +1011,52 @@ if(!empty($artistsdata)){
            $mp4_url2      =  (isset($data['video'])) ? $data['video'] : '';
            $files         =  (isset($data['subtitle_upload'])) ? $data['subtitle_upload'] : '';
            $player_image  =  (isset($data['player_image'])) ? $data['player_image'] : '';
+           $video_title_image  =  (isset($data['video_title_image'])) ? $data['video_title_image'] : '';
            $image_path    =   public_path().'/uploads/images/';
           
             if($player_image != '') {     
                 if($player_image != ''  && $player_image != null){   //code for remove old file
                         $file_old = $image_path.$player_image;
-
                     if (file_exists($file_old)){
                         unlink($file_old);
                     }
                 }
-                
                                 //upload new file
-
                 $player_image = $player_image;   
-                // $data['player_image']  = $player_image->getClientOriginalName();
                 $data['player_image'] = str_replace(' ', '_', $player_image->getClientOriginalName());
 
                 $player_image->move($image_path, $data['player_image']);
-                // $player_image = $file->getClientOriginalName();
-               $player_image = str_replace(' ', '_', $player_image->getClientOriginalName());
-  
+                $player_image = str_replace(' ', '_', $player_image->getClientOriginalName());
             } 
             else {
                $player_image = $video->player_image;
             }
 
-                            // Trailer Update
+                            // Video Title Thumbnail 
+
+              if($video_title_image != '') {   
+                if($video_title_image != ''  && $video_title_image != null){  //code for remove old file
+                     $video_title_image_file_old = $image_path.$video_title_image;
+                    if (file_exists($video_title_image_file_old)){
+                     unlink($video_title_image_file_old);
+                    }
+                }
+                //upload new file
+                $video_title_images  = 'video_title_'.time().'.webp';
+
+                Image::make($data['video_title_image'])->save(base_path().'/public/uploads/images/'.$video_title_images,80 );
+              
+                $video->video_title_images = $video_title_images;
+
+            }else {
+                $data['video_title_image'] = $video->video_title_image;
+            }
+
+            // Enable Video Title Thumbnail 
+
+            $data['enable_video_title_image']  = $request->enable_video_title_image ? '1' : '0' ;
+
+            // Trailer Update
 
             $path = public_path().'/uploads/videos/';
 
@@ -1084,7 +1103,6 @@ if(!empty($artistsdata)){
                 
                 $data['trailer'] = $M3u8_save_path;
                 $video->trailer_type  = 'm3u8';
-                // dd($data['trailer']);
             }
             else{
                 
@@ -1870,7 +1888,8 @@ if(!empty($artistsdata)){
             $trailer = (isset($data['trailer'])) ? $data['trailer'] : '';
             $files = (isset($data['subtitle_upload'])) ? $data['subtitle_upload'] : '';
             $player_image = (isset($data['player_image'])) ? $data['player_image'] : '';
-           $image_path = public_path().'/uploads/images/';
+            $video_title_image = (isset($data['video_title_image'])) ? $data['video_title_image'] : '';
+            $image_path = public_path().'/uploads/images/';
           
            if($player_image != '') {   
                 //code for remove old file
@@ -2038,7 +2057,32 @@ if(!empty($artistsdata)){
                  $data['image'] = $video->image;
              }
             
-            
+
+             // Video Title Thumbnail 
+
+
+            if($video_title_image != '') {   
+                if($video_title_image != ''  && $video_title_image != null){
+                     $video_title_image_file_old = $image_path.$video_title_image;
+                    if (file_exists($video_title_image_file_old)){
+                     unlink($video_title_image_file_old);
+                    }
+                }
+                //upload new file
+                $video_title_images  = 'video_title_'.time().'.webp';
+
+                Image::make($data['video_title_image'])->save(base_path().'/public/uploads/images/'.$video_title_images,80 );
+              
+                $video->video_title_image = $video_title_images;
+
+            }else {
+                $data['video_title_image'] = $video->video_title_image;
+            }
+
+            // Enable Video Title Thumbnail 
+
+             $video->enable_video_title_image = $request->enable_video_title_image ? '1' : '0' ;
+
              $video->trailer_type = $data['trailer_type'];
 
              if($data['trailer_type'] == 'video_mp4'){

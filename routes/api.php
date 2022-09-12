@@ -333,5 +333,5 @@ Route::group([
 
     Route::get('cpanelstorage','ApiAuthController@cpanelstorage');
 
-
+    Route::get('albumlist_ios','ApiAuthController@albumlist_ios');
 });
