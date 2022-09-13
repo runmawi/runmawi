@@ -264,7 +264,19 @@ if(!empty($request_url)){
         <div class="trending-info g-border p-0">
             <div class="row">
                 <div class="col-sm-9 col-md-9 col-xs-12">
-                    <h1 class="trending-text big-title text-uppercase mt-3"><?php echo __($video->title);?> <?php if( Auth::guest() ) { ?>  <?php } ?></h1>
+                  
+                                   <!--  Video thumbnail image-->
+                  <?php if( $video->enable_video_title_image == 1  &&  $video->video_title_image != null){ ?>
+                    <div class="d-flex col-md-6">
+                       <img src="<?= URL::to('public/uploads/images/'.$video->video_title_image )?>" class="c-logo" alt="<?= $video->title ?>">
+                    </div>
+                                     <!-- Video Title  -->
+                  <?php }else{ ?>
+                    <h1 class="trending-text big-title text-uppercase mt-3">
+                        <?php echo (strlen($video->title) > 15) ? substr($video->title,0,80).'...' : $video->title;  if( Auth::guest() ) { } ?>
+                      </h1>
+                  <?php } ?>
+
                         <!-- Category -->
                     <ul class="p-0 list-inline d-flex align-items-center movie-content">
                      <li class="text-white"><?//= $videocategory ;?></li>

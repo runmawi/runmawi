@@ -192,6 +192,7 @@ class PaypalController extends Controller
         $user_email = $request->session()->get('register.email');
         $user = User::where('email',$user_email)->first();
         $paymentMethod = $request->get('py_id');
+        $subscriptionID = $request->get('subscriptionID');
         $plan = $request->get('plan');
         $plandetail = SubscriptionPlan::where('plan_id','=',$plan)->first();
         $payment_type = $plandetail->payment_type;
@@ -201,6 +202,7 @@ class PaypalController extends Controller
         $user->payment_type = 'on_time';
         $user->card_type = 'paypal';
         $user->active = 1;
+        $user->paypal_agreement_id = $subscriptionID;
         $user->subscription_start = Carbon::now(); 
         $user->save();
 
