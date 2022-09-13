@@ -134,7 +134,7 @@ i.fa.fa-google-plus {
                         </div>
                          <div class="d-flex justify-content-around links">
                       @if (Route::has('password.request'))
-                     <!-- <a href="{{ route('password.request') }}" class="f-link">Forgot your password?</a> -->
+                      <a href="{{  URL::to('cpp/password/reset') }}" class="f-link">Forgot your password?</a>
                       @endif
 							
                   </div>
