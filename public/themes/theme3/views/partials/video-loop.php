@@ -23,6 +23,12 @@
     -moz-transition: all 0.4s ease-in-out 0s;
     transition: all 0.4s ease-in-out 0s;
 }
+     .slick-arrow, .slick-prev i{
+         color: #fff;
+     }
+     .slick-arrow,.slick-next i{
+         color: #fff;
+     }
 overflow-hidden {
     margin-top: 70px;
     overflow: hidden;

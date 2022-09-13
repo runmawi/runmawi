@@ -126,12 +126,10 @@ i.fa.fa-google-plus {
        
 }
 .form-control:-ms-input-placeholder {
-  color: #999;
-     
+color: rgba(255, 255, 255, 0.5);     
 }
 .form-control::-webkit-input-placeholder {
-  color: #999;
-    
+color: rgba(255, 255, 255, 0.5);    
 }
     .sign-in-page{
         
@@ -258,7 +256,7 @@ i.fa.fa-google-plus {
                          
                         
                            <div class="sign-info mt-5 mb-3">
-                              <button type="submit" class="btn signup" style="width:80%;color:#fff!important;letter-spacing: 3.5px;font-size:20px;">LOGIN</button>
+                              <button type="submit" class="btn signup" style="width:80%;color:#fff!important;letter-spacing: 1.5px;font-size:20px;">SIGN IN</button>
                            </div> 
                                  <div class="links text-center mt-3">
                       @if (Route::has('password.request'))
