@@ -123,6 +123,22 @@ border-radius: 20px;
   /* end_card_video */
 	display: none;
 }
+      .flik{
+          font-family: 'Gilroy';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 14px;
+
+color: #FFFFFF;
+
+opacity: 0.5
+      }
+      .btn2{
+          background: rgba(255, 255, 255, 0.3);
+border-radius: 30px;
+          padding: 10px 20px;
+      }
   </style>
 <?php
 
@@ -222,8 +238,10 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
              
                  <div id="video_container" class="fitvid" atyle="z-index: 9999;">
                <!-- Current time: <div id="current_time"></div> -->
-               <video id="videoPlayer"  class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
-                  <!-- <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >-->
+                      <div class="slide slick-bg s-bg-1 lazy"
+            style="background:linear-gradient(228.69deg, rgba(34, 7, 77, 0) 38.22%, #090015 81.76%), url('<?php echo URL::to('/').'/public/uploads/images/' .$video->player_image;?>') no-repeat;background-size:cover;background-position:right; height:70vh;">
+               <!-- <video id="videoPlayer"  class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
+                  <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >
                   <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default />
                    <source src="<?php if(!empty($video->mp4_url)){   echo $video->mp4_url; }else {  echo $video->trailer; } ?>"  type='video/mp4' label='auto' > 
                 
@@ -237,8 +255,52 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                    <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value->url ?>" >
                    <?php }
                    } } else {  } ?>  
-               </video>
- 
+               </video>-->
+                          <div class="container-fluid">
+ <div class="row align-items- text-white text-detail justify-content-between">
+             <div class="col-sm-6 col-md-6 col-xs-12">
+                   <h1 class="trending-text big-title text-uppercase mt-3"><?php echo __($video->title);?> <?php if( Auth::guest() ) { ?>  <?php } ?></h1>
+            <span class="badge badge-secondary"><?php echo __($video->age_restrict).' '.'+';?></span>
+            <span class="ml-3"><?php echo __(gmdate('H:i:s', $video->duration));?></span>
+            <span class="trending-year">,<?php if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span>
+            <span class="trending-year" style="display:none;"><?php
+            foreach($category_name as $value){
+              echo $value->categories_name. ',';  
+            }
+             ?></span>
+
+             <!-- Trailer Description -->
+              <?php if(!empty($video->trailer_description) ) { ?>
+                <div class="col-sm-12 mt-4 p-0 trailer_description">
+                  <h5>Trailer Description:</h5>
+                      <div class="text-white">
+                          <p class="trending-dec w-100 mb-0 text-white mt-3"><?php echo __($video->trailer_description); ?></p>
+                      </div>
+                  </div>
+              <?php  }?>
+              <div class="col-sm-4 p-0">
+                   <!-- <div>     
+                        <?php if($video->trailer != '' && $ThumbnailSetting->trailer == 1 ){ ?>
+                            <div id="videoplay" class="btn1 btn-outline-primary  watch_trailer"><i class="ri-film-line"></i> Watch Trailer</div>
+                            <div id="close_trailer" class="btn1 btn-outline-danger  close_trailer"><i class="ri-film-line"></i> Close Trailer</div>
+                            <div style=" display: none;" class="skiptrailer btn btn-default skip"> Skip</div>
+                        <?php } ?>
+                    </div>-->
+                </div>
+
+             
+<p class="mt-2 flik">Flicknexs will play the highest quality audio and video available for your device.</p>
+                 <div class="col-lg-5 d-flex align-items-baseline justify-content-between p-0">
+                  <a class="" href="<?php echo URL::to('category') ?><?= '/videos/' . $video->player_image ?>"> <img class="ply" src="<?php echo URL::to('/').'/assets/img/video-play.png';  ?>" /> </a>
+                 <div id="videoplay" class="btn2  watch_trailer  mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>" style="border-radius:none!important;"><?php if(isset($mywishlisted->id)): ?> <i class="fa fa-minus-circle" aria-hidden="true"></i> Remove Whislist  <?php else: ?> + Add to Wishlist <?php endif; ?>
+                        </div>
+</div>
+
+              </div>
+
+            
+         </div></div>
+         
                <div class="playertextbox hide">
                    <!--<h2>Up Next</h2>-->
                    <p><?php if(isset($videonext)){ ?>
@@ -254,6 +316,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                    <?php } ?></p>
                </div>
            </div>
+     </div>
    <?php  else: ?>
                <div id="video_container" class="fitvid" atyle="z-index: 9999;">
                <!-- Current time: <div id="current_time"></div> -->
@@ -674,7 +737,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
        <!-- Year, Running time, Age --> 
          <div class="row align-items- text-white text-detail justify-content-between">
              <div class="col-sm-6 col-md-6 col-xs-12">
-            <span class="badge badge-secondary p-3"><?php echo __($video->age_restrict).' '.'+';?></span>
+            <span class="badge badge-secondary"><?php echo __($video->age_restrict).' '.'+';?></span>
             <span class="ml-3"><?php echo __(gmdate('H:i:s', $video->duration));?></span>
             <span class="trending-year">,<?php if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span>
             <span class="trending-year" style="display:none;"><?php

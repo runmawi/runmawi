@@ -353,7 +353,7 @@ input:checked + .sliderk:before {
   height: 32px;
   position: absolute;
   top: -7px;
-  left: -5px;
+  left: -15px;
   
   cursor: pointer;
   

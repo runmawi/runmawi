@@ -53,6 +53,25 @@ if(!empty($request_url)){
   <input type="hidden" id="video_video" class="video_video" value="video">
   <input type="hidden" id="adsurl" value="<?php if(isset($ads->ads_id)){echo get_adurl($ads->ads_id);}?>">
   <style>
+      td{
+         
+      }
+      th{
+          text-align: center;
+      }
+       tr:nth-child(1) th:nth-child(1){
+          width: 55%;
+      }
+      .table-dark td, .table-dark th, .table-dark thead th {
+          color: #fff;
+      }
+      .flk{
+          font-size: 12px;
+          font-weight: 300;
+      }
+      .pay{
+          font-size: 12px;
+      }
     .vjs-error .vjs-error-display .vjs-modal-dialog-content {
    font-size: 2.4em;
    text-align: center;
