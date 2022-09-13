@@ -795,7 +795,19 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
        <div class="trending-info g-border p-0">
            <div class="row align-items-center">
                <div class="col-sm-8 col-md-8 col-xs-12">
-                   <h1 class="text-white  mt-3"><?php echo __($video->title);?> <?php if( Auth::guest() ) { ?>  <?php } ?></h1>
+
+                                                                       <!--  Video thumbnail image-->
+                  <?php if( $video->enable_video_title_image == 1  &&  $video->video_title_image != null){ ?>
+                    <div class="d-flex col-md-6">
+                       <img src="<?= URL::to('public/uploads/images/'.$video->video_title_image )?>" class="c-logo" alt="<?= $video->title ?>">
+                    </div>
+                                                        <!-- Video Title  -->
+                  <?php }else{ ?>
+                      <h1 class="text-white mb-3" >
+                        <?php echo (strlen($video->title) > 15) ? substr($video->title,0,80).'...' : $video->title;  if( Auth::guest() ) { } ?>
+                      </h1>
+                  <?php } ?>
+
                        <!-- Category -->
                    <ul class="p-0 list-inline d-flex align-items-center movie-content">
                     <li class="text-white"><?//= $videocategory ;?></li>
@@ -1279,6 +1291,9 @@ $artists = [];
        </div>
      </div>
    </div>
+
+
+
 
    <?php if(isset($videonext)){ ?>
    <div class="next_video" style="display: none;"><?= $videonext->slug ?></div>
@@ -2025,24 +2040,4 @@ location.reload();
   });
 </script>
 
-<!-- Pop-up For register -->
-<script src="<?= URL::to('/assets/admin/js/sweetalertfire.min.js') ?>"></script>
-
-<script>
-  $(document).ready(function(){
-      $(".pop_up_register_user").click(function(){
-          
-        Swal.fire({
-                    imageUrl: "<?php echo URL::to('/public/Thumbnai_images/Horror-7.png') ?> " ,
-                    imageWidth: 200,
-                    imageHeight: 250,
-                    imageAlt: 'Custom image',
-         
-          text: 'Please Subscribe Watch !',
-          timer: 15000 ,
-          content:''
-        })
-      });
-  });
-</script>
-
+<?php include('register_pop_up.php'); ?>

@@ -72,17 +72,22 @@ i.fa.fa-google-plus {
     margin: 0 auto;
     display: block;
 }
+
+
+.reveal{
+        margin-left: 80% !important;
+        margin-top: -26% !important;
+    height: 45px !important;
+    background: transparent !important;
+    color: #fff !important;
+    }
 </style>
 
  
 <section class="sign-in-page" style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;">
    <div class="container">
       <div class="row  align-items-center justify-content-center height-self-center">
-          <!-- <div class="col-lg-  col-md-6">
-              <div class="" >
-              <h1 class="km">WATCH<br> TV SHOWS &amp;<br> MOVIES <br>ANYWHERE,<br> ANYTIME</h1>
-                  </div>
-          </div> -->
+
          <div class="col-lg-5 col-md-12 align-self-center">
             <div class="sign-user_card ">                    
                <div class="sign-in-page-data">
@@ -103,56 +108,32 @@ i.fa.fa-google-plus {
                         @endif
                                               
                   </div>
-                     <form method="POST" action="{{ URL::to('cpp/home') }}" class="mt-4">
+                     <form method="POST" action="{{  URL::to('cpp/resetpassword') }}" class="mt-4">
                      <!-- <meta name="csrf-token" content="{{ csrf_token() }}"> -->
 
                          @csrf
 						   <input type="hidden" name="previous" value="{{ url()->previous() }}">
-						@error('email')
-							<span class="invalid-feedback" role="alert">
-								<strong>{{ $message }}</strong>
-							</span>
-						@enderror
-						
-						@error('password')
-							<span class="invalid-feedback" role="alert">
-								<strong>{{ $message }}</strong>
-							</span>
-						@enderror
+
                         <div class="form-group">  
                           <!-- <input type="email" class="form-control mb-0" id="exampleInputEmail1" placeholder="Enter email" autocomplete="off" required>-->
                             <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" placeholder="{{ __('E-Mail or Phone number') }}" value="{{ old('email') }}" required autocomplete="email" autofocus>
                         </div>
                         <div class="form-group" style="  margin-top: 30px;">                                 
-                           <!--<input type="password" class="form-control mb-0" id="exampleInputPassword2" placeholder="Password" required>-->
-                            								<input id="password" type="password" class="form-control @error('password') is-invalid @enderror" placeholder="{{ __('Password') }}" name="password" required autocomplete="current-password" >
+                            <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" placeholder="{{ __('Password') }}" name="password" required autocomplete="current-password" >
                         </div>
-                         <div class="d-flex justify-content-around links">
-                      @if (Route::has('password.request'))
-                     <a href="{{  URL::to('cpp/password/reset') }}" class="f-link">Forgot your password?</a>
-                      @endif
-							
-                  </div>
-                        
+                        <div >
+                            <span class="input-group-btn" id="eyeSlash">
+                                <button class="btn btn-default reveal" onclick="visibility1()" type="button" style=" background: transparent !important; color:#ff0000!important "><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
+                            </span>
+                            <span class="input-group-btn" id="eyeShow" style="display: none;">
+                                <button class="btn btn-default reveal" onclick="visibility1()" type="button" style=" background: transparent !important; color:#ff0000!important ;"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                            </span>
+                        </div>                        
                            <div class="sign-info">
-                              <button type="submit" class="btn  ab" style="width:100%;color:#fff!important;background:#8a0303!important">SIGN IN</button>
+                              <button type="submit" class="btn  ab" style="width:100%;color:#fff!important;background:#8a0303!important">{{ __('Password Reset') }}</button>
                                                             
                            </div> 
-                           <div class="clear"></div>
-                         <div class="custom-control custom-checkbox mt-3" align="left" style="" >
-                                 <!--<input type="checkbox" class="custom-control-input" id="customCheck">-->
-                                 
-                                 <!--<label class="custom-control-label" for="customCheck">Remember Me</label>-->
-                                  <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-								<label class="form-check-label nv" for="remember">
-									{{ __('Keep me signed in') }}
-								</label>
-                              </div>  
-                          <hr style="color:#1e1e1e;">
-                           <div class="mt-3">
-                              <div class=" justify-content-center links">
-                                 To Content Partner Portal <a href="<?= URL::to('/cpp/signup')?>" class="text-primary ml-2">Sign Up </a> Here!
-                              </div>                        
+                           <div class="clear"></div>                       
                            </div>
                      </form>
                   </div>
@@ -163,7 +144,7 @@ i.fa.fa-google-plus {
    </div>
 </section>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-                    <script src="jquery-3.5.1.min.js"></script>
+<script src="jquery-3.5.1.min.js"></script>
 <script>
     $(document).ready(function(){
         // $('#message').fadeOut(120);
@@ -171,6 +152,34 @@ i.fa.fa-google-plus {
             $('#successMessage').fadeOut('fast');
         }, 3000);
     })
+</script>
+<script>
+    function visibility1() {
+  var x = document.getElementById('password');
+  if (x.type === 'password') {
+    x.type = "text";
+    $('#eyeShow').show();
+    $('#eyeSlash').hide();
+  }else {
+    x.type = "password";
+    $('#eyeShow').hide();
+    $('#eyeSlash').show();
+  }
+}
+</script>
+<script>
+    function visibility2() {
+  var x = document.getElementById('password-confirm');
+  if (x.type === 'password') {
+    x.type = "text";
+    $('#eyeShow1').show();
+    $('#eyeSlash1').hide();
+  }else {
+    x.type = "password";
+    $('#eyeShow1').hide();
+    $('#eyeSlash1').show();
+  }
+}
 </script>
                        {{-- Footer --}}
 @php

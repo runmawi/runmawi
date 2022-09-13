@@ -192,9 +192,17 @@ endif; ?>
 
                     <div class="row align-items-center bl h-100">
                         <div class="col-xl-5 col-lg-12 col-md-12 mt-3">
-                            <h1 class=" text-white title text-uppercase mb-3" >
-                                    <?php echo __($videos->title); ?>
-                            </h1>
+                                                        <!--  Video thumbnail image-->
+                            <?php if( $videos->enable_video_title_image == 1  &&  $videos->video_title_image != null){ ?>
+                                    <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>">
+                                        <img src="<?= URL::to('public/uploads/images/'.$videos->video_title_image )?>" class="c-logo" alt="<?= $videos->title ?>">
+                                    </a>
+                                                        <!-- Video Title  -->
+                            <?php }else{ ?>
+                                    <h1 class="text-white title text-uppercase mb-3" >
+                                        <?php echo (strlen($videos->title) > 15) ? substr($videos->title,0,80).'...' : $videos->title; ?>
+                                    </h1>
+                            <?php } ?>
 
                             <div class="mb-3">
                                 <span class="fa fa-star checked"></span>
@@ -273,9 +281,17 @@ if(Route::current()->getName() == "home"){
 
                     <div class="row align-items-center bl h-100">
                         <div class="col-xl-4 col-lg-12 col-md-12">
-                            <h1 class=" text-white title text-uppercase mb-3" data-animation-in="fadeInLeft" data-delay-in="0.6">
-                                    <?php echo __($videos->title); ?>
-                            </h1>
+
+                            <?php if( $videos->enable_video_title_image == 1  &&  $videos->video_title_image != null){ ?>
+                                <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>">
+                                    <img src="<?= URL::to('public/uploads/images/'.$videos->video_title_image )?>" class="c-logo" alt="<?= $videos->title ?>">
+                                </a>
+                                                            <!-- Video Title  -->
+                            <?php }else{ ?>
+                                <h1 class=" text-white title text-uppercase mb-3" data-animation-in="fadeInLeft" data-delay-in="0.6">
+                                     <?php echo (strlen($videos->title) > 15) ? substr($videos->title,0,80).'...' : $videos->title; ?>
+                                </h1>
+                            <?php } ?>
 
                             <div class="mb-3">
                                 <span class="fa fa-star checked"></span>

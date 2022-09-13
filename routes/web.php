@@ -1028,6 +1028,11 @@ Route::get('admin/payment_test', 'AdminPaymentManagementController@PaymentIndex'
 
 Route::post('cpp/home',  'ModeratorsLoginController@Login')->name('CPPLogin');
 
+Route::get('cpp/password/reset',  'ModeratorsLoginController@PasswordRset')->name('CPPPasswordRset');
+Route::post('cpp/resetpassword',  'ModeratorsLoginController@ResetPassword')->name('CPPResetPassword');
+
+
+
 
 /**       CPP Middlware       */
 Route::group(['prefix' => 'cpp','middleware' => ['cpp']], function() {
