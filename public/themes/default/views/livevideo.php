@@ -20,6 +20,9 @@ font-size: 60px;
 margin-top: 0px;
 color:red;
 }
+    .fp-ratio{
+        padding-top: 64%!important;
+    }
 h2{
 text-align: center;
 font-size: 35px;

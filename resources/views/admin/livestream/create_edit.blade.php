@@ -205,12 +205,12 @@ border-radius: 0px 4px 4px 0px;
 
 
                                 <div class="new-video-upload mt-2" id="mp4_code">
-                                    <label for="embed_code"><label class="mb-1">Live Stream URL</label></label>
+                                    <label for="embed_code"><label class="mb-1">Live Stream URL </label></label>
                                     <input type="text" name="mp4_url" class="form-control" id="mp4_url" value="@if(!empty($video->mp4_url) ) {{ $video->mp4_url}}  @endif" />
                                 </div>
 
                                 <div class="new-video-upload mt-2" id="embed_code">
-                                    <label for="embed_code"><label class="mb-1">Live Embed URL</label></label>
+                                    <label for="embed_code"><label class="mb-1">Live Embed URL (Add the url from SRC tag)</label></label>
                                     <input type="text" name="embed_url" class="form-control" id="embed_url" value="@if(!empty($video->embed_url) ) {{ $video->embed_url}}  @endif" />
                                 </div>
 
