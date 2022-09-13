@@ -34,7 +34,8 @@
                 <div class="row">
                     <div class="col-3">
                         <label for="">Choose Time</label>
-                        <select class="form-control" name="time">
+                        <select class="form-control" name="time" id="time" >
+                            <option value="">Select Schedule Timing</option>
                             <option value="12:00 AM to 01:00 AM">12:00 AM to 01:00 AM</option>
                             <option value="01:00 AM to 02:00 AM">01:00 AM to 02:00 AM</option>
                             <option value="02:00 AM to 03:00 AM">02:00 AM to 03:00 AM</option>
@@ -111,6 +112,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     
     <script type="text/javascript">
+
         var month = '{{ $Calendar['month'] }}';
         var year = '{{ $Calendar['year'] }}';
         var date = '{{ $Calendar['date'] }}';
@@ -129,6 +131,10 @@
             formData.append("year", year);
             formData.append("date", date);
             formData.append("schedule_id", schedule_id);
+            formData.append("choose_time", $('#time').val());
+
+            // var choose_time = ;
+
             // console.log(value)
             this.on("success", function(file, value) {
                 console.log(value.video_title);
