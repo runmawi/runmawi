@@ -1292,6 +1292,9 @@ $artists = [];
      </div>
    </div>
 
+
+
+
    <?php if(isset($videonext)){ ?>
    <div class="next_video" style="display: none;"><?= $videonext->slug ?></div>
    <div class="next_url" style="display: none;"><?= $url ?></div>
@@ -2037,24 +2040,4 @@ location.reload();
   });
 </script>
 
-<!-- Pop-up For register -->
-<script src="<?= URL::to('/assets/admin/js/sweetalertfire.min.js') ?>"></script>
-
-<script>
-  $(document).ready(function(){
-      $(".pop_up_register_user").click(function(){
-          
-        Swal.fire({
-                    imageUrl: "<?php echo URL::to('/public/Thumbnai_images/Horror-7.png') ?> " ,
-                    imageWidth: 200,
-                    imageHeight: 250,
-                    imageAlt: 'Custom image',
-         
-          text: 'Please Subscribe Watch !',
-          timer: 15000 ,
-          content:''
-        })
-      });
-  });
-</script>
-
+<?php include('register_pop_up.php'); ?>
