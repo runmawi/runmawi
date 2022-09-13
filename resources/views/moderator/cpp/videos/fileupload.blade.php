@@ -1465,7 +1465,7 @@ CKEDITOR.replace( 'summary-ckeditor', {
     Dropzone.autoDiscover = false;
     var myDropzone = new Dropzone(".dropzone",{ 
       //   maxFilesize: 900,  // 3 mb
-        maxFilesize: 500,
+        maxFilesize: 15000000000,
         acceptedFiles: "video/mp4,video/x-m4v,video/*",
     });
     myDropzone.on("sending", function(file, xhr, formData) {
