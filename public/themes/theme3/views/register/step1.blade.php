@@ -220,8 +220,8 @@ i.fa.fa-google-plus {
     background: #474644 !important;
 }
     .reveal{
-        margin-left: 59px !important;
-        margin-top: -46px!important;
+       top: 10px;
+        right: 0;
     height: 45px !important;
     background: transparent !important;
     color: #fff !important;
