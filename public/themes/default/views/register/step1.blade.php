@@ -473,18 +473,27 @@ i.fa.fa-google-plus {
                             <?php } ?>
                         
                         <div class="form-group" >
-							
+	                             {{-- reCAPTCHA  --}}
+                            <div class="col-md-12" id="">
+                                @if( get_enable_captcha()  == 1)   
+                                    <div class="form-group" style="  margin-top: 30px;">
+                                        {!! NoCaptcha::renderJs('en', false, 'onloadCallback') !!}
+                                        {!! NoCaptcha::display() !!}
+                                    </div>
+                                @endif
+                            </div>
+
 							<div class="col-md-12" id="mob">
                                 <input id="password-confirm" type="checkbox" name="terms" value="1" required>
 								<label for="password-confirm" class="col-form-label text-md-right" style="display: inline-block;">{{ __('Yes') }} ,<a data-toggle="modal" data-target="#terms" style="text-decoration:none;color: #fff;"> {{ __('I Agree to Terms and  Conditions' ) }}</a></label>
                             </div>
+
                             <div class="sign-up-buttons col-md-12" align="right">
                                   <button type="button" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile" style="display: none;"> Verify Profile</button>
                                   <button class="btn btn-hover btn-primary btn-block signup" style="display: block;" type="submit" name="create-account">{{ __('Sign Up Today') }}</button>
                                 </div>
-                        </div>
-                        
-                       
+                            </div>
+                           
 						<div class="form-group row">
 							<div class="col-md-10 col-sm-offset-1">
                                 <!--<div class="sign-up-buttons">
@@ -570,9 +579,6 @@ i.fa.fa-google-plus {
                     </div>
                   </div>
                   </div>
-             
-               
-                 
           </form>
       </div>
    
@@ -912,6 +918,7 @@ $(document).ready(function() {
                     }
                 },
             },
+
                 messages: {
                     mobile: {
                         required: "Please Enter the Mobile Number",
