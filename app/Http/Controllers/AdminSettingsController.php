@@ -23,7 +23,7 @@ use GuzzleHttp\Message\Response;
 use App\FooterLink;
 use App\LinkingSetting;
 use App\CompressImage;
-
+use App\Captcha;
 
 //use Illuminate\Http\Request;
 
@@ -74,6 +74,7 @@ class AdminSettingsController extends Controller
             'resolution' => $resolution ,   
 			      'settings' => $setting,
             'rtmp_url'  => RTMP::all(),
+            'captchas'  =>Captcha::first(),
 			  );
 
 	    	return \View::make('admin.settings.index', $data);
@@ -84,7 +85,7 @@ class AdminSettingsController extends Controller
 
         $input = $request->all();
         // transcoding_resolution
-        // dd( $input);
+        dd( $input);
         if(!empty($request['transcoding_resolution'])){
          $transcoding_resolution = implode(",",$request['transcoding_resolution']);
         }else{
@@ -996,5 +997,31 @@ if($watermark != '') {
       return redirect()->route('compress_image')->with(array('message' => 'Successfully Updated!', 'note_type' => 'success') );
     }
 
+    public function captcha(Request $request)
+    {
+
+     $Captcha = Captcha::first();
+
+      if($Captcha == null){
+
+        Captcha::create([
+            'captcha_site_key' => $request->captcha_site_key,
+            'captcha_secret_key' => $request->captcha_secret_key,
+            'enable_captcha'   => ( $request->enable_captcha == null ) ? '0' : '1'  ,
+          ]);
+
+      }else{
+
+        Captcha::first()->update([
+          'captcha_site_key' => $request->captcha_site_key,
+          'captcha_secret_key' => $request->captcha_secret_key,
+          'enable_captcha'   => ( $request->enable_captcha == null ) ? '0' : '1'  ,
+        ]);
+
+      }
+     
+      return Redirect::to('admin/settings')->with(array('message' => 'Successfully Updated Site Settings!', 'note_type' => 'success') );
+
+    }
 
 }
