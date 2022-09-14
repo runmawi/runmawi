@@ -187,7 +187,7 @@ return [
         Jenssegers\Agent\AgentServiceProvider::class,
         Facuz\Theme\ThemeServiceProvider::class,
         ZanySoft\Zip\ZipServiceProvider::class,
-
+        Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -278,6 +278,7 @@ return [
         'Zip' => ZanySoft\Zip\ZipFacade::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'LogActivity' => App\Helpers\LogActivity::class,
+        'NoCaptcha' => Anhskohbo\NoCaptcha\Facades\NoCaptcha::class,
 
 
     ],

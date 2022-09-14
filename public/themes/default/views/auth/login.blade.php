@@ -217,7 +217,7 @@ i.fa.fa-google-plus {
    </div>
 </section>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-                  
+<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"async defer></script>                
 <script>
     $(document).ready(function(){
         // $('#message').fadeOut(120);
@@ -227,7 +227,7 @@ i.fa.fa-google-plus {
     })
 
     var onloadCallback = function(){
-        alert("sss");
+      
     }
 </script>
 
