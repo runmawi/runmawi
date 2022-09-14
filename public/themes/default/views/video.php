@@ -931,7 +931,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 
                          <!-- && ($video->global_ppv == 1 ) -->
                            <button  data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn1 btn-outline-danger rent-video">
-                           <?php echo __('Rents');?> </button>
+                           <?php echo __('Purchase Now');?> </button>
                        <?php } ?>
                    </li>
                    <li>

@@ -87,7 +87,7 @@ i.fa.fa-google-plus {
                <div class="sign-in-page-data">
                   <div class="sign-in-from  m-auto" align="center">
                       <div class="row justify-content-center">
-                          <div class="col-md-6">
+                          <div class="col-md-12">
                           <img class=""  src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;"></div></div>
                       <?php if($settings->demo_mode == 1) { ?>
                         <div class="demo_cred">
@@ -124,23 +124,32 @@ i.fa.fa-google-plus {
 						@enderror
                         <div class="form-group">  
                           <!-- <input type="email" class="form-control mb-0" id="exampleInputEmail1" placeholder="Enter email" autocomplete="off" required>-->
-                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" placeholder="{{ __('E-Mail or Phone number') }}" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" placeholder="{{ __('E-Mail or Phone number') }}" value="{{ old('email') }}"  autocomplete="email" autofocus>
                         </div>
                         <div class="form-group" style="  margin-top: 30px;">                                 
                            <!--<input type="password" class="form-control mb-0" id="exampleInputPassword2" placeholder="Password" required>-->
-                            								<input id="password" type="password" class="form-control @error('password') is-invalid @enderror" placeholder="{{ __('Password') }}" name="password" required autocomplete="current-password" >
+                            								<input id="password" type="password" class="form-control @error('password') is-invalid @enderror" placeholder="{{ __('Password') }}" name="password"  autocomplete="current-password" >
                         </div>
-                         <div class="d-flex justify-content-end links">
-                      @if (Route::has('password.request'))
-                     <a href="{{ route('password.request') }}" class="f-link">Forgot your password?</a>
-                      @endif
-							
-                  </div>
+
                         
-                           <div class="sign-info">
-                              <button type="submit" class="btn btn-hover ab" style="width:100%;color:#fff!important;">SIGN IN</button>
-                                                            
-                           </div> 
+                         <div class="d-flex justify-content-end links">
+                            @if (Route::has('password.request'))
+                                    <a href="{{ route('password.request') }}" class="f-link">Forgot your password?</a>
+                            @endif
+                        </div>
+                        
+                                         {{-- reCAPTCHA  --}}
+                        @if( get_enable_captcha()  == 1)   
+                            <div class="form-group text-left" style="  margin-top: 30px;">
+                                {!! NoCaptcha::renderJs('en', false, 'onloadCallback') !!}
+                                {!! NoCaptcha::display() !!}
+                            </div>
+                        @endif
+                        
+                        <div class="sign-info">
+                            <button type="submit" class="btn btn-hover ab" style="width:100%;color:#fff!important;">SIGN IN</button>                     
+                        </div> 
+
                          <div class="mt-3" align="left" style="" >
                                  <!--<input type="checkbox" class="custom-control-input" id="customCheck">-->
                                  
@@ -209,7 +218,7 @@ i.fa.fa-google-plus {
    </div>
 </section>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-                  
+<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"async defer></script>                
 <script>
     $(document).ready(function(){
         // $('#message').fadeOut(120);
@@ -217,7 +226,13 @@ i.fa.fa-google-plus {
             $('#successMessage').fadeOut('fast');
         }, 3000);
     })
+
+    var onloadCallback = function(){
+      
+    }
 </script>
+
+
 </body>
 
 @php

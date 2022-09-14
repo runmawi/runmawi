@@ -443,7 +443,7 @@ i.fa.fa-google-plus {
         color: #000!important;
         background-color: #fff;
         height: 140px;
-        width: 330px;
+        width: 315px;
        
     }
 
