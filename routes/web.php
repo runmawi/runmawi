@@ -1170,7 +1170,8 @@ Route::post('/audios/audioupdate', array('before' => 'demo', 'uses' => 'CPPAdmin
     Route::get('/channel/verify/{activation_code}', 'ChannelLoginController@Verify');
     Route::get('/channel/emailvalidation', 'SignupController@EmailValidation');
     Route::post('/channel/home',  'ChannelLoginController@Login');
-
+    Route::get('channel/password/reset',  'ChannelLoginController@PasswordRset')->name('channelPasswordRset');
+    Route::post('channel/resetpassword',  'ChannelLoginController@ResetPassword')->name('channelResetPassword');
 
     Route::group(['prefix' => 'channel','middleware' => ['channel']], function() {        
         
