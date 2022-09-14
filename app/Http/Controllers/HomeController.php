@@ -2274,7 +2274,14 @@ class HomeController extends Controller
             session(['referrer' => $request->query('ref') ]);
         }
 
-        $validatedData = $request->validate(['username' => ['required', 'string'], 'email' => ['required', 'string', 'email', 'unique:users'], 'password' => 'required|string|min:6|confirmed|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/', 'mobile' => ['required', 'numeric', 'min:8', 'unique:users'], 'password_confirmation' => 'required', ]);
+        $validatedData = $request->validate(
+            [   'username' => ['required', 'string'], 
+                'email' => ['required', 'string', 'email', 'unique:users'],
+                'password' => 'required|string|min:6|confirmed|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/',
+                'mobile' => ['required', 'numeric', 'min:8', 'unique:users'],
+                'password_confirmation' => 'required',
+                'g-recaptcha-response' => get_enable_captcha() == 1 ? 'required|captcha' : '',
+             ]);
 
         $free_registration = FreeRegistration();
         $length = 10;
