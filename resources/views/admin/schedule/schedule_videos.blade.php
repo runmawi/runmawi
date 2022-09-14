@@ -2,7 +2,6 @@
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.css"/>
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
     <!-- CSS -->
     <link rel="stylesheet" type="text/css" href="{{asset('dropzone/dist/min/dropzone.min.css')}}">
@@ -33,7 +32,8 @@
 
                 <div class="row">
                     <div class="col-3">
-                        <label for="">Choose Time</label>
+                        <label for="">Choose Time</label><br>
+                        <p style="color:black"> Select Timing Before Upload Video <span style="color:red;">*</span></p>
                         <select class="form-control" name="time" id="time" >
                             <option value="">Select Schedule Timing</option>
                             <option value="12:00 AM to 01:00 AM">12:00 AM to 01:00 AM</option>
@@ -48,7 +48,7 @@
                             <option value="09:00 AM to 10:00 AM">09:00 AM to 10:00 AM</option>
                             <option value="10:00 AM to 11:00 AM">10:00 AM to 11:00 AM</option>
                             <option value="11:00 AM to 12:00 PM">11:00 AM to 12:00 PM</option>
-                            <option value="12:00 AM to 01:00 PM">12:00 AM to 01:00 PM</option>
+                            <option value="12:00 PM to 01:00 PM">12:00 PM to 01:00 PM</option>
                             <option value="01:00 PM to 02:00 PM">01:00 PM to 02:00 PM</option>
                             <option value="02:00 PM to 03:00 PM">02:00 PM to 03:00 PM</option>
                             <option value="03:00 PM to 04:00 PM">03:00 PM to 04:00 PM</option>
@@ -93,9 +93,46 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
+            
+            
+
+                <div class="row">
+                            <div class="col-md-12">
+                                <table class="table text-center" id="schedule_videos_table" style="width:100%">
+                                    <thead>
+                                        <tr class="r1">
+                                            <th>#</th>
+                                            <th>Title</th>
+                                            <th>Type</th>
+                                            <th>Shedule Date</th>
+                                            <th>Sheduled Starttime</th>
+                                            <th>Shedule Endtime</th>
+                                        </tr>
+                                    </thead>
+                                <tbody>
+
+                                </tbody>
+                           </table>
+                        </div>
+                    </div>
             </div>
+            <!-- <div class="row">
+                <table id="customers" class="table table-bordered table-condensed table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Title</th>
+                            <th>Video Type</th>
+                            <th>Shedule Dte</th>
+                            <th>Sheduled Start Time</th>
+                            <th>Shedule End Time</th>
+                        </tr>
+                    </thead>
+
+                </table>
+            </div> -->
+
         </div>
     </div>
 </div>
@@ -108,7 +145,6 @@
 @section('javascript')
 
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     
     <script type="text/javascript">
@@ -144,6 +180,36 @@
 
   <script>
     
+
+    $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+    });
+
+    $(document).ready(function(){
+
+        var url = "{{ URL::to('admin/IndexScheduledVideos/')  }}";
+
+        $.ajax({
+            url: url,
+            type: "GET",      
+            success: function (data) {
+                console.log(data);
+                // alert(data);
+                // $("#data").append(data);
+                $('tbody').html(data.table_data);
+            },
+            error: function() { 
+                console.log(data);
+            }
+        });
+    });
+
+
+
+
+
    function EmbedCopy() {
    // var media_path = $('#media_url').val();
    var media_path = '<?= $url_path ?>';
@@ -159,6 +225,74 @@
    }
 
   </script>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+<!-- Fonts -->
+<link rel="dns-prefetch" href="//fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+
+
+<script>
+    $(document).ready(function() {
+        $.noConflict();
+        var token = ''
+        // var modal = $('.modal')
+        // var form = $('.form')
+        // var btnAdd = $('.add'),
+            // btnSave = $('.btn-save'),
+            // btnUpdate = $('.btn-update');
+        
+        var table = $('#customers').DataTable({
+                ajax: '',
+                serverSide: true,
+                processing: true,
+                aaSorting:[[0,"desc"]],
+                columns: [
+                    {data: 'id', name: 'id'},
+                    {data: 'title', name: 'title'},
+                    {data: 'type', name: 'type'},
+                    {data: 'shedule_date', name: 'shedule_date'},
+                    {data: 'sheduled_starttime', name: 'sheduled_starttime'},
+                    {data: 'shedule_endtime', name: 'shedule_endtime'},
+
+                ]
+            });
+      
+
+        $(document).on('click','.btn-delete',function(){
+            if(!confirm("Are you sure?")) return;
+
+            var rowid = $(this).data('rowid')
+            var el = $(this)
+            if(!rowid) return;
+
+            
+            $.ajax({
+                type: "POST",
+                dataType: 'JSON',
+                url: "/" + rowid,
+                data: {_method: 'delete',_token:token},
+                success: function (data) {
+                    if (data.success) {
+                        table.row(el.parents('tr'))
+                            .remove()
+                            .draw();
+                    }
+                }
+             }); //end ajax
+        })
+    })
+</script>
+
 @stop
 
 @stop
