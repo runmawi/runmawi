@@ -556,5 +556,44 @@ class ChannelLoginController extends Controller
         );
     }
 
+    public function PasswordRset()
+    {
+        $user_package = User::where('id', 1)->first();
+        $package = $user_package->package;
+        if (!empty($package) && $package == "Pro" || !empty($package) && $package == "Business")
+        {
+            $settings = Setting::first();
+            $user = User::where('id', '=', 1)->first();
+
+            return Theme::view('channel.reset_password', compact('settings', 'user'));
+        }
+        else
+        {
+            return Redirect::to('/blocked');
+        }
+    }
+
+    
+    public function ResetPassword(Request $request)
+    {
+      $data = $request->all();
+      $user = Channel::where('email', $data['email'])->first();
+      if(!empty($user)){
+
+        $user->unhased_password = $data['password'];
+        $user->password = Hash::make($data['password']);
+        $user->save();
+  
+        return redirect('/channel/login')
+        ->with('message', 'Youre Password Changed Successfully');
+
+      }else{
+
+        return Redirect::back()->with('message', 'Please Enter Valid Email');
+
+      }
+
+  }
+
 }
 

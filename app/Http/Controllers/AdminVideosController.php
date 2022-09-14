@@ -3806,7 +3806,7 @@ if(!empty($artistsdata)){
                 $settings = Setting::first();
         
                 if($mp4_url != '' && $pack != "Business" ) {
-                    print_r('1');exit();
+                    // print_r('1');exit();
 
                     $rand = Str::random(16);
                     $path = $rand . '.' . $request->file->getClientOriginalExtension();
@@ -3851,7 +3851,7 @@ if(!empty($artistsdata)){
                     return $value;
                 
                 }elseif($mp4_url != '' && $pack == "Business" && $settings->transcoding_access  == 1) {
-                    print_r('2');exit();
+                    // print_r('2');exit();
         
                     $rand = Str::random(16);
                     $path = $rand . '.' . $request->file->getClientOriginalExtension();
@@ -3897,8 +3897,12 @@ if(!empty($artistsdata)){
                       return $value;
                 }elseif($mp4_url != '' && $pack == "Business"  && $settings->transcoding_access  == 0 ) {
                     
-                    print_r('3');exit();
-        
+                    $date = $data['date'];
+                    $month = $data['month'];
+                    $year = $data['year'];
+                    $choose_time = $data['choose_time'];
+                    $schedule_id = $data['schedule_id'];
+                    
                     $rand = Str::random(16);
                     $path = $rand . '.' . $request->file->getClientOriginalExtension();
                 
@@ -3911,6 +3915,9 @@ if(!empty($artistsdata)){
                     $Video_storepath  = storage_path('app/public/'.$path);       
                     $VideoInfo = $getID3->analyze($Video_storepath);
                     $Video_duration = $VideoInfo['playtime_seconds'];
+
+
+                    print_r($data['month']);exit();
         
                     $video = new Video();
                     $video->title = $file_folder_name;
