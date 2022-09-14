@@ -140,7 +140,7 @@ i.fa.fa-google-plus {
                         
                                          {{-- reCAPTCHA  --}}
                                      
-                        <div class="form-group" style="  margin-top: 30px;">
+                        <div class="form-group text-left" style="margin-top: 30px;">
                             {!! NoCaptcha::renderJs('en', false, 'onloadCallback') !!}
                             {!! NoCaptcha::display() !!}
                         </div>
