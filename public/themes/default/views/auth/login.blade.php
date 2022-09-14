@@ -139,11 +139,12 @@ i.fa.fa-google-plus {
                         </div>
                         
                                          {{-- reCAPTCHA  --}}
-                                     
-                        <div class="form-group text-left" style="margin-top: 30px;">
-                            {!! NoCaptcha::renderJs('en', false, 'onloadCallback') !!}
-                            {!! NoCaptcha::display() !!}
-                        </div>
+                        @if( get_enable_captcha()  == 1)   
+                            <div class="form-group" style="  margin-top: 30px;">
+                                {!! NoCaptcha::renderJs('en', false, 'onloadCallback') !!}
+                                {!! NoCaptcha::display() !!}
+                            </div>
+                        @endif
                         
                         <div class="sign-info">
                             <button type="submit" class="btn btn-hover ab" style="width:100%;color:#fff!important;">SIGN IN</button>                     

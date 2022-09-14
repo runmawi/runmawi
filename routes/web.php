@@ -562,6 +562,9 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::get('/footer_menu_edit/{id}', 'AdminSettingsController@footer_edit'); 
     Route::post('/footer_update', 'AdminSettingsController@footer_update'); 
 
+    // recaptcha 
+    Route::post('/captcha', 'AdminSettingsController@captcha')->name('captcha'); 
+
 
     // Mobile Side Link
     Route::get('/mobile/side_menu', 'AdminMobileSideMenu@Side_link')->name('Side_link'); 

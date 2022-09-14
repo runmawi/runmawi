@@ -138,6 +138,7 @@ border-radius: 0px 4px 4px 0px;
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="script_setting" href="#!">Script Settings</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="default_Image_setting" href="#!"> Default Image Settings</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="cpp_payouts_setting" href="#!">  Payouts Settings</a> 
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="recpatcha_setting" href="#!">{{  ucwords('recaptcha settings') }}</a>  
                     <!-- Content Partner -->
                 </div>
             </div>
@@ -1069,6 +1070,9 @@ border-radius: 0px 4px 4px 0px;
         </div>
     </div>
 
+
+    
+
     {{-- RTMP streaming --}}
 
     <div class="container-fluid" id="rtmp_url" >
@@ -1119,6 +1123,88 @@ border-radius: 0px 4px 4px 0px;
             </form>
         </div>
     </div>
+
+        {{-- recpatcha --}}
+
+        <div class="container-fluid" id="recpatcha_settings" >
+            <h5>Re-captcha Settings</h5>
+            <div class="row">
+                <form method="POST" action="{{ URL::to('admin/captcha')  }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
+                    
+                    <div class="row mt-4">
+                        
+                        <div class="col-sm-6" id="">
+                            <div class="panel panel-primary" data-collapsed="0">
+                                <div class="panel-heading">
+                                    <div class="panel-title"><label> {{ ucwords('Captcha Site Key') }}</label></div>
+                                </div>
+
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                        <div class="make-switch" data-on="success" data-off="warning">
+                                            <input type="text" class="form-control" name="captcha_site_key" id="captcha_site_key" required
+                                            placeholder="Captcha Site Key"
+                                                value="@if(!empty($captchas->captcha_site_key)){{ $captchas->captcha_site_key }}@endif" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6" id="">
+                            <div class="panel panel-primary" data-collapsed="0">
+                                <div class="panel-heading">
+                                    <div class="panel-title"><label> Captcha Secret Key  </label> </div>
+                                </div>
+
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                        <div class="make-switch" data-on="success" data-off="warning">
+                                            <input type="text" class="form-control" name="captcha_secret_key" id="captcha_secret_key"
+                                                placeholder="Captcha Secret Key" required
+                                                value="@if(!empty($captchas->captcha_secret_key)){{ $captchas->captcha_secret_key }}@endif" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6" id="">
+                            <div class="panel panel-primary" data-collapsed="0">
+                                <div class="panel-heading">
+                                    <div class="panel-title"><label> {{ ucwords('Enable Captcha ') }}</label></div>
+                                </div>
+
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                        <div class="d-flex justify-content-between">
+                                            <div>OFF</div>
+                                                <div class="mt-1">
+                                                    <label class="switch">
+                                                        <input type="checkbox" @if(!isset($captchas->enable_captcha) ||
+                                                        (isset($captchas->enable_captcha) &&
+                                                        $captchas->enable_captcha))checked="checked" value="1"@else value="0"@endif
+                                                        name="enable_captcha" />
+                                                        <span class="slider round"></span>
+                                                    </label>
+                                                </div>
+                                                <div>ON</div>
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+    
+                        <div class="d-flex justify-content-end mt-3" style=" ">
+                            <input type="submit" id="appupdate" value="Update APP Settings" class="btn btn-primary text-right" />
+                        </div>
+    
+                    </div>
+                </form>
+            </div>
+        </div>
 
     </div></div></div></div>
     <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
@@ -1199,8 +1285,32 @@ border-radius: 0px 4px 4px 0px;
         $("#rtmp_url").hide();
 		$('#settingupdate').show();
 		$('#cpp_payouts').hide();
+		$('#recpatcha_settings').hide();
 
 	});
+
+	$('#recpatcha_setting').click(function(){
+        $('#site').hide();
+		$('#videos_settings').hide();
+		$('#ppv').hide();
+		// $('#videos_settings').hide();
+		$('#registration').hide();
+		$('#email').hide();
+		$('#social').hide();
+		$('#subscription').hide();
+		$('#login').hide();
+		$('#advertisement').hide();
+        $('#script').hide();
+		$('#app').hide();
+        $("#Defaut_image_setting").hide();
+        $("#transcodingsetting").hide();
+        $("#seasonsetting").hide();
+        $("#rtmp_url").hide();
+		$('#settingupdate').show();
+		$('#cpp_payouts').hide();
+		$('#recpatcha_settings').show();
+		$('#settingupdate').hide();
+    });
 
 	$('#ppv_setting').click(function(){
 		// alert();
@@ -1222,6 +1332,7 @@ border-radius: 0px 4px 4px 0px;
         $("#rtmp_url").hide();
 		$('#settingupdate').show();
 		$('#cpp_payouts').hide();
+		$('#recpatcha_settings').hide();
 
 	});
 	$('#video_setting').click(function(){
@@ -1242,9 +1353,9 @@ border-radius: 0px 4px 4px 0px;
         $("#rtmp_url").hide();
 		$('#settingupdate').show();
 		$('#cpp_payouts').hide();
-
-
+		$('#recpatcha_settings').hide();
 	});
+
 	$('#registration_setting').click(function(){
 		$('#site').hide();
 		$('#ppv').hide();
@@ -1263,9 +1374,9 @@ border-radius: 0px 4px 4px 0px;
         $("#rtmp_url").hide();
 		$('#settingupdate').show();
 		$('#cpp_payouts').hide();
-
-
+		$('#recpatcha_settings').hide();
 	});
+
 	$('#email_setting').click(function(){
 		$('#site').hide();
 		$('#ppv').hide();
@@ -1284,9 +1395,9 @@ border-radius: 0px 4px 4px 0px;
         $("#rtmp_url").hide();
 		$('#settingupdate').show();
 		$('#cpp_payouts').hide();
-
-
+		$('#recpatcha_settings').hide();
 	});
+
 	$('#social_setting').click(function(){
 		$('#site').hide();
 		$('#ppv').hide();
@@ -1306,9 +1417,9 @@ border-radius: 0px 4px 4px 0px;
         $("#rtmp_url").hide();
 		$('#settingupdate').show();
 		$('#cpp_payouts').hide();
-
-
+		$('#recpatcha_settings').hide();
 	});
+
 	$('#subscription_setting').click(function(){
 		$('#site').hide();
 		$('#ppv').hide();
@@ -1328,9 +1439,9 @@ border-radius: 0px 4px 4px 0px;
         $("#rtmp_url").hide();
 		$('#settingupdate').show();
 		$('#cpp_payouts').hide();
-
-
+		$('#recpatcha_settings').hide();
 	});
+
 	$('#login_setting').click(function(){
 		$('#site').hide();
 		$('#videos_settings').hide();
@@ -1351,9 +1462,9 @@ border-radius: 0px 4px 4px 0px;
         $("#rtmp_url").hide();
 		$('#settingupdate').show();
 		$('#cpp_payouts').hide();
-
-
+		$('#recpatcha_settings').hide();
 	});
+
 	$('#advertisement_setting').click(function(){
 		$('#videos_settings').hide();
 		$('#site').hide();
@@ -1373,8 +1484,7 @@ border-radius: 0px 4px 4px 0px;
         $("#rtmp_url").hide();
 		$('#settingupdate').show();
 		$('#cpp_payouts').hide();
-
-
+		$('#recpatcha_settings').hide();
 	});
 
 
@@ -1399,8 +1509,7 @@ border-radius: 0px 4px 4px 0px;
         $("#rtmp_url").hide();
         $("#settingupdate").hide();
 		$('#cpp_payouts').hide();
-
-
+		$('#recpatcha_settings').hide();
 	});
 
 	$('#app_setting').click(function(){
@@ -1424,7 +1533,7 @@ border-radius: 0px 4px 4px 0px;
         $("#seasonsetting").hide();
         $("#rtmp_url").hide();
 		$('#cpp_payouts').hide();
-
+		$('#recpatcha_settings').hide();
 	});
 
     $("#default_Image_setting").click(function () {
@@ -1451,7 +1560,7 @@ border-radius: 0px 4px 4px 0px;
         $("#rtmp_url").hide();
         $("#settingupdate").show();
 		$('#cpp_payouts').hide();
-
+		$('#recpatcha_settings').hide();
     });
      
     $("#transcoding_setting").click(function () {
@@ -1475,8 +1584,9 @@ border-radius: 0px 4px 4px 0px;
         $("#rtmp_url").hide();
 		$('#settingupdate').show();
 		$('#cpp_payouts').hide();
-
+		$('#recpatcha_settings').hide();
     });
+
     $("#series_setting").click(function () {
         // alert();
         $("#videos_settings").hide();
@@ -1498,7 +1608,7 @@ border-radius: 0px 4px 4px 0px;
         $("#rtmp_url").hide();
 		$('#settingupdate').show();
 		$('#cpp_payouts').hide();
-
+		$('#recpatcha_settings').hide();
     });
 
     $("#rtmp_url_setting").click(function () {
@@ -1524,6 +1634,7 @@ border-radius: 0px 4px 4px 0px;
         $("#rtmp_url").show();
 		$('#settingupdate').hide();
 		$('#cpp_payouts').hide();
+		$('#recpatcha_settings').hide();
     });
 
     $("#cpp_payouts_setting").click(function () {
@@ -1549,8 +1660,7 @@ border-radius: 0px 4px 4px 0px;
         $("#rtmp_url").hide();
 		$('#cpp_payouts').show();
 		$('#settingupdate').show();
-
-
+		$('#recpatcha_settings').hide();
     });
 
 	});
