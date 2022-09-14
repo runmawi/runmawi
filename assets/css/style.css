@@ -875,7 +875,8 @@ a.title-dec{
     list-style: none;
     background-color: #000 !important;
     overflow: scroll;
-    height: 300px;
+    height: auto;
+    max-height: 300px;
 }
    
 }
