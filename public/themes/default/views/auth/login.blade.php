@@ -87,7 +87,7 @@ i.fa.fa-google-plus {
                <div class="sign-in-page-data">
                   <div class="sign-in-from  m-auto" align="center">
                       <div class="row justify-content-center">
-                          <div class="col-md-6">
+                          <div class="col-md-12">
                           <img class=""  src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;"></div></div>
                       <?php if($settings->demo_mode == 1) { ?>
                         <div class="demo_cred">
