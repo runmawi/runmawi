@@ -1903,6 +1903,10 @@ if(jQuery('#view-chart-13').length){
    //  var tourguide = new Tourguide();
    //  tourguide.start();
 </script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+
+<link href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" rel="stylesheet">
+<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>  
 </body>
 </html>
 

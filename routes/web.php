@@ -734,6 +734,8 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::get('/manage/schedule/{id}', 'AdminVideosController@ManageSchedule');
     Route::post('/calendar/schedule', 'AdminVideosController@CalendarSchedule');
     Route::post('/schedule/uploadFile', 'AdminVideosController@ScheduleUploadFile');
+    Route::get('/IndexScheduledVideos', 'AdminVideosController@IndexScheduledVideos');
+
 
     
     Route::get('/video-event', 'AdminVideosController@calendarEvent');
