@@ -124,23 +124,31 @@ i.fa.fa-google-plus {
 						@enderror
                         <div class="form-group">  
                           <!-- <input type="email" class="form-control mb-0" id="exampleInputEmail1" placeholder="Enter email" autocomplete="off" required>-->
-                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" placeholder="{{ __('E-Mail or Phone number') }}" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" placeholder="{{ __('E-Mail or Phone number') }}" value="{{ old('email') }}"  autocomplete="email" autofocus>
                         </div>
                         <div class="form-group" style="  margin-top: 30px;">                                 
                            <!--<input type="password" class="form-control mb-0" id="exampleInputPassword2" placeholder="Password" required>-->
-                            								<input id="password" type="password" class="form-control @error('password') is-invalid @enderror" placeholder="{{ __('Password') }}" name="password" required autocomplete="current-password" >
+                            								<input id="password" type="password" class="form-control @error('password') is-invalid @enderror" placeholder="{{ __('Password') }}" name="password"  autocomplete="current-password" >
                         </div>
-                         <div class="d-flex justify-content-end links">
-                      @if (Route::has('password.request'))
-                     <a href="{{ route('password.request') }}" class="f-link">Forgot your password?</a>
-                      @endif
-							
-                  </div>
+
                         
-                           <div class="sign-info">
-                              <button type="submit" class="btn btn-hover ab" style="width:100%;color:#fff!important;">SIGN IN</button>
-                                                            
-                           </div> 
+                         <div class="d-flex justify-content-end links">
+                            @if (Route::has('password.request'))
+                                    <a href="{{ route('password.request') }}" class="f-link">Forgot your password?</a>
+                            @endif
+                        </div>
+                        
+                                         {{-- reCAPTCHA  --}}
+                                     
+                        <div class="form-group" style="  margin-top: 30px;">
+                            {!! NoCaptcha::renderJs('en', false, 'onloadCallback') !!}
+                            {!! NoCaptcha::display() !!}
+                        </div>
+                        
+                        <div class="sign-info">
+                            <button type="submit" class="btn btn-hover ab" style="width:100%;color:#fff!important;">SIGN IN</button>                     
+                        </div> 
+
                          <div class="mt-3" align="left" style="" >
                                  <!--<input type="checkbox" class="custom-control-input" id="customCheck">-->
                                  
@@ -217,7 +225,13 @@ i.fa.fa-google-plus {
             $('#successMessage').fadeOut('fast');
         }, 3000);
     })
+
+    var onloadCallback = function(){
+        alert("sss");
+    }
 </script>
+
+
 </body>
 
 @php
