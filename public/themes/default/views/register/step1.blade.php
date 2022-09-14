@@ -319,9 +319,22 @@ i.fa.fa-google-plus {
         </div>
     </div>
 </div>-->
+
+
+
 <div class="container">
       <div class="row justify-content-center align-items-center height-self-center">
          <div class="col-sm-9 col-md-7 col-lg-5 align-self-center">
+
+                    {{-- recaptcha --}}
+            <div class="cod-md-6">
+                @if ($errors->has('g-recaptcha-response'))
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
+                    </span>
+                @endif
+            </div>
+
             <div class="sign-user_card ">                    
                <div class="sign-in-page-data">
                   <div class="sign-in-from w-100 m-auto">
@@ -861,7 +874,7 @@ $(document).ready(function() {
     <script>
 
 
-    $( "#stripe_plan" ).validate({
+    $( "#stripe_plans" ).validate({
         
         rules: {
                 username: {
