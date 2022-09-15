@@ -326,14 +326,14 @@ i.fa.fa-google-plus {
       <div class="row justify-content-center align-items-center height-self-center">
          <div class="col-sm-9 col-md-7 col-lg-5 align-self-center">
 
-                    {{-- recaptcha --}}
-            <div class="cod-md-6">
-                @if ($errors->has('g-recaptcha-response'))
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
-                    </span>
-                @endif
-            </div>
+                            {{-- recaptcha --}}
+                <div class="col-md-12">
+                    @if ($errors->has('g-recaptcha-response'))
+                        <span class="alert alert-danger display-hide" id="successMessage" >
+                            <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
+                        </span>
+                     @endif
+                </div>
 
             <div class="sign-user_card ">                    
                <div class="sign-in-page-data">
@@ -874,7 +874,7 @@ $(document).ready(function() {
     <script>
 
 
-    $( "#stripe_plans" ).validate({
+    $( "#stripe_plan" ).validate({
         
         rules: {
                 username: {

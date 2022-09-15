@@ -254,6 +254,14 @@ color: rgba(255, 255, 255, 0.5);
                             								<input id="password" type="password" class="input-field  form-control @error('Password') is-invalid @enderror" placeholder="{{ __('PASSWORD') }}" name="password" required autocomplete="current-password" >
                         </div> </div>
                          
+                                                            
+                                    {{-- reCAPTCHA  --}}
+                            @if( get_enable_captcha()  == 1)   
+                                <div class="form-group text-left" style="  margin-top: 30px;">
+                                    {!! NoCaptcha::renderJs('en', false, 'onloadCallback') !!}
+                                    {!! NoCaptcha::display() !!}
+                                </div>
+                            @endif
                         
                            <div class="sign-info mt-5 mb-3">
                               <button type="submit" class="btn signup" style="width:80%;color:#fff!important;letter-spacing: 1.5px;font-size:20px;">SIGN IN</button>
@@ -264,6 +272,9 @@ color: rgba(255, 255, 255, 0.5);
                       @endif
 							
                   </div>
+
+
+
                                  <div class="row align-items-center mt-3">
                                      <div class="col-md-5 p-0"> <img class="w-100"  src="<?php echo  URL::to('/assets/img/l3.png')?>"></div>
                                      <div class="col-md-2 mt-3 p-0"><p class="text-white">OR</p></div>
@@ -283,7 +294,7 @@ color: rgba(255, 255, 255, 0.5);
                       
                   </div>
                   <div class="d-flex align-items-center mt-2 agree justify-content-strat">
-                          <input type="checkbox" id="" name="" value="" class="mb-2 mr-1">
+                          <input type="checkbox" id="" name="" value="" class="mb-2 mr-1" checked>
                     <label for="vehicle1"> Keep me signed in</label><br>
                           </div>
                </div>
