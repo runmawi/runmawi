@@ -27,10 +27,11 @@ class ContactController extends Controller
             'email' => ['required', 'string', 'email', 'max:255' ],
             'phone_number' => ['string', 'max:255'],
             'subject' => ['required', 'string', 'max:255'],
-            'message' => ['required', 'string', 'max:255']
+            'message' => ['required', 'string', 'max:255'],
+            // 'g-recaptcha-response' => get_enable_captcha() == 1 ? 'required|captcha' : '',
         ]);
-
         $data = $request->all();
+
         $image  =  (isset($data['screenshot'])) ? $data['screenshot'] : '';
         $image_path = public_path().'/uploads/contact_image/';
           
@@ -47,6 +48,11 @@ class ContactController extends Controller
            $file->move($image_path, $data['screenshot']);
         } else {
              $data['screenshot'] = '';
+        }
+        if(!empty($data['screenshot'])){
+            $url = \URL::to('/public/uploads/contact_image'.'/'.$data['screenshot']);
+        }else{
+            $url = "";
         }
 
         $contact = new Contact();
@@ -71,17 +77,20 @@ class ContactController extends Controller
                 'email_subject' => $email_subject,
             );
 
-
-            Mail::send('emails.contact_us', array(
+            \Mail::send('emails.contact_us', array(
                 'username' => $data['fullname'],
                 'website_name' => GetWebsiteName(),
                 'originalMessage' => $data['message'],
+                'data' => $data,
+
             ), 
             function($message) use ($data,$datas) {
                 $message->from(AdminMail(),GetWebsiteName());
-                $message->to($data['email'], $data['fullname'])->subject($datas['email_subject']);
-            });
+                $message->to('sanjai@webnexs.in')->subject($datas['email_subject']);
+                $message->attach($url);
 
+            });
+            // $url;
             $email_log      = 'Mail Sent Successfully from Contact us';
             $email_template = "6";
             $user_id = Auth::user()->id;
@@ -96,6 +105,8 @@ class ContactController extends Controller
 
             Email_notsent_log($user_id,$email_log,$email_template);
         }
+        dd($data);
+
         return Redirect::back()->with(array('message' => 'Sent Your Contact Request', 'note_type' => 'success') );
     }
   
