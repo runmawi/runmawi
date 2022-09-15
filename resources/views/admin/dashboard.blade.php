@@ -109,6 +109,16 @@
                                 <h4 class="card-title">Get Started </h4>
                                 <p class="p1">You are 3 steps away from completion</p>
                             </div>
+                            <div class="iq-header-title">
+                                 <?php 
+                                    $users = App\User::where('id',1)->first(); 
+                                    $date=date_create($users->package_ends);
+                                    $package_ends = date_format($date,"Y-M-d"); 
+                                  ?>
+                              <p style="color:black;">Subscribed To {{ $users->package }}</p>
+                              <p style="color:black;">Package Ends On {{ $package_ends }} </p>
+ 
+                            </div>
                             <div id="top-rated-item-slick-arrow" class="slick-aerrow-block"></div>
                         </div>
                         <div class="iq-card-body">
