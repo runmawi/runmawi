@@ -105,7 +105,7 @@ class ContactController extends Controller
 
             Email_notsent_log($user_id,$email_log,$email_template);
         }
-        dd($data);
+        // dd($data);
 
         return Redirect::back()->with(array('message' => 'Sent Your Contact Request', 'note_type' => 'success') );
     }
