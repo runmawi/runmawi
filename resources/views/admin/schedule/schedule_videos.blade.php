@@ -29,12 +29,13 @@
                 <div class="clear"></div>
                 <br>
                 <h4 class="card-title">{{ $Calendar['date'].'/'.$Calendar['month'].'/'.$Calendar['year'] }} </h4>
+                        <label for=""><h4 class="fs-title m-0">{{ $schedule->name }}</h4></label>
 
                 <div class="row">
                     <div class="col-3">
-                        <label for="">Choose Time</label><br>
-                        <p style="color:black"> Select Timing Before Upload Video <span style="color:red;">*</span></p>
-                        <select class="form-control" name="time" id="time" >
+                        <!-- <label for="">Choose Time</label><br>
+                        <p style="color:black"> Select Timing Before Upload Video <span style="color:red;">*</span></p> -->
+                        <!-- <select class="form-control" name="time" id="time" >
                             <option value="">Select Schedule Timing</option>
                             <option value="12:00 AM to 01:00 AM">12:00 AM to 01:00 AM</option>
                             <option value="01:00 AM to 02:00 AM">01:00 AM to 02:00 AM</option>
@@ -60,10 +61,14 @@
                             <option value="09:00 PM to 10:00 PM">09:00 PM to 10:00 PM</option>
                             <option value="10:00 PM to 11:00 PM">10:00 PM to 11:00 PM</option>
                             <option value="11:00 PM to 12:00 AM">11:00 PM to 12:00 AM</option>
-                        </select>
+                        </select> -->
+                        <label class="m-0">Start Time <small>(Please Time in this Format Hours:minutes PM/PM)</small></label>
+                        <input type="text" class="form-control" id="choose_start_time" name="choose_start_time" value="">
+                        
                     </div>
                     <div class="col-3">
-                        <label for=""><h4 class="fs-title m-0">{{ $schedule->name }}</h4></label>
+                        <label class="m-0">End Time <small>(Please Time in this Format Hours:minutes PM/PM)</small></label>
+                        <input type="text" class="form-control" id="choose_start_time" name="choose_start_time" value="">
 
                     </div>
                     <div class="col-3">
@@ -146,8 +151,12 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="<?= URL::to('/assets/js/jquery.mask.min.js');?>"></script>
     
     <script type="text/javascript">
+      $('#choose_start_time').mask("00:00 AM");
+      $('#choose_end_time').mask("00:00 AM");
+
 
         var month = '{{ $Calendar['month'] }}';
         var year = '{{ $Calendar['year'] }}';
@@ -227,71 +236,6 @@
   </script>
 
 
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-
-<!-- Bootstrap -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-
-<!-- Fonts -->
-<link rel="dns-prefetch" href="//fonts.gstatic.com">
-<link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-
-
-<script>
-    $(document).ready(function() {
-        $.noConflict();
-        var token = ''
-        // var modal = $('.modal')
-        // var form = $('.form')
-        // var btnAdd = $('.add'),
-            // btnSave = $('.btn-save'),
-            // btnUpdate = $('.btn-update');
-        
-        var table = $('#customers').DataTable({
-                ajax: '',
-                serverSide: true,
-                processing: true,
-                aaSorting:[[0,"desc"]],
-                columns: [
-                    {data: 'id', name: 'id'},
-                    {data: 'title', name: 'title'},
-                    {data: 'type', name: 'type'},
-                    {data: 'shedule_date', name: 'shedule_date'},
-                    {data: 'sheduled_starttime', name: 'sheduled_starttime'},
-                    {data: 'shedule_endtime', name: 'shedule_endtime'},
-
-                ]
-            });
-      
-
-        $(document).on('click','.btn-delete',function(){
-            if(!confirm("Are you sure?")) return;
-
-            var rowid = $(this).data('rowid')
-            var el = $(this)
-            if(!rowid) return;
-
-            
-            $.ajax({
-                type: "POST",
-                dataType: 'JSON',
-                url: "/" + rowid,
-                data: {_method: 'delete',_token:token},
-                success: function (data) {
-                    if (data.success) {
-                        table.row(el.parents('tr'))
-                            .remove()
-                            .draw();
-                    }
-                }
-             }); //end ajax
-        })
-    })
-</script>
 
 @stop
 
