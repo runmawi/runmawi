@@ -667,21 +667,8 @@ function get_coupon_code(){
 
  function get_enable_captcha()
 {
-    $get_enable_captcha = App\Captcha::pluck('enable_captcha')->first();
+    $get_enable_captcha = App\Captcha::pluck('enable_captcha')->first() ?  App\Captcha::pluck('enable_captcha')->first() : "0" ;
 
     return $get_enable_captcha;
 }
 
-function get_captcha_site_key(){
-
-    $get_captcha_site_key = App\Captcha::pluck('captcha_site_key')->first();
-
-    return $get_captcha_site_key;
-}
-
-function get_captcha_secret_key	(){
-
-    $captcha_secret_key	 = App\Captcha::pluck('captcha_secret_key')->first();
-
-    return $captcha_secret_key	;
-}
