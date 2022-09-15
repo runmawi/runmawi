@@ -3902,7 +3902,7 @@ if(!empty($artistsdata)){
                     $year = $data['year'];
                     $choose_start_time = $data['choose_start_time'];
                     $choose_end_time = $data['choose_end_time'];
-                    echo "<pre>";print_r();exit;
+                    echo "<pre>";print_r($choose_start_time);exit;
                         if(!empty($choose_start_time)){
                             
                             $Schedule_current_date = date('Y-m-d');

@@ -489,7 +489,7 @@ i.fa.fa-google-plus {
                      <p class="text-white">You will not be charged until the end of your free trial. Cancel anytime.</p>
                     <div class="col-md-6 p-0">
 
-                        <h5> Payment Method</h5>
+                        <!-- <h5> Payment Method</h5> -->
 
                         <div class="d-flex align-items-center">
                             <?php if(!empty($Stripe_payment_settings) && $Stripe_payment_settings->stripe_status == 1){ ?>
