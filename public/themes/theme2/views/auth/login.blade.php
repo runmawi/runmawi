@@ -206,6 +206,15 @@ i.fa.fa-google-plus {
                       @endif
 							
                   </div>
+
+                  
+                                    {{-- reCAPTCHA  --}}
+                        @if( get_enable_captcha()  == 1)   
+                            <div class="form-group text-left" style="  margin-top: 30px;">
+                                {!! NoCaptcha::renderJs('en', false, 'onloadCallback') !!}
+                                {!! NoCaptcha::display() !!}
+                            </div>
+                        @endif
                         
                            <div class="sign-info mt-3 mb-3">
                               <button type="submit" class="btn signup" style="width:100%;color:#fff!important;letter-spacing: 3.5px;font-size:20px;">LOGIN</button>
@@ -217,7 +226,7 @@ i.fa.fa-google-plus {
                       
                   </div>
                   <div class="d-flex align-items-center mt-2 agree justify-content-strat">
-                          <input type="checkbox" id="" name="" value="" class="mb-2 mr-1">
+                          <input type="checkbox" id="" name="" value="" class="mb-2 mr-1" checked >
                     <label for="vehicle1"> Keep me signed in</label><br>
                           </div>
                </div>
