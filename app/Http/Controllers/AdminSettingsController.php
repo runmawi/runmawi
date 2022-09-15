@@ -85,7 +85,6 @@ class AdminSettingsController extends Controller
 
         $input = $request->all();
         // transcoding_resolution
-        dd( $input);
         if(!empty($request['transcoding_resolution'])){
          $transcoding_resolution = implode(",",$request['transcoding_resolution']);
         }else{
