@@ -549,7 +549,7 @@ i.fa.fa-google-plus {
                                  </div>
                              </div>
 
-                            <div style="margin-top:20px;" class="col-md-6 plan_details paypal_plan_details"  data-plan-id={{ 'active'.$plan[0]->id  }}  data-plan-price={{ $plan[0]->price }} data-plan_id=@if(!empty($plan[1])) {{ $plan[1]->plan_id }} @endif data-payment-type=@if(!empty($plan[1])) {{ $plan[1]->plan_id }} @endif onclick="paypalplan_details(this)">
+                            <div style="margin-top:20px;" class="col-md-6 plan_details paypal_plan_details"  data-plan-id={{ 'active'.$plan[0]->id  }}  data-plan-price={{ $plan[0]->price }} data-plan_id=@if(!empty($plan[1])) {{ $plan[1]->plan_id }} @endif data-payment-type={{ $plan[0]->payment_type }} onclick="paypalplan_details(this)">
                                 <div class="d-flex justify-content-between align-items-center dg"  id={{ 'active'.$plan[0]->id  }}>
                                     <div class="bgk">
                                         <h4 class="text-black font-weight-bold"> {{ $plan[0]->plans_name  }} </h4>
