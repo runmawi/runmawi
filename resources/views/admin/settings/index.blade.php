@@ -1228,7 +1228,6 @@ border-radius: 0px 4px 4px 0px;
 @section('javascript')
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 
-                    <script src="jquery-3.5.1.min.js"></script>
 <script>
     $(document).ready(function(){
         // $('#message').fadeOut(120);
