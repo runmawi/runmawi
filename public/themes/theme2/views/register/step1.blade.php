@@ -380,8 +380,17 @@ i.fa.fa-google-plus {
              <div class="text-center">
                <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" style="margin-bottom:1rem;">  
           </div>
-            <div class="sign-user_card ">                    
+            <div class="sign-user_card ">   
                <div class="sign-in-page-data">
+                                        {{-- recaptcha --}}
+                    <div class="col-md-12">
+                        @if ($errors->has('g-recaptcha-response'))
+                            <span class="alert alert-danger display-hide" id="successMessage" >
+                                <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+
                   <div class="sign-in-from w-100 m-auto">
                       <div align="center">
                                <h3 class="mb-3 text-center text-white">SIGNUP</h3>
@@ -526,12 +535,26 @@ i.fa.fa-google-plus {
                                 </div>
                           
                             <?php } ?>
+
+                                                      
+                               {{-- reCAPTCHA  --}}
+                            <div class="col-md-12" id="">
+                                @if( get_enable_captcha()  == 1)   
+                                    <div class="form-group text-left" style="  margin-top: 30px;">
+                                        {!! NoCaptcha::renderJs('en', false, 'onloadCallback') !!}
+                                        {!! NoCaptcha::display() !!}
+                                    </div>
+                                @endif
+                            </div>
+
                          <div class="form-group row">
                               <div class="col-md-12">
-                                <input id="password-confirm" type="checkbox" name="terms" value="1" required>
+                                <input id="password-confirm" type="checkbox" name="terms" value="1" required checked>
 								<label for="password-confirm" class="col-form-label text-md-right" style="display: inline-block;">{{ __('Yes') }} ,<a data-toggle="modal" data-target="#terms" style="text-decoration:none;color: #fff;"> {{ __('I Agree to Terms and  Conditions' ) }}</a></label>
                             </div>
                           </div>
+
+
                       
                           <div class="d-flex justify-content-center links mb-3">
                      Already have an account? <a href="<?= URL::to('/login')?>" class=" ml-2" style="color: #007bff!important;font-weight: 600;">SIGN IN</a>
