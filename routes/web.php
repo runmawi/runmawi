@@ -351,8 +351,8 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/order_homepage/update_setting', 'Admin\HomeSettingsController@OrderUpdate');
 
 
-
-
+    Route::get('/signup', 'AdminSignupMenuController@index')->name('signupindex');
+    Route::post('/Signupmenu_Store', 'AdminSignupMenuController@store')->name('store');
 
 
     Route::get('/sliders', 'AdminThemeSettingsController@SliderIndex');

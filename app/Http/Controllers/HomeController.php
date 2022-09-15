@@ -2273,15 +2273,50 @@ class HomeController extends Controller
         {
             session(['referrer' => $request->query('ref') ]);
         }
+        
+        $SiteTheme = SiteTheme::first();
+        if($SiteTheme->signup_theme == 1){
 
-        $validatedData = $request->validate(
-            [   'username' => ['required', 'string'], 
-                'email' => ['required', 'string', 'email', 'unique:users'],
-                'password' => 'required|string|min:6|confirmed|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/',
-                'mobile' => ['required', 'numeric', 'min:8', 'unique:users'],
-                'password_confirmation' => 'required',
-                'g-recaptcha-response' => get_enable_captcha() == 1 ? 'required|captcha' : '',
-             ]);
+            $SignupMenu = \App\SignupMenu::first();
+            if($SignupMenu->username == 1){
+                $validatedData = $request->validate([
+                    'username' =>  ['required', 'string'],
+                ]);
+            }
+            
+            if($SignupMenu->email == 1){
+                $validatedData = $request->validate([
+                    'email' =>  ['required', 'string', 'email', 'unique:users'],
+                ]);
+            }
+            if($SignupMenu->password == 1){
+                $validatedData = $request->validate([
+                    'password' => 'required|string|min:6|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/',
+                ]);
+            }
+            if($SignupMenu->mobile == 1){
+                $validatedData = $request->validate([
+                    'mobile' => ['required', 'numeric', 'min:8', 'unique:users'],
+                ]);
+            }
+            if($SignupMenu->password_confirm == 1){
+                $validatedData = $request->validate([
+                    'password_confirmation' => 'required',
+                ]);
+            }
+        }else{
+        // dd('testone');
+
+            $validatedData = $request->validate(
+                [   'username' => ['required', 'string'], 
+                    'email' => ['required', 'string', 'email', 'unique:users'],
+                    'password' => 'required|string|min:6|confirmed|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/',
+                    'mobile' => ['required', 'numeric', 'min:8', 'unique:users'],
+                    'password_confirmation' => 'required',
+                    'g-recaptcha-response' => get_enable_captcha() == 1 ? 'required|captcha' : '',
+                 ]);
+        }
+        
 
         $free_registration = FreeRegistration();
         $length = 10;
