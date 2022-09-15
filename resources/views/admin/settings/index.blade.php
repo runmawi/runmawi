@@ -1181,9 +1181,7 @@ border-radius: 0px 4px 4px 0px;
                                             <div>OFF</div>
                                                 <div class="mt-1">
                                                     <label class="switch">
-                                                        <input type="checkbox" @if(!isset($captchas->enable_captcha) ||
-                                                        (isset($captchas->enable_captcha) &&
-                                                        $captchas->enable_captcha))checked="checked" value="1"@else value="0"@endif
+                                                        <input type="checkbox" @if( $captchas != null && $captchas->enable_captcha == "1" )checked="checked" value="1"@else value="0"@endif
                                                         name="enable_captcha" />
                                                         <span class="slider round"></span>
                                                     </label>
@@ -1198,7 +1196,7 @@ border-radius: 0px 4px 4px 0px;
                         <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
     
                         <div class="d-flex justify-content-end mt-3" style=" ">
-                            <input type="submit" id="appupdate" value="Update APP Settings" class="btn btn-primary text-right" />
+                            <input type="submit" id="appupdate" value="Update Re-captcha Settings" class="btn btn-primary text-right" />
                         </div>
     
                     </div>
