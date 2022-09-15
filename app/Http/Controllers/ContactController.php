@@ -84,13 +84,13 @@ class ContactController extends Controller
                 'data' => $data,
 
             ), 
-            function($message) use ($data,$datas) {
+            
+            function($message) use ($data,$datas,$url) {
                 $message->from(AdminMail(),GetWebsiteName());
                 $message->to('sanjai@webnexs.in')->subject($datas['email_subject']);
                 $message->attach($url);
 
             });
-            // $url;
             $email_log      = 'Mail Sent Successfully from Contact us';
             $email_template = "6";
             $user_id = Auth::user()->id;
