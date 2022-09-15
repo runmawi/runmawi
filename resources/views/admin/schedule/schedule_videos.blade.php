@@ -68,7 +68,7 @@
                     </div>
                     <div class="col-3">
                         <label class="m-0">End Time <small>(Please Time in this Format Hours:minutes PM/PM)</small></label>
-                        <input type="text" class="form-control" id="choose_start_time" name="choose_start_time" value="">
+                        <input type="text" class="form-control" id="choose_end_time" name="choose_end_time" value="">
 
                     </div>
                     <div class="col-3">
@@ -176,9 +176,8 @@
             formData.append("year", year);
             formData.append("date", date);
             formData.append("schedule_id", schedule_id);
-            formData.append("choose_time", $('#time').val());
-
-            // var choose_time = ;
+            formData.append("choose_start_time", $('#choose_start_time').val());
+            formData.append("choose_end_time", $('#choose_end_time').val());
 
             // console.log(value)
             this.on("success", function(file, value) {
