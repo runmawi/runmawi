@@ -11,6 +11,7 @@ use App\Contact;
 use Auth;
 use App\EmailTemplate;
 use Mail;
+use App\Setting;
 
 class ContactController extends Controller
 {
@@ -28,9 +29,10 @@ class ContactController extends Controller
             'phone_number' => ['string', 'max:255'],
             'subject' => ['required', 'string', 'max:255'],
             'message' => ['required', 'string', 'max:255'],
-            // 'g-recaptcha-response' => get_enable_captcha() == 1 ? 'required|captcha' : '',
+            'g-recaptcha-response' => get_enable_captcha() == 1 ? 'required|captcha' : '',
         ]);
         $data = $request->all();
+
 
         $image  =  (isset($data['screenshot'])) ? $data['screenshot'] : '';
         $image_path = public_path().'/uploads/contact_image/';
@@ -49,11 +51,7 @@ class ContactController extends Controller
         } else {
              $data['screenshot'] = '';
         }
-        if(!empty($data['screenshot'])){
-            $url = \URL::to('/public/uploads/contact_image'.'/'.$data['screenshot']);
-        }else{
-            $url = "";
-        }
+        $screenshot_url = !empty($data['screenshot']) ? \URL::to('/public/uploads/contact_image'.'/'.$data['screenshot']) : null ;
 
         $contact = new Contact();
         $contact->fullname = $data['fullname'];
@@ -65,37 +63,41 @@ class ContactController extends Controller
         $contact->user_id = Auth::user()->id;
         $contact->save();
 
-
                     // Mail for Contact us
         try {
-
             
             $email_template_subject =  EmailTemplate::where('id',6)->pluck('heading')->first() ;
             $email_subject  = str_replace("{Name}", "$request->fullname", $email_template_subject);
 
             $datas = array(
                 'email_subject' => $email_subject,
+                'system_email'  => Setting::pluck('system_email')->first(), 
             );
 
             \Mail::send('emails.contact_us', array(
                 'username' => $data['fullname'],
                 'website_name' => GetWebsiteName(),
                 'originalMessage' => $data['message'],
-                'data' => $data,
-
+                'screenshot_url' => $screenshot_url,
             ), 
             
-            function($message) use ($data,$datas,$url) {
+            function($message) use ($data,$datas,$screenshot_url) {
                 $message->from(AdminMail(),GetWebsiteName());
-                $message->to('sanjai@webnexs.in')->subject($datas['email_subject']);
-                $message->attach($url);
+                $message->to($datas['system_email'])->subject($datas['email_subject']);
 
+                if (!empty($data['screenshot'])) {
+                    $message->attach($screenshot_url);
+                }
             });
+
             $email_log      = 'Mail Sent Successfully from Contact us';
             $email_template = "6";
             $user_id = Auth::user()->id;
 
             Email_sent_log($user_id,$email_log,$email_template);
+
+            $message      = 'Your contact request was successfully sent';
+            $note_type    = 'Success'; 
         }
         catch (\Exception $e) {
 
@@ -104,10 +106,12 @@ class ContactController extends Controller
             $user_id = Auth::user()->id;
 
             Email_notsent_log($user_id,$email_log,$email_template);
-        }
-        // dd($data);
 
-        return Redirect::back()->with(array('message' => 'Sent Your Contact Request', 'note_type' => 'success') );
+            $message      = 'Sorry! Your contact request was not sent';
+            $note_type    = 'Reject'; 
+        }
+
+        return Redirect::back()->with(array('message' => $message, 'note_type' => $note_type) );
     }
   
     public function ViewRequest()

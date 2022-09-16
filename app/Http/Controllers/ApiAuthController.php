@@ -241,11 +241,17 @@ class ApiAuthController extends Controller
     try {
       if($settings->free_registration && $settings->activation_email == 1){
 
+        try {
           $email = $input['email'];
           $uname = $input['username'];
           Mail::send('emails.verify', array('activation_code' => $user->activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
           $message->to($email,$uname)->subject('Verify your email address');
         });
+
+        } catch (\Throwable $th) {
+          //throw $th;
+        }
+         
         $response = array('status'=>'true','message' => 'Registered Successfully.');
       } 
       else {
@@ -373,9 +379,15 @@ class ApiAuthController extends Controller
                                                 ]);
                                         $email = $input['email'];
                                         $uname = $input['username'];
-                                        Mail::send('emails.verify', array('activation_code' => $user->activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
-                                            $message->to($email,$uname)->subject('Verify your email address');
-                                        });
+
+                                        try {
+                                            Mail::send('emails.verify', array('activation_code' => $user->activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
+                                              $message->to($email,$uname)->subject('Verify your email address');
+                                            });
+                                        } catch (\Throwable $th) {
+                                          //throw $th;
+                                        }
+                                     
                                           $response = array(
                                                 'status' => 'true',
                                                 'message' => 'Registered Successfully.'
@@ -402,9 +414,15 @@ class ApiAuthController extends Controller
 
                                             $email = $input['email'];
                                             $uname = $input['username'];
-                                            Mail::send('emails.verify', array('activation_code' => $user->activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
+
+                                            try {
+                                              Mail::send('emails.verify', array('activation_code' => $user->activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
                                                 $message->to($email,$uname)->subject('Verify your email address');
-                                            });
+                                              });
+                                            } catch (\Throwable $th) {
+                                              //throw $th;
+                                            }
+                                           
                                               $response = array(
                                                     'status' => 'true',
                                           'message' => 'Registered Successfully.'
@@ -587,11 +605,16 @@ class ApiAuthController extends Controller
       
       $verification_code = mt_rand(100000, 999999);
       $email = $user_email;
-      Mail::send('emails.resetpassword', array('verification_code' => $verification_code), function($message) use ($email) {
-        $message->to($email)->subject('Verify your email address');
-      });
-      
-            
+
+      try {
+        Mail::send('emails.resetpassword', array('verification_code' => $verification_code), function($message) use ($email) {
+          $message->to($email)->subject('Verify your email address');
+        });
+        
+      } catch (\Throwable $th) {
+        //throw $th;
+      }
+     
                 $data = DB::table('password_resets')->where('email', $user_email)->first();
                 
                 if(empty($data)){
@@ -778,10 +801,13 @@ class ApiAuthController extends Controller
 
       $verification_code = mt_rand(100000, 999999);
 
-
-      Mail::send('resetpassword', array('verification_code' => $verification_code), function($message) use ($request)  {
-        $message->to($request->get('email'))->subject('Verify your email address');
-      });
+      try {
+        Mail::send('resetpassword', array('verification_code' => $verification_code), function($message) use ($request)  {
+          $message->to($request->get('email'))->subject('Verify your email address');
+        });
+      } catch (\Throwable $th) {
+        //throw $th;
+      }
 
       $data = DB::table('password_resets')->where('email', $user_email)->first();
       if(empty($data)){
@@ -1959,13 +1985,19 @@ $final[] = array_merge($array1,$array2,$array3,$array4);
             }
               $plan = $request->get('plan_name');
               $plandetail = SubscriptionPlan::where('plan_id',$upgrade_plan)->first();
-              \Mail::send('emails.changeplansubscriptionmail', array(
-                            'name' => $user->username,
-                            'plan' => ucfirst($plandetail->plans_name),
-                        ), function($message) use ($request,$user){
-                            $message->from(AdminMail(),'Flicknexs');
-                            $message->to($user->email, $user->username)->subject('Subscription Plan Changed');
+
+              try {
+                \Mail::send('emails.changeplansubscriptionmail', array(
+                  'name' => $user->username,
+                  'plan' => ucfirst($plandetail->plans_name),
+                    ), function($message) use ($request,$user){
+                  $message->from(AdminMail(),GetWebsiteName());
+                  $message->to($user->email, $user->username)->subject('Subscription Plan Changed');
                 });
+              } catch (\Throwable $th) {
+                //throw $th;
+              }
+             
                 return response()->json(['success'=>'Your plan has been changed.']);
         }
     
@@ -1979,15 +2011,20 @@ $final[] = array_merge($array1,$array2,$array3,$array4);
     $start_date =  SubStartDate($user_id);
     $ends_at =  SubEndDate($user_id);
 
-    \Mail::send('emails.cancel', array(
-      'name' => $user->username,
-      'plan_name' => $plan_name,
-      'start_date' => $start_date,
-      'ends_at' => $ends_at,
-    ), function($message) use ($user){
-      $message->from(AdminMail(),'Flicknexs');
-      $message->to($user->email, $user->username)->subject('Subscription Renewal');
-    });
+    try {
+      \Mail::send('emails.cancel', array(
+        'name' => $user->username,
+        'plan_name' => $plan_name,
+        'start_date' => $start_date,
+        'ends_at' => $ends_at,
+      ), function($message) use ($user){
+        $message->from(AdminMail(),GetWebsiteName());
+        $message->to($user->email, $user->username)->subject('Subscription Renewal');
+      });
+    } catch (\Throwable $th) {
+      //throw $th;
+    }
+    
 
     if ($user->subscription($stripe_plan)->cancel()){
       $response = array(
@@ -2015,17 +2052,19 @@ $final[] = array_merge($array1,$array2,$array3,$array4);
             $plan = $planvalue[0]->stripe_plan;
             $plandetail = SubscriptionPlan::where('plan_id',$plan)->first();
           
-            \Mail::send('emails.renewsubscriptionemail', array(
-                'name' => $user->username,
-                'plan' => ucfirst($plandetail->plans_name),
-               // 'price' => $plandetail->price,
-            ), function($message) use ($user){
-                $message->from(AdminMail(),'Flicknexs');
-                $message->to($user->email, $user->username)->subject('Subscription Renewal');
-            });
-        
-    
-    
+            try {
+                  \Mail::send('emails.renewsubscriptionemail', array(
+                    'name' => $user->username,
+                    'plan' => ucfirst($plandetail->plans_name),
+                  // 'price' => $plandetail->price,
+                ), function($message) use ($user){
+                    $message->from(AdminMail(),GetWebsiteName());
+                    $message->to($user->email, $user->username)->subject('Subscription Renewal');
+                });
+            } catch (\Throwable $th) {
+              //throw $th;
+            }
+            
       $response = array(
         'status' => 'true',
         'msg' => 'Renewed successfully'
@@ -5462,7 +5501,7 @@ public function SubscriptionPayment(Request $request){
                 'ends_at' => $date,	
                 'plan_names' => $plan_details->plans_name,	
                 'created_at' => $current_date), function($message) use ($request,$user_id,$name,$subject,$user_email) {	
-                                      $message->from(AdminMail(),'Flicknexs');	
+                                      $message->from(AdminMail(),GetWebsiteName());	
                                         $message->to($user_email, $name)->subject($subject);	
                 });
 
