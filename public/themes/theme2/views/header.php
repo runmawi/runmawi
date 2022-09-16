@@ -171,7 +171,7 @@ $site_page_url = $http_site_url[1];
 	height: 100vh;
 	width: 100vw;
 	overflow: hidden;
-	background: linear-gradient(180deg, #040404 0%, #3D3D47 100%);
+	background: linear-gradient(180deg, #121C28 -35.59%, rgba(11, 18, 28, 1) 173.05%);
 	z-index: 9999;
 	opacity: 1;
 	transition: opacity .5s;

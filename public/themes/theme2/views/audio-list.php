@@ -42,7 +42,7 @@
 						<div class="favorites-contens">
 				            <div class="epi-box">
                                 <div class="epi-img position-relative">
-                                   <img src="<?php echo URL::to('/').'/public/uploads/albums/'.$album->album;?>" class="img-fluid img-zoom" alt="">
+                                   <img src="<?php echo URL::to('/').'/public/uploads/albums/'.$album->album;?>" class="img-fluid w-100" alt="">
                                    <div class="episode-play-info">
                                       <div class="episode-play">
                                          <a href="<?= URL::to('album') ?><?= '/' . $album->slug ?>">

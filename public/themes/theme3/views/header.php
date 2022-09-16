@@ -158,6 +158,57 @@ $site_page_url = $http_site_url[1];
         } ?>
    </head>
     <style>
+           .fullpage-loader {
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100vh;
+	width: 100vw;
+	overflow: hidden;
+	background: radial-gradient(72.19% 72.19% at 47.68% 20.46%, #2B0781 0%, #22093C 100%);
+	z-index: 9999;
+	opacity: 1;
+	transition: opacity .5s;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	.fullpage-loader__logo {
+		position: relative;
+		&:after {
+			// this is the sliding white part
+			content: '';
+			height: 100%;
+			width: 100%;
+			position: absolute;
+			top: 0;
+			left: 0;
+			animation: shine 2.5s infinite cubic-bezier(0.42, 0, 0.58, 1);
+						
+			// opaque white slide
+			background: rgba(255,255,255,.8);
+			// gradient shine scroll
+			background: -moz-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 100%); /* FF3.6-15 */
+			background: -webkit-linear-gradient(left, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 50%,rgba(255,255,255,0) 100%); /* Chrome10-25,Safari5.1-6 */
+			background: linear-gradient(to right, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 50%,rgba(255,255,255,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#00ffffff',GradientType=1 ); /* IE6-9 */
+			
+		}
+	}
+}
+
+@keyframes shine {
+	0% {
+		transform: translateX(-100%) skew(-30deg);
+	}
+	100% {
+		transform: translateX(200%) skew(-30deg);
+	}
+}
+
+.fullpage-loader--invisible {
+	opacity: 0;
+}
+
         svg{
             height: 30px;
         }
@@ -258,14 +309,31 @@ input:checked + .sliderk:before {
         }
 /* Dark mode and light Mode */
       body.light-theme {
-	      background-color: <?php echo GetLightBg(); ?>;
+	     background: <?php echo GetLightBg(); ?>!important;
+        
+      } 
+        body.light-theme #menu {
+	     background: <?php echo GetLightBg(); ?>!important;
+        
       }
-
+ body.light-theme #menuToggle input:checked ~ span{
+	   background: #000!important;
+        
+      }
+        body.light-theme #menuToggle span{
+             background: #000!important;
+        }
+        body.light-theme li.list-group-item a{
+             color: <?php echo GetLightText(); ?>;
+        }  
+        body.light-theme .icn1{
+             color: <?php echo GetLightText(); ?>!important;
+        }
       body.light-theme h4, body.light-theme p {
          color: <?php echo GetLightText(); ?>;
       }
         body.light-theme header#main-header{
-           background-color: <?php echo GetLightBg(); ?>!important;  
+           background: <?php echo GetLightBg(); ?>!important;  
             color: <?php echo GetLightText(); ?>;
              box-shadow: 0 0 50px #ccc;
         }
@@ -481,9 +549,16 @@ input:checked + .sliderk:before {
 {
   transform: none;
 }
+        
     </style>
      
    <body>
+         <div class="fullpage-loader">
+	<div class="fullpage-loader__logo">
+		
+		<img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>">
+	</div>
+</div>
       <!-- loader Start -->
      <!-- <div id="loading">
          <div id="loading-center">
@@ -640,7 +715,7 @@ input:checked + .sliderk:before {
   <div class="search-box iq-search-bar d-search">
                                     <form action="<?php echo URL::to("/") ."/searchResult"; ?>" method="post" class="searchbox">
                                         <input name="_token" type="hidden" value="<?php echo csrf_token(); ?>" />
-                                        <div class="form-group position-relative">
+                                        <div class="form-group position-relative col-lg-4">
                                             <input type="text" name="search" class="text search-input font-size-12 searches" placeholder="Type here to Search Videos" />
                                             <i class="search-link ri-search-line"></i>
 
@@ -920,12 +995,12 @@ input:checked + .sliderk:before {
                                     <div class="iq-card shadow-none m-0">
                                        <div class="iq-card-body p-0 pl-3 pr-3">
                                            <a class="p-0">
-                                               <div class=" mt-3 text-right">
-                                               <label class="switch toggle mt-3">
+                                               <div class="toggle text-left ">
+                                                <i class="fas fa-moon"></i>      
+                         <label class="switch toggle mt-3">
   <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
   <span class="sliderk round"></span>
-</label>
-</div>
+                                               </label>  <i class="fas fa-sun"></i></div>
                                            </a>
                                           <a href="<?php echo  URL::to('myprofile') ?>" class="iq-sub-card  setting-dropdown">
                                              <div class="media align-items-center">

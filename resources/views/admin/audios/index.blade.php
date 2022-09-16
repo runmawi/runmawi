@@ -16,6 +16,9 @@ border-radius: 0px 4px 4px 0px;
         color: rgba(66, 149, 210, 1);
 
     }
+    .table.dataTable thead th, table.dataTable thead td{
+        border-bottom: 1px solid #dee2e6!important;
+    }
 </style>
 @section('css')
 	<link rel="stylesheet" href="{{ URL::to('/assets/admin/css/sweetalert.css') }}">
