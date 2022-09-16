@@ -293,8 +293,23 @@ $series = $series_data ;
 			<div class="col-sm-12">
 					<div id="ppv">
 				<h2 class="text-center" style="margin-top:80px;">Purchase to Watch the Series <?php if($series->access == 'subscriber'): ?>Subscribers<?php elseif($series->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
+          <h4 class="text-center" style="margin-top:80px;"><a href="<?=URL::to('/') . '/login' ?>"><p>Click Here To Become Subscriber</p></a></h4>
 				<div class="clear"></div>
 				</div> 
+
+        <?php elseif( Auth::user()->role == "registered" && $series->access == "subscriber"):
+						
+            // }
+              ?>
+          </div> 
+  
+            <!-- <div  style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $series->image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;"> -->
+        <div class="col-sm-12">
+            <div id="ppv">
+          <h2 class="text-center" style="margin-top:80px;">Purchase to Watch the Series <?php if($series->access == 'subscriber'): ?>Subscribers<?php elseif($series->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
+            <h4 class="text-center" style="margin-top:80px;"><a href="<?=URL::to('/') . '/stripe/billings-details' ?>"><p>Click Here To Become Subscriber</p></a></h4>
+          <div class="clear"></div>
+          </div> 
 				<!-- </div>  -->
 
 
