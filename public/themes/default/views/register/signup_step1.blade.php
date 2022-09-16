@@ -736,132 +736,132 @@ $(document).ready(function() {
         var username = '<?= $SignupMenu->username ?>';
     }
     // alert(password);
-    $( "#stripe_plan" ).validate({
+//     $( "#stripe_plan" ).validate({
         
-        rules: {
-                username: {
-                    required : function(element) {
-                        if(username == 0) { 
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    }
-                    // required: true,
-                },
-                password:{
+//         rules: {
+//                 username: {
+//                     required : function(element) {
+//                         if(username == 0) { 
+//                             return true;
+//                         } else {
+//                             return false;
+//                         }
+//                     }
+//                     // required: true,
+//                 },
+//                 password:{
 
-                    // required: true,
-                    minlength: 8,
-                    maxlength: 30,
-                    // regx: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])\w{6,}$/,
-                    regx: /^(?=.*[A-Z])(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-                    required : function(element) {
-                        if(password == 0) {
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    }
+//                     // required: true,
+//                     minlength: 8,
+//                     maxlength: 30,
+//                     // regx: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])\w{6,}$/,
+//                     regx: /^(?=.*[A-Z])(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+//                     required : function(element) {
+//                         if(password == 0) {
+//                             return true;
+//                         } else {
+//                             return false;
+//                         }
+//                     }
 
-            },
-            //     password_confirmation: {
-            //         required : function(element) {
-            //             if(password_confirmation == 0) {
-            //                 return true;
-            //             } else {
-            //                 return false;
-            //             }
-            //         }
-            //     // required: true,
-            //     minlength: 8,
-            //     maxlength: 30,
-            //     equalTo: "#password"
-            // },
-                mobile: {
-                    // required: true,
-                    remote: {
-                        url: '{{ URL::to('SignupMobile_val') }}',
-                        type: "post",
-                        data: {
-                            _token: "{{csrf_token()}}" ,
-                            MobileNo: function() {
-                            return $( "#mobile" ).val(); }
-                        }
-                    },
-                    required : function(element) {
-                        if(mobile == 0) {
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    }
-                },
-                email: {
+//             },
+//             //     password_confirmation: {
+//             //         required : function(element) {
+//             //             if(password_confirmation == 0) {
+//             //                 return true;
+//             //             } else {
+//             //                 return false;
+//             //             }
+//             //         }
+//             //     // required: true,
+//             //     minlength: 8,
+//             //     maxlength: 30,
+//             //     equalTo: "#password"
+//             // },
+//                 mobile: {
+//                     // required: true,
+//                     remote: {
+//                         url: '{{ URL::to('SignupMobile_val') }}',
+//                         type: "post",
+//                         data: {
+//                             _token: "{{csrf_token()}}" ,
+//                             MobileNo: function() {
+//                             return $( "#mobile" ).val(); }
+//                         }
+//                     },
+//                     required : function(element) {
+//                         if(mobile == 0) {
+//                             return true;
+//                         } else {
+//                             return false;
+//                         }
+//                     }
+//                 },
+//                 email: {
 
-                    // required: true,
-                    remote: {
-                        url:"{{ URL::to('/emailvalidation') }}",
-                        type: "get",
-                        data: {
-                            _token: "{{csrf_token()}}" ,
-                            success: function() {
-                            return $('#email').val(); }
-                        }
-                    },
-                    required : function(element) {
-                        if(email == 0) {
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    }
-                },
-                username: {
+//                     // required: true,
+//                     remote: {
+//                         url:"{{ URL::to('/emailvalidation') }}",
+//                         type: "get",
+//                         data: {
+//                             _token: "{{csrf_token()}}" ,
+//                             success: function() {
+//                             return $('#email').val(); }
+//                         }
+//                     },
+//                     required : function(element) {
+//                         if(email == 0) {
+//                             return true;
+//                         } else {
+//                             return false;
+//                         }
+//                     }
+//                 },
+//                 username: {
 
-                    // required: true,
-                    remote: {
-                        url:"{{ URL::to('/usernamevalidation') }}",
-                        type: "get",
-                        data: {
-                            _token: "{{csrf_token()}}" ,
-                            success: function() {
-                            return $('#username').val(); }
-                        }
-                    },
-                    required : function(element) {
-                        if(username == 0) {
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    }
-                },
-            },
+//                     // required: true,
+//                     remote: {
+//                         url:"{{ URL::to('/usernamevalidation') }}",
+//                         type: "get",
+//                         data: {
+//                             _token: "{{csrf_token()}}" ,
+//                             success: function() {
+//                             return $('#username').val(); }
+//                         }
+//                     },
+//                     required : function(element) {
+//                         if(username == 0) {
+//                             return true;
+//                         } else {
+//                             return false;
+//                         }
+//                     }
+//                 },
+//             },
 
-                messages: {
-                    mobile: {
-                        required: "Please Enter the Mobile Number",
-                        remote: "Mobile Number already in taken ! Please try another Mobile Number"
-                    },
-                    username: {
-                         required: "Please Enter the Name",
-                         remote: "Name already in taken ! Please try another Username"
-                    },
-                    email: {
-                        required: "Please Enter the Email Id",
-                        remote: "Email Id already in taken ! Please try another Email ID"
-                    },
-                    password: {
-                        pwcheck: "Password is not strong enough"
-                    }   
+//                 messages: {
+//                     mobile: {
+//                         required: "Please Enter the Mobile Number",
+//                         remote: "Mobile Number already in taken ! Please try another Mobile Number"
+//                     },
+//                     username: {
+//                          required: "Please Enter the Name",
+//                          remote: "Name already in taken ! Please try another Username"
+//                     },
+//                     email: {
+//                         required: "Please Enter the Email Id",
+//                         remote: "Email Id already in taken ! Please try another Email ID"
+//                     },
+//                     password: {
+//                         pwcheck: "Password is not strong enough"
+//                     }   
                    
-                }
-    });
+//                 }
+//     });
 
-    $.validator.addMethod("regx", function(value, element, regexpr) {          
-    return regexpr.test(value);
-}, "Please enter a valid pasword.");
+//     $.validator.addMethod("regx", function(value, element, regexpr) {          
+//     return regexpr.test(value);
+// }, "Please enter a valid pasword.");
     </script>
 
 
