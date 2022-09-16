@@ -196,10 +196,18 @@ i.fa.fa-google-plus {
                       @endif
 							
                   </div>
-                        
-                           <div class="sign-info mt-3">
-                              <button type="submit" class="btn signup" style="width:100%;color:#fff!important;letter-spacing: 3.5px;font-size:20px;">LOGIN</button>
-                           </div> 
+
+                                    {{-- reCAPTCHA  --}}
+                    @if( get_enable_captcha()  == 1)   
+                        <div class="form-group text-left" style="  margin-top: 30px;">
+                            {!! NoCaptcha::renderJs('en', false, 'onloadCallback') !!}
+                            {!! NoCaptcha::display() !!}
+                        </div>
+                    @endif
+                                                       
+                    <div class="sign-info mt-3">
+                        <button type="submit" class="btn signup" style="width:100%;color:#fff!important;letter-spacing: 3.5px;font-size:20px;">LOGIN</button>
+                    </div> 
                         
                          
                          <!-- <h5 class="mb-3 text-center">Sign in by using</h5>

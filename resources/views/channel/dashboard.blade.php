@@ -6,6 +6,10 @@
 		
 		  <!-- Page Content  -->
           <?php
+          $users = App\User::where('id',1)->first();
+         //  dd($users->package_ends);
+         //  dd($users->package);
+
    $number = TotalViewcount();
    if($number >= 1000) {
       $view = $number/1000 . "k";   // NB: you will want to round this
@@ -112,36 +116,17 @@
                   <div class="iq-card">
                      <div class="iq-card-header d-flex justify-content-between align-items-center">
                         <div class="iq-header-title">
-                           <h4 class="card-title">Top Rated Item </h4>
+                           <h4 class="card-title">Get Started </h4>
                         </div>
                         <div id="top-rated-item-slick-arrow" class="slick-aerrow-block"></div>
                      </div>
                      <div class="iq-card-body">
-                        <ul class="list-unstyled row  mb-0">
-                        @if(!empty(@$top_rated_videos ))
-                            @foreach(@$top_rated_videos as $top_video)
-                           <li class="col-sm-6 col-lg-4 col-xl-4 iq-rated-box">
-                              <div class="iq-card mb-0">
-                                 <div class="iq-card-body p-0">
-                                    <div class="iq-thumb">
-                                       <a href="javascript:void(0)">
-                                          <img src="{{  URL::to('/').'/public/uploads/images/'.$top_video->image }}" class="img-fluid w-100 img-border-radius" alt="">
-                                       </a>
-                                    </div>
-                                    <div class="iq-feature-list">
-                                       <h6 class="font-weight-600 mb-0">{{  @$top_video->title }}</h6>
-                                       <p class="mb-0 mt-2">{{  @$top_video->categories->name }}</p>
-                                       <div class="d-flex align-items-center my-2">
-                                          <p class="mb-0 mr-2"><i class="lar la-eye mr-1"></i> {{  $top_video->views }}</p>
-                                          <p class="mb-0 "><i class="las la-download ml-2"></i> 30 k</p>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
-                           </li>
-                           @endforeach
-                           @endif
-                        </ul>
+                        <p style="color:black;">Subscribed To {{ $users->package }}</p>
+                        <?php
+                        
+                        $date=date_create($users->package_ends);
+                          $package_ends = date_format($date,"Y-M-d"); ?>
+                        <p style="color:black;">Package Ends On {{ $package_ends }} </p>
                      </div>
                   </div>
                </div>

@@ -85,7 +85,6 @@ class AdminSettingsController extends Controller
 
         $input = $request->all();
         // transcoding_resolution
-        dd( $input);
         if(!empty($request['transcoding_resolution'])){
          $transcoding_resolution = implode(",",$request['transcoding_resolution']);
         }else{
@@ -1000,7 +999,9 @@ if($watermark != '') {
     public function captcha(Request $request)
     {
 
-     $Captcha = Captcha::first();
+      $Env_path = realpath(('.env'));
+
+      $Captcha = Captcha::first();
 
       if($Captcha == null){
 
@@ -1010,6 +1011,14 @@ if($watermark != '') {
             'enable_captcha'   => ( $request->enable_captcha == null ) ? '0' : '1'  ,
           ]);
 
+          // Create Recaptcha .env
+          $captcha_secret_key = 'NOCAPTCHA_SECRET='.$request->captcha_secret_key.PHP_EOL;
+          $captcha_site_key   = 'NOCAPTCHA_SITEKEY='.$request->captcha_site_key.PHP_EOL;
+
+          $file_open = fopen($Env_path, 'a');
+          fwrite($file_open, $captcha_secret_key);
+          fwrite($file_open, $captcha_site_key);
+
       }else{
 
         Captcha::first()->update([
@@ -1018,10 +1027,27 @@ if($watermark != '') {
           'enable_captcha'   => ( $request->enable_captcha == null ) ? '0' : '1'  ,
         ]);
 
+              // Replace the Captcha in .env
+              
+        $Replace_data =array(
+          'NOCAPTCHA_SECRET'   =>  $request->captcha_secret_key,
+          'NOCAPTCHA_SITEKEY'  =>  $request->captcha_site_key,
+        );
+
+        file_put_contents($Env_path, implode('', 
+              array_map(function($Env_path) use ($Replace_data) {
+                return   stristr($Env_path,'NOCAPTCHA_SECRET') ? "NOCAPTCHA_SECRET=".$Replace_data['NOCAPTCHA_SECRET']."\n" : $Env_path;
+              }, file($Env_path))
+        ));
+
+        file_put_contents($Env_path, implode('', 
+            array_map(function($Env_path) use ($Replace_data) {
+                return   stristr($Env_path,'NOCAPTCHA_SITEKEY') ? "NOCAPTCHA_SITEKEY=".$Replace_data['NOCAPTCHA_SITEKEY']."\n" : $Env_path;
+            }, file($Env_path))
+        ));
+
       }
-     
-      return Redirect::to('admin/settings')->with(array('message' => 'Successfully Updated Site Settings!', 'note_type' => 'success') );
 
+      return Redirect::to('admin/settings')->with(array('message' => 'Successfully Updated Re-captcha Settings!', 'note_type' => 'success') );
     }
-
 }

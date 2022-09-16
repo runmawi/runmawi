@@ -471,7 +471,8 @@ i.fa.fa-google-plus {
 @php
     $SubscriptionPlan = App\SubscriptionPlan::first();
     $signup_payment_content = App\SiteTheme::pluck('signup_payment_content')->first();
-
+    $Stripe_payment_settings = App\PaymentSetting::where('payment_type','Stripe')->first();
+    $PayPal_payment_settings = App\PaymentSetting::where('payment_type','PayPal')->first();
 @endphp
 
 <section class="flick">
@@ -488,15 +489,18 @@ i.fa.fa-google-plus {
                      <p class="text-white">You will not be charged until the end of your free trial. Cancel anytime.</p>
                     <div class="col-md-6 p-0">
 
-                        <h5> Payment Method</h5>
+                        <!-- <h5> Payment Method</h5> -->
 
                         <div class="d-flex align-items-center">
-                            <input type="checkbox" id="Stripe_lable" name="payment_lable" value="Stripe_lable" checked>
-                            <label class="mt-2 ml-2" for="" > Stripe</label><br />&nbsp;&nbsp;
-                            <input type="checkbox" id="Paypal_lable" name="payment_lable" value="Paypal_lable" >
-                            <label class="mt-2 ml-2 " for="" > Paypal</label><br />&nbsp;&nbsp;
-                            <!-- <input type="checkbox" id="Razorpay_lable" name="payment_lable" value="Razorpay_lable" >
-                            <label class="mt-2 ml-2 " for="" > Razorpay</label><br /> -->
+                            <?php if(!empty($Stripe_payment_settings) && $Stripe_payment_settings->stripe_status == 1){ ?>
+                                <input type="checkbox" id="Stripe_lable" name="payment_lable" value="Stripe_lable" checked>
+                                <label class="mt-2 ml-2" for="" > Stripe</label><br />&nbsp;&nbsp;
+                            <?php }elseif(!empty($PayPal_payment_settings) && $PayPal_payment_settings->paypal_status == 1){ ?>
+                                <input type="checkbox" id="Paypal_lable" name="payment_lable" value="Paypal_lable" >
+                                <label class="mt-2 ml-2 " for="" > Paypal</label><br />&nbsp;&nbsp;
+                            <?php } ?>
+                                <!-- <input type="checkbox" id="Razorpay_lable" name="payment_lable" value="Razorpay_lable" >
+                                <label class="mt-2 ml-2 " for="" > Razorpay</label><br /> -->
                         </div>
 
           </div>      
@@ -523,8 +527,7 @@ i.fa.fa-google-plus {
                                  </div>
                              </div>
 
-                             <div style="margin-top:20px;" class="col-md-6 plan_details paypal_plan_details"  data-plan-id={{ 'active'.$plan[0]->id  }}  data-plan-price={{ $plan[0]->price }} data-plan_id={{  $plan[1]->plan_id  }} data-payment-type={{ $plan[1]->payment_type }} onclick="paypalplan_details(this)">
-
+                             <div style="margin-top:20px;" class="col-md-6 plan_details paypal_plan_details"  data-plan-id={{ 'active'.$plan[0]->id  }}  data-plan-price={{ $plan[0]->price }} data-plan_id={{  $plan[1]->plan_id  }} data-payment-type={{ $plan[0]->payment_type }} onclick="paypalplan_details(this)">
                                 <div class="d-flex justify-content-between align-items-center dg"  id={{ 'active'.$plan[0]->id  }}>
                                     <div class="bgk">
                                         <h4 class="text-black font-weight-bold"> {{ $plan[0]->plans_name  }} </h4>

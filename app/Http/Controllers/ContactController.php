@@ -27,10 +27,11 @@ class ContactController extends Controller
             'email' => ['required', 'string', 'email', 'max:255' ],
             'phone_number' => ['string', 'max:255'],
             'subject' => ['required', 'string', 'max:255'],
-            'message' => ['required', 'string', 'max:255']
+            'message' => ['required', 'string', 'max:255'],
+            // 'g-recaptcha-response' => get_enable_captcha() == 1 ? 'required|captcha' : '',
         ]);
-
         $data = $request->all();
+
         $image  =  (isset($data['screenshot'])) ? $data['screenshot'] : '';
         $image_path = public_path().'/uploads/contact_image/';
           
@@ -48,6 +49,7 @@ class ContactController extends Controller
         } else {
              $data['screenshot'] = '';
         }
+        $screenshot_url = !empty($data['screenshot']) ? \URL::to('/public/uploads/contact_image'.'/'.$data['screenshot']) : null ;
 
         $contact = new Contact();
         $contact->fullname = $data['fullname'];
@@ -59,10 +61,8 @@ class ContactController extends Controller
         $contact->user_id = Auth::user()->id;
         $contact->save();
 
-
                     // Mail for Contact us
         try {
-
             
             $email_template_subject =  EmailTemplate::where('id',6)->pluck('heading')->first() ;
             $email_subject  = str_replace("{Name}", "$request->fullname", $email_template_subject);
@@ -71,15 +71,21 @@ class ContactController extends Controller
                 'email_subject' => $email_subject,
             );
 
-
-            Mail::send('emails.contact_us', array(
+            \Mail::send('emails.contact_us', array(
                 'username' => $data['fullname'],
                 'website_name' => GetWebsiteName(),
                 'originalMessage' => $data['message'],
+                'screenshot_url' => $screenshot_url,
             ), 
-            function($message) use ($data,$datas) {
+            
+            function($message) use ($data,$datas,$screenshot_url) {
                 $message->from(AdminMail(),GetWebsiteName());
-                $message->to($data['email'], $data['fullname'])->subject($datas['email_subject']);
+                $message->to('info@everydaywomensnetwork.tv')->subject($datas['email_subject']);
+
+                if (!empty($data['screenshot'])) {
+                    $message->attach($screenshot_url);
+                }
+
             });
 
             $email_log      = 'Mail Sent Successfully from Contact us';
@@ -96,6 +102,7 @@ class ContactController extends Controller
 
             Email_notsent_log($user_id,$email_log,$email_template);
         }
+
         return Redirect::back()->with(array('message' => 'Sent Your Contact Request', 'note_type' => 'success') );
     }
   

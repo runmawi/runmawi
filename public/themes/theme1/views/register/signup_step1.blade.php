@@ -189,139 +189,8 @@ i.fa.fa-google-plus {
 <?php 
     $ref = Request::get('ref');
     $coupon = Request::get('coupon');
-    
-
+    // dd($SignupMenu);
 ?>
-
-<!--<div class="container">
-    <div class="row justify-content-center" id="signup-form">
-        <div class="col-md-10 col-sm-offset-1">
-			<div class="login-block">
-				
-                <div class="panel-heading" align="center" ><h5 style="color:#4895d1">{{ __('Enter your Info below to Sign-Up for an Account!') }}</h5></div>
-                <div class="panel-body">
-                    <form action="<?php if (isset($ref) ) { echo URL::to('/').'/register1?ref='.$ref.'&coupon='.$coupon; } else { echo URL::to('/').'/register1'; } ?>" method="POST" id="stripe_plan" class="stripe_plan" name="member_signup" enctype="multipart/form-data">
-                        @csrf
-                            <div class="form-group row">
-                                <label for="username" class="col-md-4 col-sm-offset-1 col-form-label text-md-right">{{ __('Username') }} <span style="color:#4895d1">*</span></label>
-
-                                <div class="col-md-6">
-                                    <input id="username" type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="off" autofocus>
-
-                                    @error('username')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-                        
-                            <div class="form-group row">
-                                <label for="username" class="col-md-4 col-sm-offset-1 col-form-label text-md-right ">{{ __('User Profile') }} </label>
-
-                                <div class="col-md-6">
-                                        <input type="file" multiple="true" class="form-control" name="avatar" id="avatar" />
-
-                                </div>
-                            </div>
-
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-sm-offset-1 col-form-label text-md-right">{{ __('E-Mail Address') }} <span style="color:#4895d1">*</span></label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="off">
-
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-                         
-                        <div class="form-group row">
-                            <label for="mobile" class="col-md-4 col-sm-offset-1 col-form-label text-md-right">{{ __('Phone Number') }} <span style="color:#4895d1">*</span></label>
-                            
-                            <div class="form-group">
-                               
-                            <div class="col-sm-2">
-                              <select name="ccode" id="ccode" >
-                                @foreach($jsondata as $code)
-                                <option data-thumbnail="images/icon-chrome.png" value="{{ $code['dial_code'] }}" <?php if($code['dial_code']) { echo "selected='seletected'"; } ?>> {{ $code['name'].' ('. $code['dial_code'] . ')' }}</option>
-                                @endforeach
-                            </select>
-                            </div>
-                            <div class="col-sm-4">
-                                <input id="mobile" type="text" class="form-control @error('email') is-invalid @enderror" name="mobile" placeholder="{{ __('Enter Mobile Number') }}" value="{{ old('mobile') }}" required autocomplete="off" autofocus> 
-                                <span class="verify-error"></span>
-                                
-                                 @error('mobile')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror                                    
-                            </div>
-						</div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-sm-offset-1 col-form-label text-md-right">
-                                {{ __('Password') }} <span style="color:#4895d1">*</span>
-                            </label>
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-                                <span style="color:#4895d1">(Password should be at least 8 characters in length and should include at least one upper case letter, one number, and one special character.)</span>
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror                               
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password-confirm" class="col-md-4 col-sm-offset-1 col-form-label text-md-right">{{ __('Confirm Password') }} <span style="color:#4895d1">*</span>
-                            </label>
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
-                            </div>
-                        </div>
-                            <?php if ( isset($ref)) { ?>
-                                <div class="form-group row">
-                                    <label for="password-confirm" class="col-md-4 col-sm-offset-1 col-form-label text-md-right">{{ __('Referrer ID') }} <span style="color:#4895d1"></span>
-                                    </label>
-                                    <div class="col-md-6">
-                                        <input id="referrer_code" type="text" class="form-control" value="<?php echo $ref;?>" name="referrer_code" readonly>
-                                    </div>
-                                </div>
-                            <?php } ?>
-                        
-                        <div class="form-group row">
-							<div class="col-md-4 col-sm-offset-1"></div>
-							<div class="col-md-7">
-                                <input id="password-confirm" type="checkbox" name="terms" value="1" required>
-								<label for="password-confirm" class="col-form-label text-md-right" style="display: inline-block;">{{ __('Yes') }} ,<a data-toggle="modal" data-target="#terms" style="text-decoration:none;color: #fff;"> {{ __('I Agree to Terms and  Conditions and privacy policy' ) }}</a></label>
-                            </div>
-                        </div>
-                        
-                       
-						<div class="form-group row">
-							<div class="col-md-10 col-sm-offset-1">
-                                <div class="sign-up-buttons">
-                                  <button type="button" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile" style="display: none;"> Verify Profile</button>
-                                  <button class="btn btn-lg btn-primary btn-block signup" style="display: block;" type="submit" name="create-account">{{ __('Sign Up Today') }}</button>
-                                </div>
-							</div>
-						</div>
-                        
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>-->
-
-
-
 <div class="container">
       <div class="row justify-content-center align-items-center height-self-center">
          <div class="col-sm-9 col-md-7 col-lg-5 align-self-center">
@@ -344,28 +213,36 @@ i.fa.fa-google-plus {
                       <form action="<?php if (isset($ref) ) { echo URL::to('/').'/register1?ref='.$ref.'&coupon='.$coupon; } else { echo URL::to('/').'/register1'; } ?>" method="POST" id="stripe_plan" class="stripe_plan" name="member_signup" enctype="multipart/form-data">
                         @csrf
                             <div class="form-group">
-                                <!--<label for="username" class="col-md-4 col-sm-offset-1 col-form-label text-md-right">{{ __('Username') }} <span style="color:#4895d1">*</span></label>-->
+                            
+                                @if (!empty($SignupMenu) && $SignupMenu->username == 1)
+                                    <div class="col-md-12">
+                                        <input id="username" type="text"  class="form-control alphaonly  @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" placeholder="Username" required autocomplete="off" autofocus>
 
-                                <div class="col-md-12">
-                                    <input id="username" type="text"  class="form-control alphaonly  @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" placeholder="Username" required autocomplete="off" autofocus>
+                                        @error('username')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                    @endif
+                                
+                                
+                                @if(!empty($SignupMenu) && $SignupMenu->email == 1)
+                                    <div class="col-md-12">
+                                    <input id="email" type="email" placeholder="Email Address"  class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="off">
+                                    <span class="invalid-feedback" id="email_error" role="alert">Email Already Exits
+                                    </span>
 
-                                    @error('username')
-                                        <span class="invalid-feedback" role="alert">
+                                    @error('email')
+                                        <span class="invalid-feedback" id="email_error" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
                                     @enderror
                                 </div>
-                                <div class="col-md-12">
-                                <input id="email" type="email" placeholder="Email Address"  class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="off">
-                                <span class="invalid-feedback" id="email_error" role="alert">Email Already Exits
-                                </span>
-
-                                @error('email')
-                                    <span class="invalid-feedback" id="email_error" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
+                                @endif
+                            
+                            
+                                @if(!empty($SignupMenu) && $SignupMenu->mobile == 1)
                                  <div class="col-md-12">
                                             <div class="row">
                                
@@ -373,10 +250,10 @@ i.fa.fa-google-plus {
                               <select class="phselect form-control" name="ccode" id="ccode" >
                                 @foreach($jsondata as $code)
                                 <option value="{{  $code['dial_code'] }}" {{ $code['name'] == "United States" ? 'selected' : ''}}>{{ $code['name'].' ('. $code['dial_code'] . ')' }}</option>
-                                <!-- <option data-thumbnail="images/icon-chrome.png" value="{{ $code['dial_code'] }}" <?php if($code['dial_code']) ?>> {{ $code['name'].' ('. $code['dial_code'] . ')' }}</option> -->
                                 @endforeach
                             </select>
                             </div>
+
                             <div class="col-md-7 col-sm-8">
                                 <input id="mobile" type="text" maxlength="10" minlength="10" class="form-control @error('email') is-invalid @enderror" name="mobile" placeholder="{{ __('Enter Mobile Number') }}" value="{{ old('mobile') }}" required autocomplete="off" autofocus> 
                                 <span class="verify-error"></span>
@@ -391,11 +268,18 @@ i.fa.fa-google-plus {
 
                                 </div>
                                 
-                                
+                                @endif
+                            
+                            
+                                @if(!empty($SignupMenu) && $SignupMenu->avatar == 1)
                             <div class="col-md-12" style="postion:relative;">
                                 <input type="file" multiple="true" class="form-control" style="padding: 0px;" name="avatar" id="avatar" />
                                 <label id="fileLabel">Choose Profile Image</label>
                                  </div>
+                                 @endif
+                           
+                            
+                                @if(!empty($SignupMenu) && $SignupMenu->password == 1)
                                  <div class="col-md-12">
                                      <div class="row">
                                      <div class="col-md-12">
@@ -416,6 +300,10 @@ i.fa.fa-google-plus {
                                 @enderror
                                          </div>
                             </div>
+                                @endif
+                            
+                            
+                                @if(!empty($SignupMenu) && $SignupMenu->password_confirm == 1)
                             <div class="col-md-12">
                                 <div class="row">
                                      <div class="col-md-12">
@@ -434,46 +322,11 @@ i.fa.fa-google-plus {
                                 <span style="color: var(--iq-white);font-size: 14px;font-style: italic;">(Password should be at least 8 characters in length and should include at least one upper case letter, one number, and one special character.)</span>
                             </div>
                                  
-                            </div>
-                          
-                        
+                            </div>            
+                                @endif
                             
-
-                       
-                         
-                        <div class="form-group row">
-                           <!-- <label for="mobile" class="col-md-4 col-sm-offset-1 col-form-label text-md-right">{{ __('Phone Number') }} <span style="color:#4895d1">*</span></label>-->
                             
-                            <!--<div class="form-group">
-                               
-                            <div class="col-sm-2">
-                              <select name="ccode" id="ccode" >
-                                @foreach($jsondata as $code)
-                                <option data-thumbnail="images/icon-chrome.png" value="{{ $code['dial_code'] }}" <?php if($code['dial_code']) { echo "selected='seletected'"; } ?>> {{ $code['name'].' ('. $code['dial_code'] . ')' }}</option>
-                                @endforeach
-                            </select>
-                            </div>
-                            <div class="col-sm-4">
-                                <input id="mobile" type="text" class="form-control @error('email') is-invalid @enderror" name="mobile" placeholder="{{ __('Enter Mobile Number') }}" value="{{ old('mobile') }}" required autocomplete="off" autofocus> 
-                                <span class="verify-error"></span>
-                                
-                                 @error('mobile')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror                                    
-                            </div>
-						</div>-->
-                        </div>
-                       
-                          
-
-                        <div class="form-group row">
-                            <!--<label for="password-confirm" class="col-md-4 col-sm-offset-1 col-form-label text-md-right">{{ __('Confirm Password') }} <span style="color:#4895d1">*</span>
-                            </label>-->
-                            <!--<div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
-                            </div>-->
+                       <div class="form-group row">
                         </div>
                             <?php if ( isset($ref)) { ?>
                                 <div class="form-group row">
@@ -506,15 +359,7 @@ i.fa.fa-google-plus {
                                   <button class="btn btn-hover btn-primary btn-block signup" style="display: block;" type="submit" name="create-account">{{ __('Sign Up Today') }}</button>
                                 </div>
                             </div>
-                           
-						<div class="form-group row">
-							<div class="col-md-10 col-sm-offset-1">
-                                <!--<div class="sign-up-buttons">
-                                  <button type="button" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile" style="display: none;"> Verify Profile</button>
-                                  <button class="btn btn-lg btn-primary btn-block signup" style="display: block;" type="submit" name="create-account">{{ __('Sign Up Today') }}</button>
-                                </div>-->
-							</div>
-						</div>
+                        
                         
                     </form>
                        <div class="mt-3">
@@ -713,104 +558,104 @@ $(document).ready(function() {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
-    $("#submit").click(function(e){
-        e.preventDefault();
-        var ccode = $("#ccode").val();
-        var mobile = $("#mobile").val();       
-        var url = '{{ url('sendOtp') }}';        
-        if (mobile.length > 5 ){
-            $.ajax({
-               url:url,
-               method:'POST',
-               data:{
-                      ccode:ccode, 
-                      mobile:mobile
-                    },
-               success:function(response){                   
-                   if (response.status == true) {
-                        var veri = response.verify;
-                       $("#verify_id").val(veri);
-                       $("#loginModalLong").modal('show');
-                       timer();
+//     $("#submit").click(function(e){
+//         e.preventDefault();
+//         var ccode = $("#ccode").val();
+//         var mobile = $("#mobile").val();       
+//         var url = '{{ url('sendOtp') }}';        
+//         if (mobile.length > 5 ){
+//             $.ajax({
+//                url:url,
+//                method:'POST',
+//                data:{
+//                       ccode:ccode, 
+//                       mobile:mobile
+//                     },
+//                success:function(response){                   
+//                    if (response.status == true) {
+//                         var veri = response.verify;
+//                        $("#verify_id").val(veri);
+//                        $("#loginModalLong").modal('show');
+//                        timer();
                        
-                       //$('#loginModalLong').show();
+//                        //$('#loginModalLong').show();
                        
-                   } else {
-                        $(".verify-error").html(response.message);
-                        $(".verify-error").css("color","red");
-                   }
-               },
+//                    } else {
+//                         $(".verify-error").html(response.message);
+//                         $(".verify-error").css("color","red");
+//                    }
+//                },
              
-            });
-          } else {
-//               alert(response.message);
-//                   return false;
-                $("#success").html(response.message);
-                alert('Length Must be atleast 10');
-          }
-   });  
+//             });
+//           } else {
+// //               alert(response.message);
+// //                   return false;
+//                 $("#success").html(response.message);
+//                 alert('Length Must be atleast 10');
+//           }
+//    });  
        
-    $("#checkotp").click(function(e){
-        e.preventDefault();
-        var otp = $("#otp").val(); 
-        var verify_id = $("#verify_id").val();       
-        var username = $("#username").val();       
-        var avatar = $("#avatar").val();       
-        var email = $("#email").val();       
-        var ccode = $("#ccode").val();       
-        var mobile = $("#mobile").val();       
-        var terms = $("#terms").val();       
-        var password_confirmation = $("#password_confirmation").val();       
-        var password = $("#password").val();       
-        var url = '{{ url('verifyOtp') }}'; 
-        let timerOn = true;
+//     $("#checkotp").click(function(e){
+//         e.preventDefault();
+//         var otp = $("#otp").val(); 
+//         var verify_id = $("#verify_id").val();       
+//         var username = $("#username").val();       
+//         var avatar = $("#avatar").val();       
+//         var email = $("#email").val();       
+//         var ccode = $("#ccode").val();       
+//         var mobile = $("#mobile").val();       
+//         var terms = $("#terms").val();       
+//         var password_confirmation = $("#password_confirmation").val();       
+//         var password = $("#password").val();       
+//         var url = '{{ url('verifyOtp') }}'; 
+//         let timerOn = true;
         
-        if (otp.length > 0 ){
-            $.ajax({
-               url:url,
-               method:'POST',
-               data:{
-                      otp:otp, 
-                      verify_id:verify_id
-                    },
-                   success:function(response){
-                       if (response.status == true) {
-//                         $('.verify-profile').css('display','none');
-//                         $('.signup').css('display','block');
-//                         $("#mobile").prop("readonly", true);
-//                         $("#verify-error").css("display","none");
-//                         $('.modal').modal('hide');
-//                         var base_url = $('.base_url').val();
-//                         $("#stripe_plan").submit();
-//                           
-//                           alert();
+//         if (otp.length > 0 ){
+//             $.ajax({
+//                url:url,
+//                method:'POST',
+//                data:{
+//                       otp:otp, 
+//                       verify_id:verify_id
+//                     },
+//                    success:function(response){
+//                        if (response.status == true) {
+// //                         $('.verify-profile').css('display','none');
+// //                         $('.signup').css('display','block');
+// //                         $("#mobile").prop("readonly", true);
+// //                         $("#verify-error").css("display","none");
+// //                         $('.modal').modal('hide');
+// //                         var base_url = $('.base_url').val();
+// //                         $("#stripe_plan").submit();
+// //                           
+// //                           alert();
                            
-//                           
-//                           $.post(base_url+'/register1', {
-//                                 py_id:py_id, plan:plan_data, _token: '<?= csrf_token(); ?>' 
-//                               }, 
-//                                function(data){
-//                                    $('#loader').css('display','block');
-//                                    swal("You have done  Payment !");
-//
-//                                    setTimeout(function() {
-//                                    //location.reload();
-//                                    window.location.replace(base_url+'/register2');
-//
-//                                  }, 2000);
-//                               });
-                      } else {
-                        $(".success").html(response.message);
-                        $(".success").css("color","red");
-                        return false;
-                     }
+// //                           
+// //                           $.post(base_url+'/register1', {
+// //                                 py_id:py_id, plan:plan_data, _token: '<?= csrf_token(); ?>' 
+// //                               }, 
+// //                                function(data){
+// //                                    $('#loader').css('display','block');
+// //                                    swal("You have done  Payment !");
+// //
+// //                                    setTimeout(function() {
+// //                                    //location.reload();
+// //                                    window.location.replace(base_url+'/register2');
+// //
+// //                                  }, 2000);
+// //                               });
+//                       } else {
+//                         $(".success").html(response.message);
+//                         $(".success").css("color","red");
+//                         return false;
+//                      }
                    
-               },
-            });
-          } else {
-                   alert('Length Must be atleast 4');
-          }
-   });
+//                },
+//             });
+//           } else {
+//                    alert('Length Must be atleast 4');
+//           }
+//    });
 });
 
     function timer()
@@ -873,29 +718,68 @@ $(document).ready(function() {
 
     <script>
 
-
+    var SignupMenu = '<?= $SignupMenu ?>'; 
+    console.log(SignupMenu);
+    if(SignupMenu && SignupMenu ==""){
+        var username = 0;
+        var password = 0;
+        var password_confirmation = 0;
+        var mobile = 0;
+        var email = 0;
+        var username = 0;
+    }else{
+        var username = '<?= $SignupMenu->username ?>';
+        var password = '<?= $SignupMenu->password ?>';
+        var password_confirmation = '<?= $SignupMenu->password_confirmation ?>';
+        var mobile = '<?= $SignupMenu->mobile ?>';
+        var email = '<?= $SignupMenu->email ?>';
+        var username = '<?= $SignupMenu->username ?>';
+    }
+    // alert(password);
     $( "#stripe_plan" ).validate({
         
         rules: {
                 username: {
-                    required: true,
+                    required : function(element) {
+                        if(username == 0) { 
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                    // required: true,
                 },
                 password:{
-                    required: true,
+
+                    // required: true,
                     minlength: 8,
                     maxlength: 30,
                     // regx: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])\w{6,}$/,
                     regx: /^(?=.*[A-Z])(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+                    required : function(element) {
+                        if(password == 0) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
 
             },
-                password_confirmation: {
-                required: true,
-                minlength: 8,
-                maxlength: 30,
-                equalTo: "#password"
-            },
+            //     password_confirmation: {
+            //         required : function(element) {
+            //             if(password_confirmation == 0) {
+            //                 return true;
+            //             } else {
+            //                 return false;
+            //             }
+            //         }
+            //     // required: true,
+            //     minlength: 8,
+            //     maxlength: 30,
+            //     equalTo: "#password"
+            // },
                 mobile: {
-                    required: true,
+                    // required: true,
                     remote: {
                         url: '{{ URL::to('SignupMobile_val') }}',
                         type: "post",
@@ -904,10 +788,18 @@ $(document).ready(function() {
                             MobileNo: function() {
                             return $( "#mobile" ).val(); }
                         }
+                    },
+                    required : function(element) {
+                        if(mobile == 0) {
+                            return true;
+                        } else {
+                            return false;
+                        }
                     }
                 },
                 email: {
-                    required: true,
+
+                    // required: true,
                     remote: {
                         url:"{{ URL::to('/emailvalidation') }}",
                         type: "get",
@@ -916,10 +808,18 @@ $(document).ready(function() {
                             success: function() {
                             return $('#email').val(); }
                         }
+                    },
+                    required : function(element) {
+                        if(email == 0) {
+                            return true;
+                        } else {
+                            return false;
+                        }
                     }
                 },
                 username: {
-                    required: true,
+
+                    // required: true,
                     remote: {
                         url:"{{ URL::to('/usernamevalidation') }}",
                         type: "get",
@@ -927,6 +827,13 @@ $(document).ready(function() {
                             _token: "{{csrf_token()}}" ,
                             success: function() {
                             return $('#username').val(); }
+                        }
+                    },
+                    required : function(element) {
+                        if(username == 0) {
+                            return true;
+                        } else {
+                            return false;
                         }
                     }
                 },
