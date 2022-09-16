@@ -1,6 +1,6 @@
 <?php if(isset($audios)) :
 foreach($audios as $audio): ?>
-<div class="iq-main-header col-md-3 d-flex align-items-center justify-content-between">
+<div class="iq-main-header ">
     <div class="favorites-contens">           
         <div class="epi-box">
             <div class="epi-img position-relative">

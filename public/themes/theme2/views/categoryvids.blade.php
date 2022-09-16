@@ -18,13 +18,12 @@ $category_slug = App\VideoCategory::where('name',$categoryVideos['category_title
             <div class="container-fluid" >
                 <div class="row pageheight">
                   <div class="col-sm-12 overflow-hidden">
-                    <div class="iq-main-header align-items-center"> </div>
 
                         {{-- filter Option --}}
 
-                        <div class="row d-flex ">
+                        <div class="row ">
 
-                            {{-- <div class="col-md-3">
+                            {{-- <div class="col-md-2">
                                 <select class="selectpicker" multiple title="Refine" data-live-search="true">
                                     <option value="videos">Movie</option>
                                     <option value="tv_Shows">TV Shows</option>
@@ -33,7 +32,7 @@ $category_slug = App\VideoCategory::where('name',$categoryVideos['category_title
                                 </select>
                             </div> --}}
 
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <select class="selectpicker" multiple title="Age" name="age[]" id="age" data-live-search="true">
                                     @foreach($categoryVideos['age_categories'] as $age)
                                         <option value="{{ $age->age  }}">{{ $age->slug }}</option>
@@ -41,7 +40,7 @@ $category_slug = App\VideoCategory::where('name',$categoryVideos['category_title
                                 </select>
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <select class="selectpicker" multiple title="Rating" id="rating" name="rating[]" data-live-search="true">
                                     <option value="1" >1</option>
                                     <option value="2">2</option>

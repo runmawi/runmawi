@@ -1382,3 +1382,6 @@ table.dataTable thead .sorting:before, table.dataTable thead .sorting:after, tab
     display: block;
     opacity: 0.3;
 }
+div.dataTables_wrapper div.dataTables_filter input{
+    border:none;
+}

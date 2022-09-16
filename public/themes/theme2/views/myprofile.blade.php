@@ -314,10 +314,10 @@ color: #FFFFFF;
                     <div> <a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="Text-white" style="color: #fff!important;"><i class="fa fa-plus-circle"></i> Edit</a></div>
                       
                     <div class="text-center">
-                        <p class="account d-flex justify-content-around"><span class="">First Name:</span> <span class=""><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></span></p>
-                        <p class="account d-flex justify-content-around"><span>User Name:</span><span class=""><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></span> </p>
-                        <p class="account d-flex justify-content-around"><span>Moblie.no:</span><span class=""> <?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?></span></p>
-                        <p class="account d-flex justify-content-around"><span>Email-id:</span><span class=""> <?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?></span></p>
+                        <p class="account col-lg-12 d-flex justify-content-around"><span class="">First Name:</span> <span class=""><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></span></p>
+                        <p class="account col-lg-12 d-flex justify-content-around"><span>User Name:</span><span class=""><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></span> </p>
+                        <p class="account col-lg-12 d-flex justify-content-around"><span>Moblie.no:</span><span class=""> <?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?></span></p>
+                        <p class="account col-lg-12 d-flex justify-content-around"><span>Email-id:</span><span class=""> <?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?></span></p>
                          
                     </div>
                 <!--<div class="col-md-4 mt-3 pt-3">
