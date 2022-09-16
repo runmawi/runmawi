@@ -353,6 +353,9 @@ input:checked + .sliderk:before {
              background-color: <?php echo GetLightBg(); ?>!important;  
             color: <?php echo GetLightText(); ?>!important;
         }
+        body.light-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover {
+    color: rgb(0, 82, 204)!important;
+}
          body.light-theme .navbar-right .iq-sub-dropdown{
            background-color: <?php echo GetLightBg(); ?>;  
         }
