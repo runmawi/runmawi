@@ -167,27 +167,36 @@ border-radius: 0px 4px 4px 0px;
                             </div>
                     
                 </div>
+                
 </div>
                                  {{-- Prevent Viewing Page Source --}}
-                                 
-                <div class="panel-heading mt-3"> 
-                    <div class="panel-title"> 	
-                        <h4><i class="entypo-monitor"></i> Prevent Viewing Page Source</h4> 
-                    </div>             
-                </div> 
 
-                <div class="panel-body"> 
-                    <div class="col-sm-6">
-                        <div class="mt-1">
-                            <label class="switch">
-                                <input name="prevent_inspect" class="prevent_inspect" id="prevent_inspect" type="checkbox" @if( $settings->prevent_inspect == "1") checked  @endif >
-                                <span class="slider round"></span>
-                            </label>
+                    <div class="panel-heading mt-3"> 
+
+                        <div class="row"> 
+                                <div class="col-sm-6">
+                                    <p>{{ ucfirst(trans(' Enable Developer Tools')) }}</p>
+                                    <div class="mt-1">
+                                        <label class="switch">
+                                            <input name="prevent_inspect" class="prevent_inspect" id="prevent_inspect" type="checkbox" @if( $settings->prevent_inspect == "1") checked  @endif >
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                    
+                                <div class="col-sm-6">
+                                    <p>{{ ucfirst(trans('Enable Loader')) }}</p>
+                                    <div class="mt-1">
+                                        <label class="switch">
+                                            <input name="loader_setting" class="loader_setting" id="loader_setting" type="checkbox" @if( $settings->loader_setting == "1") checked  @endif >
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                </div>
                         </div>
                     </div>
-                </div> 
-
-                                                {{-- Style sheet  --}}
+              
+                        {{-- Style sheet  --}}
 
                 <div>
                     <div class="row">
@@ -210,6 +219,7 @@ border-radius: 0px 4px 4px 0px;
                             <h4><i class="entypo-monitor"></i> Typography Link</h4> 
                         </div>             
                     </div> 
+                    
     
                     <div class="panel-body"> 
                         <div class="">
@@ -218,11 +228,9 @@ border-radius: 0px 4px 4px 0px;
                     </div> 
                         </div>
                     </div>
-                   
-
-                    
                 </div>
                                 
+                
                 <div class="panel-body mt-4" style="display: flex; justify-content: flex-end;">
                     <button type="submit" class="btn btn-primary " name="submit"> Save Settings</button>
                 </div>
