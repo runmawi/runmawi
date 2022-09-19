@@ -232,13 +232,12 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                 </div>
 
              
-<p class="mt-2 flik">Flicknexs will play the highest quality audio and video available for your device.</p>
-                 <div class="col-lg-5 d-flex align-items-baseline justify-content-between p-0">
-                  <a class="" href="<?php echo URL::to('category') ?><?= '/videos/' . $video->player_image ?>"> <img class="ply" src="<?php echo URL::to('/').'/assets/img/video-play.png';  ?>" /> </a>
-                     
-                 <div id="videoplay" class="btn2  watch_trailer  mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>" style="border-radius:none!important;"><?php if(isset($mywishlisted->id)): ?> <i class="fa fa-minus-circle" aria-hidden="true"></i> Remove Whislist  <?php else: ?> + Add to Wishlist <?php endif; ?>
+                <p class="mt-2 flik"> <?= GetWebsiteName() ?> will play the highest quality audio and video available for your device.</p>
+                <div class="col-lg-5 d-flex align-items-baseline justify-content-between p-0">
+                    <a class="" href="<?=  route('fullplayer_videos',$video->slug ) ?>"> <img class="ply" src="<?php echo URL::to('/').'/assets/img/video-play.png';  ?>" /> </a>
+                    <div id="videoplay" class="btn2  watch_trailer  mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>" style="border-radius:none!important;"><?php if(isset($mywishlisted->id)): ?> <i class="fa fa-minus-circle" aria-hidden="true"></i> Remove Whislist  <?php else: ?> + Add to Wishlist <?php endif; ?>
                         </div>
-</div>
+                </div>
 
      </div></div>
              <?php
@@ -350,14 +349,11 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                 </div>
 
              
-<p class="mt-2 flik">Flicknexs will play the highest quality audio and video available for your device.</p>
+                <p class="mt-2 flik"> <?= GetWebsiteName() ?>  will play the highest quality audio and video available for your device.</p>
                  <div class="col-lg-5 d-flex align-items-baseline justify-content-between p-0">
-                  <a class="" href="<?php echo URL::to('category') ?><?= '/videos/' . $video->player_image ?>"> <img class="ply" src="<?php echo URL::to('/').'/assets/img/video-play.png';  ?>" /> </a>
-                     
-                 <div id="videoplay" class="btn2  watch_trailer  mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>" style="border-radius:none!important;"><?php if(isset($mywishlisted->id)): ?> <i class="fa fa-minus-circle" aria-hidden="true"></i> Remove Whislist  <?php else: ?> + Add to Wishlist <?php endif; ?>
-                        </div>
-</div>
-
+                    <a class="" href="<?=  route('fullplayer_videos',$video->slug ) ?>"> <img class="ply" src="<?php echo URL::to('/').'/assets/img/video-play.png';  ?>" /> </a>
+                    <div id="videoplay" class="btn2  watch_trailer  mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>" style="border-radius:none!important;"><?php if(isset($mywishlisted->id)): ?> <i class="fa fa-minus-circle" aria-hidden="true"></i> Remove Whislist  <?php else: ?> + Add to Wishlist <?php endif; ?></div>
+                </div>
               </div>
 
             
@@ -432,13 +428,14 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                 </div>
 
              
-<p class="mt-2 flik">Flicknexs will play the highest quality audio and video available for your device.</p>
+                 <p class="mt-2 flik"> <?= GetWebsiteName() ?> will play the highest quality audio and video available for your device.</p>
                  <div class="col-lg-5 d-flex align-items-baseline justify-content-between p-0">
-                  <a class="" href="<?php echo URL::to('category') ?><?= '/videos/' . $video->player_image ?>"> <img class="ply" src="<?php echo URL::to('/').'/assets/img/video-play.png';  ?>" /> </a>
+                    <a class="" href="<?=  route('fullplayer_videos',$video->slug ) ?>"> 
+                      <img class="ply" src="<?php echo URL::to('/').'/assets/img/video-play.png';  ?>" /> 
+                    </a>
                      
-                 <div id="videoplay" class="btn2  watch_trailer  mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>" style="border-radius:none!important;"><?php if(isset($mywishlisted->id)): ?> <i class="fa fa-minus-circle" aria-hidden="true"></i> Remove Whislist  <?php else: ?> + Add to Wishlist <?php endif; ?>
-                        </div>
-</div>
+                    <div id="videoplay" class="btn2  watch_trailer  mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>" style="border-radius:none!important;"><?php if(isset($mywishlisted->id)): ?> <i class="fa fa-minus-circle" aria-hidden="true"></i> Remove Whislist  <?php else: ?> + Add to Wishlist <?php endif; ?></div>
+                  </div>
 
      </div></div>
                <!-- Current time: <div id="current_time"></div> -->
