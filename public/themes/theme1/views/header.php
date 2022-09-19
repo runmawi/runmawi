@@ -517,7 +517,7 @@ input:checked + .sliderk:before {
 
                                           <?php } else { ?>
                                           <li class="menu-item">
-                                            <a href="<?php echo URL::to('/').$menu->url;?>">
+                                          <a href="<?php if(!empty($menu->url)){ echo URL::to('/').$menu->url; }elseif(!empty($menu->custom_url)){ echo $menu->custom_url;  }?>">
                                               <?php echo __($menu->name);?>
                                             </a>
                                           </li>
