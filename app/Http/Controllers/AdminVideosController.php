@@ -32,6 +32,7 @@ use FFMpeg\Coordinate\TimeCode;
 use FFMpeg\Format\Video\X264;
 use App\Http\Requests\StoreVideoRequest;
 use App\Jobs\ConvertVideoForStreaming;
+use App\Jobs\VideoSchedule;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use FFMpeg\Filters\Video\VideoFilters;
 use Illuminate\Support\Str;
@@ -3851,50 +3852,292 @@ if(!empty($artistsdata)){
                     return $value;
                 
                 }elseif($mp4_url != '' && $pack == "Business" && $settings->transcoding_access  == 1) {
-                    // print_r('2');exit();
-        
-                    $rand = Str::random(16);
-                    $path = $rand . '.' . $request->file->getClientOriginalExtension();
-                    $request->file->storeAs('public', $path);
-                     
-                     $original_name = ($request->file->getClientOriginalName()) ? $request->file->getClientOriginalName() : '';
-                     
-                    $storepath  = URL::to('/storage/app/public/'.$path);
-        
-        
-                    //  Video duration 
-                    $getID3 = new getID3;
-                    $Video_storepath  = storage_path('app/public/'.$path);       
-                    $VideoInfo = $getID3->analyze($Video_storepath);
-                    $Video_duration = $VideoInfo['playtime_seconds'];
-                     
-                     $video = new Video();
-                     $video->disk = 'public';
-                     $video->status = 0;
-                     $video->original_name = 'public';
-                     $video->path = $path;
-                     $video->title = $file_folder_name;
-                     $video->mp4_url = $storepath;
-                     $video->draft = 0;
-                     $video->image = 'default_image.jpg';
-        
+
+                    $date = $data['date'];  
+                    $month = $data['month'];
+                    $year = $data['year'];
+                    $schedule_time = $data['schedule_time'];
+
+                        if(!empty($schedule_time)){
+                                
+                           $choose_time = explode("to",$schedule_time);
+                                if(count($choose_time) > 0){
+                                    $choose_start_time = $choose_time[0];
+                                    $choose_end_time = $choose_time[1];
+                                }else{
+                                    $choose_start_time = '';
+                                    $choose_end_time = '';
+                                }
+                            
+                            $Schedule_current_date = date('Y-m-d');
+
+
+                            $schedule_id = $data['schedule_id'];
+                            $choosed_date  = $year.'-'.$month.'-'.$date ;
+
+                            $date=date_create($choosed_date);
+                            $date_choose = date_format($date,"Y/m");
+                            $date_choosed = $date_choose.'/'.$data['date'];
+                            // echo "<pre>";print_r($date_choosed);exit;
+
+                            $choosedtime_exitvideos = ScheduleVideos::selectRaw('*')
+                            ->where('shedule_date','=',$date_choosed)
+                            ->where('shedule_time','=',$schedule_time)
+                            // ->whereBetween('choose_start_time',[$choose_start_time, $choose_end_time])
+                            ->orderBy('id', 'desc')->first();
+                            // echo "<pre>";print_r($choosedtime_exitvideos);exit;
+
+                            $ScheduleVideos = ScheduleVideos::where('shedule_date','=',$date_choosed)->orderBy('id', 'desc')->first();
+                            
+                            $rand = Str::random(16);
+                            $path = $rand . '.' . $request->file->getClientOriginalExtension();
+                        
+                            $request->file->storeAs('public', $path);
+                            $thumb_path = 'public';                           
+                            $original_name = ($request->file->getClientOriginalName()) ? $request->file->getClientOriginalName() : '';
+                            $storepath  = URL::to('/storage/app/public/'.$path);
+                            //  Video duration 
+                            $getID3 = new getID3;
+                            $Video_storepath  = storage_path('app/public/'.$path);       
+                            $VideoInfo = $getID3->analyze($Video_storepath);
+                            $Video_duration = $VideoInfo['playtime_seconds'];
+
+                            // DateTime();
+                            $current_date =     $current_date = date('Y-m-d h:i:s a', time()); 
+                            $current_date = date('Y-m-d h:i:s');    
+                            $daten = date('Y-m-d h:i:s ', time());  
+                            $d = new \DateTime('now');
+                            $d->setTimezone(new \DateTimeZone('Asia/Kolkata'));  
+                            $now = $d->format('Y-m-d h:i:s a');
+                            $current_time = date('h:i A', strtotime($now));
+                            // print_r($choosedtime_exitvideos);exit;
+
+                            if(!empty($ScheduleVideos) && empty($choosedtime_exitvideos)){
+                                // print_r('ScheduleVideos');exit;
+
+                                $last_shedule_endtime = $ScheduleVideos->shedule_endtime;
+                                $last_current_time = $ScheduleVideos->current_time;
+                                $last_sheduled_endtime = $ScheduleVideos->sheduled_endtime;     
+
+                                    if($last_shedule_endtime < $current_time){
+
+                                        $time    = explode(':', date('h:i', strtotime($now)));
+                                        $minutes = ($time[0] * 60.0 + $time[1] * 1.0);
+                                        $totalSecs   = ($minutes * 60);
+                                        $sec = $totalSecs + $Video_duration;
+                                        $hour = floor($sec / 3600);
+                                        $minute = floor(($sec / 60) % 60);
+                                        $hours = str_pad($hour, 2, '0', STR_PAD_LEFT);
+                                        $minutes = str_pad($minute, 2, '0', STR_PAD_LEFT);
+
+                                        $shedule_endtime = $hours.':'.$minutes.' '.date('A', strtotime($now));
+                                        $sheduled_endtime = $hours.':'.$minutes;
+                                        
+                                        $starttime = date('h:i ', strtotime($now));        
+                                        $sheduled_starttime = date('h:i A', strtotime($now));  
+                                        // print_r($last_shedule_endtime);exit;
+
+                                    }else{
+
+                                        $time    = explode(':', $last_sheduled_endtime);
+                                        $minutes = ($time[0] * 60.0 + $time[1] * 1.0);
+                                        $totalSecs   = ($minutes * 60);
+                                        $sec = $totalSecs + $Video_duration;
+                                        // $sec = 45784.249244444;
+                                        $hour = floor($sec / 3600);
+                                        $minute = floor(($sec / 60) % 60);
+                                        $hours = str_pad($hour, 2, '0', STR_PAD_LEFT);
+                                        $minutes = str_pad($minute, 2, '0', STR_PAD_LEFT);
+
+                                        $shedule_endtime = $hours.':'.$minutes.' '.date('A', strtotime($now));
+                                        $sheduled_endtime = $hours.':'.$minutes;
+
+                                        $starttime = $last_sheduled_endtime;        
+                                        $sheduled_starttime = $last_shedule_endtime;  
+                                    }
+                                
+                                $video = new ScheduleVideos();
+                                $video->title = $file_folder_name;
+                                $video->type = 'mp4_url';
+                                $video->active	 = 1;
+                                $video->original_name = 'public';
+                                $video->disk = 'public';
+                                $video->mp4_url = $storepath;
+                                $video->path = $path;
+                                $video->shedule_date = $date_choosed; 
+                                $video->shedule_time = $schedule_time; 
+                                $video->shedule_endtime = $shedule_endtime;     
+                                $video->sheduled_endtime = $sheduled_endtime;     
+                                $video->current_time = date('h:i A', strtotime($now));     
+                                $video->video_order = 1;        
+                                $video->schedule_id = $schedule_id ;        
+                                $video->starttime = $starttime ;        
+                                $video->sheduled_starttime = $sheduled_starttime ;   
+                                $video->starttime = $last_sheduled_endtime ;        
+                                $video->choose_start_time = $choose_start_time ;        
+                                $video->choose_end_time  = $choose_end_time;
+                                $video->status  = 1;
+                                $video->save(); 
+                                
+                                VideoSchedule::dispatch($video);
+
+                                $video_id = $video->id;
+                                $video_title = ScheduleVideos::find($video_id);
+                                $title =$video_title->title; 
                     
-                     $video->duration  = $Video_duration;
-                     $video->user_id = Auth::user()->id;
-                     $video->save();
-        
-                    //  ConvertVideoForStreaming::dispatch($video);
-                     $video_id = $video->id;
-                     $video_title = Video::find($video_id);
-                     $title =$video_title->title; 
-              
-                      $value['success'] = 1;
-                      $value['message'] = 'Uploaded Successfully!';
-                      $value['video_id'] = $video_id;
-                      $value['video_title'] = $title;
-        
-                      
-                      return $value;
+                                $value['success'] = 1;
+                                $value['message'] = 'Uploaded Successfully!';
+                                $value['video_id'] = $video_id;
+                                $value['video_title'] = $title;
+                    
+                    
+                                return $value;
+
+                            }elseif(!empty($ScheduleVideos) && !empty($choosedtime_exitvideos)){
+
+                                // print_r('$ScheduleVideos');exit;
+                                $last_shedule_endtime = $choosedtime_exitvideos->shedule_endtime;
+                                $last_current_time = $choosedtime_exitvideos->current_time;
+                                $last_sheduled_endtime = $choosedtime_exitvideos->sheduled_endtime;   
+                                
+                                if($last_shedule_endtime < $current_time){
+                                // print_r('$ScheduleVideos');exit;
+
+                                    $time    = explode(':', date('h:i', strtotime($now)));
+                                    $minutes = ($time[0] * 60.0 + $time[1] * 1.0);
+                                    $totalSecs   = ($minutes * 60);
+                                    $sec = $totalSecs + $Video_duration;
+                                    $hour = floor($sec / 3600);
+                                    $minute = floor(($sec / 60) % 60);
+                                    $hours = str_pad($hour, 2, '0', STR_PAD_LEFT);
+                                    $minutes = str_pad($minute, 2, '0', STR_PAD_LEFT);
+
+                                    $shedule_endtime = $hours.':'.$minutes.' '.date('A', strtotime($now));
+                                    $sheduled_endtime = $hours.':'.$minutes;
+
+                                    $starttime = date('h:i ', strtotime($now));        
+                                    $sheduled_starttime = date('h:i A', strtotime($now));   
+
+                                    // print_r($last_shedule_endtime);exit;
+
+                                }else{
+
+                                // print_r('$last_sheduled_endtime');exit;
+                                    $time    = explode(':', $last_sheduled_endtime);
+                                    $minutes = ($time[0] * 60.0 + $time[1] * 1.0);
+                                    $totalSecs   = ($minutes * 60);
+                                    $sec = $totalSecs + $Video_duration;
+                                    // $sec = 45784.249244444;
+                                    $hour = floor($sec / 3600);
+                                    $minute = floor(($sec / 60) % 60);
+                                    $hours = str_pad($hour, 2, '0', STR_PAD_LEFT);
+                                    $minutes = str_pad($minute, 2, '0', STR_PAD_LEFT);
+
+                                    $shedule_endtime = $hours.':'.$minutes.' '.date('A', strtotime($now));
+                                    $sheduled_endtime = $hours.':'.$minutes;
+                                    // print_r($sheduled_endtime);exit;
+
+                                     $starttime = $last_sheduled_endtime;        
+                                     $sheduled_starttime = $last_shedule_endtime;  
+
+                                }
+
+                                $video = new ScheduleVideos();
+                                $video->title = $file_folder_name;
+                                $video->type = 'mp4_url';
+                                $video->active	 = 1;
+                                $video->original_name = 'public';
+                                $video->disk = 'public';
+                                $video->mp4_url = $storepath;
+                                $video->path = $path;
+                                $video->shedule_date = $date_choosed; 
+                                $video->shedule_time = $schedule_time; 
+                                $video->shedule_endtime = $shedule_endtime;     
+                                $video->sheduled_endtime = $sheduled_endtime;     
+                                $video->current_time = date('h:i A', strtotime($now));     
+                                $video->video_order = 1;        
+                                $video->schedule_id = $schedule_id ;        
+                                $video->starttime = $starttime ;        
+                                $video->sheduled_starttime = $sheduled_starttime ;        
+                                $video->duration  = $Video_duration;
+                                $video->choose_start_time = $choose_start_time ;        
+                                $video->choose_end_time  = $choose_end_time;
+                                $video->status  = 1;
+                                $video->save(); 
+                                
+                                VideoSchedule::dispatch($video);
+
+                                $video_id = $video->id;
+                                $video_title = ScheduleVideos::find($video_id);
+                                $title =$video_title->title; 
+                    
+                                $value['success'] = 1;
+                                $value['message'] = 'Uploaded Successfully!';
+                                $value['video_id'] = $video_id;
+                                $value['video_title'] = $title;
+                    
+                    
+                                return $value;
+
+                            }
+                            else{
+
+                                $time    = explode(':', date('h:i', strtotime($now)));
+                                $minutes = ($time[0] * 60.0 + $time[1] * 1.0);
+                                $totalSecs   = ($minutes * 60);
+                                $sec = $totalSecs + $Video_duration;
+
+                                $hour = floor($sec / 3600);
+                                $minute = floor(($sec / 60) % 60);
+                                $hours = str_pad($hour, 2, '0', STR_PAD_LEFT);
+                                $minutes = str_pad($minute, 2, '0', STR_PAD_LEFT);
+                                
+                                $shedule_endtime = $hours.':'.$minutes.' '.date('A', strtotime($now));
+                                $sheduled_endtime = $hours.':'.$minutes;
+
+                                $video = new ScheduleVideos();
+                                $video->title = $file_folder_name;
+                                $video->type = 'mp4_url';
+                                $video->active	 = 1;
+                                $video->original_name = 'public';
+                                $video->disk = 'public';
+                                $video->mp4_url = $storepath;
+                                $video->path = $path;
+                                $video->shedule_date = $date_choosed; 
+                                $video->shedule_time = $schedule_time; 
+                                $video->shedule_endtime = $shedule_endtime;     
+                                $video->sheduled_endtime = $sheduled_endtime;     
+                                $video->current_time = date('h:i A', strtotime($now));     
+                                $video->starttime = date('h:i', strtotime($now));        
+                                $video->sheduled_starttime = date('h:i A', strtotime($now)) ;   
+                                $video->video_order = 1;        
+                                $video->schedule_id = $schedule_id ;        
+                                $video->duration  = $Video_duration;
+                                $video->choose_start_time = $choose_start_time ;        
+                                $video->choose_end_time  = $choose_end_time;
+                                $video->status  = 1;
+                                $video->save(); 
+                                
+                                VideoSchedule::dispatch($video);
+                            
+                                $video_id = $video->id;
+                                $video_title = ScheduleVideos::find($video_id);
+                                $title =$video_title->title; 
+                    
+                                $value['success'] = 1;
+                                $value['message'] = 'Uploaded Successfully!';
+                                $value['video_id'] = $video_id;
+                                $value['video_title'] = $title;
+                    
+                    
+                                return $value;
+                        }     
+                    }else{
+                        return 'Please Choose Time';
+                        
+                    }
+
+
                 }elseif($mp4_url != '' && $pack == "Business"  && $settings->transcoding_access  == 0 ) {
                     
                     $date = $data['date'];
@@ -3905,8 +4148,15 @@ if(!empty($artistsdata)){
                     // $choose_end_time = $data['choose_end_time'];
                         if(!empty($schedule_time)){
                                 
-                    echo "<pre>";print_r($schedule_time);exit;
-                            
+                           $choose_time = explode("to",$schedule_time);
+                    // echo "<pre>";print_r($choose_time);exit;
+                                if(count($choose_time) > 0){
+                                    $choose_start_time = $choose_time[0];
+                                    $choose_end_time = $choose_time[1];
+                                }else{
+                                    $choose_start_time = '';
+                                    $choose_end_time = '';
+                                }
                             
                             $Schedule_current_date = date('Y-m-d');
 
@@ -3930,7 +4180,7 @@ if(!empty($artistsdata)){
                             // ->whereBetween('choose_start_time',['01:30 PM','02:30 PM'])
                             // ->orderBy('id', 'desc')->first();
 
-                            echo "<pre>";print_r($choosedtime_exitvideos);exit;
+                            // echo "<pre>";print_r($choosedtime_exitvideos);exit;
 
 
                             $ScheduleVideos = ScheduleVideos::where('shedule_date','=',$date_choosed)->orderBy('id', 'desc')->first();
@@ -3956,7 +4206,7 @@ if(!empty($artistsdata)){
                             $d->setTimezone(new \DateTimeZone('Asia/Kolkata'));  
                             $now = $d->format('Y-m-d h:i:s a');
                             $current_time = date('h:i A', strtotime($now));
-                            print_r($choosedtime_exitvideos);exit;
+                            // print_r($choosedtime_exitvideos);exit;
 
                             if(!empty($ScheduleVideos) && empty($choosedtime_exitvideos)){
                                 // print_r('ScheduleVideos');exit;
@@ -3978,8 +4228,10 @@ if(!empty($artistsdata)){
 
                                         $shedule_endtime = $hours.':'.$minutes.' '.date('A', strtotime($now));
                                         $sheduled_endtime = $hours.':'.$minutes;
-                                        
+ 
                                         // print_r($last_shedule_endtime);exit;
+                                        $starttime = date('h:i ', strtotime($now));        
+                                        $sheduled_starttime = date('h:i A', strtotime($now));  
 
                                     }else{
 
@@ -3995,7 +4247,9 @@ if(!empty($artistsdata)){
 
                                         $shedule_endtime = $hours.':'.$minutes.' '.date('A', strtotime($now));
                                         $sheduled_endtime = $hours.':'.$minutes;
-
+                                        
+                                        $starttime = $last_sheduled_endtime;        
+                                        $sheduled_starttime = $last_shedule_endtime; 
                                     }
                                 
                                 $video = new ScheduleVideos();
@@ -4007,15 +4261,17 @@ if(!empty($artistsdata)){
                                 $video->mp4_url = $storepath;
                                 $video->path = $path;
                                 $video->shedule_date = $date_choosed; 
-                                $video->shedule_time = $choose_time; 
+                                $video->shedule_time = $schedule_time; 
                                 $video->shedule_endtime = $shedule_endtime;     
                                 $video->sheduled_endtime = $sheduled_endtime;     
                                 $video->current_time = date('h:i A', strtotime($now));     
                                 $video->video_order = 1;        
                                 $video->schedule_id = $schedule_id ;        
+                                $video->starttime = $starttime ;        
+                                $video->sheduled_starttime = $sheduled_starttime ;   
                                 $video->starttime = $last_sheduled_endtime ;        
-                                $video->sheduled_starttime = $last_shedule_endtime ;        
-                                $video->duration  = $Video_duration;
+                                $video->choose_start_time = $choose_start_time ;        
+                                $video->choose_end_time  = $choose_end_time;
                                 $video->status  = 1;
                                 $video->save(); 
                                 
@@ -4035,7 +4291,9 @@ if(!empty($artistsdata)){
                             }elseif(!empty($ScheduleVideos) && !empty($choosedtime_exitvideos)){
 
                                 // print_r($ScheduleVideos);exit;
-
+                                $last_shedule_endtime = $choosedtime_exitvideos->shedule_endtime;
+                                $last_current_time = $choosedtime_exitvideos->current_time;
+                                $last_sheduled_endtime = $choosedtime_exitvideos->sheduled_endtime;   
                                 
                                 if($last_shedule_endtime < $current_time){
 
@@ -4052,7 +4310,8 @@ if(!empty($artistsdata)){
                                     $sheduled_endtime = $hours.':'.$minutes;
                                     
                                     // print_r($last_shedule_endtime);exit;
-
+                                    $starttime = date('h:i ', strtotime($now));        
+                                    $sheduled_starttime = date('h:i A', strtotime($now));  
                                 }else{
 
                                     $time    = explode(':', $last_sheduled_endtime);
@@ -4067,8 +4326,9 @@ if(!empty($artistsdata)){
 
                                     $shedule_endtime = $hours.':'.$minutes.' '.date('A', strtotime($now));
                                     $sheduled_endtime = $hours.':'.$minutes;
-                                    print_r($sheduled_endtime);exit;
-
+                                    // print_r($sheduled_endtime);exit;                                                                            
+                                    $starttime = $last_sheduled_endtime;        
+                                    $sheduled_starttime = $last_shedule_endtime; 
                                 }
 
                                 $video = new ScheduleVideos();
@@ -4080,15 +4340,17 @@ if(!empty($artistsdata)){
                                 $video->mp4_url = $storepath;
                                 $video->path = $path;
                                 $video->shedule_date = $date_choosed; 
-                                $video->shedule_time = $choose_time; 
+                                $video->shedule_time = $schedule_time; 
                                 $video->shedule_endtime = $shedule_endtime;     
                                 $video->sheduled_endtime = $sheduled_endtime;     
                                 $video->current_time = date('h:i A', strtotime($now));     
                                 $video->video_order = 1;        
                                 $video->schedule_id = $schedule_id ;        
-                                $video->starttime = $last_sheduled_endtime ;        
-                                $video->sheduled_starttime = $last_shedule_endtime ;        
+                                $video->starttime = $starttime ;        
+                                $video->sheduled_starttime = $sheduled_starttime ;        
                                 $video->duration  = $Video_duration;
+                                $video->choose_start_time = $choose_start_time ;        
+                                $video->choose_end_time  = $choose_end_time;
                                 $video->status  = 1;
                                 $video->save(); 
                                 
@@ -4130,7 +4392,7 @@ if(!empty($artistsdata)){
                                 $video->mp4_url = $storepath;
                                 $video->path = $path;
                                 $video->shedule_date = $date_choosed; 
-                                $video->shedule_time = $choose_time; 
+                                $video->shedule_time = $schedule_time; 
                                 $video->shedule_endtime = $shedule_endtime;     
                                 $video->sheduled_endtime = $sheduled_endtime;     
                                 $video->current_time = date('h:i A', strtotime($now));     
@@ -4139,6 +4401,8 @@ if(!empty($artistsdata)){
                                 $video->video_order = 1;        
                                 $video->schedule_id = $schedule_id ;        
                                 $video->duration  = $Video_duration;
+                                $video->choose_start_time = $choose_start_time ;        
+                                $video->choose_end_time  = $choose_end_time;
                                 $video->status  = 1;
                                 $video->save(); 
                                 
