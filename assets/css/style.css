@@ -2101,7 +2101,6 @@ box-shadow: -1px 6px 13px 0px rgba(0,0,0,0.44);
 .slick-frame.slick-initialized {
     visibility: visible;
 }
-
-
-
-
+.rippleEffect{
+    display: block!important;
+}
