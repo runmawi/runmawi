@@ -361,6 +361,31 @@ input:checked + .sliderk:before {
         }
         body.light-theme .media-body h6{
              color: <?php echo GetLightText(); ?>;
+            font-weight: 400;
+        }
+        body.light-theme .block-description h6{
+             color: <?php echo GetLightText(); ?>;
+            font-weight: 400;
+        }  
+        body.light-theme .movie-time i{
+             color: <?php echo GetLightText(); ?>!important;
+            font-weight: 400;
+        }  
+        body.light-theme .p-tag1{
+             color: <?php echo GetLightText(); ?>!important;
+            font-weight: 400;
+        } body.light-theme .p-tag{
+             
+             color: <?php echo GetLightText(); ?>!important;
+            font-weight: 400;
+        } 
+        body.light-theme .movie-time span{
+             color: <?php echo GetLightText(); ?>!important;
+            font-weight: 400;
+        }
+        body.light-theme .block-description a{
+             color: <?php echo GetLightText(); ?>!important;
+            font-weight: 400;
         }
         body.light-theme  header .navbar ul li{
             font-weight: 400;
@@ -393,13 +418,16 @@ input:checked + .sliderk:before {
     </style>
      
    <body>
-       <div class="fullpage-loader">
-	<div class="fullpage-loader__logo">
-		
-		<img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>">
-	</div>
-</div>
-      <!-- loader Start -->
+      
+               <!-- loader Start -->
+   <?php if( get_image_loader() == 1) { ?>
+      <div class="fullpage-loader">
+	      <div class="fullpage-loader__logo">
+		      <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>">
+	      </div>
+      </div>
+   <?php } ?>
+
      <!-- <div id="loading">
          <div id="loading-center">
          </div>

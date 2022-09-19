@@ -108,6 +108,9 @@ Route::post('favorite', 'ThemeAudioController@add_favorite');
 Route::post('albumfavorite', 'ThemeAudioController@albumfavorite');
 Route::get('/live/category/{cid}', 'LiveStreamController@channelVideos');
 
+//theme 3 full Player 
+Route::get('/category/videos/play/{vid}', 'ChannelController@fullplayer_videos')->name('fullplayer_videos');
+
 
 Route::get('/updatecard', 'PaymentController@UpdateCard');
 Route::get('/my-refferals', 'PaymentController@MyRefferal');

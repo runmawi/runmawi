@@ -43,8 +43,7 @@ $system_settings = App\SystemSetting::find(1);
     .nv{
         font-size: 14px;
        color: #fff;
-        margin-top: 25px;
-    }
+        }
     .km{
        text-align:center;
          font-size: 75px;
@@ -56,7 +55,7 @@ $system_settings = App\SystemSetting::find(1);
  }
     a.f-link {
     margin-bottom: 1rem;
-        margin-left: 15vw;
+      text-align: right;
         font-size: 14px;
     
 }
@@ -68,7 +67,7 @@ i.fa.fa-google-plus {
 }
 
 .sign-in-from{
-    width: 50% !important;
+   
     margin: 0 auto;
     display: block;
 }
@@ -77,13 +76,13 @@ i.fa.fa-google-plus {
  
 <section class="sign-in-page" style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;">
    <div class="container">
-      <div class="row  align-items-center height-self-center">
+      <div class="row  align-items-center justify-content-center height-self-center">
           <!-- <div class="col-lg-  col-md-6">
               <div class="" >
               <h1 class="km">WATCH<br> TV SHOWS &amp;<br> MOVIES <br>ANYWHERE,<br> ANYTIME</h1>
                   </div>
           </div> -->
-         <div class="col-lg-12 col-md-12 align-self-center">
+         <div class="col-lg-5 col-12 col-md-12 align-self-center">
             <div class="sign-user_card ">                    
                <div class="sign-in-page-data">
                   <div class="sign-in-from  m-auto" align="center">
@@ -127,7 +126,7 @@ i.fa.fa-google-plus {
                            <!--<input type="password" class="form-control mb-0" id="exampleInputPassword2" placeholder="Password" required>-->
                             								<input id="password" type="password" class="form-control @error('password') is-invalid @enderror" placeholder="{{ __('Password') }}" name="password" required autocomplete="current-password" >
                         </div>
-                         <div class="d-flex justify-content-around links">
+                         <div class="d-flex justify-content-end links">
                       @if (Route::has('password.request'))
                      <a href="{{ URL::to('channel/password/reset') }}" class="f-link">Forgot your password?</a>
                       @endif
@@ -139,14 +138,14 @@ i.fa.fa-google-plus {
                                                             
                            </div> 
                            <div class="clear"></div>
-                         <div class="custom-control custom-checkbox" align="left" style="" >
+                         <div class="custom-control custom-checkbox mt-2" align="left" style="" >
                                  <!--<input type="checkbox" class="custom-control-input" id="customCheck">-->
                                  
                                  <!--<label class="custom-control-label" for="customCheck">Remember Me</label>-->
                                   <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
 								<label class="form-check-label nv" for="remember">
 									{{ __('Keep me signed in') }}
-								</label>
+								</label> 
                               </div>  
                           <hr style="color:#1e1e1e;">
                            <div class="mt-3">
