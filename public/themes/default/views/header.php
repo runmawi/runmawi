@@ -361,6 +361,31 @@ input:checked + .sliderk:before {
         }
         body.light-theme .media-body h6{
              color: <?php echo GetLightText(); ?>;
+            font-weight: 400;
+        }
+        body.light-theme .block-description h6{
+             color: <?php echo GetLightText(); ?>;
+            font-weight: 400;
+        }  
+        body.light-theme .movie-time i{
+             color: <?php echo GetLightText(); ?>!important;
+            font-weight: 400;
+        }  
+        body.light-theme .p-tag1{
+             color: <?php echo GetLightText(); ?>!important;
+            font-weight: 400;
+        } body.light-theme .p-tag{
+             
+             color: <?php echo GetLightText(); ?>!important;
+            font-weight: 400;
+        } 
+        body.light-theme .movie-time span{
+             color: <?php echo GetLightText(); ?>!important;
+            font-weight: 400;
+        }
+        body.light-theme .block-description a{
+             color: <?php echo GetLightText(); ?>!important;
+            font-weight: 400;
         }
         body.light-theme  header .navbar ul li{
             font-weight: 400;
