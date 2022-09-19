@@ -63,40 +63,53 @@ border-radius: 0px 4px 4px 0px;
     
     @csrf
 		<div class="panel panel-primary" data-collapsed="0">
-                <div class="panel-heading"> <div class="panel-title"> <p>Site Background Color</p></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+                
                 <div class="panel-body"> 
-                        <div class="row mt-4">
-                           <div class="col-sm-4">
-                                <div class="input-group color-picker" style="width: 50%;">
+                        <div class="row mt-4 align-items-center">
+                            <div class="col-md-6">
+                                <div class="row align-items-center">
+                                    <div class="col-sm-6">
+                                         <div class="panel-heading"> <div class="panel-title"> <p>Site Background Color</p></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+                                <div class="input-group color-picker" >
                                     <label class="mt-2">Dark Mode</label>
                                     <input type="color" class="form-control ml-1"  name="dark_bg_color" data-format="hex" value="{{ $settings->dark_bg_color}}" />
                                 </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="input-group color-picker" style="width: 50%;">
+                                    </div>
+                                    <div class="col-sm-6 mt-5">
+                                          <div class="input-group color-picker" >
                                     <label class="mt-2">Light Mode</label>
                                     <input type="color" class="form-control ml-1"  name="light_bg_color" data-format="hex" value="{{ $settings->light_bg_color}}" />
                                 </div>
+                                    </div>
+                                </div>
                             </div>
+                            <div class="col-md-6">
+                                 <div class="row align-items-center">
+                                    <div class="col-sm-6">
+                                         <div class="panel-heading"> <div class="panel-title mb-0"> <p>Site Text Color</p></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+                                <div class="input-group color-picker">
+                                    <label class="mt-2"> Dark Mode</label>
+                                    <input type="color" class="form-control ml-1"  name="dark_text_color" data-format="hex" value="{{ $settings->dark_text_color  }}" />
+                                </div>
+                                     </div>
+                                    <div class="col-sm-6 mt-5">
+                                     <div class="input-group color-picker" >
+                                    <label class="mt-2"> Light Mode</label>
+                                    <input type="color" class="form-control ml-1"  name="light_text_color" data-format="hex" value="{{ $settings->light_text_color }}" />
+                                </div>
+                                     </div>
+                                </div>
+                            </div>
+                           
                         </div>
                 </div> 
 
 
-                <div class="panel-heading"> <div class="panel-title"> <p>Site Text Color</p></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+               
                 <div class="panel-body"> 
-                        <div class="row mt-4">
-                           <div class="col-sm-4">
-                                <div class="input-group color-picker" style="width: 50%;">
-                                    <label class="mt-2"> Dark Mode</label>
-                                    <input type="color" class="form-control ml-1"  name="dark_text_color" data-format="hex" value="{{ $settings->dark_text_color  }}" />
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="input-group color-picker" style="width: 50%;">
-                                    <label class="mt-2"> Light Mode</label>
-                                    <input type="color" class="form-control ml-1"  name="light_text_color" data-format="hex" value="{{ $settings->light_text_color }}" />
-                                </div>
-                            </div>
+                        <div class="row mt-2">
+                           
+                            
                         </div>
                 </div> 
             
@@ -125,33 +138,18 @@ border-radius: 0px 4px 4px 0px;
             
 
 
-                <div class="panel-heading mt-3"> 
-                    <div class="panel-title"> 	
-                        <h4><i class="entypo-monitor"></i> Theme Settings for Default Button Color</h4> 
-                    </div> 
-                    <p>Button Background Color</p>
-                    <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
-                
-                </div> 
-			    <div class="panel-body"> 
-                    <div class="row mt-3">
-                        <div class="col-sm-4">
-                             <div class="input-group color-picker" style="width: 50%;">
-                                <label class="mt-2">Color</label>
-                                <input type="color" class="form-control ml-1"  name="button_bg_color" data-format="hex" @if( $settings->button_bg_color != null) value="{{ $settings->button_bg_color }}" @else value="{{ '#006AFF' }}"  @endif  />
-                            </div>
-                        </div>
-                    </div>
-                </div> 
+              
                 
                 <div class="panel-heading mt-3"> 
                     <div class="panel-title"> 	
                         <h4><i class="entypo-monitor"></i> Checkout Theme Setting</h4> 
                     </div> 
-                        <p>{{ ucfirst(trans('signup page theme')) }}</p>
+                      
                 
-                    <div class="panel-body"> 
+                    <div class="row"> 
+                        
                             <div class="col-sm-6">
+                                  <p>{{ ucfirst(trans('signup page theme')) }}</p>
                                 <div class="mt-1">
                                     <label class="switch">
                                         <input name="signup_theme" class="signup_theme" id="signup_theme" type="checkbox" @if( $settings->signup_theme == "1") checked  @endif >
@@ -159,16 +157,17 @@ border-radius: 0px 4px 4px 0px;
                                     </label>
                                 </div>
                             </div>
-                    </div> 
+                   
 
-                    <p>{{ ucfirst(trans('signup Agree Message')) }}</p>
-                    <div class="panel-body"> 
+                   
+                   
                             <div class="col-sm-6">
+                                 <p>{{ ucfirst(trans('signup Agree Message')) }}</p>
                                 <input type="text" placeholder="Signup Agree Message" name="signup_payment_content" class="form-control signup_payment_content" id="signup_payment_content" value="@if(!empty($settings->signup_payment_content)){{ $settings->signup_payment_content }}@endif">
                             </div>
-                    </div> 
+                    
                 </div>
-
+</div>
                                  {{-- Prevent Viewing Page Source --}}
                                  
                 <div class="panel-heading mt-3"> 
@@ -191,32 +190,40 @@ border-radius: 0px 4px 4px 0px;
                                                 {{-- Style sheet  --}}
 
                 <div>
-                    <div class="panel-heading mt-3 "> 
+                    <div class="row">
+                        <div class="col-lg-6">
+                             <div class="panel-heading mt-3 "> 
                         <div class="panel-title"> 	
                             <h4><i class="entypo-monitor"></i> Style Sheet Link</h4> 
                         </div>             
                     </div> 
     
                     <div class="panel-body"> 
-                        <div class="col-sm-6">
+                        <div class="">
                             <input name="style_sheet_link" class="form-control" placeholder="style.css" id="" type="text" value="{{  $settings->style_sheet_link ?  $settings->style_sheet_link : ""  }}">
                         </div>
                     </div> 
-
-                    <div class="panel-heading mt-3 "> 
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="panel-heading mt-3 "> 
                         <div class="panel-title"> 	
                             <h4><i class="entypo-monitor"></i> Typography Link</h4> 
                         </div>             
                     </div> 
     
                     <div class="panel-body"> 
-                        <div class="col-sm-6">
+                        <div class="">
                             <input name="typography_link" class="form-control" placeholder="typography.css" id="" type="text" value="{{  $settings->typography_link ?  $settings->typography_link : ""  }}">
                         </div>
                     </div> 
+                        </div>
+                    </div>
+                   
+
+                    
                 </div>
                                 
-                <div class="panel-body" style="display: flex; justify-content: flex-end;">
+                <div class="panel-body mt-4" style="display: flex; justify-content: flex-end;">
                     <button type="submit" class="btn btn-primary " name="submit"> Save Settings</button>
                 </div>
 </form>
