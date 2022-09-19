@@ -672,3 +672,9 @@ function get_coupon_code(){
     return $get_enable_captcha;
 }
 
+function get_image_loader(){
+
+    $get_image_loader = "0" ;
+
+    return $get_image_loader;
+}

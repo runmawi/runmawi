@@ -553,13 +553,16 @@ input:checked + .sliderk:before {
     </style>
      
    <body>
-         <div class="fullpage-loader">
-	<div class="fullpage-loader__logo">
-		
-		<img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>">
-	</div>
-</div>
+      
       <!-- loader Start -->
+      <?php if( get_image_loader() == 1) { ?>
+         <div class="fullpage-loader">
+            <div class="fullpage-loader__logo">
+               <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>">
+            </div>
+         </div>
+      <?php } ?>
+
      <!-- <div id="loading">
          <div id="loading-center">
          </div>
