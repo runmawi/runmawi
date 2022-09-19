@@ -717,7 +717,7 @@ $(document).ready(function(){
   // include('AdsvideoMid.php');
   // include('AdsvideoPost.php');
 
-  include('Adstagurl.php'); 
+  // include('Adstagurl.php'); 
 
 ?>
 
