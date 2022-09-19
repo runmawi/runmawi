@@ -68,13 +68,13 @@ a:hover { text-decoration: none; }
 .table { /*color: var(--iq-body-text);*/ }
 
 /* scroller */
-.scroller { overflow-y: auto; scrollbar-color: var(--iq-primary) var(--iq-light-primary); scrollbar-width: thin; }
-.scroller::-webkit-scrollbar-thumb { background-color: var(--iq-primary); }
-.scroller::-webkit-scrollbar-track { background-color: var(--iq-light-primary); }
-#sidebar-scrollbar { overflow-y: auto; scrollbar-color: var(--iq-primary) var(--iq-light-primary); scrollbar-width: thin; }
-#sidebar-scrollbar::-webkit-scrollbar-thumb { background-color: var(--iq-primary); }
-#sidebar-scrollbar { height: calc(100vh - 153px) !important; }
-#sidebar-scrollbar::-webkit-scrollbar-track { background-color: var(--iq-light-primary); }
+.scroller { overflow-y: auto; scrollbar-color: #ddd; scrollbar-width: thin; }
+.scroller::-webkit-scrollbar-thumb { background-color: #000; }
+.scroller::-webkit-scrollbar-track { background-color: #000; }
+#sidebar-scrollbar { overflow-y: auto; scrollbar-color: #ddd; scrollbar-width: thin; }
+#sidebar-scrollbar::-webkit-scrollbar-thumb { background-color: #000; }
+#sidebar-scrollbar { height: calc(100vh - 100px) !important; }
+#sidebar-scrollbar::-webkit-scrollbar-track { background-color: #ddd; }
 ::-webkit-scrollbar { width: 8px; height: 8px; border-radius: 5px; }
 
 /* Track */
@@ -386,7 +386,7 @@ font-weight: 600;
 .iq-sidebar-menu .iq-menu li ul { /*padding-left: 0;*/ }
 .sidebar-main .iq-sidebar-menu .iq-menu li ul { padding-left: 0; }
 .iq-sidebar-menu .iq-menu li ul a:hover { color: var(--iq-primary); text-decoration: none; background: transparent; }
-.iq-sidebar-menu .iq-menu li ul li a { padding: 20px 20px 10px 35px; }
+.iq-sidebar-menu .iq-menu li ul li a { padding: 20px 20px 10px 5px; }
 .iq-sidebar-menu .iq-menu li ul ul li > a { padding-left: 65px; }
 .iq-sidebar-menu .iq-menu li ul ul ul li > a { padding-left: 80px; }
 .iq-sidebar-menu .iq-menu li.active .iq-submenu li a[aria-expanded="true"], .iq-sidebar-menu .iq-menu li .iq-submenu li a[aria-expanded="true"] { box-shadow: none; }
