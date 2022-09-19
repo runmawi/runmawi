@@ -1,6 +1,6 @@
 
 <?php
- include(public_path('themes/theme3/views/header.php')); ?>
+ include(public_path('themes/theme3/views/link.php')); ?>
 
 <?php 
 
@@ -775,7 +775,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 
  
 
-                 <div class="row justify-content-end">
+               <!--  <div class="row justify-content-end">
            <div class="col-sm-8 col-md-8 col-xs-4 text-right p-0">
                 <div>     
                         <?php if($video->trailer != '' && $ThumbnailSetting->trailer == 1 ){ ?>
@@ -788,7 +788,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                        <?php if($video->trailer != '' && $ThumbnailSetting->trailer == 1  ){ ?>
                            <!-- <div id="videoplay" class="btn1 btn-secondary btn-lg btn-block watch_trailer" style="border-radius:none!important;"><i class="ri-film-line"></i> Watch Trailer</div>
                            <div id="close_trailer" class="btn1 btn-primary btn-lg btn-block  close_trailer"><i class="ri-film-line"></i> Close Trailer</div>
-                           <div style=" display: none;" class="skiptrailer btn btn-default skip"> Skip</div> -->
+                           <div style=" display: none;" class="skiptrailer btn btn-default skip"> Skip</div> 
                        <?php } ?>
                        
                         <?php
@@ -799,7 +799,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                               <?php echo __('Rents');?> </button>
                             <?php } ?>
                    </div> 
-               </div></div>
+               </div></div>-->
            </div>
          </div>
            
@@ -901,41 +901,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 
 
 
-           <?php if(Auth::guest()){
-$artists = [];
-}else{
-
-}
- if(count($artists) > 0 ) { ?>
- <h4>Cast & crew</h4>
-         <div class="row">
-                <div class="favorites-contens">
-                    
-                    <ul class="category-page list-inline row p-0 mb-0 m-3">
-                       <?php foreach($artists as $key => $artist){  ?>
-                       <li class="slide-item ">
-                        <a  href="<?php echo __(URL::to('/') . '/artist/' . $artist->artist_slug); ?>"  >
-                             <div class="block-images position-relative">
-                                  <!-- block-images -->
-                                <div class="img-box">
-                                    <img src="<?= URL::to('/') . '/public/uploads/artists/'.$artist->image ?>" alt="" width="100">
-                                     <div class="p-tag2">
-                                           <p class="trending-dec w-100 mb-0 text-white mt-2" ><?php echo $artist->artist_name ; ?> </p>
-                                    </div>
-                                 </div>
-                                <div class="">
-                                    <a  href="<?php echo __(URL::to('/') . '/artist/' . $artist->artist_slug); ?>"  > </a>   
-                                </div>
-                            </div>
-                            
-                          </a>
-                       </li>
-                         <?php } }  ?>
-                    </ul>
-                     
-                 </div>
-          </div>
-
+          
    <!-- Modal -->
  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
      <div class="modal-dialog modal-dialog-centered" role="document">
@@ -1614,8 +1580,10 @@ location.reload();
 
 </script>
 
-<?php include(public_path('themes/theme3/views/footer.blade.php')); ?>
+ <?php include(public_path('themes/theme3/views/flink.blade.php')); ?>
 
+ 
+    
 <!-- Trailer m3u8 -->
 
 <script>
