@@ -17,8 +17,8 @@
 		<label for="name">Menu Item URL</label>
 		<select name="select_url" id="select_url" class="form-control">
 			<option value="">Select URL</option>
-			<option value="add_Site_url" @if(!empty($menu->url)){{ 'selected' }}@endif >Site URL</option>
-			<option value="add_Custom_url"@if(!empty($menu->custom_url)){{ 'selected' }}@endif>Custom URL</option>
+			<option value="add_Site_url" @if($menu->select_url == "add_Site_url"){{ 'selected' }}@endif >Site URL</option>
+			<option value="add_Custom_url"@if($menu->select_url == "add_Custom_url"){{ 'selected' }}@endif>Custom URL</option>
 		</select><br />
 		 <div id="div_Site">
 			<label for="url">Menu Item URL (ex. /site/url)</label>

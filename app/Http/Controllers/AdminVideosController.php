@@ -3900,11 +3900,13 @@ if(!empty($artistsdata)){
                     $date = $data['date'];
                     $month = $data['month'];
                     $year = $data['year'];
-                    $choose_start_time = $data['choose_start_time'];
-                    $choose_end_time = $data['choose_end_time'];
-                    // echo "<pre>";print_r($choose_start_time);exit;
-                        if(!empty($choose_start_time)){
+                    $schedule_time = $data['schedule_time'];
+                    // $choose_start_time = $data['choose_start_time'];
+                    // $choose_end_time = $data['choose_end_time'];
+                        if(!empty($schedule_time)){
                                 
+                    echo "<pre>";print_r($schedule_time);exit;
+                            
                             
                             $Schedule_current_date = date('Y-m-d');
 
@@ -3918,14 +3920,15 @@ if(!empty($artistsdata)){
                             // echo "<pre>";print_r($date_choosed);exit;
 
                             $choosedtime_exitvideos = ScheduleVideos::selectRaw('*')
+                            ->where('shedule_date','=',$date_choosed)
                             ->whereBetween('choose_start_time',[$choose_start_time, $choose_end_time])
                             ->orderBy('id', 'desc')->first();
                             // SELECT * FROM schedule_videos WHERE choose_start_time BETWEEN '01:30 PM' AND '02:30 PM';
 
-                            $ScheduleVideos = DB::table('schedule_videos')
-                            ->select('*')
-                            ->whereBetween('choose_start_time',['01:30 PM','02:30 PM'])
-                            ->orderBy('id', 'desc')->first();
+                            // $ScheduleVideos = DB::table('schedule_videos')
+                            // ->select('*')
+                            // ->whereBetween('choose_start_time',['01:30 PM','02:30 PM'])
+                            // ->orderBy('id', 'desc')->first();
 
                             echo "<pre>";print_r($choosedtime_exitvideos);exit;
 
@@ -3956,7 +3959,7 @@ if(!empty($artistsdata)){
                             print_r($choosedtime_exitvideos);exit;
 
                             if(!empty($ScheduleVideos) && empty($choosedtime_exitvideos)){
-                                print_r('ScheduleVideos');exit;
+                                // print_r('ScheduleVideos');exit;
 
                                 $last_shedule_endtime = $ScheduleVideos->shedule_endtime;
                                 $last_current_time = $ScheduleVideos->current_time;
@@ -4031,7 +4034,7 @@ if(!empty($artistsdata)){
 
                             }elseif(!empty($ScheduleVideos) && !empty($choosedtime_exitvideos)){
 
-                                print_r($ScheduleVideos);exit;
+                                // print_r($ScheduleVideos);exit;
 
                                 
                                 if($last_shedule_endtime < $current_time){
@@ -4048,7 +4051,7 @@ if(!empty($artistsdata)){
                                     $shedule_endtime = $hours.':'.$minutes.' '.date('A', strtotime($now));
                                     $sheduled_endtime = $hours.':'.$minutes;
                                     
-                                    print_r($last_shedule_endtime);exit;
+                                    // print_r($last_shedule_endtime);exit;
 
                                 }else{
 

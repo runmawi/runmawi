@@ -524,7 +524,7 @@ input:checked + .sliderk:before {
 
                                           <?php } else { ?>
                                           <li class="menu-item">
-                                          <a href="<?php if(!empty($menu->url)){ echo URL::to('/').$menu->url; }elseif(!empty($menu->custom_url)){ echo $menu->custom_url;  }?>">
+                                          <a href="<?php if($menu->select_url == "add_Site_url"){ echo URL::to('/').$menu->url; }elseif($menu->select_url == "add_Custom_url"){ echo $menu->custom_url;  }?>">
                                               <?php echo __($menu->name);?>
                                             </a>
                                           </li>
