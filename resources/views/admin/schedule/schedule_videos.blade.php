@@ -33,11 +33,13 @@
 
                 <div class="row">
                     <div class="col-3">
-                        <!-- <label for="">Choose Time</label><br>
-                        <p style="color:black"> Select Timing Before Upload Video <span style="color:red;">*</span></p> -->
-                        <!-- <select class="form-control" name="time" id="time" >
+                        <label for="">Choose Time</label><br>
+                        <p style="color:black"> Select Timing Before Upload Video <span style="color:red;">*</span></p>
+                        <select class="form-control" name="time" id="time" >
                             <option value="">Select Schedule Timing</option>
-                            <option value="12:00 AM to 01:00 AM">12:00 AM to 01:00 AM</option>
+                            <option value="12:00 AM to 12:00 PM">12:00 AM to 12:00 PM</option>
+                            <option value="12:00 PM to 12:00 AM">12:00 PM to 12:00 AM</option>
+                            <!-- <option value="12:00 AM to 01:00 AM">12:00 AM to 01:00 AM</option>
                             <option value="01:00 AM to 02:00 AM">01:00 AM to 02:00 AM</option>
                             <option value="02:00 AM to 03:00 AM">02:00 AM to 03:00 AM</option>
                             <option value="03:00 AM to 04:00 AM">03:00 AM to 04:00 AM</option>
@@ -60,17 +62,17 @@
                             <option value="08:00 PM to 09:00 PM">08:00 PM to 09:00 PM</option>
                             <option value="09:00 PM to 10:00 PM">09:00 PM to 10:00 PM</option>
                             <option value="10:00 PM to 11:00 PM">10:00 PM to 11:00 PM</option>
-                            <option value="11:00 PM to 12:00 AM">11:00 PM to 12:00 AM</option>
-                        </select> -->
-                        <label class="m-0">Start Time <small>(Please Time in this Format Hours:minutes PM/PM)</small></label>
-                        <input type="text" class="form-control" id="choose_start_time" name="choose_start_time" value="">
+                            <option value="11:00 PM to 12:00 AM">11:00 PM to 12:00 AM</option> -->
+                        </select>
+                        <!-- <label class="m-0">Start Time <small>(Please Time in this Format Hours:minutes PM/PM)</small></label>
+                        <input type="text" class="form-control" id="choose_start_time" name="choose_start_time" value=""> -->
                         
                     </div>
-                    <div class="col-3">
+                    <!-- <div class="col-3">
                         <label class="m-0">End Time <small>(Please Time in this Format Hours:minutes PM/PM)</small></label>
                         <input type="text" class="form-control" id="choose_end_time" name="choose_end_time" value="">
 
-                    </div>
+                    </div> -->
                     <div class="col-3">
                             <label for=""><h5 class="fs-title m-0">Your IFRAME URL:</h5></label>
                     </div>
@@ -176,8 +178,9 @@
             formData.append("year", year);
             formData.append("date", date);
             formData.append("schedule_id", schedule_id);
-            formData.append("choose_start_time", $('#choose_start_time').val());
-            formData.append("choose_end_time", $('#choose_end_time').val());
+            formData.append("schedule_time", $('#time').val());
+            // formData.append("choose_start_time", $('#choose_start_time').val());
+            // formData.append("choose_end_time", $('#choose_end_time').val());
 
             // console.log(value)
             this.on("success", function(file, value) {

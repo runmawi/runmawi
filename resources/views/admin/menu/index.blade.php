@@ -49,8 +49,21 @@
 					<form id="new-menu-form" accept-charset="UTF-8" action="{{ URL::to('admin/menu/store') }}" method="post">
 				        <label for="name">Enter the new menu item name below</label>
 				        <input name="name" id="name" placeholder="Menu Item Name" class="form-control" value="" /><br />
-				        <label for="url">Menu Item URL (ex. /site/url)</label>
-				        <input name="url" id="url" placeholder="URL" class="form-control" value="" /><br />
+				        
+						<label for="name">Menu Item URL</label>
+						<select name="select_url" id="select_url" class="form-control">
+							<option value="">Select URL</option>
+							<option value="add_Site_url">Site URL</option>
+							<option value="add_Custom_url">Custom URL</option>
+						</select><br />
+						<div id="div_Site">
+							<label for="url">Menu Item URL (ex. /site/url)</label>
+							<input name="url" id="url" placeholder="URL" class="form-control" value="" /><br />
+						</div>
+						<div id="div_Custom">
+							<label for="url">Custom URL (ex. full url)</label>
+							<input name="custom_url" id="custom_url" placeholder="Custom URL" class="form-control" value="" /><br />
+						</div>
 				        <label for="dropdown">or Dropdown for:</label>
 				        <div class="clear"></div>
 				        <input type="radio" class="menu-dropdown-radio" name="type" value="none" checked="checked" /> None
@@ -251,6 +264,20 @@
 			}
 		}
 
+			$(document).ready(function(){
+				
+				$('#div_Site').hide();
+				$('#div_Custom').hide();
+				$('#select_url').change(function(){
+					if($('#select_url').val() == 'add_Site_url'){
+						$('#div_Custom').hide();
+						$('#div_Site').show();
+					}else if($('#select_url').val() == 'add_Custom_url'){
+						$('#div_Site').hide();
+						$('#div_Custom').show();
+					}
+				})
+			})
 		</script>
 
 
