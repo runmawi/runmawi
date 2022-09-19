@@ -218,13 +218,16 @@ class ChannelLoginController extends Controller
                 else
                 {
                     return redirect('/channel/login')
-                        ->with('message', 'Miss Match Login Credentials');
+                        ->with('message', 'Login Credentials Do Not Match With Something on Our Records. 
+Please recheck the credentials before you try again!');
                 }
             }
             else
             {
+                
                 return redirect('/channel/login')
-                    ->with('message', 'Miss Match Login Credentials');
+                    ->with('message', 'Login Credentials Do Not Match With Something on Our Records. 
+Please recheck the credentials before you try again!');
             }
 
         }
