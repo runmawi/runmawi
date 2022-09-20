@@ -37,7 +37,7 @@
                               <div class="form-card">
                                   <h2 class="fs-title">General Information</h2>
                                   <div class="row col-md-12">
-                                      <div class="form-group col-md-4">
+                                      <div class="form-group col-md-4 p-0">
                                           <label>Age:</label>
                           
                                           <p class="error-message" style="color: red;font-size:10px;">This filed is required</p>
@@ -93,7 +93,7 @@
                                           </div>
                                       </div>
                           
-                                      <div class="form-group col-md-5">
+                                      <div class="form-group col-md-5 p-0">
                                           <label>Household Income:</label>
                           
                                           <p class="error-message" style="color: red;font-size:10px;">This filed is required</p>
@@ -148,11 +148,11 @@
                                           </div>
                                       </div>
                           
-                                      <div class="form-group col-md-3">
+                                      <div class="form-group col-md-3 p-0">
                                           <label>Gender:</label>
                                           <p class="error-message" style="color: red;font-size:10px;">This filed is required</p>
                           
-                                          <select class="js-example-basic-multiple" name="gender[]" multiple="multiple" id="gender">
+                                          <select class="js-example-basic-multiple form-control" name="gender[]" multiple="multiple" id="gender">
                                               <option value="male">Male</option>
                                               <option value="female">Female</option>
                                               <option value="kids">Kids</option>

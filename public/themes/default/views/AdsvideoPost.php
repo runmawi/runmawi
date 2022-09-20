@@ -15,7 +15,7 @@ $AdsVideosPost = App\AdsEvent::Join('advertisements','advertisements.id','=','ad
   // ->whereTime('start', '<=', $current_time)
   // ->whereTime('end', '>=', $current_time)
   ->where('ads_events.status',1)
-  ->where('advertisements.status',10)
+  ->where('advertisements.status',1)
   ->where('advertisements.ads_position','post')
   ->where('videos.ads_category',$video->ads_category)
   ->get();
