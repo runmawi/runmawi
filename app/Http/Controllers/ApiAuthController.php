@@ -8047,6 +8047,27 @@ $cpanel->end();
       }
         return response()->json($response, 200);
     }
+
+    public function account_delete(Request $request){
+
+        try {
+          User::find($request->user_id)->delete();
+
+          $status = "true";
+          $message = "Your ". GetWebsiteName() ." user account was successfully deleted" ;
+
+        } catch (\Throwable $th) {
+            $status = "false";
+            $message =  $th->getMessage();
+        }
+
+        $response = array(
+          'status'=> $status,
+          'message'=> $message,
+        );
+
+        return response()->json($response, 200);
+    }
 }
 
 
