@@ -80,7 +80,6 @@
   var Ads_type        = <?php echo json_encode($ads_type); ?> ;
   var ads_videoplayer_id  = <?php echo json_encode($video_type_id); ?> ;
 
-
   if( Ads_count >= 1 && Ads_type != null){
 
   this.videoads_tym.addEventListener('timeupdate', (e) => {
