@@ -13,12 +13,15 @@ use App\PlayerAnalytic as PlayerAnalytic;
 use Auth;
 use Hash;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Contracts\Filesystem\Filesystem;
 use Image;
 use DB;
 use App\CountryCode as CountryCode;
 use App\City as City;
 use App\State as State;
 use App\UserLogs as UserLogs;
+use File;
+
 
 class AdminPlayerAnalyticsController extends Controller
 {
@@ -292,7 +295,117 @@ class AdminPlayerAnalyticsController extends Controller
     }
     }
 
+    public function PlayerVideosExport(Request $request){
+        $user_package = User::where("id", 1)->first();
+        $package = $user_package->package;
+        if (
+            (!empty($package) && $package == "Pro") ||
+            (!empty($package) && $package == "Business")
+        ) {
 
+            $data = $request->all();
+            // dd($data);exit;
+
+            $start_time = $data["start_time"];
+            $end_time = $data["end_time"];
+            if (!empty($start_time) && empty($end_time)) {
+                $player_videos = PlayerAnalytic::join('users', 'users.id', '=', 'player_analytics.user_id')
+                ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')
+                // ->groupBy('player_analytics.videoid')
+                ->orderBy('player_analytics.created_at')
+                ->whereDate('player_analytics.created_at', '>=', $start_time)->groupBy('month_name')
+                ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title',
+                DB::raw('sum(player_analytics.duration) as duration') ,
+                 DB::raw('sum(player_analytics.currentTime) as currentTime') ,
+                 DB::raw('(player_analytics.seekTime) as seekTime') ,
+                 DB::raw('(player_analytics.bufferedTime) as bufferedTime') ,
+                 DB::raw('sum(player_analytics.watch_percentage) as watch_percentage') ,
+                 \DB::raw("MONTHNAME(player_analytics.created_at) as month_name") ,
+                 \DB::raw("COUNT(player_analytics.videoid) as count"),
+                 \DB::raw("(player_analytics.watch_percentage) as watchpercentage"),
+                ]);
+
+            } elseif (!empty($start_time) && !empty($end_time)) {
+ 
+                $player_videos = PlayerAnalytic::join('users', 'users.id', '=', 'player_analytics.user_id')
+                ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')
+                // ->groupBy('player_analytics.videoid')
+                ->orderBy('player_analytics.created_at')
+                ->whereBetween('player_analytics.created_at', [$start_time, $end_time])->groupBy('month_name')
+                ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title',
+                DB::raw('sum(player_analytics.duration) as duration') ,
+                 DB::raw('sum(player_analytics.currentTime) as currentTime') ,
+                 DB::raw('(player_analytics.seekTime) as seekTime') ,
+                 DB::raw('(player_analytics.bufferedTime) as bufferedTime') ,
+                 DB::raw('sum(player_analytics.watch_percentage) as watch_percentage') ,
+                 \DB::raw("MONTHNAME(player_analytics.created_at) as month_name") ,
+                 \DB::raw("COUNT(player_analytics.videoid) as count"),
+                 \DB::raw("(player_analytics.watch_percentage) as watchpercentage"),
+                ]);
+
+            } else {
+
+                $player_videos = PlayerAnalytic::join('users', 'users.id', '=', 'player_analytics.user_id')
+                ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')
+                // $player_videos = PlayerAnalytic::groupBy('videoid')
+                ->groupBy('player_analytics.videoid')
+                ->orderBy('player_analytics.created_at')
+                ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title',
+                DB::raw('sum(player_analytics.duration) as duration') ,
+                 DB::raw('sum(player_analytics.currentTime) as currentTime') ,
+                 DB::raw('(player_analytics.seekTime) as seekTime') ,
+                 DB::raw('(player_analytics.bufferedTime) as bufferedTime') ,
+                 DB::raw('sum(player_analytics.watch_percentage) as watch_percentage') ,
+                 \DB::raw("MONTHNAME(player_analytics.created_at) as month_name") ,
+                 \DB::raw("COUNT(player_analytics.videoid) as count"),
+                 \DB::raw("(player_analytics.watch_percentage) as watchpercentage"),
+                //  floor($player_videos[1]->duration / 60)
+                ]);
+                    
+            }
+            $file = "PlayerVideosAnalytics.csv";
+
+            $headers = [
+                "Content-Type" => "application/vnd.ms-excel; charset=utf-8",
+                "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+                "Content-Disposition" => "attachment; filename=download.csv",
+                "Expires" => "0",
+                "Pragma" => "public",
+            ];
+            if (!File::exists(public_path() . "/uploads/csv")) {
+                File::makeDirectory(public_path() . "/uploads/csv");
+            }
+            $filename = public_path("/uploads/csv/" . $file);
+            $handle = fopen($filename, "w");
+            fputcsv($handle, [
+                "Video Name",
+                "Viewed Count",
+                "Watch Percentage (Minutes)",
+                "Commission Pending",
+                "Seek Time (Seconds)",
+                "Buffered Time (Seconds)",
+            ]);
+            if (count($player_videos) > 0) {
+                foreach ($player_videos as $each_user) {
+                    fputcsv($handle, [
+                        $each_user->title,
+                        $each_user->count,
+                        $each_user->watchpercentage,
+                        $each_user->seekTime,
+                        $each_user->bufferedTime,
+                    ]);
+                }
+            }
+
+            fclose($handle);
+
+            \Response::download($filename, "download.csv", $headers);
+
+            return $file;
+        } else {
+            return Redirect::to("/blocked");
+        }
+    }
 
     public function RegionVideoAnalytics(Request $request){
 
@@ -910,5 +1023,118 @@ class AdminPlayerAnalyticsController extends Controller
     }
 }
 
+        
+    public function PlayerUsersExport(Request $request){
+
+        $user_package = User::where("id", 1)->first();
+        $package = $user_package->package;
+        if (
+            (!empty($package) && $package == "Pro") ||
+            (!empty($package) && $package == "Business")
+        ) {
+
+            $data = $request->all();
+            // dd($data);exit;
+
+            $start_time = $data["start_time"];
+            $end_time = $data["end_time"];
+            if (!empty($start_time) && empty($end_time)) {
+            
+                $player_videos = PlayerAnalytic::join('users', 'users.id', '=', 'player_analytics.user_id')
+            ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')
+            // ->groupBy('player_analytics.videoid')
+            ->orderBy('player_analytics.created_at')
+            ->whereDate('player_analytics.created_at', '>=', $start_time)->groupBy('month_name')
+            ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title',
+            DB::raw('sum(player_analytics.duration) as duration') ,
+             DB::raw('sum(player_analytics.currentTime) as currentTime') ,
+             DB::raw('(player_analytics.seekTime) as seekTime') ,
+             DB::raw('(player_analytics.bufferedTime) as bufferedTime') ,
+             DB::raw('sum(player_analytics.watch_percentage) as watch_percentage') ,
+             \DB::raw("MONTHNAME(player_analytics.created_at) as month_name") ,
+             \DB::raw("COUNT(player_analytics.videoid) as count"),
+             \DB::raw("(player_analytics.watch_percentage) as watchpercentage"),
+            ]);
+
+            } elseif (!empty($start_time) && !empty($end_time)) {
+
+                $player_videos = PlayerAnalytic::join('users', 'users.id', '=', 'player_analytics.user_id')
+            ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')
+            // ->groupBy('player_analytics.videoid')
+            ->orderBy('player_analytics.created_at')
+            ->whereBetween('player_analytics.created_at', [$start_time, $end_time])->groupBy('month_name')
+            ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title',
+            DB::raw('sum(player_analytics.duration) as duration') ,
+             DB::raw('sum(player_analytics.currentTime) as currentTime') ,
+             DB::raw('(player_analytics.seekTime) as seekTime') ,
+             DB::raw('(player_analytics.bufferedTime) as bufferedTime') ,
+             DB::raw('sum(player_analytics.watch_percentage) as watch_percentage') ,
+             \DB::raw("MONTHNAME(player_analytics.created_at) as month_name") ,
+             \DB::raw("COUNT(player_analytics.videoid) as count"),
+             \DB::raw("(player_analytics.watch_percentage) as watchpercentage"),
+            ]);
     
+
+            } else {
+
+                $player_videos = PlayerAnalytic::join('users', 'users.id', '=', 'player_analytics.user_id')
+                ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')
+                ->groupBy('player_analytics.user_id')
+                ->orderBy('player_analytics.created_at')
+                ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title',
+                DB::raw('sum(player_analytics.duration) as duration') ,
+                DB::raw('sum(player_analytics.currentTime) as currentTime') ,
+                DB::raw('(player_analytics.seekTime) as seekTime') ,
+                DB::raw('(player_analytics.bufferedTime) as bufferedTime') ,
+                DB::raw('sum(player_analytics.watch_percentage) as watch_percentage') ,
+                \DB::raw("MONTHNAME(player_analytics.created_at) as month_name") ,
+                \DB::raw("COUNT(player_analytics.videoid) as count"),
+                \DB::raw("(player_analytics.watch_percentage) as watchpercentage"),
+                ]);
+
+            }
+            $file = "PlayerUsersAnalytics.csv";
+
+            $headers = [
+                "Content-Type" => "application/vnd.ms-excel; charset=utf-8",
+                "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+                "Content-Disposition" => "attachment; filename=download.csv",
+                "Expires" => "0",
+                "Pragma" => "public",
+            ];
+            if (!File::exists(public_path() . "/uploads/csv")) {
+                File::makeDirectory(public_path() . "/uploads/csv");
+            }
+            $filename = public_path("/uploads/csv/" . $file);
+            $handle = fopen($filename, "w");
+            fputcsv($handle, [
+                "User Name",
+                "Viewed Count",
+                "Watch Percentage (Minutes)",
+                "Commission Pending",
+                "Seek Time (Seconds)",
+                "Buffered Time (Seconds)",
+            ]);
+            if (count($player_videos) > 0) {
+                foreach ($player_videos as $each_user) {
+                    fputcsv($handle, [
+                        $each_user->username,
+                        $each_user->count,
+                        $each_user->watchpercentage,
+                        $each_user->seekTime,
+                        $each_user->bufferedTime,
+                    ]);
+                }
+            }
+
+            fclose($handle);
+
+            \Response::download($filename, "download.csv", $headers);
+
+            return $file;
+        } else {
+            return Redirect::to("/blocked");
+        }
+    }
+
 }
