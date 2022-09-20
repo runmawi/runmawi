@@ -54,6 +54,7 @@ class DatabaseSeeder extends Seeder
             MobileHomePageTableSeeder::class,
             FooterMenuSeeder::class,
             CompressImageSeeder::class,
+            SignupMenuSeeder::class,
         ]);
     
     }
