@@ -359,14 +359,19 @@ class AdminUsersController extends Controller
 
         if ($input['role'] == "subscriber")
         {
-            \Mail::send('emails.verify', array(
-                'activation_code' => $string,
-                'website_name' => $settings->website_name
-            ) , function ($message) use ($request, $input)
-            {
-                $message->to($request->email, $request->name)
-                    ->subject('Verify your email address');
-            });
+            try {
+                \Mail::send('emails.verify', array(
+                    'activation_code' => $string,
+                    'website_name' => $settings->website_name
+                ) , function ($message) use ($request, $input)
+                {
+                    $message->to($request->email, $request->name)
+                        ->subject('Verify your email address');
+                });
+            } catch (\Throwable $th) {
+                //throw $th;
+            }
+            
         }
         else
         {
@@ -1044,18 +1049,24 @@ class AdminUsersController extends Controller
         // $mail_check = ApprovalMailDevice::where('user_ip','=', $user_ip)->where('device_name','=', $device_name)->first();
         // if(empty($mail_check)){
         // dd($device->user_name->username);
-        Mail::send('emails.device_logout', array(
-            /* 'activation_code', $user->activation_code,*/
-            'name' => $username,
-            'email' => $email,
-            'user_ip' => $user_ip,
-            'device_name' => $device_name,
-            'id' => $id,
-        ) , function ($message) use ($email, $username, $settings)
-        {
-            $message->from(AdminMail() , $settings->website_name);
-            $message->to($email, $username)->subject('Request to Logout Device');
-        });
+
+        try {
+            Mail::send('emails.device_logout', array(
+                /* 'activation_code', $user->activation_code,*/
+                'name' => $username,
+                'email' => $email,
+                'user_ip' => $user_ip,
+                'device_name' => $device_name,
+                'id' => $id,
+            ) , function ($message) use ($email, $username, $settings)
+            {
+                $message->from(AdminMail() , $settings->website_name);
+                $message->to($email, $username)->subject('Request to Logout Device');
+            });
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+     
         $maildevice = new ApprovalMailDevice;
         $maildevice->user_ip = $userIp;
         $maildevice->device_name = $device_name;
@@ -1096,15 +1107,20 @@ class AdminUsersController extends Controller
 
         if (!empty($user_id))
         {
-            Mail::send('emails.register_device_login', array(
-                'id' => $user_id,
-                'name' => $username,
-
-            ) , function ($message) use ($email, $username, $settings)
-            {
-                $message->from(AdminMail() , $settings->website_name);
-                $message->to($email, $username)->subject('Buy Advanced Plan To Access Multiple Devices');
-            });
+            try {
+                Mail::send('emails.register_device_login', array(
+                    'id' => $user_id,
+                    'name' => $username,
+    
+                ) , function ($message) use ($email, $username, $settings)
+                {
+                    $message->from(AdminMail() , $settings->website_name);
+                    $message->to($email, $username)->subject('Buy Advanced Plan To Access Multiple Devices');
+                });
+            } catch (\Throwable $th) {
+                //throw $th;
+            }
+            
         }
         return Redirect::to('home');
         // return Redirect::to('/home');
