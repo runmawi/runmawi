@@ -80,6 +80,10 @@
     margin: 10px 5px 10px 0px;
     float: right;
 }
+    .iq-sidebar-menu .iq-menu li a span{
+      
+    padding: 5px 12px 6px 5px;
+    }
 </style>
 
 </head>
@@ -106,25 +110,23 @@
          <div id="sidebar-scrollbar">
             <nav class="iq-sidebar-menu">
                <ul id="iq-sidebar-toggle" class="iq-menu">
-                  <li class="views"><a href="<?php echo URL::to('home') ?>" ><i class="ri-arrow-right-line"></i><span>Visit site</span></a></li>
-                  <li class=" "><a href="<?php echo URL::to('advertiser') ?>" class="iq-waves-effect"><i class="las la-home iq-arrow-left"></i><span>Dashboard</span></a></li>
-                     <li><a href="<?php echo URL::to('advertiser') ?>/ads-list" class="iq-waves-effect"><i class="la la-buysellads"></i><span>Advertisements</span></a></li>
-                    <li><a href="<?php echo URL::to('advertiser') ?>/upload_ads" class="iq-waves-effect"><i class="la la-cloud-upload"></i><span> Upload Ads</span></a></li>
-                  <li class=" "><a href="<?php echo URL::to('advertiser') ?>/featured_ads" class="iq-waves-effect"><i class="la la-list-alt iq-arrow-left"></i><span>Pay Per Ads</span></a></li>
-                  <li class=" "><a href="<?php echo URL::to('advertiser') ?>/upload_featured_ad" class="iq-waves-effect"><i class="la la-cloud-upload iq-arrow-left"></i><span>Upload Featured Ad</span></a></li>
-                   <li class=" "><a href="<?php echo URL::to('advertiser/Ads_Scheduled') ?>" class="iq-waves-effect"><i class="   la la-list-alt iq-arrow-left"></i><span>Ads Scheduled</span></a></li>
-                    <li class=" "><a href="<?php echo URL::to('advertiser') ?>/ads_campaign" class="iq-waves-effect"><i class="la la-list-alt iq-arrow-left"></i><span>Ads campaign</span></a></li>
-                  <li class=" "><a href="<?php echo URL::to('advertiser') ?>/list_total_cpc" class="iq-waves-effect"><i class="la la-money iq-arrow-left"></i><span>CPC</span></a></li>
-                  <li class=" "><a href="<?php echo URL::to('advertiser') ?>/list_total_cpv" class="iq-waves-effect"><i class="la la-eye iq-arrow-left"></i><span>CPV</span></a></li>
-                   <li class=" "><a href="<?php echo URL::to('advertiser') ?>/featured_ad_history" class="iq-waves-effect"><i class="la la-history iq-arrow-left"></i><span>Featured Ad History</span></a></li>
-                     <li><a href="<?php echo URL::to('advertiser') ?>/plan_history" class="iq-waves-effect"><i class="la la-history"></i><span> Plans History</span></a></li>
-                      <li><a href="<?php echo URL::to('advertiser') ?>/logout" class="iq-waves-effect"><i class="la la-sign-out"></i><span> Logout</span></a></li>
+                  <li class="views"><a href="<?php echo URL::to('home') ?>" ><span>Visit site</span></a></li>
+                  <li class=" "><a href="<?php echo URL::to('advertiser') ?>" class="iq-waves-effect"><span>Dashboard</span></a></li>
+                     <li><a href="<?php echo URL::to('advertiser') ?>/ads-list" class="iq-waves-effect"><span>Advertisements</span></a></li>
+                    <li><a href="<?php echo URL::to('advertiser') ?>/upload_ads" class="iq-waves-effect"><span> Upload Ads</span></a></li>
+                  <li class=" "><a href="<?php echo URL::to('advertiser') ?>/featured_ads" class="iq-waves-effect"><span>Pay Per Ads</span></a></li>
+                  <li class=" "><a href="<?php echo URL::to('advertiser') ?>/upload_featured_ad" class="iq-waves-effect"><span>Upload Featured Ad</span></a></li>
+                   <li class=" "><a href="<?php echo URL::to('advertiser/Ads_Scheduled') ?>" class="iq-waves-effect"><span>Ads Scheduled</span></a></li>
+                    <li class=" "><a href="<?php echo URL::to('advertiser') ?>/ads_campaign" class="iq-waves-effect"><span>Ads campaign</span></a></li>
+                  <li class=" "><a href="<?php echo URL::to('advertiser') ?>/list_total_cpc" class="iq-waves-effect"><span>CPC</span></a></li>
+                  <li class=" "><a href="<?php echo URL::to('advertiser') ?>/list_total_cpv" class="iq-waves-effect"><span>CPV</span></a></li>
+                   <li class=" "><a href="<?php echo URL::to('advertiser') ?>/featured_ad_history" class="iq-waves-effect"><span>Featured Ad History</span></a></li>
+                     <li><a href="<?php echo URL::to('advertiser') ?>/plan_history" class="iq-waves-effect"><span> Plans History</span></a></li>
+                      <li><a href="<?php echo URL::to('advertiser') ?>/logout" class="iq-waves-effect"><span> Logout</span></a></li>
                    <div class="bod"></div>
                    <?php $activeplan =  App\Advertiserplanhistory::where('advertiser_id',session('advertiser_id'))->where('status','active')->count(); ?>
                    @if($activeplan != 0)
-                    <div>
-                        <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Ads Management</p>
-                    </div>
+                   
                   
 
                    

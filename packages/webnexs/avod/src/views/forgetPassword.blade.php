@@ -98,7 +98,7 @@ $system_settings = App\SystemSetting::find(1);
                                               @endif
                                       </div>
                                       <div class="form-group row text-center">
-                                          <button type="submit" class="btn btn-primary">
+                                          <button type="submit" class="btn btn-hover ab btn-lg btn-block">
                                               Send Password Reset Link
                                           </button>
                                       </div>
