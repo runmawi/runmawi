@@ -2048,7 +2048,7 @@ if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1
                 // 'channelvideos' => $channelvideos,
                 );
 
-            return View('admin.series.SeriesApproval.CppSeriesApproval', $data);
+            return View('admin.series.SeriesApproval.ChannelSeriesApproval', $data);
         }
     }
        public function ChannelSeriesApproval($id)
