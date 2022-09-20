@@ -674,7 +674,8 @@ function get_coupon_code(){
 
 function get_image_loader(){
 
-    $get_image_loader = "0" ;
+    $get_image_loader = App\SiteTheme::first();
+    return $get_image_loader->loader_setting;
 
     return $get_image_loader;
 }
