@@ -451,15 +451,17 @@ i.fa.fa-google-plus {
         padding: 10px;
         color: #000!important;
         background-color: #fff;
+        margin: 7px;
        
     }
 
     .actives {
         border:5px solid #a5a093;
+        padding: 10px!important;
     }
    
         .dg:hover{
-            padding: 10px;
+          
             color: #000!important;
             border:  {{ '5px solid'.button_bg_color() .'!important' }} ;
         }
@@ -536,13 +538,14 @@ i.fa.fa-google-plus {
                              @endphp
                              <div style="margin-top:20px;" class="col-md-6 plan_details stripe_plan_details"  data-plan-id={{ 'active'.$plan[0]->id  }}  data-plan-price={{ $plan[0]->price }} data-plan_id={{  $plan[0]->plan_id  }} data-payment-type={{ $plan[0]->payment_type }} onclick="plan_details(this)">
 
-                                 <div class="d-flex justify-content-between align-items-center dg"  id={{ 'active'.$plan[0]->id  }}>
-                                     <div class="bgk">
+                                 <div class="row justify-content-between align-items-center dg"  id={{ 'active'.$plan[0]->id  }}>
+                                     <div class="bgk col-lg-7 p-0">
                                          <h4 class="text-black font-weight-bold"> {{ $plan[0]->plans_name  }} </h4>
                                          <p>{{ $plan[0]->plans_name  }} Membership</p>
+                                         
                                      </div>
-                                     <div class="vl"></div>
-                                     <div style="border-left: 1px solid #fff; padding: 5px;">
+                                     <div class="vl "></div>
+                                     <div class="col-lg-4 p-0" style="border-left: 1px solid #fff; ">
                                          <h4 class="text-black">{{ "$".$plan[0]->price }}</h4>
                                          <p>Billed as {{ "$".$plan[0]->price }}</p>
                                      </div>
@@ -550,13 +553,13 @@ i.fa.fa-google-plus {
                              </div>
 
                             <div style="margin-top:20px;" class="col-md-6 plan_details paypal_plan_details"  data-plan-id={{ 'active'.$plan[0]->id  }}  data-plan-price={{ $plan[0]->price }} data-plan_id=@if(!empty($plan[1])) {{ $plan[1]->plan_id }} @endif data-payment-type={{ $plan[0]->payment_type }} onclick="paypalplan_details(this)">
-                                <div class="d-flex justify-content-between align-items-center dg"  id={{ 'active'.$plan[0]->id  }}>
-                                    <div class="bgk">
+                                <div class="row justify-content-between align-items-center dg"  id={{ 'active'.$plan[0]->id  }}>
+                                    <div class="bgk col-lg-7">
                                         <h4 class="text-black font-weight-bold"> {{ $plan[0]->plans_name  }} </h4>
                                         <p>{{ $plan[0]->plans_name  }} Membership</p>
                                     </div>
-                                    <div class="vl"></div>
-                                    <div style="border-left: 1px solid #fff; padding: 5px;">
+                                    <div class="vl col-lg-1"></div>
+                                    <div class="col-lg-4" style="border-left: 1px solid #fff; padding: 5px;">
                                         <h4 class="text-black">{{ "$".$plan[0]->price }}</h4>
                                         <p>Billed as {{ "$".$plan[0]->price }}</p>
                                     </div>
@@ -728,8 +731,9 @@ i.fa.fa-google-plus {
 
    
          <div class="form-group row">
-                <div class="col-md-10 col-sm-offset-1">
-				      <div class="pull-right sign-up-buttons">
+                <div class="col-md-12 text-center">
+                    <p class="mt-3 text-white">OR</p>
+				      <div class="mt-4 sign-up-buttons">
                    <a type="button" href="<?php echo URL::to('/').'/registerUser';?>" class="btn btn-secondary">
                             <?php echo __('Skip');?>
                         </a>
