@@ -22,7 +22,9 @@ NOTE: This file contains the styling for responsive Template.
 /*---------------------------------------------------------------------
                     Header
 -----------------------------------------------------------------------*/
-
+.media-body h6{
+    font-weight: 300;
+}
 @media (min-width: 411px){
     .tvsec {
        text-align: center;

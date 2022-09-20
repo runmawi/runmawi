@@ -510,12 +510,12 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="channel" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li><a href="{{ URL::to('admin/channel/view-channel-members/') }}"><i class="las la-eye"></i>View Channel Partners </a></li>
-                        <li><a href="{{ URL::to('admin/channel/pendingusers/') }}"><i class="las la-eye"></i>Channel Partners For Approval</a></li>
-                        <li><a href="{{ URL::to('admin/channel/commission') }}"><i class="las la-eye"></i>Commission </a></li>
-                        <li><a href="{{ URL::to('admin/channel/payouts') }}"><i class="las la-eye"></i>Channel Partners Payout</a></li>
-                        <li><a href="{{ route('channel_package_index') }}"><i class="las la-eye"></i>Channel Package</a></li>
-                        <li><a href="{{ route('channel_package_index') }}"><i class="las la-eye"></i>Channel Package</a></li>
+                        <li><a href="{{ URL::to('admin/channel/view-channel-members/') }}">View Channel Partners </a></li>
+                        <li><a href="{{ URL::to('admin/channel/pendingusers/') }}">Channel Partners For Approval</a></li>
+                        <li><a href="{{ URL::to('admin/channel/commission') }}">Commission </a></li>
+                        <li><a href="{{ URL::to('admin/channel/payouts') }}">Channel Partners Payout</a></li>
+                        <li><a href="{{ route('channel_package_index') }}">Channel Package</a></li>
+                        <li><a href="{{ route('channel_package_index') }}">Channel Package</a></li>
                      </ul>
                   </li>
                   <li>
@@ -807,11 +807,11 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="channel" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                     <li><a href="{{ URL::to('admin/channel/view-channel-members/') }}"><i class="las la-eye"></i>View Channel Partners </a></li>
-                        <li><a href="{{ URL::to('admin/channel/pendingusers/') }}"><i class="las la-eye"></i>Channel Partners For Approval</a></li>
-                        <li><a href="{{ URL::to('admin/channel/commission') }}"><i class="las la-eye"></i>Commission </a></li>
-                        <li><a href="{{ URL::to('admin/channel/payouts') }}"><i class="las la-eye"></i>Channel Partners Payout</a></li>
-                        <li><a href="{{ route('channel_package_index') }}"><i class="las la-eye"></i>Channel Package</a></li>
+                     <li><a href="{{ URL::to('admin/channel/view-channel-members/') }}">View Channel Partners </a></li>
+                        <li><a href="{{ URL::to('admin/channel/pendingusers/') }}">Channel Partners For Approval</a></li>
+                        <li><a href="{{ URL::to('admin/channel/commission') }}">Commission </a></li>
+                        <li><a href="{{ URL::to('admin/channel/payouts') }}">Channel Partners Payout</a></li>
+                        <li><a href="{{ route('channel_package_index') }}">Channel Package</a></li>
                      </ul>
                   </li>
                   <li>
@@ -1105,11 +1105,11 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="channel" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                     <li><a href="{{ URL::to('admin/channel/view-channel-members/') }}"><i class="las la-eye"></i>View Channel Partners </a></li>
-                        <li><a href="{{ URL::to('admin/channel/pendingusers/') }}"><i class="las la-eye"></i>Channel Partners For Approval</a></li>
-                        <li><a href="{{ URL::to('admin/channel/commission') }}"><i class="las la-eye"></i>Commission </a></li>
-                        <li><a href="{{ URL::to('admin/channel/payouts') }}"><i class="las la-eye"></i>Channel Partners Payout</a></li>
-                        <li><a href="{{ route('channel_package_index') }}"><i class="las la-eye"></i>Channel Package</a></li>
+                     <li><a href="{{ URL::to('admin/channel/view-channel-members/') }}">View Channel Partners </a></li>
+                        <li><a href="{{ URL::to('admin/channel/pendingusers/') }}">Channel Partners For Approval</a></li>
+                        <li><a href="{{ URL::to('admin/channel/commission') }}">Commission </a></li>
+                        <li><a href="{{ URL::to('admin/channel/payouts') }}">Channel Partners Payout</a></li>
+                        <li><a href="{{ route('channel_package_index') }}">Channel Package</a></li>
                      </ul>
                   </li>
                   <li>
