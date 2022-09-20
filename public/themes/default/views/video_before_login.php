@@ -925,9 +925,9 @@ $(document).ready(function(){
 
 <?php
 
-  // include('AdsvideoPre.php'); 
-  // include('AdsvideoMid.php');
-  // include('AdsvideoPost.php');
+  include('AdsvideoPre.php'); 
+  include('AdsvideoMid.php');
+  include('AdsvideoPost.php');
 
   include('Adstagurl.php'); 
 
