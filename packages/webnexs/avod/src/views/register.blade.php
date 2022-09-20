@@ -28,7 +28,7 @@ $uppercase =  ucfirst($request_url);
       <!-- Typography CSS -->
       <link rel="stylesheet" href="{{URL::to('/')}}/assets/css/typography.css" />
       <!-- Style -->
-      <link href="<?php echo URL::to('public/themes/theme1/assets/css/style.css') ?>" rel="stylesheet">
+      <link rel="stylesheet" href="<?= style_sheet_link()?>" />
       <!-- Responsive -->
       <link rel="stylesheet" href="{{URL::to('/')}}/assets/css/responsive.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
@@ -109,6 +109,7 @@ $uppercase =  ucfirst($request_url);
     background: transparent !important;
     color: var(--iq-white) !important;
 }
+    
 .form-control {
     height: 45px;
     line-height: 45px;
@@ -252,19 +253,21 @@ i.fa.fa-google-plus {
                             
                             <div class="sign-up-buttons col-md-12" align="right">
                                   
-                                  <button class="btn btn-hover btn-primary btn-block signup" style="display: block;" type="submit" name="create-account">{{ __('Sign Up Today') }}</button>
+                                  <button class="btn btn-hover ab btn-lg btn-block" style="display: block;" type="submit" name="create-account">{{ __('Sign Up Today') }}</button>
                                 </div>
                         </div>
                       
                         
                     </form>
-                  </div>
-               </div>    
-               <div class="mt-3">
+                      <div class="mt-3">
                   <div class="d-flex justify-content-center links">
                      Already have an account? <a href="<?= URL::to('advertiser/login')?>" class="text-primary ml-2">Sign In</a>
                   </div>                        
                </div>
+                  </div>
+                   
+               </div>    
+               
             </div>
          </div>
       </div>
@@ -351,6 +354,5 @@ i.fa.fa-google-plus {
     </script>
 
 
-@include('footer')
 
 @endsection 
