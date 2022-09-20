@@ -18,7 +18,7 @@ $system_settings = App\SystemSetting::find(1);
     <!-- Typography CSS -->
     <link rel="stylesheet" href="{{URL::to('/')}}/assets/css/typography.css" />
     <!-- Style -->
-          <link href="<?php echo URL::to('public/themes/theme1/assets/css/style.css') ?>" rel="stylesheet">
+      <link rel="stylesheet" href="<?= style_sheet_link()?>" />
 
     <!-- Responsive -->
     <link rel="stylesheet" href="{{URL::to('/')}}/assets/css/responsive.css" />
@@ -52,6 +52,9 @@ $system_settings = App\SystemSetting::find(1);
 
     .signcont {
     }
+        .sign-user_card{
+            background: rgba(11, 11, 11, 0.75)!important;
+        }
     a.f-link {
         margin-bottom: 1rem;
         margin-left: 15vw;
@@ -86,7 +89,7 @@ $system_settings = App\SystemSetting::find(1);
                         <div class="sign-in-page-data">
                             <div class="sign-in-from  m-auto" align="center">
                                 <div align="center">
-                                  <img class="" src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" style="margin-bottom:1rem;">       <h3 class="mb-3 text-center">Advertiser Sign Up</h3>
+                                  <img class="" src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" style="margin-bottom:1rem;">       <h3 class="mb-3 text-center">Advertiser Sign In</h3>
                               </div>
                                 <form method="POST" action="{{ url('advertiser/post-login') }}" class="mt-4" autocomplete="off">
                                     @csrf
@@ -113,19 +116,20 @@ $system_settings = App\SystemSetting::find(1);
                                         <button type="submit" class="btn btn-hover ab" style="width:100%;color:#fff!important;">SIGN IN</button>
 
                                     </div> 
-
+<div class="mt-2 d-flex justify-content-end  links">
+                                <a href="{{ url('advertiser/forget-password') }}" class="text-primary ml-2">Reset Password </a>
+                            </div>
                                     <hr style="color:#1e1e1e;">
 
                                 </form>
+                                 <div class="d-flex justify-content-center  links">
+                                Don't have an account? <a href="{{ url('advertiser/register') }}" class="text-primary ml-2">Sign Up</a>
+                            </div>
                             </div>
                         </div>
                         <div class="">
-                            <div class="d-flex justify-content-center  links">
-                                Don't have an account? <a href="{{ url('advertiser/register') }}" class="text-primary ml-2">Sign Up</a>
-                            </div>
-                            <div class="d-flex justify-content-center  links">
-                                <a href="{{ url('advertiser/forget-password') }}" class="text-primary ml-2">Reset Password </a>
-                            </div>
+                           
+                           
 
                         </div>
                     </div>
