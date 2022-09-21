@@ -843,6 +843,21 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::get('/channel/view_payouts/{id}', 'ChannelPayoutController@ViewPayouts'); 
     Route::post('/channel/update_payouts', 'ChannelPayoutController@UpdatePayouts');
 
+// Video Move to partner
+Route::get('/assign_videos/partner', 'AdminVideosController@indexCPPPartner');
+Route::post('/move/cpp-partner', 'AdminVideosController@MoveCPPPartner');
+
+Route::get('/assign_videos/channel_partner', 'AdminVideosController@indexChannelPartner');
+Route::post('/move/channel-partner', 'AdminVideosController@MoveChannelPartner');
+
+
+// Series Move to partner
+
+Route::get('/assign_Series/partner', 'AdminSeriesController@indexCPPPartner');
+Route::post('/MoveSeries/cpp-partner', 'AdminSeriesController@MoveCPPPartner');
+
+Route::get('/assign_Series/channel_partner', 'AdminSeriesController@indexChannelPartner');
+Route::post('/MoveSeries/channel-partner', 'AdminSeriesController@MoveChannelPartner');
 
 
 // Email Template
