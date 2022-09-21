@@ -473,6 +473,7 @@ i.fa.fa-google-plus {
     $signup_payment_content = App\SiteTheme::pluck('signup_payment_content')->first();
     $Stripe_payment_settings = App\PaymentSetting::where('payment_type','Stripe')->first();
     $PayPal_payment_settings = App\PaymentSetting::where('payment_type','PayPal')->first();
+    $signup_step2_title = App\SiteTheme::pluck('signup_step2_title')->first();
 @endphp
 
 <section class="flick">
@@ -485,8 +486,8 @@ i.fa.fa-google-plus {
                 <div class="flick1">
                  <div class="small-heading text-white">Step 2 of  <span class="ml-2">2</span></div>
                      <p class="text-white">Hello, {{ $user_mail }}</p>
-                     <div class="medium-heading text-white">Activate Your Free Trial</div>
-                     <p class="text-white">You will not be charged until the end of your free trial. Cancel anytime.</p>
+                     <div class="medium-heading text-white"> {{  $signup_step2_title }} </div>
+                     {{-- <p class="text-white">You will not be charged until the end of your free trial. Cancel anytime.</p> --}}
                     <div class="col-md-6 p-0">
 
                         <!-- <h5> Payment Method</h5> -->

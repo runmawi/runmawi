@@ -331,10 +331,11 @@ class AdminUsersController extends Controller
             //upload new file
             $file = $logo;
             $input['avatar'] = $file->getClientOriginalName();
-            $user->avatar = $file->getClientOriginalName();
-
             $file->move($path, $input['avatar']);
+            $avatar = $file->getClientOriginalName();
 
+        }else{
+            $avatar = null;
         }
         $string = Str::random(60);
 
@@ -349,6 +350,7 @@ class AdminUsersController extends Controller
                 'role' => $request['role'],
                 'activation_code' => $string,
                 'active' => $active,
+                'avatar' =>  $avatar ,
                 //  terms = $request['terms'],
                 'password' => $password,
         ]);
@@ -3788,5 +3790,61 @@ class AdminUsersController extends Controller
 
     }
 
+    public function email_exitsvalidation(Request $request)
+    {
+
+        $email = $request->get('email');
+        
+        $user = User::where('email',$email)->first();
+
+        if( $user == null){
+              $message = "true";
+        }
+        else{
+          $message = "false";
+        }
+        return $message;
+    }
+
+    public function mobilenumber_exitsvalidation(Request $request)
+    {
+        $mobile = $request->get('mobile');
+        
+        $mobile = User::where('mobile',$mobile)->first();
+
+        if( $mobile == null){
+              $message = "true";
+        }
+        else{
+          $message = "false";
+        }
+        return $message;
+    }
+
+    public function password_validation(Request $request)
+    {
+        $password_validation = $request->passwords;
+
+        $inputs = [
+            'password' => $password_validation,
+        ];
+    
+        $rules = [
+            'password' => 'required|string|min:8|regex:/^(?=.*[A-Z])(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/',
+        ];
+    
+        $validation = \Validator::make( $inputs, $rules );
+    
+        if ( $validation->fails() ) {
+
+            // print_r( $validation->errors()->all() );
+
+            $message = "false";
+        }
+        else{
+            $message = "true";
+        }
+            return $message;
+    }
 }
 

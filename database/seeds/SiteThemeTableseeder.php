@@ -21,6 +21,7 @@ class SiteThemeTableseeder extends Seeder
                     'dark_mode_logo' =>  "WAKNEX NAME-8A Final.png", 
                     'light_mode_logo' => "Logo-1.png", 
                     'button_bg_color' => "#006AFF",
+                    'signup_step2_title' => 'Subscribe us and Enjoy our premium shows',
                     'created_at' => Carbon::now(),
                     'updated_at' => null,),
                 );
