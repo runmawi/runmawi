@@ -331,10 +331,11 @@ class AdminUsersController extends Controller
             //upload new file
             $file = $logo;
             $input['avatar'] = $file->getClientOriginalName();
-            $user->avatar = $file->getClientOriginalName();
-
             $file->move($path, $input['avatar']);
+            $avatar = $file->getClientOriginalName();
 
+        }else{
+            $avatar = null;
         }
         $string = Str::random(60);
 
@@ -349,6 +350,7 @@ class AdminUsersController extends Controller
                 'role' => $request['role'],
                 'activation_code' => $string,
                 'active' => $active,
+                'avatar' =>  $avatar ,
                 //  terms = $request['terms'],
                 'password' => $password,
         ]);
