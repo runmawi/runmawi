@@ -4,7 +4,10 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 
 <style>
-   
+    .table td, .table th{
+        padding: 0;
+        vertical-align: baseline!important;
+    }
 
 </style>
     
@@ -172,6 +175,7 @@
                            
                               </div>
                               <input type="button" name="next" class="next action-button" value="Next Step" id="Next1" />
+                              
                            </fieldset>
 
                            <!--Ads Details  fieldsets -->
@@ -236,6 +240,7 @@
                               </div>
                               <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                               <input type="button" name="next" class="next action-button" value="Next Step" id="Next2" />
+                             
                            </fieldset>
                           
                            <!--Location fieldsets -->
@@ -278,29 +283,25 @@
                                 <div class="col-md-6">
                                  
                  </div>
-                                    <div class="row align-items-center">
-                                        <div class="col-sm-6 d-flex justify-content-between">
-                                            <div>  <div></div>
-                                            <input type="checkbox" id="Monday" class="date" name="date[Monday]" value="{{ $Monday }}" @if(!empty($Monday_time['0'])) checked @endif/></div>
-                                            <div> <label for="">Monday</label></div>
-                                            <div> <span id="" class="Monday_add ml-4">
-                                                <i class="fa-solid fa-plus"></i>
-                                            </span>
+                                    <div class="row ">
+                                        <div class="col-sm-2">
+                                            <div class="">
+                                                <div> <label class="checkbox-inline 10" for="household_income_label">
+                                                 <input type="checkbox" id="Monday" class="date" name="date[Monday]" value="{{ $Monday }}" @if(!empty($Monday_time['0'])) checked @endif/> Monday
+                                                </label></div>
+                                              
                                             </div>
-                                          
-                                             
-                                           
                                         </div>
                                        
-                                        </div>
-
+                                       
+                                        <div class="col-sm-4">
                                         @forelse ($Monday_time as $Monday_times)
-                                            <table class="table col-md-12" id=""> 
+                                            <table class="table col-md-12 mb-2" id=""> 
                                                 <tr>
                                                     <td>
-                                                        <div class="container">
+                                                        <div class="container mb-2">
                                                             <div class="row">
-                                                                <div class="col-md-4 p-0 d-flex align-items-center">
+                                                                <div class=" p-0 d-flex align-items-center">
                                                                     <input type="time" name="Monday_Start_time[]" class="form-control" value={{  $Monday_times->start_time }} />
                                                                     -</div>
                                                                 <div class="col-md-4 p-0">
@@ -316,28 +317,35 @@
 
                                         @endforelse
 
-                                        <table class="table col-md-12" id="Monday_add"> </table>
-                                   
-
-                                    <div class="row align-items-center">
-                                        <div class="col-sm-6 d-flex justify-content-between">
-                                            <div> <input type="checkbox" id="Tuesday" class="date" name="date[Tuesday]" value="{{ $Tuesday }}" @if(!empty($Tuesday_time['0'])) checked @endif /></div>
-                                            <div> <label for=""> Tuesday </label></div>
-                                            <div> <span id="" class="Tuesday_add ml-4">
+                                        <table class="table " id="Monday_add"> </table>
+                                        </div>
+                                        <div class="col-sm-1"><span id="" class="Monday_add ">
                                                 <i class="fa-solid fa-plus"></i>
                                             </span></div>
+                                   
+ </div>
+                                    <div class="row ">
+                                        <div class="col-sm-2 ">
+                                            <div class="">
+                                                <div><label class="checkbox-inline 10" for="household_income_label">
+                                                <input type="checkbox" id="Tuesday" class="date" name="date[Tuesday]" value="{{ $Tuesday }}" @if(!empty($Tuesday_time['0'])) checked @endif />  Tuesday
+                                                </label></div>
+                                             
+                                            </div>
+                                           
+                                            
                                            </div>
                                        
                                         
-
+<div class="col-sm-4">
                                         @forelse ($Tuesday_time as $tuesday_tym)
-                                            <table class="table col-md-12" id=""> 
+                                            <table class="table " id=""> 
                                                 <tr>
                                                     <td>
                                                         <div class="container">
                                                             <div class="row">
-                                                                <div class="col-md-4 p-0 d-flex align-items-center"><input type="time" name="tuesday_start_time[]" class="form-control" value="{{ $tuesday_tym->start_time }}" />-</div>
-                                                                <div class="col-md-4 p-0"><input type="time" name="Tuesday_end_time[]" class="form-control" id="" value="{{ $tuesday_tym->end_time }}" /></div>
+                                                                <div class=" p-0 d-flex align-items-center"><input type="time" name="tuesday_start_time[]" class="form-control" value="{{ $tuesday_tym->start_time }}" />-</div>
+                                                                <div class="p-0"><input type="time" name="Tuesday_end_time[]" class="form-control" id="" value="{{ $tuesday_tym->end_time }}" /></div>
                                                             </div>
                                                         </div>
                                                     </td>
@@ -348,23 +356,32 @@
                                             
                                         @endforelse
 
-                                        <table class="table col-md-12" id="Tuesday_add"> </table>
-                            
+                                        <table class="table" id="Tuesday_add"> </table>
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <span id="" class="Tuesday_add ">
+                                                <i class="fa-solid fa-plus"></i>
+                                            </span>
+                                        </div>
                                     </div>
                     
-                                    <div class="row align-items-center">
-                                        <div class="col-sm-6 d-flex justify-content-between">
-                                            <div> <input type="checkbox" class="date" id="Wednesday" name="date[Wednesday]" value="{{ $Wednesday }}" @if(!empty($Wednesday_time['0'])) checked @endif /></div>
-                                            <div>   <label for=""> Wednesday </label></div>
-                                            <div>  <span  class="wednesday_add ml-4">
-                                                <i class="fa-solid fa-plus"></i>
-                                            </span></div>
+                                    <div class="row ">
+                                        <div class="col-sm-2 ">
+                                            <div class="d-flex justify-content-between">
+                                                <div> <label class="checkbox-inline 10" for="household_income_label">
+                                               <input type="checkbox" class="date" id="Wednesday" name="date[Wednesday]" value="{{ $Wednesday }}" @if(!empty($Wednesday_time['0'])) checked @endif />  Wednesday
+                                                </label></div>
+                                                <div> </div>
+                                            </div>
+                                            
+                                          
+                                            
                                            </div>
                                         
-                                      
+                                      <div class="col-sm-4">
 
                                         @forelse ($Wednesday_time as $tym)
-                                            <table class="table col-md-12" id=""> 
+                                            <table class="table " id=""> 
                                                 <tr>
                                                     <td>
                                                         <div class="container">
@@ -381,20 +398,27 @@
                                         @empty
                                         @endforelse
 
-                                        <table class="table col-md-12" id="wednesday_add"> </table>
+                                        <table class="table " id="wednesday_add"> </table>
                                     </div>
-                    
-                                    <div class="row align-items-center">
-                                        <div class="col-sm-6 d-flex justify-content-between">
-                                            <div> <input type="checkbox" class="date" id="thrusday" name="date[thrusday]" value="{{ $Thrusday }}"  @if(!empty($Thursday_time['0'])) checked @endif /></div>
-                                            <div>  <label for=""> Thrusday </label></div>
-                                            <div> <span id="add" class="thrusday_add">
+                                        <div class="col-sm-1"><span  class="wednesday_add">
                                                 <i class="fa-solid fa-plus"></i>
                                             </span></div>
+                                     </div>
+                    
+                                    <div class="row ">
+                                        <div class="col-sm-2">
+                                            <div class="d-flex justify-content-between">
+                                                <div><label class="checkbox-inline 10" for="household_income_label">
+                                               <input type="checkbox" class="date" id="thrusday" name="date[thrusday]" value="{{ $Thrusday }}"  @if(!empty($Thursday_time['0'])) checked @endif />  Thrusday
+                                                </label></div>
+                                                <div> </div>
+                                            </div>
+                                            
+                                            
                                            </div>
                                        
                                         
-
+                                        <div class="col-sm-4">
                                         @forelse ($Thursday_time as $tym)
                                             <table class="table col-md-12" id=""> 
                                                 <tr>
@@ -413,22 +437,30 @@
                                         @empty
                                         @endforelse
 
-                                        <table class="table col-md-12" id="thrusday_add"> </table>
+                                        <table class="table col-md-12" id="thrusday_add"> </table></div>
+                                        <div class="col-sm-1">
+                                             <span id="add" class="thrusday_add">
+                                                <i class="fa-solid fa-plus"></i>
+                                            </span>
+                                        </div>
                                     </div>
                     
-                                    <div class="row align-items-center">
-                                        <div class="col-sm-6  d-flex justify-content-between">
-                                            <div> <input type="checkbox" class="date" id="friday" name="date[friday]" value="{{ $Friday }}"  @if(!empty($Friday_time['0'])) checked @endif /></div>
-                                            <div>     <label for="">Friday </label></div>
-                                            <div> <span id="add" class="friday_add ml-4">
-                                                <i class="fa-solid fa-plus"></i>
-                                            </span></div>
+                                    <div class="row ">
+                                        <div class="col-sm-2 ">
+                                            <div class="d-flex justify-content-between">
+                                                <div> <label class="checkbox-inline 10" for="household_income_label">
+                                              <input type="checkbox" class="date" id="friday" name="date[friday]" value="{{ $Friday }}"  @if(!empty($Friday_time['0'])) checked @endif />  Friday
+                                                </label></div>
+                                                <div>  </div>
+                                            </div>
+                                         
+                                            
                                            </div>
                                       
                                       
-
+<div class="col-sm-4">
                                         @forelse ($Friday_time as $tym)
-                                            <table class="table col-md-12" id=""> 
+                                            <table class="table " id=""> 
                                                 <tr>
                                                     <td>
                                                         <div class="container">
@@ -451,20 +483,26 @@
 
                                         <table class="table" id="friday_add"> </table>
                                     </div>
-                    
-                                    <div class="row align-items-center">
-                                        <div class="col-sm-6 d-flex justify-content-between">
-                                            <div> <input type="checkbox" class="date" id="saturday" name="date[saturday]" value="{{ $Saturday }}" @if(!empty($Saturday_time['0'])) checked @endif /></div>
-                                            <div> <label for="">Saturday </label></div>
-                                            <div>  <span id="add" class="saturday_add">
+                                        <div class="col-sm-1"><span id="add" class="friday_add ">
                                                 <i class="fa-solid fa-plus"></i>
                                             </span></div>
+                    </div>
+                                    <div class="row ">
+                                        <div class="col-sm-2">
+                                            <div class="d-flex justify-content-between">
+                                                <div><label class="checkbox-inline 10" for="household_income_label">
+                                             <input type="checkbox" class="date" id="saturday" name="date[saturday]" value="{{ $Saturday }}" @if(!empty($Saturday_time['0'])) checked @endif />  Saturday
+                                                </label></div>
+                                                <div>  </div>
+                                            </div>
+                                           
+                                           
                                            </div>
                                       
-                                       
+                                       <div class="col-sm-4">
 
                                         @forelse ($Saturday_time as $tym)
-                                            <table class="table col-md-12" id=""> 
+                                            <table class="table " id=""> 
                                                 <tr>
                                                     <td>
                                                         <div class="container">
@@ -481,7 +519,10 @@
                                         @empty
                                         @endforelse
 
-                                        <table class="table" id="saturday_add"> </table>
+                                        <table class="table" id="saturday_add"> </table></div>
+                                        <div class="col-sm-1"><span id="add" class="saturday_add">
+                                                <i class="fa-solid fa-plus"></i>
+                                            </span></div>
                                     </div>
                     
                                      <input type="button" name="previous" class="previous action-button-previous" value="Previous" /> 
@@ -567,43 +608,43 @@
     $(".Monday_add").click(function(){
             ++i;
             $('#Monday').prop('checked', true);
-            $("#Monday_add").append('<tr> <td> <div class="container"> <div class="row"> <div class="col-md-4 p-0 d-flex align-items-center"> <input type="time" name="Monday_Start_time[]"   class="form-control" />-</div> <div class="col-md-4 p-0"> <input type="time" name="Monday_end_time[]" class="form-control" id=""/> </div> </div> </div> </td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td>   </tr>');
+            $("#Monday_add").append('<tr> <td> <div class="container"> <div class="row mb-2"> <div class=" p-0 d-flex align-items-center"> <input type="time" name="Monday_Start_time[]"   class="form-control" />-</div> <div class=" p-0"> <input type="time" name="Monday_end_time[]" class="form-control" id=""/> </div> </div> </div> </td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td>   </tr>');
         });
 
     $(".Tuesday_add").click(function(){
             ++i;
             $('#Tuesday').prop('checked', true);
-            $("#Tuesday_add").append('<tr> <td> <div class="container"> <div class="row"> <div class="col-md-4 p-0 d-flex align-items-center"> <input type="time" name="tuesday_start_time[]" class="form-control" />-</div> <div class="col-md-4 p-0"> <input type="time" name="Tuesday_end_time[]" class="form-control" id=""/> </div> </div> </div> <td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td>   </tr>');
+            $("#Tuesday_add").append('<tr> <td> <div class="container"> <div class="row mb-2"> <div class=" p-0 d-flex align-items-center"> <input type="time" name="tuesday_start_time[]" class="form-control" />-</div> <div class="p-0"> <input type="time" name="Tuesday_end_time[]" class="form-control" id=""/> </div> </div> </div> <td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td>   </tr>');
         });
 
    $(".wednesday_add").click(function(){
        ++i;
        $('#Wednesday').prop('checked', true);
-       $("#wednesday_add").append('<tr> <td> <div class="container"> <div class="row"> <div class="col-md-4 p-0 d-flex align-items-center"> <input type="time" name="wednesday_start_time[]" class="form-control" />-</div> <div class="col-md-4 p-0"> <input type="time" name="wednesday_end_time[]" class="form-control" id=""/> </div> </div> </div> <td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td>   </tr>');
+       $("#wednesday_add").append('<tr> <td> <div class="container"> <div class="row mb-2"> <div class=" p-0 d-flex align-items-center"> <input type="time" name="wednesday_start_time[]" class="form-control" />-</div> <div class=" p-0"> <input type="time" name="wednesday_end_time[]" class="form-control" id=""/> </div> </div> </div> <td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td>   </tr>');
    });
 
    $(".thrusday_add").click(function(){
        ++i;
        $('#thrusday').prop('checked', true);
-       $("#thrusday_add").append('<tr> <td> <div class="container"> <div class="row"> <div class="col-md-4 p-0 d-flex align-items-center"> <input type="time" name="thursday_start_time[]" class="form-control" />-</div> <div class="col-md-4 p-0"> <input type="time" name="thursday_end_time[]" class="form-control" id=""/> </div> </div> </div> <td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td>   </tr>');
+       $("#thrusday_add").append('<tr> <td> <div class="container"> <div class="row mb-2"> <div class=" p-0 d-flex align-items-center"> <input type="time" name="thursday_start_time[]" class="form-control" />-</div> <div class=" p-0"> <input type="time" name="thursday_end_time[]" class="form-control" id=""/> </div> </div> </div> <td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td>   </tr>');
    });
 
    $(".friday_add").click(function(){
        ++i;
        $('#friday').prop('checked', true);
-       $("#friday_add").append('<tr> <td> <div class="container"> <div class="row"> <div class="col-md-4 p-0 d-flex align-items-center"> <input type="time" name="friday_start_time[]" class="form-control" />-</div> <div class="col-md-4 p-0"> <input type="time" name="friday_end_time[]" class="form-control" id=""/> </div> </div> </div> <td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td>   </tr>');
+       $("#friday_add").append('<tr> <td> <div class="container"> <div class="row mb-2"> <div class=" p-0 d-flex align-items-center"> <input type="time" name="friday_start_time[]" class="form-control" />-</div> <div class=" p-0"> <input type="time" name="friday_end_time[]" class="form-control" id=""/> </div> </div> </div> <td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td>   </tr>');
    });
 
    $(".saturday_add").click(function(){
        ++i;
        $('#saturday').prop('checked', true);
-       $("#saturday_add").append('<tr> <td> <div class="container"> <div class="row"> <div class="col-md-4 p-0 d-flex align-items-center"> <input type="time" name="saturday_start_time[]" class="form-control" />-</div> <div class="col-md-4 p-0"> <input type="time" name="saturday_end_time[]"  class="form-control" id=""/> </div> </div> </div> <td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td>   </tr>');
+       $("#saturday_add").append('<tr> <td> <div class="container"> <div class="row mb-2"> <div class=" p-0 d-flex align-items-center"> <input type="time" name="saturday_start_time[]" class="form-control" />-</div> <div class=" p-0"> <input type="time" name="saturday_end_time[]"  class="form-control" id=""/> </div> </div> </div> <td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td>   </tr>');
    });
 
    $(".sunday_add").click(function(){
        ++i;
        $('#sunday').prop('checked', true);
-       $("#sunday_add").append('<tr> <td> <div class="container"> <div class="row"> <div class="col-md-4 p-0 d-flex align-items-center"> <input type="time" name="sunday_start_time[]" class="form-control" />-</div> <div class="col-md-4 p-0"> <input type="time" name="sunday_end_time[]" class="form-control" id=""/> </div> </div> </div> <td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td>   </tr>');
+       $("#sunday_add").append('<tr> <td> <div class="container"> <div class="row mb-2"> <div class=" p-0 d-flex align-items-center"> <input type="time" name="sunday_start_time[]" class="form-control" />-</div> <div class=" p-0"> <input type="time" name="sunday_end_time[]" class="form-control" id=""/> </div> </div> </div> <td>  <td> <i class="fa-solid fa-trash-can remove-tr"> </i> </td>   </tr>');
    });
 
    $(document).on('click', '.remove-tr', function(){
