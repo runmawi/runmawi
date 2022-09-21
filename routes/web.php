@@ -334,7 +334,10 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/profile/update', 'AdminUsersController@myprofileupdate');
     Route::post('/profileupdate', 'AdminUsersController@ProfileImage');
     Route::post('/profilePreference', 'AdminUsersController@profilePreference');
-
+    Route::get('/email_exitsvalidation', 'AdminUsersController@email_exitsvalidation')->name('email_exitsvalidation');
+    Route::get('/mobilenumber_exitsvalidation', 'AdminUsersController@mobilenumber_exitsvalidation')->name('mobilenumber_exitsvalidation');
+    Route::get('/password_validation', 'AdminUsersController@password_validation')->name('password_validation');
+    
     Route::get('/settings', 'AdminSettingsController@index');
     Route::post('/settings/save_settings', 'AdminSettingsController@save_settings');
     Route::post('/settings/script_settings', 'AdminSettingsController@script_settings');
@@ -840,6 +843,21 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::get('/channel/view_payouts/{id}', 'ChannelPayoutController@ViewPayouts'); 
     Route::post('/channel/update_payouts', 'ChannelPayoutController@UpdatePayouts');
 
+// Video Move to partner
+Route::get('/assign_videos/partner', 'AdminVideosController@indexCPPPartner');
+Route::post('/move/cpp-partner', 'AdminVideosController@MoveCPPPartner');
+
+Route::get('/assign_videos/channel_partner', 'AdminVideosController@indexChannelPartner');
+Route::post('/move/channel-partner', 'AdminVideosController@MoveChannelPartner');
+
+
+// Series Move to partner
+
+Route::get('/assign_Series/partner', 'AdminSeriesController@indexCPPPartner');
+Route::post('/MoveSeries/cpp-partner', 'AdminSeriesController@MoveCPPPartner');
+
+Route::get('/assign_Series/channel_partner', 'AdminSeriesController@indexChannelPartner');
+Route::post('/MoveSeries/channel-partner', 'AdminSeriesController@MoveChannelPartner');
 
 
 // Email Template
