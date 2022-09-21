@@ -3773,12 +3773,15 @@ if(!empty($artistsdata)){
                 $id = $data['schedule_id'];
                 // dd($data);
                 $VideoSchedules =  VideoSchedules::where('id', '=', $id)->first();
+                $Video =  Video::get();
                 $settings = Setting::first();
          
                 $data = array(
                       'schedule' => $VideoSchedules,
                       'settings' => $settings,
                       'Calendar' => $data,
+                      'Video' => $Video,
+
                    );
                 //    dd($data );
                return view('admin.schedule.schedule_videos',$data);
