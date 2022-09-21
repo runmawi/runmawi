@@ -334,7 +334,10 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/profile/update', 'AdminUsersController@myprofileupdate');
     Route::post('/profileupdate', 'AdminUsersController@ProfileImage');
     Route::post('/profilePreference', 'AdminUsersController@profilePreference');
-
+    Route::get('/email_exitsvalidation', 'AdminUsersController@email_exitsvalidation')->name('email_exitsvalidation');
+    Route::get('/mobilenumber_exitsvalidation', 'AdminUsersController@mobilenumber_exitsvalidation')->name('mobilenumber_exitsvalidation');
+    Route::get('/password_validation', 'AdminUsersController@password_validation')->name('password_validation');
+    
     Route::get('/settings', 'AdminSettingsController@index');
     Route::post('/settings/save_settings', 'AdminSettingsController@save_settings');
     Route::post('/settings/script_settings', 'AdminSettingsController@script_settings');

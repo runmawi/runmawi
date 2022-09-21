@@ -111,7 +111,7 @@
 					@else
 						<p class="p1">Enter users password:</p>
 					@endif
-					<input type="password" class="form-control mb-3" name="passwords" id="password" value="" />
+					<input type="password" class="form-control mb-3" name="passwords" id="passwords" value="" />
 				</div>
 			</div>
                  <div class="col-sm-12 mt-2 p-0"> 
@@ -165,7 +165,7 @@
 	
 	@section('javascript')
 
-	<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+	<script src="{{ URL::to('assets/admin/js/jquery.validate_New.min.js') }}"></script>
 	<script type="text/javascript" src="{{ '/application/application/assets/js/tinymce/tinymce.min.js' }}"></script>
 	<script type="text/javascript" src="{{ '/application/application/assets/js/tagsinput/jquery.tagsinput.min.js' }}"></script>
 	<script type="text/javascript" src="{{ '/application/application/assets/js/jquery.mask.min.js' }}"></script>
@@ -193,27 +193,68 @@
 	</script>
 <script>
     $(document).ready(function(){
-        // $('#message').fadeOut(120);
         setTimeout(function() {
             $('#successMessage').fadeOut('fast');
         }, 3000);
 
 
-
 		$('form[id="update_profile_form"]').validate({
         rules: {
 			username: "required",
-			mobile: "required",
-			passwords: "required",
-			// active: "required",
-			// avatar : "required",
 			email: {
 				required: true,
-				email: true
+				email: true,
+				remote: {
+						url:"{{ route('email_exitsvalidation') }}",
+                        type: "get",
+                        data: {
+                            _token: "{{csrf_token()}}" ,
+                            success: function() {
+                            return $('#email').val(); }
+                        }
+                    }
+			},
+			passwords: {
+					required: true,
+					remote: {
+						url:"{{ route('password_validation') }}",
+                        type: "get",
+                        data: {
+                            _token: "{{csrf_token()}}" ,
+                            success: function() {
+                            return $('#passwords').val(); }
+                        }
+                    }
+            },
+			mobile: {
+				required: true,
+				remote: {
+                        url:"{{ route('mobilenumber_exitsvalidation') }}",
+                        type: "get",
+                        data: {
+                            _token: "{{csrf_token()}}" ,
+                            success: function() {
+                            return $('#mobile').val(); }
+                        }
+                    }
 			},
         },
         messages: {
-            email: "This field is required",
+			mobile: {
+                required: "Please Enter the Mobile Number",
+                remote: "Mobile Number already in taken ! Please try another Mobile Number"
+            },
+            username: {
+                required: "Please Enter the User Name",
+            },
+	        email: {
+               required : "Please Enter the Email Address",
+               remote   : "Email Id already in taken ! Please try another Email Address"
+		    },
+		    passwords: {
+                required : "Please Enter the Password",
+               	remote   : "Password should be at least 8 characters in length and should include at least one upper case letter, one number, and one special character."
+            } 
         },
         submitHandler: function (form) {
             form.submit();
