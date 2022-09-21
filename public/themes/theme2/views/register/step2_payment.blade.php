@@ -474,6 +474,8 @@ i.fa.fa-google-plus {
     $Stripe_payment_settings = App\PaymentSetting::where('payment_type','Stripe')->first();
     $PayPal_payment_settings = App\PaymentSetting::where('payment_type','PayPal')->first();
     $signup_step2_title = App\SiteTheme::pluck('signup_step2_title')->first();
+    $stripe_lable = App\PaymentSetting::where('payment_type','Stripe')->pluck('stripe_lable')->first() ? App\PaymentSetting::where('payment_type','Stripe')->pluck('stripe_lable')->first()  : "Stripe";
+    $paypal_lable = App\PaymentSetting::where('payment_type','PayPal')->pluck('paypal_lable')->first() ? App\PaymentSetting::where('payment_type','PayPal')->pluck('paypal_lable')->first() : "PayPal";
 @endphp
 
 <section class="flick">
@@ -495,10 +497,10 @@ i.fa.fa-google-plus {
                         <div class="d-flex align-items-center">
                             <?php if(!empty($Stripe_payment_settings) && $Stripe_payment_settings->stripe_status == 1){ ?>
                                 <input type="checkbox" id="Stripe_lable" name="payment_lable" value="Stripe_lable" checked>
-                                <label class="mt-2 ml-2" for="" > Stripe</label><br />&nbsp;&nbsp;
+                                <label class="mt-2 ml-2" for="" > {{ $stripe_lable  }}</label><br />&nbsp;&nbsp;
                             <?php }elseif(!empty($PayPal_payment_settings) && $PayPal_payment_settings->paypal_status == 1){ ?>
                                 <input type="checkbox" id="Paypal_lable" name="payment_lable" value="Paypal_lable" >
-                                <label class="mt-2 ml-2 " for="" > Paypal</label><br />&nbsp;&nbsp;
+                                <label class="mt-2 ml-2 " for="" > {{ $paypal_lable }}</label><br />&nbsp;&nbsp;
                             <?php } ?>
                                 <!-- <input type="checkbox" id="Razorpay_lable" name="payment_lable" value="Razorpay_lable" >
                                 <label class="mt-2 ml-2 " for="" > Razorpay</label><br /> -->
