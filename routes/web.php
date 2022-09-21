@@ -967,6 +967,11 @@ Route::get('/CPPSeriesApproval/{id}',  'AdminSeriesController@CPPSeriesApproval'
 Route::get('/CPPSeriesReject/{id}',  'AdminSeriesController@CPPSeriesReject');
 
 
+// Test Server Video Upload 
+
+Route::get('/test/videoupload',  'AdminVideosController@TestServerUpload');
+Route::post('/test/server/videoupload/',  'AdminVideosController@TestServerFileUpload');
+
 });
 
 Route::get('admin/channel/pendingusers',  'ChannelLoginController@PendingUsers');
