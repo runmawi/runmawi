@@ -43,8 +43,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <!-- <span  id="export" class="btn btn-primary" >Download CSV</span> -->
-                        <!--btn btn-success btn-sm-->
+                        <span  id="export" class="btn btn-primary" >Download CSV</span>
                     </div>
                 </div>
 
@@ -249,6 +248,43 @@
 
 }
 
-    </script>
 
     
+    
+    $.ajaxSetup({
+        headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $(document).ready(function(){
+          $('#export').click(function(){
+            var start_time =  $('#start_time').val();
+            var end_time =  $('#end_time').val();
+            var url =  $('#exportCsv_url').val();
+        var url = "{{ URL::to('admin/analytics/playervideos_export/')  }}";
+
+            $.ajax({
+            url: url,
+            type: "post",
+                data: {
+                _token: '{{ csrf_token() }}',
+                start_time: start_time,
+                end_time: end_time,
+
+                },      
+                success: function(data){
+                var Excel = data ;
+                var Excel_url =  "{{ URL::to('public/uploads/csv/')  }}";
+                var link_url = Excel_url+'/'+Excel;
+                $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Downloaded User CSV File </div>');
+                            setTimeout(function() {
+                                $('.add_watch').slideUp('fast');
+                            }, 3000);
+
+                location.href = link_url;
+            }
+            });
+        });
+    });
+
+    </script>
