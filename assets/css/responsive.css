@@ -186,6 +186,11 @@
     max-width: none;
     width: 100%;
 }
+    .plyr--video {
+     height: calc(55vh - 80px - 75px)!important;
+    max-width: none;
+    width: 100%;
+}
       .ri-arrow-down-s-line{
         display: ;
         }

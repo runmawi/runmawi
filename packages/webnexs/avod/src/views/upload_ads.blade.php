@@ -16,13 +16,14 @@
                <div class="row">
                <div class="col-lg-12">
                   <div class="iq-card-body">
-                     <h2 class="mb-4">Upload Advertisement</h2>
+                      <div class="container">
+                          <h4 class="mb-4 pl-3">Upload Advertisement</h4></div>
                      <div id="nestable" class="nested-list dd with-margins">
                        
                      <!-- MultiStep Form -->
         
                 <div class="row">
-                    <div class="col-md-12 mx-0">
+                    <div class="col-md-12 p-0">
                         <form id="msform" accept-charset="UTF-8" action="{{ URL::to('advertiser/store_ads') }}" method="post" enctype="multipart/form-data">
                             <!-- progressbar -->
                             <ul id="progressbar">
@@ -34,124 +35,133 @@
 
                            <!--General Information  fieldsets -->
                            <fieldset>
-                              <div class="form-card">
-                                  <h2 class="fs-title">General Information</h2>
+                              <div class="form-card p-0">
+                                  <h4 class="fs-title ">General Information</h4>
                                   <div class="row col-md-12">
-                                      <div class="form-group col-md-4 p-0">
-                                          <label>Age:</label>
+                                      <div class="form-group mb-0 col-md-3 p-0 d-flex align-items-baseline ">
+                                          <label class="mb-0">Age:   </label>
+                          <p class="error-message ml-2" style="color: red;font-size:10px;">(This filed is required)</p>
+                                         </div>
+                                      <div class="col-md-11 ">
+                                          
+                                      </div>
+                                          <div class="row p-1">
+                                              
+                                         
                           
-                                          <p class="error-message" style="color: red;font-size:10px;">This filed is required</p>
-                          
-                                          <div class="row ages">
-                                              <div class="col-sm-4"><label for=""> 18-24 </label></div>
-                                              <div class="col-sm-4">
-                                                  <input type="checkbox" id="" class="age" name="age[]" value="18-24" />
-                                              </div>
-                                              <div></div>
+                                          <div class="row  ages ">
+                                               <label class="checkbox-inline">
+     <input type="checkbox" id="" class="age" name="age[]" value="18-24" /> 18-24
+    </label>
+                                             
                                           </div>
                           
-                                          <div class="row ages">
-                                              <div class="col-sm-4"><label for=""> 25-34 </label></div>
-                                              <div class="col-sm-4">
-                                                  <input type="checkbox" class="age" id="" name="age[]" value="25-34" />
+                                          <div class="row  ages ">
+                                               <label class="checkbox-inline">
+                                                 <input type="checkbox" class="age" id="" name="age[]" value="25-34" /> 25-34
+                                                </label>
+                                             
+                                                 
                                               </div>
-                                          </div>
+                                         
                           
                                           <div class="row ages">
-                                              <div class="col-sm-4"><label for=""> 35-44 </label></div>
-                                              <div class="col-sm-4">
-                                                  <input type="checkbox" class="age" id="" name="age[]" value="35-44" />
-                                              </div>
+                                              <label class="checkbox-inline">
+                                                  <input type="checkbox" class="age" id="" name="age[]" value="35-44" /> 35-44
+                                                </label>
+                                              
                                           </div>
                           
-                                          <div class="row ages">
-                                              <div class="col-sm-4"><label for=""> 45-54 </label></div>
-                                              <div class="col-sm-4">
-                                                  <input type="checkbox" class="age" id="" name="age[]" value="45-54" />
-                                              </div>
+                                          <div class="row  ages">
+                                                <label class="checkbox-inline">
+                                                 <input type="checkbox" class="age" id="" name="age[]" value="45-54" /> 45-54
+                                                </label>
+                                              
                                           </div>
                           
-                                          <div class="row ages">
-                                              <div class="col-sm-4"><label for="">55-64 </label></div>
-                                              <div class="col-sm-4">
-                                                  <input type="checkbox" class="age" id="" name="age[]" value="55-64" />
-                                              </div>
+                                          <div class="row  ages ">
+                                              <label class="checkbox-inline">
+                                                  <input type="checkbox" class="age" id="" name="age[]" value="55-64" /> 55-64
+                                                </label>
+                                              
                                           </div>
                           
-                                          <div class="row ages">
-                                              <div class="col-sm-4"><label for="">65+ </label></div>
-                                              <div class="col-sm-4">
-                                                  <input type="checkbox" class="age" id="" name="age[]" value="65+" />
-                                              </div>
+                                          <div class="row   ages ">
+                                               <label class="checkbox-inline">
+                                                  <input type="checkbox" class="age" id="" name="age[]" value="65+" /> 65+
+                                                </label>
+                                             
                                           </div>
                           
-                                          <div class="row ages">
-                                              <div class="col-sm-4"><label for="">unknown </label></div>
-                                              <div class="col-sm-4">
-                                                  <input type="checkbox" class="age" id="" name="age[]" value="unknown" />
-                                              </div>
+                                          <div class="row  ages ">
+                                              <label class="checkbox-inline">
+                                                  <input type="checkbox" class="age" id="" name="age[]" value="unknown" /> unknown
+                                                </label>
+                                            
+                                          </div>
+                                     </div>
+                          </div>
+                                      <div class="form-group mb-0 d-flex align-items-baseline col-md-4 p-0">
+                                          <label class="mb-0">Household Income:</label>
+                          
+                                          <p class="error-message ml-1" style="color: red;font-size:10px;">(This filed is required)</p></div>
+                          <div class="col-md-12 p-0">
+                              <div class="row">
+                                          <div class="row household_Income ">
+                                               <label class="checkbox-inline 10" for="household_income_label" >
+                                                   <input type="radio" class="household_income" id="" name="household_income" value="1-10" /> Top 10%
+                                                </label>
+                                             
+                                          </div>
+                          
+                                          <div class="row household_Income ">
+                                               <label class="checkbox-inline" for="household_income_label">
+                                                   <input type="radio" class="household_income" id="" name="household_income" value="11-20" /> 11 - 20%
+                                                </label>
+                                             
+                                          </div>
+                          
+                                          <div class="row household_Income ">
+                                                <label class="checkbox-inline" for="household_income_label">
+                                                   <input type="radio" class="household_income" id="" name="household_income" value="21-30" /> 21 - 30%
+                                                </label>
+                                             
+                                          </div>
+                          
+                                          <div class="row household_Income ">
+                                               <label class="checkbox-inline 10" for="household_income_label">
+                                                   <input type="radio" class="household_income" id="" name="household_income" value="31-40" /> 31 - 40%
+                                                </label>
+                                            
+                                          </div>
+                          
+                                          <div class="row household_Income ">
+                                                <label class="checkbox-inline 10" for="household_income_label">
+                                                  <input type="radio" class="household_income" id="" name="household_income" value="41-50" /> 41 - 50%
+                                                </label>
+                                             
+                                          </div>
+                          
+                                          <div class="row household_Income ">
+                                              <label class="checkbox-inline 10" for="household_income_label">
+                                                 <input type="radio" class="household_income" id="" name="household_income" value="lower_50" /> Lower-50%
+                                                </label>
+                                              
+                                          </div>
+                          
+                                          <div class="row household_Income ">
+                                              <label class="checkbox-inline 10" for="household_income_label">
+                                                  <input type="radio" class="household_income" id="" name="household_income" value="unknown" /> Unknown
+                                                </label>
+                                             
                                           </div>
                                       </div>
-                          
-                                      <div class="form-group col-md-5 p-0">
-                                          <label>Household Income:</label>
-                          
-                                          <p class="error-message" style="color: red;font-size:10px;">This filed is required</p>
-                          
-                                          <div class="row household_Income">
-                                              <div class="col-sm-4"><label for="household_income_label" class="10">Top 10%</label></div>
-                                              <div class="col-sm-4">
-                                                  <input type="radio" class="household_income" id="" name="household_income" value="1-10" />
-                                              </div>
-                                          </div>
-                          
-                                          <div class="row household_Income">
-                                              <div class="col-sm-4"><label for="household_income_label">11 - 20% </label></div>
-                                              <div class="col-sm-4">
-                                                  <input type="radio" class="household_income" id="" name="household_income" value="11-20" />
-                                              </div>
-                                          </div>
-                          
-                                          <div class="row household_Income">
-                                              <div class="col-sm-4"><label for="household_income_label">21 - 30%</label></div>
-                                              <div class="col-sm-4">
-                                                  <input type="radio" class="household_income" id="" name="household_income" value="21-30" />
-                                              </div>
-                                          </div>
-                          
-                                          <div class="row household_Income">
-                                              <div class="col-sm-4"><label for="household_income_label" class="10">31 - 40%</label></div>
-                                              <div class="col-sm-4">
-                                                  <input type="radio" class="household_income" id="" name="household_income" value="31-40" />
-                                              </div>
-                                          </div>
-                          
-                                          <div class="row household_Income">
-                                              <div class="col-sm-4"><label for="household_income_label" class="10">41 - 50%</label></div>
-                                              <div class="col-sm-4">
-                                                  <input type="radio" class="household_income" id="" name="household_income" value="41-50" />
-                                              </div>
-                                          </div>
-                          
-                                          <div class="row household_Income">
-                                              <div class="col-sm-4"><label for="household_income_label" class="10">Lower 50%</label></div>
-                                              <div class="col-sm-4">
-                                                  <input type="radio" class="household_income" id="" name="household_income" value="lower_50" />
-                                              </div>
-                                          </div>
-                          
-                                          <div class="row household_Income">
-                                              <div class="col-sm-4"><label for="household_income_label" class="10">Unknown</label></div>
-                                              <div class="col-sm-4">
-                                                  <input type="radio" class="household_income" id="" name="household_income" value="unknown" />
-                                              </div>
-                                          </div>
-                                      </div>
-                          
-                                      <div class="form-group col-md-3 p-0">
+                          </div>
+                                  <div class="row">
+                                      <div class="form-group mb-0 col-md-8 d-flex align-items-baseline">
                                           <label>Gender:</label>
-                                          <p class="error-message" style="color: red;font-size:10px;">This filed is required</p>
-                          
+                                          <p class="error-message ml-1" style="color: red;font-size:10px;">(This filed is required)</p></div>
+                          <div class="col-md-5">
                                           <select class="js-example-basic-multiple form-control" name="gender[]" multiple="multiple" id="gender">
                                               <option value="male">Male</option>
                                               <option value="female">Female</option>
@@ -159,6 +169,7 @@
                                           </select>
                                       </div>
                                   </div>
+                           
                               </div>
                               <input type="button" name="next" class="next action-button" value="Next Step" id="Next1" />
                            </fieldset>
@@ -170,10 +181,11 @@
                                   <h2 class="fs-title">Ads Details</h2>
                                   <div class="row">
                                       <div class="col-md-6">
-                                           <div class="form-group">
+                                           <div class="form-group ">
+                                               <div class="d-flex align-items-baseline">
                                           <label>Ads Name:</label>
                           
-                                          <p class="error-message" style="color: red;font-size:10px;">This filed is required</p>
+                                          <p class="error-message ml-1" style="color: red;font-size:10px;">(This filed is required)</p></div>
                           
                                           <input type="text" id="ads_name" name="ads_name" required class="form-control" />
                                       </div>
@@ -198,8 +210,9 @@
 
                                       <div class="col-md-6">
                                         <div class="form-group">
+                                            <div class="d-flex align-items-baseline">
                                             <label> Ads upload Type:</label>
-                                            <p class="error-message" style="color: red;font-size:10px;">This filed is required</p>
+                                            <p class="error-message ml-1" style="color: red;font-size:10px;">(This filed is required)</p></div>
                                             <select class="form-control ads_type" name="">
                                                 <option value="null">select Ads Type </option>
                                                 <option value="tag_url">Ad Tag Url </option>
