@@ -486,6 +486,7 @@ i.fa.fa-google-plus {
 @php
     $SubscriptionPlan = App\SubscriptionPlan::first();
     $signup_payment_content = App\SiteTheme::pluck('signup_payment_content')->first();
+    $signup_step2_title = App\SiteTheme::pluck('signup_step2_title')->first();
 @endphp
 
 <section class="flick">
@@ -496,7 +497,7 @@ i.fa.fa-google-plus {
                 <div class="flick1">
                  <div class="small-heading text-white">Step 2 of<span class="ml-2">2</span></div>
                      <p class="text-white" style="font-size: 16px;">Welcome {{ Auth::user()->username ? Auth::user()->username  : " "  }}, </p>
-                     <div class="medium-heading text-white pb-3">Save by Paying for the Year Upfront!</div>
+                     <div class="medium-heading text-white pb-3"> {{  $signup_step2_title  }} </div>
 
                     {{-- <p class="text-white">You will not be charged until the end of your free trial. Cancel anytime.</p>
 
