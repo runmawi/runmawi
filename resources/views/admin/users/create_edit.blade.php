@@ -228,6 +228,7 @@
             },
 			mobile: {
 				required: true,
+				number: true ,
 				remote: {
                         url:"{{ route('mobilenumber_exitsvalidation') }}",
                         type: "get",
