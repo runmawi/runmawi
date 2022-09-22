@@ -106,7 +106,8 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 						</video>
 						</div>
 					<?php endif; ?>
-					
+					 <div class="logo_player"> </div>
+
 	<!-- Intro Skip and Recap Skip -->
 		
 			<div class="col-sm-12 intro_skips">
@@ -571,7 +572,7 @@ location.reload();
     margin-right: 0;
 }
     .plyr--video {
-    height: calc(90vh - 80px - 75px);
+    height: calc(100vh - 80px - 75px);
     max-width: none;
          width: 100%;}
     #videoPlayer{
