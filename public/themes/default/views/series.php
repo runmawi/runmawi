@@ -29,6 +29,7 @@
     
     .pls ul{
         list-style: none;
+        padding: 0;
     }
       .close {
     /* float: right; */
@@ -86,13 +87,13 @@ $series = $series_data ;
                             <p class="desc" style="color:#fff!important;"><?php echo $series->details;?></p>
 						<b><p class="desc" style="color:#fff;"><?php echo $series->description;?></p></b>
                             <div class="row p-0 mt-3 align-items-center">
-                                <div class="col-md-2">  <a data-video="<?php echo $series->trailer;  ?>" data-toggle="modal" data-target="#videoModal">	
-                                          <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> </a></div>
+                                <div class="col-md-6 col-sm-6 d-flex justify-content-between align-item-center">  <a data-video="<?php echo $series->trailer;  ?>" data-toggle="modal" data-target="#videoModal">	
+                                          <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> Watch Tralier </a></div>
                               <!--  <div class="col-md-4 text-center pls">  <a herf="">  <i class="fa fa-plus" aria-hidden="true"></i> <br>Add Wishlist</a></div>-->
-                                <div class="col-md-1 pls  d-flex text-center mt-2">
-                                    <div></div><ul>
+                                <div class="col-md-2 pls col-sm-6  p-0  d-flex text-left mt-3">
+                                  <ul>
                                     <li class="share">
-<span><i class="ri-share-fill"></i></span>
+<span><i class="ri-share-fill"></i> Share</span> 
     <div class="share-box">
        <div class="d-flex align-items-center"> 
           <a href="https://www.facebook.com/sharer/sharer.php?u=" class="share-ico"><i class="ri-facebook-fill"></i></a>
@@ -100,7 +101,7 @@ $series = $series_data ;
           <a href="#"onclick="Copy();" class="share-ico"><i class="ri-links-fill"></i></a>
        </div>
     </div>
-</li>Share
+</li>
                                     </ul></div>
                                           
                                           
@@ -604,6 +605,27 @@ amount: amount * 100
 });
 }
 </script> -->
+<?php
+  $player_ui = App\Playerui::pluck('show_logo')->first();
+  $logo = App\Setting::pluck('logo')->first();
+  $logo_url = '/public/uploads/settings/'. $logo ;
+    if($player_ui == 1){
+?>
+        <style>
+            .logo_player {
+            position: absolute;
+            top: 50%;
+            left: 80%;
+            z-index: 2;
+            content: '';
+            height: 200px;
+            width: 10%;
+            background: url(<?php echo URL::to($logo_url) ; ?>) no-repeat;
+            background-size: 100px auto, auto;
+            }
+        </style>
+<?php } ?>
+
 
 <script type="text/javascript">
 	var first = $('select').val();

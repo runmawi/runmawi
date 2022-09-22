@@ -1,3 +1,17 @@
+ @media only screen and (max-device-width: 480px)  {
+     #video .plyr.plyr--full-ui, #video-trailer .plyr.plyr--full-ui, #video_container .plyr.plyr--full-ui, #video_container .plyr__video-embed, #watch_trailer .plyr.plyr--full-ui, #watch_trailer .plyr__video-embed {
+    height: calc(55vh - 80px - 75px)!important;
+    max-width: none;
+    width: 100%;
+}
+      .plyr--video {
+    height: calc(55vh - 80px - 75px)!important;
+    max-width: none;
+         width: 100%;}
+   
+    }
+
+    
 @media (min-width:1300px) {
   .container { max-width: 1170px; }
 }
@@ -181,11 +195,8 @@
     .reveal {
         margin-left: -52px!important;
     }
-    #video .plyr.plyr--full-ui, #video-trailer .plyr.plyr--full-ui, #video_container .plyr.plyr--full-ui, #video_container .plyr__video-embed, #watch_trailer .plyr.plyr--full-ui, #watch_trailer .plyr__video-embed {
-    height: calc(55vh - 80px - 75px)!important;
-    max-width: none;
-    width: 100%;
-}
+    
+    
       .ri-arrow-down-s-line{
         display: ;
         }
@@ -218,9 +229,33 @@
         text-align: left!important;
          margin-left: 10px;
     }
+    .plyr__video-wrapper::before {
+    position: absolute;
+    top: 28%!important;
+    left: 70%!important;
+    z-index: 2;
+    content: '';
+    height: 90px!important;
+    width: 96px;
+   
+        background-size: 50px auto, auto!important;}
+    
     .dk{
         display: block!important;
     }
+    .pls ul{
+       padding-left: 20px!important;
+    }
+    .logo_player {
+    position: absolute;
+    top: 28%!important;
+    right: 10%!important;
+    z-index: 2;
+    content: '';
+    height: 60px!important;
+    width: 12%!important;
+    background-size: contain!important;
+}
     header .navbar ul li{margin-right: 0px;}
     .navbar-nav{padding-right: 0px;}
     .more-menu{min-width:0rem;}
@@ -247,3 +282,6 @@
   header .navbar ul li.list-inline-item a { padding-left: 20px; padding-right: 20px; }
 }
 
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px)  { /* STYLES GO HERE */}
