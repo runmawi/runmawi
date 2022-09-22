@@ -9,9 +9,5 @@ elixir(function(mix) {
 	);
 	
 
-	mix.scripts([
-				'./assets/js/script.js'
-				], './assets/dist/js/scripts.js'
-	);
-
+	
 });
