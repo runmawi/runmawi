@@ -4,6 +4,11 @@
     max-width: none;
     width: 100%;
 }
+      .plyr--video {
+    height: calc(55vh - 80px - 75px)!important;
+    max-width: none;
+         width: 100%;}
+   
     }
 
     
@@ -238,6 +243,19 @@
     .dk{
         display: block!important;
     }
+    .pls ul{
+       padding-left: 20px!important;
+    }
+    .logo_player {
+    position: absolute;
+    top: 28%!important;
+    right: 10%!important;
+    z-index: 2;
+    content: '';
+    height: 60px!important;
+    width: 12%!important;
+    background-size: contain!important;
+}
     header .navbar ul li{margin-right: 0px;}
     .navbar-nav{padding-right: 0px;}
     .more-menu{min-width:0rem;}
