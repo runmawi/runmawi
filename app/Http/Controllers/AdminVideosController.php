@@ -378,6 +378,8 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
         
         }elseif($mp4_url != '' && $pack == "Business" && $settings->transcoding_access  == 1) {
 
+        try{
+
             $rand = Str::random(16);
             $path = $rand . '.' . $request->file->getClientOriginalExtension();
             $request->file->storeAs('public', $path);
@@ -437,6 +439,14 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
             \LogActivity::addVideoLog('Added Uploaded M3U8  Video.',$video_id);
               
               return $value;
+
+            }
+            catch (\Exception $e){
+              return response()->json([
+                'status'  => 'false',
+                'Message' => 'fails to upload '], 200);
+          }
+
         }elseif($mp4_url != '' && $pack == "Business"  && $settings->transcoding_access  == 0 ) {
 
             $rand = Str::random(16);

@@ -117,7 +117,8 @@
                                 <!-- <div class="draggable"> -->
                                         @foreach(@$Video as $value)
                                         <div class="draggable">
-                                            <input type="text" id="video_id" data-id = "{{ $value->id }}" class="video_{{ $value->id }}" value="{{ $value->title }}" readonly>
+                                            <!-- <input type="text" id="video_id" data-id = "{{ $value->id }}" class="video_{{ $value->id }}" value="{{ $value->title }}" readonly> -->
+                                            <div class="video_id{{ $value->id }}" data-toggle="modal" data-target="#video" data-name="{{ $value->id }}"  onclick="dropZoneDropHandler(this)"  >{{ $value->title }}</div>
                                         </div>
                                         @endforeach
                                 </div>
@@ -401,11 +402,16 @@ function dropZoneDropHandler(e,ele) {
             var videos = $('.video_17').val();
 
             console.log(allvideos);
-            
-            // $.each(allvideos , function(index, item) { 
-            //    console.log(item.id);
 
-            // });
+            var obj = JSON.parse(allvideos);
+            console.log(obj)
+
+            $.each(obj, function(i, $val)
+            {
+            // $.each(allvideos , function(index, item) { 
+               console.log(item.id);
+
+            });
                         
             // console.log(allvideos);
     // alert((videos));
