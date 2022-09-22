@@ -62,6 +62,8 @@ use App\CurrencySetting as CurrencySetting;
 use App\VideoSchedules as VideoSchedules;
 use App\ScheduleVideos as ScheduleVideos;
 use App\TestServerUploadVideo as TestServerUploadVideo;
+use App\Channel as Channel;
+
 
 
 class AdminVideosController extends Controller
@@ -3771,12 +3773,15 @@ if(!empty($artistsdata)){
                 $id = $data['schedule_id'];
                 // dd($data);
                 $VideoSchedules =  VideoSchedules::where('id', '=', $id)->first();
+                $Video =  Video::get();
                 $settings = Setting::first();
          
                 $data = array(
                       'schedule' => $VideoSchedules,
                       'settings' => $settings,
                       'Calendar' => $data,
+                      'Video' => $Video,
+
                    );
                 //    dd($data );
                return view('admin.schedule.schedule_videos',$data);
@@ -4623,6 +4628,74 @@ if(!empty($artistsdata)){
                 return response()->json($value);
             }
     
+        }
+
+        public function indexCPPPartner(Request $request)
+        {
+
+            $ModeratorsUser = ModeratorsUser::get();
+            $video = Video::where("uploaded_by","!=","CPP")->orWhere("uploaded_by",null)->get();
+            // dd($video);
+
+            $data = array(
+                
+                'ModeratorsUser' => $ModeratorsUser,
+                'video' => $video,
+
+            );
+
+            return view('admin.videos.move_videos.move_cpp_index',$data);
+        }
+
+        public function MoveCPPPartner(Request $request)
+        {
+            $data = $request->all();
+
+            $vid = $data['video_data'];
+            $cpp_id = $data['cpp_users'];
+
+            $ModeratorsUser = ModeratorsUser::get();
+            $video = Video::where("id",$vid)->first();
+            $video->user_id = $cpp_id;
+            $video->uploaded_by = 'CPP';
+            $video->save();
+
+            // CPP
+
+            return Redirect::back()->with('message','Your video moved to selected partner');
+        }
+
+        public function indexChannelPartner(Request $request)
+        {
+
+            $channel = Channel::get();
+            $video = Video::where("uploaded_by","!=","Channel")->orWhere("uploaded_by",null)->get();
+
+            $data = array(
+                
+                'channel' => $channel,
+                'video' => $video,
+
+            );
+
+            return view('admin.videos.move_videos.move_channel_video',$data);
+            
+        }
+        
+        public function MoveChannelPartner(Request $request)
+        {
+            $data = $request->all();
+
+            $vid = $data['video_data'];
+            $channel_id = $data['channel_users'];
+
+            $Channel = Channel::get();
+            $video = Video::where("id",$vid)->first();
+            $video->user_id = $channel_id;
+            $video->uploaded_by = 'Channel';
+            $video->save();
+
+            return Redirect::back()->with('message','Your video moved to selected partner');
         }
 
 }

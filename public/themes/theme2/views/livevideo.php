@@ -325,15 +325,18 @@ if ($ppv_exist > 0 || Auth::user()->subscribed()  || $video->access == "guest" &
         -->                 
                         <ul class="list-inline p-0 mt-4 rental-lists">
                         <!-- Subscribe -->
+                        <?php if ($video->access == 'subscriber' ) { ?>
                             <li>
                                 <a href="<?php echo URL::to('/login');?>"><span class="view-count btn btn-primary subsc-video"><?php echo __('Subscribe');?> </span></a>
                             </li>
+                            <?php } ?>
                             <!-- PPV button -->
+                            <?php if ($video->access != 'guest' ) { ?>
                             <li>
-                                <a class="view-count btn btn-primary rent-video text-white" href="<?php echo URL::to('/login');?>">
+                                <a data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary rent-video" href="<?php echo URL::to('/login');?>">
                                     <?php echo __('Rent');?> </a>
                             </li>
-                        </ul>
+                        <?php   }?>
                     </div>
                 </div>
                 <?php   }?>

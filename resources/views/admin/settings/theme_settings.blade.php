@@ -144,8 +144,6 @@ border-radius: 0px 4px 4px 0px;
                     <div class="panel-title"> 	
                         <h4><i class="entypo-monitor"></i> Checkout Theme Setting</h4> 
                     </div> 
-                      
-                
                     <div class="row"> 
                         
                             <div class="col-sm-6">
@@ -158,17 +156,20 @@ border-radius: 0px 4px 4px 0px;
                                 </div>
                             </div>
                    
-
-                   
-                   
                             <div class="col-sm-6">
                                  <p>{{ ucfirst(trans('signup Agree Message')) }}</p>
                                 <input type="text" placeholder="Signup Agree Message" name="signup_payment_content" class="form-control signup_payment_content" id="signup_payment_content" value="@if(!empty($settings->signup_payment_content)){{ $settings->signup_payment_content }}@endif">
                             </div>
-                    
+                    </div>
+                                    {{-- Sign up - Step 2 Title  --}}
+                    <div class="row"> 
+                        <div class="col-sm-6">
+                             <p>{{ ucfirst(trans('Sign up - Step 2 Title')) }}</p>
+                            <input type="text" placeholder="Sign up - Step 2 Title" name="signup_step2_title" class="form-control signup_step2_title" id="signup_step2_title" value="@if(!empty($settings->signup_step2_title)){{ $settings->signup_step2_title }}@endif">
+                        </div>
+                    </div>
                 </div>
-                
-</div>
+
                                  {{-- Prevent Viewing Page Source --}}
 
                     <div class="panel-heading mt-3"> 

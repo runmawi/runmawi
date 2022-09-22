@@ -473,6 +473,9 @@ i.fa.fa-google-plus {
     $signup_payment_content = App\SiteTheme::pluck('signup_payment_content')->first();
     $Stripe_payment_settings = App\PaymentSetting::where('payment_type','Stripe')->first();
     $PayPal_payment_settings = App\PaymentSetting::where('payment_type','PayPal')->first();
+    $signup_step2_title = App\SiteTheme::pluck('signup_step2_title')->first();
+    $stripe_lable = App\PaymentSetting::where('payment_type','Stripe')->pluck('stripe_lable')->first() ? App\PaymentSetting::where('payment_type','Stripe')->pluck('stripe_lable')->first()  : "Stripe";
+    $paypal_lable = App\PaymentSetting::where('payment_type','PayPal')->pluck('paypal_lable')->first() ? App\PaymentSetting::where('payment_type','PayPal')->pluck('paypal_lable')->first() : "PayPal";
 @endphp
 
 <section class="flick">
@@ -485,8 +488,8 @@ i.fa.fa-google-plus {
                 <div class="flick1">
                  <div class="small-heading text-white">Step 2 of  <span class="ml-2">2</span></div>
                      <p class="text-white">Hello, {{ $user_mail }}</p>
-                     <div class="medium-heading text-white">Activate Your Free Trial</div>
-                     <p class="text-white">You will not be charged until the end of your free trial. Cancel anytime.</p>
+                     <div class="medium-heading text-white"> {{  $signup_step2_title }} </div>
+                     {{-- <p class="text-white">You will not be charged until the end of your free trial. Cancel anytime.</p> --}}
                     <div class="col-md-6 p-0">
 
                         <!-- <h5> Payment Method</h5> -->
@@ -494,10 +497,10 @@ i.fa.fa-google-plus {
                         <div class="d-flex align-items-center">
                             <?php if(!empty($Stripe_payment_settings) && $Stripe_payment_settings->stripe_status == 1){ ?>
                                 <input type="checkbox" id="Stripe_lable" name="payment_lable" value="Stripe_lable" checked>
-                                <label class="mt-2 ml-2" for="" > Stripe</label><br />&nbsp;&nbsp;
+                                <label class="mt-2 ml-2" for="" > {{ $stripe_lable  }}</label><br />&nbsp;&nbsp;
                             <?php }elseif(!empty($PayPal_payment_settings) && $PayPal_payment_settings->paypal_status == 1){ ?>
                                 <input type="checkbox" id="Paypal_lable" name="payment_lable" value="Paypal_lable" >
-                                <label class="mt-2 ml-2 " for="" > Paypal</label><br />&nbsp;&nbsp;
+                                <label class="mt-2 ml-2 " for="" > {{ $paypal_lable }}</label><br />&nbsp;&nbsp;
                             <?php } ?>
                                 <!-- <input type="checkbox" id="Razorpay_lable" name="payment_lable" value="Razorpay_lable" >
                                 <label class="mt-2 ml-2 " for="" > Razorpay</label><br /> -->

@@ -51,6 +51,8 @@ use App\Jobs\ConvertSerieTrailer;
 use Streaming\Representation;
 use getID3;
 use App\InappPurchase;
+use App\Channel as Channel;
+use App\ModeratorsUser as ModeratorsUser;
 
 class AdminSeriesController extends Controller
 {
@@ -2259,4 +2261,72 @@ if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1
 
         }
         
+
+        public function indexCPPPartner(Request $request)
+        {
+
+            $ModeratorsUser = ModeratorsUser::get();
+            $Series = Series::where("uploaded_by","!=","CPP")->orWhere("uploaded_by",null)->get();
+            // dd($Series);
+
+            $data = array(
+                
+                'ModeratorsUser' => $ModeratorsUser,
+                'Series' => $Series,
+
+            );
+
+            return view('admin.series.move_series.move_cpp_series',$data);
+        }
+
+        public function MoveCPPPartner(Request $request)
+        {
+            $data = $request->all();
+
+            $Seriesid = $data['Series_data'];
+            $cpp_id = $data['cpp_users'];
+
+            $ModeratorsUser = ModeratorsUser::get();
+            $Series = Series::where("id",$Seriesid)->first();
+            $Series->user_id = $cpp_id;
+            $Series->uploaded_by = 'CPP';
+            $Series->save();
+
+            // CPP
+
+            return Redirect::back()->with('message','Your video moved to selected partner');
+        }
+
+        public function indexChannelPartner(Request $request)
+        {
+
+            $channel = Channel::get();
+            $Series = Series::where("uploaded_by","!=","Channel")->orWhere("uploaded_by",null)->get();
+
+            $data = array(
+                
+                'channel' => $channel,
+                'Series' => $Series,
+
+            );
+
+            return view('admin.series.move_series.move_channel_move_series',$data);
+            
+        }
+        
+        public function MoveChannelPartner(Request $request)
+        {
+            $data = $request->all();
+
+            $Seriesid = $data['Series_data'];
+            $channel_id = $data['channel_users'];
+
+            $Series = Series::where("id",$Seriesid)->first();
+            $Series->user_id = $channel_id;
+            $Series->uploaded_by = 'Channel';
+            $Series->save();
+
+            return Redirect::back()->with('message','Your video moved to selected partner');
+        }
+
 }

@@ -334,7 +334,10 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/profile/update', 'AdminUsersController@myprofileupdate');
     Route::post('/profileupdate', 'AdminUsersController@ProfileImage');
     Route::post('/profilePreference', 'AdminUsersController@profilePreference');
-
+    Route::get('/email_exitsvalidation', 'AdminUsersController@email_exitsvalidation')->name('email_exitsvalidation');
+    Route::get('/mobilenumber_exitsvalidation', 'AdminUsersController@mobilenumber_exitsvalidation')->name('mobilenumber_exitsvalidation');
+    Route::get('/password_validation', 'AdminUsersController@password_validation')->name('password_validation');
+    
     Route::get('/settings', 'AdminSettingsController@index');
     Route::post('/settings/save_settings', 'AdminSettingsController@save_settings');
     Route::post('/settings/script_settings', 'AdminSettingsController@script_settings');
@@ -840,6 +843,21 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::get('/channel/view_payouts/{id}', 'ChannelPayoutController@ViewPayouts'); 
     Route::post('/channel/update_payouts', 'ChannelPayoutController@UpdatePayouts');
 
+// Video Move to partner
+Route::get('/assign_videos/partner', 'AdminVideosController@indexCPPPartner');
+Route::post('/move/cpp-partner', 'AdminVideosController@MoveCPPPartner');
+
+Route::get('/assign_videos/channel_partner', 'AdminVideosController@indexChannelPartner');
+Route::post('/move/channel-partner', 'AdminVideosController@MoveChannelPartner');
+
+
+// Series Move to partner
+
+Route::get('/assign_Series/partner', 'AdminSeriesController@indexCPPPartner');
+Route::post('/MoveSeries/cpp-partner', 'AdminSeriesController@MoveCPPPartner');
+
+Route::get('/assign_Series/channel_partner', 'AdminSeriesController@indexChannelPartner');
+Route::post('/MoveSeries/channel-partner', 'AdminSeriesController@MoveChannelPartner');
 
 
 // Email Template
@@ -906,6 +924,7 @@ Route::get('/regionvideos', 'AdminUsersController@RegionVideos');
 Route::get('/analytics/PlayerVideoAnalytics', 'AdminPlayerAnalyticsController@PlayerVideoAnalytics');
 Route::post('/analytics/playervideos_start_date_url', 'AdminPlayerAnalyticsController@PlayerVideosStartDateRecord');
 Route::post('/analytics/playervideos_end_date_url', 'AdminPlayerAnalyticsController@PlayerVideosEndDateRecord');
+Route::post('/analytics/playervideos_export', 'AdminPlayerAnalyticsController@PlayerVideosExport');
 // Route::post('/admin/subscriber_end_date_url', 'AdminUsersController@SubscriberRevenueStartEndDateRecord');
 
 Route::get('/analytics/RegionVideoAnalytics', 'AdminPlayerAnalyticsController@RegionVideoAnalytics');
@@ -914,6 +933,8 @@ Route::get('/analytics/RegionVideoAnalytics', 'AdminPlayerAnalyticsController@Re
 Route::get('/analytics/PlayerUserAnalytics', 'AdminPlayerAnalyticsController@PlayerUserAnalytics');
 Route::post('/analytics/playerusers_start_date_url', 'AdminPlayerAnalyticsController@PlayerUsersStartDateRecord');
 Route::post('/analytics/playerusers_end_date_url', 'AdminPlayerAnalyticsController@PlayerUsersEndDateRecord');
+Route::post('/analytics/playerusers_export', 'AdminPlayerAnalyticsController@PlayerUsersExport');
+
 
 Route::get('/analytics/VideoAllCountry', 'AdminPlayerAnalyticsController@RegionVideoAllCountry');
 Route::get('/analytics/VideoAllCity', 'AdminPlayerAnalyticsController@RegionVideoAllCity');
