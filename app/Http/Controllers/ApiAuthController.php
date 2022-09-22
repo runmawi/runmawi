@@ -451,7 +451,7 @@ class ApiAuthController extends Controller
                       //                           $message->to($user->email, $user->username)->subject($request->get('subject'));
                       //                       });
 
-            send_password_notification('Notification From '. GetWebsiteName(),'Your Payment has been done Successfully','Your Your Payment has been done Successfully','',$user->id);
+            // send_password_notification('Notification From '. GetWebsiteName(),'Your Payment has been done Successfully','Your Your Payment has been done Successfully','',$user->id);
         }
       }
       else{

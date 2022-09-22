@@ -402,10 +402,10 @@ function dropZoneDropHandler(e,ele) {
 
             console.log(allvideos);
             
-            $.each(allvideos , function(index, item) { 
-               console.log(item.id);
+            // $.each(allvideos , function(index, item) { 
+            //    console.log(item.id);
 
-            });
+            // });
                         
             // console.log(allvideos);
     // alert((videos));
