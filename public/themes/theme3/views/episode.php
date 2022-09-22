@@ -34,8 +34,8 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 <input type="hidden" value="<?php echo $episode->type; ?>" id='episode_type'>
 <input type="hidden" value="<?php echo URL::to('/');?>" id="base_url" >
 <input type="hidden" id="videoslug" value="<?php if(isset($episode->path)) { echo $episode->path; } else{ echo "0";}?>">
-<div class="container-fluid">
-	<div id="series_bg" class=" mt-3">
+<div class="">
+	<div id="series_bg" class="">
 		<div class="">
 			
 			<?php 
@@ -190,7 +190,7 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 	</div>
 	<?php	} } ?>
 	
-                <div class="col-md-5 p-0">
+                <div class="col-md-5">
 			<span class="text-white" style="font-size: 129%;font-weight: 700;">You're watching:</span>
 			<p style=";font-size: 130%;color: white;">
 			<?php 
@@ -317,8 +317,8 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 		<div class="next_url" style="display: none;"><?= $url ?></div>
 		<?php } ?>
 
-		<div class="iq-main-header container d-flex align-items-center justify-content-between">
-  <h4 class="main-title">Season</h4>                      
+		<div class="iq-main-header  d-flex align-items-center justify-content-between mt-3 p-0">
+  <h6 class="main-title">Season</h6>                      
 </div>
 <div class="favorites-contens">
   <ul class="favorites-slider list-inline  row p-0 mb-0">
@@ -591,9 +591,9 @@ input.skips,input#Recaps_Skip{
         
     }
     #series_bg{
-         padding: 20px;
+         /*padding: 20px;
           background: #202933;
-border-radius: 20px;
+border-radius: 20px;*/
     }
 	</style>
 
