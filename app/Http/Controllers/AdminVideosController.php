@@ -771,7 +771,7 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
              $video->embed_code = $data['embed_code'];
              $video->video_category_id = $data['video_category_id'];
              $video->details = $request->details;
-             $video->description = strip_tags($request->description);
+             $video->description = ($request->description);
              $video->user_id = Auth::user()->id;
              $video->save();
 
@@ -815,7 +815,7 @@ if($row->active == 0){ $active = "Pending" ;$class="bg-warning"; }elseif($row->a
              $video->video_category_id = $data['video_category_id'];
              $video->details = $data['details'];
              $video->duration = $data['duration'];
-             $video->description = strip_tags($data['description']);
+             $video->description = ($data['description']);
              $video->user_id = Auth::user()->id;
              $video->save(); 
             
@@ -1546,8 +1546,8 @@ if(!empty($artistsdata)){
         $video->banner=$banner ;
         $video->ppv_price =$data['ppv_price'];
         $video->type =$data['type'];
-        $video->description = strip_tags($data['description']);
-        $video->trailer_description = strip_tags($data['trailer_description']);
+        $video->description = ($data['description']);
+        $video->trailer_description = ($data['trailer_description']);
         $video->banner =  $banner;
         $video->enable =  $enable;
         $video->rating =  $request->rating;
@@ -2302,8 +2302,8 @@ if(!empty($artistsdata)){
             $video->intro_start_time =  $data['intro_start_time'];
             $video->intro_end_time =  $data['intro_end_time'];   
             $video->ads_category =  $data['ads_category'];   
-            $video->description = strip_tags($data['description']);
-            $video->trailer_description = strip_tags($data['trailer_description']);
+            $video->description = ($data['description']);
+            $video->trailer_description = ($data['trailer_description']);
             $video->uploaded_by = Auth::user()->role;
             $video->draft = 1;
             $video->active = 1 ;

@@ -150,7 +150,7 @@ $settings  = App\Setting::first();?>
                 <div class="panel-heading"> 
 				<div class="panel-title font-weight-bold"><label class="m-0">Series Details, Links, and Info</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body col-sm-12 p-0" style="display: block; padding:0px;">
-					<textarea class="form-control" name="details" id="summary-ckeditor" >@if(!empty($series->details)){{ htmlspecialchars($series->details) }}@endif</textarea>
+					<textarea class="form-control" name="details" id="summary-ckeditor" >@if(!empty($series->details)){{ ($series->details) }}@endif</textarea>
 				</div> 
 			</div>
 
