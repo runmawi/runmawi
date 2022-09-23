@@ -150,7 +150,7 @@ $site_page_url = $http_site_url[1];
     <!-- Responsive -->
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/responsive.css';?>" />
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/slick.css';?>" />
-    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/plyr_marker.scss';?>" />
+   <!-- <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/plyr_marker.scss';?>" />-->
 
     
        <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />

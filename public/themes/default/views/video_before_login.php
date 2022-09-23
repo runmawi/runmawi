@@ -1,5 +1,8 @@
 <?php include('header.php'); ?>
 <style>
+    .plyr__video-embed{
+          position: relative;
+      }
         .modal-content{
           background-color: transparent;
       }
