@@ -282,6 +282,7 @@
     .dgk{
         color: #000!important;
         padding: 30px 24px;
+       
         
         
     }
@@ -442,13 +443,15 @@ i.fa.fa-google-plus {
         padding: 10px;
         color: #000!important;
         background-color: #fff;
-        height: 140px;
-        width: 315px;
+        margin: 5px;
+        height: 110px;
+       
        
     }
 
     .actives {
         border:5px solid rgba(138, 3, 3, 1)!important;
+        padding: 0;
     }
    
         .dg:hover{
@@ -491,7 +494,7 @@ i.fa.fa-google-plus {
     $paypal_lable = App\PaymentSetting::where('payment_type','PayPal')->pluck('paypal_lable')->first() ? App\PaymentSetting::where('payment_type','PayPal')->pluck('paypal_lable')->first() : "PayPal";
 @endphp
 
-<section class="flick">
+<section class="flick p-4">
     <div class="container">
         <div align="center"></div>
         <div class="row justify-content-center">
@@ -513,20 +516,20 @@ i.fa.fa-google-plus {
 
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="row align-items-center m-0">
+                        <div class="row align-items-center m-0 p-0">
                          @foreach($plans_data as $key => $plan) 
                              @php
                                   $plan_name = $plan[0]->plans_name;
                              @endphp
 
-                             <div style="" class="col-md-6 plan_details"  data-plan-id={{ 'active'.$plan[0]->id  }}  data-plan-price={{ $plan[0]->price }} data-plan_id={{  $plan[0]->plan_id  }} data-payment-type={{ $plan[0]->payment_type }} onclick="plan_details(this)">
+                             <div style="" class="col-md-6 plan_details p-0"  data-plan-id={{ 'active'.$plan[0]->id  }}  data-plan-price={{ $plan[0]->price }} data-plan_id={{  $plan[0]->plan_id  }} data-payment-type={{ $plan[0]->payment_type }} onclick="plan_details(this)">
                                 <div class="row dg align-items-center mb-4" id={{ 'active'.$plan[0]->id  }}>
-                                    <div class="col-md-6">
+                                    <div class="col-md-7 p-0">
                                         <h4 class="text-black font-weight-bold"> {{ $plan[0]->plans_name  }} </h4>
                                         <p>{{ $plan[0]->plans_name  }} Membership</p>
                                     </div>
-                                    
-                                    <div class="col-md-6" style="border-left: 1px solid #000; padding: 15px;">
+                                     <div class="vl "></div>
+                                    <div class="col-md-4 p-2" >
                                         <h4 class="text-black">{{ "$".$plan[0]->price }}</h4>
                                         <p>Billed as {{ "$".$plan[0]->price }}</p>
                                     </div>
