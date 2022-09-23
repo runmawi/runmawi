@@ -117,14 +117,14 @@
                                 <!-- <div class="draggable"> -->
                                         @foreach(@$Video as $value)
                                         <div class="draggable">
-                                            <input type="text" id="video_id" class="video_{{ $value->id }}" value="{{ $value->title }}" readonly>
+                                            <input type="text" data-class="{{ $value->id }}" id="video_id" draggable="true" ondragstart="drag(this)" class="video_{{ $value->id }}" value="{{ $value->title }}" readonly>
                                             <!-- <div class="video_id{{ $value->id }}" data-toggle="modal" data-target="#video" data-name="{{ $value->id }}"  onclick="dropZoneDropHandler(this)"  >{{ $value->title }}</div> -->
                                         </div>
                                         @endforeach
                                 </div>
                             </div>
                         <div class="col-md-6">
-                            <div class="drop-zone"></div>
+                            <div class="drop-zone" ondrop="drop(this)" ondragover="allowDrop(this)"></div>
                         </div>
 
                         <!-- <div class="drop-zone"></div> -->
@@ -455,6 +455,55 @@ function deferredOriginChanges(origin, dragFeedbackClassName) {
     });
 }
 
+
+var video_id = '';
+ 
+
+
+function allowDrop(ev) {
+//   ev.preventDefault();
+}
+
+function drag(ev) {
+//   ev.dataTransfer.setData("text", ev.target.id);
+// console.log(ev);
+
+var video_id = $(ev).attr('data-class');
+// console.log(video_id);
+drop(video_id);
+}
+
+function drop(video_id) {
+
+    console.log(video_id);
+
+    $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+    });
+
+
+        var url = "{{ URL::to('admin/dragdropScheduledVideos/')  }}";
+        var time = $('#time').val();
+        $.ajax({
+           url: url,
+           type: "post",
+            data: {
+                  _token: '{{ csrf_token() }}',
+                    video_id: video_id,
+                    month: month,
+                    year: year,
+                    date: date,
+                    schedule_id: schedule_id,
+                    schedule_time: time
+            },        
+            success: function(value){
+   			console.log(value);
+           }
+       });
+
+}
 
 </script>
 

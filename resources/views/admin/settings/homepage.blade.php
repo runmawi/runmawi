@@ -94,7 +94,7 @@ border-radius: 0px 4px 4px 0px;
                             
                            <div class="col-sm-4">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
-                                <div><label class="mt-1"> @if ($order_settings_list[0]->header_name) {{ @$order_settings_list[0]->header_name }} @else {{ ""  }} @endif  </label></div>
+                                <div><label class="mt-1"> @if (@$order_settings_list[0]->header_name) {{ @$order_settings_list[0]->header_name }} @else {{ ""  }} @endif  </label></div>
                               
                                     <div class="mt-1 d-flex align-items-center justify-content-around">
                                           <div class="mr-2">OFF</div>
@@ -109,7 +109,7 @@ border-radius: 0px 4px 4px 0px;
                             </div>
                             <div class="col-sm-4">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
-                                <div><label class="mt-1">  @if ($order_settings_list[1]->header_name) {{ @$order_settings_list[1]->header_name }} @else {{ ""  }} @endif </label></div>
+                                <div><label class="mt-1">  @if (@$order_settings_list[1]->header_name) {{ @$order_settings_list[1]->header_name }} @else {{ ""  }} @endif </label></div>
                                
                                     <div class="mt-1 d-flex align-items-center justify-content-around">
                                          <div class="mr-2">OFF</div>
@@ -124,7 +124,7 @@ border-radius: 0px 4px 4px 0px;
                             </div>
                             <div class="col-sm-4">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
-                                <div><label class="mt-1"> @if ($order_settings_list[2]->header_name) {{ @$order_settings_list[2]->header_name }} @else {{ ""  }} @endif </label></div>
+                                <div><label class="mt-1"> @if (@$order_settings_list[2]->header_name) {{ @$order_settings_list[2]->header_name }} @else {{ ""  }} @endif </label></div>
                                
                                     <div class="mt-1 d-flex align-items-center justify-content-around">
                                          <div class="mr-2">OFF</div>
@@ -139,7 +139,7 @@ border-radius: 0px 4px 4px 0px;
                             </div>
                             <div class="col-sm-4">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
-                                <div><label class="mt-1">  @if ($order_settings_list[3]->header_name) {{ @$order_settings_list[3]->header_name }} @else {{ ""  }} @endif </label></div>
+                                <div><label class="mt-1">  @if (@$order_settings_list[3]->header_name) {{ @$order_settings_list[3]->header_name }} @else {{ ""  }} @endif </label></div>
                                
                                     <div class="mt-1 d-flex align-items-center justify-content-around">
                                          <div class="mr-2">OFF</div>
@@ -154,7 +154,7 @@ border-radius: 0px 4px 4px 0px;
                             </div>
                             <div class="col-sm-4">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
-                                <div><label class="mt-1">  @if ($order_settings_list[5]->header_name) {{ @$order_settings_list[5]->header_name }} @else {{ ""  }} @endif </label></div>
+                                <div><label class="mt-1">  @if (@$order_settings_list[5]->header_name) {{ @$order_settings_list[5]->header_name }} @else {{ ""  }} @endif </label></div>
                                 
                                     <div class="mt-1 d-flex align-items-center justify-content-around">
                                         <div class="mr-2">OFF</div>
@@ -169,7 +169,7 @@ border-radius: 0px 4px 4px 0px;
                             </div>
                             <div class="col-sm-4">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
-                                <div><label class="mt-1">  @if ($order_settings_list[6]->header_name) {{ @$order_settings_list[6]->header_name }} @else {{ ""  }} @endif </label></div>
+                                <div><label class="mt-1">  @if (@$order_settings_list[6]->header_name) {{ @$order_settings_list[6]->header_name }} @else {{ ""  }} @endif </label></div>
                                 
                                     <div class="mt-1 d-flex align-items-center justify-content-around">
                                         <div class="mr-2">OFF</div>
@@ -184,7 +184,7 @@ border-radius: 0px 4px 4px 0px;
                             </div>
                             <div class="col-sm-4">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
-                                <div><label class="mt-1">  @if ($order_settings_list[4]->header_name) {{ @$order_settings_list[4]->header_name }} @else {{ ""  }} @endif </label></div>
+                                <div><label class="mt-1">  @if (@$order_settings_list[4]->header_name) {{ @$order_settings_list[4]->header_name }} @else {{ ""  }} @endif </label></div>
                                 
                                     <div class="mt-1 d-flex align-items-center justify-content-around">
                                         <div class="mr-2">OFF</div>
@@ -202,7 +202,7 @@ border-radius: 0px 4px 4px 0px;
 
                             <div class="col-sm-4">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
-                                <div><label class="mt-1">  @if ($order_settings_list[7]->header_name) {{ @$order_settings_list[7]->header_name }} @else {{ ""  }} @endif  </label></div>
+                                <div><label class="mt-1">  @if (@$order_settings_list[7]->header_name) {{ @$order_settings_list[7]->header_name }} @else {{ ""  }} @endif  </label></div>
                                
                                     <div class="mt-1 d-flex align-items-center justify-content-around">
                                            <div class="mr-2">OFF</div>
@@ -309,7 +309,7 @@ border-radius: 0px 4px 4px 0px;
                             
                            <div class="col-sm-4">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
-                                <div><label class="mt-1"> @if ($order_settings_list[0]->header_name) {{ @$order_settings_list[0]->header_name }} @else {{ ""  }} @endif  </label></div>
+                                <div><label class="mt-1"> @if (@$order_settings_list[0]->header_name) {{ @$order_settings_list[0]->header_name }} @else {{ ""  }} @endif  </label></div>
                               
                                     <div class="mt-1 d-flex align-items-center justify-content-around">
                                           <div class="mr-2">OFF</div>
@@ -324,7 +324,7 @@ border-radius: 0px 4px 4px 0px;
                             </div>
                             <div class="col-sm-4">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
-                                <div><label class="mt-1">  @if ($order_settings_list[1]->header_name) {{ @$order_settings_list[1]->header_name }} @else {{ ""  }} @endif </label></div>
+                                <div><label class="mt-1">  @if (@$order_settings_list[1]->header_name) {{ @$order_settings_list[1]->header_name }} @else {{ ""  }} @endif </label></div>
                                
                                     <div class="mt-1 d-flex align-items-center justify-content-around">
                                          <div class="mr-2">OFF</div>
@@ -339,7 +339,7 @@ border-radius: 0px 4px 4px 0px;
                             </div>
                             <div class="col-sm-4">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
-                                <div><label class="mt-1"> @if ($order_settings_list[2]->header_name) {{ @$order_settings_list[2]->header_name }} @else {{ ""  }} @endif </label></div>
+                                <div><label class="mt-1"> @if (@$order_settings_list[2]->header_name) {{ @$order_settings_list[2]->header_name }} @else {{ ""  }} @endif </label></div>
                                
                                     <div class="mt-1 d-flex align-items-center justify-content-around">
                                          <div class="mr-2">OFF</div>
@@ -354,7 +354,7 @@ border-radius: 0px 4px 4px 0px;
                             </div>
                             <div class="col-sm-4">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
-                                <div><label class="mt-1">  @if ($order_settings_list[3]->header_name) {{ @$order_settings_list[3]->header_name }} @else {{ ""  }} @endif </label></div>
+                                <div><label class="mt-1">  @if (@$order_settings_list[3]->header_name) {{ @$order_settings_list[3]->header_name }} @else {{ ""  }} @endif </label></div>
                                
                                     <div class="mt-1 d-flex align-items-center justify-content-around">
                                          <div class="mr-2">OFF</div>
@@ -369,7 +369,7 @@ border-radius: 0px 4px 4px 0px;
                             </div>
                             <div class="col-sm-4">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
-                                <div><label class="mt-1">  @if ($order_settings_list[5]->header_name) {{ @$order_settings_list[5]->header_name }} @else {{ ""  }} @endif </label></div>
+                                <div><label class="mt-1">  @if (@$order_settings_list[5]->header_name) {{ @$order_settings_list[5]->header_name }} @else {{ ""  }} @endif </label></div>
                                 
                                     <div class="mt-1 d-flex align-items-center justify-content-around">
                                         <div class="mr-2">OFF</div>
@@ -384,7 +384,7 @@ border-radius: 0px 4px 4px 0px;
                             </div>
                             <div class="col-sm-4">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
-                                <div><label class="mt-1">  @if ($order_settings_list[6]->header_name) {{ @$order_settings_list[6]->header_name }} @else {{ ""  }} @endif </label></div>
+                                <div><label class="mt-1">  @if (@$order_settings_list[6]->header_name) {{ @$order_settings_list[6]->header_name }} @else {{ ""  }} @endif </label></div>
                                 
                                     <div class="mt-1 d-flex align-items-center justify-content-around">
                                         <div class="mr-2">OFF</div>
@@ -399,7 +399,7 @@ border-radius: 0px 4px 4px 0px;
                             </div>
                             <div class="col-sm-4">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
-                                <div><label class="mt-1">  @if ($order_settings_list[4]->header_name) {{ @$order_settings_list[4]->header_name }} @else {{ ""  }} @endif </label></div>
+                                <div><label class="mt-1">  @if (@$order_settings_list[4]->header_name) {{ @$order_settings_list[4]->header_name }} @else {{ ""  }} @endif </label></div>
                                 
                                     <div class="mt-1 d-flex align-items-center justify-content-around">
                                         <div class="mr-2">OFF</div>
@@ -417,7 +417,7 @@ border-radius: 0px 4px 4px 0px;
 
                             <div class="col-sm-4">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
-                                <div><label class="mt-1">  @if ($order_settings_list[7]->header_name) {{ @$order_settings_list[7]->header_name }} @else {{ ""  }} @endif  </label></div>
+                                <div><label class="mt-1">  @if (@$order_settings_list[7]->header_name) {{ @$order_settings_list[7]->header_name }} @else {{ ""  }} @endif  </label></div>
                                
                                     <div class="mt-1 d-flex align-items-center justify-content-around">
                                            <div class="mr-2">OFF</div>

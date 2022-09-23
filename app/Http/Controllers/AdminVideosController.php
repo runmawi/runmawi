@@ -4771,4 +4771,274 @@ if(!empty($artistsdata)){
                 }
     
         }
+
+        
+        public function DragDropScheduledVideos(Request $request)
+        {
+            $data = $request->all();
+
+            $video_id = $data['video_id'];
+            $videochooed = Video::where('id',$video_id)->first(); 
+            // echo "<pre>"; print_r($videochooed);exit(); 
+            $date = $data['date'];  
+            $month = $data['month'];
+            $year = $data['year'];
+            $schedule_time = $data['schedule_time'];
+
+                if(!empty($schedule_time)){
+                        
+                   $choose_time = explode("to",$schedule_time);
+                        if(count($choose_time) > 0){
+                            $choose_start_time = $choose_time[0];
+                            $choose_end_time = $choose_time[1];
+                        }else{
+                            $choose_start_time = '';
+                            $choose_end_time = '';
+                        }
+                    
+                    $Schedule_current_date = date('Y-m-d');
+
+                    $schedule_id = $data['schedule_id'];
+                    $choosed_date  = $year.'-'.$month.'-'.$date ;
+
+                    $date=date_create($choosed_date);
+                    $date_choose = date_format($date,"Y/m");
+                    $date_choosed = $date_choose.'/'.$data['date'];
+
+                    $choosedtime_exitvideos = ScheduleVideos::selectRaw('*')
+                    ->where('shedule_date','=',$date_choosed)
+                    ->where('shedule_time','=',$schedule_time)
+                    ->orderBy('id', 'desc')->first();
+
+                    $ScheduleVideos = ScheduleVideos::where('shedule_date','=',$date_choosed)->orderBy('id', 'desc')->first();
+                    
+                    $video_duration = $videochooed->duration;
+
+                    // DateTime();
+                    $current_date =     $current_date = date('Y-m-d h:i:s a', time()); 
+                    $current_date = date('Y-m-d h:i:s');    
+                    $daten = date('Y-m-d h:i:s ', time());  
+                    $d = new \DateTime('now');
+                    $d->setTimezone(new \DateTimeZone('Asia/Kolkata'));  
+                    $now = $d->format('Y-m-d h:i:s a');
+                    $current_time = date('h:i A', strtotime($now));
+                    // print_r($choosedtime_exitvideos);exit;
+
+                    if(!empty($ScheduleVideos) && empty($choosedtime_exitvideos)){
+                        // print_r('ScheduleVideos');exit;
+
+                        $last_shedule_endtime = $ScheduleVideos->shedule_endtime;
+                        $last_current_time = $ScheduleVideos->current_time;
+                        $last_sheduled_endtime = $ScheduleVideos->sheduled_endtime;     
+
+                            if($last_shedule_endtime < $current_time){
+
+                                $time    = explode(':', date('h:i', strtotime($now)));
+                                $minutes = ($time[0] * 60.0 + $time[1] * 1.0);
+                                $totalSecs   = ($minutes * 60);
+                                $sec = $totalSecs + $video_duration;
+                                $hour = floor($sec / 3600);
+                                $minute = floor(($sec / 60) % 60);
+                                $hours = str_pad($hour, 2, '0', STR_PAD_LEFT);
+                                $minutes = str_pad($minute, 2, '0', STR_PAD_LEFT);
+
+                                $shedule_endtime = $hours.':'.$minutes.' '.date('A', strtotime($now));
+                                $sheduled_endtime = $hours.':'.$minutes;
+                                
+                                $starttime = date('h:i ', strtotime($now));        
+                                $sheduled_starttime = date('h:i A', strtotime($now));  
+
+                            }else{
+
+                                $time    = explode(':', $last_sheduled_endtime);
+                                $minutes = ($time[0] * 60.0 + $time[1] * 1.0);
+                                $totalSecs   = ($minutes * 60);
+                                $sec = $totalSecs + $video_duration;
+                                // $sec = 45784.249244444;
+                                $hour = floor($sec / 3600);
+                                $minute = floor(($sec / 60) % 60);
+                                $hours = str_pad($hour, 2, '0', STR_PAD_LEFT);
+                                $minutes = str_pad($minute, 2, '0', STR_PAD_LEFT);
+
+                                $shedule_endtime = $hours.':'.$minutes.' '.date('A', strtotime($now));
+                                $sheduled_endtime = $hours.':'.$minutes;
+
+                                $starttime = $last_sheduled_endtime;        
+                                $sheduled_starttime = $last_shedule_endtime;  
+                            }
+                        
+                        $video = new ScheduleVideos();
+                        $video->title = $videochooed->title;
+                        $video->type = $videochooed->type;
+                        $video->active	 = 1;
+                        $video->original_name = 'public';
+                        $video->disk = 'public';
+                        $video->mp4_url = $videochooed->mp4_url;
+                        // $video->m3u8_url = $videochooed->m3u8_url;
+                        $video->path = $videochooed->path;
+                        $video->shedule_date = $date_choosed; 
+                        $video->shedule_time = $schedule_time; 
+                        $video->shedule_endtime = $shedule_endtime;     
+                        $video->sheduled_endtime = $sheduled_endtime;     
+                        $video->current_time = date('h:i A', strtotime($now));     
+                        $video->video_order = 1;        
+                        $video->schedule_id = $schedule_id ;        
+                        $video->starttime = $starttime ;        
+                        $video->sheduled_starttime = $sheduled_starttime ;   
+                        $video->starttime = $last_sheduled_endtime ;        
+                        $video->choose_start_time = $choose_start_time ;        
+                        $video->choose_end_time  = $choose_end_time;
+                        $video->status  = 1;
+                        $video->save(); 
+                        
+                        $video_id = $video->id;
+                        $video_title = ScheduleVideos::find($video_id);
+                        $title =$video_title->title; 
+            
+                        $value['success'] = 1;
+                        $value['message'] = 'Uploaded Successfully!';
+                        $value['video_id'] = $video_id;
+                        $value['video_title'] = $title;
+            
+            
+                        return $value;
+
+                    }elseif(!empty($ScheduleVideos) && !empty($choosedtime_exitvideos)){
+
+                        // print_r('$ScheduleVideos');exit;
+                        $Video_duration = $videochooed->duration;
+                        $last_shedule_endtime = $choosedtime_exitvideos->shedule_endtime;
+                        $last_current_time = $choosedtime_exitvideos->current_time;
+                        $last_sheduled_endtime = $choosedtime_exitvideos->sheduled_endtime;   
+                        
+                        if($last_shedule_endtime < $current_time){
+
+                            $time    = explode(':', date('h:i', strtotime($now)));
+                            $minutes = ($time[0] * 60.0 + $time[1] * 1.0);
+                            $totalSecs   = ($minutes * 60);
+                            $sec = $totalSecs + $Video_duration;
+                            $hour = floor($sec / 3600);
+                            $minute = floor(($sec / 60) % 60);
+                            $hours = str_pad($hour, 2, '0', STR_PAD_LEFT);
+                            $minutes = str_pad($minute, 2, '0', STR_PAD_LEFT);
+
+                            $shedule_endtime = $hours.':'.$minutes.' '.date('A', strtotime($now));
+                            $sheduled_endtime = $hours.':'.$minutes;
+
+                            $starttime = date('h:i ', strtotime($now));        
+                            $sheduled_starttime = date('h:i A', strtotime($now));   
+
+
+                        }else{
+
+                            $time    = explode(':', $last_sheduled_endtime);
+                            $minutes = ($time[0] * 60.0 + $time[1] * 1.0);
+                            $totalSecs   = ($minutes * 60);
+                            $sec = $totalSecs + $Video_duration;
+                            $hour = floor($sec / 3600);
+                            $minute = floor(($sec / 60) % 60);
+                            $hours = str_pad($hour, 2, '0', STR_PAD_LEFT);
+                            $minutes = str_pad($minute, 2, '0', STR_PAD_LEFT);
+
+                            $shedule_endtime = $hours.':'.$minutes.' '.date('A', strtotime($now));
+                            $sheduled_endtime = $hours.':'.$minutes;
+
+                             $starttime = $last_sheduled_endtime;        
+                             $sheduled_starttime = $last_shedule_endtime;  
+
+                        }
+
+                        $video = new ScheduleVideos();
+                        $video->title = $videochooed->title;
+                        $video->type = $videochooed->type;
+                        $video->active	 = 1;
+                        $video->original_name = 'public';
+                        $video->disk = 'public';
+                        $video->mp4_url = $videochooed->mp4_url;
+                        // $video->m3u8_url = $videochooed->m3u8_url;
+                        $video->path = $videochooed->path;
+                        $video->shedule_date = $date_choosed; 
+                        $video->shedule_time = $schedule_time; 
+                        $video->shedule_endtime = $shedule_endtime;     
+                        $video->sheduled_endtime = $sheduled_endtime;     
+                        $video->current_time = date('h:i A', strtotime($now));     
+                        $video->video_order = 1;        
+                        $video->schedule_id = $schedule_id ;        
+                        $video->starttime = $starttime ;        
+                        $video->sheduled_starttime = $sheduled_starttime ;        
+                        $video->duration  = $Video_duration;
+                        $video->choose_start_time = $choose_start_time ;        
+                        $video->choose_end_time  = $choose_end_time;
+                        $video->status  = 1;
+                        $video->save(); 
+                        
+                        $video_id = $video->id;
+                        $video_title = ScheduleVideos::find($video_id);
+                        $title =$video_title->title; 
+            
+                        $value['success'] = 1;
+                        $value['message'] = 'Uploaded Successfully!';
+                        $value['video_id'] = $video_id;
+                        $value['video_title'] = $title;
+            
+            
+                        return $value;
+
+                    }
+                    else{
+
+                        $Video_duration = $videochooed->duration;
+                        $time    = explode(':', date('h:i', strtotime($now)));
+                        $minutes = ($time[0] * 60.0 + $time[1] * 1.0);
+                        $totalSecs   = ($minutes * 60);
+                        $sec = $totalSecs + $Video_duration;
+
+                        $hour = floor($sec / 3600);
+                        $minute = floor(($sec / 60) % 60);
+                        $hours = str_pad($hour, 2, '0', STR_PAD_LEFT);
+                        $minutes = str_pad($minute, 2, '0', STR_PAD_LEFT);
+                        
+                        $shedule_endtime = $hours.':'.$minutes.' '.date('A', strtotime($now));
+                        $sheduled_endtime = $hours.':'.$minutes;
+
+                        $video = new ScheduleVideos();
+                        $video->title = $videochooed->title;
+                        $video->type = $videochooed->type;
+                        $video->active	 = 1;
+                        $video->original_name = 'public';
+                        $video->disk = 'public';
+                        $video->mp4_url = $videochooed->mp4_url;
+                        // $video->m3u8_url = $videochooed->m3u8_url;
+                        $video->path = $videochooed->path;
+                        $video->shedule_date = $date_choosed; 
+                        $video->shedule_time = $schedule_time; 
+                        $video->shedule_endtime = $shedule_endtime;     
+                        $video->sheduled_endtime = $sheduled_endtime;     
+                        $video->current_time = date('h:i A', strtotime($now));     
+                        $video->starttime = date('h:i', strtotime($now));        
+                        $video->sheduled_starttime = date('h:i A', strtotime($now)) ;   
+                        $video->video_order = 1;        
+                        $video->schedule_id = $schedule_id ;        
+                        $video->duration  = $Video_duration;
+                        $video->choose_start_time = $choose_start_time ;        
+                        $video->choose_end_time  = $choose_end_time;
+                        $video->status  = 1;
+                        $video->save(); 
+                        
+                    
+                        $video_id = $video->id;
+                        $video_title = ScheduleVideos::find($video_id);
+                        $title =$video_title->title; 
+            
+                        $value['success'] = 1;
+                        $value['message'] = 'Uploaded Successfully!';
+                        $value['video_id'] = $video_id;
+                        $value['video_title'] = $title;
+            
+            
+                        return $value;
+                }
+            }     
+
+        }
 }
