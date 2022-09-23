@@ -331,7 +331,7 @@ class AdminSeriesController extends Controller
         $series->player_image = $player_image;
         $series->banner = empty($data['banner']) ? 0 : 1;
         $series->search_tag =$data['search_tag'];
-        $series->details =strip_tags($data['details']);
+        $series->details =($data['details']);
         $series->season_trailer = $season_trailer ;
         $series->series_trailer = $series_trailer ;
         $series->save();  
@@ -586,7 +586,7 @@ class AdminSeriesController extends Controller
         $series->player_image = $player_image;
         $series->slug = $data['slug'];
         $series->ppv_status = $ppv_status;
-        $series->details =strip_tags($data['details']);
+        $series->details =($data['details']);
         $series->save();
 
         if(!empty($data['artists'])){
