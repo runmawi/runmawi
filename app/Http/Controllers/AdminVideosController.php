@@ -4577,7 +4577,7 @@ if(!empty($artistsdata)){
         }
 
         
-        public function TestServerFileUpload(Request $request)
+        public function TestServerFileUploads(Request $request)
         {
 
             $value = array();
@@ -4708,4 +4708,67 @@ if(!empty($artistsdata)){
             return Redirect::back()->with('message','Your video moved to selected partner');
         }
 
+
+        public function TestServerFileUpload(Request $request)
+        {
+
+            $value = array();
+            $data = $request->all();
+    
+            $validator = Validator::make($request->all(), [
+               'file' => 'required|mimes:video/mp4,video/x-m4v,video/*',
+               
+            ]);
+            $mp4_url = (isset($data['file'])) ? $data['file'] : '';
+                // dd($mp4_url );
+            $path = public_path().'/uploads/videos/';
+            
+            
+            $file = $request->file->getClientOriginalName();
+            $newfile = explode(".mp4",$file);
+            $file_folder_name = $newfile[0];
+       
+            $package = User::where('id',1)->first();
+            $pack = $package->package;
+            $mp4_url = $data['file'];
+            $settings = Setting::first();
+    
+            if($mp4_url != '') {
+                
+                $rand = Str::random(16);
+                $path = $rand . '.' . $request->file->getClientOriginalExtension();
+            
+                $request->file->storeAs('public', $path);
+                $thumb_path = 'public';
+                                
+                $original_name = ($request->file->getClientOriginalName()) ? $request->file->getClientOriginalName() : '';
+
+                $storepath  = URL::to('/storage/app/public/'.$path);
+
+                $video = new TestServerUploadVideo();
+                $video->title = $file_folder_name;
+                $video->video_url = $storepath;
+                $video->user_id  = Auth::User()->id;
+                $video->save(); 
+                
+            
+                $video_id = $video->id;
+                $video_title = TestServerUploadVideo::find($video_id);
+                $title =$video_title->title; 
+    
+                $value['success'] = 1;
+                $value['message'] = 'Uploaded Successfully!';
+                $value['video_id'] = $video_id;
+                $value['video_title'] = $title;
+        
+                return Redirect::back()->with('message','Uploaded Successfully!');
+            
+            }
+            else {
+                 $value['success'] = 2;
+                 $value['message'] = 'File not uploaded.'; 
+                 return Redirect::back()->with('message','File not uploaded');
+                }
+    
+        }
 }

@@ -146,7 +146,8 @@
            <!-- back-to-top End -->
      <!-- back-to-top End -->
       <!-- jQuery, Popper JS -->
-      <script src="<?= URL::to('/'). '/assets/js/jquery-3.4.1.min.js';?>"></script>
+<!--
+      <script src="<?= URL::to('/'). '/assets/js/jquery-3.4.1.min.js';?>"></script>-->
       <script src="<?= URL::to('/'). '/assets/js/popper.min.js';?>"></script>
       <!-- Bootstrap JS -->
       <script src="<?= URL::to('/'). '/assets/js/bootstrap.min.js';?>"></script>

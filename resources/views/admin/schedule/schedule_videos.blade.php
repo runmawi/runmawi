@@ -117,8 +117,8 @@
                                 <!-- <div class="draggable"> -->
                                         @foreach(@$Video as $value)
                                         <div class="draggable">
-                                            <!-- <input type="text" id="video_id" data-id = "{{ $value->id }}" class="video_{{ $value->id }}" value="{{ $value->title }}" readonly> -->
-                                            <div class="video_id{{ $value->id }}" data-toggle="modal" data-target="#video" data-name="{{ $value->id }}"  onclick="dropZoneDropHandler(this)"  >{{ $value->title }}</div>
+                                            <input type="text" id="video_id" class="video_{{ $value->id }}" value="{{ $value->title }}" readonly>
+                                            <!-- <div class="video_id{{ $value->id }}" data-toggle="modal" data-target="#video" data-name="{{ $value->id }}"  onclick="dropZoneDropHandler(this)"  >{{ $value->title }}</div> -->
                                         </div>
                                         @endforeach
                                 </div>
@@ -399,19 +399,20 @@ function dropZoneLeaveHandler(e) {
  */
 function dropZoneDropHandler(e,ele) {
             var allvideos = '<?= $Video ?>';
-            var videos = $('.video_17').val();
-
-            console.log(allvideos);
-
+            // var videos = $('.video_17').val();
+            // console.log(allvideos);
             var obj = JSON.parse(allvideos);
-            console.log(obj)
+            // console.log(obj)
 
-            $.each(obj, function(i, $val)
-            {
-            // $.each(allvideos , function(index, item) { 
-               console.log(item.id);
+            // $.each(obj, function(i, $val)
+            // {
+                
+            //     if('video_'+$val.id == '' ){
 
-            });
+            //     }
+            //    console.log($val.id);
+
+            // });
                         
             // console.log(allvideos);
     // alert((videos));
