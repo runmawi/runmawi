@@ -7,6 +7,11 @@ include('header.php');
 $series=App\series::first();
 
  ?>
+  <style>
+	p {
+		color: white !important;
+	}
+</style>
 
 <!-- free content - hide & show -->
 <!-- <div class="row free_content">
@@ -203,6 +208,7 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 			<?php if(!empty($episode) && $episode->id == $Episode_value->id){ echo 'Episode'.' '. ($episode->episode_order)   .' ';} ?>
 			<?php } ?>
 			 <p style=";font-size: 130%;color: white;"><?= $episode->title ?></p>
+			 <p ><?php echo $series->details;?></p>
 		
 	</div>
                 

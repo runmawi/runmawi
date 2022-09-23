@@ -2,8 +2,13 @@
 
 
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-    <h4 class="main-title"><a href="<?php echo URL::to('artist-list') ?>"> Artist </a></h4>
+        <h4 class="main-title"><a href="<?php 
+            if ($order_settings_list[8]->header_name) { echo URL::to('/').'/'.$order_settings_list[8]->url ;} else { echo "" ; } ?>">
+                 <?php if ($order_settings_list[1]->header_name) { echo $order_settings_list[8]->header_name ;} else { echo "" ; } ?>
+            </a>
+        </h4>  
 </div>
+
 <div class="favorites-contens">
     <ul class="favorites-slider list-inline row p-0 mb-0">
         <?php  if(isset($artist)) :
