@@ -316,7 +316,7 @@ border-radius: 0px 4px 4px 0px;
 <!--
                           <div class="col-6 text-center">
                               <p>@if(!empty($video->title)){{ $video->title }}@endif</p>
-                              <p>@if(!empty($video->description)){{ strip_tags($video->description) }}@endif</p>
+                              <p>@if(!empty($video->description)){{ ($video->description) }}@endif</p>
                               <p>$video->title</p>
                               <p>$video->title</p>
                           </div>
@@ -384,12 +384,12 @@ border-radius: 0px 4px 4px 0px;
                    <div class="col-lg-12 form-group">
                         <label class="m-0">Video Description:</label>
                         <textarea  rows="5" class="form-control mt-2" name="description" id="summary-ckeditor"
-                      placeholder="Description">@if(!empty($video->description)){{ strip_tags($video->description) }}@endif</textarea>
+                      placeholder="Description">@if(!empty($video->description)){{ ($video->description) }}@endif</textarea>
                    </div>
                    <div class="col-12 form-group">
                         <label class="m-0">Links &amp; Details</label>
                         <textarea   rows="5" class="form-control mt-2" name="details" id="links-ckeditor"
-                      placeholder="Link and details">@if(!empty($video->details)){{ strip_tags($video->details) }}@endif</textarea>
+                      placeholder="Link and details">@if(!empty($video->details)){{ ($video->details) }}@endif</textarea>
                    </div>
                </div>
                 <div class="row">
@@ -905,7 +905,7 @@ border-radius: 0px 4px 4px 0px;
                         <div class="col-sm-8  form-group">
                            <label class="m-0">Trailer Description:</label>
                            <textarea  rows="5" class="form-control mt-2" name="trailer_description" id="trailer-ckeditor"
-                              placeholder="Description">@if(!empty($video->trailer_description)){{ strip_tags($video->trailer_description) }}@endif
+                              placeholder="Description">@if(!empty($video->trailer_description)){{ ($video->trailer_description) }}@endif
                            </textarea>
                         </div>
                      </div>
