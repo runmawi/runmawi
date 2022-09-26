@@ -124,7 +124,7 @@ $media_url = URL::to("/schedule/videos") . "/" . $schedule->name;
                                 </div>
                             </div>
                         <div class="col-md-6">
-                            <div class="drop-zone" ondrop="drop(this)" ondragover="allowDrop(this)"></div>
+                            <div class="drop-zone ScrollStyle" ondrop="drop(this)" ondragover="allowDrop(this)"></div>
                         </div>
 
                         <!-- <div class="drop-zone"></div> -->
