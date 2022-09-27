@@ -36,7 +36,7 @@
                 </div>
                 <div class="block-description">
                     <div class="hover-buttons">
-                        <a class="text-white" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>"> <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.svg';  ?>" /> </a>
+                        <a class="text-white" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>"> <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> </a>
 
                         <div class="d-flex">
                             <!-- <a   href="<?php //echo URL::to('category') ?><? // '/wishlist/' . $watchlater_video->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist -->
@@ -58,7 +58,7 @@
                                                 </button>
                                     </div>
 -->
-                </div>
+                    </div></div>
                 <div class="mt-2 d-flex justify-content-between p-0">
                     <?php if($ThumbnailSetting->title == 1) { ?>
                     <h6><?php  echo (strlen($watchlater_video->title) > 17) ? substr($watchlater_video->title,0,18).'...' : $watchlater_video->title; ?></h6>
