@@ -650,6 +650,7 @@ public function createStep3(Request $request)
 
 
         if ( $payment_type == "recurring") {
+
             $user_email = $request->session()->get('register.email');
             $user = User::where('email',$user_email)->first();
             $paymentMethod = $request->get('py_id');
@@ -658,22 +659,24 @@ public function createStep3(Request $request)
             $apply_coupon = $request->get('coupon_code') ?  $request->get('coupon_code') : null ;
             $stripe_plan = SubscriptionPlan();
             $plandetail = SubscriptionPlan::where('plan_id',$plan)->first();
+            
             if ( NewSubscriptionCoupon() == 1 ) {                      
                 try {
-                     $user->newSubscription($stripe_plan, $plan)->withCoupon($apply_coupon)->create($paymentMethod);
-                     $user->role = 'subscriber';
-                     $user->payment_type = 'recurring';
-                     $user->card_type = 'stripe';
-                     $user->active = 1;
-                     $user->subscription_start = Carbon::now(); 
-                     $user->save();
+                    $user->newSubscription($stripe_plan, $plan)->withCoupon($apply_coupon)->create($paymentMethod);
 
-                     $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
+                    $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
                     $customer_data = $stripe->invoices->upcoming([
                                     'customer' => $user->stripe_id ,
                     ]);
-
-                    $nextPaymentAttemptDate =  Carbon::createFromTimeStamp($customer_data->period_end)->format('F jS, Y')  ;
+                    $nextPaymentAttemptDate =  Carbon::createFromTimeStamp($customer_data->period_end)->toDateTimeString()  ;
+                    
+                    $user->role = 'subscriber';
+                    $user->payment_type = 'recurring';
+                    $user->card_type = 'stripe';
+                    $user->active = 1;
+                    $user->subscription_start = Carbon::now(); 
+                    $user->subscription_ends_at = $nextPaymentAttemptDate; 
+                    $user->save();
 
                 } catch (IncompletePayment $exception) {
                     
@@ -727,7 +730,7 @@ public function createStep3(Request $request)
                                        'customer' => $user->stripe_id ,
                         ]);
 
-                        $nextPaymentAttemptDate =  Carbon::createFromTimeStamp($customer_data->period_end)->format('F jS, Y')  ;
+                        $nextPaymentAttemptDate =  Carbon::createFromTimeStamp($customer_data->period_end)->toDateTimeString()  ;
 
                     } catch (IncompletePayment $exception) {
                         return redirect()->route(
@@ -770,21 +773,26 @@ public function createStep3(Request $request)
                          Email_notsent_log($user_id,$email_log,$email_template);
                     }
                     
+                    
                     $user->role = "subscriber";
                     $user->payment_type = "recurring";
                     $user->card_type = "stripe";
                     $user->active = 1;
                     $user->avatar = $avatar;
+                    $user->subscription_start = Carbon::now(); 
+                    $user->subscription_ends_at = $nextPaymentAttemptDate; 
                     $user->save();
+
                     $next_date = $plandetail->days;
                     $date = Carbon::parse($current_date)->addDays($next_date);
                     $subscription = Subscription::where('user_id',$user->id)->first();
                     $subscription->price = $plandetail->price;
                     $subscription->name = $user->username;
                     $subscription->days = $plandetail->days;
-                    $subscription->regionname = $regionName;
-                    $subscription->countryname = $countryName;
-                    $subscription->cityname = $cityName;
+                    $subscription->regionname = Region_name();
+                    $subscription->countryname = Country_name();
+                    $subscription->cityname = city_name();
+                    $subscription->PaymentGateway =  'Stripe';
                     $subscription->ends_at = $date;
                     $subscription->save();
                     $data = Session::all();
@@ -803,7 +811,7 @@ public function createStep3(Request $request)
                 $next_date = $plan_details->days;
                 $date = Carbon::parse($current_date)->addDays($next_date);
                 $sub_price = $plan_details->price;
-                $stripe = new \Stripe\StripeClient('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');
+                $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
                 $sub_total = $sub_price - DiscountPercentage();
                     if ( NewSubscriptionCoupon() == 1 ) {
                             $stripe->charges->create([
