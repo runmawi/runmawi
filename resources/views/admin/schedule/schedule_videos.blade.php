@@ -33,7 +33,16 @@ $media_url = URL::to("/schedule/videos") . "/" . $schedule->name;
                 <br>
                 <h4 class="card-title">{{ $Calendar['date'].'/'.$Calendar['month'].'/'.$Calendar['year'] }} </h4>
                         <label for=""><h4 class="fs-title m-0">{{ $schedule->name }}</h4></label>
-
+                    <div class="pull-right" style="margin-top: -5%;">
+                        <form action="{{ URL::to('/schedule/videos') }}" accept-charset="UTF-8" method="post">
+                            <input type="hidden" name="date" id= "date" value="{{ $Calendar['date'] }}">
+                            <input type="hidden" name="month" id= "month" value="{{ $Calendar['month'] }}">
+                            <input type="hidden" name="year" id= "year" value="{{ $Calendar['year'] }}">
+                            <input type="hidden" name="schedule_id" id= "schedule_id" value="{{ $Calendar['schedule_id'] }}">
+                            <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+                            <button type="submit" class="btn btn-primary" id="submit-update-menu">Perview</button>
+                        </form>
+                    </div>
                 <div class="row">
                     <div class="col-3">
                         <label for="">Choose Time</label><br>
