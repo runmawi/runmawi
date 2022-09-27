@@ -524,7 +524,7 @@ public function RentPaypal(Request $request)
 
     public function CancelSubscription()
         {
-
+       
           $Razorpay = User::where('users.id',Auth::user()->id)
           ->Join("subscriptions", "subscriptions.user_id", "=", "users.id")
           ->whereColumn('users.stripe_id', '=', 'subscriptions.stripe_id')
@@ -539,7 +539,8 @@ public function RentPaypal(Request $request)
                     $user = Auth::user();
                     $stripe_plan = Subscription::where('user_id',$user->id)->latest()->pluck('stripe_id')->first();
                     $stripe = new \Stripe\StripeClient( env('STRIPE_SECRET') );
-                    // $stripe->subscriptions->cancel( $stripe_plan,[] );
+                    $stripe->subscriptions->cancel( $stripe_plan,[] );
+                    
 
               } catch (\Throwable $th) {
 
@@ -548,7 +549,6 @@ public function RentPaypal(Request $request)
                       'note_type' => 'error'
                     ));
               }
-           
                     // Email 
 
             $plan_name =  CurrentSubPlanName(Auth::user()->id);
@@ -568,10 +568,21 @@ public function RentPaypal(Request $request)
                   $message->from(AdminMail(),GetWebsiteName());
                   $message->to($user->email, $user->username)->subject($plan_name.' '.$heading);
               });
-              
+             
+                $email_log      = 'Mail Sent Successfully from cancel subscription';
+                $email_template = "27";
+                $user_id = Auth::user()->id;
+    
+                Email_sent_log($user_id,$email_log,$email_template);
+
             }
              catch (\Throwable $th) {
 
+                $email_log      = $th->getMessage();
+                $email_template = "27";
+                $user_id = Auth::user()->id;
+
+                Email_notsent_log($user_id,$email_log,$email_template);
             }
             
             // $user = User::find(Auth::user()->id);
@@ -1450,8 +1461,8 @@ public function UpgadeSubscription(Request $request){
                     'stripe_plan'    =>  $subscription->plan['id'],
                     'quantity'       =>  $subscription['quantity'],
                     'countryname'    =>  Country_name(),
-                    'regionname'     =>  city_name(),
-                    'cityname'       =>  Region_name(),
+                    'regionname'     =>  Region_name(),
+                    'cityname'       =>  city_name(),
                     'PaymentGateway' =>  'Stripe',
                     'trial_ends_at'  =>  $trial_ends_at,
                     'ends_at'        =>  $trial_ends_at,

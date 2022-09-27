@@ -5,7 +5,9 @@
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <style type="text/css">
-	
+	 .plyr__video-embed{
+          position: relative;
+      }
 #video_bg_dim{
 /*background: rgb(0 0 0 / 45%);*/
 position: absolute;

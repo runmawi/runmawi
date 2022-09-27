@@ -24,6 +24,9 @@ NOTE: This file contains the styling for responsive Template.
 a:link{
   text-decoration: none!important;
 }
+ .plyr__video-embed{
+          position: relative;
+      }
 /*---------------------------------------------------------------------
                     Header
 -----------------------------------------------------------------------*/
