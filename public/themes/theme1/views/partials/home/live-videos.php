@@ -36,13 +36,16 @@
                 <div class="block-description" >
                
                 <div class="hover-buttons">
-                    <div class="d-flex align-items-center justify-content-between">
-
-                    
-
-                     
-                    </div>
-
+                     <a class="text-white d-flex justify-content-center align-items-center" href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
+                            <img class="ply mr-2" style="width: 20%; height: 20%;" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" />
+                               <!-- Live Now-->
+                        </a>
+                    </div></div>
+                   <?php if($ThumbnailSetting->title == 1) { ?>
+                        <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
+                            <span class="text-white"><?= (strlen($video->title) > 17) ? substr($video->title,0,18).'...' : $video->title; ?></span>
+                        </a>
+                    <?php } ?>
                     <div class="movie-time my-2">
                         <!-- Duration -->
     
@@ -80,7 +83,7 @@
                         </span>
                         <?php } ?>
                     </div>
-                </div>
+               
 
                 <div class="movie-time my-2">
                     <!-- Category Thumbnail  setting -->
@@ -104,18 +107,11 @@
                     
                     <div class="">
                        
-                        <a class="text-white d-flex justify-content-center align-items-center" href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
-                            <img class="ply mr-2" style="width: 13%; height: 13%;" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" />
-                               <!-- Live Now-->
-                        </a>
+                       
                     </div>
                 </div>
-                </div></div>
-                 <?php if($ThumbnailSetting->title == 1) { ?>
-                        <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
-                            <span class="text-white"><?= (strlen($video->title) > 17) ? substr($video->title,0,18).'...' : $video->title; ?></span>
-                        </a>
-                    <?php } ?>
+                
+              
             </a>
         </li>
 
