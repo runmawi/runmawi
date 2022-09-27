@@ -49,3 +49,9 @@
     padding: 10px;
     height: 36px;
 }
+
+.ScrollStyle
+{
+    max-height: 150px;
+    overflow-y: scroll;
+}

@@ -17,13 +17,7 @@ $embed_media_url = $embed_url . "/" . $schedule->name;
 $url_path = '<iframe width="853" height="480" src="' . $embed_media_url . '" frameborder="0" allowfullscreen></iframe>';
 $media_url = URL::to("/schedule/videos") . "/" . $schedule->name;
 ?>
-<style>
-    .ScrollStyle
-{
-    max-height: 150px;
-    overflow-y: scroll;
-}
-</style>
+
 @section('content')
     <div id="content-page" class="content-page">
         <div class="iq-card">
@@ -130,7 +124,7 @@ $media_url = URL::to("/schedule/videos") . "/" . $schedule->name;
                                 </div>
                             </div>
                         <div class="col-md-6">
-                            <div class="drop-zone" ondrop="drop(this)" ondragover="allowDrop(this)"></div>
+                            <div class="drop-zone ScrollStyle" ondrop="drop(this)" ondragover="allowDrop(this)"></div>
                         </div>
 
                         <!-- <div class="drop-zone"></div> -->
