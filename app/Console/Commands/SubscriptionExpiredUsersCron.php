@@ -54,12 +54,10 @@ class SubscriptionExpiredUsersCron extends Command
 
                 User::where('id',$subscription_expired_user->id)->update([
                     'subscription_ends_at' => null ,
-                    'role'                => 'registered'
+                    'role'                => 'registered',
+                    'payment_status'      => 'Expiry'
                 ]);
 
-                Subscription::where('user_id',$subscription_expired_user->id)->update([
-                  'stripe_status' => 'Expiry' ,
-                ]);
               }
         }
     }
