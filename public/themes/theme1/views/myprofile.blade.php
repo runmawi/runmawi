@@ -293,6 +293,12 @@ border-radius: 20px;
         <!-- MainContent -->
     <section  class="m-profile setting-wrapper pt-0">
         <div class="container">
+
+                             {{-- message --}}
+        @if (Session::has('message'))
+            <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
+        @endif
+
             <div class="row sig ">
                 <div class="col-md-4 mt-3 pt-3">
                     <h4 class="main-title mb-4">My Account</h4>
@@ -1505,8 +1511,11 @@ jQuery(document).ready(function($){
       $('#new-cat-form').submit();
    });
 });
+
+$(document).ready(function(){
+        setTimeout(function() {
+            $('#successMessage').fadeOut('fast');
+        }, 3000);
+    })
+
 </script>
-
-
-
-

@@ -530,11 +530,15 @@ class EmailTemplatesSeeder extends Seeder
 
                         [   'template_type' => 'Cancel subscription by user', 
                             'heading' => 'Name Cancellation Confirmation',
-                            'description' => 'Dear {Name},
+                            'description' => '<p>Dear {Name},&nbsp;</p>
 
-                                            We acknowledge the receipt of your request to cancel your {PlanName} subscription to {Name}.
+                                            <p>We acknowledge the receipt of your request to cancel your {PlanName} subscription to {Name}. There will not be any further charges on your credit card for the same.</p>
                                             
-                                            There will not be any further charges on your credit card for the same.You will have acc',
+                                            <p>Sincerely,</p>
+                                            
+                                            <p>Team {Website Name}.</p>
+                                            
+                                            <p>&nbsp;</p>',
                             'role_type' => 'Subscription' ,
                             'created_at' => Carbon::now(),
                             'updated_at' => null,

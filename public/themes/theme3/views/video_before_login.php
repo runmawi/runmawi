@@ -260,7 +260,7 @@ if(!empty($request_url)){
             
 
   <input type="hidden" class="videocategoryid" data-videocategoryid="<?= $video->video_category_id ?>" value="<?= $video->video_category_id ?>">
-    <div class="container-fluid video-details" style="width:90%!important;">
+    <div class="container-fluid video-details" >
         <div class="trending-info g-border p-0">
             <div class="row">
                 <div class="col-sm-9 col-md-9 col-xs-12">
@@ -550,7 +550,7 @@ if(!empty($request_url)){
                 <?php include('partials/video-loop.php');?>
                 </div>
     
-    </div>
+    </div></div>
     <script type="text/javascript"> 
         videojs('videoPlayer').videoJsResolutionSwitcher(); 
     </script>
