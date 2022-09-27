@@ -540,8 +540,11 @@ public function RentPaypal(Request $request)
                     $stripe_plan = Subscription::where('user_id',$user->id)->latest()->pluck('stripe_id')->first();
                     $stripe = new \Stripe\StripeClient( env('STRIPE_SECRET') );
                     $stripe->subscriptions->cancel( $stripe_plan,[] );
-                    
 
+                    $user = User::find(Auth::user()->id);
+                    $user->payment_status = 'Cancel';
+                    $user->save();
+                    
               } catch (\Throwable $th) {
 
                     return redirect::to('myprofile')->with(array(
@@ -585,12 +588,10 @@ public function RentPaypal(Request $request)
                 Email_notsent_log($user_id,$email_log,$email_template);
             }
             
-            // $user = User::find(Auth::user()->id);
-            // $user->role = 'registered';
-            // $user->save();
+          
 
             Subscription::where('stripe_id',$stripe_plan)->update([
-              'stripe_status' =>  'Cancelled',
+              'stripe_status' =>  'Cancel',
               'updated_at'    =>  Carbon::now()->toDateTimeString(),
             ]);
 
@@ -1474,6 +1475,7 @@ public function UpgadeSubscription(Request $request){
                     'subscription_start'    =>  $Sub_Startday,
                     'subscription_ends_at'  =>  $Sub_Endday,
                     'payment_type'          => 'recurring',
+                    'payment_status'        => $subscription['status'],
                 ]);
 
                 

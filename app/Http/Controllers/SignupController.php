@@ -676,6 +676,7 @@ public function createStep3(Request $request)
                     $user->active = 1;
                     $user->subscription_start = Carbon::now(); 
                     $user->subscription_ends_at = $nextPaymentAttemptDate; 
+                    $user->payment_status = 'active'; 
                     $user->save();
 
                 } catch (IncompletePayment $exception) {
@@ -781,6 +782,7 @@ public function createStep3(Request $request)
                     $user->avatar = $avatar;
                     $user->subscription_start = Carbon::now(); 
                     $user->subscription_ends_at = $nextPaymentAttemptDate; 
+                    $user->payment_status = 'active'; 
                     $user->save();
 
                     $next_date = $plandetail->days;
@@ -824,6 +826,7 @@ public function createStep3(Request $request)
                             $user->role = "subscriber";
                             $user->payment_type = "one_time";
                             $user->card_type = "stripe";
+                            $user->payment_status = 'active'; 
                             $user->save();
                             DB::table('single_subscriptions')->insert([
                                     ['user_id' => $user_id, 'plan_id' => $plan, 'days' => $plan_details->days, 'price' => $plan_details->price, 'to_date' => $date,'from_date' => $current_date,'status' => 'active']
@@ -839,6 +842,7 @@ public function createStep3(Request $request)
                             $user->role = "subscriber";
                             $user->payment_type = "one_time";
                             $user->card_type ="stripe";
+                            $user->payment_status = 'active'; 
                             $user->save();
                             DB::table('single_subscriptions')->insert([
                                 ['user_id' => $user_id, 'plan_id' => $plan, 'days' => $plan_details->days, 'price' => $plan_details->price, 'to_date' => $date,'from_date' => $current_date,'status' => 'active']
