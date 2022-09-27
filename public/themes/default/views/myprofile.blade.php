@@ -182,6 +182,11 @@ $settings = App\Setting::first();
 <section class="m-profile  setting-wrapper pt-0 p-3">        
     <div class="container">
        
+                     {{-- message --}}
+      @if (Session::has('message'))
+         <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
+      @endif
+
          <div class="sign-user_card">
         <div class="row align-items-center">
            
@@ -1215,22 +1220,10 @@ $('#submit-new-cat').click(function(){
   $('#new-cat-form').submit();
 });
 });
+
+    $(document).ready(function(){
+        setTimeout(function() {
+            $('#successMessage').fadeOut('fast');
+        }, 3000);
+    })
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
