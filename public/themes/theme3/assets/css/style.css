@@ -866,7 +866,7 @@ footer, .home footer {
     overflow-x: hidden!important;
 }
 ::-webkit-scrollbar {
-  width: 5px;
+  width: 15px;
 }
 
 /* Track */

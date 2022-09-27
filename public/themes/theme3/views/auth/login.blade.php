@@ -37,6 +37,197 @@ $system_settings = App\SystemSetting::find(1);
   </script>
     
 <style>
+  
+.login-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 400px;
+  padding: 40px;
+  transform: translate(-50%, -50%);
+  background: rgba(0,0,0,.5);
+  box-sizing: border-box;
+  box-shadow: 0 15px 25px rgba(0,0,0,.6);
+  border-radius: 10px;
+}
+
+.login-box h2 {
+  margin: 0 0 30px;
+  padding: 0;
+  color: #fff;
+  text-align: center;
+}
+
+.login-box .user-box {
+  position: relative;
+}
+
+.login-box .user-box input {
+  width: 100%;
+  padding: 10px 0;
+  font-size: 16px;
+  color: #fff;
+  margin-bottom: 30px;
+  border: none;
+  border-bottom: 1px solid #fff;
+  outline: none;
+  background: transparent;
+}
+.login-box .user-box label {
+  position: absolute;
+}
+
+.login-box .user-box input:focus ~ label,
+.login-box .user-box input:valid ~ label {
+  top: -20px;
+  left: 0;
+  color: #03e9f4;
+  font-size: 12px;
+}
+
+.login-box form a {
+  position: relative;
+  display: inline-block;
+  padding: 10px 20px;
+  color: #03e9f4;
+  font-size: 16px;
+  text-decoration: none;
+  text-transform: uppercase;
+  overflow: hidden;
+  transition: .5s;
+  margin-top: 40px;
+  letter-spacing: 4px
+}
+
+.login-box a:hover {
+  background: #03e9f4;
+  color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 5px #03e9f4,
+              0 0 25px #03e9f4,
+              0 0 50px #03e9f4,
+              0 0 100px #03e9f4;
+}
+
+.login-box a span {
+  position: absolute;
+  display: block;
+}
+
+.login-box a span:nth-child(1) {
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #03e9f4);
+  animation: btn-anim1 1s linear infinite;
+}
+
+@keyframes btn-anim1 {
+  0% {
+    left: -100%;
+  }
+  50%,100% {
+    left: 100%;
+  }
+}
+
+.login-box a span:nth-child(2) {
+  top: -100%;
+  right: 0;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(180deg, transparent, #03e9f4);
+  animation: btn-anim2 1s linear infinite;
+  animation-delay: .25s
+}
+
+@keyframes btn-anim2 {
+  0% {
+    top: -100%;
+  }
+  50%,100% {
+    top: 100%;
+  }
+}
+
+.login-box a span:nth-child(3) {
+  bottom: 0;
+  right: -100%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(270deg, transparent, #03e9f4);
+  animation: btn-anim3 1s linear infinite;
+  animation-delay: .5s
+}
+
+@keyframes btn-anim3 {
+  0% {
+    right: -100%;
+  }
+  50%,100% {
+    right: 100%;
+  }
+}
+
+.login-box a span:nth-child(4) {
+  bottom: -100%;
+  left: 0;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(360deg, transparent, #03e9f4);
+  animation: btn-anim4 1s linear infinite;
+  animation-delay: .75s
+}
+
+@keyframes btn-anim4 {
+  0% {
+    bottom: -100%;
+  }
+  50%,100% {
+    bottom: 100%;
+  }
+}
+
+    
+    label{
+        font-family: 'Gilroy';
+font-weight: 500;
+font-size: 20px;
+line-height: 28px;
+        color: #fff;
+        display: block;
+    }
+    .form-group {
+  position: relative;
+  margin-bottom: 1.5rem;
+        
+}
+
+.form-control-placeholder {
+  position: absolute;
+ 
+  padding: 7px 0 0 1px;
+  transition: all 800ms;
+  opacity: 0.8;
+  color: #fff;
+    top:15px;
+  left: 0;
+  padding: 10px 0;
+  font-size: 16px;
+  color: #fff;
+  pointer-events: none;
+  transition: .5s;
+
+}
+
+.form-control:focus + .form-control-placeholder,
+.form-control:valid + .form-control-placeholder {
+  font-size: 75%;
+  transform: translate3d(0, -100%, 0);
+  opacity: 0.5;
+    
+}
     h3 {font-size: 30px!important;}
     .from-control::placeholder{
         color: #7b7b7b!important;
@@ -137,6 +328,9 @@ color: rgba(255, 255, 255, 0.5);
         padding-top: 100px;
       
     }  
+    .form-control{
+        
+    }
     .icn i{
         border:1px solid #fff;
         border-radius: 50%;
@@ -184,8 +378,9 @@ color: rgba(255, 255, 255, 0.5);
       </div>
           </div>
     </section>  
-    
+
 <section class="sign-in-page" style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;height:100vh;">
+    <div class="container">
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content" style="background:transparent!important;">
@@ -241,17 +436,23 @@ color: rgba(255, 255, 255, 0.5);
 						@enderror
                          <div class="row justify-content-center">
                              <div class="col-lg-11">
+                                 <div role="group" class="form-group">
+     <input id="email" type="email" class=" input-field form-control @error('email') is-invalid @enderror" name="email" placeholder="" value="{{ old('email') }}" required autocomplete="email" autofocus>
+    <label for="year" class="d-block form-control-placeholder" required="required">{{ __('Email Address') }}</label>
+  </div>
                         <div class="form-group">  
                             <div class="input-icons">
                           <!-- <input type="email" class="form-control mb-0" id="exampleInputEmail1" placeholder="Enter email" autocomplete="off" required>-->
                      
-                            <input id="email" type="email" class=" input-field form-control @error('email') is-invalid @enderror" name="email" placeholder="{{ __('Email Address') }}" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                          
                         </div></div>
                         <div class="form-group" style="  margin-top: 20px;">                                 
-                           <!--<input type="password" class="form-control mb-0" id="exampleInputPassword2" placeholder="Password" required>--><div class="input-icons">
+                           <!--<input type="password" class="form-control mb-0" id="exampleInputPassword2" placeholder="Password" required>--> 
+                            <div role="group" class="form-group">
                          
                            
-                            								<input id="password" type="password" class="input-field  form-control @error('Password') is-invalid @enderror" placeholder="{{ __('PASSWORD') }}" name="password" required autocomplete="current-password" >
+                            								<input id="password" type="password" class="input-field  form-control @error('Password') is-invalid @enderror" placeholder="" name="password" required autocomplete="current-password" >
+                                 <label for="year" class="d-block form-control-placeholder" required="required">{{ __('PASSWORD') }}</label>
                         </div> </div>
                          
                                                             
@@ -281,8 +482,8 @@ color: rgba(255, 255, 255, 0.5);
                                      <div class="col-md-5 p-0"> <img class="w-100"  src="<?php echo  URL::to('/assets/img/l3.png')?>"></div>
                                  </div>
                                  <div class="row justify-content-center">
-                                     <div class="col-md-1 p-0 icn">  <i class="fa fa-google" aria-hidden="true"></i></div>
-                                     <div class="col-md-2 p-0 icn"> <i class="fa fa-facebook" aria-hidden="true"></i></div>
+                                     <div class="col-md-1 p-0 icn">  <a href="{{ url('/auth/redirect/google') }}" ><i class="fa fa-google"></i> </a></div>
+                                     <div class="col-md-2 p-0 icn">  <a href="{{ url('/auth/redirect/facebook') }}"><i class="fa fa-facebook" aria-hidden="true"></i></a></div>
                                  </div>
                                
                                 
@@ -334,7 +535,7 @@ color: rgba(255, 255, 255, 0.5);
   </div>
 </div>
     
-   
+   </div>
    </div>
 </section>
      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>

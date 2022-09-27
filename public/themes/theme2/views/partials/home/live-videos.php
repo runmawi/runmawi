@@ -33,7 +33,7 @@
                          <?php } ?>   
                        
                 </div>
-                <div class="block-description" style="top: 40px !important;">
+                <div class="block-description">
                <div class="hover-buttons">
                         <a class="text-white d-flex justify-content-center align-items-center" href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
                             <img class="ply mr-2" style="width: 13%; height: 13%;" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" />
@@ -104,7 +104,7 @@
                     <?php } ?>
                     
                     
-                </div></div>
+                </div>
                   <div class="d-flex align-items-center justify-content-between">
 
                     <?php if($ThumbnailSetting->title == 1) { ?>
