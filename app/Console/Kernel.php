@@ -14,13 +14,13 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         //
+        Commands\SubscriptionExpiredUsersCron::class,
         Commands\LivestreamCron::class,
         Commands\VideostreamCron::class,
         Commands\Autodeploy::class,
         Commands\SubscriptionReminder::class,
         Commands\SubscriptionRenewal::class,
         Commands\SubscriptionExpiry::class,
-
     ];
 
     /**
@@ -31,6 +31,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        $schedule->command('subscriptionexpiredusers:cron')
+        ->everyMinute();
+
         $schedule->command('Autodeploy:cron')
         ->everyMinute();
 
