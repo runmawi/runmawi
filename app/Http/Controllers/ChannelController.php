@@ -22,6 +22,7 @@ use App\UserLogs;
 use App\Videoartist;
 use App\Artist;
 use App\PaymentSetting;
+use App\ScheduleVideos;
 use App\Language;
 use URL;
 use Auth;
@@ -3631,6 +3632,40 @@ class ChannelController extends Controller
             );
 
             return Theme::view('artist-list', $data);
+        }
+        catch(\Throwable $th)
+        {
+            return abort(404);
+        }
+
+    }
+
+    public function ScheduledVideos(Request $request)
+    {
+        $settings = Setting::first();
+        try
+        {
+            $data = $request->all();
+            $date = $data["date"];
+            $month = $data["month"];
+            $year = $data["year"];
+            $schedule_id = $data["schedule_id"];
+            $choosedmonth = date('m',strtotime($month));
+            $choosed_date = $year.'/'.$choosedmonth.'/'.$date;
+
+            $ScheduleVideos = ScheduleVideos::where("shedule_date", "=", $choosed_date)
+            ->where("schedule_id", "=", $schedule_id)
+            // ->orderBy("id", "desc")
+            ->get();
+            dd($ScheduleVideos);
+
+                $d = new \DateTime("now");
+                $d->setTimezone(new \DateTimeZone("Asia/Kolkata"));
+                $now = $d->format("Y-m-d h:i:s a");
+                $current_time = date("h:i A", strtotime($now));
+
+            
+            return ;
         }
         catch(\Throwable $th)
         {
