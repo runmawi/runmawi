@@ -3334,6 +3334,22 @@ public function checkEmailExists(Request $request)
         $Season = '';
        }
       //  print_r($Season->id);exit;
+
+
+      $languages = SeriesLanguage::Join('languages','languages.id','=','series_languages.series_id')
+      ->where('series_languages.series_id',$series_id)->get('name');
+      // echo "<pre>"; print_r($languages);exit;
+
+      foreach($languages as $value){
+        $language[] = $value['name']; 
+      }
+      if(!empty($language)){
+      $languages = implode(",",$language);
+      }else{
+        $languages = "";
+      }
+
+
       if($request->user_id != ''){
         $user_id = $request->user_id;
         $cnt = Wishlist::select('episode_id')->where('user_id','=',$user_id)->where('episode_id','=',$request->episodeid)->count();

@@ -180,7 +180,7 @@ endif; ?>
             <div class="slide slick-bg s-bg-1 lazy"
             style="background:linear-gradient(180deg, rgba(9, 0, 21, 0) -1.41%, #090015 80.7%), url('<?php echo URL::to('/').'/public/uploads/images/' .$videos->player_image;?>'); background-repeat:no-repeat;background-size:contain;background-postion:top ;">
             <div class="container-fluid position-relative h-100">
-                <div class="slider-inner h-slider mt-5">
+                <div class="slider-inner h-slider mt-3">
 
                     <div class="row align-items-center bl h-100">
                         <div class="col-xl-7 col-lg-12 col-md-12">
@@ -204,7 +204,7 @@ endif; ?>
                                 <span class="fa fa-star"></span>
                             </div>
                     <div 
-                        style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
+                        style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 5px;color:#fff;display: -webkit-box;
                         -webkit-line-clamp: 3;
                         -webkit-box-orient: vertical;  
                         overflow: hidden;">
