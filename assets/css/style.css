@@ -2096,7 +2096,9 @@ box-shadow: -1px 6px 13px 0px rgba(0,0,0,0.44);
 }
 
 
-
+#home-slider{
+    display: none;
+}
 
 /* arrows */
 
@@ -2108,4 +2110,19 @@ box-shadow: -1px 6px 13px 0px rgba(0,0,0,0.44);
 }
 .rippleEffect{
     display: block!important;
+}
+
+.slick-dots li{
+    
+        display: inline-block;
+}
+  .slick-dots li:only-child {
+        display: none;
+    }
+
+.slick-frame {
+    visibility: hidden;
+}
+.slick-frame.slick-initialized {
+    visibility: visible;
 }
