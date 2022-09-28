@@ -300,9 +300,16 @@ color: #FFFFFF;
         <!-- MainContent -->
     <section  class="m-profile setting-wrapper pt-0">
         <div class="container">
+
             <div class="row justify-content-center">
                 <div class="col-md-5 sigk text-center">
                     <div class="d-flex justify-content-between">
+
+                                             {{-- message --}}
+                     @if (Session::has('message'))
+                            <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
+                    @endif
+
                         <div><i class="fa fa-arrow-left text-white" aria-hidden="true"></i></div>
                         <div><h4 class="main-title mb-4 text-center">My Account</h4></div>
                         <div><a herf="" class="text-white">Done</a>
@@ -1563,8 +1570,10 @@ jQuery(document).ready(function($){
       $('#new-cat-form').submit();
    });
 });
+
+$(document).ready(function(){
+        setTimeout(function() {
+            $('#successMessage').fadeOut('fast');
+        }, 3000);
+    })
 </script>
-
-
-
-

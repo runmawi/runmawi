@@ -97,6 +97,7 @@ Route::post('/admin/cpp_analytics_exportCsv', 'ModeratorsUserController@CPPAnaly
 Route::post('/admin/cpp_analytics_barchart', 'ModeratorsUserController@CPPAnalyticBarchart');
 
 
+Route::post('/schedule/videos', 'ChannelController@ScheduledVideos');
 
 
 Route::post('/register1', 'HomeController@PostcreateStep1');

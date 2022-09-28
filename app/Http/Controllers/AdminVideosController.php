@@ -4109,112 +4109,172 @@ class AdminVideosController extends Controller
         $mp4_url = $data["file"];
         $settings = Setting::first();
 
+        $date = $data["date"];
+        $month = $data["month"];
+        $year = $data["year"];
+        $schedule_time = $data["schedule_time"];
+
+        if (!empty($schedule_time)) {
+            $choose_time = explode("to", $schedule_time);
+            if (count($choose_time) > 0) {
+                $choose_start_time = $choose_time[0];
+                $choose_end_time = $choose_time[1];
+            } else {
+                $choose_start_time = "";
+                $choose_end_time = "";
+            }
+            
+            $d = new \DateTime("now");
+            $d->setTimezone(new \DateTimeZone("Asia/Kolkata"));
+            $now = $d->format("Y-m-d h:i:s a");
+            $current_time = date("h:i A", strtotime($now));
+            if($current_time > $choose_start_time){
+                $choose_current_time =  explode(":", date("h:i", strtotime($now)));
+            }else {
+                $choose_current_time =  explode(":", date("h:i", strtotime($choose_start_time)));
+            }
+        }
+            
+
+
         if ($mp4_url != "" && $pack != "Business") {
             // print_r('1');exit();
 
-            $rand = Str::random(16);
-            $path = $rand . "." . $request->file->getClientOriginalExtension();
+                $rand = Str::random(16);
+                $path = $rand . "." . $request->file->getClientOriginalExtension();
 
-            $request->file->storeAs("public", $path);
-            $thumb_path = "public";
-            $original_name = $request->file->getClientOriginalName()
-                ? $request->file->getClientOriginalName()
-                : "";
-            $storepath = URL::to("/storage/app/public/" . $path);
-            //  Video duration
-            $getID3 = new getID3();
-            $Video_storepath = storage_path("app/public/" . $path);
-            $VideoInfo = $getID3->analyze($Video_storepath);
-            $Video_duration = $VideoInfo["playtime_seconds"];
+                $request->file->storeAs("public", $path);
+                $thumb_path = "public";
+                $original_name = $request->file->getClientOriginalName()
+                    ? $request->file->getClientOriginalName()
+                    : "";
+                $storepath = URL::to("/storage/app/public/" . $path);
+                //  Video duration
+                $getID3 = new getID3();
+                $Video_storepath = storage_path("app/public/" . $path);
+                $VideoInfo = $getID3->analyze($Video_storepath);
+                $Video_duration = $VideoInfo["playtime_seconds"];
 
-            $video = new Video();
-            $video->title = $file_folder_name;
-            $video->type = "mp4_url";
-            $video->active = 1;
-            $video->original_name = "public";
-            $video->disk = "public";
-            $video->mp4_url = $storepath;
-            $video->path = $path;
-            $video->shedule_date = "default_image.jpg";
-            $video->shedule_time = "default_image.jpg";
-            $video->video_order = "default_image.jpg";
-            $video->schedule_id = "default_image.jpg";
-            $video->duration = $Video_duration;
-            $video->status = 1;
-            $video->save();
+                $time = $choose_current_time;
+                $minutes = $time[0] * 60.0 + $time[1] * 1.0;
+                $totalSecs = $minutes * 60;
+                $sec = $totalSecs + $Video_duration;
 
-            $video_id = $video->id;
-            $video_title = Video::find($video_id);
-            $title = $video_title->title;
+                $hour = floor($sec / 3600);
+                $minute = floor(($sec / 60) % 60);
+                $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
+                $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
 
-            $choosed_date =
-                $data["year"] . "-" . $data["month"] . "-" . $data["date"];
+                $shedule_endtime =
+                    $hours .
+                    ":" .
+                    $minutes .
+                    " " .
+                    date("A", strtotime($now));
+                $sheduled_endtime = $hours . ":" . $minutes;
+                $starttime = date("h:i A", strtotime($choose_start_time));
+                $sheduled_starttime = date("h:i ", strtotime($choose_start_time));
 
-            $date = date_create($choosed_date);
-            $date_choose = date_format($date, "Y/m");
-            $date_choosed = $date_choose . "/" . $data["date"];
+                $video = new ScheduleVideos();
+                $video->title = $file_folder_name;
+                $video->type = "mp4_url";
+                $video->active = 1;
+                $video->original_name = "public";
+                $video->disk = "public";
+                $video->mp4_url = $storepath;
+                $video->path = $path;
+                $video->shedule_date = $date_choosed;
+                $video->shedule_time = $schedule_time;
+                $video->shedule_endtime = $shedule_endtime;
+                $video->sheduled_endtime = $sheduled_endtime;
+                $video->current_time = date("h:i A", strtotime($now));
+                $video->starttime = $starttime;
+                $video->sheduled_starttime = $sheduled_starttime;
+                $video->video_order = 1;
+                $video->schedule_id = $schedule_id;
+                $video->duration = $Video_duration;
+                $video->choose_start_time = $choose_start_time;
+                $video->choose_end_time = $choose_end_time;
+                $video->status = 1;
+                $video->save();
 
-            // print_r($date_choosed);exit;
-            $total_content = ScheduleVideos::where(
-                "shedule_date",
-                "=",
-                $date_choosed
-            )
-                ->orderBy("id", "desc")
-                ->get();
+                $video_id = $video->id;
+                $video_title = ScheduleVideos::find($video_id);
+                $title = $video_title->title;
 
-            $output = "";
-            $i = 1;
-            if (count($total_content) > 0) {
-                $total_row = $total_content->count();
-                if (!empty($total_content)) {
-                    $currency = CurrencySetting::first();
+                $choosed_date =
+                    $data["year"] .
+                    "-" .
+                    $data["month"] .
+                    "-" .
+                    $data["date"];
 
-                    foreach ($total_content as $key => $row) {
-                        $output .=
-                            '
-                  <tr>
-                  <td>' .
-                            $i++ .
-                            '</td>
-                  <td>' .
-                            $row->title .
-                            '</td>
-                  <td>' .
-                            $row->type .
-                            '</td>  
-                  <td>' .
-                            $row->shedule_date .
-                            '</td>       
-                  <td>' .
-                            $row->sheduled_starttime .
-                            '</td>    
+                $date = date_create($choosed_date);
+                $date_choose = date_format($date, "Y/m");
+                $date_choosed = $date_choose . "/" . $data["date"];
 
-                  <td>' .
-                            $row->shedule_endtime .
-                            '</td>  
+                // print_r($date_choosed);exit;
+                $total_content = ScheduleVideos::where(
+                    "shedule_date",
+                    "=",
+                    $date_choosed
+                )
+                    ->orderBy("id", "desc")
+                    ->get();
 
-                  </tr>
-                  ';
+                $output = "";
+                $i = 1;
+                if (count($total_content) > 0) {
+                    $total_row = $total_content->count();
+                    if (!empty($total_content)) {
+                        $currency = CurrencySetting::first();
+
+                        foreach ($total_content as $key => $row) {
+                            $output .=
+                                '
+            <tr>
+            <td>' .
+                                $i++ .
+                                '</td>
+            <td>' .
+                                $row->title .
+                                '</td>
+            <td>' .
+                                $row->type .
+                                '</td>  
+            <td>' .
+                                $row->shedule_date .
+                                '</td>       
+            <td>' .
+                                $row->sheduled_starttime .
+                                '</td>    
+
+            <td>' .
+                                $row->shedule_endtime .
+                                '</td>  
+
+            </tr>
+            ';
+                        }
+                    } else {
+                        $output = '
+        <tr>
+        <td align="center" colspan="5">No Data Found</td>
+        </tr>
+        ';
                     }
-                } else {
-                    $output = '
-              <tr>
-               <td align="center" colspan="5">No Data Found</td>
-              </tr>
-              ';
                 }
-            }
 
-            $value["success"] = 1;
-            $value["message"] = "Uploaded Successfully!";
-            $value["video_id"] = $video_id;
-            $value["video_title"] = $title;
-            $value["table_data"] = $output;
-            $value["total_data"] = $total_row;
-            $value["total_content"] = $total_content;
+                $value["success"] = 1;
+                $value["message"] = "Uploaded Successfully!";
+                $value["video_id"] = $video_id;
+                $value["video_title"] = $title;
+                $value["table_data"] = $output;
+                $value["total_data"] = $total_row;
+                $value["total_content"] = $total_content;
 
-            return $value;
+                return $value;
+            
         } elseif (
             $mp4_url != "" &&
             $pack == "Business" &&
@@ -4234,7 +4294,18 @@ class AdminVideosController extends Controller
                     $choose_start_time = "";
                     $choose_end_time = "";
                 }
+                
+                $d = new \DateTime("now");
+                $d->setTimezone(new \DateTimeZone("Asia/Kolkata"));
+                $now = $d->format("Y-m-d h:i:s a");
+                $current_time = date("h:i A", strtotime($now));
+                if($current_time > $choose_start_time){
+                    $choose_current_time =  explode(":", date("h:i", strtotime($now)));
+                }else {
+                    $choose_current_time =  explode(":", date("h:i", strtotime($choose_start_time)));
+                }
 
+                
                 $Schedule_current_date = date("Y-m-d");
 
                 $schedule_id = $data["schedule_id"];
@@ -4295,7 +4366,7 @@ class AdminVideosController extends Controller
                     $last_sheduled_endtime = $ScheduleVideos->sheduled_endtime;
 
                     if ($last_shedule_endtime < $current_time) {
-                        $time = explode(":", date("h:i", strtotime($now)));
+                        $time = $choose_current_time;
                         $minutes = $time[0] * 60.0 + $time[1] * 1.0;
                         $totalSecs = $minutes * 60;
                         $sec = $totalSecs + $Video_duration;
@@ -4309,11 +4380,11 @@ class AdminVideosController extends Controller
                             ":" .
                             $minutes .
                             " " .
-                            date("A", strtotime($now));
+                            date("A", strtotime($choose_start_time));
                         $sheduled_endtime = $hours . ":" . $minutes;
 
-                        $starttime = date("h:i ", strtotime($now));
-                        $sheduled_starttime = date("h:i A", strtotime($now));
+                        $starttime = date("h:i ", strtotime($choose_start_time));
+                        $sheduled_starttime = date("h:i A", strtotime($choose_start_time));
                         // print_r($last_shedule_endtime);exit;
                     } else {
                         $time = explode(":", $last_sheduled_endtime);
@@ -4453,7 +4524,7 @@ class AdminVideosController extends Controller
                     if ($last_shedule_endtime < $current_time) {
                         // print_r('$ScheduleVideos');exit;
 
-                        $time = explode(":", date("h:i", strtotime($now)));
+                        $time = $choose_current_time;
                         $minutes = $time[0] * 60.0 + $time[1] * 1.0;
                         $totalSecs = $minutes * 60;
                         $sec = $totalSecs + $Video_duration;
@@ -4467,11 +4538,11 @@ class AdminVideosController extends Controller
                             ":" .
                             $minutes .
                             " " .
-                            date("A", strtotime($now));
+                            date("A", strtotime($choose_start_time));
                         $sheduled_endtime = $hours . ":" . $minutes;
 
-                        $starttime = date("h:i ", strtotime($now));
-                        $sheduled_starttime = date("h:i A", strtotime($now));
+                        $starttime = date("h:i ", strtotime($choose_start_time));
+                        $sheduled_starttime = date("h:i A", strtotime($choose_start_time));
 
                         // print_r($last_shedule_endtime);exit;
                     } else {
@@ -4815,7 +4886,7 @@ class AdminVideosController extends Controller
                     $last_sheduled_endtime = $ScheduleVideos->sheduled_endtime;
 
                     if ($last_shedule_endtime < $current_time) {
-                        $time = explode(":", date("h:i", strtotime($now)));
+                        $time = $choose_current_time;
                         $minutes = $time[0] * 60.0 + $time[1] * 1.0;
                         $totalSecs = $minutes * 60;
                         $sec = $totalSecs + $Video_duration;
@@ -4829,12 +4900,12 @@ class AdminVideosController extends Controller
                             ":" .
                             $minutes .
                             " " .
-                            date("A", strtotime($now));
+                            date("A", strtotime($choose_start_time));
                         $sheduled_endtime = $hours . ":" . $minutes;
 
                         // print_r($last_shedule_endtime);exit;
-                        $starttime = date("h:i ", strtotime($now));
-                        $sheduled_starttime = date("h:i A", strtotime($now));
+                        $starttime = date("h:i ", strtotime($choose_start_time));
+                        $sheduled_starttime = date("h:i A", strtotime($choose_start_time));
                     } else {
                         $time = explode(":", $last_sheduled_endtime);
                         $minutes = $time[0] * 60.0 + $time[1] * 1.0;
@@ -4969,7 +5040,7 @@ class AdminVideosController extends Controller
                         $choosedtime_exitvideos->sheduled_endtime;
 
                     if ($last_shedule_endtime < $current_time) {
-                        $time = explode(":", date("h:i", strtotime($now)));
+                        $time = $choose_current_time;
                         $minutes = $time[0] * 60.0 + $time[1] * 1.0;
                         $totalSecs = $minutes * 60;
                         $sec = $totalSecs + $Video_duration;
@@ -4983,12 +5054,12 @@ class AdminVideosController extends Controller
                             ":" .
                             $minutes .
                             " " .
-                            date("A", strtotime($now));
+                            date("A", strtotime($choose_start_time));
                         $sheduled_endtime = $hours . ":" . $minutes;
 
                         // print_r($last_shedule_endtime);exit;
-                        $starttime = date("h:i ", strtotime($now));
-                        $sheduled_starttime = date("h:i A", strtotime($now));
+                        $starttime = date("h:i ", strtotime($choose_start_time));
+                        $sheduled_starttime = date("h:i A", strtotime($choose_start_time));
                     } else {
                         $time = explode(":", $last_sheduled_endtime);
                         $minutes = $time[0] * 60.0 + $time[1] * 1.0;
@@ -5112,7 +5183,7 @@ class AdminVideosController extends Controller
 
                     return $value;
                 } else {
-                    $time = explode(":", date("h:i", strtotime($now)));
+                    $time = $choose_current_time;
                     $minutes = $time[0] * 60.0 + $time[1] * 1.0;
                     $totalSecs = $minutes * 60;
                     $sec = $totalSecs + $Video_duration;
@@ -5129,6 +5200,8 @@ class AdminVideosController extends Controller
                         " " .
                         date("A", strtotime($now));
                     $sheduled_endtime = $hours . ":" . $minutes;
+                    $starttime = date("h:i A", strtotime($choose_start_time));
+                    $sheduled_starttime = date("h:i ", strtotime($choose_start_time));
 
                     $video = new ScheduleVideos();
                     $video->title = $file_folder_name;
@@ -5143,8 +5216,8 @@ class AdminVideosController extends Controller
                     $video->shedule_endtime = $shedule_endtime;
                     $video->sheduled_endtime = $sheduled_endtime;
                     $video->current_time = date("h:i A", strtotime($now));
-                    $video->starttime = date("h:i", strtotime($now));
-                    $video->sheduled_starttime = date("h:i A", strtotime($now));
+                    $video->starttime = $starttime;
+                    $video->sheduled_starttime = $sheduled_starttime;
                     $video->video_order = 1;
                     $video->schedule_id = $schedule_id;
                     $video->duration = $Video_duration;
@@ -5559,7 +5632,6 @@ class AdminVideosController extends Controller
 
         $video_id = $data["video_id"];
         $videochooed = Video::where("id", $video_id)->first();
-        // echo "<pre>"; print_r($videochooed);exit();
         $date = $data["date"];
         $month = $data["month"];
         $year = $data["year"];
@@ -5574,6 +5646,16 @@ class AdminVideosController extends Controller
                 $choose_start_time = "";
                 $choose_end_time = "";
             }
+            $d = new \DateTime("now");
+            $d->setTimezone(new \DateTimeZone("Asia/Kolkata"));
+            $now = $d->format("Y-m-d h:i:s a");
+            $current_time = date("h:i A", strtotime($now));
+            if($current_time > $choose_start_time){
+                $choose_current_time =  explode(":", date("h:i", strtotime($now)));
+            }else {
+                $choose_current_time =  explode(":", date("h:i", strtotime($choose_start_time)));
+            }
+
 
             $Schedule_current_date = date("Y-m-d");
 
@@ -5601,7 +5683,7 @@ class AdminVideosController extends Controller
             $video_duration = $videochooed->duration;
 
             // DateTime();
-            $current_date = $current_date = date("Y-m-d h:i:s a", time());
+            $current_date =  date("Y-m-d h:i:s a", time());
             $current_date = date("Y-m-d h:i:s");
             $daten = date("Y-m-d h:i:s ", time());
             $d = new \DateTime("now");
@@ -5611,14 +5693,14 @@ class AdminVideosController extends Controller
             // print_r($choosedtime_exitvideos);exit;
 
             if (!empty($ScheduleVideos) && empty($choosedtime_exitvideos)) {
-                // print_r('ScheduleVideos');exit;
+                print_r('ScheduleVideos');exit;
 
                 $last_shedule_endtime = $ScheduleVideos->shedule_endtime;
                 $last_current_time = $ScheduleVideos->current_time;
                 $last_sheduled_endtime = $ScheduleVideos->sheduled_endtime;
 
                 if ($last_shedule_endtime < $current_time) {
-                    $time = explode(":", date("h:i", strtotime($now)));
+                    $time = $choose_current_time;
                     $minutes = $time[0] * 60.0 + $time[1] * 1.0;
                     $totalSecs = $minutes * 60;
                     $sec = $totalSecs + $video_duration;
@@ -5632,11 +5714,11 @@ class AdminVideosController extends Controller
                         ":" .
                         $minutes .
                         " " .
-                        date("A", strtotime($now));
+                        date("A", strtotime($choose_start_time));
                     $sheduled_endtime = $hours . ":" . $minutes;
 
-                    $starttime = date("h:i ", strtotime($now));
-                    $sheduled_starttime = date("h:i A", strtotime($now));
+                    $starttime = date("h:i ", strtotime($choose_current_time));
+                    $sheduled_starttime = date("h:i A", strtotime($choose_start_time));
                 } else {
                     $time = explode(":", $last_sheduled_endtime);
                     $minutes = $time[0] * 60.0 + $time[1] * 1.0;
@@ -5648,12 +5730,7 @@ class AdminVideosController extends Controller
                     $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
                     $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
 
-                    $shedule_endtime =
-                        $hours .
-                        ":" .
-                        $minutes .
-                        " " .
-                        date("A", strtotime($now));
+                    $shedule_endtime = $hours .":" .$minutes ." " .date("A", strtotime($now));
                     $sheduled_endtime = $hours . ":" . $minutes;
 
                     $starttime = $last_sheduled_endtime;
@@ -5769,7 +5846,7 @@ class AdminVideosController extends Controller
                     $choosedtime_exitvideos->sheduled_endtime;
 
                 if ($last_shedule_endtime < $current_time) {
-                    $time = explode(":", date("h:i", strtotime($now)));
+                    $time = $choose_current_time;
                     $minutes = $time[0] * 60.0 + $time[1] * 1.0;
                     $totalSecs = $minutes * 60;
                     $sec = $totalSecs + $Video_duration;
@@ -5778,16 +5855,12 @@ class AdminVideosController extends Controller
                     $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
                     $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
 
-                    $shedule_endtime =
-                        $hours .
-                        ":" .
-                        $minutes .
-                        " " .
-                        date("A", strtotime($now));
+                    $shedule_endtime = $hours .":" .$minutes ." " .date("A", strtotime($choose_start_time));
+
                     $sheduled_endtime = $hours . ":" . $minutes;
 
-                    $starttime = date("h:i ", strtotime($now));
-                    $sheduled_starttime = date("h:i A", strtotime($now));
+                    $starttime = date("h:i ", strtotime($choose_start_time));
+                    $sheduled_starttime = date("h:i A", strtotime($choose_start_time));
                 } else {
                     $time = explode(":", $last_sheduled_endtime);
                     $minutes = $time[0] * 60.0 + $time[1] * 1.0;
@@ -5798,12 +5871,8 @@ class AdminVideosController extends Controller
                     $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
                     $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
 
-                    $shedule_endtime =
-                        $hours .
-                        ":" .
-                        $minutes .
-                        " " .
-                        date("A", strtotime($now));
+                    $shedule_endtime = $hours .":" .$minutes ." " .date("A", strtotime($now));
+
                     $sheduled_endtime = $hours . ":" . $minutes;
 
                     $starttime = $last_sheduled_endtime;
@@ -5907,8 +5976,9 @@ class AdminVideosController extends Controller
 
                 return $value;
             } else {
+                
                 $Video_duration = $videochooed->duration;
-                $time = explode(":", date("h:i", strtotime($now)));
+                $time = $choose_current_time;
                 $minutes = $time[0] * 60.0 + $time[1] * 1.0;
                 $totalSecs = $minutes * 60;
                 $sec = $totalSecs + $Video_duration;
@@ -5918,9 +5988,12 @@ class AdminVideosController extends Controller
                 $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
                 $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
 
-                $shedule_endtime =
-                    $hours . ":" . $minutes . " " . date("A", strtotime($now));
+                $shedule_endtime = $hours .":" .$minutes ." " .date("A", strtotime($choose_start_time));
+                // echo "<pre>"; print_r($Video_duration);exit();
+
                 $sheduled_endtime = $hours . ":" . $minutes;
+                $starttime = date("h:i A", strtotime($choose_start_time));
+                $sheduled_starttime = date("h:i ", strtotime($choose_start_time));
 
                 $video = new ScheduleVideos();
                 $video->title = $videochooed->title;
@@ -5936,8 +6009,8 @@ class AdminVideosController extends Controller
                 $video->shedule_endtime = $shedule_endtime;
                 $video->sheduled_endtime = $sheduled_endtime;
                 $video->current_time = date("h:i A", strtotime($now));
-                $video->starttime = date("h:i", strtotime($now));
-                $video->sheduled_starttime = date("h:i A", strtotime($now));
+                $video->starttime = $starttime;
+                $video->sheduled_starttime = $sheduled_starttime;
                 $video->video_order = 1;
                 $video->schedule_id = $schedule_id;
                 $video->duration = $Video_duration;

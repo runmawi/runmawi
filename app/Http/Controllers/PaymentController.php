@@ -524,7 +524,7 @@ public function RentPaypal(Request $request)
 
     public function CancelSubscription()
         {
-
+       
           $Razorpay = User::where('users.id',Auth::user()->id)
           ->Join("subscriptions", "subscriptions.user_id", "=", "users.id")
           ->whereColumn('users.stripe_id', '=', 'subscriptions.stripe_id')
@@ -534,33 +534,72 @@ public function RentPaypal(Request $request)
             return redirect::to('RazorpayCancelSubscriptions');
           }
           else{
-            $user = Auth::user();
-            $stripe_plan = SubscriptionPlan();
-            $user->subscription($stripe_plan)->cancel();
+                      // Subscription Cancel
+              try {
+                    $user = Auth::user();
+                    $stripe_plan = Subscription::where('user_id',$user->id)->latest()->pluck('stripe_id')->first();
+                    $stripe = new \Stripe\StripeClient( env('STRIPE_SECRET') );
+                    $stripe->subscriptions->cancel( $stripe_plan,[] );
+
+                    $user = User::find(Auth::user()->id);
+                    $user->payment_status = 'Cancel';
+                    $user->save();
+                    
+              } catch (\Throwable $th) {
+
+                    return redirect::to('myprofile')->with(array(
+                      'message' => 'There was a failure to terminate the subscription !' ."\r\n". $th->getMessage() ,
+                      'note_type' => 'error'
+                    ));
+              }
+                    // Email 
+
             $plan_name =  CurrentSubPlanName(Auth::user()->id);
             $start_date =  SubStartDate(Auth::user()->id);
             $ends_at =  SubEndDate(Auth::user()->id);
-            $template = EmailTemplate::where('id','=', 31)->first(); 
+            $template = EmailTemplate::where('id','=', 27)->first(); 
             $heading = $template->heading;
 
-            // $user = User::find(Auth::user()->id);
-            // $user->role = 'registered';
-            // $user->save();
-
-            \Mail::send('emails.cancelsubscription', array(
-                'name' => $user->username,
-                'plan_name' => $plan_name,
-                'start_date' => $start_date,
-                'ends_at' => $ends_at,
-             
-            ), function($message) use ($user,$heading,$plan_name){
-                $message->from(AdminMail(),GetWebsiteName());
-                $message->to($user->email, $user->username)->subject($plan_name.' '.$heading);
-            });
-            return redirect::to('myprofile');
-
-          }
+            try {
+                \Mail::send('emails.cancelsubscription', array(
+                  'name' => $user->username,
+                  'plan_name' => $plan_name,
+                  'start_date' => $start_date,
+                  'ends_at' => $ends_at,
               
+              ), function($message) use ($user,$heading,$plan_name){
+                  $message->from(AdminMail(),GetWebsiteName());
+                  $message->to($user->email, $user->username)->subject($plan_name.' '.$heading);
+              });
+             
+                $email_log      = 'Mail Sent Successfully from cancel subscription';
+                $email_template = "27";
+                $user_id = Auth::user()->id;
+    
+                Email_sent_log($user_id,$email_log,$email_template);
+
+            }
+             catch (\Throwable $th) {
+
+                $email_log      = $th->getMessage();
+                $email_template = "27";
+                $user_id = Auth::user()->id;
+
+                Email_notsent_log($user_id,$email_log,$email_template);
+            }
+            
+          
+
+            Subscription::where('stripe_id',$stripe_plan)->update([
+              'stripe_status' =>  'Cancel',
+              'updated_at'    =>  Carbon::now()->toDateTimeString(),
+            ]);
+
+            return redirect::to('myprofile')->with(array(
+                'message' => 'Your subscription was successfully terminated!',
+                'note_type' => 'success'
+            ));
+          }
        }
 
         public function RenewSubscription()
@@ -1155,7 +1194,7 @@ public function UpgadeSubscription(Request $request){
     $apply_coupon = NewSubscriptionCouponCode();
     $stripe_plan = SubscriptionPlan();
     $plandetail = SubscriptionPlan::where('plan_id',$plan)->first();
-    $email_subject = EmailTemplate::where('id',23)->pluck('heading')->first() ;
+    $email_subject = EmailTemplate::where('id',27)->pluck('heading')->first() ;
 
   // $plandetail = Plan::where('plan_id',$plan)->first();
 
@@ -1423,8 +1462,8 @@ public function UpgadeSubscription(Request $request){
                     'stripe_plan'    =>  $subscription->plan['id'],
                     'quantity'       =>  $subscription['quantity'],
                     'countryname'    =>  Country_name(),
-                    'regionname'     =>  city_name(),
-                    'cityname'       =>  Region_name(),
+                    'regionname'     =>  Region_name(),
+                    'cityname'       =>  city_name(),
                     'PaymentGateway' =>  'Stripe',
                     'trial_ends_at'  =>  $trial_ends_at,
                     'ends_at'        =>  $trial_ends_at,
@@ -1436,6 +1475,7 @@ public function UpgadeSubscription(Request $request){
                     'subscription_start'    =>  $Sub_Startday,
                     'subscription_ends_at'  =>  $Sub_Endday,
                     'payment_type'          => 'recurring',
+                    'payment_status'        => $subscription['status'],
                 ]);
 
                 
