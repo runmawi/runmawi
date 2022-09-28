@@ -571,6 +571,12 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     // recaptcha 
     Route::post('/captcha', 'AdminSettingsController@captcha')->name('captcha'); 
 
+    // Restream
+
+    Route::get('/Restream', 'AdminRestreamController@Restream_index')->name('Restream_index'); 
+    Route::get('/Restream-create', 'AdminRestreamController@Restream_create')->name('Restream_create'); 
+    Route::post('/youtube-store', 'AdminRestreamController@youtube_store')->name('youtube-store'); 
+
 
     // Mobile Side Link
     Route::get('/mobile/side_menu', 'AdminMobileSideMenu@Side_link')->name('Side_link'); 
