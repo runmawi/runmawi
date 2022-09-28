@@ -123,6 +123,13 @@ font-size: 24px!important;
 line-height: 33px;
           
       }
+      .close-btn{
+          position: absolute;
+    z-index: 5;
+    left: 2%;
+    top: 4%;
+          font-size: 35px;
+      }
       label{
           font-size: 18px;
 line-height: 21px;
@@ -245,6 +252,8 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
            </div>
            <?php  elseif($video->type == ''): ?>
           <div id="video_container" class="fitvid" atyle="z-index: 9999;">
+              <a class="text-white close-btn" href="https://www.google.com"><i class="fa fa-arrow-left" aria-hidden="true"></i>
+</a>
 
           <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
       <source 
@@ -287,6 +296,8 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
            
              
                  <div id="video_container" class="fitvid" atyle="z-index: 9999;">
+                      <a class="text-white close-btn" href="https://www.google.com"><i class="fa fa-arrow-left" aria-hidden="true"></i>
+</a>
                <!-- Current time: <div id="current_time"></div> -->
                <video id="videoPlayer"  class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
                   <!-- <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >-->
@@ -322,6 +333,8 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
            </div>
    <?php  else: ?>
                <div id="video_container" class="fitvid" atyle="z-index: 9999;">
+                    <a class="text-white close-btn" href="https://www.w3schools.com"><i class="fa fa-arrow-left" aria-hidden="true"></i>
+</a>
                <!-- Current time: <div id="current_time"></div> -->
                <video  id="videoPlayer" class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
 <!--                <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >-->
@@ -403,7 +416,8 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 /* For Registered User */       
    else {  ?>      
        <div id="video" class="fitvid" style="margin: 0 auto;">
-       
+        <a class="text-white close-btn" herf><i class="fa fa-arrow-left" aria-hidden="true"></i>
+</a>
        <!-- <video id="videoPlayer" class="video-js vjs-default-skin vjs-big-play-centered" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $video->trailer; ?>"  type="video/mp4" > -->
        <video   id="videoPlayer" class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $video->trailer; ?>"  type="video/mp4" >
            <source src="<?= $video->trailer; ?>" type='video/mp4' label='Auto' res='auto' />
