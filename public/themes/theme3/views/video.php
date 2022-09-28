@@ -340,13 +340,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
               echo $value->categories_name. ',';  
             }
              ?></span>
- <?php if(!empty($video->description) ) { ?>
 
-                  
-                    <div class="text-white">
-                        <p class="trending-dec w-100 mb-0 text-white mt-3"><?php echo __($video->description); ?></p>
-                    </div>
-                    <?php  }?>
              <!-- Trailer Description -->
               <?php if(!empty($video->trailer_description) ) { ?>
                 <div class="col-sm-12 mt-4 p-0 trailer_description">
