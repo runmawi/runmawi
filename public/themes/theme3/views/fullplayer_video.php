@@ -252,7 +252,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
            </div>
            <?php  elseif($video->type == ''): ?>
           <div id="video_container" class="fitvid" atyle="z-index: 9999;">
-              <a class="text-white close-btn" href="https://www.google.com"><i class="fa fa-arrow-left" aria-hidden="true"></i>
+              <a class="text-white close-btn" href="<?= route('play_videos',$video->slug ) ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i>
 </a>
 
           <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
@@ -296,7 +296,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
            
              
                  <div id="video_container" class="fitvid" atyle="z-index: 9999;">
-                      <a class="text-white close-btn" href="https://www.google.com"><i class="fa fa-arrow-left" aria-hidden="true"></i>
+                      <a class="text-white close-btn" href="<?= route('play_videos',$video->slug ) ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i>
 </a>
                <!-- Current time: <div id="current_time"></div> -->
                <video id="videoPlayer"  class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
@@ -333,7 +333,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
            </div>
    <?php  else: ?>
                <div id="video_container" class="fitvid" atyle="z-index: 9999;">
-                    <a class="text-white close-btn" href="https://www.w3schools.com"><i class="fa fa-arrow-left" aria-hidden="true"></i>
+                    <a class="text-white close-btn" href="<?= route('play_videos',$video->slug ) ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i>
 </a>
                <!-- Current time: <div id="current_time"></div> -->
                <video  id="videoPlayer" class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >

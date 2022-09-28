@@ -105,7 +105,7 @@ Route::get('/verify-request', 'HomeController@VerifyRequest');
 Route::get('/verify-request-sent', 'HomeController@VerifyRequestNotsent');
 Route::get('verify/{activation_code}', 'SignupController@Verify');
 Route::get('/category/{cid}', 'ChannelController@channelVideos');
-Route::get('/category/videos/{vid}', 'ChannelController@play_videos');
+Route::get('/category/videos/{vid}', 'ChannelController@play_videos')->name('play_videos');
 Route::get('/category/videos/embed/{vid}', 'ChannelController@Embed_play_videos');
 Route::get('/language/{language}', 'ChannelController@LanguageVideo');
 Route::post('/saveSubscription', 'PaymentController@saveSubscription');
