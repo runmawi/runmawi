@@ -71,6 +71,9 @@ input.skips,input#Recaps_Skip{
 #Auto_skip{
 	display: none;
 }
+      #videoplay{
+          margin-left: 10px;
+      }
 div#url_linkdetails {
     position: absolute;
     top: 22%;
@@ -182,7 +185,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
          <?php if($video->type == 'embed'): ?>
            <div id="video_container" class="fitvid">
                 <div class="slide slick-bg s-bg-1 lazy"
-            style="background:linear-gradient(228.69deg, rgba(34, 7, 77, 0) 38.22%, #090015 81.76%), url('<?php echo URL::to('/').'/public/uploads/images/' .$video->player_image;?>') no-repeat;background-size:cover;background-position:right; height:70vh;">
+            style="background:linear-gradient(228.69deg, rgba(34, 7, 77, 0) 38.22%, #090015 81.76%), url('<?php echo URL::to('/').'/public/uploads/images/' .$video->player_image;?>') no-repeat;background-size:cover;background-position:right; height:80vh;">
                <!-- <video id="videoPlayer"  class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
                   <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >
                   <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default />
@@ -202,6 +205,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                           <div class="container-fluid">
  <div class="row align-items- text-white text-detail justify-content-between">
              <div class="col-sm-6 col-md-6 col-xs-12">
+                 
                    <h1 class="trending-text big-title text-uppercase mt-3"><?php echo __($video->title);?> <?php if( Auth::guest() ) { ?>  <?php } ?></h1>
             <span class="badge badge-secondary"><?php echo __($video->age_restrict).' '.'+';?></span>
             <span class="ml-3"><?php echo __(gmdate('H:i:s', $video->duration));?></span>
@@ -211,7 +215,14 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
               echo $value->categories_name. ',';  
             }
              ?></span>
+ <?php if(!empty($video->description) ) { ?>
 
+                  
+                    <div class="text-white">
+                        <p class="trending-dec w-100 mb-0 text-white mt-3"><?php echo __($video->description); ?></p>
+                    </div>
+                    <?php  }?>
+                  
              <!-- Trailer Description -->
               <?php if(!empty($video->trailer_description) ) { ?>
                 <div class="col-sm-12 mt-4 p-0 trailer_description">
@@ -233,7 +244,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 
              
                 <p class="mt-2 flik"> <?= GetWebsiteName() ?> will play the highest quality audio and video available for your device.</p>
-                <div class="col-lg-5 d-flex align-items-baseline justify-content-between p-0">
+                <div class="col-lg-5 d-flex align-items-baseline  p-0">
                     <a class="" href="<?=  route('fullplayer_videos',$video->slug ) ?>"> <img class="ply" src="<?php echo URL::to('/').'/assets/img/video-play.png';  ?>" /> </a>
                     <div id="videoplay" class="btn2  watch_trailer  mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>" style="border-radius:none!important;"><?php if(isset($mywishlisted->id)): ?> <i class="fa fa-minus-circle" aria-hidden="true"></i> Remove Whislist  <?php else: ?> + Add to Wishlist <?php endif; ?>
                         </div>
@@ -299,7 +310,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                  <div id="video_container" class="fitvid" atyle="z-index: 9999;">
                <!-- Current time: <div id="current_time"></div> -->
                       <div class="slide slick-bg s-bg-1 lazy"
-            style="background:linear-gradient(228.69deg, rgba(34, 7, 77, 0) 38.22%, #090015 81.76%), url('<?php echo URL::to('/').'/public/uploads/images/' .$video->player_image;?>') no-repeat;background-size:cover;background-position:right; height:70vh;">
+            style="background:linear-gradient(228.69deg, rgba(34, 7, 77, 0) 38.22%, #090015 81.76%), url('<?php echo URL::to('/').'/public/uploads/images/' .$video->player_image;?>') no-repeat;background-size:cover;background-position:right; height:80vh;">
                <!-- <video id="videoPlayer"  class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
                   <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >
                   <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default />
@@ -319,6 +330,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                           <div class="container-fluid">
  <div class="row align-items- text-white text-detail justify-content-between">
              <div class="col-sm-6 col-md-6 col-xs-12">
+                 
                    <h1 class="trending-text big-title text-uppercase mt-3"><?php echo __($video->title);?> <?php if( Auth::guest() ) { ?>  <?php } ?></h1>
             <span class="badge badge-secondary"><?php echo __($video->age_restrict).' '.'+';?></span>
             <span class="ml-3"><?php echo __(gmdate('H:i:s', $video->duration));?></span>
@@ -350,7 +362,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 
              
                 <p class="mt-2 flik"> <?= GetWebsiteName() ?>  will play the highest quality audio and video available for your device.</p>
-                 <div class="col-lg-5 d-flex align-items-baseline justify-content-between p-0">
+                 <div class="col-lg-5 d-flex align-items-baseline  p-0">
                     <a class="" href="<?=  route('fullplayer_videos',$video->slug ) ?>"> <img class="ply" src="<?php echo URL::to('/').'/assets/img/video-play.png';  ?>" /> </a>
                     <div id="videoplay" class="btn2  watch_trailer  mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>" style="border-radius:none!important;"><?php if(isset($mywishlisted->id)): ?> <i class="fa fa-minus-circle" aria-hidden="true"></i> Remove Whislist  <?php else: ?> + Add to Wishlist <?php endif; ?></div>
                 </div>
@@ -378,7 +390,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
    <?php  else: ?>
                <div id="video_container" class="fitvid" atyle="z-index: 9999;">
                     <div class="slide slick-bg s-bg-1 lazy"
-            style="background:linear-gradient(228.69deg, rgba(34, 7, 77, 0) 38.22%, #090015 81.76%), url('<?php echo URL::to('/').'/public/uploads/images/' .$video->player_image;?>') no-repeat;background-size:cover;background-position:right; height:70vh;">
+            style="background:linear-gradient(228.69deg, rgba(34, 7, 77, 0) 38.22%, #090015 81.76%), url('<?php echo URL::to('/').'/public/uploads/images/' .$video->player_image;?>') no-repeat;background-size:cover;background-position:right; height:80vh;">
                <!-- <video id="videoPlayer"  class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
                   <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >
                   <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default />
