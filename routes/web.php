@@ -105,7 +105,7 @@ Route::get('/verify-request', 'HomeController@VerifyRequest');
 Route::get('/verify-request-sent', 'HomeController@VerifyRequestNotsent');
 Route::get('verify/{activation_code}', 'SignupController@Verify');
 Route::get('/category/{cid}', 'ChannelController@channelVideos');
-Route::get('/category/videos/{vid}', 'ChannelController@play_videos');
+Route::get('/category/videos/{vid}', 'ChannelController@play_videos')->name('play_videos');
 Route::get('/category/videos/embed/{vid}', 'ChannelController@Embed_play_videos');
 Route::get('/language/{language}', 'ChannelController@LanguageVideo');
 Route::post('/saveSubscription', 'PaymentController@saveSubscription');
@@ -575,6 +575,12 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
 
     // recaptcha 
     Route::post('/captcha', 'AdminSettingsController@captcha')->name('captcha'); 
+
+    // Restream
+
+    Route::get('/Restream', 'AdminRestreamController@Restream_index')->name('Restream_index'); 
+    Route::get('/Restream-create', 'AdminRestreamController@Restream_create')->name('Restream_create'); 
+    Route::post('/youtube-store', 'AdminRestreamController@youtube_store')->name('youtube-store'); 
 
 
     // Mobile Side Link
