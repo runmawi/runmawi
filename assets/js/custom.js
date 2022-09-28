@@ -159,11 +159,10 @@ Index Of Script
 
 		});
             $('#home-slider').fadeIn();
+           
             
-        });
-        
-			
-		jQuery('.favorites-slider').slick({
+            
+            jQuery('.favorites-slider').slick({
 			dots: false,
 			arrows: true,
 			infinite: true,
@@ -203,6 +202,13 @@ Index Of Script
 			}
 			]
 		});
+            
+             $('.favorites-slider').fadeIn();
+            
+        });
+        
+			
+		
 
 		jQuery('#top-ten-slider').slick({
 			slidesToShow: 1,
