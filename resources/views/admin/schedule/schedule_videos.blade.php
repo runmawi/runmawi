@@ -12,11 +12,11 @@
     <script src="{{asset('dropzone/dist/min/dropzone.min.js')}}" type="text/javascript"></script>
 
     <?php
-        $embed_url = URL::to('/schedule/videos/embed');
-        $embed_media_url = $embed_url . '/' . $schedule->name;
-        $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'" frameborder="0" allowfullscreen></iframe>';
-        $media_url = URL::to('/schedule/videos').'/'.$schedule->name;
-    ?>
+$embed_url = URL::to("/schedule/videos/embed");
+$embed_media_url = $embed_url . "/" . $schedule->name;
+$url_path = '<iframe width="853" height="480" src="' . $embed_media_url . '" frameborder="0" allowfullscreen></iframe>';
+$media_url = URL::to("/schedule/videos") . "/" . $schedule->name;
+?>
 
 @section('content')
     <div id="content-page" class="content-page">
@@ -33,7 +33,16 @@
                 <br>
                 <h4 class="card-title">{{ $Calendar['date'].'/'.$Calendar['month'].'/'.$Calendar['year'] }} </h4>
                         <label for=""><h4 class="fs-title m-0">{{ $schedule->name }}</h4></label>
-
+                    <div class="pull-right" style="margin-top: -5%;">
+                        <form action="{{ URL::to('/schedule/videos') }}" accept-charset="UTF-8" method="post">
+                            <input type="hidden" name="date" id= "date" value="{{ $Calendar['date'] }}">
+                            <input type="hidden" name="month" id= "month" value="{{ $Calendar['month'] }}">
+                            <input type="hidden" name="year" id= "year" value="{{ $Calendar['year'] }}">
+                            <input type="hidden" name="schedule_id" id= "schedule_id" value="{{ $Calendar['schedule_id'] }}">
+                            <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+                            <button type="submit" class="btn btn-primary" id="submit-update-menu">Perview</button>
+                        </form>
+                    </div>
                 <div class="row">
                     <div class="col-3">
                         <label for="">Choose Time</label><br>
@@ -113,18 +122,18 @@
                      <div class="row">
                      <div class="col-md-6">
 
-                        <div class="drop-zone">
+                        <div class="drop-zone ScrollStyle">
                                 <!-- <div class="draggable"> -->
                                         @foreach(@$Video as $value)
                                         <div class="draggable">
-                                            <input type="text" id="video_id" class="video_{{ $value->id }}" value="{{ $value->title }}" readonly>
+                                            <input type="text" data-class="{{ $value->id }}" id="video_id" draggable="true" ondragstart="drag(this)" class="video_{{ $value->id }}" value="{{ $value->title }}" readonly>
                                             <!-- <div class="video_id{{ $value->id }}" data-toggle="modal" data-target="#video" data-name="{{ $value->id }}"  onclick="dropZoneDropHandler(this)"  >{{ $value->title }}</div> -->
                                         </div>
                                         @endforeach
                                 </div>
                             </div>
                         <div class="col-md-6">
-                            <div class="drop-zone"></div>
+                            <div class="drop-zone ScrollStyle" ondrop="drop(this)" ondragover="allowDrop(this)"></div>
                         </div>
 
                         <!-- <div class="drop-zone"></div> -->
@@ -144,7 +153,17 @@
                                         </tr>
                                     </thead>
                                 <tbody>
+                                <tr>
+                                    @foreach($ScheduledVideo as $key => $video)
+                                        <td>{{ $key+1  }}</td>   
+                                        <td>{{ $video->title  }}</td>  
+                                        <td>{{ $video->type  }}</td>   
+                                        <td>{{ $video->shedule_date  }}</td>   
+                                        <td>{{ $video->sheduled_starttime  }}</td>  
+                                        <td>{{ $video->shedule_endtime  }}</td>   
+                                        </tr>                               
 
+                                     @endforeach
                                 </tbody>
                            </table>
                         </div>
@@ -187,7 +206,7 @@
 
 
 
-    <script src="<?= URL::to('/assets/js/jquery.mask.min.js');?>"></script>
+    <script src="<?=URL::to("/assets/js/jquery.mask.min.js") ?>"></script>
     
     <script type="text/javascript">
       $('#choose_start_time').mask("00:00 AM");
@@ -219,6 +238,14 @@
             // console.log(value)
             this.on("success", function(file, value) {
                 console.log(value.video_title);
+                    // $("#data").append(value);
+                    if(value == 'Please Choose Time'){
+                        alert('Please Choose Time');
+                    }else if(value == ''){
+                        alert('Please Choose Time');
+                    }else{
+                        $('tbody').html(value.table_data);
+                    }
             });
         }); 
     </script>
@@ -243,7 +270,7 @@
                 console.log(data);
                 // alert(data);
                 // $("#data").append(data);
-                $('tbody').html(data.table_data);
+                // $('tbody').html(data.table_data);
             },
             error: function() { 
                 console.log(data);
@@ -257,7 +284,7 @@
 
    function EmbedCopy() {
    // var media_path = $('#media_url').val();
-   var media_path = '<?= $url_path ?>';
+   var media_path = '<?=$url_path ?>';
    var url =  navigator.clipboard.writeText(window.location.href);
    var path =  navigator.clipboard.writeText(media_path);
    $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Copied Embed URL</div>');
@@ -398,7 +425,7 @@ function dropZoneLeaveHandler(e) {
  * On successful drop event, move the element
  */
 function dropZoneDropHandler(e,ele) {
-            var allvideos = '<?= $Video ?>';
+            var allvideos = '<?=$Video ?>';
             // var videos = $('.video_17').val();
             // console.log(allvideos);
             var obj = JSON.parse(allvideos);
@@ -456,9 +483,62 @@ function deferredOriginChanges(origin, dragFeedbackClassName) {
 }
 
 
+var video_id = '';
+ 
+
+
+function allowDrop(ev) {
+//   ev.preventDefault();
+}
+
+function drag(ev) {
+//   ev.dataTransfer.setData("text", ev.target.id);
+// console.log(ev);
+
+var video_id = $(ev).attr('data-class');
+// console.log(video_id);
+drop(video_id);
+}
+
+function drop(video_id) {
+
+    console.log(video_id);
+
+    $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+    });
+
+
+        var url = "{{ URL::to('admin/dragdropScheduledVideos/')  }}";
+        var time = $('#time').val();
+        $.ajax({
+           url: url,
+           type: "post",
+            data: {
+                  _token: '{{ csrf_token() }}',
+                    video_id: video_id,
+                    month: month,
+                    year: year,
+                    date: date,
+                    schedule_id: schedule_id,
+                    schedule_time: time
+            },        
+            success: function(value){
+   			console.log(value);
+               if(value == ''){
+                        alert('Please Choose Time');
+                    }else{
+                        $('tbody').html(value.table_data);
+                    }
+           }
+       });
+
+}
+
 </script>
 
 @stop
 
 @stop
-

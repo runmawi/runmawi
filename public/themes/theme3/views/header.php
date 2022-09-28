@@ -518,7 +518,7 @@ input:checked + .sliderk:before {
 #menu
 {
   position: absolute;
-  width: 300px;
+  width: 250px;
   margin: -100px 0 0 -50px;
   padding: 20px;
   padding-top: 125px;
@@ -532,6 +532,7 @@ input:checked + .sliderk:before {
   transform: translate(-100%, 0);
   
   transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
+  
 }
 
 #menu li

@@ -84,6 +84,11 @@ Route::post('/admin/cpp_video_exportCsv', 'ModeratorsUserController@CPPVideoExpo
 Route::post('/admin/cpp_video_fliter', 'ModeratorsUserController@CPPVideoFilter');
 
 
+Route::get('admin/cpp/livestream-analytics', 'CPPAnalyticsController@IndexLivestreamAnalytics');
+Route::post('admin/cpp/livestream_startdate_analytics', 'CPPAnalyticsController@LivestreamStartDateAnalytics');
+Route::post('admin/cpp/livestream_enddate_analytics', 'CPPAnalyticsController@LivestreamEndDateAnalytics');
+Route::post('admin/cpp/livestream_exportCsv', 'CPPAnalyticsController@LivestreamExportCsv');
+
 
 
 Route::post('/admin/cpp_startdate_analytics', 'ModeratorsUserController@CPPStartDateAnalytic');
@@ -92,6 +97,7 @@ Route::post('/admin/cpp_analytics_exportCsv', 'ModeratorsUserController@CPPAnaly
 Route::post('/admin/cpp_analytics_barchart', 'ModeratorsUserController@CPPAnalyticBarchart');
 
 
+Route::post('/schedule/videos', 'ChannelController@ScheduledVideos');
 
 
 Route::post('/register1', 'HomeController@PostcreateStep1');
@@ -341,7 +347,6 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::get('/settings', 'AdminSettingsController@index');
     Route::post('/settings/save_settings', 'AdminSettingsController@save_settings');
     Route::post('/settings/script_settings', 'AdminSettingsController@script_settings');
-
 
     Route::get('/home-settings', 'Admin\HomeSettingsController@index');
     Route::post('/home-settings/save', 'Admin\HomeSettingsController@save_settings');
@@ -747,7 +752,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/calendar/schedule', 'AdminVideosController@CalendarSchedule');
     Route::post('/schedule/uploadFile', 'AdminVideosController@ScheduleUploadFile');
     Route::get('/IndexScheduledVideos', 'AdminVideosController@IndexScheduledVideos');
-
+    Route::post('/dragdropScheduledVideos', 'AdminVideosController@DragDropScheduledVideos');
 
     
     Route::get('/video-event', 'AdminVideosController@calendarEvent');
@@ -1088,6 +1093,7 @@ Route::get('video-analytics', 'CPPAnalyticsController@IndexVideoAnalytics');
 Route::post('video_startdate_analytics', 'CPPAnalyticsController@VideoStartDateAnalytics');
 Route::post('video_enddate_analytics', 'CPPAnalyticsController@VideoEndDateAnalytics');
 Route::post('video_exportCsv', 'CPPAnalyticsController@VideoExportCsv');
+
 
 
 Route::get('myprofile', 'ModeratorsUserController@CPPMyProfile');

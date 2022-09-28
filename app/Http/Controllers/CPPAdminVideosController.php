@@ -1296,7 +1296,7 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
                 foreach ($videos as $key => $val) {
                 $RelatedVideo = new RelatedVideo;
                 $RelatedVideo->video_id = $video->id;
-                $RelatedVideo->user_id = Auth::user()->id;
+                $RelatedVideo->user_id = $user_id;
                 $RelatedVideo->related_videos_id = $val->id;
                 $RelatedVideo->related_videos_title = $val->title;
                 $RelatedVideo->save();
@@ -1330,7 +1330,7 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
             VideoSearchTag::where('video_id', $video->id)->delete();
             foreach ($searchtags as $key => $value) {
                 $videosearchtags = new VideoSearchTag;
-                $videosearchtags->user_id = Auth::User()->id;
+                $videosearchtags->user_id = $user_id;
                 $videosearchtags->video_id = $video->id;
                 $videosearchtags->search_tag = $value;
                 $videosearchtags->save();
@@ -1847,7 +1847,7 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
                 VideoSearchTag::where('video_id', $video->id)->delete();
                 foreach ($searchtags as $key => $value) {
                     $videosearchtags = new VideoSearchTag;
-                    $videosearchtags->user_id = Auth::User()->id;
+                    $videosearchtags->user_id = $user_id;
                     $videosearchtags->video_id = $video->id;
                     $videosearchtags->search_tag = $value;
                     $videosearchtags->save();
@@ -1866,7 +1866,7 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
                         foreach ($videos as $key => $val) {
                          $RelatedVideo = new RelatedVideo;
                         $RelatedVideo->video_id = $id;
-                        $RelatedVideo->user_id = Auth::user()->id;
+                        $RelatedVideo->user_id = $user_id;
                         $RelatedVideo->related_videos_id = $val->id;
                         $RelatedVideo->related_videos_title = $val->title;
                         $RelatedVideo->save();

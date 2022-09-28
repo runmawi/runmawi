@@ -76,6 +76,7 @@ use App\SubscriptionPlan;
 use App\Multiprofile;
 use App\LanguageVideo;
 use App\CategoryAudio;
+use App\LiveLanguage;
 use Session;
 use Victorybiz\GeoIPLocation\GeoIPLocation;
 use App\Geofencing;
@@ -1222,6 +1223,20 @@ public function verifyandupdatepassword(Request $request)
         $item['live_description'] = $item->description ? $item->description : "" ;
         return $item;
       });
+
+      $languages = LiveLanguage::Join('languages','languages.id','=','live_languages.language_id')
+      ->where('live_languages.live_id',$liveid)->get('name');
+      // echo "<pre>"; print_r($languages);exit;
+
+      foreach($languages as $value){
+        $language[] = $value['name']; 
+      }
+      if(!empty($language)){
+      $languages = implode(",",$language);
+      }else{
+        $languages = "";
+      }
+
       $current_date = date('Y-m-d h:i:s a', time()); 
       // $ppv_exist = LivePurchase::where('video_id',$videoid)->where('user_id',$user_id)->where('to_time','>',$current_date)->count();
       $ppv_exist = LivePurchase::where('video_id',$liveid)->where('user_id',$user_id)->count();
@@ -1260,7 +1275,9 @@ public function verifyandupdatepassword(Request $request)
       'livedetail' => $livedetail,
       'like' => $like,
       'dislike' => $dislike,
-      'ppv_video_status' => $ppv_video_status
+      'ppv_video_status' => $ppv_video_status,
+      'languages' => $languages,
+
     );
     return response()->json($response, 200);
   }
@@ -3317,6 +3334,22 @@ public function checkEmailExists(Request $request)
         $Season = '';
        }
       //  print_r($Season->id);exit;
+
+
+      $languages = SeriesLanguage::Join('languages','languages.id','=','series_languages.series_id')
+      ->where('series_languages.series_id',$series_id)->get('name');
+      // echo "<pre>"; print_r($languages);exit;
+
+      foreach($languages as $value){
+        $language[] = $value['name']; 
+      }
+      if(!empty($language)){
+      $languages = implode(",",$language);
+      }else{
+        $languages = "";
+      }
+
+
       if($request->user_id != ''){
         $user_id = $request->user_id;
         $cnt = Wishlist::select('episode_id')->where('user_id','=',$user_id)->where('episode_id','=',$request->episodeid)->count();

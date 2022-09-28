@@ -35,19 +35,19 @@
               </div>
               <div class="mt-2">
                   
-                <div class="movie-time d-flex align-items-center justify-content-between my-2">
+                <div class="movie-time d-flex align-items-center  my-2">
                      <a href="<?php echo URL::to('/play_series'.'/'.$latest_serie->slug) ?> ">
 
-              <h6><?php echo __($latest_serie->title); ?></h6>
+              <h6 class="mr-1"><?php echo __($latest_serie->title); ?> ,</h6>
                 </a>
-                  <div class="badge badge-secondary p-1 mr-2"><?php echo $latest_serie->age_restrict.' '.'+' ?></div>
+                 <!-- <div class="badge badge-secondary p-1 mr-2"><?php echo $latest_serie->age_restrict.' '.'+' ?></div>-->
                   <div class="badge badge-secondary p-1 mr-2"><?php 
                   $SeriesSeason = App\SeriesSeason::where('series_id',$latest_serie->id)->count(); 
-                  echo $SeriesSeason.' '.'Season'
+                  echo $SeriesSeason.' '.'S'
                   ?></div>
                   <div class="badge badge-secondary p-1 mr-2"><?php 
                   $Episode = App\Episode::where('series_id',$latest_serie->id)->count(); 
-                  echo $Episode.' '.'Episodes'
+                  echo $Episode.' '.'E'
                   ?></div>
                 </div>
                    <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $latest_serie->duration); ?></span>
