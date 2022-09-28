@@ -1489,7 +1489,7 @@ class ChannelVideosController extends Controller
                         {
                             $RelatedVideo = new RelatedVideo;
                             $RelatedVideo->video_id = $video->id;
-                            $RelatedVideo->user_id = Auth::user()->id;
+                            $RelatedVideo->user_id = $user_id;
                             $RelatedVideo->related_videos_id = $val->id;
                             $RelatedVideo->related_videos_title = $val->title;
                             $RelatedVideo->save();
@@ -1533,7 +1533,7 @@ class ChannelVideosController extends Controller
                 foreach ($searchtags as $key => $value)
                 {
                     $videosearchtags = new VideoSearchTag;
-                    $videosearchtags->user_id = Auth::User()->id;
+                    $videosearchtags->user_id = $user_id;
                     $videosearchtags->video_id = $video->id;
                     $videosearchtags->search_tag = $value;
                     $videosearchtags->save();
@@ -2130,7 +2130,7 @@ class ChannelVideosController extends Controller
                 foreach ($searchtags as $key => $value)
                 {
                     $videosearchtags = new VideoSearchTag;
-                    $videosearchtags->user_id = Auth::User()->id;
+                    $videosearchtags->user_id = $user_id;
                     $videosearchtags->video_id = $video->id;
                     $videosearchtags->search_tag = $value;
                     $videosearchtags->save();
@@ -2152,7 +2152,7 @@ class ChannelVideosController extends Controller
                         {
                             $RelatedVideo = new RelatedVideo;
                             $RelatedVideo->video_id = $id;
-                            $RelatedVideo->user_id = Auth::user()->id;
+                            $RelatedVideo->user_id = $user_id;
                             $RelatedVideo->related_videos_id = $val->id;
                             $RelatedVideo->related_videos_title = $val->title;
                             $RelatedVideo->save();
