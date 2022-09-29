@@ -580,7 +580,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
 
     Route::get('/Restream', 'AdminRestreamController@Restream_index')->name('Restream_index'); 
     Route::get('/Restream-create', 'AdminRestreamController@Restream_create')->name('Restream_create'); 
-    Route::post('/youtube-store', 'AdminRestreamController@youtube_store')->name('youtube-store'); 
+    Route::post('/Restream-obs-store', 'AdminRestreamController@Restream_obs_store')->name('Restream_obs_store'); 
 
 
     // Mobile Side Link
