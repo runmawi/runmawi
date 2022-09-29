@@ -2481,3 +2481,35 @@ color: rgba(255, 255, 255, 0.5);
 .foot{
     font-size: 18px;
 }
+
+.slick-frame {
+    visibility: hidden;
+}
+.slick-frame.slick-initialized {
+    visibility: visible;
+}
+.rippleEffect{
+    display: block!important;
+}
+
+.slick-dots li{
+    
+        display: inline-block;
+}
+  .slick-dots li:only-child {
+        display: none;
+    }
+
+.slick-frame {
+    visibility: hidden;
+}
+.slick-frame.slick-initialized {
+    visibility: visible;
+}
+
+#home-slider{
+    display: none;
+}
+.favorites-slider{
+     display: none;
+}
