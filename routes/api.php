@@ -337,4 +337,8 @@ Route::group([
 
     Route::post('account_delete','ApiAuthController@account_delete');
 
+    Route::post('remaining_Episode','ApiAuthController@remaining_Episode');
+
+    Route::post('related_series','ApiAuthController@related_series');
+
 });

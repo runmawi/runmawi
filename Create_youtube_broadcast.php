@@ -7,12 +7,13 @@ if (!file_exists(__DIR__ . "/vendor/autoload.php")) {
             '"'
     );
 }
-
 require_once __DIR__ . "/vendor/autoload.php";
 session_start();
 
-$OAUTH2_CLIENT_ID ="592443666387-86osj17vgar9djnavhd8ehk1cv7kb2fs.apps.googleusercontent.com";
-$OAUTH2_CLIENT_SECRET = "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";
+
+$OAUTH2_CLIENT_ID ="592443666387-jvimvtu2s0td0gg84q1hfo30jbpdb2j3.apps.googleusercontent.com";
+$OAUTH2_CLIENT_SECRET = "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";
+
 
 $client = new Google_Client();
 $client->setClientId($OAUTH2_CLIENT_ID);
