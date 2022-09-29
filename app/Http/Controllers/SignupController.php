@@ -609,35 +609,20 @@ public function createStep3(Request $request)
 
     public function PostcreateStep3(Request $request)
     {
-      if ($request->has('ref')) {
+        if ($request->has('ref')) {
             session(['referrer' => $request->query('ref')]);
         }
+
         $avatars = $request->session()->get('avatar');
-        if ($avatars!=='') {
-            $avatar = $request->session()->get('avatar');
-        } else {
-            $avatar  = 'default.png'; 
-        }
-         $settings = $settings = \App\Setting::first();/*Setting::first()*/
-       /* if (!$settings->free_registration && $skip == 0) {
-            $user_data['role'] = 'subscriber';
-            $user_data['active'] = '1';
-        } else {
-                if($settings->activation_email):
-                    $user_data['activation_code'] = Str::random(60);
-                    $user_data['active'] = 0;
-                endif;
-            $user_data['role'] = 'registered';
-        }*/
+
+        $avatar = $avatars!=='' ?  $request->session()->get('avatar') : 'default.png' ;
+
+        $settings = $settings = \App\Setting::first();
+       
         $email_subject = EmailTemplate::where('id',23)->pluck('heading')->first() ;
 
         $current_date = date('Y-m-d h:i:s');    
-        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-        $userIp = $geoip->getip();    
-        $countryName = $geoip->getCountry();
-        $regionName = $geoip->getregion();
-        $cityName = $geoip->getcity();
-
+      
         $user_email = $request->session()->get('register.email');
         $user = User::where('email',$user_email)->first();
         $paymentMethod = $request->get('py_id');
@@ -721,7 +706,8 @@ public function createStep3(Request $request)
                     Email_notsent_log($user_id,$email_log,$email_template);
                 }
 
-                } else {
+            } 
+            else {
                     
                     try {
                         $user->newSubscription($stripe_plan, $plan)->create($paymentMethod);
@@ -798,8 +784,9 @@ public function createStep3(Request $request)
                     $subscription->ends_at = $date;
                     $subscription->save();
                     $data = Session::all();
-                    }
-            } else {
+            }
+        } 
+        elseif( $payment_type == "one_time" ) {
 
                 $current_date = date('Y-m-d h:i:s');    
                 $setting = Setting::first();
@@ -849,12 +836,12 @@ public function createStep3(Request $request)
                             ]);
             }
 
-            }
+        }
                 $response = array(
-                'status' => 'success'
+                    'status' => 'success'
                 );
-    return response()->json($response);
-    // print_r($payment_type);exit();
+
+                return response()->json($response);
     }
 
     protected function registered(Request $request, $user)
