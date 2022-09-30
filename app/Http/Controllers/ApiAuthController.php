@@ -3994,6 +3994,8 @@ return response()->json($response, 200);
       $ppv_interval = $season[0]->ppv_interval;
       $season_id = $season[0]->id;
   }
+  // echo "<pre>";
+  // print_r($season);exit;
   // Free Interval Episodes   
 
   if(!empty($ppv_price) && !empty($ppv_interval)){
@@ -4016,7 +4018,7 @@ return response()->json($response, 200);
         $free_episode = 'PPV'; 
       }
   }else{
-    $free_episode = 'PPV'; 
+    $free_episode = 'Free'; 
   }
 
     $response = array(

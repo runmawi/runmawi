@@ -29,7 +29,7 @@
       </div>
 @elseif(!empty($Choose_current_date))
         <div id="novideo">
-            <h2> NO Video Available </h2>
+            <h2> NO Video Available For Today </h2>
             <p class="countdown" id="demo"></p>
         </div>
 
@@ -40,7 +40,14 @@
 <!-- Trailer m3u8 -->
 <!-- && !empty($next_start) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  
+  <script>
+
+      function goBack() {
+          window.location.hash = window.location.lasthash[window.location.lasthash.length-1];
+          //blah blah blah
+          window.location.lasthash.pop();
+      }
+  </script>
 <script>
 // Set the date we're counting down to
 var date = "<?= $next_start ?>";

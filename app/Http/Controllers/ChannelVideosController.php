@@ -2463,5 +2463,37 @@ class ChannelVideosController extends Controller
 
     }
 
+
+    public function PlayVideo($slug)
+    {
+        // dd($slug);
+
+        try
+        {
+            $user_package =    User::where('id', 1)->first();
+            $package = $user_package->package;
+            if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
+              $user = Session::get('channel'); 
+                $id = $user->id;
+                    $videos = Video::where('slug',$slug)->first();
+            $data = array(
+                'video' => $videos,
+
+            );
+            return View('channel.videos.player', $data);
+
+            }else{
+                return Redirect::to('/blocked');
+            }
+    }
+    catch(\Throwable $th)
+    {
+
+        return abort(404);
+
+    }
+    }
+
+
 }
 

@@ -107,7 +107,7 @@ for($i=0;$i<(count($userrolepermissiom));$i++){
   <!-- Sidebar-->
       <div class="iq-sidebar">
          <div class=" d-flex justify-content-between align-items-center">
-            <a href="<?php echo URL::to('home') ?>" class="header-logo mt-2">
+            <a href="<?php echo URL::to('cpp/dashboard') ?>" class="header-logo mt-2">
                <img src="<?php echo URL::to('/').'/public/uploads/settings/'.$settings->logo;?>" class="img-fluid rounded-normal" alt="">
                <div class="logo-title">
                </div>
