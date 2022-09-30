@@ -334,8 +334,8 @@ if(!empty($request_url)){
                     </div>
                                                         <!-- Video Title  -->
                   <?php }else{ ?>
-                      <h1 class="text-white mb-3" >
-                        <?php echo (strlen($video->title) > 15) ? substr($video->title,0,80).'...' : $video->title;  if( Auth::guest() ) { } ?>
+                      <h1 class="text-white mb-3 mt-3" >
+                        <?php echo (strlen($video->title) > 15) ? substr($video->title,0,200) : $video->title;  if( Auth::guest() ) { } ?>
                       </h1>
                   <?php } ?>
                   
