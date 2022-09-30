@@ -98,7 +98,7 @@ Route::post('/admin/cpp_analytics_barchart', 'ModeratorsUserController@CPPAnalyt
 
 
 Route::post('/schedule/videos', 'ChannelController@ScheduledVideos');
-
+Route::get('/schedule/videos/embed/{name}','ChannelController@EmbedScheduledVideos');
 
 Route::post('/register1', 'HomeController@PostcreateStep1');
 Route::get('/verify-request', 'HomeController@VerifyRequest');
@@ -580,7 +580,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
 
     Route::get('/Restream', 'AdminRestreamController@Restream_index')->name('Restream_index'); 
     Route::get('/Restream-create', 'AdminRestreamController@Restream_create')->name('Restream_create'); 
-    Route::post('/youtube-store', 'AdminRestreamController@youtube_store')->name('youtube-store'); 
+    Route::post('/Restream-obs-store', 'AdminRestreamController@Restream_obs_store')->name('Restream_obs_store'); 
 
 
     // Mobile Side Link
@@ -1114,6 +1114,8 @@ Route::get('/videos/create', 'CPPAdminVideosController@CPPcreate');
 Route::post('/videos/fileupdate', array('before' => 'demo', 'uses' => 'CPPAdminVideosController@CPPfileupdate'));
 Route::post('/videos/store', array('before' => 'demo', 'uses' => 'CPPAdminVideosController@CPPstore'));
 Route::post('/videos/update', array('before' => 'demo', 'uses' => 'CPPAdminVideosController@Cppupdate'));
+Route::get('/category/videos/{slug}','CPPChannelController@PlayVideo');
+
 
 Route::get('/cppusers_videodata', 'CPPAdminVideosController@CPPVideo');
 Route::get('/CPPlive_search', 'CPPAdminVideosController@CPPlive_search');
@@ -1224,6 +1226,7 @@ Route::post('/audios/audioupdate', array('before' => 'demo', 'uses' => 'CPPAdmin
     Route::post('video_startdate_analytics', 'ChannelAnalyticsController@VideoStartDateAnalytics');
     Route::post('video_enddate_analytics', 'ChannelAnalyticsController@VideoEndDateAnalytics');
     Route::post('video_exportCsv', 'ChannelAnalyticsController@VideoExportCsv');
+    Route::get('/category/videos/{slug}','ChannelVideosController@PlayVideo');
 
 
     Route::get('payouts', 'ChannelAnalyticsController@UserPayouts');

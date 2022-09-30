@@ -3268,7 +3268,8 @@ public function checkEmailExists(Request $request)
       $seriesid = $request->seriesid;
       $season = SeriesSeason::where('series_id','=',$seriesid)->orderBy('created_at', 'desc')->get();
       $seasonfirst = SeriesSeason::where('series_id','=',$seriesid)->first();
-      $first_season_id = $seasonfirst->id;
+      $first_season_id = $seasonfirst =! " " ? $seasonfirst->id : null; 
+
       $response = array(
         'status'=>'true',
         'message'=>'success',
@@ -3993,6 +3994,8 @@ return response()->json($response, 200);
       $ppv_interval = $season[0]->ppv_interval;
       $season_id = $season[0]->id;
   }
+  // echo "<pre>";
+  // print_r($season);exit;
   // Free Interval Episodes   
 
   if(!empty($ppv_price) && !empty($ppv_interval)){
@@ -4006,7 +4009,7 @@ return response()->json($response, 200);
           endforeach; 
       endforeach;
       if (array_key_exists($episode_id,$free_episode)){ 
-        $free_episode = 'Free';  
+        $free_episode = 'guest';  
       }else{ 
         $free_episode = 'PPV'; 
       }
@@ -4015,7 +4018,7 @@ return response()->json($response, 200);
         $free_episode = 'PPV'; 
       }
   }else{
-    $free_episode = 'PPV'; 
+    $free_episode = 'guest'; 
   }
 
     $response = array(
@@ -7889,6 +7892,7 @@ $cpanel->end();
        $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
        return $item;
      });
+
     //  if(count($episode) > 0){
     //  $series_id =  $episode[0]->series_id;
     //  $season_id = $episode[0]->season_id;
@@ -7917,6 +7921,8 @@ $cpanel->end();
     //   $Season = '';
     //  }
     //  print_r($Season->id);exit;
+
+
     if($request->user_id != ''){
       $user_id = $request->user_id;
       $cnt = Wishlist::select('episode_id')->where('user_id','=',$user_id)->where('episode_id','=',$request->episodeid)->count();
@@ -7926,7 +7932,7 @@ $cpanel->end();
       $wishliststatus = 'false';
       // $userrole = '';
     } 
-    if(!empty($request->user_id)){
+    if(!empty($request->user_id) && $request->user_id != '' ){
       $user_id = $request->user_id;
       $cnt = Watchlater::select('episode_id')->where('user_id','=',$user_id)->where('episode_id','=',$request->episodeid)->count();
       $watchlaterstatus =  ($cnt == 1) ? "true" : "false";
@@ -7935,6 +7941,8 @@ $cpanel->end();
       $watchlaterstatus = 'false';
       // $userrole = '';
     }
+
+
     if($request->user_id != ''){
     $like_data = LikeDisLike::where("episode_id","=",$episodeid)->where("user_id","=",$user_id)->where("liked","=",1)->count();
     $dislike_data = LikeDisLike::where("episode_id","=",$episodeid)->where("user_id","=",$user_id)->where("disliked","=",1)->count();
@@ -7959,7 +7967,8 @@ $cpanel->end();
   }
 
   $series_id = Episode::where('id','=',$episodeid)->pluck('series_id');
-  if(!empty($series_id)){
+
+  if(!empty($series_id) && count($series_id) > 0){
     $series_id = $series_id[0];
     
   $main_genre = SeriesCategory::Join('genres','genres.id','=','series_categories.category_id')
@@ -7977,7 +7986,6 @@ $cpanel->end();
   $category = [];
 }
 // echo "<pre>";print_r($category);exit;
-
   if(!empty($category)){
   $main_genre = implode(",",$category);
   }else{
@@ -7992,21 +8000,20 @@ $cpanel->end();
 }else{
   $language = "";
 }
+
   if(!empty($language)){
   $languages = implode(",",$language);
   }else{
     $languages = "";
   }
-  if (!empty($episode)) {
-  $season = SeriesSeason::where('id',$episode[0]->season_id)->first();
-  // print_r();exit;
-  $ppv_exist = PpvPurchase::where('user_id',$user_id)
-  // ->where('season_id',$episode[0]->season_id)
-  ->where('series_id',$episode[0]->series_id)
-  ->count();
-} else {
-  $ppv_exist = 0;
-}
+    if (!empty($episode) && count($episode) > 0) {
+        $season = SeriesSeason::where('id',$episode[0]->season_id)->first();
+        $ppv_exist = PpvPurchase::where('user_id',$user_id)
+        ->where('series_id',$episode[0]->series_id)
+        ->count();
+  } else {
+      $ppv_exist = 0;
+  }
   if ($ppv_exist > 0) {
 
         $ppv_video_status = "can_view";
@@ -8019,6 +8026,7 @@ $cpanel->end();
     }
 
 
+    return 'ss';
 
 
 
@@ -8105,6 +8113,65 @@ $cpanel->end();
         );
 
         return response()->json($response, 200);
+    }
+
+    public function remaining_Episode(Request $request)
+    {
+
+      $season_id = $request->seasonid;
+      $episode_id = $request->episodeid;
+      
+      try {
+          $episodes = Episode::where('season_id','=',$season_id)->where('id','!=',$episode_id)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+            $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
+            $item['series_name'] = Series::where('id',$item->series_id)->pluck('title')->first();
+            return $item;
+          });
+        
+        $response = array(
+          'status'=>'true',
+          'message'=>'success',
+          'episodes' => $episodes
+        );
+
+      } catch (\Throwable $th) {
+          $response = array(
+            'status'=>'false',
+            'message'=>$th->getMessage(),
+            'episodes' => [],
+          );
+      }
+     
+      return response()->json($response, 200);
+     
+    }
+
+    public function related_series(Request $request)
+    {
+
+      $series_id = $request->series_id ;
+
+      $Series_category = Series::Join('series_categories','series_categories.series_id','=','series.id')
+                        ->where('series.id',$series_id)->pluck('category_id');
+
+      $Series_list = Series::Join('series_categories','series_categories.series_id','=','series.id')
+          ->whereIn('series_categories.category_id',$Series_category)
+          ->where('series.id',"!=",$series_id)
+          ->where('active','=',1)->orderBy('series.created_at', 'desc')
+          ->groupBy('series.id')
+          ->get();
+
+        if(count($Series_list) > 0){
+          $Series_list = $Series_list->random();
+        }  
+
+      $response = array(
+        'status'=>'true',
+        'message'=>'success',
+        'Series_list' =>$Series_list,
+      );
+
+      return response()->json($response, 200);
     }
 }
 
