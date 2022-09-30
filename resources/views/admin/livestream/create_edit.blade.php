@@ -185,6 +185,7 @@ border-radius: 0px 4px 4px 0px;
 
                     <div class="row mt-3">
                         <div class="col-sm-6">
+
                             <label class="m-0">Video Source</label>
 
                             <div class="panel-body">
@@ -231,6 +232,53 @@ border-radius: 0px 4px 4px 0px;
                             </div>
                         </div>
                     </div>
+                                    
+                                        {{-- Re-Stream  --}}
+                    <div class="row mt-3">
+                        <div class="col-sm-6">
+                            <label class="m-0">Enable ReStream</label>
+
+                            <div class="panel-body">
+                                <div class="mt-1">
+                                    <label class="switch">
+                                        <input name="enable_restream" class="enable_restream" id="enable_restream" type="checkbox" >
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="panel-body">
+                                <div class="mt-2" id="">
+                                    <label class="mb-1"> YouTube Stream (RTMP URL) </label>
+                                    <input type="text" name="youtube_restream_url" class="form-control" id="youtube_restream_url" placeholder="YouTube Stream" value="@if(!empty($video->youtube_restream_url) ) {{ $video->youtube_restream_url}}  @endif" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                                    
+                                                {{-- fb & Twitter Restream URL --}}
+                    <div class="row mt-3">
+                        <div class="col-sm-6">
+                            <div class="panel-body">
+                                <div class="mt-2" id="">
+                                    <label class="mb-1"> FaceBook Stream (RTMP URL) </label>
+                                    <input type="text" name="fb_restream_url" class="form-control" id="fb_restream_url" placeholder="Facebook Stream" value="@if(!empty($video->fb_restream_url) ) {{ $video->fb_restream_url}}  @endif" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="panel-body">
+                                <div class="mt-2" id="">
+                                    <label class="mb-1"> Twitter Stream (RTMP URL) </label>
+                                    <input type="text" name="twitter_restream_url" class="form-control" id="twitter_restream_url" placeholder="Twitter Stream" value="@if(!empty($video->twitter_restream_url) ) {{ $video->twitter_restream_url}}  @endif" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
 
                     <div class="row mt-3">
                         <div class="col-sm-12">
@@ -431,9 +479,30 @@ border-radius: 0px 4px 4px 0px;
                 <!-- This is where now -->
             </div>
         </div>
-    </div>
-</div>
+        
+    
+                    <!-- Restream Modal -->
+        <input type="hidden" class="btn btn-primary btn-lg" data-toggle="modal" id="restream_button" data-target="#myModal">
 
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel"> Choose the Platforms </h4>
+                    </div>
+                        <div class="modal-body">
+                        ...
+                        </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
 @section('javascript')
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -458,10 +527,8 @@ border-radius: 0px 4px 4px 0px;
 <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
 <script src="https://bootstrap-tagsinput.github.io/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
 
-
-
 <script type="text/javascript">
-    
+
         $ = jQuery;
 
         $(document).ready(function($){
@@ -644,6 +711,20 @@ border-radius: 0px 4px 4px 0px;
 </script>
 <!-- {{-- end validate --}} -->
 
+{{-- Restream  Script--}}
+
+<script>
+
+    $(document).ready(function(){
+        $("#enable_restream").change(function(){
+            var enable_restream  = $("#enable_restream").prop("checked");
+            if(enable_restream == true){
+                document.getElementById("restream_button").click();
+            }
+        });
+    });
+
+</script>
 
 {{-- Sweet alert --}}
 
