@@ -909,7 +909,7 @@ public function verifyandupdatepassword(Request $request)
 
   public function categorylist()
   {
-    $channellist = VideoCategory::orderBy('created_at', 'desc')->get()->map(function ($item) {
+    $channellist = VideoCategory::orderBy('order')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/videocategory/'.$item->image;
         return $item;
       });
@@ -3949,7 +3949,7 @@ return response()->json($response, 200);
 
     foreach ($seasonlist as $key => $season) {
       $seasonid = $season['id'];
-      $episodes= Episode::where('season_id',$seasonid)->where('active','=',1)->orderBy('created_at')->get()->map(function ($item)  {
+      $episodes= Episode::where('season_id',$seasonid)->where('active','=',1)->orderBy('episode_order')->get()->map(function ($item)  {
         $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['episode_id'] =$item->id;
 
