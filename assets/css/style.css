@@ -407,7 +407,7 @@ li.slide-item .block-description .parallax-ratting span { font-size: 12px; }
     border: none!important;
 }
 .main-header{
-    
+    padding: 10px;
     
 }
 /*.slick-nav.prev-arrow{
