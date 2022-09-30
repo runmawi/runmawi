@@ -25,7 +25,9 @@
                 <select class="form-control" id="country" name="country">
                     <option selected disabled="">Choose Currency</option>
                     @foreach($currency as $value)
-                    <option value="{{ $value->country }}" @if(!empty($allCurrency->country) ==  $value->country ){{ 'selected' }}@endif>{{ $value->symbol .'-'. $value->currencies }}</option>
+                    <!-- <option value="{{ $value->country }}" @if(!empty($allCurrency->country) ==  $value->country ){{ 'selected' }}@endif>{{ $value->symbol .'-'. $value->currencies }}</option> -->
+					<option value="{{ $value->country }}"  {{  ($allCurrency->country == $value->country ) ? 'selected' : '' }} > {{ $value->symbol .'-'.$value->currencies }}</option>
+
                     @endforeach
                 </select>
                     </div> 

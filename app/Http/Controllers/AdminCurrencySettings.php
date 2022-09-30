@@ -98,7 +98,9 @@ class AdminCurrencySettings extends Controller
         $currency = Currency::where('country','=',$input['country'])->first();
         $id = $input['id'];
 
-        //  dd($currency);
+        //  dd($currency->symbol);
+        // CurrencySetting::truncate();
+
          $Currencysetting = CurrencySetting::find($id);        
 
         //  $Currencysetting = new CurrencySetting;
@@ -107,6 +109,7 @@ class AdminCurrencySettings extends Controller
          $Currencysetting->symbol = $currency->symbol;
          $Currencysetting->user_id = Auth::User()->id;
          $Currencysetting->save();
+
          return Redirect::back();
     }
 
@@ -141,7 +144,8 @@ class AdminCurrencySettings extends Controller
     );
             return View::make('admin.expired_dashboard', $data);
         }else{
-        $allCurrency = CurrencySetting::where('id','=',$id)->first();
+        $allCurrency = CurrencySetting::first();
+        // dd( $allCurrency);
          $currency = Currency::get();
         
          $data = array(

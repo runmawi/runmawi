@@ -64,8 +64,8 @@ class CPPAdminVideosController extends Controller
 
       // $search_value = Request::get('s');
       $user_package =    User::where('id', 1)->first();
-$package = $user_package->package;
-if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
+    $package = $user_package->package;
+    if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
       $user = Session::get('user'); 
         $id = $user->id;
         if(!empty($search_value)):
