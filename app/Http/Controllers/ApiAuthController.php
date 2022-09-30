@@ -4009,7 +4009,7 @@ return response()->json($response, 200);
           endforeach; 
       endforeach;
       if (array_key_exists($episode_id,$free_episode)){ 
-        $free_episode = 'Free';  
+        $free_episode = 'guest';  
       }else{ 
         $free_episode = 'PPV'; 
       }
@@ -4018,7 +4018,7 @@ return response()->json($response, 200);
         $free_episode = 'PPV'; 
       }
   }else{
-    $free_episode = 'Free'; 
+    $free_episode = 'guest'; 
   }
 
     $response = array(
