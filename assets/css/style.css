@@ -2108,10 +2108,11 @@ box-shadow: -1px 6px 13px 0px rgba(0,0,0,0.44);
 
 
 #home-slider{
- display: none;}
+ display: none;
+}
 
 .favorites-slider{
-    display: none;
+    opacity: 0;
 }
 
 /* arrows */
@@ -2145,6 +2146,7 @@ box-shadow: -1px 6px 13px 0px rgba(0,0,0,0.44);
 
 .slick-slider{
     touch-action: auto!important;
+    opacity: 1;
 }
 
 

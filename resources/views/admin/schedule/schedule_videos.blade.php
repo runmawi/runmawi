@@ -43,8 +43,8 @@ $media_url = URL::to("/schedule/videos") . "/" . $schedule->name;
                             <button type="submit" class="btn btn-primary" id="submit-update-menu">Perview</button>
                         </form>
                     </div>
-                <div class="row">
-                    <div class="col-3">
+                <div class="row mt-4">
+                    <div class="col-5">
                         <label for="">Choose Time</label><br>
                         <p style="color:black"> Select Timing Before Upload Video <span style="color:red;">*</span></p>
                         <select class="form-control" name="time" id="time" >
@@ -85,14 +85,13 @@ $media_url = URL::to("/schedule/videos") . "/" . $schedule->name;
                         <input type="text" class="form-control" id="choose_end_time" name="choose_end_time" value="">
 
                     </div> -->
-                    <div class="col-3">
-                            <label for=""><h5 class="fs-title m-0">Your IFRAME URL:</h5></label>
-                    </div>
-                    <div class="col-3">
+                    <div class="col-5">
+                            <label for=""><h5 class="fs-title m-0">Your IFRAME URL:</h5></label><br>
                         <a href="#" onclick="EmbedCopy();" class="share-ico">
                             {{ $url_path }}
                             </a>
                     </div>
+                    
                 </div>
 
 
