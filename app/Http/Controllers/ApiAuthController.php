@@ -8036,12 +8036,6 @@ $cpanel->end();
           $ppv_video_status = "pay_now";
     }
 
-
-    return 'ss';
-
-
-
-
     $response = array(
       'status'=>'true',
       'message'=>'success',
