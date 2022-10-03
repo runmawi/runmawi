@@ -12,6 +12,12 @@
 .row.col-sm-12 {
     padding: 26px;
 }
+    .fc-ltr .fc-basic-view .fc-day-top .fc-day-number{
+    color: #000!important;
+}
+    .fc-ltr .fc-axis{
+         color: #000!important;
+    }
     </style>
 
     <div id="content-page" class="content-page">

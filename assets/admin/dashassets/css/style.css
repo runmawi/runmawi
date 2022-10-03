@@ -1385,3 +1385,7 @@ table.dataTable thead .sorting:before, table.dataTable thead .sorting:after, tab
 div.dataTables_wrapper div.dataTables_filter input{
     border:none;
 }
+.calendar .days li .date {
+    margin-bottom: 0.5rem;
+    color: #000;
+}
