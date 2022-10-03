@@ -33,7 +33,7 @@
                             
 
                     <!-- </div> -->
-                </div>
+                    </div></div>
                 <div class="block-description">
                     <div class="hover-buttons">
                         <a class="text-white" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>"> <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.svg';  ?>" /> </a>
