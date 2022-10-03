@@ -426,10 +426,9 @@ function dropZoneLeaveHandler(e) {
  * On successful drop event, move the element
  */
 function dropZoneDropHandler(e,ele) {
-            var allvideos = '<?=$Video ?>';
             // var videos = $('.video_17').val();
             // console.log(allvideos);
-            var obj = JSON.parse(allvideos);
+            // var obj = JSON.parse(allvideos);
             // console.log(obj)
 
             // $.each(obj, function(i, $val)
@@ -493,8 +492,6 @@ function allowDrop(ev) {
 }
 
 function drag(ev) {
-//   ev.dataTransfer.setData("text", ev.target.id);
-// console.log(ev);
 
 var video_id = $(ev).attr('data-class');
 // console.log(video_id);
