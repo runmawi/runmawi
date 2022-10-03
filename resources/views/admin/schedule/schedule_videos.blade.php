@@ -31,8 +31,8 @@ $media_url = URL::to("/schedule/videos") . "/" . $schedule->name;
 
                 <div class="clear"></div>
                 <br>
-                <h4 class="card-title">{{ $Calendar['date'].'/'.$Calendar['month'].'/'.$Calendar['year'] }} </h4>
-                        <label for=""><h4 class="fs-title m-0">{{ $schedule->name }}</h4></label>
+                <h4 class="card-title container-fluid">{{ $Calendar['date'].'/'.$Calendar['month'].'/'.$Calendar['year'] }} </h4>
+                        <label for=""><h4 class="fs-title m-0 container-fluid">{{ $schedule->name }}</h4></label>
                     <div class="pull-right" style="margin-top: -5%;">
                         <form action="{{ URL::to('/schedule/videos') }}" accept-charset="UTF-8" method="post">
                             <input type="hidden" name="date" id= "date" value="{{ $Calendar['date'] }}">
@@ -43,7 +43,7 @@ $media_url = URL::to("/schedule/videos") . "/" . $schedule->name;
                             <button type="submit" class="btn btn-primary" id="submit-update-menu">Perview</button>
                         </form>
                     </div>
-                <div class="row mt-4">
+                <div class="row mt-4 container-fluid">
                     <div class="col-5">
                         <label for="">Choose Time</label><br>
                         <p style="color:black"> Select Timing Before Upload Video <span style="color:red;">*</span></p>
@@ -96,8 +96,8 @@ $media_url = URL::to("/schedule/videos") . "/" . $schedule->name;
                 </div>
 
 
-                <div class="row">
-                    <div class="col-md-6">
+                <div class="row mt-3 container-fluid">
+                    <div class="col-md-5">
                     <!-- Video upload -->   
                         <div id="video_upload" style="">
                             <div class='content file'>
@@ -113,11 +113,10 @@ $media_url = URL::to("/schedule/videos") . "/" . $schedule->name;
                         </div>
                     </div>
                 </div>
-                <br>
-            <br>
+              
 
                 <!-- <div class="row"> -->
-                    <h2>Drag Video and Drop for Scheduling:</h2>
+                    <h4 class="container-fluid mt-3">Drag Video and Drop for Scheduling:</h4>
                 <div class="col-md-12">
                      <div class="row">
                      <div class="col-md-6">
