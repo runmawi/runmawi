@@ -7901,6 +7901,7 @@ $cpanel->end();
 
     $episode = Episode::where('id',$episodeid)->orderBy('created_at', 'desc')->get()->map(function ($item) {
        $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
+       $item['series_name'] = Series::where('id',$item->series_id)->pluck('title')->first();
        return $item;
      });
 
@@ -7996,14 +7997,12 @@ $cpanel->end();
 }else{
   $category = [];
 }
-// echo "<pre>";print_r($category);exit;
   if(!empty($category)){
   $main_genre = implode(",",$category);
   }else{
     $main_genre = "";
   }
 
-  // echo "<pre>"; print_r($languages);exit;
   if(!empty($series_id) && !empty($languages)){
   foreach($languages as $value){
     $language[] = $value['name']; 
