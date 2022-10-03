@@ -49,8 +49,8 @@ $media_url = URL::to("/schedule/videos") . "/" . $schedule->name;
                         <p style="color:black"> Select Timing Before Upload Video <span style="color:red;">*</span></p>
                         <select class="form-control" name="time" id="time" >
                             <option value="">Select Schedule Timing</option>
-                            <option value="12:00 AM to 12:00 PM">12:00 AM to 12:00 PM</option>
-                            <option value="12:00 PM to 12:00 AM">12:00 PM to 12:00 AM</option>
+                            <option value="12:00 AM to 12:00 PM" {{ $current_time ==  'AM'? 'selected' : '' }}>12:00 AM to 12:00 PM</option>
+                            <option value="12:00 PM to 12:00 AM" {{ $current_time == 'PM' ? 'selected' : '' }}>12:00 PM to 12:00 AM</option>
                             <!-- <option value="12:00 AM to 01:00 AM">12:00 AM to 01:00 AM</option>
                             <option value="01:00 AM to 02:00 AM">01:00 AM to 02:00 AM</option>
                             <option value="02:00 AM to 03:00 AM">02:00 AM to 03:00 AM</option>
@@ -90,7 +90,8 @@ $media_url = URL::to("/schedule/videos") . "/" . $schedule->name;
                     </div>
                     <div class="col-3">
                         <a href="#" onclick="EmbedCopy();" class="share-ico">
-                            {{ $url_path }}
+                            <!-- {{ $url_path }} -->
+                        Click Here To Copy IFRAME URL
                             </a>
                     </div>
                 </div>

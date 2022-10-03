@@ -4067,7 +4067,11 @@ class AdminVideosController extends Controller
         $date = date_create($choosed_date);
         $date_choose = date_format($date, "Y/m");
         $date_choosed = $date_choose . "/" . $data["date"];
-
+        
+        $d = new \DateTime("now");
+        $d->setTimezone(new \DateTimeZone("Asia/Kolkata"));
+        $now = $d->format("Y-m-d h:i:s a");
+        $current_time = date("A", strtotime($now));
         // dd($date_choosed);
         $ScheduledVideo = ScheduleVideos::where(
             "shedule_date",
@@ -4082,6 +4086,7 @@ class AdminVideosController extends Controller
             "Calendar" => $data,
             "Video" => $Video,
             "ScheduledVideo" => $ScheduledVideo,
+            "current_time" => $current_time,
         ];
         //    dd($data );
         return view("admin.schedule.schedule_videos", $data);
