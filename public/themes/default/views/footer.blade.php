@@ -261,7 +261,6 @@ function myFunction() {
  <script src="<?= URL::to('/'). '/assets/js/lazysizes.min.js';?>"></script>
  <script src="<?= URL::to('/'). '/assets/js/plyr.polyfilled.js';?>"></script>
  <script src="<?= URL::to('/'). '/assets/js/hls.min.js';?>"></script>
- <script src="<?= URL::to('/'). '/assets/js/plyr.js';?>"></script>
  <!-- <script src="<? //URL::to('/'). '/assets/js/plyr-3-7.js';?>"></script> -->
  <script src="<?= URL::to('/'). '/assets/js/hls.js';?>"></script>
           
