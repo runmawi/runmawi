@@ -220,19 +220,15 @@ class AuthController extends Controller
         return Redirect::to("advertiser/login")->withError('Opps! You do not have access');
     }
 
-    public function upload_ads() {
+    public function upload_ads_old() {
         
         $data = [];
         $data['settings'] = Setting::first();
-        // $activeplan = Advertiserplanhistory::where('advertiser_id',session('advertiser_id'))->where('status','active')->count();
-        // $getdata = Advertiserplanhistory::where('advertiser_id','=',session('advertiser_id'))->where('status','active')->first();
-        // $upload_ads_cnt = $getdata->ads_limit - $getdata->no_of_uploads;
-
-        $activeplan = 1;
+        $activeplan = Advertiserplanhistory::where('advertiser_id',session('advertiser_id'))->where('status','active')->count();
+        $getdata = Advertiserplanhistory::where('advertiser_id','=',session('advertiser_id'))->where('status','active')->first();
+        $upload_ads_cnt = $getdata->ads_limit - $getdata->no_of_uploads;
         
-        // if(!empty(session('advertiser_id')) && $activeplan == 0 || $upload_ads_cnt == 0){
-
-        if(!empty(session('advertiser_id')) && $activeplan == 0 ){
+        if(!empty(session('advertiser_id')) && $activeplan == 0 || $upload_ads_cnt == 0){
             $getdata->status = 'deactive';
             $getdata->save();
 
@@ -247,10 +243,7 @@ class AuthController extends Controller
             \Mail::to($advertiser_emailid)->send(new \App\Mail\MyTestMail($details));
 
             return Redirect::to("/advertiser")->withError('Opps! Your limit has completed.Please update your plan');
-        // }elseif(!empty(session('advertiser_id')) && $activeplan > 0 && $getdata->ads_limit > $getdata->no_of_uploads ){
-
-        }elseif(!empty(session('advertiser_id')) && $activeplan > 0 ){
-
+        }elseif(!empty(session('advertiser_id')) && $activeplan > 0 && $getdata->ads_limit > $getdata->no_of_uploads ){
 
             // Ads scheduling
 
@@ -280,6 +273,50 @@ class AuthController extends Controller
         }
         return Redirect::to("advertiser/login")->withError('Opps! You do not have access');
     }
+
+    public function upload_ads(Request $request)
+    {
+        $data = [];
+        $data['settings'] = Setting::first();
+
+        $activeplan = Advertiserplanhistory::where('advertiser_id',session('advertiser_id'))->where('status','active')->count();
+        $getdata = Advertiserplanhistory::where('advertiser_id','=',session('advertiser_id'))->where('status','active')->first();
+        
+        if(!empty(session('advertiser_id')) && $activeplan == 0 ){
+
+            return Redirect::to("/advertiser")->withError('Opps! Please update your plan for uploading ads');
+
+        }elseif(!empty(session('advertiser_id')) && $activeplan > 0 ){
+
+            // Ads scheduling
+
+              $now = Carbon::now();
+
+              $data = [
+                'Monday_time'    => AdsTimeSlot::where('day','Monday')->get(),
+                'Tuesday_time' =>AdsTimeSlot::where('day','Tuesday')->get(),
+                'Wednesday_time' =>AdsTimeSlot::where('day','Wednesday')->get(),
+                'Thursday_time' =>AdsTimeSlot::where('day','Thrusday')->get(),
+                'Friday_time' =>AdsTimeSlot::where('day','Friday')->get(),
+                'Saturday_time' =>AdsTimeSlot::where('day','Saturday')->get(),
+                'Sunday_time' =>AdsTimeSlot::where('day','Sunday')->get(),
+                'Monday'   =>  $now->startOfWeek(Carbon::MONDAY)->format('Y-m-d'),
+                'Tuesday'   =>  $now->endOfWeek(Carbon::TUESDAY)->format('Y-m-d'),
+                'Wednesday' =>  $now->endOfWeek(Carbon::WEDNESDAY)->format('Y-m-d'),
+                'Thrusday'  =>  $now->endOfWeek(Carbon::THURSDAY)->format('Y-m-d'),
+                'Friday'    => $now->endOfWeek(Carbon::FRIDAY)->format('Y-m-d'),
+                'Saturday' => $now->endOfWeek(Carbon::SATURDAY)->format('Y-m-d'),
+                'Sunday'    => $now->endOfWeek(Carbon::SUNDAY)->format('Y-m-d'),
+              ];
+
+          //  End Scheduling
+
+            $data['ads_category'] = Adscategory::all();
+            return view('avod::upload_ads',$data);
+        }
+        return Redirect::to("advertiser/login")->withError('Opps! You do not have access');
+    }
+
 
     public function store_ads(Request $request) {
 
