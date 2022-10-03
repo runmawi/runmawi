@@ -1237,7 +1237,13 @@ public function verifyandupdatepassword(Request $request)
       }
 
       $categorys = CategoryLive::join('live_categories','live_categories.id','=','livecategories.category_id')
-      ->where('live_id',$liveid)->pluck('name');
+      ->where('live_id',$liveid)->get('name');
+
+      foreach($categorys as $value){
+        $category[] = $value['name']; 
+      }
+     
+      $categories = !empty($category) ? implode(",",$category) : ' ' ;
 
       $current_date = date('Y-m-d h:i:s a', time()); 
       // $ppv_exist = LivePurchase::where('video_id',$videoid)->where('user_id',$user_id)->where('to_time','>',$current_date)->count();
@@ -1279,7 +1285,7 @@ public function verifyandupdatepassword(Request $request)
       'dislike' => $dislike,
       'ppv_video_status' => $ppv_video_status,
       'languages' => $languages,
-      'categories' => $categorys,
+      'categories' => $categories,
     );
     
     return response()->json($response, 200);
