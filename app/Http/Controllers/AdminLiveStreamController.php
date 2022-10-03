@@ -396,12 +396,15 @@ class AdminLiveStreamController extends Controller
             $data['slug'] = $slug == null ?  str_replace(' ', '_', $data['slug']) : str_replace(' ', '_', $data['slug'].'-'.$last_id) ;
         }
 
-        // Restearm
+            // Restearm
         if(!empty($data['enable_restream'])){
             $movie->fb_restream_url      = $data['fb_restream_url'];
             $movie->youtube_restream_url = $data['youtube_restream_url'];
             $movie->twitter_restream_url = $data['twitter_restream_url'];
-            $movie->enable_restream = '1';
+            $movie->fb_streamkey         = $data['fb_streamkey'];
+            $movie->youtube_streamkey    = $data['youtube_streamkey'];
+            $movie->twitter_streamkey    = $data['twitter_streamkey'];
+            $movie->enable_restream      = $data['enable_restream'] ? '1' : '0' ;
         }
 
         $movie->title =$data['title'];

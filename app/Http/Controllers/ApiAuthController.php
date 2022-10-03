@@ -3312,8 +3312,9 @@ public function checkEmailExists(Request $request)
       
       $episodeid = $request->episodeid;
 
-      $episode = Episode::where('id',$episodeid)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+      $episode = Episode::where('id',$episodeid)->orderBy('episode_order')->get()->map(function ($item) {
          $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
+         $item['series_name'] = Series::where('id',$item->series_id)->pluck('title')->first();
          return $item;
        });
        if(count($episode) > 0){
@@ -3460,10 +3461,6 @@ public function checkEmailExists(Request $request)
       else {
             $ppv_video_status = "pay_now";
       }
-
-
-
-
 
 
       $response = array(
@@ -7899,7 +7896,7 @@ $cpanel->end();
       
     $episodeid = $request->episodeid;
 
-    $episode = Episode::where('id',$episodeid)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+    $episode = Episode::where('id',$episodeid)->orderBy('episode_order')->get()->map(function ($item) {
        $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
        $item['series_name'] = Series::where('id',$item->series_id)->pluck('title')->first();
        return $item;

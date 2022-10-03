@@ -256,19 +256,31 @@ border-radius: 0px 4px 4px 0px;
                                 </div>
                             </div>
                         </div>
+                    </div>
+
+                                    {{-- YouTube Stream  --}}
+                    <div class="row mt-3" id="youtube_restream_url">
+                        <div class="col-sm-6">
+                            <div class="panel-body">
+                                <div class="mt-2" >
+                                    <label class="mb-1"> YouTube Stream (RTMP URL) </label>
+                                    <input type="text" name="youtube_restream_url" class="form-control" id="youtube_restream_url" placeholder="YouTube Stream Url" value="@if(!empty($video->youtube_restream_url) ) {{ $video->youtube_restream_url}}  @endif" />
+                                </div>
+                            </div>
+                        </div>
 
                         <div class="col-sm-6">
                             <div class="panel-body">
-                                <div class="mt-2" id="youtube_restream_url">
-                                    <label class="mb-1"> YouTube Stream (RTMP URL) </label>
-                                    <input type="text" name="youtube_restream_url" class="form-control" id="youtube_restream_url" placeholder="YouTube Stream" value="@if(!empty($video->youtube_restream_url) ) {{ $video->youtube_restream_url}}  @endif" />
+                                <div class="mt-2" id="">
+                                    <label class="mb-1"> YouTube Stream Key </label>
+                                    <input type="text" name="youtube_streamkey" class="form-control" id="youtube_streamkey" placeholder="YouTube Stream Key" value="@if(!empty($video->youtube_streamkey) ) {{ $video->youtube_streamkey}}  @endif" />
                                 </div>
                             </div>
                         </div>
                     </div>
                                     
-                                                {{-- fb & Twitter Restream URL --}}
-                    <div class="row mt-3">
+                                                {{-- fb Restream --}}
+                    <div class="row mt-3" id="fb_restream_url">
                         <div class="col-sm-6">
                             <div class="panel-body">
                                 <div class="mt-2" id="fb_restream_url">
@@ -278,16 +290,37 @@ border-radius: 0px 4px 4px 0px;
                             </div>
                         </div>
 
-                        <div class="col-sm-6">
+                        <div class="col-sm-6" >
                             <div class="panel-body">
-                                <div class="mt-2" id="twitter_restream_url">
-                                    <label class="mb-1"> Twitter Stream (RTMP URL) </label>
-                                    <input type="text" name="twitter_restream_url" class="form-control" id="" placeholder="Twitter Stream" value="@if(!empty($video->twitter_restream_url) ) {{ $video->twitter_restream_url}}  @endif" />
+                                <div class="mt-2" id="">
+                                    <label class="mb-1"> FaceBook Stream Key </label>
+                                    <input type="text" name="fb_streamkey" class="form-control" id="" placeholder="Facebook Stream Key" value="@if(!empty($video->fb_streamkey) ) {{ $video->fb_streamkey}}  @endif" />
                                 </div>
                             </div>
                         </div>
                     </div>
 
+                                                {{-- Twitter Restream --}}
+
+                    <div class="row mt-3" id="twitter_restream_url">
+                        <div class="col-sm-6">
+                            <div class="panel-body">
+                                <div class="mt-2" >
+                                    <label class="mb-1"> Twitter Stream (RTMP URL) </label>
+                                    <input type="text" name="twitter_restream_url" class="form-control" id="" placeholder="Twitter Stream" value="@if(!empty($video->twitter_restream_url) ) {{ $video->twitter_restream_url}}  @endif" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="panel-body">
+                                <div class="mt-2" >
+                                    <label class="mb-1"> Twitter Stream Key </label>
+                                    <input type="text" name="twitter_streamkey" class="form-control" id="twitter_streamkey" placeholder="Twitter Stream" value="@if(!empty($video->twitter_streamkey) ) {{ $video->twitter_streamkey}}  @endif" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="row mt-3">
                         <div class="col-sm-12">
