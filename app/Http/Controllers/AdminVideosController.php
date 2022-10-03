@@ -4059,6 +4059,7 @@ class AdminVideosController extends Controller
         // dd($data);
         $VideoSchedules = VideoSchedules::where("id", "=", $id)->first();
         $Video = ScheduleVideos::get();
+        $Videos = [];
         foreach($Video as $value){
             $Videos = Video::where("title",'!=',$value->title)->get();
         }
