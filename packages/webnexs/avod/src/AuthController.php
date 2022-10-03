@@ -224,11 +224,15 @@ class AuthController extends Controller
         
         $data = [];
         $data['settings'] = Setting::first();
-        $activeplan = Advertiserplanhistory::where('advertiser_id',session('advertiser_id'))->where('status','active')->count();
-        $getdata = Advertiserplanhistory::where('advertiser_id','=',session('advertiser_id'))->where('status','active')->first();
-        $upload_ads_cnt = $getdata->ads_limit - $getdata->no_of_uploads;
+        // $activeplan = Advertiserplanhistory::where('advertiser_id',session('advertiser_id'))->where('status','active')->count();
+        // $getdata = Advertiserplanhistory::where('advertiser_id','=',session('advertiser_id'))->where('status','active')->first();
+        // $upload_ads_cnt = $getdata->ads_limit - $getdata->no_of_uploads;
+
+        $activeplan = 1;
         
-        if(!empty(session('advertiser_id')) && $activeplan == 0 || $upload_ads_cnt == 0){
+        // if(!empty(session('advertiser_id')) && $activeplan == 0 || $upload_ads_cnt == 0){
+
+        if(!empty(session('advertiser_id')) && $activeplan == 0 ){
             $getdata->status = 'deactive';
             $getdata->save();
 
@@ -243,7 +247,10 @@ class AuthController extends Controller
             \Mail::to($advertiser_emailid)->send(new \App\Mail\MyTestMail($details));
 
             return Redirect::to("/advertiser")->withError('Opps! Your limit has completed.Please update your plan');
-        }elseif(!empty(session('advertiser_id')) && $activeplan > 0 && $getdata->ads_limit > $getdata->no_of_uploads ){
+        // }elseif(!empty(session('advertiser_id')) && $activeplan > 0 && $getdata->ads_limit > $getdata->no_of_uploads ){
+
+        }elseif(!empty(session('advertiser_id')) && $activeplan > 0 ){
+
 
             // Ads scheduling
 

@@ -17,6 +17,7 @@ use App\SystemSetting as SystemSetting;
 use Session;
 use GuzzleHttp\Client;
 use GuzzleHttp\Message\Response;
+use App\Setting ;
 
 class AdminLiveCategoriesController extends Controller
 {
