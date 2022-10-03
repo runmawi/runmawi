@@ -8133,7 +8133,7 @@ $cpanel->end();
       $episode_id = $request->episodeid;
       
       try {
-          $episodes = Episode::where('season_id','=',$season_id)->where('id','!=',$episode_id)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+          $episodes = Episode::where('season_id','=',$season_id)->where('id','!=',$episode_id)->orderBy('episode_order')->get()->map(function ($item) {
             $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
             $item['series_name'] = Series::where('id',$item->series_id)->pluck('title')->first();
             return $item;
