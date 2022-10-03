@@ -1985,7 +1985,6 @@ location.reload();
 
 <!-- Trailer m3u8 -->
 
-<script src="https://cdn.plyr.io/3.5.10/plyr.js"></script>
 
 <script>
 
