@@ -4062,6 +4062,13 @@ class AdminVideosController extends Controller
         foreach($Video as $value){
             $Videos = Video::where("title",'!=',$value->title)->get();
         }
+
+        if(count($Videos) > 0){
+           $Videos_list = $Videos ;
+        }else{
+            $Videos_list = Video::get(); 
+        }
+
         $settings = Setting::first();
         // dd($Videos);
 
@@ -4088,7 +4095,7 @@ class AdminVideosController extends Controller
             "schedule" => $VideoSchedules,
             "settings" => $settings,
             "Calendar" => $data,
-            "Video" => $Videos,
+            "Video" => $Videos_list,
             "ScheduledVideo" => $ScheduledVideo,
             "current_time" => $current_time,
         ];
