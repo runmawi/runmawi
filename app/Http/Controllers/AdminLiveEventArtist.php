@@ -379,6 +379,14 @@ class AdminLiveEventArtist extends Controller
             $data['slug'] = $slug == null ?  str_replace(' ', '_', $data['slug']) : str_replace(' ', '_', $data['slug'].'-'.$last_id) ;
         }
 
+               // Restearm
+        if(!empty($data['enable_restream'])){
+            $movie->fb_restream_url      = $data['fb_restream_url'];
+            $movie->youtube_restream_url = $data['youtube_restream_url'];
+            $movie->twitter_restream_url = $data['twitter_restream_url'];
+            $movie->enable_restream = '1';
+        }
+
         $movie->title =$data['title'];
         $movie->embed_url =$embed_url;
         $movie->url_type =$url_type;

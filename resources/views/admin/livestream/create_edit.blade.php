@@ -261,7 +261,7 @@ border-radius: 0px 4px 4px 0px;
                             <div class="panel-body">
                                 <div class="mt-2" id="youtube_restream_url">
                                     <label class="mb-1"> YouTube Stream (RTMP URL) </label>
-                                    <input type="text" name="" class="form-control" id="youtube_restream_url" placeholder="YouTube Stream" value="@if(!empty($video->youtube_restream_url) ) {{ $video->youtube_restream_url}}  @endif" />
+                                    <input type="text" name="youtube_restream_url" class="form-control" id="youtube_restream_url" placeholder="YouTube Stream" value="@if(!empty($video->youtube_restream_url) ) {{ $video->youtube_restream_url}}  @endif" />
                                 </div>
                             </div>
                         </div>

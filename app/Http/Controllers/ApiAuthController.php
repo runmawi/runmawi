@@ -103,7 +103,7 @@ use App\PlayerAnalytic;
 use App\SystemSetting;
 use App\CurrencySetting;
 use App\MobileSideMenu;
-
+use App\CategoryLive;
 
 class ApiAuthController extends Controller
 {
@@ -1225,17 +1225,19 @@ public function verifyandupdatepassword(Request $request)
       });
 
       $languages = LiveLanguage::Join('languages','languages.id','=','live_languages.language_id')
-      ->where('live_languages.live_id',$liveid)->get('name');
-      // echo "<pre>"; print_r($languages);exit;
+          ->where('live_languages.live_id',$liveid)->get('name');
 
       foreach($languages as $value){
         $language[] = $value['name']; 
       }
       if(!empty($language)){
-      $languages = implode(",",$language);
+        $languages = implode(",",$language);
       }else{
         $languages = "";
       }
+
+      $categorys = CategoryLive::join('live_categories','live_categories.id','=','livecategories.category_id')
+      ->where('live_id',$liveid)->pluck('name');
 
       $current_date = date('Y-m-d h:i:s a', time()); 
       // $ppv_exist = LivePurchase::where('video_id',$videoid)->where('user_id',$user_id)->where('to_time','>',$current_date)->count();
@@ -1277,8 +1279,9 @@ public function verifyandupdatepassword(Request $request)
       'dislike' => $dislike,
       'ppv_video_status' => $ppv_video_status,
       'languages' => $languages,
-
+      'categories' => $categorys,
     );
+    
     return response()->json($response, 200);
   }
 

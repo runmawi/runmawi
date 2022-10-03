@@ -397,8 +397,6 @@ class AdminLiveStreamController extends Controller
         }
 
         // Restearm
-
-
         if(!empty($data['enable_restream'])){
             $movie->fb_restream_url      = $data['fb_restream_url'];
             $movie->youtube_restream_url = $data['youtube_restream_url'];
