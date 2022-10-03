@@ -43,8 +43,9 @@
                 </div>
                 <div class="col-5">
                 <a href="#" onclick="EmbedCopy();" class="share-ico">
-                        <label for=""><h3 class="fs-title m-0">Your IFRAME URL:</h3></label><br>
-                        {{ $url_path }}
+                        <!-- <label for=""><h3 class="fs-title m-0">Your IFRAME URL:</h3></label> -->
+                        <!-- {{ $url_path }} -->
+                        Click Here To Copy IFRAME URL
                         </a>
                     <a href="#" onclick="EmbedCopy();" class="btn btn-outline-primary">Click Here</a>
                         </div>
