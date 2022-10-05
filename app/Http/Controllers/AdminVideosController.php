@@ -4213,14 +4213,6 @@ class AdminVideosController extends Controller
                     ])
                     ->orderBy("id", "desc")
                     ->first();
-                // SELECT * FROM schedule_videos WHERE choose_start_time BETWEEN '01:30 PM' AND '02:30 PM';
-
-                // $ScheduleVideos = DB::table('schedule_videos')
-                // ->select('*')
-                // ->whereBetween('choose_start_time',['01:30 PM','02:30 PM'])
-                // ->orderBy('id', 'desc')->first();
-
-                // echo "<pre>";print_r($choosedtime_exitvideos);exit;
 
                 $ScheduleVideos = ScheduleVideos::where(
                     "shedule_date",
@@ -4250,10 +4242,7 @@ class AdminVideosController extends Controller
                 $current_date = $current_date = date("Y-m-d h:i:s a", time());
                 $current_date = date("Y-m-d h:i:s");
                 $daten = date("Y-m-d h:i:s ", time());
-                // $d = new \DateTime("now");
-                // $d->setTimezone(new \DateTimeZone("Asia/Kolkata"));
-                // $now = $d->format("Y-m-d h:i:s a");
-                // $current_time = date("h:i A", strtotime($now));
+
                 date_default_timezone_set('Asia/Kolkata');
                 $now = date("Y-m-d h:i:s a", time());
                 $current_time = date("h:i A", time());
@@ -4717,7 +4706,7 @@ class AdminVideosController extends Controller
                 $now = date("Y-m-d h:i:s a", time());
                 $current_time = date("h:i A", time());
 
-                if($current_time > $choose_start_time){
+                if($current_time < $choose_start_time){
                     $choose_current_time =  explode(":", date("h:i", strtotime($now)));
                 }else {
                     $choose_current_time =  explode(":", date("h:i", strtotime($choose_start_time)));
