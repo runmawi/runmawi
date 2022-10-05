@@ -6033,8 +6033,8 @@ class AdminVideosController extends Controller
                 // echo "<pre>"; print_r($Video_duration);exit();
 
                 $sheduled_endtime = $hours . ":" . $minutes;
-                $starttime = date("h:i A", strtotime($store_current_time));
-                $sheduled_starttime = date("h:i ", strtotime($store_current_time));
+                $starttime = date("h:i", strtotime($store_current_time));
+                $sheduled_starttime = date("h:i A", strtotime($store_current_time));
 
                 $video = new ScheduleVideos();
                 $video->title = $videochooed->title;
