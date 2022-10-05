@@ -40,7 +40,7 @@ $media_url = URL::to("/schedule/videos") . "/" . $schedule->name;
                             <input type="hidden" name="year" id= "year" value="{{ $Calendar['year'] }}">
                             <input type="hidden" name="schedule_id" id= "schedule_id" value="{{ $Calendar['schedule_id'] }}">
                             <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-                            <button type="submit" class="btn btn-primary" id="submit-update-menu">Perview</button>
+                            <button type="submit" class="btn btn-primary" id="submit-update-menu">Preview</button>
                         </form>
                     </div>
                 <div class="row mt-4 container-fluid">
@@ -146,9 +146,9 @@ $media_url = URL::to("/schedule/videos") . "/" . $schedule->name;
                                             <th>#</th>
                                             <th>Title</th>
                                             <th>Type</th>
-                                            <th>Shedule Date</th>
-                                            <th>Sheduled Starttime</th>
-                                            <th>Shedule Endtime</th>
+                                            <th>Schedule Date</th>
+                                            <th>Scheduled Starttime</th>
+                                            <th>Schedule Endtime</th>
                                         </tr>
                                     </thead>
                                 <tbody>

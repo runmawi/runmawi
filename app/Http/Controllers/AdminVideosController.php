@@ -5665,6 +5665,13 @@ class AdminVideosController extends Controller
         $year = $data["year"];
         $schedule_time = $data["schedule_time"];
 
+        date_default_timezone_set('Asia/Kolkata');
+        $now = date("Y-m-d h:i:s a", time());
+        $current_time = date("h:i A", time());
+        // $date = date('m/d/Y h:i:s a', time());
+        // echo"<pre>";print_r($date);
+        // echo"<pre>";print_r($current_time );exit;
+        
         if (!empty($schedule_time)) {
             $choose_time = explode("to", $schedule_time);
             if (count($choose_time) > 0) {
@@ -5674,10 +5681,16 @@ class AdminVideosController extends Controller
                 $choose_start_time = "";
                 $choose_end_time = "";
             }
-            $d = new \DateTime("now");
-            $d->setTimezone(new \DateTimeZone("Asia/Kolkata"));
-            $now = $d->format("Y-m-d h:i:s a");
-            $current_time = date("h:i A", strtotime($now));
+            // $d = new \DateTime("now");
+            // $d->setTimezone(new \DateTimeZone("Asia/Kolkata"));
+            // $now = $d->format("Y-m-d h:i:s a");
+            // $current_time = date("h:i A", strtotime($now));
+            date_default_timezone_set('Asia/Kolkata');
+            $now = date("Y-m-d h:i:s a", time());
+            $current_time = date("h:i A", time());
+            
+            $now = date("Y-m-d h:i:s a");
+            $current_time = date("h:i A");
             if($current_time < $choose_start_time){
                 $choose_current_time =  explode(":", date("h:i", strtotime($now)));
             }else {
@@ -5727,10 +5740,15 @@ class AdminVideosController extends Controller
             $current_date =  date("Y-m-d h:i:s a", time());
             $current_date = date("Y-m-d h:i:s");
             $daten = date("Y-m-d h:i:s ", time());
-            $d = new \DateTime("now");
-            $d->setTimezone(new \DateTimeZone("Asia/Kolkata"));
-            $now = $d->format("Y-m-d h:i:s a");
-            $current_time = date("h:i A", strtotime($now));
+            // $d = new \DateTime("now");
+            // $d->setTimezone(new \DateTimeZone("Asia/Kolkata"));
+            // $now = $d->format("Y-m-d h:i:s a");
+            // $current_time = date("h:i A", strtotime($now));
+
+            date_default_timezone_set('Asia/Kolkata');
+            $now = date("Y-m-d h:i:s a", time());
+            $current_time = date("h:i A", time());
+            
             // print_r($choose_current_time);exit;
 
             if (!empty($ScheduleVideos) && empty($choosedtime_exitvideos)) {
@@ -6033,8 +6051,8 @@ class AdminVideosController extends Controller
                 // echo "<pre>"; print_r($Video_duration);exit();
 
                 $sheduled_endtime = $hours . ":" . $minutes;
-                $starttime = date("h:i A", strtotime($store_current_time));
-                $sheduled_starttime = date("h:i ", strtotime($store_current_time));
+                $starttime = date("h:i", strtotime($store_current_time));
+                $sheduled_starttime = date("h:i A", strtotime($store_current_time));
 
                 $video = new ScheduleVideos();
                 $video->title = $videochooed->title;
