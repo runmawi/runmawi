@@ -8177,6 +8177,36 @@ $cpanel->end();
 
       return response()->json($response, 200);
     }
+
+
+    public function HomePage(Request $request)
+    {
+
+      $series_id = $request->series_id ;
+
+      $Series_category = Series::Join('series_categories','series_categories.series_id','=','series.id')
+                        ->where('series.id',$series_id)->pluck('category_id');
+
+      $Series_list = Series::Join('series_categories','series_categories.series_id','=','series.id')
+          ->whereIn('series_categories.category_id',$Series_category)
+          ->where('series.id',"!=",$series_id)
+          ->where('active','=',1)->orderBy('series.created_at', 'desc')
+          ->groupBy('series.id')
+          ->get();
+
+        if(count($Series_list) > 0){
+          $Series_list = $Series_list->random();
+        }  
+
+      $response = array(
+        'status'=>'true',
+        'message'=>'success',
+        'Series_list' =>$Series_list,
+      );
+
+      return response()->json($response, 200);
+    }
+
 }
 
 

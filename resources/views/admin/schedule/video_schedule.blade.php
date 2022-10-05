@@ -25,7 +25,7 @@
 			<div class="col-md-8 d-flex justify-content-between">
 				<h4><i class="entypo-list"></i> Stream Scheduled Videos </h4>
                	<div>
-					<a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Create a New Scheduled</a>
+					<a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Create a New Schedule</a>
 			   	</div>
 			</div>
             <div class="col-md-8" align="right">
