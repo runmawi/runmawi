@@ -4600,7 +4600,7 @@ class AdminVideosController extends Controller
 
                         // print_r($last_shedule_endtime);exit;
                     } else {
-                        print_r('$last_sheduled_endtime');exit;
+                        // print_r('$last_sheduled_endtime');exit;
                         $time = explode(":", $last_sheduled_endtime);
                         $minutes = $time[0] * 60.0 + $time[1] * 1.0;
                         $totalSecs = $minutes * 60;
@@ -4727,7 +4727,7 @@ class AdminVideosController extends Controller
                     return $value;
                 } else {
 
-                    print_r('$else');exit;
+                    // print_r('$else');exit;
 
                     $time = explode(":", date("h:i", strtotime($now)));
                     $minutes = $time[0] * 60.0 + $time[1] * 1.0;
