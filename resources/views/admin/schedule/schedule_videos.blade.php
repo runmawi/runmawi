@@ -158,7 +158,7 @@ $media_url = URL::to("/schedule/videos") . "/" . $schedule->name;
                                         <td>{{ $video->title  }}</td>  
                                         <td>{{ $video->type  }}</td>   
                                         <td>{{ $video->shedule_date  }}</td>   
-                                        <td>{{ $video->starttime  }}</td>  
+                                        <td>{{ $video->starttimestarttime  }}</td>  
                                         <td>{{ $video->shedule_endtime  }}</td>   
                                         </tr>                               
 
