@@ -3652,11 +3652,19 @@ class ChannelController extends Controller
             $schedule_id = $data["schedule_id"];
             $choosedmonth = date('m',strtotime($month));
             $choosed_date = $year.'/'.$choosedmonth.'/'.$date;
-            $d = new \DateTime("now");
-            $d->setTimezone(new \DateTimeZone("Asia/Kolkata"));
-            $now = $d->format("Y-m-d h:i:s a");
+            // $d = new \DateTime("now");
+            // $d->setTimezone(new \DateTimeZone("Asia/Kolkata"));
+            // $now = $d->format("Y-m-d h:i:s a");
             $current_time = date("h:i A", strtotime($now));
             $current_date = date("Y/m/d", strtotime($now));
+
+            date_default_timezone_set('Asia/Kolkata');
+            $now = date("Y-m-d h:i:s a", time());
+            $current_time = date("h:i A", time());
+
+            $current_time = date("h:i A", time());
+            $current_date = date("Y/m/d", time());
+
             // dd();
             if($current_date == $choosed_date){
                 $ScheduleVideos = ScheduleVideos::where("shedule_date", "=", $choosed_date)
@@ -3743,11 +3751,20 @@ class ChannelController extends Controller
         try
         {
             
-            $d = new \DateTime("now");
-            $d->setTimezone(new \DateTimeZone("Asia/Kolkata"));
-            $now = $d->format("Y-m-d h:i:s a");
-            $current_time = date("h:i A", strtotime($now));
-            $current_date = date("Y/m/d", strtotime($now));
+            // $d = new \DateTime("now");
+            // $d->setTimezone(new \DateTimeZone("Asia/Kolkata"));
+            // $now = $d->format("Y-m-d h:i:s a");
+            // $current_time = date("h:i A", strtotime($now));
+            // $current_date = date("Y/m/d", strtotime($now));
+
+            
+            date_default_timezone_set('Asia/Kolkata');
+            $now = date("Y-m-d h:i:s a", time());
+            $current_time = date("h:i A", time());
+
+            $current_time = date("h:i A", time());
+            $current_date = date("Y/m/d", time());
+            
             // dd();
             $VideoSchedules = VideoSchedules::where("name", "=", $name)
             ->first(); 
