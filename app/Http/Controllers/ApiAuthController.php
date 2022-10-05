@@ -8185,37 +8185,51 @@ $cpanel->end();
 
         $HomeSetting = HomeSetting::first();
         $OrderHomeSetting = OrderHomeSetting::first();
+        $OrderSetting = array();
+
         //   echo "<pre>";
         // print_r($OrderHomeSetting);exit;
-        foreach($order_settings as $key => $value){
-          if($value->video_name == 'latest_videos'){
-            $order_latest_videos = $value->order_id;
-          }else{ $order_latest_videos = []; }
-          if($value->video_name == 'category_videos'){
-            $order_category_videos = $value->order_id;
-          }else{ $order_category_videos = [];  }
-          if($value->video_name == 'live_videos'){
-            $order_live_videos = $value->order_id;
-          }else{  $order_live_videos = []; }
-          if($value->video_name == 'audios'){
-            $order_audios = $value->order_id;
-          }else{  $order_audios = []; }
-          if($value->video_name == 'albums'){
-            $order_albums = $value->order_id;
-          }else{  $order_albums = []; }
-          if($value->video_name == 'artist'){
-            $order_artist = $value->order_id;
-          }else{  $order_artist = []; }
-          if($value->video_name == 'series'){
-            $order_series = $value->order_id;
-          }else{  $order_series = []; }
-          if($value->video_name == 'featured_videos'){
-            $order_featured_videos = $value->order_id;
-          }else{  $order_featured_videos = [];  }
-          if($value->video_name == 'Recommendation'){
-            $order_Recommendation = $value->order_id;
-          }else{  $order_Recommendation = []; }
-        }
+        // foreach($OrderHomeSetting as $key => $value){
+        //   if($value->video_name == 'latest_videos'){
+        //     $order_latest_videos = $value->order_id;
+        //   }else{ $order_latest_videos = []; }
+        //   if($value->video_name == 'category_videos'){
+        //     $order_category_videos = $value->order_id;
+        //   }else{ $order_category_videos = [];  }
+        //   if($value->video_name == 'live_videos'){
+        //     $order_live_videos = $value->order_id;
+        //   }else{  $order_live_videos = []; }
+        //   if($value->video_name == 'audios'){
+        //     $order_audios = $value->order_id;
+        //   }else{  $order_audios = []; }
+        //   if($value->video_name == 'albums'){
+        //     $order_albums = $value->order_id;
+        //   }else{  $order_albums = []; }
+        //   if($value->video_name == 'artist'){
+        //     $order_artist = $value->order_id;
+        //   }else{  $order_artist = []; }
+        //   if($value->video_name == 'series'){
+        //     $order_series = $value->order_id;
+        //   }else{  $order_series = []; }
+        //   if($value->video_name == 'featured_videos'){
+        //     $order_featured_videos = $value->order_id;
+        //   }else{  $order_featured_videos = [];  }
+        //   if($value->video_name == 'Recommendation'){
+        //     $order_Recommendation = $value->order_id;
+        //   }else{  $order_Recommendation = []; }
+        //   $OrderSetting[] = array(
+        //   'order_latest_videos' => $order_latest_videos,
+        //   'order_category_videos' => $order_category_videos,
+        //   'order_live_videos' => $order_live_videos,
+        //   'order_audios' => $order_audios,
+        //   'order_albums' => $order_albums,
+        //   'order_artist' => $order_artist,
+        //   'order_series' => $order_series,
+        //   'order_featured_videos' => $order_featured_videos,
+        //   'order_Recommendation' => $order_Recommendation,
+        //   );
+        // }
+        
         
         if(@$HomeSetting->featured_videos == 1){
           $featured_videos = Video::where('active', '=', '1')->where('featured', '=', '1')->where('status', '=', '1')->where('draft', '=', '1')
@@ -8449,15 +8463,7 @@ $cpanel->end();
           'audios' => $audios,
           'albums' => $albums,
           'Recommendation' => $Recommendation,
-          'order_latest_videos' => $order_latest_videos,
-          'order_category_videos' => $order_category_videos,
-          'order_live_videos' => $order_live_videos,
-          'order_audios' => $order_audios,
-          'order_albums' => $order_albums,
-          'order_artist' => $order_artist,
-          'order_series' => $order_series,
-          'order_featured_videos' => $order_featured_videos,
-          'order_Recommendation' => $order_Recommendation,
+
         );
 
       return response()->json($response, 200);
