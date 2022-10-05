@@ -4135,6 +4135,7 @@ class AdminVideosController extends Controller
         $month = $data["month"];
         $year = $data["year"];
         $schedule_time = $data["schedule_time"];
+        $schedule_id = $data["schedule_id"];
 
         if (!empty($schedule_time)) {
             $choose_time = explode("to", $schedule_time);
