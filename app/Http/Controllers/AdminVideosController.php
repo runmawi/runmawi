@@ -4153,21 +4153,26 @@ class AdminVideosController extends Controller
 
             date_default_timezone_set('Asia/Kolkata');
             $now = date("Y-m-d h:i:s a", time());
-            $current_time = date("h:i A", time());
+            $current_time = date("h:i A ", time());
 
-            if($current_time > $choose_start_time){
+            if($current_time < $choose_start_time){
                 $choose_current_time =  explode(":", date("h:i", strtotime($now)));
             }else {
                 $choose_current_time =  explode(":", date("h:i", strtotime($choose_start_time)));
             }
-
+            // dd($choose_current_time);
             if($current_time < $choose_start_time){
                 $store_current_time =  date("h:i", strtotime($now));
             }else {
                 $store_current_time =  date("h:i", strtotime($choose_start_time));
             }
         }
-            
+        $choosed_date =
+        $data["year"] . "-" . $data["month"] . "-" . $data["date"];
+
+        $date = date_create($choosed_date);
+        $date_choose = date_format($date, "Y/m");
+        $date_choosed = $date_choose . "/" . $data["date"];
 
 
         if ($mp4_url != "" && $pack != "Business") {
@@ -4594,7 +4599,7 @@ class AdminVideosController extends Controller
 
                         // print_r($last_shedule_endtime);exit;
                     } else {
-                        // print_r('$last_sheduled_endtime');exit;
+                        print_r('$last_sheduled_endtime');exit;
                         $time = explode(":", $last_sheduled_endtime);
                         $minutes = $time[0] * 60.0 + $time[1] * 1.0;
                         $totalSecs = $minutes * 60;
@@ -4720,6 +4725,9 @@ class AdminVideosController extends Controller
 
                     return $value;
                 } else {
+
+                    print_r('$else');exit;
+
                     $time = explode(":", date("h:i", strtotime($now)));
                     $minutes = $time[0] * 60.0 + $time[1] * 1.0;
                     $totalSecs = $minutes * 60;
@@ -4848,6 +4856,9 @@ class AdminVideosController extends Controller
             $pack == "Business" &&
             $settings->transcoding_access == 0
         ) {
+
+                // echo "<pre>";print_r($choose_time);exit;
+
             $date = $data["date"];
             $month = $data["month"];
             $year = $data["year"];

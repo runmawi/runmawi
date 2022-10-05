@@ -2464,16 +2464,29 @@ $final[] = array_merge($array1,$array2,$array3,$array4);
 
     public function relatedchannelvideos(Request $request) {
       $videoid = $request->videoid;
-      $categoryVideos = Video::where('id',$videoid)->first();
-        $category_id = Video::where('id',$videoid)->pluck('video_category_id');
-        $recomended = Video::where('video_category_id','=',$category_id)->where('id','!=',$videoid)
-        ->orderBy('created_at', 'desc')->where('status','=',1)->where('active','=',1)->get()->map(function ($item) {
-        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-        return $item;
-      });
+      // $categoryVideos = Video::where('id',$videoid)->first();
+      //   $category_id = Video::where('id',$videoid)->pluck('video_category_id');
+      //   $recomended = Video::where('video_category_id','=',$category_id)->where('id','!=',$videoid)
+      //   ->orderBy('created_at', 'desc')->where('status','=',1)->where('active','=',1)->get()->map(function ($item) {
+      //   $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+      //   return $item;
+      // });
+      $category_id = CategoryVideo::where('video_id', $videoid)->get();
+        // Recomendeds 
+        foreach ($category_id as $key => $value)
+        {
+            $recomendeds = Video::select('videos.*', 'video_categories.name as categories_name', 'categoryvideos.category_id as categories_id')
+                ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
+                ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+                ->where('videos.id', '!=', $videoid)
+                ->where('categoryvideos.category_id', '=', $value->category_id)
+                ->limit(10)
+                ->get();
+        }
+
         $response = array(
         'status'=>'true',
-        'channelrecomended' => $recomended
+        'channelrecomended' => $recomendeds
       ); 
       return response()->json($response, 200);
     }
