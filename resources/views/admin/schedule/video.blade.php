@@ -5,7 +5,7 @@
     .plyr__progress{ pointer-events: none; }
 
 </style>
-@if(!empty($ScheduleVideos) && !empty($new_date) && empty($next_start) && empty($Choose_current_date))
+@if(!empty($ScheduleVideos) && !empty($new_date)  && empty($Choose_current_date))
     @if($ScheduleVideos->type == 'mp4_url')
         <div id="video_container" class="fitvid" atyle="z-index: 9999;">
                 <!-- Current time: <div id="current_time"></div> -->
