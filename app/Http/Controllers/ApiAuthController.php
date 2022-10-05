@@ -8182,29 +8182,91 @@ $cpanel->end();
     public function HomePage(Request $request)
     {
 
-      $series_id = $request->series_id ;
+      try{
 
-      $Series_category = Series::Join('series_categories','series_categories.series_id','=','series.id')
-                        ->where('series.id',$series_id)->pluck('category_id');
+        $HomeSetting = HomeSetting::first();
 
-      $Series_list = Series::Join('series_categories','series_categories.series_id','=','series.id')
-          ->whereIn('series_categories.category_id',$Series_category)
-          ->where('series.id',"!=",$series_id)
-          ->where('active','=',1)->orderBy('series.created_at', 'desc')
-          ->groupBy('series.id')
-          ->get();
+        if(@$HomeSetting->featured_videos == 1){
+          $featured_videos = Video::where('active', '=', '1')->where('featured', '=', '1')->where('status', '=', '1')->where('draft', '=', '1')
+              ->orderBy('created_at', 'DESC')
+              ->get();;
+              
+        }else{
+          $featured_videos = [];
+        }
 
-        if(count($Series_list) > 0){
-          $Series_list = $Series_list->random();
-        }  
+        if(@$HomeSetting->latest_videos == 1){
+          $latest_videos = Video::where('active', '=', '1')->where('featured', '=', '1')->where('status', '=', '1')->where('draft', '=', '1')
+              ->orderBy('created_at', 'DESC')
+              ->get();;
+        }else{
+          $latest_videos = [];
+        }
 
-      $response = array(
-        'status'=>'true',
-        'message'=>'success',
-        'Series_list' =>$Series_list,
-      );
+        if(@$HomeSetting->category_videos == 1){
+          $category_videos = Video::where('active', '=', '1')->where('featured', '=', '1')->where('status', '=', '1')->where('draft', '=', '1')
+              ->orderBy('created_at', 'DESC')
+              ->get();;
+        }else{
+          $category_videos = [];
+        }
+
+        if(@$HomeSetting->live_videos == 1){
+          $live_videos = Video::where('active', '=', '1')->where('featured', '=', '1')->where('status', '=', '1')->where('draft', '=', '1')
+              ->orderBy('created_at', 'DESC')
+              ->get();;
+        }else{
+          $live_videos = [];
+        }
+
+        if(@$HomeSetting->series == 1){
+          $series = Video::where('active', '=', '1')->where('featured', '=', '1')->where('status', '=', '1')->where('draft', '=', '1')
+              ->orderBy('created_at', 'DESC')
+              ->get();;
+        }else{
+          $series = [];
+        }
+
+        if(@$HomeSetting->audios == 1){
+          $audios = Video::where('active', '=', '1')->where('featured', '=', '1')->where('status', '=', '1')->where('draft', '=', '1')
+              ->orderBy('created_at', 'DESC')
+              ->get();;
+        }else{
+          $audios = [];
+        }
+
+        if(@$HomeSetting->albums == 1){
+          $albums = Video::where('active', '=', '1')->where('featured', '=', '1')->where('status', '=', '1')->where('draft', '=', '1')
+              ->orderBy('created_at', 'DESC')
+              ->get();;
+        }else{
+          $albums = [];
+        }
+
+        if(@$HomeSetting->Recommendation == 1){
+          $Recommendation = Video::where('active', '=', '1')->where('featured', '=', '1')->where('status', '=', '1')->where('draft', '=', '1')
+              ->orderBy('created_at', 'DESC')
+              ->get();;
+        }else{
+          $Recommendation = [];
+        }
+
+       
+        $response = array(
+          'status'=>'true',
+          'HomeSetting' => $HomeSetting,
+          'featured_videos' => $featured_videos,
+        );
 
       return response()->json($response, 200);
+        
+      } catch (\Throwable $th) {
+        $response = array(
+          'status'=>'false',
+          'message'=>$th->getMessage(),
+          'nodata' => [],
+        );
+    }
     }
 
 }
