@@ -138,19 +138,41 @@ p.welcome_p {
 	
 		<div class="sign-in-from" >
 		<div class="row data">
-				@forelse ($mobile_settings as $splash)
+							{{-- Splash Screen --}}
+
+				@forelse ($mobile_settings as $key => $splash)
 					<div class="splash_image" style="padding: 20px;">
 						<div class="">
 							<img src="{{ URL::to('/') . '/public/uploads/settings/' . $splash->splash_image }}" style="max-height:100px" />
 						</div>
 
+						<span> {{ 'IOS' }} {{ $key + 1 }}  </span>
+
 						<div class="action" align="right">
-							<a href="{{ route('Splash_edit', ['id' => $splash->id]) }}" ><i class="fa fa-pencil" aria-hidden="true"></i></a>	
-							<a href="{{ route('Splash_destroy', ['id' => $splash->id]) }}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+							<a href="{{ route('Splash_edit', ['id' => $splash->id ,'source'=>'ios' ]) }}" ><i class="fa fa-pencil" aria-hidden="true"></i></a>	
+							<a href="{{ route('Splash_destroy', ['id' => $splash->id ,'source'=>'ios' ]) }}"><i class="fa fa-trash" aria-hidden="true"></i></a>
 						</div>
 					</div>
 				@empty  
 						<p> No Splash Screen Available </p>
+				@endforelse
+
+							{{-- Andriod Splash Screen --}}
+
+				@forelse ($mobile_settings as $key => $andriod_splash)
+					<div class="splash_image" style="padding: 20px;">
+						<div class="">
+							<img src="{{ URL::to('/') . '/public/uploads/settings/' . $andriod_splash->andriod_splash_image }}" style="max-height:100px" />
+						</div>
+
+						<span> {{ 'Andriod'  }}  {{ $key + 1 }} </span>
+
+						<div class="action" align="right">
+							<a href="{{ route('Splash_edit', ['id' => $andriod_splash->id , 'source'=>'andriod']) }}" ><i class="fa fa-pencil" aria-hidden="true"></i></a>	
+							<a href="{{ route('Splash_destroy', ['id' => $andriod_splash->id ,'source'=>'andriod' ]) }}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+						</div>
+					</div>
+				@empty  
 				@endforelse
 		</div>
 	</div>
@@ -213,9 +235,15 @@ p.welcome_p {
 			<div class="modal-body p-3">
 				<form id="Splash" accept-charset="UTF-8" action="{{ URL::to('admin/mobile_app/store') }}" method="post" enctype="multipart/form-data">
 					<div class="control-group">
-						<label for="theme_image">Splash Preview Images</label>
-						<input type="file" name="splash_image" id="splash_image" accept="image/*" >
+						<label for="theme_image">Splash Preview Images <span> (IOS) </span></label>
+						<input type="file" name="splash_image" id="splash_image" required >
 					</div>
+
+					<div class="control-group">
+						<label for="theme_image"> Splash Preview Images <span> (Andriod) </span></label>
+						<input type="file" name="andriod_splash_image" id="andriod_splash_image"  required>
+					</div>
+
 					<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 					<div class="modal-footer">
 						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>

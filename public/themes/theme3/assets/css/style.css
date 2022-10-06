@@ -1852,6 +1852,7 @@ padding: 15px;
 }
 .audio-list-page .img-fluid {
     height: 200px;
+    width: 200px;
   /*  object-fit: scale-down;*/
 }
 .rental-lists li {display: inline-block;float:right; margin-right: 10px;}

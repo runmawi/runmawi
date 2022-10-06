@@ -6,8 +6,7 @@ $audio = $audios ;
 <style type="text/css">
 .audio-js *, .audio-js :after, .audio-js :before {box-sizing: inherit;display: grid;}
 .vjs-big-play-button{
-top: 50% !important;
-left: 50% !important;
+
 margin: -25px 0 0 -25px;
 width: 50px !important;
 height: 50px !important;
@@ -30,6 +29,12 @@ background: #2bc5b4!important;}
 p{
 color: #fff;
 }
+    .img-responsive{
+        border-radius: 10px;
+    }
+    .slick-track{
+        width: 45%!important;
+    }
 .fa-heart{color: red !important;}
 .flexlink{
 position: relative;
@@ -39,9 +44,12 @@ left: -121px;
 #ff{
 border: 1px solid #fff;
 border-radius: 50%;
-padding: 10px;
-font-size: 20px;
+padding: 5px;
+font-size: 12px;
 color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 li{
 list-style: none; 
@@ -81,9 +89,9 @@ border-radius: 50%;
 /* Player Style */
 .audioPlayer .jp-jplayer, #jplayer-audio-container {}
 .audioPlayer .jp-controls button {text-indent: 0;}
-.jp-audio, .jp-video {background: black;font-family: sans-serif;font-size: .75rem;max-width: 85rem;width: 100%;position: fixed;
-    top: 85%;
-    z-index: 5;margin-left: -110px;}
+.jp-audio, .jp-video {background: black;font-family: sans-serif;font-size: .75rem;/*max-width: 85rem;*/width: 100%;position: fixed;
+   bottom: 0;
+    z-index: 5;margin-left: -40px;}
     .jp-btn{background-color: red;border-radius: 50%;}
 .jp-type-playlist {display: -webkit-box;display: -moz-box;display: -ms-flexbox;display: -webkit-flex;display: flex;-webkit-flex-direction: column;-moz-flex-direction: column;-ms-flex-direction: column;flex-direction: column;height: 100%;}
 .jp-type-playlist .jp-close {-webkit-flex-grow: 0;-moz-flex-grow: 0;-ms-flex-grow: 0;flex-grow: 0;}
@@ -91,7 +99,7 @@ border-radius: 50%;
 .jp-type-playlist .jp-playlist {-webkit-flex-grow: 1;-moz-flex-grow: 1;-ms-flex-grow: 1;flex-grow: 1;overflow-y: auto;}
 .jp-btn {border: 0;padding: 0;outline: none;background: none;color: #fff;height: 1.5rem;line-height: 1.5rem;padding: 0 15px;}
 .jp-gui {background: rgba(255, 255, 255, 0.05);padding: 1rem;}
-.jp-gui .jp-title {display: inline-block;color: #fff;height: 1.5rem;width: 50%;text-align: right;line-height: 1.5rem;overflow: hidden;opacity: 0.5;}
+.jp-gui .jp-title {display: inline-block;color: #fff;height: 1.5rem;/*width: 50%;text-align: right;*/line-height: 1.5rem;overflow: hidden;opacity: 0.5;}
 .jp-gui .jp-toggles {display: inline-block;float: right;}
 .jp-gui .jp-toggles .jp-repeat,
 .jp-gui .jp-toggles .jp-shuffle {display: inline-block;float: left;vertical-align: top;opacity: 0.5;}
@@ -151,16 +159,15 @@ border-radius: 50%;
 </style>
 
 <?php if (isset($error)) { ?>
-  <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
-    <p ><h3 class="text-center"><?php echo $message;?></h3>
-  </div>
-
+                <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;">
+                    <p ><h3 class="text-center"><?php echo $message;?></h3>
+                </div>
 <?php } else { ?>
 
 <input type="hidden" value="<?php echo URL('/');?>" id="base_url">
 <div id="audio_bg" >
 <div id="audio_bg_dim" <?php if($audio->access == 'guest' || ($audio->access == 'subscriber' && !Auth::guest()) ): ?><?php else: ?>class="darker"<?php endif; ?>></div>
-<div class="container">
+<div class="container-fluid">
 
 <?php if($audio->access == 'guest' || ( ($audio->access == 'subscriber' || $audio->access == 'registered') && !Auth::guest() && Auth::user()->subscribed()) || (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) || (!Auth::guest() && $audio->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered') || (($audio->access == 'subscriber' || $audio->access == 'registered') && $ppv_status == 1)): ?>
 
@@ -195,8 +202,8 @@ Your browser does not support the audio element.
 <?php } else { ?>                
 
 <div class="row album-top-30 mt-4 align-items-center">
-<div class="col-sm-4 ">
-<img src="<?= URL::to('/').'/public/uploads/images/'. $audio->image ?>"  class="img-responsive" / width="350">
+<div class="col-sm-2 col-md-2 col-xs-2">
+<img src="<?= URL::to('/').'/public/uploads/images/'. $audio->image ?>" height="200" width="200" class="img-responsive" >
 
 <!-- -->
 </div>
@@ -208,7 +215,7 @@ Your browser does not support the audio element.
 <h2 class="hero-title album"> <?= $audio->title; ?></h2>
 <p class="mt-2">Music by <?php echo get_audio_artist($audio->id); ?></p>
 <p class="mt-2">Album <a href="<?php echo URL::to('/').'/album/'.$album_slug;?>"><?php echo ucfirst($album_name); ?></a></p>
-<div class="d-flex" style="justify-content: space-between;width: 40%;align-items: center;">
+<div class="d-flex" style="justify-content: space-between;width: 24%;align-items: center;">
 <button class="btn bd" id="vidbutton"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play</button>
 <a aria-hidden="true" class="favorite <?php echo audiofavorite($audio->id);?>" data-authenticated="<?= !Auth::guest() ?>" data-audio_id="<?= $audio->id ?>"><?php if(audiofavorite($audio->id) == "active"): ?><i id="ff" class="fa fa-heart" ></i><?php else: ?><i id="ff" class="fa fa-heart-o" ></i><?php endif; ?></a>
 <i id="ff" class="fa fa-ellipsis-h" aria-hidden="true"></i>
@@ -283,28 +290,40 @@ Your browser does not support the audio element.
 <div class="clear"></div>  
 
 <?php } ?>
-<div class="container">
+<div class="container-fluid">
 <div class="row album-top-30 mt-3">  
 <div class="col-sm-12">
     
 <h4  class="album-title">Other Albums </h4>
-<ul class="album_list mt-3" style="display: flex;">
+    <div class="favorites-contens">
+<ul class="favorites-slider list-inline  row p-0 mb-0">
     <?php foreach ($other_albums as $other_album) { ?>
-        <li>
+        <li class="slide-item">
             <?php if($other_album->album != ''){ ?>
+            
                 <a href="<?php echo URL('/').'/album/'.$other_album->slug; ?>">
-                <img src="<?= URL::to('/').'/public/uploads/albums/' . $other_album->album ?>"  class="img-responsive" width="200" height="150"/>
-                <div class="play-block">
-                    <a href=""> <i class="fa fa-play flexlink" aria-hidden="true"></i> </a>
+                    <div class="block-images position-relative">
+                          <div class="img-box">
+                             <img src="<?= URL::to('/').'/public/uploads/albums/' . $other_album->album ?>"  class="img-responsive w-100" />   
+                        </div>
+                        <div class="block-description">
+                            <div class="hover-buttons text-white">
+                                <p class="mt-2"><?php echo ucfirst($other_album->albumname);?> </p>
                 </div>
+                           
+            <?php  } ?> 
+                        </div>
+                    </div>
+              
+               
                     
             </a>
-            <p class="mt-2"><?php echo ucfirst($other_album->albumname);?>
-            <?php  } ?> </p>
+           
           
         </li>
     <?php } ?>
 </ul>
+        </div>
 </div>
 
 </div>
@@ -320,9 +339,14 @@ Your browser does not support the audio element.
 <div id="jp_container_1" class="jp-audio" role="application" aria-label="media player">
   <div class="jp-type-single">
     <div class="jp-gui jp-interface">
-      
+        <div class="jp-details">
+            <img src="<?= URL::to('/').'/public/uploads/images/'. $audio->image ?>"  class="img-responsive" width="50">
+      <div class="jp-title text-white" aria-label="title">&nbsp;</div>
+    </div>
       <div class="jp-controls-holder">
         <div class="jp-controls">
+            
+
             <div class="jp-volume-controls" style="width:100%;">
                 <button class="jp-mute" role="button" tabindex="0"><i class="fa fa-volume-off" style="font-size:26px;"></i></button>
                 <button class="jp-volume-max" role="button" tabindex="0">max volume</button>
@@ -347,10 +371,9 @@ Your browser does not support the audio element.
     width: 10%;float: right;color: white;display: inline-flex;">&nbsp;</div>
         
       </div>
+      
     </div>
-    <div class="jp-details">
-      <div class="jp-title" aria-label="title">&nbsp;</div>
-    </div>
+    
     <div class="jp-no-solution">
       <span>Update Required</span>
       To play the media you will need to either update your browser to a recent version or update your <a href="https://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
@@ -495,4 +518,3 @@ window.location = '<?= URL::to('login') ?>';
     });
 </script>
 <?php include(public_path('themes/theme3/views/footer.blade.php')); ?>
-
