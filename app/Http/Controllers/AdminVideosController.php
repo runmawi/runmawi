@@ -2997,7 +2997,7 @@ class AdminVideosController extends Controller
             $myData = [];
             foreach ($videocategories as $key => $videocategory) {
                 $videocategoryid = $videocategory["id"];
-                $videos = Video::where("active", "=", 0)
+                $videos = Video::where("videos.status", "=", 0)
                     ->join(
                         "moderators_users",
                         "videos.user_id",
@@ -3026,6 +3026,13 @@ class AdminVideosController extends Controller
                     ->orderBy("videos.created_at", "DESC")
                     ->paginate(9);
             }
+            // $videos = Video::join("moderators_users", "videos.user_id", "=", "moderators_users.id")
+            // ->select("moderators_users.username", "videos.*")
+            // // ->groupby("videos.id")
+            // ->where("videos.status",0)
+            // ->where("videos.uploaded_by", "CPP")
+            // ->orderBy("videos.created_at", "DESC")
+            // ->paginate(9);
             $data = [
                 "videos" => $videos,
             ];
@@ -3040,7 +3047,7 @@ class AdminVideosController extends Controller
         //    exit();
 
         $video = Video::findOrFail($id);
-        $video->active = 1;
+        $video->status = 1;
         $video->save();
 
         return Redirect::back()->with(
@@ -3520,7 +3527,7 @@ class AdminVideosController extends Controller
             $myData = [];
             foreach ($videocategories as $key => $videocategory) {
                 $videocategoryid = $videocategory["id"];
-                $videos = Video::where("active", "=", 0)
+                $videos = Video::where("videos.status", "=", 0)
                     ->join("channels", "videos.user_id", "=", "channels.id")
                     ->select("channels.channel_name", "videos.*")
                     ->groupby("videos.id")
@@ -3545,7 +3552,7 @@ class AdminVideosController extends Controller
         //    exit();
 
         $video = Video::findOrFail($id);
-        $video->active = 1;
+        $video->status = 1;
         $video->save();
 
         return Redirect::back()->with(

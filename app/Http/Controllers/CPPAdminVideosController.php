@@ -1278,6 +1278,8 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
          $video->enable =  $enable;
          $video->search_tags =  $searchtags;
          $video->ios_ppv_price = $data['ios_ppv_price'];
+         $video->uploaded_by = 'CPP';
+
          $video->save();
 
 
@@ -1360,7 +1362,7 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
             /*save artist*/
             if(!empty($language_id)){
                 LanguageVideo::where('video_id', $video->id)->delete();
-                foreach ($languagevideo as $key => $value) {
+                foreach ($language_id as $key => $value) {
                     $languagevideo = new LanguageVideo;
                     $languagevideo->video_id = $video->id;
                     $languagevideo->language_id = $value;
@@ -1824,23 +1826,11 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
                     $video->enable =  1;
                     $video->search_tags =  $searchtags;
                     $video->ios_ppv_price = $data['ios_ppv_price'];
+                    $video->uploaded_by = 'CPP';
         
                      $video->update($data);
         
                      $video = Video::findOrFail($id);
-                     $users = User::all();
-                     if($video['draft'] == 1){
-                    //  foreach ($users as $key => $user) {
-                    //     //  $userid[]= $user->id;
-                    //     if(!empty($user->token)){
-                    // send_password_notification('Notification From FLICKNEXS','New Videp Added','',$user->id);
-                    //     }
-                    //  }
-                //      foreach ($userid as $key => $user_id) {
-                //    send_password_notification('Notification From FLICKNEXS','New Video Added','',$user_id);
-                //     }
-                 
-                    }
 
                      if(!empty($data['searchtags'])){
                 $searchtags = explode(',',$data['searchtags']);

@@ -88,7 +88,7 @@ class CPPAdminLiveStreamController extends Controller
                 'post_route' => URL::to('cpp/livestream/store'),
                 'button_text' => 'Add New Video',
                 // 'admin_user' => Auth::user(),
-                'video_categories' => LiveCategory::all(),
+                'video_categories' => LiveCategory::where('uploaded_by','CPP')->get(),
                 'languages' => Language::all(),
                 'category_id' => [],
                 'languages_id' => [],
@@ -240,17 +240,30 @@ class CPPAdminLiveStreamController extends Controller
                 $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
                 $data['duration'] = $time_seconds;
         }
-        if(empty($data['ppv_price'])){
-            $settings = Setting::where('ppv_status','=',1)->first();
-            if(!empty($settings)){
-                $ppv_price = $settings->ppv_price;
-            }
-            }  elseif(empty($data['ppv_price'])) {
-                $ppv_price = $data['ppv_price'];
-            }else{
-            $ppv_price = null;
+        // if(empty($data['ppv_price'])){
+        //     $settings = Setting::where('ppv_status','=',1)->first();
+        //     if(!empty($settings)){
+        //         $ppv_price = $settings->ppv_price;
+        //     }
+        //     }  elseif(empty($data['ppv_price'])) {
+        //         $ppv_price = $data['ppv_price'];
+        //     }else{
+        //     $ppv_price = null;
 
-            }  
+        //     }  
+            if($data['access'] == "ppv"){
+                $ppv_price = $data['ppv_price'];
+            }elseif(empty($data['ppv_price'])) {
+                $settings = Setting::where('ppv_status','=',1)->first();
+                if(!empty($settings)){
+                    $ppv_price = $settings->ppv_price;
+                }
+            }else{
+                $ppv_price = null;
+            
+            }    // dd($data);
+    
+               
     
             $last_id = LiveStream::latest()->pluck('id')->first() + 1;
 
@@ -331,6 +344,7 @@ class CPPAdminLiveStreamController extends Controller
         $movie->publish_type =$data['publish_type'];
         $movie->publish_time = $data['publish_time'];
         // $movie->footer =$data['footer'];
+        $movie->uploaded_by = 'CPP';
         $movie->slug =$data['slug'];
         $movie->image =$file->getClientOriginalName();
         $movie->mp4_url =$data['mp4_url'];
@@ -668,6 +682,7 @@ class CPPAdminLiveStreamController extends Controller
         $video->publish_time = $request['publish_time'];
         $video->user_id =  $user_id;
         $video->ios_ppv_price =  $request->ios_ppv_price;
+        $video->uploaded_by = 'CPP';
         $video->save();
 
         if(!empty($data['video_category_id'])){

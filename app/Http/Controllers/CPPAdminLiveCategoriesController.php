@@ -117,6 +117,7 @@ class CPPAdminLiveCategoriesController extends Controller
             $LiveCategory->parent_id = $input['parent_id'];
             $LiveCategory->image = $input['image'];
             $LiveCategory->in_menu = $in_menu;
+            $LiveCategory->uploaded_by = 'CPP';
             $LiveCategory->save();
             return back()->with('message', 'New Category added successfully.');
           }else{
@@ -189,6 +190,7 @@ class CPPAdminLiveCategoriesController extends Controller
             $category->slug = $request['slug'];
             $category->in_menu = $request['in_home'];
             $category->parent_id = $request['parent_id'];
+            $category->uploaded_by = 'CPP';
             
              if ( $category->slug != '') {
               $category->slug  = $request['slug'];
