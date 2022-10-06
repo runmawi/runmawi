@@ -36,16 +36,18 @@
                 <br>
                 <h4 class="card-title"> </h4>
 
-                <div class="row">
-                <div class="col-3">
+                <div class="row container-fluid">
+                <div class="col-5">
                     <label for=""><h4 class="fs-title m-0">{{ $schedule->name }}</h4></label>
 
                 </div>
-                <div class="col-3">
+                <div class="col-5 text-right">
                 <a href="#" onclick="EmbedCopy();" class="share-ico">
-                        <label for=""><h3 class="fs-title m-0">Your IFRAME URL:</h3></label>
-                        {{ $url_path }}
+                        <!-- <label for=""><h3 class="fs-title m-0">Your IFRAME URL:</h3></label> -->
+                        <!-- {{ $url_path }} -->
+                        Click Here To Copy IFRAME URL
                         </a>
+                  
                         </div>
                     </div>
                     <!-- <div class="col-3">

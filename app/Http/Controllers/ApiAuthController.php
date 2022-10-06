@@ -2464,16 +2464,29 @@ $final[] = array_merge($array1,$array2,$array3,$array4);
 
     public function relatedchannelvideos(Request $request) {
       $videoid = $request->videoid;
-      $categoryVideos = Video::where('id',$videoid)->first();
-        $category_id = Video::where('id',$videoid)->pluck('video_category_id');
-        $recomended = Video::where('video_category_id','=',$category_id)->where('id','!=',$videoid)
-        ->orderBy('created_at', 'desc')->where('status','=',1)->where('active','=',1)->get()->map(function ($item) {
-        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-        return $item;
-      });
+      // $categoryVideos = Video::where('id',$videoid)->first();
+      //   $category_id = Video::where('id',$videoid)->pluck('video_category_id');
+      //   $recomended = Video::where('video_category_id','=',$category_id)->where('id','!=',$videoid)
+      //   ->orderBy('created_at', 'desc')->where('status','=',1)->where('active','=',1)->get()->map(function ($item) {
+      //   $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+      //   return $item;
+      // });
+      $category_id = CategoryVideo::where('video_id', $videoid)->get();
+        // Recomendeds 
+        foreach ($category_id as $key => $value)
+        {
+            $recomendeds = Video::select('videos.*', 'video_categories.name as categories_name', 'categoryvideos.category_id as categories_id')
+                ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
+                ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+                ->where('videos.id', '!=', $videoid)
+                ->where('categoryvideos.category_id', '=', $value->category_id)
+                ->limit(10)
+                ->get();
+        }
+
         $response = array(
         'status'=>'true',
-        'channelrecomended' => $recomended
+        'channelrecomended' => $recomendeds
       ); 
       return response()->json($response, 200);
     }
@@ -8174,6 +8187,307 @@ $cpanel->end();
 
       return response()->json($response, 200);
     }
+
+    public function HomePage(Request $request)
+    {
+
+      try{
+
+        $HomeSetting = HomeSetting::first();
+        $OrderHomeSetting = OrderHomeSetting::first();
+        $OrderSetting = array();
+
+        //   echo "<pre>";
+        // print_r($OrderHomeSetting);exit;
+        // foreach($OrderHomeSetting as $key => $value){
+        //   if($value->video_name == 'latest_videos'){
+        //     $order_latest_videos = $value->order_id;
+        //   }else{ $order_latest_videos = []; }
+        //   if($value->video_name == 'category_videos'){
+        //     $order_category_videos = $value->order_id;
+        //   }else{ $order_category_videos = [];  }
+        //   if($value->video_name == 'live_videos'){
+        //     $order_live_videos = $value->order_id;
+        //   }else{  $order_live_videos = []; }
+        //   if($value->video_name == 'audios'){
+        //     $order_audios = $value->order_id;
+        //   }else{  $order_audios = []; }
+        //   if($value->video_name == 'albums'){
+        //     $order_albums = $value->order_id;
+        //   }else{  $order_albums = []; }
+        //   if($value->video_name == 'artist'){
+        //     $order_artist = $value->order_id;
+        //   }else{  $order_artist = []; }
+        //   if($value->video_name == 'series'){
+        //     $order_series = $value->order_id;
+        //   }else{  $order_series = []; }
+        //   if($value->video_name == 'featured_videos'){
+        //     $order_featured_videos = $value->order_id;
+        //   }else{  $order_featured_videos = [];  }
+        //   if($value->video_name == 'Recommendation'){
+        //     $order_Recommendation = $value->order_id;
+        //   }else{  $order_Recommendation = []; }
+        //   $OrderSetting[] = array(
+        //   'order_latest_videos' => $order_latest_videos,
+        //   'order_category_videos' => $order_category_videos,
+        //   'order_live_videos' => $order_live_videos,
+        //   'order_audios' => $order_audios,
+        //   'order_albums' => $order_albums,
+        //   'order_artist' => $order_artist,
+        //   'order_series' => $order_series,
+        //   'order_featured_videos' => $order_featured_videos,
+        //   'order_Recommendation' => $order_Recommendation,
+        //   );
+        // }
+        
+        
+        if(@$HomeSetting->featured_videos == 1){
+          $featured_videos = Video::where('active', '=', '1')->where('featured', '=', '1')->where('status', '=', '1')->where('draft', '=', '1')
+              ->orderBy('created_at', 'DESC')
+              ->get();
+
+        }else{
+          $featured_videos = [];
+        }
+
+        if(@$HomeSetting->latest_videos == 1){
+          $latest_videos = Video::where('status', '=', '1')->take(10)->where('active', '=', '1')->where('draft', '=', '1')
+                    ->orderBy('created_at', 'DESC')
+                    ->get();
+        }else{
+          $latest_videos = [];
+        }
+
+        if(@$HomeSetting->category_videos == 1){
+          // echo "<pre>";
+          $videocategories = VideoCategory::select('id','image','order')->get()->toArray();
+          $order_video_categories = VideoCategory::select('id','name','order')->get()->toArray();
+          $myData = array();
+          foreach ($videocategories as $key => $videocategory) {
+            $videocategoryid = $videocategory['id'];
+            $genre_image = $videocategory['image'];
+
+            $videos= Video::Join('categoryvideos','categoryvideos.video_id','=','videos.id')->where('categoryvideos.category_id',$videocategoryid)
+            ->where('active','=',1)->where('status','=',1)->where('draft','=',1)->orderBy('videos.created_at', 'desc')->get()->map(function ($item) {
+              $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+              $item['video_url'] = URL::to('/').'/storage/app/public/';
+              $item['category_name'] = VideoCategory::where('id',$item->category_id)->pluck('slug')->first();
+              $item['category_order'] = VideoCategory::where('id',$item->category_id)->pluck('order')->first();
+
+              return $item;
+            });
+
+            $main_genre = CategoryVideo::Join('video_categories','video_categories.id','=','categoryvideos.category_id')
+            ->get('name');
+            foreach($main_genre as $value){
+              $category[] = $value['name']; 
+            }
+            if(!empty($category)){
+            $main_genre = implode(",",$category);
+            }else{
+              $main_genre = "";
+            }
+            if(count($videos) > 0){
+              $msg = 'success';
+            }else{
+              $msg = 'nodata';
+            }
+            $myData[] = array(
+              "message" => $msg,
+              'gener_name' =>  VideoCategory::where('id',$videocategoryid)->pluck('name')->first(),
+              'home_genre' =>  VideoCategory::where('id',$videocategoryid)->pluck('home_genre')->first(),
+              'gener_id' =>  VideoCategory::where('id',$videocategoryid)->pluck('id')->first(),
+              "videos" => $videos,
+              "order_video_categories" => $order_video_categories,
+            );
+          }
+        }else{
+          $myData = [];
+        }
+
+        if(@$HomeSetting->live_videos == 1){
+          $live_videos = LiveStream::where('active', '=', '1')->orderBy('id', 'DESC')
+          ->get();
+        }else{
+          $live_videos = [];
+        }
+
+        if(@$HomeSetting->series == 1){
+          $series = Video::where('active', '=', '1')->where('status', '=', '1')->where('draft', '=', '1')
+              ->orderBy('created_at', 'DESC')
+              ->get();;
+        }else{
+          $series = [];
+        }
+
+        if(@$HomeSetting->audios == 1){
+          $audios = Audio::where('active', '=', '1')->orderBy('created_at', 'DESC')->get();
+        }else{
+          $audios = [];
+        }
+
+        if(@$HomeSetting->albums == 1){
+          $albums = AudioAlbums::orderBy('created_at', 'DESC')->get();
+        }else{
+          $albums = [];
+        }
+
+        if(@$HomeSetting->Recommendation == 1){
+          $Recommendation = array();
+
+          $most_watch_user = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))->join('videos', 'videos.id', '=', 'recent_views.video_id')
+                ->groupBy('video_id');
+            if ($multiuser != null)
+            {
+                $most_watch_user = $most_watch_user->where('recent_views.sub_user', $multiuser);
+            }
+            else
+            {
+                $most_watch_user = $most_watch_user->where('recent_views.user_id', Auth::user()
+                    ->id);
+            }
+            if ($Family_Mode == 1)
+            {
+                $most_watch_user = $most_watch_user->where('age_restrict', '<', 18);
+            }
+            if ($Kids_Mode == 1)
+            {
+                $most_watch_user = $most_watch_user->where('age_restrict', '<', 10);
+            }
+            $most_watch_user = $most_watch_user->orderByRaw('count DESC')
+                ->limit(20)
+                ->get();
+
+            $top_most_watched = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))->join('videos', 'videos.id', '=', 'recent_views.video_id')
+                        ->groupBy('video_id')
+                        ->whereNotIn('videos.id', $blocking_videos);
+                    if ($Family_Mode == 1)
+                    {
+                        $top_most_watched = $top_most_watched->where('age_restrict', '<', 18);
+                    }
+                    if ($Kids_Mode == 1)
+                    {
+                        $top_most_watched = $top_most_watched->where('age_restrict', '<', 10);
+                    }
+                    $top_most_watched = $top_most_watched->orderByRaw('count DESC')
+                        ->limit(20)
+                        ->get();
+
+                        $Most_watched_country = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))->join('videos', 'videos.id', '=', 'recent_views.video_id')
+                        ->groupBy('video_id')
+                        ->orderByRaw('count DESC');
+                    if ($Family_Mode == 1)
+                    {
+                        $Most_watched_country = $Most_watched_country->where('age_restrict', '<', 18);
+                    }
+                    if ($Kids_Mode == 1)
+                    {
+                        $Most_watched_country = $Most_watched_country->where('age_restrict', '<', 10);
+                    }
+                    $Most_watched_country = $Most_watched_country->where('country', $countryName)->whereNotIn('videos.id', $blocking_videos)->limit(20)
+                        ->get();
+
+                        $preference_genres = User::where('id', Auth::user()->id)
+                        ->pluck('preference_genres')
+                        ->first();
+                    $preference_language = User::where('id', Auth::user()->id)
+                        ->pluck('preference_language')
+                        ->first();
+
+                    if ($preference_genres != null)
+                    {
+                        $video_genres = json_decode($preference_genres);
+                        $preference_gen = Video::whereIn('video_category_id', $video_genres)
+                        ->whereNotIn('videos.id', $blocking_videos) 
+                        ->where('active', '=', '1')
+                         ->where('status', '=', '1')
+                        ->where('draft', '=', '1')
+                        ;
+                        if ($Family_Mode == 1)
+                        {
+                            $preference_gen = $preference_gen->where('age_restrict', '<', 18);
+                        }
+                        if ($Kids_Mode == 1)
+                        {
+                            $preference_gen = $preference_gen->where('age_restrict', '<', 10);
+                        }
+                        $preference_gen = $preference_gen->get();
+                    }
+                    else
+                    {
+                        $preference_gen = [];
+                    }
+                    if ($preference_language != null)
+                    {
+                        $video_language = json_decode($preference_language);
+                        $preference_Lan = Video::whereIn('language', $video_language)
+                        ->whereNotIn('videos.id', $blocking_videos)
+                        ->where('status', '=', '1')
+                        ->where('draft', '=', '1')
+                        ->where('active', '=', '1');
+                        if ($Family_Mode == 1)
+                        {
+                            $preference_Lan = $preference_Lan->where('age_restrict', '<', 18);
+                        }
+                        if ($Kids_Mode == 1)
+                        {
+                            $preference_Lan = $preference_Lan->where('age_restrict', '<', 10);
+                        }
+                        $preference_Lan = $preference_Lan->get();
+                    }
+                    else
+                    {
+                        $preference_Lan = [];
+                    }
+              $Recommendation[] = array(
+                $top_most_watched = $top_most_watched,
+                $Most_watched_country = $Most_watched_country,
+                $most_watch_user = $most_watch_user,
+                $Most_watched_country = [],
+                $preference_gen = $preference_gen,
+                $preference_Lan = $preference_Lan,
+              );
+        }else{
+
+
+          $Recommendation[] = array(
+              $top_most_watched = [],
+              $Most_watched_country = [],
+              $most_watch_user = [],
+              $Most_watched_country = [],
+              $preference_gen = [],
+              $preference_Lan = [],
+          );
+        }
+
+       
+        $response = array(
+          'status'=>'true',
+          'HomeSetting' => $HomeSetting,
+          'OrderHomeSetting' => $OrderHomeSetting,
+          'featured_videos' => $featured_videos,
+          'latest_videos' => $latest_videos,
+          'category_videos' => $myData,
+          'live_videos' => $live_videos,
+          'series' => $series,
+          'audios' => $audios,
+          'albums' => $albums,
+          'Recommendation' => $Recommendation,
+
+        );
+
+      return response()->json($response, 200);
+        
+      } catch (\Throwable $th) {
+        $response = array(
+          'status'=>'false',
+          'message'=>$th->getMessage(),
+          'nodata' => [],
+        );
+    }
+    }
+
+
 }
 
 
