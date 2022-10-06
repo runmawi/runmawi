@@ -118,8 +118,6 @@ Index Of Script
 		/*---------------------------------------------------------------------
 			Slick Slider
 		----------------------------------------------------------------------- */
-        $(window).on('load',function(){
-            
             $('#home-slider').slick({
 			autoplay: true,
 			speed:500,
@@ -160,10 +158,7 @@ Index Of Script
 			}
 
 		});
-            $('#home-slider').fadeIn();
-           
-            $('.favorites-slider').fadeIn();
-            
+        
             jQuery('.favorites-slider').slick({
 			dots: false,
 			arrows: true,
@@ -205,9 +200,17 @@ Index Of Script
 			}
 			]
 		});
+        
+        
+    //    $(window).on('load',function(){
+            
+      //      $('#home-slider').fadeIn();
+           
+        //    $('.favorites-slider').fadeIn();
             
             
-        });
+            
+    //    });
         
 			
 		
