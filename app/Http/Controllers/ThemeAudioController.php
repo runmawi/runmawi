@@ -50,6 +50,7 @@ use App\BlockAudio;
 use App\Geofencing;
 use Theme;
 Use App\HomeSetting;
+use App\ThumbnailSetting;
 
 class ThemeAudioController extends Controller{
 
@@ -660,5 +661,21 @@ class ThemeAudioController extends Controller{
             return abort(404);
         }
       
+    }
+
+    public function albums_list()
+    {
+
+        // if(Auth::guest()):
+        //     return Redirect::to('/login');
+        // endif;
+
+        $data = array(
+            'albums_list' => AudioAlbums::get(),
+            'page_name'    => ucwords('albums'),
+            'ThumbnailSetting' => ThumbnailSetting::first(),
+        );
+        
+        return Theme::view('albums_list', $data);
     }
 }
