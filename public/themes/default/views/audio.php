@@ -203,7 +203,7 @@ Your browser does not support the audio element.
 
 <div class="row album-top-30 mt-4 align-items-center">
 <div class="col-sm-2 col-md-2 col-xs-2">
-<img src="<?= URL::to('/').'/public/uploads/images/'. $audio->image ?>"  class="img-responsive" >
+<img src="<?= URL::to('/').'/public/uploads/images/'. $audio->image ?>" height="200" width="200" class="img-responsive" >
 
 <!-- -->
 </div>
@@ -295,12 +295,14 @@ Your browser does not support the audio element.
 <div class="col-sm-12">
     
 <h4  class="album-title">Other Albums </h4>
-<ul class="album_list mt-3" style="display: flex;">
+    <div class="favorites-contens">
+<ul class="favorites-slider list-inline  row p-0 mb-0">
     <?php foreach ($other_albums as $other_album) { ?>
-        <li>
+        <li class="slide-item">
             <?php if($other_album->album != ''){ ?>
+            
                 <a href="<?php echo URL('/').'/album/'.$other_album->slug; ?>">
-                <img src="<?= URL::to('/').'/public/uploads/albums/' . $other_album->album ?>"  class="img-responsive" width="200" height="150"/>
+                <img src="<?= URL::to('/').'/public/uploads/albums/' . $other_album->album ?>"  class="img-responsive w-100" />
                 <div class="play-block">
                     <a href=""> <i class="fa fa-play flexlink" aria-hidden="true"></i> </a>
                 </div>
@@ -312,6 +314,7 @@ Your browser does not support the audio element.
         </li>
     <?php } ?>
 </ul>
+        </div>
 </div>
 
 </div>

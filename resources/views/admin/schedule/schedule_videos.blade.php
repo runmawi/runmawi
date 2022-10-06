@@ -106,7 +106,7 @@ $media_url = URL::to("/schedule/videos") . "/" . $schedule->name;
                                 <form action="{{URL::to('admin/schedule/uploadFile')}}" method= "post" class='dropzone' ></form>
                                 <div class="row justify-content-center">
                                     <div class="col-md-9 text-center">
-                                    <p class="c1" style="margin-left: 25%;">Trailers Can Be Uploaded From Video Edit Screen</p>
+                                    <p class="c1" style="">Trailers Can Be Uploaded From Video Edit Screen</p>
                                     </div>
                                 </div>
                             </div>
@@ -119,13 +119,13 @@ $media_url = URL::to("/schedule/videos") . "/" . $schedule->name;
                     <h4 class="container-fluid mt-3">Drag Video and Drop for Scheduling:</h4>
                 <div class="col-md-12">
                      <div class="row">
-                     <div class="col-md-6">
+                     <div class="col-md-6 p-0">
 
                         <div class="drop-zone ScrollStyle">
                                 <!-- <div class="draggable"> -->
                                         @foreach(@$Video as $value)
                                         <div class="draggable">
-                                            <input type="text" data-class="{{ $value->id }}" id="video_id" draggable="true" ondragstart="drag(this)" class="video_{{ $value->id }}" value="{{ $value->title }}" readonly>
+                                            <input type="text" data-class="{{ $value->id }}" id="video_id" draggable="true" ondragstart="drag(this)" class=" form-control video_{{ $value->id }}" value="{{ $value->title }}" readonly>
                                             <!-- <div class="video_id{{ $value->id }}" data-toggle="modal" data-target="#video" data-name="{{ $value->id }}"  onclick="dropZoneDropHandler(this)"  >{{ $value->title }}</div> -->
                                         </div>
                                         @endforeach

@@ -2112,7 +2112,7 @@ box-shadow: -1px 6px 13px 0px rgba(0,0,0,0.44);
 }
 
 .favorites-slider{
-    opacity: 0;
+    display: none;
 }
 
 /* arrows */
@@ -2148,6 +2148,7 @@ box-shadow: -1px 6px 13px 0px rgba(0,0,0,0.44);
     touch-action: auto!important;
     opacity: 1;
 }
+
 
 
 
