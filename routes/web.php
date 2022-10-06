@@ -180,6 +180,7 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
     Route::get('audio/{slug}', 'ThemeAudioController@index');
     //Route::get('audios_category/{audio_id}', 'ThemeAudioController@categoryaudios');
     Route::get('album/{album_slug}', 'ThemeAudioController@album');
+    Route::get('/albums-list', 'ThemeAudioController@albums_list')->name('albums_list');
 
         
     Route::post('/sendOtp', 'HomeController@SendOTP');
