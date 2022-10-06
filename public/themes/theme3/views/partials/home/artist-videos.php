@@ -18,13 +18,14 @@
         <li class="slide-item">
             <a href="<?php echo URL::to('artist-list') ?>">
                 <div class="block-images position-relative">
+                     <a href="<?php echo URL::to('artist') ?><?= '/' . $artist_details->artist_slug ?>">
                     <div class="img-box">
-                        <a href="<?php echo URL::to('artist') ?><?= '/' . $artist_details->artist_slug ?>">
-                             <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$artist_details->image;  ?>" class="img-fluid w-100" alt="">
-                        </a>
+                       
+                             <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$artist_details->image;  ?>" class="img-fluid lazyload w-100" alt="">
+                        
                     </div>
-               
-
+               </a>
+                </div>
                 <div class="block-description">
                     <div class="hover-buttons">
                         <a class="text-white btn-cl" href="<?php echo URL::to('artist') ?><?= '/' . $artist_details->artist_slug ?>">
@@ -38,7 +39,7 @@
                         <h6><?php  echo (strlen($artist_details->artist_name) > 17) ? substr($artist_details->artist_name,0,18).'...' : $artist_details->artist_name; ?></h6>
                     <?php } ?>
                 </div>
- </div>
+
             </a>
         </li>
         <?php endforeach; endif; ?>
