@@ -2236,7 +2236,7 @@ $final[] = array_merge($array1,$array2,$array3,$array4);
           return $item;
       });
 
-      $Splash_Screen_first = MobileApp::pluck('splash_image')->first();
+      $Splash_Screen_first = MobileApp::pluck('andriod_splash_image')->first();
 
       $first_Splash_Screen[] =[
         'Splash_Screen'=> $Splash_Screen_first,
@@ -3325,8 +3325,9 @@ public function checkEmailExists(Request $request)
       
       $episodeid = $request->episodeid;
 
-      $episode = Episode::where('id',$episodeid)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+      $episode = Episode::where('id',$episodeid)->orderBy('episode_order')->get()->map(function ($item) {
          $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
+         $item['series_name'] = Series::where('id',$item->series_id)->pluck('title')->first();
          return $item;
        });
        if(count($episode) > 0){
@@ -3473,10 +3474,6 @@ public function checkEmailExists(Request $request)
       else {
             $ppv_video_status = "pay_now";
       }
-
-
-
-
 
 
       $response = array(
@@ -7912,7 +7909,7 @@ $cpanel->end();
       
     $episodeid = $request->episodeid;
 
-    $episode = Episode::where('id',$episodeid)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+    $episode = Episode::where('id',$episodeid)->orderBy('episode_order')->get()->map(function ($item) {
        $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
        $item['series_name'] = Series::where('id',$item->series_id)->pluck('title')->first();
        return $item;

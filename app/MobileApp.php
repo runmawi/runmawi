@@ -12,7 +12,7 @@ class MobileApp extends Model
 
 	public $timestamps = false;
 
-	protected $fillable = array('id', 'splash_image', 'created_at', 'updated_at');
+	protected $fillable = array('id', 'splash_image','andriod_splash_image' ,'created_at', 'updated_at');
 
 	protected $table = 'mobile_apps';
 }
