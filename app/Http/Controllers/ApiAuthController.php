@@ -8245,15 +8245,23 @@ $cpanel->end();
           $featured_videos = Video::where('active', '=', '1')->where('featured', '=', '1')->where('status', '=', '1')->where('draft', '=', '1')
               ->orderBy('created_at', 'DESC')
               ->get();
-
+          $featured_videos =  Video::where('active', '=', '1')->where('featured', '=', '1')->where('status', '=', '1')->where('draft', '=', '1')
+          ->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+              $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+              $item['video_url'] = URL::to('/').'/storage/app/public/';
+              return $item;
+            });
         }else{
           $featured_videos = [];
         }
 
         if(@$HomeSetting->latest_videos == 1){
-          $latest_videos = Video::where('status', '=', '1')->take(10)->where('active', '=', '1')->where('draft', '=', '1')
-                    ->orderBy('created_at', 'DESC')
-                    ->get();
+          $latest_videos =  Video::where('status', '=', '1')->take(10)->where('active', '=', '1')->where('draft', '=', '1')
+          ->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+              $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+              $item['video_url'] = URL::to('/').'/storage/app/public/';
+              return $item;
+            });
         }else{
           $latest_videos = [];
         }
@@ -8306,28 +8314,39 @@ $cpanel->end();
         }
 
         if(@$HomeSetting->live_videos == 1){
-          $live_videos = LiveStream::where('active', '=', '1')->orderBy('id', 'DESC')
-          ->get();
+          $live_videos = LiveStream::where('active', '=', '1')->orderBy('id', 'DESC')->get()->map(function ($item) {
+            $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
+            return $item;
+          });
         }else{
           $live_videos = [];
         }
 
         if(@$HomeSetting->series == 1){
-          $series = Video::where('active', '=', '1')->where('status', '=', '1')->where('draft', '=', '1')
-              ->orderBy('created_at', 'DESC')
-              ->get();;
+          $series = Series::where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+              $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+              $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+              return $item;
+            });
         }else{
           $series = [];
         }
 
         if(@$HomeSetting->audios == 1){
-          $audios = Audio::where('active', '=', '1')->orderBy('created_at', 'DESC')->get();
+          $audios = Audio::orderBy('created_at', 'desc')->get()->map(function ($item) {
+            $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+            $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;     
+            return $item;
+          });
         }else{
           $audios = [];
         }
 
         if(@$HomeSetting->albums == 1){
-          $albums = AudioAlbums::orderBy('created_at', 'DESC')->get();
+          $albums = AudioAlbums::orderBy('created_at', 'desc')->get()->map(function ($item) {
+            $item['image_url'] = URL::to('/').'/public/uploads/albums/'.$item->album;
+            return $item;
+          });
         }else{
           $albums = [];
         }

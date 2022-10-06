@@ -138,23 +138,50 @@ public function RentPaypal(Request $request)
     $video_id = $request->get('video_id');
     $date = date('YYYY-MM-DD');
 
+    $video = LiveStream::where('id','=',$video_id)->where('uploaded_by','CPP')->first();
 
-
-    $video = LiveStream::where('id','=',$video_id)->first();
+    $channelvideo = LiveStream::where('id','=',$video_id)->where('uploaded_by','Channel')->first();
+  
     if(!empty($video)){
       $moderators_id = $video->user_id;
      }
-    if(!empty($moderators_id)){
+  
+    // $video = LiveStream::where('id','=',$video_id)->first();
+    if(!empty($video)){
+      $moderators_id = $video->user_id;
+     }
+     if(!empty($moderators_id)){
       $moderator = ModeratorsUser::where('id','=',$moderators_id)->first();  
       $total_amount = $video->ppv_price;
       $title =  $video->title;
-      $commssion = VideoCommission::first();
-      $percentage = $commssion->percentage; 
+      // $commssion = VideoCommission::first();
+      $commission = VideoCommission::where('type', 'CPP')->first();
+      $percentage = $commission->percentage; 
       $ppv_price = $video->ppv_price;
-      $admin_commssion = ($percentage/100) * $ppv_price ;
+      // $admin_commssion = ($percentage/100) * $ppv_price ;
       $moderator_commssion = $ppv_price - $percentage;
+      $admin_commssion =  $ppv_price - $moderator_commssion;
       $moderator_id = $moderators_id;
-    }else{
+      $channel_id = null ;
+
+    }elseif(!empty($channelvideo)){
+      if(!empty($channelvideo)){
+        $channelvideo_id = $channelvideo->user_id;
+       }
+       $Channel = Channel::where('id','=',$channelvideo_id)->first();  
+       $total_amount = $channelvideo->ppv_price;
+       $title =  $channelvideo->title;
+       $commssion = VideoCommission::where('type','Channel')->first();
+       $percentage = $commssion->percentage; 
+       $ppv_price = $channelvideo->ppv_price;
+       // $admin_commssion = ($percentage/100) * $ppv_price ;
+       $moderator_commssion = $ppv_price - $percentage;
+       $admin_commssion =  $ppv_price - $moderator_commssion;
+       $channel_id = $channelvideo_id;
+       $moderator_id = null;
+  
+    }
+    else{
       $total_amount = $video->ppv_price;
       $title =  $video->title;
       $commssion = VideoCommission::first();
@@ -163,8 +190,30 @@ public function RentPaypal(Request $request)
       $admin_commssion =  null;
       $moderator_commssion = null;
       $moderator_id = null;
-
+      $channel_id = null ;
     }
+    
+    // if(!empty($moderators_id)){
+    //   $moderator = ModeratorsUser::where('id','=',$moderators_id)->first();  
+    //   $total_amount = $video->ppv_price;
+    //   $title =  $video->title;
+    //   $commssion = VideoCommission::first();
+    //   $percentage = $commssion->percentage; 
+    //   $ppv_price = $video->ppv_price;
+    //   $admin_commssion = ($percentage/100) * $ppv_price ;
+    //   $moderator_commssion = $ppv_price - $percentage;
+    //   $moderator_id = $moderators_id;
+    // }else{
+    //   $total_amount = $video->ppv_price;
+    //   $title =  $video->title;
+    //   $commssion = VideoCommission::first();
+    //   $percentage = null; 
+    //   $ppv_price = $video->ppv_price;
+    //   $admin_commssion =  null;
+    //   $moderator_commssion = null;
+    //   $moderator_id = null;
+
+    // }
     $payment_settings = PaymentSetting::first();  
     $mode = $payment_settings->live_mode ;
       if($mode == 0){
@@ -197,7 +246,7 @@ public function RentPaypal(Request $request)
     $purchase->status = 'active';
     $purchase->to_time = $to_time;
     $purchase->moderator_id = $moderator_id;
-
+    $purchase->channel_id = $channel_id;
     $purchase->save();
 
     $livepurchase = new LivePurchase;
@@ -391,7 +440,7 @@ public function RentPaypal(Request $request)
     // print_r($video_id);exit();
     $video = Video::where('id','=',$video_id)->where('uploaded_by','CPP')->first();
 
-    $channelvideo = Video::where('id','=',$video_id)->where('Channel','CPP')->first();
+    $channelvideo = Video::where('id','=',$video_id)->where('uploaded_by','Channel')->first();
 
     if(!empty($video)){
       $moderators_id = $video->user_id;
