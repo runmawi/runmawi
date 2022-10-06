@@ -207,7 +207,7 @@ Your browser does not support the audio element.
 
 <!-- -->
 </div>
-<div class="col-sm-8 col-md-8 col-xs-8 p-0">
+<div class="col-sm-8 col-md-8 col-xs-8">
 <div class="album_bg">
 <div class="album_container">
 <div class="blur"></div>
@@ -215,7 +215,7 @@ Your browser does not support the audio element.
 <h2 class="hero-title album"> <?= $audio->title; ?></h2>
 <p class="mt-2">Music by <?php echo get_audio_artist($audio->id); ?></p>
 <p class="mt-2">Album <a href="<?php echo URL::to('/').'/album/'.$album_slug;?>"><?php echo ucfirst($album_name); ?></a></p>
-<div class="d-flex" style="justify-content: space-between;width: 18%;align-items: center;">
+<div class="d-flex" style="justify-content: space-between;width: 22%;align-items: center;">
 <button class="btn bd" id="vidbutton"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play</button>
 <a aria-hidden="true" class="favorite <?php echo audiofavorite($audio->id);?>" data-authenticated="<?= !Auth::guest() ?>" data-audio_id="<?= $audio->id ?>"><?php if(audiofavorite($audio->id) == "active"): ?><i id="ff" class="fa fa-heart" ></i><?php else: ?><i id="ff" class="fa fa-heart-o" ></i><?php endif; ?></a>
 <i id="ff" class="fa fa-ellipsis-h" aria-hidden="true"></i>
@@ -302,14 +302,23 @@ Your browser does not support the audio element.
             <?php if($other_album->album != ''){ ?>
             
                 <a href="<?php echo URL('/').'/album/'.$other_album->slug; ?>">
-                <img src="<?= URL::to('/').'/public/uploads/albums/' . $other_album->album ?>"  class="img-responsive w-100" />
-                <div class="play-block">
-                    <a href=""> <i class="fa fa-play flexlink" aria-hidden="true"></i> </a>
+                    <div class="block-images position-relative">
+                          <div class="img-box">
+                             <img src="<?= URL::to('/').'/public/uploads/albums/' . $other_album->album ?>"  class="img-responsive w-100" />   
+                        </div>
+                        <div class="block-description">
+                            <div class="hover-buttons text-white">
+                                <p class="mt-2"><?php echo ucfirst($other_album->albumname);?> </p>
                 </div>
+                           
+            <?php  } ?> 
+                        </div>
+                    </div>
+              
+               
                     
             </a>
-            <p class="mt-2"><?php echo ucfirst($other_album->albumname);?>
-            <?php  } ?> </p>
+           
           
         </li>
     <?php } ?>
