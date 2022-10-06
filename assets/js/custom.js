@@ -162,7 +162,7 @@ Index Of Script
 		});
             $('#home-slider').fadeIn();
            
-            
+            $('.favorites-slider').fadeIn();
             
             jQuery('.favorites-slider').slick({
 			dots: false,

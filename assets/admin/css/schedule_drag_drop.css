@@ -1,18 +1,20 @@
 .draggable {
     /* background: #e0ffee;
     border: 1px solid #57a57a; */
-    width: 200px;
+    width: 250px;
     padding: 5px;
     margin: 3px;
 }
 
 .drop-zone {
-    width: 300px;
-    padding: 10px;
+    /*width: 300px;
+    padding: 10px;*/
     margin: 10px;
+    padding-left: 20px;
     background: #eee;
-    border: 2px solid #000;
-    min-height: 36px;
+    border: 2px solid #fafafa;
+    min-height: 150px;
+    border-radius: 10px;
 }
 
 /* Dragged source element style */
