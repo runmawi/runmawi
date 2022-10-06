@@ -325,10 +325,13 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
 
     Route::get('/', 'AdminDashboardController@index');
     Route::get('/mobileapp', 'AdminUsersController@mobileapp');
+
+    // Splash Screen
     Route::post('/mobile_app/store', 'AdminUsersController@mobileappupdate');
-    Route::get('/mobile_app/Splash_destroy/{id}', 'AdminUsersController@Splash_destroy')->name('Splash_destroy');
-    Route::get('/mobile_app/Splash_edit/{id}', 'AdminUsersController@Splash_edit')->name('Splash_edit');
-    Route::post('/mobile_app/Splash_update/{id}', 'AdminUsersController@Splash_update')->name('Splash_update');
+    Route::get('/mobile_app/Splash_destroy/{source}/{id}', 'AdminUsersController@Splash_destroy')->name('Splash_destroy');
+    Route::get('/mobile_app/Splash_edit/{source}/{id}', 'AdminUsersController@Splash_edit')->name('Splash_edit');
+    Route::post('/mobile_app/Splash_update/{source}/{id}', 'AdminUsersController@Splash_update')->name('Splash_update');
+
     Route::get('/users', 'AdminUsersController@index');
     Route::get('/user/create', 'AdminUsersController@create');
     Route::post('/user/store', 'AdminUsersController@store');
