@@ -940,7 +940,14 @@ class AdminUsersController extends Controller
         $input['splash_image'] = $file->getClientOriginalName();
         $file->move($path, $input['splash_image']);
 
-        MobileApp::create(['splash_image' => $input['splash_image'], ]);
+        $file =  $request['andriod_splash_image'];
+        $input['andriod_splash_image'] = "andriod_splash_image_".time().".".$file->getClientOriginalExtension();
+        $file->move($path, $input['andriod_splash_image']);
+
+        MobileApp::create(
+                [  'splash_image' => $input['splash_image'],
+                   'andriod_splash_image' => $input['andriod_splash_image'],
+                ]);
 
         return Redirect::to('admin/mobileapp')->with(array(
             'message' => 'Successfully Updated  Settings!',
@@ -2912,7 +2919,7 @@ class AdminUsersController extends Controller
         }
     }
     
-    public function Splash_edit(Request $request, $id)
+    public function Splash_edit(Request $request, $source, $id )
     {
 
         $Splash = MobileApp::where('id', $id)->first();
@@ -2921,19 +2928,20 @@ class AdminUsersController extends Controller
         $data = array(
             'admin_user' => Auth::user() ,
             'Splash' => $Splash,
-            'allCategories' => $allCategories
+            'allCategories' => $allCategories,
+            'source'   => $source
         );
 
         return View::make('admin.mobile.splashEdit', $data);
 
     }
 
-    public function Splash_update(Request $request, $id)
+    public function Splash_update(Request $request, $source, $id)
     {
         $input = $request->all();
         $Splash = MobileApp::find($id);
 
-        if ($request->file('splash_image'))
+        if ( $source == "ios" && $request->file('splash_image'))
         {
             $path = public_path() . '/uploads/settings/';
             $splash_image = $request['splash_image'];
@@ -2942,8 +2950,23 @@ class AdminUsersController extends Controller
             $file->move($path, $input['splash_image']);
 
             $Splash->splash_image = $input['splash_image'];
+
+            $Splash->save();
+
         }
-        $Splash->save();
+
+        if ( $source == "andriod" &&  $request->file('andriod_splash_image'))
+        {
+            $path = public_path() . '/uploads/settings/';
+            $file = $request['andriod_splash_image'];
+            $input['andriod_splash_image'] = "andriod_splash_image_".time().".".$file->getClientOriginalExtension();
+            $file->move($path, $input['andriod_splash_image']);
+
+            $Splash->andriod_splash_image = $input['andriod_splash_image'];
+
+            $Splash->save();
+
+        }
 
         return Redirect::to('admin/mobileapp')
             ->with(array(
@@ -2952,10 +2975,26 @@ class AdminUsersController extends Controller
         ));
     }
 
-    public function Splash_destroy($id)
+    public function Splash_destroy( $source ,$id)
     {
-        $Splash = MobileApp::find($id);
-        $Splash->delete();
+        if( $source == "andriod" ){
+            $Splash = MobileApp::find($id)->update([
+                "andriod_splash_image" => null ,
+            ]);
+        }
+
+        if ( $source == "ios" ){
+            $Splash = MobileApp::find($id)->update([
+                "splash_image" => null ,
+            ]);
+        }
+
+        $Splash = MobileApp::where('id',$id)->first();
+
+        if( $Splash->splash_image == null && $Splash->andriod_splash_image == null  ){
+            $Splash->delete();
+        }
+
         return Redirect::to('admin/mobileapp')
             ->with(array(
             'message' => 'Successfully deleted!',

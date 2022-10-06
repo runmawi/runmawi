@@ -296,6 +296,87 @@ border-radius: 0px 4px 4px 0px;
                 </div>
             @endif
 
+                                 {{-- Re-Stream  --}}
+                    <div class="row mt-3">
+                        <div class="col-sm-6">
+                            <label class="m-0">Enable ReStream</label>
+
+                            <div class="panel-body">
+                                <div class="mt-1">
+                                    <label class="switch">
+                                        <input name="enable_restream" class="enable_restream" id="enable_restream" type="checkbox" @if(!empty($video->enable_restream) && $video->enable_restream == 1){{ 'checked="checked"' }}@elseif(!isset($video->enable_restream)){{ 'checked="checked"' }}@endif >
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                                    {{-- YouTube Stream  --}}
+
+                        <div class="row mt-3" id="youtube_restream_url">
+                            <div class="col-sm-6">
+                                <div class="panel-body">
+                                    <div class="mt-2" >
+                                        <label class="mb-1"> YouTube Stream (RTMP URL) </label>
+                                        <input type="text" name="youtube_restream_url" class="form-control" id="YT_restream_url" placeholder="YouTube Stream Url" value="@if(!empty($video->youtube_restream_url) ) {{ $video->youtube_restream_url}}  @endif" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="panel-body">
+                                    <div class="mt-2" id="">
+                                        <label class="mb-1"> YouTube Stream Key </label>
+                                        <input type="text" name="youtube_streamkey" class="form-control" id="youtube_streamkey" placeholder="YouTube Stream Key" value="@if(!empty($video->youtube_streamkey) ) {{ $video->youtube_streamkey}}  @endif" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                                    
+                                                {{-- fb Restream --}}
+
+                        <div class="row mt-3" id="fb_restream_url">
+                            <div class="col-sm-6">
+                                <div class="panel-body">
+                                    <div class="mt-2" id="">
+                                        <label class="mb-1"> FaceBook Stream (RTMP URL) </label>
+                                        <input type="text" name="fb_restream_url" class="form-control" id="facebook_restream_url" placeholder="Facebook Stream" value="@if(!empty($video->fb_restream_url) ) {{ $video->fb_restream_url}} @endif" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6" >
+                                <div class="panel-body">
+                                    <div class="mt-2" id="">
+                                        <label class="mb-1"> FaceBook Stream Key </label>
+                                        <input type="text" name="fb_streamkey" class="form-control" id="" placeholder="Facebook Stream Key" value="@if(!empty($video->fb_streamkey) ) {{ $video->fb_streamkey}}  @endif" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                                                {{-- Twitter Restream --}}
+                        <div class="row mt-3" id="twitter_restream_url">
+                            <div class="col-sm-6">
+                                <div class="panel-body">
+                                    <div class="mt-2" >
+                                        <label class="mb-1"> Twitter Stream (RTMP URL) </label>
+                                        <input type="text" name="twitter_restream_url" class="form-control"  id="Twitter_Restream_url" placeholder="Twitter Stream" value="@if(!empty($video->twitter_restream_url) ) {{ $video->twitter_restream_url}} @endif" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="panel-body">
+                                    <div class="mt-2" >
+                                        <label class="mb-1"> Twitter Stream Key </label>
+                                        <input type="text" name="twitter_streamkey" class="form-control" id="twitter_streamkey" placeholder="Twitter Stream" value="@if(!empty($video->twitter_streamkey) ) {{ $video->twitter_streamkey}}  @endif" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
             <div class="row mt-3">
                 <div class="col-sm-12">
                     <label class="m-0">Search Tags</label>
@@ -504,6 +585,54 @@ border-radius: 0px 4px 4px 0px;
 <!-- This is where now -->
 </div>
     </div></div>
+
+       
+                    <!-- Restream Modal -->
+        <input type="hidden" class="btn btn-primary btn-lg" data-toggle="modal" id="restream_button" data-backdrop="static" data-target="#myModal">
+
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header" style="border:none;">
+                        <button type="button" class="close restream_modal_close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <h4 class="modal-title text-center">Choose A Platfrom</h4>
+                        <div class="container mt-5">
+
+                            <div class="row">
+
+                                <div class="col-md-4 youtube_col"> 
+                                    <a class="youtube_btn btn btn-outline-primary">
+                                        <img class="w-50" src="<?php echo  URL::to('/assets/img/you.png')?>" >
+                                        <p class="mb-0 Youtube">Youtube</p>
+                                    </a>
+                                </div>
+
+                                <div class="col-md-4 facebook_col"> 
+                                    <a class="facebook_btn btn btn-outline-primary" value="ss">
+                                        <img class="w-100" src="<?php echo  URL::to('/assets/img/face.jpg')?>" >
+                                        <p class="mb-0 Facebook">Facebook</p>
+                                    </a>
+                                </div>
+
+                                <div class="col-md-4 twitter_col"> 
+                                    <a class="twitter_btn btn btn-outline-primary">
+                                        <img class="w-50" src="<?php echo  URL::to('/assets/img/twitter.png')?>" >
+                                        <p class="mb-0 Twitters" value="sss">Twitter</p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer p-4" style="background:#0000FF;border:none; justify-content: space-between;">
+                        <p class="text-white">Get more power from Restream </p>
+                        <button type="button" class="btn btn-secondary restream_modal_save" data-dismiss="modal"> Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 </div>
 	
 @php
@@ -563,6 +692,79 @@ $( document ).ready(function() {
 			})
 		}
 	});
+
+     // Restream Script 
+
+     $(document).ready(function(){
+        
+        if (!$('#YT_restream_url').val()) {
+            $('#youtube_restream_url').hide();
+        }
+
+        if (!$('#Twitter_Restream_url').val()) {
+            $('#twitter_restream_url').hide();
+        }
+
+        if (!$('#facebook_restream_url').val()) {
+            $('#fb_restream_url').hide();
+        }
+        
+        $(".restream_modal_close").click(function() {
+            $("#enable_restream").attr("checked", false);
+        });
+
+        $("#enable_restream").change(function(){
+            var enable_restream  = $("#enable_restream").prop("checked");
+            if(enable_restream == true){
+                document.getElementById("restream_button").click();
+            }
+
+            if(enable_restream == false){
+                $('#fb_restream_url').hide();
+                $('#youtube_restream_url').hide();
+                $('#twitter_restream_url').hide();
+            }
+        });
+
+        $(".youtube_col").click(function(){
+            $(".youtube_btn").toggleClass('active');
+            $(".Youtube").toggleClass('restream_active');
+        });
+
+        $(".facebook_col").click(function(){
+            $(".facebook_btn").toggleClass('active');
+            $(".Facebook").toggleClass('restream_active');
+        });
+
+        $(".twitter_col").click(function(){
+            $(".twitter_btn").toggleClass('active');
+            $(".Twitters").toggleClass('restream_active');
+        });
+
+        $(".restream_modal_save").click(function(){
+
+            $('#fb_restream_url').hide();
+            $('#youtube_restream_url').hide();
+            $('#twitter_restream_url').hide();
+
+            var inputs =  $('.restream_active');
+           
+            for(var i=0 ; i < inputs.length; i++  )
+            {
+                if( $(inputs[i]).html() == "Facebook"){
+                    $('#fb_restream_url').show();
+                }
+
+                if( $(inputs[i]).html() == "Youtube"){
+                    $('#youtube_restream_url').show();
+                }
+
+                if( $(inputs[i]).html() == "Twitter"){
+                    $('#twitter_restream_url').show();
+                }
+            }
+        });
+    });
 
 
 $(document).ready(function(){
@@ -646,7 +848,7 @@ $(document).ready(function(){
 
 
 
-//  validate 
+    //  validate 
 	$('form[id="liveEdit_video"]').validate({
 	rules: {
 	  title: 'required',
@@ -708,7 +910,7 @@ $(document).ready(function(){
 	}
   });
 
-//  End validate
+    //  End validate
 
             $('#mp4_code').hide();
             $('#embed_code').hide();
