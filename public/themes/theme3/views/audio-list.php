@@ -38,17 +38,16 @@
 			<?php 
 			if(isset($albums) && count( $albums) > 0 ) { 
 				foreach($albums as $album): ?>
-					<div class="iq-main-header col-md-3 d-flex align-items-center justify-content-between">
+					<div class="iq-main-header ">
 						<div class="favorites-contens">
 				            <div class="epi-box">
+                                  <a href="<?= URL::to('album') ?><?= '/' . $album->slug ?>">
                                 <div class="epi-img position-relative">
-                                   <img src="<?php echo URL::to('/').'/public/uploads/albums/'.$album->album;?>" class="img-fluid img-zoom" alt="">
+                                   <img src="<?php echo URL::to('/').'/public/uploads/albums/'.$album->album;?>" class="img-fluid img-zoom" height="200" width="200" alt="">
                                    <div class="episode-play-info">
-                                      <div class="episode-play">
-                                         <a href="<?= URL::to('album') ?><?= '/' . $album->slug ?>">
-                                            <i class="ri-play-fill"></i>
-                                         </a>
-                                      </div>
+                                     <!-- <div class="episode-play">
+                                         
+                                      </div>-->
                                    </div>
                                 </div>
                                 <div class="epi-desc p-3"> 
@@ -59,6 +58,7 @@
                                       <span class="text-white"><small><?php if($audios_count > 0){  echo get_audio_artist($audio->id); }else{}  ?></small></span>
                                    </div>
                                 </div>
+                                </a>
                             </div>
 						</div>
 					</div>

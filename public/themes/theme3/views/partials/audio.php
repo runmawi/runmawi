@@ -1,8 +1,8 @@
 <?php if(isset($audios)) :
 foreach($audios as $audio): ?>
-<div class="iq-main-header ">
+<div class="iq-main-header col-md-2 p-0">
     <div class="favorites-contens">           
-        <div class="epi-box">
+        <div class="epi-box ">
             <div class="epi-img position-relative">
                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$audio->image;?>" class="img-fluid img-zoom" alt="">
                <div class="episode-play-info">

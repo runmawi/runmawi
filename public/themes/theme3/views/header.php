@@ -519,6 +519,7 @@ input:checked + .sliderk:before {
 {
   position: absolute;
   width: 250px;
+    min-height: 500px;
   margin: -100px 0 0 -50px;
   padding: 20px;
   padding-top: 125px;
