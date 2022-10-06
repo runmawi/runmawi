@@ -221,7 +221,7 @@
                         </div>
                     </div>
                     
-                     {{-- Re-Stream  --}}
+                                            {{-- Re-Stream  --}}
                      <div class="row mt-3">
                         <div class="col-sm-6">
                             <label class="m-0">Enable ReStream</label>

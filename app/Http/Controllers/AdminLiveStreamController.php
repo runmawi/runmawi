@@ -784,6 +784,18 @@ class AdminLiveStreamController extends Controller
         }else{
             $searchtags = $request['searchtags'];
         } 
+
+            // Restearm
+        if(!empty($data['enable_restream'])){
+            $video->fb_restream_url      = $data['fb_restream_url'];
+            $video->youtube_restream_url = $data['youtube_restream_url'];
+            $video->twitter_restream_url = $data['twitter_restream_url'];
+            $video->fb_streamkey         = $data['fb_streamkey'];
+            $video->youtube_streamkey    = $data['youtube_streamkey'];
+            $video->twitter_streamkey    = $data['twitter_streamkey'];
+            $video->enable_restream      = $data['enable_restream'] ? '1' : '0' ;
+        }
+
         $video->rating = $rating;
         $video->banner = $banner;
         $video->url_type = $url_type;
@@ -1447,5 +1459,22 @@ class AdminLiveStreamController extends Controller
         return $file;
     }
 
+    public function liveStream(Request $request)
+    {
+        $r_144p  = (new Representation)->setKiloBitrate(95)->setResize(256, 144);
+        $format = new \Streaming\Format\X264();
+        $ffmpeg = \Streaming\FFMpeg::create([ ]);
 
+        $video = $ffmpeg->open('public/uploads/LiveStream/Vaaranam_Aayiram.mp4');
+
+        $hls = $video->hls()
+        ->x264()
+        ->addRepresentations([(new Representation)->setKiloBitrate(95)->setResize(256, 144)])
+        ->save('public/uploads/LiveStream/hls-stream-3.m3u8');
+
+        $hls->setMasterPlaylist('public/uploads/LiveStream/hls-stream-3.m3u8')
+            ->live('https://stream.flicknexs.com:9043/hls/8250313363/index.m3u8');
+
+        dd($hls);
+    }
 }
