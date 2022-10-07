@@ -1,6 +1,6 @@
 
 
-@extends('moderator.master')
+@extends('admin.master')
 
 @section('css')
 	<link rel="stylesheet" href="{{ URL::to('/assets/admin/css/sweetalert.css') }}">
@@ -70,7 +70,7 @@
                                             <th>Video Name</th>
                                             <th>Email</th>
                                             <th>Uploader Name</th>
-                                            <th>Total Views</th>
+                                            <!-- <th>Total Views</th> -->
                                             <!-- <th>Total Comments</th> -->
                                         </tr>
                                     </thead>
@@ -81,7 +81,7 @@
                                         <td>{{ $videos->title  }}</td>   
                                         <td>{{ $videos->cppemail  }}</td>   
                                         <td>{{ $videos->cppusername  }}</td>   
-                                        <td>{{ $videos->views  }}</td>   
+                                        <!-- <td>{{ $videos->views  }}</td>    -->
                                         <!-- <td>{{ $videos->count }}</td>  -->
                                         </tr>
                                     @endforeach
@@ -274,8 +274,8 @@ function drawChart() {
 
 var data = google.visualization.arrayToDataTable([
     ['Month Name', 'Moderator Video Views'],
-    <?php foreach ($total_content as $d) {
-        echo "['" . $d->month_name . "', " . $d->views . "],";
+    <?php foreach ($total_contentss as $d) {
+        echo "['" . @$d['month_name'] . "', " . @$d['count'] . "],";
     } ?>
     
 ]);
