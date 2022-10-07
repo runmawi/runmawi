@@ -54,7 +54,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                 <div class="d-flex justify-content-between">
                     <div><h1 class="card-title">{{ $episodes->title }}</h1></div>
                     <div class="pull-right">
-                        <a href="{{URL::to('episode') . '/' . @$episodes->series_title->title . '/' . $episodes->slug }}" target="_blank" class="btn btn-primary"> <i class="fa fa-eye"></i> Preview <i class="fa fa-external-link"></i> </a>
+                        <a href="{{URL::to('channel/episode') . '/' . @$episodes->series_title->title . '/' . $episodes->slug }}" target="_blank" class="btn btn-primary"> <i class="fa fa-eye"></i> Preview <i class="fa fa-external-link"></i> </a>
                     </div>
                 </div>
                 @endif

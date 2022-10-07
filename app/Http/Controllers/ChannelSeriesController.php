@@ -50,6 +50,10 @@ use App\Jobs\ConvertSerieTrailer;
 use Streaming\Representation;
 use getID3;
 use App\InappPurchase;
+use App\HomeSetting;
+use App\Theme;
+use App\Watchlater;
+use App\Wishlist;
 use Session;
 
 class ChannelSeriesController extends Controller
@@ -2249,6 +2253,64 @@ class ChannelSeriesController extends Controller
             return response()->json(['message' => "false"]);
         }
     }
+
+
+    public function play_episode($series_name,$episode_name)//
+    {
+
+         $settings = Setting::first();
+         $user = Session::get('channel');
+
+ 
+         if($user == null){
+                 $user_id = null ;
+         }else{
+             $user_id = $user->id ;
+         }
+ 
+         $episodess = Episode::where('slug','=',$episode_name)->orderBy('id', 'DESC')->first();    
+ 
+         $episode_watchlater = Watchlater::where('episode_id',$episodess->id)->where('user_id',$user_id)->first();
+ 
+         $episode_Wishlist = Wishlist::where('episode_id',$episodess->id)->where('user_id',$user_id)->first();
+ 
+
+         $episode = Episode::where('slug','=',$episode_name)->orderBy('id', 'DESC')->first();    
+         // dd($episode_name);
+         $id = $episode->id;
+         // $episode = Episode::findOrFail($id);
+         $season = SeriesSeason::where('series_id','=',$episode->series_id)->with('episodes')->get();
+         $series = Series::find($episode->series_id);
+         //$episoderesolutions = Episode::findOrFail($id)->episoderesolutions;
+         $episodenext = Episode::where('id', '>', $id)->where('series_id','=',$episode->series_id)->first();
+         $episodeprev = Episode::where('id', '<', $id)->where('series_id','=',$episode->series_id)->first();
+         //Make sure series is active
+ 
+ 
+        //  $view = new RecentView;
+        //  $view->user_id      = $user ? $user->id : null ;
+        //  $view->sub_user     = null ;
+        //  $view->country_name = $this->countryName ? $this->countryName : null ;
+        //  $view->visited_at   = Carbon::now()->year;
+        //  $view->episode_id      = $id ;
+        //  $view->save();
+         
+         $wishlisted = false;
+
+         $watchlater = false;
+
+
+
+             $data = array(
+
+                 'episode' => $episode,
+
+                 );
+
+                 return View::make('channel.series.season.player', $data);
+ 
+    }
+    
 
 }
 
