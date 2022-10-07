@@ -15,23 +15,23 @@
                              <!-- block-images -->
             <div class="img-box">
             <img src="<?php echo URL::to('/').'/public/uploads/albums/'.$album->album;?>" class="img-fluid img-zoom" alt="">
-            </div>
-            <div class="block-description" style="top:40px !important;">
-            <a href="<?= URL::to('album') ?><?= '/' . $album->slug ?>">
-                        <i class="ri-play-fill"></i>
+             </div></div>
+            <div class="block-description" > </div>
+            <a class="d-flex mt-2" href="<?= URL::to('album') ?><?= '/' . $album->slug ?>">
+                        <i class="ri-play-fill  text-white"></i> <h6 class="epi-name text-white mb-0 ml-1"><?php echo $album->albumname; ?></h6>
                      </a>                         
                <div class="hover-buttons">
                <a href="<?= URL::to('album') ?><?= '/' . $album->slug ?>">
-                  <h6 class="epi-name text-white mb-0"><?php echo $album->albumname; ?></h6>
+                 
                </a>
                 <div class="d-flex align-items-center justify-content-between">
                   <span class="text-white"><small><?php echo get_audio_artist($album->id); ?></small></span>
                </div>
                </div>
 
-                </div>
+               
 
-         </div>
+        
       </a>
    </li>
 
