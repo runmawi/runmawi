@@ -8239,8 +8239,16 @@ $cpanel->end();
         //   'order_Recommendation' => $order_Recommendation,
         //   );
         // }
+        $movies =  Video::where('status', '=', '1')->where('active', '=', '1')->where('draft', '=', '1')
+        ->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+            $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+            $item['video_url'] = URL::to('/').'/storage/app/public/';
+            return $item;
+          });
         
-        
+          if(count($movies) > 0){
+            $movie = $movies;
+          }else{ $movie = []; }
         if(@$HomeSetting->featured_videos == 1){
           $featured_videos = Video::where('active', '=', '1')->where('featured', '=', '1')->where('status', '=', '1')->where('draft', '=', '1')
               ->orderBy('created_at', 'DESC')
@@ -8492,6 +8500,7 @@ $cpanel->end();
           'audios' => $audios,
           'albums' => $albums,
           'Recommendation' => $Recommendation,
+          'movie' => $movie,
 
         );
 
