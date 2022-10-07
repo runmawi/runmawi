@@ -1,4 +1,4 @@
-<?php  include(public_path('themes/theme1/views/header.php')); ?>
+<?php  include(public_path('themes/theme3/views/header.php')); ?>
 
 <div class="aud" style="background-image:url(<?php echo URL::to('/').'/public/uploads/artists/'.$artist->image;?>)">
         <h2 class="font-weight-bold"><?php echo $artist->artist_name;?></h2>
@@ -200,4 +200,4 @@
         <?php } ?>
         
 
-<?php  include(public_path('themes/theme2/views/footer.blade.php'));  ?>
+<?php  include(public_path('themes/theme3/views/footer.blade.php'));  ?>
