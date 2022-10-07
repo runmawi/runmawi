@@ -1225,7 +1225,6 @@ Route::post('/audios/audioupdate', array('before' => 'demo', 'uses' => 'CPPAdmin
     Route::group(['prefix' => 'channel','middleware' => ['channel']], function() {        
         
     Route::get('/logout',  'ChannelLoginController@Logout');
-    Route::get('episode/{series_name}/{episode_name}', 'ChannelSeriesController@play_episode');
     
     // Route::get('episode/{episode_name}', 'ChannelSeriesController@PlayEpisode');
 
@@ -1369,6 +1368,7 @@ Route::post('/audios/audioupdate', array('before' => 'demo', 'uses' => 'CPPAdmin
     Route::post('/episode/update', 'ChannelSeriesController@update_episode');
     Route::post('/episode_upload',  'ChannelSeriesController@EpisodeUpload');
     Route::post('/uploadepisodeedit',  'ChannelSeriesController@EpisodeUploadEdit');
+    Route::get('episode/{series_name}/{episode_name}', 'ChannelSeriesController@play_episode');
 
 
 
