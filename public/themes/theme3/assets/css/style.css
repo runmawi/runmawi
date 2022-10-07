@@ -2483,15 +2483,6 @@ color: rgba(255, 255, 255, 0.5);
     font-size: 18px;
 }
 
-.slick-frame {
-    visibility: hidden;
-}
-.slick-frame.slick-initialized {
-    visibility: visible;
-}
-.rippleEffect{
-    display: block!important;
-}
 
 .slick-dots li{
     
@@ -2501,16 +2492,3 @@ color: rgba(255, 255, 255, 0.5);
         display: none;
     }
 
-.slick-frame {
-    visibility: hidden;
-}
-.slick-frame.slick-initialized {
-    visibility: visible;
-}
-
-#home-slider{
-    display: none;
-}
-.favorites-slider{
-     display: none;
-}
