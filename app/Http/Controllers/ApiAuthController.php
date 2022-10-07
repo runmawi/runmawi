@@ -5160,7 +5160,7 @@ return response()->json($response, 200);
           'status' => 'true',
           'genre_movies' => $myData,
           // 'main_genre' => $msg,
-          'main_genre' => $main_genre,
+          // 'main_genre' => $main_genre,
     
         );
         return response()->json($response, 200);
