@@ -773,8 +773,7 @@ class CPPAnalyticsController extends Controller
             (!empty($package) && $package == "Pro") ||
             (!empty($package) && $package == "Business")
         ) {
-            $user = Session::get("user");
-            $user_id = $user->id;
+
             $settings = Setting::first();
             $total_content = ModeratorsUser::join(
                 "live_streams",
@@ -783,7 +782,7 @@ class CPPAnalyticsController extends Controller
                 "moderators_users.id"
             )
                 ->groupBy("live_streams.id")
-                ->where("moderators_users.id", $user_id)
+                // ->where("moderators_users.id", $user_id)
                 ->get([
                     \DB::raw("COUNT(*) as count"),
                     \DB::raw("MONTHNAME(live_streams.created_at) as month_name"),
@@ -791,20 +790,19 @@ class CPPAnalyticsController extends Controller
                     \DB::raw("moderators_users.username as cppusername"),
                     \DB::raw("moderators_users.email as cppemail"),
                 ]);
-
-            $total_content = Video::join(
+                // dd($total_content);
+            $total_content = LiveStream::join(
                 "moderators_users",
                 "moderators_users.id",
                 "=",
                 "live_streams.user_id"
             )
-                ->groupBy("videos.id")
-                ->where("moderators_users.id", $user_id)
+                ->groupBy("live_streams.id")
+                // ->where("moderators_users.id", $user_id)
                 ->get([
-                    "videos.*",
+                    "live_streams.*",
                     \DB::raw("COUNT(*) as count"),
-                    \DB::raw("MONTHNAME(videos.created_at) as month_name"),
-                    \DB::raw("MONTHNAME(videos.created_at) as month_name"),
+                    \DB::raw("MONTHNAME(live_streams.created_at) as month_name"),
                     \DB::raw("moderators_users.username as cppusername"),
                     \DB::raw("moderators_users.email as cppemail"),
                 ]);
@@ -818,7 +816,7 @@ class CPPAnalyticsController extends Controller
                 "total_video_count" => count($total_content),
                 "total_contentss" => $total_contentss,
             ];
-            return view("moderator.cpp.analytics.live_analytics", $data);
+            return view("admin.analytics.live_analytics", $data);
         } else {
             return Redirect::to("/blocked");
         }

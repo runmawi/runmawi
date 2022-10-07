@@ -876,7 +876,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                          <li><a href="{{ URL::to('admin/analytics/PlayerVideoAnalytics') }}">Player Video Analytics</a></li>
                          <li><a href="{{ URL::to('admin/analytics/RegionVideoAnalytics') }}">Region Video Analytics</a></li>
                          <li><a href="{{ URL::to('admin/analytics/PlayerUserAnalytics') }}">Player User Analytics</a></li>
-                        <!-- <li><a href="{{ URL::to('admin/cpp/livestream-analytics') }}">CPP Live Video </a></li> -->
+                        <li><a href="{{ URL::to('admin/livestream-analytics') }}">CPP Live Video </a></li>
 
                      </ul>
                   </li>
