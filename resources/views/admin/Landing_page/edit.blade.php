@@ -44,6 +44,16 @@
                                              </div>
                                         </div>
 
+                                                {{-- Custom CSS  --}}
+                                        <div class="row">
+                                            <label class="m-0"> Custom CSS :</label>
+                                            <div class="container"> 
+                                                <div class="col-md-12 p-0  align-items-center"> 
+                                                    <textarea  rows="7" name="custom_css" class="form-control mt-2"  placeholder="Custom CSS" value="{{ $custom_css }}" > {{ $custom_css }}</textarea>
+                                                </div> 
+                                            </div> 
+                                        </div>
+
                                         <div class="row">
                                             <div class="col-sm-4">
                                                 <input type="checkbox" id="sections_1" class="date" name="date[]" value="section_1" @if(!empty($section_1['0'])) checked @endif/>

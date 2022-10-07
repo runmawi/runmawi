@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddSplashscreenToMobileApps extends Migration
+class AddStyleSheetToAdminLandingPagesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class AddSplashscreenToMobileApps extends Migration
      */
     public function up()
     {
-        Schema::table('mobile_apps', function (Blueprint $table) {
-            $table->string('andriod_splash_image')->nullable()->after('splash_image');
-
+        Schema::table('admin_landing_pages', function (Blueprint $table) {
+            $table->string('custom_css')->nullable()->after('content');
         });
     }
 
@@ -26,8 +25,8 @@ class AddSplashscreenToMobileApps extends Migration
      */
     public function down()
     {
-        Schema::table('mobile_apps', function (Blueprint $table) {
-            Schema::dropIfExists('andriod_splash_image');
+        Schema::table('admin_landing_pages', function (Blueprint $table) {
+            Schema::dropIfExists('custom_css');
         });
     }
 }
