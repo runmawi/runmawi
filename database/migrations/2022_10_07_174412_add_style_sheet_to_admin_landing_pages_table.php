@@ -14,7 +14,7 @@ class AddStyleSheetToAdminLandingPagesTable extends Migration
     public function up()
     {
         Schema::table('admin_landing_pages', function (Blueprint $table) {
-            $table->string('custom_css')->nullable()->after('content');
+            $table->longText('custom_css')->nullable()->after('content');
         });
     }
 

@@ -46,8 +46,14 @@
 
                                                 {{-- Custom CSS  --}}
                                         <div class="row">
-                                            <label class="m-0"> Custom CSS :</label>
+                                            
                                             <div class="container"> 
+                                                <label class="m-0"> Custom CSS 
+                                                    <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title="Please add custom css as <style> ..... </style>" data-original-title="Please enter the URL Slug" href="#">
+                                                        <i class="las la-exclamation-circle"></i>
+                                                    </a>:
+                                                </label>
+
                                                 <div class="col-md-12 p-0  align-items-center"> 
                                                     <textarea  rows="7" name="custom_css" class="form-control mt-2"  placeholder="Custom CSS" value="{{ $custom_css }}" > {{ $custom_css }}</textarea>
                                                 </div> 
