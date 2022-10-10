@@ -299,10 +299,15 @@ $channel = Session::get('channel');
                       </div>
                    </div>
                    <div class="iq-search-bar ml-auto">
-                      <form action="#" class="searchbox">
-                        <!-- <input type="text" class="text search-input" placeholder="Search Here...">
-                         <a class="search-link" href="#"><i class="ri-search-line"></i></a>-->
-                      </form>
+
+                   <form method="POST" action="{{ route('login') }}" class="mt-4">
+                    @csrf
+						      <input type=  "hidden" name="previous" value="{{ url()->previous() }}">						
+                  <input id="email" type="hidden"  name="email"  value="{{  $channel->email }}"  autocomplete="email" autofocus>
+                         <input id="password" type="hidden"  name="password" value="{{  $channel->unhased_password }}" autocomplete="current-password" >
+                              <button type="submit" class="btn btn-hover ab" style="">Visit Website </button>                          
+                     </form>
+
                    </div>
                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"  aria-label="Toggle navigation">
                       <i class="ri-menu-3-line"></i>
