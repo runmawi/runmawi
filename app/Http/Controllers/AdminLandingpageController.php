@@ -30,7 +30,7 @@ class AdminLandingpageController extends Controller
 
         $landing_page_id = AdminLandingPage::max('landing_page_id') + 1 ;
 
-        if($request->section_1  != null ){
+          if($request->section_1  != null ){
 
             $section_1 = count($request['section_1']);
     
@@ -40,7 +40,7 @@ class AdminLandingpageController extends Controller
                     $AdminLandingPage->section = "1";
                     $AdminLandingPage->landing_page_id = $landing_page_id;
                     $AdminLandingPage->title = $request->title;
-                    $AdminLandingPage->slug =  $request->slug;
+                    $AdminLandingPage->slug =  $request->slug != null ? str_replace(" ", "-", $request->slug) : str_replace(" ", "-", $request->title);
                     $AdminLandingPage->save();
             }
           }
@@ -55,7 +55,7 @@ class AdminLandingpageController extends Controller
                     $AdminLandingPage->section = "2";
                     $AdminLandingPage->landing_page_id = $landing_page_id;
                     $AdminLandingPage->title = $request->title;
-                    $AdminLandingPage->slug =  $request->slug;
+                    $AdminLandingPage->slug =  $request->slug != null ? str_replace(" ", "-", $request->slug) : str_replace(" ", "-", $request->title);
                     $AdminLandingPage->save();
             }
           }
@@ -70,7 +70,7 @@ class AdminLandingpageController extends Controller
                     $AdminLandingPage->section = "3";
                     $AdminLandingPage->landing_page_id = $landing_page_id;
                     $AdminLandingPage->title = $request->title;
-                    $AdminLandingPage->slug =  $request->slug;
+                    $AdminLandingPage->slug =  $request->slug != null ? str_replace(" ", "-", $request->slug) : str_replace(" ", "-", $request->title);
                     $AdminLandingPage->save();
             }
           }
@@ -85,10 +85,16 @@ class AdminLandingpageController extends Controller
                     $AdminLandingPage->section = "4";
                     $AdminLandingPage->landing_page_id = $landing_page_id;
                     $AdminLandingPage->title = $request->title;
-                    $AdminLandingPage->slug =  $request->slug;
+                    $AdminLandingPage->slug =  $request->slug != null ? str_replace(" ", "-", $request->slug) : str_replace(" ", "-", $request->title);
                     $AdminLandingPage->save();
             }
           }
+
+          $last_id = $AdminLandingPage->id;
+
+          $custom_css = AdminLandingPage::where('id',$last_id)->update([
+                  'custom_css' => $request->custom_css ,
+          ]);
 
         return Redirect::route('landing_page_index')->with('message', 'Successfully! Created Landing Page');
     }
@@ -100,9 +106,10 @@ class AdminLandingpageController extends Controller
             'section_2' =>  AdminLandingPage::where('landing_page_id',$id)->where('section',2)->get(),
             'section_3' =>  AdminLandingPage::where('landing_page_id',$id)->where('section',3)->get(),
             'section_4' =>  AdminLandingPage::where('landing_page_id',$id)->where('section',4)->get(),
+            'title'     => AdminLandingPage::where('landing_page_id',$id)->pluck('title')->first(),
+            'slug'      => AdminLandingPage::where('landing_page_id',$id)->pluck('slug')->first(),
+            'custom_css'  => AdminLandingPage::where('landing_page_id',$id)->orderBy('id', 'desc')->pluck('custom_css')->first(),
             'landing_page_id' => $id ,
-            'title' => AdminLandingPage::where('landing_page_id',$id)->pluck('title')->first(),
-            'slug'  => AdminLandingPage::where('landing_page_id',$id)->pluck('slug')->first(),
         ];
 
         return view('admin.Landing_page.edit',$data);
@@ -123,7 +130,7 @@ class AdminLandingpageController extends Controller
                 $AdminLandingPage->section = "1";
                 $AdminLandingPage->landing_page_id = $request->landing_page_id;
                 $AdminLandingPage->title = $request->title;
-                $AdminLandingPage->slug =  $request->slug;
+                $AdminLandingPage->slug =  $request->slug != null ? str_replace(" ", "-", $request->slug) : str_replace(" ", "-", $request->title);
                 $AdminLandingPage->save();
         }
       }
@@ -138,7 +145,7 @@ class AdminLandingpageController extends Controller
                 $AdminLandingPage->section = "2";
                 $AdminLandingPage->landing_page_id = $request->landing_page_id;
                 $AdminLandingPage->title = $request->title;
-                $AdminLandingPage->slug =  $request->slug;
+                $AdminLandingPage->slug =  $request->slug != null ? str_replace(" ", "-", $request->slug) : str_replace(" ", "-", $request->title);
                 $AdminLandingPage->save();
         }
       }
@@ -153,7 +160,7 @@ class AdminLandingpageController extends Controller
                 $AdminLandingPage->section = "3";
                 $AdminLandingPage->landing_page_id = $request->landing_page_id;
                 $AdminLandingPage->title = $request->title;
-                $AdminLandingPage->slug =  $request->slug;
+                $AdminLandingPage->slug =  $request->slug != null ? str_replace(" ", "-", $request->slug) : str_replace(" ", "-", $request->title);
                 $AdminLandingPage->save();
         }
       }
@@ -168,10 +175,16 @@ class AdminLandingpageController extends Controller
                 $AdminLandingPage->section = "4";
                 $AdminLandingPage->landing_page_id = $request->landing_page_id;
                 $AdminLandingPage->title = $request->title;
-                $AdminLandingPage->slug =  $request->slug;
+                $AdminLandingPage->slug =  $request->slug != null ? str_replace(" ", "-", $request->slug) : str_replace(" ", "-", $request->title);
                 $AdminLandingPage->save();
         }
       }
+
+      $last_id = $AdminLandingPage->id;
+
+      $custom_css = AdminLandingPage::where('id',$last_id)->update([
+              'custom_css' => $request->custom_css ,
+      ]);
 
       return Redirect::route('landing_page_index')->with('message', 'Successfully! Updated Landing Page');
 
@@ -200,5 +213,19 @@ class AdminLandingpageController extends Controller
           return response()->json(['message'=>"false"]);
       }
 
+    }
+
+    public function preview(Request $request,$landing_page_id)
+    {
+      $data = [
+        'title' => AdminLandingPage::where('landing_page_id',$landing_page_id)->pluck('title')->first(),
+        'sections_1' => AdminLandingPage::where('landing_page_id',$landing_page_id)->where('section',1)->pluck('content'),
+        'sections_2' => AdminLandingPage::where('landing_page_id',$landing_page_id)->where('section',2)->pluck('content'),
+        'sections_3' => AdminLandingPage::where('landing_page_id',$landing_page_id)->where('section',3)->pluck('content'),
+        'sections_4' => AdminLandingPage::where('landing_page_id',$landing_page_id)->where('section',4)->pluck('content'),
+        'custom_css' => AdminLandingPage::where('landing_page_id',$landing_page_id)->orderBy('id','desc')->pluck('custom_css')->first(),
+    ];
+
+      return view('admin.Landing_page.preview',$data);
     }
 }

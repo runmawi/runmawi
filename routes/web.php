@@ -575,7 +575,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/landing-page/update', 'AdminLandingpageController@update')->name('landing_page_update'); 
     Route::get('/landing-page/delete/{id}', 'AdminLandingpageController@delete')->name('landing_page_delete'); 
     Route::post('/landing-page/update_status', 'AdminLandingpageController@update_status')->name('landing_page_update_status'); 
-
+    Route::get('/landing-page/preview/{landing_page_id}', 'AdminLandingpageController@preview')->name('landing_page_preview'); 
 
     // Footer Link
     Route::get('/footer_menu', 'AdminSettingsController@footer_link')->name('footer_link'); 
