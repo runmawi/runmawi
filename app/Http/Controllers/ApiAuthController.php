@@ -3479,6 +3479,7 @@ public function checkEmailExists(Request $request)
       $response = array(
         'status'=>'true',
         'message'=>'success',
+        'shareurl' => URL::to('episode').'/'.$episode[0]->series_name.'/'.$episode[0]->slug,
         'episode' => $episode,
         'Season_Name' => $Season_Name,
         'season' => $Season,
