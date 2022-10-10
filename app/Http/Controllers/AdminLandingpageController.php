@@ -214,4 +214,18 @@ class AdminLandingpageController extends Controller
       }
 
     }
+
+    public function preview(Request $request,$landing_page_id)
+    {
+      $data = [
+        'title' => AdminLandingPage::where('landing_page_id',$landing_page_id)->pluck('title')->first(),
+        'sections_1' => AdminLandingPage::where('landing_page_id',$landing_page_id)->where('section',1)->pluck('content'),
+        'sections_2' => AdminLandingPage::where('landing_page_id',$landing_page_id)->where('section',2)->pluck('content'),
+        'sections_3' => AdminLandingPage::where('landing_page_id',$landing_page_id)->where('section',3)->pluck('content'),
+        'sections_4' => AdminLandingPage::where('landing_page_id',$landing_page_id)->where('section',4)->pluck('content'),
+        'custom_css' => AdminLandingPage::where('landing_page_id',$landing_page_id)->orderBy('id','desc')->pluck('custom_css')->first(),
+    ];
+
+      return view('admin.Landing_page.preview',$data);
+    }
 }
