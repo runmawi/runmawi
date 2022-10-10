@@ -50,12 +50,18 @@
                                 </td>
                                  <td>
 
-                                    <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" data-original-title="Edit Video" 
+                                    
+                                    <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" data-original-title="Preview Landing Page" 
+                                       href="{{ route( 'landing_page_preview', $landing_page->landing_page_id ) }}">
+                                       <img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>">
+                                    </a>
+
+                                    <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" data-original-title="Edit Landing Page" 
                                        href="{{ route( 'landing_page_edit', $landing_page->landing_page_id ) }}">
                                        <img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>">
                                     </a>
 
-                                    <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" 
+                                    <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete Landing Page" 
                                        onclick="return confirm('Are you sure?')" href="{{ route( 'landing_page_delete', $landing_page->landing_page_id ) }}">
                                        <img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>">
                                     </a>
