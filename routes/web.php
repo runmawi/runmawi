@@ -64,6 +64,14 @@ Route::post('/admin/video/purchased-analytics_enddate_revenue', 'AdminVideosCont
 Route::post('/admin/video/purchased-analytics_exportCsv', 'AdminVideosController@PurchasedVideoExportCsv');
 
 
+////// Live Purchased Analytics
+
+Route::get('admin/live/purchased-analytics', 'AdminLiveStreamController@PurchasedLiveAnalytics');
+Route::post('/admin/live/purchased-analytics_startdate_revenue', 'AdminLiveStreamController@PurchasedLiveStartDateRevenue');
+Route::post('/admin/live/purchased-analytics_enddate_revenue', 'AdminLiveStreamController@PurchasedLiveEndDateRevenue');
+Route::post('/admin/live/purchased-analytics_exportCsv', 'AdminLiveStreamController@PurchasedLiveExportCsv');
+
+
 ////// CPP revenue
 
 Route::get('admin/cpp/analytics', 'ModeratorsUserController@Analytics');
@@ -1092,6 +1100,14 @@ Route::get('payouts', 'CPPAnalyticsController@UserPayouts');
 Route::post('payouts_startdate_analytics', 'CPPAnalyticsController@PayoutsStartDateAnalytics');
 Route::post('payouts_enddate_analytics', 'CPPAnalyticsController@PayoutsEndDateAnalytics');
 Route::post('payouts_exportCsv', 'CPPAnalyticsController@PayoutsExportCsv');
+
+
+Route::get('live-payouts', 'CPPAnalyticsController@LivePayouts');
+Route::post('live-payouts_startdate_analytics', 'CPPAnalyticsController@LivePayoutsStartDateAnalytics');
+Route::post('live-payouts_enddate_analytics', 'CPPAnalyticsController@LivePayoutsEndDateAnalytics');
+Route::post('live-payouts_exportCsv', 'CPPAnalyticsController@LivePayoutsExportCsv');
+
+
 
 Route::get('video-analytics', 'CPPAnalyticsController@IndexVideoAnalytics');
 Route::post('video_startdate_analytics', 'CPPAnalyticsController@VideoStartDateAnalytics');
