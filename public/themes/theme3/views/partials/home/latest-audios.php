@@ -16,24 +16,24 @@
                              <div class="block-images position-relative">
                                 <div class="img-box">
                                 <img src="<?php echo URL::to('/').'/public/uploads/images/'.$audio->image;?>" class="img-fluid img-zoom" alt="">
-                                </div>
-                                <div class="block-description" style="top:40px !important;">
-                                <a href="<?= URL::to('audio') ?><?= '/' . $audio->slug ?>">
-                        <i class="ri-play-fill"></i>
+                                 </div></div>
+                              <div class="block-description" > </div>
+                                <a class="d-flex mt-2" href="<?= URL::to('audio') ?><?= '/' . $audio->slug ?>">
+                        <i class="ri-play-fill text-white"></i>  <h6 class="epi-name text-white mb-0 ml-1"><?php echo $audio->title; ?></h6>
                      </a>                     
                                    <div class="hover-buttons">
                                    <a href="<?= URL::to('audio') ?><?= '/' . $audio->slug ?>">
-                  <h6 class="epi-name text-white mb-0"><?php echo $audio->title; ?></h6>
+                 
                </a>
-                <div class="d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center ">
                     <span class="text-white"><small><?php echo get_audio_artist($audio->id); ?></small></span>
-                    <span class="text-primary"><small><?php echo gmdate('H:i:s', $audio->duration); ?>m</small></span>
+                  
                </div>
+                                         <span class="text-primary"><small><?php echo gmdate('H:i:s', $audio->duration); ?> m</small></span>
                                    </div>
                                 
-                                    </div>
-                              
-                             </div>
+                                   
+                            
                           </a>
                        </li>
 

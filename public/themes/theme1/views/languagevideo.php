@@ -214,7 +214,7 @@ $('.dropdown-menu a').click(function(e){
 }
 </script>
    
-<script>
+<!--<script>
 window.onscroll = function() {myFunction()};
 
 var header = document.getElementById("myHeader");
@@ -227,18 +227,6 @@ header.classList.add("sticky");
 header.classList.remove("sticky");
 }
 }
-</script>
-<script src="<?= THEME_URL . '/assets/js/rrssb.min.js'; ?>"></script>
-<script src="<?= THEME_URL . '/assets/js/videojs-resolution-switcher.js';?>"></script>
-<link href=”//vjs.zencdn.net/7.0/video-js.min.css” rel=”stylesheet”>
-<script src=”//vjs.zencdn.net/7.0/video.min.js”></script>
-
-<script src="<?= THEME_URL .'/assets/dist/video.js'; ?>"></script>
- <script src="<?= THEME_URL .'/assets/dist/videojs-resolution-switcher.js'; ?>"></script>
- <script src="<?= THEME_URL .'/assets/dist/videojs-watermark.js'; ?>"></script>
-<input type="hidden" id="base_url" value="<?php echo URL::to('/');?>">
-<script src="https://vjs.zencdn.net/7.10.2/video.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/videojs-seek-buttons/dist/videojs-seek-buttons.min.js"></script>
-<script src="<?php echo URL::to('/').'/assets/js/videojs.hotkeys.js';?>"></script>
+</script>-->
 
 <?php include('footer.blade.php');?>

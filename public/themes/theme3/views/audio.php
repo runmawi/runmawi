@@ -33,7 +33,7 @@ color: #fff;
         border-radius: 10px;
     }
     .slick-track{
-        width: 45%!important;
+        
     }
 .fa-heart{color: red !important;}
 .flexlink{
@@ -89,9 +89,9 @@ border-radius: 50%;
 /* Player Style */
 .audioPlayer .jp-jplayer, #jplayer-audio-container {}
 .audioPlayer .jp-controls button {text-indent: 0;}
-.jp-audio, .jp-video {background: black;font-family: sans-serif;font-size: .75rem;/*max-width: 85rem;*/width: 100%;position: fixed;
-   bottom: 0;
-    z-index: 5;margin-left: -40px;}
+.jp-audio, .jp-video {background: black;font-family: sans-serif;font-size: .75rem;/*max-width: 100%;*/width: 100%;position: fixed;
+   bottom: 0;left: 0;
+    z-index: 25;}
     .jp-btn{background-color: red;border-radius: 50%;}
 .jp-type-playlist {display: -webkit-box;display: -moz-box;display: -ms-flexbox;display: -webkit-flex;display: flex;-webkit-flex-direction: column;-moz-flex-direction: column;-ms-flex-direction: column;flex-direction: column;height: 100%;}
 .jp-type-playlist .jp-close {-webkit-flex-grow: 0;-moz-flex-grow: 0;-ms-flex-grow: 0;flex-grow: 0;}
@@ -290,9 +290,9 @@ Your browser does not support the audio element.
 <div class="clear"></div>  
 
 <?php } ?>
-<div class="container-fluid">
+<div class="container-fluid ">
 <div class="row album-top-30 mt-3">  
-<div class="col-sm-12">
+<div class="col-sm-12 overflow-hidden">
     
 <h4  class="album-title">Other Albums </h4>
     <div class="favorites-contens">
@@ -305,15 +305,15 @@ Your browser does not support the audio element.
                     <div class="block-images position-relative">
                           <div class="img-box">
                              <img src="<?= URL::to('/').'/public/uploads/albums/' . $other_album->album ?>"  class="img-responsive w-100" />   
-                        </div>
-                        <div class="block-description">
+                        </div></div>
+                        <div class="block-description"></div>
                             <div class="hover-buttons text-white">
                                 <p class="mt-2"><?php echo ucfirst($other_album->albumname);?> </p>
                 </div>
                            
             <?php  } ?> 
-                        </div>
-                    </div>
+                       
+                    
               
                
                     
@@ -339,9 +339,9 @@ Your browser does not support the audio element.
 <div id="jp_container_1" class="jp-audio" role="application" aria-label="media player">
   <div class="jp-type-single">
     <div class="jp-gui jp-interface">
-        <div class="jp-details">
+        <div class="jp- d-flex align-items-center">
             <img src="<?= URL::to('/').'/public/uploads/images/'. $audio->image ?>"  class="img-responsive" width="50">
-      <div class="jp-title text-white" aria-label="title">&nbsp;</div>
+      <div class="jp-title text-white ml-1" aria-label="title">&nbsp;</div>
     </div>
       <div class="jp-controls-holder">
         <div class="jp-controls">
@@ -365,14 +365,19 @@ Your browser does not support the audio element.
             <div class="jp-play-bar"></div>
           </div>
         </div>
-        <div class="jp-current-time" role="timer" aria-label="time" style="
-    width: 10%;display: inline-block;color: white;">&nbsp;</div>
-        <div class="jp-duration" role="timer" aria-label="duration" style="
-    width: 10%;float: right;color: white;display: inline-flex;">&nbsp;</div>
+        <div class="jp-times">
+                        <div class="jp-current-time" role="timer" aria-label="time">&nbsp;</div>
+                        <div class="jp-duration" role="timer" aria-label="duration">&nbsp;</div>
+                    </div>
         
       </div>
       
     </div>
+      <div class="jp-playlist">
+                <ul>
+                    <li>&nbsp;</li>
+                </ul>
+            </div>
     
     <div class="jp-no-solution">
       <span>Update Required</span>

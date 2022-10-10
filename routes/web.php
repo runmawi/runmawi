@@ -84,10 +84,10 @@ Route::post('/admin/cpp_video_exportCsv', 'ModeratorsUserController@CPPVideoExpo
 Route::post('/admin/cpp_video_fliter', 'ModeratorsUserController@CPPVideoFilter');
 
 
-Route::get('admin/cpp/livestream-analytics', 'CPPAnalyticsController@IndexLivestreamAnalytics');
-Route::post('admin/cpp/livestream_startdate_analytics', 'CPPAnalyticsController@LivestreamStartDateAnalytics');
-Route::post('admin/cpp/livestream_enddate_analytics', 'CPPAnalyticsController@LivestreamEndDateAnalytics');
-Route::post('admin/cpp/livestream_exportCsv', 'CPPAnalyticsController@LivestreamExportCsv');
+Route::get('admin/livestream-analytics', 'CPPAnalyticsController@IndexLivestreamAnalytics');
+Route::post('admin/livestream_startdate_analytics', 'CPPAnalyticsController@LivestreamStartDateAnalytics');
+Route::post('admin/livestream_enddate_analytics', 'CPPAnalyticsController@LivestreamEndDateAnalytics');
+Route::post('admin/livestream_exportCsv', 'CPPAnalyticsController@LivestreamExportCsv');
 
 
 
@@ -1226,6 +1226,9 @@ Route::post('/audios/audioupdate', array('before' => 'demo', 'uses' => 'CPPAdmin
         
     Route::get('/logout',  'ChannelLoginController@Logout');
     
+    // Route::get('episode/{episode_name}', 'ChannelSeriesController@PlayEpisode');
+
+
     Route::get('video-analytics', 'ChannelAnalyticsController@IndexVideoAnalytics');
     Route::post('video_startdate_analytics', 'ChannelAnalyticsController@VideoStartDateAnalytics');
     Route::post('video_enddate_analytics', 'ChannelAnalyticsController@VideoEndDateAnalytics');
@@ -1365,6 +1368,7 @@ Route::post('/audios/audioupdate', array('before' => 'demo', 'uses' => 'CPPAdmin
     Route::post('/episode/update', 'ChannelSeriesController@update_episode');
     Route::post('/episode_upload',  'ChannelSeriesController@EpisodeUpload');
     Route::post('/uploadepisodeedit',  'ChannelSeriesController@EpisodeUploadEdit');
+    Route::get('episode/{series_name}/{episode_name}', 'ChannelSeriesController@play_episode');
 
 
 

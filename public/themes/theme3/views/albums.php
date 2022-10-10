@@ -61,12 +61,29 @@ border-bottom-right-radius:0;
 .aud-lp{
 border-bottom: 1px solid #141414;
 }
+    .img-responsive{
+        border-radius: 10px;
+    }
+    .bd {
+    border-radius: 25px!important;
+    background: #2bc5b4!important;
+}
+    #ff {
+    border: 1px solid #fff;
+    border-radius: 50%;
+    padding: 5px;
+    font-size: 12px;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 /* Player Style */
 .audioPlayer .jp-jplayer, #jplayer-audio-container {}
 .audioPlayer .jp-controls button {text-indent: 0;}
-.jp-audio, .jp-video {background: black;font-family: sans-serif;font-size: .75rem;max-width: 85rem;width: 100%;position: fixed;
-    top: 85%;
-    z-index: 5;margin-left: -110px;}
+.jp-audio, .jp-video {background: black;font-family: sans-serif;font-size: .75rem;/*max-width: 85rem;*/width: 100%;position: fixed;
+   bottom: 0; left: 0;
+    z-index: 25;}
     .jp-btn{background-color: red;border-radius: 50%;}
 .jp-type-playlist {display: -webkit-box;display: -moz-box;display: -ms-flexbox;display: -webkit-flex;display: flex;-webkit-flex-direction: column;-moz-flex-direction: column;-ms-flex-direction: column;flex-direction: column;height: 100%;}
 .jp-type-playlist .jp-close {-webkit-flex-grow: 0;-moz-flex-grow: 0;-ms-flex-grow: 0;flex-grow: 0;}
@@ -140,10 +157,10 @@ border-bottom: 1px solid #141414;
 
 <input type="hidden" value="<?php echo URL('/');?>" id="base_url">
 <div id="audio_bg" >
-<div class="container">
+<div class="container-fluid">
 <div class="row album-top-30 mt-4 align-items-center">
-<div class="col-sm-4 ">
-<img src="<?= URL::to('/').'/public/uploads/albums/'. $album->album ?>"  class="img-responsive" / width="350">
+<div class="col-sm-2 col-md-2 col-xs-2">
+<img src="<?= URL::to('/').'/public/uploads/albums/'. $album->album ?>"  class="img-responsive" height="200" width="200">
 </div>
 <div class="col-sm-8 col-md-8 col-xs-8">
 <div class="album_bg">
@@ -152,7 +169,7 @@ border-bottom: 1px solid #141414;
 <div class="overlay_blur">
  <h2 class="hero-title album"> <?= $album->albumname; ?></h2>
     <!-- <p class="mt-2">Music by    <br>A. R. Rahman</p> -->
-    <div class="d-flex" style="justify-content: space-between;width: 40%;align-items: center;">
+    <div class="d-flex mt-3 mb-3" style="justify-content: space-between;width: 24%;align-items: center;">
         <button class="btn bd" id="vidbutton"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play</button>
         <a aria-hidden="true" class="albumfavorite <?php echo albumfavorite($album->id);?>" data-authenticated="<?= !Auth::guest() ?>" data-album_id="<?= $album->id ?>"><?php if(albumfavorite($album->id) == "active"): ?><i id="ff" class="fa fa-heart" aria-hidden="true"></i><?php else: ?><i id="ff" class="fa fa-heart-o" aria-hidden="true"></i><?php endif; ?></a>
         <i id="ff" class="fa fa-ellipsis-h" aria-hidden="true"></i>
@@ -211,27 +228,41 @@ border-bottom: 1px solid #141414;
 <div class="clear"></div>  
 
 <?php } ?>
-<div class="container">
+<div class="container-fluid">
 <div class="row album-top-30 mt-3">  
-<div class="col-sm-12">
+<div class="col-sm-12 overflow-hidden">
 <p  class="album-title">Other Albums </p>
-<ul class="album_list mt-3" style="display: flex;">
-    <?php foreach ($other_albums as $other_album) { ?>
-        <li>
+     <div class="favorites-contens">
+<ul class="favorites-slider list-inline  row p-0 mb-0">
+     <?php foreach ($other_albums as $other_album) { ?>
+        <li class="slide-item">
             <?php if($other_album->album != ''){ ?>
-                <a href="<?php echo URL('/').'/album/'.$other_album->slug;?>">
-                <img src="<?= URL::to('/').'/public/uploads/albums/' . $other_album->album ?>"  class="img-responsive" width="200" height="150"/>
-              
-
-                <div class="play-block">
-                    <a href=""> <i class="fa fa-play flexlink" aria-hidden="true"></i> </a>
+            
+                <a href="<?php echo URL('/').'/album/'.$other_album->slug; ?>">
+                    <div class="block-images position-relative">
+                          <div class="img-box">
+                               <img src="<?= URL::to('/').'/public/uploads/albums/' . $other_album->album ?>"  class="img-responsive w-100" />
+             
+                        </div></div>
+                        <div class="block-description"></div>
+                            <div class="hover-buttons text-white">
+                                <p class="mt-2"><?php echo ucfirst($other_album->albumname);?> </p>
                 </div>
+                           
+            <?php  } ?> 
+                       
+                    
+              
+               
+                    
             </a>
-            <p><?php echo ucfirst($other_album->albumname);?>
-            <?php  } ?>
+           
+          
         </li>
-    <?php }?>
+    <?php } ?>
 </ul>
+        </div>
+
   
 
 
