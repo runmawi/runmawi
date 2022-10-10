@@ -669,7 +669,7 @@ input:checked + .sliderk:before {
                               </div>
                            </div>
                         </div>
-                        <?php if(Auth::User()->package == "CPP"){ ?>
+                        <?php if(!Auth::guest() && Auth::User()->package == "CPP"){ ?>
                         <div class="iq-search-bar ml-auto">
                            <form method="POST" action="<?php echo URL::to('cpp/home') ?>" class="mt-4">
                               <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
@@ -678,7 +678,7 @@ input:checked + .sliderk:before {
                                     <button type="submit" class="btn btn-hover " style="margin-top: -13%;margin-left: -8%;">Visit Website </button>                          
                            </form>
                         </div>
-                        <?php }elseif(Auth::User()->package == "Channel"){ ?>
+                        <?php }elseif(!Auth::guest() && Auth::User()->package == "Channel"){ ?>
                            <div class="iq-search-bar ml-auto">
                            <form method="POST" action="<?php echo URL::to('channel/home') ?>" class="mt-4">
                               <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
