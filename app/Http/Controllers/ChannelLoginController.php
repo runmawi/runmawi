@@ -125,6 +125,18 @@ class ChannelLoginController extends Controller
             $channel->status = 0;
             $channel->save();
 
+
+            $user = new User();
+            $user->package = 'Channel';
+            $user->unhashed_password = $request->password;
+            $user->name = $request->channel_name;
+            $user->role = 'registered';
+            $user->username = $request->channel_name;
+            $user->email = $request->email_id;
+            $user->password = Hash::make($request->password);
+            $user->active = 1;
+            $user->save();
+
             $template = EmailTemplate::where('id', '=', 13)->first();
             $heading = $template->heading;
             $settings = Setting::first();
@@ -586,7 +598,13 @@ Please recheck the credentials before you try again!');
         $user->unhased_password = $data['password'];
         $user->password = Hash::make($data['password']);
         $user->save();
-  
+
+        $adminuser = User::where('email', $data['email'])->first();
+        if(!empty($adminuser)){
+            $adminuser->password = Hash::make($data['password']);
+            $adminuser->unhashed_password = $data['password'];
+            $adminuser->save();
+        }
         return redirect('/channel/login')
         ->with('message', 'Youre Password Changed Successfully');
 

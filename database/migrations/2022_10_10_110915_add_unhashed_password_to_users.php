@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddSplashscreenToMobileApps extends Migration
+class AddUnhashedPasswordToUsers extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class AddSplashscreenToMobileApps extends Migration
      */
     public function up()
     {
-        Schema::table('mobile_apps', function (Blueprint $table) {
-            $table->string('andriod_splash_image')->nullable()->after('splash_image');
-
+        Schema::table('users', function (Blueprint $table) {
+            //
+            $table->string('unhashed_password')->nullable();
         });
     }
 
@@ -26,8 +26,9 @@ class AddSplashscreenToMobileApps extends Migration
      */
     public function down()
     {
-        Schema::table('mobile_apps', function (Blueprint $table) {
-            Schema::dropIfExists('andriod_splash_image');
+        Schema::table('users', function (Blueprint $table) {
+            //
+            Schema::dropIfExists('unhashed_password');
         });
     }
 }

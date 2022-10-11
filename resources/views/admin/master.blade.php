@@ -574,6 +574,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <li><a href="{{ URL::to('admin/cpp/revenue') }}"><i class="las la-user-plus"></i>CPP Revenue </a></li>
                         <li><a href="{{ URL::to('admin/analytics/ViewsRegion') }}"><i class="las la-eye"></i>Views By Region</a></li>
                          <li><a href="{{ URL::to('admin/analytics/RevenueRegion') }}"><i class="las la-eye"></i>Revenue by Region</a></li>
+                        <li><a href="{{ URL::to('admin/live/purchased-analytics') }}">Purchased LiveStream Analytics </a></li>
                      </ul>
                   </li>
                   <div >
@@ -876,7 +877,8 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                          <li><a href="{{ URL::to('admin/analytics/PlayerVideoAnalytics') }}">Player Video Analytics</a></li>
                          <li><a href="{{ URL::to('admin/analytics/RegionVideoAnalytics') }}">Region Video Analytics</a></li>
                          <li><a href="{{ URL::to('admin/analytics/PlayerUserAnalytics') }}">Player User Analytics</a></li>
-                        <!-- <li><a href="{{ URL::to('admin/cpp/livestream-analytics') }}">CPP Live Video </a></li> -->
+                        <li><a href="{{ URL::to('admin/livestream-analytics') }}">CPP Live Video </a></li>
+                        <li><a href="{{ URL::to('admin/live/purchased-analytics') }}">Purchased LiveStream Analytics </a></li>
 
                      </ul>
                   </li>
@@ -1174,6 +1176,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <li><a href="{{ URL::to('admin/cpp/revenue') }}"><i class="las la-user-plus"></i>CPP Revenue </a></li>
                         <li><a href="{{ URL::to('admin/analytics/ViewsRegion') }}"><i class="las la-eye"></i>Views By Region</a></li>
                          <li><a href="{{ URL::to('admin/analytics/RevenueRegion') }}"><i class="las la-eye"></i>Revenue by Region</a></li>
+                        <li><a href="{{ URL::to('admin/live/purchased-analytics') }}">Purchased LiveStream Analytics </a></li>
                      </ul>
                   </li>
                   <div >

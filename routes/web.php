@@ -64,6 +64,14 @@ Route::post('/admin/video/purchased-analytics_enddate_revenue', 'AdminVideosCont
 Route::post('/admin/video/purchased-analytics_exportCsv', 'AdminVideosController@PurchasedVideoExportCsv');
 
 
+////// Live Purchased Analytics
+
+Route::get('admin/live/purchased-analytics', 'AdminLiveStreamController@PurchasedLiveAnalytics');
+Route::post('/admin/live/purchased-analytics_startdate_revenue', 'AdminLiveStreamController@PurchasedLiveStartDateRevenue');
+Route::post('/admin/live/purchased-analytics_enddate_revenue', 'AdminLiveStreamController@PurchasedLiveEndDateRevenue');
+Route::post('/admin/live/purchased-analytics_exportCsv', 'AdminLiveStreamController@PurchasedLiveExportCsv');
+
+
 ////// CPP revenue
 
 Route::get('admin/cpp/analytics', 'ModeratorsUserController@Analytics');
@@ -84,10 +92,10 @@ Route::post('/admin/cpp_video_exportCsv', 'ModeratorsUserController@CPPVideoExpo
 Route::post('/admin/cpp_video_fliter', 'ModeratorsUserController@CPPVideoFilter');
 
 
-Route::get('admin/cpp/livestream-analytics', 'CPPAnalyticsController@IndexLivestreamAnalytics');
-Route::post('admin/cpp/livestream_startdate_analytics', 'CPPAnalyticsController@LivestreamStartDateAnalytics');
-Route::post('admin/cpp/livestream_enddate_analytics', 'CPPAnalyticsController@LivestreamEndDateAnalytics');
-Route::post('admin/cpp/livestream_exportCsv', 'CPPAnalyticsController@LivestreamExportCsv');
+Route::get('admin/livestream-analytics', 'CPPAnalyticsController@IndexLivestreamAnalytics');
+Route::post('admin/livestream_startdate_analytics', 'CPPAnalyticsController@LivestreamStartDateAnalytics');
+Route::post('admin/livestream_enddate_analytics', 'CPPAnalyticsController@LivestreamEndDateAnalytics');
+Route::post('admin/livestream_exportCsv', 'CPPAnalyticsController@LivestreamExportCsv');
 
 
 
@@ -567,7 +575,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/landing-page/update', 'AdminLandingpageController@update')->name('landing_page_update'); 
     Route::get('/landing-page/delete/{id}', 'AdminLandingpageController@delete')->name('landing_page_delete'); 
     Route::post('/landing-page/update_status', 'AdminLandingpageController@update_status')->name('landing_page_update_status'); 
-
+    Route::get('/landing-page/preview/{landing_page_id}', 'AdminLandingpageController@preview')->name('landing_page_preview'); 
 
     // Footer Link
     Route::get('/footer_menu', 'AdminSettingsController@footer_link')->name('footer_link'); 
@@ -1093,6 +1101,14 @@ Route::post('payouts_startdate_analytics', 'CPPAnalyticsController@PayoutsStartD
 Route::post('payouts_enddate_analytics', 'CPPAnalyticsController@PayoutsEndDateAnalytics');
 Route::post('payouts_exportCsv', 'CPPAnalyticsController@PayoutsExportCsv');
 
+
+Route::get('live-payouts', 'CPPAnalyticsController@LivePayouts');
+Route::post('live-payouts_startdate_analytics', 'CPPAnalyticsController@LivePayoutsStartDateAnalytics');
+Route::post('live-payouts_enddate_analytics', 'CPPAnalyticsController@LivePayoutsEndDateAnalytics');
+Route::post('live-payouts_exportCsv', 'CPPAnalyticsController@LivePayoutsExportCsv');
+
+
+
 Route::get('video-analytics', 'CPPAnalyticsController@IndexVideoAnalytics');
 Route::post('video_startdate_analytics', 'CPPAnalyticsController@VideoStartDateAnalytics');
 Route::post('video_enddate_analytics', 'CPPAnalyticsController@VideoEndDateAnalytics');
@@ -1226,6 +1242,9 @@ Route::post('/audios/audioupdate', array('before' => 'demo', 'uses' => 'CPPAdmin
         
     Route::get('/logout',  'ChannelLoginController@Logout');
     
+    // Route::get('episode/{episode_name}', 'ChannelSeriesController@PlayEpisode');
+
+
     Route::get('video-analytics', 'ChannelAnalyticsController@IndexVideoAnalytics');
     Route::post('video_startdate_analytics', 'ChannelAnalyticsController@VideoStartDateAnalytics');
     Route::post('video_enddate_analytics', 'ChannelAnalyticsController@VideoEndDateAnalytics');
@@ -1365,6 +1384,7 @@ Route::post('/audios/audioupdate', array('before' => 'demo', 'uses' => 'CPPAdmin
     Route::post('/episode/update', 'ChannelSeriesController@update_episode');
     Route::post('/episode_upload',  'ChannelSeriesController@EpisodeUpload');
     Route::post('/uploadepisodeedit',  'ChannelSeriesController@EpisodeUploadEdit');
+    Route::get('episode/{series_name}/{episode_name}', 'ChannelSeriesController@play_episode');
 
 
 

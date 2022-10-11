@@ -282,7 +282,8 @@ for($i=0;$i<(count($userrolepermissiom));$i++){
                      <ul id="analytics_managements" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('/cpp/video-analytics') }}"><i class="las la-user-plus"></i>Video Analytics </a></li>
                         <li><a href="{{ URL::to('/cpp/view_by_region') }}"><i class="las la-user-plus"></i>Video View BY Region  </a></li>
-                        <li><a href="{{ URL::to('/cpp/payouts') }}"><i class="las la-user-plus"></i>Payouts </a></li>
+                        <li><a href="{{ URL::to('/cpp/payouts') }}"><i class="las la-user-plus"></i>Video Payouts </a></li>
+                        <li><a href="{{ URL::to('/cpp/live-payouts') }}"><i class="las la-user-plus"></i>LiveStream Payouts </a></li>
                      </ul>
                   </li>
                   
@@ -380,10 +381,26 @@ for($i=0;$i<(count($userrolepermissiom));$i++){
                       </div>
                    </div>
                    <div class="iq-search-bar ml-auto">
-                      <form action="#" class="searchbox">
-                        <!-- <input type="text" class="text search-input" placeholder="Search Here...">
-                         <a class="search-link" href="#"><i class="ri-search-line"></i></a>-->
-                      </form>
+                      <!-- <form method="POST" action="{{ URL::to('login') }}" class="">
+                        <input type="text" class="text search-input" placeholder="Search Here...">
+                         <a class="search-link" href="#"><i class="ri-search-line"></i></a>
+                         <input id="email" type="hidden"  name="email"  value="{{  $user->email }}"  autocomplete="email" autofocus>
+                         <input id="password" type="hidden"  name="password" value="{{  $user->password }}" autocomplete="current-password" >
+                         <input type="hidden" name="token" id= "token" value="{{ csrf_token() }}">
+
+                         <button type="submit" class="btn btn-hover ab" style="color: blue;">Visit Website</button>
+                      </form> -->
+
+
+                      <form method="POST" action="{{ route('login') }}" class="mt-4">
+                         @csrf
+						   <input type="hidden" name="previous" value="{{ url()->previous() }}">						
+
+                  <input id="email" type="hidden"  name="email"  value="{{  $user->email }}"  autocomplete="email" autofocus>
+                         <input id="password" type="hidden"  name="password" value="{{  $user->password }}" autocomplete="current-password" >
+                              <button type="submit" class="btn btn-hover ab" style="">Visit Website </button>                          
+                     </form>
+
                    </div>
                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"  aria-label="Toggle navigation">
                       <i class="ri-menu-3-line"></i>
