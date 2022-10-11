@@ -584,6 +584,25 @@ input:checked + .sliderk:before {
                               </div>
                            </div>
                         </div>
+                        <?php if(!Auth::guest() && Auth::User()->package == "CPP"){ ?>
+                        <div class="iq-search-bar ml-auto">
+                           <form method="POST" action="<?php echo URL::to('cpp/home') ?>" class="mt-4">
+                              <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
+                                    <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
+                                    <input id="password" type="hidden"  name="password" value="<?=  Auth::user()->unhashed_password ?>" autocomplete="current-password" >
+                                    <button type="submit" class="btn btn-hover " style="margin-top: -13%;margin-left: -8%;">Visit Website </button>                          
+                           </form>
+                        </div>
+                        <?php }elseif(!Auth::guest() && Auth::User()->package == "Channel"){ ?>
+                           <div class="iq-search-bar ml-auto">
+                           <form method="POST" action="<?php echo URL::to('channel/home') ?>" class="mt-4">
+                              <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
+                                    <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
+                                    <input id="password" type="hidden"  name="password" value="<?=  Auth::user()->unhashed_password ?>" autocomplete="current-password" >
+                                    <button type="submit" class="btn btn-hover" style="margin-top: -13%;margin-left: -8%;">Visit Website </button>                          
+                           </form>
+                        </div>
+                       <?php } ?>
                         <div class="navbar-right menu-right">
                            <ul class="d-flex align-items-center list-inline m-0">
                               <li class="nav-item nav-icon">

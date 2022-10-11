@@ -226,6 +226,7 @@ class ModeratorsLoginController extends Controller
 
         $input = $request->all();
         $request->validate(['email_id' => 'required|email|unique:moderators_users,email', 'password' => 'min:6', ]);
+        $request->validate(['email_id' => 'required|email|unique:users,email' ]);
         // dd($input);
         $user_package = User::where('id', 1)->first();
         $package = $user_package->package;
@@ -307,6 +308,20 @@ class ModeratorsLoginController extends Controller
                 $moderatorsuser->picture = $file->getClientOriginalName();
             }
             $moderatorsuser->save();
+
+
+
+            $user = new User();
+            $user->package = 'Channel';
+            $user->unhashed_password = $request->password;
+            $user->name = $request->channel_name;
+            $user->role = 'registered';
+            $user->username = $request->channel_name;
+            $user->email = $request->email_id;
+            $user->password = Hash::make($request->password);
+            $user->active = 1;
+            $user->save();
+
             $user_id = $moderatorsuser->id;
             $str = "1,2,3,4,5,9,10,11,12,26,27,39,40,41,42,43";
             $userrolepermissiom = explode(",", $str);
@@ -546,6 +561,8 @@ class ModeratorsLoginController extends Controller
       $data = $request->all();
       // dd($data);
       $user = ModeratorsUser::where('email', $data['email'])->first();
+
+
       // dd($data);
 // 
       if(!empty($user)){
@@ -553,9 +570,19 @@ class ModeratorsLoginController extends Controller
         $user->password = $data['password'];
         $user->hashedpassword = Hash::make($data['password']);
         $user->save();
+
+        $adminuser = User::where('email', $data['email'])->first();
+    //   dd($adminuser);
+        
+        if(!empty($adminuser)){
+            $adminuser->password = Hash::make($data['password']);
+            $adminuser->unhashed_password = $data['password'];
+            $adminuser->save();
+        }
   
         return redirect('/cpp/login')
         ->with('message', 'Youre Password Changed Successfully');
+        
 
       }else{
 

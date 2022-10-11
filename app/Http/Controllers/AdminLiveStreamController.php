@@ -29,10 +29,12 @@ use GuzzleHttp\Message\Response;
 use App\InappPurchase;
 use App\ModeratorsUser;
 use App\PpvPurchase;
+use App\CurrencySetting;
 use Intervention\Image\Facades\Image;
 use Intervention\Image\Filters\DemoFilter;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
+use File;
 
 class AdminLiveStreamController extends Controller
 {
@@ -1484,4 +1486,391 @@ class AdminLiveStreamController extends Controller
             echo $exception->getMessage();
         }
     }
+
+
+
+    
+    public function PurchasedLiveAnalytics()
+    {
+        $user_package = User::where("id", 1)->first();
+        $package = $user_package->package;
+        if (
+            (!empty($package) && $package == "Pro") ||
+            (!empty($package) && $package == "Business")
+        ) {
+            $settings = Setting::first();
+            $total_content = LiveStream::join(
+                "ppv_purchases",
+                "ppv_purchases.live_id",
+                "=",
+                "live_streams.id"
+            )
+                ->join("users", "users.id", "=", "ppv_purchases.user_id")
+                ->groupBy("ppv_purchases.id")
+
+                ->get([
+                    \DB::raw("live_streams.*"),
+                    \DB::raw("users.username"),
+                    \DB::raw("users.email"),
+                    \DB::raw("ppv_purchases.total_amount"),
+                    \DB::raw("ppv_purchases.created_at as ppvcreated_at"),
+                    \DB::raw("COUNT(*) as count"),
+                    \DB::raw(
+                        "MONTHNAME(ppv_purchases.created_at) as month_name"
+                    ),
+                ]);
+            // dd($total_content);
+            $total_contentss = $total_content->groupBy("month_name");
+
+            // dd($total_content);
+
+            $data = [
+                "settings" => $settings,
+                "total_content" => $total_content,
+                "total_video_count" => count($total_content),
+                "total_contentss" => $total_contentss,
+                "currency" => CurrencySetting::first(),
+            ];
+            return view("admin.analytics.live_purchased_analytics", $data);
+        } else {
+            return Redirect::to("/blocked");
+        }
+    }
+
+    public function PurchasedLiveStartDateRevenue(Request $request)
+    {
+        $user_package = User::where("id", 1)->first();
+        $package = $user_package->package;
+        if (
+            (!empty($package) && $package == "Pro") ||
+            (!empty($package) && $package == "Business")
+        ) {
+            $data = $request->all();
+
+            $start_time = $data["start_time"];
+            $end_time = $data["end_time"];
+            if (!empty($start_time) && empty($end_time)) {
+                $settings = Setting::first();
+
+                $total_content = LiveStream::join(
+                    "ppv_purchases",
+                    "ppv_purchases.live_id",
+                    "=",
+                    "live_streams.id"
+                )
+                    ->join("users", "users.id", "=", "ppv_purchases.user_id")
+                    ->groupBy("ppv_purchases.id")
+                    ->whereDate("ppv_purchases.created_at", ">=", $start_time)
+
+                    ->get([
+                        \DB::raw("live_streams.*"),
+                        \DB::raw("users.username"),
+                        \DB::raw("users.email"),
+                        \DB::raw("ppv_purchases.total_amount"),
+                        \DB::raw("ppv_purchases.created_at as ppvcreated_at"),
+                        // DB::raw(
+                        //     "sum(ppv_purchases.total_amount) as total_amount"
+                        // ),
+                        \DB::raw("COUNT(*) as count"),
+                        \DB::raw(
+                            "MONTHNAME(ppv_purchases.created_at) as month_name"
+                        ),
+                    ]);
+
+                // echo "<pre>";print_r($total_content);exit;
+            } else {
+            }
+
+            $output = "";
+            $i = 1;
+            if (count($total_content) > 0) {
+                $total_row = $total_content->count();
+                if (!empty($total_content)) {
+                    $currency = CurrencySetting::first();
+
+                    foreach ($total_content as $key => $row) {
+                        $video_url =
+                            URL::to("/category/videos") . "/" . $row->slug;
+                        $date = date_create($row->ppvcreated_at);
+                        $newDate = date_format($date, "d M Y");
+
+                        $output .=
+                            '
+                      <tr>
+                      <td>' .
+                            $i++ .
+                            '</td>
+                      <td>' .
+                            $row->username .
+                            '</td>
+                      <td>' .
+                            $row->email .
+                            '</td>    
+                      <td><a href="' .
+                            $video_url .
+                            '">' .
+                            $row->title .
+                            '</a></td>    
+                      <td>' .
+                            $currency->symbol .
+                            " " .
+                            $row->total_amount .
+                            '</td>    
+                      <td>' .
+                            $newDate .
+                            '</td>    
+                      </tr>
+                      ';
+                    }
+                } else {
+                    $output = '
+                  <tr>
+                   <td align="center" colspan="5">No Data Found</td>
+                  </tr>
+                  ';
+                }
+                $value = [
+                    "table_data" => $output,
+                    "total_data" => $total_row,
+                    "total_content" => $total_content,
+                ];
+
+                return $value;
+            }
+        } else {
+            return Redirect::to("/blocked");
+        }
+    }
+
+    public function PurchasedLiveEndDateRevenue(Request $request)
+    {
+        $user_package = User::where("id", 1)->first();
+        $package = $user_package->package;
+        if (
+            (!empty($package) && $package == "Pro") ||
+            (!empty($package) && $package == "Business")
+        ) {
+            $data = $request->all();
+
+            $start_time = $data["start_time"];
+            $end_time = $data["end_time"];
+
+            if (!empty($start_time) && !empty($end_time)) {
+                $total_content = LiveStream::join(
+                    "ppv_purchases",
+                    "ppv_purchases.live_id",
+                    "=",
+                    "live_streams.id"
+                )
+                    ->join("users", "users.id", "=", "ppv_purchases.user_id")
+                    ->groupBy("ppv_purchases.id")
+                    ->whereBetween("ppv_purchases.created_at", [
+                        $start_time,
+                        $end_time,
+                    ])
+                    ->get([
+                        \DB::raw("live_streams.*"),
+                        \DB::raw("users.username"),
+                        \DB::raw("users.email"),
+                        \DB::raw("ppv_purchases.total_amount"),
+                        \DB::raw("ppv_purchases.created_at as ppvcreated_at"),
+                        \DB::raw("COUNT(*) as count"),
+                        \DB::raw(
+                            "MONTHNAME(ppv_purchases.created_at) as month_name"
+                        ),
+                    ]);
+            } else {
+                $total_content = [];
+            }
+
+            $output = "";
+            $i = 1;
+            if (count($total_content) > 0) {
+                $total_row = $total_content->count();
+                if (!empty($total_content)) {
+                    $currency = CurrencySetting::first();
+
+                    foreach ($total_content as $key => $row) {
+                        $video_url =
+                            URL::to("/category/videos") . "/" . $row->slug;
+                        $date = date_create($row->ppvcreated_at);
+                        $newDate = date_format($date, "d M Y");
+
+                        $output .=
+                            '
+                      <tr>
+                      <td>' .
+                            $i++ .
+                            '</td>
+                      <td>' .
+                            $row->username .
+                            '</td>
+                      <td>' .
+                            $row->email .
+                            '</td>    
+                      <td>
+                      <a href="' .
+                            $video_url .
+                            '">' .
+                            $row->title .
+                            '</a>
+                                    </td>       
+                      <td>' .
+                            $currency->symbol .
+                            " " .
+                            $row->total_amount .
+                            '</td>    
+                      <td>' .
+                            $newDate .
+                            '</td>    
+                      </tr>
+                      ';
+                    }
+                } else {
+                    $output = '
+                  <tr>
+                   <td align="center" colspan="5">No Data Found</td>
+                  </tr>
+                  ';
+                }
+                $value = [
+                    "table_data" => $output,
+                    "total_data" => $total_row,
+                    "total_content" => $total_content,
+                ];
+
+                return $value;
+            }
+        } else {
+            return Redirect::to("/blocked");
+        }
+    }
+
+    public function PurchasedLiveExportCsv(Request $request)
+    {
+        $user_package = User::where("id", 1)->first();
+        $package = $user_package->package;
+        if (
+            (!empty($package) && $package == "Pro") ||
+            (!empty($package) && $package == "Business")
+        ) {
+            $data = $request->all();
+
+            $start_time = $data["start_time"];
+            $end_time = $data["end_time"];
+
+            if (!empty($start_time) && empty($end_time)) {
+                $total_content = LiveStream::join(
+                    "ppv_purchases",
+                    "ppv_purchases.live_id",
+                    "=",
+                    "live_streams.id"
+                )
+                    ->join("users", "users.id", "=", "ppv_purchases.user_id")
+                    ->groupBy("ppv_purchases.id")
+                    ->whereDate("ppv_purchases.created_at", ">=", $start_time)
+                    ->get([
+                        \DB::raw("live_streams.*"),
+                        \DB::raw("users.username"),
+                        \DB::raw("users.email"),
+                        \DB::raw("ppv_purchases.total_amount"),
+                        \DB::raw("ppv_purchases.created_at as ppvcreated_at"),
+                        \DB::raw("COUNT(*) as count"),
+                        \DB::raw(
+                            "MONTHNAME(ppv_purchases.created_at) as month_name"
+                        ),
+                    ]);
+            } elseif (!empty($start_time) && !empty($end_time)) {
+                $total_content = LiveStream::join(
+                    "ppv_purchases",
+                    "ppv_purchases.live_id",
+                    "=",
+                    "live_streams.id"
+                )
+                    ->join("users", "users.id", "=", "ppv_purchases.user_id")
+                    ->groupBy("ppv_purchases.id")
+                    ->whereBetween("ppv_purchases.created_at", [
+                        $start_time,
+                        $end_time,
+                    ])
+                    ->get([
+                        \DB::raw("live_streams.*"),
+                        \DB::raw("users.username"),
+                        \DB::raw("users.email"),
+                        \DB::raw("ppv_purchases.total_amount"),
+                        \DB::raw("ppv_purchases.created_at as ppvcreated_at"),
+                        \DB::raw("COUNT(*) as count"),
+                        \DB::raw(
+                            "MONTHNAME(ppv_purchases.created_at) as month_name"
+                        ),
+                    ]);
+            } else {
+                $total_content = LiveStream::join(
+                    "ppv_purchases",
+                    "ppv_purchases.live_id",
+                    "=",
+                    "live_streams.id"
+                )
+                    ->join("users", "users.id", "=", "ppv_purchases.user_id")
+                    ->groupBy("ppv_purchases.id")
+                    ->get([
+                        \DB::raw("live_streams.*"),
+                        \DB::raw("users.username"),
+                        \DB::raw("users.email"),
+                        \DB::raw("ppv_purchases.total_amount"),
+                        \DB::raw("ppv_purchases.created_at as ppvcreated_at"),
+                        \DB::raw("COUNT(*) as count"),
+                        \DB::raw(
+                            "MONTHNAME(ppv_purchases.created_at) as month_name"
+                        ),
+                    ]);
+            }
+            $file = "PurchasedLiveAnalytics.csv";
+
+            $headers = [
+                "Content-Type" => "application/vnd.ms-excel; charset=utf-8",
+                "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+                "Content-Disposition" => "attachment; filename=download.csv",
+                "Expires" => "0",
+                "Pragma" => "public",
+            ];
+            if (!File::exists(public_path() . "/uploads/csv")) {
+                File::makeDirectory(public_path() . "/uploads/csv");
+            }
+            $filename = public_path("/uploads/csv/" . $file);
+            $handle = fopen($filename, "w");
+            fputcsv($handle, [
+                "UserName",
+                "Email",
+                "Live Name",
+                "Amount",
+                "Purchased ON",
+            ]);
+            if (count($total_content) > 0) {
+                foreach ($total_content as $each_user) {
+                    $video_url =
+                        URL::to("/category/videos") . "/" . $each_user->slug;
+                    $date = date_create($each_user->ppvcreated_at);
+                    $newDate = date_format($date, "d M Y");
+
+                    fputcsv($handle, [
+                        $each_user->username,
+                        $each_user->email,
+                        $each_user->title,
+                        $each_user->total_amount,
+                        $newDate,
+                    ]);
+                }
+            }
+
+            fclose($handle);
+
+            \Response::download($filename, "download.csv", $headers);
+
+            return $file;
+        } else {
+            return Redirect::to("/blocked");
+        }
+    }
+
 }

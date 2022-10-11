@@ -1,3 +1,4 @@
+<!-- Page Create on 01/06/2022 -->
 
 
 @extends('admin.master')
@@ -23,7 +24,7 @@
         <div class="col-md-12">
             <div class="iq-card-header  justify-content-between">
                 <div class="iq-header-title">
-                    <h4 class="card-title">Content Partners Video Analytics :</h4>
+                    <h4 class="card-title">Purchased Live Analytics :</h4>
                 </div>
             </div>
              
@@ -44,45 +45,57 @@
                     <div class="col-md-4">
                         <span  id="export" class="btn btn-primary" >Download CSV</span>
                     </div>
+
+                    <div class="col-md-4">
+                        <!-- <span  id="export" class="btn btn-primary" >Download CSV</span> -->
+                        <!--btn btn-success btn-sm-->
+                    </div>
                 </div>
 
                 <div class="clear"></div>
+                            <br>
                 <br>
 
-                <h4 class="card-title">Video View Through Graph :</h4>
+                <h4 class="card-title">Purchased Live Graph :</h4>
                 
                 <div class="row">
-                    <div class="col-md-8">
+                    <div class="col-md-6">
                     <div id="google-line-chart" style="width: 900px; height: 500px"></div>
                  </div>
-                 <!-- <div class="col-md-4" >
-                
-                 </div> -->
                 </div>
-            
-
                         <div class="row">
                             <div class="col-md-12">
-                                <table class="table text-center" id="cpp_video_analytics_table" style="width:100%">
+                                <table class="table text-center" id="player_table" style="width:100%">
                                     <thead>
                                         <tr class="r1">
                                             <th>#</th>
-                                            <th>Video Name</th>
-                                            <th>Email</th>
-                                            <th>Uploader Name</th>
-                                            <!-- <th>Total Views</th> -->
-                                            <!-- <th>Total Comments</th> -->
+                                            <th>User Name</th>
+                                            <th>User Email</th>
+                                            <th>Live Name</th>
+                                            <th>Amount</th>
+                                            <th>Purchased Date</th>
+                                            <!-- <th>Seek Time (Seconds)</th>
+                                            <th>Buffered Time (Seconds)</th> -->
+
                                         </tr>
                                     </thead>
                                 <tbody>
                                 <tr>
-                                    @foreach($total_content as $key => $videos)
+                                    @foreach($total_content as $key => $video)
                                         <td>{{ $key+1  }}</td>   
-                                        <td>{{ $videos->title  }}</td>   
-                                        <td>{{ $videos->cppemail  }}</td>   
-                                        <td>{{ $videos->cppusername  }}</td>   
-                                        <!-- <td>{{ $videos->views  }}</td>    -->
-                                        <!-- <td>{{ $videos->count }}</td>  -->
+                                        <td>{{ $video->username  }}</td>  
+                                        <td>{{ $video->email  }}</td>   
+                                        <td><a  href="{{ URL::to('/category/videos') . '/' . $video->slug }}">{{ $video->title  }}</a></td>   
+                                        <td>{{ $currency->symbol.' '.$video->total_amount  }}</td>   
+                                        <td>
+                                        @php
+                                            $date=date_create($video->ppvcreated_at);
+                                            $newDate = date_format($date,"d M Y");
+                                        @endphp
+                                         {{ $newDate }}
+                                        </td>   
+                                        <!-- <td>{{ $video->seekTime  }}</td>    -->
+                                        <!-- <td>@if(!empty($playervideo->bufferedTime)){{ $playervideo->bufferedTime  }} @else {{ 'No Buffer' }} @endif</td>    -->
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -95,42 +108,30 @@
 </div>
     
 @stop
-
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script>
-
-    $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-    });
-
-     $(document).ready(function(){
-        $('#cpp_video_analytics_table').DataTable();
-     });
-        </script>
+         $(document).ready(function(){
+            $('#player_table').DataTable();
+         });
+</script>
 
 
+<script type="text/javascript">
+         $(document).ready(function(){
 
 
+        var start_time =  $('#start_time').val();
+        var end_time =  $('#end_time').val();
 
-
-
-<script>
-
-    $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-    });
-
-     $(document).ready(function(){
-        // alert();video_startdate_analytics
         $('#start_time').change(function(){
             var start_time =  $('#start_time').val();
             var end_time =  $('#end_time').val();
-            var url = "{{ URL::to('admin/livestream_startdate_analytics/')  }}";
+            // alert(start_time);
+            var url = "{{ URL::to('admin/live/purchased-analytics_startdate_revenue')  }}";
        
        if(start_time != "" && end_time == ""){
+        // alert(start_time);
+
             $.ajax({
                 url: url,
                 type: "post",
@@ -144,21 +145,21 @@
                     // console.log(value);
 
                     $('tbody').html(value.table_data);
-                    $('#cpp_video_analytics_table').DataTable();
+                    $('#player_table').DataTable();
                     google.charts.load('current', {'packages':['corechart']});
                     google.charts.setOnLoadCallback(drawChart);
             
                     function drawChart() {
-                    var linechart = value.total_content;
+                    var linechart = value.total_Revenue;
                     var data = new google.visualization.DataTable(linechart);
                     var data = new google.visualization.DataTable();
                     data.addColumn('string', 'Month');
-                    data.addColumn('number', 'Video Views Count');
+                    data.addColumn('number', 'Users Count');
 
                     linechart.forEach(function (row) {
                         data.addRow([
                         row.month_name,
-                        parseInt(row.views),
+                        parseInt(row.count),
                         ]);
                     });
                     var chart = new google.visualization.LineChart(document.getElementById('google-line-chart'));
@@ -171,10 +172,12 @@
             });
        }
     });
-        $('#end_time').change(function(){
+
+
+    $('#end_time').change(function(){
         var start_time =  $('#start_time').val();
         var end_time =  $('#end_time').val();
-        var url = "{{ URL::to('admin/livestream_enddate_analytics/')  }}";
+        var url = "{{ URL::to('admin/live/purchased-analytics_enddate_revenue')  }}";
 
        if(start_time != "" && end_time != ""){
             $.ajax({
@@ -189,21 +192,22 @@
                 success: function(value){
                     console.log(value);
                     $('tbody').html(value.table_data);
-                    $('#cpp_video_analytics_table').DataTable();
+                    $('#total_views').text(value.views_count);  
+                    $('#player_table').DataTable();
                     google.charts.load('current', {'packages':['corechart']});
                     google.charts.setOnLoadCallback(drawChart);
             
                     function drawChart() {
-                    var linechart = value.total_content;
+                    var linechart = value.total_Revenue;
                     var data = new google.visualization.DataTable(linechart);
                     var data = new google.visualization.DataTable();
                     data.addColumn('string', 'Month');
-                    data.addColumn('number', 'Video Views Count');
+                    data.addColumn('number', 'Users Count');
 
                     linechart.forEach(function (row) {
                         data.addRow([
                         row.month_name,
-                        parseInt(row.views),
+                        parseInt(row.count),
                         ]);
                     });
                     var chart = new google.visualization.LineChart(document.getElementById('google-line-chart'));
@@ -218,9 +222,8 @@
         }
       });
 
-     });
+    });
 
-    /////////  Export ///////////////
 
     $.ajaxSetup({
         headers: {
@@ -232,7 +235,7 @@
             var start_time =  $('#start_time').val();
             var end_time =  $('#end_time').val();
             var url =  $('#exportCsv_url').val();
-        var url = "{{ URL::to('admin/livestream_exportCsv/')  }}";
+        var url = "{{ URL::to('admin/live/purchased-analytics_exportCsv/')  }}";
 
             $.ajax({
             url: url,
@@ -258,41 +261,41 @@
         });
     });
 
-</script>
-     
-<script type="text/javascript">
 
-var total_video_count   = "{{ $total_video_count }}";
-// if(total_Revenue_count == 0){
-//     ('#google-line-chart').hide();
-// }
-if(total_video_count > 0){
-google.charts.load('current', {'packages':['corechart']});
-google.charts.setOnLoadCallback(drawChart);
+    var total_video_count = '<?= $total_video_count ?>';
 
-function drawChart() {
+        if(total_video_count > 0){
 
-var data = google.visualization.arrayToDataTable([
-    ['Month Name', 'Moderator Video Views'],
-    <?php foreach ($total_contentss as $d) {
-        echo "['" . @$d['month_name'] . "', " . @$d['count'] . "],";
-    } ?>
-    
-]);
+            // ('#google-line-chart').hide();
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
 
-var options = {
-  title: 'Total Moderator Video Views',
-  curveType: 'function',
-  legend: { position: 'bottom' }
-};
+        function drawChart() {
 
-  var chart = new google.visualization.LineChart(document.getElementById('google-line-chart'));
+        var data = google.visualization.arrayToDataTable([
+            ['Month Name', 'Purchased LiveStream'],
 
-  chart.draw(data, options);
-}
+                @php
+                foreach($total_content as $key => $d) {
+                    echo "['".$d->month_name."', ".$d->count."],";
+                }
+                @endphp
+        ]);
+
+        var options = {
+          title: 'Purchased LiveStream',
+          curveType: 'function',
+          legend: { position: 'bottom' }
+        };
+
+          var chart = new google.visualization.LineChart(document.getElementById('google-line-chart'));
+
+          chart.draw(data, options);
+    }
 }else{
-}
-</script>
 
+}
+
+    </script>
 
     

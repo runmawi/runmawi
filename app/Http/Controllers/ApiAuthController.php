@@ -7992,6 +7992,8 @@ $cpanel->end();
       
     $episodeid = $request->episodeid;
 
+
+
     $episode = Episode::where('id',$episodeid)->orderBy('episode_order')->get()->map(function ($item) {
        $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
        $item['series_name'] = Series::where('id',$item->series_id)->pluck('title')->first();
@@ -8073,6 +8075,10 @@ $cpanel->end();
 
   $series_id = Episode::where('id','=',$episodeid)->pluck('series_id');
 
+  $season_id = Episode::where('id','=',$episodeid)->pluck('season_id');
+
+  
+
   if(!empty($series_id) && count($series_id) > 0){
     $series_id = $series_id[0];
     
@@ -8128,12 +8134,17 @@ $cpanel->end();
           $ppv_video_status = "pay_now";
     }
 
+    if(!empty($season_id) ){
+      $Season = SeriesSeason::where('series_id',$series_id)->where('id',$season_id)->get();
+    }
+    
+
     $response = array(
       'status'=>'true',
       'message'=>'success',
       'episode' => $episode,
       // 'Season_Name' => $Season_Name,
-      // 'season' => $Season,
+      'season' => $Season,
       'ppv_video_status' => $ppv_video_status,
       'wishlist' => $wishliststatus,
       'watchlater' => $watchlaterstatus,
