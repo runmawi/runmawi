@@ -1881,7 +1881,7 @@ class AdminLiveStreamController extends Controller
            
             $youtube_rtmp_url =  $request->youtube_restream;
     
-            $command_line = "ffmpeg -fflags +igndts -hide_banner -i ".$streaming_video_url." -c copy -f flv ".$youtube_rtmp_url;
+            $command_line = "ffmpeg -re -i ".$streaming_video_url." -c:v libx264 -c:a aac -f flv ".$youtube_rtmp_url;
     
             $process = Process::fromShellCommandline( $command_line);
     
@@ -1901,8 +1901,8 @@ class AdminLiveStreamController extends Controller
 
             $rtmp_fb_url =  $request->youtube_restream;
     
-            $command_line = "ffmpeg -fflags +igndts -hide_banner -i ".$streaming_video_url." -c copy -f flv ".$rtmp_fb_url;
-    
+            $command_line = "ffmpeg -re -i ".$streaming_video_url." -c:v libx264 -c:a aac -f flv ".$rtmp_fb_url;
+
             $process = Process::fromShellCommandline( $command_line);
     
             try {
@@ -1920,7 +1920,7 @@ class AdminLiveStreamController extends Controller
 
             $rtmp_twitter_url =  $request->twitter_restream;
     
-            $command_line = "ffmpeg -fflags +igndts -hide_banner -i ".$streaming_video_url." -c copy -f flv ".$rtmp_twitter_url;
+            $command_line = "ffmpeg -re -i ".$streaming_video_url." -c:v libx264 -c:a aac -f flv ".$rtmp_twitter_url;
     
             $process = Process::fromShellCommandline( $command_line);
     
