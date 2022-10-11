@@ -59,7 +59,7 @@ border-radius: 0px 4px 4px 0px;
                      </div>
                      <div class="iq-card-body table-responsive p-0">
                         <div class="table-view">
-                           <table class="table text-center table-striped table-bordered table movie_table iq-card " style="width:100%">
+                           <table class="table text-center iq-card " style="width:100%">
                               <thead>
                                  <tr class="r1">
                                     <th>Select All <input type="checkbox" id="select_all"></th>

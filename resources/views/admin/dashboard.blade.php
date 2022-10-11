@@ -4,6 +4,11 @@
     background: #fff!important; */
    
 }
+    .tab-content{
+        background-color: #fafafa;
+        padding: 10px;
+        border-radius: 10px;
+    }
 </style>
 @section('content')
 	<!--[hook_admin_dashboard_widgets_start]-->
@@ -34,7 +39,7 @@
                   <div class="iq-card iq-card iq-card-block iq-card-stretch iq-card-height">
                      <div class="iq-card-header">
                         <div class="iq-header-title">
-                           <h4 class="card-title text-center" style="color: #4295D2;">User's Of {{ GetWebsiteName() }}</h4>
+                           <h4 class="card-title text-center" >User's Of {{ GetWebsiteName() }}</h4>
                         </div>
                      </div>
                      <div class="iq-card-body pb-0">
@@ -364,13 +369,13 @@
                            <table class="data-tables table movie_table" style="width:100%">
                               <thead>
                                  <tr class="r1">
-                                    <th style=""><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/vi.svg';  ?>">Video</th>
-                                    <th style=""><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/rat.svg';  ?>">Rating</th>
-                                    <th style=""><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/ct.svg';  ?>">Category</th>
-                                    <th style=""><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/viw.svg';  ?>">Views</th>
+                                    <th style=""><img width="25" class="ply" src="<?php echo URL::to('/').'/assets/img/icon/video.svg';  ?>">Video</th>
+                                    <th style=""><img width="25" class="ply" src="<?php echo URL::to('/').'/assets/img/icon/rat.svg';  ?>">Rating</th>
+                                    <th style=""><img width="25" class="ply" src="<?php echo URL::to('/').'/assets/img/icon/ct.svg';  ?>">Category</th>
+                                    <th style=""><img width="25" class="ply" src="<?php echo URL::to('/').'/assets/img/icon/viw.svg';  ?>">Views</th>
                                     
                                     <!-- <th style="width:20%;">Date</th> -->
-                                    <th style=""><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/lik.svg';  ?>">Favourites</th>
+                                    <th style=""><img width="25" class="ply" src="<?php echo URL::to('/').'/assets/img/icon/lik.svg';  ?>">Favourites</th>
                                  </tr>
                               </thead>
                               <tbody>
