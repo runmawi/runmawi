@@ -1873,4 +1873,70 @@ class AdminLiveStreamController extends Controller
         }
     }
 
+    public function start_restream(Request $request)
+    {
+        $streaming_video_url = $request->hls_url;
+
+        if($request->youtube_restream_checkbox == true){
+           
+            $youtube_rtmp_url =  $request->youtube_restream;
+    
+            $command_line = "ffmpeg -fflags +igndts -hide_banner -i ".$streaming_video_url." -c copy -f flv ".$youtube_rtmp_url;
+    
+            $process = Process::fromShellCommandline( $command_line);
+    
+            try {
+                $process->setTimeout(null);
+                $process->mustRun();
+                echo $process->getOutput();
+    
+                return "youtube_streaming" ;
+
+            } catch (ProcessFailedException $exception) {
+                echo $exception->getMessage();
+            }
+        }
+
+        if($request->facebook_restream_checkbox == true){
+
+            $rtmp_fb_url =  $request->youtube_restream;
+    
+            $command_line = "ffmpeg -fflags +igndts -hide_banner -i ".$streaming_video_url." -c copy -f flv ".$rtmp_fb_url;
+    
+            $process = Process::fromShellCommandline( $command_line);
+    
+            try {
+                $process->setTimeout(null);
+                $process->mustRun();
+                echo $process->getOutput();
+    
+            } catch (ProcessFailedException $exception) {
+                echo $exception->getMessage();
+            }
+           
+        }
+
+        if($request->twitter_restream_checkbox == true){
+
+            $rtmp_twitter_url =  $request->twitter_restream;
+    
+            $command_line = "ffmpeg -fflags +igndts -hide_banner -i ".$streaming_video_url." -c copy -f flv ".$rtmp_twitter_url;
+    
+            $process = Process::fromShellCommandline( $command_line);
+    
+            try {
+                $process->setTimeout(null);
+                $process->mustRun();
+                echo $process->getOutput();
+    
+            } catch (ProcessFailedException $exception) {
+                echo $exception->getMessage();
+            }
+        }
+
+        if($request->linkedin_restream_checkbox == true){
+           
+        }
+    }
+
 }
