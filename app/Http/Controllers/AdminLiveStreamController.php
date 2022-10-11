@@ -32,6 +32,8 @@ use App\PpvPurchase;
 use App\CurrencySetting;
 use Intervention\Image\Facades\Image;
 use Intervention\Image\Filters\DemoFilter;
+use Symfony\Component\Process\Process;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 use File;
 
 class AdminLiveStreamController extends Controller
@@ -1463,21 +1465,26 @@ class AdminLiveStreamController extends Controller
 
     public function liveStream(Request $request)
     {
-        $r_144p  = (new Representation)->setKiloBitrate(95)->setResize(256, 144);
-        $format = new \Streaming\Format\X264();
-        $ffmpeg = \Streaming\FFMpeg::create([ ]);
+        
+        $youtube_rtmp_url   = 'rtmp://a.rtmp.youtube.com/live2' ;
+        $youtube_stream_key = "ubxz-qpsg-f2hg-ba3p-beyq" ;
+        $combine_youtube_url =  $youtube_rtmp_url."/".$youtube_stream_key;
 
-        $video = $ffmpeg->open('public/uploads/LiveStream/Vaaranam_Aayiram.mp4');
+        $youtube_streaming_video_url = "https://cph-p2p-msl.akamaized.net/hls/live/2000341/test/master.m3u8";
 
-        $hls = $video->hls()
-        ->x264()
-        ->addRepresentations([(new Representation)->setKiloBitrate(95)->setResize(256, 144)])
-        ->save('public/uploads/LiveStream/hls-stream-3.m3u8');
+        $command_line = "ffmpeg -fflags +igndts -hide_banner -i ".$youtube_streaming_video_url." -c copy -f flv ".$combine_youtube_url;
 
-        $hls->setMasterPlaylist('public/uploads/LiveStream/hls-stream-3.m3u8')
-            ->live('https://stream.flicknexs.com:9043/hls/8250313363/index.m3u8');
+        $process = Process::fromShellCommandline( $command_line);
 
-        dd($hls);
+
+        try {
+            $process->setTimeout(null);
+            $process->mustRun();
+            echo $process->getOutput();
+
+        } catch (ProcessFailedException $exception) {
+            echo $exception->getMessage();
+        }
     }
 
 
