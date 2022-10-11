@@ -1307,45 +1307,50 @@ public function verifyandupdatepassword(Request $request)
 
      public function sliders()
      {
-      $sliders = Slider::where('active', '=', 1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
-        $item['slider'] = URL::to('/').'/public/uploads/videocategory/'.$item->slider;
-        return $item;
-      });
-      $banners = Video::where('active','=',1)->where('status','=',1)
-      ->where('banner', '=', 1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
-        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-        $item['video_url'] = URL::to('/').'/storage/app/public/';
-        $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
-        return $item;
-      });
-      $live_banner = LiveStream::where('active','=',1)
-      ->where('banner', '=', 1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
-        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-        $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
-        return $item;
-      });
-      $series_banner = Series::where('active','=',1)->where('banner', '=', 1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
-        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-        $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
-        return $item;
-      });
 
-$array1 = array ( 'sliders'=> $sliders);
-$array2 = array ('video_banners'=> $banners);
-$array3 = array ('live_banner'=> $live_banner);
-$array4 = array ('series_banner'=> $series_banner);
-$final[] = array_merge($array1,$array2,$array3,$array4);
-// echo "<pre>";
-// print_r($final);exit;
-      $response = array(
-        'status' => 'true',
-        // 'sliders' => $sliders,
-        // 'banner' => $banners,
-        'banners' => $final,
-        // 'live_banner' => $live_banner,
-        // 'series_banner' => $series_banner,
-      );
-      return response()->json($response, 200);
+        $sliders = Slider::where('active', '=', 1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+                  $item['slider'] = URL::to('/').'/public/uploads/videocategory/'.$item->slider;
+                  $item['slider_source'] = "slider";
+                  return $item;
+        });
+
+        $video_banners = Video::where('active','=',1)->where('status','=',1)
+                  ->where('banner', '=', 1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+                  $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+                  $item['video_url'] = URL::to('/').'/storage/app/public/';
+                  $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+                  $item['slider_source'] = "videos";
+                  return $item;
+        });
+
+        $live_banner = LiveStream::where('active','=',1)
+                  ->where('banner', '=', 1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+                  $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+                  $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+                  $item['slider_source'] = "livestream";
+                  return $item;
+        });
+
+        $series_banner = Series::where('active','=',1)->where('banner', '=', 1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+              $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+              $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+              $item['slider_source'] = "series";
+              return $item;
+        });
+
+        $slider_array  =  array ( 'sliders'       => $sliders);
+        $videos_array  =  array ( 'video_banners' => $video_banners);
+        $live_array    =  array ( 'live_banner'   => $live_banner);
+        $series_array  =  array ( 'series_banner' => $series_banner);
+
+        $combine_sliders[] =  array_merge($slider_array,$videos_array,$live_array,$series_array);
+
+        $response = array(
+          'status' => 'true',
+          'banners' => $combine_sliders,
+        );
+        
+        return response()->json($response, 200);
      } 
        
      public function coupons(Request $request)
@@ -1821,7 +1826,7 @@ $final[] = array_merge($array1,$array2,$array3,$array4);
 
     $user_id = $request->user_id;
 
-    /*channel videos*/
+    /* videos*/
     $video_ids = Watchlater::select('video_id')->where('user_id','=',$user_id)->get();
     $video_ids_count = Watchlater::select('video_id')->where('user_id','=',$user_id)->count();
 
@@ -1833,6 +1838,7 @@ $final[] = array_merge($array1,$array2,$array3,$array4);
       $channel_videos = Video::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['video_url'] = URL::to('/').'/storage/app/public/';
+        $item['source'] = 'Videos';
         return $item;
       });
       if(count($channel_videos) > 0){
@@ -1842,13 +1848,52 @@ $final[] = array_merge($array1,$array2,$array3,$array4);
       }
     }else{
              $status = "false";
-      $channel_videos = [];
+              $channel_videos = [];
+    }
+
+    // live videos
+
+    $live_videos_id = Watchlater::where('user_id','=',$user_id)->whereNotNull('live_id')->pluck('live_id');
+
+    if(count($live_videos_id) > 0){
+
+        $livestream_videos = LiveStream::whereIn('id',$live_videos_id)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+            $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+            $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+            $item['live_description'] = $item->description ? $item->description : "" ;
+            $item['source'] = 'live_stream';
+            return $item;
+        });
+
+    }else{
+      $livestream_videos = [];
     }
     
+    // Episode
+
+    $episode_id = Watchlater::where('user_id','=',$user_id)->whereNotNull('episode_id')->pluck('episode_id');
+
+    
+    if(count($episode_id) > 0 ){
+
+        $episode = Episode::whereIn('id',$episode_id)->orderBy('episode_order')->get()->map(function ($item) {
+          $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
+          $item['series_name'] = Series::where('id',$item->series_id)->pluck('title')->first();
+          $item['source'] = 'episode';
+          return $item;
+        });
+  
+    }else{
+      $episode = [];
+    }
+
     $response = array(
-        'status'=>$status,
-        'channel_videos'=> $channel_videos
-      );
+        'status'         => $status,
+        'channel_videos' => $channel_videos,
+        'livestream_videos'=> $livestream_videos,
+        'episode' => $episode,
+    );
+
     return response()->json($response, 200);
 
   }
@@ -7718,6 +7763,43 @@ public function Adstatus_upate(Request $request)
       
       return response()->json($response, 200); 
   }
+
+  public function live_addwatchalter(Request $request)
+    {
+        $user_id = $request->user_id;
+        $live_id = $request->live_id;
+
+        try {
+            if($live_id != ''){
+              $count = Watchlater::where('user_id', '=', $user_id)->where('live_id', '=', $live_id)->count();
+
+            if( $count > 0 ) {
+
+                Watchlater::where('user_id', '=', $user_id)->where('live_id', '=', $live_id)->delete();
+                $status = "true";
+                $message = "Removed live video From Your Watch Later List";
+            } 
+            else {
+              
+                $data = array('user_id' => $user_id, 'live_id' => $live_id );
+                Watchlater::Create($data);
+                $status = "true";
+                $message = "Added live video to Your Watch Later List";
+            }
+          }
+        } 
+        catch (\Throwable $th) {
+            $status = "false";
+            $message = $th->getMessage();
+        }
+        
+        $response = array(
+          'status' => $status ,
+          'message'=> $message,
+        );
+
+        return response()->json($response, 200);
+    }
 
   public function home_categorylist(Request $request)
   {
