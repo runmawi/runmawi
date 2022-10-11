@@ -8053,7 +8053,7 @@ $cpanel->end();
     }
 
     if(!empty($season_id) ){
-      $Season = SeriesSeason::where('series_id',$series_id)->where('id',$season_id)->first();
+      $Season = SeriesSeason::where('series_id',$series_id)->where('id',$season_id)->get();
     }
     
 
