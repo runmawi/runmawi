@@ -75,6 +75,7 @@ class ChannelLoginController extends Controller
     {
         $input = $request->all();
         $request->validate(['email_id' => 'required|email|unique:channels,email', 'password' => 'min:6', ]);
+        $request->validate(['email_id' => 'required|email|unique:users,email' ]);
         // dd($input);
         $user_package = User::where('id', 1)->first();
         $package = $user_package->package;
