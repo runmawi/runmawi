@@ -307,6 +307,7 @@ Route::group([
     
     Route::post('live_like_ios', 'ApiAuthController@live_like_ios');
     Route::post('live_dislike_ios', 'ApiAuthController@live_dislike_ios');
+    Route::post('live_addwatchalter', 'ApiAuthController@live_addwatchalter');
 
     // Audio Like & dislike - IOS
     Route::post('Videolike_ios', 'ApiAuthController@Videolike_ios');
