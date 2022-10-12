@@ -452,8 +452,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::get('/livestream/delete/{id}', array('before' => 'demo', 'uses' => 'AdminLiveStreamController@destroy'));
     Route::get('/livestream/create', 'AdminLiveStreamController@create');
     Route::post('/livestream/store', array('before' => 'demo', 'uses' => 'AdminLiveStreamController@store'));
-
-
+    Route::post('/start_restream', 'AdminLiveStreamController@start_restream')->name('start_restream');
 
 
     Route::get('/ppv/categories', array('before' => 'demo', 'uses' => 'AdminPpvCategoriesController@index'));
@@ -593,6 +592,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::get('/Restream', 'AdminRestreamController@Restream_index')->name('Restream_index'); 
     Route::get('/Restream-create', 'AdminRestreamController@Restream_create')->name('Restream_create'); 
     Route::post('/Restream-obs-store', 'AdminRestreamController@Restream_obs_store')->name('Restream_obs_store'); 
+    
 
 
     // Mobile Side Link
