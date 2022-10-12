@@ -119,7 +119,17 @@ border-radius: 0px 4px 4px 0px;
 						<td> @if( $video->url_type != null && $video->url_type == "Encode_video") {{ 'Video Encoder' }} @elseif( $video->url_type != null && $video->url_type == "live_stream_video") {{ 'Live Stream Video' }} @else {{  ucwords($video->url_type)  }} @endif
 							
 							@if( $video->url_type != null && $video->url_type == "Encode_video")
-								<i class="fa fa-info-circle encode_video_alert"  aria-hidden="true" data-title = "{{ $video->title }}" data-name="{{$video->Stream_key}}"  data-rtmpURL= "{{ $video->rtmp_url ? $video->rtmp_url : null }}" data-hls-url= "{{ $video->hls_url ? $video->hls_url : null }}" value="{{$video->Stream_key}}" onclick="addRow(this)" ></i>
+								<i class="fa fa-info-circle encode_video_alert"  aria-hidden="true" 
+										data-title = "{{ $video->title }}" data-name="{{$video->Stream_key}}"
+										data-rtmpURL= "{{ $video->rtmp_url ? $video->rtmp_url : null }}" 
+										data-hls-url= "{{ $video->hls_url ? $video->hls_url : null }}" 
+										
+										data-linkedin-restream = "{{ 'dat' }}" 
+										data-youtube-restream  = "{{ $video->youtube_restream_url && $video->youtube_streamkey  ? $video->youtube_restream_url.'/'. $video->youtube_streamkey : null }}" 
+										data-facebook-restream = "{{ $video->fb_restream_url && $video->fb_streamkey  ? $video->fb_restream_url."/".$video->fb_streamkey : null }}"
+										data-twitter-restream  = "{{ $video->twitter_restream_url && $video->twitter_streamkey ? $video->twitter_restream_url."/".$video->twitter_streamkey : null }}"   
+										value="{{$video->Stream_key}}" onclick="addRow(this)" >
+								</i>
 							@endif
 
  						</td>
@@ -166,7 +176,19 @@ border-radius: 0px 4px 4px 0px;
 			var stream_key = $(ele).attr('data-name');
 			var Rtmp_url   = $(ele).attr('data-rtmpURL');
 			var Rtmp_title = $(ele).attr('data-title');
-			var hls_url = $(ele).attr('data-hls-url');
+			var hls_url    = $(ele).attr('data-hls-url');
+
+			var youtube_restream    = $(ele).attr('data-youtube-restream');
+			var facebook_restream   = $(ele).attr('data-facebook-restream');
+			var twitter_restream    = $(ele).attr('data-twitter-restream');
+			var linkedin_restream   = $(ele).attr('data-linkedin-restream');
+
+			var youtube_restream  = '<div class="col-md-4">   <lable> Youtube </lable>  <td> <div class="mt-1"> <label class="switch">  <input name="youtube_restream"   type="checkbox" value= ' + youtube_restream + ' > <span class="slider round"></span></label></div></td></div>' ;
+			var facebook_restream = '<div class="col-md-4">   <lable> FaceBook </lable>  <td> <div class="mt-1"> <label class="switch"> <input name="facebook_restream"  type="checkbox" value= ' + facebook_restream + ' > <span class="slider round"></span></label></div></td></div>' ;
+			var twitter_restream  = '<div class="col-md-4">   <lable> Twitter </lable>  <td> <div class="mt-1"> <label class="switch">  <input name="twitter_restream"   type="checkbox" value= ' + twitter_restream + '  > <span class="slider round"></span></label></div></td></div>' ;
+			var linkedin_restream = '<div class="col-md-4">   <lable> Linkedin </lable>  <td> <div class="mt-1"> <label class="switch"> <input name="linkedin_restream"  type="checkbox" value= ' + linkedin_restream + ' > <span class="slider round"></span></label></div></td></div>' ;
+		
+			var rtmp_hls_url = '<input type="hidden" name="rtmp_hls_url" value='+ hls_url +'>';
 
 			Swal.fire({
 					allowOutsideClick:false,
@@ -174,9 +196,50 @@ border-radius: 0px 4px 4px 0px;
 					title: 'RTMP Streaming Details for '+ Rtmp_title ,
 					html: '<div class="col-md-12">' + ' URL :  ' + Rtmp_url + '</div>' +"<br>"+ 
 						  '<div class="col-md-12">' + 'Stream Key :  ' +  stream_key + '</div>'+"<br>"+ 
-						  '<div class="col-md-12">' + 'HLS URL :  ' +  hls_url + '</div>' ,
+						  '<div class="col-md-12">' + 'HLS URL :  ' +  hls_url + '</div>' +"<br>"+ 
+						  '<div class="col-md-12">' + '<form> <lable> Live Re-stream : </lable> <br> <br> <div class="row">' +  youtube_restream  +  facebook_restream + twitter_restream + linkedin_restream + rtmp_hls_url +'</div> </div>' +
+						  '<div class="col-md-12"> <input type="submit" value="Start Restream"  class="btn btn-primary" onclick="restream_button(this)" > </div> </form>', 
+
 			})
 		}
+
+		function restream_button(ele){
+
+			var youtube_restream_checkbox   = $("input[name=youtube_restream]").prop("checked");
+			var facebook_restream_checkbox  = $("input[name=facebook_restream]").prop("checked");
+			var twitter_restream_checkbox   = $("input[name=twitter_restream]").prop("checked");
+			var linkedin_restream_checkbox  = $("input[name=linkedin_restream]").prop("checked");
+   
+			var youtube_restream  = $("input[name=youtube_restream]").val();
+			var facebook_restream = $("input[name=facebook_restream]").val();
+			var twitter_restream  = $("input[name=twitter_restream]").val(); 
+			var linkedin_restream = $("input[name=linkedin_restream]").val();
+
+			var hls_url = $("input[name=rtmp_hls_url]").val();
+
+			$.ajax({
+				type   : 'POST',
+				url    : "{{ route('start_restream') }}",
+				data:{
+					_token : "{{ csrf_token() }}",
+					youtube_restream_checkbox    : youtube_restream_checkbox, 
+					facebook_restream_checkbox   : facebook_restream_checkbox, 
+					twitter_restream_checkbox    : twitter_restream_checkbox, 
+					linkedin_restream_checkbox   : linkedin_restream_checkbox, 
+					youtube_restream    : youtube_restream, 
+					facebook_restream   : facebook_restream, 
+					twitter_restream    : twitter_restream,
+					linkedin_restream   : linkedin_restream, 
+					hls_url				: hls_url,
+				},
+
+				success:function(data){
+					console.log(data);
+				}
+        	});
+
+		}
+		
 
 		$(document).ready(function(){
 			var delete_link = '';

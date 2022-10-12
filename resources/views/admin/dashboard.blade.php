@@ -4,6 +4,11 @@
     background: #fff!important; */
    
 }
+    .tab-content{
+        background-color: #fafafa;
+        padding: 10px;
+        border-radius: 10px;
+    }
 </style>
 @section('content')
 	<!--[hook_admin_dashboard_widgets_start]-->
@@ -34,7 +39,7 @@
                   <div class="iq-card iq-card iq-card-block iq-card-stretch iq-card-height">
                      <div class="iq-card-header">
                         <div class="iq-header-title">
-                           <h4 class="card-title text-center" style="color: #4295D2;">User's Of {{ GetWebsiteName() }}</h4>
+                           <h4 class="card-title text-center" >User's Of {{ GetWebsiteName() }}</h4>
                         </div>
                      </div>
                      <div class="iq-card-body pb-0">
@@ -249,7 +254,7 @@
                         <ul class="list-unstyled row  mb-0">
                        
                             @foreach($top_rated_videos as $top_video)
-                           <li class="col-sm-6 col-lg-4 col-xl-4 iq-rated-box">
+                           <li class="col-sm-2 col-lg-2 col-xl-2 iq-rated-box p-0">
                               <div class="iq-card mb-0">
                                  <div class="iq-card-body p-0">
                                     <div class="iq-thumb">
@@ -288,7 +293,7 @@
                         <!-- <div id="view-chart-03"></div> -->
                         <?php
                         foreach( $video_category as $key => $value){ ?>
-                           <div class="col-sm-6 col-md-4 col-lg-8 mb-3">
+                           <div class="col-sm-6 col-md-4 col-lg-8 mb-3 p-0">
                            <div class="iq-progress-bar progress-bar-vertical iq-bg-primary">
                               <span class="bg-primary" data-percent="100" style="transition: height 2s ease 0s; width: 100%; height: 40%;"></span>
                            </div>
@@ -331,7 +336,7 @@
                                        ->Join('videos', 'videos.id', '=', 'categoryvideos.video_id')
                                        ->where("category_id","=",$category->id)->sum('videos.views');
                                        ?>                                   
-                              <div class="col-sm-6 col-md-5 col-lg-6 mb-3">
+                              <div class="col-sm-6 col-md-5 col-lg-6 mb-3 p-0">
                                  <div class="iq-progress-bar progress-bar-vertical iq-bg-primary">
                                     <span class="bg-primary" data-percent="100" style="transition: height 2s ease 0s; width: 100%; height: 40%;"></span>
                                  </div>
@@ -365,13 +370,13 @@
                            <table class="data-tables table movie_table" style="width:100%">
                               <thead>
                                  <tr class="r1">
-                                    <th style=""><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/vi.svg';  ?>">Video</th>
-                                    <th style=""><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/rat.svg';  ?>">Rating</th>
-                                    <th style=""><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/ct.svg';  ?>">Category</th>
-                                    <th style=""><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/viw.svg';  ?>">Views</th>
+                                    <th style=""><img width="25" class="ply" src="<?php echo URL::to('/').'/assets/img/icon/video.svg';  ?>">Video</th>
+                                    <th style=""><img width="25" class="ply" src="<?php echo URL::to('/').'/assets/img/icon/rat.svg';  ?>">Rating</th>
+                                    <th style=""><img width="25" class="ply" src="<?php echo URL::to('/').'/assets/img/icon/ct.svg';  ?>">Category</th>
+                                    <th style=""><img width="25" class="ply" src="<?php echo URL::to('/').'/assets/img/icon/viw.svg';  ?>">Views</th>
                                     
                                     <!-- <th style="width:20%;">Date</th> -->
-                                    <th style=""><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/lik.svg';  ?>">Favourites</th>
+                                    <th style=""><img width="25" class="ply" src="<?php echo URL::to('/').'/assets/img/icon/lik.svg';  ?>">Favourites</th>
                                  </tr>
                               </thead>
                               <tbody>
