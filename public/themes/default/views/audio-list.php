@@ -11,10 +11,10 @@
         height:10%;
     }
 </style>
-            <div class="container-fluid mt-4 audio-list-page">
+            <div class="container-fluid mt-4 audio-list-page overflow-hidden">
                      <div class="block-space1">
                            <div class="row">
-                              <div class="col-sm-12 overflow-hidden">
+                              <div class="col-sm-12 ">
                                  <div class="iq-main-header d-flex align-items-center justify-content-between">
                                     <?php if(isset($page_title) && count( $audios) > 0 ): ?>
                                        <h4 class="main-title">Today Trending</h4>
@@ -31,10 +31,10 @@
             </div>
             
 
-            <div class="container-fluid mt-2">
+            <div class="container-fluid mt-2 overflow-hidden">
                   <div class="block-space1"> 
                      <div class="row">
-                        <div class="col-sm-12 overflow-hidden">
+                        <div class="col-sm-12 ">
                            <div class="iq-main-header d-flex align-items-center justify-content-between">
                               <?php if((isset($page_title))  && count( $albums) > 0 ):  ?>
                                  <a href=<?= route('albums_list') ?> >
