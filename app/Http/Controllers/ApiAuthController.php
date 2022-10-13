@@ -1776,11 +1776,46 @@ public function verifyandupdatepassword(Request $request)
       $channel_videos = [];
     }
 
+    // Episode
+
+    $episode_id = Wishlist::where('user_id','=',$user_id)->whereNotNull('episode_id')->pluck('episode_id');
+
+    if(count($episode_id) > 0 ){
+
+        $episode = Episode::whereIn('id',$episode_id)->orderBy('episode_order')->get()->map(function ($item) {
+          $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
+          $item['series_name'] = Series::where('id',$item->series_id)->pluck('title')->first();
+          $item['source'] = 'episode';
+          return $item;
+        });
   
+    }else{
+      $episode = [];
+    }
+
+    // Audios 
+
+    $audio_id = Wishlist::where('user_id','=',$user_id)->whereNotNull('audio_id')->pluck('audio_id');
+
+    if(count($audio_id) > 0 ){
+
+        $audios = Audio::whereIn('id',$audio_id)->get()->map(function ($item) {
+          $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
+          $item['source'] = 'audio';
+          return $item;
+        });
+  
+    }else{
+      $audios = [];
+    }
+
     $response = array(
         'status'=>$status,
-        'channel_videos'=> $channel_videos
-      );
+        'channel_videos' => $channel_videos,
+        'episode_videos' => $episode,
+        'audios' => $audios
+       );
+
     return response()->json($response, 200);
 
   }
@@ -1801,8 +1836,10 @@ public function verifyandupdatepassword(Request $request)
       $channel_videos = Video::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['video_url'] = URL::to('/').'/storage/app/public/';
+        $item['source'] = 'videos';
         return $item;
       });
+
       if(count($channel_videos) > 0){
         $status = "true";
       }else{
@@ -1813,10 +1850,44 @@ public function verifyandupdatepassword(Request $request)
       $channel_videos = [];
     }
 
+    // Episode
+
+    $episode_id = Favorite::where('user_id','=',$user_id)->whereNotNull('episode_id')->pluck('episode_id');
+
+    if(count($episode_id) > 0 ){
+
+        $episode = Episode::whereIn('id',$episode_id)->orderBy('episode_order')->get()->map(function ($item) {
+          $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
+          $item['series_name'] = Series::where('id',$item->series_id)->pluck('title')->first();
+          $item['source'] = 'episode';
+          return $item;
+        });
+  
+    }else{
+      $episode = [];
+    }
+
+    // Audios
+    
+    $audio_id = Favorite::where('user_id','=',$user_id)->whereNotNull('audio_id')->pluck('audio_id');
+
+    if(count($audio_id) > 0 ){
+
+        $audios = Audio::whereIn('id',$audio_id)->get()->map(function ($item) {
+          $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
+          $item['source'] = 'audio';
+          return $item;
+        });
+  
+    }else{
+      $audios = [];
+    }
   
     $response = array(
         'status'=>$status,
-        'channel_videos'=> $channel_videos
+        'channel_videos'  => $channel_videos,
+        'episode_videos'  => $episode,
+        'audios'          => $audios,
       );
     return response()->json($response, 200);
 
@@ -1838,7 +1909,7 @@ public function verifyandupdatepassword(Request $request)
       $channel_videos = Video::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['video_url'] = URL::to('/').'/storage/app/public/';
-        $item['source'] = 'Videos';
+        $item['source'] = 'videos';
         return $item;
       });
       if(count($channel_videos) > 0){
@@ -1887,11 +1958,26 @@ public function verifyandupdatepassword(Request $request)
       $episode = [];
     }
 
+    $audio_id = Watchlater::where('user_id','=',$user_id)->whereNotNull('audio_id')->pluck('audio_id');
+
+    if(count($audio_id) > 0 ){
+
+        $audios = Audio::whereIn('id',$audio_id)->get()->map(function ($item) {
+          $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
+          $item['source'] = 'audio';
+          return $item;
+        });
+  
+    }else{
+      $audios = [];
+    }
+
     $response = array(
         'status'         => $status,
         'channel_videos' => $channel_videos,
         'livestream_videos'=> $livestream_videos,
         'episode' => $episode,
+        'audios'  => $audios,
     );
 
     return response()->json($response, 200);
