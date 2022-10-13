@@ -262,8 +262,9 @@
                                           <img src="{{  URL::to('/').'/public/uploads/images/'.$top_video->image }}" class="img-fluid w-100 img-border-radius" alt="">
                                        </a>
                                     </div>
-                                    <div class="iq-feature-list p-0 mt-2">
-                                       <h6 class="font-weight-600 mb-0" style="font-size:14px;">{{  $top_video->title }}</h6>
+                                    <div class="iq-feature-list">
+                                     
+                                    <h6 class="font-weight-600 mb-0">@if(strlen($top_video->title) > 17)  {{  substr($top_video->title,0,18).'...' }} @else {{ $top_video->title }} @endif</h6>
                                        <p class="mb-0 mt-2">{{  @$top_video->categories->name }}</p>
                                        <div class="d-flex align-items-center my-2">
                                           <p class="mb-0 mr-2"><i class="lar la-eye mr-1"></i> {{  $top_video->views }}</p>
