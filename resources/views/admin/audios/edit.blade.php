@@ -11,6 +11,9 @@
 	span{
 		color: gray;
 	}
+    .select2-container{
+       
+    }
     .select2-selection__rendered{
         background-color: #141414!important;
     }
@@ -127,16 +130,18 @@ border-radius: 0px 4px 4px 0px;
         <a class="black" href="{{ URL::to('admin/audios/categories') }}">Manage Audio Categories</a>
              <a class="black" href="{{ URL::to('admin/audios/albums') }}">Manage Albums</a></div>
 
-{{-- Push Message --}}
+
+
+	<div class="container-fluid p-0">
+        
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="iq-card">
+                    {{-- Push Message --}}
 		@if (Session::has('message'))
 				<div id="successMessage" class="alert alert-info">{{ Session::get('Audio_message') }}</div>
 		@endif
 {{-- End Push Message --}}
-
-	<div class="container-fluid p-0">
-		<div class="row">
-			<div class="col-sm-12">
-				<div class="iq-card">
 					<div class="iq-card-header d-flex justify-content-between">
 						<div class="iq-header-title">
 							<h4 class="card-title">Add Audio</h4>
@@ -180,13 +185,13 @@ border-radius: 0px 4px 4px 0px;
 
 								@endif
 							</div>
-							<div class="row">
+							<div class="row mt-3">
 								<div class="col-md-6">
 								<div class="panel panel-primary col-sm-8 p-0 mt-3" data-collapsed="0"> <div class="panel-heading"> 
 								<div class="panel-title"><label class="mb-1">Audio Image Cover <span>( 9:16 Ratio or 1080X1920px )</span> </label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 								<div class="panel-body" style="display: block;"> 
 									@if(!empty($audio->image))
-									<img src="{{ URL::to('/'). '/public/uploads/images/' . $audio->image }}" class="audio-img" width="200"/>
+									<img src="{{ URL::to('/'). '/public/uploads/images/' . $audio->image }}" class="audio-img w-100 mb-1" />
 									@endif
 									<input type="file" multiple="true" class="form-control" name="image" id="image" />
 
@@ -195,15 +200,17 @@ border-radius: 0px 4px 4px 0px;
 
 								</div>
 								<div class="col-md-6">
-								<div class="col-sm-12 form-group">
-									
-							<label class="mb-1">Player Audio Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br>
-							<input type="file" name="player_image" id="player_image" >
-							@if(!empty($audio->player_image))
-								<div class="col-sm-8 p-0">
-							<img src="{{ URL::to('/') . '/public/uploads/images/' . $audio->player_image }}" class="video-img w-100 mt-1" /></div>
+                                    <div class="panel panel-primary col-sm-8 p-0 mt-3" data-collapsed="0"> <div class="panel-heading"> 
+								<div class="panel-title">	<label class="mb-1">Player Audio Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+								<div class="panel-body" style="display: block;"> 
+									@if(!empty($audio->player_image))
+								<div class=" p-0 mb-1">
+							<img src="{{ URL::to('/') . '/public/uploads/images/' . $audio->player_image }}" class="video-img w-100 " /></div>
 							@endif
+                                    <input type="file" name="player_image" id="player_image" >
+								</div> 
 							</div>
+							
 							
 								</div>
 
@@ -213,7 +220,7 @@ border-radius: 0px 4px 4px 0px;
 							<input type="hidden" id="check_image" name="check_image" value="@if(!empty($audio->image) ) {{ "validate" }} @else {{ " " }} @endif"  />
 							<input type="hidden" id="player_check_image" name="player_check_image" value="@if(!empty($audio->player_image) ) {{ "validate" }} @else {{ " " }} @endif"  />
 							
-							
+                            <div class="row container-fluid">
 							<div class="col-sm-6 p-0 mt-3">
 								<div class="panel panel-primary p-0" data-collapsed="0"> <div class="panel-heading"> 
 									<div class="panel-title"><label class="mb-1">Country</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
@@ -231,7 +238,7 @@ border-radius: 0px 4px 4px 0px;
 									</div> 
 								</div>
 							</div>
-
+                        <div class="col-sm-6 mt-3">
 							<div class="panel panel-primary mt-3" data-collapsed="0"> <div class="panel-heading"> 
 								<div class="panel-title"><label class="mb-1">Search Tags</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 								<div class="panel-body" style="display: block;">
@@ -240,7 +247,7 @@ border-radius: 0px 4px 4px 0px;
 								</div>
 
 							</div>
-
+</div></div>
 							<div class="panel panel-primary  mt-3" data-collapsed="0"> <div class="panel-heading"> 
 								<div class="panel-title"><label class="mb-1">Audio Source</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 								<div class="panel-body" style="display: block;"> 
@@ -328,7 +335,7 @@ border-radius: 0px 4px 4px 0px;
 													<option value="{{ $category->id }}" @if(!empty($audio->audio_category_id) && $audio->audio_category_id == $category->id)selected="selected"@endif>{{ $category->name }}</option>
 													@endforeach
 												</select> -->
-											<select class="form-control js-example-basic-multiple"  name="audio_category_id[]"  id="audio_category_id"  multiple="multiple" >
+											<select class="form-control js-example-basic-multiple"  name="audio_category_id[]"  id="audio_category_id"  multiple="multiple"  style="width: 100%;">
 												@foreach($audio_categories as $category)
 												@if(in_array($category->id, $category_id))
 												<option value="{{ $category->id }}" selected="true">{{ $category->name }}</option>
@@ -486,7 +493,7 @@ border-radius: 0px 4px 4px 0px;
                                    
 								</div><!-- row -->
 
-								 <div class="mt-2 p-2"  style="display: flex;">
+								 <div class="mt-2 p-2 d-flex justify-content-end"  style="">
                                     
 								<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 								<input type="submit" value="{{ $button_text }}" class="btn btn-primary " />
