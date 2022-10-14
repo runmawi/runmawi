@@ -209,6 +209,8 @@ class ThemeAudioController extends Controller{
                 'error' =>'error',
                 'json_list' => null ,
                 'audios'  => null ,
+                'ablum_audios' =>  null,
+
                 );
 
                 return Theme::view('audio', $data);
@@ -220,6 +222,12 @@ class ThemeAudioController extends Controller{
             if (!empty($audio_details)) {
                 $ppv_status = PpvPurchase::with('audio')->where('audio_id','=',$audio)->where('user_id','=',Auth::user()->id)->where('to_time', '>', Carbon::now())->count();
                 $view_increment = $this->handleViewCount($audio); 
+
+                $current_audio   = Audio::where('album_id',$albumID)->where('id',$audio)->get();
+                $all_album_audios = Audio::where('album_id',$albumID)->get();
+
+                $merged_audios = $current_audio->merge($all_album_audios)->all();
+
 
             $json = array('title' => $audio_details->title,'mp3'=>$audio_details->mp3_url);  
             $data = array(
@@ -243,7 +251,7 @@ class ThemeAudioController extends Controller{
                 'watchlatered' => $watchlater,
                 'audio_categories' => AudioCategory::all(),
                 'pages' => Page::where('active', '=', 1)->get(),
-                'ablum_audios' =>  Audio::where('album_id',$albumID)->get(),
+                'ablum_audios' =>  $merged_audios,
                 );
             } else {
                 $data = array(

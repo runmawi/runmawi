@@ -274,7 +274,7 @@ Your browser does not support the audio element.
          <div class="player-ctn">
               <div class="row">
             <div class="col-sm-3 col-md-3 col-xs-3">
-<img src="<?= URL::to('/').'/public/uploads/albums/'. $audio->album ?>"  class="img-responsive" width="200" height="200">
+<img src="<?= URL::to('/').'/public/uploads/albums/'. $audio->image ?>"  class="img-responsive" width="200" height="200">
 
 <!-- -->
 </div>
@@ -733,10 +733,13 @@ window.location = '<?= URL::to('login') ?>';
     }
   }
 
-  document.querySelector('#source-audio').src = listAudio[indexAudio].mp3_url
-  document.querySelector('.title').innerHTML = listAudio[indexAudio].title
+  document.querySelector('#source-audio').src = <?php echo json_encode($audios->mp3_url) ; ?>  
+  document.querySelector('.title').innerHTML = <?php echo json_encode($audios->title) ; ?>  
 
   var currentAudio = document.getElementById("myAudio");
+
+  console.log(currentAudio);
+
 
   currentAudio.load()
   
