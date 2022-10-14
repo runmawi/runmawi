@@ -1006,7 +1006,7 @@ public function verifyandupdatepassword(Request $request)
         $item['pdf_files_url'] = URL::to('/').'/public/uploads/videoPdf/'.$item->pdf_files;
         $item['mobile_image_url'] = URL::to('/').'/public/uploads/images/'.$item->mobile_image;
         $item['tablet_image_url'] = URL::to('/').'/public/uploads/images/'.$item->tablet_image;
-
+        $item['transcoded_url'] = URL::to('/storage/app/public/').'/'.$item->path . '.m3u8';
         $ads_videos = AdsVideo::where('ads_videos.video_id',$item->id)
             ->join('advertisements', 'ads_videos.ads_id', '=', 'advertisements.id')
             ->first();

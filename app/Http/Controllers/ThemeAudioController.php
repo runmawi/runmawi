@@ -477,6 +477,7 @@ class ThemeAudioController extends Controller{
                 'media_url' => URL::to('/').'/album/'.$album_slug,
                 'album_audios' => $album_audios,
                 'other_albums' => $other_albums,
+                
             );
             
             return Theme::view('albums', $data);

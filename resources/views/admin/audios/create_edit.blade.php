@@ -73,15 +73,17 @@ border-radius: 0px 4px 4px 0px;
             <a class="black" href="{{ URL::to('admin/audios/albums') }}">Manage Albums</a>
 		</div>
 
-	{{-- Push Message --}}
+	
+	
+    <div class="container-fluid p-0">
+        <div class="admin-section-title">
+           
+            <div class="iq-card">
+                 {{-- Push Message --}}
 		@if (Session::has('message'))
 			<div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
 		@endif
 	{{-- End Push Message --}}	
-	
-    <div class="container-fluid p-0">
-        <div class="admin-section-title">
-            <div class="iq-card">
                 <div class="row">
 					
                     <div class="col-md-8" id="heading_option">
@@ -245,8 +247,8 @@ data: {
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script src="http://malsup.github.com/jquery.form.js"></script>
 
-<div id="content-page" class="content-page">
-	<div class="container-fluid">
+<div id="content-page" class="content-page" style="padding:0px 15px 0px;margin-top:-40px;">
+	<div class="container-fluid p-0">
 		<div class="row">
 			<div class="col-sm-12">
 				<div class="iq-card">
@@ -324,7 +326,7 @@ data: {
 						</div>
 							
 
-							<div class="">
+							<div class="row container-fluid">
 								<div class="panel panel-primary col-sm-6 p-0 mt-3" data-collapsed="0"> <div class="panel-heading"> 
 									<div class="panel-title"><label>Country</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 									<div class="panel-body" style="display: block;"> 
@@ -336,19 +338,19 @@ data: {
 										</select>
 									</div> 
 								</div>
-							</div>
-							<div class="row mt-3">
-								<div class="col-sm-12">
+							
+							<div class="col-sm-6 mt-3">
+								<div class="">
 									<label class="m-0">Search Tags</label>
 
-									<div class="panel-body">
+									<div class="panel-body mt-3">
 									<!-- <input type="text" id="#inputTag" value="" data-role="tagsinput">  -->
 									<input type="text" id="tag-input1" name="searchtags">
 
 								</div>
 								</div>
 							</div>
-
+</div>
 							<!-- <div class="panel panel-primary  mt-3" data-collapsed="0"> <div class="panel-heading"> 
 								<div class="panel-title"><label>Audio Source</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 								<div class="panel-body" style="display: block;"> 
@@ -436,7 +438,7 @@ data: {
 													<option value="{{ $category->id }}" @if(!empty($audio->audio_category_id) && $audio->audio_category_id == $category->id)selected="selected"@endif>{{ $category->name }}</option>
 													@endforeach
 												</select> -->
-											<select class="form-control js-example-basic-multiple"  name="audio_category_id[]"  id="audio_category_id"  multiple="multiple" >
+											<select class="form-control js-example-basic-multiple"  name="audio_category_id[]"  id="audio_category_id"  multiple="multiple" style="Width:100%;">
 						                        @foreach($audio_categories as $category)
                                                 @if(in_array($category->id, $category_id))
 												<option value="{{ $category->id }}" selected="true">{{ $category->name }}</option>

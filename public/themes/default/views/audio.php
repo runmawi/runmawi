@@ -18,6 +18,7 @@ $audio = $audios ;
 }
     .title{
         text-align: left;
+        color: #fff;
     }
 .logo {
   fill: red;
@@ -25,7 +26,7 @@ $audio = $audios ;
 
 .btn-action{
   cursor: pointer;
-  padding-top: 10px;
+ 
   width: 30px;
 }
 
@@ -92,7 +93,7 @@ padding-top: 20px;
     color: #fff;
 }
 .playlist-info-track{
-  width: 80%;
+  width: 85%;
     height: 25px;
     padding: 2px;
 }
@@ -155,7 +156,7 @@ border-radius: 25px !important;
 }
 .vjs-texttrack-settings { display: none; }
 .audio-js .vjs-big-play-button{ border: none !important; }
-.bd{border-radius: 25px!important;
+.bd{/*border-radius: 25px!important;*/padding:5px;
 background: #2bc5b4!important;}
 .bd:hover{
 
@@ -273,7 +274,7 @@ Your browser does not support the audio element.
          <div class="player-ctn">
               <div class="row">
             <div class="col-sm-3 col-md-3 col-xs-3">
-<img src="<?= URL::to('/').'/public/uploads/images/'. $audio->image ?>" height="200" width="200" class="img-responsive" >
+<img src="<?= URL::to('/').'/public/uploads/albums/'. $audio->album ?>"  class="img-responsive" width="200" height="200">
 
 <!-- -->
 </div>
@@ -285,7 +286,7 @@ Your browser does not support the audio element.
 <div class="album_container">
 <div class="blur"></div>
 <div class="overlay_blur">
-<h2 class="hero-title album"> <?= $audio->title; ?></h2>
+<h2 class="hero-title album"> <?php echo ucfirst($audio->title); ?></h2>
 <p class="mt-2">Music by <?php echo get_audio_artist($audio->id); ?></p>
 <p class="mt-2">Album <a href="<?php echo URL::to('/').'/album/'.$album_slug;?>"><?php echo ucfirst($album_name); ?></a></p>
 <div class="d-flex" style="justify-content: space-between;width: 30%;align-items: center;">

@@ -1,5 +1,147 @@
 <?php include('header.php'); ?>
 <style type="text/css">
+       #myProgress {
+   background-color: #d9d9f2; 
+  cursor: pointer;
+  border-radius: 10px;
+}
+  
+#myBar {
+  width: 0%;
+  height: 3px;
+  background-color:red;
+  border-radius: 10px;
+}
+    .title{
+        text-align: left;
+        color: #fff;
+    }
+.logo {
+  fill: red;
+}
+
+.btn-action{
+  cursor: pointer;
+ 
+  width: 30px;
+}
+
+.btn-ctn, .infos-ctn{
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.infos-ctn{
+padding-top: 20px;
+}
+
+.btn-ctn > div {
+ padding: 5px;
+ margin-top: 18px;
+ margin-bottom: 18px;
+}
+
+.infos-ctn > div {
+ margin-bottom: 8px;
+ color: rgb(0, 82, 204);
+    text-align: left;
+}
+
+.first-btn{
+  margin-left: 3px;
+}
+
+.duration{
+  margin-left: 10px;
+}
+
+.title{
+  margin-left: 10px;
+  
+  text-align: center;
+}
+
+.player-ctn{
+  
+ 
+  padding: 10px;
+  background: linear-gradient(180deg, #151517 127.69%, #282834 0% );
+  margin:auto;
+   
+    border-radius: 10px;
+ 
+}
+
+.playlist-track-ctn{
+  display: flex;
+  background-color: #464646;
+  margin-top: 3px;
+  border-radius: 5px;
+  cursor: pointer;
+    align-items: center;
+}
+.playlist-track-ctn:last-child{
+  /*border: 1px solid #ffc266; */
+}
+
+.playlist-track-ctn > div{
+  margin:5px;
+    color: #fff;
+}
+.playlist-info-track{
+  width: 80%;
+    height: 25px;
+    padding: 2px;
+}
+.playlist-info-track,.playlist-duration{
+  /*padding-top: 7px;
+  padding-bottom: 7px;*/
+  color: #e9cc95;
+  font-size: 14px;
+  pointer-events: none;
+}
+   .playlist-ctn {
+  scrollbar-width: thin;
+  scrollbar-color: #CFD8DC;
+}
+.playlist-ctn::-webkit-scrollbar-track {
+  background: #CFD8DC;
+}
+.playlist-ctn::-webkit-scrollbar-thumb {
+  background-color: rgb(0, 82, 204) ;
+  border-radius: 6px;
+  border: 3px solid var(--scrollbarBG);
+}
+.playlist-ctn{
+   padding-bottom: 20px;
+    overflow: scroll;
+    max-height: 400px;
+    scrollbar-color: rebeccapurple green!important;
+    overflow-x: hidden;
+}
+.active-track{
+  background: #4d4d4d;
+  color: #ffc266 !important;
+  font-weight: bold;
+  
+}
+
+.active-track > .playlist-info-track,.active-track >.playlist-duration,.active-track > .playlist-btn-play{
+  color: #ffc266 !important;
+}
+
+
+.playlist-btn-play{
+  pointer-events: none;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+.fas{
+  color: rgb(0, 82, 204);
+  font-size: 20px;
+}
+    
+ 
 .fa-heart{color: red !important;}
 .audio-js *, .audio-js :after, .audio-js :before {box-sizing: inherit;display: grid;}
 .vjs-big-play-button{
@@ -61,76 +203,6 @@ border-bottom-right-radius:0;
 .aud-lp{
 border-bottom: 1px solid #141414;
 }
-/* Player Style */
-.audioPlayer .jp-jplayer, #jplayer-audio-container {}
-.audioPlayer .jp-controls button {text-indent: 0;}
-.jp-audio, .jp-video {background: black;font-family: sans-serif;font-size: .75rem;max-width: 85rem;width: 100%;position: fixed;
-    top:78%;
-    z-index: 5;margin-left: -70px;}
-    .jp-btn{background-color: red;border-radius: 50%;}
-.jp-type-playlist {display: -webkit-box;display: -moz-box;display: -ms-flexbox;display: -webkit-flex;display: flex;-webkit-flex-direction: column;-moz-flex-direction: column;-ms-flex-direction: column;flex-direction: column;height: 100%;}
-.jp-type-playlist .jp-close {-webkit-flex-grow: 0;-moz-flex-grow: 0;-ms-flex-grow: 0;flex-grow: 0;}
-.jp-type-playlist .jp-gui {-webkit-flex-grow: 0;-moz-flex-grow: 0;-ms-flex-grow: 0;flex-grow: 0;}
-.jp-type-playlist .jp-playlist {-webkit-flex-grow: 1;-moz-flex-grow: 1;-ms-flex-grow: 1;flex-grow: 1;overflow-y: auto;}
-.jp-btn {border: 0;padding: 0;outline: none;background: none;color: #fff;height: 1.5rem;line-height: 1.5rem;padding: 0 15px;}
-.jp-gui {background: rgba(255, 255, 255, 0.05);padding: 1rem;}
-.jp-gui .jp-title {display: inline-block;color: #fff;height: 1.5rem;width: 50%;text-align: right;line-height: 1.5rem;overflow: hidden;opacity: 0.5;}
-.jp-gui .jp-toggles {display: inline-block;float: right;}
-.jp-gui .jp-toggles .jp-repeat,
-.jp-gui .jp-toggles .jp-shuffle {display: inline-block;float: left;vertical-align: top;opacity: 0.5;}
-.jp-gui .jp-toggles .jp-shuffle i,.jp-gui .jp-toggles .jp-repeat i{font-size: 1.6rem;}
-.jp-gui .jp-times {display: -webkit-box;display: -moz-box;display: -ms-flexbox;display: -webkit-flex;display: flex;margin-top: .5rem;}
-.jp-gui .jp-times .jp-current-time,
-.jp-gui .jp-times .jp-duration {-webkit-flex-grow: 1;-moz-flex-grow: 1;-ms-flex-grow: 1;flex-grow: 1;color: #fff;font-size: .6rem;opacity: 0.5;}
-    ..jp-gui .jp-controls-holder .jp-controls{
-        width: 40%
-            margin:0 auto;
-    }
-.jp-gui .jp-times .jp-current-time {text-align: left;}
-.jp-gui .jp-times .jp-duration {text-align: right;}
-.jp-gui .jp-volume-controls {display: inline-block;float: right;}
-.jp-gui .jp-volume-controls .jp-volume-max {display: none !important;}
-.jp-gui .jp-volume-controls .jp-mute {display: inline-block;float: left;vertical-align: top;margin-right: -.75rem;opacity: 0.5;}
-.jp-gui .jp-volume-controls .jp-volume-bar {display: none !important;float: left;vertical-align: top;width: 2.5rem;height: 2px;background: rgba(255, 255, 255, 0.5);margin: .65rem 0;}
-.jp-gui .jp-volume-controls .jp-volume-bar .jp-volume-bar-value {background: #fff;height: 2px;}
-.jp-gui .jp-controls-holder .jp-controls {/*padding: 1rem 0;*/display: -webkit-box;display: -moz-box;display: -ms-flexbox;display: -webkit-flex;display: flex;-webkit-align-items: center;-moz-align-items: center;-ms-align-items: center;align-items: center;width: 40%;margin: 0 auto;}
-.jp-gui .jp-controls-holder .jp-controls button {-webkit-flex-grow: 1;-moz-flex-grow: 1;-ms-flex-grow: 1;flex-grow: 1;height: 2.5rem;line-height: 2.5rem;}
-.jp-gui .jp-controls-holder .jp-controls button i {font-size: 1.25rem;}
-.jp-gui .jp-controls-holder .jp-controls button:active i {color: #09f;}
-.jp-gui .jp-controls-holder .jp-progress .jp-seek-bar {background: rgba(255, 255, 255, 0.5);height: .15rem;}
-.jp-gui .jp-controls-holder .jp-progress .jp-seek-bar .jp-play-bar {background: #fff;height: .15rem;}
-.jp-state-playing .jp-play i {color: #09f;}
-.jp-state-playing .jp-play i:before {content: "\f04c";}
-.jp-state-looped .jp-repeat {opacity: 1 !important;}
-.jp-state-looped .jp-repeat i {color: #09f;}
-.jp-state-shuffled .jp-shuffle {opacity: 1 !important;}
-.jp-state-shuffled .jp-shuffle i {color: #09f;}
-.jp-state-muted .jp-mute {opacity: 1 !important;}
-.jp-state-muted .jp-mute i {color: #09f;}
-.jp-playlist {background: rgba(255, 255, 255, 0);}
-.jp-playlist > ul {padding: 0;margin: 0;list-style: none;}
-.jp-playlist > ul > li {display: block;padding: 0 !important;}
-.jp-playlist > ul > li > div > a.jp-playlist-item {display: block;padding: .75rem 1rem;outline: none;color: rgba(255, 255, 255, 0.5);}
-.jp-playlist > ul > li > div > a.jp-playlist-item.jp-playlist-current {background: rgba(255, 255, 255, 0.2);color: #fff;}
-.jp-playlist > ul > li:nth-child(odd) > div > a {background: rgba(255, 255, 255, 0.1);}
-.jp-gui button {background: transparent;color: #fff;}
-.jp-interface {-webkit-align-content: center;-ms-align-content: center;align-content: center;-webkit-align-items: center;-ms-align-items: center;align-items: center;display: table;display: -webkit-box;display: -ms-flexbox;display: flex;-webkit-flex-wrap: wrap;-ms-flex-wrap: wrap;flex-wrap: wrap;justify-content: space-between;width: 100%;}
-.jp-gui .jp-toggles {-webkit-align-content: center;-ms-align-content: center;align-content: center;-webkit-align-items: center;-ms-align-items: center;align-items: center;display: table;display: -webkit-box;display: -ms-flexbox;display: flex;-webkit-flex-wrap: wrap;-ms-flex-wrap: wrap;flex-wrap: wrap;width: 100%;}
-.jp-controls-holder, .jp-progress {width: 100%;}
-.jp-seek-bar {background: rgba(255, 255, 255, 0.5);height: .15rem;}
-.jp-play-bar {background-color: #fff;height: 100%;}
-.jp-gui .jp-toggles button + button {margin-left: .3rem;}
-#jp_video {height: auto !important;position: relative;padding-bottom: 54.3%;width: 100% !important;}
-#jp_video > * {height: 100% !important;-webkit-object-fit: cover;-ms-object-fit: cover;object-fit: cover;position: absolute;width: 100% !important;}
-.sectionContainer {padding: 3.75rem 0;}
-.sectionContainer + .sectionContainer {border-top: .1rem solid #fff;}
-.sectionContainer:nth-child(odd) {background-color: rgba(255, 255, 255, 0.1);}
-.crow {display: -webkit-box;display: -ms-flexbox;display: flex;-webkit-flex-wrap: wrap;-ms-flex-wrap: wrap;flex-wrap: wrap;margin: 0 -15px;}
-.chalf {padding: 15px;width: 50%;}
-@media only screen and (max-width: 991px) {
-    html, body {font-size: 16px;}
-    .chalf {width: 100%;}
-}
 </style>
 
 <?php if (isset($error)) { ?>
@@ -142,71 +214,147 @@ border-bottom: 1px solid #141414;
 <div id="audio_bg" >
 <div class="container-fluid">
 <div class="row album-top-30 mt-4 align-items-center">
-<div class="col-sm-3 ">
-<img src="<?= URL::to('/').'/public/uploads/albums/'. $album->album ?>"  class="img-responsive" width="250" height="250">
+ <div class="col-lg-8">
+         <div class="player-ctn">
+              <div class="row">
+            <div class="col-sm-3 col-md-3 col-xs-3">
+<img src="<?= URL::to('/').'/public/uploads/albums/'. $audio->album ?>"  class="img-responsive" width="200" height="200">
+
+<!-- -->
 </div>
-<div class="col-sm-8 col-md-8 col-xs-8">
+            
+<div class="col-sm-9 col-md-9 col-xs-9">
+    
+        
 <div class="album_bg">
 <div class="album_container">
 <div class="blur"></div>
 <div class="overlay_blur">
- <h4 class="hero-title album mb-2"> <?= $album->albumname; ?></h4>
-     <p class="mt-2">Music by    <br>A. R. Rahman</p>
-    <div class="d-flex" style="justify-content: space-between;width: 40%;align-items: center;">
-        <button class="btn bd" id="vidbutton"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play</button>
-        <a aria-hidden="true" class="albumfavorite <?php echo albumfavorite($album->id);?>" data-authenticated="<?= !Auth::guest() ?>" data-album_id="<?= $album->id ?>"><?php if(albumfavorite($album->id) == "active"): ?><i id="ff" class="fa fa-heart" aria-hidden="true"></i><?php else: ?><i id="ff" class="fa fa-heart-o" aria-hidden="true"></i><?php endif; ?></a>
-        <i id="ff" class="fa fa-ellipsis-h" aria-hidden="true"></i>
-        <div class="dropdown">
-            <i id="ff" class="fa fa-share-alt " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"  style="background-color: black;border:1px solid white;padding: 0;">
-                <a class="dropdown-item popup" href="https://twitter.com/intent/tweet?text=<?= $media_url ?>" target="_blank">
-                    <i class="fa fa-twitter" style="color: #00acee;padding: 10px;border-radius: 50%;font-size: 26px;"></i>
-                </a>
-                <div class="divider" style="border:1px solid white"></div>
-                <a class="dropdown-item popup" href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" target="_blank"><i class="fa fa-facebook" style="color: #3b5998;padding: 10px;border-radius: 50%; font-size: 26px;"></i></a>
-            </div>
+<h2 class="hero-title album"> <?php echo ucfirst($audio->title); ?></h2>
+<p class="mt-2">Music by <?php echo get_audio_artist($audio->id); ?></p>
+<p class="mt-2">Album <a href="<?php echo URL::to('/').'/album/'.$album_slug;?>"><?php echo ucfirst($album_name); ?></a></p>
+<div class="d-flex" style="justify-content: space-between;width: 30%;align-items: center;">
+
+<div onclick="toggleAudio()">
+  <button class=" bd btn-action" id="vidbutton" style="width:80px" ><i class="fa fa-play mr-2" aria-hidden="true"  ></i> Play</button>
+</div>
+
+<a aria-hidden="true" class="favorite <?php echo audiofavorite($audio->id);?>" data-authenticated="<?= !Auth::guest() ?>" data-audio_id="<?= $audio->id ?>"><?php if(audiofavorite($audio->id) == "active"): ?><i id="ff" class="fa fa-heart" ></i><?php else: ?><i id="ff" class="fa fa-heart-o" ></i><?php endif; ?></a>
+<i id="ff" class="fa fa-ellipsis-h" aria-hidden="true"></i>
+<div class="dropdown">
+    <i id="ff" class="fa fa-share-alt " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"  style="background-color: black;border:1px solid white;padding: 0;">
+        <a class="dropdown-item popup" href="https://twitter.com/intent/tweet?text=<?= $media_url ?>" target="_blank">
+            <i class="fa fa-twitter" style="color: #00acee;padding: 10px;border-radius: 50%;font-size: 26px;"></i>
+        </a>
+        <div class="divider" style="border:1px solid white"></div>
+        <a class="dropdown-item popup" href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" target="_blank"><i class="fa fa-facebook" style="color: #3b5998;padding: 10px;border-radius: 50%; font-size: 26px;"></i></a>
+    </div>
+</div>
+<!-- Share -->
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
         </div>
-        <!-- Share -->
-    </div>
   
-    </div>
-</div>
-</div>
-</div>
-</div>
-<div class="row mt-5">
-    <div class="col-sm-12 db">
-        <div class="audio-lp">
-        <table style="width:100%;color:#fff;">  
+  <div class="infos-ctn d-flex justify-space-between">
+   
+      <?php /*{ ?>
+      
+          <img src="<?= URL::to('/').'/public/uploads/images/'. $audio->image ?>"  class="img-responsive mb-2" / width="100">
+           
+      <?php } */?>
+   
+      
+  </div>
+  <div id="myProgress">
+    <div id="myBar"></div>
+  </div> 
+    <div class="d-flex justify-content-between text-white">
+    <div class="timer">00:00</div>
+        <div class="duration">00:00</div></div>
+  <div class="btn-ctn">
+     <div class="btn-action first-btn" onclick="previous()">
+        <div id="btn-faws-back">
+          <i class='fas fa-step-backward'></i>
+        </div>
+     </div>
+     <div class="btn-action" onclick="rewind()">
+        <div id="btn-faws-rewind">
+          <i class='fas fa-backward'></i>
+        </div>
+     </div>
+     <div class="btn-action" onclick="toggleAudio()">
+        <div id="btn-faws-play-pause">
+          <i class='fas fa-play' id="icon-play"></i>
+          <i class='fas fa-pause' id="icon-pause" style="display: none"></i>
+        </div>
+     </div>
+     <div class="btn-play" onclick="forward()">
+        <div id="btn-faws-forward">
+          <i class='fas fa-forward'></i>
+        </div>
+     </div>
+     <div class="btn-action" onclick="next()">
+        <div id="btn-faws-next">
+          <i class='fas fa-step-forward'></i>
+        </div>
+     </div>
+     <div class="btn-mute" id="toggleMute" onclick="toggleMute()">
+        <div id="btn-faws-volume">
+          <i id="icon-vol-up" class='fas fa-volume-up'></i>
+          <i id="icon-vol-mute" class='fas fa-volume-mute' style="display: none"></i>
+        </div>
+     </div>
+      
+  </div>
+         <div class="title"></div>
+        </div>
+       <!-- <div class="col-sm-12 db p-0 mt-4">
+
+<div class="audio-lp">
+<p  class="album-title">Other Songs from <?= ucfirst($album_name); ?></p>
+  <table style="width:100%;color:#fff;">  
 <tr style="border-bottom:1px solid #fff;">
     <th>Track </th>
     <th>Song list</th>
     <th>Singer by</th>
     <th>Lyrics by</th>
     <th>Favourite</th>
-    <th>Duration</th>
-            </tr>
+    <th>Duration</th></tr>
+      <?php foreach($related_audio as $other_audio){ ?>
+      <tr class="audio-lpk">
+
+
+   
+        
+          <td> <img src="<?= URL::to('/').'/public/uploads/images/'. $other_audio->image ?>"  class="img-responsive" / width="50"></td>
+           <td><a href="<?php echo URL::to('/').'/audio/'.$other_audio->slug;?>"><?php echo ucfirst($other_audio->title); ?></a></td>
+           <td><?php echo get_audio_artist($other_audio->id); ?></td>
+           <td>Arstist</td>
+           <td><a aria-hidden="true" class="favorite <?php echo audiofavorite($other_audio->id);?>" data-authenticated="<?= !Auth::guest() ?>" data-audio_id="<?= $other_audio->id ?>"><?php if(audiofavorite($other_audio->id) == "active"): ?><i class="fa fa-heart" ></i><?php else: ?><i class="fa fa-heart-o" ></i><?php endif; ?></a></td>
+           <td><?php echo gmdate('H:i:s', $other_audio->duration); ?></td>
       
-          
-            <?php foreach($album_audios as $audio){ ?>
-            <tr class="audio-lpk">
-                
-                <td> <img src="<?= URL::to('/').'/public/uploads/images/'. $audio->image ?>"  class="img-responsive" / width="50"></td>
-                <td><a href="<?php echo URL::to('/').'/audio/'.$audio->slug;?>"><?php echo ucfirst($audio->title); ?></a></td>
-                <td><?php echo get_audio_artist($audio->id); ?></td>
-                <td>Arstist</td>
-                <td><a aria-hidden="true" class="favorite <?php echo audiofavorite($audio->id);?>" data-authenticated="<?= !Auth::guest() ?>" data-audio_id="<?= $audio->id ?>"><?php if(audiofavorite($audio->id) == "active"): ?><i class="fa fa-heart" ></i><?php else: ?><i class="fa fa-heart-o" ></i><?php endif; ?></a></td>
-                <td><?php echo gmdate('H:i:s', $audio->duration); ?></td>
-               
-              </tr>
-            <?php } ?>
-           
-     
-        </table>
+   
+
+          </tr>
+      <?php } ?>
+    </table>
+</div>
+</div>-->
+
     </div>
-</div>
-</div>
-</div>
+    <div class="col-lg-4 p-0">
+        <audio id="myAudio" ontimeupdate="onTimeUpdate()">
+          <source id="source-audio" src="" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+      <div class="playlist-ctn"></div>
+    </div>
 
 <div class="clear"></div>  
 
@@ -253,54 +401,6 @@ border-bottom: 1px solid #141414;
 
 </div>
 
-</div>
-
-<div class="chalf">
-    <div id="jplayer-audio" class="jp-jplayer"></div>
-    <div id="jplayer-audio-container" class="jp-audio" role="application" aria-label="media player">
-        <div class="jp-type-playlist">
-            <div class="jp-gui">
-                <div class="jp-title"></div>
-                <div class="jp-volume-controls">
-                    <button class="jp-mute jp-btn" role="button" tabindex="0"><i class="fa fa-volume-mute"></i></button>
-                    <button class="jp-volume-max" role="button" tabindex="0">max volume</button>
-                    <div class="jp-volume-bar">
-                        <div class="jp-volume-bar-value"></div>
-                    </div>
-                </div>
-                <div class="jp-toggles">
-                    <button class="jp-repeat jp-btn" role="button" tabindex="0"><i class="fa fa-repeat"></i></button>
-                    <button class="jp-shuffle jp-btn" role="button" tabindex="0"><i class="fa fa-random"></i></button>
-                </div>
-                <div class="jp-controls-holder">
-                    <div class="jp-controls">
-                        <button class="jp-previous jp-btn" role="button" tabindex="0"><i class="fa fa-backward"></i></button>
-                        <button class="jp-play jp-btn" role="button" tabindex="0"><i class="fa fa-play"></i></button>
-                        <button class="jp-stop jp-btn" role="button" tabindex="0"><i class="fa fa-stop"></i></button>
-                        <button class="jp-next jp-btn" role="button" tabindex="0"><i class="fa fa-forward"></i></button>
-                    </div>
-                    <div class="jp-progress">
-                        <div class="jp-seek-bar">
-                            <div class="jp-play-bar"></div>
-                        </div>
-                    </div>
-                    <div class="jp-times">
-                        <div class="jp-current-time" role="timer" aria-label="time">&nbsp;</div>
-                        <div class="jp-duration" role="timer" aria-label="duration">&nbsp;</div>
-                    </div>
-                </div>
-            </div>
-            <div class="jp-playlist">
-                <ul>
-                    <li>&nbsp;</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-</div>
 </div>
 
 </div>
@@ -583,5 +683,227 @@ jQuery(function($) {
         }
       });
 </script>
+   <script>
+  function createTrackItem(index,name,duration){
+
+    var trackItem = document.createElement('div');
+    trackItem.setAttribute("class", "playlist-track-ctn");
+    trackItem.setAttribute("id", "ptc-"+index);
+    trackItem.setAttribute("data-index", index);
+    document.querySelector(".playlist-ctn").appendChild(trackItem);
+
+    var playBtnItem = document.createElement('div');
+    playBtnItem.setAttribute("class", "playlist-btn-play");
+    playBtnItem.setAttribute("id", "pbp-"+index);
+    document.querySelector("#ptc-"+index).appendChild(playBtnItem);
+
+    var btnImg = document.createElement('i');
+    btnImg.setAttribute("class", "fas fa-play");
+    btnImg.setAttribute("height", "40");
+    btnImg.setAttribute("width", "40");
+    btnImg.setAttribute("id", "p-img-"+index);
+    document.querySelector("#pbp-"+index).appendChild(btnImg);
+
+    var trackInfoItem = document.createElement('div');
+    trackInfoItem.setAttribute("class", "playlist-info-track");
+    trackInfoItem.innerHTML = name
+    document.querySelector("#ptc-"+index).appendChild(trackInfoItem);
+
+    var trackDurationItem = document.createElement('div');
+    trackDurationItem.setAttribute("class", "playlist-duration");
+    trackDurationItem.innerHTML = duration
+    document.querySelector("#ptc-"+index).appendChild(trackDurationItem);
+
+  }
+
+  var listAudio = <?php echo json_encode($ablum_audios); ?>;
+
+  for (var i = 0; i < listAudio.length; i++) {
+      createTrackItem(i,listAudio[i].title,listAudio[i].duration);
+  }
+
+  var indexAudio = 0;
+
+  function loadNewTrack(index){
+
+    var player = document.querySelector('#source-audio')
+    player.src = listAudio[index].mp3_url
+    document.querySelector('.title').innerHTML = listAudio[index].title
+
+    this.currentAudio = document.getElementById("myAudio");
+    this.currentAudio.load()
+    this.toggleAudio()
+    this.updateStylePlaylist(this.indexAudio,index)
+    this.indexAudio = index;
+  }
+
+  var playListItems = document.querySelectorAll(".playlist-track-ctn");
+
+  for (let i = 0; i < playListItems.length; i++){
+    playListItems[i].addEventListener("click", getClickedElement.bind(this));
+  }
+
+  function getClickedElement(event) {
+    for (let i = 0; i < playListItems.length; i++){
+      if(playListItems[i] == event.target){
+        var clickedIndex = event.target.getAttribute("data-index")
+        if (clickedIndex == this.indexAudio ) { // alert('Same audio');
+            this.toggleAudio()
+        }else{
+            loadNewTrack(clickedIndex);
+        }
+      }
+    }
+  }
+
+  document.querySelector('#source-audio').src = listAudio[indexAudio].mp3_url
+  document.querySelector('.title').innerHTML = listAudio[indexAudio].title
+
+  var currentAudio = document.getElementById("myAudio");
+
+  currentAudio.load()
+  
+  currentAudio.onloadedmetadata = function() {
+        document.getElementsByClassName('duration')[0].innerHTML = this.getMinutes(this.currentAudio.duration)
+  }.bind(this);
+
+  var interval1;
+
+  function toggleAudio() {
+
+    if (this.currentAudio.paused) {
+      document.querySelector('#icon-play').style.display = 'none';
+      document.querySelector('#icon-pause').style.display = 'block';
+      document.querySelector('#ptc-'+this.indexAudio).classList.add("active-track");
+      this.playToPause(this.indexAudio)
+      this.currentAudio.play();
+    }else{
+      document.querySelector('#icon-play').style.display = 'block';
+      document.querySelector('#icon-pause').style.display = 'none';
+      this.pauseToPlay(this.indexAudio)
+      this.currentAudio.pause();
+    }
+  }
+
+  function pauseAudio() {
+    this.currentAudio.pause();
+    clearInterval(interval1);
+  }
+
+  var timer = document.getElementsByClassName('timer')[0]
+
+  var barProgress = document.getElementById("myBar");
+
+
+  var width = 0;
+
+  function onTimeUpdate() {
+    var t = this.currentAudio.currentTime
+    timer.innerHTML = this.getMinutes(t);
+    this.setBarProgress();
+    if (this.currentAudio.ended) {
+      document.querySelector('#icon-play').style.display = 'block';
+      document.querySelector('#icon-pause').style.display = 'none';
+      this.pauseToPlay(this.indexAudio)
+      if (this.indexAudio < listAudio.length-1) {
+          var index = parseInt(this.indexAudio)+1
+          this.loadNewTrack(index)
+      }
+    }
+  }
+
+
+  function setBarProgress(){
+    var progress = (this.currentAudio.currentTime/this.currentAudio.duration)*100;
+    document.getElementById("myBar").style.width = progress + "%";
+  }
+
+
+  function getMinutes(t){
+    var min = parseInt(parseInt(t)/60);
+    var sec = parseInt(t%60);
+    if (sec < 10) {
+      sec = "0"+sec
+    }
+    if (min < 10) {
+      min = "0"+min
+    }
+    return min+":"+sec
+  }
+
+  var progressbar = document.querySelector('#myProgress')
+  progressbar.addEventListener("click", seek.bind(this));
+
+
+  function seek(event) {
+    var percent = event.offsetX / progressbar.offsetWidth;
+    this.currentAudio.currentTime = percent * this.currentAudio.duration;
+    barProgress.style.width = percent*100 + "%";
+  }
+
+  function forward(){
+    this.currentAudio.currentTime = this.currentAudio.currentTime + 5
+    this.setBarProgress();
+  }
+
+  function rewind(){
+    this.currentAudio.currentTime = this.currentAudio.currentTime - 5
+    this.setBarProgress();
+  }
+
+
+  function next(){
+    if (this.indexAudio <listAudio.length-1) {
+        var oldIndex = this.indexAudio
+        this.indexAudio++;
+        updateStylePlaylist(oldIndex,this.indexAudio)
+        this.loadNewTrack(this.indexAudio);
+    }
+  }
+
+  function previous(){
+    if (this.indexAudio>0) {
+        var oldIndex = this.indexAudio
+        this.indexAudio--;
+        updateStylePlaylist(oldIndex,this.indexAudio)
+        this.loadNewTrack(this.indexAudio);
+    }
+  }
+
+  function updateStylePlaylist(oldIndex,newIndex){
+    document.querySelector('#ptc-'+oldIndex).classList.remove("active-track");
+    this.pauseToPlay(oldIndex);
+    document.querySelector('#ptc-'+newIndex).classList.add("active-track");
+    this.playToPause(newIndex)
+  }
+
+  function playToPause(index){
+    var ele = document.querySelector('#p-img-'+index)
+    ele.classList.remove("fa-play");
+    ele.classList.add("fa-pause");
+  }
+
+  function pauseToPlay(index){
+    var ele = document.querySelector('#p-img-'+index)
+    ele.classList.remove("fa-pause");
+    ele.classList.add("fa-play");
+  }
+
+
+  function toggleMute(){
+    var btnMute = document.querySelector('#toggleMute');
+    var volUp = document.querySelector('#icon-vol-up');
+    var volMute = document.querySelector('#icon-vol-mute');
+    if (this.currentAudio.muted == false) {
+       this.currentAudio.muted = true
+       volUp.style.display = "none"
+       volMute.style.display = "block"
+    }else{
+      this.currentAudio.muted = false
+      volMute.style.display = "none"
+      volUp.style.display = "block"
+    }
+  }
+    </script>
 
 <?php include('footer.blade.php'); ?>
