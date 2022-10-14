@@ -453,6 +453,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::get('/livestream/create', 'AdminLiveStreamController@create');
     Route::post('/livestream/store', array('before' => 'demo', 'uses' => 'AdminLiveStreamController@store'));
     Route::post('/start_restream', 'AdminLiveStreamController@start_restream')->name('start_restream');
+    Route::post('/stop_restream', 'AdminLiveStreamController@stop_restream')->name('stop_restream');
 
 
     Route::get('/ppv/categories', array('before' => 'demo', 'uses' => 'AdminPpvCategoriesController@index'));

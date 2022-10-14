@@ -173,6 +173,7 @@ border-radius: 0px 4px 4px 0px;
 
 		function addRow(ele) 
 		{
+
 			var stream_key = $(ele).attr('data-name');
 			var Rtmp_url   = $(ele).attr('data-rtmpURL');
 			var Rtmp_title = $(ele).attr('data-title');
@@ -197,13 +198,17 @@ border-radius: 0px 4px 4px 0px;
 					html: '<div class="col-md-12">' + ' URL :  ' + Rtmp_url + '</div>' +"<br>"+ 
 						  '<div class="col-md-12">' + 'Stream Key :  ' +  stream_key + '</div>'+"<br>"+ 
 						  '<div class="col-md-12">' + 'HLS URL :  ' +  hls_url + '</div>' +"<br>"+ 
-						  '<div class="col-md-12">' + '<form> <lable> Live Re-stream : </lable> <br> <br> <div class="row">' +  youtube_restream  +  facebook_restream + twitter_restream + linkedin_restream + rtmp_hls_url +'</div> </div>' +
-						  '<div class="col-md-12"> <input type="submit" value="Start Restream"  class="btn btn-primary" onclick="restream_button(this)" > </div> </form>', 
-
+						  '<div class="col-md-12">' + '<form> <lable> Live Re-stream : </lable> <br> <br> <p class="restream_error_message">  </p>  <div class="row">' +  youtube_restream  +  facebook_restream + twitter_restream + linkedin_restream + rtmp_hls_url +'</div> </div>' +
+						  '<div class="col-md-12"> <input type="submit" value="Start Restream"  class="btn btn-primary" id="restream_button" onclick="restream_button(this)" > </div> </form>', 
 			})
 		}
 
 		function restream_button(ele){
+
+			$('.restream_error_message').empty()
+			$('#restream_button').val('Stop Streaming');
+			$('#restream_button').removeAttr('onclick');
+			$('#restream_button').attr('onClick', 'stop_restream_button(this);');
 
 			var youtube_restream_checkbox   = $("input[name=youtube_restream]").prop("checked");
 			var facebook_restream_checkbox  = $("input[name=facebook_restream]").prop("checked");
@@ -234,10 +239,59 @@ border-radius: 0px 4px 4px 0px;
 				},
 
 				success:function(data){
-					console.log(data);
+					if( data.status == false ){
+						$('#restream_button').val('Start Streaming');
+						$('#restream_button').removeAttr('onclick');
+						$('#restream_button').attr('onClick', 'restream_button(this);');
+						$('.restream_error_message').append('Please toogle any one of the Re-streams').css('color', '#f92b2b');
+					}
 				}
         	});
 
+		}
+
+		function stop_restream_button(ele){
+
+			$('#restream_button').val('Start Streaming');
+			$('#restream_button').removeAttr('onclick');
+			$('#restream_button').attr('onClick', 'restream_button(this);');
+
+			var youtube_restream_checkbox   = $("input[name=youtube_restream]").prop("checked");
+			var facebook_restream_checkbox  = $("input[name=facebook_restream]").prop("checked");
+			var twitter_restream_checkbox   = $("input[name=twitter_restream]").prop("checked");
+			var linkedin_restream_checkbox  = $("input[name=linkedin_restream]").prop("checked");
+   
+			var youtube_restream  = $("input[name=youtube_restream]").val();
+			var facebook_restream = $("input[name=facebook_restream]").val();
+			var twitter_restream  = $("input[name=twitter_restream]").val(); 
+			var linkedin_restream = $("input[name=linkedin_restream]").val();
+
+			var hls_url = $("input[name=rtmp_hls_url]").val();
+
+			$.ajax({
+				type   : 'POST',
+				url    : "{{ route('stop_restream') }}",
+				data:{
+					_token : "{{ csrf_token() }}",
+					youtube_restream_checkbox    : youtube_restream_checkbox, 
+					facebook_restream_checkbox   : facebook_restream_checkbox, 
+					twitter_restream_checkbox    : twitter_restream_checkbox, 
+					linkedin_restream_checkbox   : linkedin_restream_checkbox, 
+					youtube_restream    : youtube_restream, 
+					facebook_restream   : facebook_restream, 
+					twitter_restream    : twitter_restream,
+					linkedin_restream   : linkedin_restream, 
+					hls_url				: hls_url,
+				},
+
+				success:function(data){
+					if( data.status == false ){
+						$('#restream_button').val('Start Streaming');
+						$('#restream_button').removeAttr('onclick');
+						$('#restream_button').attr('onClick', 'restream_button(this);');
+					}
+				}
+        	});
 		}
 		
 
