@@ -60,6 +60,12 @@
          p.p-tag1 {
                 background-color: {{ button_bg_color() .'!important' }} ;
         }
+
+                 /* profile page */
+        .btn{
+            border: #f3ece0 !important ;
+            background-color: {{ button_bg_color() .'!important' }} ;
+        }
         
 
           /* Home page Admin icon */
