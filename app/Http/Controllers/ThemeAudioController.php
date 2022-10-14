@@ -243,6 +243,7 @@ class ThemeAudioController extends Controller{
                 'watchlatered' => $watchlater,
                 'audio_categories' => AudioCategory::all(),
                 'pages' => Page::where('active', '=', 1)->get(),
+                'ablum_audios' =>  Audio::where('album_id',$albumID)->get(),
                 );
             } else {
                 $data = array(
@@ -250,8 +251,8 @@ class ThemeAudioController extends Controller{
                 );
                 
             }
-            return Theme::view('audio', $data);
 
+            return Theme::view('audio', $data);
     }
 
     /*
