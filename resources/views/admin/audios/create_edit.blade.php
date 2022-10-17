@@ -79,11 +79,13 @@ border-radius: 0px 4px 4px 0px;
         <div class="admin-section-title">
            
             <div class="iq-card">
+				
                  {{-- Push Message --}}
-		@if (Session::has('message'))
-			<div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
-		@endif
-	{{-- End Push Message --}}	
+						@if (Session::has('message'))
+							<div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
+						@endif
+				{{-- End Push Message --}}
+
                 <div class="row">
 					
                     <div class="col-md-8" id="heading_option">

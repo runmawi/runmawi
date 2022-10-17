@@ -310,7 +310,7 @@ Your browser does not support the audio element.
 <div class="d-flex" style="justify-content: space-between;width: 30%;align-items: center;">
 
 <div onclick="toggleAudio()">
-  <button class=" bd btn-action" id="vidbutton" style="width:80px" ><i class="fa fa-play mr-2" aria-hidden="true"  ></i> Play</button>
+  <button class="btn bd btn-action" id="vidbutton" style="width:80px" ><i class="fa fa-play mr-2" aria-hidden="true"  ></i> Play</button>
 </div>
 
 <a aria-hidden="true" class="favorite <?php echo audiofavorite($audio->id);?>" data-authenticated="<?= !Auth::guest() ?>" data-audio_id="<?= $audio->id ?>"><?php if(audiofavorite($audio->id) == "active"): ?><i id="ff" class="fa fa-heart" ></i><?php else: ?><i id="ff" class="fa fa-heart-o" ></i><?php endif; ?></a>
@@ -710,7 +710,13 @@ window.location = '<?= URL::to('login') ?>';
 
     var trackDurationItem = document.createElement('div');
     trackDurationItem.setAttribute("class", "playlist-duration");
-    trackDurationItem.innerHTML = duration
+
+    var measuredTime = new Date(null);
+    measuredTime.setSeconds(duration); 
+    var MHSTime = measuredTime.toISOString().substr(11, 8);
+    
+    trackDurationItem.innerHTML = MHSTime
+
     document.querySelector("#ptc-"+index).appendChild(trackDurationItem);
 
   }
@@ -724,11 +730,11 @@ window.location = '<?= URL::to('login') ?>';
   var indexAudio = 0;
 
   function loadNewTrack(index){
-
+    
     var player = document.querySelector('#source-audio')
+
     player.src = listAudio[index].mp3_url
     document.querySelector('.title').innerHTML = listAudio[index].title
-
     this.currentAudio = document.getElementById("myAudio");
     this.currentAudio.load()
     this.toggleAudio()
@@ -759,9 +765,6 @@ window.location = '<?= URL::to('login') ?>';
   document.querySelector('.title').innerHTML = <?php echo json_encode($audios->title) ; ?>  
 
   var currentAudio = document.getElementById("myAudio");
-
-  console.log(currentAudio);
-
 
   currentAudio.load()
   
