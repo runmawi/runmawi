@@ -5,7 +5,7 @@ $audio = $audios ;
 ?>
 <style type="text/css">
     #myProgress {
-   background-color: #d9d9f2; 
+   background-color: #8b0000; 
   cursor: pointer;
   border-radius: 10px;
 }
@@ -17,16 +17,22 @@ $audio = $audios ;
   border-radius: 10px;
 }
     .title{
-        text-align: left;
+        text-align: left!important;
         color: #fff;
     }
 .logo {
   fill: red;
 }
+    .play-border{
+        border:1px solid rgba(255,255,255,0.3);
+        border-radius: 10px;
+        padding: 10px;
+        border-width:2px;
+    }
 
 .btn-action{
   cursor: pointer;
- 
+  padding-top: 10px;
   width: 30px;
 }
 
@@ -61,8 +67,9 @@ padding-top: 20px;
 
 .title{
   margin-left: 10px;
-  
+  /*
   text-align: center;
+    border-top:1px solid rgba(255, 255, 255,0.1)*/
 }
 
 .player-ctn{
@@ -70,6 +77,8 @@ padding-top: 20px;
  
   padding: 10px;
   background: linear-gradient(180deg, #151517 127.69%, #282834 0% );
+      box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+
   margin:auto;
    
     border-radius: 10px;
@@ -78,8 +87,10 @@ padding-top: 20px;
 
 .playlist-track-ctn{
   display: flex;
+    padding-left: 10px;
   background-color: #464646;
   margin-top: 3px;
+    margin-right: 10px;
   border-radius: 5px;
   cursor: pointer;
     align-items: center;
@@ -93,8 +104,8 @@ padding-top: 20px;
     color: #fff;
 }
 .playlist-info-track{
-  width: 85%;
-    height: 25px;
+  width: 80%;
+  
     padding: 2px;
 }
 .playlist-info-track,.playlist-duration{
@@ -105,21 +116,26 @@ padding-top: 20px;
   pointer-events: none;
 }
    .playlist-ctn {
-  scrollbar-width: thin;
-  scrollbar-color: #CFD8DC;
+ 
+}
+    .playlist-ctn::-webkit-scrollbar {
+width: 2px;
 }
 .playlist-ctn::-webkit-scrollbar-track {
-  background: #CFD8DC;
+  background: rgba(255,255,255,0.2);
+    
 }
 .playlist-ctn::-webkit-scrollbar-thumb {
-  background-color: rgb(0, 82, 204) ;
-  border-radius: 6px;
-  border: 3px solid var(--scrollbarBG);
+  background-color: red;
+  border-radius: 2px;
+  border: 2px solid red;
+     width: 2px;
 }
 .playlist-ctn{
    padding-bottom: 20px;
     overflow: scroll;
-    max-height: 400px;
+    scroll-behavior: auto;
+    min-height:335px;
     scrollbar-color: rebeccapurple green!important;
     overflow-x: hidden;
 }
@@ -136,12 +152,13 @@ padding-top: 20px;
 
 
 .playlist-btn-play{
+    color: #fff!important;
   pointer-events: none;
   padding-top: 5px;
   padding-bottom: 5px;
 }
 .fas{
-  color: rgb(0, 82, 204);
+  color: rgb(255,0,0);
   font-size: 20px;
 }
     
@@ -156,7 +173,7 @@ border-radius: 25px !important;
 }
 .vjs-texttrack-settings { display: none; }
 .audio-js .vjs-big-play-button{ border: none !important; }
-.bd{/*border-radius: 25px!important;*/padding:5px;
+.bd{/*border-radius: 25px!important;*/padding:2px;
 background: #2bc5b4!important;}
 .bd:hover{
 
@@ -270,11 +287,12 @@ Your browser does not support the audio element.
 <?php } else { ?>                
 
 <div class="row album-top-30 mt-4 ">
+    
     <div class="col-lg-8">
          <div class="player-ctn">
-              <div class="row">
+              <div class="row align-items-center">
             <div class="col-sm-3 col-md-3 col-xs-3">
-<img src="<?= URL::to('/').'/public/uploads/albums/'. $audio->image ?>"  class="img-responsive" width="200" height="200">
+<img src="<?= URL::to('/').'/public/uploads/images/'. $audio->image ?>" height="200" width="200" class="img-responsive" >
 
 <!-- -->
 </div>
@@ -286,7 +304,7 @@ Your browser does not support the audio element.
 <div class="album_container">
 <div class="blur"></div>
 <div class="overlay_blur">
-<h2 class="hero-title album"> <?php echo ucfirst($audio->title); ?></h2>
+<h2 class="hero-title album"> <?= $audio->title; ?></h2>
 <p class="mt-2">Music by <?php echo get_audio_artist($audio->id); ?></p>
 <p class="mt-2">Album <a href="<?php echo URL::to('/').'/album/'.$album_slug;?>"><?php echo ucfirst($album_name); ?></a></p>
 <div class="d-flex" style="justify-content: space-between;width: 30%;align-items: center;">
@@ -409,7 +427,8 @@ Your browser does not support the audio element.
           <source id="source-audio" src="" type="audio/mpeg">
             Your browser does not support the audio element.
         </audio>
-      <div class="playlist-ctn"></div>
+        <div class="play-border">
+            <div class="playlist-ctn"></div></div>
     </div>
 
     </div>
