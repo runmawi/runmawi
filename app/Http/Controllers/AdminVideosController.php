@@ -2211,7 +2211,12 @@ class AdminVideosController extends Controller
             $pack == "Business" &&
             $settings->transcoding_access == 1
         ) {
+           if($video->processed_low < 100){
             $data["status"] = 0;
+
+           } else{
+            $data["status"] = 1;
+           }
         } elseif (
             Auth::user()->role == "admin" &&
             $pack == "Business" &&

@@ -1465,26 +1465,19 @@ class AdminLiveStreamController extends Controller
 
     public function liveStream(Request $request)
     {
+
+        $ffmpeg = \Streaming\FFMpeg::create();
+        $videos = $ffmpeg->open('public/uploads/LiveStream'.'/'.'12.mp4');
+
+        $hls = $videos->hls()
+            ->x264()
+            ->autoGenerateRepresentations();
+        $hls->save();
+
+        $hls->setMasterPlaylist('public/uploads/LiveStream'.'/'.'12.m3u8')
+        ->live('rtmp://a.rtmp.youtube.com/live2/vp9u-yadb-x43r-bwgz-4hh4');
         
-        $youtube_rtmp_url   = 'rtmp://a.rtmp.youtube.com/live2' ;
-        $youtube_stream_key = "ubxz-qpsg-f2hg-ba3p-beyq" ;
-        $combine_youtube_url =  $youtube_rtmp_url."/".$youtube_stream_key;
-
-        $youtube_streaming_video_url = "https://cph-p2p-msl.akamaized.net/hls/live/2000341/test/master.m3u8";
-
-        $command_line = "ffmpeg -fflags +igndts -hide_banner -i ".$youtube_streaming_video_url." -c copy -f flv ".$combine_youtube_url;
-
-        $process = Process::fromShellCommandline( $command_line);
-
-
-        try {
-            $process->setTimeout(null);
-            $process->mustRun();
-            echo $process->getOutput();
-
-        } catch (ProcessFailedException $exception) {
-            echo $exception->getMessage();
-        }
+       dd($videos);
     }
 
 
@@ -1873,70 +1866,133 @@ class AdminLiveStreamController extends Controller
         }
     }
 
-    public function start_restream(Request $request)
+        // Restream
+
+    public function youtube_start_restream(Request $request){
+
+        $hls_url       = $request->hls_url ;
+        $streaming_url = $request->streaming_url ;
+
+        $command_line = "ffmpeg -re -i ".$hls_url." -c:v libx264 -c:a aac -f flv ".$streaming_url;
+
+        $process = Process::fromShellCommandline( $command_line);
+
+        try {
+            $process->setTimeout(0);
+            $process->mustRun();
+
+        } catch (ProcessFailedException $exception) {
+
+            $response = array(
+                'status'   => false,
+                'message'  => "Error! while Re-stream video on YouTube." ,
+                'Error_message'  => $exception->getMessage() ,
+            );
+        
+            return response()->json($response, 200);
+        }
+    }
+
+    public function fb_start_restream(Request $request){
+
+        $hls_url       = $request->hls_url ;    
+        $streaming_url = $request->streaming_url ;
+
+        $command_line = "ffmpeg -re -i ".$hls_url." -c:v libx264 -c:a aac -f flv ".$streaming_url;
+
+        $process = Process::fromShellCommandline( $command_line);
+
+        try {
+            $process->setTimeout(0);
+            $process->mustRun();
+
+        } catch (ProcessFailedException $exception) {
+
+            $response = array(
+                'status'   => false,
+                'message'  => "Error! while Re-stream video on FaceBook" ,
+                'Error_message'  => $exception->getMessage() ,
+            );
+        
+            return response()->json($response, 200);
+        }
+    }
+
+    public function twitter_start_restream(Request $request){
+
+        $hls_url       = $request->hls_url ;
+        $streaming_url = $request->streaming_url ;
+
+        $command_line = "ffmpeg -re -i ".$hls_url." -c:v libx264 -c:a aac -f flv ".$streaming_url;
+
+        $process = Process::fromShellCommandline( $command_line);
+
+        try {
+            $process->setTimeout(0);
+            $process->mustRun();
+
+        } catch (ProcessFailedException $exception) {
+
+            $response = array(
+                'status'   => false,
+                'message'  => "Error! while Re-stream video on Twitter" ,
+                'Error_message'  => $exception->getMessage() ,
+            );
+        
+            return response()->json($response, 200);
+        }
+    }
+
+    public function linkedin_start_restream(Request $request){
+
+        $hls_url       = $request->hls_url ;
+        $streaming_url = $request->streaming_url ;
+
+        $command_line = "ffmpeg -re -i ".$hls_url." -c:v libx264 -c:a aac -f flv ".$streaming_url;
+
+        $process = Process::fromShellCommandline( $command_line);
+
+        try {
+            $process->setTimeout(0);
+            $process->mustRun();
+
+        } catch (ProcessFailedException $exception) {
+
+            $response = array(
+                'status'   => false,
+                'message'  => "Error! while Re-stream video on Linkedin" ,
+                'Error_message'  => $exception->getMessage() ,
+            );
+        
+            return response()->json($response, 200);
+        }
+    }
+
+    public function youtube_stop_restream( Request $request )
     {
-        $streaming_video_url = $request->hls_url;
+        $hls_url       = $request->hls_url ;
+        $streaming_url = $request->streaming_url ;
 
-        if($request->youtube_restream_checkbox == true){
-           
-            $youtube_rtmp_url =  $request->youtube_restream;
-    
-            $command_line = "ffmpeg -re -i ".$streaming_video_url." -c:v libx264 -c:a aac -f flv ".$youtube_rtmp_url;
-    
-            $process = Process::fromShellCommandline( $command_line);
-    
-            try {
-                $process->setTimeout(null);
-                $process->mustRun();
-                echo $process->getOutput();
-    
-                return "youtube_streaming" ;
+        $command_line = "ffmpeg -re -i ".$hls_url." -c:v libx264 -c:a aac -f flv ".$streaming_url;
 
-            } catch (ProcessFailedException $exception) {
-                echo $exception->getMessage();
-            }
+        $process = Process::fromShellCommandline( $command_line);
+
+        try {
+            $process->setTimeout(0);
+            $process->stop();
+
+        } catch (ProcessFailedException $exception) {
+
+            $response = array(
+                'status'   => false,
+                'message'  => "Error! while Stop Re-stream video on YouTube." ,
+                'Error_message'  => $exception->getMessage() ,
+            );
+        
+            return response()->json($response, 200);
         }
 
-        if($request->facebook_restream_checkbox == true){
 
-            $rtmp_fb_url =  $request->youtube_restream;
-    
-            $command_line = "ffmpeg -re -i ".$streaming_video_url." -c:v libx264 -c:a aac -f flv ".$rtmp_fb_url;
-
-            $process = Process::fromShellCommandline( $command_line);
-    
-            try {
-                $process->setTimeout(null);
-                $process->mustRun();
-                echo $process->getOutput();
-    
-            } catch (ProcessFailedException $exception) {
-                echo $exception->getMessage();
-            }
-           
-        }
-
-        if($request->twitter_restream_checkbox == true){
-
-            $rtmp_twitter_url =  $request->twitter_restream;
-    
-            $command_line = "ffmpeg -re -i ".$streaming_video_url." -c:v libx264 -c:a aac -f flv ".$rtmp_twitter_url;
-    
-            $process = Process::fromShellCommandline( $command_line);
-    
-            try {
-                $process->setTimeout(null);
-                $process->mustRun();
-                echo $process->getOutput();
-    
-            } catch (ProcessFailedException $exception) {
-                echo $exception->getMessage();
-            }
-        }
-
-        if($request->linkedin_restream_checkbox == true){
-           
-        }
     }
 
 }

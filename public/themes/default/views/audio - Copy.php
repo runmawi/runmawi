@@ -18,7 +18,6 @@ $audio = $audios ;
 }
     .title{
         text-align: left;
-        color: #fff;
     }
 .logo {
   fill: red;
@@ -26,7 +25,7 @@ $audio = $audios ;
 
 .btn-action{
   cursor: pointer;
- 
+  padding-top: 10px;
   width: 30px;
 }
 
@@ -93,7 +92,7 @@ padding-top: 20px;
     color: #fff;
 }
 .playlist-info-track{
-  width: 85%;
+  width: 80%;
     height: 25px;
     padding: 2px;
 }
@@ -156,7 +155,7 @@ border-radius: 25px !important;
 }
 .vjs-texttrack-settings { display: none; }
 .audio-js .vjs-big-play-button{ border: none !important; }
-.bd{/*border-radius: 25px!important;*/padding:5px;
+.bd{border-radius: 25px!important;
 background: #2bc5b4!important;}
 .bd:hover{
 
@@ -274,7 +273,7 @@ Your browser does not support the audio element.
          <div class="player-ctn">
               <div class="row">
             <div class="col-sm-3 col-md-3 col-xs-3">
-<img src="<?= URL::to('/').'/public/uploads/albums/'. $audio->image ?>"  class="img-responsive" width="200" height="200">
+<img src="<?= URL::to('/').'/public/uploads/images/'. $audio->image ?>" height="200" width="200" class="img-responsive" >
 
 <!-- -->
 </div>
@@ -286,15 +285,11 @@ Your browser does not support the audio element.
 <div class="album_container">
 <div class="blur"></div>
 <div class="overlay_blur">
-<h2 class="hero-title album"> <?php echo ucfirst($audio->title); ?></h2>
+<h2 class="hero-title album"> <?= $audio->title; ?></h2>
 <p class="mt-2">Music by <?php echo get_audio_artist($audio->id); ?></p>
 <p class="mt-2">Album <a href="<?php echo URL::to('/').'/album/'.$album_slug;?>"><?php echo ucfirst($album_name); ?></a></p>
 <div class="d-flex" style="justify-content: space-between;width: 30%;align-items: center;">
-
-<div onclick="toggleAudio()">
-  <button class=" bd btn-action" id="vidbutton" style="width:80px" ><i class="fa fa-play mr-2" aria-hidden="true"  ></i> Play</button>
-</div>
-
+<button class="btn bd" id="vidbutton"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play</button>
 <a aria-hidden="true" class="favorite <?php echo audiofavorite($audio->id);?>" data-authenticated="<?= !Auth::guest() ?>" data-audio_id="<?= $audio->id ?>"><?php if(audiofavorite($audio->id) == "active"): ?><i id="ff" class="fa fa-heart" ></i><?php else: ?><i id="ff" class="fa fa-heart-o" ></i><?php endif; ?></a>
 <i id="ff" class="fa fa-ellipsis-h" aria-hidden="true"></i>
 <div class="dropdown">
@@ -406,11 +401,13 @@ Your browser does not support the audio element.
     </div>
     <div class="col-lg-4 p-0">
         <audio id="myAudio" ontimeupdate="onTimeUpdate()">
-          <source id="source-audio" src="" type="audio/mpeg">
-            Your browser does not support the audio element.
-        </audio>
-      <div class="playlist-ctn"></div>
-    </div>
+  <!-- <source src="audio.ogg" type="audio/ogg"> -->
+  <source id="source-audio" src="" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+
+  <div class="playlist-ctn"></div>
+</div>
 
     </div>
 </div>
@@ -524,7 +521,63 @@ Your browser does not support the audio element.
 </div>
 </div> -->
 
-
+        <div class="player-ctn">
+            
+  
+  <div class="infos-ctn d-flex justify-space-between">
+   
+      <?php /*{ ?>
+      
+          <img src="<?= URL::to('/').'/public/uploads/images/'. $audio->image ?>"  class="img-responsive mb-2" / width="100">
+           
+      <?php } */?>
+   
+      
+  </div>
+  <div id="myProgress">
+    <div id="myBar"></div>
+  </div> 
+    <div class="d-flex justify-content-between text-white">
+    <div class="timer">00:00</div>
+        <div class="duration">00:00</div></div>
+  <div class="btn-ctn">
+     <div class="btn-action first-btn" onclick="previous()">
+        <div id="btn-faws-back">
+          <i class='fas fa-step-backward'></i>
+        </div>
+     </div>
+     <div class="btn-action" onclick="rewind()">
+        <div id="btn-faws-rewind">
+          <i class='fas fa-backward'></i>
+        </div>
+     </div>
+     <div class="btn-action" onclick="toggleAudio()">
+        <div id="btn-faws-play-pause">
+          <i class='fas fa-play' id="icon-play"></i>
+          <i class='fas fa-pause' id="icon-pause" style="display: none"></i>
+        </div>
+     </div>
+     <div class="btn-play" onclick="forward()">
+        <div id="btn-faws-forward">
+          <i class='fas fa-forward'></i>
+        </div>
+     </div>
+     <div class="btn-action" onclick="next()">
+        <div id="btn-faws-next">
+          <i class='fas fa-step-forward'></i>
+        </div>
+     </div>
+     <div class="btn-mute" id="toggleMute" onclick="toggleMute()">
+        <div id="btn-faws-volume">
+          <i id="icon-vol-up" class='fas fa-volume-up'></i>
+          <i id="icon-vol-mute" class='fas fa-volume-mute' style="display: none"></i>
+        </div>
+     </div>
+      
+  </div>
+         <div class="title"></div>
+        </div>
+ 
 <?php else: ?>
 
 <div id="subscribers_only">
@@ -659,10 +712,8 @@ window.location = '<?= URL::to('login') ?>';
         $(".jp-play").trigger("click");
     });
 </script>
-
     <script>
-  function createTrackItem(index,name,duration){
-
+          function createTrackItem(index,name,duration){
     var trackItem = document.createElement('div');
     trackItem.setAttribute("class", "playlist-track-ctn");
     trackItem.setAttribute("id", "ptc-"+index);
@@ -690,23 +741,56 @@ window.location = '<?= URL::to('login') ?>';
     trackDurationItem.setAttribute("class", "playlist-duration");
     trackDurationItem.innerHTML = duration
     document.querySelector("#ptc-"+index).appendChild(trackDurationItem);
-
   }
 
-  var listAudio = <?php echo json_encode($ablum_audios); ?>;
+  var listAudio = [
+    {
+      name:'<p class="marcu"><marquee  direction="left" ><?php echo ucfirst($other_audio->title); ?><marquee></p> ',
+      art:'<p>Arstist<p>',
+      file:'<?= $audio->mp3_url; ?>',
+      duration:"04:12"
+    },
+    {
+      name:"Artist 2 - audio 2",
+      file:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
+      duration:"05:53"
+    },
+    {
+      name:"Artist 3 - audio 3",
+      file:"https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_1MG.mp3",
+      duration:"00:27"
+    },
+      {
+      name:"Artist 3 - audio 3",
+      file:"https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_1MG.mp3",
+      duration:"00:27"
+    },
+      {
+      name:"Artist 3 - audio 3",
+      file:"https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_1MG.mp3",
+      duration:"00:27"
+    },
+      {
+      name:"Artist 3 - audio 3",
+      file:"https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_1MG.mp3",
+      duration:"00:27"
+    },
+       {
+      name:"Artist 3 - audio 3",
+      file:"https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_1MG.mp3",
+      duration:"00:27"
+    },
+  ]
 
   for (var i = 0; i < listAudio.length; i++) {
-      createTrackItem(i,listAudio[i].title,listAudio[i].duration);
+      createTrackItem(i,listAudio[i].name,listAudio[i].duration);
   }
-
   var indexAudio = 0;
 
   function loadNewTrack(index){
-
     var player = document.querySelector('#source-audio')
-    player.src = listAudio[index].mp3_url
-    document.querySelector('.title').innerHTML = listAudio[index].title
-
+    player.src = listAudio[index].file
+    document.querySelector('.title').innerHTML = listAudio[index].name
     this.currentAudio = document.getElementById("myAudio");
     this.currentAudio.load()
     this.toggleAudio()
@@ -733,13 +817,11 @@ window.location = '<?= URL::to('login') ?>';
     }
   }
 
-  document.querySelector('#source-audio').src = <?php echo json_encode($audios->mp3_url) ; ?>  
-  document.querySelector('.title').innerHTML = <?php echo json_encode($audios->title) ; ?>  
+  document.querySelector('#source-audio').src = listAudio[indexAudio].file
+  document.querySelector('.title').innerHTML = listAudio[indexAudio].name
+
 
   var currentAudio = document.getElementById("myAudio");
-
-  console.log(currentAudio);
-
 
   currentAudio.load()
   
