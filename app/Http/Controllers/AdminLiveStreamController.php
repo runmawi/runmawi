@@ -1970,7 +1970,29 @@ class AdminLiveStreamController extends Controller
 
     public function youtube_stop_restream( Request $request )
     {
-        # code...
+        $hls_url       = $request->hls_url ;
+        $streaming_url = $request->streaming_url ;
+
+        $command_line = "ffmpeg -re -i ".$hls_url." -c:v libx264 -c:a aac -f flv ".$streaming_url;
+
+        $process = Process::fromShellCommandline( $command_line);
+
+        try {
+            $process->setTimeout(0);
+            $process->stop();
+
+        } catch (ProcessFailedException $exception) {
+
+            $response = array(
+                'status'   => false,
+                'message'  => "Error! while Stop Re-stream video on YouTube." ,
+                'Error_message'  => $exception->getMessage() ,
+            );
+        
+            return response()->json($response, 200);
+        }
+
+
     }
 
 }

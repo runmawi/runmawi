@@ -311,7 +311,32 @@ border-radius: 0px 4px 4px 0px;
 
 		function stop_YouTube_restream(ele){
 
-			
+			// $('#youtube_button').empty().append('Stop');
+			// $('#youtube_button').removeAttr('onclick').attr('onClick', 'stop_YouTube_restream(this);');
+
+			var streaming_url  = $(ele).attr('data-YouTube-restream');
+			var Hls_url        = $(ele).attr('data-hls-url');
+
+			$.ajax({
+				type   : 'POST',
+				url    : "{{ route('youtube_stop_restream') }}",
+				data:{
+					_token : "{{ csrf_token() }}",
+					streaming_url : streaming_url, 
+					hls_url		  : Hls_url,
+				},
+
+				success:function(data){
+					if( data.status == false ){
+						$('#youtube_button').empty().append('Stop');
+						$('.restream_error_message').empty().append(data.message).css('color', '#f92b2b');
+					}else{
+						$('#youtube_button').empty().append('Start');
+						$('#youtube_button').removeAttr('onclick').attr('onClick', 'YouTube_restream(this);');
+					}
+				}
+        	});
+
 		}
 
 		function stop_facebook_restream(ele) {
