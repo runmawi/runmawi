@@ -452,7 +452,17 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::get('/livestream/delete/{id}', array('before' => 'demo', 'uses' => 'AdminLiveStreamController@destroy'));
     Route::get('/livestream/create', 'AdminLiveStreamController@create');
     Route::post('/livestream/store', array('before' => 'demo', 'uses' => 'AdminLiveStreamController@store'));
-    Route::post('/start_restream', 'AdminLiveStreamController@start_restream')->name('start_restream');
+
+    // Restream - live
+    Route::post('/youtube_start_restream', 'AdminLiveStreamController@youtube_start_restream')->name('youtube_start_restream');
+    Route::post('/fb_start_restream', 'AdminLiveStreamController@fb_start_restream')->name('fb_start_restream');
+    Route::post('/twitter_start_restream', 'AdminLiveStreamController@twitter_start_restream')->name('twitter_start_restream');
+    Route::post('/linkedin_start_restream', 'AdminLiveStreamController@linkedin_start_restream')->name('linkedin_start_restream');
+
+    Route::post('/youtube_stop_restream', 'AdminLiveStreamController@youtube_stop_restream')->name('youtube_stop_restream');
+    Route::post('/fb_stop_restream', 'AdminLiveStreamController@fb_stop_restream')->name('fb_stop_restream');
+    Route::post('/twitter_stop_restream', 'AdminLiveStreamController@twitter_stop_restream')->name('twitter_stop_restream');
+    Route::post('/linkedin_stop_restream', 'AdminLiveStreamController@linkedin_stop_restream')->name('linkedin_stop_restream');
 
 
     Route::get('/ppv/categories', array('before' => 'demo', 'uses' => 'AdminPpvCategoriesController@index'));
