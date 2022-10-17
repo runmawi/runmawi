@@ -258,7 +258,11 @@ border-bottom: 1px solid #141414;
  <h4 class="hero-title album mb-2"> <?= $album->albumname; ?></h4>
      <p class="mt-2">Music by    <br>A. R. Rahman</p>
     <div class="d-flex" style="justify-content: space-between;width: 33%;align-items: center;">
-        <button class="btn bd" id="vidbutton"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play</button>
+
+    <div onclick="toggleAudio()">
+      <button class="btn bd btn-action" id="vidbutton" style="width:80px" ><i class="fa fa-play mr-2" aria-hidden="true"  ></i> Play</button>
+    </div>
+
         <a aria-hidden="true" class="albumfavorite <?php echo albumfavorite($album->id);?>" data-authenticated="<?= !Auth::guest() ?>" data-album_id="<?= $album->id ?>"><?php if(albumfavorite($album->id) == "active"): ?><i id="ff" class="fa fa-heart" aria-hidden="true"></i><?php else: ?><i id="ff" class="fa fa-heart-o" aria-hidden="true"></i><?php endif; ?></a>
         <i id="ff" class="fa fa-ellipsis-h" aria-hidden="true"></i>
         <div class="dropdown">
@@ -661,8 +665,10 @@ jQuery(function($) {
         }
       });
 </script>
+
 <script>
-        function createTrackItem(index,name,duration){
+  function createTrackItem(index,name,duration){
+
     var trackItem = document.createElement('div');
     trackItem.setAttribute("class", "playlist-track-ctn");
     trackItem.setAttribute("id", "ptc-"+index);
@@ -688,37 +694,33 @@ jQuery(function($) {
 
     var trackDurationItem = document.createElement('div');
     trackDurationItem.setAttribute("class", "playlist-duration");
-    trackDurationItem.innerHTML = duration
+
+    var measuredTime = new Date(null);
+    measuredTime.setSeconds(duration); 
+    var MHSTime = measuredTime.toISOString().substr(11, 8);
+    
+    trackDurationItem.innerHTML = MHSTime
+
     document.querySelector("#ptc-"+index).appendChild(trackDurationItem);
+
   }
 
-  var listAudio = [
-    {
-      name:"Artist 1 - audio 1",
-      file:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3",
-      duration:"08:47"
-    },
-    {
-      name:"Artist 2 - audio 2",
-      file:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
-      duration:"05:53"
-    },
-    {
-      name:"Artist 3 - audio 3",
-      file:"https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_1MG.mp3",
-      duration:"00:27"
-    }
-  ]
+  var listAudio = <?php echo json_encode($album_audios); ?>;
 
   for (var i = 0; i < listAudio.length; i++) {
-      createTrackItem(i,listAudio[i].name,listAudio[i].duration);
+      createTrackItem(i,listAudio[i].title,listAudio[i].duration);
   }
+
   var indexAudio = 0;
 
   function loadNewTrack(index){
+
     var player = document.querySelector('#source-audio')
-    player.src = listAudio[index].file
-    document.querySelector('.title').innerHTML = listAudio[index].name
+
+    player.src = listAudio[index].mp3_url
+
+    document.querySelector('.title').innerHTML = listAudio[index].title
+
     this.currentAudio = document.getElementById("myAudio");
     this.currentAudio.load()
     this.toggleAudio()
@@ -745,9 +747,8 @@ jQuery(function($) {
     }
   }
 
-  document.querySelector('#source-audio').src = listAudio[indexAudio].file
-  document.querySelector('.title').innerHTML = listAudio[indexAudio].name
-
+  document.querySelector('#source-audio').src = <?php echo json_encode($first_album_song->mp3_url) ; ?>  
+  document.querySelector('.title').innerHTML = <?php echo json_encode($first_album_song->title) ; ?>  
 
   var currentAudio = document.getElementById("myAudio");
 
