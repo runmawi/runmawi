@@ -451,11 +451,12 @@ class ThemeAudioController extends Controller{
         if(Auth::guest()):
             return Redirect::to('/login');
         endif;
+
         $getfeching= Geofencing::first();
         $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
         $userIp = $geoip->getip();    
         $countryName = $geoip->getCountry();
-        
+
         try {
             $album_id = AudioAlbums::where('slug', $album_slug)->first()->id;
             $album = AudioAlbums::where('id', $album_id)->first();
@@ -468,6 +469,7 @@ class ThemeAudioController extends Controller{
                   }
                }    
                $blocked_Audio[]='';
+
                $album_audios  =  Audio::where('album_id', $album_id);
                  if($getfeching !=null && $getfeching->geofencing == 'ON'){
                       $album_audios = $album_audios  ->whereNotIn('id',$blocked_Audio);
@@ -475,6 +477,7 @@ class ThemeAudioController extends Controller{
                 $album_audios = $album_audios ->get();
 
             $other_albums = AudioAlbums::where('id','!=', $album_id)->get();
+
             foreach ($album_audios as $key => $album_audio) {
                 $json[] = array('title' => $album_audio->title,'mp3'=>$album_audio->mp3_url);
             }
@@ -485,7 +488,7 @@ class ThemeAudioController extends Controller{
                 'media_url' => URL::to('/').'/album/'.$album_slug,
                 'album_audios' => $album_audios,
                 'other_albums' => $other_albums,
-                
+                'first_album_song' => $album_audios->first(),
             );
             
             return Theme::view('albums', $data);
@@ -493,7 +496,6 @@ class ThemeAudioController extends Controller{
         } catch (\Throwable $th) {
                 return  abort(404);;       
         }
-          
     }
 
     public function add_favorite(Request $request)
