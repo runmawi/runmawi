@@ -1,7 +1,7 @@
 <?php include('header.php'); ?>
 <style type="text/css">
-       #myProgress {
-   background-color: #d9d9f2; 
+     #myProgress {
+   background-color: #8b0000; 
   cursor: pointer;
   border-radius: 10px;
 }
@@ -13,26 +13,35 @@
   border-radius: 10px;
 }
     .title{
-        text-align: left;
+        text-align: left!important;
         color: #fff;
     }
 .logo {
   fill: red;
 }
+    .play-border{
+        border:1px solid rgba(255,255,255,0.3);
+        border-radius: 10px;
+        padding: 10px;
+        border-width:2px;
+    }
 
 .btn-action{
   cursor: pointer;
- 
+  padding-top: 10px;
   width: 30px;
 }
 
-.btn-ctn, .infos-ctn{
+.btn-ctn{
   display: flex;
   align-items: center;
   justify-content: space-evenly;
 }
 .infos-ctn{
-padding-top: 20px;
+padding-top: 8px;
+    display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .btn-ctn > div {
@@ -43,7 +52,7 @@ padding-top: 20px;
 
 .infos-ctn > div {
  margin-bottom: 8px;
- color: rgb(0, 82, 204);
+ color: #fff;
     text-align: left;
 }
 
@@ -57,8 +66,9 @@ padding-top: 20px;
 
 .title{
   margin-left: 10px;
-  
+  /*
   text-align: center;
+    border-top:1px solid rgba(255, 255, 255,0.1)*/
 }
 
 .player-ctn{
@@ -66,6 +76,8 @@ padding-top: 20px;
  
   padding: 10px;
   background: linear-gradient(180deg, #151517 127.69%, #282834 0% );
+      box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+
   margin:auto;
    
     border-radius: 10px;
@@ -74,8 +86,10 @@ padding-top: 20px;
 
 .playlist-track-ctn{
   display: flex;
+    padding-left: 10px;
   background-color: #464646;
   margin-top: 3px;
+    margin-right: 10px;
   border-radius: 5px;
   cursor: pointer;
     align-items: center;
@@ -90,7 +104,7 @@ padding-top: 20px;
 }
 .playlist-info-track{
   width: 80%;
-    height: 25px;
+  
     padding: 2px;
 }
 .playlist-info-track,.playlist-duration{
@@ -101,21 +115,26 @@ padding-top: 20px;
   pointer-events: none;
 }
    .playlist-ctn {
-  scrollbar-width: thin;
-  scrollbar-color: #CFD8DC;
+ 
+}
+    .playlist-ctn::-webkit-scrollbar {
+width: 2px;
 }
 .playlist-ctn::-webkit-scrollbar-track {
-  background: #CFD8DC;
+  background: rgba(255,255,255,0.2);
+    
 }
 .playlist-ctn::-webkit-scrollbar-thumb {
-  background-color: rgb(0, 82, 204) ;
-  border-radius: 6px;
-  border: 3px solid var(--scrollbarBG);
+  background-color: red;
+  border-radius: 2px;
+  border: 2px solid red;
+     width: 2px;
 }
 .playlist-ctn{
    padding-bottom: 20px;
     overflow: scroll;
-    max-height: 400px;
+    scroll-behavior: auto;
+    min-height:335px;
     scrollbar-color: rebeccapurple green!important;
     overflow-x: hidden;
 }
@@ -132,16 +151,19 @@ padding-top: 20px;
 
 
 .playlist-btn-play{
+    color: #fff!important;
   pointer-events: none;
   padding-top: 5px;
   padding-bottom: 5px;
 }
 .fas{
-  color: rgb(0, 82, 204);
+  color: rgb(255,0,0);
   font-size: 20px;
 }
+    .img-responsive{
+        border-radius: 10px;
+    }
     
- 
 .fa-heart{color: red !important;}
 .audio-js *, .audio-js :after, .audio-js :before {box-sizing: inherit;display: grid;}
 .vjs-big-play-button{
@@ -176,10 +198,13 @@ left: -121px;
 }
 #ff{
 border: 1px solid #fff;
-border-radius: 50%;
-padding: 10px;
-font-size: 20px;
-color: #fff;
+    border-radius: 50%;
+    padding: 5px;
+    font-size: 12px;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 li{
 list-style: none; 
@@ -214,69 +239,59 @@ border-bottom: 1px solid #141414;
 <div id="audio_bg" >
 <div class="container-fluid">
 <div class="row album-top-30 mt-4 align-items-center">
- <div class="col-lg-8">
-         <div class="player-ctn">
-              <div class="row">
-            <div class="col-sm-3 col-md-3 col-xs-3">
-<img src="<?= URL::to('/').'/public/uploads/albums/'. $audio->album ?>"  class="img-responsive" width="200" height="200">
-
-<!-- -->
+   <div class="col-lg-8">
+ <audio id="myAudio" ontimeupdate="onTimeUpdate()">
+  <!-- <source src="audio.ogg" type="audio/ogg"> -->
+  <source id="source-audio" src="" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+<div class="player-ctn">
+    <div class="row align-items-center mb-4">
+    <div class="col-sm-3">
+<img src="<?= URL::to('/').'/public/uploads/albums/'. $album->album ?>"  class="img-responsive" width="200" height="200">
 </div>
-            
-<div class="col-sm-9 col-md-9 col-xs-9">
-    
-        
+<div class="col-sm-8 col-md-8 col-xs-8">
 <div class="album_bg">
 <div class="album_container">
 <div class="blur"></div>
 <div class="overlay_blur">
-<h2 class="hero-title album"> <?php echo ucfirst($audio->title); ?></h2>
-<p class="mt-2">Music by <?php echo get_audio_artist($audio->id); ?></p>
-<p class="mt-2">Album <a href="<?php echo URL::to('/').'/album/'.$album_slug;?>"><?php echo ucfirst($album_name); ?></a></p>
-<div class="d-flex" style="justify-content: space-between;width: 30%;align-items: center;">
+ <h4 class="hero-title album mb-2"> <?= $album->albumname; ?></h4>
+     <p class="mt-2">Music by    <br>A. R. Rahman</p>
+    <div class="d-flex" style="justify-content: space-between;width: 33%;align-items: center;">
 
-<div onclick="toggleAudio()">
-  <button class=" bd btn-action" id="vidbutton" style="width:80px" ><i class="fa fa-play mr-2" aria-hidden="true"  ></i> Play</button>
-</div>
+    <div onclick="toggleAudio()">
+      <button class="btn bd btn-action" id="vidbutton" style="width:80px" ><i class="fa fa-play mr-2" aria-hidden="true"  ></i> Play</button>
+    </div>
 
-<a aria-hidden="true" class="favorite <?php echo audiofavorite($audio->id);?>" data-authenticated="<?= !Auth::guest() ?>" data-audio_id="<?= $audio->id ?>"><?php if(audiofavorite($audio->id) == "active"): ?><i id="ff" class="fa fa-heart" ></i><?php else: ?><i id="ff" class="fa fa-heart-o" ></i><?php endif; ?></a>
-<i id="ff" class="fa fa-ellipsis-h" aria-hidden="true"></i>
-<div class="dropdown">
-    <i id="ff" class="fa fa-share-alt " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"  style="background-color: black;border:1px solid white;padding: 0;">
-        <a class="dropdown-item popup" href="https://twitter.com/intent/tweet?text=<?= $media_url ?>" target="_blank">
-            <i class="fa fa-twitter" style="color: #00acee;padding: 10px;border-radius: 50%;font-size: 26px;"></i>
-        </a>
-        <div class="divider" style="border:1px solid white"></div>
-        <a class="dropdown-item popup" href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" target="_blank"><i class="fa fa-facebook" style="color: #3b5998;padding: 10px;border-radius: 50%; font-size: 26px;"></i></a>
+        <a aria-hidden="true" class="albumfavorite <?php echo albumfavorite($album->id);?>" data-authenticated="<?= !Auth::guest() ?>" data-album_id="<?= $album->id ?>"><?php if(albumfavorite($album->id) == "active"): ?><i id="ff" class="fa fa-heart" aria-hidden="true"></i><?php else: ?><i id="ff" class="fa fa-heart-o" aria-hidden="true"></i><?php endif; ?></a>
+        <i id="ff" class="fa fa-ellipsis-h" aria-hidden="true"></i>
+        <div class="dropdown">
+            <i id="ff" class="fa fa-share-alt " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"  style="background-color: black;border:1px solid white;padding: 0;">
+                <a class="dropdown-item popup" href="https://twitter.com/intent/tweet?text=<?= $media_url ?>" target="_blank">
+                    <i class="fa fa-twitter" style="color: #00acee;padding: 10px;border-radius: 50%;font-size: 26px;"></i>
+                </a>
+                <div class="divider" style="border:1px solid white"></div>
+                <a class="dropdown-item popup" href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" target="_blank"><i class="fa fa-facebook" style="color: #3b5998;padding: 10px;border-radius: 50%; font-size: 26px;"></i></a>
+            </div>
+        </div>
+        <!-- Share -->
+    </div>
+  
     </div>
 </div>
-<!-- Share -->
 </div>
+</div></div>
 
-</div>
-</div>
-</div>
-</div>
-
-        </div>
   
-  <div class="infos-ctn d-flex justify-space-between">
-   
-      <?php /*{ ?>
-      
-          <img src="<?= URL::to('/').'/public/uploads/images/'. $audio->image ?>"  class="img-responsive mb-2" / width="100">
-           
-      <?php } */?>
-   
-      
-  </div>
   <div id="myProgress">
     <div id="myBar"></div>
-  </div> 
-    <div class="d-flex justify-content-between text-white">
+  </div>
+    <div class="infos-ctn">
     <div class="timer">00:00</div>
-        <div class="duration">00:00</div></div>
+    <div class="title"></div>
+    <div class="duration">00:00</div>
+  </div>
   <div class="btn-ctn">
      <div class="btn-action first-btn" onclick="previous()">
         <div id="btn-faws-back">
@@ -310,50 +325,17 @@ border-bottom: 1px solid #141414;
           <i id="icon-vol-mute" class='fas fa-volume-mute' style="display: none"></i>
         </div>
      </div>
-      
   </div>
-         <div class="title"></div>
-        </div>
-       <!-- <div class="col-sm-12 db p-0 mt-4">
-
-<div class="audio-lp">
-<p  class="album-title">Other Songs from <?= ucfirst($album_name); ?></p>
-  <table style="width:100%;color:#fff;">  
-<tr style="border-bottom:1px solid #fff;">
-    <th>Track </th>
-    <th>Song list</th>
-    <th>Singer by</th>
-    <th>Lyrics by</th>
-    <th>Favourite</th>
-    <th>Duration</th></tr>
-      <?php foreach($related_audio as $other_audio){ ?>
-      <tr class="audio-lpk">
-
-
-   
-        
-          <td> <img src="<?= URL::to('/').'/public/uploads/images/'. $other_audio->image ?>"  class="img-responsive" / width="50"></td>
-           <td><a href="<?php echo URL::to('/').'/audio/'.$other_audio->slug;?>"><?php echo ucfirst($other_audio->title); ?></a></td>
-           <td><?php echo get_audio_artist($other_audio->id); ?></td>
-           <td>Arstist</td>
-           <td><a aria-hidden="true" class="favorite <?php echo audiofavorite($other_audio->id);?>" data-authenticated="<?= !Auth::guest() ?>" data-audio_id="<?= $other_audio->id ?>"><?php if(audiofavorite($other_audio->id) == "active"): ?><i class="fa fa-heart" ></i><?php else: ?><i class="fa fa-heart-o" ></i><?php endif; ?></a></td>
-           <td><?php echo gmdate('H:i:s', $other_audio->duration); ?></td>
-      
-   
-
-          </tr>
-      <?php } ?>
-    </table>
+ 
 </div>
-</div>-->
 
+</div>
+        <div class="col-lg-4">
+            <div class="play-border">
+                <div class="playlist-ctn"></div></div>
+        </div>
     </div>
-    <div class="col-lg-4 p-0">
-        <audio id="myAudio" ontimeupdate="onTimeUpdate()">
-          <source id="source-audio" src="" type="audio/mpeg">
-            Your browser does not support the audio element.
-        </audio>
-      <div class="playlist-ctn"></div>
+</div>
     </div>
 
 <div class="clear"></div>  
@@ -683,7 +665,8 @@ jQuery(function($) {
         }
       });
 </script>
-   <script>
+
+<script>
   function createTrackItem(index,name,duration){
 
     var trackItem = document.createElement('div');
@@ -711,12 +694,18 @@ jQuery(function($) {
 
     var trackDurationItem = document.createElement('div');
     trackDurationItem.setAttribute("class", "playlist-duration");
-    trackDurationItem.innerHTML = duration
+
+    var measuredTime = new Date(null);
+    measuredTime.setSeconds(duration); 
+    var MHSTime = measuredTime.toISOString().substr(11, 8);
+    
+    trackDurationItem.innerHTML = MHSTime
+
     document.querySelector("#ptc-"+index).appendChild(trackDurationItem);
 
   }
 
-  var listAudio = <?php echo json_encode($ablum_audios); ?>;
+  var listAudio = <?php echo json_encode($album_audios); ?>;
 
   for (var i = 0; i < listAudio.length; i++) {
       createTrackItem(i,listAudio[i].title,listAudio[i].duration);
@@ -727,7 +716,9 @@ jQuery(function($) {
   function loadNewTrack(index){
 
     var player = document.querySelector('#source-audio')
+
     player.src = listAudio[index].mp3_url
+
     document.querySelector('.title').innerHTML = listAudio[index].title
 
     this.currentAudio = document.getElementById("myAudio");
@@ -756,8 +747,8 @@ jQuery(function($) {
     }
   }
 
-  document.querySelector('#source-audio').src = listAudio[indexAudio].mp3_url
-  document.querySelector('.title').innerHTML = listAudio[indexAudio].title
+  document.querySelector('#source-audio').src = <?php echo json_encode($first_album_song->mp3_url) ; ?>  
+  document.querySelector('.title').innerHTML = <?php echo json_encode($first_album_song->title) ; ?>  
 
   var currentAudio = document.getElementById("myAudio");
 
@@ -904,6 +895,6 @@ jQuery(function($) {
       volUp.style.display = "block"
     }
   }
-    </script>
+</script>
 
 <?php include('footer.blade.php'); ?>
