@@ -287,11 +287,12 @@ Your browser does not support the audio element.
 <?php } else { ?>                
 
 <div class="row album-top-30 mt-4 ">
+    
     <div class="col-lg-8">
          <div class="player-ctn">
               <div class="row align-items-center">
             <div class="col-sm-3 col-md-3 col-xs-3">
-<img src="<?= URL::to('/').'/public/uploads/albums/'. $audio->image ?>"  class="img-responsive" width="200" height="200">
+<img src="<?= URL::to('/').'/public/uploads/images/'. $audio->image ?>" height="200" width="200" class="img-responsive" >
 
 <!-- -->
 </div>
