@@ -121,7 +121,7 @@ if(date != ''){
 
 
 <script src="https://cdn.plyr.io/3.5.10/plyr.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <script>
 
 
