@@ -137,11 +137,13 @@ border-radius: 0px 4px 4px 0px;
 		<div class="row">
 			<div class="col-sm-12">
 				<div class="iq-card">
+
                     {{-- Push Message --}}
-		@if (Session::has('message'))
-				<div id="successMessage" class="alert alert-info">{{ Session::get('Audio_message') }}</div>
-		@endif
-{{-- End Push Message --}}
+						@if (Session::has('message'))
+								<div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
+						@endif
+					{{-- End Push Message --}}
+
 					<div class="iq-card-header d-flex justify-content-between">
 						<div class="iq-header-title">
 							<h4 class="card-title">Add Audio</h4>
@@ -887,6 +889,14 @@ tagInput1.addData([])
         }
 
 		
+	</script>
+
+	<script>
+		$(document).ready(function(){
+			setTimeout(function() {
+				$('#successMessage').fadeOut('fast');
+			}, 3000);
+		})
 	</script>
 
 	@stop
