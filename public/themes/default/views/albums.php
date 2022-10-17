@@ -176,7 +176,7 @@ border-radius: 25px !important;
 }
 .vjs-texttrack-settings { display: none; }
 .audio-js .vjs-big-play-button{ border: none !important; }
-.bd{border-radius: 25px!important;
+.bd{
 background: #2bc5b4!important;}
 .bd:hover{
 
@@ -328,7 +328,8 @@ border-bottom: 1px solid #141414;
 </div>
         <div class="col-lg-4">
             <div class="play-border">
-                <div class="playlist-ctn"></div></div>
+                <div class="playlist-ctn">                <h6 class="mb-2 font-weight-bold">AUDIO LIST <i class="fa fa-arrow-right" aria-hidden="true"></i>
+</h6></div></div>
         </div>
     </div>
 </div>
@@ -337,7 +338,7 @@ border-bottom: 1px solid #141414;
 <div class="clear"></div>  
 
 <?php } ?>
-<div class="container-fluid">
+<div class="container-fluid overflow-hidden">
 <div class="row album-top-30 mt-3 p-0">  
 <div class="col-sm-12">
 <p  class="album-title">Other Albums </p>
