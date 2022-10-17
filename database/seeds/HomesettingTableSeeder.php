@@ -22,6 +22,7 @@ class HomesettingTableSeeder extends Seeder
                     'latest_videos' => '1',
                     'category_videos' => '1',
                     'live_videos' => '1' ,
+                    'live_category' => 0 ,
                     'series' => null, 
                     'audios' => 0,
                     'albums' => 1,

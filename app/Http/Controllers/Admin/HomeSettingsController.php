@@ -121,6 +121,12 @@ class HomeSettingsController extends Controller
             $settings->Recommendation = 0;
         }
 
+        if($request->live_category !=null){
+            $settings->live_category = 1;
+        }else{
+            $settings->live_category = 0;
+        }
+
         if($request->artist !=null){
             $settings->artist = 1;
         }else{
@@ -308,6 +314,12 @@ class HomeSettingsController extends Controller
             $settings->Recommendation = 0;
         }
 
+        if($request->live_category !=null){
+            $settings->live_category = 1;
+        }else{
+            $settings->live_category = 0;
+        }
+        
         if($request->AutoIntro_skip !=null){
             $settings->AutoIntro_skip = 1;
         }else{
