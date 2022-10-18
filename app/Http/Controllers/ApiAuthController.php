@@ -8701,6 +8701,59 @@ $cpanel->end();
           );
         }
 
+
+
+        if(@$HomeSetting->live_category == 1){
+          // echo "<pre>";
+
+          $livecategories = LiveCategory::select('id','image','order')->groupBy('name')->get()->toArray();
+          $order_live_categories = LiveCategory::select('id','name','order')->groupBy('name')->get()->toArray();
+          $LiveCategory = array();
+          foreach ($livecategories as $key => $livecategory) {
+            $livecategoryid = $livecategory['id'];
+            $genre_image = $livecategory['image'];
+
+            $live_category= LiveStream::Join('livecategories','livecategories.live_id','=','live_streams.id')
+            ->where('livecategories.category_id',$livecategoryid)
+            ->where('active','=',1)->where('status','=',1)
+            ->orderBy('live_streams.created_at', 'desc')->get()->map(function ($item) {
+              $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+              $item['category_name'] = LiveCategory::where('id',$item->category_id)->pluck('slug')->first();
+              $item['category_order'] = LiveCategory::where('id',$item->category_id)->pluck('order')->first();
+              return $item;
+            });
+
+            $main_genre = CategoryLive::Join('live_categories','live_categories.id','=','livecategories.category_id')
+            ->get('name');
+            foreach($main_genre as $value){
+              $category[] = $value['name']; 
+            }
+            if(!empty($category)){
+            $main_genre = implode(",",$category);
+            }else{
+              $main_genre = "";
+            }
+            if(count($live_category) > 0){
+              $msg = 'success';
+            }else{
+              $msg = 'nodata';
+            }
+
+            $LiveCategory[] = array(
+              "message" => $msg,
+              'gener_name' =>  LiveCategory::where('id',$livecategoryid)->pluck('name')->first(),
+              'gener_id' =>  LiveCategory::where('id',$livecategoryid)->pluck('id')->first(),
+              "live_category" => $live_category,
+              "order_video_categories" => $order_video_categories,
+            );
+            // print_r($LiveCategory);exit;
+
+          }
+        }else{
+          $LiveCategory = [];
+        }
+
+
        
         $response = array(
           'status'=>'true',
@@ -8716,6 +8769,7 @@ $cpanel->end();
           'Recommendation' => $Recommendation,
           // 'movie' => $movie,
           'movies' => $movies,
+          'LiveCategory' => $LiveCategory,
 
         );
 
@@ -8730,7 +8784,94 @@ $cpanel->end();
     }
     }
 
+    public function LanguageVideo(Request $request){
+      
+      $langid = $request->langid;
+      $Language = Language::where('id', $langid)->first();
+      try{
 
+        if(!empty($Language)){
+          $languagesVideo = Video::Join('languagevideos','languagevideos.video_id','=','videos.id')
+          ->where('languagevideos.language_id',$langid)->get();
+
+          $response = array(
+              'status'=>'true',
+              'Language_name' => $Language->name,    
+              'Language' => $Language,
+              'languagesVideo' => $languagesVideo,
+          );
+        }
+
+      } catch (\Throwable $th) {
+        $response = array(
+          'status'=>'false',
+          'message'=>$th->getMessage(),
+          'nodata' => [],
+        );
+    }
+    return response()->json($response, 200);
+
+    }
+
+
+    public function LanguageSeries(Request $request){
+      
+      $langid = $request->langid;
+      $Language = Language::where('id', $langid)->first();
+      try{
+
+        if(!empty($Language)){
+          $languagesSeries = Series::Join('series_languages','series_languages.series_id','=','series.id')
+          ->where('series_languages.language_id',$langid)->get();
+
+          $response = array(
+              'status'=>'true',
+              'Language_name' => $Language->name,    
+              'Language' => $Language,
+              'languagesSeries' => $languagesSeries,
+          );
+        }
+
+      } catch (\Throwable $th) {
+        $response = array(
+          'status'=>'false',
+          'message'=>$th->getMessage(),
+          'nodata' => [],
+        );
+    }
+    return response()->json($response, 200);
+
+    }
+
+
+    public function LanguageLive(Request $request){
+      
+      $langid = $request->langid;
+      $Language = Language::where('id', $langid)->first();
+      try{
+
+        if(!empty($Language)){
+          $languagesLive = LiveStream::Join('live_languages','live_languages.live_id','=','live_streams.id')
+          ->where('live_languages.language_id',$langid)->get();
+
+          $response = array(
+              'status'=>'true',
+              'Language_name' => $Language->name,    
+              'Language' => $Language,
+              'languagesLive' => $languagesLive,
+          );
+        }
+
+      } catch (\Throwable $th) {
+        $response = array(
+          'status'=>'false',
+          'message'=>$th->getMessage(),
+          'nodata' => [],
+        );
+    }
+    return response()->json($response, 200);
+
+    }
 }
 
 

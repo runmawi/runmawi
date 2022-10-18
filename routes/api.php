@@ -344,5 +344,11 @@ Route::group([
 
     Route::get('home_page','ApiAuthController@HomePage');
 
+    Route::post('video_language','ApiAuthController@LanguageVideo');
+
+    Route::post('series_language','ApiAuthController@LanguageSeries');
+
+    Route::post('live_language','ApiAuthController@LanguageLive');
+
 
 });
