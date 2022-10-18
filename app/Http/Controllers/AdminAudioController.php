@@ -430,28 +430,33 @@ class AdminAudioController extends Controller
     {
 
         $data = Session::all();
+
         if (!empty($data['password_hash'])) {
-        $package_id = auth()->user()->id;
-        $user_package =    User::where('id', $package_id)->first();
-        $package = $user_package->package;
+            $package_id = auth()->user()->id;
+            $user_package =    User::where('id', $package_id)->first();
+            $package = $user_package->package;
 
         if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
-        $input = $request->all();
-        $id = $request->id;
-        $settings =Setting::first();
-        if(!empty($input['ppv_price'])){
-            $ppv_price = $input['ppv_price'];
-        }elseif($input['ppv_status'] || $settings->ppv_status == 1){
-            $ppv_price = $settings->ppv_price;
-        }
-        $audio = Audio::findOrFail($id);
+         
+            $input = $request->all();
+            $id = $request->id;
+            $settings =Setting::first();
 
-        $validator = Validator::make($data = $input, Audio::$rules);
+            if(!empty($input['ppv_price'])){
+                $ppv_price = $input['ppv_price'];
+            }elseif($input['ppv_status'] || $settings->ppv_status == 1){
+                $ppv_price = $settings->ppv_price;
+            }
 
-        if ($validator->fails())
-        {
-            return Redirect::back()->withErrors($validator)->withInput();
-        }
+            $audio = Audio::findOrFail($id);
+
+            $validator = Validator::make($data = $input, Audio::$rules);
+
+            if ($validator->fails())
+            {
+                return Redirect::back()->withErrors($validator)->withInput();
+            }
+
         /*Slug*/
 
         if(  $data['slug']  == '' || $audio->slug == ''){
@@ -473,48 +478,70 @@ class AdminAudioController extends Controller
                 $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
                 $data['duration'] = $time_seconds;
         }
+
         $path = public_path().'/uploads/audios/';
         $image_path = public_path().'/uploads/images/';
+
         if(empty($data['image'])){
             unset($data['image']);
-        } else {
+        } 
+        else {
             $image = $data['image'];
+            
             if($image != ''  && $image != null){
                    $file_old = $image_path.$image;
                   if (file_exists($file_old)){
                    unlink($file_old);
                   }
-              }
-              //upload new file
-              $file = $image;
-            //   $data['image']  = $file->getClientOriginalName();
-            $data['image'] = str_replace(' ', '_', $file->getClientOriginalName());
-              $file->move($image_path, $data['image']);
+            }
+
+            if(compress_image_enable() == 1){
+
+                $audio_filename  = time().'.'.compress_image_format();
+                $audio_image     =  'audio_'.$audio_filename ;
+                Image::make($image)->save(base_path().'/public/uploads/images/'.$audio_image,compress_image_resolution() );
+            }else{
+
+                $audio_filename  = time().'.'.$audio_image->getClientOriginalExtension();
+                $audio_image     =  'audio_'.$audio_filename ;
+                Image::make($image)->save(base_path().'/public/uploads/images/'.$audio_image );
+            }  
+
+            $data['image'] = $audio_image ;
         }
 
-        $path = public_path().'/uploads/audios/';
-        $image_path = public_path().'/uploads/images/';
+       
         if(empty($data['player_image'])){
             unset($data['player_image']);
                 $player_image = $audio->player_image;
-        } else {
+        } 
+        else {
             $image = $data['player_image'];
-            if($image != ''  && $image != null){
-                   $file_old = $image_path.$image;
-                  if (file_exists($file_old)){
-                   unlink($file_old);
-                  }
-              }
-              //upload new file
-              $player_image = $image;
-            //   $data['player_image']  = $player_image->getClientOriginalName();
-            $data['player_image'] = str_replace(' ', '_', $player_image->getClientOriginalName());
-              $player_image->move($image_path, $data['player_image']);
-            // $player_image =  $player_image->getClientOriginalName();
-            $player_image = str_replace(' ', '_', $player_image->getClientOriginalName());
 
-
+                if($image != ''  && $image != null){
+                    $file_old = $image_path.$image;
+                    if (file_exists($file_old)){
+                        unlink($file_old);
+                    }
                 }
+
+                $player_image = $image;
+
+                if(compress_image_enable() == 1){
+
+                    $audio_player_filename  = time().'.'.compress_image_format();
+                    $audio_player_image     =  'audio_player_'.$audio_player_filename ;
+                    Image::make($image)->save(base_path().'/public/uploads/images/'.$audio_player_image,compress_image_resolution() );
+                }else{
+    
+                    $audio_player_filename  = time().'.'.$audio_player_image->getClientOriginalExtension();
+                    $audio_player_image     =  'audio_player_'.$audio_player_filename ;
+                    Image::make($image)->save(base_path().'/public/uploads/images/'.$audio_player_image );
+                }  
+
+                $player_image = $audio_player_image;
+        }
+
         if(empty($data['active'])){
             $data['active'] = 0;
         }
@@ -544,10 +571,10 @@ class AdminAudioController extends Controller
         $audio->update($data);
         $audio->ppv_price =  $ppv_price;
         $audio->ppv_status =  $data['ppv_status'];
-        $audio->player_image =  $player_image;
         $audio->search_tags =  $searchtags;
         $audio->banner =  $banner;
         $audio->ios_ppv_price =  $request->ios_ppv_price;
+        $audio->player_image =  $player_image;
         $audio->save();
         // dd($audio->id);
 
