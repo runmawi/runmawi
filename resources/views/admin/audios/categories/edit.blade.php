@@ -1,10 +1,6 @@
 @extends('admin.master')
 @section('content')
-<?php
-    //   echo "<pre>";  
-    // print_r($moderators->user_role);
-    // exit();
-    ?>
+
 
 <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
@@ -48,14 +44,15 @@
                             <div class="row">
                         <div class="col-md-6" >
 
-                        <div class="form-group row">
-                        <label>Image:</label>
-                        @if(!empty($categories[0]->image))
-                        <img src="{{ URL::to('/audiocategory').'/'.$categories[0]->image }}" class="movie-img" width="200"/>
-                        @endif
-                        <p>Select the Category image (1280x720 px or 16:9 ratio):</p> 
-                        <input type="file" multiple="true" class="form-control" name="image" id="image" />
+                            <div class="form-group row">
+                                <label>Image:</label>
 
+                                @if(!empty($categories[0]->image))
+                                    <img src="{{ URL::to('public/uploads/audios').'/'.$categories[0]->image }}" class="movie-img" width="200"/>
+                                @endif
+
+                                <p>Select the Category image (1280x720 px or 16:9 ratio):</p> 
+                                <input type="file" multiple="true" class="form-control" name="image" id="image" />
                             </div>
                         </div>
 

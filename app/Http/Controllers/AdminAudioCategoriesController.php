@@ -16,11 +16,12 @@ use Auth;
 use View;
 use Hash;
 use Illuminate\Support\Facades\Cache;
-use Image;
 use DB;
 use Session;
 use GuzzleHttp\Client;
 use GuzzleHttp\Message\Response;
+use Intervention\Image\Facades\Image;
+use Intervention\Image\Filters\DemoFilter;
 
 class AdminAudioCategoriesController extends Controller
 {
@@ -118,24 +119,36 @@ class AdminAudioCategoriesController extends Controller
 
           
            if($image != '') {   
-             //code for remove old file
                
-              if($image != ''  && $image != null){
-                   $file_old = $path.$image;
-                  if (file_exists($file_old)){
-                   unlink($file_old);
-                  }
-              }
-                //upload new file
-              $file = $image;
-            //   $input['image']  = $file->getClientOriginalName();
-            $data['image'] = str_replace(' ', '_', $file->getClientOriginalName());
-              $file->move($path, $input['image']);
-         } else {
+                if($image != ''  && $image != null){       //code for remove old file
+                    $file_old = $path.$image;
+                    if (file_exists($file_old)){
+                        unlink($file_old);
+                    }
+                }
+
+                $file = $image;
+
+                if(compress_image_enable() == 1){
+
+                    $audio_categories_filename  = time().'.'.compress_image_format();
+                    $audio_categories_PC_image     =  'Audio_Categories_'.$audio_categories_filename ;
+                    Image::make($image)->save(base_path().'/public/uploads/audios/'.$audio_categories_PC_image,compress_image_resolution() );
+                }else{
+
+                    $audio_categories_filename  = time().'.'.$audio_categories_image->getClientOriginalExtension();
+                    $audio_categories_PC_image     =  'Audio_Categories_'.$audio_categories_filename ;
+                    Image::make($image)->save(base_path().'/public/uploads/audios/'.$audio_categories_PC_image );
+                }
+
+                $input['image']  = $audio_categories_PC_image;
+            } 
+            else {
                $input['image']  = 'default.jpg';
-           }
-          
+            }
+
             AudioCategory::create($input);
+
             return back()->with('message', 'New Category added successfully.');
         }else if($package == "Basic"){
 
@@ -207,48 +220,52 @@ class AdminAudioCategoriesController extends Controller
         public function update(Request $request){
 
             $data = Session::all();
+
             if (!empty($data['password_hash'])) {
-            $package_id = auth()->user()->id;
-            $user_package =    User::where('id', $package_id)->first();
-            $package = $user_package->package;
+
+                $package_id = auth()->user()->id;
+                $user_package =    User::where('id', $package_id)->first();
+                $package = $user_package->package;
     
             if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
-            $input = $request->all();
+
+                $input = $request->all();
+                
+                $validatedData = $request->validate([
+                    'name' => 'required|max:255',
+                ]);
             
-             $validatedData = $request->validate([
-                   'name' => 'required|max:255',
-             ]);
-            
-            
-            $path = public_path().'/uploads/audios/';
+                $path = public_path().'/uploads/audios/';
 
-            $id = $request['id'];
-            $category = AudioCategory::find($id);
+                $id = $request['id'];
+                $category = AudioCategory::find($id);
 
-             if (isset($request['image']) && !empty($request['image'])){
-                $image = $request['image']; 
-             } else {
-                 $request['image'] = $category->image;
-             }
+                if( isset($request->image) && $request->image != '') {   
+                
+                    if($request->image != ''  && $request->image != null){   //code for remove old file
+                        $file_old = $path.$request->image;
+                        if (file_exists($file_old)){
+                            unlink($file_old);
+                        }
+                    }
 
-             if( isset($image) && $image!= '') {   
-              //code for remove old file
-                  if($image != ''  && $image != null){
-                       $file_old = $path.$image;
-                      if (file_exists($file_old)){
-                       unlink($file_old);
-                      }
-                  }
-                  //upload new file
-                  $file = $image;
-                //   $category->image  = $file->getClientOriginalName();
-                  $category->image  = str_replace(' ', '_', $file->getClientOriginalName());
+                    $file = $request->image;
 
-                  $file->move($path,$category->image);
+                    if(compress_image_enable() == 1){
+    
+                        $audio_categories_filename  = time().'.'.compress_image_format();
+                        $audio_categories_PC_image     =  'Audio_Categories_'.$audio_categories_filename ;
+                        Image::make($file)->save(base_path().'/public/uploads/audios/'.$audio_categories_PC_image,compress_image_resolution() );
+                    }else{
+    
+                        $audio_categories_filename  = time().'.'.$audio_categories_image->getClientOriginalExtension();
+                        $audio_categories_PC_image     =  'Audio_Categories_'.$audio_categories_filename ;
+                        Image::make($file)->save(base_path().'/public/uploads/audios/'.$audio_categories_PC_image );
+                    }
 
-             } 
-
-            
+                    $category->image = $audio_categories_PC_image ; 
+                } 
+                
             
             $category->name = $request['name'];
             $category->slug = $request['slug'];
