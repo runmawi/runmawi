@@ -428,7 +428,10 @@ Your browser does not support the audio element.
             Your browser does not support the audio element.
         </audio>
         <div class="play-border">
-            <div class="playlist-ctn"></div></div>
+            <div class="playlist-ctn">
+                <h6 class="mb-2 font-weight-bold">AUDIO LIST <i class="fa fa-arrow-right" aria-hidden="true"></i>
+</h6>
+            </div></div>
     </div>
 
     </div>
