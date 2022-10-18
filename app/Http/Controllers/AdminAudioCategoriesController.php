@@ -331,14 +331,16 @@ class AdminAudioCategoriesController extends Controller
          /*Albums section */
     
     public function albumIndex(){
+
         $data = Session::all();
+
         if (!empty($data['password_hash'])) {
-        $package_id = auth()->user()->id;
-        $user_package =    User::where('id', $package_id)->first();
-        $package = $user_package->package;
-        $user =  User::where('id',1)->first();
-        $duedate = $user->package_ends;
-        $current_date = date('Y-m-d');
+            $package_id = auth()->user()->id;
+            $user_package =    User::where('id', $package_id)->first();
+            $package = $user_package->package;
+            $user =  User::where('id',1)->first();
+            $duedate = $user->package_ends;
+            $current_date = date('Y-m-d');
         if ($current_date > $duedate)
         {
             $client = new Client();
@@ -418,10 +420,19 @@ class AdminAudioCategoriesController extends Controller
 
                     $file = $image;
 
-                    $request['album'] = str_replace(' ', '_', $file->getClientOriginalName());
-                    $file->move($image_path, $request['album']);
+                    if(compress_image_enable() == 1){
+    
+                        $audio_album_filename  = time().'.'.compress_image_format();
+                        $audio_album_PC_image     =  'Audio_album_'.$audio_album_filename ;
+                        Image::make($file)->save(base_path().'/public/uploads/albums/'.$audio_album_PC_image,compress_image_resolution() );
+                    }else{
+    
+                        $audio_album_filename  = time().'.'.$audio_album_image->getClientOriginalExtension();
+                        $audio_album_PC_image     =  'Audio_album_'.$audio_album_filename ;
+                        Image::make($file)->save(base_path().'/public/uploads/albums/'.$audio_album_PC_image );
+                    }  
 
-                    $input['album'] = str_replace(' ', '_', $file->getClientOriginalName());    
+                    $input['album'] = $audio_album_PC_image ;    
                 }
 
                  /*Slug*/
@@ -450,19 +461,20 @@ class AdminAudioCategoriesController extends Controller
     }
 
     public function updateAlbum(Request $request){
+
         $data = Session::all();
+
         if (!empty($data['password_hash'])) {
-        $package_id = auth()->user()->id;
-        $user_package =    User::where('id', $package_id)->first();
-        $package = $user_package->package;
+            $package_id = auth()->user()->id;
+            $user_package =    User::where('id', $package_id)->first();
+            $package = $user_package->package;
 
         if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
                
-        $request = $request->all();
-        
-         
+             $request = $request->all();
         
             $id = $request['id'];
+
             $audio = AudioAlbums::findOrFail($id);
         
            if ($audio->slug != $request['slug']) {
@@ -475,40 +487,56 @@ class AdminAudioCategoriesController extends Controller
 
             $path = public_path().'/uploads/albums/';
             $image_path = public_path().'/uploads/albums/';
+
             if(empty($request['album'])){
                 unset($request['album']);
-            } else {
+            } 
+            else {
                 $image = $request['album'];
+
                 if($image != ''  && $image != null){
-                 $file_old = $image_path.$image;
-                 if (file_exists($file_old)){
-                     unlink($file_old);
-                 }
-             }
-              //upload new file
-             $file = $image;
-            //  $request['album']  = $file->getClientOriginalName();
-            $request['album'] = str_replace(' ', '_', $file->getClientOriginalName());
-             $file->move($image_path, $request['album']);
+                    $file_old = $image_path.$image;
+
+                    if (file_exists($file_old)){
+                        unlink($file_old);
+                    }
+
+                    if(compress_image_enable() == 1){
+    
+                        $audio_album_filename  = time().'.'.compress_image_format();
+                        $audio_album_PC_image     =  'Audio_album_'.$audio_album_filename ;
+                        Image::make($image)->save(base_path().'/public/uploads/albums/'.$audio_album_PC_image,compress_image_resolution() );
+
+                        $request['album']  = $audio_album_PC_image ;
+
+                    }else{
+    
+                        $audio_album_filename  = time().'.'.$audio_album_image->getClientOriginalExtension();
+                        $audio_album_PC_image     =  'Audio_album_'.$audio_album_filename ;
+                        Image::make($image)->save(base_path().'/public/uploads/albums/'.$audio_album_PC_image );
+
+                        $request['album']  = $audio_album_PC_image ;
+                    }  
+            }
          }
         
         $audio->update($request);
         
-        
         if(isset($audio)){
             return Redirect::to('admin/audios/albums')->with(array('message' => 'Successfully Updated Albums', 'note_type' => 'success') );
         }
-    }else if($package == "Basic"){
 
-        return view('blocked');
+        }else if($package == "Basic"){
 
-    }
-}else{
-    $system_settings = SystemSetting::first();
-    $user = User::where('id','=',1)->first();
-    return view('auth.login',compact('system_settings','user'));
+            return view('blocked');
+        }
 
-  }
+        }else{
+            $system_settings = SystemSetting::first();
+            $user = User::where('id','=',1)->first();
+            return view('auth.login',compact('system_settings','user'));
+
+        }
     }
 
     public function destroyAlbum($id){
