@@ -74,8 +74,8 @@ padding-top: 8px;
 .player-ctn{
   
  
-  padding: 10px;
-  background: linear-gradient(180deg, #151517 127.69%, #282834 0% );
+  padding: 25px;
+  /*background: linear-gradient(180deg, #151517 127.69%, #282834 0% );*/
       box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
 
   margin:auto;
@@ -245,7 +245,9 @@ border-bottom: 1px solid #141414;
   <source id="source-audio" src="" type="audio/mpeg">
   Your browser does not support the audio element.
 </audio>
-<div class="player-ctn">
+<div class="player-ctn" style="background-image:linear-gradient(to left, rgba(0, 0, 0, 0.25)0%, rgba(117, 19, 93, 1)),url('<?= URL::to('/').'/public/uploads/albums/'. $album->album ?>');background-size: cover;
+    background-repeat: no-repeat;
+    background-position: right;">
     <div class="row align-items-center mb-4">
     <div class="col-sm-3">
 <img src="<?= URL::to('/').'/public/uploads/albums/'. $album->album ?>"  class="img-responsive" width="200" height="200">

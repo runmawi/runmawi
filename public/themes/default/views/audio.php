@@ -75,8 +75,8 @@ padding-top: 20px;
 .player-ctn{
   
  
-  padding: 10px;
-  background: linear-gradient(180deg, #151517 127.69%, #282834 0% );
+  padding: 25px;
+  /*background: linear-gradient(180deg, #151517 127.69%, #282834 0% );*/
       box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
 
   margin:auto;
@@ -135,7 +135,7 @@ width: 2px;
    padding-bottom: 20px;
     overflow: scroll;
     scroll-behavior: auto;
-    min-height:335px;
+    max-height:335px;
     scrollbar-color: rebeccapurple green!important;
     overflow-x: hidden;
 }
@@ -289,15 +289,17 @@ Your browser does not support the audio element.
 <div class="row album-top-30 mt-4 ">
     
     <div class="col-lg-8">
-         <div class="player-ctn">
+         <div class="player-ctn" style="background-image:linear-gradient(to left, rgba(0, 0, 0, 0.25)0%, rgba(117, 19, 93, 1)),url('<?= URL::to('/').'/public/uploads/images/'. $audio->player_image ?>');background-size: cover;
+    background-repeat: no-repeat;
+    background-position: right;">
               <div class="row align-items-center">
-            <div class="col-sm-3 col-md-3 col-xs-3">
-<img src="<?= URL::to('/').'/public/uploads/images/'. $audio->image ?>" height="200" width="200" class="img-responsive" >
+           <div class="col-sm-3 col-md-3 col-xs-3 ">
+<img src="<?= URL::to('/').'/public/uploads/images/'. $audio->image ?>" height="200" width="180" class="img-responsive" >
 
-<!-- -->
+ 
 </div>
             
-<div class="col-sm-9 col-md-9 col-xs-9">
+<div class="col-sm-9 col-md-9 col-xs-9 p-0">
     
         
 <div class="album_bg">
