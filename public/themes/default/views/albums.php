@@ -28,7 +28,7 @@
 
 .btn-action{
   cursor: pointer;
-  padding-top: 10px;
+  /*padding-top: 10px;*/
   width: 30px;
 }
 
