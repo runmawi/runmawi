@@ -20,6 +20,18 @@ $order_settings_list = App\OrderHomeSetting::get();
  </svg>
 </section>
 
+
+<?php if(count($VideoSchedules) > 0){ ?>
+       <section id="iq-favorites">
+            <div class="container-fluid overflow-hidden">
+               <div class="row">
+                  <div class="col-sm-12 ">
+                     <?php include('partials/home/schedule.php'); ?>
+                  </div>
+               </div>
+            </div>
+         </section>
+   <?php } ?>
 <!-- Slider End -->
 
 
@@ -1123,7 +1135,42 @@ endif; ?>
                         <?php } ?>
                     <?php } ?>
                 </div>
-                <?php } } }?>
+                <?php } } ?>
+
+                <?php 
+       if($value->video_name == 'live_category'){
+            
+            if ( GetCategoryLiveStatus() == 1 ) {  
+                      ?>
+            <div class="">
+               <?php
+               
+                     $Multiuser=Session('subuser_id');
+                     $Multiprofile= App\Multiprofile::where('id',$Multiuser)->first();
+
+                     $parentCategories = App\LiveCategory::orderBy('order','ASC')->groupBy('name')->get();
+                     // dd($parentCategories);
+                    foreach($parentCategories as $category) {
+                    
+                     $live_streams = App\LiveStream::join('livecategories', 'livecategories.live_id', '=', 'live_streams.id')
+                        ->where('category_id','=',$category->id)->where('live_streams.active', '=', '1')
+                        ->where('live_streams.status', '=', '1');
+                     
+                     if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+                        $live_streams = $live_streams  ->whereNotIn('live_streams.id',Block_videos());
+                           }
+
+                     $live_streams = $live_streams->orderBy('live_streams.created_at','desc')->get();
+                     
+                ?>
+                        <?php if (count($live_streams) > 0 ) { 
+                            include('partials/home/live-category.php');
+                        } else { ?>
+                        <p class="no_video"> <!--<?php echo __('No Video Found');?>--></p>
+                        <?php } ?>
+                    <?php }?>
+                </div>
+                <?php }  } } ?>
 
 <!-- Most watched Videos - category -->
 
