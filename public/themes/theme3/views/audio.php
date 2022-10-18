@@ -9,7 +9,12 @@ $audio = $audios ;
   cursor: pointer;
   border-radius: 10px;
 }
-  
+  .play-border{
+        border:1px solid rgba(255,255,255,0.3);
+        border-radius: 10px;
+        padding: 10px;
+        border-width:2px;
+    }
 #myBar {
   width: 0%;
   height: 3px;
@@ -409,6 +414,7 @@ Your browser does not support the audio element.
           <source id="source-audio" src="" type="audio/mpeg">
             Your browser does not support the audio element.
         </audio>
+        <div class="play-border">
       <div class="playlist-ctn"></div>
     </div>
 
@@ -450,14 +456,14 @@ Your browser does not support the audio element.
                     <div class="block-images position-relative">
                           <div class="img-box">
                              <img src="<?= URL::to('/').'/public/uploads/albums/' . $other_album->album ?>"  class="img-responsive w-100" />   
-                        </div>
-                        <div class="block-description">
+                        </div></div>
+                        <div class="block-description"></div>
                             <div class="hover-buttons text-white">
                                 <p class="mt-2"><?php echo ucfirst($other_album->albumname);?> </p>
-                </div>
+                
                            
             <?php  } ?> 
-                        </div>
+                        
                     </div>      
             </a>
            
