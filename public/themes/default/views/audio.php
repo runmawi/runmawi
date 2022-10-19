@@ -66,8 +66,8 @@ padding-top: 20px;
 }
 
 .title{
-  margin-left: 10px;
-  /*
+   /*margin-left: 10px;
+ 
   text-align: center;
     border-top:1px solid rgba(255, 255, 255,0.1)*/
 }
@@ -306,7 +306,8 @@ Your browser does not support the audio element.
 <div class="album_container">
 <div class="blur"></div>
 <div class="overlay_blur">
-<h2 class="hero-title album"> <?= $audio->title; ?></h2>
+<h2 class="hero-title album">          <div class="title"></div>
+</h2>
 <p class="mt-2">Music by <?php echo get_audio_artist($audio->id); ?></p>
 <p class="mt-2">Album <a href="<?php echo URL::to('/').'/album/'.$album_slug;?>"><?php echo ucfirst($album_name); ?></a></p>
 <div class="d-flex" style="justify-content: space-between;width: 30%;align-items: center;">
