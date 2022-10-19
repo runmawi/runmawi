@@ -367,6 +367,13 @@ function GetCategoryVideoStatus()
      $settings = App\HomeSetting::first();
      return $settings->category_videos;  
 }
+
+function GetCategoryLiveStatus()
+{
+     $settings = App\HomeSetting::first();
+     return $settings->live_category;  
+}
+
 function GetLatestVideoStatus()
 {
      $settings = App\HomeSetting::first();
