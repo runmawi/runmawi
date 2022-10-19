@@ -62,6 +62,8 @@ use App\Artist;
 use App\Helpers\LogActivity;
 use App\AdminLandingPage;
 use App\EmailTemplate;
+use App\VideoSchedules as VideoSchedules;
+use App\ScheduleVideos as ScheduleVideos;
 
 class HomeController extends Controller
 {
@@ -431,7 +433,7 @@ class HomeController extends Controller
                 'Kids_Mode' => $Kids_Mode = 2,
                 'ThumbnailSetting' => $ThumbnailSetting,
                 'artist' => Artist::all(),
-
+                'VideoSchedules' => VideoSchedules::where('in_home',1)->get(),
             );
             return Theme::view('home', $data);
         }
@@ -1335,6 +1337,7 @@ class HomeController extends Controller
                         'Mode' => $Mode,
                         'ThumbnailSetting' => $ThumbnailSetting,
                         'artist' => Artist::all(),
+                        'VideoSchedules' => VideoSchedules::where('in_home',1)->get(),
                     );
 
                     return Theme::view('home', $data);
@@ -2220,6 +2223,7 @@ class HomeController extends Controller
                     'ThumbnailSetting' => $ThumbnailSetting,
                     'latest_series' => $latest_series,
                     'artist' => Artist::all(),
+                    'VideoSchedules' => VideoSchedules::where('in_home',1)->get(),
                 );
                
                 return Theme::view('home', $data);

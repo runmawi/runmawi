@@ -34,7 +34,18 @@ $order_settings_list = App\OrderHomeSetting::get();
         </div>
     </section>
 
-
+    
+    <?php if(count($VideoSchedules) > 0){ ?>
+       <section id="iq-favorites">
+            <div class="container-fluid overflow-hidden">
+               <div class="row">
+                  <div class="col-sm-12 ">
+                     <?php include('partials/home/schedule.php'); ?>
+                  </div>
+               </div>
+            </div>
+         </section>
+   <?php } ?>
     <?php 
     
     foreach($order_settings as $key => $value){
