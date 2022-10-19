@@ -1408,7 +1408,6 @@ class AdminSeriesController extends Controller
               $episodes->ppv_price =  $ppv_price;
               $episodes->ppv_status =  $data['ppv_status'];
               $episodes->status =  1;
-              $episodes->episode_order = $episode = Episode::where('season_id',$data['season_id'])->max('episode_order') + 1 ;
               $episodes->save();
 
 
@@ -1698,11 +1697,14 @@ class AdminSeriesController extends Controller
          $episode->image = 'default_image.jpg';
          $episode->type = 'upload';
          $episode->status = 0;
-            $episode->duration = $Video_duration;
+        $episode->duration = $Video_duration;
+        $episode->episode_order = Episode::where('season_id',$season_id)->max('episode_order') + 1 ;
+
          $episode->save(); 
          $episode_id = $episode->id;
         $episode_title = Episode::find($episode_id);
         $title =$episode_title->title; 
+        
         $value['success'] = 1;
         $value['message'] = 'Uploaded Successfully!';
         $value['episode_id'] = $episode_id;
@@ -1748,6 +1750,7 @@ class AdminSeriesController extends Controller
          $video->path = $path;
          $video->mp4_url = $storepath;
         //  $video->user_id = Auth::user()->id;
+        $video->episode_order = Episode::where('season_id',$season_id)->max('episode_order') + 1 ;
         $video->duration = $Video_duration;
          $video->save();
 
