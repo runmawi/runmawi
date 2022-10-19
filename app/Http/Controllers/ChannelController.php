@@ -57,6 +57,7 @@ use App\RelatedVideo;
 use App\LiveCategory;
 use App\SeriesGenre;
 use App\Series;
+use App\VideoSchedules as VideoSchedules;
 
 class ChannelController extends Controller
 {

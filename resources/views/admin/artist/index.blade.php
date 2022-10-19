@@ -41,22 +41,24 @@ border-radius: 0px 4px 4px 0px;
       <div class=" container-fluid p-0">
           <div class="iq-card">
 	<div class="row mt-3">
+
 		<div class="col-md-6">
-            
 			<h4><i class="entypo-newspaper"></i> Manage Artist</h4>
-           
 		</div>
+		
 		@if (Session::has('message'))
-                       <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
-                        @endif
-                        @if(count($errors) > 0)
-                        @foreach( $errors->all() as $message )
-                        <div class="alert alert-danger display-hide" id="successMessage" >
-                        <button id="successMessage" class="close" data-close="alert"></button>
-                        <span>{{ $message }}</span>
-                        </div>
-                        @endforeach
-                        @endif
+            <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
+        @endif
+
+        @if(count($errors) > 0)
+            @foreach( $errors->all() as $message )
+            	<div class="alert alert-danger display-hide" id="successMessage" >
+					<button id="successMessage" class="close" data-close="alert"></button>
+					<span>{{ $message }}</span>
+                </div>
+            @endforeach
+        @endif
+
 		<div class="col-md-3">	
 			<form method="get" role="form" class="search-form-full"> <div class="form-group"> <input type="text" class="form-control" name="s" id="search-input" value="<?= Request::get('s'); ?>" placeholder="Search..."> <i class="entypo-search"></i> </div> </form>
 		</div>
@@ -69,25 +71,26 @@ border-radius: 0px 4px 4px 0px;
 <div class="clear"></div>
 
 
-<table class="table  artists-table iq-card text-center p-0">
-	<tr class="r1">
-		<th><label>S.No</label></th>
-		<th><label>Image</label></th>
-		<th><label>Artist Name</label></th>
-		<th><label>Operation</label></th>
-		@foreach($artists as $key=>$artist)
-		<tr>
-			<td>{{$artist->id}}</td>
-			<td><img src="{{ URL::to('/public/uploads/artists/') . '/'.$artist->image }}" width="100"></td>
-			<td valign="bottom"><p>{{ $artist->artist_name }}</p></td>
-			<td>
-				<p class=" align-items-center list-user-action">
-					<a href="{{ URL::to('admin/artists/edit') . '/' . $artist->id }}" class="iq-bg-warning"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"> </a>
-					<a href="{{ URL::to('admin/artists/delete') . '/' . $artist->id }}" onclick="return confirm('Are you sure?')" class="iq-bg-danger"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
-				</p>
-			</td>
-		</tr>
-		@endforeach
+	<table class="table  artists-table iq-card text-center p-0">
+			<tr class="r1">
+				<th><label> S.No </label></th>
+				<th><label> Image </label></th>
+				<th><label> Artist Name </label></th>
+				<th><label> Operation </label></th>
+				
+				@foreach($artists as $key=>$artist)
+				<tr>
+					<td>{{ $key+1 }}</td>
+					<td><img src="{{ URL::to('/public/uploads/artists/') . '/'.$artist->image }}" width="100"></td>
+					<td valign="bottom"><p> {{ $artist->artist_name }} </p></td>
+					<td>
+						<p class=" align-items-center list-user-action">
+							<a href="{{ URL::to('admin/artists/edit') . '/' . $artist->id }}" class="iq-bg-warning"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"> </a>
+							<a href="{{ URL::to('admin/artists/delete') . '/' . $artist->id }}" onclick="return confirm('Are you sure?')" class="iq-bg-danger"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
+						</p>
+					</td>
+				</tr>
+			@endforeach
 	</table>
 </div>
 	<div class="clear"></div></div>

@@ -15,7 +15,7 @@ class Audio extends Model
 
 	public static $rules = array();
 
-	protected $fillable = array('user_id','audio_category_id', 'title', 'status', 'slug', 'album_id', 'ppv_status', 'subtitle', 'type', 'access', 'details', 'description', 'active', 'featured', 'duration', 'image','mobile_image', 'mp3_url','year', 'created_at', 'updated_at','ios_ppv_price','ppv_price');
+	protected $fillable = array('user_id','audio_category_id', 'title', 'status', 'slug', 'album_id', 'ppv_status', 'subtitle', 'type', 'access', 'details', 'description', 'active', 'featured', 'duration', 'image','mobile_image', 'mp3_url','year', 'created_at', 'updated_at','ios_ppv_price','ppv_price','player_image');
 
     public function categories(){
 		return $this->belongsTo('App\AudioCategory','audio_category_id','id');

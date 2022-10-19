@@ -117,37 +117,58 @@ class AdminVideoCategoriesController extends Controller
                    unlink($file_old);
                   }
               }
-              //upload new file
+
               $file = $image;
-            //   $input['image']  = $file->getClientOriginalName();
-            $input['image'] = str_replace(' ', '_', $file->getClientOriginalName());
 
-              $file->move($path, $input['image']);
+              if(compress_image_enable() == 1){
 
-          } else {
+                $video_category_filename  = time().'.'.compress_image_format();
+                $video_category_image     =  'video_category_'.$video_category_filename ;
+                Image::make($file)->save(base_path().'/public/uploads/videocategory/'.$video_category_image,compress_image_resolution() );
+  
+              }else{
+  
+                $video_category_filename  = time().'.'.compress_image_format();
+                $video_category_image     =  'video_category_'.$video_category_filename ;
+                Image::make($file)->save(base_path().'/public/uploads/videocategory/'.$video_category_image );
+              }  
+                   
+              $input['image'] = $video_category_image ;
+  
+            } else {
                $input['image']  = 'default.jpg';
            }
+
            $banner_image = $request['banner_image']; 
           
            if($banner_image != '') {   
-            //code for remove old file
                 if($banner_image != ''  && $banner_image != null){
                      $file_old = $path.$banner_image;
                     if (file_exists($file_old)){
                      unlink($file_old);
                     }
                 }
-                //upload new file
-                $file = $banner_image;
-                // $input['banner_image']  = $file->getClientOriginalName();
-            $input['banner_image'] = str_replace(' ', '_', $file->getClientOriginalName());
 
-                $file->move($path, $input['banner_image']);
-  
+                $file = $banner_image;
+
+                if(compress_image_enable() == 1){
+
+                  $video_category_banner_filename  = time().'.'.compress_image_format();
+                  $video_category_banner_image     =  'video_category_banner_'.$video_category_banner_filename ;
+                  Image::make($file)->save(base_path().'/public/uploads/videocategory/'.$video_category_banner_image,compress_image_resolution() );
+    
+                }else{
+    
+                  $video_category_banner_filename  = time().'.'.compress_image_format();
+                  $video_category_banner_image     =  'video_category_banner_'.$video_category_banner_filename ;
+                  Image::make($file)->save(base_path().'/public/uploads/videocategory/'.$video_category_banner_image );
+                } 
+    
+                $input['banner_image']  = $video_category_banner_image ;
+              
             } else {
                  $input['banner_image']  = 'default.jpg';
              }
-            
 
             VideoCategory::create($input);
             return back()->with('message', 'New Category added successfully.');
@@ -165,6 +186,7 @@ class AdminVideoCategoriesController extends Controller
      public function update(Request $request){
            
         $input = $request->all();
+
         $path = public_path().'/uploads/videocategory/';
            
         $id = $request['id'];
@@ -173,63 +195,81 @@ class AdminVideoCategoriesController extends Controller
         $home_genre = $request['home_genre']; 
         $in_menu = $request['in_menu']; 
         $category = VideoCategory::find($id);
-         
-             if (isset($request['image']) && !empty($request['image'])){
-                    $image = $request['image']; 
-                 } else {
-                     $request['image'] = $category->image;
-              }
 
+        $slug = $request['slug']; 
 
-              if (isset($request['banner_image']) && !empty($request['banner_image'])){
-                $banner_image = $request['banner_image']; 
-             } else {
-                 $request['banner_image'] = $category->banner_image;
-          }
+        if ( $in_home != '') {
+           $input['in_home']  = $request['in_home'];
+        } else {
+           $input['in_home']  = $request['in_home'];
+        }
 
-              $slug = $request['slug']; 
-              if ( $in_home != '') {
-                  $input['in_home']  = $request['in_home'];
-              } else {
-                   $input['in_home']  = $request['in_home'];
-              }
+        if ( $footer != '') {
+            $input['footer']  = $request['footer'];
+        } else {
+            $input['footer']  = $request['footer'];
+        }
 
-              if ( $footer != '') {
-                $input['footer']  = $request['footer'];
-            } else {
-                 $input['footer']  = $request['footer'];
-            }
+          $image = $request->image;
 
-            if( isset($image) && $image!= '') {   
-            //code for remove old file
-            if ($image != ''  && $image != null) {
+          if( isset($image) && $image!= '' && !empty($request['image'])) {   
+            
+            if ($image != ''  && $image != null) {   //code for remove old file
                 $file_old = $path.$image;
                 if (file_exists($file_old)){
-                       unlink($file_old);
+                  unlink($file_old);
                 }
             }
-                  //upload new file
-                  $file = $image;
-                //   $category->image  = $file->getClientOriginalName();
-                $category->image = str_replace(' ', '_', $file->getClientOriginalName());
 
-                  $file->move($path,$category->image);
+            $file = $image;
 
-              } 
-              if( isset($banner_image) && $banner_image!= '') {   
-                //code for remove old file
-                if ($banner_image != ''  && $banner_image != null) {
-                    $file_old = $path.$banner_image;
-                    if (file_exists($file_old)){
-                           unlink($file_old);
-                    }
+            if(compress_image_enable() == 1){
+
+              $video_category_filename  = time().'.'.compress_image_format();
+              $video_category_image     =  'video_category_'.$video_category_filename ;
+              Image::make($file)->save(base_path().'/public/uploads/videocategory/'.$video_category_image,compress_image_resolution() );
+
+            }else{
+
+              $video_category_filename  = time().'.'.compress_image_format();
+              $video_category_image     =  'video_category_'.$video_category_filename ;
+              Image::make($file)->save(base_path().'/public/uploads/videocategory/'.$video_category_image );
+            }  
+                 
+            $category->image = $video_category_image ;
+
+          }
+
+          // Banner Image
+
+          $banner_image = ( $request->banner_image );
+
+          if( isset($banner_image) && $banner_image!= '' && !empty($request['banner_image'])) {   
+            if ($banner_image != ''  && $banner_image != null) {
+                $file_old = $path.$banner_image;
+
+                if (file_exists($file_old)){
+                  unlink($file_old);
                 }
-                      //upload new file
-                      $file = $banner_image;
-                      $category->banner_image  = $file->getClientOriginalName();
-                      $file->move($path,$category->banner_image);
-    
-                  } 
+            }
+                      
+            if(compress_image_enable() == 1){
+
+              $video_category_banner_filename  = time().'.'.compress_image_format();
+              $video_category_banner_image     =  'video_category_banner_'.$video_category_banner_filename ;
+              Image::make($banner_image)->save(base_path().'/public/uploads/videocategory/'.$video_category_banner_image,compress_image_resolution() );
+
+            }else{
+
+              $video_category_banner_filename  = time().'.'.compress_image_format();
+              $video_category_banner_image     =  'video_category_banner_'.$video_category_banner_filename ;
+              Image::make($banner_image)->save(base_path().'/public/uploads/videocategory/'.$video_category_banner_image );
+            } 
+
+            $category->banner_image = $video_category_banner_image;
+          } 
+          
+
             $category->name = $request['name'];
             $category->slug = $request['slug'];
             $category->home_genre  = $request['home_genre']; 

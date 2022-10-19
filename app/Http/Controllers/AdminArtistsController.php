@@ -169,10 +169,23 @@ class AdminArtistsController extends Controller
                                 unlink($file_old);
                             }
                         }
+
                         //upload new file
                         $file = $image;
-                        $data['image'] = str_replace(' ', '_', $file->getClientOriginalName());
-                        $file->move($image_path, $data['image']);
+
+                        if(compress_image_enable() == 1){
+    
+                            $artist_filename  = time().'.'.compress_image_format();
+                            $artist_image     =  'Artist_'.$artist_filename ;
+                            Image::make($file)->save(base_path().'/public/uploads/artists/'.$artist_image,compress_image_resolution() );
+                        }else{
+        
+                            $artist_filename  = time().'.'.$artist_image->getClientOriginalExtension();
+                            $artist_image     =  'Artist_'.$artist_filename ;
+                            Image::make($file)->save(base_path().'/public/uploads/artists/'.$artist_image );
+                        }  
+
+                        $data['image'] = $artist_image ;
 
             } else {
                 $data['image']  = 'default.jpg';
@@ -299,8 +312,20 @@ class AdminArtistsController extends Controller
                         }
                     }
                     $file = $image;
-                    $data['image'] = str_replace(' ', '_', $file->getClientOriginalName());
-                    $file->move($image_path, $data['image']);
+
+                    if(compress_image_enable() == 1){
+    
+                        $artist_filename  = time().'.'.compress_image_format();
+                        $artist_image     =  'Artist_'.$artist_filename ;
+                        Image::make($file)->save(base_path().'/public/uploads/artists/'.$artist_image,compress_image_resolution() );
+                    }else{
+    
+                        $artist_filename  = time().'.'.$artist_image->getClientOriginalExtension();
+                        $artist_image     =  'Artist_'.$artist_filename ;
+                        Image::make($file)->save(base_path().'/public/uploads/artists/'.$artist_image );
+                    }  
+
+                    $data['image'] = $artist_image ;
                 }
 
             if($data['artist_slug'] == null ){

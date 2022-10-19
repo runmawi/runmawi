@@ -44,11 +44,26 @@
 				</div>
 				
 				<div class="modal-body">
-					<form id="new-menu-form" accept-charset="UTF-8" action="{{ URL::to('admin/video-schedule/store') }}" method="post">
+					<form id="new-menu-form" accept-charset="UTF-8" enctype="multipart/form-data" action="{{ URL::to('admin/video-schedule/store') }}" method="post">
 				        <label for="name">Name *</label>
 				        <input name="name" id="name" placeholder="Schedule Name" class="form-control" value="" /><br />
 				        <label for="description">Description *</label>
 				        <input name="description" id="description" placeholder="Description" class="form-control" value="" /><br />
+						<div style="margin-left: -5%;">
+							<div class="mt-1 d-flex align-items-center justify-content-around">
+								<div><label class="mt-1"> Display on Home page </label></div>
+									<div class="mr-2">OFF</div>
+										<label class="switch mt-2">
+										<input name="in_home" type="checkbox" >
+										<span class="slider round"></span>
+										</label>
+									<div class="ml-2">ON</div>
+							</div>
+						</div><br>
+						<label class="m-0">Home Thumbnail: <small>(9:16 Ratio or 1080X1920px)</small></label>
+						<input type="file" class="form-group" name="image"  id="image"  >
+						<label class="m-0">Player Thumbnail: <small>(16:9 Ratio or 1280X720px)</small></label>
+						<input type="file" class="form-group" name="player_image"  id="player_image"  >
 				        <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 				    </form>
 				</div>
