@@ -3996,9 +3996,58 @@ class AdminVideosController extends Controller
     {
         $data = $request->all();
 
+
+        $image = isset($data["image"]) ? $data["image"] : "";
+        $player_image = isset($data["player_image"]) ? $data["player_image"] : "";
+
+        $path = public_path() . "/uploads/videos/";
+        $image_path = public_path() . "/uploads/images/";
+        $image_url = URL::to('public/uploads/images');
+
+        if ($image != "") {
+            //code for remove old file
+            if ($image != "" && $image != null) {
+                $file_old = $image_path . $image;
+                if (file_exists($file_old)) {
+                    unlink($file_old);
+                }
+            }
+            //upload new file
+            $file = $image;
+            $image = $image_url.'/'.str_replace(" ","_",$file->getClientOriginalName());
+
+            $file->move($image_path, $data["image"]);
+        } else {
+            $image = "default.jpg";
+        }
+
+        if ($player_image != "") {
+            //code for remove old file
+            if ($player_image != "" && $player_image != null) {
+                $file_old = $image_path . $player_image;
+                if (file_exists($file_old)) {
+                    unlink($file_old);
+                }
+            }
+            //upload new file
+            $file = $player_image;
+            $player_image = $image_url.'/'.str_replace(" ","_",$file->getClientOriginalName());
+
+            $file->move($image_path, $player_image);
+        } else {
+            $player_image = "default.jpg";
+        }
+        if(!empty($data['in_home'])){
+            $in_home = 1;
+        }else{
+            $in_home = 0;
+        }
         $Schedules = new VideoSchedules();
         $Schedules->name = $request["name"];
         $Schedules->description = $request["description"];
+        $Schedules->image = $image;
+        $Schedules->player_image = $player_image;
+        $Schedules->in_home = $in_home;
         $Schedules->user_id = Auth::user()->id;
         $Schedules->save();
 
@@ -4036,10 +4085,62 @@ class AdminVideosController extends Controller
     {
         $input = $request->all();
         $id = $request["id"];
-
         $Schedules = VideoSchedules::find($id);
+        if(!empty($input['in_home'])){
+            $in_home = 1;
+        }else{
+            $in_home = 0;
+        }
+        // dd();
+
+        $image = isset($input["image"]) ? $input["image"] : "";
+        $player_image = isset($input["player_image"]) ? $input["player_image"] : "";
+
+        $path = public_path() . "/uploads/videos/";
+        $image_path = public_path() . "/uploads/images/";
+        $image_url = URL::to('public/uploads/images');
+
+        if ($image != "") {
+            //code for remove old file
+            if ($image != "" && $image != null) {
+                $file_old = $image_path . $image;
+                if (file_exists($file_old)) {
+                    unlink($file_old);
+                }
+            }
+            //upload new file
+            $file = $image;
+            $image = $image_url.'/'.str_replace(" ","_",$file->getClientOriginalName());
+
+            $file->move($image_path, $image);
+
+        // dd( $image);
+
+        } else {
+            $image = $Schedules->image;
+        }
+        if ($player_image != "") {
+            //code for remove old file
+            if ($player_image != "" && $player_image != null) {
+                $file_old = $image_path . $player_image;
+                if (file_exists($file_old)) {
+                    unlink($file_old);
+                }
+            }
+            //upload new file
+            $file = $player_image;
+            $player_image = $image_url.'/'.str_replace(" ","_",$file->getClientOriginalName());
+
+            $file->move($image_path, $player_image);
+        } else {
+            $player_image = $Schedules->player_image;
+        }
+
         $Schedules->name = $request["name"];
         $Schedules->description = $request["description"];
+        $Schedules->image = $image;
+        $Schedules->player_image = $player_image;
+        $Schedules->in_home = $in_home;
         $Schedules->user_id = Auth::user()->id;
         $Schedules->save();
 
