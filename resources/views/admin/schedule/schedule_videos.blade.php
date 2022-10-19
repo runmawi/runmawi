@@ -94,8 +94,19 @@ $media_url = URL::to("/schedule/videos") . "/" . $schedule->name;
                     </div>
                     
                 </div>
+                
+                <div class="row mt-4 container-fluid">
+                    <!-- Reschudel for One day  -->
 
-
+                    <div class="col-5">
+                        <button id="reschedule_oneday" class="btn btn-info" value="reschedule_oneday">Re-Schedule To Tomorrow</button>
+                    </div>
+                    <!-- Reschudel for week -->
+                    <!-- <div class="col-5">
+                        <button id="reschedule_week" class="btn btn-secondary" value="reschedule_week">Re-Schedule for thisWeek</button>
+                    </div> -->
+                    
+                </div>
                 <div class="row mt-3 container-fluid">
                     <div class="col-md-5">
                     <!-- Video upload -->   
@@ -301,6 +312,61 @@ $media_url = URL::to("/schedule/videos") . "/" . $schedule->name;
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
     <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 
+    <script>
+        
+    $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+    });
+            $('#reschedule_oneday').click(function(){
+                // alert();
+                let oneday = $('#reschedule_oneday').val();
+                var month = '{{ $Calendar['month'] }}';
+                var year = '{{ $Calendar['year'] }}';
+                var date = '{{ $Calendar['date'] }}';
+                var schedule_id = '{{ $Calendar['schedule_id'] }}';
+                var url = "{{ URL::to('admin/reschedule_oneday/')  }}";
+                
+                    $.ajax({
+                    url: url,
+                    type: "post",
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                                oneday: 'one',
+                                month: month,
+                                year: year,
+                                date: date,
+                                schedule_id: schedule_id,
+                        },        
+                        success: function(value){
+                        console.log(value.message);
+                        if(value.message == 'Added Successfully'){
+                            $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Videos Reschedule Successfully</div>');
+                                setTimeout(function() {
+                                $('.add_watch').slideUp('fast');
+                                }, 3000);
+                        }else if(value.message == 'No Video'){
+                            $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">No Video Available to Reschedule</div>');
+                                setTimeout(function() {
+                                $('.add_watch').slideUp('fast');
+                                }, 3000);
+                        }else if(value.message == 'Already Added'){
+                            $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Alreay Video is Reschedule</div>');
+                                setTimeout(function() {
+                                $('.add_watch').slideUp('fast');
+                                }, 3000);
+                        }
+                    }
+                });
+            });
+
+            $('#reschedule_week').click(function(){
+                
+
+            });
+        // 
+    </script>
 <script>
 
 initDragAndDrop();
