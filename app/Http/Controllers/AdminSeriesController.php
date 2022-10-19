@@ -182,14 +182,15 @@ class AdminSeriesController extends Controller
     public function store(Request $request)
     {
 
-          $validatedData = $request->validate([
-                'title' => ['required', 'string'],
-            ]);
+        $validatedData = $request->validate([
+            'title' => ['required', 'string'],
+        ]);
 
         
          /*Slug*/
         $data = $request->all();
-       if(!empty($data['artists'])){
+
+        if(!empty($data['artists'])){
             $artistsdata = $data['artists'];
             unset($data['artists']);
         }
@@ -203,55 +204,76 @@ class AdminSeriesController extends Controller
             $languagedata = $data['language'];
             unset($data['language']);
         }
-                 $path = public_path().'/uploads/videos/';
-                 $image_path = public_path().'/uploads/images/';
+
+        $path = public_path().'/uploads/videos/';
+        $image_path = public_path().'/uploads/images/';
         
+        // Series Image 
+
             $image = (isset($data['image'])) ? $data['image'] : '';
+
             if(!empty($image)){
-                //$data['image'] = ImageHandler::uploadImage($data['image'], 'images');
+
                 if($image != ''  && $image != null){
                        $file_old = $image_path.$image;
                       if (file_exists($file_old)){
                        unlink($file_old);
                       }
                   }
-                  //upload new file
-                  $file = $image;
-                //   $data['image']  = $file->getClientOriginalName();
-                  $data['image'] =  str_replace(' ', '_', $file->getClientOriginalName());
 
-                  $file->move($image_path, $data['image']);
+                $file = $image;
+
+                if(compress_image_enable() == 1){
+    
+                    $series_filename  = time().'.'.compress_image_format();
+                    $series_image     =  'series_'.$series_filename ;
+                    Image::make($file)->save(base_path().'/public/uploads/images/'.$series_image,compress_image_resolution() );
+                }else{
+    
+                    $series_filename  = time().'.'.$image->getClientOriginalExtension();
+                    $series_image     =  'series_'.$series_filename ;
+                    Image::make($file)->save(base_path().'/public/uploads/images/'.$series_image );
+                }  
+
+                $data['image'] = $series_image;
 
             } else {
                 $data['image'] = 'placeholder.jpg';
             }
         
+            // Series Player Image  
+
             $player_image = (isset($data['player_image'])) ? $data['player_image'] : '';
 
             if(!empty($player_image) && $data['player_image'] != 'validate'){
-                //$data['image'] = ImageHandler::uploadImage($data['image'], 'images');
+
                 if($player_image != ''  && $player_image != null){
                        $file_old = $image_path.$player_image;
                       if (file_exists($file_old)){
                        unlink($file_old);
                       }
                   }
-                  //upload new file
                   $player_image = $player_image;
-                 //  $data['player_image']  = $player_image->getClientOriginalName();
-                 $data['player_image'] =  str_replace(' ', '_', $player_image->getClientOriginalName());
 
-                  $player_image->move($image_path, $data['player_image']);
-                 //  $player_image =  $player_image->getClientOriginalName();
-            $player_image = str_replace(' ', '_', $player_image->getClientOriginalName());
+                if(compress_image_enable() == 1){
+    
+                    $series_playerimage_filename  = time().'.'.compress_image_format();
+                    $series_playerimage_image     =  'series_playerimage_'.$series_playerimage_filename ;
+                    Image::make($player_image)->save(base_path().'/public/uploads/images/'.$series_playerimage_image,compress_image_resolution() );
+                }else{
+    
+                    $series_playerimage_filename  = time().'.'.$player_image->getClientOriginalExtension();
+                    $series_playerimage_image     =  'series_playerimage_'.$series_playerimage_filename ;
+                    Image::make($player_image)->save(base_path().'/public/uploads/images/'.$series_playerimage_image );
+                }  
 
-
+                $player_image  =  $series_playerimage_image ; 
 
             } else {
-             $player_image = "default_horizontal_image.jpg";
+
+                $player_image = "default_horizontal_image.jpg";
+
             }
-
-
             
 //          
 //         if($image != '') {   
@@ -457,9 +479,9 @@ class AdminSeriesController extends Controller
         $input = $request->all();
         $id = $input['id'];
         $series = Series::findOrFail($id);
-
        
         $data = $input;
+
         if(isset($data['duration'])){
                 //$str_time = $data
                 $str_time = preg_replace("/^([\d]{1,2})\:([\d]{2})$/", "00:$1:$2", $data['duration']);
@@ -480,56 +502,70 @@ class AdminSeriesController extends Controller
             $data['slug'] = $slug == null ?  str_replace(' ', '_', $data['slug']) : str_replace(' ', '_', $data['slug'].'-'.$id) ;
         }
 
-         $path = public_path().'/uploads/videos/';
-         $image_path = public_path().'/uploads/images/';
+        $path = public_path().'/uploads/videos/';
+        $image_path = public_path().'/uploads/images/';
         
-            $image = (isset($data['image'])) ? $data['image'] : '';
+        $image = (isset($data['image'])) ? $data['image'] : '';
+
             if(!empty($image)){
-                //$data['image'] = ImageHandler::uploadImage($data['image'], 'images');
                 if($image != ''  && $image != null){
                        $file_old = $image_path.$image;
                       if (file_exists($file_old)){
                        unlink($file_old);
                       }
-                  }
-                  //upload new file
-                  $file = $image;
-                //   $data['image']  = $file->getClientOriginalName();
-                  $data['image'] =  str_replace(' ', '_', $file->getClientOriginalName());
+                }
 
-                  $file->move($image_path, $data['image']);
+                $file = $image;
+
+                if(compress_image_enable() == 1){
+    
+                    $series_filename  = time().'.'.compress_image_format();
+                    $series_image     =  'series_'.$series_filename ;
+                    Image::make($file)->save(base_path().'/public/uploads/images/'.$series_image,compress_image_resolution() );
+                }else{
+    
+                    $series_filename  = time().'.'.$image->getClientOriginalExtension();
+                    $series_image     =  'series_'.$series_filename ;
+                    Image::make($file)->save(base_path().'/public/uploads/images/'.$series_image );
+                }  
+
+                $data['image'] =  $series_image;
 
             } else {
                 $data['image'] = $series->image;
             }
 
-            $path = public_path().'/uploads/videos/';
-            $image_path = public_path().'/uploads/images/';
-               $player_image = (isset($data['player_image'])) ? $data['player_image'] : '';
+        $player_image = (isset($data['player_image'])) ? $data['player_image'] : '';
 
-               if(!empty($player_image) && $data['player_image'] != 'validate'){
-                   //$data['image'] = ImageHandler::uploadImage($data['image'], 'images');
-                   if($player_image != ''  && $player_image != null){
-                          $file_old = $image_path.$player_image;
-                         if (file_exists($file_old)){
-                          unlink($file_old);
-                         }
-                     }
-                     //upload new file
-                     $player_image = $player_image;
-                    //  $data['player_image']  = $player_image->getClientOriginalName();
-                    $data['player_image'] =  str_replace(' ', '_', $player_image->getClientOriginalName());
+            if(!empty($player_image) && $data['player_image'] != 'validate'){
 
-                     $player_image->move($image_path, $data['player_image']);
-                    //  $player_image =  $player_image->getClientOriginalName();
-               $player_image = str_replace(' ', '_', $player_image->getClientOriginalName());
+                if($player_image != ''  && $player_image != null){
+                    $file_old = $image_path.$player_image;
+                    if (file_exists($file_old)){
+                        unlink($file_old);
+                    }
+                }
 
+                if(compress_image_enable() == 1){
+    
+                    $series_playerimage_filename  = time().'.'.compress_image_format();
+                    $series_playerimage_image     =  'series_playerimage_'.$series_playerimage_filename ;
+                    Image::make($player_image)->save(base_path().'/public/uploads/images/'.$series_playerimage_image,compress_image_resolution() );
+                }else{
+    
+                    $series_playerimage_filename  = time().'.'.$player_image->getClientOriginalExtension();
+                    $series_playerimage_image     =  'series_playerimage_'.$series_playerimage_filename ;
+                    Image::make($player_image)->save(base_path().'/public/uploads/images/'.$series_playerimage_image );
+                }  
 
-   
+                $player_image = $series_playerimage_image;
+
                } else {
                 $player_image = $series->player_image;
                }
+
             //    dd($player_image);
+
         if(empty($data['active'])){
             $data['active'] = 0;
         }
@@ -788,7 +824,6 @@ class AdminSeriesController extends Controller
         $image = (isset($data['image'])) ? $data['image'] : '';
         
 
-
         $settings = Setting::first();
 
         $package = User::where('id',1)->first();
@@ -827,7 +862,6 @@ class AdminSeriesController extends Controller
                     }
                     
                 }
-                // dd($convertresolution);
 
                             $trailer = $data['trailer'];
                             $trailer_path  = URL::to('public/uploads/season_trailer/');
@@ -882,26 +916,32 @@ class AdminSeriesController extends Controller
         }
 
     }
-    $image_path = public_path().'/uploads/season_images/';
-    $path = public_path().'/uploads/season_videos/';
+
+        $image_path = public_path().'/uploads/season_images/';
+        $path = public_path().'/uploads/season_videos/';
 
         if($image != '') {   
-            //code for remove old file
-            if($image != ''  && $image != null){
-                // $file_old = $image_path.$image;
-                // if (file_exists($file_old)){
-                // unlink($file_old);
-                // }
-            }
-            //upload new file
+           
             $file = $image;
-            // $data['image']  = URL::to('/').'/public/uploads/season_images/'.$file->getClientOriginalName();
-            $data['image'] =  URL::to('/').'/public/uploads/season_images/'.str_replace(' ', '_', $file->getClientOriginalName());
 
-            $file->move($image_path, $data['image']);
+            if(compress_image_enable() == 1){
+    
+                $season_filename  = time().'.'.compress_image_format();
+                $season_image     =  'season_'.$season_filename ;
+                Image::make($file)->save(base_path().'/public/uploads/season_images/'.$season_image,compress_image_resolution() );
+            }else{
+
+                $season_filename  = time().'.'.$image->getClientOriginalExtension();
+                $season_image     =  'season_'.$season_filename ;
+                Image::make($file)->save(base_path().'/public/uploads/season_images/'.$season_image );
+            }  
+
+            $data['image'] =  URL::to('/').'/public/uploads/season_images'.'/'.$season_image;
 
         } else {
-            $data['image']  = 'default.jpg';
+
+            $data['image']  =  URL::to('/').'/public/uploads/images/default.jpg';
+
         } 
 
         if(!empty($data['ppv_access'])){
@@ -977,10 +1017,10 @@ class AdminSeriesController extends Controller
         $path = public_path().'/uploads/season_videos/';
         $settings = Setting::first();
 
-$package = User::where('id',1)->first();
-$pack = $package->package;
+        $package = User::where('id',1)->first();
+        $pack = $package->package;
 
-if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1) {
+    if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1) {
             
     $settings = Setting::first();
     if($settings->transcoding_resolution != null){
@@ -1013,7 +1053,6 @@ if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1
             }
             
         }
-        // dd($convertresolution);
 
                     $trailer = $data['trailer'];
                     $trailer_path  = URL::to('public/uploads/season_trailer/');
@@ -1051,19 +1090,29 @@ if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1
     }
 
         if($image != '') {   
-            //code for remove old file
-            if($image != ''  && $image != null){
-                $file_old = $image_path.$image;
-                if (file_exists($file_old)){
+            
+            if($image != ''  && $image != null){   
+                $file_old = $image_path.$image;    //code for remove old file
+                if (file_exists($file_old)){  
                 unlink($file_old);
                 }
             }
-            //upload new file
-            $file = $image;
-            // $data['image']  = URL::to('/').'/public/uploads/season_images/'.$file->getClientOriginalName();
-            $data['image'] =  URL::to('/').'/public/uploads/season_images/'.str_replace(' ', '_', $file->getClientOriginalName());
 
-            $file->move($image_path, $data['image']);
+            $file = $image;
+
+            if(compress_image_enable() == 1){
+    
+                $season_filename  = time().'.'.compress_image_format();
+                $season_image     =  'season_'.$season_filename ;
+                Image::make($file)->save(base_path().'/public/uploads/season_images/'.$season_image,compress_image_resolution() );
+            }else{
+
+                $season_filename  = time().'.'.$image->getClientOriginalExtension();
+                $season_image     =  'season_'.$season_filename ;
+                Image::make($file)->save(base_path().'/public/uploads/season_images/'.$season_image );
+            }  
+
+            $data['image'] =  URL::to('/').'/public/uploads/season_images'.'/'.$season_image;
 
         } else {
             $data['image']  = $series_season->image;
@@ -1152,9 +1201,7 @@ if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1
             $ppv_price = $settings->ppv_price;
         }else{
             $ppv_price = null;
-
         }
-        // dd($data);
 
         $id = $data['episode_id'];
         $episodes = Episode::findOrFail($id);
@@ -1169,24 +1216,42 @@ if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1
         $image_path = public_path().'/uploads/images/';
         
         $image = (isset($data['image'])) ? $data['image'] : '';
-        if(!empty($image)){
-               if($image != ''  && $image != null){
-                   $file_old = $image_path.$image;
-                  if (file_exists($file_old)){
-                   unlink($file_old);
-                  }
-              }
-              //upload new file
-              $file = $image;
-            //   $data['image']  = $file->getClientOriginalName();
-            $data['image'] = str_replace(' ', '_', $file->getClientOriginalName());
-              $file->move($image_path, $data['image']);
+
+        $file = $image;
+
+            if(!empty($image)){
+
+                 if($image != ''  && $image != null){
+                    $file_old = $image_path.$image;
+
+                    if (file_exists($file_old)){
+                    unlink($file_old);
+                    }
+                }
+
+                if(compress_image_enable() == 1){
+            
+                    $episode_filename  = time().'.'.compress_image_format();
+                    $episode_image     =  'episode_'.$episode_filename ;
+                    Image::make($file)->save(base_path().'/public/uploads/images/'.$episode_image,compress_image_resolution() );
+                }else{
+
+                    $episode_filename  = time().'.'.$image->getClientOriginalExtension();
+                    $episode_image     =  'episode_'.$episode_filename ;
+                    Image::make($file)->save(base_path().'/public/uploads/images/'.$episode_image );
+                }  
+
+            $data['image'] = $episode_image ;
+
         } else {
+
             $data['image'] = 'placeholder.jpg';
         }
 
         
         $player_image = (isset($data['player_image'])) ? $data['player_image'] : '';
+
+        $player_image = $player_image;
 
         if($request->hasFile('player_image')){
 
@@ -1197,18 +1262,24 @@ if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1
                }
            }
 
-           //upload new file
-           $player_image = $player_image;
-           $data['player_image']  = str_replace(' ', '_', $player_image->getClientOriginalName());
-           $player_image->move($image_path, $data['player_image']);
-        //    $player_image = $file->getClientOriginalName();
-        $player_image = str_replace(' ', '_', $player_image->getClientOriginalName());
+           if(compress_image_enable() == 1){
+                
+                $episode_player_filename  = time().'.'.compress_image_format();
+                $episode_player_image     =  'episode_player_'.$episode_player_filename ;
+                Image::make($file)->save(base_path().'/public/uploads/images/'.$episode_player_image,compress_image_resolution() );
+            }else{
 
+                $episode_player_filename  = time().'.'.$image->getClientOriginalExtension();
+                $episode_player_image     =  'episode_player_'.$episode_player_filename ;
+                Image::make($file)->save(base_path().'/public/uploads/images/'.$episode_player_image );
+            }  
+
+           $player_image  = $episode_player_image ;
 
          } else {
-            // $player_image = $episode->player_image;
             $player_image = "default_horizontal_image.jpg";
          }
+
         if(!empty($data['searchtags'])){
             $searchtags = $data['searchtags'];
         }else{
@@ -1374,6 +1445,7 @@ if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1
 
     public function update_episode(Request $request)
     {
+
         $input = $request->all();
         $id = $input['id'];
         $episode = Episode::findOrFail($id);
@@ -1384,23 +1456,18 @@ if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1
         }else{
             $searchtags = $episode->searchtags;
         }
+
         if(empty($input['image']) && !empty($episode->image)){
             $image = $episode->image ;
         }else{
-            // $image = $input['image'] ;
             $image = (isset($input['image'])) ? $input['image'] : '';
-
         }
 
         if(empty($input['player_image']) && !empty($episode->player_image)){
             $player_image = $episode->player_image ;
-        // dd('$player_image');
 
         }else{
-            // $player_image = $input['player_image'] ;
             $player_image = (isset($input['player_image'])) ? $input['player_image'] : '';
-            // dd($player_image);
-
         }
        
         $settings =Setting::first();
@@ -1442,18 +1509,31 @@ if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1
         
         
              if($request->hasFile('image')){
-               if($image != ''  && $image != null){
-                   $file_old = $image_path.$image;
-                  if (file_exists($file_old)){
-                   unlink($file_old);
-                  }
-              }
-              //upload new file
-              $file = $image;
-            //   $data['image']  = $file->getClientOriginalName();
-            $data['image'] = str_replace(' ', '_', $file->getClientOriginalName());
 
-              $file->move($image_path, $data['image']);
+                if($image != ''  && $image != null){
+                    $file_old = $image_path.$image;
+
+                        if (file_exists($file_old)){
+                        unlink($file_old);
+                        }
+                }
+
+                $file = $image;
+
+                if(compress_image_enable() == 1){
+        
+                    $episode_filename  = time().'.'.compress_image_format();
+                    $episode_image     =  'episode_'.$episode_filename ;
+                    Image::make($file)->save(base_path().'/public/uploads/images/'.$episode_image,compress_image_resolution() );
+                }else{
+
+                    $episode_filename  = time().'.'.$image->getClientOriginalExtension();
+                    $episode_image     =  'episode_'.$episode_filename ;
+                    Image::make($file)->save(base_path().'/public/uploads/images/'.$episode_image );
+                }  
+
+                $data['image'] = $episode_image ;
+
             } else {
                 $data['image'] = $episode->image ;
             }
@@ -1468,13 +1548,21 @@ if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1
                    }
                }
 
-               //upload new file
                $player_image = $player_image;
-               $data['player_image']  = str_replace(' ', '_', $player_image->getClientOriginalName());
-               $player_image->move($image_path, $data['player_image']);
-            //    $player_image = $file->getClientOriginalName();
-            $player_image = str_replace(' ', '_', $player_image->getClientOriginalName());
 
+                if(compress_image_enable() == 1){
+            
+                    $episode_player_filename  = time().'.'.compress_image_format();
+                    $episode_player_image     =  'episode_player_'.$episode_player_filename ;
+                    Image::make($player_image)->save(base_path().'/public/uploads/images/'.$episode_player_image,compress_image_resolution() );
+                }else{
+
+                    $episode_player_filename  = time().'.'.$image->getClientOriginalExtension();
+                    $episode_player_image     =  'episode_player_'.$episode_player_filename ;
+                    Image::make($player_image)->save(base_path().'/public/uploads/images/'.$episode_player_image );
+                }  
+
+               $player_image  = $episode_player_image;
 
              } else {
                 $player_image = $episode->player_image;
