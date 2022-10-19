@@ -39,6 +39,10 @@
         p.p-tag1 {
                 background-color: {{ button_bg_color() .'!important' }} ;
         }
+
+        .p-tag{
+            background-color: {{ button_bg_color() .'!important' }} ;
+        }
 .sta{
         color: {{ button_bg_color() .'!important' }} ;
     }

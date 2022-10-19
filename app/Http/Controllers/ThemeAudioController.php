@@ -478,8 +478,12 @@ class ThemeAudioController extends Controller{
 
             $other_albums = AudioAlbums::where('id','!=', $album_id)->get();
 
-            foreach ($album_audios as $key => $album_audio) {
-                $json[] = array('title' => $album_audio->title,'mp3'=>$album_audio->mp3_url);
+            if( count($album_audios) > 0 ){
+                foreach ($album_audios as $key => $album_audio) {
+                    $json[] = array('title' => $album_audio->title,'mp3'=>$album_audio->mp3_url);
+                }
+            }else{
+                $json[] = array('title' => null, 'mp3'   => null);
             }
 
             $data = array(
@@ -488,12 +492,15 @@ class ThemeAudioController extends Controller{
                 'media_url' => URL::to('/').'/album/'.$album_slug,
                 'album_audios' => $album_audios,
                 'other_albums' => $other_albums,
-                'first_album_song' => $album_audios->first(),
+                'first_album_mp3_url' => $album_audios->first() ? $album_audios->first()->mp3_url : null ,
+                'first_album_title' => $album_audios->first() ? $album_audios->first()->title : null ,
             );
+            
             
             return Theme::view('albums', $data);
 
         } catch (\Throwable $th) {
+            return $th->getMessage();
                 return  abort(404);;       
         }
     }
