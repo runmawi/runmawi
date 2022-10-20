@@ -17,7 +17,7 @@ class CompressImageSeeder extends Seeder
 
         $CompressImage = [
 
-            [   'compress_resolution_size' => '90' , 
+            [   'compress_resolution_size' => '50' , 
                 'compress_resolution_format' => 'webp' ,
                 'enable_compress_image' => 1,
                 'videos' => '1' ,
