@@ -134,7 +134,7 @@ $site_page_url = $http_site_url[1];
         <link rel="shortcut icon" href="<?php echo getFavicon();?>" type="image/gif" sizes="16x16">
 
        <input type="hidden" value="<?php echo $settings->google_tracking_id ; ?>" name="tracking_id" id="tracking_id">
-           
+           <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link async rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -143,12 +143,12 @@ $site_page_url = $http_site_url[1];
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/bootstrap.min.css';?>" />
     <!-- Typography CSS -->
-    <link rel="stylesheet" href="<?= typography_link();?>" />
-    <!-- Style -->
-    <link rel="stylesheet" href="<?= style_sheet_link();?>" />
+   <link href="<?php echo URL::to('public/themes/theme4/assets/css/style.css') ?>" rel="stylesheet">
+    
+       <link href="<?php echo URL::to('public/themes/theme4/assets/css/typography.css') ?>" rel="stylesheet">
+       <link href="<?php echo URL::to('public/themes/theme4/assets/css/responsive.css') ?>" rel="stylesheet">
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/variable.css';?>" />
     <!-- Responsive -->
-    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/responsive.css';?>" />
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/slick.css';?>" />
    <!-- <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/plyr_marker.scss';?>" />-->
 
@@ -539,8 +539,8 @@ input:checked + .sliderk:before {
                                     
                                         
                                        <li class="dropdown menu-item">
-                                            <a class="dropdown-toggle" id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
-                                              <?php echo __($menu->name);?> <i class="fa fa-angle-down"></i>
+                                            <a class="dropdown-toggle d-flex justify-content-between align-items-center" id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                                              <img class="mr-1"  src="<?php echo  URL::to('/assets/img/cv.png')?>" ><?php echo __($menu->name);?> <i class="fa fa-angle-down"></i>
                                             </a>
                                            
                                             <ul class="dropdown-menu categ-head">
@@ -559,7 +559,8 @@ input:checked + .sliderk:before {
                                              $cat = App\VideoCategory::all();
                                            ?>
                                              <li class="dropdown menu-item">
-                                             <a class="dropdown-toggle" id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                                             <a class="dropdown-toggle d-flex justify-content-between align-items-center" id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown"> 
+                                                  <img class="mr-1"  src="<?php echo  URL::to('/assets/img/mv.png')?>" >
                                                 <?php echo __($menu->name);?> <i class="fa fa-angle-down"></i>
                                              </a>
                                              <ul class="dropdown-menu categ-head">
@@ -577,7 +578,8 @@ input:checked + .sliderk:before {
                                           ?>
 
                                           <li class="dropdown menu-item">
-                                            <a class="dropdown-toggle" id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                                            <a class="dropdown-toggle d-flex justify-content-between align-items-center" id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                                                 <img class="mr-1"  src="<?php echo  URL::to('/assets/img/mv.png')?>" >
                                               <?php echo __($menu->name);?> <i class="fa fa-angle-down"></i>
                                             </a>
                                             <ul class="dropdown-menu categ-head">
@@ -597,7 +599,8 @@ input:checked + .sliderk:before {
                                              $tv_shows_series = App\Series::get();
                                           ?>
                                                 <li class="dropdown menu-item">
-                                                   <a class="" id="" href="<?php echo URL::to('/').$menu->url;?>" >  
+                                                   <a class="d-flex justify-content-between align-items-center" id="" href="<?php echo URL::to('/').$menu->url;?>" >
+                                                       
                                                       <?php echo __($menu->name);?> <i class="fa fa-angle-down"></i>
                                                    </a>
                                                    <?php if(count($tv_shows_series) > 0 ){ ?>
@@ -615,7 +618,8 @@ input:checked + .sliderk:before {
 
                                           <?php } else { ?>
                                           <li class="menu-item">
-                                          <a href="<?php if($menu->select_url == "add_Site_url"){ echo URL::to('/').$menu->url; }elseif($menu->select_url == "add_Custom_url"){ echo $menu->custom_url;  }?>">
+                                          <a class="d-flex justify-content-between align-items-center" href="<?php if($menu->select_url == "add_Site_url"){ echo URL::to('/').$menu->url; }elseif($menu->select_url == "add_Custom_url"){ echo $menu->custom_url;  }?>">
+                                               <img class="mr-1"  src="<?php echo  URL::to('/assets/img/cv.png')?>" >
                                               <?php echo __($menu->name);?>
                                             </a>
                                           </li>

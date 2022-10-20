@@ -122,7 +122,7 @@ Index Of Script
              });
 
 		
-        $('#home-slider').slick({
+        $('').slick({
 			autoplay: true,
 			speed: 900,
 			lazyLoad: 'progressive',
@@ -872,3 +872,32 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 })
 
+
+
+$('#home-slider').slick({
+  centerMode: true,
+    autoplay:false,
+    arrows:false,
+  centerPadding: '80px',
+  slidesToShow: 3,
+  responsive: [
+    {
+      breakpoint: 768,
+      settings: {
+        arrows: false,
+        centerMode: true,
+        centerPadding: '40px',
+        slidesToShow: 3
+      }
+    },
+    {
+      breakpoint: 480,
+      settings: {
+        arrows: false,
+        centerMode: true,
+        centerPadding: '40px',
+        slidesToShow: 1
+      }
+    }
+  ]
+});
