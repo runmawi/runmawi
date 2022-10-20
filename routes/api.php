@@ -350,5 +350,8 @@ Route::group([
 
     Route::post('live_language','ApiAuthController@LanguageLive');
 
+    Route::post('audio_language','ApiAuthController@LanguageAudio');
+
+
 
 });

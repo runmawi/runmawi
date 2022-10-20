@@ -8794,8 +8794,14 @@ $cpanel->end();
           $languagesVideo = Video::Join('languagevideos','languagevideos.video_id','=','videos.id')
           ->where('languagevideos.language_id',$langid)->get();
 
+          if(count($languagesVideo) > 0){
+            $status = 'true';
+          }else{
+            $status = 'false';
+          }
+
           $response = array(
-              'status'=>'true',
+              'status'=>$status,
               'Language_name' => $Language->name,    
               'Language' => $Language,
               'languagesVideo' => $languagesVideo,
@@ -8824,8 +8830,14 @@ $cpanel->end();
           $languagesSeries = Series::Join('series_languages','series_languages.series_id','=','series.id')
           ->where('series_languages.language_id',$langid)->get();
 
+          if(count($languagesSeries) > 0){
+            $status = 'true';
+          }else{
+            $status = 'false';
+          }
+
           $response = array(
-              'status'=>'true',
+              'status'=>$status,
               'Language_name' => $Language->name,    
               'Language' => $Language,
               'languagesSeries' => $languagesSeries,
@@ -8853,9 +8865,50 @@ $cpanel->end();
         if(!empty($Language)){
           $languagesLive = LiveStream::Join('live_languages','live_languages.live_id','=','live_streams.id')
           ->where('live_languages.language_id',$langid)->get();
-
+          if(count($languagesLive) > 0){
+            $status = 'true';
+          }else{
+            $status = 'false';
+          }
           $response = array(
-              'status'=>'true',
+              'status'=> $status,
+              'Language_name' => $Language->name,    
+              'Language' => $Language,
+              'languagesLive' => $languagesLive,
+          );
+        }
+
+      } catch (\Throwable $th) {
+        $response = array(
+          'status'=>'false',
+          'message'=>$th->getMessage(),
+          'nodata' => [],
+        );
+    }
+    return response()->json($response, 200);
+
+    }
+
+
+    
+    public function LanguageAudio(Request $request){
+      
+      $langid = $request->langid;
+      $Language = Language::where('id', $langid)->first();
+      try{
+
+        if(!empty($Language)){
+
+          $LanguagesAudio = Audio::Join('audio_languages','audio_languages.audio_id','=','audios.id')
+          ->where('audio_languages.language_id',$langid)->get();
+
+          if(count($LanguagesAudio) > 0){
+            $status = 'true';
+          }else{
+            $status = 'false';
+          }
+          $response = array(
+              'status'=> $status,
               'Language_name' => $Language->name,    
               'Language' => $Language,
               'languagesLive' => $languagesLive,
