@@ -444,6 +444,7 @@
                                 <th><label>Episode </label></th>
                                 <th><label>Episode Name</label></th>
                                 <th><label>Slider</label></th>
+                                <th><label>Status</label></th>
                                 <th><label>Action</label></th>
                             </tr>
 
@@ -459,6 +460,12 @@
                                             </label>
                                         </div>
                                     </td>
+
+                                    <?php if($episode->active == null){ ?>
+                                    <td > <p class = "bg-warning video_active"><?php echo "Draft"; ?></p></td>
+                                             <?php }elseif($episode->active == 1){ ?>
+                                    <td > <p class = "bg-success video_active"><?php  echo "Approved"; ?></p></td>
+                                             <?php } ?>
                                     <td>
                                         <div class=" align-items-center">
                                             <a href="{{ URL::to('admin/episode/episode_edit') . '/' . $episode->id }}" class="btn btn-xs btn-primary"><span class="fa fa-edit"></span>Edit Video</a>

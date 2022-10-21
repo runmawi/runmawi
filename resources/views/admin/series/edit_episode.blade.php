@@ -309,7 +309,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                             <div class="clear"></div>
                             <div>
                                 <label class="m-0">Is this episode Active:</label>
-                                <input type="checkbox" @if(!empty($episodes->active) && $episodes->active == 1){{ 'checked="checked"' }}@elseif(!isset($episodes->active)){{ 'checked="checked"' }}@endif name="active" value="1"
+                                <input type="checkbox" @if(!empty($episodes->active) && $episodes->active == 1){{ 'checked="checked"' }}@endif name="active" value="1"
                                 id="active" />
                             </div>
                             <div class="clear"></div>
