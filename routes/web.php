@@ -775,6 +775,10 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/schedule/uploadFile', 'AdminVideosController@ScheduleUploadFile');
     Route::get('/IndexScheduledVideos', 'AdminVideosController@IndexScheduledVideos');
     Route::post('/dragdropScheduledVideos', 'AdminVideosController@DragDropScheduledVideos');
+    Route::post('/reschedule_oneday', 'AdminVideosController@ReScheduleOneDay');
+    Route::post('/reschedule_week', 'AdminVideosController@ReScheduleWeek');
+
+
 
     
     Route::get('/video-event', 'AdminVideosController@calendarEvent');

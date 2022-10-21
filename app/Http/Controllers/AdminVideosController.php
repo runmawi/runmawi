@@ -63,6 +63,7 @@ use App\VideoSchedules as VideoSchedules;
 use App\ScheduleVideos as ScheduleVideos;
 use App\TestServerUploadVideo as TestServerUploadVideo;
 use App\Channel as Channel;
+use App\ReSchedule as ReSchedule;
 
 class AdminVideosController extends Controller
 {
@@ -6165,6 +6166,147 @@ class AdminVideosController extends Controller
         }
     }
 
+    public function ReScheduleOneDay(Request $request)
+    {
+        $data = $request->all();
+
+        $schedule_id = $data["schedule_id"];
+        $date = $data["date"];
+        $month = $data["month"];
+        $year = $data["year"];
+
+        $choosed_date = $data["year"] . "-" . $data["month"] . "-" . $data["date"];
+
+        $date = date_create($choosed_date);
+        $date_choose = date_format($date, "Y/m");
+        $date_choosed = $date_choose . "/" . $data["date"];
+    
+        $stop_date = date('Y-m-d', strtotime("+1 day", strtotime($date_choosed)));
+
+        date_default_timezone_set('Asia/Kolkata');
+        $now = date("Y-m-d h:i:s a", time());
+        $current_time = date("h:i A", time());
+        $schedulevideo = ScheduleVideos::where("shedule_date",$date_choosed)->where("schedule_id", $schedule_id)->get();
+        $reschedulevideo = ScheduleVideos::where("shedule_date",$stop_date)->where("schedule_id", $schedule_id)->get();
+  
+
+        if(count($reschedulevideo) > 0){
+            if(count($schedulevideo) == count($reschedulevideo)){
+                $value["success"] = 2;
+                $value["message"] = "Already Added";
+                return $value;
+            }else{
+                $aleady_reschedule =  DB::table('schedule_videos')                 
+                ->where("shedule_date",$stop_date)
+                ->where("schedule_id", $schedule_id)
+                ->where("reschedule", 'one_day')
+                ->get();
+                foreach($aleady_reschedule as $schedule){ 
+                    ScheduleVideos::where("id", $schedule->id)->delete();
+                }
+                foreach($schedulevideo as $schedule){ 
+
+                    $video = new ScheduleVideos();
+
+                    $video->title = $schedule->title;
+                    $video->type = $schedule->type;
+                    $video->active = $schedule->active;
+                    $video->original_name = $schedule->original_name;
+                    $video->disk = $schedule->disk;
+                    $video->mp4_url = $schedule->mp4_url;
+                    $video->path = $schedule->path;
+                    $video->shedule_date = $stop_date;
+                    $video->shedule_time = $schedule->shedule_time;
+                    $video->shedule_endtime = $schedule->shedule_endtime;
+                    $video->sheduled_endtime = $schedule->sheduled_endtime;
+                    $video->current_time = $schedule->current_time;
+                    $video->starttime = $schedule->starttime;
+                    $video->sheduled_starttime = $schedule->sheduled_starttime;
+                    $video->video_order = $schedule->video_order;
+                    $video->schedule_id = $schedule->schedule_id;
+                    $video->duration = $schedule->duration;
+                    $video->choose_start_time = $schedule->choose_start_time;
+                    $video->choose_end_time = $schedule->choose_end_time;
+                    $video->status = $schedule->status;
+                    $video->reschedule = 'one_day';
+                    $video->save();
+                }
+
+                $value["success"] = 1;
+                $value["message"] = "Added Successfully";
+                return $value;
+            }
+        }else{
+
+            if(count($schedulevideo) > 0){
+
+                $ReSchedule = new ReSchedule();
+                $ReSchedule->schedule_id = $schedule_id;
+                $ReSchedule->reschedule_date = $stop_date;
+                $ReSchedule->scheduled_date = $date_choosed;
+                $ReSchedule->scheduled_enddate = $stop_date;
+                $ReSchedule->type = 'one_day';
+                $ReSchedule->save();
+
+                foreach($schedulevideo as $schedule){ 
+
+                    $video = new ScheduleVideos();
+
+                    $video->title = $schedule->title;
+                    $video->type = $schedule->type;
+                    $video->active = $schedule->active;
+                    $video->original_name = $schedule->original_name;
+                    $video->disk = $schedule->disk;
+                    $video->mp4_url = $schedule->mp4_url;
+                    $video->path = $schedule->path;
+                    $video->shedule_date = $stop_date;
+                    $video->shedule_time = $schedule->shedule_time;
+                    $video->shedule_endtime = $schedule->shedule_endtime;
+                    $video->sheduled_endtime = $schedule->sheduled_endtime;
+                    $video->current_time = $schedule->current_time;
+                    $video->starttime = $schedule->starttime;
+                    $video->sheduled_starttime = $schedule->sheduled_starttime;
+                    $video->video_order = $schedule->video_order;
+                    $video->schedule_id = $schedule->schedule_id;
+                    $video->duration = $schedule->duration;
+                    $video->choose_start_time = $schedule->choose_start_time;
+                    $video->choose_end_time = $schedule->choose_end_time;
+                    $video->status = $schedule->status;
+                    $video->reschedule = 'one_day';
+                    $video->save();
+                }
+
+                $value["success"] = 1;
+                $value["message"] = "Added Successfully";
+                return $value;
+            }
+            
+            $value["success"] = 1;
+            $value["message"] = "No Video";
+            return $value;
+
+        }
+
+        
+    }
+
+    public function ReScheduleWeek(Request $request)
+    {
+        $data = $request->all();
+
+        $video_id = $data["video_id"];
+        $videochooed = Video::where("id", $video_id)->first();
+        $date = $data["date"];
+        $month = $data["month"];
+        $year = $data["year"];
+        $schedule_time = $data["schedule_time"];
+
+        date_default_timezone_set('Asia/Kolkata');
+        $now = date("Y-m-d h:i:s a", time());
+        $current_time = date("h:i A", time());
+
+        
+    }
     public function DragDropScheduledVideos(Request $request)
     {
         $data = $request->all();

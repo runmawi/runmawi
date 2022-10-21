@@ -2,8 +2,21 @@
     <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
 </head>
 <style>
+    body{
+        background: linear-gradient(180deg, #040404 0%, #3D3D47 100%);
+    }
     .plyr__progress{ pointer-events: none; }
-
+    #novideo{
+        color: #fff;
+        text-align: center;
+        display: flex;
+        align-content: center;
+        align-self: center;
+        justify-content: center;
+    }
+    #novideo h2{
+        margin-top: 20%;
+    }
 </style>
 @if(!empty($ScheduleVideos) && !empty($new_date)  && empty($Choose_current_date))
     @if($ScheduleVideos->type == 'mp4_url')
