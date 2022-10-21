@@ -26,9 +26,11 @@ $uppercase =  ucfirst($request_url);
      <!-- Bootstrap CSS -->
       <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
       <!-- Typography CSS -->
-      <link rel="stylesheet" href="<?= style_sheet_link(); ?>" />
-      <!-- Style -->
-      <link rel="stylesheet" href="<?= typography_link(); ?>" />
+      <link href="<?php echo URL::to('public/themes/theme4/assets/css/style.css') ?>" rel="stylesheet">
+             <link href="<?php echo URL::to('public/themes/theme4/assets/css/typography.css') ?>" rel="stylesheet">
+
+      <!-- Style --> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
       <!-- Responsive -->
       <link rel="stylesheet" href="assets/css/responsive.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
@@ -159,7 +161,7 @@ i.fa.fa-google-plus {
     background: #474644 !important;
 }
     .reveal{
-        margin-left: -92px;
+        margin-left: -62px;
     height: 45px !important;
     background: transparent !important;
     color: #fff !important;
@@ -174,7 +176,8 @@ i.fa.fa-google-plus {
         color: #fff;
         padding: 8px;
         left: 114px;
-        background:rgba(11, 11, 11,1);
+        display: none;
+        background:transparent;
         font-size: 12px;
     }
 </style>

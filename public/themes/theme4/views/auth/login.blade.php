@@ -18,16 +18,17 @@ $system_settings = App\SystemSetting::find(1);
       <!-- Bootstrap CSS -->
       <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme1/assets/css/bootstrap.min.css')?>" rel="stylesheet">
       <!-- Typography CSS -->
-      <link href="<?php echo URL::to('public/themes/theme3/assets/css/typography.css') ?>" rel="stylesheet">
+      <link href="<?php echo URL::to('public/themes/theme4/assets/css/typography.css') ?>" rel="stylesheet">
       <!-- Style -->
-      <link href="<?php echo URL::to('public/themes/theme3/assets/css/style.css') ?>" rel="stylesheet">
-      <link href="<?php echo URL::to('public/themes/theme3/assets/css/responsive.css') ?>" rel="stylesheet">
+      <link href="<?php echo URL::to('public/themes/theme4/assets/css/style.css') ?>" rel="stylesheet">
+      <link href="<?php echo URL::to('public/themes/theme4/assets/css/responsive.css') ?>" rel="stylesheet">
 
-      <!-- Responsive -->
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="stylesheet">
-        <link href="http://fonts.cdnfonts.com/css/gilroy-bold?styles=20876,20877,20878,20879,20880" rel="stylesheet">
+      <!-- Responsive -->           <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
                 
  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
@@ -191,7 +192,7 @@ $system_settings = App\SystemSetting::find(1);
 
     
     label{
-        font-family: 'Gilroy';
+       font-family: 'Poppins', sans-serif;
 font-weight: 500;
 font-size: 20px;
 line-height: 28px;
@@ -256,7 +257,7 @@ line-height: 57px;
         font-weight: 600;
         color: #fff;
         text-align: left;
-       font-family: 'Gilroy';
+      font-family: 'Poppins', sans-serif;
 
 
 
@@ -293,7 +294,7 @@ line-height: 57px;
  }
     a.f-link {
     margin-bottom: 1rem;
-             font-family: 'Gilroy';
+            font-family: 'Poppins', sans-serif;
 
         font-size: 14px;
     
@@ -356,28 +357,15 @@ color: rgba(255, 255, 255, 0.5);
         background: transparent;
         border: none;
     }
+    .button.btn.signup {
+        background-color: #FF0052!important;
+    }
+    
+
 </style>
     </head>
 
 <body>
-  <section>
-      <div class="container-fluid">
-      <div class="row p-2 align-items-center">
-          <div class="col-md-4 sea">
-              <i class="fa fa-search" aria-hidden="true"></i>
-
-          </div>
-          <div class="col-md-4 text-center">
-            <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  >
-          </div>
-          <div class="col-md-4 text-right">
-              <a   data-bs-toggle="modal" data-bs-target="#staticBackdrop" href="<?= URL::to('/login')?>" class=" mr-2" style="color:#fff!important;font-weight:500!important;">SIGN IN</a>
-               <button  type="submit" class="btn signup" style="color:#fff!important;font-size:16px;font-weight:700;border-radius:30px;">Subscribe Now</button>
-              
-          </div>
-      </div>
-          </div>
-    </section>  
 
 <section class="sign-in-page" style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;height:100vh;">
     <div class="container">
@@ -385,7 +373,9 @@ color: rgba(255, 255, 255, 0.5);
   <div class="modal-dialog">
     <div class="modal-content" style="background:transparent!important;">
       <div class="modal-header">
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">X</button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="font-size: 25px;
+    color: #fff;"><i class="fa fa-times" aria-hidden="true"></i>
+</button>
       </div>
       <div class="">
        <div class="container">
@@ -464,7 +454,7 @@ color: rgba(255, 255, 255, 0.5);
                                 </div>
                             @endif
                         
-                           <div class="sign-info mt-5 mb-3">
+                           <div class="sign-info mt-5 mb-3 text-center">
                               <button type="submit" class="btn signup" style="width:80%;color:#fff!important;letter-spacing: 1.5px;font-size:20px;">SIGN IN</button>
                            </div> 
                                  <div class="links text-center mt-3">
