@@ -360,7 +360,7 @@
       <script src="<?= URL::to('/'). '/assets/js/slick-animation.min.js';?>"></script>
       <!-- Custom JS-->
 
-      <script type="text/javascript" src="<?php echo URL::to('public/themes/theme3/assets/js/custom.js'); ?>"></script>
+      <script type="text/javascript" src="<?php echo URL::to('public/themes/theme4/assets/js/custom.js'); ?>"></script>
       
       <?php 
       $footer_script = App\Script::pluck('footer_script')->toArray();

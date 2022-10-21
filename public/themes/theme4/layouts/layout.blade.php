@@ -35,7 +35,7 @@
     /*Button Bg color  */
     button.btn.signup {
             border: #f3ece0 !important ;
-            background-color: #883FC5!important;
+            background-color: #FF0052!important;
         }
 
         button.transpar {

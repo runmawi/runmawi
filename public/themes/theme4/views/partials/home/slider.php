@@ -178,47 +178,21 @@ endif; ?>
 
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
             <div class="slide slick-bg s-bg-1 lazy"
-            style="background:linear-gradient(180deg, rgba(9, 0, 21, 0) -1.41%, #090015 80.7%), url('<?php echo URL::to('/').'/public/uploads/images/' .$videos->player_image;?>'); background-repeat:no-repeat;background-size:contain;background-postion:top ;">
+            style="background: url('<?php echo URL::to('/').'/public/uploads/images/' .$videos->player_image;?>'); background-repeat:no-repeat;background-size:100% 100%;background-postion:top ;">
             <div class="container-fluid position-relative h-100">
                 <div class="slider-inner h-slider mt-3">
 
                     <div class="row align-items-center bl h-100">
-                        <div class="col-xl-7 col-lg-12 col-md-12">
+                        <div class="col-xl-12 col-lg-12 col-md-12">
+                            <img src="" alt="" class="img-fluid">
                                                <!--  Video thumbnail image-->
-                            <?php if( $videos->enable_video_title_image == 1  &&  $videos->video_title_image != null){ ?>
-                                    <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>">
-                                        <img src="<?= URL::to('public/uploads/images/'.$videos->video_title_image )?>" class="c-logo" alt="<?= $videos->title ?>">
-                                    </a>
-                                                        <!-- Video Title  -->
-                            <?php }else{ ?>
-                                    <h1 class="text-white title text-uppercase mb-3" >
-                                        <?php echo (strlen($videos->title) > 15) ? substr($videos->title,0,80).'...' : $videos->title; ?>
-                                    </h1>
-                            <?php } ?>
                             
-                            <div class="mb-3">
-                                <span class="fa fa-star checked"></span>
-                                <span class="fa fa-star checked"></span>
-                                <span class="fa fa-star checked"></span>
-                                <span class="fa fa-star"></span>
-                                <span class="fa fa-star"></span>
-                            </div>
-                    <div 
-                        style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 5px;color:#fff;display: -webkit-box;
-                        -webkit-line-clamp: 3;
-                        -webkit-box-orient: vertical;  
-                        overflow: hidden;">
-                        <?php echo __($videos->description); ?>
-                        </div>
+                  
                             <div class="row justify r-mb-23  p-0 mb-4 text-center" >
                                 </div>
                             <div class="justify r-mb-23  p-0" >
                                 
-                            <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"
-                                class="mt-3 p-0"> <img class="w-100" src="<?php echo  URL::to('/assets/img/ply.png')?>" style="margin-top:-20px;"></a>
-                               <a href="#vide
-                                 o-trailer"
-                            class="video-open playbtn btn bd ml-4"  href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"><i class="fa fa-info" aria-hidden="true"></i> More Info</a>
+                           
                             </div>
                             
                 </div>
