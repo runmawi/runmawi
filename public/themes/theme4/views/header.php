@@ -134,8 +134,8 @@ $site_page_url = $http_site_url[1];
         <link rel="shortcut icon" href="<?php echo getFavicon();?>" type="image/gif" sizes="16x16">
 
        <input type="hidden" value="<?php echo $settings->google_tracking_id ; ?>" name="tracking_id" id="tracking_id">
-           <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link async rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+           <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
@@ -225,7 +225,7 @@ $site_page_url = $http_site_url[1];
         .mk{
             display: none;
         }
-         #main-header{ color: #fff; }
+         #main-header{ color: #fff;background: #021E5E; }
          .svg{ color: #fff; } 
          #videoPlayer{
          width:100%;
@@ -955,10 +955,10 @@ input:checked + .sliderk:before {
   <input type="checkbox" id="toggle" />
   <label for="toggle"></label>
 </div> -->                                                  <!-- dark mode -->
-                           <div class="toggle mt-3 text-left">
+                           <div class="toggle mt-3 text-left col-md-7 d-flex justify-content-between">
                                       
    <i class="fas fa-moon"></i>
-                              <label class="switch toggle mt-3">
+                              <label class="switch toggle ">
                                  <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?> 
                                  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
                                  <span class="sliderk round"></span>

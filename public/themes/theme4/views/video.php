@@ -1,6 +1,6 @@
 
 <?php
-    include(public_path('themes/theme3/views/header.php'));
+    include(public_path('themes/theme4/views/header.php'));
 ?>
 
 <?php 
@@ -1763,7 +1763,7 @@ location.reload();
 
 </script>
 
-<?php     include(public_path('themes/theme3/views/footer.blade.php')); ?>
+<?php     include(public_path('themes/theme4/views/footer.blade.php')); ?>
 
 <!-- Trailer m3u8 -->
 

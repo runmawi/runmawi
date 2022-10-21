@@ -22,14 +22,14 @@
                         
                         ?>
                 <li class="slide-item">
+                     <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
                     <div class="block-images position-relative">
                         <!-- block-images -->
-                        <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
+                       
+                             <div class="img-box">
                              <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"
                                         class="img-fluid" alt=""> 
-                           <!-- <video width="100%" height="auto" class="play-video lazy" poster="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" data-play="hover">
-                                <source src="<?php echo $category_video->trailer;  ?>" type="video/mp4" />
-                            </video>
+                        
 
                             <!-- PPV price -->
                          
@@ -43,32 +43,16 @@
                                     <?php } ?>
                                     <?php } ?>
                                 
+                            </div>
+                      
                             
-                        </a>
                     </div>
                     <div class="block-description">
                         <div class="hover-buttons">
-                            <a type="button" class="text-white btn-cl" href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>"> <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> </a>
-                            <!--   <div class="">
-                                        <span style="color: white;"class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $category_video->id ?>">
-                            <i style="" <?php if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line " <?php endif; ?> style="" ></i>
-                          </span>
-                          <div style="color:white;" id="<?= $category_video->id ?>"><?php if(@$category_video->mywishlisted->user_id == $id && @$category_video->mywishlisted->video_id == $category_video->id  ) { echo "Remove From Wishlist"; } else { echo "Add To Wishlist" ; } ?></div> 
-                              </div>
-                                       <!-- <a   href="<?php // echo URL::to('category') ?><? // '/wishlist/' . $category_video->slug ?>" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist -->
-                            <!-- </a> -->
-                        </div>
-
-                        <!--
-                           <div>
-                               <button class="show-details-button" data-id="<?= $category_video->id;?>">
-                                   <span class="text-center thumbarrow-sec">
-                                       <img src="<?php echo URL::to('/').'/assets/img/arrow-red.png';?>" class="thumbarrow thumbarrow-red" alt="right-arrow">
-                                   </span>
-                                       </button></div>
-                        -->
+                            <a  class=" " href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>"> <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> </a>
+                            
                     </div>
-                   
+                    </div>
 
                     <div class="mt-2 d-flex justify-content-between p-0">
                         <?php if($ThumbnailSetting->title == 1) { ?>
@@ -138,7 +122,7 @@
                         </span>
                         <?php } ?>
                     </div>
-
+  </a>
                 </li>
                 <?php           
                           endforeach; 

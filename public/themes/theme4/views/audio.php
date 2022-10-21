@@ -1,4 +1,4 @@
-<?php include(public_path('themes/theme3/views/header.php'));  
+<?php include(public_path('themes/theme4/views/header.php'));  
 
 $audio = $audios ;
 
@@ -441,7 +441,7 @@ Your browser does not support the audio element.
 <div class="clear"></div>  
 
 <?php } ?>
-<div class="container-fluid">
+<div class="container-fluid overflow-hidden">
 <div class="row album-top-30 mt-3">  
 <div class="col-sm-12">
    
@@ -888,4 +888,4 @@ window.location = '<?= URL::to('login') ?>';
     }
   }
     </script>
-<?php include(public_path('themes/theme3/views/footer.blade.php')); ?>
+<?php include(public_path('themes/theme4/views/footer.blade.php')); ?>
