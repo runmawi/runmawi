@@ -1181,7 +1181,7 @@ input:checked + .sliderk:before {
             opacity : <?php echo $playerui_settings->watermark_opacity; ?>;
             z-index: 2;
             content: '';
-            height: 300px;
+            height: 150px;
             width: <?php echo $playerui_settings->watermar_width; ?>;
             background: url(<?php echo $playerui_settings->watermark_logo; ?>) no-repeat;
             background-size: 100px auto, auto;
