@@ -40,12 +40,12 @@
 			<?php 
 			if(isset($albums) && count( $albums) > 0 ) { 
 				foreach($albums as $album): ?>
-					<div class="iq-main-header ">
+					<div class="iq-main-header col-md-2 p-0 ">
 						<div class="favorites-contens">
 				            <div class="epi-box">
                                   <a href="<?= URL::to('album') ?><?= '/' . $album->slug ?>">
                                 <div class="epi-img position-relative">
-                                   <img src="<?php echo URL::to('/').'/public/uploads/albums/'.$album->album;?>" class="img-fluid img-zoom" height="200" width="200" alt="">
+                                   <img src="<?php echo URL::to('/').'/public/uploads/albums/'.$album->album;?>" class="img-fluid img-zoom w-100" height="200" width="200" alt="">
                                    <div class="episode-play-info">
                                      <!-- <div class="episode-play">
                                          

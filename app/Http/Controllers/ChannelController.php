@@ -58,6 +58,8 @@ use App\LiveCategory;
 use App\SeriesGenre;
 use App\Series;
 use App\VideoSchedules as VideoSchedules;
+use App\Channel;
+use App\ModeratorsUser;
 
 class ChannelController extends Controller
 {
@@ -232,7 +234,6 @@ class ChannelController extends Controller
                     $ppv_rent_price = $Video_ppv->ppv_price;
                 }
             }
-
             $current_date = date('Y-m-d h:i:s a', time());
             $view_increment = $this->handleViewCount_movies($vid);
 
@@ -666,9 +667,57 @@ class ChannelController extends Controller
                 {
                     $new_date = null;
                 }
+                if(@$categoryVideos->uploaded_by == 'Channel'){
+                        $user_id = $categoryVideos->user_id;
+
+                        $user = Channel::where("channels.id", "=", $user_id )
+                        ->join(
+                            "users",
+                            "channels.email",
+                            "=",
+                            "users.email"
+                        )
+                        ->select(
+                            "users.id as user_id",
+                        )
+                        ->first();
+                        if($user->user_id == Auth::user()->id){
+                            $video_access = 'free';
+                        }else{ 
+                            $video_access = 'pay';
+                         }
+                }else if(@$categoryVideos->uploaded_by == 'CPP'){
+                    $user_id = $categoryVideos->user_id;
+
+                    $user = ModeratorsUser::where("moderators_users.id", "=", $user_id )
+                    ->join(
+                        "users",
+                        "moderators_users.email",
+                        "=",
+                        "users.email"
+                    )
+                    ->select(
+                        "users.id as user_id",
+                    )
+                    ->first();
+                    if($user->user_id == Auth::user()->id){
+                        $video_access = 'free';
+                    }else{ 
+                        $video_access = 'pay';
+                     }
+            }else{
+                if(@$categoryVideos->access  == 'ppv' && Auth::user()->role != 'admin' ){
+                    $video_access = 'pay';
+                }else{
+                    $video_access = 'free';
+                }
+            }
                 //  dd($recomended);
+            // dd($video_access);
+
                 $currency = CurrencySetting::first();
                 $data = array(
+                    'video_access' => $video_access,
                     'currency' => $currency,
                     'video' => $categoryVideos,
                     'videocategory' => $videocategory,
@@ -966,8 +1015,54 @@ class ChannelController extends Controller
 
                 $Reels_videos = Video::where('id', $vid)->whereNotNull('reelvideo')
                     ->get();
+                            if(@$categoryVideos->uploaded_by == 'Channel'){
+                                $user_id = $categoryVideos->user_id;
 
+                                $user = Channel::where("channels.id", "=", $user_id )
+                                ->join(
+                                    "users",
+                                    "channels.email",
+                                    "=",
+                                    "users.email"
+                                )
+                                ->select(
+                                    "users.id as user_id",
+                                )
+                                ->first();
+                                if($user->user_id == Auth::user()->id){
+                                    $video_access = 'free';
+                                }else{ 
+                                    $video_access = 'pay';
+                                }
+                        }else if(@$categoryVideos->uploaded_by == 'CPP'){
+                            $user_id = $categoryVideos->user_id;
+
+                            $user = ModeratorsUser::where("moderators_users.id", "=", $user_id )
+                            ->join(
+                                "users",
+                                "moderators_users.email",
+                                "=",
+                                "users.email"
+                            )
+                            ->select(
+                                "users.id as user_id",
+                            )
+                            ->first();
+                            if($user->user_id == Auth::user()->id){
+                                $video_access = 'free';
+                            }else{ 
+                                $video_access = 'pay';
+                            }
+                    }else{
+                        if(@$categoryVideos->access  == 'ppv' && Auth::user()->role != 'admin' ){
+                            $video_access = 'pay';
+                        }else{
+                            $video_access = 'free';
+                        }
+                    }
                 $data = array(
+                    'video_access' => $video_access,
+
                     'currency' => $currency,
                     'video' => $categoryVideos,
                     'recomended' => $recomended,
@@ -1130,8 +1225,53 @@ class ChannelController extends Controller
                 {
                     $subtitles = "No Subtitles Added";
                 }
+                    if(@$categoryVideos->uploaded_by == 'Channel'){
+                        $user_id = $categoryVideos->user_id;
 
+                        $user = Channel::where("channels.id", "=", $user_id )
+                        ->join(
+                            "users",
+                            "channels.email",
+                            "=",
+                            "users.email"
+                        )
+                        ->select(
+                            "users.id as user_id",
+                        )
+                        ->first();
+                        if($user->user_id == Auth::user()->id){
+                            $video_access = 'free';
+                        }else{ 
+                            $video_access = 'pay';
+                        }
+                }else if(@$categoryVideos->uploaded_by == 'CPP'){
+                    $user_id = $categoryVideos->user_id;
+
+                    $user = ModeratorsUser::where("moderators_users.id", "=", $user_id )
+                    ->join(
+                        "users",
+                        "moderators_users.email",
+                        "=",
+                        "users.email"
+                    )
+                    ->select(
+                        "users.id as user_id",
+                    )
+                    ->first();
+                    if($user->user_id == Auth::user()->id){
+                        $video_access = 'free';
+                    }else{ 
+                        $video_access = 'pay';
+                    }
+            }else{
+                if(@$categoryVideos->access  == 'ppv' && Auth::user()->role != 'admin' ){
+                    $video_access = 'pay';
+                }else{
+                    $video_access = 'free';
+                }
+            }
                 $data = array(
+                    'video_access' => $video_access,
                     'currency' => $currency,
                     'video' => $categoryVideos,
                     'videocategory' => $videocategory,
@@ -1402,8 +1542,53 @@ class ChannelController extends Controller
                     $artists = [];
                 }
                 $Reels_videos = Video::Join('reelsvideo', 'reelsvideo.video_id', '=', 'videos.id')->where('videos.id', $vid)->get();
+                        if(@$categoryVideos->uploaded_by == 'Channel'){
+                            $user_id = $categoryVideos->user_id;
 
+                            $user = Channel::where("channels.id", "=", $user_id )
+                            ->join(
+                                "users",
+                                "channels.email",
+                                "=",
+                                "users.email"
+                            )
+                            ->select(
+                                "users.id as user_id",
+                            )
+                            ->first();
+                            if($user->user_id == Auth::user()->id){
+                                $video_access = 'free';
+                            }else{ 
+                                $video_access = 'pay';
+                            }
+                    }else if(@$categoryVideos->uploaded_by == 'CPP'){
+                        $user_id = $categoryVideos->user_id;
+
+                        $user = ModeratorsUser::where("moderators_users.id", "=", $user_id )
+                        ->join(
+                            "users",
+                            "moderators_users.email",
+                            "=",
+                            "users.email"
+                        )
+                        ->select(
+                            "users.id as user_id",
+                        )
+                        ->first();
+                        if($user->user_id == Auth::user()->id){
+                            $video_access = 'free';
+                        }else{ 
+                            $video_access = 'pay';
+                        }
+                }else{
+                    if(@$categoryVideos->access  == 'ppv' && Auth::user()->role != 'admin' ){
+                        $video_access = 'pay';
+                    }else{
+                        $video_access = 'free';
+                    }
+                }
                 $data = array(
+                    'video_access' => $video_access,
                     'currency' => $currency,
                     'video' => $categoryVideos,
                     'recomended' => $recomended,
