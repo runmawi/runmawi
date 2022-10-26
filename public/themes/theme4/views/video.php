@@ -158,12 +158,12 @@ if(empty($new_date)){
 if(!Auth::guest()) {
   // dd($video->access);
   // dd('test');
-if( !empty($ppv_video_play) || Auth::user()->role == 'registered' || 
+if( !empty($ppv_video_play) || $video_access == 'free' || Auth::user()->role == 'registered' || 
  $video->global_ppv == null && $video->access == 'subscriber' ||  $video->global_ppv == null && $video->ppv_price == null && $video->access == 'registered' ||  $video->global_ppv == null && $video->ppv_price == null && $video->access == 'subscriber' && Auth::user()->role == 'subscriber' || $video->access == 'ppv' && Auth::user()->role == 'admin' || $video->access == 'subscriber' && Auth::user()->role == 'admin' || $video->access == 'registered' && Auth::user()->role == 'admin'|| $video->access == 'registered' && Auth::user()->role == 'subscriber'|| $video->access == 'registered' && Auth::user()->role == 'registered' || Auth::user()->role == 'admin'){
 
 
       
-if ( $ppv_exist > 0  || Auth::user()->subscribed() && $video->type != "" || 
+if ( $ppv_exist > 0 || $video_access == 'free' || Auth::user()->subscribed() && $video->type != "" || 
 Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="subscriber" && $video->type != ""
 || (!Auth::guest() && $video->access == 'registered' && Auth::user()->role == 'registered' && $video->type != "")) { ?>
 <?php //dd(Auth::user()->role); ?>
@@ -181,7 +181,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
            } else {
              $paypal_subscription = "";  
            }
-           if($ppv_exist > 0  || Auth::user()->subscribed() || $paypal_subscription =='CANCE' || $video->access == 'guest' || ( ($video->access == 'subscriber' || $video->access == 'registered') && !Auth::guest() ) || (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) || (!Auth::guest() && $video->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered') ): ?>
+           if($ppv_exist > 0 || $video_access == 'free' || Auth::user()->subscribed() || $paypal_subscription =='CANCE' || $video->access == 'guest' || ( ($video->access == 'subscriber' || $video->access == 'registered') && !Auth::guest() ) || (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) || (!Auth::guest() && $video->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered') ): ?>
          <?php if($video->type == 'embed'): ?>
            <div id="video_container" class="fitvid">
                 <div class="slide slick-bg s-bg-1 lazy"
@@ -502,7 +502,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
      <?php endif; ?>            
    </div>
  
-  <?php }elseif( $ppv_exist > 0  || Auth::user()->subscribed() && $pack == "Business" || Auth::user()->role == 'admin' && $pack == "Business" || Auth::user()->role =="subscriber" && $pack == "Business"
+  <?php }elseif( $ppv_exist > 0  || $video_access == 'free' || Auth::user()->subscribed() && $pack == "Business" || Auth::user()->role == 'admin' && $pack == "Business" || Auth::user()->role =="subscriber" && $pack == "Business"
    || (!Auth::guest() && $video->access == 'registered' && Auth::user()->role == 'registered' && $pack == "Business")) {
  if(!empty($video->path)){  ?>
           <div id="video_container" class="fitvid" atyle="z-index: 9999;">
@@ -530,10 +530,27 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 <?php } }
 /* For Registered User */       
    else {  ?>      
-       <div id="video" class="fitvid" style="margin: 0 auto;">
+    <div id="subscribers_only"style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>);background-position:center; background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
+  <div id="subscribers_only">
+  <div class="clear"></div>
+  <div style="position: absolute;top: 20%;left: 20%;width: 100%;">
+  <h2 ><p style ="margin-left:14%">Sorry, this video is only available to</p> <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
+    <?php if(!Auth::guest() && $video->access == 'subscriber' || !Auth::guest() && $video->access == 'ppv'|| !Auth::guest() && $video->access == 'guest' && !empty($video->ppv_price) ){ ?>
+    <form method="get" action="<?= URL::to('/stripe/billings-details') ?>">
+      <button style="margin-left: 27%;margin-top: 0%;" class="btn btn-primary"id="button">Purchase to watch this video</button>
+    </form>
+  <?php }else{ ?>
+    <form method="get" action="<?= URL::to('signup') ?>">
+      <button id="button" style="margin-top: 0%;">Signup Now <?php if($video->access == 'subscriber'): ?>to Purchase this video <?php elseif($video->access == 'registered'): ?>for Free!<?php endif; ?></button>
+    </form>
+  <?php } ?>
+  </div>
+</div>
+</div>
+       <!-- <div id="video" class="fitvid" style="margin: 0 auto;"> -->
        
        <!-- <video id="videoPlayer" class="video-js vjs-default-skin vjs-big-play-centered" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $video->trailer; ?>"  type="video/mp4" > -->
-       <video   id="videoPlayer" class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $video->trailer; ?>"  type="video/mp4" >
+       <!-- <video   id="videoPlayer" class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $video->trailer; ?>"  type="video/mp4" >
            <source src="<?= $video->trailer; ?>" type='video/mp4' label='Auto' res='auto' />
 
            <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
@@ -547,7 +564,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
            <?php } } } else { }  ?>  
        </video> 
 
-       </div>
+       </div> -->
  <?php } } 
  else { ?>
  <div id="subscribers_only"style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>);background-position:center; background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">

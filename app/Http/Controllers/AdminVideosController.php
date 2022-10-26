@@ -1263,6 +1263,7 @@ class AdminVideosController extends Controller
 
             $data["trailer"] = $M3u8_save_path;
             $video->trailer_type = "m3u8";
+            $data["trailer_type"] = "m3u8";
         } else {
             if ($data["trailer_type"] == "video_mp4") {
                 if (!empty($trailer)) {
@@ -2325,7 +2326,7 @@ class AdminVideosController extends Controller
             if (
                 $trailer != "" &&
                 $pack == "Business" &&
-                $settings->transcoding_access == 1
+                $settings->transcoding_access == 1 && $data["trailer_type"] == "video_mp4"
             ) {
                 $settings = Setting::first();
                 // $resolution = explode(",",$settings->transcoding_resolution);
