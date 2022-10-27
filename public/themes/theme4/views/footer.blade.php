@@ -232,6 +232,7 @@ function myFunction() {
     loadJS("https://afarkas.github.io/lazysizes/plugins/respimg/ls.respimg.min.js");
     }
 </script>
+<script src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
 
 
       <script>
@@ -252,7 +253,7 @@ function myFunction() {
     // alert(user_logged_out)
 
 
-   if(type != "" &&  video_video == 'video'){
+   if(type != "" &&  type != "m3u8_url" &&  video_video == 'video'){
     // alert('video_video')
 
         const player = new Plyr('#videoPlayer',{

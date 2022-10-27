@@ -678,7 +678,7 @@ class ChannelController extends Controller
                             "users.email"
                         )
                         ->select(
-                            "users.id as user_id",
+                            "users.id as user_id"
                         )
                         ->first();
                         if($user->user_id == Auth::user()->id){
@@ -697,7 +697,7 @@ class ChannelController extends Controller
                         "users.email"
                     )
                     ->select(
-                        "users.id as user_id",
+                        "users.id as user_id"
                     )
                     ->first();
                     if($user->user_id == Auth::user()->id){
@@ -1026,7 +1026,7 @@ class ChannelController extends Controller
                                     "users.email"
                                 )
                                 ->select(
-                                    "users.id as user_id",
+                                    "users.id as user_id"
                                 )
                                 ->first();
                                 if($user->user_id == Auth::user()->id){
@@ -1045,7 +1045,7 @@ class ChannelController extends Controller
                                 "users.email"
                             )
                             ->select(
-                                "users.id as user_id",
+                                "users.id as user_id"
                             )
                             ->first();
                             if($user->user_id == Auth::user()->id){
@@ -1236,7 +1236,7 @@ class ChannelController extends Controller
                             "users.email"
                         )
                         ->select(
-                            "users.id as user_id",
+                            "users.id as user_id"
                         )
                         ->first();
                         if($user->user_id == Auth::user()->id){
@@ -1255,7 +1255,7 @@ class ChannelController extends Controller
                         "users.email"
                     )
                     ->select(
-                        "users.id as user_id",
+                        "users.id as user_id"
                     )
                     ->first();
                     if($user->user_id == Auth::user()->id){
@@ -1553,7 +1553,7 @@ class ChannelController extends Controller
                                 "users.email"
                             )
                             ->select(
-                                "users.id as user_id",
+                                "users.id as user_id"
                             )
                             ->first();
                             if($user->user_id == Auth::user()->id){
@@ -1572,7 +1572,7 @@ class ChannelController extends Controller
                             "users.email"
                         )
                         ->select(
-                            "users.id as user_id",
+                            "users.id as user_id"
                         )
                         ->first();
                         if($user->user_id == Auth::user()->id){
