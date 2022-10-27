@@ -126,6 +126,7 @@ public function RentPaypal(Request $request)
 
   public function StoreLive(Request $request)
   {
+   
     $daten = date('m-d-Y h:i:s ', time());    
     $setting = Setting::first();   
     $ppv_hours = $setting->ppv_hours;
@@ -141,7 +142,9 @@ public function RentPaypal(Request $request)
     $video = LiveStream::where('id','=',$video_id)->where('uploaded_by','CPP')->first();
 
     $channelvideo = LiveStream::where('id','=',$video_id)->where('uploaded_by','Channel')->first();
-  
+
+    $livestream_videos = LiveStream::where('id','=',$video_id)->first();
+
     if(!empty($video)){
       $moderators_id = $video->user_id;
      }
@@ -182,11 +185,11 @@ public function RentPaypal(Request $request)
   
     }
     else{
-      $total_amount = $video->ppv_price;
-      $title =  $video->title;
+      $total_amount = $livestream_videos->ppv_price;
+      $title =  $livestream_videos->title;
       $commssion = VideoCommission::first();
       $percentage = null; 
-      $ppv_price = $video->ppv_price;
+      $ppv_price = $livestream_videos->ppv_price;
       $admin_commssion =  null;
       $moderator_commssion = null;
       $moderator_id = null;
