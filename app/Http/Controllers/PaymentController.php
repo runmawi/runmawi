@@ -131,7 +131,7 @@ public function RentPaypal(Request $request)
     $setting = Setting::first();   
     $ppv_hours = $setting->ppv_hours;
     $d = new \DateTime('now');
-    $d->setTimezone(new \DateTimeZone('Asia/Kolkata'));
+    // $d->setTimezone(new \DateTimeZone('Asia/Kolkata'));
     $now = $d->format('Y-m-d h:i:s a');
     $time = date('h:i:s', strtotime($now));
     $to_time = date('Y-m-d H:i:s',strtotime('+'.$ppv_hours.' hour',strtotime($now))); 

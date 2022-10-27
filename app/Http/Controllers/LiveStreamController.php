@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 use \App\User as User;
 use \Redirect as Redirect;
-use Request;
+use Illuminate\Http\Request;
 use App\Setting;
 use App\LiveStream as LiveStream;
 use App\LivePurchase as LivePurchase;
@@ -88,7 +88,7 @@ class LiveStreamController extends Controller
 
         if(!empty($data['password_hash'])){
 
-           $ppv_exist = LivePurchase::where('video_id',$vid)->where('user_id',$user_id)->count();
+           $ppv_exist = LivePurchase::where('video_id',$vid)->where('user_id',$user_id)->where('status',1)->count();
           }else{
             $ppv_exist = [];
           }
@@ -256,5 +256,43 @@ class LiveStreamController extends Controller
 
         }
 
+        public function PPV_live_PurchaseUpdate( Request $request)
+        {
+          $current_time = Carbon::now()->format('Y-m-d H:i:s');
 
+          try {
+
+            LivePurchase::where('video_id',$request->live_id)->where('user_id',Auth::user()->id)->update([
+              'livestream_view_count' => 1 ,
+            ]);
+
+            $expiry_date = LivePurchase::where('video_id',$request->live_id)->where('user_id',Auth::user()->id)->pluck('expired_date')->first();
+
+              if( $expiry_date == $current_time ){
+
+                  LivePurchase::where('video_id',$request->live_id)->where('user_id',Auth::user()->id)->update([
+                      'status' => 0 ,
+                  ]);
+
+                  $data = array(
+                    'status' => true,
+                    'message' => 'Live Purchase status updated' ,
+                  );
+              }
+              else{
+                  $data = array(
+                    'status' => true,
+                    'message' => 'Live Purchase - No changes updated' ,
+                  );
+              }
+          } catch (\Throwable $th) {
+
+            $data = array(
+              'status' => false,
+              'message' => $th->getMessage() ,
+            );
+          }
+
+          return response()->json($data, 200);
+        }
 }
