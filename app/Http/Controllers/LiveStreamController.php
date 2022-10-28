@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 use \App\User as User;
 use \Redirect as Redirect;
-use Request;
+use Illuminate\Http\Request;
 use App\Setting;
 use App\LiveStream as LiveStream;
 use App\LivePurchase as LivePurchase;
@@ -88,9 +88,11 @@ class LiveStreamController extends Controller
 
         if(!empty($data['password_hash'])){
 
-           $ppv_exist = LivePurchase::where('video_id',$vid)->where('user_id',$user_id)->count();
+           $ppv_exist = LivePurchase::where('video_id',$vid)->where('user_id',$user_id)->where('status',1)->latest()->count();
+           $ppv_exist_unseen = LivePurchase::where('video_id',$vid)->where('user_id',$user_id)->where('status',1)->where('livestream_view_count',0)->latest()->count();
           }else{
             $ppv_exist = [];
+            $ppv_exist_unseen = 0 ;
           }
 
             $wishlisted = false;
@@ -154,6 +156,7 @@ class LiveStreamController extends Controller
                  'password_hash' => $password_hash,
                  'publishable_key' => $publishable_key,
                  'ppv_exist' => $ppv_exist,
+                 'ppv_exist_unseen' => $ppv_exist_unseen,
                  'ppv_price' => $categoryVideos->ppv_price,
                  'watchlatered' => $watchlater,
                  'mywishlisted' => $wishlisted,
@@ -256,5 +259,84 @@ class LiveStreamController extends Controller
 
         }
 
+        public function PPV_live_PurchaseUpdate( Request $request)
+        {
+          $current_time = Carbon::now()->format('Y-m-d H:i:s');
 
+          try {
+
+            LivePurchase::where('video_id',$request->live_id)->where('user_id',Auth::user()->id)->update([
+              'livestream_view_count' => 1 ,
+            ]);
+
+            $expiry_date = LivePurchase::where('video_id',$request->live_id)->where('user_id',Auth::user()->id)->pluck('expired_date')->first();
+
+              if( $expiry_date >= $current_time ){
+
+                  LivePurchase::where('video_id',$request->live_id)->where('user_id',Auth::user()->id)->update([
+                      'status' => 0 ,
+                  ]);
+
+                  $data = array(
+                    'status' => true,
+                    'message' => 'Live Purchase status updated' ,
+                  );
+              }
+              else{
+                  $data = array(
+                    'status' => false,
+                    'message' => 'Live Purchase - No changes updated' ,
+                  );
+              }
+          } catch (\Throwable $th) {
+
+            $data = array(
+              'status' => false,
+              'message' => $th->getMessage() ,
+            );
+          }
+
+          return response()->json($data, 200);
+        }
+
+        public function PPV_live_PurchaseUpdate_unseen( Request $request )
+        {
+
+          $current_time = Carbon::now()->format('Y-m-d H:i:s');
+
+          try {
+
+            LivePurchase::where('video_id',$request->live_id)->where('user_id',Auth::user()->id)->update([
+              'livestream_view_count' => 1 ,
+            ]);
+
+            $unseen_expiry_date = LivePurchase::where('video_id',$request->live_id)->where('user_id',Auth::user()->id)->pluck('unseen_expiry_date')->first();
+
+              if( $unseen_expiry_date >= $current_time ){
+
+                  LivePurchase::where('video_id',$request->live_id)->where('user_id',Auth::user()->id)->update([
+                      'status' => 0 ,
+                  ]);
+
+                  $data = array(
+                    'status' => true,
+                    'message' => 'Live Purchase status updated' ,
+                  );
+              }
+              else{
+                  $data = array(
+                    'status' => false,
+                    'message' => 'Live Purchase - No changes updated' ,
+                  );
+              }
+          } catch (\Throwable $th) {
+
+            $data = array(
+              'status' => false,
+              'message' => $th->getMessage() ,
+            );
+          }
+
+          return response()->json($data, 200);
+        }
 }
