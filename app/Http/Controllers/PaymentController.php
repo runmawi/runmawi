@@ -257,6 +257,8 @@ public function RentPaypal(Request $request)
     $livepurchase->video_id = $video_id;
     $livepurchase->to_time = $to_time;
     $livepurchase->expired_date = $to_time;
+    $livepurchase->from_time = Carbon::now()->format('Y-m-d H:i:s');
+    $livepurchase->unseen_expiry_date = Carbon::now()->addDay()->format('Y-m-d H:i:s');
     $livepurchase->amount = $request->get('amount');
     $livepurchase->status = 1;
     $livepurchase->save();

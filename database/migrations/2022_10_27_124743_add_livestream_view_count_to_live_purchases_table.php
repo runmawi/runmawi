@@ -14,7 +14,9 @@ class AddLivestreamViewCountToLivePurchasesTable extends Migration
     public function up()
     {
         Schema::table('live_purchases', function (Blueprint $table) {
-            $table->integer('livestream_view_count')->nullable()->after('status');
+            $table->string('livestream_view_count')->default(0)->after('status');
+            $table->integer('unseen_expiry_date')->nullable()->after('livestream_view_count');
+
         });
     }
 
@@ -27,6 +29,7 @@ class AddLivestreamViewCountToLivePurchasesTable extends Migration
     {
         Schema::table('live_purchases', function (Blueprint $table) {
             Schema::dropIfExists('livestream_view_count');
+            Schema::dropIfExists('unseen_expiry_date');
         });
     }
 }

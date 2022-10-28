@@ -591,81 +591,76 @@ settings: "unslick" // destroys slick
 <script src="https://checkout.stripe.com/checkout.js"></script>
 
 <script type="text/javascript">
-var livepayment = $('#purchase_url').val();
-var publishable_key = $('#publishable_key').val();
 
+    var livepayment = $('#purchase_url').val();
+    var publishable_key = $('#publishable_key').val();
 
-// alert(livepayment);
+    $(document).ready(function () {  
+        $.ajaxSetup({
+            headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    });
 
-$(document).ready(function () {  
-$.ajaxSetup({
-headers: {
-'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-}
-});
-});
+    function pay(amount) {
+        var video_id = $('#video_id').val();
+        var handler = StripeCheckout.configure({
+        key: publishable_key,
+        locale: 'auto',
+        token: function (token) {
+            console.log('Token Created!!'); // You can access the token ID with `token.id`.
+            console.log(token); // Get the token ID to your server-side code for use.
+            $('#token_response').html(JSON.stringify(token));
 
-function pay(amount) {
-    var video_id = $('#video_id').val();
-    var handler = StripeCheckout.configure({
-    key: publishable_key,
-    locale: 'auto',
-    token: function (token) {
-    // You can access the token ID with `token.id`.
-    // Get the token ID to your server-side code for use.
-    console.log('Token Created!!');
-    console.log(token);
+            $.ajax({
+            url: '<?php echo URL::to("purchase-live") ;?>',
+            method: 'post',
+            data: {"_token": "<?= csrf_token(); ?>",
+                tokenId:token.id, 
+                amount: amount , 
+                video_id: video_id 
+            },
+            success: (response) => {
+            alert("You have done  Payment !");
+            setTimeout(function() {
+            location.reload();
+            }, 2000);
+        },
+        error: (error) => {
+        swal('error');
+        //swal("Oops! Something went wrong");
+        /* setTimeout(function() {
+        location.reload();
+        }, 2000);*/
+        }
+        })
+        // $.ajax({
+        // url: livepayment,
+        // method: 'post',
+        // data: {  _token: '<?= csrf_token(); ?>',tokenId: token.id, amount: amount , video_id: video_id },
+        // success: (response) => {
+        // swal("You have done  Payment !");
+        // setTimeout(function() {
+        // location.reload();
+        // }, 2000);
 
-    $('#token_response').html(JSON.stringify(token));
-    $.ajax({
-    url: '<?php echo URL::to("purchase-live") ;?>',
-    method: 'post',
-    data: {"_token": "<?= csrf_token(); ?>",
-        tokenId:token.id, 
-        amount: amount , 
-        video_id: video_id 
-    },
-    success: (response) => {
-    alert("You have done  Payment !");
-    setTimeout(function() {
-    location.reload();
-    }, 2000);
-},
-error: (error) => {
-swal('error');
-//swal("Oops! Something went wrong");
-/* setTimeout(function() {
-location.reload();
-}, 2000);*/
-}
-})
-// $.ajax({
-// url: livepayment,
-// method: 'post',
-// data: {  _token: '<?= csrf_token(); ?>',tokenId: token.id, amount: amount , video_id: video_id },
-// success: (response) => {
-// swal("You have done  Payment !");
-// setTimeout(function() {
-// location.reload();
-// }, 2000);
-
-// },
-// error: (error) => {
-// swal('error');
-// //swal("Oops! Something went wrong");
-// /* setTimeout(function() {
-// location.reload();
-// }, 2000);*/
-// }
-// })
-}
+        // },
+        // error: (error) => {
+        // swal('error');
+        // //swal("Oops! Something went wrong");
+        // /* setTimeout(function() {
+        // location.reload();
+        // }, 2000);*/
+        // }
+        // })
+    }
 });
 
-
-handler.open({
-name: '<?php $settings = App\Setting::first(); echo $settings->website_name;?>',
-description: 'PAY PeR VIEW',
-amount: amount * 100
+    handler.open({
+    name: '<?php $settings = App\Setting::first(); echo $settings->website_name;?>',
+    description: 'PAY PeR VIEW',
+    amount: amount * 100
 });
 }
 </script>
@@ -757,8 +752,9 @@ document.getElementById("demo").innerHTML = "EXPIRED";
 <script type="text/javascript">
 
     var ppv_exits = <?= $ppv_exist ?>;
+    var ppv_exist_unseen = <? $ppv_exist_unseen ?>;
 
-    if( ppv_exits == 1){
+    if( ppv_exits == 1 && ppv_exist_unseen == 0 ){
         
         function PPV_live_PurchaseUpdate() {
 
@@ -770,12 +766,37 @@ document.getElementById("demo").innerHTML = "EXPIRED";
                         "live_id" : "<?php echo $video->id; ?>", 
                     },
                 success:function(data) {
-                    //   
+                    if(data.status == true){
+                        window.location.reload();
+                    }
                 }
                 });
         }
 
         var i = setInterval(function() { PPV_live_PurchaseUpdate(); }, 60 * 1000);
+    }
+
+    else if( ppv_exits == 1 && ppv_exist_unseen == 1 ){
+
+        function PPV_live_PurchaseUpdate_unseen() {
+
+        $.ajax({
+                type:'post',
+                url:'<?= route('PPV_live_PurchaseUpdate_unseen') ?>',
+                data: {
+                        "_token"   : "<?= csrf_token(); ?>",
+                        "live_id" : "<?php echo $video->id; ?>", 
+                    },
+                success:function(data) {
+                    if(data.status == true){
+                        window.location.reload();
+                    }
+                }
+                });
+        }
+
+        var set_Interval = setInterval(function() { PPV_live_PurchaseUpdate_unseen(); }, 60 * 1000);
+
     }
     
 </script>
