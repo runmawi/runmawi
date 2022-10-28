@@ -14,7 +14,7 @@ class AddLivestreamViewCountToLivePurchasesTable extends Migration
     public function up()
     {
         Schema::table('live_purchases', function (Blueprint $table) {
-            $table->string('livestream_view_count')->nullable()->after('status');
+            $table->integer('livestream_view_count')->nullable()->after('status');
         });
     }
 
