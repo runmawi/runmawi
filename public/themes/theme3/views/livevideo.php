@@ -740,4 +740,55 @@ document.getElementById("demo").innerHTML = "EXPIRED";
 }, 1000);
 </script>
 
+
+       <!-- PPV Purchase -->
+
+       <script type="text/javascript">
+
+var ppv_exits = <?= $ppv_exists ?>;
+
+if( ppv_exits == 1 ){
+
+    var i = setInterval(function() { PPV_live_PurchaseUpdate(); }, 60 * 1000);
+
+    window.onload = unseen_expirydate_checking();
+    
+    function PPV_live_PurchaseUpdate() {
+
+    $.ajax({
+            type:'post',
+            url:'<?= route('PPV_live_PurchaseUpdate') ?>',
+            data: {
+                    "_token"   : "<?= csrf_token(); ?>",
+                    "live_id" : "<?php echo $video->id; ?>", 
+                },
+            success:function(data) {
+                if(data.status == true){
+                    window.location.reload();
+                }
+            }
+            });
+    }
+
+    function unseen_expirydate_checking() {
+
+        $.ajax({
+            type:'post',
+            url:'<?= route('unseen_expirydate_checking') ?>',
+            data: {
+                    "_token"   : "<?= csrf_token(); ?>",
+                    "live_id" : "<?php echo $video->id; ?>", 
+                },
+            success:function(data) {
+                console.log(data);
+                if(data.status == true){
+                    window.location.reload();
+                }
+            }
+        });
+    }
+}
+
+</script>
+
 <?php include ('footer.blade.php'); ?>

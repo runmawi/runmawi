@@ -1958,4 +1958,4 @@ Route::get('/liveStream', 'AdminLiveStreamController@liveStream')->name('liveStr
 // PPV_live_PurchaseUpdate
 
 Route::post('/PPV_live_PurchaseUpdate', 'LiveStreamController@PPV_live_PurchaseUpdate')->name('PPV_live_PurchaseUpdate');
-Route::post('/PPV_live_PurchaseUpdate_unseen', 'LiveStreamController@PPV_live_PurchaseUpdate_unseen')->name('PPV_live_PurchaseUpdate_unseen');
+Route::post('/unseen_expirydate_checking', 'LiveStreamController@unseen_expirydate_checking')->name('unseen_expirydate_checking');
