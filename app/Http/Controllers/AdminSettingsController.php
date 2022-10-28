@@ -90,7 +90,6 @@ class AdminSettingsController extends Controller
         }else{
         $transcoding_resolution = null;
         }
-        // dd($transcoding_resolution);
         
         if(!empty($request['instagram_page_id'])){
         $instagram_page_id = $request['instagram_page_id'];
@@ -128,21 +127,24 @@ class AdminSettingsController extends Controller
           }else{
           $transcoding_access = 0;
           }
+
           if(!empty($request['activation_email'])){
             $activation_email = $request['activation_email'];
-            }else{
+          }else{
             $activation_email = 0;
-            }
-            if(!empty($request['ios_product_id'])){
+          }
+
+          if(!empty($request['ios_product_id'])){
             $ios_product_id = $request['ios_product_id'];
-            }else{
+          }else{
             $ios_product_id = null;
-            }
-            if(!empty($request['ios_plan_price'])){
+          }
+
+          if(!empty($request['ios_plan_price'])){
             $ios_plan_price = $request['ios_plan_price'];
-            }else{
+          }else{
             $ios_plan_price = null;
-            }
+          }
 
             // dd($activation_email);
 		$settings = Setting::find(1);
@@ -196,7 +198,9 @@ class AdminSettingsController extends Controller
     $settings->ios_plan_price = $ios_plan_price;
 		$settings->ios_product_id = $ios_product_id;
 		$settings->notification_key = $request['notification_key'];
-        
+		$settings->expiry_time_started = $request['expiry_time_started'];
+		$settings->expiry_time_notstarted = $request['expiry_time_notstarted'];
+
         $settings->ppv_status = $request['ppv_status'];
         
          $path = public_path().'/uploads/settings/';

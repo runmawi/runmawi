@@ -364,7 +364,6 @@ border-radius: 0px 4px 4px 0px;
                         <p class="p1">IOS Product Id :</p>
                         <div class="form-group">
                             <div class="make-switch" data-on="success" data-off="warning">
-
                                 <input type="text" class="form-control" name="ios_product_id" id="ios_product_id"
                                     placeholder=""
                                     value="@if(!empty($settings->ios_product_id)){{ $settings->ios_product_id }}@endif" />
@@ -393,6 +392,46 @@ border-radius: 0px 4px 4px 0px;
                 </div>
             </div>
         </div>
+
+                                        {{-- Set Expiry time --}}
+
+        <div class="row mt-3">
+            <div class="col-sm-6" >
+                <div class="panel panel-primary" data-collapsed="0">
+                    <div class="panel-heading">
+                        <div class="panel-title"><label> Set Expiry time  </label> <span> (If Live Video Started) </span></div>
+                        <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="make-switch" data-on="success" data-off="warning">
+                                <input type="text" class="form-control" name="expiry_time_started" id="expiry_time_started" placeholder="Set Expiry time (HH:MM:SS)"
+                                    value="@if(!empty($settings->expiry_time_started)){{ $settings->expiry_time_started }}@endif" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6" >
+                <div class="panel panel-primary" data-collapsed="0">
+                    <div class="panel-heading">
+                        <div class="panel-title"><label> Set Expiry time </label> <span> (If Live Video Not Started) </span> </div>
+                        <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="make-switch" data-on="success" data-off="warning">
+                                <input type="datetime-local" class="form-control" name="expiry_time_notstarted" id="expiry_time_notstarted" placeholder="Set Expiry time (00:00:00)"
+                                    value="@if(!empty($settings->expiry_time_notstarted)){{ $settings->expiry_time_notstarted }}@endif" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+                                {{-- End Set Expiry time --}}
     </div>
                                 <!-- video setting -->
 
@@ -1225,13 +1264,16 @@ border-radius: 0px 4px 4px 0px;
 		
 @section('javascript')
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script type="text/javascript" src="{{ URL::to('/assets/js/jquery.mask.min.js') }}"></script>
 
 <script>
     $(document).ready(function(){
-        // $('#message').fadeOut(120);
+
         setTimeout(function() {
             $('#successMessage').fadeOut('fast');
         }, 3000);
+
+        $("#expiry_time_started").mask("00:00:00");
     })
 </script>
 	<script src="{{ '/application/assets/admin/js/bootstrap-switch.min.js' }}"></script>
