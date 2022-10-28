@@ -199,7 +199,10 @@ class AdminSettingsController extends Controller
 		$settings->ios_product_id = $ios_product_id;
 		$settings->notification_key = $request['notification_key'];
 		$settings->expiry_time_started = $request['expiry_time_started'];
-		$settings->expiry_time_notstarted = $request['expiry_time_notstarted'];
+		$settings->expiry_day_notstarted = $request['expiry_day_notstarted'];
+		$settings->expiry_hours_notstarted = $request['expiry_hours_notstarted'];
+		$settings->expiry_min_notstarted = $request['expiry_min_notstarted'];
+
 
         $settings->ppv_status = $request['ppv_status'];
         

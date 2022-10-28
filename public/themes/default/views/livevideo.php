@@ -751,10 +751,13 @@ document.getElementById("demo").innerHTML = "EXPIRED";
 
 <script type="text/javascript">
 
-    var ppv_exits = <?= $ppv_exist ?>;
-    var ppv_exist_unseen = <? $ppv_exist_unseen ?>;
+    var ppv_exits = <?= $ppv_exists ?>;
 
-    if( ppv_exits == 1 && ppv_exist_unseen == 0 ){
+    if( ppv_exits == 1 ){
+
+        var i = setInterval(function() { PPV_live_PurchaseUpdate(); }, 60 * 1000);
+
+        window.onload = unseen_expirydate_checking();
         
         function PPV_live_PurchaseUpdate() {
 
@@ -773,30 +776,23 @@ document.getElementById("demo").innerHTML = "EXPIRED";
                 });
         }
 
-        var i = setInterval(function() { PPV_live_PurchaseUpdate(); }, 60 * 1000);
-    }
+        function unseen_expirydate_checking() {
 
-    else if( ppv_exits == 1 && ppv_exist_unseen == 1 ){
-
-        function PPV_live_PurchaseUpdate_unseen() {
-
-        $.ajax({
+            $.ajax({
                 type:'post',
-                url:'<?= route('PPV_live_PurchaseUpdate_unseen') ?>',
+                url:'<?= route('unseen_expirydate_checking') ?>',
                 data: {
                         "_token"   : "<?= csrf_token(); ?>",
                         "live_id" : "<?php echo $video->id; ?>", 
                     },
                 success:function(data) {
+                    console.log(data);
                     if(data.status == true){
                         window.location.reload();
                     }
                 }
-                });
+            });
         }
-
-        var set_Interval = setInterval(function() { PPV_live_PurchaseUpdate_unseen(); }, 60 * 1000);
-
     }
     
 </script>
