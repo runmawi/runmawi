@@ -19,8 +19,8 @@ class CreateLivePurchasesTable extends Migration
             $table->integer('audio_id')->nullable();
             $table->integer('movie_id')->nullable();
             $table->timestamp('expired_date');
-            $table->timestamp('from_time');
-            $table->timestamp('to_time');
+            $table->dateTime('from_time');
+            $table->dateTime('to_time');
             $table->integer('video_id')->nullable();
             $table->string('amount')->nullable();
             $table->integer('status')->nullable();
