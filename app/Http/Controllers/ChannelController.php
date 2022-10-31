@@ -681,7 +681,7 @@ class ChannelController extends Controller
                             "users.id as user_id"
                         )
                         ->first();
-                        if($user->user_id == Auth::user()->id){
+                        if(!Auth::guest() && $user->user_id == Auth::user()->id ){
                             $video_access = 'free';
                         }else{ 
                             $video_access = 'pay';
@@ -700,13 +700,13 @@ class ChannelController extends Controller
                         "users.id as user_id"
                     )
                     ->first();
-                    if($user->user_id == Auth::user()->id){
+                    if(!Auth::guest() &&  $user->user_id == Auth::user()->id){
                         $video_access = 'free';
                     }else{ 
                         $video_access = 'pay';
                      }
             }else{
-                if(@$categoryVideos->access  == 'ppv' && Auth::user()->role != 'admin' ){
+                if(!Auth::guest() &&  @$categoryVideos->access  == 'ppv' && Auth::user()->role != 'admin' ){
                     $video_access = 'pay';
                 }else{
                     $video_access = 'free';
@@ -1029,7 +1029,7 @@ class ChannelController extends Controller
                                     "users.id as user_id"
                                 )
                                 ->first();
-                                if($user->user_id == Auth::user()->id){
+                                if(!Auth::guest() &&  $user->user_id == Auth::user()->id){
                                     $video_access = 'free';
                                 }else{ 
                                     $video_access = 'pay';
@@ -1048,13 +1048,13 @@ class ChannelController extends Controller
                                 "users.id as user_id"
                             )
                             ->first();
-                            if($user->user_id == Auth::user()->id){
+                            if(!Auth::guest() &&  $user->user_id == Auth::user()->id){
                                 $video_access = 'free';
                             }else{ 
                                 $video_access = 'pay';
                             }
                     }else{
-                        if(@$categoryVideos->access  == 'ppv' && Auth::user()->role != 'admin' ){
+                        if(!Auth::guest() &&  @$categoryVideos->access  == 'ppv' && Auth::user()->role != 'admin' ){
                             $video_access = 'pay';
                         }else{
                             $video_access = 'free';
@@ -1239,7 +1239,7 @@ class ChannelController extends Controller
                             "users.id as user_id"
                         )
                         ->first();
-                        if($user->user_id == Auth::user()->id){
+                        if(!Auth::guest() &&  $user->user_id == Auth::user()->id){
                             $video_access = 'free';
                         }else{ 
                             $video_access = 'pay';
@@ -1258,13 +1258,13 @@ class ChannelController extends Controller
                         "users.id as user_id"
                     )
                     ->first();
-                    if($user->user_id == Auth::user()->id){
+                    if(!Auth::guest() &&  $user->user_id == Auth::user()->id){
                         $video_access = 'free';
                     }else{ 
                         $video_access = 'pay';
                     }
             }else{
-                if(@$categoryVideos->access  == 'ppv' && Auth::user()->role != 'admin' ){
+                if(!Auth::guest() &&  @$categoryVideos->access  == 'ppv' && Auth::user()->role != 'admin' ){
                     $video_access = 'pay';
                 }else{
                     $video_access = 'free';
@@ -1556,7 +1556,7 @@ class ChannelController extends Controller
                                 "users.id as user_id"
                             )
                             ->first();
-                            if($user->user_id == Auth::user()->id){
+                            if(!Auth::guest() && $user->user_id == Auth::user()->id ){
                                 $video_access = 'free';
                             }else{ 
                                 $video_access = 'pay';
@@ -1575,13 +1575,13 @@ class ChannelController extends Controller
                             "users.id as user_id"
                         )
                         ->first();
-                        if($user->user_id == Auth::user()->id){
+                        if(!Auth::guest() &&  $user->user_id == Auth::user()->id ){
                             $video_access = 'free';
                         }else{ 
                             $video_access = 'pay';
                         }
                 }else{
-                    if(@$categoryVideos->access  == 'ppv' && Auth::user()->role != 'admin' ){
+                    if(!Auth::guest() && @$categoryVideos->access  == 'ppv'&& Auth::user()->role != 'admin' ){
                         $video_access = 'pay';
                     }else{
                         $video_access = 'free';
