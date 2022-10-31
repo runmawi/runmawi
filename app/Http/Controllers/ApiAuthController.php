@@ -5484,7 +5484,7 @@ return response()->json($response, 200);
           $k2[] = $value1->audio_id;
         }
         $channel_videos = Audio::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) {
-          $item['image_url'] = URL::to('/').'/uploads/images/'.$item->image;
+          $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
           $item['mp3_url'] = $item->mp3_url;
           return $item;
         });
