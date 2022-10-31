@@ -445,7 +445,7 @@ border-radius: 0px 4px 4px 0px;
                     <div class="row" id="ppv_price">
                         <div class="col-sm-4">
                             <label class="m-0">PPV Price</label>
-                            <p class="p1">Apply PPV Price from Global Settings?</p>
+                            <p class="p1">Apply PPV Price from Global Settings?  <input type="checkbox" id="ppv_purchase_active" /> </p>
                             <div class="panel-body">
                                 <input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($video->ppv_price)){{ $video->ppv_price }}@endif" />
                                 <div class="clear"></div>
@@ -865,6 +865,20 @@ border-radius: 0px 4px 4px 0px;
 
 </script>
 
+<script>
+
+    $('#ppv_purchase_active').on('change', function(event) {
+        
+        var ppv_gobal_price = {{ $ppv_gobal_price }};
+        $('#price').val('');
+
+        var ppv_purchase_active = $("#ppv_purchase_active").prop("checked");
+            if(ppv_purchase_active == true){
+                $("#price").val(ppv_gobal_price);
+            }
+        });
+</script>
+
 {{-- Sweet alert --}}
 
 @php
@@ -1044,10 +1058,8 @@ border-radius: 0px 4px 4px 0px;
             setTimeout(function () {
                 $("#successMessage").fadeOut("fast");
             }, 3000);
+
         });
-
-
-
 
         (function(){
 
@@ -1225,4 +1237,5 @@ var tagInput1 = new TagsInput({
     tagInput1.addData([])
 
     </script>
+
 @stop @stop

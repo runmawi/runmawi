@@ -135,6 +135,8 @@ class AdminLiveStreamController extends Controller
     );
             return View::make('admin.expired_dashboard', $data);
         }else{
+            $settings = Setting::first();
+
             $data = array(
                 'headline' => '<i class="fa fa-plus-circle"></i> New Video',
                 'post_route' => URL::to('admin/livestream/store'),
@@ -147,6 +149,7 @@ class AdminLiveStreamController extends Controller
                 'liveStreamVideo_error' => '0',
                 'Rtmp_urls' => RTMP::all(),
                 'InappPurchase' => InappPurchase::all(),
+                'ppv_gobal_price' => $settings->ppv_price != null ?  $settings->ppv_price : " ",
                 );
             return View::make('admin.livestream.create_edit', $data);
         }

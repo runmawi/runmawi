@@ -686,3 +686,24 @@ function get_image_loader(){
 
     return $get_image_loader;
 }
+
+function ppv_expirytime_started()
+{
+    $ppv_expirytime_started = App\Setting::pluck('expiry_time_started')->first();
+
+    $expirytime_started = $ppv_expirytime_started != null ?  Carbon\Carbon::now()->addHours($ppv_expirytime_started)->toDateTimeString() : Carbon\Carbon::now()->addHours(3)->toDateTimeString();
+
+    return $expirytime_started;
+
+}
+
+function ppv_expirytime_notstarted()
+{
+    $expiry_day_notstarted   =  App\Setting::pluck('expiry_day_notstarted')->first();
+    $expiry_hours_notstarted =  App\Setting::pluck('expiry_hours_notstarted')->first();
+    $expiry_min_notstarted   =  App\Setting::pluck('expiry_min_notstarted')->first();
+
+    $newDateTime = Carbon\Carbon::now()->addDays($expiry_day_notstarted)->addHours($expiry_hours_notstarted)->addMinutes($expiry_min_notstarted)->toDateTimeString();
+
+    return $newDateTime;
+}
