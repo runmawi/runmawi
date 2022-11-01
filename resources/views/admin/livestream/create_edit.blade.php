@@ -203,7 +203,8 @@ border-radius: 0px 4px 4px 0px;
                                     <option value="mp4"> MP4/M3U8 URL </option>
                                     <option value="embed"> Embed URL</option>
                                     <option value="live_stream_video"> Live Stream Video</option>
-                                    
+                                    <option value="m3u_url"> M3U URL </option>
+
                                     @foreach($Rtmp_urls as $key => $urls)
                                       @php     $number = $key+1;  @endphp
                                            <option class="Encode_stream_video" value={{ "Encode_video" }} data-name="{{ $urls->rtmp_url }}" data-hls-url="{{ $urls->hls_url  }}" >{{ "RTMP Streaming"." ".$number }} </option>
@@ -222,6 +223,11 @@ border-radius: 0px 4px 4px 0px;
                                 <div class="new-video-upload mt-2" id="embed_code">
                                     <label for="embed_code"><label class="mb-1">Live Embed URL (Add the url from SRC tag)</label></label>
                                     <input type="text" name="embed_url" class="form-control" id="embed_url" value="@if(!empty($video->embed_url) ) {{ $video->embed_url}}  @endif" />
+                                </div>
+
+                                <div class="new-video-upload mt-2" id="m3u_urls">
+                                    <label for="m3u_url"><label class="mb-1"> M3U URL</label></label>
+                                    <input type="text" name="m3u_url" class="form-control" id="m3u_url" value="@if(!empty($video->m3u_url) ) {{ $video->m3u_url}}  @endif" />
                                 </div>
 
                                 <div class="new-video-upload mt-2" id="live_stream_video">
@@ -439,7 +445,7 @@ border-radius: 0px 4px 4px 0px;
                     <div class="row" id="ppv_price">
                         <div class="col-sm-4">
                             <label class="m-0">PPV Price</label>
-                            <p class="p1">Apply PPV Price from Global Settings?</p>
+                            <p class="p1">Apply PPV Price from Global Settings?  <input type="checkbox" id="ppv_purchase_active" /> </p>
                             <div class="panel-body">
                                 <input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($video->ppv_price)){{ $video->ppv_price }}@endif" />
                                 <div class="clear"></div>
@@ -742,6 +748,17 @@ border-radius: 0px 4px 4px 0px;
                 },
             },
 
+            m3u_url: {
+                required: function (element) {
+                    var action = $(".url_type").val();
+                    if (action == "m3u_url") {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                },
+            },
+
             embed_url: {
                 required: function (element) {
                     var action = $(".url_type").val();
@@ -848,6 +865,20 @@ border-radius: 0px 4px 4px 0px;
 
 </script>
 
+<script>
+
+    $('#ppv_purchase_active').on('change', function(event) {
+        
+        var ppv_gobal_price = {{ $ppv_gobal_price }};
+        $('#price').val('');
+
+        var ppv_purchase_active = $("#ppv_purchase_active").prop("checked");
+            if(ppv_purchase_active == true){
+                $("#price").val(ppv_gobal_price);
+            }
+        });
+</script>
+
 {{-- Sweet alert --}}
 
 @php
@@ -882,29 +913,48 @@ border-radius: 0px 4px 4px 0px;
         $("#mp4_code").hide();
         $("#embed_code").hide();
         $("#live_stream_video").hide();
+        $("#m3u_urls").hide();
 
         $("#url_type").change(function () {
             if ($("#url_type").val() == "mp4") {
                 $("#mp4_code").show();
                 $("#embed_code").hide();
                 $("#live_stream_video").hide();
-            } else if ($("#url_type").val() == "embed") {
+                $("#m3u_urls").hide();
+            } 
+            else if ($("#url_type").val() == "embed") {
                 $("#embed_code").show();
                 $("#mp4_code").hide();
                 $("#live_stream_video").hide();
-            }else if ($("#url_type").val() == "live_stream_video") {
+                $("#m3u_urls").hide();
+            }
+            else if ($("#url_type").val() == "live_stream_video") {
                 $("#embed_code").hide();
                 $("#mp4_code").hide();
                 $("#live_stream_video").show();
-            }else if ($("#url_type").val() == "Encode_video") {
+                $("#m3u_urls").hide();
+            }
+            else if ($("#url_type").val() == "Encode_video") {
                 $("#embed_code").hide();
                 $("#mp4_code").hide();
                 $("#live_stream_video").hide();
+                $("#m3u_urls").hide();
+            }
+            else if ($("#url_type").val() == "m3u_url") {
+                $("#embed_code").hide();
+                $("#mp4_code").hide();
+                $("#live_stream_video").hide();
+                $("#m3u_urls").show();
+            }
+            else if ($("#url_type").val() == " ") {
+                $("#embed_code").hide();
+                $("#mp4_code").hide();
+                $("#live_stream_video").hide();
+                $("#m3u_urls").hide();
             }
         });
     });
 
-    
 
     $(document).ready(function () {
         $("#publishlater").hide();
@@ -1008,10 +1058,8 @@ border-radius: 0px 4px 4px 0px;
             setTimeout(function () {
                 $("#successMessage").fadeOut("fast");
             }, 3000);
+
         });
-
-
-
 
         (function(){
 
@@ -1189,4 +1237,5 @@ var tagInput1 = new TagsInput({
     tagInput1.addData([])
 
     </script>
+
 @stop @stop

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 use \App\User as User;
 use \Redirect as Redirect;
-use Request;
+use Illuminate\Http\Request;
 use App\Setting;
 use App\LiveStream as LiveStream;
 use App\LivePurchase as LivePurchase;
@@ -87,10 +87,13 @@ class LiveStreamController extends Controller
            $settings = Setting::first(); 
 
         if(!empty($data['password_hash'])){
+            $ppv_exist = LivePurchase::where('video_id',$vid)->where('user_id',$user_id)->where('status',1)->latest()->count();
+            $ppv_exists = LivePurchase::where('video_id',$vid)->where('user_id',$user_id)->where('status',1)->latest()->count();
 
-           $ppv_exist = LivePurchase::where('video_id',$vid)->where('user_id',$user_id)->count();
           }else{
             $ppv_exist = [];
+            $ppv_exists = 0;
+
           }
 
             $wishlisted = false;
@@ -154,6 +157,7 @@ class LiveStreamController extends Controller
                  'password_hash' => $password_hash,
                  'publishable_key' => $publishable_key,
                  'ppv_exist' => $ppv_exist,
+                 'ppv_exists' => $ppv_exists ,
                  'ppv_price' => $categoryVideos->ppv_price,
                  'watchlatered' => $watchlater,
                  'mywishlisted' => $wishlisted,
@@ -256,5 +260,81 @@ class LiveStreamController extends Controller
 
         }
 
+        public function PPV_live_PurchaseUpdate( Request $request)
+        {
+
+          try {
+              $current_time = Carbon::now()->format('Y-m-d H:i:s');
+              $live_id      = $request->live_id;
+
+              $live_purchase = LivePurchase::where('video_id',$live_id)->where('user_id',Auth::user()->id)->first();
+
+              LivePurchase::where('video_id',$live_id)->where('user_id',Auth::user()->id)->update([
+                'livestream_view_count' => 1 ,
+              ]);
+
+              if( $live_purchase != null &&  $live_purchase->expired_date <= $current_time ){
+
+                  LivePurchase::where('video_id',$live_id)->where('user_id',Auth::user()->id)->update([
+                    'status' => 0 ,
+                  ]);
+
+                    $data = array(
+                      'status' => true,
+                      'message' => 'Live Purchase status updated' ,
+                    );
+              }
+              else{
+                  $data = array(
+                    'status' => false,
+                    'message' => 'Live Purchase status No changes done' ,
+                  );
+              }
+          } 
+          catch (\Throwable $th) {
+
+              $data = array(
+                'status' => false,
+                'message' => $th->getMessage(),
+              );
+          }
+            
+          return response()->json($data, 200);
+        }
+
+        public function unseen_expirydate_checking( Request $request )
+        {
+          try {
+              $current_time = Carbon::now()->format('Y-m-d H:i:s');
+
+              $unseen_expiry_date = LivePurchase::where('video_id',$request->live_id)->where('livestream_view_count',0)->where('user_id',Auth::user()->id)->pluck('unseen_expiry_date')->first();
+
+              if(  $unseen_expiry_date != null && $unseen_expiry_date <= $current_time ){
+
+                LivePurchase::where('video_id',$request->live_id)->where('user_id',Auth::user()->id)->update([
+                  'status' => 0 ,
+                ]);
+
+                $data = array(
+                  'status' => true,
+                  'message' => 'Unseen Expiry-date cheacking PPV purchase updated Sucessfully' ,
+                );
+              }
+              else{
+                $data = array(
+                  'status' => false,
+                  'message' => 'Unseen Expiry-date cheacking PPV purchase- No changes done' ,
+                );
+              }
+          } 
+          catch (\Throwable $th) {
+
+              $data = array(
+                'status' => false,
+                'message' => $th->getMessage() ,
+              );
+          }
+          return response()->json($data, 200);
+      }
 
 }

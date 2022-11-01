@@ -126,14 +126,13 @@ public function RentPaypal(Request $request)
 
   public function StoreLive(Request $request)
   {
+   
     $daten = date('m-d-Y h:i:s ', time());    
     $setting = Setting::first();   
     $ppv_hours = $setting->ppv_hours;
-    $d = new \DateTime('now');
-    $d->setTimezone(new \DateTimeZone('Asia/Kolkata'));
-    $now = $d->format('Y-m-d h:i:s a');
-    $time = date('h:i:s', strtotime($now));
-    $to_time = date('Y-m-d H:i:s',strtotime('+'.$ppv_hours.' hour',strtotime($now))); 
+
+    $to_time = ppv_expirytime_started(); 
+
     $user_id = Auth::user()->id;
     $video_id = $request->get('video_id');
     $date = date('YYYY-MM-DD');
@@ -141,7 +140,9 @@ public function RentPaypal(Request $request)
     $video = LiveStream::where('id','=',$video_id)->where('uploaded_by','CPP')->first();
 
     $channelvideo = LiveStream::where('id','=',$video_id)->where('uploaded_by','Channel')->first();
-  
+
+    $livestream_videos = LiveStream::where('id','=',$video_id)->first();
+
     if(!empty($video)){
       $moderators_id = $video->user_id;
      }
@@ -182,11 +183,11 @@ public function RentPaypal(Request $request)
   
     }
     else{
-      $total_amount = $video->ppv_price;
-      $title =  $video->title;
+      $total_amount = $livestream_videos->ppv_price;
+      $title =  $livestream_videos->title;
       $commssion = VideoCommission::first();
       $percentage = null; 
-      $ppv_price = $video->ppv_price;
+      $ppv_price = $livestream_videos->ppv_price;
       $admin_commssion =  null;
       $moderator_commssion = null;
       $moderator_id = null;
@@ -254,6 +255,8 @@ public function RentPaypal(Request $request)
     $livepurchase->video_id = $video_id;
     $livepurchase->to_time = $to_time;
     $livepurchase->expired_date = $to_time;
+    $livepurchase->from_time = Carbon::now()->format('Y-m-d H:i:s');
+    $livepurchase->unseen_expiry_date = ppv_expirytime_notstarted();
     $livepurchase->amount = $request->get('amount');
     $livepurchase->status = 1;
     $livepurchase->save();

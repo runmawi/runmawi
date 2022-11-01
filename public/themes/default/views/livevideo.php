@@ -1,7 +1,5 @@
 
-<?php include ('header.php'); 
-//    dd($data);
-  ?>
+<?php include ('header.php');  ?>
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <style type="text/css">
@@ -88,59 +86,57 @@ if ($ppv_exist > 0 || Auth::user()->subscribed() || Auth::user()->role == "admin
                         <!-- <source src="<?php echo URL::to('/storage/app/public/') . '/' . $video->path . '_2_1000.m3u8'; ?>" type='application/x-mpegURL' label='720p' res='720'/>  -->
                     </video>
 
-            <?php }elseif(!empty($video->embed_url)  && $video->url_type == "embed"){ ?> 
-                <div class="plyr__video-embed" id="player">
-                    <iframe
-                        src="<?php if(!empty($video->embed_url)){ echo $video->embed_url	; }else { } ?>"
-                        allowfullscreen
-                        allowtransparency
-                        allow="autoplay">
-                    </iframe>
-                </div>
-                <?php  }elseif(!empty($request_url == "m3u8")  && $video->url_type == "mp4"){  ?> 
-                    <!-- <div class="plyr__video-embed" id="player"> -->
-                        <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->mp4_url ?>">
-                        <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
-                        <input type="hidden" id="live" name="live" value="live">
-                        <input type="hidden" id="request_url" name="request_url" value="<?php echo $request_url ?>">
+            <?php } elseif(!empty($video->embed_url)  && $video->url_type == "embed"){ ?> 
 
-                        <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
-                            <source  type="application/x-mpegURL"  src="<?php echo $video->mp4_url; ?>" >
-                        </video>
-                    <!-- </div>  -->
+                    <div class="plyr__video-embed" id="player">
+                        <iframe
+                            src="<?php if(!empty($video->embed_url)){ echo $video->embed_url	; }else { } ?>"
+                            allowfullscreen
+                            allowtransparency
+                            allow="autoplay">
+                        </iframe>
+                    </div>
+
+            <?php  }elseif(!empty($request_url == "m3u8")  && $video->url_type == "mp4"){  ?> 
+
+                    <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->mp4_url ?>">
+                    <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
+                    <input type="hidden" id="live" name="live" value="live">
+                    <input type="hidden" id="request_url" name="request_url" value="<?php echo $request_url ?>">
+
+                    <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                        <source  type="application/x-mpegURL"  src="<?php echo $video->mp4_url; ?>" >
+                    </video>
+                    
             <?php }elseif(!empty($video->url_type == "Encode_video")){  ?>
 
-                        <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->hls_url ; ?>">
-                        <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
-                        <input type="hidden" id="live" name="live" value="live">
-                        <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
+                    <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->hls_url ; ?>">
+                    <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
+                    <input type="hidden" id="live" name="live" value="live">
+                    <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
 
-                         <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
-                            <source  type="application/x-mpegURL"  src="<?php echo $video->hls_url ; ?>" >
-                        </video>
+                    <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                        <source  type="application/x-mpegURL"  src="<?php echo $video->hls_url ; ?>" >
+                    </video>
 
-               <?php  }elseif(!empty($video->url_type ) && $video->url_type == "live_stream_video"){  ?>
+            <?php  }elseif(!empty($video->url_type ) && $video->url_type == "live_stream_video"){  ?>
 
-                <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->live_stream_video; ?>">
-                <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
-                <input type="hidden" id="live" name="live" value="live">
-                <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
+                    <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->live_stream_video; ?>">
+                    <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
+                    <input type="hidden" id="live" name="live" value="live">
+                    <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
 
-                 <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
-                    <source  type="application/x-mpegURL"  src="<?php echo $video->hls_url ; ?>" >
-                </video>
+                    <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                        <source  type="application/x-mpegURL"  src="<?php echo $video->hls_url ; ?>" >
+                    </video>
 
-       <?php  }elseif(!empty($video->url_type ) && $video->url_type == "live_stream_video"){  ?>
+            <?php  }elseif(!empty($video->url_type ) && $video->url_type == "m3u_url"){   ?>
+       
+                <div  id="m3u_player" width="100%">
+                      
+                </div>
 
-        <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->live_stream_video; ?>">
-        <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
-        <input type="hidden" id="live" name="live" value="live">
-        <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
-            <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
-                        <source type="application/x-mpegURL" src="<?php echo $video->live_stream_video ; ?>">
-            </video>
-
-    <?php } ?>
+            <?php } ?>
 
         <div class="playertextbox hide">
             <p> <?php if (isset($videonext)) { ?>
@@ -167,15 +163,14 @@ if ($ppv_exist > 0 || Auth::user()->subscribed() || Auth::user()->role == "admin
                         <h2 class="mb-3">Pay now to watch <?php echo $video->title; ?></h2>
                         <div class="clear"></div>
 
-                       
-            <!-- Stripe Button -->
-                    <button class="btn btn-primary btn-block" onclick="pay(<?php echo $video->ppv_price; ?>)">Watch Now For <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
-
-            <!-- Razorpay Button -->
-            <?php if($Razorpay_payment_setting !=null && $Razorpay_payment_setting->payment_type == "Razorpay" ){?>
-                    <button class="btn btn-primary btn-block" onclick="location.href ='<?= URL::to('RazorpayLiveRent/'.$video->id.'/'.$video->ppv_price) ?>' ;" >Razorpay Purchase For <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
-            <?php } ?>
-                    </div>
+                                <!-- Stripe Button -->
+                                    <button class="btn btn-primary btn-block" onclick="pay(<?php echo $video->ppv_price; ?>)">Watch Now For <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
+                           
+                                <!-- Razorpay Button -->
+                            <?php if($Razorpay_payment_setting !=null && $Razorpay_payment_setting->payment_type == "Razorpay" ){?>
+                                    <button class="btn btn-primary btn-block" onclick="location.href ='<?= URL::to('RazorpayLiveRent/'.$video->id.'/'.$video->ppv_price) ?>' ;" >Razorpay Purchase For <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
+                            <?php } ?>
+                        </div>
                 </div>
             </div>
         </div>
@@ -596,79 +591,76 @@ settings: "unslick" // destroys slick
 <script src="https://checkout.stripe.com/checkout.js"></script>
 
 <script type="text/javascript">
-var livepayment = $('#purchase_url').val();
-var publishable_key = $('#publishable_key').val();
 
+    var livepayment = $('#purchase_url').val();
+    var publishable_key = $('#publishable_key').val();
 
-// alert(livepayment);
+    $(document).ready(function () {  
+        $.ajaxSetup({
+            headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    });
 
-$(document).ready(function () {  
-$.ajaxSetup({
-headers: {
-'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-}
-});
-});
+    function pay(amount) {
+        var video_id = $('#video_id').val();
+        var handler = StripeCheckout.configure({
+        key: publishable_key,
+        locale: 'auto',
+        token: function (token) {
+            console.log('Token Created!!'); // You can access the token ID with `token.id`.
+            console.log(token); // Get the token ID to your server-side code for use.
+            $('#token_response').html(JSON.stringify(token));
 
-function pay(amount) {
-var video_id = $('#video_id').val();
+            $.ajax({
+            url: '<?php echo URL::to("purchase-live") ;?>',
+            method: 'post',
+            data: {"_token": "<?= csrf_token(); ?>",
+                tokenId:token.id, 
+                amount: amount , 
+                video_id: video_id 
+            },
+            success: (response) => {
+            alert("You have done  Payment !");
+            setTimeout(function() {
+            location.reload();
+            }, 2000);
+        },
+        error: (error) => {
+        swal('error');
+        //swal("Oops! Something went wrong");
+        /* setTimeout(function() {
+        location.reload();
+        }, 2000);*/
+        }
+        })
+        // $.ajax({
+        // url: livepayment,
+        // method: 'post',
+        // data: {  _token: '<?= csrf_token(); ?>',tokenId: token.id, amount: amount , video_id: video_id },
+        // success: (response) => {
+        // swal("You have done  Payment !");
+        // setTimeout(function() {
+        // location.reload();
+        // }, 2000);
 
-var handler = StripeCheckout.configure({
-
-key: publishable_key,
-locale: 'auto',
-token: function (token) {
-// You can access the token ID with `token.id`.
-// Get the token ID to your server-side code for use.
-console.log('Token Created!!');
-console.log(token);
-$('#token_response').html(JSON.stringify(token));
-$.ajax({
-url: '<?php echo URL::to("purchase-live") ;?>',
-method: 'post',
-data: {"_token": "<?= csrf_token(); ?>",tokenId:token.id, amount: amount , video_id: video_id },
-success: (response) => {
-alert("You have done  Payment !");
-setTimeout(function() {
-location.reload();
-}, 2000);
-
-},
-error: (error) => {
-swal('error');
-//swal("Oops! Something went wrong");
-/* setTimeout(function() {
-location.reload();
-}, 2000);*/
-}
-})
-// $.ajax({
-// url: livepayment,
-// method: 'post',
-// data: {  _token: '<?= csrf_token(); ?>',tokenId: token.id, amount: amount , video_id: video_id },
-// success: (response) => {
-// swal("You have done  Payment !");
-// setTimeout(function() {
-// location.reload();
-// }, 2000);
-
-// },
-// error: (error) => {
-// swal('error');
-// //swal("Oops! Something went wrong");
-// /* setTimeout(function() {
-// location.reload();
-// }, 2000);*/
-// }
-// })
-}
+        // },
+        // error: (error) => {
+        // swal('error');
+        // //swal("Oops! Something went wrong");
+        // /* setTimeout(function() {
+        // location.reload();
+        // }, 2000);*/
+        // }
+        // })
+    }
 });
 
-
-handler.open({
-name: '<?php $settings = App\Setting::first(); echo $settings->website_name;?>',
-description: 'PAY PeR VIEW',
-amount: amount * 100
+    handler.open({
+    name: '<?php $settings = App\Setting::first(); echo $settings->website_name;?>',
+    description: 'PAY PeR VIEW',
+    amount: amount * 100
 });
 }
 </script>
@@ -738,6 +730,71 @@ clearInterval(x);
 document.getElementById("demo").innerHTML = "EXPIRED";
 }
 }, 1000);
+</script>
+
+<!-- clappr Player -->
+
+<script type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/@clappr/player@latest/dist/clappr.min.js">
+</script>
+
+<script>
+    var player = new Clappr.Player(
+        {
+            source: "https://stream.flicknexs.com:9043/hls/3558376416/index.m3u8", 
+            parentId: "#m3u_player" ,
+            poster :'http://clappr.io/poster.png'
+        });
+</script>
+
+        <!-- PPV Purchase -->
+
+<script type="text/javascript">
+
+    var ppv_exits = <?= $ppv_exists ?>;
+
+    if( ppv_exits == 1 ){
+
+        var i = setInterval(function() { PPV_live_PurchaseUpdate(); }, 60 * 1000);
+
+        window.onload = unseen_expirydate_checking();
+        
+        function PPV_live_PurchaseUpdate() {
+
+        $.ajax({
+                type:'post',
+                url:'<?= route('PPV_live_PurchaseUpdate') ?>',
+                data: {
+                        "_token"   : "<?= csrf_token(); ?>",
+                        "live_id" : "<?php echo $video->id; ?>", 
+                    },
+                success:function(data) {
+                    if(data.status == true){
+                        window.location.reload();
+                    }
+                }
+                });
+        }
+
+        function unseen_expirydate_checking() {
+
+            $.ajax({
+                type:'post',
+                url:'<?= route('unseen_expirydate_checking') ?>',
+                data: {
+                        "_token"   : "<?= csrf_token(); ?>",
+                        "live_id" : "<?php echo $video->id; ?>", 
+                    },
+                success:function(data) {
+                    console.log(data);
+                    if(data.status == true){
+                        window.location.reload();
+                    }
+                }
+            });
+        }
+    }
+    
 </script>
 
 <?php include ('footer.blade.php'); ?>

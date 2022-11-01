@@ -135,6 +135,8 @@ class AdminLiveStreamController extends Controller
     );
             return View::make('admin.expired_dashboard', $data);
         }else{
+            $settings = Setting::first();
+
             $data = array(
                 'headline' => '<i class="fa fa-plus-circle"></i> New Video',
                 'post_route' => URL::to('admin/livestream/store'),
@@ -147,6 +149,7 @@ class AdminLiveStreamController extends Controller
                 'liveStreamVideo_error' => '0',
                 'Rtmp_urls' => RTMP::all(),
                 'InappPurchase' => InappPurchase::all(),
+                'ppv_gobal_price' => $settings->ppv_price != null ?  $settings->ppv_price : " ",
                 );
             return View::make('admin.livestream.create_edit', $data);
         }
@@ -244,7 +247,6 @@ class AdminLiveStreamController extends Controller
             
         $data['user_id'] = Auth::user()->id;
         
-//        unset($data['tags']);
         
         if(empty($data['active'])){
             $data['active'] = 0;
@@ -266,8 +268,6 @@ class AdminLiveStreamController extends Controller
         if(empty($data['id'])){
             $data['id'] = 0;
         }  
-        
-       
 
         if(empty($data['featured'])){
             $data['featured'] = 0;
@@ -288,12 +288,12 @@ class AdminLiveStreamController extends Controller
             $data['access'] = 0;
         }  
         if(isset($data['duration'])){
-                //$str_time = $data
                 $str_time = preg_replace("/^([\d]{1,2})\:([\d]{2})$/", "00:$1:$2", $data['duration']);
                 sscanf($str_time, "%d:%d:%d", $hours, $minutes, $seconds);
                 $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
                 $data['duration'] = $time_seconds;
         }
+        
         // $settings = Setting::first();
         // if(!empty($data['ppv_price'])){
         //     $ppv_price = $data['ppv_price'] ;
@@ -305,28 +305,29 @@ class AdminLiveStreamController extends Controller
 
         if(empty($data['ppv_price'])){
             $settings = Setting::where('ppv_status','=',1)->first();
+
             if(!empty($settings)){
-                // $ppv_price = $settings->ppv_price;
                 $ppv_price = null;
             }else{
                 $ppv_price = null;
             }
-            } elseif(!empty($data['ppv_price'])) {
-                $ppv_price = $data['ppv_price'];
-            }  else{
-                $ppv_price = null;                
-            }
-            if ( !empty($data['rating'])) {
-                $rating  = $data['rating'];
-            } else {
-                $rating  = null;
-            }
+        } elseif(!empty($data['ppv_price'])) {
+            $ppv_price = $data['ppv_price'];
+        }  else{
+            $ppv_price = null;                
+        }
 
-            if (!empty($data['searchtags'])) {
-                $searchtags  = $data['searchtags'];
-            } else {
-                $searchtags  = null;
-            }
+        if ( !empty($data['rating'])) {
+            $rating  = $data['rating'];
+        } else {
+            $rating  = null;
+        }
+
+        if (!empty($data['searchtags'])) {
+            $searchtags  = $data['searchtags'];
+        } else {
+            $searchtags  = null;
+        }
 
         if(empty($data['embed_url'])){
             $embed_url = null;
@@ -346,7 +347,7 @@ class AdminLiveStreamController extends Controller
 
         $movie = new LiveStream;
 
-// live stream video
+    // live stream video
         if(!empty($data['live_stream_video'])){
 
             $live_stream_video = $data['live_stream_video'];
@@ -413,6 +414,7 @@ class AdminLiveStreamController extends Controller
 
         $movie->title =$data['title'];
         $movie->embed_url =$embed_url;
+        $movie->m3u_url =$data['m3u_url'];
         $movie->url_type =$url_type;
         $movie->details =$data['details'];
         $movie->rating =$rating;
@@ -437,7 +439,6 @@ class AdminLiveStreamController extends Controller
         $movie->player_image = $player_PC_image;
         $movie->user_id =Auth::User()->id;
         $movie->ios_ppv_price =$request->ios_ppv_price;
-      
         $movie->save();
 
         // $movie = LiveStream::create($data);
@@ -455,10 +456,8 @@ class AdminLiveStreamController extends Controller
                     $category->category_id = $value;
                     $category->save();
                 }
-
             }
         
-
             /*save LiveLanguage*/
             if(!empty($languages)){
                 LiveLanguage::where('live_id', $movie->id)->delete();
@@ -468,7 +467,6 @@ class AdminLiveStreamController extends Controller
                     $serieslanguage->language_id = $value;
                     $serieslanguage->save();
                 }
-
             }
 
             if( $data['url_type'] == "Encode_video" ){
@@ -484,7 +482,6 @@ class AdminLiveStreamController extends Controller
             else{
                 return Redirect::to('admin/livestream')->with(array('message' => 'New PPV Video Successfully Added!', 'note_type' => 'success') );
             }
-        
     }
     
     public function createSlug($title, $id = 0)
@@ -519,6 +516,7 @@ class AdminLiveStreamController extends Controller
 
     public function edit($id)
     {
+
         $video = LiveStream::find($id);
 
         $Stream_key = Session::get('Stream_key');
@@ -632,7 +630,6 @@ class AdminLiveStreamController extends Controller
 
            $image = ($request->file('image')) ? $request->file('image') : '';
            $mp4_url = (isset($data['mp4_url'])) ? $data['mp4_url'] : '';
-        
        
        
         if(empty($data['ppv_status'])){
@@ -814,6 +811,7 @@ class AdminLiveStreamController extends Controller
         $video->search_tags = $searchtags;
         $video->access = $request->access;
         $video->ios_ppv_price = $request->ios_ppv_price;
+        $video->m3u_url = $request->m3u_url;
         $video->save();
 
         if(!empty($data['video_category_id'])){

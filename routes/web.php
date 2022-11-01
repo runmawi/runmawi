@@ -1954,3 +1954,8 @@ Route::post('/stripePayment-Tips', 'LiveEventArtistStream@stripePaymentTips')->n
 Route::post('/purchase-live-artist-event', 'LiveEventArtistStream@rent_live_artist_event')->name('rent_live_artist_event'); 
 
 Route::get('/liveStream', 'AdminLiveStreamController@liveStream')->name('liveStream');
+
+// PPV_live_PurchaseUpdate
+
+Route::post('/PPV_live_PurchaseUpdate', 'LiveStreamController@PPV_live_PurchaseUpdate')->name('PPV_live_PurchaseUpdate');
+Route::post('/unseen_expirydate_checking', 'LiveStreamController@unseen_expirydate_checking')->name('unseen_expirydate_checking');

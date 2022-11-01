@@ -278,7 +278,7 @@ function myFunction() {
     }
 </script>
 
-
+<script src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
       <script>
     var type = $('#video_type').val();
     // var type = $('#hls_m3u8').val();
@@ -294,10 +294,10 @@ function myFunction() {
 
 
     // alert(ads_path_tag);
-    // alert(user_logged_out)
+    // alert(type)
 
 
-   if(type != "" &&  video_video == 'video'){
+   if(type != "" &&  type != "m3u8_url" &&  video_video == 'video' ){
     // alert('video_video')
 
         const player = new Plyr('#videoPlayer',{
@@ -327,7 +327,8 @@ function myFunction() {
                       tagUrl: ads_path_tag 
                     }
         });
-   }else if(type != "" && request_url != 'm3u8' && episode_type != 'm3u8'){
+   } 
+   else if(type != "" && request_url != 'm3u8' && episode_type != 'm3u8'){
     // alert('m3u8')
 
         const player = new Plyr('#videoPlayer',{
@@ -361,7 +362,10 @@ function myFunction() {
         });
    }
   else if(user_logged_out == 1 && type == '' && processed_low != 100 || user_logged_out == 1 && type == '' && processed_low == ""){
-        const player = new Plyr('#videoPlayer',{
+    // alert('videoPlayer')
+        
+    
+    const player = new Plyr('#videoPlayer',{
           controls: [
 
       'play-large',

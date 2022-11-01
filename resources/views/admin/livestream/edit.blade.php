@@ -211,6 +211,7 @@ border-radius: 0px 4px 4px 0px;
                             <option value="mp4" @if(!empty($video->url_type) && $video->url_type == 'mp4'){{ 'selected' }}@endif > MP4/M3U8 URL </option>
                             <option value="embed" @if(!empty($video->url_type) && $video->url_type == 'embed'){{ 'selected' }}@endif>Embed URL</option>
                             <option value="live_stream_video" @if(!empty($video->url_type) && $video->url_type == 'live_stream_video'){{ 'selected' }}@endif>Live Stream Video</option>
+                            <option value="m3u_url" @if(!empty($video->url_type) && $video->url_type == 'm3u_url'){{ 'selected' }}@endif> M3U URL </option>
                         
                         	@if(!empty($video->url_type) && $video->url_type == 'Encode_video')
                                 @foreach($Rtmp_urls as $key => $urls)
@@ -236,6 +237,11 @@ border-radius: 0px 4px 4px 0px;
                             <div class="new-video-upload mt-2" id="embed_code">
                                 <label for="embed_code"><label>Live Embed URL</label></label>
                                 <input type="text" name="embed_url" class="form-control" id="embed_url" value="@if(!empty($video->embed_url) ) {{ $video->embed_url}}  @endif" />
+                            </div>
+
+                            <div class="new-video-upload mt-2" id="m3u_urls">
+                                <label for="m3u_url"><label class="mb-1"> M3U URL</label></label>
+                                <input type="text" name="m3u_url" class="form-control" id="m3u_url" value="@if(!empty($video->m3u_url) ) {{ $video->m3u_url}}  @endif" />
                             </div>
 
                             <div class="new-video-upload mt-2" id="live_stream_video">
@@ -655,16 +661,14 @@ border-radius: 0px 4px 4px 0px;
 
 <script type="text/javascript">
    $ = jQuery;
-   $(document).ready(function($){
-// alert($("#search_tag").val())
 
+   $(document).ready(function($){
     $("#duration").mask("00:00:00");
    });
-
   
-var Stream_error = '{{ $liveStreamVideo_errors }}';
+    var Stream_error = '{{ $liveStreamVideo_errors }}';
 
-$( document ).ready(function() {
+    $( document ).ready(function() {
 		var Stream_error = '{{ $Stream_error }}';
 		var Rtmp_url   = "{{ $Rtmp_url ? $Rtmp_url : 'No RTMP URL Added' }}" ;	
 		var Stream_keys = '{{ $Stream_key }}';
@@ -879,26 +883,37 @@ $(document).ready(function(){
 		 }
 		},
 
-		embed_url: {
-				required : function(element) {
-					var action = $(".url_type").val();
-					if(action == "embed") { 
-						return true;
-					} else {
-						return false;
-					}
-				}
-			},
+        m3u_url: {
+            required: function (element) {
+                var action = $(".url_type").val();
+                if (action == "m3u_url") {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+        },
 
-            ppv_price: {
-                required: function (element) {
-                    var ppv_price = $("#access").val();
-                    if (ppv_price == "ppv") {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                },
+		embed_url: {
+			required : function(element) {
+			    var action = $(".url_type").val();
+				if(action == "embed") { 
+						return true;
+				} else {
+						return false;
+				}
+			}
+		},
+
+        ppv_price: {
+            required: function (element) {
+                var ppv_price = $("#access").val();
+                if (ppv_price == "ppv") {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
             },
 		},
 	messages: {
@@ -912,10 +927,45 @@ $(document).ready(function(){
 
     //  End validate
 
-            $('#mp4_code').hide();
-            $('#embed_code').hide();
-            $('#live_stream_video').hide();	
- 
+    if($("#url_type").val() == 'mp4'){
+        $('#mp4_code').show();
+        $('#embed_code').hide();
+        $('#live_stream_video').hide();	
+        $('#url_rtmp').hide();	
+        $("#m3u_urls").hide();
+
+    }else if($("#url_type").val() == 'embed'){
+        $('#embed_code').show();	
+        $('#mp4_code').hide();
+        $('#live_stream_video').hide();	
+        $('#url_rtmp').hide();	
+        $("#m3u_urls").hide();
+
+    }else if ($("#url_type").val() == "Encode_video") {
+        $("#embed_code").hide();
+        $("#mp4_code").hide();
+        $("#live_stream_video").hide();
+        $('#url_rtmp').show();	
+        $("#m3u_urls").hide();
+    }
+    else if ($("#url_type").val() == "m3u_url") {
+        $("#embed_code").hide();
+        $("#mp4_code").hide();
+        $("#live_stream_video").hide();
+        $("#m3u_urls").show();
+    }
+    else if ($("#url_type").val() == " ") {
+        $("#embed_code").hide();
+        $("#mp4_code").hide();
+        $("#live_stream_video").hide();
+        $("#m3u_urls").hide();
+    }
+    else if ($("#url_type").val() == "live_stream_video") {
+        $("#embed_code").hide();
+        $("#mp4_code").hide();
+        $("#live_stream_video").hide();
+        $("#m3u_urls").hide();
+    }
 
     $("#url_type").change(function(){
 
@@ -924,27 +974,42 @@ $(document).ready(function(){
             $('#embed_code').hide();
             $('#live_stream_video').hide();	
             $('#url_rtmp').hide();	
+            $("#m3u_urls").hide();
 
         }else if($("#url_type").val() == 'embed'){
             $('#embed_code').show();	
             $('#mp4_code').hide();
             $('#live_stream_video').hide();	
             $('#url_rtmp').hide();	
+            $("#m3u_urls").hide();
 
         }else if($("#url_type").val() == 'live_stream_video'){
             $('#embed_code').hide();	
             $('#mp4_code').hide();
             $('#live_stream_video').show();	
             $('#url_rtmp').hide();	
+            $("#m3u_urls").hide();
 
         }else if ($("#url_type").val() == "Encode_video") {
                 $("#embed_code").hide();
                 $("#mp4_code").hide();
                 $("#live_stream_video").hide();
                 $('#url_rtmp').show();	
+                $("#m3u_urls").hide();
         }
+        else if ($("#url_type").val() == "m3u_url") {
+                $("#embed_code").hide();
+                $("#mp4_code").hide();
+                $("#live_stream_video").hide();
+                $("#m3u_urls").show();
+        }
+        else if ($("#url_type").val() == " ") {
+                $("#embed_code").hide();
+                $("#mp4_code").hide();
+                $("#live_stream_video").hide();
+                $("#m3u_urls").hide();
+            }
     });
-
 
 	$('.js-example-basic-multiple').select2();
 

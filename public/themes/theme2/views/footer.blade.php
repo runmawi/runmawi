@@ -443,6 +443,7 @@ function myFunction() {
  <!-- <script src="<? //URL::to('/'). '/assets/js/plyr-3-7.js';?>"></script> -->
  <script src="<?= URL::to('/'). '/assets/js/hls.js';?>"></script>
  <script src="<?= URL::to('/'). '/assets/js/.js';?>"></script>
+<script src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
         
  <!-- <script src="https://cdn.plyr.io/3.6.3/plyr.polyfilled.js"></script>
  <script src="https://cdn.rawgit.com/video-dev/hls.js/18bb552/dist/hls.min.js"></script> -->
@@ -462,7 +463,7 @@ function myFunction() {
     
     // alert(ads_path)
 
-   if(type != "" && video_video == 'video'){
+   if(type != "" &&  type != "m3u8_url" && video_video == 'video'){
     // alert('m3u8')
 
         const player = new Plyr('#videoPlayer',{
