@@ -118,7 +118,7 @@ Index Of Script
 		/*---------------------------------------------------------------------
 			Slick Slider
 		----------------------------------------------------------------------- */
-          $(window).on('load',function(){
+         
 		$('#home-slider').slick({
 			autoplay: false,
 			speed: 800,
@@ -194,7 +194,7 @@ Index Of Script
 			}
 			]
 		});
-});
+
 		jQuery('#top-ten-slider').slick({
 			slidesToShow: 1,
 			slidesToScroll: 1,
