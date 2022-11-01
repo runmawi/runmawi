@@ -1,7 +1,6 @@
 <?php
-    include(public_path('themes/theme3/views/header.php'));
+    include(public_path('themes/theme4/views/header.php'));
 ?>
-
 <style>
     .h-100 { height: 540px !important; }
     .blink_me { animation: blinker 2s linear infinite; } @keyframes blinker { 50% { opacity: 0;}}
@@ -13,6 +12,9 @@
         box-shadow: 0px 0px 10px #141414;
         margin-bottom: 50px;
     }
+    h3,h2,h1 {
+        color:black ;
+    }
 </style>
 
     <div class="container">
@@ -22,16 +24,15 @@
                 <div class="border-line"></div>
 
                 <div class="page-body text-black mt-3">
-                    <?php echo __($pager->body); ?>
+                    <?php echo html_entity_decode($pager->body); ?>
                 </div>
             </div>
         </div>
 
 
     </div>     
- <!-- back-to-top End -->
-      
+ 
 
-<?php
-    include(public_path('themes/theme3/views/footer.blade.php'));
+ <?php
+    include(public_path('themes/theme4/views/footer.blade.php'));
 ?>
