@@ -13,6 +13,16 @@
         box-shadow: 0px 0px 10px #141414;
         margin-bottom: 50px;
     }
+     .page-body h2{
+        color: #000!important;
+        font-size: 22px;
+        margin-bottom: 10px;
+    }
+    .page-body h3{
+ color: #000!important;
+        font-size: 18px;
+        font-weight: 400;
+    }
 </style>
 
     <div class="container">
