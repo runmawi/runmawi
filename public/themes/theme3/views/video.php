@@ -267,12 +267,9 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
           <div id="video_container" class="fitvid" atyle="z-index: 9999;">
               
 
-          <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
-      <source 
-        type="application/x-mpegURL" 
-        src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>"
-      >
-    </video>
+
+          <video  autoplay id="video"  allow="autoplay" class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
+          <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>"  type='application/x-mpegURL' label='auto' > 
                <!-- <video id="video"  class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   > -->
   <!-- Captions are optional -->
   <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
