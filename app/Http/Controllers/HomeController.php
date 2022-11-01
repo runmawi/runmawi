@@ -447,7 +447,7 @@ class HomeController extends Controller
             $countryName = $geoip->getCountry();
             $regionName = $geoip->getregion();
             $cityName = $geoip->getcity();
-            $system_settings = SystemSetting::first();
+            // $system_settings = SystemSetting::first();
             $data = Session::all();
             $user = User::where('id', '=', 1)->first();
             // $session_password = $data['password_hash'];
@@ -624,8 +624,8 @@ class HomeController extends Controller
 
                     $url1 = $_SERVER['REQUEST_URI'];
                     header("Refresh: 120; URL=$url1");
-                    $message = 'Your Plan Device  Limit Is' . ' ' . $device_limit;
-                    return view('device_logged', compact('alldevices', 'system_settings', 'user','userIp'))->with(array(
+                    $message = 'Your Plan Device  Limit Is' . ' ' . $device_limit;  //'system_settings',
+                    return view('device_logged', compact('alldevices',  'user','userIp'))->with(array(
                         'message' => $message,
                         'note_type' => 'success'
                     ));
@@ -1374,7 +1374,7 @@ class HomeController extends Controller
             $regionName = $geoip->getregion();
             $cityName = $geoip->getcity();
             $data = Session::all();
-            $system_settings = SystemSetting::first();
+            // $system_settings = SystemSetting::first();
             $user = User::where('id', '=', 1)->first();
             // $session_password = $data['password_hash'];
             if (empty($data['password_hash']))
@@ -1536,8 +1536,8 @@ class HomeController extends Controller
 
                     $url1 = $_SERVER['REQUEST_URI'];
                     header("Refresh: 120; URL=$url1");
-                    $message = 'Your Plan Device  Limit Is' . ' ' . $device_limit;
-                    return view('device_logged', compact('alldevices', 'system_settings', 'user','userIp'))->with(array(
+                    $message = 'Your Plan Device  Limit Is' . ' ' . $device_limit; //'system_settings',
+                    return view('device_logged', compact('alldevices', 'user','userIp'))->with(array(
                         'message' => $message,
                         'note_type' => 'success'
                     ));
