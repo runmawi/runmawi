@@ -18,8 +18,14 @@
         margin-bottom: 10px;
     }
     .page-body h3{
- color: #000!important;
+        color: #000!important;
         font-size: 18px;
+        font-weight: 400;
+    }
+
+    .page-body h1{
+        color: #000!important;
+        font-size: 27px;
         font-weight: 400;
     }
 </style>
@@ -31,7 +37,7 @@
                 <div class="border-line"></div>
 
                 <div class="page-body text-black mt-3">
-                    <?php echo __($pager->body); ?>
+                    <?php echo html_entity_decode($pager->body); ?>
                 </div>
             </div>
         </div>

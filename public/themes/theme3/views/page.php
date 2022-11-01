@@ -1,7 +1,6 @@
 <?php
     include(public_path('themes/theme3/views/header.php'));
 ?>
-
 <style>
     .h-100 { height: 540px !important; }
     .blink_me { animation: blinker 2s linear infinite; } @keyframes blinker { 50% { opacity: 0;}}
@@ -13,14 +12,20 @@
         box-shadow: 0px 0px 10px #141414;
         margin-bottom: 50px;
     }
-     .page-body h2{
+    .page-body h2{
         color: #000!important;
         font-size: 22px;
         margin-bottom: 10px;
     }
     .page-body h3{
- color: #000!important;
+        color: #000!important;
         font-size: 18px;
+        font-weight: 400;
+    }
+
+    .page-body h1{
+        color: #000!important;
+        font-size: 27px;
         font-weight: 400;
     }
 </style>
@@ -32,16 +37,15 @@
                 <div class="border-line"></div>
 
                 <div class="page-body text-black mt-3">
-                    <?php echo __($pager->body); ?>
+                    <?php echo html_entity_decode($pager->body); ?>
                 </div>
             </div>
         </div>
 
 
     </div>     
- <!-- back-to-top End -->
-      
+ 
 
-<?php
+ <?php
     include(public_path('themes/theme3/views/footer.blade.php'));
 ?>
