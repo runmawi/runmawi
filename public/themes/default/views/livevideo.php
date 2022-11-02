@@ -743,7 +743,9 @@ document.getElementById("demo").innerHTML = "EXPIRED";
         {
             source: "https://stream.flicknexs.com:9043/hls/3558376416/index.m3u8", 
             parentId: "#m3u_player" ,
-            poster :'http://clappr.io/poster.png'
+            poster :'http://clappr.io/poster.png',
+            height: 420,
+            width: 1370,
         });
 </script>
 
