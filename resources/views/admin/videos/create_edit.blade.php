@@ -927,17 +927,62 @@ border-radius: 0px 4px 4px 0px;
                         </div>
 
 
-                  {{-- Ads Category--}}
-                        <div class="col-sm-6 form-group mt-3">
-                           <label class="">Choose Ad Category</label>
-                           <select class="form-control" name="ads_category">
-                              <option value=" ">Select Category</option>
+                        {{-- Ads Category--}}
+
+                        <div class="col-sm-4 form-group mt-3">
+                           <label class="">Choose Pre-Ad Category</label>
+                           <select class="form-control" name="pre_ads_category" id="pre_ads_category">
+                              <option value=" ">Select Pre-Ad Category</option>
                               @foreach($ads_category as $ad)
-                                 <option value="{{ $ad->id }}" @if( $video->ads_category == $ad->id ) {{ 'selected' }} @endif  > {{ ucwords($ad->name) }}</option>
+                                 <option value="{{ $ad->id }}" @if( $video->pre_ads_category == $ad->id ) {{ 'selected' }} @endif  > {{ ucwords($ad->name) }}</option>
                               @endforeach
                            </select>
                         </div>
 
+                        <div class="col-sm-4 form-group mt-3">
+                           <label class="">Choose Mid-Ad Category</label>
+                           <select class="form-control" name="mid_ads_category" id="mid_ads_category">
+                              <option value=" ">Select Mid-Ad Category</option>
+                              @foreach($ads_category as $ad)
+                                 <option value="{{ $ad->id }}" @if( $video->mid_ads_category == $ad->id ) {{ 'selected' }} @endif  > {{ ucwords($ad->name) }}</option>
+                              @endforeach
+                           </select>
+                        </div>
+
+                        <div class="col-sm-4 form-group mt-3">
+                           <label class="">Choose Post-Ad Category</label>
+                           <select class="form-control" name="post_ads_category" id="post_ads_category">
+                              <option value=" ">Select Post-Ad Category</option>
+                              @foreach($ads_category as $ad)
+                                 <option value="{{ $ad->id }}" @if( $video->post_ads_category == $ad->id ) {{ 'selected' }} @endif  > {{ ucwords($ad->name) }}</option>
+                              @endforeach
+                           </select>
+                        </div>
+
+                           {{-- Ads --}}
+
+                        <div class="col-sm-4 form-group mt-3" id="pre_ads_div" >
+                           <label class="">Choose Pre-Ad </label>
+                           <select class="form-control" name="pre_ads" id="pre_ads">
+                              <option value=" ">Select Pre-Ad </option>
+                           </select>
+                        </div>
+
+                        <div class="col-sm-4 form-group mt-3" id="mid_ads_div">
+                           <label class="">Choose Mid-Ad </label>
+                           <select class="form-control" name="mid_ads" id="mid_ads">
+                              <option value=" ">Select Mid-Ad </option>
+                           </select>
+                        </div>
+
+                        <div class="col-sm-4 form-group mt-3" id="post_ads_div">
+                           <label class="">Choose Post-Ad </label>
+                           <select class="form-control" name="post_ads" id="post_ads">
+                              <option value=" ">Select Post-Ad </option>
+                           </select>
+                        </div>
+
+                        
 
                         {{-- <div class="col-sm-6 form-group mt-3">
                            <label class="">Choose Ad Name</label>
@@ -1316,7 +1361,6 @@ border-radius: 0px 4px 4px 0px;
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
 <script>
-
 
          // validation for slug
 
@@ -1995,11 +2039,6 @@ $('#error_video_Category').hide();
       }
 
 
-
-
-
-
-
       var trailer_type = $('.trailer_type').val();
 
       if(trailer_type == 'video_mp4' ){
@@ -2541,6 +2580,7 @@ if(this.textContent === 'destroy') {
 
    </script>
 
+@include('admin.videos.Ads_videos'); 
 
 @section('javascript')
 @stop
