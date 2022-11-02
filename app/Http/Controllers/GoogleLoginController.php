@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use Validator,Redirect,Response,File;
 use Socialite;
 use App\User;
- 
+use Session;
+
 class GoogleLoginController extends Controller
 {
  
@@ -23,25 +24,50 @@ public function callback($provider)
     $user = $this->createUser($getInfo,$provider);
  
     auth()->login($user);
- 
-    return redirect()->to('/home');
- 
+    $user = $user;
+    session()->put('user', $user);
+    return redirect('/home');
+
 }
 function createUser($getInfo,$provider){
  
  $user = User::where('provider_id', $getInfo->id)->first();
+
+ $user_exits = User::where('email', $getInfo->email)->first();
+
  
- if (!$user) {
+ if (!$user && empty($user_exits)) {
      $user = User::create([
         'name'     => $getInfo->name,
+        'active'    =>'1',
+        'role'    =>'registered',
         'email'    => $getInfo->email,
         'provider' => $provider,
         'provider_id' => $getInfo->id
     ]);
+
     return $user;
-  }else{
-    return Redirect::to('/login');
+
+  }elseif($user_exits){
+
+    $user_exits->name = $getInfo->name;
+    $user_exits->active = 1;
+    $user_exits->provider_id = $getInfo->id;
+    $user_exits->provider =  $provider;
+    $user_exits->active = 1;
+    $user_exits->save();
+
+    $user = array(
+        'name'     => $getInfo->name,
+        'email'    => $getInfo->email,
+        'provider' => $provider,
+        'provider_id' => $getInfo->id
+    );
+
+    return $user;
 
   }
+
+
 }
 }
