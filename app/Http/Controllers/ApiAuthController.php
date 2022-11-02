@@ -8754,7 +8754,36 @@ $cpanel->end();
         }
 
 
-       
+        $Alllanguage   = Language::orderBy('created_at', 'desc')->get();
+        if(!empty($reques->language_id)){
+        $Language = Language::where('id', $reques->language_id)->first();
+
+        if(!empty($Language)){
+          $VideoLanguage   = Video::Join('languagevideos','languagevideos.video_id','=','videos.id')
+          ->where('languagevideos.language_id',$reques->language_id)->get();
+        }
+        if(!empty($Language)){
+          $languagesSeries = Series::Join('series_languages','series_languages.series_id','=','series.id')
+          ->where('series_languages.language_id',$reques->language_id)->get();
+          }
+
+        if(!empty($Language)){
+          $languagesLive = LiveStream::Join('live_languages','live_languages.live_id','=','live_streams.id')
+          ->where('live_languages.language_id',$reques->language_id)->get();
+          }
+
+        if(!empty($Language)){
+
+          $LanguagesAudio = Audio::Join('audio_languages','audio_languages.audio_id','=','audios.id')
+          ->where('audio_languages.language_id',$reques->language_id)->get();
+        }
+
+      }else{
+        $VideoLanguage = [];
+        $languagesSeries = [];
+        $LanguagesAudio = [];
+        $languagesLive = [];
+      }
         $response = array(
           'status'=>'true',
           'HomeSetting' => $HomeSetting,
@@ -8770,6 +8799,12 @@ $cpanel->end();
           // 'movie' => $movie,
           'movies' => $movies,
           'LiveCategory' => $LiveCategory,
+          'Alllanguage  ' => $Alllanguage  ,
+          'VideoLanguage' => $VideoLanguage  ,
+          'languagesSeries' => $languagesSeries  ,
+          'languagesLive' => $languagesLive  ,
+          'LanguagesAudio' => $LanguagesAudio  ,
+
 
         );
 
