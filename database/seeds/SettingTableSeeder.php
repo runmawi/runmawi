@@ -60,7 +60,7 @@ class SettingTableSeeder extends Seeder
                 'videos_per_page' => '3' ,
                 'posts_per_page' => '12' ,
                 'free_registration' => '1' ,
-                'activation_email' => '1' ,
+                'activation_email' => '0' ,
                 'premium_upgrade' => '1' ,
                 'access_free' => '0' ,
                 'watermark_top' => null ,

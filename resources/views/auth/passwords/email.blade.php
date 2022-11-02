@@ -98,10 +98,15 @@ $settings = App\Setting::find(1);
                                     </span>
                                 @enderror
 								
-								<button type="submit" class="btn btn-primary">
-                                    {{ __('Send Password Reset Link') }}
-                                </button>
-                          
+                                @if( $mail_status == 1)
+
+                                     <button type="submit" class="btn btn-primary">
+                                         {{ __('Send Password Reset Link') }}
+                                     </button>
+
+                                 @elseif( $mail_status == 0 )
+                                    <button type="reset" id="Mail_error"  class="btn btn-primary" >  {{ __('Send Password Reset Link') }} </button>
+                                @endif
                     </form>
                      </div>
                 </div>
@@ -111,7 +116,16 @@ $settings = App\Setting::find(1);
     </div>
     </div>
 </section>
-  @include('footer')
 
-    </body>
+<script>
+    $(document).ready(function(){
+        $("#Mail_error").click(function(){
+            alert("Can't send email at this time, Contact Support Team");
+        });
+    });
+</script>
+
+@include('footer')
+
+</body>
 </html>
