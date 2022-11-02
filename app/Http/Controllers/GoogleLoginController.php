@@ -38,7 +38,10 @@ function createUser($getInfo,$provider){
         'provider' => $provider,
         'provider_id' => $getInfo->id
     ]);
+    return $user;
+  }else{
+    return Redirect::to('/login');
+
   }
-  return $user;
 }
 }
