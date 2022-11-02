@@ -81,12 +81,18 @@ class RegisterController extends Controller
             'password' => $password,
             'activation_code' => $string,
         ]);
+
+        try {
             $settings = Setting::first();
             Mail::send('emails.verify', array('activation_code' => $string, 'website_name' => $settings->website_name), function($message) use ($data) {
                         $message->to($data['email'], $data['username'])->subject('Verify your email address');
                      });
 
-            return $user;
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+        
+        return $user;
     }
 
 
