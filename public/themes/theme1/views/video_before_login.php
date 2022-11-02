@@ -85,7 +85,7 @@ if(!empty($request_url)){
              
            <div id="video_container" class="fitvid" atyle="z-index: 9999;">
          <!-- Current time: <div id="current_time"></div> -->
-         <video id="videoPlayer"  class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
+         <video id="videoPlayer" autoplay class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
             <!-- <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >-->
             <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default />
              <source src="<?php if(!empty($video->mp4_url)){   echo $video->mp4_url; }else {  echo $video->trailer; } ?>"  type='video/mp4' label='auto' > 
@@ -108,13 +108,9 @@ if(!empty($request_url)){
        
      <div id="video_container" class="fitvid" atyle="z-index: 9999;">
    <!-- Current time: <div id="current_time"></div> -->
-   <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
-      <source 
-        type="application/x-mpegURL" 
-        src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>"
-      >
-      <!-- </video> -->
-              <!-- <video id="video"  class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   > -->
+   <video  autoplay id="video"  allow="autoplay" class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
+          <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>"  type='application/x-mpegURL' label='auto' > 
+ 
       <!-- Captions are optional -->
       <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
           <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
@@ -136,7 +132,7 @@ if(!empty($request_url)){
              
                  <div id="video_container" class="fitvid" atyle="z-index: 9999;">
                <!-- Current time: <div id="current_time"></div> -->
-               <video id="videoPlayer"  class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
+               <video id="videoPlayer" autoplay class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
                   <!-- <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >-->
                   <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default />
                    <source src="<?php if(!empty($video->mp4_url)){   echo $video->mp4_url; }else {  echo $video->trailer; } ?>"  type='video/mp4' label='auto' > 
@@ -187,7 +183,7 @@ if(!empty($request_url)){
    <?php  else: ?>
                <div id="video_container" class="fitvid" atyle="z-index: 9999;">
                <!-- Current time: <div id="current_time"></div> -->
-               <video  id="videoPlayer" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
+               <video  id="videoPlayer" autoplay class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
 <!--                <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >-->
                    <source src="<?php if(!empty($video->m3u8_url)){ echo $video->m3u8_url; }else { echo $video->trailer;} ?>"  type='application/x-mpegURL' label='auto' > 
 
@@ -227,7 +223,7 @@ if(!empty($request_url)){
   <?php }elseif( Auth::guest() && $video->access == "guest" && empty($video->ppv_price ) && !empty($video->path) || Auth::guest() && $video->access == "guest" && $video->path != "public" && empty($video->ppv_price )){  ?>
           <div id="video_container" class="fitvid" atyle="z-index: 9999;">
                <!-- Current time: <div id="current_time"></div> -->
-               <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+               <video id="video" autoplay controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
       <source 
         type="application/x-mpegURL" 
         src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>"
@@ -253,7 +249,7 @@ if(!empty($request_url)){
   <input type="hidden" id="hls" name="hls" value="<?php echo $hls; ?>">
     <div id="video" class="fitvid" style="margin: 0 auto;">
         
-        <video id="videoPlayer" class="video-js vjs-default-skin vjs-big-play-centered" 
+        <video id="videoPlayer" autoplay class="video-js vjs-default-skin vjs-big-play-centered" 
         poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" 
         controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'
          src="<?php echo $video->trailer; ?>"  type="video/mp4" >
@@ -430,13 +426,13 @@ if(!empty($request_url)){
                
                <?php  if($video->trailer_type !=null && $video->trailer_type == "video_mp4" || $video->trailer_type == "mp4_url"  ){ ?>
 
-                   <video  class="videoPlayer1" 
+                   <video  class="videoPlayer1" autoplay
                          controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
                          type="video/mp4" src="<?php echo $video->trailer;?>">
                    </video>
                    <?php }elseif($video->trailer_type !=null && $video->trailer_type == "m3u8" ){ ?>
 
-                      <video  id="videos" class=""  poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
+                      <video  autoplay id="videos" class=""  poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
                           controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
                           type="application/x-mpegURL">
                           <source 
@@ -447,7 +443,7 @@ if(!empty($request_url)){
 
                <?php }elseif($video->trailer_type !=null && $video->trailer_type == "m3u8_url" ){ ?>
 
-                   <video  class="videoPlayer1" 
+                   <video  class="videoPlayer1" autoplay
                          controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
                          type="application/x-mpegURL">
                    </video>
