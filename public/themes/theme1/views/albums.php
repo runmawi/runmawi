@@ -230,6 +230,14 @@ border-bottom: 1px solid #141414;
 }
 </style>
 
+<?php if( count($album_audios) == 0 ){ ?>
+
+<div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
+    <p ><h3 class="text-center">No Audio Available</h3>
+</div>
+
+<?php }else{ ?>
+
 <?php if (isset($error)) { ?>
 <h2 class="text-center"><?php echo $message;?></h2>
 
@@ -387,6 +395,7 @@ border-bottom: 1px solid #141414;
 </div>
 
 </div>
+<?php } ?>
 <script src="<?= THEME_URL . '/assets/js/jquery.fitvid.js'; ?>"></script>
 
 <script type="text/javascript">
@@ -638,8 +647,8 @@ window.location = base_url+"/audios_category/"+prev_cat_audio;
     }
   }
 
-  document.querySelector('#source-audio').src = <?php echo json_encode($first_album_song->mp3_url) ; ?>  
-  document.querySelector('.title').innerHTML = <?php echo json_encode($first_album_song->title) ; ?>  
+  document.querySelector('#source-audio').src = <?php echo json_encode($first_album_mp3_url) ; ?>  
+  document.querySelector('.title').innerHTML = <?php echo json_encode($first_album_title) ; ?>  
 
   var currentAudio = document.getElementById("myAudio");
 
