@@ -14,12 +14,12 @@ class AddAdsToVideosTable extends Migration
     public function up()
     {
         Schema::table('videos', function (Blueprint $table) {
-            $table->integer('pre_ads_category')->nullable()->after('ads_category');
-            $table->integer('mid_ads_category')->nullable()->after('pre_ads_category');
-            $table->integer('post_ads_category')->nullable()->after('mid_ads_category');
-            $table->integer('pre_ads')->nullable()->after('post_ads_category');
-            $table->integer('mid_ads')->nullable()->after('pre_ads');
-            $table->integer('post_ads')->nullable()->after('mid_ads');
+            $table->string('pre_ads_category', 10)->nullable()->after('ads_category');
+            $table->string('mid_ads_category', 10)->nullable()->after('pre_ads_category');
+            $table->string('post_ads_category', 10)->nullable()->after('mid_ads_category');
+            $table->string('pre_ads', 10)->nullable()->after('post_ads_category');
+            $table->string('mid_ads', 10)->nullable()->after('pre_ads');
+            $table->string('post_ads', 10)->nullable()->after('mid_ads');
         });
     }
 
