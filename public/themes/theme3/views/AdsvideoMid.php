@@ -9,14 +9,14 @@
   $current_time = Carbon\Carbon::now()->format('H:i:s');
 
   $AdsVideosMid = App\AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
-    ->Join('videos','advertisements.ads_category','=','videos.ads_category')
-    ->whereDate('start', '=', Carbon\Carbon::now()->format('Y-m-d'))
+    ->Join('videos','advertisements.ads_category','=','videos.mid_ads_category')
+    // ->whereDate('start', '=', Carbon\Carbon::now()->format('Y-m-d'))
     // ->whereTime('start', '<=', $current_time)
     // ->whereTime('end', '>=', $current_time)
-    ->where('ads_events.status',1)
-    ->where('advertisements.status',10)
-    ->where('advertisements.ads_position','mid')
-    ->where('videos.ads_category',$video->ads_category)
+    ->where('ads_events.status',1)->where('advertisements.status',1)
+    ->where('videos.id',$video->id)
+    ->where('ads_position','mid')
+    ->where('advertisements.id',$video->mid_ads)
     ->get();
 
 
@@ -81,6 +81,7 @@
   var Ads_count_mid       = <?php echo count($AdsVideosMid); ?> ;
   var Ads_type_mid        = <?php echo json_encode($ads_type_mid); ?> ;
   var Mid_tym             = <?php echo json_encode($Mid_tym); ?> ;
+  var ads_mid_videoplayer_id  = <?php echo json_encode($video_type_id); ?> ;
 
 
   if( Ads_count_mid >= 1 &&  Ads_type_mid != null ){
@@ -96,21 +97,17 @@
             
                 $('.adstime_url').attr('src', Ads_videos_mid);
 
-                  document.getElementById('videoPlayer').addEventListener('loadedmetadata', function() {
-                      this.currentTime = 0;
-                  }, true);
-                  
-                  videoId.play();
-                  
+                document.getElementById(ads_mid_videoplayer_id).addEventListener('loadedmetadata', function() {
+                    this.currentTime = 0;
+                }, true);
+                
+                videoId.play();
                   $('#ads_start_tym_mid').replaceWith('<input type="hidden" id="ads_start_tym_mid" class="ads_start_tym_mid" value="'+ ads_end_tym_mid+'">');
                   $('.ads_show_status_mid').replaceWith('<input type="hidden" id="" class="ads_show_status_mid"  value="0">');
                   document.getElementById("Ads_vies_count_mid").click();
                  
                   $(".plyr__controls__item ").css("display", "none");
                   $(".plyr__time ").css("display", "block");
-
-                 
-
             }
             else if(ads_show_status_mid == 0){
                   $('.ads_show_status_mid').replaceWith('<input type="hidden" id="" class="ads_show_status_mid"  value="5">');
@@ -119,11 +116,9 @@
                   $(".plyr__controls__item").css("display", "block");
                   $(".plyr__volume").removeAttr("style");
 
-                  document.getElementById('videoPlayer').addEventListener('loadedmetadata', function() {
+                  document.getElementById(ads_mid_videoplayer_id).addEventListener('loadedmetadata', function() {
                       this.currentTime = Mid_tym;
                     }, true);
-
-                 
 
                 videoId.play();
             }
