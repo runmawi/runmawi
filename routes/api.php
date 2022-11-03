@@ -342,7 +342,7 @@ Route::group([
 
     Route::post('related_series','ApiAuthController@related_series');
 
-    Route::get('home_page','ApiAuthController@HomePage');
+    Route::post('home_page','ApiAuthController@HomePage');
 
     Route::post('video_language','ApiAuthController@LanguageVideo');
 

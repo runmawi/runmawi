@@ -8799,7 +8799,7 @@ $cpanel->end();
           // 'movie' => $movie,
           'movies' => $movies,
           'LiveCategory' => $LiveCategory,
-          'Alllanguage  ' => $Alllanguage  ,
+          'Alllanguage' => $Alllanguage  ,
           'VideoLanguage' => $VideoLanguage  ,
           'languagesSeries' => $languagesSeries  ,
           'languagesLive' => $languagesLive  ,
