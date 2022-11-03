@@ -10,15 +10,14 @@ $post_tym = $post_tyming - 5 ;
 
 
 $AdsVideosPost = App\AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
-  ->Join('videos','advertisements.ads_category','=','videos.ads_category')
+  ->Join('videos','advertisements.ads_category','=','videos.post_ads_category')
   // ->whereDate('start', '=', Carbon\Carbon::now()->format('Y-m-d'))
   // ->whereTime('start', '<=', $current_time)
   // ->whereTime('end', '>=', $current_time)
-  ->where('ads_events.status',1)
-  ->where('advertisements.status',1)
-  ->where('advertisements.ads_position','post')
-  ->where('videos.ads_category',$video->ads_category)
-  ->get();
+  ->where('ads_events.status',1)->where('advertisements.status',1)
+  ->where('advertisements.ads_category',$video->post_ads_category)
+  ->where('videos.id',$video->id)->where('ads_position','post')
+  ->where('advertisements.id',$video->post_ads)->get();
 
 
   if( count($AdsVideosPost) >= 1){

@@ -5,15 +5,14 @@
   $current_time = Carbon\Carbon::now()->format('H:i:s');
 
   $AdsVideos = App\AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
-    ->Join('videos','advertisements.ads_category','=','videos.ads_category')
-    ->whereDate('start', '=', Carbon\Carbon::now()->format('Y-m-d'))
+    ->Join('videos','advertisements.ads_category','=','videos.pre_ads_category')
+    // ->whereDate('start', '=', Carbon\Carbon::now()->format('Y-m-d'))
     // ->whereTime('start', '<=', $current_time)
     // ->whereTime('end', '>=', $current_time)
-    ->where('ads_events.status',1)
-    ->where('advertisements.status',10)
-    ->where('videos.ads_category',$video->ads_category)
-    ->where('ads_position','pre')
-    ->get();
+    ->where('ads_events.status',1)->where('advertisements.status',1)
+    ->where('advertisements.ads_category',$video->pre_ads_category)
+    ->where('videos.id',$video->id)->where('ads_position','pre')
+    ->where('advertisements.id',$video->pre_ads)->get();
 
 
     if( count($AdsVideos) >= 1){
@@ -78,7 +77,7 @@
   var ads_end_tym     = <?php  echo json_encode($Ads_duration_Sec)  ;?>;
   var Ads_count       = <?php echo count($AdsVideos); ?> ;
   var Ads_type        = <?php echo json_encode($ads_type); ?> ;
-
+  var ads_videoplayer_id  = <?php echo json_encode($video_type_id); ?> ;
 
   if( Ads_count >= 1 && Ads_type != null){
 
@@ -93,12 +92,11 @@
             
                 $('.adstime_url').attr('src', Ads_videos);
 
-                  document.getElementById('videoPlayer').addEventListener('loadedmetadata', function() {
-                        this.currentTime = 0;
-                    }, true);
-                    
-                  videoId.play();
-                  
+                document.getElementById(ads_videoplayer_id).addEventListener('loadedmetadata', function() {
+                    this.currentTime = 0;
+                }, true);
+                
+                videoId.play();
                   $('#ads_start_tym').replaceWith('<input type="hidden" id="ads_start_tym" class="ads_start_tym" value="'+ ads_end_tym+'">');
                   $('.ads_show_status').replaceWith('<input type="hidden" id="" class="ads_show_status"  value="0">');
                 
@@ -115,7 +113,7 @@
                   $(".plyr__volume").removeAttr("style");
                   
 
-                  document.getElementById('videoPlayer').addEventListener('loadedmetadata', function() {
+                  document.getElementById(ads_videoplayer_id).addEventListener('loadedmetadata', function() {
                       this.currentTime = 0;
                     }, true);
 

@@ -10,15 +10,14 @@ $post_tym = $post_tyming - 5 ;
 
 
 $AdsVideosPost = App\AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
-  ->Join('videos','advertisements.ads_category','=','videos.ads_category')
-  ->whereDate('start', '=', Carbon\Carbon::now()->format('Y-m-d'))
+  ->Join('videos','advertisements.ads_category','=','videos.post_ads_category')
+  // ->whereDate('start', '=', Carbon\Carbon::now()->format('Y-m-d'))
   // ->whereTime('start', '<=', $current_time)
   // ->whereTime('end', '>=', $current_time)
-  ->where('ads_events.status',1)
-  ->where('advertisements.status',10)
-  ->where('advertisements.ads_position','post')
-  ->where('videos.ads_category',$video->ads_category)
-  ->get();
+  ->where('ads_events.status',1)->where('advertisements.status',1)
+  ->where('advertisements.ads_category',$video->post_ads_category)
+  ->where('videos.id',$video->id)->where('ads_position','post')
+  ->where('advertisements.id',$video->post_ads)->get();
 
 
   if( count($AdsVideosPost) >= 1){
@@ -82,6 +81,7 @@ var ads_end_tym_Post     =  <?php  echo json_encode($Ads_duration_Sec_Post)  ;?>
 var Ads_count_Post       = <?php echo count($AdsVideosPost); ?> ;
 var Ads_type_Post        = <?php echo json_encode($ads_type_Post); ?> ;
 var post_tym             = <?php echo json_encode($post_tym); ?> ;
+var ads_post_videoplayer_id  = <?php echo json_encode($video_type_id); ?> ;
 
 
 if( Ads_count_Post >= 1 &&  Ads_type_Post != null ){
@@ -97,12 +97,11 @@ this.videoads_tym_Post.addEventListener('timeupdate', (e) => {
           
               $('.adstime_url').attr('src', Ads_videos_Post);
 
-                document.getElementById('videoPlayer').addEventListener('loadedmetadata', function() {
+                document.getElementById(ads_post_videoplayer_id).addEventListener('loadedmetadata', function() {
                     this.currentTime = 0;
                 }, true);
 
                videoId.play();
-               
                 $('#ads_start_tym_Post').replaceWith('<input type="hidden" id="ads_start_tym_Post" class="ads_start_tym_Post" value="'+ ads_end_tym_Post+'">');
                 $('.ads_show_status_Post').replaceWith('<input type="hidden" id="" class="ads_show_status_Post"  value="0">');
                 document.getElementById("Ads_vies_count_Post").click();
@@ -117,7 +116,7 @@ this.videoads_tym_Post.addEventListener('timeupdate', (e) => {
                 $(".plyr__controls__item").css("display", "block");
                 $(".plyr__volume").removeAttr("style");
 
-                document.getElementById('videoPlayer').addEventListener('loadedmetadata', function() {
+                document.getElementById(ads_post_videoplayer_id).addEventListener('loadedmetadata', function() {
                     this.currentTime = post_tym;
                   }, true);
 

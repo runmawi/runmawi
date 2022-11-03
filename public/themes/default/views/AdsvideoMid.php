@@ -9,14 +9,14 @@
   $current_time = Carbon\Carbon::now()->format('H:i:s');
 
   $AdsVideosMid = App\AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
-    ->Join('videos','advertisements.ads_category','=','videos.ads_category')
+    ->Join('videos','advertisements.ads_category','=','videos.mid_ads_category')
     // ->whereDate('start', '=', Carbon\Carbon::now()->format('Y-m-d'))
     // ->whereTime('start', '<=', $current_time)
     // ->whereTime('end', '>=', $current_time)
-    ->where('ads_events.status',1)
-    ->where('advertisements.status',1)
-    ->where('advertisements.ads_position','mid')
-    ->where('videos.ads_category',$video->ads_category)
+    ->where('ads_events.status',1)->where('advertisements.status',1)
+    ->where('videos.id',$video->id)
+    ->where('ads_position','mid')
+    ->where('advertisements.id',$video->mid_ads)
     ->get();
 
 

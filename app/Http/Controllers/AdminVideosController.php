@@ -1005,10 +1005,13 @@ class AdminVideosController extends Controller
 
     public function edit($id)
     {
+       
+
         if (!Auth::user()->role == "admin") {
             return redirect("/home");
         }
         $settings = Setting::first();
+
 
         $video = Video::find($id);
 
@@ -1045,7 +1048,9 @@ class AdminVideosController extends Controller
         $all_related_videos = RelatedVideo::where("video_id", $id)
             ->pluck("related_videos_id")
             ->toArray();
-        // dd($all_related_videos);
+
+       
+
         $data = [
             "headline" => '<i class="fa fa-edit"></i> Edit Video',
             "video" => $video,
@@ -1086,6 +1091,15 @@ class AdminVideosController extends Controller
                 ->pluck("country_id")
                 ->toArray(),
             "InappPurchase" => InappPurchase::all(),
+
+            'pre_ads'  => Video::select('advertisements.*')->join('advertisements','advertisements.id','=','videos.pre_ads')
+                            ->where('videos.id',$id)->first(),
+
+            'mid_ads'  => Video::select('advertisements.*')->join('advertisements','advertisements.id','=','videos.mid_ads')
+                            ->where('videos.id',$id)->first(),
+
+            'post_ads' => Video::select('advertisements.*')->join('advertisements','advertisements.id','=','videos.post_ads')
+                            ->where('videos.id',$id)->first(),
         ];
 
         return View::make("admin.videos.create_edit", $data);
@@ -1672,9 +1686,15 @@ class AdminVideosController extends Controller
         } else {
             $uploaded_by = Auth::user()->role;
         }
-        // dd($data['trailer']);
 
-        $video->ads_category = $data["ads_category"];
+                // Ads videos
+        $video->pre_ads_category = $data["pre_ads_category"];
+        $video->mid_ads_category = $data["mid_ads_category"];
+        $video->post_ads_category = $data["post_ads_category"];
+        $video->pre_ads = $data["pre_ads"];
+        $video->mid_ads = $data["mid_ads"];
+        $video->post_ads = $data["post_ads"];
+
         $shortcodes = $request["short_code"];
         $languages = $request["sub_language"];
         $video->mp4_url = $data["mp4_url"];
@@ -2545,7 +2565,6 @@ class AdminVideosController extends Controller
             $video->urlEnd_linksec = $startSec + 60;
         }
 
-        // Ads category
 
         $shortcodes = $request["short_code"];
         $languages = $request["sub_language"];
@@ -2556,7 +2575,6 @@ class AdminVideosController extends Controller
         $video->skip_intro = $data["skip_intro"];
         $video->intro_start_time = $data["intro_start_time"];
         $video->intro_end_time = $data["intro_end_time"];
-        $video->ads_category = $data["ads_category"];
         $video->description = $data["description"];
         $video->trailer_description = $data["trailer_description"];
         $video->uploaded_by = Auth::user()->role;
@@ -2575,6 +2593,14 @@ class AdminVideosController extends Controller
         $video->enable = 1;
         $video->search_tags = $searchtags;
         $video->ios_ppv_price = $data["ios_ppv_price"];
+
+            // Ads videos
+        $video->pre_ads_category = $data["pre_ads_category"];
+        $video->mid_ads_category = $data["mid_ads_category"];
+        $video->post_ads_category = $data["post_ads_category"];
+        $video->pre_ads = $data["pre_ads"];
+        $video->mid_ads = $data["mid_ads"];
+        $video->post_ads = $data["post_ads"];
 
         if (!empty($data["default_ads"])) {
             $video->default_ads = $data["default_ads"];
@@ -3102,6 +3128,7 @@ class AdminVideosController extends Controller
 
     public function editvideo($id)
     {
+
         if (!Auth::user()->role == "admin") {
             return redirect("/home");
         }
@@ -6865,6 +6892,73 @@ class AdminVideosController extends Controller
                 return $value;
             }
         }
+    }
+
+    public function pre_videos_ads( Request $request )
+    {
+        try {
+
+            $Advertisement = Advertisement::where('ads_category',$request->ads_category_id)->where('ads_position','pre')->where('status',1)->get();
+
+            $response = array(
+                'status'  => true,
+                'message' => 'Successfully Retrieve Pre Advertisement videos',
+                'ads_videos'    => $Advertisement ,
+            );
+
+        } catch (\Throwable $th) {
+
+            $response = array(
+                'status' => false,
+                'message' =>  $th->getMessage()
+            );
+        }
+        return response()->json($response, 200);
+    }
+
+    public function mid_videos_ads( Request $request )
+    {
+        try {
+
+            $Advertisement = Advertisement::where('ads_category',$request->ads_category_id)->where('ads_position','mid')->where('status',1)->get();
+
+            $response = array(
+                'status'  => true,
+                'message' => 'Successfully Retrieve Mid Advertisement videos',
+                'ads_videos'    => $Advertisement ,
+            );
+
+        } catch (\Throwable $th) {
+
+            $response = array(
+                'status' => false,
+                'message' =>  $th->getMessage()
+            );
+        }
+        return response()->json($response, 200);
+    }
+
+    public function post_videos_ads( Request $request )
+    {
+        try {
+
+            $Advertisement = Advertisement::where('ads_category',$request->ads_category_id)
+                            ->where('ads_position','post')->where('status',1)->get();
+
+            $response = array(
+                'status'  => true,
+                'message' => 'Successfully Retrieve Post Advertisement videos',
+                'ads_videos'    => $Advertisement ,
+            );
+
+        } catch (\Throwable $th) {
+
+            $response = array(
+                'status' => false,
+                'message' =>  $th->getMessage()
+            );
+        }
+        return response()->json($response, 200);
     }
 }
     
