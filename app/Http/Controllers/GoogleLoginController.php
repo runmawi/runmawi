@@ -21,9 +21,29 @@ public function callback($provider)
            
     $getInfo = Socialite::driver($provider)->user();
      
-    $user = $this->createUser($getInfo,$provider);
+    $findUser = User::where('email', $getInfo->email)->first();
+
+    if($findUser){
+        // Auth::login($findUser);
+        auth()->login($findUser);
+       $user = $findUser;
+    }else{
+         $user = User::create([
+            'name'     => $getInfo->name,
+            'username'     => $getInfo->name,
+            'active'    =>'1',
+            'role'    =>'registered',
+            'email'    => $getInfo->email,
+            'provider' => $provider,
+            'provider_id' => $getInfo->id
+        ]);
+        auth()->login($user);
+    }
+
+
+    // $user = $this->createUser($getInfo,$provider);
  
-    auth()->login($user);
+    // auth()->login($user);
     $user = $user;
     session()->put('user', $user);
     return redirect('/home');
@@ -71,3 +91,6 @@ function createUser($getInfo,$provider){
 
 }
 }
+
+
+
