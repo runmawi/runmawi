@@ -24,6 +24,7 @@
                   if(data.status == true){
 
                      if(data.ads_videos.length  === 0){
+                        $('#pre_ads_div').show();
                         $('#pre_ads').empty();
                         $('#pre_ads').append( $('<option value=" "> No Ads Found</option>')) ;
                      }else{
@@ -58,6 +59,7 @@
                   if(data.status == true){
 
                      if(data.ads_videos.length  === 0){
+                        $('#mid_ads_div').show();
                         $('#mid_ads').empty();
                         $('#mid_ads').append( $('<option value=" "> No Ads Found</option>')) ;
                      }else{
@@ -93,6 +95,7 @@
                   if(data.status == true){
 
                      if(data.ads_videos.length  === 0){
+                        $('#post_ads_div').show();
                         $('#post_ads').empty();
                         $('#post_ads').append( $('<option value=" "> No Ads Found</option>')) ;
                      }else{
@@ -106,5 +109,4 @@
                },
          });
       });
-
 </script>  

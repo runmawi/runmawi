@@ -965,6 +965,9 @@ border-radius: 0px 4px 4px 0px;
                            <label class="">Choose Pre-Ad </label>
                            <select class="form-control" name="pre_ads" id="pre_ads">
                               <option value=" ">Select Pre-Ad </option>
+                              @if( $pre_ads != null)
+                                 <option id="pre_ads_value" value="{{ $pre_ads->id  }} " {{ 'selected' }}> {{ $pre_ads->ads_name }} </option>
+                              @endif
                            </select>
                         </div>
 
@@ -972,6 +975,9 @@ border-radius: 0px 4px 4px 0px;
                            <label class="">Choose Mid-Ad </label>
                            <select class="form-control" name="mid_ads" id="mid_ads">
                               <option value=" ">Select Mid-Ad </option>
+                              @if( $mid_ads != null)
+                                  <option id="mid_ads_value" value="{{ $mid_ads->id  }} " {{ 'selected' }} > {{ $mid_ads->ads_name }} </option>
+                              @endif
                            </select>
                         </div>
 
@@ -979,10 +985,12 @@ border-radius: 0px 4px 4px 0px;
                            <label class="">Choose Post-Ad </label>
                            <select class="form-control" name="post_ads" id="post_ads">
                               <option value=" ">Select Post-Ad </option>
+                              @if( $post_ads != null)
+                                 <option id="post_ads_value" value="{{ $post_ads->id  }} " {{ 'selected' }} > {{ $post_ads->ads_name }} </option>
+                              @endif
                            </select>
                         </div>
 
-                        
 
                         {{-- <div class="col-sm-6 form-group mt-3">
                            <label class="">Choose Ad Name</label>
@@ -2580,10 +2588,8 @@ if(this.textContent === 'destroy') {
 
    </script>
 
-@include('admin.videos.Ads_videos'); 
+@include('admin.videos.Ads_edit_videos'); 
 
 @section('javascript')
 @stop
 @stop
-
-   

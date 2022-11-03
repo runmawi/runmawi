@@ -1005,10 +1005,13 @@ class AdminVideosController extends Controller
 
     public function edit($id)
     {
+       
+
         if (!Auth::user()->role == "admin") {
             return redirect("/home");
         }
         $settings = Setting::first();
+
 
         $video = Video::find($id);
 
@@ -1045,7 +1048,9 @@ class AdminVideosController extends Controller
         $all_related_videos = RelatedVideo::where("video_id", $id)
             ->pluck("related_videos_id")
             ->toArray();
-        // dd($all_related_videos);
+
+       
+
         $data = [
             "headline" => '<i class="fa fa-edit"></i> Edit Video',
             "video" => $video,
@@ -1086,6 +1091,15 @@ class AdminVideosController extends Controller
                 ->pluck("country_id")
                 ->toArray(),
             "InappPurchase" => InappPurchase::all(),
+
+            'pre_ads'  => Video::select('advertisements.*')->join('advertisements','advertisements.id','=','videos.pre_ads')
+                            ->where('videos.id',$id)->first(),
+
+            'mid_ads'  => Video::select('advertisements.*')->join('advertisements','advertisements.id','=','videos.mid_ads')
+                            ->where('videos.id',$id)->first(),
+
+            'post_ads' => Video::select('advertisements.*')->join('advertisements','advertisements.id','=','videos.post_ads')
+                            ->where('videos.id',$id)->first(),
         ];
 
         return View::make("admin.videos.create_edit", $data);
@@ -3114,6 +3128,7 @@ class AdminVideosController extends Controller
 
     public function editvideo($id)
     {
+
         if (!Auth::user()->role == "admin") {
             return redirect("/home");
         }
