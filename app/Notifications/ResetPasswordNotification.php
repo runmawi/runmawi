@@ -7,6 +7,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Lang;
 use Carbon\Carbon;
 use URL;
+use App\EmailTemplate;
 
 class ResetPasswordNotification extends Notification
 {
@@ -78,9 +79,13 @@ class ResetPasswordNotification extends Notification
             'token' => $this->token,
             'email' => $notifiable->getEmailForPasswordReset(),
         ], false));
-// dd( $url);
+
+
         try {
-            return (new MailMessage)->view('emails.reset', [
+
+            $email_subject =  EmailTemplate::where('id',4)->pluck('heading')->first() ;
+
+            return (new MailMessage)->subject($email_subject)->view('emails.reset', [
                 'url' => $url,
                 'email' => $notifiable->getEmailForPasswordReset(),
                 'token' => $this->token,
