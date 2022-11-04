@@ -41,6 +41,7 @@
         "sybio/gif-creator": "^1.0",
         "symfony/process": "^5.4",
         "symfony/psr-http-message-bridge": "^2.0",
+        "unicodeveloper/laravel-paystack": "^1.0",
         "unisharp/laravel-filemanager": "^2.4",
         "victorybiz/geoip-location": "^1.1",
         "wapmorgan/mp3info": "^0.0.8",
