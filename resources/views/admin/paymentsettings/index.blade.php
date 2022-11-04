@@ -69,11 +69,12 @@
 
                 <div class="clear"></div>
 
-                    <p><h3>Stripe Payment</h3></p>
 
                     <form method="POST" action="{{ URL::to('admin/payment_settings') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
             
                         @if(!empty($payment_settings))
+
+                            <p><h3>Stripe Payment</h3></p>
 
                             <div class="row">
 
@@ -301,6 +302,83 @@
                                 <input type="text" class="form-control" name="paypal_lable" id="paypal_lable" placeholder="PayPal Label" value="@if(!empty($paypal_payment_settings->paypal_lable) && Auth::user()->role != 'demo'){{ $paypal_payment_settings->paypal_lable }}@endif" />
                             </div>
                             </div>
+                        @endif
+
+                        {{-- Razorpay --}}
+
+                        @if(!empty($paystack_payment_setting))
+
+                            <p><h3>Paystack  Payment</h3></p>
+
+                            <div class="row">
+
+                                <div class="col-md-6">
+
+                                    <label for="">Payment Mode</label>
+
+                                    <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                        <div style="color:red;">Disable</div>
+                                            <div class="mt-1">
+                                                <label class="switch">
+                                                    <input type="checkbox"  @if ($paystack_payment_setting->paystack_status == 1) {{ "checked='checked'" }} @else {{ " " }} @endif name="paystack_status" >
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            </div>
+                                        <div style="color:green;">Enable</div>
+                                    </div>
+                                    <div class="make-switch" data-on="success" data-off="warning"></div>
+                                </div>
+                    
+                                <div class="col-md-6">
+                                    <label for=""> Paystack Mode </label>
+
+                                    <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                        
+                                        <div style="color:red;">OFF</div>
+                                        <div class="mt-1">
+                                            <label class="switch">
+                                                <input type="checkbox"  name="paystack_live_mode"  @if ($paystack_payment_setting->paystack_live_mode == 1) {{ "checked='checked'" }} @else {{ "" }} @endif>
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                        <div style="color:green;">ON</div>
+                                    </div>
+
+                                    <div class="make-switch" data-on="success" data-off="warning"></div>
+                                </div>
+                    
+                                <div class="col-md-6">
+                                    <div class="panel-title"> Paystack Plan (<a href="https://paystack.com/" target="_blank"> https://paystack.com/ </a>)</div>
+                                    <label>Name:</label> 
+                                    <input type="text" class="form-control" name="paystack_name" id="paystack_name" placeholder="Paystack Name" value="@if(!empty($paystack_payment_setting->paystack_name)){{ $paystack_payment_setting->paystack_name }}@endif" />
+                                </div>
+
+                                <div class="col-md-6 mt-3">
+                                    <label> Paystack Test Secret Key: </label> 
+                                    <input type="text" class="form-control" name="paystack_test_secret_key" placeholder="Paystack Test Secret Key" value="@if(!empty($paystack_payment_setting->paystack_test_secret_key) && Auth::user()->role != 'demo'){{ $paystack_payment_setting->paystack_test_secret_key }}@endif" />
+                                </div>
+
+                                <div class="col-md-6 mt-3">
+                                    <label> Paystack Test Publishable Key: </label> 
+                                    <input type="text" class="form-control" name="paystack_test_publishable_key"  placeholder="Paystack Test Publishable Key" value="@if(!empty($paystack_payment_setting->paystack_test_publishable_key) && Auth::user()->role != 'demo'){{ $paystack_payment_setting->paystack_test_publishable_key }}@endif" />
+                                </div>
+                    
+                                <div class="col-md-6 mt-3">
+                                    <label> Paystack Live Secret Key: </label> 
+                                    <input type="text" class="form-control" name="paystack_live_secret_key" placeholder="Paystack Live Secret Key" value="@if(!empty($paystack_payment_setting->paystack_live_secret_key) && Auth::user()->role != 'demo'){{ $paystack_payment_setting->paystack_live_secret_key }}@endif" />
+                                </div>
+                                
+                                <div class="col-md-6 mt-3">
+                                    <label> Paystack Live Publishable Key: </label> 
+                                    <input type="text" class="form-control" name="paystack_live_publishable_key"  placeholder="Paystack Live Publishable Key" value="@if(!empty($paystack_payment_setting->paystack_live_publishable_key) && Auth::user()->role != 'demo'){{ $paystack_payment_setting->paystack_live_publishable_key }}@endif" />
+                                </div>
+                    
+                                <div class="col-md-6 mt-3">
+                                    <label> Paystack Label: </label> 
+                                    <input type="text" class="form-control" name="paystack_lable"  placeholder="paystack Label" value="@if( !empty($paystack_payment_setting->paystack_lable ) && Auth::user()->role != 'demo'){{ $paystack_payment_setting->paystack_lable }}@endif" />
+                                </div>
+                    
+                            </div> <br><br>
                         @endif
 
                         <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
