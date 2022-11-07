@@ -563,6 +563,11 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/video_slider_update', 'AdminVideosController@video_slider_update'); 
     Route::post('/video_slug_validate', 'AdminVideosController@video_slug_validate'); 
 
+    // Ads category - videos
+    Route::post('/pre-videos-ads', 'AdminVideosController@pre_videos_ads')->name('pre_videos_ads'); 
+    Route::post('/mid-videos-ads', 'AdminVideosController@mid_videos_ads')->name('mid_videos_ads'); 
+    Route::post('/post-videos-ads', 'AdminVideosController@post_videos_ads')->name('post_videos_ads'); 
+
     // slider for live stream in index
     Route::post('/livevideo_slider_update', 'AdminLiveStreamController@livevideo_slider_update');
     
@@ -1909,36 +1914,36 @@ Route::get('artist-list', 'ChannelController@artist_list')->name('artist_list');
     // Filter 
 Route::get('categoryfilter', 'ChannelController@categoryfilter')->name('categoryfilter');
 
-
     // Landing page 
 Route::get('pages/{landing_page_slug}', 'LandingpageController@landing_page')->name('landing_page');
 
     // Razorpay 
 Route::group(['middleware' => ['RazorpayMiddleware']], function() {
-Route::get('Razorpay', 'RazorpayController@Razorpay');
-Route::get('/RazorpayIntegration/{PlanId}', 'RazorpayController@RazorpayIntegration')->name('RazorpayIntegration');
-Route::post('/RazorpayCompleted', 'RazorpayController@RazorpayCompleted')->name('RazorpayCompleted');
-Route::get('/RazorpayUpgrade', 'RazorpayController@RazorpayUpgrade')->name('RazorpayUpgrade');
-Route::get('/RazorpayCancelSubscriptions', 'RazorpayController@RazorpayCancelSubscriptions')->name('RazorpayCancelSubscriptions');
-Route::get('/RazorpaySubscriptionStore', 'RazorpayController@RazorpaySubscriptionStore')->name('RazorpaySubscriptionStore');
-Route::get('/RazorpaySubscriptionUpdate/{planId}', 'RazorpayController@RazorpaySubscriptionUpdate')->name('RazorpaySubscriptionUpdate');
 
-Route::get('/RazorpayVideoRent/{video_id}/{amount}', 'RazorpayController@RazorpayVideoRent')->name('RazorpayVideoRent');
-Route::POST('/RazorpayVideoRent_Payment', 'RazorpayController@RazorpayVideoRent_Payment')->name('RazorpayVideoRent_Payment');
+    Route::get('Razorpay', 'RazorpayController@Razorpay');
+    Route::get('/RazorpayIntegration/{PlanId}', 'RazorpayController@RazorpayIntegration')->name('RazorpayIntegration');
+    Route::post('/RazorpayCompleted', 'RazorpayController@RazorpayCompleted')->name('RazorpayCompleted');
+    Route::get('/RazorpayUpgrade', 'RazorpayController@RazorpayUpgrade')->name('RazorpayUpgrade');
+    Route::get('/RazorpayCancelSubscriptions', 'RazorpayController@RazorpayCancelSubscriptions')->name('RazorpayCancelSubscriptions');
+    Route::get('/RazorpaySubscriptionStore', 'RazorpayController@RazorpaySubscriptionStore')->name('RazorpaySubscriptionStore');
+    Route::get('/RazorpaySubscriptionUpdate/{planId}', 'RazorpayController@RazorpaySubscriptionUpdate')->name('RazorpaySubscriptionUpdate');
 
-Route::get('/RazorpayLiveRent/{live_id}/{amount}', 'RazorpayController@RazorpayLiveRent')->name('RazorpayLiveRent');
-Route::POST('/RazorpayLiveRent_Payment', 'RazorpayController@RazorpayLiveRent_Payment')->name('RazorpayLiveRent_Payment');
+    Route::get('/RazorpayVideoRent/{video_id}/{amount}', 'RazorpayController@RazorpayVideoRent')->name('RazorpayVideoRent');
+    Route::POST('/RazorpayVideoRent_Payment', 'RazorpayController@RazorpayVideoRent_Payment')->name('RazorpayVideoRent_Payment');
 
-// Route::get('/RazorpayModeratorPayouts/{user_id}/{amount}', 'RazorpayController@RazorpayModeratorPayouts')->name('RazorpayModeratorPayouts');
-Route::POST('/RazorpayModeratorPayouts', 'RazorpayController@RazorpayModeratorPayouts')->name('RazorpayModeratorPayouts');
-Route::POST('/RazorpayModeratorPayouts_Payment', 'RazorpayController@RazorpayModeratorPayouts_Payment')->name('RazorpayModeratorPayouts_Payment');
+    Route::get('/RazorpayLiveRent/{live_id}/{amount}', 'RazorpayController@RazorpayLiveRent')->name('RazorpayLiveRent');
+    Route::POST('/RazorpayLiveRent_Payment', 'RazorpayController@RazorpayLiveRent_Payment')->name('RazorpayLiveRent_Payment');
 
+    // Route::get('/RazorpayModeratorPayouts/{user_id}/{amount}', 'RazorpayController@RazorpayModeratorPayouts')->name('RazorpayModeratorPayouts');
+    Route::POST('/RazorpayModeratorPayouts', 'RazorpayController@RazorpayModeratorPayouts')->name('RazorpayModeratorPayouts');
+    Route::POST('/RazorpayModeratorPayouts_Payment', 'RazorpayController@RazorpayModeratorPayouts_Payment')->name('RazorpayModeratorPayouts_Payment');
 
-
-Route::POST('/RazorpayChannelPayouts', 'RazorpayController@RazorpayChannelPayouts')->name('RazorpayChannelPayouts');
-Route::POST('/RazorpayChannelPayouts_Payment', 'RazorpayController@RazorpayChannelPayouts_Payment')->name('RazorpayChannelPayouts_Payment');
+    Route::POST('/RazorpayChannelPayouts', 'RazorpayController@RazorpayChannelPayouts')->name('RazorpayChannelPayouts');
+    Route::POST('/RazorpayChannelPayouts_Payment', 'RazorpayController@RazorpayChannelPayouts_Payment')->name('RazorpayChannelPayouts_Payment');
 
 });
+
+
 
 // Content Partner - Home Page
 
@@ -1959,3 +1964,9 @@ Route::get('/liveStream', 'AdminLiveStreamController@liveStream')->name('liveStr
 
 Route::post('/PPV_live_PurchaseUpdate', 'LiveStreamController@PPV_live_PurchaseUpdate')->name('PPV_live_PurchaseUpdate');
 Route::post('/unseen_expirydate_checking', 'LiveStreamController@unseen_expirydate_checking')->name('unseen_expirydate_checking');
+
+
+// Paystack
+
+Route::POST('Paystack-Subscription', 'PaystackController@Paystack_CreateSubscription')->name('Paystack_CreateSubscription');
+Route::get('/paystack-verify-request', 'PaystackController@paystack_verify_request')->name('paystack_verify_request');

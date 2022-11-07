@@ -30,6 +30,7 @@ class AdminPaymentSettingsController extends Controller
 			'payment_settings' => PaymentSetting::where('payment_type','=','Stripe')->first(),
 			'paypal_payment_settings' => PaymentSetting::where('payment_type','=','PayPal')->first(),
 			'Razorpay_payment_setting' =>  PaymentSetting::where('payment_type','=','Razorpay')->first(),
+			'paystack_payment_setting' =>  PaymentSetting::where('payment_type','=','Paystack')->first(),
 			);
 
 		return View::make('admin.paymentsettings.index', $data);
@@ -215,6 +216,36 @@ class AdminPaymentSettingsController extends Controller
 		$Razorpay_payment_setting->plan_name 			= $request['Razorpay_plan_name'] ?  $request['Razorpay_plan_name'] : null;
 		$Razorpay_payment_setting->payment_type 		= "Razorpay";
         $Razorpay_payment_setting->save();
+	}
+
+
+	// Paystack
+
+	$paystack_payment_setting =  PaymentSetting::where('payment_type','=','Paystack')->first();
+
+	if($paystack_payment_setting != null){
+
+		if(empty($request['paystack_live_mode'])){
+			$paystack_live_mode = 0;
+		}else{
+			$paystack_live_mode = 1;
+		}
+
+		if(empty($request['paystack_status'])){
+			$paystack_status = 0;
+		}else{
+			$paystack_status = 1;
+		}
+
+		$paystack_payment_setting->paystack_live_mode            =    $paystack_live_mode;
+		$paystack_payment_setting->paystack_status               =    $paystack_status;
+		$paystack_payment_setting->paystack_test_secret_key      =    $request['paystack_test_secret_key'] ?  $request['paystack_test_secret_key'] : null;
+		$paystack_payment_setting->paystack_test_publishable_key = 	  $request['paystack_test_publishable_key'] ?  $request['paystack_test_publishable_key'] : null;
+		$paystack_payment_setting->paystack_live_secret_key      = 	  $request['paystack_live_secret_key'] ?  $request['paystack_live_secret_key'] : null;
+		$paystack_payment_setting->paystack_live_publishable_key = 	  $request['paystack_live_publishable_key'] ?  $request['paystack_live_publishable_key'] :null;
+		$paystack_payment_setting->paystack_lable 			 	 = 	  $request['paystack_lable'] ?  $request['paystack_lable'] : null;
+		$paystack_payment_setting->payment_type 				 =    "Paystack";
+        $paystack_payment_setting->save();
 	}
 
         return Redirect::to('admin/payment_settings')->with(array('note' => 'Successfully Updated Payment Settings!', 'note_type' => 'success') );
