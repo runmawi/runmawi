@@ -212,7 +212,8 @@ return [
         Maatwebsite\Excel\ExcelServiceProvider::class,
         UniSharp\LaravelFilemanager\LaravelFilemanagerServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
-        
+        Unicodeveloper\Paystack\PaystackServiceProvider::class,
+
     ],
 
     /*
@@ -279,8 +280,7 @@ return [
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'LogActivity' => App\Helpers\LogActivity::class,
         'NoCaptcha' => Anhskohbo\NoCaptcha\Facades\NoCaptcha::class,
-
-
+        'Paystack' => Unicodeveloper\Paystack\Facades\Paystack::class,
     ],
 
 ];

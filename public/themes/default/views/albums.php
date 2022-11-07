@@ -244,35 +244,7 @@
 
   <h2 class="text-center"><?php echo $message;?></h2>
 
-<input type="hidden" value="<?php echo URL('/');?>" id="base_url">
-<div id="audio_bg" >
-<div class="container-fluid">
-<div class="row album-top-30 mt-4 align-items-center">
-   <div class="col-lg-8">
- <audio id="myAudio" ontimeupdate="onTimeUpdate()">
-  <!-- <source src="audio.ogg" type="audio/ogg"> -->
-  <source id="source-audio" src="" type="audio/mpeg">
-  Your browser does not support the audio element.
-</audio>
-<div class="player-ctn" style="background-image:linear-gradient(to left, rgba(0, 0, 0, 0.25)0%, rgba(117, 19, 93, 1)),url('<?= URL::to('/').'/public/uploads/albums/'. $album->album ?>');background-size: cover;
-    background-repeat: no-repeat;
-    background-position: right;">
-    <div class="row align-items-center mb-4">
-    <div class="col-sm-3">
-<img src="<?= URL::to('/').'/public/uploads/albums/'. $album->album ?>"  class="img-responsive" width="200" height="200">
-</div>
-<div class="col-sm-8 col-md-8 col-xs-8">
-<div class="album_bg">
-<div class="album_container">
-<div class="blur"></div>
-<div class="overlay_blur">
- <h4 class="hero-title album mb-2"> <?= $album->albumname; ?></h4>
-     <p class="mt-2">Music by    <br>A. R. Rahman</p>
-    <div class="d-flex" style="justify-content: space-between;width: 33%;align-items: center;">
-
-    <div onclick="toggleAudio()">
-      <button class="btn bd btn-action" id="vidbutton" style="width:80px" ><i class="fa fa-play mr-2" aria-hidden="true"  ></i> Play</button>
-    </div>
+<?php } else { ?>
 
   <input type="hidden" value="<?php echo URL('/');?>" id="base_url">
 

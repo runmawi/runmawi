@@ -492,6 +492,7 @@ i.fa.fa-google-plus {
     $signup_step2_title = App\SiteTheme::pluck('signup_step2_title')->first();
     $stripe_lable = App\PaymentSetting::where('payment_type','Stripe')->pluck('stripe_lable')->first() ? App\PaymentSetting::where('payment_type','Stripe')->pluck('stripe_lable')->first()  : "Stripe";
     $paypal_lable = App\PaymentSetting::where('payment_type','PayPal')->pluck('paypal_lable')->first() ? App\PaymentSetting::where('payment_type','PayPal')->pluck('paypal_lable')->first() : "PayPal";
+    $paystack_lable = App\PaymentSetting::where('payment_type','Paystack')->pluck('paystack_lable')->first() ? App\PaymentSetting::where('payment_type','Paystack')->pluck('paystack_lable')->first() : "paystack";
 @endphp
 
 <section class="flick p-4">
@@ -504,14 +505,17 @@ i.fa.fa-google-plus {
                      <p class="text-white" style="font-size: 16px;">Welcome {{ Auth::user()->username ? Auth::user()->username  : " "  }}, </p>
                      <div class="medium-heading text-white pb-3"> {{  $signup_step2_title  }} </div>
 
-                    {{-- <p class="text-white">You will not be charged until the end of your free trial. Cancel anytime.</p> --}}
-
                     <div class="col-md-6 p-0">
                         <h5> Payment Method</h5>
+
                         <div class="d-flex align-items-center">
-                            <input type="checkbox" id="" name="" value="" checked>
-                            <label class="mt-2 ml-2" for="" > {{ $stripe_lable }}</label><br />
-                        </div>
+                            <input type="radio" id="stripe_radio_button" class="payment_gateway" name="payment_gateway" value="stripe" >
+                            <label class="mt-2 ml-2"> {{ $stripe_lable }} </label> <br />
+
+                            <input type="radio" id="paystack_radio_button" class="payment_gateway" name="payment_gateway" value="paystack">
+                            <label class="mt-2 ml-2" > {{ $paystack_lable }} </label> <br />
+                        </div> 
+
                     </div>      
 
                 <div class="row">
@@ -534,12 +538,11 @@ i.fa.fa-google-plus {
                                         <p>Billed as {{ "$".$plan[0]->price }}</p>
                                     </div>
                                 </div>
+
                                  <div class="d-flex justify-content-between align-items-center " > 
-                                     <div class="bgk">
-                                       
-                                     </div>
-                                     
+                                     <div class="bgk"></div>
                                  </div>
+
                              </div>
                           @endforeach
 
@@ -547,8 +550,8 @@ i.fa.fa-google-plus {
                         </div>
                     </div>
 
-                    <div class="col-md-12 mt-5 p-0">
-                        <div class="cont">
+                    <div class="col-md-12 mt-5 p-0 ">
+                        <div class="cont stripe_payment">
       
                          <div class="d-flex justify-content-between align-items-center">
                              <div>
@@ -566,40 +569,40 @@ i.fa.fa-google-plus {
                             </div>
                         </div>
 
-                    <div class="mt-3"></div>
+                        <div class="mt-3"></div>
 
-                    <label for="fname"><i class="fa fa-user"></i> Full Name</label>
+                        <label for="fname"><i class="fa fa-user"></i> Full Name</label>
 
-                    <input id="card-holder-name" type="text" class="form-control" placeholder="Card Holder Name">
+                        <input id="card-holder-name" type="text" class="form-control" placeholder="Card Holder Name">
 
-                     <!-- Stripe Elements Placeholder -->
-                     <label for="ccnum"> Card Number</label>
-                     <div id="card-element" style=""></div>
+                        <!-- Stripe Elements Placeholder -->
+                        <label for="ccnum"> Card Number</label>
+                        <div id="card-element" style=""></div>
 
-                    @if( get_coupon_code() == 1)
-                                    <!-- Add Promotion Code -->
-                        <div class="mt-3">
-                            <label for="fname"  style="float: right; " data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"  class="promo"> Add Promotion Code </label>
-                            <div class="collapse" id="collapseExample">
-                                <div class="row p-0">
-                                    <div class="col-lg-6 p-0" >
-                                        <input id="coupon_code_stripe" type="text" class="form-control" placeholder="Add Promotion Code" >
-                                        <input id="final_coupon_code_stripe" name="final_coupon_code_stripe" type="hidden" >
-                                         </div>
-                                    <div class="col-lg-6 p-0"><a type="button" id="couple_apply" class="btn round">Apply</a></div>
-                                    <span id="coupon_message"></span>
+                        @if( get_coupon_code() == 1)
+                                        <!-- Add Promotion Code -->
+                            <div class="mt-3">
+                                <label for="fname"  style="float: right; " data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"  class="promo"> Add Promotion Code </label>
+                                <div class="collapse" id="collapseExample">
+                                    <div class="row p-0">
+                                        <div class="col-lg-6 p-0" >
+                                            <input id="coupon_code_stripe" type="text" class="form-control" placeholder="Add Promotion Code" >
+                                            <input id="final_coupon_code_stripe" name="final_coupon_code_stripe" type="hidden" >
+                                            </div>
+                                        <div class="col-lg-6 p-0"><a type="button" id="couple_apply" class="btn round">Apply</a></div>
+                                        <span id="coupon_message"></span>
 
-                                                {{-- Coupon Code from backend(admin) --}}
-                                    @if( NewSubscriptionCouponCode() != '0' )
-                                        <span id="">  {{ "Recommend a Coupon Code for you - " . NewSubscriptionCouponCode() }} </span>
-                                    @endif
+                                                    {{-- Coupon Code from backend(admin) --}}
+                                        @if( NewSubscriptionCouponCode() != '0' )
+                                            <span id="">  {{ "Recommend a Coupon Code for you - " . NewSubscriptionCouponCode() }} </span>
+                                        @endif
 
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    @endif
+                        @endif
 
-                </div>
+                    </div>
                 
                 <h4>Summary</h4>
 
@@ -625,17 +628,29 @@ i.fa.fa-google-plus {
                     <p class="text-center mt-3">All state sales taxes apply</p>
                 </div>
 
-               
-
-
                  <p class="text-white mt-3 dp">
                          {{ $signup_payment_content ? $signup_payment_content : " " }}
                  </p>
             </div>
+                    <div class="col-md-12 stripe_payment">
+                        <button id="card-button" class="btn1  btn-lg btn-block font-weight-bold text-white mt-3 processing_alert"   data-secret="{{ session()->get('intent_stripe_key')  }}">
+                            Pay Now
+                        </button>
+                    </div>
+                  
+                    <div class="col-md-12 paystack_payment">
 
-                    <button id="card-button" class="btn1  btn-lg btn-block font-weight-bold text-white mt-3 processing_alert"   data-secret="{{ session()->get('intent_stripe_key')  }}">
-                        Pay Now
-                    </button>
+                        <form action="{{ route('Paystack_CreateSubscription') }}" method="post">
+                            @csrf
+                            <input type="hidden" id="" value="PLN_vweybpv7wx8rbj9" name="paystack_plan_id">
+
+                            <button  type="submit" class="btn1 btn-lg btn-block font-weight-bold text-white mt-3" >
+                                Pay Now
+                            </button>
+                        </form>
+
+                    </div>
+                   
                     
                     {{-- <button type="button" class="btn1  btn-lg btn-block font-weight-bold text-white mt-3">Start Your Free Trial</button> --}}
                     <input type="hidden" id="payment_image" value="<?php echo URL::to('/').'/public/Thumbnai_images';?>">
@@ -878,6 +893,34 @@ i.fa.fa-google-plus {
             });
         });
         
+</script>
+
+                {{-- Radio button for payment Gateway  --}}
+<script>
+
+    $(document).ready(function(){
+
+        $("#stripe_radio_button").attr('checked', true);
+
+        $('.paystack_payment').hide();
+
+        $(".payment_gateway").click(function(){
+
+            $('.paystack_payment,.stripe_payment').hide();
+
+            let payment_gateway =  $('input[name="payment_gateway"]:checked').val();
+
+                if( payment_gateway  == "stripe" ){
+
+                    $('.stripe_payment').show();
+                        
+                }else if( payment_gateway == "paystack" ){
+
+                    $('.paystack_payment').show();
+                }
+        });
+    });
+
 </script>
 
 @php
