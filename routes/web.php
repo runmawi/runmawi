@@ -1943,9 +1943,7 @@ Route::group(['middleware' => ['RazorpayMiddleware']], function() {
 
 });
 
-    // Paystack
 
-    Route::get('/paystack', 'PaystackController@paystack');
 
 // Content Partner - Home Page
 
@@ -1966,3 +1964,9 @@ Route::get('/liveStream', 'AdminLiveStreamController@liveStream')->name('liveStr
 
 Route::post('/PPV_live_PurchaseUpdate', 'LiveStreamController@PPV_live_PurchaseUpdate')->name('PPV_live_PurchaseUpdate');
 Route::post('/unseen_expirydate_checking', 'LiveStreamController@unseen_expirydate_checking')->name('unseen_expirydate_checking');
+
+
+// Paystack
+
+Route::POST('Paystack-Subscription', 'PaystackController@Paystack_CreateSubscription')->name('Paystack_CreateSubscription');
+Route::get('/paystack-verify-request', 'PaystackController@paystack_verify_request')->name('paystack_verify_request');
