@@ -1968,5 +1968,10 @@ Route::post('/unseen_expirydate_checking', 'LiveStreamController@unseen_expiryda
 
 // Paystack
 
-Route::POST('Paystack-Subscription', 'PaystackController@Paystack_CreateSubscription')->name('Paystack_CreateSubscription');
-Route::post('/paystack-verify-request', 'PaystackController@paystack_verify_request')->name('paystack_verify_request');
+Route::post('/Paystack-Subscription', 'PaystackController@Paystack_CreateSubscription')->name('Paystack_CreateSubscription');
+Route::get('/paystack-verify-request', 'PaystackController@paystack_verify_request')->name('paystack_verify_request');
+Route::get('/paystack-Subscription-update', 'PaystackController@paystack_Subscription_update')->name('paystack_Subscription_update');
+Route::get('/Paystack-Subscription-cancel', 'PaystackController@Paystack_Subscription_cancel')->name('Paystack_Subscription_cancel');
+
+
+
