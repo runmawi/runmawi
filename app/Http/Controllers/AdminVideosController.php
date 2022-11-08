@@ -1268,7 +1268,8 @@ class AdminVideosController extends Controller
             }
             $trailer = $data["trailer"];
             $trailer_path = URL::to("public/uploads/trailer/");
-            $trailer_Video = time() . "_" . $trailer->getClientOriginalName();
+            $trailer_Videoname =  Str::lower($trailer->getClientOriginalName());
+            $trailer_Video = time() . "_" . str_replace(" ","_",$trailer_Videoname);
             $trailer->move(public_path("uploads/trailer/"), $trailer_Video);
             $trailer_video_name = strtok($trailer_Video, ".");
             $M3u8_save_path =
@@ -2391,8 +2392,10 @@ class AdminVideosController extends Controller
                 }
                 $trailer = $data["trailer"];
                 $trailer_path = URL::to("public/uploads/trailer/");
-                $trailer_Video =
-                    time() . "_" . $trailer->getClientOriginalName();
+                $trailer_Videoname =  Str::lower($trailer->getClientOriginalName());
+                $trailer_Video = time() . "_" . str_replace(" ","_",$trailer_Videoname);
+                // $trailer_Video =
+                //     time() . "_" . $trailer->getClientOriginalName();
                 $trailer->move(public_path("uploads/trailer/"), $trailer_Video);
                 $trailer_video_name = strtok($trailer_Video, ".");
                 $M3u8_save_path =
