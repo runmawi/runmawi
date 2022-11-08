@@ -180,6 +180,7 @@ class PaystackController extends Controller
                 'stripe_id'             =>  $subcription_details['data']['subscription_code'] ,
                 'subscription_start'    =>  $Sub_Startday,
                 'subscription_ends_at'  =>  $Sub_Endday,
+                'payment_gateway'       =>  'Paystack',
             ]);
 
             $request->session()->forget('paystack_customer_id');
@@ -193,9 +194,9 @@ class PaystackController extends Controller
         
     }
 
-    public function Paystack_Subscription_cancel( Request $request )
+    public function Paystack_Subscription_cancel( Request $request , $subscription_id )
     {
-        $subcription_details = Paystack::fetchSubscription( $request->paystack_subcription_id) ;
+        $subcription_details = Paystack::fetchSubscription( $subscription_id ) ;
 
         $fields_string = http_build_query(array(
             'code'  =>  $subcription_details['data']['subscription_code'] ,
@@ -210,8 +211,18 @@ class PaystackController extends Controller
         curl_setopt($ch, CURLOPT_HTTPHEADER, $this->SecretKey_array);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER, true); 
         
-        $result = curl_exec($ch);
-        echo $result;
+        $Paystack_Subscription_cancel = curl_exec($ch);
+        $result = json_decode($Paystack_Subscription_cancel, true);
+
+        // dd( $result['message'] );
+
+        Subscription::where('stripe_id',$subscription_id )->update([
+            'stripe_status' =>  'Cancelled',
+        ]);
+
+        User::where('id',Auth::user()->id )->update([
+            'payment_gateway' =>  null ,
+        ]);
 
         return redirect()->route('home');
     }
