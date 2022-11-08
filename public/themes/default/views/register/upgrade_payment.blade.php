@@ -643,11 +643,9 @@ i.fa.fa-google-plus {
                                 Pay Now
                             </button>
                     </div>
-                   
                     
                     {{-- <button type="button" class="btn1  btn-lg btn-block font-weight-bold text-white mt-3">Start Your Free Trial</button> --}}
                     <input type="hidden" id="payment_image" value="<?php echo URL::to('/').'/public/Thumbnai_images';?>">
-
             </div>           
     </div>
     </div>

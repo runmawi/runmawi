@@ -58,9 +58,18 @@ class PaystackController extends Controller
     {
 
         try {
-            $user_email = User::where('id',Auth::user()->id)->pluck('email')->first();
 
-                    // Plan Details 
+            $users_details =Auth::User();
+
+            if( $users_details != null ){
+                $user_email = User::where('id',Auth::user()->id)->pluck('email')->first();
+            }
+            else{
+                $userEmailId = $request->session()->get('register.email');
+                $user_email   = User::where('email',$userEmailId)->pluck('email')->first();
+            }
+            
+                // Plan Details 
 
             $Plan_details = Paystack::fetchPlan( $request->paystack_plan_id );
  
@@ -143,21 +152,30 @@ class PaystackController extends Controller
         if( $request->trxref != null && $request->reference != null ){
 
                 // Customer Details
-            $paystack_customer_id = session('paystack_customer_id');
 
+            $paystack_customer_id = session('paystack_customer_id');
             $customer_details = Paystack::fetchCustomer( $paystack_customer_id );
 
                 // Subscription Details
-            $subcription_id = $customer_details['data']['subscriptions'][0]['subscription_code'] ;
 
+            $subcription_id = $customer_details['data']['subscriptions'][0]['subscription_code'] ;
             $subcription_details = Paystack::fetchSubscription($subcription_id) ;
 
-            $Sub_Startday =Carbon::parse($subcription_details['data']['createdAt'])->setTimezone('UTC')->format('d/m/Y H:i:s'); 
-            $Sub_Endday = Carbon::parse($subcription_details['data']['next_payment_date'] )->setTimezone('UTC')->format('d/m/Y H:i:s'); 
+            $Sub_Startday  = Carbon::parse($subcription_details['data']['createdAt'])->setTimezone('UTC')->format('d/m/Y H:i:s'); 
+            $Sub_Endday    = Carbon::parse($subcription_details['data']['next_payment_date'] )->setTimezone('UTC')->format('d/m/Y H:i:s'); 
             $trial_ends_at = Carbon::parse($subcription_details['data']['next_payment_date'] )->setTimezone('UTC')->toDateTimeString(); 
 
-                // Subscription Details
-            $user_id = Auth::user()->id;
+                // Subscription Details - Storing
+
+            $users_details = Auth::User() ;
+
+            if( $users_details != null ){
+                $user_id = Auth::user()->id;
+            }
+            else{
+                $userEmailId = $request->session()->get('register.email');
+                $user_id   = User::where('email',$userEmailId)->pluck('id')->first();
+            }
 
             Subscription::create([
                 'user_id'        =>  $user_id,
