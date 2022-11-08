@@ -5,11 +5,16 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Config;
+use Unicodeveloper\Paystack\Exceptions\IsNullException;
+use Unicodeveloper\Paystack\Exceptions\PaymentVerificationFailedException;
+use GuzzleHttp\Client;
 use App\PaymentSetting;
 use App\User;
 use Auth;
 use Paystack;
 use URL;
+
 
 class PaystackController extends Controller
 {
@@ -88,7 +93,16 @@ class PaystackController extends Controller
 
     public function paystack_verify_request ( Request $request )
     {
-        # code...
+        $transaction_id = $request->q8db9a67w9 ;
+
+        $paystack_verify_request = Paystack::isTransactionVerificationValid($transaction_id) ;
+
+        $paystack_verify_requests = Paystack::verifyTransactionAtGateway($transaction_id) ;
+
+
+        dd($paystack_verify_request);
+
+
     }
 
 }
