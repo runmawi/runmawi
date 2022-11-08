@@ -385,8 +385,10 @@ class AdminLiveStreamController extends Controller
              
         if(empty($data['active'])){
             $active = 0;
+            $status = 0;
         } else{
             $active = 1;
+            $status = 1;
         }
 
         $last_id = LiveStream::latest()->pluck('id')->first() + 1;
@@ -771,8 +773,11 @@ class AdminLiveStreamController extends Controller
 
         if(empty($data['active'])){
             $active = 0;
+            $status = 0;
+
         }else{
             $active = 1;
+            $status = 1;
         } 
         if(empty($data['banner'])){
             $banner = 0;
@@ -799,6 +804,7 @@ class AdminLiveStreamController extends Controller
 
         $video->rating = $rating;
         $video->banner = $banner;
+        $video->status = $status;
         $video->url_type = $url_type;
         $video->ppv_price = $ppv_price;
         $video->player_image = $player_PC_image;
