@@ -290,6 +290,7 @@ Route::get('upgrade-subscription', 'PaymentController@Upgrade');
 
 Route::get('upgrade-subscription_plan', 'PaymentController@Upgrade_Plan');
 Route::get('becomesubscriber', 'PaymentController@BecomeSubscriber');
+Route::get('BecomeSubscriber_Plans', 'PaymentController@BecomeSubscriber_Plans')->name('BecomeSubscriber_Plans');
 Route::get('transactiondetails','PaymentController@TransactionDetails');
 
 Route::get('/upgrading', 'PaymentController@upgrading');
