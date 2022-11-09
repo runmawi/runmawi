@@ -47,6 +47,8 @@ use App\CurrencySetting as CurrencySetting;
 use App\Playerui as Playerui;
 use App\HomeSetting;
 use Theme;
+use App\Channel;
+use App\ModeratorsUser;
 
 class TvshowsController extends Controller
 {
@@ -437,6 +439,53 @@ class TvshowsController extends Controller
   
         $series = Series::where('slug','=',$name)->first();    
 
+
+        if(@$series->uploaded_by == 'Channel'){
+            $user_id = $series->user_id;
+
+            $user = Channel::where("channels.id", "=", $user_id )
+            ->join(
+                "users",
+                "channels.email",
+                "=",
+                "users.email"
+            )
+            ->select(
+                "users.id as user_id"
+            )
+            ->first();
+            if(!Auth::guest() &&  $user->user_id == Auth::user()->id){
+                $video_access = 'free';
+            }else{ 
+                $video_access = 'pay';
+            }
+        }else if(@$series->uploaded_by == 'CPP'){
+            $user_id = $series->user_id;
+
+            $user = ModeratorsUser::where("moderators_users.id", "=", $user_id )
+            ->join(
+                "users",
+                "moderators_users.email",
+                "=",
+                "users.email"
+            )
+            ->select(
+                "users.id as user_id"
+            )
+            ->first();
+            if(!Auth::guest() &&  $user->user_id == Auth::user()->id){
+                $video_access = 'free';
+            }else{ 
+                $video_access = 'pay';
+            }
+        }else{
+            if(!Auth::guest() &&  @$categoryVideos->access  == 'ppv' ||  @$categoryVideos->access  == 'subscriber' && Auth::user()->role != 'admin' ){
+                $video_access = 'pay';
+            }else{
+                $video_access = 'free';
+            }
+        }
+        // dd($video_access);
         $id = $series->id;
 
 
@@ -479,6 +528,7 @@ class TvshowsController extends Controller
             $data = array(
                 'series_data' => $series,
                 'currency' => $currency,
+                'video_access' => $video_access,
                 'ppv_exits' => $ppv_exits,
                 'season' => $season,
                 'season_trailer' => $season_trailer,
@@ -498,6 +548,7 @@ class TvshowsController extends Controller
             $data = array(
                 'series_data' => $series,
                 'currency' => $currency,
+                'video_access' => $video_access,
                 'ppv_exits' => $ppv_exits,
                 'season' => $season,
                 'season_trailer' => $season_trailer,

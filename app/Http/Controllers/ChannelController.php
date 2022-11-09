@@ -706,7 +706,7 @@ class ChannelController extends Controller
                         $video_access = 'pay';
                      }
             }else{
-                if(!Auth::guest() &&  @$categoryVideos->access  == 'ppv' && Auth::user()->role != 'admin' ){
+                if(!Auth::guest() &&  @$categoryVideos->access  == 'ppv' ||  @$categoryVideos->access  == 'subscriber' && Auth::user()->role != 'admin' ){
                     $video_access = 'pay';
                 }else{
                     $video_access = 'free';
@@ -1054,7 +1054,7 @@ class ChannelController extends Controller
                                 $video_access = 'pay';
                             }
                     }else{
-                        if(!Auth::guest() &&  @$categoryVideos->access  == 'ppv' && Auth::user()->role != 'admin' ){
+                        if(!Auth::guest() &&  @$categoryVideos->access  == 'ppv' ||  @$categoryVideos->access  == 'subscriber' && Auth::user()->role != 'admin' ){
                             $video_access = 'pay';
                         }else{
                             $video_access = 'free';
@@ -1264,7 +1264,7 @@ class ChannelController extends Controller
                         $video_access = 'pay';
                     }
             }else{
-                if(!Auth::guest() &&  @$categoryVideos->access  == 'ppv' && Auth::user()->role != 'admin' ){
+                if(!Auth::guest() &&  @$categoryVideos->access  == 'ppv'  ||  @$categoryVideos->access  == 'subscriber' && Auth::user()->role != 'admin' ){
                     $video_access = 'pay';
                 }else{
                     $video_access = 'free';
