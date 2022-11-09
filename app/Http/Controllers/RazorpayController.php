@@ -199,6 +199,7 @@ dd($carbon);
             'stripe_id'             =>  $subscription['id'] ,
             'subscription_start'    =>  $Sub_Startday,
             'subscription_ends_at'  =>  $Sub_Endday,
+            'payment_gateway'       =>  'Razorpay',
         ]);
 
         return Redirect::route('home');
@@ -250,6 +251,7 @@ dd($carbon);
                 User::where('id',$user_id)->update([
                     'subscription_start'    =>  $Sub_Startday,
                     'subscription_ends_at'  =>  $Sub_Endday,
+                    'payment_gateway'       =>  'Razorpay',
                 ]);
             }
             return Redirect::route('home');
@@ -271,6 +273,10 @@ dd($carbon);
 
         Subscription::where('stripe_id',$subscriptionId)->update([
             'stripe_status' =>  'Cancelled',
+        ]);
+
+        User::where('id',Auth::user()->id )->update([
+            'payment_gateway' =>  null ,
         ]);
 
         return Redirect::route('home')->with('message', 'Invalid Activation.');

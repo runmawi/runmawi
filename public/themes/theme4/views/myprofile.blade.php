@@ -391,6 +391,11 @@ $settings = App\Setting::first();
                                  <a href="<?=URL::to('/becomesubscriber');?>" class="btn btn-primary btn-login nomargin noborder-radius" > Become Subscriber</a>
                            @endif
                         </div>
+
+                        @if ( $payment_package != null  && $payment_package->payment_gateway == "Paystack")
+                           <a href="{{ route('Paystack_Subscription_cancel', [ 'subscription_id' => $payment_package->stripe_id ]) }}" class="btn btn-primary btn-login nomargin noborder-radius" > Cancel Membership </a>
+                        @endif
+                        
                     </div>
     </div>
                 

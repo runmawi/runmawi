@@ -500,7 +500,7 @@ i.fa.fa-google-plus {
     $signup_step2_title = App\SiteTheme::pluck('signup_step2_title')->first();
     $stripe_lable = App\PaymentSetting::where('payment_type','Stripe')->pluck('stripe_lable')->first() ? App\PaymentSetting::where('payment_type','Stripe')->pluck('stripe_lable')->first()  : "Stripe";
     $paypal_lable = App\PaymentSetting::where('payment_type','PayPal')->pluck('paypal_lable')->first() ? App\PaymentSetting::where('payment_type','PayPal')->pluck('paypal_lable')->first() : "PayPal";
-
+    $paystack_lable = App\PaymentSetting::where('payment_type','Paystack')->pluck('paystack_lable')->first() ? App\PaymentSetting::where('payment_type','Paystack')->pluck('paystack_lable')->first() : "paystack";
 @endphp
 
 <section class="flick">
@@ -519,17 +519,23 @@ i.fa.fa-google-plus {
 
                         <!-- <h5> Payment Method</h5> -->
 
-                        <div class="d-flex align-items-center">
-                            <?php if(!empty($Stripe_payment_settings) && $Stripe_payment_settings->stripe_status == 1){ ?>
+                        {{-- <div class="d-flex align-items-center">
+                            @if(!empty($Stripe_payment_settings) && $Stripe_payment_settings->stripe_status == 1)
                                 <input type="checkbox" id="Stripe_lable" name="payment_lable" value="Stripe_lable" checked>
                                 <label class="mt-2 ml-2" for="" > {{ $stripe_lable }} </label><br />&nbsp;&nbsp;
-                            <?php }elseif(!empty($PayPal_payment_settings) && $PayPal_payment_settings->paypal_status == 1){ ?>
+                            @elseif(!empty($PayPal_payment_settings) && $PayPal_payment_settings->paypal_status == 1)
                                 <input type="checkbox" id="Paypal_lable" name="payment_lable" value="Paypal_lable" >
                                 <label class="mt-2 ml-2 " for="" > {{ $paypal_lable }} </label><br />&nbsp;&nbsp;
-                            <?php } ?>
-                                <!-- <input type="checkbox" id="Razorpay_lable" name="payment_lable" value="Razorpay_lable" >
-                                <label class="mt-2 ml-2 " for="" > Razorpay</label><br /> -->
-                        </div>
+                            @endif
+                        </div> --}}
+
+                        <div class="d-flex align-items-center">
+                            <input type="radio" id="stripe_radio_button" class="payment_gateway" name="payment_gateway" value="stripe" >
+                            <label class="mt-2 ml-2"> {{ $stripe_lable }} </label> <br />
+
+                            <input type="radio" id="paystack_radio_button" class="payment_gateway" name="payment_gateway" value="paystack">
+                            <label class="mt-2 ml-2" > {{ $paystack_lable }} </label> <br />
+                        </div> 
 
           </div>      
 
@@ -578,12 +584,13 @@ i.fa.fa-google-plus {
                     
                     <!-- Stripe Payment -->
                     <div class="col-md-12 mt-5 Stripe_Payment">
-                        <div class="cont">
+                        <div class="cont stripe_payment">
       
                          <div class="d-flex justify-content-between align-items-center">
                              <div>
                                  <h3>Payment</h3>
                              </div>
+                             
 
                              <div>
                                  <label for="fname">Accepted Cards</label>
@@ -668,18 +675,20 @@ i.fa.fa-google-plus {
                  </p>
              <!-- </div> -->
 
-                    <button id="card-button" class="btn1  btn-lg btn-block font-weight-bold text-white mt-3 processing_alert"   data-secret="{{ session()->get('intent_stripe_key')  }}">
-                        Pay Now
-                    </button>
+                    <div class="col-md-12 stripe_payment">
+                        <button id="card-button" class="btn1  btn-lg btn-block font-weight-bold text-white mt-3 processing_alert"   data-secret="{{ session()->get('intent_stripe_key')  }}">
+                            Pay Now
+                        </button>
+                    </div>
+                  
+                    <div class="col-md-12 paystack_payment">
+                        <button  type="submit" class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 paystack_button " >
+                            Pay Now
+                        </button>
+                    </div>
                     
                     <input type="hidden" id="payment_image" value="<?php echo URL::to('/').'/public/Thumbnai_images';?>">
-                    
-                    {{-- <button type="button" class="btn1  btn-lg btn-block font-weight-bold text-white mt-3">Start Your Free Trial</button> --}}
-
             </div>           
-
-
-            
 
             <div class="col-md-12 mt-5 PaypalPayment" id="Paypal_Payment">
                     
@@ -1212,6 +1221,71 @@ function paypalplan_details(ele){
                 }
             });
         })
+</script>
+
+        {{-- Radio button for payment Gateway  --}}
+
+<script>
+
+    $(document).ready(function(){
+
+        $("#stripe_radio_button").attr('checked', true);
+
+        $('.paystack_payment').hide();
+
+        $(".payment_gateway").click(function(){
+
+            $('.paystack_payment,.stripe_payment').hide();
+
+            let payment_gateway =  $('input[name="payment_gateway"]:checked').val();
+
+                if( payment_gateway  == "stripe" ){
+
+                    $('.stripe_payment').show();
+                        
+                }else if( payment_gateway == "paystack" ){
+
+                    $('.paystack_payment').show();
+                }
+        });
+    });
+
+</script>
+
+                {{-- Paystack Payment --}}
+<script>
+
+    $(".paystack_button").click(function(){
+
+        var paystack_plan_id = $("#plan_name").val();
+
+        $.ajax({
+            url: "{{ route('Paystack_CreateSubscription') }}",
+            type: "post",
+            data: {
+                    _token: '{{ csrf_token() }}',
+                    paystack_plan_id : paystack_plan_id ,
+                    async: false,
+                },       
+                
+                success: function( data ,textStatus ){
+
+                if( data.status == true ){
+                    window.location.href = data.authorization_url ;
+                }
+
+                else if( data.status == false ){
+                    swal({
+                        title: "Payment Failed!",
+                        text: data.message,
+                        icon: "warning",
+                        }).then(function() {
+                            window.location = base_url+'/login';
+                        })
+                    }
+                } 
+            });
+        });
 </script>
 
 @php

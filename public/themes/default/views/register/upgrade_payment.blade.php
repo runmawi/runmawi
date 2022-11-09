@@ -639,22 +639,13 @@ i.fa.fa-google-plus {
                     </div>
                   
                     <div class="col-md-12 paystack_payment">
-
-                        <form action="{{ route('Paystack_CreateSubscription') }}" method="post">
-                            @csrf
-                            <input type="hidden" id="" value="PLN_vweybpv7wx8rbj9" name="paystack_plan_id">
-
-                            <button  type="submit" class="btn1 btn-lg btn-block font-weight-bold text-white mt-3" >
+                            <button  type="submit" class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 paystack_button " >
                                 Pay Now
                             </button>
-                        </form>
-
                     </div>
-                   
                     
                     {{-- <button type="button" class="btn1  btn-lg btn-block font-weight-bold text-white mt-3">Start Your Free Trial</button> --}}
                     <input type="hidden" id="payment_image" value="<?php echo URL::to('/').'/public/Thumbnai_images';?>">
-
             </div>           
     </div>
     </div>
@@ -698,7 +689,7 @@ i.fa.fa-google-plus {
         var plan_payment_type = $(ele).attr('data-payment-type');
         var plan_price  = $(ele).attr('data-plan-price');
         var plan_id_class = $(ele).attr('data-plan-id');
-        
+
         $('#payment_type').replaceWith('<input type="hidden" name="payment_type" id="payment_type" value="'+ plan_payment_type+'">');
         $('#plan_name').replaceWith('<input type="hidden" name="plan_name" id="plan_name" value="'+ plans_id +'">');
         $('.plan_price').empty(plan_price);
@@ -921,6 +912,43 @@ i.fa.fa-google-plus {
         });
     });
 
+</script>
+
+                {{-- Paystack Payment --}}
+<script>
+
+        $(".paystack_button").click(function(){
+
+        var paystack_plan_id = $("#plan_name").val();
+
+
+        $.ajax({
+            url: "{{ route('Paystack_CreateSubscription') }}",
+            type: "post",
+            data: {
+                    _token: '{{ csrf_token() }}',
+                    paystack_plan_id : paystack_plan_id ,
+                    async: false,
+                },       
+                
+                success: function( data ,textStatus ){
+
+                if( data.status == true ){
+                    window.location.href = data.authorization_url ;
+                }
+
+                else if( data.status == false ){
+                    swal({
+                        title: "Payment Failed!",
+                        text: data.message,
+                        icon: "warning",
+                        }).then(function() {
+                            window.location = base_url+'/home';
+                        })
+                    }
+                } 
+            });
+        });
 </script>
 
 @php

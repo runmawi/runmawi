@@ -9,18 +9,22 @@ use Illuminate\Support\Facades\Config;
 use Unicodeveloper\Paystack\Exceptions\IsNullException;
 use Unicodeveloper\Paystack\Exceptions\PaymentVerificationFailedException;
 use GuzzleHttp\Client;
+use Carbon\Carbon;
 use App\PaymentSetting;
+use App\Subscription;
 use App\User;
 use Auth;
 use Paystack;
 use URL;
 
-
 class PaystackController extends Controller
 {
     public function __construct()
     {
-        $this->url = "https://api.paystack.co/transaction/initialize";
+        $this->customer_create_api_url = "https://api.paystack.co/customer";
+        $this->Subscription_create_api_url = "https://api.paystack.co/transaction/initialize";
+        $this->Subscription_cancel_api_url = "https://api.paystack.co/subscription/disable";
+
 
         $PaymentSetting = PaymentSetting::where('payment_type','Paystack')->first();
 
@@ -52,57 +56,192 @@ class PaystackController extends Controller
 
     public function Paystack_CreateSubscription( Request $request )
     {
-        $user_email = User::where('id',Auth::user()->id)->pluck('email')->first();
 
-                    // Plan Details 
+        try {
 
-        $Plan_details = Paystack::fetchPlan( $request->paystack_plan_id );
+            $users_details =Auth::User();
 
-        $Plan_amount = $Plan_details['data']['amount'] ;
-        $plan_id     = $request->paystack_plan_id ;
+            if( $users_details != null ){
+                $user_email = User::where('id',Auth::user()->id)->pluck('email')->first();
+            }
+            else{
+                $userEmailId = $request->session()->get('register.email');
+                $user_email   = User::where('email',$userEmailId)->pluck('email')->first();
+            }
+            
+                // Plan Details 
 
-        $fields_string = http_build_query( array(
-            'email'  => $user_email , 
-            'amount' => $Plan_amount, 
-            'plan'   => $plan_id, 
-        ));
+            $Plan_details = Paystack::fetchPlan( $request->paystack_plan_id );
+ 
+            $Plan_amount = $Plan_details['data']['amount'] ;
+            $plan_id     = $request->paystack_plan_id ;
+
+                // Create Customer
+        
+            $customer_details = http_build_query( array(
+                "email" => $user_email , 
+                "first_name" => null,
+                "last_name" => null,
+                "phone" => null
+            ));
+        
+            $ch = curl_init();
+            
+            curl_setopt($ch,CURLOPT_URL, $this->customer_create_api_url);
+            curl_setopt($ch,CURLOPT_POST, true);
+            curl_setopt($ch,CURLOPT_POSTFIELDS, $customer_details );
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $this->SecretKey_array);
+            
+            curl_setopt($ch,CURLOPT_RETURNTRANSFER, true); 
+            
+            $customer = (curl_exec($ch));
+
+            $customer_respond = json_decode($customer, true);
+
+            $customer_id = $customer_respond['data']['customer_code'] ;
+
+            session(['paystack_customer_id' => $customer_id ]);
+
+                 // Create Subscription 
+
+            $Subscription_details = http_build_query( array(
+                'email'  => $user_email , 
+                'amount' => $Plan_amount, 
+                'plan'   => $plan_id, 
+            ));
       
-        $ch = curl_init();
+            $sub = curl_init();
+            
+            curl_setopt($sub,CURLOPT_URL, $this->Subscription_create_api_url );
+            curl_setopt($sub,CURLOPT_POST, true);
+            curl_setopt($sub,CURLOPT_POSTFIELDS, $Subscription_details);
+            curl_setopt($sub, CURLOPT_HTTPHEADER,  $this->SecretKey_array);
+            
+            curl_setopt($sub,CURLOPT_RETURNTRANSFER, true); 
         
-        curl_setopt($ch,CURLOPT_URL, $this->url );
-        curl_setopt($ch,CURLOPT_POST, true);
-        curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
-        curl_setopt($ch, CURLOPT_HTTPHEADER,  $this->SecretKey_array);
-        
-        curl_setopt($ch,CURLOPT_RETURNTRANSFER, true); 
-        
-        $result = json_decode(curl_exec($ch));
+            $subscription = (curl_exec($sub));
 
-        $response = array(
-            'authorization_url' => $result->data->authorization_url ,
-            'access_code'       => $result->data->access_code ,
-            'reference'         => $result->data->reference,
-            'email_id'          => $user_email,
-            'amount'            => $Plan_amount ,
-            'publish_key'       => $this->paystack_keyId,
-            'redirect_url'      => URL::to('becomesubscriber'),
-        );
+            $result = json_decode($subscription, true);
 
-        return view('Paystack.checkout',compact('response'),$response);
+            $response = array(
+                'status'           => true ,
+                'message'          => "Customer & Authorization url Successfully Created !" , 
+                'authorization_url' => $result['data']['authorization_url'] , 
+                'access_code'       => $result['data']['access_code'] , 
+                'reference'         => $result['data']['reference'], 
+                'email_id'          => $user_email,
+                'amount'            => $Plan_amount ,
+                'publish_key'       => $this->paystack_keyId,
+                'redirect_url'      => URL::to('becomesubscriber'),
+            );
+        } 
+        catch (\Throwable $th) {
+
+           $response = array(
+                "status"  => false ,
+                "message" => $th->getMessage() , 
+            );
+        }
+        
+        return response()->json($response, 200);
     }
 
     public function paystack_verify_request ( Request $request )
     {
-        $transaction_id = $request->q8db9a67w9 ;
 
-        $paystack_verify_request = Paystack::isTransactionVerificationValid($transaction_id) ;
+        if( $request->trxref != null && $request->reference != null ){
 
-        $paystack_verify_requests = Paystack::verifyTransactionAtGateway($transaction_id) ;
+                // Customer Details
 
+            $paystack_customer_id = session('paystack_customer_id');
+            $customer_details = Paystack::fetchCustomer( $paystack_customer_id );
 
-        dd($paystack_verify_request);
+                // Subscription Details
 
+            $subcription_id = $customer_details['data']['subscriptions'][0]['subscription_code'] ;
+            $subcription_details = Paystack::fetchSubscription($subcription_id) ;
 
+            $Sub_Startday  = Carbon::parse($subcription_details['data']['createdAt'])->setTimezone('UTC')->format('d/m/Y H:i:s'); 
+            $Sub_Endday    = Carbon::parse($subcription_details['data']['next_payment_date'] )->setTimezone('UTC')->format('d/m/Y H:i:s'); 
+            $trial_ends_at = Carbon::parse($subcription_details['data']['next_payment_date'] )->setTimezone('UTC')->toDateTimeString(); 
+
+                // Subscription Details - Storing
+
+            $users_details = Auth::User() ;
+
+            if( $users_details != null ){
+                $user_id = Auth::user()->id;
+            }
+            else{
+                $userEmailId = $request->session()->get('register.email');
+                $user_id   = User::where('email',$userEmailId)->pluck('id')->first();
+            }
+
+            Subscription::create([
+                'user_id'        =>  $user_id,
+                'name'           =>  $subcription_details['data']['plan']['name'],
+                'price'          =>  $subcription_details['data']['amount'] ,   // Amount Paise to Rupees
+                'stripe_id'      =>  $subcription_details['data']['subscription_code'] ,
+                'stripe_status'  =>  $subcription_details['data']['status'] ,
+                'stripe_plan'    =>  $subcription_details['data']['plan']['plan_code'],
+                'quantity'       =>  null,
+                'countryname'    =>  Country_name(),
+                'regionname'     =>  Region_name(),
+                'cityname'       =>  city_name(),
+                'PaymentGateway' =>  'Paystack',
+                'trial_ends_at'  =>  $trial_ends_at,
+                'ends_at'        =>  $trial_ends_at,
+            ]);
+
+            User::where('id',$user_id)->update([
+                'role'                  =>  'subscriber',
+                'stripe_id'             =>  $subcription_details['data']['subscription_code'] ,
+                'subscription_start'    =>  $Sub_Startday,
+                'subscription_ends_at'  =>  $Sub_Endday,
+                'payment_gateway'       =>  'Paystack',
+            ]);
+
+            $request->session()->forget('paystack_customer_id');
+
+            return redirect()->route('home');
+        }
     }
 
+    public function paystack_Subscription_update( Request $request )
+    {
+        
+    }
+
+    public function Paystack_Subscription_cancel( Request $request , $subscription_id )
+    {
+        $subcription_details = Paystack::fetchSubscription( $subscription_id ) ;
+
+        $fields_string = http_build_query(array(
+            'code'  =>  $subcription_details['data']['subscription_code'] ,
+            'token' =>  $subcription_details['data']['email_token'] ,
+        ));
+      
+        $ch = curl_init();
+        
+        curl_setopt($ch,CURLOPT_URL, $this->Subscription_cancel_api_url);
+        curl_setopt($ch,CURLOPT_POST, true);
+        curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $this->SecretKey_array);
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER, true); 
+        
+        $Paystack_Subscription_cancel = curl_exec($ch);
+        $result = json_decode($Paystack_Subscription_cancel, true);
+
+        // dd( $result['message'] );
+
+        Subscription::where('stripe_id',$subscription_id )->update([
+            'stripe_status' =>  'Cancelled',
+        ]);
+
+        User::where('id',Auth::user()->id )->update([
+            'payment_gateway' =>  null ,
+        ]);
+
+        return redirect()->route('home');
+    }
 }
