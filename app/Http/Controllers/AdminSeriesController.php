@@ -865,7 +865,9 @@ class AdminSeriesController extends Controller
 
                             $trailer = $data['trailer'];
                             $trailer_path  = URL::to('public/uploads/season_trailer/');
-                            $trailer_Video =  time().'_'.$trailer->getClientOriginalName();  
+                            // $trailer_Video =  time().'_'.$trailer->getClientOriginalName();  
+                            $trailer_Videoname =  Str::lower($trailer->getClientOriginalName());
+                            $trailer_Video = time() . "_" . str_replace(" ","_",$trailer_Videoname);
                             $trailer->move(public_path('uploads/season_trailer/'), $trailer_Video);
                             $trailer_video_name = strtok($trailer_Video, '.');
                             $M3u8_save_path = $trailer_path.'/'.$trailer_video_name.'.m3u8';
@@ -1056,7 +1058,9 @@ class AdminSeriesController extends Controller
 
                     $trailer = $data['trailer'];
                     $trailer_path  = URL::to('public/uploads/season_trailer/');
-                    $trailer_Video =  time().'_'.$trailer->getClientOriginalName();  
+                    // $trailer_Video =  time().'_'.$trailer->getClientOriginalName();  
+                    $trailer_Videoname =  Str::lower($trailer->getClientOriginalName());
+                    $trailer_Video = time() . "_" . str_replace(" ","_",$trailer_Videoname);
                     $trailer->move(public_path('uploads/season_trailer/'), $trailer_Video);
                     $trailer_video_name = strtok($trailer_Video, '.');
                     $M3u8_save_path = $trailer_path.'/'.$trailer_video_name.'.m3u8';

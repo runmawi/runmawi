@@ -75,7 +75,7 @@ if(empty($new_date)){
 if(!Auth::guest()){
 // dd($ppv_exist);
 if(!empty($password_hash)){
-if ($ppv_exist > 0 || Auth::user()->subscribed() || Auth::user()->role == "admin" || $video->access == "guest" && $video->ppv_price == null ) { ?>
+if ($ppv_exist > 0 || $video_access == "free"  || Auth::user()->subscribed() || Auth::user()->role == "admin" || $video->access == "guest" && $video->ppv_price == null ) { ?>
 <div id="video_bg"> 
         <div class="">
             <div id="video sda" class="fitvid" style="margin: 0 auto;">
@@ -169,7 +169,8 @@ if ($ppv_exist > 0 || Auth::user()->subscribed() || Auth::user()->role == "admin
 
                        
             <!-- Stripe Button -->
-                    <button class="btn btn-primary btn-block" onclick="pay(<?php echo $video->ppv_price; ?>)">Watch Now For <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
+                    <!-- <button class="btn btn-primary btn-block" onclick="pay(<?php echo $video->ppv_price; ?>)">Watch Now For <?php echo $currency->symbol.' '.$video->ppv_price; ?></button> -->
+                    <h4 class="text-center" style="margin-top:80px;"><a href="<?=URL::to('/') . '/stripe/billings-details' ?>"><p>Click Here To Become Subscriber</p></a></h4>
 
             <!-- Razorpay Button -->
             <?php if($Razorpay_payment_setting !=null && $Razorpay_payment_setting->payment_type == "Razorpay" ){?>
