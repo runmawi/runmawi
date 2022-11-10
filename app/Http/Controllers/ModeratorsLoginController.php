@@ -226,7 +226,7 @@ class ModeratorsLoginController extends Controller
 
         $input = $request->all();
         $request->validate(['email_id' => 'required|email|unique:moderators_users,email', 'password' => 'min:6', ]);
-        $request->validate(['email_id' => 'required|email|unique:users,email' ]);
+        // $request->validate(['email_id' => 'required|email|unique:users,email' ]);
         // dd($input);
         $user_package = User::where('id', 1)->first();
         $package = $user_package->package;
@@ -309,8 +309,9 @@ class ModeratorsLoginController extends Controller
             }
             $moderatorsuser->save();
 
+            $user_data = User::where('email', $request->email_id)->first();
 
-
+            if(empty($user_data)){
             $user = new User();
             $user->package = 'Channel';
             $user->unhashed_password = $request->password;
@@ -321,7 +322,9 @@ class ModeratorsLoginController extends Controller
             $user->password = Hash::make($request->password);
             $user->active = 1;
             $user->save();
+            }else{
 
+            }
             $user_id = $moderatorsuser->id;
             $str = "1,2,3,4,5,9,10,11,12,26,27,39,40,41,42,43";
             $userrolepermissiom = explode(",", $str);

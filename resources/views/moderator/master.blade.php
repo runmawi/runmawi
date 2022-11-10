@@ -380,7 +380,9 @@ for($i=0;$i<(count($userrolepermissiom));$i++){
                          </a>
                       </div>
                    </div>
-                   <div class="iq-search-bar ml-auto">
+
+
+                   <div class="iq-search-bar ml-auto" style="margin-left: 59% !important;margin-top: -1% !important;">
                       <!-- <form method="POST" action="{{ URL::to('login') }}" class="">
                         <input type="text" class="text search-input" placeholder="Search Here...">
                          <a class="search-link" href="#"><i class="ri-search-line"></i></a>
@@ -402,6 +404,19 @@ for($i=0;$i<(count($userrolepermissiom));$i++){
                      </form>
 
                    </div>
+
+
+                     <?php $Channel = App\Channel::where('email', $user->email)->first(); ?>
+                     <?php if(!empty($Channel)){ ?>
+                           <div class="iq-search-bar ml-auto">
+                           <form method="POST" action="<?php echo URL::to('channel/home') ?>" class="mt-4">
+                              <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
+                                    <input id="email" type="hidden"  name="email"  value="<?=  $Channel->email ?>"  autocomplete="email" autofocus>
+                                    <input id="password" type="hidden"  name="password" value="<?=  $Channel->unhased_password ?>" autocomplete="current-password" >
+                                    <button type="submit" class="btn btn-hover" style="margin-top: -13%;margin-left: -8%;">Channel Visit Portal </button>                          
+                           </form>
+                        </div>
+                        <?php } ?>
                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"  aria-label="Toggle navigation">
                       <i class="ri-menu-3-line"></i>
                    </button>

@@ -815,7 +815,30 @@ public function RentPaypal(Request $request)
             
            return View::make('stripe_billing',$stripe_details);
     }
-    
+
+
+    public function BecomeSubscriber_Plans( Request $request)
+    {
+      try {
+
+        $plans_data = SubscriptionPlan::where('type',$request->payment_gateway)->get() ;
+
+        $response = array(
+          'status'     => true ,
+          'message'    => "Plans data for $request->payment_gateway retrieved Successfully  !" , 
+          'plans_data' => $plans_data , 
+        );
+
+      } catch (\Throwable $th) {
+        
+          $response = array(
+              "status"  => false ,
+              "message" => $th->getMessage() , 
+          );
+      }
+
+      return response()->json(['data' => $response]);
+    }
     
       public function BecomeSubscriber()
         {
@@ -830,9 +853,12 @@ public function RentPaypal(Request $request)
 
             $uid = Auth::user()->id;
             $user = User::where('id',$uid)->first();
+            
             $plans = SubscriptionPlan::get();
             $plans_data = $plans->groupBy('plans_name');
-            // dd($plans_data);
+
+            $plans_data_signup_checkout = SubscriptionPlan::where('type','Stripe')->groupBy('plans_name')->get();
+
             Session::put('plans_data ', $plans_data );
             // if(!empty($plans->devices)){
               $devices = Devices::all();
@@ -864,7 +890,7 @@ public function RentPaypal(Request $request)
             $intent_key =  $intent_stripe->createSetupIntent()->client_secret ;
             session()->put('intent_stripe_key',$intent_key);
 
-            return Theme::view('register.upgrade_payment', compact(['plans_data']));
+            return Theme::view('register.upgrade_payment', compact(['plans_data_signup_checkout']));
 
           }else{
                 return Theme::view('register.upgrade', [

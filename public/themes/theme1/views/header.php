@@ -578,22 +578,25 @@ input:checked + .sliderk:before {
                               </div>
                            </div>
                         </div>
-                        <?php if(!Auth::guest() && Auth::User()->package == "CPP"){ ?>
+                        <?php                         
+                        $ModeratorsUser = App\ModeratorsUser::where('email', Auth::User()->email)->first();
+                        $Channel = App\Channel::where('email', Auth::User()->email)->first();
+                        if(!Auth::guest() && !empty($ModeratorsUser)){ ?>
                         <div class="iq-search-bar ml-auto">
                            <form method="POST" action="<?php echo URL::to('cpp/home') ?>" class="mt-4">
                               <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
                                     <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
-                                    <input id="password" type="hidden"  name="password" value="<?=  Auth::user()->unhashed_password ?>" autocomplete="current-password" >
-                                    <button type="submit" class="btn btn-hover " style="margin-top: -13%;margin-left: -8%;">Visit Website </button>                          
+                                    <input id="password" type="hidden"  name="password" value="<?=  @$ModeratorsUser->password ?>" autocomplete="current-password" >
+                                    <button type="submit" class="btn btn-hover " style="margin-top: -14%;margin-left: -14%;">Visit CPP Portal </button>                          
                            </form>
                         </div>
-                        <?php }elseif(!Auth::guest() && Auth::User()->package == "Channel"){ ?>
+                        <?php }if(!Auth::guest() && !empty($Channel)){ ?>
                            <div class="iq-search-bar ml-auto">
                            <form method="POST" action="<?php echo URL::to('channel/home') ?>" class="mt-4">
                               <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
                                     <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
-                                    <input id="password" type="hidden"  name="password" value="<?=  Auth::user()->unhashed_password ?>" autocomplete="current-password" >
-                                    <button type="submit" class="btn btn-hover" style="margin-top: -13%;margin-left: -8%;">Visit Website </button>                          
+                                    <input id="password" type="hidden"  name="password" value="<?=  @$Channel->unhased_password ?>" autocomplete="current-password" >
+                                    <button type="submit" class="btn btn-hover" style="margin-top: -13%;margin-left: -8%;">Channel Visit Portal </button>                          
                            </form>
                         </div>
                        <?php } ?>
