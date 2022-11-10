@@ -8,11 +8,17 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Config;
 use Unicodeveloper\Paystack\Exceptions\IsNullException;
 use Unicodeveloper\Paystack\Exceptions\PaymentVerificationFailedException;
+use Illuminate\Support\Str;
 use GuzzleHttp\Client;
 use Carbon\Carbon;
 use App\PaymentSetting;
 use App\Subscription;
+use App\PpvPurchase;
+use App\VideoCommission;
+use App\ModeratorsUser;
+use App\Video;
 use App\User;
+use App\Setting;
 use Auth;
 use Paystack;
 use URL;
@@ -243,5 +249,127 @@ class PaystackController extends Controller
         ]);
 
         return redirect()->route('home');
+    }
+
+    public function Paystack_Video_Rent(Request $request,$video_id,$amount)
+    {
+        $email = User::where('id',Auth::user()->id)->pluck('email')->first();
+
+        $access_code = Str::random(15);
+
+        $data = array(
+                'amount' => $amount * 100 ,
+                'email'  => $email ,
+                'publish_key'  =>  $this->paystack_keyId,
+                'access_code'  => $access_code ,
+                'redirect_url' => URL::to('category/videos/rent-payment'),
+                'Video_id'     =>  $video_id ,
+        );
+        return view('Paystack.video_rent_checkout',$data);
+    }
+
+    public function Paystack_Video_Rent_Paymentverify ( Request $request )
+    {
+        
+        try {
+
+            $setting = Setting::first();  
+            $ppv_hours = $setting->ppv_hours;
+     
+            $d = new \DateTime('now');
+            $now = $d->format('Y-m-d h:i:s a');
+            $time = date('h:i:s', strtotime($now));
+            $to_time = date('Y-m-d h:i:s a',strtotime('+'.$ppv_hours.' hour',strtotime($now)));       
+
+                 // Verify Payment
+
+            $reference_code = $request->reference_code;
+
+            $curl = curl_init();
+            
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => "https://api.paystack.co/transaction/verify/$reference_code",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_SSL_VERIFYHOST => 0,
+                CURLOPT_SSL_VERIFYPEER => 0,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "GET",
+                CURLOPT_HTTPHEADER => $this->SecretKey_array,
+            ));
+            
+            $result = curl_exec($curl);
+            $payment_result = json_decode($result, true);
+            $err = curl_error($curl);
+            curl_close($curl);
+
+                                // Store data
+
+            $video = Video::where('id','=',$request->video_id)->first();
+
+            if(!empty($video)){
+                 $moderators_id = $video->user_id;
+            }
+
+            if(!empty($moderators_id)){
+                $moderator = ModeratorsUser::where('id','=',$moderators_id)->first();  
+                $total_amount = $video->ppv_price;
+                $title =  $video->title;
+                $commssion = VideoCommission::first();
+                $percentage = $commssion->percentage; 
+                $ppv_price = $video->ppv_price;
+                $admin_commssion = ($percentage/100) * $ppv_price ;
+                $moderator_commssion = $ppv_price - $percentage;
+                $moderator_id = $moderators_id;
+            }
+            else
+            {
+                $total_amount = $video->ppv_price;
+                $title =  $video->title;
+                $commssion = VideoCommission::first();
+                $percentage = null; 
+                $ppv_price = $video->ppv_price;
+                $admin_commssion =  null;
+                $moderator_commssion = null;
+                $moderator_id = null;
+            }
+
+            $purchase = new PpvPurchase;
+            $purchase->user_id      = Auth::user()->id ;
+            $purchase->video_id     = $request->video_id ;
+            $purchase->total_amount = $payment_result['data']['amount'] ;
+            $purchase->admin_commssion = $admin_commssion;
+            $purchase->moderator_commssion = $moderator_commssion;
+            $purchase->status = 'active';
+            $purchase->to_time = $to_time;
+            $purchase->moderator_id = $moderator_id;
+            $purchase->save();
+
+            if ($err) {                 // Error 
+                $response = array( 
+                    "status"  => false , 
+                    "message" => $err  
+                );
+            } 
+            else {                      // Success 
+                $response = array(
+                    "status"  => true ,
+                    "message" => "Payment done! Successfully", 
+                    'data'    =>  $result ,
+                );
+            }
+
+        } catch (\Exception $e) {
+
+            $response = array(
+                 "status"  => false , 
+                 "message" => $e->getMessage(), 
+            );
+
+        }
+
+        return response()->json($response, 200);
     }
 }

@@ -1968,8 +1968,16 @@ Route::post('/unseen_expirydate_checking', 'LiveStreamController@unseen_expiryda
 
 
 // Paystack
-
+                    // Paystack-Subscription
 Route::post('/Paystack-Subscription', 'PaystackController@Paystack_CreateSubscription')->name('Paystack_CreateSubscription');
 Route::get('/paystack-verify-request', 'PaystackController@paystack_verify_request')->name('paystack_verify_request');
 Route::get('/paystack-Subscription-update', 'PaystackController@paystack_Subscription_update')->name('paystack_Subscription_update');
 Route::get('/Paystack-Subscription-cancel/{subscription_id}', 'PaystackController@Paystack_Subscription_cancel')->name('Paystack_Subscription_cancel');
+
+                    // Paystack-Video Rent
+Route::get('/Paystack-video-rent/{video_id}/{amount}', 'PaystackController@Paystack_Video_Rent')->name('Paystack_Video_Rent');
+Route::get('/Paystack-video-rent-paymentverify', 'PaystackController@Paystack_Video_Rent_Paymentverify')->name('Paystack_Video_Rent_Paymentverify');
+
+                    // Paystack-Live Rent
+Route::get('/Paystack-live-rent/{live_id}/{amount}', 'PaystackController@Paystack_live_Rent')->name('Paystack_live_Rent');
+Route::post('/Paystack-live-rent-paymentverify', 'PaystackController@Paystack_live_Rent_Paymentverify')->name('Paystack_live_Rent_Paymentverify');

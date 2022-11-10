@@ -749,7 +749,8 @@ class ChannelController extends Controller
                     'subtitles_name' => $subtitles,
                     'ThumbnailSetting' => $ThumbnailSetting,
                     // 'latestviews' => $latestviews,
-                    
+                    'Paystack_payment_settings' => PaymentSetting::where('payment_type','Paystack')->first() ,
+                    'Razorpay_payment_settings' => PaymentSetting::where('payment_type','Razorpay')->first() ,
                 );
 
             }
@@ -1080,6 +1081,8 @@ class ChannelController extends Controller
                     'artistsname' => $artistsname,
                     'lang_name' => $lang_name,
                     'subtitles_name' => $subtitles,
+                    'Paystack_payment_settings' => PaymentSetting::where('payment_type','Paystack')->first() ,
+                    'Razorpay_payment_settings' => PaymentSetting::where('payment_type','Razorpay')->first() ,
                 );
             }
 
