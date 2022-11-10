@@ -2424,4 +2424,20 @@ class AdminSeriesController extends Controller
             return Redirect::back()->with('message','Your video moved to selected partner');
         }
 
+        public function filedelete($id)
+        {
+            $video = Episode::findOrFail($id);
+            $filename = $video->path . ".mp4";
+            $path = storage_path("app/public/" . $filename);
+    
+            if (file_exists($path)) {
+                unlink($path);
+            } else {
+            }
+            return Redirect::back()->with(
+                "message",
+                "Your video will be available shortly after we process it"
+            );
+        }
+
 }
