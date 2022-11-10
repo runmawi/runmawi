@@ -362,7 +362,8 @@ class ChannelLiveStreamController extends Controller
                 $movie->Stream_key = $Stream_key;
                 $movie->Rtmp_url = $data['Rtmp_url'];
             }
-
+            
+            $movie->uploaded_by = 'Channel';
             $movie->title = $data['title'];
             $movie->embed_url = $embed_url;
             $movie->url_type = $url_type;
@@ -752,6 +753,7 @@ class ChannelLiveStreamController extends Controller
             $video->update($data);
             $video->embed_url = $embed_url;
             $video->url_type = $url_type;
+            $video->access = $data['access'];
             $video->ppv_price = $ppv_price;
             $video->player_image = $player_image;
             $video->publish_status = $request['publish_status'];

@@ -29,6 +29,8 @@ use Illuminate\Support\Facades\Cache;
 //use Image;
 use App\SystemSetting as SystemSetting;
 use Intervention\Image\ImageManagerStatic as Image;
+use App\Channel;
+use App\ModeratorsUser;
 
 class LiveStreamController extends Controller
 {
@@ -78,6 +80,54 @@ class LiveStreamController extends Controller
           $data = session()->all();
 
           $categoryVideos = LiveStream::where('slug',$vid)->first();
+
+          
+        if(@$categoryVideos->uploaded_by == 'Channel'){
+          $user_id = $categoryVideos->user_id;
+
+          $user = Channel::where("channels.id", "=", $user_id )
+          ->join(
+              "users",
+              "channels.email",
+              "=",
+              "users.email"
+          )
+          ->select(
+              "users.id as user_id"
+          )
+          ->first();
+          if(!Auth::guest() &&  $user->user_id == Auth::user()->id){
+              $video_access = 'free';
+          }else{ 
+              $video_access = 'pay';
+          }
+      }else if(@$categoryVideos->uploaded_by == 'CPP'){
+          $user_id = $categoryVideos->user_id;
+
+          $user = ModeratorsUser::where("moderators_users.id", "=", $user_id )
+          ->join(
+              "users",
+              "moderators_users.email",
+              "=",
+              "users.email"
+          )
+          ->select(
+              "users.id as user_id"
+          )
+          ->first();
+          if(!Auth::guest() &&  $user->user_id == Auth::user()->id){
+              $video_access = 'free';
+          }else{ 
+              $video_access = 'pay';
+          }
+      }else{
+          if(!Auth::guest() &&  @$categoryVideos->access  == 'ppv' ||  @$categoryVideos->access  == 'subscriber' && Auth::user()->role != 'admin' ){
+              $video_access = 'pay';
+          }else{
+              $video_access = 'free';
+          }
+      }
+
           $vid =  $categoryVideos->id;
           //  $categoryVideos = LiveStream::where('id',$vid)->first();
         if(!empty($data['password_hash'])){
@@ -153,6 +203,7 @@ class LiveStreamController extends Controller
 
            $data = array(
                  'currency' => $currency,
+                 'video_access' => $video_access,
                  'video' => $categoryVideos,
                  'password_hash' => $password_hash,
                  'publishable_key' => $publishable_key,
