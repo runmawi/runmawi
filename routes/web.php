@@ -417,6 +417,9 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::get('/get_processed_percentage/{id}', 'AdminVideosController@get_processed_percentage');
 
     /* manage videos */
+// Admin Series and Episode 
+
+Route::get('/episode/filedelete/{id}', 'AdminSeriesController@filedelete'); 
 
 // Admin Video Functionality
     Route::post('/category_order', 'AdminVideoCategoriesController@category_order');
