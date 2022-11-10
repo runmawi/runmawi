@@ -820,7 +820,6 @@ document.getElementById("demo").innerHTML = "EXPIRED";
                 }
                 });
         }
-    }
 
         function unseen_expirydate_checking() {
 
@@ -839,7 +838,7 @@ document.getElementById("demo").innerHTML = "EXPIRED";
                 }
             });
         }
-    
+    }
 </script>
 
 <script>
