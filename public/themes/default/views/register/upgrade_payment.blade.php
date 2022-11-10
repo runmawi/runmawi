@@ -490,6 +490,13 @@ i.fa.fa-google-plus {
     $SubscriptionPlan = App\SubscriptionPlan::first();
     $signup_payment_content = App\SiteTheme::pluck('signup_payment_content')->first();
     $signup_step2_title = App\SiteTheme::pluck('signup_step2_title')->first();
+
+    $Stripe_payment_settings  = App\PaymentSetting::where('payment_type','Stripe')->first();
+    $PayPal_payment_settings  = App\PaymentSetting::where('payment_type','PayPal')->first();
+    $Paystack_payment_settings = App\PaymentSetting::where('payment_type','Paystack')->first();
+    $Razorpay_payment_settings = App\PaymentSetting::where('payment_type','Razorpay')->first();
+
+                // lable
     $stripe_lable = App\PaymentSetting::where('payment_type','Stripe')->pluck('stripe_lable')->first() ? App\PaymentSetting::where('payment_type','Stripe')->pluck('stripe_lable')->first()  : "Stripe";
     $paypal_lable = App\PaymentSetting::where('payment_type','PayPal')->pluck('paypal_lable')->first() ? App\PaymentSetting::where('payment_type','PayPal')->pluck('paypal_lable')->first() : "PayPal";
     $paystack_lable = App\PaymentSetting::where('payment_type','Paystack')->pluck('paystack_lable')->first() ? App\PaymentSetting::where('payment_type','Paystack')->pluck('paystack_lable')->first() : "paystack";
@@ -509,44 +516,51 @@ i.fa.fa-google-plus {
                         <h5> Payment Method</h5>
 
                         <div class="d-flex align-items-center">
-                            <input type="radio" id="stripe_radio_button" class="payment_gateway" name="payment_gateway" value="stripe" >
-                            <label class="mt-2 ml-2"> {{ $stripe_lable }} </label> <br />
+                            @if(!empty($Stripe_payment_settings) && $Stripe_payment_settings->stripe_status == 1)
+                                <input type="radio" id="stripe_radio_button" class="payment_gateway" name="payment_gateway" value="stripe" >
+                                <label class="mt-2 ml-2"> {{ $stripe_lable }} </label> <br />
+                            @endif
 
-                            <input type="radio" id="paystack_radio_button" class="payment_gateway" name="payment_gateway" value="paystack">
-                            <label class="mt-2 ml-2" > {{ $paystack_lable }} </label> <br />
+                            @if( !empty($Paystack_payment_settings) && $Paystack_payment_settings->status == 1 )
+                                <input type="radio" id="paystack_radio_button" class="payment_gateway" name="payment_gateway" value="paystack">
+                                <label class="mt-2 ml-2" > {{ $paystack_lable }} </label> <br />
+                            @endif
+
+                            @if( !empty($PayPal_payment_settings) && $PayPal_payment_settings->paypal_status == 1 )
+                                <input type="radio" id="paystack_radio_button" class="payment_gateway" name="payment_gateway" value="paypal">
+                                <label class="mt-2 ml-2" > {{ $paypal_lable }} </label> <br />
+                            @endif
+
                         </div> 
 
                     </div>      
 
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="row align-items-center m-0 p-0">
-                         @foreach($plans_data as $key => $plan) 
-                             @php
-                                  $plan_name = $plan[0]->plans_name;
-                             @endphp
+                        <div class="data-plans row align-items-center m-0 p-0">
+                            @foreach( $plans_data_signup_checkout as $key => $plan ) 
+                                @php
+                                    $plan_name = $plan->plans_name;
+                                @endphp
 
-                             <div style="" class="col-md-6 plan_details p-0"  data-plan-id={{ 'active'.$plan[0]->id  }}  data-plan-price={{ $plan[0]->price }} data-plan_id={{  $plan[0]->plan_id  }} data-payment-type={{ $plan[0]->payment_type }} onclick="plan_details(this)">
-                                <div class="row dg align-items-center mb-4" id={{ 'active'.$plan[0]->id  }}>
-                                    <div class="col-md-7 p-0">
-                                        <h4 class="text-black font-weight-bold"> {{ $plan[0]->plans_name  }} </h4>
-                                        <p>{{ $plan[0]->plans_name  }} Membership</p>
+                                <div style="" class="col-md-6 plan_details p-0"  data-plan-id={{ 'active'.$plan->id  }}  data-plan-price={{ $plan->price }} data-plan_id={{  $plan->plan_id  }} data-payment-type={{ $plan->payment_type }} onclick="plan_details(this)">
+                                    <div class="row dg align-items-center mb-4" id={{ 'active'.$plan->id  }}>
+                                        <div class="col-md-7 p-0">
+                                            <h4 class="text-black font-weight-bold"> {{ $plan->plans_name  }} </h4>
+                                            <p>{{ $plan->plans_name  }} Membership</p>
+                                        </div>
+                                        <div class="vl "></div>
+                                        <div class="col-md-4 p-2" >
+                                            <h4 class="text-black">{{ "$".$plan->price }}</h4>
+                                            <p>Billed as {{ "$".$plan->price }}</p>
+                                        </div>
                                     </div>
-                                     <div class="vl "></div>
-                                    <div class="col-md-4 p-2" >
-                                        <h4 class="text-black">{{ "$".$plan[0]->price }}</h4>
-                                        <p>Billed as {{ "$".$plan[0]->price }}</p>
+
+                                    <div class="d-flex justify-content-between align-items-center " > 
+                                        <div class="bgk"></div>
                                     </div>
                                 </div>
-
-                                 <div class="d-flex justify-content-between align-items-center " > 
-                                     <div class="bgk"></div>
-                                 </div>
-
-                             </div>
-                          @endforeach
-
-                         
+                            @endforeach
                         </div>
                     </div>
 
@@ -611,12 +625,12 @@ i.fa.fa-google-plus {
                      
                     @if( get_coupon_code() == 1)
                         <div class="d-flex justify-content-between align-items-center mt-2">
-                            <div>
+                            <div class="stripe_payment">
                                 <p> Amount Deducted for Promotion Code   </p>
                                 <p> Payable Amount   </p>
                             </div>
 
-                            <div>
+                            <div class="stripe_payment" >
                                 <p id="promo_code_amt" > {{  '$0'  }} </p>
                                 <p id="coupon_amt_deduction"> {{ $SubscriptionPlan ? '$'.$SubscriptionPlan->price : '$0:0'  }} </p>
                             </div>
@@ -639,22 +653,13 @@ i.fa.fa-google-plus {
                     </div>
                   
                     <div class="col-md-12 paystack_payment">
-
-                        <form action="{{ route('Paystack_CreateSubscription') }}" method="post">
-                            @csrf
-                            <input type="hidden" id="" value="PLN_vweybpv7wx8rbj9" name="paystack_plan_id">
-
-                            <button  type="submit" class="btn1 btn-lg btn-block font-weight-bold text-white mt-3" >
+                            <button  type="submit" class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 paystack_button processing_alert" >
                                 Pay Now
                             </button>
-                        </form>
-
                     </div>
-                   
                     
                     {{-- <button type="button" class="btn1  btn-lg btn-block font-weight-bold text-white mt-3">Start Your Free Trial</button> --}}
                     <input type="hidden" id="payment_image" value="<?php echo URL::to('/').'/public/Thumbnai_images';?>">
-
             </div>           
     </div>
     </div>
@@ -698,7 +703,7 @@ i.fa.fa-google-plus {
         var plan_payment_type = $(ele).attr('data-payment-type');
         var plan_price  = $(ele).attr('data-plan-price');
         var plan_id_class = $(ele).attr('data-plan-id');
-        
+
         $('#payment_type').replaceWith('<input type="hidden" name="payment_type" id="payment_type" value="'+ plan_payment_type+'">');
         $('#plan_name').replaceWith('<input type="hidden" name="plan_name" id="plan_name" value="'+ plans_id +'">');
         $('.plan_price').empty(plan_price);
@@ -898,11 +903,17 @@ i.fa.fa-google-plus {
                 {{-- Radio button for payment Gateway  --}}
 <script>
 
-    $(document).ready(function(){
+    window.onload = function(){
 
         $("#stripe_radio_button").attr('checked', true);
-
         $('.paystack_payment').hide();
+
+        if( $('input[name="payment_gateway"]:checked').val() == "paystack" ){
+            $('.stripe_payment').hide();
+        }
+    };
+
+    $(document).ready(function(){
 
         $(".payment_gateway").click(function(){
 
@@ -922,6 +933,115 @@ i.fa.fa-google-plus {
     });
 
 </script>
+
+                {{-- Paystack Payment --}}
+<script>
+
+        $(".paystack_button").click(function(){
+
+        var paystack_plan_id = $("#plan_name").val();
+
+        $.ajax({
+            url: "{{ route('Paystack_CreateSubscription') }}",
+            type: "post",
+            data: {
+                    _token: '{{ csrf_token() }}',
+                    paystack_plan_id : paystack_plan_id ,
+                    async: false,
+                },       
+                
+                success: function( data ,textStatus ){
+
+                if( data.status == true ){
+                    window.location.href = data.authorization_url ;
+                }
+
+                else if( data.status == false ){
+                    swal({
+                        title: "Payment Failed!",
+                        text: data.message,
+                        icon: "warning",
+                        }).then(function() {
+                            location.reload();
+                        })
+                    }
+                } 
+            });
+        });
+
+        $(".payment_gateway").click(function(){
+
+            let payment_gateway =  $('input[name="payment_gateway"]:checked').val();
+
+            $.ajax({
+                url: "{{ route('BecomeSubscriber_Plans') }}",
+                type: "get",
+                data: {
+                        _token: '{{ csrf_token() }}',
+                        payment_gateway : payment_gateway ,
+                        async: false,
+                    },       
+                    
+                    success: function( response ){
+
+                    var count = response.data.plans_data.length ;
+
+                    if( count <= 0 ){
+                        swal({
+                            title: "No Plan Found !!",
+                            icon: "warning",
+                            }).then(function() {
+                                location.reload();
+                        })
+                    }
+
+                    if( count > 0 && response.data.status == true ){
+
+                        html = "";
+                        html += '<div class="row align-items-center m-0 p-0 data-plans">';
+                            
+                            $.each( response.data.plans_data , function( index, plan_data ) {
+
+                                html += '<div class="col-md-6 plan_details p-0"  data-plan-id="active'+ plan_data.id +'" data-plan-price="'+ plan_data.price +'"  data-plan_id="'+ plan_data.plan_id +'"  data-payment-type="'+ plan_data.payment_type +'" onclick="plan_details(this)">';
+                                    html += '<div class="row dg align-items-center mb-4" id="active'+ plan_data.id +'" >';
+                                        
+                                        html +=   '<div class="col-md-7 p-0">';
+                                            html +=   '<h4 class="text-black font-weight-bold">  '+ plan_data.plans_name +'   </h4>';
+                                            html +=   '<p>' + plan_data.plans_name + ' Membership </p>';
+                                        html += '</div>' ;
+
+                                        html += '<div class="vl "></div>' ;
+
+                                        html += '<div class="col-md-4 p-2" >' ;
+                                            html +=    '<h4 class="text-black"> $'+ plan_data.price +' </h4>'  ;
+                                            html +=    '<p>Billed as $'+ plan_data.price +' </p>' ;
+                                        html += '</div>' ;
+
+                                    html += '</div>' ;
+                                    html +=' <div class="d-flex justify-content-between align-items-center " > <div class="bgk"></div> </div>' ;
+                                html += ' </div>' ;
+                            
+                                });
+                        html += '</div>';
+
+                        $('.data-plans').empty('').append(html);
+
+                    } 
+
+                    else if(  response.data.status == false ){
+                        swal({
+                            title: "No Plan Found !!",
+                            icon: "warning",
+                            }).then(function() {
+                                location.reload();
+                            })
+                        }
+                    } 
+            });
+        });
+</script>
+
+
 
 @php
     include(public_path('themes/default/views/footer.blade.php'));

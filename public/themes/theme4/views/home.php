@@ -1042,7 +1042,7 @@ endif; ?>
                              if($Kids_Mode == 1){
                                  $videos = $videos->where('age_restrict', '<', 10);
                              }
-                              $videos = $videos ->get();
+                              $videos = $videos->latest('videos.created_at')->get();
                            }else{
                      $videos = App\Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
                                           ->where('category_id','=',$category->id)->where('active', '=', '1')
@@ -1057,7 +1057,7 @@ endif; ?>
                        if($Kids_Mode == 1){
                            $videos = $videos->where('age_restrict', '<', 10);
                        }
-                      $videos = $videos ->orderBy('videos.created_at','desc')->get();
+                      $videos = $videos->latest('videos.created_at')->get();
                        } } else {
 
                       
@@ -1075,7 +1075,7 @@ endif; ?>
                           if($Kids_Mode == 1){
                               $videos = $videos->where('age_restrict', '<', 10);
                           }
-                     $videos = $videos ->orderBy('videos.created_at','desc')->get();
+                     $videos = $videos->latest('videos.created_at')->get();
                      }
 
                      $Episode_videos =  App\Series::select('episodes.*','series.title as series_name')

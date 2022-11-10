@@ -2808,12 +2808,7 @@ class AdminUsersController extends Controller
                 $user_role = Subscription::select('subscription_plans.*')->join('subscription_plans', 'subscription_plans.plan_id', '=', 'subscriptions.stripe_plan')
                     ->where('subscriptions.user_id', $user_id)->orderBy('created_at', 'DESC')
                     ->get();
-                //     SELECT
-                // subscription_plans.* FROM subscriptions INNER JOIN subscription_plans ON
-                // subscriptions.stripe_plan = subscription_plans.plan_id
-                // WHERE subscriptions.user_id = 601
                 
-
                 if (!empty($user_role[0]))
                 {
                     $role_plan = $user_role[0]->plans_name;
@@ -2911,9 +2906,8 @@ class AdminUsersController extends Controller
                 'profile_details' => $profile_details,
                 'Multiuser' => $Multiuser,
                 'alldevices' => $alldevices,
+                'payment_package' => User::where('id',Auth::user()->id)->first() ,
             );
-
-            // dd($data['videocategory']);
 
             return Theme::view('myprofile', $data);
         }

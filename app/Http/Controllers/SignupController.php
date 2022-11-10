@@ -400,6 +400,9 @@ public function createStep2(Request $request)
             $user_mail = session()->get('register.email');
             $user_count = User::where("email","=",$user_mail)->where("active","=",1)->count();
 
+            $plans_data_signup_checkout = SubscriptionPlan::where('type','Stripe')->groupBy('plans_name')->get();
+
+
             if ($user_count == 0 ) {
                   return redirect('/')->with('message', 'You have successfully verified your account. Please login below.');
             }elseif(!isset($user_mail)){
@@ -413,7 +416,7 @@ public function createStep2(Request $request)
                     $intent_key =  $intent_stripe->createSetupIntent()->client_secret ;
                     session()->put('intent_stripe_key',$intent_key);
 
-                    return Theme::view('register.step2_payment', compact(['register', 'plans_data','user_mail']));
+                    return Theme::view('register.step2_payment', compact(['register', 'plans_data', 'plans_data_signup_checkout','user_mail']));
 
                 }
                 else{
