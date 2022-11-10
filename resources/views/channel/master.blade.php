@@ -298,7 +298,7 @@ $channel = Session::get('channel');
                          </a>
                       </div>
                    </div>
-                   <div class="iq-search-bar ml-auto">
+                   <div class="iq-search-bar ml-auto" style="margin-left: 59% !important;margin-top: -1% !important;">
 
                    <form method="POST" action="{{ route('login') }}" class="mt-4">
                     @csrf
@@ -309,6 +309,17 @@ $channel = Session::get('channel');
                      </form>
 
                    </div>
+                   <?php $ModeratorsUser = App\ModeratorsUser::where('email', $channel->email)->first(); ?>
+                    <?php if(!empty($ModeratorsUser)){ ?>
+                          <div class="iq-search-bar ml-auto">
+                          <form method="POST" action="<?php echo URL::to('cpp/home') ?>" class="mt-4">
+                              <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
+                                    <input id="email" type="hidden"  name="email"  value="<?=  $ModeratorsUser->email ?>"  autocomplete="email" autofocus>
+                                    <input id="password" type="hidden"  name="password" value="<?=  $ModeratorsUser->password ?>" autocomplete="current-password" >
+                                    <button type="submit" class="btn btn-hover" style="margin-top: -13%;margin-left: -8%;">Visit CPP Portal </button>                          
+                          </form>
+                        </div>
+                      <?php } ?>
                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"  aria-label="Toggle navigation">
                       <i class="ri-menu-3-line"></i>
                    </button>
