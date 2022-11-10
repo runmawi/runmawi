@@ -191,7 +191,10 @@ class LiveStreamController extends Controller
              }
 
              $payment_setting = PaymentSetting::where('status',1)->where('live_mode',1)->get();
-             $Razorpay_payment_setting = PaymentSetting::where('status',1)->first();
+
+             $Razorpay_payment_setting = PaymentSetting::where('payment_type','Razorpay')->where('status',1)->first();
+
+             $Paystack_payment_setting = PaymentSetting::where('payment_type','Paystack')->where('status',1)->first();
 
              $view = new RecentView;
              $view->user_id      = Auth::User() ? Auth::User()->id : null ;
@@ -215,6 +218,7 @@ class LiveStreamController extends Controller
                  'new_date' => $new_date,
                  'payment_setting' => $payment_setting,
                  'Razorpay_payment_setting' => $Razorpay_payment_setting,
+                 'Paystack_payment_setting' => $Paystack_payment_setting ,
                  'Related_videos' => LiveStream::whereNotIn('id',[$vid])->inRandomOrder()->get(),
            );
 

@@ -283,8 +283,6 @@ class TvshowsController extends Controller
                                 $free_episode[$episodes->slug] = Episode::where('slug','=',$episodes->slug)->count();    
                             else :
                                 $paid_episode[] = Episode::where('slug','=',$episodes->slug)->orderBy('id', 'DESC')->count();  
-                                // print_r($free_episode);
-                                // dd($free_episode);
 
                             endif;
                     endforeach; 
@@ -308,19 +306,23 @@ class TvshowsController extends Controller
                 if($series->ppv_status == 0 && $ppv_price == 0 ||  $ppv_price == null) { 
                     $series_ppv_status = 0;
                     $free_episode = 1;
-            // dd($series->ppv_status);
-
                 }else{ 
                     $series_ppv_status = 1; 
-            // dd('$series->ppv_status');
+                }
 
-                }
-                // 
                 if(!Auth::guest()){
-                if(Auth::user()->role == 'admin' ){
-                    $free_episode = 1;
+                    if(Auth::user()->role == 'admin' ){
+                        $free_episode = 1;
+                    }
+
+                    else if(Auth::user()->role == 'registered' ){
+                        $free_episode = 1;
+                    }
+
+                    else if(Auth::user()->role == 'subscriber' ){
+                        $free_episode = 1;
+                    }
                 }
-            }
               
             if(!Auth::guest()):
                 $like_dislike = LikeDislike::where('user_id', '=', Auth::user()->id)->where('episode_id', '=', $id)->first();

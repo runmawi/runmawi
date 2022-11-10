@@ -704,9 +704,6 @@ i.fa.fa-google-plus {
         var plan_price  = $(ele).attr('data-plan-price');
         var plan_id_class = $(ele).attr('data-plan-id');
 
-        alert(plans_id);
-
-
         $('#payment_type').replaceWith('<input type="hidden" name="payment_type" id="payment_type" value="'+ plan_payment_type+'">');
         $('#plan_name').replaceWith('<input type="hidden" name="plan_name" id="plan_name" value="'+ plans_id +'">');
         $('.plan_price').empty(plan_price);

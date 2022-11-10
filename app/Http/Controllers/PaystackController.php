@@ -17,6 +17,8 @@ use App\PpvPurchase;
 use App\VideoCommission;
 use App\ModeratorsUser;
 use App\Video;
+use App\LivePurchase;
+use App\LiveStream;
 use App\User;
 use App\Setting;
 use Auth;
@@ -270,7 +272,6 @@ class PaystackController extends Controller
 
     public function Paystack_Video_Rent_Paymentverify ( Request $request )
     {
-        
         try {
 
             $setting = Setting::first();  
@@ -368,6 +369,134 @@ class PaystackController extends Controller
                  "message" => $e->getMessage(), 
             );
 
+        }
+
+        return response()->json($response, 200);
+    }
+
+    public function Paystack_live_Rent(Request $request,$live_id,$amount)
+    {
+        $email = User::where('id',Auth::user()->id)->pluck('email')->first();
+
+        $access_code = Str::random(15);
+
+        $data = array(
+                'amount' => $amount * 100 ,
+                'email'  => $email ,
+                'publish_key'  =>  $this->paystack_keyId,
+                'access_code'  => $access_code ,
+                'redirect_url' => URL::to('live/Rent_Payment_Live'),
+                'live_id'     =>  $live_id ,
+        );
+
+        return view('Paystack.live_rent_checkout',$data);
+    }
+
+    public function Paystack_live_Rent_Paymentverify( Request $request )
+    {
+        try {
+
+            $setting = Setting::first();  
+            $ppv_hours = $setting->ppv_hours;
+
+            $to_time = ppv_expirytime_started(); 
+            
+                 // Verify Payment
+
+            $reference_code = $request->reference_code;
+
+            $curl = curl_init();
+            
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => "https://api.paystack.co/transaction/verify/$reference_code",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_SSL_VERIFYHOST => 0,
+                CURLOPT_SSL_VERIFYPEER => 0,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "GET",
+                CURLOPT_HTTPHEADER => $this->SecretKey_array,
+            ));
+            
+            $result = curl_exec($curl);
+            $payment_result = json_decode($result, true);
+            $err = curl_error($curl);
+            curl_close($curl);
+
+            $video = LiveStream::where('id','=',$request->live_id)->first();
+
+            if(!empty($video)){
+            $moderators_id = $video->user_id;
+            }
+
+            if(!empty($moderators_id)){
+                $moderator        = ModeratorsUser::where('id','=',$moderators_id)->first();  
+                $total_amount     = $video->ppv_price;
+                $title            =  $video->title;
+                $commssion        = VideoCommission::first();
+                $percentage       = $commssion->percentage; 
+                $ppv_price        = $video->ppv_price;
+                $admin_commssion  = ($percentage/100) * $ppv_price ;
+                $moderator_commssion = $ppv_price - $percentage;
+                $moderator_id = $moderators_id;
+            }
+            else
+            {
+                $total_amount   = $video->ppv_price;
+                $title          =  $video->title;
+                $commssion      = VideoCommission::first();
+                $percentage     = null; 
+                $ppv_price       = $video->ppv_price;
+                $admin_commssion =  null;
+                $moderator_commssion = null;
+                $moderator_id = null;
+            }
+
+            $purchase = new PpvPurchase;
+            $purchase->user_id       =  Auth::user()->id ;
+            $purchase->live_id       = $request->live_id ;
+            $purchase->total_amount  = $payment_result['data']['amount'] ; ;
+            $purchase->admin_commssion = $admin_commssion;
+            $purchase->moderator_commssion = $moderator_commssion;
+            $purchase->status = 'active';
+            $purchase->to_time = $to_time;
+            $purchase->moderator_id = $moderator_id;
+            $purchase->save();
+
+            $livepurchase = new LivePurchase;
+            $livepurchase->user_id =  Auth::user()->id ;
+            $livepurchase->video_id = $request->live_id;
+            $livepurchase->to_time = $to_time;
+            $livepurchase->expired_date = $to_time;
+            $livepurchase->amount = $request->get('amount')/100 ;
+            $livepurchase->from_time = Carbon::now()->format('Y-m-d H:i:s');
+            $livepurchase->unseen_expiry_date = ppv_expirytime_notstarted();
+            $livepurchase->status = 1;
+            $livepurchase->save();
+
+            if ($err) {                 // Error 
+                $response = array( 
+                    "status"  => false , 
+                    "message" => $err  
+                );
+            } 
+            else {                      // Success 
+                $response = array(
+                    "status"  => true ,
+                    "message" => "Payment done! Successfully", 
+                    'data'    =>  $result ,
+                );
+            }
+        
+
+        } catch (\Exception $e) {
+
+            $response = array(
+                "status"  => false , 
+                "message" => $e->getMessage(), 
+           );
         }
 
         return response()->json($response, 200);

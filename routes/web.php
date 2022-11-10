@@ -1980,4 +1980,4 @@ Route::get('/Paystack-video-rent-paymentverify', 'PaystackController@Paystack_Vi
 
                     // Paystack-Live Rent
 Route::get('/Paystack-live-rent/{live_id}/{amount}', 'PaystackController@Paystack_live_Rent')->name('Paystack_live_Rent');
-Route::post('/Paystack-live-rent-paymentverify', 'PaystackController@Paystack_live_Rent_Paymentverify')->name('Paystack_live_Rent_Paymentverify');
+Route::get('/Paystack-live-rent-paymentverify', 'PaystackController@Paystack_live_Rent_Paymentverify')->name('Paystack_live_Rent_Paymentverify');

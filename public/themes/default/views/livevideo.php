@@ -164,13 +164,19 @@ if ($ppv_exist > 0 ||  Auth::user()->subscribed() || $video_access == "free"  ||
                         <div class="clear"></div>
 
                                 <!-- Stripe Button -->
-                                    <!-- <button class="btn btn-primary btn-block" onclick="pay(<?php echo $video->ppv_price; ?>)">Watch Now For <?php echo $currency->symbol.' '.$video->ppv_price; ?></button> -->
-            <h4 class="text-center" style="margin-top:80px;"><a href="<?=URL::to('/') . '/stripe/billings-details' ?>"><p>Click Here To Become Subscriber</p></a></h4>
+                            <h4 class="text-center" style="margin-top:80px;"><a href="<?=URL::to('/') . '/stripe/billings-details' ?>"><p>Click Here To Become Subscriber</p></a></h4>
+                            <button class="btn btn-primary btn-block" onclick="pay(<?php echo $video->ppv_price; ?>)"> Watch Now For <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
                            
                                 <!-- Razorpay Button -->
-                            <?php if($Razorpay_payment_setting !=null && $Razorpay_payment_setting->payment_type == "Razorpay" ){?>
+                            <?php if( $Razorpay_payment_setting != null && $Razorpay_payment_setting->payment_type == "Razorpay" ){?>
                                     <button class="btn btn-primary btn-block" onclick="location.href ='<?= URL::to('RazorpayLiveRent/'.$video->id.'/'.$video->ppv_price) ?>' ;" >Razorpay Purchase For <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
                             <?php } ?>
+
+                                <!-- Paystack Button -->
+                            <?php if( $Paystack_payment_setting != null && $Paystack_payment_setting->payment_type == "Paystack" ){?>
+                                    <button class="btn btn-primary btn-block" onclick="location.href ='<?= route('Paystack_live_Rent', ['live_id' => $video->id , 'amount' => $video->ppv_price] ) ?>' ;" >Paystack Purchase For <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
+                            <?php } ?>
+
                         </div>
                 </div>
             </div>
