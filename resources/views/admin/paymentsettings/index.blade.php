@@ -320,7 +320,7 @@
                                         <div style="color:red;">Disable</div>
                                             <div class="mt-1">
                                                 <label class="switch">
-                                                    <input type="checkbox"  @if ($paystack_payment_setting->paystack_status == 1) {{ "checked='checked'" }} @else {{ " " }} @endif name="paystack_status" >
+                                                    <input type="checkbox"  @if ($paystack_payment_setting->status == 1) {{ "checked='checked'" }} @else {{ " " }} @endif name="paystack_status" >
                                                     <span class="slider round"></span>
                                                 </label>
                                             </div>

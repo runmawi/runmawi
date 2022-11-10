@@ -196,6 +196,8 @@ class LiveStreamController extends Controller
 
              $Paystack_payment_setting = PaymentSetting::where('payment_type','Paystack')->where('status',1)->first();
 
+             $stripe_payment_setting = PaymentSetting::where('payment_type','Stripe')->where('stripe_status',1)->first();
+
              $view = new RecentView;
              $view->user_id      = Auth::User() ? Auth::User()->id : null ;
              $view->country_name = $this->countryName ? $this->countryName : null ;
@@ -219,7 +221,9 @@ class LiveStreamController extends Controller
                  'payment_setting' => $payment_setting,
                  'Razorpay_payment_setting' => $Razorpay_payment_setting,
                  'Paystack_payment_setting' => $Paystack_payment_setting ,
+                 'stripe_payment_setting'   => $stripe_payment_setting ,
                  'Related_videos' => LiveStream::whereNotIn('id',[$vid])->inRandomOrder()->get(),
+                 'Paystack_payment_settings' => PaymentSetting::where('payment_type','Paystack')->first() ,
            );
 
            return Theme::view('livevideo', $data);
