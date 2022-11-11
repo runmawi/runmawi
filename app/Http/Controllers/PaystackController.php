@@ -38,7 +38,7 @@ class PaystackController extends Controller
 
         if( $PaymentSetting != null ){
 
-            if( $PaymentSetting->live_mode == 0 ){
+            if( $PaymentSetting->paystack_live_mode == 0 ){
 
                 $this->paystack_keyId = $PaymentSetting->paystack_test_publishable_key;
                 $this->paystack_keysecret = $PaymentSetting->paystack_test_secret_key;

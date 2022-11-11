@@ -15,7 +15,7 @@ class AddPaystackcallbackToPaymentSettingsTable extends Migration
     public function up()
     {
         Schema::table('payment_settings', function (Blueprint $table) {
-            $table->string('paystack_callback_url',100)->default( URL::to('paystack-verify-request') )->after('paystack_lable');
+            $table->string('paystack_callback_url',100)->default( URL::to('/paystack-verify-request') )->after('paystack_lable');
         });
     }
 
