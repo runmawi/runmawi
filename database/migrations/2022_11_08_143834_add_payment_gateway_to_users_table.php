@@ -26,7 +26,7 @@ class AddPaymentGatewayToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            Schema::dropIfExists('post_ads');
+            Schema::dropIfExists('payment_gateway');
         });
     }
 }

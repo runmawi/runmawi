@@ -223,28 +223,190 @@ class AdminPaymentSettingsController extends Controller
 
 	$paystack_payment_setting =  PaymentSetting::where('payment_type','=','Paystack')->first();
 
+	$Env_path = realpath(('.env'));
+
 	if($paystack_payment_setting != null){
 
 		if(empty($request['paystack_live_mode'])){
+
 			$paystack_live_mode = 0;
+
+			if(env('PAYSTACK_PUBLIC_KEY') !== null && env('PAYSTACK_PUBLIC_KEY') !== ''){
+
+				$Replace_data =array( 'PAYSTACK_PUBLIC_KEY'   =>  $request['paystack_test_publishable_key']);
+		  
+				  file_put_contents($Env_path, implode('', 
+					  array_map(function($Env_path) use ($Replace_data) {
+						  return   stristr($Env_path,'PAYSTACK_PUBLIC_KEY') ? "PAYSTACK_PUBLIC_KEY=".$Replace_data['PAYSTACK_PUBLIC_KEY']."\n" : $Env_path;
+					  }, file($Env_path))
+				));
+			   
+			}
+			else{
+
+				$PAYSTACK_PUBLIC_KEY = 'PAYSTACK_PUBLIC_KEY='.$request['paystack_test_publishable_key'].PHP_EOL;
+				$file_open = fopen($Env_path, 'a');
+				fwrite($file_open, $PAYSTACK_PUBLIC_KEY);
+			}
+
+
+			if(env('PAYSTACK_SECRET_KEY') !== null && env('PAYSTACK_SECRET_KEY') !== ''){
+
+				$Replace_data =array( 'PAYSTACK_SECRET_KEY'   => $request['paystack_test_secret_key']  );
+		  
+				  file_put_contents($Env_path, implode('', 
+					  array_map(function($Env_path) use ($Replace_data) {
+						  return   stristr($Env_path,'PAYSTACK_SECRET_KEY') ? "PAYSTACK_SECRET_KEY=".$Replace_data['PAYSTACK_SECRET_KEY']."\n" : $Env_path;
+					  }, file($Env_path))
+				));
+			   
+			}
+			else{
+
+				$PAYSTACK_SECRET_KEY = 'PAYSTACK_SECRET_KEY='.$request['paystack_test_secret_key'].PHP_EOL;
+				$file_open = fopen($Env_path, 'a');
+				fwrite($file_open, $PAYSTACK_SECRET_KEY);
+			}
+
+
+			if(env('PAYSTACK_PAYMENT_URL') !== null && env('PAYSTACK_PAYMENT_URL') !== ''){
+
+				$Replace_data =array( 'PAYSTACK_PAYMENT_URL'   => 'https://api.paystack.co' );
+		  
+				  file_put_contents($Env_path, implode('', 
+					  array_map(function($Env_path) use ($Replace_data) {
+						  return   stristr($Env_path,'PAYSTACK_PAYMENT_URL') ? "PAYSTACK_PAYMENT_URL=".$Replace_data['PAYSTACK_PAYMENT_URL']."\n" : $Env_path;
+					  }, file($Env_path))
+				));
+
+			}
+			else{
+
+				$PAYSTACK_PAYMENT_URL = 'PAYSTACK_PAYMENT_URL='.'https://api.paystack.co'.PHP_EOL;
+				$file_open = fopen($Env_path, 'a');
+				fwrite($file_open, $PAYSTACK_PAYMENT_URL);
+
+			}
+
+
+			if(env('MERCHANT_EMAIL') !== null && env('MERCHANT_EMAIL') !== ''){
+
+				$Replace_data =array( 'MERCHANT_EMAIL'   => 'unicodeveloper@gmail.com' );
+		  
+				  file_put_contents($Env_path, implode('', 
+					  array_map(function($Env_path) use ($Replace_data) {
+						  return   stristr($Env_path,'MERCHANT_EMAIL') ? "MERCHANT_EMAIL=".$Replace_data['MERCHANT_EMAIL']."\n" : $Env_path;
+					  }, file($Env_path))
+				));
+
+			}
+			else{
+
+				$PAYSTACK_PAYMENT_URL = 'MERCHANT_EMAIL='.'unicodeveloper@gmail.com'.PHP_EOL;
+				$file_open = fopen($Env_path, 'a');
+				fwrite($file_open, $PAYSTACK_PAYMENT_URL);
+			}
+
 		}else{
+
 			$paystack_live_mode = 1;
+
+			if(env('PAYSTACK_PUBLIC_KEY') !== null && env('PAYSTACK_PUBLIC_KEY') !== ''){
+
+				$Replace_data =array( 'PAYSTACK_PUBLIC_KEY'   =>  $request['paystack_live_publishable_key'] );
+		  
+				  file_put_contents($Env_path, implode('', 
+					  array_map(function($Env_path) use ($Replace_data) {
+						  return   stristr($Env_path,'PAYSTACK_PUBLIC_KEY') ? "PAYSTACK_PUBLIC_KEY=".$Replace_data['PAYSTACK_PUBLIC_KEY']."\n" : $Env_path;
+					  }, file($Env_path))
+				));
+			   
+			}
+			else{
+
+				$PAYSTACK_PUBLIC_KEY = 'PAYSTACK_PUBLIC_KEY='.$request['paystack_live_publishable_key'].PHP_EOL;
+				$file_open = fopen($Env_path, 'a');
+				fwrite($file_open, $PAYSTACK_PUBLIC_KEY);
+			}
+
+
+			if(env('PAYSTACK_SECRET_KEY') !== null && env('PAYSTACK_SECRET_KEY') !== ''){
+
+				$Replace_data =array( 'PAYSTACK_SECRET_KEY'   => $request['paystack_live_secret_key']  );
+		  
+				  file_put_contents($Env_path, implode('', 
+					  array_map(function($Env_path) use ($Replace_data) {
+						  return   stristr($Env_path,'PAYSTACK_SECRET_KEY') ? "PAYSTACK_SECRET_KEY=".$Replace_data['PAYSTACK_SECRET_KEY']."\n" : $Env_path;
+					  }, file($Env_path))
+				));
+			   
+			}
+			else{
+
+				$PAYSTACK_SECRET_KEY = 'PAYSTACK_SECRET_KEY='.$request['paystack_live_secret_key'].PHP_EOL;
+				$file_open = fopen($Env_path, 'a');
+				fwrite($file_open, $PAYSTACK_SECRET_KEY);
+			}
+
+
+			if(env('PAYSTACK_PAYMENT_URL') !== null && env('PAYSTACK_PAYMENT_URL') !== ''){
+
+				$Replace_data =array( 'PAYSTACK_PAYMENT_URL'   => 'https://api.paystack.co' );
+		  
+				  file_put_contents($Env_path, implode('', 
+					  array_map(function($Env_path) use ($Replace_data) {
+						  return   stristr($Env_path,'PAYSTACK_PAYMENT_URL') ? "PAYSTACK_PAYMENT_URL=".$Replace_data['PAYSTACK_PAYMENT_URL']."\n" : $Env_path;
+					  }, file($Env_path))
+				));
+
+			}
+			else{
+
+				$PAYSTACK_PAYMENT_URL = 'PAYSTACK_PAYMENT_URL='.'https://api.paystack.co'.PHP_EOL;
+				$file_open = fopen($Env_path, 'a');
+				fwrite($file_open, $PAYSTACK_PAYMENT_URL);
+
+			}
+
+
+			if(env('MERCHANT_EMAIL') !== null && env('MERCHANT_EMAIL') !== ''){
+
+				$Replace_data =array( 'MERCHANT_EMAIL'   => 'unicodeveloper@gmail.com' );
+		  
+				  file_put_contents($Env_path, implode('', 
+					  array_map(function($Env_path) use ($Replace_data) {
+						  return   stristr($Env_path,'MERCHANT_EMAIL') ? "MERCHANT_EMAIL=".$Replace_data['MERCHANT_EMAIL']."\n" : $Env_path;
+					  }, file($Env_path))
+				));
+
+			}
+			else{
+
+				$PAYSTACK_PAYMENT_URL = 'MERCHANT_EMAIL='.'unicodeveloper@gmail.com'.PHP_EOL;
+				$file_open = fopen($Env_path, 'a');
+				fwrite($file_open, $PAYSTACK_PAYMENT_URL);
+			}
+
 		}
 
 		if(empty($request['paystack_status'])){
+
 			$paystack_status = 0;
+
 		}else{
+
 			$paystack_status = 1;
 		}
 
 		$paystack_payment_setting->paystack_live_mode            =    $paystack_live_mode;
-		$paystack_payment_setting->paystack_status               =    $paystack_status;
+		$paystack_payment_setting->status                        =    $paystack_status;
 		$paystack_payment_setting->paystack_test_secret_key      =    $request['paystack_test_secret_key'] ?  $request['paystack_test_secret_key'] : null;
 		$paystack_payment_setting->paystack_test_publishable_key = 	  $request['paystack_test_publishable_key'] ?  $request['paystack_test_publishable_key'] : null;
 		$paystack_payment_setting->paystack_live_secret_key      = 	  $request['paystack_live_secret_key'] ?  $request['paystack_live_secret_key'] : null;
 		$paystack_payment_setting->paystack_live_publishable_key = 	  $request['paystack_live_publishable_key'] ?  $request['paystack_live_publishable_key'] :null;
 		$paystack_payment_setting->paystack_lable 			 	 = 	  $request['paystack_lable'] ?  $request['paystack_lable'] : null;
 		$paystack_payment_setting->payment_type 				 =    "Paystack";
+		$paystack_payment_setting->paystack_callback_url 	     =    URL::to('/paystack-verify-request');
         $paystack_payment_setting->save();
 	}
 
