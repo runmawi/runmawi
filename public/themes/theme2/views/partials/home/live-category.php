@@ -55,6 +55,11 @@
                             $publish_time = 'Published';
                           }
                         }else{
+
+                            date_default_timezone_set('Asia/Kolkata');
+                            $current_date = Date("M d , y H:i:s");
+                            $date = date_create($current_date);
+                            
                             $currentdate = date_format($date, "y M D");
 
                             $publish_time = date("y M D", strtotime($video->created_at));
