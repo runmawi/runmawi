@@ -674,8 +674,10 @@ input:checked + .sliderk:before {
                            </div>
                         </div>
                         <?php                         
+                        if(!Auth::guest()){                                                              
                         $ModeratorsUser = App\ModeratorsUser::where('email', Auth::User()->email)->first();
                         $Channel = App\Channel::where('email', Auth::User()->email)->first();
+                        }
                         if(!Auth::guest() && !empty($ModeratorsUser)){ ?>
                         <div class="iq-search-bar ml-auto">
                            <form method="POST" action="<?php echo URL::to('cpp/home') ?>" class="mt-4">
