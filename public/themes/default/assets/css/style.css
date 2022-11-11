@@ -1907,3 +1907,42 @@ box-shadow: -1px 6px 13px 0px rgba(0,0,0,0.44);
 .form-group h5{
     font-size: 16px;
 }
+
+
+.published_on{
+    color: #fff!important;
+     position: absolute;
+     bottom: 0;
+     left: 0;
+     background-color: #00a8e1;
+     padding: 7px;
+     font-size: 12px;
+   
+    
+     border-radius: 3px;
+    font-family: 'Chivo';
+     font-weight: 500;
+     border-top: none;
+     border-left: none;
+        
+     border-bottom-right-radius: 15px;
+    
+    
+ }
+
+.published_on1{
+    color: #fff!important;
+     position: absolute;
+     bottom: 0;
+     left: 0;
+     background-color: #00a8e1;
+     padding: 7px;
+     font-size: 12px;
+    
+     border-radius: 3px;
+    font-family: 'Chivo';
+     font-weight: 500;
+      border-top: none;
+     border-left: none;  
+     border-bottom-right-radius: 15px;
+ }

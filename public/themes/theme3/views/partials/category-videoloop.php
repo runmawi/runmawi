@@ -47,7 +47,43 @@
                     <?php  if(!empty($data['password_hash'])) { 
                           $id = Auth::user()->id ; } else { $id = 0 ; } ?>
                     <?php  if(isset($videos)) :
-                       foreach($videos as $category_video): ?>
+                       foreach($videos as $category_video):
+                        if (!empty($category_video->publish_time) && !empty($category_video->publish_time))
+                        {
+                          $currentdate = date("M d , y H:i:s");
+                          date_default_timezone_set('Asia/Kolkata');
+                          $current_date = Date("M d , y H:i:s");
+                          $date = date_create($current_date);
+                          $currentdate = date_format($date, "D h:i");
+                          $publish_time = date("D h:i", strtotime($category_video->publish_time));
+                          if ($category_video->publish_type == 'publish_later')
+                          {
+                              if ($currentdate < $publish_time)
+                              {
+                                $publish_time = date("D h:i", strtotime($category_video->publish_time));
+                              }else{
+                                $publish_time = 'Published';
+                              }
+                          }
+                          elseif ($category_video->publish_type == 'publish_now')
+                          {
+                            $currentdate = date_format($date, "y M D");
+
+                            $publish_time = date("y M D", strtotime($category_video->publish_time));
+
+                              if ($currentdate == $publish_time)
+                              {
+                                $publish_time = 'Today'.' '.date("h:i", strtotime($category_video->publish_time));
+                              }else{
+                                $publish_time = 'Published';
+                              }
+                          }else{
+                            $publish_time = '';
+                        }
+                        }else{
+                            $publish_time = '';
+                        }
+                         ?>
                     <li class="slide-item">
                         <div class="block-images position-relative"> <!-- block-images -->
                             <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
@@ -65,6 +101,9 @@
                                         <p class="p-tag"><?php echo "Free"; ?></p>
                                     <?php } ?>
                                 <?php } ?>
+                                <?php if($ThumbnailSetting->published_on == 1) { ?>                                            
+                                        <p class="published_on1"><?php echo $publish_time; ?></p>
+                                    <?php  } ?>
                         </div>
 
                         <div class="block-description">

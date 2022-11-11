@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddPaymentGatewayToUsersTable extends Migration
+class AddPublishedOnToThumbnailSetting extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,10 @@ class AddPaymentGatewayToUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('payment_gateway')->nullable()->after('payment_type');
+        Schema::table('thumbnail_setting', function (Blueprint $table) {
+            //
+            $table->string('published_on')->nullable()->after('published_year');
+
         });
     }
 
@@ -25,8 +27,9 @@ class AddPaymentGatewayToUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            Schema::dropIfExists('payment_gateway');
+        Schema::table('thumbnail_setting', function (Blueprint $table) {
+            //
+            Schema::dropIfExists('published_on');
         });
     }
 }
