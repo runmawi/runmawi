@@ -33,7 +33,14 @@ class AddPaystackToPaymentSettingsTable extends Migration
     public function down()
     {
         Schema::table('payment_settings', function (Blueprint $table) {
-            //
+            Schema::dropIfExists('paystack_status');
+            Schema::dropIfExists('paystack_live_mode');
+            Schema::dropIfExists('paystack_name');
+            Schema::dropIfExists('paystack_test_secret_key');
+            Schema::dropIfExists('paystack_test_publishable_key');
+            Schema::dropIfExists('paystack_live_secret_key');
+            Schema::dropIfExists('paystack_live_publishable_key');
+            Schema::dropIfExists('paystack_lable');
         });
     }
 }

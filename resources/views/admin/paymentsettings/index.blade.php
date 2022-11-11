@@ -354,13 +354,24 @@
                                 </div>
 
                                 <div class="col-md-6 mt-3">
-                                    <label> Paystack Test Secret Key: </label> 
-                                    <input type="text" class="form-control" name="paystack_test_secret_key" placeholder="Paystack Test Secret Key" value="@if(!empty($paystack_payment_setting->paystack_test_secret_key) && Auth::user()->role != 'demo'){{ $paystack_payment_setting->paystack_test_secret_key }}@endif" />
+                                    <label> Paystack Callback URL: </label> 
+                                    <input type="text" class="form-control" name="paystack_callback_url"  placeholder="Paystack Callback URL" value="@if( !empty($paystack_payment_setting->paystack_callback_url ) && Auth::user()->role != 'demo'){{ $paystack_payment_setting->paystack_callback_url }}@endif" readonly />
                                 </div>
 
                                 <div class="col-md-6 mt-3">
                                     <label> Paystack Test Publishable Key: </label> 
                                     <input type="text" class="form-control" name="paystack_test_publishable_key"  placeholder="Paystack Test Publishable Key" value="@if(!empty($paystack_payment_setting->paystack_test_publishable_key) && Auth::user()->role != 'demo'){{ $paystack_payment_setting->paystack_test_publishable_key }}@endif" />
+                                </div>
+
+
+                                <div class="col-md-6 mt-3">
+                                    <label> Paystack Test Secret Key: </label> 
+                                    <input type="text" class="form-control" name="paystack_test_secret_key" placeholder="Paystack Test Secret Key" value="@if(!empty($paystack_payment_setting->paystack_test_secret_key) && Auth::user()->role != 'demo'){{ $paystack_payment_setting->paystack_test_secret_key }}@endif" />
+                                </div>
+
+                                <div class="col-md-6 mt-3">
+                                    <label> Paystack Live Publishable Key: </label> 
+                                    <input type="text" class="form-control" name="paystack_live_publishable_key"  placeholder="Paystack Live Publishable Key" value="@if(!empty($paystack_payment_setting->paystack_live_publishable_key) && Auth::user()->role != 'demo'){{ $paystack_payment_setting->paystack_live_publishable_key }}@endif" />
                                 </div>
                     
                                 <div class="col-md-6 mt-3">
@@ -369,14 +380,11 @@
                                 </div>
                                 
                                 <div class="col-md-6 mt-3">
-                                    <label> Paystack Live Publishable Key: </label> 
-                                    <input type="text" class="form-control" name="paystack_live_publishable_key"  placeholder="Paystack Live Publishable Key" value="@if(!empty($paystack_payment_setting->paystack_live_publishable_key) && Auth::user()->role != 'demo'){{ $paystack_payment_setting->paystack_live_publishable_key }}@endif" />
-                                </div>
-                    
-                                <div class="col-md-6 mt-3">
                                     <label> Paystack Label: </label> 
                                     <input type="text" class="form-control" name="paystack_lable"  placeholder="paystack Label" value="@if( !empty($paystack_payment_setting->paystack_lable ) && Auth::user()->role != 'demo'){{ $paystack_payment_setting->paystack_lable }}@endif" />
                                 </div>
+
+                             
                     
                             </div> <br><br>
                         @endif
