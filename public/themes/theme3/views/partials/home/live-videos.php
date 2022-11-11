@@ -9,7 +9,53 @@
 <div class="favorites-contens">
     <ul class="favorites-slider list-inline row p-0 mb-0">
         <?php  if(isset($livetream)) :
-                         foreach($livetream as $video): ?>
+                         foreach($livetream as $video): 
+                            if (!empty($video->publish_time))
+                            {
+                              $currentdate = date("M d , y H:i:s");
+                              date_default_timezone_set('Asia/Kolkata');
+                              $current_date = Date("M d , y H:i:s");
+                              $date = date_create($current_date);
+                              $currentdate = date_format($date, "D h:i");
+                              $publish_time = date("D h:i", strtotime($video->publish_time));
+                              if ($video->publish_type == 'publish_later')
+                              {
+                                  if ($currentdate < $publish_time)
+                                  {
+                                    $publish_time = date("D h:i", strtotime($video->publish_time));
+                                  }else{
+                                    $publish_time = 'Published';
+                                  }
+                              }
+                              elseif ($video->publish_type == 'publish_now')
+                              {
+                                $currentdate = date_format($date, "y M D");
+  
+                                $publish_time = date("y M D", strtotime($video->created_at));
+  
+                                  if ($currentdate == $publish_time)
+                                  {
+                                    $publish_time = date("D h:i", strtotime($video->created_at));
+                                  }else{
+                                    $publish_time = 'Published';
+                                  }
+                              }else{
+                                $publish_time = 'Published';
+                              }
+                            }else{
+                                $currentdate = date_format($date, "y M D");
+  
+                                $publish_time = date("y M D", strtotime($video->created_at));
+  
+                                  if ($currentdate == $publish_time)
+                                  {
+                                    $publish_time = date("D h:i", strtotime($video->created_at));
+                                  }else{
+                                    $publish_time = 'Published';
+                                  }
+                              }
+                              ?>
+                         
         <!-- .@$video->categories->name. -->
         <li class="slide-item">
             <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
@@ -31,7 +77,9 @@
                                 <?php } ?>
                            
                          <?php } ?>   
-                       
+                         <?php if($ThumbnailSetting->published_on == 1) { ?>                                            
+                            <p class="published_on1"><?php echo $publish_time; ?></p>
+                        <?php  } ?>
                     </div></div>
                 <div class="block-description" >
                

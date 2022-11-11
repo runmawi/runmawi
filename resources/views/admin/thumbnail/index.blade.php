@@ -81,9 +81,21 @@
                                 </td>
                             </tbody>
 
-
                             <tbody>
                                 <td> {{ '5'}} </td>
+                                <td> {{ 'Published ON'}} </td>
+                                <td> 
+                                    <div class="mt-1">
+                                        <label class="switch">
+                                            <input name="published_on" class="published_on" id="published_on" type="checkbox" @if( $thumbnail_setting->published_on == "1") checked  @endif >
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                </td>
+                            </tbody>
+
+                            <tbody>
+                                <td> {{ '6'}} </td>
                                 <td> {{ 'Duration'}} </td>
                                 <td> 
                                     <div class="mt-1">
@@ -97,7 +109,7 @@
 
 
                             <tbody>
-                                <td> {{ '6'}} </td>
+                                <td> {{ '7'}} </td>
                                 <td> {{ 'Featured'}} </td>
                                 <td> 
                                     <div class="mt-1">
@@ -111,7 +123,7 @@
 
                             
                             <tbody>
-                                <td> {{ '7'}} </td>
+                                <td> {{ '8'}} </td>
                                 <td> {{ 'Free or Cost label'}} </td>
                                 <td> 
                                     <div class="mt-1">
@@ -124,7 +136,7 @@
                             </tbody>
 
                             <tbody>
-                                <td> {{ '8'}} </td>
+                                <td> {{ '9'}} </td>
                                 <td> {{ 'Play button'}} </td>
                                 <td> 
                                     <div class="mt-1 text-center">
@@ -141,7 +153,7 @@
 
 
                             <tbody>
-                                <td> {{ '9' }} </td>
+                                <td> {{ '10' }} </td>
                                 <td> {{ 'Category'}} </td>
                                 <td> 
                                     <div class="mt-1">
@@ -155,7 +167,7 @@
 
 
                             <tbody>
-                                <td> {{ '10'}} </td>
+                                <td> {{ '11'}} </td>
                                 <td> {{ 'Trailer'}} </td>
                                 <td> 
                                     <div class="mt-1">
@@ -169,7 +181,7 @@
 
 
                             <tbody>
-                                <td> {{ '11'}} </td>
+                                <td> {{ '12'}} </td>
                                 <td> {{ 'Reels Videos'}} </td>
                                 <td> 
                                     <div class="mt-1">

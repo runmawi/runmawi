@@ -9,7 +9,42 @@
     <ul class="favorites-slider list-inline row p-0 mb-0">
         <?php  if(isset($featured_videos)) :
                       if(!empty($data['password_hash'])) { 
-                          $id = Auth::user()->id ; } else { $id = 0 ; } foreach($featured_videos as $watchlater_video): ?>
+                          $id = Auth::user()->id ; } else { $id = 0 ; } foreach($featured_videos as $watchlater_video): 
+                            if (!empty($watchlater_video->publish_time) && !empty($watchlater_video->publish_time))
+                            {
+                              $currentdate = date("M d , y H:i:s");
+                              date_default_timezone_set('Asia/Kolkata');
+                              $current_date = Date("M d , y H:i:s");
+                              $date = date_create($current_date);
+                              $currentdate = date_format($date, "D h:i");
+                              $publish_time = date("D h:i", strtotime($watchlater_video->publish_time));
+                              if ($watchlater_video->publish_type == 'publish_later')
+                              {
+                                  if ($currentdate < $publish_time)
+                                  {
+                                    $publish_time = date("D h:i", strtotime($watchlater_video->publish_time));
+                                  }else{
+                                    $publish_time = 'Published';
+                                  }
+                              }
+                              elseif ($watchlater_video->publish_type == 'publish_now')
+                              {
+                                $currentdate = date_format($date, "y M D");
+  
+                                $publish_time = date("y M D", strtotime($watchlater_video->publish_time));
+  
+                                  if ($currentdate == $publish_time)
+                                  {
+                                    $publish_time = 'Today'.' '.date("h:i", strtotime($watchlater_video->publish_time));
+                                  }else{
+                                    $publish_time = 'Published';
+                                  }
+                              }else{
+                                $publish_time = '';
+                            }
+                            }else{
+                                $publish_time = '';
+                            } ?>
         <li class="slide-item">
             <a href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
                 <!-- block-images -->
@@ -30,7 +65,9 @@
                                     <p class="p-tag"><?php echo "Free"; ?></p>
                                     <?php } ?>
                                     <?php } ?>
-                            
+                                    <?php if($ThumbnailSetting->published_on == 1) { ?>                                            
+                                        <p class="published_on1"><?php echo $publish_time; ?></p>
+                                    <?php  } ?>
 
                     <!-- </div> -->
                 </div>

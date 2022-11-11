@@ -749,6 +749,7 @@ if($watermark != '') {
         $Thumbnail->age                =  $request->has('age') ? 1 : 0 ?? 0;   
         $Thumbnail->rating             =  $request->has('rating') ? 1 : 0 ?? 0;  
         $Thumbnail->published_year     =  $request->has('published_year') ? 1 : 0 ?? 0;  
+        $Thumbnail->published_on       =  $request->has('published_on') ? 1 : 0 ?? 0;  
         $Thumbnail->duration           =  $request->has('duration') ? 1 : 0 ?? 0;  
         $Thumbnail->category           =  $request->has('category') ? 1 : 0 ?? 0;   
         $Thumbnail->featured           =  $request->has('featured') ? 1 : 0 ?? 0; 
