@@ -1235,10 +1235,13 @@ $artists = [];
               <div class="Razorpay_button">   <!-- Razorpay Button -->
                 <button onclick="location.href ='<?= URL::to('RazorpayVideoRent/'.$video->id.'/'.$video->ppv_price) ?>' ;" id="" class="btn2  btn-outline-primary" > Continue</button>
               </div>
-                
-              <div class="paystack_button">  <!-- Paystack Button -->
-                <button onclick="location.href ='<?= route('Paystack_Video_Rent', ['video_id' => $video->id , 'amount' => $video->ppv_price] ) ?>' ;" id="" class="btn2  btn-outline-primary" > Continue</button>
-              </div>
+
+              <?php if( $video->ppv_price !=null &&  $video->ppv_price == " "  ){ ?>
+                <div class="paystack_button">  <!-- Paystack Button -->
+                  <button onclick="location.href ='<?= route('Paystack_Video_Rent', ['video_id' => $video->id , 'amount' => $video->ppv_price] ) ?>' ;" id="" class="btn2  btn-outline-primary" > Continue</button>
+                </div>
+              <?php } ?>
+
             </div>
           </div>
       </div>

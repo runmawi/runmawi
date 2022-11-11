@@ -109,6 +109,9 @@ class AdminPaymentSettingsController extends Controller
 
 
         $payment_settings = PaymentSetting::where('id','=',2)->first();
+
+		if( $payment_settings != null){
+			
 		if(empty($input['paypal_live_mode'])){
 			$paypal_live_mode = 0;
 		}else{
@@ -186,6 +189,7 @@ class AdminPaymentSettingsController extends Controller
 		}
 	   
         $payment_settings->save();
+	}
 
 // Razorpay 
 
