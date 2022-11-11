@@ -1320,30 +1320,32 @@ function paypalplan_details(ele){
                     if( count > 0 && response.data.status == true ){
 
                         html = "";
-                        html += '<div class="row align-items-center m-0 p-0 data-plans">';
-                            
-                            $.each( response.data.plans_data , function( index, plan_data ) {
+                        html += '<div class="col-md-12">';
+                            html += '<div class="row align-items-center m-0 p-0 data-plans">';
+                                
+                                $.each( response.data.plans_data , function( index, plan_data ) {
 
-                                html += '<div class="col-md-6 plan_details p-0"  data-plan-id="active'+ plan_data.id +'" data-plan-price="'+ plan_data.price +'"  data-plan_id="'+ plan_data.plan_id +'"  data-payment-type="'+ plan_data.payment_type +'" onclick="plan_details(this)">';
-                                    html += '<div class="row dg align-items-center mb-4" id="active'+ plan_data.id +'" >';
-                                        
-                                        html +=   '<div class="col-md-7 p-0">';
-                                            html +=   '<h4 class="text-black font-weight-bold">  '+ plan_data.plans_name +'   </h4>';
-                                            html +=   '<p>' + plan_data.plans_name + ' Membership </p>';
+                                    html += '<div class="col-md-6 plan_details p-0"  data-plan-id="active'+ plan_data.id +'" data-plan-price="'+ plan_data.price +'"  data-plan_id="'+ plan_data.plan_id +'"  data-payment-type="'+ plan_data.payment_type +'" onclick="plan_details(this)">';
+                                        html += '<div class="row dg align-items-center mb-4" id="active'+ plan_data.id +'" >';
+                                            
+                                            html +=   '<div class="col-md-7 p-0">';
+                                                html +=   '<h4 class="text-black font-weight-bold">  '+ plan_data.plans_name +'   </h4>';
+                                                html +=   '<p>' + plan_data.plans_name + ' Membership </p>';
+                                            html += '</div>' ;
+
+                                            html += '<div class="vl "></div>' ;
+
+                                            html += '<div class="col-md-4 p-2" >' ;
+                                                html +=    '<h4 class="text-black"> $'+ plan_data.price +' </h4>'  ;
+                                                html +=    '<p>Billed as $'+ plan_data.price +' </p>' ;
+                                            html += '</div>' ;
+
                                         html += '</div>' ;
-
-                                        html += '<div class="vl "></div>' ;
-
-                                        html += '<div class="col-md-4 p-2" >' ;
-                                            html +=    '<h4 class="text-black"> $'+ plan_data.price +' </h4>'  ;
-                                            html +=    '<p>Billed as $'+ plan_data.price +' </p>' ;
-                                        html += '</div>' ;
-
-                                    html += '</div>' ;
-                                    html +=' <div class="d-flex justify-content-between align-items-center " > <div class="bgk"></div> </div>' ;
-                                html += ' </div>' ;
-                            
-                                });
+                                        html +=' <div class="d-flex justify-content-between align-items-center " > <div class="bgk"></div> </div>' ;
+                                    html += ' </div>' ;
+                                
+                                    });
+                            html += '</div>';
                         html += '</div>';
 
                         $('.data-plans').empty('').append(html);
