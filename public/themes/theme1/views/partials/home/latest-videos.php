@@ -49,11 +49,11 @@
                                     $date = date_create($current_date);
                                     $currentdate = date_format($date, "y M D");
       
-                                    $publish_time = date("y M D", strtotime($video->created_at));
+                                    $publish_time = date("y M D", strtotime($watchlater_video->publish_time));
       
                                       if ($currentdate == $publish_time)
                                       {
-                                        $publish_time = date("D h:i", strtotime($video->created_at));
+                                        $publish_time = date("D h:i", strtotime($watchlater_video->publish_time));
                                       }else{
                                         $publish_time = 'Published';
                                       }

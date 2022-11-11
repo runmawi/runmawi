@@ -22,32 +22,32 @@
 
                     <?php  if(isset($live_streams)) :
                        foreach($live_streams as $livestream):
-                        if (!empty($video->publish_time))
+                        if (!empty($livestream->publish_time))
                         {
                           $currentdate = date("M d , y H:i:s");
                           date_default_timezone_set('Asia/Kolkata');
                           $current_date = Date("M d , y H:i:s");
                           $date = date_create($current_date);
                           $currentdate = date_format($date, "D h:i");
-                          $publish_time = date("D h:i", strtotime($video->publish_time));
-                          if ($video->publish_type == 'publish_later')
+                          $publish_time = date("D h:i", strtotime($livestream->publish_time));
+                          if ($livestream->publish_type == 'publish_later')
                           {
                               if ($currentdate < $publish_time)
                               {
-                                $publish_time = date("D h:i", strtotime($video->publish_time));
+                                $publish_time = date("D h:i", strtotime($livestream->publish_time));
                               }else{
                                 $publish_time = 'Published';
                               }
                           }
-                          elseif ($video->publish_type == 'publish_now')
+                          elseif ($livestream->publish_type == 'publish_now')
                           {
                             $currentdate = date_format($date, "y M D");
 
-                            $publish_time = date("y M D", strtotime($video->created_at));
+                            $publish_time = date("y M D", strtotime($livestream->created_at));
 
                               if ($currentdate == $publish_time)
                               {
-                                $publish_time = date("D h:i", strtotime($video->created_at));
+                                $publish_time = date("D h:i", strtotime($livestream->created_at));
                               }else{
                                 $publish_time = 'Published';
                               }
@@ -55,18 +55,18 @@
                             $publish_time = 'Published';
                           }
                         }else{
-                            
+
                             date_default_timezone_set('Asia/Kolkata');
                             $current_date = Date("M d , y H:i:s");
                             $date = date_create($current_date);
 
                             $currentdate = date_format($date, "y M D");
 
-                            $publish_time = date("y M D", strtotime($video->created_at));
+                            $publish_time = date("y M D", strtotime($livestream->created_at));
 
                               if ($currentdate == $publish_time)
                               {
-                                $publish_time = date("D h:i", strtotime($video->created_at));
+                                $publish_time = date("D h:i", strtotime($livestream->created_at));
                               }else{
                                 $publish_time = 'Published';
                               }
