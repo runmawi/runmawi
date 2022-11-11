@@ -8,19 +8,31 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Config;
 use Unicodeveloper\Paystack\Exceptions\IsNullException;
 use Unicodeveloper\Paystack\Exceptions\PaymentVerificationFailedException;
+use Illuminate\Support\Str;
 use GuzzleHttp\Client;
+use Carbon\Carbon;
 use App\PaymentSetting;
+use App\Subscription;
+use App\PpvPurchase;
+use App\VideoCommission;
+use App\ModeratorsUser;
+use App\Video;
+use App\LivePurchase;
+use App\LiveStream;
 use App\User;
+use App\Setting;
 use Auth;
 use Paystack;
 use URL;
-
 
 class PaystackController extends Controller
 {
     public function __construct()
     {
-        $this->url = "https://api.paystack.co/transaction/initialize";
+        $this->customer_create_api_url = "https://api.paystack.co/customer";
+        $this->Subscription_create_api_url = "https://api.paystack.co/transaction/initialize";
+        $this->Subscription_cancel_api_url = "https://api.paystack.co/subscription/disable";
+
 
         $PaymentSetting = PaymentSetting::where('payment_type','Paystack')->first();
 
@@ -52,57 +64,441 @@ class PaystackController extends Controller
 
     public function Paystack_CreateSubscription( Request $request )
     {
-        $user_email = User::where('id',Auth::user()->id)->pluck('email')->first();
 
-                    // Plan Details 
+        try {
 
-        $Plan_details = Paystack::fetchPlan( $request->paystack_plan_id );
+            $users_details =Auth::User();
 
-        $Plan_amount = $Plan_details['data']['amount'] ;
-        $plan_id     = $request->paystack_plan_id ;
+            if( $users_details != null ){
+                $user_email = User::where('id',Auth::user()->id)->pluck('email')->first();
+            }
+            else{
+                $userEmailId = $request->session()->get('register.email');
+                $user_email   = User::where('email',$userEmailId)->pluck('email')->first();
+            }
+            
+                // Plan Details 
 
-        $fields_string = http_build_query( array(
-            'email'  => $user_email , 
-            'amount' => $Plan_amount, 
-            'plan'   => $plan_id, 
-        ));
+            $Plan_details = Paystack::fetchPlan( $request->paystack_plan_id );
+ 
+            $Plan_amount = $Plan_details['data']['amount'] ;
+            $plan_id     = $request->paystack_plan_id ;
+
+                // Create Customer
+        
+            $customer_details = http_build_query( array(
+                "email" => $user_email , 
+                "first_name" => null,
+                "last_name" => null,
+                "phone" => null
+            ));
+        
+            $ch = curl_init();
+            
+            curl_setopt($ch,CURLOPT_URL, $this->customer_create_api_url);
+            curl_setopt($ch,CURLOPT_POST, true);
+            curl_setopt($ch,CURLOPT_POSTFIELDS, $customer_details );
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $this->SecretKey_array);
+            
+            curl_setopt($ch,CURLOPT_RETURNTRANSFER, true); 
+            
+            $customer = (curl_exec($ch));
+
+            $customer_respond = json_decode($customer, true);
+
+            $customer_id = $customer_respond['data']['customer_code'] ;
+
+            session(['paystack_customer_id' => $customer_id ]);
+
+                 // Create Subscription 
+
+            $Subscription_details = http_build_query( array(
+                'email'  => $user_email , 
+                'amount' => $Plan_amount, 
+                'plan'   => $plan_id, 
+            ));
       
-        $ch = curl_init();
+            $sub = curl_init();
+            
+            curl_setopt($sub,CURLOPT_URL, $this->Subscription_create_api_url );
+            curl_setopt($sub,CURLOPT_POST, true);
+            curl_setopt($sub,CURLOPT_POSTFIELDS, $Subscription_details);
+            curl_setopt($sub, CURLOPT_HTTPHEADER,  $this->SecretKey_array);
+            
+            curl_setopt($sub,CURLOPT_RETURNTRANSFER, true); 
         
-        curl_setopt($ch,CURLOPT_URL, $this->url );
-        curl_setopt($ch,CURLOPT_POST, true);
-        curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
-        curl_setopt($ch, CURLOPT_HTTPHEADER,  $this->SecretKey_array);
-        
-        curl_setopt($ch,CURLOPT_RETURNTRANSFER, true); 
-        
-        $result = json_decode(curl_exec($ch));
+            $subscription = (curl_exec($sub));
 
-        $response = array(
-            'authorization_url' => $result->data->authorization_url ,
-            'access_code'       => $result->data->access_code ,
-            'reference'         => $result->data->reference,
-            'email_id'          => $user_email,
-            'amount'            => $Plan_amount ,
-            'publish_key'       => $this->paystack_keyId,
-            'redirect_url'      => URL::to('becomesubscriber'),
-        );
+            $result = json_decode($subscription, true);
 
-        return view('Paystack.checkout',compact('response'),$response);
+            $response = array(
+                'status'           => true ,
+                'message'          => "Customer & Authorization url Successfully Created !" , 
+                'authorization_url' => $result['data']['authorization_url'] , 
+                'access_code'       => $result['data']['access_code'] , 
+                'reference'         => $result['data']['reference'], 
+                'email_id'          => $user_email,
+                'amount'            => $Plan_amount ,
+                'publish_key'       => $this->paystack_keyId,
+                'redirect_url'      => URL::to('becomesubscriber'),
+            );
+        } 
+        catch (\Throwable $th) {
+
+           $response = array(
+                "status"  => false ,
+                "message" => $th->getMessage() , 
+            );
+        }
+        
+        return response()->json($response, 200);
     }
 
     public function paystack_verify_request ( Request $request )
     {
-        $transaction_id = $request->q8db9a67w9 ;
 
-        $paystack_verify_request = Paystack::isTransactionVerificationValid($transaction_id) ;
+        if( $request->trxref != null && $request->reference != null ){
 
-        $paystack_verify_requests = Paystack::verifyTransactionAtGateway($transaction_id) ;
+                // Customer Details
 
+            $paystack_customer_id = session('paystack_customer_id');
+            $customer_details = Paystack::fetchCustomer( $paystack_customer_id );
 
-        dd($paystack_verify_request);
+                // Subscription Details
 
+            $subcription_id = $customer_details['data']['subscriptions'][0]['subscription_code'] ;
+            $subcription_details = Paystack::fetchSubscription($subcription_id) ;
 
+            $Sub_Startday  = Carbon::parse($subcription_details['data']['createdAt'])->setTimezone('UTC')->format('d/m/Y H:i:s'); 
+            $Sub_Endday    = Carbon::parse($subcription_details['data']['next_payment_date'] )->setTimezone('UTC')->format('d/m/Y H:i:s'); 
+            $trial_ends_at = Carbon::parse($subcription_details['data']['next_payment_date'] )->setTimezone('UTC')->toDateTimeString(); 
+
+                // Subscription Details - Storing
+
+            $users_details = Auth::User() ;
+
+            if( $users_details != null ){
+                $user_id = Auth::user()->id;
+            }
+            else{
+                $userEmailId = $request->session()->get('register.email');
+                $user_id   = User::where('email',$userEmailId)->pluck('id')->first();
+            }
+
+            Subscription::create([
+                'user_id'        =>  $user_id,
+                'name'           =>  $subcription_details['data']['plan']['name'],
+                'price'          =>  $subcription_details['data']['amount'] ,   // Amount Paise to Rupees
+                'stripe_id'      =>  $subcription_details['data']['subscription_code'] ,
+                'stripe_status'  =>  $subcription_details['data']['status'] ,
+                'stripe_plan'    =>  $subcription_details['data']['plan']['plan_code'],
+                'quantity'       =>  null,
+                'countryname'    =>  Country_name(),
+                'regionname'     =>  Region_name(),
+                'cityname'       =>  city_name(),
+                'PaymentGateway' =>  'Paystack',
+                'trial_ends_at'  =>  $trial_ends_at,
+                'ends_at'        =>  $trial_ends_at,
+            ]);
+
+            User::where('id',$user_id)->update([
+                'role'                  =>  'subscriber',
+                'stripe_id'             =>  $subcription_details['data']['subscription_code'] ,
+                'subscription_start'    =>  $Sub_Startday,
+                'subscription_ends_at'  =>  $Sub_Endday,
+                'payment_gateway'       =>  'Paystack',
+            ]);
+
+            $request->session()->forget('paystack_customer_id');
+
+            return redirect()->route('home');
+        }
     }
 
+    public function paystack_Subscription_update( Request $request )
+    {
+        
+    }
+
+    public function Paystack_Subscription_cancel( Request $request , $subscription_id )
+    {
+        $subcription_details = Paystack::fetchSubscription( $subscription_id ) ;
+
+        $fields_string = http_build_query(array(
+            'code'  =>  $subcription_details['data']['subscription_code'] ,
+            'token' =>  $subcription_details['data']['email_token'] ,
+        ));
+      
+        $ch = curl_init();
+        
+        curl_setopt($ch,CURLOPT_URL, $this->Subscription_cancel_api_url);
+        curl_setopt($ch,CURLOPT_POST, true);
+        curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $this->SecretKey_array);
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER, true); 
+        
+        $Paystack_Subscription_cancel = curl_exec($ch);
+        $result = json_decode($Paystack_Subscription_cancel, true);
+
+        // dd( $result['message'] );
+
+        Subscription::where('stripe_id',$subscription_id )->update([
+            'stripe_status' =>  'Cancelled',
+        ]);
+
+        User::where('id',Auth::user()->id )->update([
+            'payment_gateway' =>  null ,
+        ]);
+
+        return redirect()->route('home');
+    }
+
+    public function Paystack_Video_Rent(Request $request,$video_id,$amount)
+    {
+        $email = User::where('id',Auth::user()->id)->pluck('email')->first();
+
+        $access_code = Str::random(15);
+
+        $data = array(
+                'amount' => $amount * 100 ,
+                'email'  => $email ,
+                'publish_key'  =>  $this->paystack_keyId,
+                'access_code'  => $access_code ,
+                'redirect_url' => URL::to('category/videos/rent-payment'),
+                'Video_id'     =>  $video_id ,
+        );
+        return view('Paystack.video_rent_checkout',$data);
+    }
+
+    public function Paystack_Video_Rent_Paymentverify ( Request $request )
+    {
+        try {
+
+            $setting = Setting::first();  
+            $ppv_hours = $setting->ppv_hours;
+     
+            $d = new \DateTime('now');
+            $now = $d->format('Y-m-d h:i:s a');
+            $time = date('h:i:s', strtotime($now));
+            $to_time = date('Y-m-d h:i:s a',strtotime('+'.$ppv_hours.' hour',strtotime($now)));       
+
+                 // Verify Payment
+
+            $reference_code = $request->reference_code;
+
+            $curl = curl_init();
+            
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => "https://api.paystack.co/transaction/verify/$reference_code",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_SSL_VERIFYHOST => 0,
+                CURLOPT_SSL_VERIFYPEER => 0,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "GET",
+                CURLOPT_HTTPHEADER => $this->SecretKey_array,
+            ));
+            
+            $result = curl_exec($curl);
+            $payment_result = json_decode($result, true);
+            $err = curl_error($curl);
+            curl_close($curl);
+
+                                // Store data
+
+            $video = Video::where('id','=',$request->video_id)->first();
+
+            if(!empty($video)){
+                 $moderators_id = $video->user_id;
+            }
+
+            if(!empty($moderators_id)){
+                $moderator = ModeratorsUser::where('id','=',$moderators_id)->first();  
+                $total_amount = $video->ppv_price;
+                $title =  $video->title;
+                $commssion = VideoCommission::first();
+                $percentage = $commssion->percentage; 
+                $ppv_price = $video->ppv_price;
+                $admin_commssion = ($percentage/100) * $ppv_price ;
+                $moderator_commssion = $ppv_price - $percentage;
+                $moderator_id = $moderators_id;
+            }
+            else
+            {
+                $total_amount = $video->ppv_price;
+                $title =  $video->title;
+                $commssion = VideoCommission::first();
+                $percentage = null; 
+                $ppv_price = $video->ppv_price;
+                $admin_commssion =  null;
+                $moderator_commssion = null;
+                $moderator_id = null;
+            }
+
+            $purchase = new PpvPurchase;
+            $purchase->user_id      = Auth::user()->id ;
+            $purchase->video_id     = $request->video_id ;
+            $purchase->total_amount = $payment_result['data']['amount'] ;
+            $purchase->admin_commssion = $admin_commssion;
+            $purchase->moderator_commssion = $moderator_commssion;
+            $purchase->status = 'active';
+            $purchase->to_time = $to_time;
+            $purchase->moderator_id = $moderator_id;
+            $purchase->save();
+
+            if ($err) {                 // Error 
+                $response = array( 
+                    "status"  => false , 
+                    "message" => $err  
+                );
+            } 
+            else {                      // Success 
+                $response = array(
+                    "status"  => true ,
+                    "message" => "Payment done! Successfully", 
+                    'data'    =>  $result ,
+                );
+            }
+
+        } catch (\Exception $e) {
+
+            $response = array(
+                 "status"  => false , 
+                 "message" => $e->getMessage(), 
+            );
+
+        }
+
+        return response()->json($response, 200);
+    }
+
+    public function Paystack_live_Rent(Request $request,$live_id,$amount)
+    {
+        $email = User::where('id',Auth::user()->id)->pluck('email')->first();
+
+        $access_code = Str::random(15);
+
+        $data = array(
+                'amount' => $amount * 100 ,
+                'email'  => $email ,
+                'publish_key'  =>  $this->paystack_keyId,
+                'access_code'  => $access_code ,
+                'redirect_url' => URL::to('live/Rent_Payment_Live'),
+                'live_id'     =>  $live_id ,
+        );
+
+        return view('Paystack.live_rent_checkout',$data);
+    }
+
+    public function Paystack_live_Rent_Paymentverify( Request $request )
+    {
+        try {
+
+            $setting = Setting::first();  
+            $ppv_hours = $setting->ppv_hours;
+
+            $to_time = ppv_expirytime_started(); 
+            
+                 // Verify Payment
+
+            $reference_code = $request->reference_code;
+
+            $curl = curl_init();
+            
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => "https://api.paystack.co/transaction/verify/$reference_code",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_SSL_VERIFYHOST => 0,
+                CURLOPT_SSL_VERIFYPEER => 0,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "GET",
+                CURLOPT_HTTPHEADER => $this->SecretKey_array,
+            ));
+            
+            $result = curl_exec($curl);
+            $payment_result = json_decode($result, true);
+            $err = curl_error($curl);
+            curl_close($curl);
+
+            $video = LiveStream::where('id','=',$request->live_id)->first();
+
+            if(!empty($video)){
+            $moderators_id = $video->user_id;
+            }
+
+            if(!empty($moderators_id)){
+                $moderator        = ModeratorsUser::where('id','=',$moderators_id)->first();  
+                $total_amount     = $video->ppv_price;
+                $title            =  $video->title;
+                $commssion        = VideoCommission::first();
+                $percentage       = $commssion->percentage; 
+                $ppv_price        = $video->ppv_price;
+                $admin_commssion  = ($percentage/100) * $ppv_price ;
+                $moderator_commssion = $ppv_price - $percentage;
+                $moderator_id = $moderators_id;
+            }
+            else
+            {
+                $total_amount   = $video->ppv_price;
+                $title          =  $video->title;
+                $commssion      = VideoCommission::first();
+                $percentage     = null; 
+                $ppv_price       = $video->ppv_price;
+                $admin_commssion =  null;
+                $moderator_commssion = null;
+                $moderator_id = null;
+            }
+
+            $purchase = new PpvPurchase;
+            $purchase->user_id       =  Auth::user()->id ;
+            $purchase->live_id       = $request->live_id ;
+            $purchase->total_amount  = $payment_result['data']['amount'] ; ;
+            $purchase->admin_commssion = $admin_commssion;
+            $purchase->moderator_commssion = $moderator_commssion;
+            $purchase->status = 'active';
+            $purchase->to_time = $to_time;
+            $purchase->moderator_id = $moderator_id;
+            $purchase->save();
+
+            $livepurchase = new LivePurchase;
+            $livepurchase->user_id =  Auth::user()->id ;
+            $livepurchase->video_id = $request->live_id;
+            $livepurchase->to_time = $to_time;
+            $livepurchase->expired_date = $to_time;
+            $livepurchase->amount = $request->get('amount')/100 ;
+            $livepurchase->from_time = Carbon::now()->format('Y-m-d H:i:s');
+            $livepurchase->unseen_expiry_date = ppv_expirytime_notstarted();
+            $livepurchase->status = 1;
+            $livepurchase->save();
+
+            if ($err) {                 // Error 
+                $response = array( 
+                    "status"  => false , 
+                    "message" => $err  
+                );
+            } 
+            else {                      // Success 
+                $response = array(
+                    "status"  => true ,
+                    "message" => "Payment done! Successfully", 
+                    'data'    =>  $result ,
+                );
+            }
+        
+
+        } catch (\Exception $e) {
+
+            $response = array(
+                "status"  => false , 
+                "message" => $e->getMessage(), 
+           );
+        }
+
+        return response()->json($response, 200);
+    }
 }

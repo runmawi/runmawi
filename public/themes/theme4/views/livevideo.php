@@ -165,17 +165,16 @@ if ($ppv_exist > 0 || $video_access == "free" || Auth::user()->subscribed() || A
                 <div class="col-md-4 col-sm-offset-4">
                     <div class="ppv-block">
                         <h2 class="mb-3">Pay now to watch <?php echo $video->title; ?></h2>
-                        <div class="clear"></div>
+                        <h4 class="text-center" style="margin-top:40px;"><a href="<?=URL::to('/') . '/stripe/billings-details' ?>"><p>Click Here To Become Subscriber</p></a></h4>
 
-                       
-            <!-- Stripe Button -->
-                    <!-- <button class="btn btn-primary btn-block" onclick="pay(<?php echo $video->ppv_price; ?>)">Watch Now For <?php echo $currency->symbol.' '.$video->ppv_price; ?></button> -->
-                    <h4 class="text-center" style="margin-top:80px;"><a href="<?=URL::to('/') . '/stripe/billings-details' ?>"><p>Click Here To Become Subscriber</p></a></h4>
+                                    <!-- PPV button -->
+                            <?php $users = Auth::user();  ?>
 
-            <!-- Razorpay Button -->
-            <?php if($Razorpay_payment_setting !=null && $Razorpay_payment_setting->payment_type == "Razorpay" ){?>
-                    <button class="btn btn-primary btn-block" onclick="location.href ='<?= URL::to('RazorpayLiveRent/'.$video->id.'/'.$video->ppv_price) ?>' ;" >Razorpay Purchase For <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
-            <?php } ?>
+                            <?php if ( ($ppv_exist == 0 ) && (  $users->role!="admin")  ) { ?>
+                                <button  data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary btn-block rent-video">
+                                <?php echo __('Purchase Now ');?> </button>
+                            <?php } ?>
+           
                     </div>
                 </div>
             </div>
@@ -422,33 +421,85 @@ endif; ?> Views </span>
 endif; ?>" data-authenticated="<?=!Auth::guest() ?>" data-videoid="<?=$video->id ?>"><i class="fa fa-heart"></i> Favorite</div>
 </div> -->
         
-<!-- Modal -->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-<div class="modal-dialog modal-dialog-centered" role="document">
-<div class="modal-content">
-  <div class="modal-header">
-    <h4 class="modal-title text-center" id="exampleModalLongTitle" style="color:#000;font-weight: 700;">Rent Now</h4>
-   
-  </div>
-  <div class="modal-body">
-      <div class="row">
-          <div class="col-sm-2" style="width:52%;">
-            <span id="paypal-button"></span> 
+   <!-- Modal Rent -->
+
+   <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+         <div class="modal-content">
+
+          <div class="modal-header">
+            <h4 class="modal-title text-center" id="exampleModalLongTitle" style="color:black">Rent Now</h4>
+
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+
           </div>
-          
-          <div class="col-sm-4">
-            <a onclick="pay(<?php echo $video->ppv_price;?>)">
-                <img src="<?php echo URL::to('/assets/img/card.png');?>" class="rent-card">
-            </a>
+
+          <div class="modal-body">
+              <div class="row justify-content-between">
+                  <div class="col-sm-4 p-0" style="">
+                      <img class="img__img w-100" src="<?php echo URL::to('/').'/public/uploads/images/'.$video->image;  ?>" class="img-fluid" alt="" >
+                  </div>
+                  
+                    <div class="col-sm-8">
+                    <h4 class=" text-black movie mb-3"><?php echo __($video->title);?> ,   <span class="trending-year mt-2"><?php if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span></h4>
+                    <span class="badge badge-secondary   mb-2"><?php echo __($video->age_restrict).' '.'+';?></span>
+                    <span class="badge badge-secondary  mb-2 ml-1"><?php echo __($video->duration);?></span><br>
+                
+                    <a type="button" class="mb-3 mt-3"  data-dismiss="modal" style="font-weight:400;">Amount:   <span class="pl-2" style="font-size:20px;font-weight:700;"> <?php echo __($currency->symbol.' '.$video->ppv_price);?></span></a><br>
+                    <label class="mb-0 mt-3 p-0" for="method"><h5 style="font-size:20px;line-height: 23px;" class="font-weight-bold text-black mb-2">Payment Method : </h5></label>
+                  
+                                 <!-- Stripe Button -->
+                            <?php if( $stripe_payment_setting != null && $stripe_payment_setting->payment_type == "Stripe" ){?>
+                                 <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
+                                    <input type="radio" class="payment_btn" id="tres_important" checked name="payment_method" value= <?= $stripe_payment_setting->payment_type ?>  data-value="stripe">
+                                    <?php  echo $stripe_payment_setting->payment_type ;  ?>
+                                </label>      
+                            <?php } ?>
+
+                           
+                                <!-- Razorpay Button -->
+                            <?php if( $Razorpay_payment_setting != null && $Razorpay_payment_setting->payment_type == "Razorpay" ){?>
+                                <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
+                                    <input type="radio" class="payment_btn" id="important" name="payment_method" value="<?= $Razorpay_payment_setting->payment_type ?>"  data-value="Razorpay" >
+                                    <?php  echo $Razorpay_payment_setting->payment_type ;  ?>
+                                </label>
+                            <?php } ?>
+
+                                <!-- Paystack Button -->
+                            <?php if( $Paystack_payment_setting != null && $Paystack_payment_setting->payment_type == "Paystack" ){?>
+                                <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
+                                    <input type="radio" class="payment_btn" id="" name="payment_method" value="<?= $Paystack_payment_setting->payment_type ?>"  data-value="Paystack" >
+                                    <?php  echo $Paystack_payment_setting->payment_type ;  ?>
+                                </label>
+                            <?php } ?>
+                    </div>
+                </div>                    
+            </div>
+
+            <div class="modal-footer">
+
+              <div class="Stripe_button">  <!-- Stripe Button -->
+                <button class="btn2  btn-outline-primary" onclick="pay(<?php echo $video->ppv_price; ?>)"> Continue </button>
+              </div>
+                                  
+              <div class="Razorpay_button">   <!-- Razorpay Button -->
+                <?php if( $Razorpay_payment_setting != null && $Razorpay_payment_setting->payment_type == "Razorpay" ){?>
+                        <button class="btn2  btn-outline-primary " onclick="location.href ='<?= URL::to('RazorpayLiveRent/'.$video->id.'/'.$video->ppv_price) ?>' ;" > Continue </button>
+                <?php } ?>
+              </div>
+                
+              <div class="paystack_button">  <!-- Paystack Button -->
+                <?php if( $Paystack_payment_setting != null && $Paystack_payment_setting->payment_type == "Paystack" ){?>
+                        <button class="btn2  btn-outline-primary" onclick="location.href ='<?= route('Paystack_live_Rent', ['live_id' => $video->id , 'amount' => $video->ppv_price] ) ?>' ;" >  Continue </button>
+                <?php } ?>
+              </div>
+
+            </div>
           </div>
-      </div>                    
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-primary"  data-dismiss="modal">Close</button>
-  </div>
-</div>
-</div>
-</div>
+      </div>
+    </div>
 
 
 
@@ -790,6 +841,38 @@ if( ppv_exits == 1 ){
     }
 }
 
+</script>
+
+<script>
+  window.onload = function(){ 
+       $('.Razorpay_button,.paystack_button').hide();
+    }
+
+     $(document).ready(function(){
+
+      $(".payment_btn").click(function(){
+
+        $('.Razorpay_button,.Stripe_button,.paystack_button').hide();
+
+        let payment_gateway =  $('input[name="payment_method"]:checked').val();
+
+            if( payment_gateway  == "Stripe" ){
+
+                $('.Stripe_button').show();
+                $('.Razorpay_button,.paystack_button').hide();
+
+            }else if( payment_gateway == "Razorpay" ){
+
+                $('.paystack_button,.Stripe_button').hide();
+                $('.Razorpay_button').show();
+
+            }else if( payment_gateway == "Paystack" ){
+
+                $('.Stripe_button,.Razorpay_button').hide();
+                $('.paystack_button').show();
+            }
+      });
+    });
 </script>
 
 <?php include ('footer.blade.php'); ?>
