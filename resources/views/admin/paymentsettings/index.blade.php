@@ -377,6 +377,11 @@
                                     <label> Paystack Label: </label> 
                                     <input type="text" class="form-control" name="paystack_lable"  placeholder="paystack Label" value="@if( !empty($paystack_payment_setting->paystack_lable ) && Auth::user()->role != 'demo'){{ $paystack_payment_setting->paystack_lable }}@endif" />
                                 </div>
+
+                                <div class="col-md-6 mt-3">
+                                    <label> Paystack Callback URL: </label> 
+                                    <input type="text" class="form-control" name="paystack_callback_url"  placeholder="Paystack Callback URL" value="@if( !empty($paystack_payment_setting->paystack_callback_url ) && Auth::user()->role != 'demo'){{ $paystack_payment_setting->paystack_callback_url }}@endif" />
+                                </div>
                     
                             </div> <br><br>
                         @endif
