@@ -621,7 +621,7 @@ i.fa.fa-google-plus {
                 <h4>Summary</h4>
 
                 <div class="bg-white mt-4 dgk">
-                     <h4> Due today: <span class='plan_price'> {{ $SubscriptionPlan ? '$'.$SubscriptionPlan->price : '$0:0' }} </span> </h4>
+                     <h4> Due today: <span class='plan_price'> {{ $SubscriptionPlan ? currency_symbol().$SubscriptionPlan->price : currency_symbol().'0:0' }} </span> </h4>
                      
                     @if( get_coupon_code() == 1)
                         <div class="d-flex justify-content-between align-items-center mt-2">
@@ -631,8 +631,8 @@ i.fa.fa-google-plus {
                             </div>
 
                             <div class="stripe_payment" >
-                                <p id="promo_code_amt" > {{  '$0'  }} </p>
-                                <p id="coupon_amt_deduction"> {{ $SubscriptionPlan ? '$'.$SubscriptionPlan->price : '$0:0'  }} </p>
+                                <p id="promo_code_amt" > {{  currency_symbol().'0'  }} </p>
+                                <p id="coupon_amt_deduction"> {{ $SubscriptionPlan ? currency_symbol().$SubscriptionPlan->price : currency_symbol().'0:0'  }} </p>
                             </div>
                         </div>
                     @endif
@@ -660,6 +660,7 @@ i.fa.fa-google-plus {
                     
                     {{-- <button type="button" class="btn1  btn-lg btn-block font-weight-bold text-white mt-3">Start Your Free Trial</button> --}}
                     <input type="hidden" id="payment_image" value="<?php echo URL::to('/').'/public/Thumbnai_images';?>">
+                    <input type="hidden" id="currency_symbol" value="{{ currency_symbol() }}">
             </div>           
     </div>
     </div>
@@ -701,13 +702,14 @@ i.fa.fa-google-plus {
     function plan_details(ele){
         var plans_id          = $(ele).attr('data-plan_id');
         var plan_payment_type = $(ele).attr('data-payment-type');
-        var plan_price  = $(ele).attr('data-plan-price');
-        var plan_id_class = $(ele).attr('data-plan-id');
+        var plan_price        = $(ele).attr('data-plan-price');
+        var plan_id_class     = $(ele).attr('data-plan-id');
+        let currency_symbols  =  document.getElementById("currency_symbol").value ;
 
         $('#payment_type').replaceWith('<input type="hidden" name="payment_type" id="payment_type" value="'+ plan_payment_type+'">');
         $('#plan_name').replaceWith('<input type="hidden" name="plan_name" id="plan_name" value="'+ plans_id +'">');
         $('.plan_price').empty(plan_price);
-        $('.plan_price').append('$'+plan_price);
+        $('.plan_price').append( currency_symbols+plan_price );
 
         $('.dg' ).removeClass('actives');
         $('#'+plan_id_class ).addClass('actives');
@@ -972,6 +974,7 @@ i.fa.fa-google-plus {
         $(".payment_gateway").click(function(){
 
             let payment_gateway =  $('input[name="payment_gateway"]:checked').val();
+            let currency_symbol =  document.getElementById("currency_symbol").value ;
 
             $.ajax({
                 url: "{{ route('BecomeSubscriber_Plans') }}",
@@ -1014,8 +1017,8 @@ i.fa.fa-google-plus {
                                             html += '<div class="vl "></div>' ;
 
                                             html += '<div class="col-md-4 p-2" >' ;
-                                                html +=    '<h4 class="text-black"> $'+ plan_data.price +' </h4>'  ;
-                                                html +=    '<p>Billed as $'+ plan_data.price +' </p>' ;
+                                                html +=    '<h4 class="text-black"> '+ currency_symbol + plan_data.price +' </h4>'  ;
+                                                html +=    '<p>Billed as '+ currency_symbol + plan_data.price +' </p>' ;
                                             html += '</div>' ;
 
                                         html += '</div>' ;
