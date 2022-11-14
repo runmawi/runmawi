@@ -404,6 +404,7 @@ class AdminPaymentSettingsController extends Controller
 
 		$paystack_payment_setting->paystack_live_mode            =    $paystack_live_mode;
 		$paystack_payment_setting->status                        =    $paystack_status;
+		$paystack_payment_setting->paystack_status               =    $paystack_status;
 		$paystack_payment_setting->paystack_test_secret_key      =    $request['paystack_test_secret_key'] ?  $request['paystack_test_secret_key'] : null;
 		$paystack_payment_setting->paystack_test_publishable_key = 	  $request['paystack_test_publishable_key'] ?  $request['paystack_test_publishable_key'] : null;
 		$paystack_payment_setting->paystack_live_secret_key      = 	  $request['paystack_live_secret_key'] ?  $request['paystack_live_secret_key'] : null;
