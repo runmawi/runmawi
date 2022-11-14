@@ -99,7 +99,7 @@ public function PaypalIndex()
         
         $plans_data = SubscriptionPlan::all();
         $plans = $plans_data->groupBy('plans_name');
-        $payment_settings = PaymentSetting::get();
+        $payment_settings = PaymentSetting::where('status',1)->get();
         // dd($payment_settings);
         $currency = Currency::get();
         $allCurrency = CurrencySetting::first();
