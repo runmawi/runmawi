@@ -707,3 +707,9 @@ function ppv_expirytime_notstarted()
 
     return $newDateTime;
 }
+
+function currency_symbol(){
+
+    $currency = App\CurrencySetting::pluck('symbol')->first();
+    return $currency ;
+}

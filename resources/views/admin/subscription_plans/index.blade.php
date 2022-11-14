@@ -96,7 +96,7 @@
 		                        Recurring : <input type="radio"  name="payment_type"  value="recurring">
 		                    </div> 
                             <div class="form-group">
-							@foreach($payment_settings as $payment_setting)
+							@foreach(@$payment_settings as @$payment_setting)
 									<input type="hidden" name="type[]"  value="{{ $payment_setting->payment_type }}">
                                @endForeach
                                </div>
