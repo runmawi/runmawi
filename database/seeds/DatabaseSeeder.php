@@ -55,6 +55,7 @@ class DatabaseSeeder extends Seeder
             FooterMenuSeeder::class,
             CompressImageSeeder::class,
             SignupMenuSeeder::class,
+            TimeZoneSeeder::class,
         ]);
     
     }

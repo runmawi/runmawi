@@ -64,6 +64,7 @@ use App\ScheduleVideos as ScheduleVideos;
 use App\TestServerUploadVideo as TestServerUploadVideo;
 use App\Channel as Channel;
 use App\ReSchedule as ReSchedule;
+use App\TimeZone as TimeZone;
 
 class AdminVideosController extends Controller
 {
@@ -4016,10 +4017,13 @@ class AdminVideosController extends Controller
     {
         $VideoSchedules = VideoSchedules::get();
         $settings = Setting::first();
+        $TimeZone = TimeZone::get();
 
         $data = [
             "settings" => $settings,
             "VideoSchedules" => $VideoSchedules,
+            "TimeZone" => $TimeZone,
+
         ];
         return view("admin.schedule.video_schedule", $data);
     }
@@ -4188,10 +4192,12 @@ class AdminVideosController extends Controller
         $settings = Setting::first();
 
         $VideoSchedules = VideoSchedules::where("id", "=", $id)->first();
+        $TimeZone = TimeZone::get();
 
         $data = [
             "schedule" => $VideoSchedules,
             "settings" => $settings,
+            "TimeZone" => $TimeZone,
         ];
         //    dd($VideoSchedules);
         return view("admin.schedule.manage_schedule", $data);
@@ -4242,6 +4248,9 @@ class AdminVideosController extends Controller
         )
             ->orderBy("id", "desc")
             ->get();
+
+        $TimeZone = TimeZone::get();
+
         $data = [
             "schedule" => $VideoSchedules,
             "settings" => $settings,
@@ -4249,6 +4258,7 @@ class AdminVideosController extends Controller
             "Video" => $Videos_list,
             "ScheduledVideo" => $ScheduledVideo,
             "current_time" => $current_time,
+            "TimeZone" => $TimeZone,
         ];
         //    dd($data );
         return view("admin.schedule.schedule_videos", $data);
@@ -4281,6 +4291,8 @@ class AdminVideosController extends Controller
         $year = $data["year"];
         $schedule_time = $data["schedule_time"];
         $schedule_id = $data["schedule_id"];
+        $time_zone = $data["time_zone"];
+
 
         if (!empty($schedule_time)) {
             $choose_time = explode("to", $schedule_time);
@@ -4297,10 +4309,12 @@ class AdminVideosController extends Controller
             // $now = $d->format("Y-m-d h:i:s a");
             // $current_time = date("h:i A", strtotime($now));
 
-            date_default_timezone_set('Asia/Kolkata');
+            // date_default_timezone_set('Asia/Kolkata');
+            date_default_timezone_set($time_zone);
             $now = date("Y-m-d h:i:s a", time());
             $current_time = date("h:i A ", time());
-
+    //    echo "<pre>";
+    //     print_r($current_time);exit();
             if($current_time < $choose_start_time){
                 $choose_current_time =  explode(":", date("h:i", strtotime($now)));
             }else {
@@ -4341,6 +4355,7 @@ class AdminVideosController extends Controller
                 }
 
                 $Schedule_current_date = date("Y-m-d");
+                $time_zone = $data["time_zone"];
 
                 $schedule_id = $data["schedule_id"];
                 $choosed_date = $year . "-" . $month . "-" . $date;
@@ -4388,7 +4403,7 @@ class AdminVideosController extends Controller
                 $current_date = date("Y-m-d h:i:s");
                 $daten = date("Y-m-d h:i:s ", time());
 
-                date_default_timezone_set('Asia/Kolkata');
+                date_default_timezone_set($time_zone);
                 $now = date("Y-m-d h:i:s a", time());
                 $current_time = date("h:i A", time());
                 // print_r($choosedtime_exitvideos);exit;
@@ -4443,6 +4458,7 @@ class AdminVideosController extends Controller
                         $starttime = $last_sheduled_endtime;
                         $sheduled_starttime = $last_shedule_endtime;
                     }
+                    $time_zone = $data["time_zone"];
 
                     $video = new ScheduleVideos();
                     $video->title = $file_folder_name;
@@ -4464,6 +4480,7 @@ class AdminVideosController extends Controller
                     $video->starttime = $last_sheduled_endtime;
                     $video->choose_start_time = $choose_start_time;
                     $video->choose_end_time = $choose_end_time;
+                    $video->time_zone  = $time_zone ;
                     $video->status = 1;
                     $video->save();
 
@@ -4597,6 +4614,7 @@ class AdminVideosController extends Controller
                         $starttime = $last_sheduled_endtime;
                         $sheduled_starttime = $last_shedule_endtime;
                     }
+                    $time_zone = $data["time_zone"];
 
                     $video = new ScheduleVideos();
                     $video->title = $file_folder_name;
@@ -4619,6 +4637,7 @@ class AdminVideosController extends Controller
                     $video->choose_start_time = $choose_start_time;
                     $video->choose_end_time = $choose_end_time;
                     $video->status = 1;
+                    $video->time_zone  = $time_zone ;
                     $video->save();
 
                     $video_id = $video->id;
@@ -4717,6 +4736,7 @@ class AdminVideosController extends Controller
                     $sheduled_endtime = $hours . ":" . $minutes;
                     $starttime = date("h:i A", strtotime($store_current_time));
                     $sheduled_starttime = date("h:i ", strtotime($store_current_time));
+                    $time_zone = $data["time_zone"];
 
                     $video = new ScheduleVideos();
                     $video->title = $file_folder_name;
@@ -4739,6 +4759,7 @@ class AdminVideosController extends Controller
                     $video->choose_start_time = $choose_start_time;
                     $video->choose_end_time = $choose_end_time;
                     $video->status = 1;
+                    $video->time_zone  = $time_zone ;
                     $video->save();
 
                     $video_id = $video->id;
@@ -4846,8 +4867,9 @@ class AdminVideosController extends Controller
                 // $d->setTimezone(new \DateTimeZone("Asia/Kolkata"));
                 // $now = $d->format("Y-m-d h:i:s a");
                 // $current_time = date("h:i A", strtotime($now));
+                $time_zone = $data["time_zone"];
 
-                date_default_timezone_set('Asia/Kolkata');
+                date_default_timezone_set($time_zone);
                 $now = date("Y-m-d h:i:s a", time());
                 $current_time = date("h:i A", time());
 
@@ -4913,8 +4935,9 @@ class AdminVideosController extends Controller
                 // $d->setTimezone(new \DateTimeZone("Asia/Kolkata"));
                 // $now = $d->format("Y-m-d h:i:s a");
                 // $current_time = date("h:i A", strtotime($now));
+                $time_zone = $data["time_zone"];
 
-                date_default_timezone_set('Asia/Kolkata');
+                date_default_timezone_set($time_zone);
                 $now = date("Y-m-d h:i:s a", time());
                 $current_time = date("h:i A", time());
 
@@ -4970,6 +4993,7 @@ class AdminVideosController extends Controller
                         $starttime = $last_sheduled_endtime;
                         $sheduled_starttime = $last_shedule_endtime;
                     }
+                    $time_zone = $data["time_zone"];
 
                     $video = new ScheduleVideos();
                     $video->title = $file_folder_name;
@@ -4992,6 +5016,7 @@ class AdminVideosController extends Controller
                     $video->choose_start_time = $choose_start_time;
                     $video->choose_end_time = $choose_end_time;
                     $video->status = 1;
+                    $video->time_zone  = $time_zone ;
                     $video->save();
 
                     VideoSchedule::dispatch($video);
@@ -5131,6 +5156,7 @@ class AdminVideosController extends Controller
                         $starttime = $last_sheduled_endtime;
                         $sheduled_starttime = $last_shedule_endtime;
                     }
+                    $time_zone = $data["time_zone"];
 
                     $video = new ScheduleVideos();
                     $video->title = $file_folder_name;
@@ -5153,6 +5179,7 @@ class AdminVideosController extends Controller
                     $video->choose_start_time = $choose_start_time;
                     $video->choose_end_time = $choose_end_time;
                     $video->status = 1;
+                    $video->time_zone  = $time_zone ;
                     $video->save();
 
                     VideoSchedule::dispatch($video);
@@ -5254,6 +5281,7 @@ class AdminVideosController extends Controller
                         " " .
                         date("A", strtotime($now));
                     $sheduled_endtime = $hours . ":" . $minutes;
+                    $time_zone = $data["time_zone"];
 
                     $video = new ScheduleVideos();
                     $video->title = $file_folder_name;
@@ -5275,6 +5303,7 @@ class AdminVideosController extends Controller
                     $video->duration = $Video_duration;
                     $video->choose_start_time = $choose_start_time;
                     $video->choose_end_time = $choose_end_time;
+                    $video->time_zone  = $time_zone ;
                     $video->status = 1;
                     $video->save();
 
@@ -5444,7 +5473,9 @@ class AdminVideosController extends Controller
                 // $d->setTimezone(new \DateTimeZone("Asia/Kolkata"));
                 // $now = $d->format("Y-m-d h:i:s a");
                 // $current_time = date("h:i A", strtotime($now));
-                date_default_timezone_set('Asia/Kolkata');
+                $time_zone = $data["time_zone"];
+
+                date_default_timezone_set($time_zone);
                 $now = date("Y-m-d h:i:s a", time());
                 $current_time = date("h:i A", time());
                 // print_r($choosedtime_exitvideos);exit;
@@ -5499,6 +5530,7 @@ class AdminVideosController extends Controller
                         $starttime = $last_sheduled_endtime;
                         $sheduled_starttime = $last_shedule_endtime;
                     }
+                    $time_zone = $data["time_zone"];
 
                     $video = new ScheduleVideos();
                     $video->title = $file_folder_name;
@@ -5520,6 +5552,7 @@ class AdminVideosController extends Controller
                     $video->starttime = $last_sheduled_endtime;
                     $video->choose_start_time = $choose_start_time;
                     $video->choose_end_time = $choose_end_time;
+                    $video->time_zone  = $time_zone ;
                     $video->status = 1;
                     $video->save();
 
@@ -5653,6 +5686,7 @@ class AdminVideosController extends Controller
                         $starttime = $last_sheduled_endtime;
                         $sheduled_starttime = $last_shedule_endtime;
                     }
+                    $time_zone = $data["time_zone"];
 
                     $video = new ScheduleVideos();
                     $video->title = $file_folder_name;
@@ -5674,6 +5708,7 @@ class AdminVideosController extends Controller
                     $video->duration = $Video_duration;
                     $video->choose_start_time = $choose_start_time;
                     $video->choose_end_time = $choose_end_time;
+                    $video->time_zone  = $time_zone ;
                     $video->status = 1;
                     $video->save();
 
@@ -5773,6 +5808,7 @@ class AdminVideosController extends Controller
                     $sheduled_endtime = $hours . ":" . $minutes;
                     $starttime = date("h:i A", strtotime($store_current_time));
                     $sheduled_starttime = date("h:i ", strtotime($store_current_time));
+                    $time_zone = $data["time_zone"];
 
                     $video = new ScheduleVideos();
                     $video->title = $file_folder_name;
@@ -5794,6 +5830,7 @@ class AdminVideosController extends Controller
                     $video->duration = $Video_duration;
                     $video->choose_start_time = $choose_start_time;
                     $video->choose_end_time = $choose_end_time;
+                    $video->time_zone  = $time_zone ;
                     $video->status = 1;
                     $video->save();
 
@@ -6213,8 +6250,9 @@ class AdminVideosController extends Controller
         $date_choosed = $date_choose . "/" . $data["date"];
     
         $stop_date = date('Y-m-d', strtotime("+1 day", strtotime($date_choosed)));
+        $time_zone = $data["time_zone"];
 
-        date_default_timezone_set('Asia/Kolkata');
+        date_default_timezone_set($time_zone);
         $now = date("Y-m-d h:i:s a", time());
         $current_time = date("h:i A", time());
         $schedulevideo = ScheduleVideos::where("shedule_date",$date_choosed)->where("schedule_id", $schedule_id)->get();
@@ -6235,6 +6273,9 @@ class AdminVideosController extends Controller
                 foreach($aleady_reschedule as $schedule){ 
                     ScheduleVideos::where("id", $schedule->id)->delete();
                 }
+                
+                $time_zone = $data["time_zone"];
+
                 foreach($schedulevideo as $schedule){ 
 
                     $video = new ScheduleVideos();
@@ -6258,6 +6299,7 @@ class AdminVideosController extends Controller
                     $video->duration = $schedule->duration;
                     $video->choose_start_time = $schedule->choose_start_time;
                     $video->choose_end_time = $schedule->choose_end_time;
+                    $video->time_zone  = $time_zone ;
                     $video->status = $schedule->status;
                     $video->reschedule = 'one_day';
                     $video->save();
@@ -6278,6 +6320,7 @@ class AdminVideosController extends Controller
                 $ReSchedule->scheduled_enddate = $stop_date;
                 $ReSchedule->type = 'one_day';
                 $ReSchedule->save();
+                $time_zone = $data["time_zone"];
 
                 foreach($schedulevideo as $schedule){ 
 
@@ -6302,6 +6345,7 @@ class AdminVideosController extends Controller
                     $video->duration = $schedule->duration;
                     $video->choose_start_time = $schedule->choose_start_time;
                     $video->choose_end_time = $schedule->choose_end_time;
+                    $video->time_zone  = $time_zone ;
                     $video->status = $schedule->status;
                     $video->reschedule = 'one_day';
                     $video->save();
@@ -6331,8 +6375,10 @@ class AdminVideosController extends Controller
         $month = $data["month"];
         $year = $data["year"];
         $schedule_time = $data["schedule_time"];
+        $time_zone = $data["time_zone"];
 
-        date_default_timezone_set('Asia/Kolkata');
+
+        date_default_timezone_set($time_zone);
         $now = date("Y-m-d h:i:s a", time());
         $current_time = date("h:i A", time());
 
@@ -6348,8 +6394,9 @@ class AdminVideosController extends Controller
         $month = $data["month"];
         $year = $data["year"];
         $schedule_time = $data["schedule_time"];
+        $time_zone = $data["time_zone"];
 
-        date_default_timezone_set('Asia/Kolkata');
+        date_default_timezone_set($time_zone);
         $now = date("Y-m-d h:i:s a", time());
         $current_time = date("h:i A", time());
         // $date = date('m/d/Y h:i:s a', time());
@@ -6369,7 +6416,8 @@ class AdminVideosController extends Controller
             // $d->setTimezone(new \DateTimeZone("Asia/Kolkata"));
             // $now = $d->format("Y-m-d h:i:s a");
             // $current_time = date("h:i A", strtotime($now));
-            date_default_timezone_set('Asia/Kolkata');
+            // date_default_timezone_set('Asia/Kolkata');
+            date_default_timezone_set($time_zone);
             $now = date("Y-m-d h:i:s a", time());
             $current_time = date("h:i A", time());
             
@@ -6428,8 +6476,10 @@ class AdminVideosController extends Controller
             // $d->setTimezone(new \DateTimeZone("Asia/Kolkata"));
             // $now = $d->format("Y-m-d h:i:s a");
             // $current_time = date("h:i A", strtotime($now));
+            $time_zone = $data["time_zone"];
 
-            date_default_timezone_set('Asia/Kolkata');
+            // date_default_timezone_set('Asia/Kolkata');
+            date_default_timezone_set($time_zone);
             $now = date("Y-m-d h:i:s a", time());
             $current_time = date("h:i A", time());
 
@@ -6479,6 +6529,7 @@ class AdminVideosController extends Controller
                     $starttime = $last_sheduled_endtime;
                     $sheduled_starttime = $last_shedule_endtime;
                 }
+                $time_zone = $data["time_zone"];
 
                 $video = new ScheduleVideos();
                 $video->title = $videochooed->title;
@@ -6501,6 +6552,7 @@ class AdminVideosController extends Controller
                 $video->starttime = $last_sheduled_endtime;
                 $video->choose_start_time = $choose_start_time;
                 $video->choose_end_time = $choose_end_time;
+                $video->time_zone  = $time_zone ;
                 $video->status = 1;
                 $video->save();
 
@@ -6621,6 +6673,7 @@ class AdminVideosController extends Controller
                     $starttime = $last_sheduled_endtime;
                     $sheduled_starttime = $last_shedule_endtime;
                 }
+                $time_zone = $data["time_zone"];
 
                 $video = new ScheduleVideos();
                 $video->title = $videochooed->title;
@@ -6643,6 +6696,7 @@ class AdminVideosController extends Controller
                 $video->duration = $Video_duration;
                 $video->choose_start_time = $choose_start_time;
                 $video->choose_end_time = $choose_end_time;
+                $video->time_zone  = $time_zone ;
                 $video->status = 1;
                 $video->save();
 
@@ -6737,6 +6791,7 @@ class AdminVideosController extends Controller
                 $sheduled_endtime = $hours . ":" . $minutes;
                 $starttime = date("h:i", strtotime($store_current_time));
                 $sheduled_starttime = date("h:i A", strtotime($store_current_time));
+                $time_zone = $data["time_zone"];
 
                 $video = new ScheduleVideos();
                 $video->title = $videochooed->title;
@@ -6759,6 +6814,7 @@ class AdminVideosController extends Controller
                 $video->duration = $Video_duration;
                 $video->choose_start_time = $choose_start_time;
                 $video->choose_end_time = $choose_end_time;
+                $video->time_zone  = $time_zone ;
                 $video->status = 1;
                 $video->save();
 
