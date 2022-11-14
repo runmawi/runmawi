@@ -69,16 +69,15 @@
                             </div>
                         
                             <div class="form-group">
-							@foreach($payment_settings as $payment_setting)
-							@if($payment_setting->status == 1)
-								<label>{{ $payment_setting->payment_type }} Plan ID:</label>
-		                        <input type="text" id="plan_id" name="plan_id[]" value="" class="form-control" placeholder="Plan ID">
-								<p>* Get Plan Key From {{ $payment_setting->payment_type }}</p>
-                            @endif
-						    @endForeach
-		                        <!-- <label> Plan ID:</label>
-		                        <input type="text" id="plan_id" name="plan_id" value="" class="form-control" placeholder="Plan ID"> -->
-                            <!-- </div>  -->
+							@forelse ($payment_settings as $payment_setting)
+								@if($payment_setting->status == 1)
+									<label>{{ $payment_setting->payment_type }} Plan ID:</label>
+									<input type="text" id="plan_id" name="plan_id[]" value="" class="form-control" placeholder="Plan ID">
+									<p>* Get Plan Key From {{ $payment_setting->payment_type }}</p>
+								@endif
+							@empty
+							@endforelse
+								
 							</div>
 							<div class="form-group">
 		                        <label>Billing Interval:</label>
@@ -96,7 +95,7 @@
 		                        Recurring : <input type="radio"  name="payment_type"  value="recurring">
 		                    </div> 
                             <div class="form-group">
-							@foreach(@$payment_settings as @$payment_setting)
+							@foreach($payment_settings as $payment_setting)
 									<input type="hidden" name="type[]"  value="{{ $payment_setting->payment_type }}">
                                @endForeach
                                </div>
@@ -203,29 +202,39 @@
 	<script type="text/javascript">
 
 		jQuery(document).ready(function($){
-
-
-			// Add New Category
-			$('#submit-new-cat').click(function(){
-				$('#new-cat-form').submit();
+			$('#submit-new-cat').click(function(){   
+				$('#new-cat-form').submit();         // Add New Category
 			});
 		});
 
 			//  validate 
-			$('form[id="new-cat-form"]').validate({
+		$('form[id="new-cat-form"]').validate({
 				rules: {
-					plans_name : 'required',
-					billing_interval : 'required',
-					billing_type : 'required',
-					price : 'required',
-					days : 'required',
-					video_quality : 'required',
-					resolution : 'required',
-					},
-				submitHandler: function(form) {
-					form.submit(); }
-				});
+					'plans_name' : 'required',
+					'billing_interval' : 'required',
+					'billing_type' : 'required',
+					'price' : 'required',
+					'days' : 'required',
+					'video_quality' : 'required',
+					'resolution' : 'required',
+					'plan_id[]' : 'required',
+				},
+				messages: {
+					'plans_name' : "Please Enter the Plan Name",
+					'billing_interval'  : "Please Enter the Billing Interval",
+					'billing_type' : "Please Enter the Billing Type",
+					'price' : "Please Enter the Billing Price",
+					'days' : "Please Enter the Subscription Days",
+					'video_quality' : "Please Enter the Video Quality",
+					'resolution' : "Please Enter the Resolution",
+					'plan_id[]' : "Please Enter the Plan-Id",
+        		},
+
+			submitHandler: function(form) {
+				form.submit(); }
+		})
 	</script>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
                     <script src="jquery-3.5.1.min.js"></script>
 <script>
