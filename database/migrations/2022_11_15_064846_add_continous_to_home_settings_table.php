@@ -14,7 +14,7 @@ class AddContinousToHomeSettingsTable extends Migration
     public function up()
     {
         Schema::table('home_settings', function (Blueprint $table) {
-            $table->string('continue_watching')->default(1)->after('AutoIntro_skip');
+            $table->tinyInteger('continue_watching')->default(1)->after('AutoIntro_skip');
         });
     }
 
