@@ -139,6 +139,7 @@ border-radius: 0px 4px 4px 0px;
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="default_Image_setting" href="#!"> Default Image Settings</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="cpp_payouts_setting" href="#!">  Payouts Settings</a> 
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" id="recpatcha_setting" href="#!">{{  ucwords('recaptcha settings') }}</a>  
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="timezone_setting" href="#!">TimeZone Settings</a>  
                     <!-- Content Partner -->
                 </div>
             </div>
@@ -815,9 +816,8 @@ border-radius: 0px 4px 4px 0px;
             </div>
         </div>
     
-
     <!-- Transcoding  Setting -->
-    <div class="container-fluid" id="transcodingsetting" style="">
+        <div class="container-fluid" id="transcodingsetting" style="">
             <div class="panel panel-primary mt-3" data-collapsed="0">
                 <div class="panel-heading">
                     <div class="panel-title"><label>Transcoding Setting</label></div>
@@ -862,6 +862,38 @@ border-radius: 0px 4px 4px 0px;
                 </div>
             </div>
         </div>
+
+
+        
+    <!-- Time Zone Setting -->
+    <div class="container-fluid" id="time_zone_setting" style="">
+            <div class="panel panel-primary mt-3" data-collapsed="0">
+                <div class="panel-heading">
+                    <div class="panel-title"><label>Time Zone Setting</label></div>
+                    <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12 align-center">
+                            <div class="row">
+                                <div>
+                                <div class="mt-1 d-flex align-items-center justify-content-around">
+                                        <label class="m-0">Choose TimeZone to Schedule </label>
+                                    
+                                        <select class="form-control mb-3"  id="time_zone" name="time_zone">
+                                            @foreach($TimeZone as $time_zone)
+                                                <option value="{{ $time_zone->time_zone }}" @if(isset($settings->default_time_zone) && $time_zone->time_zone ==  $settings->default_time_zone)selected="selected"@endif> {{ $time_zone->time_zone }}</option>
+                                            @endforeach
+                                            </select>
+                                    </div>                                   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
     
 
     <!-- Subscription Settings  -->
@@ -1337,6 +1369,7 @@ border-radius: 0px 4px 4px 0px;
         $("#seasonsetting").hide();
         $("#rtmp_url").hide();
 		$('#cpp_payouts').hide();
+		$('#time_zone_setting').hide();
 
 
 	$('#site_setting').click(function(){
@@ -1359,6 +1392,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#settingupdate').show();
 		$('#cpp_payouts').hide();
 		$('#recpatcha_settings').hide();
+		$('#time_zone_setting').hide();
 
 	});
 
@@ -1383,6 +1417,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#cpp_payouts').hide();
 		$('#recpatcha_settings').show();
 		$('#settingupdate').hide();
+		$('#time_zone_setting').hide();
     });
 
 	$('#ppv_setting').click(function(){
@@ -1406,7 +1441,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#settingupdate').show();
 		$('#cpp_payouts').hide();
 		$('#recpatcha_settings').hide();
-
+		$('#time_zone_setting').hide();
 	});
 	$('#video_setting').click(function(){
 		$('#site').hide();
@@ -1427,6 +1462,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#settingupdate').show();
 		$('#cpp_payouts').hide();
 		$('#recpatcha_settings').hide();
+		$('#time_zone_setting').hide();
 	});
 
 	$('#registration_setting').click(function(){
@@ -1448,6 +1484,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#settingupdate').show();
 		$('#cpp_payouts').hide();
 		$('#recpatcha_settings').hide();
+		$('#time_zone_setting').hide();
 	});
 
 	$('#email_setting').click(function(){
@@ -1469,6 +1506,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#settingupdate').show();
 		$('#cpp_payouts').hide();
 		$('#recpatcha_settings').hide();
+		$('#time_zone_setting').hide();
 	});
 
 	$('#social_setting').click(function(){
@@ -1491,6 +1529,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#settingupdate').show();
 		$('#cpp_payouts').hide();
 		$('#recpatcha_settings').hide();
+		$('#time_zone_setting').hide();
 	});
 
 	$('#subscription_setting').click(function(){
@@ -1513,6 +1552,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#settingupdate').show();
 		$('#cpp_payouts').hide();
 		$('#recpatcha_settings').hide();
+		$('#time_zone_setting').hide();
 	});
 
 	$('#login_setting').click(function(){
@@ -1536,6 +1576,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#settingupdate').show();
 		$('#cpp_payouts').hide();
 		$('#recpatcha_settings').hide();
+		$('#time_zone_setting').hide();
 	});
 
 	$('#advertisement_setting').click(function(){
@@ -1558,6 +1599,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#settingupdate').show();
 		$('#cpp_payouts').hide();
 		$('#recpatcha_settings').hide();
+		$('#time_zone_setting').hide();
 	});
 
 
@@ -1583,6 +1625,7 @@ border-radius: 0px 4px 4px 0px;
         $("#settingupdate").hide();
 		$('#cpp_payouts').hide();
 		$('#recpatcha_settings').hide();
+		$('#time_zone_setting').hide();
 	});
 
 	$('#app_setting').click(function(){
@@ -1607,6 +1650,7 @@ border-radius: 0px 4px 4px 0px;
         $("#rtmp_url").hide();
 		$('#cpp_payouts').hide();
 		$('#recpatcha_settings').hide();
+		$('#time_zone_setting').hide();
 	});
 
     $("#default_Image_setting").click(function () {
@@ -1634,6 +1678,7 @@ border-radius: 0px 4px 4px 0px;
         $("#settingupdate").show();
 		$('#cpp_payouts').hide();
 		$('#recpatcha_settings').hide();
+		$('#time_zone_setting').hide();
     });
      
     $("#transcoding_setting").click(function () {
@@ -1658,6 +1703,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#settingupdate').show();
 		$('#cpp_payouts').hide();
 		$('#recpatcha_settings').hide();
+		$('#time_zone_setting').hide();
     });
 
     $("#series_setting").click(function () {
@@ -1682,6 +1728,8 @@ border-radius: 0px 4px 4px 0px;
 		$('#settingupdate').show();
 		$('#cpp_payouts').hide();
 		$('#recpatcha_settings').hide();
+		$('#time_zone_setting').hide();
+		$('#time_zone_setting').hide();
     });
 
     $("#rtmp_url_setting").click(function () {
@@ -1708,6 +1756,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#settingupdate').hide();
 		$('#cpp_payouts').hide();
 		$('#recpatcha_settings').hide();
+		$('#time_zone_setting').hide();
     });
 
     $("#cpp_payouts_setting").click(function () {
@@ -1734,7 +1783,34 @@ border-radius: 0px 4px 4px 0px;
 		$('#cpp_payouts').show();
 		$('#settingupdate').show();
 		$('#recpatcha_settings').hide();
+		$('#time_zone_setting').hide();
     });
+
+
+    $("#timezone_setting").click(function () {
+        $("#videos_settings").hide();
+        $("#site").hide();
+        $("#ppv").hide();
+        $("#registration").hide();
+        $("#videos_settings").hide();
+        $("#email").hide();
+        $("#social").hide();
+        $("#subscription").hide();
+        $("#login").hide();
+        $("#advertisement").hide();
+        $("#script").hide();
+        $("#app").hide();
+        $("#Defaut_image_setting").hide();
+        $("#ppv_setting").hide();
+        $("#demo_mode").hide();
+        $("#transcodingsetting").hide();
+        $("#seasonsetting").hide();
+        $("#rtmp_url").hide();
+		$('#cpp_payouts').hide();
+		$('#recpatcha_settings').hide();
+		$('#time_zone_setting,#settingupdate').show();
+    });
+
 
 	});
 </script>
