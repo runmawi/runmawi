@@ -3,6 +3,8 @@
 
 $order_settings = App\OrderHomeSetting::orderBy('order_id', 'asc')->get();  
 $order_settings_list = App\OrderHomeSetting::get();  
+$continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first();  
+
 ?>
 <!-- Header End -->
 
@@ -21,6 +23,7 @@ $order_settings_list = App\OrderHomeSetting::get();
  </svg>
 </section>
 <div class="main-content position-relative">
+   <?php if( !Auth::guest() && $continue_watching_setting != null &&  $continue_watching_setting == 1 ){ ?>
     <section id="iq-continue" style="margin-top:-140px;">
         <div class="fluid overflow-hidden" >
            <div class="row">
@@ -30,6 +33,7 @@ $order_settings_list = App\OrderHomeSetting::get();
            </div>
         </div>
 </section>
+      <?php  } ?>
 <!-- Slider End -->
 
 
