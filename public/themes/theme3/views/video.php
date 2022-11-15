@@ -1203,18 +1203,18 @@ $artists = [];
                                   <?php if(!empty($payment->paypal_lable)){ echo $payment->paypal_lable ; }else{ echo $payment->payment_type ; } ?>
                                 </label> <?php  }
                             
-                              elseif( $payment->payment_type == "Razorpay"  ){ ?> <!-- Razorpay -->
+                              if( $payment->payment_type == "Razorpay"  ){ ?> <!-- Razorpay -->
 
                                 <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
                                     <input type="radio" class="payment_btn" id="important" name="payment_method" value="<?= $payment->payment_type ?>"  data-value="Razorpay" >
                                     <?php  echo $payment->payment_type ;  ?>
                                 </label>  <?php }
                                                                               // <!-- Paystack -->
-                              elseif ( $Paystack_payment_settings->payment_type == 'Paystack'  && $Paystack_payment_settings->status == 1  && $payment->payment_type == "Paystack"){  ?>
+                              if ( $Paystack_payment_settings->payment_type == 'Paystack'  && $Paystack_payment_settings->status == 1 ){  ?>
 
                                   <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
-                                    <input type="radio" class="payment_btn" id="" name="payment_method" value="<?= $payment->payment_type ?>"  data-value="Paystack" >
-                                    <?php  echo $payment->payment_type ;  ?>
+                                    <input type="radio" class="payment_btn" id="" name="payment_method" value="<?= $Paystack_payment_settings->payment_type ?>"  data-value="Paystack" >
+                                    <?php  echo $Paystack_payment_settings->payment_type ;  ?>
                                   </label>
                                 <?php } }
                           else{
@@ -1232,12 +1232,14 @@ $artists = [];
                   <button type="button" class="btn2  btn-outline-primary" >Continue</button>
                 </a>
               </div>
-                                  
-              <div class="Razorpay_button">   <!-- Razorpay Button -->
-                <button onclick="location.href ='<?= URL::to('RazorpayVideoRent/'.$video->id.'/'.$video->ppv_price) ?>' ;" id="" class="btn2  btn-outline-primary" > Continue</button>
-              </div>
+               
+              <?php if( $video->ppv_price !=null &&  $video->ppv_price != " "  ){ ?>
+                <div class="Razorpay_button">   <!-- Razorpay Button -->
+                  <button onclick="location.href ='<?= URL::to('RazorpayVideoRent/'.$video->id.'/'.$video->ppv_price) ?>' ;" id="" class="btn2  btn-outline-primary" > Continue</button>
+                </div>
+              <?php } ?>
                 
-              <?php if( $video->ppv_price !=null &&  $video->ppv_price == " "  ){ ?>
+              <?php if( $video->ppv_price !=null &&  $video->ppv_price != " "  ){ ?>
                 <div class="paystack_button">  <!-- Paystack Button -->
                   <button onclick="location.href ='<?= route('Paystack_Video_Rent', ['video_id' => $video->id , 'amount' => $video->ppv_price] ) ?>' ;" id="" class="btn2  btn-outline-primary" > Continue</button>
                 </div>
