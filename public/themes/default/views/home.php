@@ -3,6 +3,7 @@
 
 $order_settings = App\OrderHomeSetting::orderBy('order_id', 'asc')->get();  
 $order_settings_list = App\OrderHomeSetting::get();  
+$continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first();  
 
 ?>
 <!-- Header End -->
@@ -24,6 +25,7 @@ $order_settings_list = App\OrderHomeSetting::get();
 
 <!-- MainContent -->
 <div class="main-content">
+   <?php if( !Auth::guest() && $continue_watching_setting != null &&  $continue_watching_setting == 1 ){ ?>
     <section id="iq-continue">
         <div class="container-fluid overflow-hidden">
            <div class="row">
@@ -33,6 +35,7 @@ $order_settings_list = App\OrderHomeSetting::get();
            </div>
         </div>
     </section>
+   <?php  } ?>
 
     
     <?php if(count($VideoSchedules) > 0){ ?>

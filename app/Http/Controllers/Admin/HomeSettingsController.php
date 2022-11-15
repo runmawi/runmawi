@@ -69,7 +69,6 @@ class HomeSettingsController extends Controller
     }
     public function save_settings(Request $request){
         
-        // dd($request['series']);
         $settings = HomeSetting::first();
         if(!empty($request['featured_videos'])){
             $settings->featured_videos = 1;
@@ -145,13 +144,16 @@ class HomeSettingsController extends Controller
             $settings->prevent_inspect = 0;
         }
 
-        if($request->pop_up !=null){
+        if( $request->pop_up !=null ){
             $settings->pop_up = 1;
         }else{
             $settings->pop_up = 0;
         }
 
+        $settings->continue_watching =  $request->continue_watching !=null ? 1 : 0 ;
+
         $settings->save();
+        
         return redirect::to('/admin/home-settings');
     }
 
