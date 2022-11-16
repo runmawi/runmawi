@@ -821,7 +821,7 @@ public function RentPaypal(Request $request)
     {
       try {
 
-        $plans_data = SubscriptionPlan::where('type',$request->payment_gateway)->get() ;
+        $plans_data = SubscriptionPlan::where('type',$request->payment_gateway)->groupBy('plans_name')->get() ;
 
         $response = array(
           'status'     => true ,
