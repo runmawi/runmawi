@@ -332,6 +332,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                             <li><a href="{{ URL::to('admin/theme_settings') }}"><i class="las la-eye"></i>Theme Settings</a></li>
                             <li><a href="{{ URL::to('admin/payment_settings') }}"><i class="las la-eye"></i>Payment Settings</a></li>
                             <li><a href="{{ URL::to('admin/email_settings') }}"><i class="las la-eye"></i>Email Settings</a></li>
+                            <li><a href="{{ URL::to('admin/storage_settings') }}"><i class="las la-eye"></i>Storage Settings</a></li>
                             <!-- <li><a href="{{ URL::to('admin/email_template') }}"><i class="las la-eye"></i>Email Template</a></li> -->
                             <li><a href="{{ URL::to('admin/mobileapp') }}"><i class="las la-user-plus"></i>Mobile App Settings</a></li>
                             <li><a href="{{ URL::to('admin/system_settings') }}"><i class="las la-eye"></i>Social Login Settings</a></li>
@@ -592,6 +593,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                             <li><a href="{{ URL::to('admin/theme_settings') }}"><i class="las la-eye"></i>Theme Settings</a></li>
                             {{-- <li><a href="{{ URL::to('admin/payment_settings') }}"><i class="las la-eye"></i>Payment Settings</a></li> --}}
                             <li><a href="{{ URL::to('admin/email_settings') }}"><i class="las la-eye"></i>Email Settings</a></li>
+                            <li><a href="{{ URL::to('admin/storage_settings') }}"><i class="las la-eye"></i>Storage Settings</a></li>
                             <!-- <li><a href="{{ URL::to('admin/email_template') }}"><i class="las la-eye"></i>Email Template</a></li> -->
                             <li><a href="{{ URL::to('admin/mobileapp') }}"><i class="las la-user-plus"></i>Mobile App Settings</a></li>
                             <li><a href="{{ URL::to('admin/system_settings') }}"><i class="las la-eye"></i>Social Login Settings</a></li>
@@ -895,6 +897,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                             <li><a href="{{ URL::to('admin/theme_settings') }}">Theme Settings</a></li>
                             {{-- <li><a href="{{ URL::to('admin/payment_settings') }}">Payment Settings</a></li> --}}
                             <li><a href="{{ URL::to('admin/email_settings') }}">Email Settings</a></li>
+                            <li><a href="{{ URL::to('admin/storage_settings') }}">Storage Settings</a></li>
                             <!-- <li><a href="{{ URL::to('admin/email_template') }}"><i class="las la-eye"></i>Email Template</a></li> -->
                             <li><a href="{{ URL::to('admin/mobileapp') }}">Mobile App Settings</a></li>
                             <li><a href="{{ URL::to('admin/system_settings') }}">Social Login Settings</a></li>
@@ -1192,6 +1195,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                             <li><a href="{{ URL::to('admin/theme_settings') }}"><i class="las la-eye"></i>Theme Settings</a></li>
                             {{-- <li><a href="{{ URL::to('admin/payment_settings') }}"><i class="las la-eye"></i>Payment Settings</a></li> --}}
                             <li><a href="{{ URL::to('admin/email_settings') }}"><i class="las la-eye"></i>Email Settings</a></li>
+                            <li><a href="{{ URL::to('admin/storage_settings') }}"><i class="las la-eye"></i>Storage Settings</a></li>
                             <!-- <li><a href="{{ URL::to('admin/email_template') }}"><i class="las la-eye"></i>Email Template</a></li> -->
                             <li><a href="{{ URL::to('admin/mobileapp') }}"><i class="las la-user-plus"></i>Mobile App Settings</a></li>
                             <li><a href="{{ URL::to('admin/system_settings') }}"><i class="las la-eye"></i>Social Login Settings</a></li>
