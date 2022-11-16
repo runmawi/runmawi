@@ -28,7 +28,7 @@
         </div>
     @elseif ($ScheduleVideos->type == '')
             <div id="video_container" class="fitvid" atyle="z-index: 9999;">
-                <video id="video" controls crossorigin controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                <video id="video" autoplay controls crossorigin controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
                     <source  type="application/x-mpegURL" src="<?php echo URL::to('/storage/app/public/').'/'.$ScheduleVideos->path . '.m3u8'; ?>">
                 </video>
         </div>
@@ -97,7 +97,7 @@ if(date != ''){
     }
     }, 1000);
 }else if(new_date != ''){
-    // var 
+    var 
     var countDownDate = new Date(new_date).getTime();
     // alert(new_date)
     // Update the count down every 1 second
@@ -138,15 +138,16 @@ if(date != ''){
 <script>
 
 
-  var video_type =  $('#video_type').val();
-//   alert(video_type);
+  var video_type =  <?php echo json_encode( @$ScheduleVideos->type); ?>; 
+
+  // alert(video_type);
 
   if(video_type != ''){
 
     const player = new Plyr('#videoPlayer'); 
  
-  }else if(video_type == ""){
-//   alert(video_type);
+  }else if(video_type == "" || empty(video_type)){
+  // alert(video_type);
   document.addEventListener("DOMContentLoaded", () => {
   const videos = document.querySelector('#video');
   // alert(video);

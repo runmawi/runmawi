@@ -81,12 +81,15 @@ $media_url = URL::to("/schedule/videos") . "/" . $schedule->name;
                     </div>
                         
                     <div class="col-md-4">
-                        <label class="m-0">Choose TimeZone to Schedule </label>
-                        <select class="form-control mb-3"  id="time_zone" name="time_zone">
+                        <?php //dd($settings); ?>
+                        <!-- <label class="m-0">Choose TimeZone to Schedule </label> -->
+                        <!-- <select class="form-control mb-3"  id="time_zone" name="time_zone"> -->
+                            
+                        <input type="hidden"  id="time_zone" name="time_zone" value="@if(isset($settings) && $settings->default_time_zone) {{ $settings->default_time_zone }} @else Asia/Kolkata @endif">
                         @foreach($TimeZone as $time_zone)
-                            <option value="{{ $time_zone->time_zone }}" @if(isset($time_zone) && $time_zone->time_zone ==  'Asia/Kolkata')selected="selected"@endif> {{ $time_zone->time_zone }}</option>
+                            <!-- <option value="{{ $time_zone->time_zone }}" @if(isset($time_zone) && $time_zone->time_zone ==  'Asia/Kolkata')selected="selected"@endif> {{ $time_zone->time_zone }}</option> -->
                         @endforeach
-                        </select>
+                        <!-- </select> -->
 
                     </div>
 
