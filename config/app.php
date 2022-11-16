@@ -213,6 +213,7 @@ return [
         UniSharp\LaravelFilemanager\LaravelFilemanagerServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         Unicodeveloper\Paystack\PaystackServiceProvider::class,
+        Aws\Laravel\AwsServiceProvider::class,
 
     ],
 
@@ -281,6 +282,7 @@ return [
         'LogActivity' => App\Helpers\LogActivity::class,
         'NoCaptcha' => Anhskohbo\NoCaptcha\Facades\NoCaptcha::class,
         'Paystack' => Unicodeveloper\Paystack\Facades\Paystack::class,
+        'AWS' => Aws\Laravel\AwsFacade::class,
     ],
 
 ];

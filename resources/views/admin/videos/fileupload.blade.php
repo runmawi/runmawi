@@ -186,7 +186,7 @@
                      <div class='content file'>
                         <h3 class="card-title upload-ui font-weight-bold">Upload Full Video Here</h4>
                         <!-- Dropzone -->
-                        <form action="{{URL::to('admin/uploadFile')}}" method= "post" class='dropzone' ></form>
+                        <form action="{{ $post_dropzone_url }}" method= "post" class='dropzone' ></form>
                         <div class="row justify-content-center">
                            <div class="col-md-9 text-center">
                            <p class="c1" style="margin-left: 25%;">Trailers Can Be Uploaded From Video Edit Screen</p>

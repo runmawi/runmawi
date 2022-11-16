@@ -801,6 +801,11 @@ Route::get('/episode/filedelete/{id}', 'AdminSeriesController@filedelete');
     Route::get('/email_logs', 'AdminEmailSettingsController@email_logs')->name('email_logs'); 
     Route::get('/email_template_testing', 'AdminEmailSettingsController@email_template_testing')->name('email_template_testing'); 
 
+
+    /*  Storage Setting  */
+
+    Route::get('/storage_settings', 'AdminStorageSettingsController@Index')->name('storage_settings');
+    Route::post('/storage_settings/save', 'AdminStorageSettingsController@Store');
   
      /*Ads Management starts*/
     Route::get('/advertisers', 'AdminAdvertiserController@advertisers');
@@ -849,6 +854,8 @@ Route::get('/episode/filedelete/{id}', 'AdminSeriesController@filedelete');
     Route::post('/mp4url',  'AdminVideosController@Mp4url');
     Route::post('/uploadFile',  'AdminVideosController@uploadFile');
     Route::post('/uploadEditVideo',  'AdminVideosController@uploadEditVideo');
+
+    Route::post('/AWSUploadFile',  'AdminVideosController@AWSUploadFile');
 
 
     Route::post('/Updatem3u8url',  'AdminVideosController@Updatem3u8url');
