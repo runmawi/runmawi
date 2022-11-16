@@ -60,6 +60,8 @@ use App\Series;
 use App\VideoSchedules as VideoSchedules;
 use App\Channel;
 use App\ModeratorsUser;
+use App\StorageSetting;
+
 
 class ChannelController extends Controller
 {
@@ -3854,8 +3856,11 @@ class ChannelController extends Controller
             // $now = $d->format("Y-m-d h:i:s a");
             // $current_time = date("h:i A", strtotime($now));
             // $current_date = date("Y/m/d", strtotime($now));
-
+            if(!empty($settings->default_time_zone)){
+            date_default_timezone_set($settings->default_time_zone);
+            }else{ 
             date_default_timezone_set('Asia/Kolkata');
+            }
             $now = date("Y-m-d h:i:s a", time());
             $current_time = date("h:i A", time());
 
@@ -3874,7 +3879,7 @@ class ChannelController extends Controller
                 ->where("schedule_id", "=", $schedule_id)
                 ->where("sheduled_starttime", ">=", $current_time)
                 ->first();
-            // dd($ScheduleVideos);
+            // dd($current_time);
             
                 if (!empty($ScheduleVideos))
                 {
@@ -3959,14 +3964,19 @@ class ChannelController extends Controller
             // $current_date = date("Y/m/d", strtotime($now));
 
             
-            date_default_timezone_set('Asia/Kolkata');
+            // date_default_timezone_set('Asia/Kolkata');
+            if(!empty($settings->default_time_zone)){
+                date_default_timezone_set($settings->default_time_zone);
+                }else{ 
+                date_default_timezone_set('Asia/Kolkata');
+                }
             $now = date("Y-m-d h:i:s a", time());
             $current_time = date("h:i A", time());
 
             $current_time = date("h:i A", time());
             $current_date = date("Y/m/d", time());
             
-            // dd();
+            // dd($current_time);
             $VideoSchedules = VideoSchedules::where("name", "=", $name)
             ->first(); 
             if(!empty($VideoSchedules)){
