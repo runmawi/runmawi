@@ -76,6 +76,11 @@ class AdminStorageSettingsController extends Controller
         $storage_settings->aws_region = $request->aws_region;
         $storage_settings->aws_bucket = $request->aws_bucket;
         $storage_settings->aws_storage_path = $request->aws_storage_path;
+        $storage_settings->aws_video_trailer_path = $request->aws_video_trailer_path;
+        $storage_settings->aws_season_trailer_path = $request->aws_season_trailer_path;
+        $storage_settings->aws_episode_path = $request->aws_episode_path;
+        $storage_settings->aws_live_path = $request->aws_live_path;
+        $storage_settings->aws_audio_path = $request->aws_audio_path;
 
         $storage_settings->save();
 
