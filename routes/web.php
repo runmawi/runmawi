@@ -855,6 +855,8 @@ Route::get('/episode/filedelete/{id}', 'AdminSeriesController@filedelete');
     Route::post('/uploadFile',  'AdminVideosController@uploadFile');
     Route::post('/uploadEditVideo',  'AdminVideosController@uploadEditVideo');
 
+    Route::post('/AWSUploadFile',  'AdminVideosController@AWSUploadFile');
+
 
     Route::post('/Updatem3u8url',  'AdminVideosController@Updatem3u8url');
     Route::post('/UpdateEmbededcode',  'AdminVideosController@UpdateEmbededcode');
