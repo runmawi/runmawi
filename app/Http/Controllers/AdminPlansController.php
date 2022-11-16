@@ -321,7 +321,8 @@ public function PaypalIndex()
                     $new_plan->subscription_plan_name = $request->plans_name.$types;
                     $new_plan->user_id = Auth::User()->id;  
                     $new_plan->ios_product_id = $request->ios_product_id;
-                    $new_plan->ios_plan_price = $request->ios_plan_price;      
+                    $new_plan->ios_plan_price = $request->ios_plan_price;    
+                    $new_plan->plan_content   = $request->plan_content;      
                     $new_plan->save();
                         }
                     }
@@ -469,6 +470,8 @@ public function PaypalIndex()
         $plans->devices = $plan_devices;
         $plans->ios_product_id = $request->ios_product_id;
         $plans->ios_plan_price = $request->ios_plan_price;     
+        $plans->plan_content   = $request->plan_content;     
+
         foreach($input['plan_id'] as $key => $values){
             if($key == $value){
             $plans->plan_id  = $values;
