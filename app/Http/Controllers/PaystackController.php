@@ -40,13 +40,13 @@ class PaystackController extends Controller
 
             if( $PaymentSetting->paystack_live_mode == 0 ){
 
-                $this->paystack_keyId = $PaymentSetting->paystack_test_publishable_key;
-                $this->paystack_keysecret = $PaymentSetting->paystack_test_secret_key;
+                $this->paystack_keyId = getenv('PAYSTACK_PUBLIC_KEY');
+                $this->paystack_keysecret =   getenv('PAYSTACK_SECRET_KEY') ;
 
             }else{
 
-                $this->paystack_keyId = $PaymentSetting->paystack_live_publishable_key;
-                $this->paystack_keysecret = $PaymentSetting->paystack_live_secret_key;
+                $this->paystack_keyId = getenv('PAYSTACK_PUBLIC_KEY');
+                $this->paystack_keysecret =   getenv('PAYSTACK_SECRET_KEY') ;
             }
 
             $this->SecretKey_array =  array(
