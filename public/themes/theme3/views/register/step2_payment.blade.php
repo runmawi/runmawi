@@ -1326,7 +1326,7 @@ function paypalplan_details(ele){
                     if( count > 0 && response.data.status == true ){
 
                         html = "";
-                        html += '<div class="col-md-12">';
+                        html += '<div class="col-md-12  p-0">';
                             html += '<div class="row align-items-center m-0 p-0 data-plans">';
                                 
                                 $.each( response.data.plans_data , function( index, plan_data ) {

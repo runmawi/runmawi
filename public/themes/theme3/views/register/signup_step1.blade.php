@@ -159,11 +159,12 @@ i.fa.fa-google-plus {
     background: #474644 !important;
 }
     .reveal{
-        margin-left: -92px;
-    height: 45px !important;
-    background: transparent !important;
-    color: #fff !important;
+        margin-left: -60px;
+        height: 45px !important;
+        background: transparent !important;
+        color: #fff !important;
     }
+    
     .error {
     color: brown;
     font-family: 'remixicon';

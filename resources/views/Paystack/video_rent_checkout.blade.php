@@ -2,6 +2,12 @@
     include(public_path('themes/default/views/header.php'));
 @endphp
 
+    <div class="col-lg-12  h-100">
+        <div class="d-flex justify-content-center">
+            <img src="{{ URL::to('/public/Thumbnai_images/checkout-processing.gif')}}" alt="" srcset="" class="w-100">
+        </div>
+    </div>
+
 <form id="paymentForm">
       <input type="hidden" id="email-address" value="{{ $email }}"  required />
       <input type="hidden" id="publish_key" value="{{ $publish_key }}"  required />
