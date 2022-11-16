@@ -1237,102 +1237,215 @@ class AdminVideosController extends Controller
         // Trailer Update
 
         $path = public_path() . "/uploads/videos/";
-
         $video->trailer_type = $data["trailer_type"];
-        if (
-            $trailer != "" &&
-            $pack == "Business" &&
-            $settings->transcoding_access == 1 &&
-            $data["trailer_type"] == "video_mp4"
-        ) {
-            if ($settings->transcoding_resolution != null) {
-                $convertresolution = [];
-                $resolution = explode(",", $settings->transcoding_resolution);
-                foreach ($resolution as $value) {
-                    if ($value == "240p") {
-                        $r_240p = (new Representation())
-                            ->setKiloBitrate(150)
-                            ->setResize(426, 240);
-                        array_push($convertresolution, $r_240p);
-                    }
-                    if ($value == "360p") {
-                        $r_360p = (new Representation())
-                            ->setKiloBitrate(276)
-                            ->setResize(640, 360);
-                        array_push($convertresolution, $r_360p);
-                    }
-                    if ($value == "480p") {
-                        $r_480p = (new Representation())
-                            ->setKiloBitrate(750)
-                            ->setResize(854, 480);
-                        array_push($convertresolution, $r_480p);
-                    }
-                    if ($value == "720p") {
-                        $r_720p = (new Representation())
-                            ->setKiloBitrate(2048)
-                            ->setResize(1280, 720);
-                        array_push($convertresolution, $r_720p);
-                    }
-                    if ($value == "1080p") {
-                        $r_1080p = (new Representation())
-                            ->setKiloBitrate(750)
-                            ->setResize(854, 480);
-                        array_push($convertresolution, $r_1080p);
-                    }
-                }
-            }
-            $trailer = $data["trailer"];
-            $trailer_path = URL::to("public/uploads/trailer/");
-            $trailer_Videoname =  Str::lower($trailer->getClientOriginalName());
-            $trailer_Video = time() . "_" . str_replace(" ","_",$trailer_Videoname);
-            $trailer->move(public_path("uploads/trailer/"), $trailer_Video);
-            $trailer_video_name = strtok($trailer_Video, ".");
-            $M3u8_save_path =
-                $trailer_path . "/" . $trailer_video_name . ".m3u8";
-            $storepath = URL::to("public/uploads/trailer/");
 
-            $data["trailer"] = $M3u8_save_path;
-            $video->trailer_type = "m3u8";
-            $data["trailer_type"] = "m3u8";
-        } else {
-            if ($data["trailer_type"] == "video_mp4") {
-                if (!empty($trailer)) {
-                    if ($trailer != "" && $trailer != null) {
-                        $file_old = $path . $trailer;
-
-                        if (file_exists($file_old)) {
-                            unlink($file_old);
+        $StorageSetting = StorageSetting::first();
+        // dd($StorageSetting);
+        if($StorageSetting->site_storage == 1){
+            if (
+                $trailer != "" &&
+                $pack == "Business" &&
+                $settings->transcoding_access == 1 &&
+                $data["trailer_type"] == "video_mp4"
+            ) {
+                if ($settings->transcoding_resolution != null) {
+                    $convertresolution = [];
+                    $resolution = explode(",", $settings->transcoding_resolution);
+                    foreach ($resolution as $value) {
+                        if ($value == "240p") {
+                            $r_240p = (new Representation())
+                                ->setKiloBitrate(150)
+                                ->setResize(426, 240);
+                            array_push($convertresolution, $r_240p);
+                        }
+                        if ($value == "360p") {
+                            $r_360p = (new Representation())
+                                ->setKiloBitrate(276)
+                                ->setResize(640, 360);
+                            array_push($convertresolution, $r_360p);
+                        }
+                        if ($value == "480p") {
+                            $r_480p = (new Representation())
+                                ->setKiloBitrate(750)
+                                ->setResize(854, 480);
+                            array_push($convertresolution, $r_480p);
+                        }
+                        if ($value == "720p") {
+                            $r_720p = (new Representation())
+                                ->setKiloBitrate(2048)
+                                ->setResize(1280, 720);
+                            array_push($convertresolution, $r_720p);
+                        }
+                        if ($value == "1080p") {
+                            $r_1080p = (new Representation())
+                                ->setKiloBitrate(750)
+                                ->setResize(854, 480);
+                            array_push($convertresolution, $r_1080p);
                         }
                     }
-                    //upload new file
-                    $randval = Str::random(16);
-                    $file = $trailer;
-                    $trailer_vid =
-                        $randval . "." . $request->file("trailer")->extension();
-                    $file->move($path, $trailer_vid);
-
-                    $data["trailer"] =
-                        URL::to("/") . "/public/uploads/videos/" . $trailer_vid;
-                    $video->trailer =
-                        URL::to("/") . "/public/uploads/videos/" . $trailer_vid;
+                }
+                $trailer = $data["trailer"];
+                $trailer_path = URL::to("public/uploads/trailer/");
+                $trailer_Videoname =  Str::lower($trailer->getClientOriginalName());
+                $trailer_Video = time() . "_" . str_replace(" ","_",$trailer_Videoname);
+                $trailer->move(public_path("uploads/trailer/"), $trailer_Video);
+                $trailer_video_name = strtok($trailer_Video, ".");
+                $M3u8_save_path =
+                    $trailer_path . "/" . $trailer_video_name . ".m3u8";
+                $storepath = URL::to("public/uploads/trailer/");
+    
+                $data["trailer"] = $M3u8_save_path;
+                $video->trailer_type = "m3u8";
+                $data["trailer_type"] = "m3u8";
+            } else {
+                if ($data["trailer_type"] == "video_mp4") {
+                    if (!empty($trailer)) {
+                        if ($trailer != "" && $trailer != null) {
+                            $file_old = $path . $trailer;
+    
+                            if (file_exists($file_old)) {
+                                unlink($file_old);
+                            }
+                        }
+                        //upload new file
+                        $randval = Str::random(16);
+                        $file = $trailer;
+                        $trailer_vid =
+                            $randval . "." . $request->file("trailer")->extension();
+                        $file->move($path, $trailer_vid);
+    
+                        $data["trailer"] =
+                            URL::to("/") . "/public/uploads/videos/" . $trailer_vid;
+                        $video->trailer =
+                            URL::to("/") . "/public/uploads/videos/" . $trailer_vid;
+                    } else {
+                        $data["trailer"] = $video->trailer;
+                    }
+                } elseif ($data["trailer_type"] == "m3u8_url") {
+                    $video->trailer = $data["m3u8_trailer"];
+                    $data["trailer"] = $data["m3u8_trailer"];
+                    // http://localhost/flicknexs/storage/app/public/4XGJiKONAQfCe4eV.mp4
+                } elseif ($data["trailer_type"] == "mp4_url") {
+                    $video->trailer = $data["mp4_trailer"];
+                    $data["trailer"] = $data["mp4_trailer"];
+                } elseif ($data["trailer_type"] == "embed_url") {
+                    $video->trailer = $data["embed_trailer"];
+                    $data["trailer"] = $data["embed_trailer"];
                 } else {
                     $data["trailer"] = $video->trailer;
                 }
-            } elseif ($data["trailer_type"] == "m3u8_url") {
-                $video->trailer = $data["m3u8_trailer"];
-                $data["trailer"] = $data["m3u8_trailer"];
-                // http://localhost/flicknexs/storage/app/public/4XGJiKONAQfCe4eV.mp4
-            } elseif ($data["trailer_type"] == "mp4_url") {
-                $video->trailer = $data["mp4_trailer"];
-                $data["trailer"] = $data["mp4_trailer"];
-            } elseif ($data["trailer_type"] == "embed_url") {
-                $video->trailer = $data["embed_trailer"];
-                $data["trailer"] = $data["embed_trailer"];
-            } else {
-                $data["trailer"] = $video->trailer;
+                // $data['trailer'] = "";
             }
-            // $data['trailer'] = "";
-        }
+    
+        }elseif($StorageSetting->aws_storage == 1){
+
+            $file = $request->file('trailer');
+            $file_folder_name =  $file->getClientOriginalName();
+            $name = time() . $file->getClientOriginalName();
+            $filePath = $StorageSetting->aws_video_trailer_path.'/'. $name;
+            Storage::disk('s3')->put($filePath, file_get_contents($file));
+            $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+            $trailer = $path.$filePath;
+            $data["trailer"] = $trailer;
+            $data["trailer_type"] = 'video_mp4';
+            
+        }else{ 
+            if (
+                $trailer != "" &&
+                $pack == "Business" &&
+                $settings->transcoding_access == 1 &&
+                $data["trailer_type"] == "video_mp4"
+            ) {
+                if ($settings->transcoding_resolution != null) {
+                    $convertresolution = [];
+                    $resolution = explode(",", $settings->transcoding_resolution);
+                    foreach ($resolution as $value) {
+                        if ($value == "240p") {
+                            $r_240p = (new Representation())
+                                ->setKiloBitrate(150)
+                                ->setResize(426, 240);
+                            array_push($convertresolution, $r_240p);
+                        }
+                        if ($value == "360p") {
+                            $r_360p = (new Representation())
+                                ->setKiloBitrate(276)
+                                ->setResize(640, 360);
+                            array_push($convertresolution, $r_360p);
+                        }
+                        if ($value == "480p") {
+                            $r_480p = (new Representation())
+                                ->setKiloBitrate(750)
+                                ->setResize(854, 480);
+                            array_push($convertresolution, $r_480p);
+                        }
+                        if ($value == "720p") {
+                            $r_720p = (new Representation())
+                                ->setKiloBitrate(2048)
+                                ->setResize(1280, 720);
+                            array_push($convertresolution, $r_720p);
+                        }
+                        if ($value == "1080p") {
+                            $r_1080p = (new Representation())
+                                ->setKiloBitrate(750)
+                                ->setResize(854, 480);
+                            array_push($convertresolution, $r_1080p);
+                        }
+                    }
+                }
+                $trailer = $data["trailer"];
+                $trailer_path = URL::to("public/uploads/trailer/");
+                $trailer_Videoname =  Str::lower($trailer->getClientOriginalName());
+                $trailer_Video = time() . "_" . str_replace(" ","_",$trailer_Videoname);
+                $trailer->move(public_path("uploads/trailer/"), $trailer_Video);
+                $trailer_video_name = strtok($trailer_Video, ".");
+                $M3u8_save_path =
+                    $trailer_path . "/" . $trailer_video_name . ".m3u8";
+                $storepath = URL::to("public/uploads/trailer/");
+    
+                $data["trailer"] = $M3u8_save_path;
+                $video->trailer_type = "m3u8";
+                $data["trailer_type"] = "m3u8";
+            } else {
+                if ($data["trailer_type"] == "video_mp4") {
+                    if (!empty($trailer)) {
+                        if ($trailer != "" && $trailer != null) {
+                            $file_old = $path . $trailer;
+    
+                            if (file_exists($file_old)) {
+                                unlink($file_old);
+                            }
+                        }
+                        //upload new file
+                        $randval = Str::random(16);
+                        $file = $trailer;
+                        $trailer_vid =
+                            $randval . "." . $request->file("trailer")->extension();
+                        $file->move($path, $trailer_vid);
+    
+                        $data["trailer"] =
+                            URL::to("/") . "/public/uploads/videos/" . $trailer_vid;
+                        $video->trailer =
+                            URL::to("/") . "/public/uploads/videos/" . $trailer_vid;
+                    } else {
+                        $data["trailer"] = $video->trailer;
+                    }
+                } elseif ($data["trailer_type"] == "m3u8_url") {
+                    $video->trailer = $data["m3u8_trailer"];
+                    $data["trailer"] = $data["m3u8_trailer"];
+                    // http://localhost/flicknexs/storage/app/public/4XGJiKONAQfCe4eV.mp4
+                } elseif ($data["trailer_type"] == "mp4_url") {
+                    $video->trailer = $data["mp4_trailer"];
+                    $data["trailer"] = $data["mp4_trailer"];
+                } elseif ($data["trailer_type"] == "embed_url") {
+                    $video->trailer = $data["embed_trailer"];
+                    $data["trailer"] = $data["embed_trailer"];
+                } else {
+                    $data["trailer"] = $video->trailer;
+                }
+                // $data['trailer'] = "";
+            }
+            }
+
 
         // dd($video->trailer);
 
