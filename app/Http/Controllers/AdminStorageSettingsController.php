@@ -66,7 +66,7 @@ class AdminStorageSettingsController extends Controller
 
         if ($storage_settings == null)
         {
-            $storage_settings = new EmailSetting;
+            $storage_settings = new StorageSetting;
         }
 
         $storage_settings->site_storage = $request->has('site_storage') ? 1 : 0 ?? 0; ;
