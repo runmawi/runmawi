@@ -1290,6 +1290,18 @@ class AdminSeriesController extends Controller
         $series = Series::find($series_id);
         $episodes = Episode::where('series_id' ,'=', $series_id)
         ->where('season_id' ,'=', $season_id)->orderBy('episode_order')->get();
+
+
+        $StorageSetting = StorageSetting::first();
+        // dd($StorageSetting);
+        if($StorageSetting->site_storage == 1){
+            $dropzone_url =  URL::to('admin/episode_upload');
+        }elseif($StorageSetting->aws_storage == 1){
+            $dropzone_url =  URL::to('admin/AWSEpisodeUpload');
+        }else{ 
+            $dropzone_url =  URL::to('admin/episode_upload');
+        }
+
         $data = array(
             'headline' => '<i class="fa fa-edit"></i> Manage episodes of Season '.$season_id.' : '.$series->title,
             'episodes' => $episodes,
@@ -1301,6 +1313,7 @@ class AdminSeriesController extends Controller
             'age_categories' => AgeCategory::all(),
             'settings' => Setting::first(),
             'InappPurchase' => InappPurchase::all(),
+            'post_dropzone_url' => $dropzone_url,
 
 
             );
@@ -2350,12 +2363,22 @@ class AdminSeriesController extends Controller
 
             }
     public function EpisodeUploadEdit($id){
+
         $video = Episode::findOrFail($id);
         // dd($id);
 
+        $StorageSetting = StorageSetting::first();
+        if($StorageSetting->site_storage == 1){
+            $dropzone_url =  URL::to('admin/EpisodeVideoUpload');
+        }elseif($StorageSetting->aws_storage == 1){
+            $dropzone_url =  URL::to('admin/AWSEpisodeVideoUpload');
+        }else{ 
+            $dropzone_url =  URL::to('admin/EpisodeVideoUpload');
+        }
+
         $data = array(
             'videos' => $video,
-            // 'channelvideos' => $channelvideos,
+            'dropzone_url' => $dropzone_url,
             );
 
         return View('admin.series.edit_episode_video', $data);
@@ -2554,6 +2577,268 @@ class AdminSeriesController extends Controller
                 "message",
                 "Your video will be available shortly after we process it"
             );
+        }
+
+
+        public function AWSEpisodeUpload(Request $request){
+
+            $value = array();
+            $data = $request->all();
+            $series_id = $data['series_id'];
+            $season_id = $data['season_id'];
+    
+            $validator = Validator::make($request->all(), [
+               'file' => 'required|mimes:video/mp4,video/x-m4v,video/*'
+               
+            ]);
+            $file = (isset($data['file'])) ? $data['file'] : '';
+    
+            // https://webnexs.org/flicknexs/content/uploads/episodes/6.mp4
+            $package = User::where('id',1)->first();
+            $pack = $package->package;
+            $mp4_url = $data['file'];
+            $settings = Setting::first();
+            $StorageSetting = StorageSetting::first();
+    
+            if($pack != "Business" || $pack == "Business" && $settings->transcoding_access  == 0){
+    
+            if($file != '') {        
+
+                $file = $request->file('file');
+                $file_folder_name =  $file->getClientOriginalName();
+                $name = time() . $file->getClientOriginalName();
+                $filePath = $StorageSetting->aws_episode_path.'/'. $name;
+                Storage::disk('s3')->put($filePath, file_get_contents($file));
+                $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+                $storepath = $path.$filePath;
+
+                $file = $request->file->getClientOriginalName();
+                $newfile = explode(".mp4",$file);
+                $file_folder_name = $newfile[0];   
+                $file = $request->file('file');
+
+                 //  Episode duration 
+                 $getID3 = new getID3();
+                 $Video_storepath = $file;
+                 $VideoInfo = $getID3->analyze($Video_storepath);
+                 $Video_duration = $VideoInfo["playtime_seconds"];
+    
+            $newfile = explode(".mp4",$file);
+            $file_folder_name = $newfile[0];       
+             $original_name = ($request->file->getClientOriginalName()) ? $request->file->getClientOriginalName() : '';
+             $episode = new Episode();
+             $episode->title = $file_folder_name;
+             $episode->mp4_url = $storepath;
+             $episode->series_id = $series_id;
+             $episode->season_id = $season_id;
+             $episode->image = 'default_image.jpg';
+             $episode->type = 'upload';
+             $episode->status = 0;
+            $episode->duration = $Video_duration;
+            $episode->episode_order = Episode::where('season_id',$season_id)->max('episode_order') + 1 ;
+    
+             $episode->save(); 
+             $episode_id = $episode->id;
+            $episode_title = Episode::find($episode_id);
+            $title =$episode_title->title; 
+            
+            $value['success'] = 1;
+            $value['message'] = 'Uploaded Successfully!';
+            $value['episode_id'] = $episode_id;
+            $value['episode_title'] = $title;
+            $value['episode_duration'] = gmdate('H:i:s', $episode_title->duration);
+            return $value;
+            }else {
+                $value['success'] = 2;
+                $value['message'] = 'File not uploaded.'; 
+               return response()->json($value);
+               }
+            
+        }elseif($pack == "Business" && $settings->transcoding_access  == 1){
+            if($file != '') {     
+
+                $file = $request->file('file');
+                $file_folder_name =  $file->getClientOriginalName();
+                $name = time() . $file->getClientOriginalName();
+                $filePath = $StorageSetting->aws_episode_path.'/'. $name;
+                Storage::disk('s3')->put($filePath, file_get_contents($file));
+                $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+                $storepath = $path.$filePath;
+    
+                $file = $request->file->getClientOriginalName();
+
+                $newfile = explode(".mp4",$file);
+                $file_folder_name = $newfile[0];     
+                $file = $request->file('file');
+
+              //  Episode duration 
+              $getID3 = new getID3();
+              $Video_storepath = $file;
+              $VideoInfo = $getID3->analyze($Video_storepath);
+              $Video_duration = $VideoInfo["playtime_seconds"];
+    
+             $video = new Episode();
+             $video->title = $file_folder_name;
+             $video->mp4_url = $path;
+             $video->series_id = $series_id;
+             $video->season_id = $season_id;
+             $video->image = 'default_image.jpg';
+             $video->type = 'm3u8';
+             $video->status = 0;
+             $video->disk = 'public';
+             $video->status = 0;
+             $video->path = $path;
+             $video->mp4_url = $storepath;
+            //  $video->user_id = Auth::user()->id;
+            $video->episode_order = Episode::where('season_id',$season_id)->max('episode_order') + 1 ;
+            $video->duration = $Video_duration;
+             $video->save();
+        
+             $episode_id = $video->id;
+            $episode_title = Episode::find($episode_id);
+            $title =$episode_title->title; 
+            $value['success'] = 1;
+            $value['message'] = 'Uploaded Successfully!';
+            $value['episode_id'] = $episode_id;
+            $value['episode_title'] = $title;
+            $value['episode_duration'] = gmdate('H:i:s', $episode_title->duration);
+    
+            return $value;
+             
+              
+    
+            }else {
+                $value['success'] = 2;
+                $value['message'] = 'File not uploaded.'; 
+               return response()->json($value);
+               }
+    
+            }else {
+                $value['success'] = 2;
+                $value['message'] = 'File not uploaded.'; 
+               return response()->json($value);
+               }
+    
+    
+            }
+
+
+            
+    public function AWSEpisodeVideoUpload(Request $request){
+
+        $value = array();
+        $data = $request->all();
+        $id = $data['Episodeid'];
+        $video = Episode::findOrFail($id);
+        $StorageSetting = StorageSetting::first();
+
+        $file = (isset($data['file'])) ? $data['file'] : '';
+
+        $package = User::where('id',1)->first();
+        $pack = $package->package;
+        $mp4_url = $data['file'];
+        $settings = Setting::first();
+
+        if($pack != "Business" || $pack == "Business" && $settings->transcoding_access  == 0){
+
+        if($file != '') {        
+
+            $file = $request->file('file');
+            $file_folder_name =  $file->getClientOriginalName();
+            $name = time() . $file->getClientOriginalName();
+            $filePath = $StorageSetting->aws_episode_path.'/'. $name;
+            Storage::disk('s3')->put($filePath, file_get_contents($file));
+            $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+            $storepath = $path.$filePath;
+            $file = $request->file('file');
+
+                //  Episode duration 
+                $getID3 = new getID3();
+                $Video_storepath = $file;
+                $VideoInfo = $getID3->analyze($Video_storepath);
+                $Video_duration = $VideoInfo["playtime_seconds"];
+
+        $newfile = explode(".mp4",$file);
+        $file_folder_name = $newfile[0];       
+            $original_name = ($request->file->getClientOriginalName()) ? $request->file->getClientOriginalName() : '';
+            $episode = Episode::findOrFail($id);
+            $episode->mp4_url = $storepath;
+            $episode->type = 'upload';
+            $episode->save(); 
+            $episode_id = $episode->id;
+        $episode_title = Episode::find($episode_id);
+        $title =$episode_title->title; 
+        $value['success'] = 1;
+        $value['message'] = 'Uploaded Successfully!';
+        $value['episode_id'] = $episode_id;
+        $value['episode_title'] = $title;
+        $value['episode_duration'] = gmdate('H:i:s', $episode_title->duration);
+        return $value;
+        }else {
+            $value['success'] = 2;
+            $value['message'] = 'File not uploaded.'; 
+            return response()->json($value);
+            }
+        
+    }elseif($pack == "Business" && $settings->transcoding_access  == 1){
+        if($file != '') {     
+
+        $file = $request->file->getClientOriginalName();
+        $newfile = explode(".mp4",$file);
+        $file_folder_name = $newfile[0];
+
+        $file = $request->file('file');
+        // $file_folder_name =  $file->getClientOriginalName();
+        $name = time() . $file->getClientOriginalName();
+        $filePath = $StorageSetting->aws_episode_path.'/'. $name;
+        Storage::disk('s3')->put($filePath, file_get_contents($file));
+        $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+        $storepath = $path.$filePath;
+        $file = $request->file('file');
+
+            //  Episode duration 
+            $getID3 = new getID3();
+            $Video_storepath = $file;
+            $VideoInfo = $getID3->analyze($Video_storepath);
+            $Video_duration = $VideoInfo["playtime_seconds"];
+
+            $video = Episode::findOrFail($id);
+            $video->mp4_url = $path;
+            $video->type = 'm3u8';
+            $video->status = 0;
+            $video->disk = 'public';
+            $video->path = $path;
+            $video->mp4_url = $storepath;
+            $video->duration = $Video_duration;
+            $video->save();
+
+
+        $episode_id = $video->id;
+        $episode_title = Episode::find($episode_id);
+        $title =$episode_title->title; 
+        $value['success'] = 1;
+        $value['message'] = 'Uploaded Successfully!';
+        $value['episode_id'] = $episode_id;
+        $value['episode_title'] = $title;
+        $value['episode_duration'] = gmdate('H:i:s', $episode_title->duration);
+
+        return $value;
+            
+            
+
+        }else {
+            $value['success'] = 2;
+            $value['message'] = 'File not uploaded.'; 
+            return response()->json($value);
+            }
+
+        }else {
+            $value['success'] = 2;
+            $value['message'] = 'File not uploaded.'; 
+            return response()->json($value);
+            }
+
+
         }
 
 }

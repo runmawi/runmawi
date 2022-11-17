@@ -3392,6 +3392,15 @@ class AdminVideosController extends Controller
             ->where("videos.id", $id)
             ->get();
 
+            $StorageSetting = StorageSetting::first();
+            if($StorageSetting->site_storage == 1){
+                $dropzone_url =  URL::to('admin/uploadEditVideo');
+            }elseif($StorageSetting->aws_storage == 1){
+                $dropzone_url =  URL::to('admin/AWSuploadEditVideo');
+            }else{ 
+                $dropzone_url =  URL::to('admin/uploadEditVideo');
+            }
+            
         $data = [
             "headline" => '<i class="fa fa-edit"></i> Edit Video',
             "video" => $video,
@@ -3421,6 +3430,8 @@ class AdminVideosController extends Controller
             "ads_paths" => $ads_details ? $ads_details : 0,
             "ads_rolls" => $ads_rolls ? $ads_rolls : 0,
             "ads_category" => $ads_category,
+            "dropzone_url" => $dropzone_url,
+
         ];
 
         return View::make("admin.videos.edit_video", $data);
@@ -7479,6 +7490,183 @@ class AdminVideosController extends Controller
         // return response()->json($value);
     }
 
+    public function AWSuploadEditVideo(Request $request)
+    {
+        $value = [];
+        $data = $request->all();
+        $id = $data["videoid"];
+        $video = Video::findOrFail($id);
+        $StorageSetting = StorageSetting::first();
 
+        // echo "<pre>";
+        // print_r($video);exit();
+        $validator = Validator::make($request->all(), [
+            "file" => "required|mimes:video/mp4,video/x-m4v,video/*",
+        ]);
+        $mp4_url = isset($data["file"]) ? $data["file"] : "";
+
+        $path = public_path() . "/uploads/videos/";
+
+        $file = $request->file->getClientOriginalName();
+        $newfile = explode(".mp4", $file);
+        $file_folder_name = $newfile[0];
+
+        $package = User::where("id", 1)->first();
+        $pack = $package->package;
+        $mp4_url = $data["file"];
+        $settings = Setting::first();
+
+        if (
+            $mp4_url != "" &&
+            $pack != "Business" &&
+            $settings->transcoding_access == 0
+        ) {
+
+            
+            $file = $request->file('file');
+            $file_folder_name =  $file->getClientOriginalName();
+            $name = time() . $file->getClientOriginalName();
+            $filePath = $StorageSetting->aws_storage_path.'/'. $name;
+            Storage::disk('s3')->put($filePath, file_get_contents($file));
+            $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+            $storepath = $path.$filePath;
+
+            $file = $request->file->getClientOriginalName();
+            $newfile = explode(".mp4",$file);
+            $file_folder_name = $newfile[0];   
+            $file = $request->file('file');
+
+             //  Video duration 
+             $getID3 = new getID3();
+             $Video_storepath = $file;
+             $VideoInfo = $getID3->analyze($Video_storepath);
+             $Video_duration = $VideoInfo["playtime_seconds"];
+
+            // $video = new Video();
+            $video->disk = "public";
+            $video->title = $file_folder_name;
+            $video->original_name = "public";
+            $video->path = $path;
+            $video->mp4_url = $storepath;
+            $video->type = "mp4_url";
+            // $video->draft = 0;
+            // $video->image = 'default_image.jpg';
+
+            $video->duration = $Video_duration;
+            $video->save();
+
+            $video_id = $video->id;
+            $video_title = Video::find($video_id);
+            $title = $video_title->title;
+
+            $value["success"] = 1;
+            $value["message"] = "Uploaded Successfully!";
+            $value["video_id"] = $video_id;
+            $value["video_title"] = $title;
+
+            return $value;
+        } elseif (
+            $mp4_url != "" &&
+            $pack == "Business" &&
+            $settings->transcoding_access == 1
+        ) {
+
+            $file = $request->file('file');
+            $file_folder_name =  $file->getClientOriginalName();
+            $name = time() . $file->getClientOriginalName();
+            $filePath = $StorageSetting->aws_storage_path.'/'. $name;
+            Storage::disk('s3')->put($filePath, file_get_contents($file));
+            $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+            $storepath = $path.$filePath;
+
+            $file = $request->file->getClientOriginalName();
+            $newfile = explode(".mp4",$file);
+            $file_folder_name = $newfile[0];   
+            $file = $request->file('file');
+
+             //  Video duration 
+             $getID3 = new getID3();
+             $Video_storepath = $file;
+             $VideoInfo = $getID3->analyze($Video_storepath);
+             $Video_duration = $VideoInfo["playtime_seconds"];
+
+            //  $video = new Video();
+            $video->disk = "public";
+            $video->status = 0;
+            $video->original_name = "public";
+            $video->path = $path;
+            $video->title = $file_folder_name;
+            $video->mp4_url = $storepath;
+            //  $video->draft = 0;
+            $video->type = "";
+            //  $video->image = 'default_image.jpg';
+            $video->duration = $Video_duration;
+            $video->user_id = Auth::user()->id;
+            $video->save();
+
+            $video_id = $video->id;
+            $video_title = Video::find($video_id);
+            $title = $video_title->title;
+
+            $value["success"] = 1;
+            $value["message"] = "Uploaded Successfully!";
+            $value["video_id"] = $video_id;
+            $value["video_title"] = $title;
+
+            return $value;
+        } elseif (
+            $mp4_url != "" &&
+            $pack == "Business" &&
+            $settings->transcoding_access == 0
+        ) {
+            $file = $request->file('file');
+            $file_folder_name =  $file->getClientOriginalName();
+            $name = time() . $file->getClientOriginalName();
+            $filePath = $StorageSetting->aws_storage_path.'/'. $name;
+            Storage::disk('s3')->put($filePath, file_get_contents($file));
+            $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+            $storepath = $path.$filePath;
+
+            $file = $request->file->getClientOriginalName();
+            $newfile = explode(".mp4",$file);
+            $file_folder_name = $newfile[0];   
+            $file = $request->file('file');
+
+             //  Video duration 
+             $getID3 = new getID3();
+             $Video_storepath = $file;
+             $VideoInfo = $getID3->analyze($Video_storepath);
+             $Video_duration = $VideoInfo["playtime_seconds"];
+
+            // $video = new Video();
+            $video->disk = "public";
+            $video->title = $file_folder_name;
+            $video->original_name = "public";
+            $video->path = $path;
+            $video->mp4_url = $storepath;
+            $video->type = "mp4_url";
+            // $video->draft = 0;
+            $video->image = "default_image.jpg";
+            $video->duration = $Video_duration;
+            $video->save();
+
+            $video_id = $video->id;
+            $video_title = Video::find($video_id);
+            $title = $video_title->title;
+
+            $value["success"] = 1;
+            $value["message"] = "Uploaded Successfully!";
+            $value["video_id"] = $video_id;
+            $value["video_title"] = $title;
+
+            return $value;
+        } else {
+            $value["success"] = 2;
+            $value["message"] = "File not uploaded.";
+            return response()->json($value);
+        }
+
+        // return response()->json($value);
+    }
 }
     
