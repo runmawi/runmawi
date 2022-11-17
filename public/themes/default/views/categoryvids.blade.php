@@ -5,8 +5,9 @@ include(public_path('themes/default/views/header.php'));
 <!-- Header End -->
 <style>
     .btn{
-       /* background-color: transparent!important;*/
-        width: 80%;
+       /* background-color: transparent!important;
+        width: 80%;*/
+        border-radius: 5px;
     }
    .bootstrap-select>.dropdown-toggle{
         background-color: transparent!important;

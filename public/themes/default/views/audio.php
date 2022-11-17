@@ -646,44 +646,7 @@ window.location = '<?= URL::to('login') ?>';
       });
 
 </script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 
-<script src="//cdnjs.cloudflare.com/ajax/libs/jplayer/2.9.2/jplayer/jquery.jplayer.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jplayer/2.9.2/add-on/jplayer.playlist.min.js"></script>
-
-<script type="text/javascript">
-    var ppbutton = document.getElementById("vidbutton");
-
-    $player = $("#jquery_jplayer_1")
-    jPlayer_method = $player.jPlayer
-    $player.jPlayer({
-        ready: function () {
-           jPlayer_method.call( $player, "setMedia",  <?php echo $json_list;?>);
-       },
-       cssSelectorAncestor: "#jp_container_1",
-       swfPath: "src/swf/",
-       solution: "html, flash",
-       supplied: "mp3",
-       preload: "auto",
-       useStateClassSkin: true,
-       autoBlur: false,
-       smoothPlayBar: true,
-       keyEnabled: true,
-       remainingDuration: true,
-       toggleDuration: true,
-       pause: function(e) {
-        ppbutton.innerHTML = '<i class="fa fa-play mr-2" aria-hidden="true"></i> Play';
-    },
-    play: function(e) {
-        ppbutton.innerHTML = '<i class="fa fa-pause mr-2" aria-hidden="true"></i> Pause';
-    }
-});
-    
-    $("#vidbutton").on("click", function(e) {
-        e.preventDefault();
-        $(".jp-play").trigger("click");
-    });
-</script>
 
     <script>
   function createTrackItem(index,name,duration){

@@ -36,97 +36,96 @@
 
 
 
-<div class="modal-body">
+    <div class="modal-body">
     	<form  accept-charset="UTF-8" action="{{ URL::to('admin/subscription-plans/update') }}" method="post" id="subscription_edit">
-                <div class="row">
-                    <div class="col-md-6">
-                            <div class="form-group">
-                                <label>  Plans Name:</label>
-                                <input type="text" id="name" name="plans_name" value="{{ $edit_plan[0]->plans_name }}" class="form-control" placeholder="Enter ">
-                            </div>
-
-                            @foreach($edit_plan as $plan)
-                                <div class="form-group">
-                                    <label>{{ $plan->type }} Plan ID:</label>
-                                    <input type="text" id="plans_id" name="plan_id[{{ $plan->subscription_plan_name }}]" value="{{ $plan->plan_id }}" class="form-control" placeholder="Plan ID">
-                                </div> 
-                            @endforeach
-
-                            <!-- @foreach($payment_settings as $payment_setting)
-							@if($payment_setting->status == 1)
-								<label>{{ $payment_setting->payment_type }} Plan ID:</label>
-                                <input type="text" id="plans_id" name="plan_id[{{ $edit_plan[0]->subscription_plan_name }}]" value="{{ $edit_plan[0]->plan_id }}" class="form-control" placeholder="Plan ID">
-								<p>* Get Plan Key From {{ $payment_setting->payment_type }}</p>
-                            @endif
-						    @endForeach -->
-
-                            <div class="form-group">
-                                <label>IOS Plan Price ( {{ @$allCurrency->symbol }} ):</label>
-                                <input type="text" id="ios_plan_price" name="ios_plan_price" value="{{ $edit_plan[0]->ios_plan_price }}"  class="form-control" placeholder="IOS Plan Price">
-                            </div>
-
-
-                            <div class="form-group">
-                                <label>Video Quality:</label>
-                                <input type="text" id="video_quality" name="video_quality"  value="{{ $edit_plan[0]->video_quality }}" class="form-control" placeholder="Quality">
-                            </div> 
-                           
-                            <div class="form-group">
-                                <label> Price ( {{ @$allCurrency->symbol }} ):</label>
-                                <input type="text" id="price" name="price" value="{{ $edit_plan[0]->price }}" class="form-control" placeholder="Price">
-                            </div>
-
-                    </div>
-
-                
-                    <div class="col-md-6">
-                        <div class="form-group">
-                          <label>Payment Type:</label><br>
-                          One Time Payment : 
-                            <input type="radio"  name="payment_type"  value="one_time" @if ($edit_plan[0]->payment_type=='one_time') checked='checked' @endif>
-                          Recurring : 
-                            <input type="radio"  name="payment_type"  value="recurring"  @if ($edit_plan[0]->payment_type=='recurring') checked='checked' @endif>
-                          </div> 
-
-                        <div class="form-group">
-                           <label>Resolution :</label>
-                           <input type="text" id="resolution" name="resolution"  value="{{ $edit_plan[0]->resolution }}" class="form-control" placeholder="Resolution">
-                        </div>  
-
-                        <div class="form-group">
-                            <label> IOS Product ID :</label>
-                            <input type="text" id="ios_product_id" name="ios_product_id" value="{{ $edit_plan[0]->ios_product_id }}"  class="form-control" placeholder="IOS Product ID">
-                        </div>
-                                  
-                    <div>
-
-                
+            <div class="row col-md-12">
+                <div class="col-md-6">
                     <div class="form-group">
-                        <label> Devices :</label>
+                        <label>  Plans Name:</label>
+                        <input type="text" id="name" name="plans_name" value="{{ $edit_plan[0]->plans_name }}" class="form-control" placeholder="Enter ">
                     </div>
 
-                    @foreach($devices as $val)
-                        <div class="col-md-7 p-0 d-flex justify-content-between align-items-center" style="float:left;">                                           
-                            <div>  <label  style="color:#000000!important;">{{ $val->devices_name }}</label></div>
-                            <div>
-                                <label class="switch">
-                                    <input class="form-check-input" type="checkbox" name="devices[]" value="{{ $val->id }}" {{ (in_array($val->id, $user_devices)) ? ' checked' : '' }}> 
-                                    <span class="slider round"></span>
-                                </label>
-                            </div>
-                        </div>
+                    @foreach($edit_plan as $plan)
+                        <div class="form-group">
+                            <label>{{ $plan->type }} Plan ID:</label>
+                            <input type="text" id="plans_id" name="plan_id[{{ $plan->subscription_plan_name }}]" value="{{ $plan->plan_id }}" class="form-control" placeholder="Plan ID">
+                        </div> 
                     @endforeach
 
+                    <!-- @foreach($payment_settings as $payment_setting)
+						@if($payment_setting->status == 1)
+							<label>{{ $payment_setting->payment_type }} Plan ID:</label>
+                            <input type="text" id="plans_id" name="plan_id[{{ $edit_plan[0]->subscription_plan_name }}]" value="{{ $edit_plan[0]->plan_id }}" class="form-control" placeholder="Plan ID">
+							<p>* Get Plan Key From {{ $payment_setting->payment_type }}</p>
+                        @endif
+				    @endForeach -->
+                           
+                    <div class="form-group">
+                        <label>Video Quality:</label>
+                        <input type="text" id="video_quality" name="video_quality"  value="{{ $edit_plan[0]->video_quality }}" class="form-control" placeholder="Quality">
+                    </div> 
+                           
+                    <div class="form-group">
+                        <label> Price ( {{ @$allCurrency->symbol }} ):</label>
+                        <input type="text" id="price" name="price" value="{{ $edit_plan[0]->price }}" class="form-control" placeholder="Price">
                     </div>
                 </div>
 
-                    <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Payment Type:</label><br>
+                        One Time Payment  <input type="radio"  name="payment_type"  value="one_time" @if ($edit_plan[0]->payment_type=='one_time') checked='checked' @endif>
+                        Recurring   <input type="radio"  name="payment_type"  value="recurring"  @if ($edit_plan[0]->payment_type=='recurring') checked='checked' @endif>
+                    </div> 
+
+                    <div class="form-group">
+                        <label>Resolution :</label>
+                        <input type="text" id="resolution" name="resolution"  value="{{ $edit_plan[0]->resolution }}" class="form-control" placeholder="Resolution">
+                    </div>  
+
+                    <div class="form-group">
+                        <label> IOS Product ID :</label>
+                        <input type="text" id="ios_product_id" name="ios_product_id" value="{{ $edit_plan[0]->ios_product_id }}"  class="form-control" placeholder="IOS Product ID">
+                    </div>
+                            
+                    <div class="form-group">
+                        <label>IOS Plan Price ( {{ @$allCurrency->symbol }} ):</label>
+                        <input type="text" id="ios_plan_price" name="ios_plan_price" value="{{ $edit_plan[0]->ios_plan_price }}"  class="form-control" placeholder="IOS Plan Price">
+                    </div>
+                <div>
+
+                <div class="form-group">
+                    <label> Devices :</label>
+                </div>
+
+                @foreach($devices as $val)
+                    <div class="col-md-7 p-0 d-flex justify-content-between align-items-center" style="float:left;">                                           
+                        <div>  <label  style="color:#000000!important;">{{ $val->devices_name }}</label></div>
+                        <div>
+                            <label class="switch">
+                                <input class="form-check-input" type="checkbox" name="devices[]" value="{{ $val->id }}" {{ (in_array($val->id, $user_devices)) ? ' checked' : '' }}> 
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+
+            <div class=" col-md-12">
+                <div class="form-group">
+                    <label> Plan Content :</label>
+                    <textarea class="form-control" id="plan_content" name="plan_content" > @if(!empty( $plan->plan_content )){{ ( $plan->plan_content  ) }}@endif </textarea>
+                </div>  
+            </div>
+
+                <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
             
                 <input type="hidden" name="id" id="id" value="{{ $edit_plan[0]->id }}" />
-                @foreach($edit_plan as $plan)
-                <input type="hidden" id="subscription_plan_name" name="subscription_plan_name[]" value="{{ $plan->subscription_plan_name }}" class="form-control" placeholder="Plan ID">
-                @endforeach
 
+                @foreach($edit_plan as $plan)
+                    <input type="hidden" id="subscription_plan_name" name="subscription_plan_name[]" value="{{ $plan->subscription_plan_name }}" class="form-control" placeholder="Plan ID">
+                @endforeach
 
               <div class="mt-3 ml-3">
                 <a type="button" class="btn btn-primary" data-dismiss="modal" href="{{ URL::to('admin/subscription-plans') }}">Close</a>
@@ -146,6 +145,8 @@
 	{{-- validate --}}
 
 	<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+    <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
+
 	<script>
 		$('form[id="subscription_edit"]').validate({
             ignore: [],
@@ -162,6 +163,9 @@
 			submitHandler: function(form) {
 				form.submit(); }
 			});
+
+		CKEDITOR.replace( 'plan_content' );
+
 	</script>
 
 @stop

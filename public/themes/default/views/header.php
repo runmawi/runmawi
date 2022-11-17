@@ -680,7 +680,7 @@ input:checked + .sliderk:before {
                               <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
                                     <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
                                     <input id="password" type="hidden"  name="password" value="<?=  @$ModeratorsUser->password ?>" autocomplete="current-password" >
-                                    <button type="submit" class="btn btn-hover " style="margin-top: -14%;margin-left: -14%;">Visit CPP Portal </button>                          
+                                    <button type="submit" class="btn btn-hover " style="margin-top: -14%;margin-left: -14%;">CPP Portal </button>                          
                            </form>
                         </div>
                         <?php }if(!Auth::guest() && !empty($Channel)){ ?>
