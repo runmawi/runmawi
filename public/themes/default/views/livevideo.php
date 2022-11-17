@@ -478,12 +478,14 @@ endif; ?>" data-authenticated="<?=!Auth::guest() ?>" data-videoid="<?=$video->id
                 <?php } ?>
               </div>
                 
-              <div class="paystack_button">  <!-- Paystack Button -->
-                <?php if( $Paystack_payment_setting != null && $Paystack_payment_setting->payment_type == "Paystack" ){?>
-                        <button class="btn2  btn-outline-primary" onclick="location.href ='<?= route('Paystack_live_Rent', ['live_id' => $video->id , 'amount' => $video->ppv_price] ) ?>' ;" >  Continue </button>
-                <?php } ?>
-              </div>
-
+              <?php if( $video->ppv_price != null &&  $video->ppv_price != " " ) {?>
+                <div class="paystack_button">  <!-- Paystack Button -->
+                    <?php if( $Paystack_payment_setting != null && $Paystack_payment_setting->payment_type == "Paystack" ){?>
+                            <button class="btn2  btn-outline-primary" onclick="location.href ='<?= route('Paystack_live_Rent', ['live_id' => $video->id , 'amount' => $video->ppv_price] ) ?>' ;" >  Continue </button>
+                    <?php } ?>
+                </div>
+              <?php } ?>
+              
             </div>
           </div>
       </div>
