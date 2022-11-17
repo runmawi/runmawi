@@ -159,7 +159,7 @@ i.fa.fa-google-plus {
     background: #474644 !important;
 }
     .reveal{
-        margin-left: -92px;
+        margin-left: -60px;
     height: 45px !important;
     background: transparent !important;
     color: #fff !important;
@@ -498,7 +498,8 @@ i.fa.fa-google-plus {
 
 							<div class="col-md-12" id="mob">
                                 <input id="password-confirm" type="checkbox" name="terms" value="1" required>
-								<label for="password-confirm" class="col-form-label text-md-right" style="display: inline-block;">{{ __('Yes') }} ,<a data-toggle="modal" data-target="#terms" style="text-decoration:none;color: #fff;"> {{ __('I Agree to Terms and  Conditions' ) }}</a></label>
+								<label for="password-confirm" class="col-form-label text-md-right" style="display: inline-block;text-decoration: underline;
+    cursor: pointer;">{{ __('Yes') }} ,<a data-toggle="modal" data-target="#terms" style="text-decoration:none;color: #fff;"> {{ __('I Agree to Terms and  Conditions' ) }}</a></label>
                             </div>
 
                             <div class="sign-up-buttons col-md-12" align="right">
