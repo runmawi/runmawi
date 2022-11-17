@@ -257,7 +257,9 @@
             <source id="source-audio" src="" type="audio/mpeg"> Your browser does not support the audio element.
           </audio>
 
-          <div class="player-ctn">
+           <div class="player-ctn" style="background-image:linear-gradient(to left, rgba(0, 0, 0, 0.25)0%, rgba(117, 19, 93, 1)),url('<?= URL::to('/').'/public/uploads/albums/'. $album->album ?>');background-size: cover;
+    background-repeat: no-repeat;
+    background-position: right;">
             <div class="row align-items-center mb-4">
 
               <div class="col-sm-3">
@@ -400,8 +402,6 @@
 
 </div>
 <?php } ?>
-<script src="<?= THEME_URL . '/assets/js/jquery.fitvid.js'; ?>"></script>
-
 <script type="text/javascript">
 $(document).ready(function() {
 $(".my-div").on("contextmenu",function(){
@@ -410,7 +410,7 @@ return false;
 });
 </script>
 
-<script type="text/javascript">
+<!--<script type="text/javascript">
 
 var base_url = $('#base_url').val();
 
@@ -457,229 +457,10 @@ window.location = '<?= URL::to('login') ?>';
 </script>
 
 <!-- RESIZING FLUID VIDEO for VIDEO JS -->
-<script type="text/javascript">
-// Once the video is ready
-_V_("video_player").ready(function(){
-
-var myPlayer = this;    // Store the video object
-var aspectRatio = 9/16; // Make up an aspect ratio
-
-function resizeVideoJS(){
-console.log(myPlayer.id);
-// Get the parent element's actual width
-var width = document.getElementById('video_container').offsetWidth;
-// Set width to fill parent element, Set height
-myPlayer.width(width).height( width * aspectRatio );
-}
-
-resizeVideoJS(); // Initialize the function
-window.onresize = resizeVideoJS; // Call the function on resize
-});
-</script>
-
-<script src="<?= THEME_URL . '/assets/js/rrssb.min.js'; ?>"></script>
-<script src="<?= THEME_URL . '/assets/js/videojs-resolution-switcher.js';?>"></script>
-<script src="https://rawgit.com/kimmobrunfeldt/progressbar.js/1.0.0/dist/progressbar.js"></script>
-<script>
-var player = videojs('video_player').videoJsResolutionSwitcher({
-default: '480p', // Default resolution [{Number}, 'low', 'high'],
-dynamicLabel: true
-})
-var res = player.currentResolution();
-player.currentResolution(res);
-
-function autoplay1() {
-//alert();
-var base_url = $('#base_url').val();
-//      var playButton = document.getElementsByClassName("vjs-big-play-button")[0];
-//      playButton.setAttribute("id", "myPlayButton");
-var next_audio_id = $(".next_audio").text();
-var prev_audio_id = $(".prev_audio").text();
-var next_cat_audio = $(".next_cat_audio").text();
-var prev_cat_audio = $(".prev_cat_audio").text();
-var url = $(".next_url").text();
-if(url != ''){
-//alert();
-
-setTimeout(function(){  
-window.location = url;
-}, 3000);
-}else if(prev_audio_id != ''){
-
-$(".vjs-big-play-button").show();
-var bar = new ProgressBar.Circle(myPlayButton, {
-strokeWidth: 7,
-easing: 'easeInOut',
-duration: 2400,
-color: '#98cb00',
-trailColor: '#eee',
-trailWidth: 1,
-svgStyle: null
-});
-
-bar.animate(1.0);  // Number from 0.0 to 1.0
-setTimeout(function(){  
-window.location = base_url+url+"/"+prev_audio_id;
-}, 3000);
-
-}
-
-if(next_cat_audio != ''){
-var base_url = $('#base_url').val();
-$(".vjs-big-play-button").show();
-var bar = new ProgressBar.Circle(myPlayButton, {
-strokeWidth: 7,
-easing: 'easeInOut',
-duration: 2400,
-color: '#98cb00',
-trailColor: '#eee',
-trailWidth: 1,
-svgStyle: null
-});
-
-bar.animate(1.0);  // Number from 0.0 to 1.0
-setTimeout(function(){  
-window.location = base_url+"/audios_category/"+next_cat_audio;
-}, 3000);
-}else if(prev_cat_audio != ''){
-
-$(".vjs-big-play-button").show();
-var bar = new ProgressBar.Circle(myPlayButton, {
-strokeWidth: 7,
-easing: 'easeInOut',
-duration: 2400,
-color: '#98cb00',
-trailColor: '#eee',
-trailWidth: 1,
-svgStyle: null
-});
-
-bar.animate(1.0);  // Number from 0.0 to 1.0
-setTimeout(function(){  
-window.location = base_url+"/audios_category/"+prev_cat_audio;
-}, 3000);
-
-}
-}
-
-</script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js">
-</script>
-<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jplayer/2.9.2/jplayer/jquery.jplayer.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jplayer/2.9.2/add-on/jplayer.playlist.min.js"></script>
-
-</div><script type="text/javascript">
-
-var _gaq = _gaq || [];
-_gaq.push(['_setAccount', 'UA-36251023-1']);
-_gaq.push(['_setDomainName', 'jqueryscript.net']);
-_gaq.push(['_trackPageview']);
-
-(function() {
-var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-})();
 
 
-jQuery(function($) {
-            /* Load jPlayer */
-            
-    
-            /* Youtube Integration Setup */
-            var ppbutton = document.getElementById("vidbutton");
-           
-            $(document).on($.jPlayer.event.setmedia, function(jpEvent) {});
-    
-            new jPlayerPlaylist({
-                jPlayer: "#jplayer-audio",
-                cssSelectorAncestor: "#jplayer-audio-container"
-            }, 
-                    <?php echo $json_list;?>
-            , {
-                swfPath: "src/swf/",
-                solution: "html, flash",
-                supplied: "mp3",
-                preload: "auto",
-                wmode: "window",
-                useStateClassSkin: true,
-                autoBlur: false,
-                smoothPlayBar: true,
-                keyEnabled: true,
-                stop: function(e) {
-                    $(".toggle-play").removeClass("active");
-                    $(".waves").fadeOut();
-                },
-                pause: function(e) {
-                    $(".toggle-play").removeClass("active");
-                    ppbutton.innerHTML = '<i class="fa fa-play mr-2" aria-hidden="true"></i> Play';
-                    $(".waves").fadeOut();
-                },
-                play: function(e) {
-                    $(".toggle-play").addClass("active");
-                    ppbutton.innerHTML = '<i class="fa fa-pause mr-2" aria-hidden="true"></i> Pause';
-                    $(".waves").fadeIn();
-                },
-                ready: function(e) {}
-            });
-    
-            $(".toggle-list").bind("click", function() {
-                if (!$("body").hasClass("active")) {
-                    $("body").addClass("active");
-                } else {
-                    $("body").removeClass("active");
-                }
-            });
-            $(window).on("load", function() {
-                $("#jp_video").jPlayer("play");
-            });
-            $(".toggle-play").on("click", function() {
-                if (!$(".jp-audio").hasClass("jp-state-playing")) {
-                    $("#jp_video").jPlayer("play");
-                } else {
-                    $("#jp_video").jPlayer("stop");
-                }
-            });
-        });
-        
-        $("#vidbutton").on("click", function(e) {
-        e.preventDefault();
-        $(".jp-play").trigger("click");
-    });
-//Audio Favorite
-      $('.favorite').click(function(){
-        if($(this).data('authenticated')){
-          $.post('<?= URL::to('favorite') ?>', { audio_id : $(this).data('audio_id'), _token: '<?= csrf_token(); ?>' }, function(data){});
-          $(this).toggleClass('active');
-          $(this).html("");
-              if($(this).hasClass('active')){
-                $(this).html('<i class="fa fa-heart"></i>');
-              }else{
-                $(this).html('<i class="fa fa-heart-o"></i>');
-              }
-        } else {
-          window.location = '<?= URL::to('login') ?>';
-        }
-      });
 
-      //Album Favorite
-      $('.albumfavorite').click(function(){
-        if($(this).data('authenticated')){
-          $.post('<?= URL::to('albumfavorite') ?>', { album_id : $(this).data('album_id'), _token: '<?= csrf_token(); ?>' }, function(data){});
-          $(this).toggleClass('active');
-          $(this).html("");
-              if($(this).hasClass('active')){
-                $(this).html('<i id="ff" class="fa fa-heart"></i>');
-              }else{
-                $(this).html('<i id="ff" class="fa fa-heart-o"></i>');
-              }
-        } else {
-          window.location = '<?= URL::to('login') ?>';
-        }
-      });
-</script>
-
+</div>
 <script>
   function createTrackItem(index,name,duration){
 
