@@ -1,5 +1,5 @@
 @extends('admin.master')
-<?php //dd('test'); ?>
+
 <style type="text/css">
 	.has-switch .switch-on label {
 			background-color: #FFF;
@@ -88,12 +88,18 @@
 		                        <label>Billing Type:</label>
 		                        <input type="text" id="billing_type" name="billing_type" value="" class="form-control" placeholder="Example .. Non Refundable">
 		                    </div>  
+
+							<div class="form-group p-1">
+								<label> Plan Content :</label>
+								<textarea class="form-control" id="plan_content" name="plan_content" > </textarea>
+							</div> 
                         
                             <div class="form-group">
 		                        <label>Payment Type:</label><br>
-		                        One Time Payment : <input type="radio"  name="payment_type"  value="one_time" checked='checked'> <br>
-		                        Recurring : <input type="radio"  name="payment_type"  value="recurring">
+		                        <input type="radio"  name="payment_type"  value="one_time" checked='checked'>  One Time Payment 
+								<input type="radio"  name="payment_type"  value="recurring">  Recurring 
 		                    </div> 
+
                             <div class="form-group">
 							@foreach($payment_settings as $payment_setting)
 									<input type="hidden" name="type[]"  value="{{ $payment_setting->payment_type }}">
@@ -235,14 +241,18 @@
 		})
 	</script>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-                    <script src="jquery-3.5.1.min.js"></script>
-<script>
-    $(document).ready(function(){
-        // $('#message').fadeOut(120);
-        setTimeout(function() {
-            $('#successMessage').fadeOut('fast');
-        }, 3000);
-    })
-</script>
-	@stop
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
+
+	<script>
+		$(document).ready(function(){
+			setTimeout(function() {
+			$('#successMessage').fadeOut('fast');
+			}, 3000);
+		})
+
+		CKEDITOR.replace( 'plan_content' );
+
+	</script>
+
+@stop

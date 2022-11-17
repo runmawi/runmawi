@@ -136,7 +136,7 @@ class AdminAudioCategoriesController extends Controller
                     Image::make($image)->save(base_path().'/public/uploads/audios/'.$audio_categories_PC_image,compress_image_resolution() );
                 }else{
 
-                    $audio_categories_filename  = time().'.'.$audio_categories_image->getClientOriginalExtension();
+                    $audio_categories_filename  = time().'.'.$file->getClientOriginalExtension();
                     $audio_categories_PC_image     =  'Audio_Categories_'.$audio_categories_filename ;
                     Image::make($image)->save(base_path().'/public/uploads/audios/'.$audio_categories_PC_image );
                 }
