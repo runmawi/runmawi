@@ -24,6 +24,8 @@ use App\FooterLink;
 use App\LinkingSetting;
 use App\CompressImage;
 use App\Captcha;
+use App\TimeZone;
+
 
 //use Illuminate\Http\Request;
 
@@ -66,11 +68,13 @@ class AdminSettingsController extends Controller
           $resolution = [];
         }
         $script =  Script::first();
+        $TimeZone = TimeZone::get();
         // dd($script);
         $data = array(
             'admin_user' => Auth::user(),
             'app_settings' => $app_settings ,   
             'script' => $script ,   
+            'TimeZone' => $TimeZone ,   
             'resolution' => $resolution ,   
 			      'settings' => $setting,
             'rtmp_url'  => RTMP::all(),
@@ -149,6 +153,7 @@ class AdminSettingsController extends Controller
             // dd($activation_email);
 		$settings = Setting::find(1);
 		$settings->demo_mode = $request['demo_mode'];
+		$settings->default_time_zone = $request['time_zone'];
 		$settings->ppv_hours = $request['ppv_hours'];
 		$settings->videos_per_page = $request['videos_per_page'];
 		$settings->ppv_price = $request['ppv_price'];

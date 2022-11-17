@@ -56,7 +56,7 @@ border-radius: 0px 4px 4px 0px;
                                 </div>
             <div class="row">
                   <div class='content' id="video_upload" style="margin-left: 36%;">
-                <form action="{{ URL::to('admin/EpisodeVideoUpload') }}" method= "post"  class='dropzone' >
+                <form action="{{ $dropzone_url }}" method= "post"  class='dropzone' >
                 </form> 
                 </div> 
              </div>

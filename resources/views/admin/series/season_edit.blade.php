@@ -99,7 +99,7 @@
                 <div class="content file">
                     <h3 class="card-title upload-ui">Upload Full Episode Here</h3>
                     <!-- Dropzone -->
-                    <form action="{{URL::to('admin/episode_upload')}}" method="post" class="dropzone"></form>
+                    <form action="{{ $post_dropzone_url }}" method="post" class="dropzone"></form>
                     <p class="p1">Trailers Can Be Uploaded From Video Edit Screen</p>
                 </div>
             </div>

@@ -44,7 +44,7 @@ $media_url = URL::to("/schedule/videos") . "/" . $schedule->name;
                         </form>
                     </div>
                 <div class="row mt-4 container-fluid">
-                    <div class="col-5">
+                    <div class="col-md-4">
                         <label for="">Choose Time</label><br>
                         <p style="color:black"> Select Timing Before Upload Video <span style="color:red;">*</span></p>
                         <select class="form-control" name="time" id="time" >
@@ -78,14 +78,22 @@ $media_url = URL::to("/schedule/videos") . "/" . $schedule->name;
                         </select>
                         <!-- <label class="m-0">Start Time <small>(Please Time in this Format Hours:minutes PM/PM)</small></label>
                         <input type="text" class="form-control" id="choose_start_time" name="choose_start_time" value=""> -->
-                        
                     </div>
-                    <!-- <div class="col-3">
-                        <label class="m-0">End Time <small>(Please Time in this Format Hours:minutes PM/PM)</small></label>
-                        <input type="text" class="form-control" id="choose_end_time" name="choose_end_time" value="">
+                        
+                    <div class="col-md-4">
+                        <?php //dd($settings); ?>
+                        <!-- <label class="m-0">Choose TimeZone to Schedule </label> -->
+                        <!-- <select class="form-control mb-3"  id="time_zone" name="time_zone"> -->
+                            
+                        <input type="hidden"  id="time_zone" name="time_zone" value="@if(isset($settings) && $settings->default_time_zone) {{ $settings->default_time_zone }} @else Asia/Kolkata @endif">
+                        @foreach($TimeZone as $time_zone)
+                            <!-- <option value="{{ $time_zone->time_zone }}" @if(isset($time_zone) && $time_zone->time_zone ==  'Asia/Kolkata')selected="selected"@endif> {{ $time_zone->time_zone }}</option> -->
+                        @endforeach
+                        <!-- </select> -->
 
-                    </div> -->
-                    <div class="col-5">
+                    </div>
+
+                    <div class="col-md-4">
                             <label for=""><h5 class="fs-title m-0">Your IFRAME URL:</h5></label><br>
                         <a href="#" onclick="EmbedCopy();" class="share-ico">
                             <!-- {{ $url_path }} -->
@@ -242,6 +250,7 @@ $media_url = URL::to("/schedule/videos") . "/" . $schedule->name;
             formData.append("date", date);
             formData.append("schedule_id", schedule_id);
             formData.append("schedule_time", $('#time').val());
+            formData.append("time_zone", $('#time_zone').val());
             // formData.append("choose_start_time", $('#choose_start_time').val());
             // formData.append("choose_end_time", $('#choose_end_time').val());
 
@@ -327,6 +336,7 @@ $media_url = URL::to("/schedule/videos") . "/" . $schedule->name;
                 var date = '{{ $Calendar['date'] }}';
                 var schedule_id = '{{ $Calendar['schedule_id'] }}';
                 var url = "{{ URL::to('admin/reschedule_oneday/')  }}";
+                let time_zone = $('#time_zone').val();
                 
                     $.ajax({
                     url: url,
@@ -575,6 +585,8 @@ function drop(video_id) {
 
         var url = "{{ URL::to('admin/dragdropScheduledVideos/')  }}";
         var time = $('#time').val();
+        let time_zone = $('#time_zone').val();
+
         $.ajax({
            url: url,
            type: "post",
@@ -585,7 +597,9 @@ function drop(video_id) {
                     year: year,
                     date: date,
                     schedule_id: schedule_id,
-                    schedule_time: time
+                    schedule_time: time,
+                    time_zone: time_zone
+
             },        
             success: function(value){
    			console.log(value);
