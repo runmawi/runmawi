@@ -1320,7 +1320,7 @@ class HomeController extends Controller
                         'suggested_videos' => $suggested_videos,
                         'video_categories' => VideoCategory::all() ,
                         'home_settings' => HomeSetting::first() ,
-                        'livetream' => LiveStream::orderBy('created_at', 'DESC')->get() ,
+                        'livetream' => LiveStream::where("active","=","1")->orderBy('created_at', 'DESC')->get() ,
                         'audios' => Audio::where('active', '=', '1')
                             ->orderBy('created_at', 'DESC')
                             ->get() ,
@@ -2205,7 +2205,7 @@ class HomeController extends Controller
                     'suggested_videos' => $suggested_videos,
                     'video_categories' => VideoCategory::all() ,
                     'home_settings' => HomeSetting::first() ,
-                    'livetream' => LiveStream::orderBy('created_at', 'DESC')->get() ,
+                    'livetream' => LiveStream::where('active','=','1')->orderBy('created_at', 'DESC')->get() ,
                     'audios' => Audio::where('active', '=', '1')
                         ->orderBy('created_at', 'DESC')
                         ->get() ,
