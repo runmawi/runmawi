@@ -438,6 +438,7 @@ Route::get('/episode/filedelete/{id}', 'AdminSeriesController@filedelete');
     Route::get('/videos/categories/edit/{id}', 'AdminVideoCategoriesController@edit');
     Route::post('/videos/categories/update','AdminVideoCategoriesController@update');
     Route::get('/videos/categories/delete/{id}', array('before' => 'demo', 'uses' => 'AdminVideoCategoriesController@destroy'));
+    Route::get('/videos/aws_editvideo/{id}', 'AdminVideosController@AWSEditvideo'); 
 
 // Admin PPV Functionality
     Route::get('/ppv', 'AdminPpvController@index');
@@ -745,6 +746,9 @@ Route::get('/episode/filedelete/{id}', 'AdminSeriesController@filedelete');
     Route::post('/episode_upload',  'AdminSeriesController@EpisodeUpload');
     Route::get('/episode/episode_edit/{id}',  'AdminSeriesController@EpisodeUploadEdit');
     Route::post('/EpisodeVideoUpload',  'AdminSeriesController@EpisodeVideoUpload');
+    Route::post('/AWSEpisodeUpload',  'AdminSeriesController@AWSEpisodeUpload');
+    Route::get('/episode/AWSepisode_edit/{id}',  'AdminSeriesController@AWSEpisodeUploadEdit');
+    Route::post('/AWSEpisodeVideoUpload',  'AdminSeriesController@AWSEpisodeVideoUpload');
 
     Route::get('/players', 'AdminSettingsController@playerui_index');
     Route::get('/players/settings', 'AdminSettingsController@playerui_settings');   
@@ -854,6 +858,7 @@ Route::get('/episode/filedelete/{id}', 'AdminSeriesController@filedelete');
     Route::post('/mp4url',  'AdminVideosController@Mp4url');
     Route::post('/uploadFile',  'AdminVideosController@uploadFile');
     Route::post('/uploadEditVideo',  'AdminVideosController@uploadEditVideo');
+    Route::post('/AWSuploadEditVideo',  'AdminVideosController@AWSuploadEditVideo');
 
     Route::post('/AWSUploadFile',  'AdminVideosController@AWSUploadFile');
 

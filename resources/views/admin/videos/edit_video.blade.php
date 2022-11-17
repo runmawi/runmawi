@@ -91,7 +91,7 @@ border-radius: 0px 4px 4px 0px;
 
                   <div class='content' id="video_upload">
                 <!-- Dropzone -->
-                <form action="{{ URL::to('admin/uploadEditVideo') }}" method= "post"  class='dropzone' >
+                <form action="{{ $dropzone_url }}" method= "post"  class='dropzone' >
                 </form> 
                 </div> 
              </div>

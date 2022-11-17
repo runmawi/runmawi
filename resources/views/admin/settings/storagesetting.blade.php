@@ -142,9 +142,45 @@ border-radius: 0px 4px 4px 0px;
                         </div>
 
                         <div class="col-sm-6">
-                            <label class="">AWS Storage Path  </label>
+                            <label class="">AWS Storage Video Path (Ex: /path/to )  </label>
                             <div class="panel-body" style="display: block;">
                               <input type="text" class="form-control" name="aws_storage_path" id="aws_storage_path" value="@if(!empty($storage_settings->aws_storage_path)){{ $storage_settings->aws_storage_path }} @endif" />
+                           </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label class="">AWS Storage Video Trailer Path (Ex: /path/to )  </label>
+                            <div class="panel-body" style="display: block;">
+                              <input type="text" class="form-control" name="aws_video_trailer_path" id="aws_video_trailer_path" value="@if(!empty($storage_settings->aws_video_trailer_path)){{ $storage_settings->aws_video_trailer_path }} @endif" />
+                           </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label class="">AWS Storage Season Trailer Path (Ex: /path/to )  </label>
+                            <div class="panel-body" style="display: block;">
+                              <input type="text" class="form-control" name="aws_season_trailer_path" id="aws_season_trailer_path" value="@if(!empty($storage_settings->aws_season_trailer_path)){{ $storage_settings->aws_season_trailer_path }} @endif" />
+                           </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label class="">AWS Storage Season Episode Path (Ex: /path/to )  </label>
+                            <div class="panel-body" style="display: block;">
+                              <input type="text" class="form-control" name="aws_episode_path" id="aws_episode_path" value="@if(!empty($storage_settings->aws_episode_path)){{ $storage_settings->aws_episode_path }} @endif" />
+                           </div>
+                        </div>
+
+
+                        <div class="col-sm-6">
+                            <label class="">AWS Storage Live Path (Ex: /path/to )  </label>
+                            <div class="panel-body" style="display: block;">
+                              <input type="text" class="form-control" name="aws_live_path" id="aws_live_path" value="@if(!empty($storage_settings->aws_live_path)){{ $storage_settings->aws_live_path }} @endif" />
+                           </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label class="">AWS Storage Audios Path (Ex: /path/to )  </label>
+                            <div class="panel-body" style="display: block;">
+                              <input type="text" class="form-control" name="aws_audio_path" id="aws_audio_path" value="@if(!empty($storage_settings->aws_audio_path)){{ $storage_settings->aws_audio_path }} @endif" />
                            </div>
                         </div>
 
