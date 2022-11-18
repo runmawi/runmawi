@@ -4,7 +4,7 @@
                 <div class="iq-main-header align-items-center justify-content-between">
             </div>
 
-            <div class="favorites-contens ml-2">
+            <div class="favorites-contens ">
                 <ul class="favorites-slider list-inline row mb-0">
                     <?php
                      if(isset($Related_videos)) :
