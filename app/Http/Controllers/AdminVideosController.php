@@ -4547,26 +4547,42 @@ class AdminVideosController extends Controller
             date_default_timezone_set($time_zone);
             $now = date("Y-m-d h:i:s a", time());
             $current_time = date("h:i A ", time());
+
+            $Schedule_current_date = date("Y-m-d");
+
+            $schedule_id = $data["schedule_id"];
+            $choosed_date = $year . "-" . $month . "-" . $date;
+
+            $date = date_create($choosed_date);
+            $date_choose = date_format($date, "Y/m");
+            $date_choosed = $date_choose . "/" . $data["date"];
+
+            
+            $now = date("Y-m-d h:i:s a");
+            $current_time = date("h:i A");
+
+            $currentDate = date("Y/m/d");
+
     //    echo "<pre>";
     //     print_r($current_time);exit();
-            if($current_time < $choose_start_time){
+            if($current_time < $choose_start_time && $currentDate == $date_choosed){
                 $choose_current_time =  explode(":", date("h:i", strtotime($now)));
             }else {
                 $choose_current_time =  explode(":", date("h:i", strtotime($choose_start_time)));
             }
             // dd($choose_current_time);
-            if($current_time < $choose_start_time){
+            if($current_time < $choose_start_time && $currentDate == $date_choosed){
                 $store_current_time =  date("h:i", strtotime($now));
             }else {
                 $store_current_time =  date("h:i", strtotime($choose_start_time));
             }
         }
-        $choosed_date =
-        $data["year"] . "-" . $data["month"] . "-" . $data["date"];
+        // $choosed_date =
+        // $data["year"] . "-" . $data["month"] . "-" . $data["date"];
 
-        $date = date_create($choosed_date);
-        $date_choose = date_format($date, "Y/m");
-        $date_choosed = $date_choose . "/" . $data["date"];
+        // $date = date_create($choosed_date);
+        // $date_choose = date_format($date, "Y/m");
+        // $date_choosed = $date_choose . "/" . $data["date"];
 
 
         if ($mp4_url != "" && $pack != "Business") {
@@ -5107,26 +5123,41 @@ class AdminVideosController extends Controller
                 $now = date("Y-m-d h:i:s a", time());
                 $current_time = date("h:i A", time());
 
-                if($current_time < $choose_start_time){
+                $Schedule_current_date = date("Y-m-d");
+
+                $schedule_id = $data["schedule_id"];
+                $choosed_date = $year . "-" . $month . "-" . $date;
+    
+                $date = date_create($choosed_date);
+                $date_choose = date_format($date, "Y/m");
+                $date_choosed = $date_choose . "/" . $data["date"];
+    
+                
+                $now = date("Y-m-d h:i:s a");
+                $current_time = date("h:i A");
+    
+                $currentDate = date("Y/m/d");
+
+                if($current_time < $choose_start_time && $currentDate == $date_choosed){
                     $choose_current_time =  explode(":", date("h:i", strtotime($now)));
                 }else {
                     $choose_current_time =  explode(":", date("h:i", strtotime($choose_start_time)));
                 }
 
-                if($current_time < $choose_start_time){
+                if($current_time < $choose_start_time && $currentDate == $date_choosed){
                     $store_current_time =  date("h:i", strtotime($now));
                 }else {
                     $store_current_time =  date("h:i", strtotime($choose_start_time));
                 }
 
-                $Schedule_current_date = date("Y-m-d");
+                // $Schedule_current_date = date("Y-m-d");
 
-                $schedule_id = $data["schedule_id"];
-                $choosed_date = $year . "-" . $month . "-" . $date;
+                // $schedule_id = $data["schedule_id"];
+                // $choosed_date = $year . "-" . $month . "-" . $date;
 
-                $date = date_create($choosed_date);
-                $date_choose = date_format($date, "Y/m");
-                $date_choosed = $date_choose . "/" . $data["date"];
+                // $date = date_create($choosed_date);
+                // $date_choose = date_format($date, "Y/m");
+                // $date_choosed = $date_choose . "/" . $data["date"];
                 // echo "<pre>";print_r($date_choosed);exit;
 
                 $choosedtime_exitvideos = ScheduleVideos::selectRaw("*")
@@ -6654,16 +6685,30 @@ class AdminVideosController extends Controller
             date_default_timezone_set($time_zone);
             $now = date("Y-m-d h:i:s a", time());
             $current_time = date("h:i A", time());
+
+
+            $Schedule_current_date = date("Y-m-d");
+
+            $schedule_id = $data["schedule_id"];
+            $choosed_date = $year . "-" . $month . "-" . $date;
+
+            $date = date_create($choosed_date);
+            $date_choose = date_format($date, "Y/m");
+            $date_choosed = $date_choose . "/" . $data["date"];
+
             
             $now = date("Y-m-d h:i:s a");
             $current_time = date("h:i A");
-            if($current_time < $choose_start_time){
+
+            $currentDate = date("Y/m/d");
+
+            if($current_time < $choose_start_time  && $currentDate == $date_choosed ){
                 $choose_current_time =  explode(":", date("h:i", strtotime($now)));
             }else {
                 $choose_current_time =  explode(":", date("h:i", strtotime($choose_start_time)));
             }
 
-            if($current_time < $choose_start_time){
+            if($current_time < $choose_start_time  && $currentDate == $date_choosed ){
                 $store_current_time =  date("h:i A", strtotime($now));
             }else {
                 $store_current_time =  date("h:i A", strtotime($choose_start_time));
@@ -6679,12 +6724,12 @@ class AdminVideosController extends Controller
 
             $Schedule_current_date = date("Y-m-d");
 
-            $schedule_id = $data["schedule_id"];
-            $choosed_date = $year . "-" . $month . "-" . $date;
+            // $schedule_id = $data["schedule_id"];
+            // $choosed_date = $year . "-" . $month . "-" . $date;
 
-            $date = date_create($choosed_date);
-            $date_choose = date_format($date, "Y/m");
-            $date_choosed = $date_choose . "/" . $data["date"];
+            // $date = date_create($choosed_date);
+            // $date_choose = date_format($date, "Y/m");
+            // $date_choosed = $date_choose . "/" . $data["date"];
 
             $choosedtime_exitvideos = ScheduleVideos::selectRaw("*")
                 ->where("shedule_date", "=", $date_choosed)
