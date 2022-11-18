@@ -871,6 +871,7 @@ Route::get('/episode/filedelete/{id}', 'AdminSeriesController@filedelete');
     
     Route::post('/uploadAudio',  'AdminAudioController@uploadAudio');
     Route::post('/Audiofile',  'AdminAudioController@Audiofile');
+    Route::post('/AWSUploadAudio',  'AdminAudioController@AWSUploadAudio');
 
     /*Moderators*/
 
