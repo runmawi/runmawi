@@ -1,4 +1,3 @@
-
 <?php include ('header.php');  ?>
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -184,25 +183,25 @@ if ($ppv_exist > 0 ||  Auth::user()->subscribed() || $video_access == "free"  ||
                     </video>
 
             <?php  }elseif(!empty($video->url_type ) && $video->url_type == "m3u_url"){   ?>
-        <div class="row container-fluid">
-            <div class="col-lg-9">
-                  <video controls  autoplay crossorigin playsinline poster="<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
-                        <source  type="application/x-mpegURL"  src="<?= "https://adultswim-vodlive.cdn.turner.com/live/aqua-teen/stream.m3u8" ; ?>" >
-                    </video>
-            </div>
-            <div class="col-lg-3 p-0">
-                <div class="border-end" id="sidebar-wrapper">
-                <div class="sidebar-heading border-bottom">Channels</div>
-                <div class="list-group list-group-flush">
-                    <a class="list-group-item list-group-item-action list-group-item-light" href="#!">Dashboard</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light " href="#!">Shortcuts</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light" href="#!">Overview</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light" href="#!">Events</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light" href="#!">Profile</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light" href="#!">Status</a>
-                </div>
-            </div>
-            </div>
+
+                <div class="row container-fluid">
+                    <div class="col-lg-9">
+                        <video controls  autoplay crossorigin playsinline poster="<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                                <source  type="application/x-mpegURL"  >
+                        </video>
+                    </div>
+
+                    <div class="col-lg-3 p-0">
+                        <div class="border-end" id="sidebar-wrapper">
+                            <div class="sidebar-heading border-bottom">Channels</div>
+                            <div class="list-group list-group-flush">
+                                <?php foreach( $M3U_channels as $M3U_index => $M3U_channel ){ ?>
+                                    <a class="list-group-item list-group-item-action list-group-item-light" href="<?= $M3U_index ?>"> <?= $M3U_index ?> </a>
+                                <?php } ?>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
 	              
             <?php } ?>
