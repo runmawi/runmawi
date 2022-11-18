@@ -222,48 +222,52 @@ if ($ppv_exist > 0 ||  Auth::user()->subscribed() || $video_access == "free"  ||
                     </video>
 
             <?php  }elseif(!empty($video->url_type ) && $video->url_type == "m3u_url"){   ?>
-<div class="container-fluid">
-                <div class="row ">
-                    <div class="col-lg-9">
-                        <video controls  autoplay crossorigin playsinline poster="<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
-                                <source  type="application/x-mpegURL"  >
-                        </video>
-                    </div>
+                <div class="container-fluid">
+                    <div class="row ">
+                        <div class="col-lg-9">
 
-                    <div class="col-lg-3 p-0">
-                        <div class="border-end" id="sidebar-wrapper">
-                            <div class="sidebar-heading border-bottom">Channels</div>
-                            <div class="list-group list-group-flush">
-                                <?php foreach( $M3U_channels as $M3U_index => $M3U_channel ){ ?>
-                                    <a data-toggle="modal" data-target="#myModal" class="list-group-item list-group-item-action list-group-item-light" href=""> <?= $M3U_index ?> </a>
-                                <?php } ?>
+                            <?php $m3u_url = session('m3u_url_link') ; ?>
+                            
+                            <video controls  autoplay crossorigin playsinline poster="<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                                <source  type="application/x-mpegURL"  src="<?php echo $m3u_url; ?>" >
+                           </video>
+                        </div>
+
+                        <div class="col-lg-3 p-0">
+                            <div class="border-end" id="sidebar-wrapper">
+                                <div class="sidebar-heading border-bottom">Channels</div>
+                                <div class="list-group list-group-flush">
+                                    <?php foreach( $M3U_channels as $M3U_index => $M3U_channel ){ ?>
+
+                                        <a data-toggle="modal" data-target="#myModal" data-MU3-category="<?=  $M3U_index ?>"  class="list-group-item list-group-item-action list-group-item-light" onclick="m3u_url(this)" > <?= $M3U_index ?> </a>
+                                    
+                                    <?php } ?>
+                                </div>
                             </div>
                         </div>
                     </div>
-</div>
                 </div>
 	              
             <?php } ?>
 
-<div class="modal fade  come-from-modal right" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content" style="background:#1B1212;">
-            <div class="modal-header">
-                 <h4 class="modal-title" id="myModalLabel"> <?= $M3U_index ?></h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-               
-            </div>
-            <div class="modal-body">
-                <div class="list-group list-group-flush" style="height: calc(100vh - 80px - 75px)!important;">
-                 <?php foreach( $M3U_channels as $M3U_index => $M3U_channel ){ ?>
-                                    <a data-toggle="modal" data-target="#myModal" class="list-group-item list-group-item-action list-group-item-light" href=""> <?= $M3U_index ?> </a>
-                                <?php } ?>
+            <div class="modal fade  come-from-modal right" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content" style="background:#1B1212;">
+
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="myModalLabel"> </h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        </div>
+
+                        <div class="modal-body data-plans ">
+                            <div class="list-group list-group-flush"  style="height: calc(100vh - 80px - 75px)!important;">
+                               <p > <?= "Please wait a short while" ?></p>
+                            </div>
+                        </div>
+                    
+                    </div>
                 </div>
             </div>
-           
-        </div>
-    </div>
-</div>
 
         <div class="playertextbox hide">
             <p> <?php if (isset($videonext)) { ?>
