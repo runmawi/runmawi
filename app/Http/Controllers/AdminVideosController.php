@@ -6748,7 +6748,7 @@ class AdminVideosController extends Controller
             
             if(!empty($videochooed) && $videochooed->type == "mp4_url" && empty($videochooed->duration)){
                 $ffprobe = \FFMpeg\FFProbe::create();
-                $duration = $ffprobe->format($full_video_path)->get('duration');
+                $duration = $ffprobe->format($videochooed->mp4_url)->get('duration');
                 $video_duration = explode(".", $duration)[0];
             }else{
                 $video_duration = $videochooed->duration;
