@@ -132,11 +132,12 @@ if ($ppv_exist > 0 ||  Auth::user()->subscribed() || $video_access == "free"  ||
 
             <?php  }elseif(!empty($video->url_type ) && $video->url_type == "m3u_url"){   ?>
        
-                <div  id="m3u_player" width="100%">
-                      
-                </div>
-
+	                <video controls  autoplay crossorigin playsinline poster="<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                        <source  type="application/x-mpegURL"  src="<?= "https://adultswim-vodlive.cdn.turner.com/live/aqua-teen/stream.m3u8" ; ?>" >
+                    </video>
             <?php } ?>
+
+
 
         <div class="playertextbox hide">
             <p> <?php if (isset($videonext)) { ?>
@@ -777,22 +778,6 @@ document.getElementById("demo").innerHTML = "EXPIRED";
 }, 1000);
 </script>
 
-<!-- clappr Player -->
-
-<script type="text/javascript"
-      src="https://cdn.jsdelivr.net/npm/@clappr/player@latest/dist/clappr.min.js">
-</script>
-
-<script>
-    var player = new Clappr.Player(
-        {
-            source: "https://stream.flicknexs.com:9043/hls/3558376416/index.m3u8", 
-            parentId: "#m3u_player" ,
-            poster :'http://clappr.io/poster.png',
-            height: 420,
-            width: 1370,
-        });
-</script>
 
         <!-- PPV Purchase -->
 
@@ -875,4 +860,7 @@ document.getElementById("demo").innerHTML = "EXPIRED";
     });
 </script>
 
-<?php include ('footer.blade.php'); ?>
+<?php  
+    include('m3u_file_live.blade.php');  
+    include ('footer.blade.php');
+?>

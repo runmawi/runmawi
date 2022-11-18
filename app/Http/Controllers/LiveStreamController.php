@@ -31,6 +31,7 @@ use App\SystemSetting as SystemSetting;
 use Intervention\Image\ImageManagerStatic as Image;
 use App\Channel;
 use App\ModeratorsUser;
+use App\M3UFileParser;
 
 class LiveStreamController extends Controller
 {
@@ -394,6 +395,33 @@ class LiveStreamController extends Controller
               );
           }
           return response()->json($data, 200);
+      }
+
+      public function m3u_file_m3u8url( Request $request )
+      {
+
+        $M3u_category = "ANIMATION";
+
+        $m3u = file_get_contents('index.category.m3u');
+
+        
+        $parser = new M3UFileParser($m3u);
+
+        $parser_list = $parser->list() ;
+
+        $M3u_url_array = $parser_list[$M3u_category] ;
+
+
+        foreach ( $M3u_url_array as $key => $M3u_url ){
+         
+
+            echo '<pre>'; print_r( $M3u_url );
+        }
+        exit();
+
+
+       
+        
       }
 
 }
