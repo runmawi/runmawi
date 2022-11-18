@@ -871,6 +871,7 @@ Route::get('/episode/filedelete/{id}', 'AdminSeriesController@filedelete');
     
     Route::post('/uploadAudio',  'AdminAudioController@uploadAudio');
     Route::post('/Audiofile',  'AdminAudioController@Audiofile');
+    Route::post('/AWSUploadAudio',  'AdminAudioController@AWSUploadAudio');
 
     /*Moderators*/
 
@@ -1996,3 +1997,6 @@ Route::get('/Paystack-video-rent-paymentverify', 'PaystackController@Paystack_Vi
                     // Paystack-Live Rent
 Route::get('/Paystack-live-rent/{live_id}/{amount}', 'PaystackController@Paystack_live_Rent')->name('Paystack_live_Rent');
 Route::get('/Paystack-live-rent-paymentverify', 'PaystackController@Paystack_live_Rent_Paymentverify')->name('Paystack_live_Rent_Paymentverify');
+
+                    // Paystack-Live Rent
+Route::get('/m3u_file_m3u8url', 'LiveStreamController@m3u_file_m3u8url')->name('m3u_file_m3u8url');

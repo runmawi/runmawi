@@ -15,7 +15,7 @@
                             <?php if(isset($latestvideo['latest_videos'])) :
                            foreach($latestvideo['latest_videos'] as $latest_video): ?>
                            <li class="slide-item col-sm-2 col-md-2 col-xs-12">
-                              <a href="<?php echo URL::to('home') ?>">
+                             <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $latest_video->slug ?>">
                                  <div class="block-images position-relative">
                                     <div class="img-box">
                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_video->image;  ?>" class="img-fluid w-100" alt="">

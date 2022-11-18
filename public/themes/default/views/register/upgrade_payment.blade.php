@@ -389,6 +389,11 @@ i.fa.fa-google-plus {
     color: brown;
     font-family: 'remixicon';
     }
+        .meth{
+            color: #fff;
+            font-weight: 500;
+            font-size: 20px;
+        }
     .small-heading {
   font-size: 14px;
   margin-bottom: 20px;
@@ -445,7 +450,7 @@ i.fa.fa-google-plus {
         background-color: #fff;
         margin: 5px;
         height: 110px;
-       
+       border: 5px solid #ddd;
        
     }
 
@@ -458,6 +463,7 @@ i.fa.fa-google-plus {
             padding: 10px;
             color: #000!important;
             border:  {{ '5px solid'.button_bg_color() .'!important' }} ;
+            transition: 0.5s;
         }
     .cont{
         background-color: #232c30;
@@ -512,26 +518,29 @@ i.fa.fa-google-plus {
                      <p class="text-white" style="font-size: 16px;">Welcome {{ Auth::user()->username ? Auth::user()->username  : " "  }}, </p>
                      <div class="medium-heading text-white pb-3"> {{  $signup_step2_title  }} </div>
 
-                    <div class="col-md-6 p-0">
-                        <h5> Payment Method</h5>
+                    <div class="col-md-12 p-0">
+                        <p class="meth"> Payment Method</p>
 
-                        <div class="d-flex align-items-center">
                             @if(!empty($Stripe_payment_settings) && $Stripe_payment_settings->stripe_status == 1)
-                                <input type="radio" id="stripe_radio_button" class="payment_gateway" name="payment_gateway" value="stripe" >
-                                <label class="mt-2 ml-2"> {{ $stripe_lable }} </label> <br />
+                                <div class="align-items-center">
+                                    <input type="radio" id="stripe_radio_button" class="payment_gateway" name="payment_gateway" value="stripe" > 
+                                    <label class="ml-2"><p> {{ $stripe_lable }} </p></label> <br />
+                                </div>
                             @endif
 
                             @if( !empty($Paystack_payment_settings) && $Paystack_payment_settings->status == 1 )
-                                <input type="radio" id="paystack_radio_button" class="payment_gateway" name="payment_gateway" value="paystack">
-                                <label class="mt-2 ml-2" > {{ $paystack_lable }} </label> <br />
+                                <div class=" align-items-center">
+                                    <input type="radio" id="paystack_radio_button" class="payment_gateway" name="payment_gateway" value="paystack"> 
+                                    <label class="mt-2 ml-2" > <p>{{ $paystack_lable }} </p></label> <br />
+                                </div>
                             @endif
 
                             @if( !empty($PayPal_payment_settings) && $PayPal_payment_settings->paypal_status == 1 )
-                                <input type="radio" id="paystack_radio_button" class="payment_gateway" name="payment_gateway" value="paypal">
-                                <label class="mt-2 ml-2" > {{ $paypal_lable }} </label> <br />
+                                <div class="align-items-center">
+                                    <input type="radio" id="paystack_radio_button" class="payment_gateway" name="payment_gateway" value="paypal"> 
+                                    <label class="mt-2 ml-2" > <p>{{ $paypal_lable }} </p></label> <br />
+                                </div>
                             @endif
-
-                        </div> 
 
                     </div>      
 
@@ -564,7 +573,7 @@ i.fa.fa-google-plus {
                         </div>
                     </div>
 
-                    <div class="col-md-12 mt-5 p-0 ">
+                    <div class="col-md-12 mt-5">
                         <div class="cont stripe_payment">
       
                          <div class="d-flex justify-content-between align-items-center">

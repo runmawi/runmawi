@@ -452,6 +452,8 @@ i.fa.fa-google-plus {
         color: #000!important;
         background-color: #fff;
         margin: 7px;
+        border:5px solid #ddd;
+        
        
     }
 
@@ -461,7 +463,7 @@ i.fa.fa-google-plus {
     }
    
         .dg:hover{
-          
+          transition: 0.5s;
             color: #000!important;
             border:  {{ '5px solid'.button_bg_color() .'!important' }} ;
         }
@@ -520,35 +522,40 @@ i.fa.fa-google-plus {
                      <p class="text-white">Hello, {{ $user_mail }}</p>
                      <div class="medium-heading text-white"> {{  $signup_step2_title }} </div>
                      {{-- <p class="text-white">You will not be charged until the end of your free trial. Cancel anytime.</p> --}}
-                    <div class="col-md-6 p-0">
+                    <div class="col-md-12 p-0 mt-2">
 
                         <!-- <h5> Payment Method</h5> -->
 
-                        <div class="d-flex align-items-center">
 
 
                             {{-- @if(!empty($PayPal_payment_settings) && $PayPal_payment_settings->paypal_status == 1)
                                 <input type="checkbox" id="Paypal_lable" name="payment_lable" value="Paypal_lable" >
-                                <label class="mt-2 ml-2 " for="" > {{ $paypal_lable }} </label><br />&nbsp;&nbsp;
+                                <label class=" ml-2 " for="" ><p> {{ $paypal_lable }} </p></label><br />&nbsp;&nbsp;
                             @endif --}}
 
 
                             @if(!empty($Stripe_payment_settings) && $Stripe_payment_settings->stripe_status == 1)
-                                <input type="radio" id="stripe_radio_button" class="payment_gateway" name="payment_gateway" value="stripe" >
-                                <label class="mt-2 ml-2"> {{ $stripe_lable }} </label> <br />
+                                <div class=" align-items-center">
+                                    <input type="radio" id="stripe_radio_button" class="payment_gateway" name="payment_gateway" value="stripe" >
+                                    <label class=" ml-2"> <p>{{ $stripe_lable }} </p></label> 
+                                </div>
                             @endif
 
                             @if( !empty($Paystack_payment_settings) && $Paystack_payment_settings->status == 1 )
-                                <input type="radio" id="paystack_radio_button" class="payment_gateway" name="payment_gateway" value="paystack">
-                                <label class="mt-2 ml-2" > {{ $paystack_lable }} </label> <br />
+                                <div class="align-items-center">
+                                    <input type="radio" id="paystack_radio_button" class="payment_gateway" name="payment_gateway" value="paystack">
+                                    <label class="ml-2" ><p> {{ $paystack_lable }} </p></label> 
+                                </div>
                             @endif
 
                             @if( !empty($PayPal_payment_settings) && $PayPal_payment_settings->paypal_status == 1 )
-                                <input type="radio" id="paystack_radio_button" class="payment_gateway" name="payment_gateway" value="paypal">
-                                <label class="mt-2 ml-2" > {{ $paypal_lable }} </label> <br />
+                                <div class=" align-items-center">
+                                    <input type="radio" id="paystack_radio_button" class="payment_gateway" name="payment_gateway" value="paypal">
+                                    <label class="mt-2 ml-2" > <p>{{ $paypal_lable }} </p></label>
+                                </div>
                             @endif
+                            
 
-                        </div>
           </div>      
 
             <div class="row">

@@ -31,6 +31,7 @@ use App\SystemSetting as SystemSetting;
 use Intervention\Image\ImageManagerStatic as Image;
 use App\Channel;
 use App\ModeratorsUser;
+use App\M3UFileParser;
 
 class LiveStreamController extends Controller
 {
@@ -73,6 +74,7 @@ class LiveStreamController extends Controller
     
     public function Play($vid)
         {
+          
 
           $Theme = HomeSetting::pluck('theme_choosen')->first();
           Theme::uses( $Theme );
@@ -206,6 +208,11 @@ class LiveStreamController extends Controller
              $view->live_id      = $vid ;
              $view->save();
 
+            //  M3U
+             $M3U_files = ('https://iptv-org.github.io/iptv/index.m3u');
+             $parser = new M3UFileParser($M3U_files);
+             $M3U_channels = $parser->list() ;
+
            $data = array(
                  'currency' => $currency,
                  'video_access' => $video_access,
@@ -224,6 +231,7 @@ class LiveStreamController extends Controller
                  'stripe_payment_setting'   => $stripe_payment_setting ,
                  'Related_videos' => LiveStream::whereNotIn('id',[$vid])->inRandomOrder()->get(),
                  'Paystack_payment_settings' => PaymentSetting::where('payment_type','Paystack')->first() ,
+                 'M3U_channels' => $M3U_channels ,
            );
 
            return Theme::view('livevideo', $data);
@@ -396,4 +404,43 @@ class LiveStreamController extends Controller
           return response()->json($data, 200);
       }
 
+      public function m3u_file_m3u8url( Request $request )
+      {
+
+        $M3u_category = "ANIMATION";
+
+        $m3u = ('https://iptv-org.github.io/iptv/index.m3u');
+
+        $parser = new M3UFileParser($m3u);
+        $parser_list = $parser->list() ;
+        $M3u_url_array = $parser_list[$M3u_category] ;
+
+        foreach ( $M3u_url_array as $key => $M3u_url ){
+         
+            preg_match_all('/(?P<tag>#EXTINF:-1)|(?:(?P<prop_key>[-a-z]+)=\"(?P<prop_val>[^"]+)")|(?<something>,[^\r\n]+)|(?<url>http[^\s]+)/', $M3u_url, $match );
+
+            $count = count( $match[0] );
+              
+            $result = [];
+            $index = -1;
+            
+            for( $i =0; $i < $count; $i++ ){
+                $item = $match[0][$i];
+            
+                if( !empty($match['tag'][$i])){
+                    ++$index;
+                }elseif( !empty($match['prop_key'][$i])){
+                    $result[$index][$match['prop_key'][$i]] = $match['prop_val'][$i];
+                }elseif( !empty($match['something'][$i])){
+                    $result[$index]['something'] = $item;
+                }elseif( !empty($match['url'][$i])){
+                    $result[$index]['url'] = $item ;
+                }
+            }
+          echo "<pre>";print_r($result);
+
+        }
+        exit();
+        
+      }
 }

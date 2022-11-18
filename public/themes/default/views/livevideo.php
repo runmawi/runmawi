@@ -1,8 +1,99 @@
-
 <?php include ('header.php');  ?>
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <style type="text/css">
+    .close{
+        color: red;
+        text-shadow: none;
+    }
+    .come-from-modal.left .modal-dialog,
+.come-from-modal.right .modal-dialog {
+    position: fixed;
+    margin: auto;
+    width: 400px;
+    background-color: #000!important;
+    height: 100%;
+    -webkit-transform: translate3d(0%, 0, 0);
+    -ms-transform: translate3d(0%, 0, 0);
+    -o-transform: translate3d(0%, 0, 0);
+    transform: translate3d(0%, 0, 0);
+}
+
+.come-from-modal.left .modal-content,
+.come-from-modal.right .modal-content {
+    height: 100%;
+    overflow-y: auto;
+    border-radius: 0px;
+}
+
+.come-from-modal.left .modal-body,
+.come-from-modal.right .modal-body {
+    padding: 15px 15px 80px;
+}
+.come-from-modal.right.fade .modal-dialog {
+    right: 0;
+    -webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
+    -moz-transition: opacity 0.3s linear, right 0.3s ease-out;
+    -o-transition: opacity 0.3s linear, right 0.3s ease-out;
+    transition: opacity 0.3s linear, right 0.3s ease-out;
+}
+
+.come-from-modal.right.fade.in .modal-dialog {
+    right: 0;
+}
+    #sidebar-wrapper {
+  height: calc(100vh - 80px - 75px)!important;
+  /*background-color: #000;*/
+        border-radius: 10px;
+        box-shadow: inset 0 0 10px #000000;
+        color: #fff;
+  transition: margin 0.25s ease-out;
+    }.list-group-item-action:hover {
+        color: #000!important;
+    }
+    .list-group-item-light{
+         background-color:transparent;
+       
+         
+    }
+     .list-group-item-light:hover{
+        background-color: #fff;
+        color: #000!important;
+    }
+    a.list-group-item{
+        border:none;
+      
+    }
+    .list-group-flush::-webkit-scrollbar-thumb {
+    background-color: red;
+    border-radius: 2px;
+    border: 2px solid red;
+      width: 2px;
+  }
+    .list-group-flush{
+        overflow-x: hidden!important;
+        overflow: scroll;
+       height: calc(91vh - 80px - 75px)!important;
+         scroll-behavior: auto;
+     
+      scrollbar-color: rebeccapurple green!important;
+
+    }
+     .list-group-flush::-webkit-scrollbar {
+  width: 8px;
+  }
+    .list-group-flush::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.2);
+      
+  }
+#sidebar-wrapper .sidebar-heading {
+  padding: 10px 10px;
+  font-size: 1.2rem;
+    
+}
+
+
+
 	 .plyr__video-embed{
           position: relative;
       }
@@ -131,12 +222,48 @@ if ($ppv_exist > 0 ||  Auth::user()->subscribed() || $video_access == "free"  ||
                     </video>
 
             <?php  }elseif(!empty($video->url_type ) && $video->url_type == "m3u_url"){   ?>
-       
-                <div  id="m3u_player" width="100%">
-                      
-                </div>
+<div class="container-fluid">
+                <div class="row ">
+                    <div class="col-lg-9">
+                        <video controls  autoplay crossorigin playsinline poster="<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                                <source  type="application/x-mpegURL"  >
+                        </video>
+                    </div>
 
+                    <div class="col-lg-3 p-0">
+                        <div class="border-end" id="sidebar-wrapper">
+                            <div class="sidebar-heading border-bottom">Channels</div>
+                            <div class="list-group list-group-flush">
+                                <?php foreach( $M3U_channels as $M3U_index => $M3U_channel ){ ?>
+                                    <a data-toggle="modal" data-target="#myModal" class="list-group-item list-group-item-action list-group-item-light" href=""> <?= $M3U_index ?> </a>
+                                <?php } ?>
+                            </div>
+                        </div>
+                    </div>
+</div>
+                </div>
+	              
             <?php } ?>
+
+<div class="modal fade  come-from-modal right" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="background:#1B1212;">
+            <div class="modal-header">
+                 <h4 class="modal-title" id="myModalLabel"> <?= $M3U_index ?></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+               
+            </div>
+            <div class="modal-body">
+                <div class="list-group list-group-flush" style="height: calc(100vh - 80px - 75px)!important;">
+                 <?php foreach( $M3U_channels as $M3U_index => $M3U_channel ){ ?>
+                                    <a data-toggle="modal" data-target="#myModal" class="list-group-item list-group-item-action list-group-item-light" href=""> <?= $M3U_index ?> </a>
+                                <?php } ?>
+                </div>
+            </div>
+           
+        </div>
+    </div>
+</div>
 
         <div class="playertextbox hide">
             <p> <?php if (isset($videonext)) { ?>
@@ -777,22 +904,6 @@ document.getElementById("demo").innerHTML = "EXPIRED";
 }, 1000);
 </script>
 
-<!-- clappr Player -->
-
-<script type="text/javascript"
-      src="https://cdn.jsdelivr.net/npm/@clappr/player@latest/dist/clappr.min.js">
-</script>
-
-<script>
-    var player = new Clappr.Player(
-        {
-            source: "https://stream.flicknexs.com:9043/hls/3558376416/index.m3u8", 
-            parentId: "#m3u_player" ,
-            poster :'http://clappr.io/poster.png',
-            height: 420,
-            width: 1370,
-        });
-</script>
 
         <!-- PPV Purchase -->
 
@@ -874,5 +985,10 @@ document.getElementById("demo").innerHTML = "EXPIRED";
       });
     });
 </script>
-
-<?php include ('footer.blade.php'); ?>
+<script>
+  
+</script>
+<?php  
+    include('m3u_file_live.blade.php');  
+    include ('footer.blade.php');
+?>

@@ -219,8 +219,8 @@ border-radius: 0px 4px 4px 0px;
 
         
         $('#aws_details').hide(); 
-
-        if($('#aws_storage').val() == 'on'){
+        var aws_storage = "{{ $storage_settings->aws_storage }}";
+        if(aws_storage == 1){
             $('#aws_details').show(); 
         }
 
