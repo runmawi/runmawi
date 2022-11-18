@@ -1,8 +1,46 @@
-
 <?php include ('header.php');  ?>
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <style type="text/css">
+    .close{
+        color: red;
+        text-shadow: none;
+    }
+    .come-from-modal.left .modal-dialog,
+.come-from-modal.right .modal-dialog {
+    position: fixed;
+    margin: auto;
+    width: 400px;
+    background-color: #000!important;
+    height: 100%;
+    -webkit-transform: translate3d(0%, 0, 0);
+    -ms-transform: translate3d(0%, 0, 0);
+    -o-transform: translate3d(0%, 0, 0);
+    transform: translate3d(0%, 0, 0);
+}
+
+.come-from-modal.left .modal-content,
+.come-from-modal.right .modal-content {
+    height: 100%;
+    overflow-y: auto;
+    border-radius: 0px;
+}
+
+.come-from-modal.left .modal-body,
+.come-from-modal.right .modal-body {
+    padding: 15px 15px 80px;
+}
+.come-from-modal.right.fade .modal-dialog {
+    right: 0;
+    -webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
+    -moz-transition: opacity 0.3s linear, right 0.3s ease-out;
+    -o-transition: opacity 0.3s linear, right 0.3s ease-out;
+    transition: opacity 0.3s linear, right 0.3s ease-out;
+}
+
+.come-from-modal.right.fade.in .modal-dialog {
+    right: 0;
+}
     #sidebar-wrapper {
   height: calc(100vh - 80px - 75px)!important;
   /*background-color: #000;*/
@@ -184,30 +222,48 @@ if ($ppv_exist > 0 ||  Auth::user()->subscribed() || $video_access == "free"  ||
                     </video>
 
             <?php  }elseif(!empty($video->url_type ) && $video->url_type == "m3u_url"){   ?>
-        <div class="row container-fluid">
-            <div class="col-lg-9">
-                  <video controls  autoplay crossorigin playsinline poster="<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
-                        <source  type="application/x-mpegURL"  src="<?= "https://adultswim-vodlive.cdn.turner.com/live/aqua-teen/stream.m3u8" ; ?>" >
-                    </video>
-            </div>
-            <div class="col-lg-3 p-0">
-                <div class="border-end" id="sidebar-wrapper">
-                <div class="sidebar-heading border-bottom">Channels</div>
-                <div class="list-group list-group-flush">
-                    <a class="list-group-item list-group-item-action list-group-item-light" href="#!">Dashboard</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light " href="#!">Shortcuts</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light" href="#!">Overview</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light" href="#!">Events</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light" href="#!">Profile</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light" href="#!">Status</a>
-                </div>
-            </div>
-            </div>
+<div class="container-fluid">
+                <div class="row ">
+                    <div class="col-lg-9">
+                        <video controls  autoplay crossorigin playsinline poster="<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                                <source  type="application/x-mpegURL"  >
+                        </video>
+                    </div>
+
+                    <div class="col-lg-3 p-0">
+                        <div class="border-end" id="sidebar-wrapper">
+                            <div class="sidebar-heading border-bottom">Channels</div>
+                            <div class="list-group list-group-flush">
+                                <?php foreach( $M3U_channels as $M3U_index => $M3U_channel ){ ?>
+                                    <a data-toggle="modal" data-target="#myModal" class="list-group-item list-group-item-action list-group-item-light" href=""> <?= $M3U_index ?> </a>
+                                <?php } ?>
+                            </div>
+                        </div>
+                    </div>
+</div>
                 </div>
 	              
             <?php } ?>
 
-
+<div class="modal fade  come-from-modal right" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="background:#1B1212;">
+            <div class="modal-header">
+                 <h4 class="modal-title" id="myModalLabel"> <?= $M3U_index ?></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+               
+            </div>
+            <div class="modal-body">
+                <div class="list-group list-group-flush" style="height: calc(100vh - 80px - 75px)!important;">
+                 <?php foreach( $M3U_channels as $M3U_index => $M3U_channel ){ ?>
+                                    <a data-toggle="modal" data-target="#myModal" class="list-group-item list-group-item-action list-group-item-light" href=""> <?= $M3U_index ?> </a>
+                                <?php } ?>
+                </div>
+            </div>
+           
+        </div>
+    </div>
+</div>
 
         <div class="playertextbox hide">
             <p> <?php if (isset($videonext)) { ?>
@@ -929,7 +985,9 @@ document.getElementById("demo").innerHTML = "EXPIRED";
       });
     });
 </script>
-
+<script>
+  
+</script>
 <?php  
     include('m3u_file_live.blade.php');  
     include ('footer.blade.php');
