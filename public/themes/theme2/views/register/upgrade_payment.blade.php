@@ -512,26 +512,29 @@ i.fa.fa-google-plus {
                      <p class="text-white" style="font-size: 16px;">Welcome {{ Auth::user()->username ? Auth::user()->username  : " "  }}, </p>
                      <div class="medium-heading text-white pb-3"> {{  $signup_step2_title  }} </div>
 
-                    <div class="col-md-6 p-0">
+                    <div class="col-md-12 p-0">
                         <h5> Payment Method</h5>
 
-                        <div class="d-flex align-items-center">
                             @if(!empty($Stripe_payment_settings) && $Stripe_payment_settings->stripe_status == 1)
-                                <input type="radio" id="stripe_radio_button" class="payment_gateway" name="payment_gateway" value="stripe" >
-                                <label class="mt-2 ml-2"> {{ $stripe_lable }} </label> <br />
+                                <div class="d-flex align-items-center">
+                                    <input type="radio" id="stripe_radio_button" class="payment_gateway" name="payment_gateway" value="stripe" > <br />
+                                    <label class="mt-2 ml-2"> {{ $stripe_lable }} </label> <br />
+                                </div>
                             @endif
 
                             @if( !empty($Paystack_payment_settings) && $Paystack_payment_settings->status == 1 )
-                                <input type="radio" id="paystack_radio_button" class="payment_gateway" name="payment_gateway" value="paystack">
-                                <label class="mt-2 ml-2" > {{ $paystack_lable }} </label> <br />
+                                <div class="d-flex align-items-center">
+                                    <input type="radio" id="paystack_radio_button" class="payment_gateway" name="payment_gateway" value="paystack"> 
+                                    <label class="mt-2 ml-2" > {{ $paystack_lable }} </label> <br />
+                                </div>
                             @endif
 
                             @if( !empty($PayPal_payment_settings) && $PayPal_payment_settings->paypal_status == 1 )
-                                <input type="radio" id="paystack_radio_button" class="payment_gateway" name="payment_gateway" value="paypal">
-                                <label class="mt-2 ml-2" > {{ $paypal_lable }} </label> <br />
+                                <div class="d-flex align-items-center">
+                                    <input type="radio" id="paystack_radio_button" class="payment_gateway" name="payment_gateway" value="paypal"> 
+                                    <label class="mt-2 ml-2" > {{ $paypal_lable }} </label> <br />
+                                </div>
                             @endif
-
-                        </div> 
 
                     </div>      
 
