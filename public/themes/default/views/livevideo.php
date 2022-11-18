@@ -3,6 +3,59 @@
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <style type="text/css">
+    #sidebar-wrapper {
+  height: calc(100vh - 80px - 75px)!important;
+  /*background-color: #000;*/
+        border-radius: 10px;
+        box-shadow: inset 0 0 10px #000000;
+        color: #fff;
+  transition: margin 0.25s ease-out;
+    }.list-group-item-action:hover {
+        color: #000!important;
+    }
+    .list-group-item-light{
+         background-color:transparent;
+       
+         
+    }
+     .list-group-item-light:hover{
+        background-color: #fff;
+        color: #000!important;
+    }
+    a.list-group-item{
+        border:none;
+      
+    }
+    .list-group-flush::-webkit-scrollbar-thumb {
+    background-color: red;
+    border-radius: 2px;
+    border: 2px solid red;
+      width: 2px;
+  }
+    .list-group-flush{
+        overflow-x: hidden!important;
+        overflow: scroll;
+       height: calc(91vh - 80px - 75px)!important;
+         scroll-behavior: auto;
+     
+      scrollbar-color: rebeccapurple green!important;
+
+    }
+     .list-group-flush::-webkit-scrollbar {
+  width: 8px;
+  }
+    .list-group-flush::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.2);
+      
+  }
+#sidebar-wrapper .sidebar-heading {
+  padding: 10px 10px;
+  font-size: 1.2rem;
+    
+}
+
+
+
 	 .plyr__video-embed{
           position: relative;
       }
@@ -131,10 +184,27 @@ if ($ppv_exist > 0 ||  Auth::user()->subscribed() || $video_access == "free"  ||
                     </video>
 
             <?php  }elseif(!empty($video->url_type ) && $video->url_type == "m3u_url"){   ?>
-       
-	                <video controls  autoplay crossorigin playsinline poster="<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+        <div class="row container-fluid">
+            <div class="col-lg-9">
+                  <video controls  autoplay crossorigin playsinline poster="<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
                         <source  type="application/x-mpegURL"  src="<?= "https://adultswim-vodlive.cdn.turner.com/live/aqua-teen/stream.m3u8" ; ?>" >
                     </video>
+            </div>
+            <div class="col-lg-3 p-0">
+                <div class="border-end" id="sidebar-wrapper">
+                <div class="sidebar-heading border-bottom">Channels</div>
+                <div class="list-group list-group-flush">
+                    <a class="list-group-item list-group-item-action list-group-item-light" href="#!">Dashboard</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light " href="#!">Shortcuts</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light" href="#!">Overview</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light" href="#!">Events</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light" href="#!">Profile</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light" href="#!">Status</a>
+                </div>
+            </div>
+            </div>
+                </div>
+	              
             <?php } ?>
 
 
