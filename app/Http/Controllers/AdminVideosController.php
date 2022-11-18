@@ -6745,7 +6745,15 @@ class AdminVideosController extends Controller
                 ->orderBy("id", "desc")
                 ->first();
 
-            $video_duration = $videochooed->duration;
+            
+            if(!empty($videochooed) && $videochooed->type == "mp4_url" && empty($videochooed->duration)){
+                $ffprobe = \FFMpeg\FFProbe::create();
+                $duration = $ffprobe->format($full_video_path)->get('duration');
+                $video_duration = explode(".", $duration)[0];
+            }else{
+                $video_duration = $videochooed->duration;
+            }
+
 
             // DateTime();
             $current_date =  date("Y-m-d h:i:s a", time());
