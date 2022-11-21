@@ -397,7 +397,7 @@ class AdminAudioCategoriesController extends Controller
             $package_id = auth()->user()->id;
             $user_package =    User::where('id', $package_id)->first();
             $package = $user_package->package;
-
+            
             if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
             
                 $input = $request->all();
@@ -410,6 +410,7 @@ class AdminAudioCategoriesController extends Controller
                 } 
                 else {
                     $image = $request['album'];
+                    $audio_album_image = $request['album'];
 
                     if($image != ''  && $image != null){
                         $file_old = $image_path.$image;
@@ -493,6 +494,7 @@ class AdminAudioCategoriesController extends Controller
             } 
             else {
                 $image = $request['album'];
+                $audio_album_image = $request['album'];
 
                 if($image != ''  && $image != null){
                     $file_old = $image_path.$image;

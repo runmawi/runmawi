@@ -10,7 +10,7 @@
      <?php  if(isset($albums)) :
      foreach($albums as $album): ?>
    <li class="slide-item">
-      <a href="<?php echo URL::to('home') ?>">
+   <a href="<?php echo URL::to('album') ?><?= '/' . $album->slug ?>">
          <div class="block-images position-relative">
                              <!-- block-images -->
             <div class="img-box">
