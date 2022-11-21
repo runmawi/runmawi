@@ -491,14 +491,14 @@ return;
                   tagUrl: ads_path_tag 
                 }
         });
-   }if(type == 'aws_m3u8'){
+   }else if(type == 'aws_m3u8'){
 
         // alert(type);
         document.addEventListener("DOMContentLoaded", () => {
         const video = document.querySelector("video");
         const source = video.getElementsByTagName("source")[0].src;
-        alert(video);
-        alert(source);
+        // alert(video);
+        // alert(source);
 
 
         // For more options see: https://github.com/sampotts/plyr/#options
@@ -546,7 +546,7 @@ return;
 
         }
 else{
-alert();
+// alert();
           document.addEventListener("DOMContentLoaded", () => {
   const video = document.querySelector("video");
   const source = video.getElementsByTagName("source")[0].src;

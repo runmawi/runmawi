@@ -3685,6 +3685,13 @@ class AdminVideosController extends Controller
 
         $id = $data["videoid"];
         $video = Video::findOrFail($id);
+        if(!empty($video) && $video->mp4_url == $data["mp4_url"]){
+            $value["success"] = 1;
+            $value["message"] = "Already Exits";
+            $value["video_id"] = $id;
+
+            return $value;
+        }else{
         // echo"<pre>";print_r($data);exit;
         if (!empty($data["mp4_url"])) {
             $video->disk = "public";
@@ -3702,11 +3709,12 @@ class AdminVideosController extends Controller
             $video_id = $video->id;
 
             $value["success"] = 1;
-            $value["message"] = "Uploaded Successfully!";
+            $value["message"] = "URL Updated Successfully!";
             $value["video_id"] = $video_id;
 
             return $value;
         }
+    }
     }
     public function Updatem3u8url(Request $request)
     {
@@ -3714,7 +3722,16 @@ class AdminVideosController extends Controller
         $value = [];
 
         $id = $data["videoid"];
+
         $video = Video::findOrFail($id);
+        if(!empty($video) && $video->m3u8_url == $data["m3u8_url"]){
+            $value["success"] = 1;
+            $value["message"] = "Already Exits";
+            $value["video_id"] = $id;
+
+            return $value;
+        }else{
+
         if (!empty($data["m3u8_url"])) {
             // $video = new Video();
             $video->disk = "public";
@@ -3732,11 +3749,13 @@ class AdminVideosController extends Controller
             $video_id = $video->id;
 
             $value["success"] = 1;
-            $value["message"] = "Uploaded Successfully!";
+            $value["message"] = "URL Updated Successfully!";
             $value["video_id"] = $video_id;
 
             return $value;
         }
+    }
+
     }
     public function UpdateEmbededcode(Request $request)
     {
@@ -3748,7 +3767,13 @@ class AdminVideosController extends Controller
         // exit();
         $id = $data["videoid"];
         $video = Video::findOrFail($id);
+        if(!empty($video) && $video->embed_code == $data["embed"]){
+            $value["success"] = 1;
+            $value["message"] = "Already Exits";
+            $value["video_id"] = $id;
 
+            return $value;
+        }else{
         if (!empty($data["embed"])) {
             // $video = new Video();
             $video->disk = "public";
@@ -3766,10 +3791,11 @@ class AdminVideosController extends Controller
             $video_id = $video->id;
 
             $value["success"] = 1;
-            $value["message"] = "Uploaded Successfully!";
+            $value["message"] = "URL Updated Successfully!";
             $value["video_id"] = $video_id;
             return $value;
         }
+    }
     }
 
     public function video_slider_update(Request $request)

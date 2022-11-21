@@ -283,6 +283,23 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 </div>
   
            </div>
+
+           <?php  elseif($video->type == 'aws_m3u8'):  ?>
+          <div id="video_container" class="fitvid" atyle="z-index: 9999;">
+
+          <video  autoplay id="video"  allow="autoplay" class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
+          <source src="<?php echo $video->m3u8_url; ?>"  type='application/x-mpegURL' label='auto' > 
+          <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
+                  <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
+                  <?php } if($value['sub_language'] == "German"){ ?>
+                  <track label="German" kind="subtitles" srclang="de" src="<?= $value['url'] ?>" >
+                  <?php } if($value['sub_language'] == "Spanish"){ ?>
+                  <track label="Spanish" kind="subtitles" srclang="es" src="<?= $value['url'] ?>" >
+                  <?php } if($value['sub_language'] == "Hindi"){ ?>
+                  <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value['url'] ?>" >
+                  <?php } } } else { }  ?>  
+        </video>
+        </div>
            <?php  elseif($video->type == 'mp4_url'):  ?>
            
              
@@ -591,6 +608,22 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
             <?= Video::where('id','=',$videos_category_prev->id)->pluck('title');  ?>
             <?php } ?></p>
         </div>
+        </div>
+        <?php  elseif($video->type == 'aws_m3u8'):  ?>
+          <div id="video_container" class="fitvid" atyle="z-index: 9999;">
+
+          <video  autoplay id="video"  allow="autoplay" class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
+          <source src="<?php echo $video->m3u8_url; ?>"  type='application/x-mpegURL' label='auto' > 
+          <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
+                  <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
+                  <?php } if($value['sub_language'] == "German"){ ?>
+                  <track label="German" kind="subtitles" srclang="de" src="<?= $value['url'] ?>" >
+                  <?php } if($value['sub_language'] == "Spanish"){ ?>
+                  <track label="Spanish" kind="subtitles" srclang="es" src="<?= $value['url'] ?>" >
+                  <?php } if($value['sub_language'] == "Hindi"){ ?>
+                  <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value['url'] ?>" >
+                  <?php } } } else { }  ?>  
+        </video>
         </div>
         <?php  elseif($video->type == 'mp4_url'):   ?>
         
