@@ -6745,7 +6745,15 @@ class AdminVideosController extends Controller
                 ->orderBy("id", "desc")
                 ->first();
 
-            $video_duration = $videochooed->duration;
+            
+            if(!empty($videochooed) && $videochooed->type == "mp4_url" && empty($videochooed->duration)){
+                $ffprobe = \FFMpeg\FFProbe::create();
+                $duration = $ffprobe->format($videochooed->mp4_url)->get('duration');
+                $video_duration = explode(".", $duration)[0];
+            }else{
+                $video_duration = $videochooed->duration;
+            }
+
 
             // DateTime();
             $current_date =  date("Y-m-d h:i:s a", time());
@@ -6912,7 +6920,15 @@ class AdminVideosController extends Controller
                 !empty($choosedtime_exitvideos)
             ) {
                 // print_r('$ScheduleVideos');exit;
-                $Video_duration = $videochooed->duration;
+                if(!empty($videochooed) && $videochooed->type == "mp4_url" && empty($videochooed->duration)){
+                    $ffprobe = \FFMpeg\FFProbe::create();
+                    $duration = $ffprobe->format($videochooed->mp4_url)->get('duration');
+                    $Video_duration = explode(".", $duration)[0];
+                }else{
+                    $Video_duration = $videochooed->duration;
+                }
+
+                // $Video_duration = $videochooed->duration;
                 $last_shedule_endtime =
                     $choosedtime_exitvideos->shedule_endtime;
                 $last_current_time = $choosedtime_exitvideos->current_time;
@@ -7052,8 +7068,15 @@ class AdminVideosController extends Controller
 
                 return $value;
             } else {
-                
+
+            if(!empty($videochooed) && $videochooed->type == "mp4_url" && empty($videochooed->duration)){
+                $ffprobe = \FFMpeg\FFProbe::create();
+                $duration = $ffprobe->format($videochooed->mp4_url)->get('duration');
+                $Video_duration = explode(".", $duration)[0];
+            }else{
                 $Video_duration = $videochooed->duration;
+            }
+                // $Video_duration = $videochooed->duration;
                 $time = $choose_current_time;
                 $minutes = $time[0] * 60.0 + $time[1] * 1.0;
                 $totalSecs = $minutes * 60;

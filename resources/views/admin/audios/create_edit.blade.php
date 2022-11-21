@@ -118,7 +118,7 @@ border-radius: 0px 4px 4px 0px;
                                 <div class='content file'>
                                     <h4 class="card-title upload-ui font-weight-bold">Upload Audio</h4>
                                     <!-- Dropzone -->
-                                    <form action="{{URL::to('admin/uploadAudio')}}" method= "post" class='dropzone' id="audio_source" ></form> 
+                                    <form action="{{ $dropzone_url }}" method= "post" class='dropzone' id="audio_source" ></form> 
                                 </div> 
                                 <div>
 <!--                                    <input type="button" id="Next" value='Next' class='btn btn-secondary'>-->
