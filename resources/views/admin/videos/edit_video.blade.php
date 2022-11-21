@@ -70,6 +70,9 @@ border-radius: 0px 4px 4px 0px;
                         <label for="embed_code"><label>m3u8 URL:</label></label>
                         <input type="text" class="form-control" name="m3u8_video_url" id="m3u8_video_url" value="" />
                      </div>
+                     <div class="new-audio-file mt-3">
+                        <button class="btn btn-primary"  id="submit_m3u8">Submit</button>
+                     </div>
                   </div>
                   <!-- Embedded Video -->        
                   <div id="embedvideo" style="">
@@ -77,12 +80,18 @@ border-radius: 0px 4px 4px 0px;
                         <label for="embed_code"><label>Embed URL:</label></label>
                         <input type="text" class="form-control" name="embed_code" id="embed_code" value="" />
                      </div>
+                     <div class="new-audio-file mt-3">
+                        <button class="btn btn-primary"  id="submit_embed">Submit</button>
+                     </div>
                   </div>
                   <!-- MP4 Video -->        
                   <div id="video_mp4" style="">
                      <div class="new-audio-file mt-3" >
                         <label for="mp4_url"><label>Mp4 File URL:</label></label>
                         <input type="text" class="form-control" name="mp4_url" id="mp4_url" value="" />
+                     </div>
+                     <div class="new-audio-file mt-3">
+                        <button class="btn btn-primary"  id="submit_mp4">Submit</button>
                      </div>
                   </div>
                   <input type="hidden" id="embed_url" value="<?php echo URL::to('/admin/UpdateEmbededcode');?>">
@@ -213,20 +222,20 @@ border-radius: 0px 4px 4px 0px;
        var url =$('#m3u8url').val();
       var videoid = '<?= $video->id ?>' ;
 
-       $('#m3u8_video_url').change(function(){
+       $('#submit_m3u8').click(function(){
         // alert($('#m3u8_video_url').val());
         $.ajax({
                url: url,
                type: "post",
        data: {
                       _token: '{{ csrf_token() }}',
-                      m3u8_url: $('#m3u8_video_url').val()
-
+                      m3u8_url: $('#m3u8_video_url').val(),
+                      videoid:videoid
                 },        success: function(value){
                 console.log(value);
                    $('#Next').show();
                                      if(value.video_id == videoid){
-                     swal("URL Update Successfull !");
+                     swal(value.message);
                   }
                }
            });
@@ -247,7 +256,7 @@ border-radius: 0px 4px 4px 0px;
       var videoid = '<?= $video->id ?>' ;
 
        var url =$('#mp4url').val();
-       $('#mp4_url').change(function(){
+       $('#submit_mp4').click(function(){
        // alert($('#mp4_url').val());
        $.ajax({
            url: url,
@@ -260,7 +269,7 @@ border-radius: 0px 4px 4px 0px;
             },        success: function(value){
                console.log(value);
                if(value.video_id == videoid){
-                     swal("URL Update Successfull !");
+                  swal(value.message);
                   }
            }
            });
@@ -280,7 +289,7 @@ border-radius: 0px 4px 4px 0px;
          var videoid = '<?= $video->id ?>' ;
    
    var url =$('#embed_url').val();
-   $('#embed_code').change(function(){
+   $('#submit_embed').click(function(){
    	// alert($('#embed_code').val());
    	$.ajax({
            url: url,
@@ -294,7 +303,7 @@ border-radius: 0px 4px 4px 0px;
             },        success: function(value){
    			console.log(value);
             if(value.video_id == videoid){
-                     swal("URL Update Successfull !");
+               swal(value.message);
                   }
            }
        });
