@@ -147,7 +147,7 @@ line-height: 21px;
           border-radius: 5px;
           font-weight: 700;
 font-size: 18px;
-line-height: 21px;
+line-height: 8px;
       }
       .modal-body a{
           font-weight: 400;

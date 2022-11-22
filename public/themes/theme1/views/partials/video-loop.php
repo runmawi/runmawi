@@ -149,7 +149,7 @@ overflow-hidden {
                                      <div class="">
                                         
                                        <div class="movie-time  align-items-center d-flex justify-content-between">
-                                           <div>  <h6><?php  echo (strlen($watchlater_video->title) > 15) ? substr($watchlater_video->title,0,15).'...' : $watchlater_video->title; ?></h6>
+                                           <div>  <h6><?php  echo (strlen($watchlater_video->title) > 15) ? substr($watchlater_video->title,0,12).'...' : $watchlater_video->title; ?></h6>
 </div>
                                           <div class="badge badge-secondary p-1 mr-2"><?php echo $watchlater_video->age_restrict.' '.'+' ?></div>
                                         
