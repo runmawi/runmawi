@@ -1885,7 +1885,7 @@ box-shadow: -1px 6px 13px 0px rgba(0,0,0,0.44);
 }
 
 #videoPlayer{
-    object-fit: cover;
+    object-fit: ;
   padding: 20px;
 }
 

@@ -202,6 +202,8 @@ class AdminThemeSettingsController extends Controller
 
           $theme_settings->signup_step2_title     = $request->signup_step2_title ? $request->signup_step2_title : null;
 
+          $theme_settings->my_profile_theme = !empty( $data['my_profile_theme']) ? '1' : '0';
+
           $theme_settings->save();       
         
           return Redirect::back()->with(array('note' => 'Successfully Updated Settings', 'note_type' => 'success') );
