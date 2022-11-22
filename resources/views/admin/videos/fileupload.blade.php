@@ -165,6 +165,9 @@
                         <label for="embed_code"><label>m3u8 URL:</label></label>
                         <input type="text" class="form-control" name="m3u8_video_url" id="m3u8_video_url" value="" />
                      </div>
+                     <div class="new-audio-file mt-3">
+                        <button class="btn btn-primary"  id="submit_m3u8">Submit</button>
+                     </div>
                   </div>
                   <!-- Embedded Video -->        
                   <div id="embedvideo" style="">
@@ -173,12 +176,18 @@
                         <p class="p1">Example URL Format : ( https://www.youtube.com/embed/*xxxxxxxxx*/) ) </p>
                         <input type="text" class="form-control" name="embed_code" id="embed_code" value="" />
                      </div>
+                     <div class="new-audio-file mt-3">
+                        <button class="btn btn-primary"  id="submit_embed">Submit</button>
+                     </div>
                   </div>
                   <!-- MP4 Video -->        
                   <div id="video_mp4" style="">
                      <div class="new-audio-file mt-3" >
                         <label for="mp4_url"><label>Mp4 File URL:</label></label>
                         <input type="text" class="form-control" name="mp4_url" id="mp4_url" value="" />
+                     </div>
+                     <div class="new-audio-file mt-3">
+                        <button class="btn btn-primary"  id="submit_mp4">Submit</button>
                      </div>
                   </div>
                   <!-- Video upload -->   
@@ -296,7 +305,7 @@
     $(document).ready(function(){
 
        var url =$('#m3u8url').val();
-       $('#m3u8_video_url').change(function(){
+       $('#submit_m3u8').click(function(){
         // alert($('#m3u8_video_url').val());
         $.ajax({
                url: url,
@@ -327,7 +336,7 @@
    
    $(document).ready(function(){
        var url =$('#mp4url').val();
-       $('#mp4_url').change(function(){
+       $('#submit_mp4').click(function(){
        // alert($('#mp4_url').val());
        $.ajax({
            url: url,
@@ -358,7 +367,7 @@
    	$(document).ready(function(){
    
    var url =$('#embed_url').val();
-   $('#embed_code').change(function(){
+   $('#submit_embed').click(function(){
    	// alert($('#embed_code').val());
    	$.ajax({
            url: url,

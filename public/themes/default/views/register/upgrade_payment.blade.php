@@ -421,7 +421,8 @@ i.fa.fa-google-plus {
         }
     label{
         color: #fff!important;
-        font-weight: 600;
+        line-height: 0;
+      
     }
     .buttonClass {
   font-size:15px;

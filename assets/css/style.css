@@ -2147,3 +2147,8 @@ box-shadow: -1px 6px 13px 0px rgba(0,0,0,0.44);
          border-left: none;  
          border-bottom-right-radius: 15px;
      }
+.btn-light:not(:disabled):not(.disabled).active, .btn-light:not(:disabled):not(.disabled):active, .show>.btn-light.dropdown-toggle {
+    color: #fff;
+    background-color: #dae0e5;
+    border-color: #fff;
+}

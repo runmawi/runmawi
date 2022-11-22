@@ -287,6 +287,9 @@ Route::post('upgradePaypal', 'PaymentController@upgradePaypal');
 Route::post('becomePaypal', 'PaymentController@BecomePaypal');
 Route::get('upgrade-subscription', 'PaymentController@Upgrade');
 
+Route::post('/profile/update_username', 'AdminUsersController@update_username');   
+Route::post('/profile/update_userImage', 'AdminUsersController@update_userImage');   
+Route::post('/profile/update_userEmail', 'AdminUsersController@update_userEmail');   
 
 Route::get('upgrade-subscription_plan', 'PaymentController@Upgrade_Plan');
 Route::get('becomesubscriber', 'PaymentController@BecomeSubscriber');

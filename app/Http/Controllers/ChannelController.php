@@ -181,6 +181,7 @@ class ChannelController extends Controller
         $cityName = $geoip->getcity();
         $stateName = $geoip->getregion();
         $ThumbnailSetting = ThumbnailSetting::first();
+        $StorageSetting = StorageSetting::first();
 
         if (!empty($data['password_hash']))
         {
@@ -1065,7 +1066,7 @@ class ChannelController extends Controller
                     }
                 $data = array(
                     'video_access' => $video_access,
-
+                    'StorageSetting' => $StorageSetting,
                     'currency' => $currency,
                     'video' => $categoryVideos,
                     'recomended' => $recomended,
@@ -1277,6 +1278,7 @@ class ChannelController extends Controller
             }
                 $data = array(
                     'video_access' => $video_access,
+                    'StorageSetting' => $StorageSetting,
                     'currency' => $currency,
                     'video' => $categoryVideos,
                     'videocategory' => $videocategory,
@@ -1594,6 +1596,7 @@ class ChannelController extends Controller
                 }
                 $data = array(
                     'video_access' => $video_access,
+                    'StorageSetting' => $StorageSetting,
                     'currency' => $currency,
                     'video' => $categoryVideos,
                     'recomended' => $recomended,

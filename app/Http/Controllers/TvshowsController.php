@@ -330,12 +330,62 @@ class TvshowsController extends Controller
             if(Auth::guest()):
                 $like_dislike = [];
             endif;
+
+            if(@$episode->uploaded_by == 'Channel'){
+                $user_id = $episode->user_id;
+
+                $user = Channel::where("channels.id", "=", $user_id )
+                ->join(
+                    "users",
+                    "channels.email",
+                    "=",
+                    "users.email"
+                )
+                ->select(
+                    "users.id as user_id"
+                )
+                ->first();
+
+                if(!Auth::guest() && $user->user_id == Auth::user()->id ){
+                    $video_access = 'free';
+                }else{ 
+                    $video_access = 'pay';
+                }
+                }else if(@$episode->uploaded_by == 'CPP'){
+                    $user_id = $episode->user_id;
+
+                    $user = ModeratorsUser::where("moderators_users.id", "=", $user_id )
+                    ->join(
+                        "users",
+                        "moderators_users.email",
+                        "=",
+                        "users.email"
+                    )
+                    ->select(
+                        "users.id as user_id"
+                    )
+                    ->first();
+                    if(!Auth::guest() &&  $user->user_id == Auth::user()->id ){
+                        $video_access = 'free';
+                    }else{ 
+                        $video_access = 'pay';
+                    }
+            }else{
+                if(!Auth::guest() && @$episode->access  == 'ppv'&& Auth::user()->role != 'admin' ){
+                    $video_access = 'pay';
+                }else{
+                    $video_access = 'free';
+                }
+            }
+            // dd($video_access);
+
          if((!Auth::guest() && Auth::user()->role == 'admin') || $series_ppv_status != 1 || $ppv_exits > 0 
          || $free_episode > 0){
 
 
             $data = array(
              'currency' => $currency,
+             'video_access' => $video_access,
              'free_episode' => $free_episode,
              'ppv_exits' => $ppv_exits,
              'publishable_key' => $publishable_key,
@@ -367,6 +417,7 @@ class TvshowsController extends Controller
                 // dd('exit');
                 $data = array(
                     'currency' => $currency,
+                    'video_access' => $video_access,
                     'ppv_exits' => $ppv_exits,
                     'free_episode' => $free_episode,
                     'publishable_key' => $publishable_key,
