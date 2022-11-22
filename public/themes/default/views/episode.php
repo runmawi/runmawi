@@ -41,8 +41,8 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 			<?php 
 			if(!Auth::guest()){
 			if($free_episode > 0 ||  $ppv_exits > 0 || Auth::user()->role == 'admin' ||  Auth::guest()){ 
-
-			if($episode->access == 'guest' ||
+// dd($video_access);
+			if($episode->access == 'guest' || $video_access == 'free' ||
 			 ( ($episode->access == 'subscriber' || $episode->access == 'registered')
 			  && !Auth::guest() && Auth::user()->subscribed()) || (!Auth::guest() && (Auth::user()->role == 'demo'
 			   || Auth::user()->role == 'admin')) || (!Auth::guest() && $episode->access == 'registered' 
