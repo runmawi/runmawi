@@ -57,6 +57,7 @@ use GuzzleHttp\Client;
 use App\ContinueWatching;
 use App\Wishlist;
 use App\Watchlater;
+use App\SiteTheme;
 
 
 class AdminUsersController extends Controller
@@ -2773,6 +2774,8 @@ class AdminUsersController extends Controller
         $Theme = HomeSetting::pluck('theme_choosen')->first();
         Theme::uses($Theme);
 
+        $SiteTheme = SiteTheme::first();
+
         if (Auth::guest())
         {
             return redirect('/login');
@@ -2908,8 +2911,12 @@ class AdminUsersController extends Controller
                 'alldevices' => $alldevices,
                 'payment_package' => User::where('id',Auth::user()->id)->first() ,
             );
-
-            return Theme::view('myprofile', $data);
+            
+            if(!empty($SiteTheme) && $SiteTheme->my_profile_theme == 0 || $SiteTheme->my_profile_theme ==  null){
+                return Theme::view('myprofile', $data);
+            }else{
+                return Theme::view('myaccount', $data);
+            }
         }
     }
     
