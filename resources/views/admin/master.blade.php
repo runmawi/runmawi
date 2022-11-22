@@ -429,14 +429,14 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
           </li>
           <li>
           <div class="men" style=""> 
-                 <p class="lnk" >Live Video</p>
+                 <p class="lnk" >Live Stream</p>
                  </div>
-                     <a href="#live-video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/live.svg')?>"><span>Manage Live Videos</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                     <a href="#live-video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/live.svg')?>"><span>Manage Live Stream</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                      <ul id="live-video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li><a href="{{ URL::to('admin/livestream') }}"><i class="las la-user-plus"></i>All Live Videos</a></li>
-                        <li><a href="{{ URL::to('admin/livestream/create') }}"><i class="las la-eye"></i>Add New Live Video</a></li>
-                        <li><a href="{{ URL::to('admin/CPPLiveVideosIndex') }}"><i class="las la-eye"></i>Live Videos For Approval</a></li>
-                         <li><a href="{{ URL::to('admin/livestream/categories') }}"><i class="las la-eye"></i>Manage Live Video Categories</a></li>
+                        <li><a href="{{ URL::to('admin/livestream') }}"><i class="las la-user-plus"></i>All Live Stream</a></li>
+                        <li><a href="{{ URL::to('admin/livestream/create') }}"><i class="las la-eye"></i>Add New Live Stream</a></li>
+                        <li><a href="{{ URL::to('admin/CPPLiveVideosIndex') }}"><i class="las la-eye"></i>Live Stream For Approval</a></li>
+                         <li><a href="{{ URL::to('admin/livestream/categories') }}"><i class="las la-eye"></i>Manage Live Stream Categories</a></li>
                          <li><a href="{{ route('live_event_artist') }}"> Live Event Artist </a></li>
                      </ul>
                   </li>
@@ -727,14 +727,14 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
           </li>
           <li>
           <div class="men" style=""> 
-                 <p class="lnk" >Live Video</p>
+                 <p class="lnk" >Live Stream</p>
                  </div>
-                     <a href="#live-video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/live.svg')?>"><span class="">Manage Live Videos</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                     <a href="#live-video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/live.svg')?>"><span class="">Manage Live Stream</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                      <ul id="live-video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li><a href="{{ URL::to('admin/livestream') }}">All Live Videos</a></li>
-                        <li><a href="{{ URL::to('admin/livestream/create') }}">Add New Live Video</a></li>
-                        <li><a href="{{ URL::to('admin/CPPLiveVideosIndex') }}">Live Videos For Approval</a></li>
-                         <li><a href="{{ URL::to('admin/livestream/categories') }}">Manage Live Video Categories</a></li>
+                        <li><a href="{{ URL::to('admin/livestream') }}">All Live Stream</a></li>
+                        <li><a href="{{ URL::to('admin/livestream/create') }}">Add New Live Stream</a></li>
+                        <li><a href="{{ URL::to('admin/CPPLiveVideosIndex') }}">Live Stream For Approval</a></li>
+                         <li><a href="{{ URL::to('admin/livestream/categories') }}">Manage Live Stream Categories</a></li>
                          <li><a href="{{ route('live_event_artist') }}"> Live Event Artist </a></li>
                      </ul>
                   </li>
@@ -1033,14 +1033,14 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
           </li>
           <li>
           <div style=""> 
-                 <p class="lnk" >Live Video</p>
+                 <p class="lnk" >Live Stream</p>
                  </div>
-                     <a href="#live-video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/live.svg')?>"><span>Manage Live Videos</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                     <a href="#live-video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/live.svg')?>"><span>Manage Live Stream</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                      <ul id="live-video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li><a href="{{ URL::to('admin/livestream') }}"><i class="las la-user-plus"></i>All Live Videos</a></li>
-                        <li><a href="{{ URL::to('admin/livestream/create') }}"><i class="las la-eye"></i>Add New Live Video</a></li>
-                        <li><a href="{{ URL::to('admin/CPPLiveVideosIndex') }}"><i class="las la-eye"></i>Live Videos For Approval</a></li>
-                         <li><a href="{{ URL::to('admin/livestream/categories') }}"><i class="las la-eye"></i>Manage Live Video Categories</a></li>
+                        <li><a href="{{ URL::to('admin/livestream') }}"><i class="las la-user-plus"></i>All Live Stream</a></li>
+                        <li><a href="{{ URL::to('admin/livestream/create') }}"><i class="las la-eye"></i>Add New Live Stream</a></li>
+                        <li><a href="{{ URL::to('admin/CPPLiveVideosIndex') }}"><i class="las la-eye"></i>Live Stream For Approval</a></li>
+                         <li><a href="{{ URL::to('admin/livestream/categories') }}"><i class="las la-eye"></i>Manage Live Stream Categories</a></li>
                          <li><a href="{{ route('live_event_artist') }}"> Live Event Artist </a></li>
                      </ul>
                   </li>
