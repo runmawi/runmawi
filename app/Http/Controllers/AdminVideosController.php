@@ -1351,9 +1351,11 @@ class AdminVideosController extends Controller
                 $newfile = explode(".mp4",$name_mp4);
                 $name = $newfile[0].'.m3u8';   
                 $filePath = $StorageSetting->aws_video_trailer_path.'/'. $name;
+                $transcode_path = @$StorageSetting->aws_transcode_path.'/'. $name;
                 Storage::disk('s3')->put($filePath, file_get_contents($file));
                 $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
-                $M3u8_save_path = $path.$filePath;
+                $M3u8_path = $path.$filePath;
+                $M3u8_save_path = $path.$transcode_path;
                 $data["trailer"] = $M3u8_save_path;
                 $video->trailer_type = "m3u8";
                 $data["trailer_type"] = "m3u8";
@@ -2599,9 +2601,12 @@ class AdminVideosController extends Controller
                 $newfile = explode(".mp4",$name_mp4);
                 $name = $newfile[0].'.m3u8';   
                 $filePath = $StorageSetting->aws_video_trailer_path.'/'. $name;
+                $transcode_path = @$StorageSetting->aws_transcode_path.'/'. $name;
                 Storage::disk('s3')->put($filePath, file_get_contents($file));
                 $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
-                $M3u8_save_path = $path.$filePath;
+                $M3u8_path = $path.$filePath;
+                $M3u8_save_path = $path.$transcode_path;
+
                 $data["trailer"] = $M3u8_save_path;
                 $video->trailer_type = "m3u8";
                 $data["trailer_type"] = "m3u8";
@@ -7489,12 +7494,15 @@ class AdminVideosController extends Controller
                 $name_mp4 = time() . $file->getClientOriginalName();
                 $newfile = explode(".mp4",$name_mp4);
                 $name = $newfile[0].'.m3u8';   
+                $transcode_path = @$StorageSetting->aws_transcode_path.'/'. $name;
+                // print_r($filePath);exit;
                 $filePath = $StorageSetting->aws_storage_path.'/'. $name;
                 $filePath_mp4 = $StorageSetting->aws_storage_path.'/'. $name_mp4;
                 Storage::disk('s3')->put($filePath, file_get_contents($file));
                 $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
                 $storepath = $path.$filePath_mp4;
                 $m3u8_path = $path.$filePath;
+                $transcode_path = $path.$transcode_path;
   
                 $getID3 = new getID3();
                 $Video_storepath = $file;
@@ -7508,7 +7516,7 @@ class AdminVideosController extends Controller
                 $video->path = $path;
                 $video->title = $file_folder_name;
                 $video->mp4_url = $storepath;
-                $video->m3u8_url = $m3u8_path;
+                $video->m3u8_url = $transcode_path;
                 $video->type = "aws_m3u8";
                 $video->draft = 0;
                 $video->image = "default_image.jpg";
@@ -7715,18 +7723,20 @@ class AdminVideosController extends Controller
             $pack == "Business" &&
             $settings->transcoding_access == 1
         ) {
-
             $file = $request->file('file');
             $file_folder_name =  $file->getClientOriginalName();
             $name_mp4 = time() . $file->getClientOriginalName();
             $newfile = explode(".mp4",$name_mp4);
             $name = $newfile[0].'.m3u8';   
+            $transcode_path = @$StorageSetting->aws_transcode_path.'/'. $name;
+            // print_r($filePath);exit;
             $filePath = $StorageSetting->aws_storage_path.'/'. $name;
             $filePath_mp4 = $StorageSetting->aws_storage_path.'/'. $name_mp4;
             Storage::disk('s3')->put($filePath, file_get_contents($file));
             $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
             $storepath = $path.$filePath_mp4;
             $m3u8_path = $path.$filePath;
+            $transcode_path = $path.$transcode_path;
 
             $file = $request->file->getClientOriginalName();
             $newfile = explode(".mp4",$file);
@@ -7748,7 +7758,7 @@ class AdminVideosController extends Controller
             $video->mp4_url = $storepath;
             //  $video->draft = 0;
             // $video->type = "";
-            $video->m3u8_url = $m3u8_path;
+            $video->m3u8_url = $transcode_path;
             $video->type = "aws_m3u8";
             //  $video->image = 'default_image.jpg';
             $video->duration = $Video_duration;

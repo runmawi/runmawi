@@ -253,7 +253,7 @@ function myFunction() {
     // alert(user_logged_out)
 
 
-   if(type != "" &&  type != "m3u8_url" &&  video_video == 'video'){
+   if(type != "" &&  type != "m3u8_url" && type != 'aws_m3u8' &&  video_video == 'video'){
     // alert('video_video')
 
         const player = new Plyr('#videoPlayer',{
@@ -283,7 +283,7 @@ function myFunction() {
                       tagUrl: ads_path_tag 
                     }
         });
-   }else if(type != "" && request_url != 'm3u8' && episode_type != 'm3u8'){
+   }else if(type != "" && request_url != 'm3u8' && type != 'aws_m3u8' && episode_type != 'm3u8'){
     // alert('m3u8')
 
         const player = new Plyr('#videoPlayer',{
@@ -316,7 +316,7 @@ function myFunction() {
                     }
         });
    }
-  else if(user_logged_out == 1 && type == '' && processed_low != 100 || user_logged_out == 1 && type == '' && processed_low == ""){
+  else if(user_logged_out == 1 && type == '' && type != 'aws_m3u8' && processed_low != 100 || user_logged_out == 1 && type == '' && processed_low == ""){
         const player = new Plyr('#videoPlayer',{
           controls: [
 
@@ -346,7 +346,7 @@ function myFunction() {
                       tagUrl: ads_path_tag 
                     }
         });
-   }else if(episode_type == 'm3u8') {
+   }else if(episode_type == 'm3u8' && type != 'aws_m3u8') {
 
     // alert('episode_type')
 
@@ -415,7 +415,7 @@ return;
 }); 
 
    }
-   else if(hls == "hls"){
+   else if(hls == "hls" && type != 'aws_m3u8'){
      
         const player = new Plyr('#videoPlayer',{
           controls: [  'play-large',

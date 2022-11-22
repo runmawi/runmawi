@@ -31,6 +31,7 @@ class StorageSettingSeeder extends Seeder
                 'aws_episode_path' => null,
                 'aws_live_path' => null,
                 'aws_audio_path' => null,
+                'aws_transcode_path' => null,
                 'created_at' => Carbon::now(),
                 'updated_at' => null,
             ],
