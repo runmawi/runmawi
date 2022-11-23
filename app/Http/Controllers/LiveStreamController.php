@@ -407,40 +407,93 @@ class LiveStreamController extends Controller
       public function m3u_file_m3u8url( Request $request )
       {
 
-        $M3u_category = "ANIMATION";
+        try {
 
-        $m3u = ('https://iptv-org.github.io/iptv/index.m3u');
+          $M3u_category = $request->m3u_url;
 
-        $parser = new M3UFileParser($m3u);
-        $parser_list = $parser->list() ;
-        $M3u_url_array = $parser_list[$M3u_category] ;
+          $m3u = ('https://iptv-org.github.io/iptv/index.m3u');
 
-        foreach ( $M3u_url_array as $key => $M3u_url ){
-         
-            preg_match_all('/(?P<tag>#EXTINF:-1)|(?:(?P<prop_key>[-a-z]+)=\"(?P<prop_val>[^"]+)")|(?<something>,[^\r\n]+)|(?<url>http[^\s]+)/', $M3u_url, $match );
+          $parser = new M3UFileParser($m3u);
+          $parser_list = $parser->list() ;
 
-            $count = count( $match[0] );
-              
-            $result = [];
-            $index = -1;
-            
-            for( $i =0; $i < $count; $i++ ){
-                $item = $match[0][$i];
-            
-                if( !empty($match['tag'][$i])){
-                    ++$index;
-                }elseif( !empty($match['prop_key'][$i])){
-                    $result[$index][$match['prop_key'][$i]] = $match['prop_val'][$i];
-                }elseif( !empty($match['something'][$i])){
-                    $result[$index]['something'] = $item;
-                }elseif( !empty($match['url'][$i])){
-                    $result[$index]['url'] = $item ;
-                }
-            }
-          echo "<pre>";print_r($result);
+          $M3u_url_array = collect($parser_list[$M3u_category])->map(function ($item) {
+
+              $mp3 = preg_match_all('/(?P<tag>#EXTINF:-1)|(?:(?P<prop_key>[-a-z]+)=\"(?P<prop_val>[^"]+)")|(?<something>,[^\r\n]+)|(?<url>http[^\s]+)/', $item, $match );
+              $count = count( $match[0] );
+              $result = [];
+              $index = 0;
+
+              for( $i =0; $i < $count; $i++ ){
+                $M3u_video_url = $match[0][$i];
+              }
+              return $M3u_video_url;
+          });
+
+          $respond = array(
+            'status' => true ,
+            'message' => 'Data Retrieved Successfully !' ,
+            'M3u_url_array' => $M3u_url_array ,
+            'M3u_category' => $M3u_category ,
+          );
+
+
+        } catch (\Throwable $th) {
+
+          $respond = array(
+            'status' => false ,
+            'message' => $th->getMessage() ,
+            'M3u_category' => $M3u_category ,
+          );
 
         }
-        exit();
         
+        return response()->json($respond, 200);
+
+        
+                  // Reference codes - Don't Remove
+
+        // $count = count( $match[0] );
+        // $result = [];
+        // $index = -1;
+        //   for( $i =0; $i < $count; $i++ ){    
+        //     $item = $match[0][$i]; 
+        //     if( !empty($match['tag'][$i])){
+        //         ++$index; 
+        //     }elseif( !empty($match['prop_key'][$i])){
+        //         $result[$index][$match['prop_key'][$i]] = $match['prop_val'][$i];
+        //     }elseif( !empty($match['something'][$i])){
+        //         $result[$index]['something'] = $item;
+        //     }elseif( !empty($match['url'][$i])){
+        //           $result[$index]['url'] = $item ;
+        //     }
+        // }
+
+      }
+
+      public function M3U_video_url( Request $request)
+      {
+        try {
+
+          $data_m3u_urls = $request->data_m3u_urls ;
+
+          $request->session()->forget('m3u_url_link');
+
+          session(['m3u_url_link' => $data_m3u_urls ]);
+
+          $respond = array(
+            'status' => true ,
+            'message' => 'Data Retrieved Successfully !' ,
+            'data_m3u_urls' => $data_m3u_urls ,
+          );
+
+        } catch (\Throwable $th) {
+            $respond = array(
+              'status' => false ,
+              'message' => $th->getMessage() ,
+            );
+        }
+
+        return response()->json($respond, 200);
+
       }
 }
