@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Storage;
 use \App\User as User;
 use \Redirect as Redirect;
 use Illuminate\Http\Request;
@@ -49,6 +50,7 @@ use GuzzleHttp\Message\Response;
 use App\InappPurchase;
 use Carbon\Carbon;
 use Carbon\CarbonInterval;
+use App\StorageSetting as StorageSetting;
 
 
 class AdminAudioController extends Controller
@@ -168,6 +170,17 @@ class AdminAudioController extends Controller
             return View::make('admin.expired_dashboard', $data);
         }else{
         if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
+
+            $StorageSetting = StorageSetting::first();
+            // dd($StorageSetting);
+            if($StorageSetting->site_storage == 1){
+                $dropzone_url =  URL::to('admin/uploadAudio');
+            }elseif($StorageSetting->aws_storage == 1){
+                $dropzone_url =  URL::to('admin/AWSUploadAudio');
+            }else{ 
+                $dropzone_url =  URL::to('admin/uploadAudio');
+            }
+
         $data = array(
             'headline' => '<i class="fa fa-plus-circle"></i> New Audio',
             'post_route' => URL::to('admin/audios/audioupdate'),
@@ -183,6 +196,7 @@ class AdminAudioController extends Controller
             'category_id' => [],
             'languages_id' => [],
             'InappPurchase' => InappPurchase::all(),
+            'dropzone_url' => $dropzone_url,
             );
          
         return View::make('admin.audios.create_edit', $data);
@@ -441,7 +455,6 @@ class AdminAudioController extends Controller
             $input = $request->all();
             $id = $request->id;
             $settings =Setting::first();
-
             if(!empty($input['ppv_price'])){
                 $ppv_price = $input['ppv_price'];
             }elseif($input['ppv_status'] || $settings->ppv_status == 1){
@@ -640,47 +653,117 @@ class AdminAudioController extends Controller
 
             }
         }
-        if(empty($data['audio_upload'])){
-            unset($data['audio_upload']);
-        } else {
-        
-        $audio_upload = $request->file('audio_upload');
-        $ext = $audio_upload->extension();
-        
-        if($audio_upload){
-            if($ext == 'mp3'){
-               $audio_store = $audio_upload->move('public/uploads/audios/', $audio->id.'.'.$ext);
+            // dd($input);
 
-                $data['mp3_url'] = URL::to('/').'/public/uploads/audios/'.$audio->id.'.'.$ext; 
+            $StorageSetting = StorageSetting::first();
 
-                $audio_duration = new \wapmorgan\Mp3Info\Mp3Info($audio_store, true);
-                $audio_duration_time = round( $audio_duration->duration,2 ) ;
+            if($StorageSetting->site_storage == 1){
 
-            }else{
-                $audio_upload->move(storage_path().'/app/', $audio_upload->getClientOriginalName());
+                if(empty($data['audio_upload'])){
+                    unset($data['audio_upload']);
+                } else {
                 
-                FFMpeg::open($audio_upload->getClientOriginalName())
-                ->export()
-                ->inFormat(new \FFMpeg\Format\Audio\Mp3)
-                ->toDisk('public')
-                ->save('audios/'. $audio->id.'.mp3');
-                unlink(storage_path().'/app/'.$audio_upload->getClientOriginalName());
-                $data['mp3_url'] = URL::to('/').'/public/uploads/audios/'.$audio->id.'.mp3'; 
+                $audio_upload = $request->file('audio_upload');
+                $ext = $audio_upload->extension();
+                
+                if($audio_upload){
+                    if($ext == 'mp3'){
+                       $audio_store = $audio_upload->move('public/uploads/audios/', $audio->id.'.'.$ext);
+        
+                        $data['mp3_url'] = URL::to('/').'/public/uploads/audios/'.$audio->id.'.'.$ext; 
+        
+                        $audio_duration = new \wapmorgan\Mp3Info\Mp3Info($audio_store, true);
+                        $audio_duration_time = round( $audio_duration->duration,2 ) ;
+        
+                    }else{
+                        $audio_upload->move(storage_path().'/app/', $audio_upload->getClientOriginalName());
+                        
+                        FFMpeg::open($audio_upload->getClientOriginalName())
+                        ->export()
+                        ->inFormat(new \FFMpeg\Format\Audio\Mp3)
+                        ->toDisk('public')
+                        ->save('audios/'. $audio->id.'.mp3');
+                        unlink(storage_path().'/app/'.$audio_upload->getClientOriginalName());
+                        $data['mp3_url'] = URL::to('/').'/public/uploads/audios/'.$audio->id.'.mp3'; 
+        
+                        $audio_duration = new \wapmorgan\Mp3Info\Mp3Info(storage_path().'/app/public/audios/'.$audio->id. '.mp3', true);
+                        $audio_duration_time = round( $audio_duration->duration,2 ) ;
+        
+                    }
+        
+                    $update_url = Audio::find($audio->id);
+        
+                    $update_url->mp3_url = $data['mp3_url'];
+                    $update_url->duration =  $audio_duration_time;
+                    $update_url->save();  
+                }
+        
+                }
+        
+            }elseif($StorageSetting->aws_storage == 1){
 
-                $audio_duration = new \wapmorgan\Mp3Info\Mp3Info(storage_path().'/app/public/audios/'.$audio->id. '.mp3', true);
+                $file = $request->file('audio_upload');
+                $name = time() . $file->getClientOriginalName();
+                // print_r($file);exit;
+                $filePath = $StorageSetting->aws_audio_path.'/'. $name;
+                
+                Storage::disk('s3')->put($filePath, file_get_contents($file));
+                $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+                $audio = $path.$filePath;
+                
+                $data['mp3_url'] = $audio; 
+    
+                $audio_duration = new \wapmorgan\Mp3Info\Mp3Info($file, true);
                 $audio_duration_time = round( $audio_duration->duration,2 ) ;
 
+                $update_url = Audio::find($audio->id);
+        
+                $update_url->mp3_url = $data['mp3_url'];
+                $update_url->duration =  $audio_duration_time;
+                $update_url->save();  
+
+            }else{ 
+                if(empty($data['audio_upload'])){
+                    unset($data['audio_upload']);
+                } else {
+                
+                $audio_upload = $request->file('audio_upload');
+                $ext = $audio_upload->extension();
+                
+                if($audio_upload){
+                    if($ext == 'mp3'){
+                       $audio_store = $audio_upload->move('public/uploads/audios/', $audio->id.'.'.$ext);
+        
+                        $data['mp3_url'] = URL::to('/').'/public/uploads/audios/'.$audio->id.'.'.$ext; 
+        
+                        $audio_duration = new \wapmorgan\Mp3Info\Mp3Info($audio_store, true);
+                        $audio_duration_time = round( $audio_duration->duration,2 ) ;
+        
+                    }else{
+                        $audio_upload->move(storage_path().'/app/', $audio_upload->getClientOriginalName());
+                        
+                        FFMpeg::open($audio_upload->getClientOriginalName())
+                        ->export()
+                        ->inFormat(new \FFMpeg\Format\Audio\Mp3)
+                        ->toDisk('public')
+                        ->save('audios/'. $audio->id.'.mp3');
+                        unlink(storage_path().'/app/'.$audio_upload->getClientOriginalName());
+                        $data['mp3_url'] = URL::to('/').'/public/uploads/audios/'.$audio->id.'.mp3'; 
+        
+                        $audio_duration = new \wapmorgan\Mp3Info\Mp3Info(storage_path().'/app/public/audios/'.$audio->id. '.mp3', true);
+                        $audio_duration_time = round( $audio_duration->duration,2 ) ;
+        
+                    }
+        
+                    $update_url = Audio::find($audio->id);
+        
+                    $update_url->mp3_url = $data['mp3_url'];
+                    $update_url->duration =  $audio_duration_time;
+                    $update_url->save();  
+                }
+        
+                }
             }
-
-            $update_url = Audio::find($audio->id);
-
-            $update_url->mp3_url = $data['mp3_url'];
-            $update_url->duration =  $audio_duration_time;
-            $update_url->save();  
-        }
-
-        }
-
 
         return Redirect::to('admin/audios/edit' . '/' . $id)->with(array('message' => 'Successfully Updated Audio!', 'note_type' => 'success') );
     }else if($package == "Basic"){
@@ -798,7 +881,7 @@ class AdminAudioController extends Controller
     return $value;  
 
     }                    
-    public function uploadAudio(Request $request)
+    public function AWSUploadAudio(Request $request)
     {
 
         $audio_upload = $request->file('file');
@@ -1073,4 +1156,94 @@ class AdminAudioController extends Controller
 
         return Redirect::to('admin/audios/create')->with(array('message' => 'New Audio Successfully Added!', 'note_type' => 'success') );
     }
+
+
+    public function uploadAudio(Request $request)
+    {
+
+        $audio_upload = $request->file('file');
+        $ext = $audio_upload->extension();
+        $StorageSetting = StorageSetting::first();
+
+        // $player_image = str_replace(' ', '_', $player_image->getClientOriginalName());
+                $file = $request->file->getClientOriginalName();
+    
+                $newfile = explode(".mp4",$file);
+                $mp3titile = $newfile[0];
+
+                $audio = new Audio();
+                // $audio->disk = 'public';
+                $audio->title = $mp3titile;
+                $audio->image = 'default_image.jpg';
+
+                $audio->save(); 
+                $audio_id = $audio->id;
+
+                if($audio_upload) {
+   
+                    if($ext == 'mp3'){
+
+
+                        $file = $request->file('file');
+                        $name = time() . $request->file->getClientOriginalName();
+                        // print_r($file);exit;
+                        $filePath = $StorageSetting->aws_audio_path.'/'. $name;
+                        
+                        Storage::disk('s3')->put($filePath, file_get_contents($file));
+                        $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+                        $audio = $path.$filePath;
+                        
+                        $data['mp3_url'] = $audio; 
+
+                        $audio_duration = new \wapmorgan\Mp3Info\Mp3Info($audio_upload, true);
+                        $audio_duration_time = round( $audio_duration->duration,2 ) ;
+                    }else{
+                        
+
+                        Storage::disk('s3')->put($filePath, file_get_contents($file));
+                        $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+                        $audio = $path.$filePath;
+
+
+                        // FFMpeg::open($file->getClientOriginalName())
+                        //             ->export()
+                        //             ->inFormat(new \FFMpeg\Format\Audio\Mp3)
+                        //             ->toDisk('public')
+                        //             ->save('audios/'. $audio->id.'.mp3');
+
+                        // unlink(storage_path().'/app/'.$audio_upload->getClientOriginalName());
+
+                        $data['mp3_url'] = $audio; 
+
+                        $audio_duration = new \wapmorgan\Mp3Info\Mp3Info($audio_upload, true);
+                        $audio_duration_time = round( $audio_duration->duration,2 ) ;
+                    }  
+                    $update_url = Audio::find($audio_id);
+                    $title =$update_url->title; 
+                  //   $update_url = Audio::find($audio_id);
+
+                    $update_url->mp3_url = $data['mp3_url'];
+                    $update_url->duration = $audio_duration_time;
+                    $update_url->save();  
+             
+                     $value['success'] = 1;
+                     $value['message'] = 'Uploaded Successfully!';
+                     $value['audio_id'] = $audio_id;
+                     $value['audio_duration_time'] =  gmdate('H:i:s', $audio_duration_time);
+                     $value['title'] = $title;
+             
+                     return $value;  
+            
+                    }
+                    
+                    else {
+                     $value['success'] = 2;
+                     $value['message'] = 'File not uploaded.'; 
+                        // $video = Video::create($data);
+                    return response()->json($value);
+                    
+                    }
+
+    }
+
 }

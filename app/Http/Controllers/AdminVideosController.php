@@ -1337,18 +1337,39 @@ class AdminVideosController extends Controller
                 // $data['trailer'] = "";
             }
     
-        }elseif($StorageSetting->aws_storage == 1){
+        }elseif($StorageSetting->aws_storage == 1 && !empty($data["trailer"])){
+            if (
+                $trailer != "" &&
+                $pack == "Business" &&
+                $settings->transcoding_access == 1 &&
+                $data["trailer_type"] == "video_mp4"
+            ) {
 
-            $file = $request->file('trailer');
-            $file_folder_name =  $file->getClientOriginalName();
-            $name = time() . $file->getClientOriginalName();
-            $filePath = $StorageSetting->aws_video_trailer_path.'/'. $name;
-            Storage::disk('s3')->put($filePath, file_get_contents($file));
-            $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
-            $trailer = $path.$filePath;
-            $data["trailer"] = $trailer;
-            $data["trailer_type"] = 'video_mp4';
-            
+                $file = $request->file('trailer');
+                $file_folder_name =  $file->getClientOriginalName();
+                $name_mp4 = time() . $file->getClientOriginalName();
+                $newfile = explode(".mp4",$name_mp4);
+                $name = $newfile[0].'.m3u8';   
+                $filePath = $StorageSetting->aws_video_trailer_path.'/'. $name;
+                Storage::disk('s3')->put($filePath, file_get_contents($file));
+                $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+                $M3u8_save_path = $path.$filePath;
+                $data["trailer"] = $M3u8_save_path;
+                $video->trailer_type = "m3u8";
+                $data["trailer_type"] = "m3u8";
+
+            }else{
+
+                $file = $request->file('trailer');
+                $file_folder_name =  $file->getClientOriginalName();
+                $name = time() . $file->getClientOriginalName();
+                $filePath = $StorageSetting->aws_video_trailer_path.'/'. $name;
+                Storage::disk('s3')->put($filePath, file_get_contents($file));
+                $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+                $trailer = $path.$filePath;
+                $data["trailer"] = $trailer;
+                $data["trailer_type"] = 'video_mp4';
+            }
         }else{ 
             if (
                 $trailer != "" &&
@@ -1515,8 +1536,8 @@ class AdminVideosController extends Controller
             $active = 1;
             $draft = 1;
             if (
-                ($video->type == "" && $video->processed_low != 100) ||
-                ($video->type == "" && $video->processed_low == null)
+                ($video->type == "" && $video->processed_low != 100) && $StorageSetting->site_storage == 1 ||
+                ($video->type == "" && $video->processed_low == null) && $StorageSetting->site_storage == 1
             ) {
                 $status = 0;
             } else {
@@ -1869,7 +1890,7 @@ class AdminVideosController extends Controller
         if (
             $trailer != "" &&
             $pack == "Business" &&
-            $settings->transcoding_access == 1
+            $settings->transcoding_access == 1 && $StorageSetting->site_storage == 1
         ) {
             ConvertVideoTrailer::dispatch(
                 $video,
@@ -2563,17 +2584,41 @@ class AdminVideosController extends Controller
             } elseif ($data["trailer_type"] == "embed_url") {
                 $data["trailer"] = $data["embed_trailer"];
             }
-        }elseif($StorageSetting->aws_storage == 1){
+        }elseif($StorageSetting->aws_storage == 1 && !empty($data["trailer"])){
 
-            $file = $request->file('trailer');
-            $file_folder_name =  $file->getClientOriginalName();
-            $name = time() . $file->getClientOriginalName();
-            $filePath = $StorageSetting->aws_video_trailer_path.'/'. $name;
-            Storage::disk('s3')->put($filePath, file_get_contents($file));
-            $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
-            $trailer = $path.$filePath;
-            $data["trailer"] = $trailer;
-            $data["trailer_type"] = 'video_mp4';
+            if (
+                $trailer != "" &&
+                $pack == "Business" &&
+                $settings->transcoding_access == 1 &&
+                $data["trailer_type"] == "video_mp4"
+            ) {
+
+                $file = $request->file('trailer');
+                $file_folder_name =  $file->getClientOriginalName();
+                $name_mp4 = time() . $file->getClientOriginalName();
+                $newfile = explode(".mp4",$name_mp4);
+                $name = $newfile[0].'.m3u8';   
+                $filePath = $StorageSetting->aws_video_trailer_path.'/'. $name;
+                Storage::disk('s3')->put($filePath, file_get_contents($file));
+                $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+                $M3u8_save_path = $path.$filePath;
+                $data["trailer"] = $M3u8_save_path;
+                $video->trailer_type = "m3u8";
+                $data["trailer_type"] = "m3u8";
+
+            }else{
+
+                $file = $request->file('trailer');
+                $file_folder_name =  $file->getClientOriginalName();
+                $name = time() . $file->getClientOriginalName();
+                $filePath = $StorageSetting->aws_video_trailer_path.'/'. $name;
+                Storage::disk('s3')->put($filePath, file_get_contents($file));
+                $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+                $trailer = $path.$filePath;
+                $data["trailer"] = $trailer;
+                $data["trailer_type"] = 'video_mp4';
+            }
+
         }else{ 
 
             if ($data["trailer_type"] == "video_mp4") {
@@ -2840,7 +2885,7 @@ class AdminVideosController extends Controller
         if (
             $trailer != "" &&
             $pack == "Business" &&
-            $settings->transcoding_access == 1
+            $settings->transcoding_access == 1 && $StorageSetting->site_storage == 1
         ) {
             ConvertVideoTrailer::dispatch(
                 $video,
@@ -3640,6 +3685,13 @@ class AdminVideosController extends Controller
 
         $id = $data["videoid"];
         $video = Video::findOrFail($id);
+        if(!empty($video) && $video->mp4_url == $data["mp4_url"]){
+            $value["success"] = 1;
+            $value["message"] = "Already Exits";
+            $value["video_id"] = $id;
+
+            return $value;
+        }else{
         // echo"<pre>";print_r($data);exit;
         if (!empty($data["mp4_url"])) {
             $video->disk = "public";
@@ -3657,11 +3709,12 @@ class AdminVideosController extends Controller
             $video_id = $video->id;
 
             $value["success"] = 1;
-            $value["message"] = "Uploaded Successfully!";
+            $value["message"] = "URL Updated Successfully!";
             $value["video_id"] = $video_id;
 
             return $value;
         }
+    }
     }
     public function Updatem3u8url(Request $request)
     {
@@ -3669,7 +3722,16 @@ class AdminVideosController extends Controller
         $value = [];
 
         $id = $data["videoid"];
+
         $video = Video::findOrFail($id);
+        if(!empty($video) && $video->m3u8_url == $data["m3u8_url"]){
+            $value["success"] = 1;
+            $value["message"] = "Already Exits";
+            $value["video_id"] = $id;
+
+            return $value;
+        }else{
+
         if (!empty($data["m3u8_url"])) {
             // $video = new Video();
             $video->disk = "public";
@@ -3687,11 +3749,13 @@ class AdminVideosController extends Controller
             $video_id = $video->id;
 
             $value["success"] = 1;
-            $value["message"] = "Uploaded Successfully!";
+            $value["message"] = "URL Updated Successfully!";
             $value["video_id"] = $video_id;
 
             return $value;
         }
+    }
+
     }
     public function UpdateEmbededcode(Request $request)
     {
@@ -3703,7 +3767,13 @@ class AdminVideosController extends Controller
         // exit();
         $id = $data["videoid"];
         $video = Video::findOrFail($id);
+        if(!empty($video) && $video->embed_code == $data["embed"]){
+            $value["success"] = 1;
+            $value["message"] = "Already Exits";
+            $value["video_id"] = $id;
 
+            return $value;
+        }else{
         if (!empty($data["embed"])) {
             // $video = new Video();
             $video->disk = "public";
@@ -3721,10 +3791,11 @@ class AdminVideosController extends Controller
             $video_id = $video->id;
 
             $value["success"] = 1;
-            $value["message"] = "Uploaded Successfully!";
+            $value["message"] = "URL Updated Successfully!";
             $value["video_id"] = $video_id;
             return $value;
         }
+    }
     }
 
     public function video_slider_update(Request $request)
@@ -6745,7 +6816,15 @@ class AdminVideosController extends Controller
                 ->orderBy("id", "desc")
                 ->first();
 
-            $video_duration = $videochooed->duration;
+            
+            if(!empty($videochooed) && $videochooed->type == "mp4_url" && empty($videochooed->duration)){
+                $ffprobe = \FFMpeg\FFProbe::create();
+                $duration = $ffprobe->format($videochooed->mp4_url)->get('duration');
+                $video_duration = explode(".", $duration)[0];
+            }else{
+                $video_duration = $videochooed->duration;
+            }
+
 
             // DateTime();
             $current_date =  date("Y-m-d h:i:s a", time());
@@ -6912,7 +6991,15 @@ class AdminVideosController extends Controller
                 !empty($choosedtime_exitvideos)
             ) {
                 // print_r('$ScheduleVideos');exit;
-                $Video_duration = $videochooed->duration;
+                if(!empty($videochooed) && $videochooed->type == "mp4_url" && empty($videochooed->duration)){
+                    $ffprobe = \FFMpeg\FFProbe::create();
+                    $duration = $ffprobe->format($videochooed->mp4_url)->get('duration');
+                    $Video_duration = explode(".", $duration)[0];
+                }else{
+                    $Video_duration = $videochooed->duration;
+                }
+
+                // $Video_duration = $videochooed->duration;
                 $last_shedule_endtime =
                     $choosedtime_exitvideos->shedule_endtime;
                 $last_current_time = $choosedtime_exitvideos->current_time;
@@ -7052,8 +7139,15 @@ class AdminVideosController extends Controller
 
                 return $value;
             } else {
-                
+
+            if(!empty($videochooed) && $videochooed->type == "mp4_url" && empty($videochooed->duration)){
+                $ffprobe = \FFMpeg\FFProbe::create();
+                $duration = $ffprobe->format($videochooed->mp4_url)->get('duration');
+                $Video_duration = explode(".", $duration)[0];
+            }else{
                 $Video_duration = $videochooed->duration;
+            }
+                // $Video_duration = $videochooed->duration;
                 $time = $choose_current_time;
                 $minutes = $time[0] * 60.0 + $time[1] * 1.0;
                 $totalSecs = $minutes * 60;
@@ -7392,12 +7486,16 @@ class AdminVideosController extends Controller
             try {
                 $file = $request->file('file');
                 $file_folder_name =  $file->getClientOriginalName();
-                $name = time() . $file->getClientOriginalName();
+                $name_mp4 = time() . $file->getClientOriginalName();
+                $newfile = explode(".mp4",$name_mp4);
+                $name = $newfile[0].'.m3u8';   
                 $filePath = $StorageSetting->aws_storage_path.'/'. $name;
+                $filePath_mp4 = $StorageSetting->aws_storage_path.'/'. $name_mp4;
                 Storage::disk('s3')->put($filePath, file_get_contents($file));
                 $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
-                $storepath = $path.$filePath;
-
+                $storepath = $path.$filePath_mp4;
+                $m3u8_path = $path.$filePath;
+  
                 $getID3 = new getID3();
                 $Video_storepath = $file;
                 $VideoInfo = $getID3->analyze($Video_storepath);
@@ -7410,6 +7508,8 @@ class AdminVideosController extends Controller
                 $video->path = $path;
                 $video->title = $file_folder_name;
                 $video->mp4_url = $storepath;
+                $video->m3u8_url = $m3u8_path;
+                $video->type = "aws_m3u8";
                 $video->draft = 0;
                 $video->image = "default_image.jpg";
 
@@ -7618,11 +7718,15 @@ class AdminVideosController extends Controller
 
             $file = $request->file('file');
             $file_folder_name =  $file->getClientOriginalName();
-            $name = time() . $file->getClientOriginalName();
+            $name_mp4 = time() . $file->getClientOriginalName();
+            $newfile = explode(".mp4",$name_mp4);
+            $name = $newfile[0].'.m3u8';   
             $filePath = $StorageSetting->aws_storage_path.'/'. $name;
+            $filePath_mp4 = $StorageSetting->aws_storage_path.'/'. $name_mp4;
             Storage::disk('s3')->put($filePath, file_get_contents($file));
             $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
-            $storepath = $path.$filePath;
+            $storepath = $path.$filePath_mp4;
+            $m3u8_path = $path.$filePath;
 
             $file = $request->file->getClientOriginalName();
             $newfile = explode(".mp4",$file);
@@ -7643,7 +7747,9 @@ class AdminVideosController extends Controller
             $video->title = $file_folder_name;
             $video->mp4_url = $storepath;
             //  $video->draft = 0;
-            $video->type = "";
+            // $video->type = "";
+            $video->m3u8_url = $m3u8_path;
+            $video->type = "aws_m3u8";
             //  $video->image = 'default_image.jpg';
             $video->duration = $Video_duration;
             $video->user_id = Auth::user()->id;

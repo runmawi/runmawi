@@ -250,7 +250,20 @@ border-radius: 0px 4px 4px 0px;
                         </div>
                     </div>
                 </div>
-                                
+                
+                <div class="row"> 
+                        
+                        <div class="col-sm-6">
+                        <h4><i class="entypo-monitor"></i>{{ ucfirst(trans('MyProfile page theme')) }}</h4>
+                            <div class="mt-1">
+                                <label class="switch">
+                                    <input name="my_profile_theme" class="my_profile_theme" id="my_profile_theme" type="checkbox" @if( $settings->my_profile_theme == "1") checked  @endif >
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>  
+                </div>
+
                 
                 <div class="panel-body mt-4" style="display: flex; justify-content: flex-end;">
                     <button type="submit" class="btn btn-primary " name="submit"> Save Settings</button>

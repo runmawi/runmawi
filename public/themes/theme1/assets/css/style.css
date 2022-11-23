@@ -1885,8 +1885,8 @@ box-shadow: -1px 6px 13px 0px rgba(0,0,0,0.44);
 }
 
 #videoPlayer{
-    object-fit: cover;
-  padding: 20px;
+    object-fit:contain;
+ 
 }
 
 /***theme***/
@@ -2424,3 +2424,9 @@ height: 29px;
      border-left: none;  
      border-bottom-right-radius: 15px;
  }
+.fliter{
+    width: 100%;
+}
+.Refine{
+    margin: 10px;
+}

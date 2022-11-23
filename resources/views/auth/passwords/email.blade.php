@@ -32,6 +32,9 @@ $settings = App\Setting::find(1);
 .container.page-height {
         padding-top: 80px !important;
 }
+            .sign-in-from{
+                padding: 0;
+            }
     i.fa.fa-google-plus {
     padding: 10px !important;
 }
@@ -55,7 +58,11 @@ $settings = App\Setting::find(1);
             }
             .reset-help{
                 margin-top: 10px;
+                padding: 15px;
                             }
+            .sign-user_card{
+                padding: 20px;
+            }
 </style>
     </head>
 <body>
@@ -79,7 +86,7 @@ $settings = App\Setting::find(1);
                       <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" style="margin-bottom:1rem;">
                       <h2 class="mb-3 text-center h">{{ __('Forgot Password') }}</h2>
 			
-                <div class="card-body pt-0">
+                <div class="">
                     @if (session('status'))
                         <div class="alert alert-success" role="alert" style="font-size: 15px;">
                             {{ session('status') }}
@@ -91,7 +98,7 @@ $settings = App\Setting::find(1);
 
                        
                                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" placeholder= "email@example.com" value="{{ old('email') }}" required autocomplete="email" autofocus>
-								<p class="reset-help text-center">We will send you an email with instructions on how to <br>reset your password.</p>
+								<p class="reset-help text-center">We will send you an email with instructions on how to reset your password.</p>
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -105,7 +112,8 @@ $settings = App\Setting::find(1);
                                      </button>
 
                                  @elseif( $mail_status == 0 )
-                                    <button type="reset" id="Mail_error"  class="btn btn-primary" >  {{ __('Send Password Reset Link') }} </button>
+                        <div class="text-center">
+                                    <button type="reset" id="Mail_error"  class="btn btn-primary" >  {{ __('Send Password Reset Link') }} </button></div>
                                 @endif
                     </form>
                      </div>

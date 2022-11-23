@@ -47,12 +47,12 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 			if(!Auth::guest()){
 
 			if($free_episode > 0 ||  $ppv_exits > 0 || Auth::user()->role == 'admin' ||  Auth::guest()){ 
-
-			if($episode->access == 'guest' ||
+ 
+			if($episode->access == 'guest' || $video_access == 'free' ||
 			 ( ($episode->access == 'subscriber' || $episode->access == 'registered')
 			  && !Auth::guest() && Auth::user()->subscribed()) || (!Auth::guest() && (Auth::user()->role == 'demo'
 			   || Auth::user()->role == 'admin')) || (!Auth::guest() && $episode->access == 'registered' 
-			   && $settings->free_registration && Auth::user()->role == 'registered') ): 
+			   && $settings->free_registration && Auth::user()->role == 'registered') || Auth::user()->role == 'subscriber'): 
 			?>
 				
 					<?php if($episode->type == 'embed'): ?>
@@ -130,7 +130,7 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 					<h2>Sorry, this series is only available to <?php if($series->access == 'subscriber'): ?>Subscribers<?php elseif($series->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
 					<div class="clear"></div>
 					<?php if(!Auth::guest() && $series->access == 'subscriber'): ?>
-						<form method="get" action="<?= URL::to('/')?>/user/<?= Auth::user()->username ?>/upgrade_subscription">
+						<form method="get" action="<?= URL::to('/stripe/billings-details')?>">
 							<button id="button">Become a subscriber to watch this episode</button>
 						</form>
 					<?php else: ?>
