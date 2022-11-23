@@ -911,15 +911,37 @@ class AdminSeriesController extends Controller
             }
             }elseif($StorageSetting->aws_storage == 1){
 
-                $file = $request->file('trailer');
-                $file_folder_name =  $file->getClientOriginalName();
-                $name = time() . $file->getClientOriginalName();
-                $filePath = $StorageSetting->aws_season_trailer_path.'/'. $name;
-                Storage::disk('s3')->put($filePath, file_get_contents($file));
-                $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
-                $trailer = $path.$filePath;
-                $data["trailer"] = $trailer;
-                $data['trailer_type']  = 'mp4_url';
+                if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1) {
+
+
+                    $file = $request->file('trailer');
+                    $file_folder_name =  $file->getClientOriginalName();
+                    $name = time() . $file->getClientOriginalName();
+                    $filePath = $StorageSetting->aws_season_trailer_path.'/'. $name;
+                    $transcode_path = @$StorageSetting->aws_transcode_path.'/'. $name;
+                    Storage::disk('s3')->put($filePath, file_get_contents($file));
+                    $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+                    $M3u8_save_path = $path.$transcode_path;
+        
+                    $data['trailer'] = $M3u8_save_path;
+                    $data["trailer_type"] = 'm3u8_url';
+        
+                }else{
+                    if($trailer != '') {   
+                            //code for remove old file
+                            $file = $request->file('trailer');
+                            $file_folder_name =  $file->getClientOriginalName();
+                            $name = time() . $file->getClientOriginalName();
+                            $filePath = $StorageSetting->aws_season_trailer_path.'/'. $name;
+                            Storage::disk('s3')->put($filePath, file_get_contents($file));
+                            $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+                            $trailer = $path.$filePath;
+                            $data["trailer"] = $trailer;
+                            $data["trailer_type"] = 'video_mp4';
+        
+                    }
+                }
+        
 
             }else{              
 
@@ -1157,15 +1179,43 @@ class AdminSeriesController extends Controller
         }
     }elseif($StorageSetting->aws_storage == 1){
 
-        $file = $request->file('trailer');
-        $file_folder_name =  $file->getClientOriginalName();
-        $name = time() . $file->getClientOriginalName();
-        $filePath = $StorageSetting->aws_season_trailer_path.'/'. $name;
-        Storage::disk('s3')->put($filePath, file_get_contents($file));
-        $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
-        $trailer = $path.$filePath;
-        $data["trailer"] = $trailer;
-        $data["trailer_type"] = 'video_mp4';
+
+
+        if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1) {
+
+
+            $file = $request->file('trailer');
+            $file_folder_name =  $file->getClientOriginalName();
+            $name = time() . $file->getClientOriginalName();
+            $filePath = $StorageSetting->aws_season_trailer_path.'/'. $name;
+            $transcode_path = @$StorageSetting->aws_transcode_path.'/'. $name;
+            Storage::disk('s3')->put($filePath, file_get_contents($file));
+            $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+            $M3u8_save_path = $path.$transcode_path;
+
+            $data['trailer'] = $M3u8_save_path;
+            $data["trailer_type"] = 'm3u8_url';
+
+        }else{
+            if($trailer != '') {   
+                    //code for remove old file
+                    $file = $request->file('trailer');
+                    $file_folder_name =  $file->getClientOriginalName();
+                    $name = time() . $file->getClientOriginalName();
+                    $filePath = $StorageSetting->aws_season_trailer_path.'/'. $name;
+                    Storage::disk('s3')->put($filePath, file_get_contents($file));
+                    $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+                    $trailer = $path.$filePath;
+                    $data["trailer"] = $trailer;
+                    $data["trailer_type"] = 'video_mp4';
+
+            } else {
+                $data['trailer'] = $series_season->trailer;
+                $data['trailer_type']  = 'mp4_url';
+
+            }
+        }
+
 
     }else{
 
@@ -2664,9 +2714,11 @@ class AdminSeriesController extends Controller
                 $file_folder_name =  $file->getClientOriginalName();
                 $name = time() . $file->getClientOriginalName();
                 $filePath = $StorageSetting->aws_episode_path.'/'. $name;
+                $transcode_path = @$StorageSetting->aws_transcode_path.'/'. $name;
                 Storage::disk('s3')->put($filePath, file_get_contents($file));
                 $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
                 $storepath = $path.$filePath;
+                $transcode_path = $path.$transcode_path;
     
                 $file = $request->file->getClientOriginalName();
 
@@ -2691,7 +2743,7 @@ class AdminSeriesController extends Controller
              $video->disk = 'public';
              $video->status = 0;
              $video->path = $path;
-             $video->mp4_url = $storepath;
+             $video->mp4_url = $transcode_path;
             //  $video->user_id = Auth::user()->id;
             $video->episode_order = Episode::where('season_id',$season_id)->max('episode_order') + 1 ;
             $video->duration = $Video_duration;
@@ -2794,9 +2846,12 @@ class AdminSeriesController extends Controller
         // $file_folder_name =  $file->getClientOriginalName();
         $name = time() . $file->getClientOriginalName();
         $filePath = $StorageSetting->aws_episode_path.'/'. $name;
+        $transcode_path = @$StorageSetting->aws_transcode_path.'/'. $name;
         Storage::disk('s3')->put($filePath, file_get_contents($file));
         $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
         $storepath = $path.$filePath;
+        $transcode_path = $path.$transcode_path;
+
         $file = $request->file('file');
 
             //  Episode duration 
@@ -2811,7 +2866,7 @@ class AdminSeriesController extends Controller
             $video->status = 0;
             $video->disk = 'public';
             $video->path = $path;
-            $video->mp4_url = $storepath;
+            $video->mp4_url = $transcode_path;
             $video->duration = $Video_duration;
             $video->save();
 
