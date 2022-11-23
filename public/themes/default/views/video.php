@@ -12,17 +12,18 @@ $default_ads_status = App\Video::where('id',$video->id)->pluck('default_ads')->f
 
 if($default_ads_url !=null && $default_ads_status == 1){
     $default_ads = $default_ads_url ;
-}
-else{
+}else{
   $default_ads = null ;
 }
             
 if($ads_details != null){ 
   $ads_path = $ads_details; 
-}
-else{ 
+}else{ 
   $ads_path = $default_ads ; 
-} 
+  }  ?>
+
+
+<?php
 
 $category_name = App\CategoryVideo::select('video_categories.name as categories_name','video_categories.slug as categories_slug')->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
 ->where('categoryvideos.video_id', $video->id)->get();
