@@ -350,6 +350,7 @@ class AdminLiveStreamController extends Controller
         $movie = new LiveStream;
 
         $StorageSetting = StorageSetting::first();
+        $settings = Setting::first();
 
     // live stream video
     if($StorageSetting->site_storage == 1){
@@ -381,6 +382,7 @@ class AdminLiveStreamController extends Controller
         }
     }elseif($StorageSetting->aws_storage == 1){
 
+        if($settings->transcoding_access  == 0 ) {
             $file = $data['live_stream_video'];
             $name = time() . $file->getClientOriginalName();
             // print_r($file);exit;
@@ -391,6 +393,38 @@ class AdminLiveStreamController extends Controller
             $filePath = $path.$filePath;
             
             $movie->live_stream_video = $filePath ; 
+        }elseif($settings->transcoding_access  == 1 ) {
+
+            $file = $data['live_stream_video'];
+            $name = time() . $file->getClientOriginalName();
+            // print_r($file);exit;
+
+            $transcode_path = @$StorageSetting->aws_transcode_path.'/'. $name;
+
+            $filePath = $StorageSetting->aws_live_path.'/'. $name;
+            
+            Storage::disk('s3')->put($filePath, file_get_contents($file));
+            $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+            $filePath = $path.$filePath;
+            $transcode_path = $path.$transcode_path;
+
+            
+            // $movie->live_stream_video = $filePath ;
+            $movie->live_stream_video = $transcode_path ; 
+
+        }
+        else{
+            $file = $data['live_stream_video'];
+            $name = time() . $file->getClientOriginalName();
+            // print_r($file);exit;
+            $filePath = $StorageSetting->aws_live_path.'/'. $name;
+            
+            Storage::disk('s3')->put($filePath, file_get_contents($file));
+            $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+            $filePath = $path.$filePath;
+            
+            $movie->live_stream_video = $filePath ; 
+        }
     }else{ 
         if(!empty($data['live_stream_video'])){
 
@@ -627,6 +661,7 @@ class AdminLiveStreamController extends Controller
         ]);
 
 $StorageSetting = StorageSetting::first();
+$settings = Setting::first();
 
 // live stream video
 if($StorageSetting->site_storage == 1){
@@ -659,16 +694,49 @@ if($StorageSetting->site_storage == 1){
         }
     }elseif($StorageSetting->aws_storage == 1){
 
-        $file = $data['live_stream_video'];
-        $name = time() . $file->getClientOriginalName();
-        // print_r($file);exit;
-        $filePath = $StorageSetting->aws_live_path.'/'. $name;
-        
-        Storage::disk('s3')->put($filePath, file_get_contents($file));
-        $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
-        $filePath = $path.$filePath;
-        
-        $movie->live_stream_video = $filePath ; 
+        if($settings->transcoding_access  == 0 ) {
+
+            $file = $data['live_stream_video'];
+            $name = time() . $file->getClientOriginalName();
+            // print_r($file);exit;
+            $filePath = $StorageSetting->aws_live_path.'/'. $name;
+            
+            Storage::disk('s3')->put($filePath, file_get_contents($file));
+            $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+            $filePath = $path.$filePath;
+            
+            $movie->live_stream_video = $filePath ; 
+        }elseif($settings->transcoding_access  == 1 ) {
+
+            $file = $data['live_stream_video'];
+            $name = time() . $file->getClientOriginalName();
+            // print_r($file);exit;
+
+            $transcode_path = @$StorageSetting->aws_transcode_path.'/'. $name;
+
+            $filePath = $StorageSetting->aws_live_path.'/'. $name;
+            
+            Storage::disk('s3')->put($filePath, file_get_contents($file));
+            $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+            $filePath = $path.$filePath;
+            $transcode_path = $path.$transcode_path;
+
+            
+            // $movie->live_stream_video = $filePath ;
+            $movie->live_stream_video = $transcode_path ; 
+
+        }else{
+            $file = $data['live_stream_video'];
+            $name = time() . $file->getClientOriginalName();
+            // print_r($file);exit;
+            $filePath = $StorageSetting->aws_live_path.'/'. $name;
+            
+            Storage::disk('s3')->put($filePath, file_get_contents($file));
+            $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+            $filePath = $path.$filePath;
+            
+            $movie->live_stream_video = $filePath ; 
+        }
     }else{ 
 
         if( !empty($data['url_type']) && $data['url_type'] == "live_stream_video" && !empty($data['live_stream_video'] ) ){
