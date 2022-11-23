@@ -776,6 +776,7 @@ Route::get('/episode/filedelete/{id}', 'AdminSeriesController@filedelete');
     Route::post('/inapp-purchase_update', 'AdminInappPurchaseController@update')->name('inapp_purchase_update');
     Route::get('/inapp-purchase_delete/{id}', 'AdminInappPurchaseController@delete')->name('inapp_purchase_delete');
 
+    Route::get('/schedule/delete/{id}', 'AdminVideosController@ScheduledVideoDelete');
 
      /*  Videos Setting  */
 
@@ -786,6 +787,7 @@ Route::get('/episode/filedelete/{id}', 'AdminSeriesController@filedelete');
     Route::post('/video-schedule/update', 'AdminVideosController@ScheduleUpdate');
 
 
+  
     Route::get('/manage/schedule/{id}', 'AdminVideosController@ManageSchedule');
     Route::post('/calendar/schedule', 'AdminVideosController@CalendarSchedule');
     Route::post('/schedule/uploadFile', 'AdminVideosController@ScheduleUploadFile');

@@ -244,160 +244,189 @@
    }
 </script>
 <script src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
-<script>
-   var type = $('#video_type').val();
-   // var type = $('#hls_m3u8').val();
-   var request_url = $('#request_url').val();
-   var live = $('live').val();
-   // var live = $('live').val();
-   var video_video = $('#video_video').val();
-   var user_logged_out =  $('#user_logged_out').val();
-   var hls =  $('#hls').val();
-   var ads_path_tag =  $('#pre_ads_url').val();
-   var processed_low =  $('#processed_low').val();
-   var episode_type  = $('#episode_type').val();
-   
-   
-   // alert(ads_path_tag);
-   // alert(type)
-   
-   
-   if(type != "" &&  type != "m3u8_url" &&  video_video == 'video' ){
-   // alert('video_video')
-   
-       const player = new Plyr('#videoPlayer',{
-         controls: ['play-large',
-                     'restart',
-                     'rewind',
-                     'play',
-                     'fast-forward',
-                     'progress',
-                     'current-time',
-                     'mute',
-                     'volume',
-                     'captions',
-                     'settings',
-                     'pip',
-                     'airplay',
-                     'fullscreen',
-                     'capture'
-                 ],
-             i18n:{
-                  capture: 'capture'
-             },
-   
-             ads:{ 
-                     enabled: true, 
-                     publisherId: '', 
-                     tagUrl: ads_path_tag 
-                   }
-       });
+      <script>
+    var type = $('#video_type').val();
+    // var type = $('#hls_m3u8').val();
+    var request_url = $('#request_url').val();
+    var live = $('live').val();
+    // var live = $('live').val();
+    var video_video = $('#video_video').val();
+    var user_logged_out =  $('#user_logged_out').val();
+    var hls =  $('#hls').val();
+    var ads_path_tag =  $('#pre_ads_url').val();
+    var processed_low =  $('#processed_low').val();
+    var episode_type  = $('#episode_type').val();
+
+
+    // alert(ads_path_tag);
+    // alert(type)
+
+
+   if(type != "" &&  type != "m3u8_url" &&  video_video == 'video' && type != 'aws_m3u8'){
+    // alert('video_video')
+
+        const player = new Plyr('#videoPlayer',{
+          controls: ['play-large',
+                      'restart',
+                      'rewind',
+                      'play',
+                      'fast-forward',
+                      'progress',
+                      'current-time',
+                      'mute',
+                      'volume',
+                      'captions',
+                      'settings',
+                      'pip',
+                      'airplay',
+                      'fullscreen',
+                      'capture'
+		                ],
+              i18n:{
+                   capture: 'capture'
+              },
+
+              ads:{ 
+                      enabled: true, 
+                      publisherId: '', 
+                      tagUrl: ads_path_tag 
+                    }
+        });
    } 
-   else if(type != "" && request_url != 'm3u8' && episode_type != 'm3u8'){
-   // alert('m3u8')
-   
-       const player = new Plyr('#videoPlayer',{
-         controls: [
-   
-     'play-large',
-   'restart',
-   'rewind',
-   'play',
-   'fast-forward',
-   'progress',
-   'current-time',
-   'mute',
-   'volume',
-   'captions',
-   'settings',
-   'pip',
-   'airplay',
-   'fullscreen',
-   'capture'
-   ],
-   i18n:{
-   // your other i18n
-   capture: 'capture'
-   },
-               ads:{ 
-                     enabled: true, 
-                     publisherId: '', 
-                     tagUrl: ads_path_tag 
-                   }
-       });
+   else if(type != "" && request_url != 'm3u8' && episode_type != 'm3u8' && type != 'aws_m3u8'){
+    // alert('m3u8')
+
+        const player = new Plyr('#videoPlayer',{
+          controls: [
+
+      'play-large',
+			'restart',
+			'rewind',
+			'play',
+			'fast-forward',
+			'progress',
+			'current-time',
+			'mute',
+			'volume',
+			'captions',
+			'settings',
+			'pip',
+			'airplay',
+			'fullscreen',
+			'capture'
+		],
+    i18n:{
+    // your other i18n
+    capture: 'capture'
+},
+                ads:{ 
+                      enabled: true, 
+                      publisherId: '', 
+                      tagUrl: ads_path_tag 
+                    }
+        });
    }
-   else if(user_logged_out == 1 && type == '' && processed_low != 100 || user_logged_out == 1 && type == '' && processed_low == ""){
-   // alert('videoPlayer')
-       
-   
-   const player = new Plyr('#videoPlayer',{
-         controls: [
-   
-     'play-large',
-   'restart',
-   'rewind',
-   'play',
-   'fast-forward',
-   'progress',
-   'current-time',
-   'mute',
-   'volume',
-   'captions',
-   'settings',
-   'pip',
-   'airplay',
-   'fullscreen',
-   'capture'
-   ],
-   i18n:{
-   // your other i18n
-   capture: 'capture'
-   },
-                 ads:{ 
-                     enabled: true, 
-                     publisherId: '', 
-                     tagUrl: ads_path_tag 
-                   }
-       });
-   }else if(episode_type == 'm3u8') {
-   
-   // alert('episode_type')
-   
-   document.addEventListener("DOMContentLoaded", () => {
-   const video = document.querySelector("video");
-   const source = video.getElementsByTagName("source")[0].src;
-   
-   // For more options see: https://github.com/sampotts/plyr/#options
-   // captions.update is required for captions to work with hls.js
-   const defaultOptions = {};
-   
-   if (Hls.isSupported()) {
-   // For more Hls.js options, see https://github.com/dailymotion/hls.js
-   const hls = new Hls();
-   hls.loadSource(source);
-   
-   // From the m3u8 playlist, hls parses the manifest and returns
-   // all available video qualities. This is important, in this approach,
-   // we will have one source on the Plyr player.
-   hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
-   
-     // Transform available levels into an array of integers (height values).
-     const availableQualities = hls.levels.map((l) => l.height)
-   
-     // Add new qualities to option
-     defaultOptions.quality = {
-       default: availableQualities[0],
-       options: availableQualities,
-       // this ensures Plyr to use Hls to update quality level
-       forced: true,        
-       onChange: (e) => updateQuality(e),
-     }
-   
-     // Initialize here
-     const player = new Plyr(video, defaultOptions);
-   });
-   hls.attachMedia(video);
-   window.hls = hls;
+  else if(user_logged_out == 1 && type == '' && type != 'aws_m3u8' && processed_low != 100 || user_logged_out == 1 && type == '' && processed_low == ""){
+    // alert('videoPlayer')
+        
+    
+    const player = new Plyr('#videoPlayer',{
+          controls: [
+
+      'play-large',
+			'restart',
+			'rewind',
+			'play',
+			'fast-forward',
+			'progress',
+			'current-time',
+			'mute',
+			'volume',
+			'captions',
+			'settings',
+			'pip',
+			'airplay',
+			'fullscreen',
+			'capture'
+		],
+    i18n:{
+    // your other i18n
+    capture: 'capture'
+},
+                  ads:{ 
+                      enabled: true, 
+                      publisherId: '', 
+                      tagUrl: ads_path_tag 
+                    }
+        });
+   }else if(episode_type == 'm3u8' && type != 'aws_m3u8') {
+
+    // alert('episode_type')
+
+    document.addEventListener("DOMContentLoaded", () => {
+  const video = document.querySelector("video");
+  const source = video.getElementsByTagName("source")[0].src;
+  
+  // For more options see: https://github.com/sampotts/plyr/#options
+  // captions.update is required for captions to work with hls.js
+  const defaultOptions = {};
+
+  if (Hls.isSupported()) {
+    // For more Hls.js options, see https://github.com/dailymotion/hls.js
+    const hls = new Hls();
+    hls.loadSource(source);
+
+    // From the m3u8 playlist, hls parses the manifest and returns
+    // all available video qualities. This is important, in this approach,
+    // we will have one source on the Plyr player.
+    hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+
+      // Transform available levels into an array of integers (height values).
+      const availableQualities = hls.levels.map((l) => l.height)
+
+      // Add new qualities to option
+      defaultOptions.quality = {
+        default: availableQualities[0],
+        options: availableQualities,
+        // this ensures Plyr to use Hls to update quality level
+        forced: true,        
+        onChange: (e) => updateQuality(e),
+      }
+
+      // Initialize here
+      const player = new Plyr(video, defaultOptions);
+    });
+    hls.attachMedia(video);
+    window.hls = hls;
+  }
+
+  function updateQuality(newQuality) {
+    window.hls.levels.forEach((level, levelIndex) => {
+      if (level.height === newQuality) {
+        console.log("Found quality match with " + newQuality);
+        window.hls.currentLevel = levelIndex;
+      }
+    });
+  }
+});
+    
+
+$(window).on("beforeunload", function() { 
+
+var vid = document.getElementById("video");
+var currentTime = vid.currentTime;
+var duration = vid.duration;
+var videotype= $('#video_type').val();
+
+var videoid = $('#video_id').val();
+$.post('<?= URL::to('continue-watching') ?>', { video_id : videoid,duration : duration,currentTime:currentTime, _token: '<?= csrf_token(); ?>' }, function(data){
+        //    toastr.success(data.success);
+});
+
+// localStorage.setItem('your_video_'+video_id, currentTime);
+return;
+}); 
+
    }
    else if(hls == "hls"){
      

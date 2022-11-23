@@ -184,6 +184,13 @@ border-radius: 0px 4px 4px 0px;
                            </div>
                         </div>
 
+                        <div class="col-sm-6">
+                            <label class="">AWS Transcode Path (Ex: /path/to )  </label>
+                            <div class="panel-body" style="display: block;">
+                              <input type="text" class="form-control" name="aws_transcode_path" id="aws_transcode_path" value="@if(!empty($storage_settings->aws_transcode_path)){{ $storage_settings->aws_transcode_path }} @endif" />
+                           </div>
+                        </div>
+
                     </div>
                     
                 </div>

@@ -168,6 +168,7 @@ $media_url = URL::to("/schedule/videos") . "/" . $schedule->name;
                                             <th>Schedule Date</th>
                                             <th>Scheduled Starttime</th>
                                             <th>Schedule Endtime</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                 <tbody>
@@ -179,6 +180,10 @@ $media_url = URL::to("/schedule/videos") . "/" . $schedule->name;
                                         <td>{{ $video->shedule_date  }}</td>   
                                         <td>{{ $video->sheduled_starttime  }}</td>  
                                         <td>{{ $video->shedule_endtime  }}</td>   
+                                        <td>
+
+                                        <a class="iq-bg-danger deleteVideo" data-id="{{ $video->id }}" data-token="{{ csrf_token() }}"
+                                             onclick="return confirm('Are you sure?')" href="#"><i class="ri-delete-bin-line"></i></a></td> 
                                         </tr>                               
 
                                      @endforeach
@@ -227,6 +232,34 @@ $media_url = URL::to("/schedule/videos") . "/" . $schedule->name;
     <script src="<?=URL::to("/assets/js/jquery.mask.min.js") ?>"></script>
     
     <script type="text/javascript">
+
+// $(".deleteVideo").click(function(){
+//         var id = $(this).data("id");
+//         var token = $(this).data("token");
+//         var url = '<?php echo URL::to('admin/schedule/delete') ?>';
+
+//         alert(url+'/'+id);
+//         $.ajax(
+//         {
+//             url:url+'/'+id,
+//             type: 'GET',
+//             dataType: "JSON",
+//             data: {
+//                 "id": id,
+//                 "_method": 'get',
+//                 "_token": token,
+//             },
+//             success: function ()
+//             {
+//                 // console.log("it Work");
+//                 location.reload();
+//             }
+//         });
+
+//         console.log("It failed");
+//     });
+
+
       $('#choose_start_time').mask("00:00 AM");
       $('#choose_end_time').mask("00:00 AM");
 
@@ -612,6 +645,35 @@ function drop(video_id) {
        });
 
 }
+
+
+$(".deleteVideo").click(function(){
+        var id = $(this).data("id");
+        var token = $(this).data("token");
+        var url = '<?php echo URL::to('admin/schedule/delete') ?>';
+
+        // alert(url+'/'+id);
+        $.ajax(
+        {
+            url:url+'/'+id,
+            type: 'GET',
+            dataType: "JSON",
+            data: {
+                "id": id,
+                "_method": 'get',
+                "_token": token,
+            },
+            success: function ()
+            {
+                // console.log("it Work");
+                location.reload();
+            }
+        });
+
+        console.log("It failed");
+    });
+
+
 
 </script>
 

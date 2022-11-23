@@ -81,6 +81,7 @@ class AdminStorageSettingsController extends Controller
         $storage_settings->aws_episode_path = $request->aws_episode_path;
         $storage_settings->aws_live_path = $request->aws_live_path;
         $storage_settings->aws_audio_path = $request->aws_audio_path;
+        $storage_settings->aws_transcode_path = $request->aws_transcode_path;
 
         $storage_settings->save();
 
