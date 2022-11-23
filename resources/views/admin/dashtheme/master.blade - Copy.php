@@ -172,7 +172,7 @@
                         
                         <li>
 							<a href="{{ URL::to('admin/admin-languages-transulates') }}">
-								<span class="title">Manage Transulate Languages</span>
+								<span class="title">Manage Translate Languages</span>
 							</a>
 						</li>
 						
