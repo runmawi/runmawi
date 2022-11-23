@@ -1326,6 +1326,7 @@ class AdminSeriesController extends Controller
     {
         
         $data = $request->all();
+
         $settings =Setting::first();
 
         if(!empty($data['ppv_price'])){
@@ -1519,7 +1520,7 @@ class AdminSeriesController extends Controller
 
             $episodes->rating =  $data['rating'];
             $episodes->slug = $episode_slug ;
-
+            $episodes->episode_description =  $data['episode_description'];
             $episodes->type =  $type;
             $episodes->banner =  $banner;
 
@@ -1532,16 +1533,16 @@ class AdminSeriesController extends Controller
             $episodes->series_id =  $data['series_id'];
             $episodes->season_id =  $data['season_id'];
             $episodes->image =  $data['image'];
-              $episodes->skip_recap =  $data['skip_recap'];
-              $episodes->recap_start_time =  $data['recap_start_time'];
-              $episodes->recap_end_time =  $data['recap_end_time'];
-              $episodes->skip_intro =  $data['skip_intro'];
-              $episodes->intro_start_time =  $data['intro_start_time'];
-              $episodes->intro_end_time =  $data['intro_end_time'];
-              $episodes->ppv_price =  $ppv_price;
-              $episodes->ppv_status =  $data['ppv_status'];
-              $episodes->status =  1;
-              $episodes->save();
+            $episodes->skip_recap =  $data['skip_recap'];
+            $episodes->recap_start_time =  $data['recap_start_time'];
+            $episodes->recap_end_time =  $data['recap_end_time'];
+            $episodes->skip_intro =  $data['skip_intro'];
+            $episodes->intro_start_time =  $data['intro_start_time'];
+            $episodes->intro_end_time =  $data['intro_end_time'];
+            $episodes->ppv_price =  $ppv_price;
+            $episodes->ppv_status =  $data['ppv_status'];
+            $episodes->status =  1;
+            $episodes->save();
 
 
         return Redirect::to('admin/season/edit/'.$data['series_id'].'/'.$data['season_id'])->with(array('note' => 'New Episode Successfully Added!', 'note_type' => 'success') );
@@ -1777,6 +1778,7 @@ class AdminSeriesController extends Controller
         $episode->player_image =  $player_image;
         $episode->ppv_status =  $data['ppv_status'];
         $episode->slug =  $data['slug'];
+        $episode->episode_description =  $data['episode_description'];
         $episode->status =  1;
         $episode->save();
 
@@ -2179,6 +2181,7 @@ class AdminSeriesController extends Controller
               $episode->intro_end_time =  $data['intro_end_time'];
               $episode->ppv_price =  $ppv_price;
               $episode->ppv_status =  $data['ppv_status'];
+              $episode->episode_description =  $data['episode_description'];
               $episode->save();
 
 

@@ -180,6 +180,16 @@
                         
                     </div>
 
+                    <div class="row mb-3">
+                        <div class="col-sm-12">
+                            <label class="m-0"> Episode Description </label>
+                            <p class="p1"> Add a description of the Episode below: </p> 
+                            <div class="panel-body">
+                                <textarea class="form-control description_editor" name="episode_description" id="description_editor"> @if(!empty($episodes->episode_description)){{ ($episodes->episode_description) }} @endif </textarea>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="row mt-3">
                         <div class="col-sm-6">
                             <div class="panel panel-primary" data-collapsed="0">
@@ -692,7 +702,13 @@ var tagInput1 = new TagsInput({
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
 
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+    <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
+
     <script>
+
+        CKEDITOR.replaceAll( 'description_editor', {
+            toolbar : 'simple'
+        });
 
         // Image upload dimention validation
 		$.validator.addMethod('dimention', function(value, element, param) {

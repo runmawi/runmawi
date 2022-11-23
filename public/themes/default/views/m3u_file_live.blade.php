@@ -58,6 +58,87 @@
                 }
             }
         });
+
+        function m3u_url(ele){
+
+           var m3u_url   = $(ele).attr('data-MU3-category');
+
+           alert('Are you Select ' + m3u_url + ' ? ');
+
+           $.ajax({
+
+            url: "<?=  route('m3u_file_m3u8url') ?>",
+            type: "get",
+            data: {
+                    m3u_url : m3u_url ,
+                    async: false,
+                },       
+                
+                success: function( data  ){
+
+                if( data.status == true ){
+
+                    var count = data.M3u_url_array.length ;
+
+
+                    if( count > 0 && data.status == true ){
+
+                        html = "";
+                        html += '<div class="modal-body">';
+                            html += '<div class="list-group list-group-flush" style="height: calc(100vh - 80px - 75px)!important;">';
+                                    
+                                    $.each( data.M3u_url_array , function( index, M3u_url_array ) {
+                                    
+                                        html +='<a data-toggle="modal" data-target="#myModal" class="list-group-item list-group-item-action list-group-item-light"  data-m3u-urls="'+ M3u_url_array +'" onclick="M3U_video_url(this)" > "'+ M3u_url_array +'"  </a>';
+
+                                    });
+
+                            html += '</div>';
+                        html += '</div>';
+
+                        Title_name  = "";
+                        Title_name += ' <h4 class="modal-title" id="myModalLabel" > '+ data.M3u_category +' </h4>';
+                       
+                        $('.data-plans').empty('').append(html);
+                        $('#myModalLabel').empty('').append(Title_name);
+
+                    }
+                }
+
+                else if( data.status == false ){
+                   alert('Sorry! No Data Found');
+                   location.reload();
+                }
+            } 
+        });
+    }   
+
+    function M3U_video_url(ele){
+
+           var data_m3u_urls   = $(ele).attr('data-m3u-urls');
+
+           $.ajax({
+
+            url: "<?=  route('M3U_video_url') ?>",
+            type: "get",
+            data: {
+                    data_m3u_urls : data_m3u_urls ,
+                    async: false,
+                },       
+                
+                success: function( data  ){
+
+                if( data.status == true ){
+                    location.reload();
+                }
+                else if( data.status == false ){
+                   alert('Incorrect Access');
+                   location.reload();
+                }
+            } 
+        });
+    }
+
     </script>
 
 <?php } ?> 

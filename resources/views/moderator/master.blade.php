@@ -238,7 +238,7 @@ for($i=0;$i<(count($userrolepermissiom));$i++){
                      <li><a href="{{ URL::to('languages') }}"><i class="las la-eye"></i>Manage Translations</a></li>
                      <?php }else{ } ?>
        <?php if( in_array( "Manage Transulate Languages" ,$role)){ ?>   
-                     <li><a href="{{ URL::to('admin_languages_transulates') }}"><i class="las la-eye"></i>Manage Transulate Languages</a></li>
+                     <li><a href="{{ URL::to('admin_languages_transulates') }}"><i class="las la-eye"></i>Manage Translate Languages</a></li>
                      <?php }else{ } ?>
                   </ul>
                   </li>
