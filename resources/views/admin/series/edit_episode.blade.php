@@ -143,26 +143,33 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                     <input type="hidden" id="player_check_image" name="player_check_image" value="@if(!empty($episodes->player_image) ) {{ "validate" }} @else {{ " " }} @endif"  />
 
                 </div>
-                <div class="row mb-3">
 
-                <div class="col-sm-6">
+                <div class="row mb-3">
+                    <div class="col-sm-12">
+                        <label class="m-0"> Episode Description </label>
+                        <p class="p1"> Add a description of the Episode below: </p> 
+                        <div class="panel-body">
+					        <textarea class="form-control description_editor" name="episode_description" id="description_editor"> @if(!empty($episodes->episode_description)){{ ($episodes->episode_description) }} @endif </textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-sm-6">
                         <label class="m-0">Episode Ratings</label>
                         <p class="p1">IMDb Ratings 10 out of 10</p>
-
                         <div class="panel-body">
                             <input class="form-control" name="rating" id="rating" value="@if(!empty($episodes->rating)){{ $episodes->rating }}@endif" onkeyup="NumAndTwoDecimals(event , this);" />
                         </div>
                     </div>
 
-                            <div class="col-sm-6">
-                            <label class="m-0">Search Tags</label>
-
-                                <div class="panel-body">
-								<input type="text" id="tag-input1" name="searchtags">
-
-                             </div>
+                    <div class="col-sm-6">
+                        <label class="m-0">Search Tags</label>
+                        <div class="panel-body">
+							<input type="text" id="tag-input1" name="searchtags" class="form-control">
                         </div>
                     </div>
+                </div>
 
                 <div class="row mb-3">
                     <div class="col-sm-6">
@@ -170,7 +177,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                         <p class="p1">Episode Format</p>
 
                         <div class="panel-body">
-                            <select id="type" name="type">
+                            <select id="type" name="type" class="form-control">
                                 <option value="embed">Embed Code</option>
                                 <option value="file" @if(!empty($episodes->type) && $episodes->type == 'file'){{ 'selected' }}@endif>Episode File</option>
                                 <option value="upload" @if(!empty($episodes->type) && $episodes->type == 'upload'){{ 'selected' }}@endif>Upload Episode</option>
@@ -289,7 +296,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                         <p class="p1">Who is allowed to view this episode?</p>
 
                         <div class="panel-body">
-                            <select id="access" name="access">
+                            <select id="access" name="access" class="form-control" >
                                     <option value="guest" @if(!empty($episodes->access) && $episodes->access == 'guest'){{ 'selected' }}@endif>Guest (everyone)</option>
                                     <option value="registered" @if(!empty($episodes->access) && $episodes->access == 'registered'){{ 'selected' }}@endif>Registered Users (free registration must be enabled)</option>
                                     <option value="subscriber" @if(!empty($episodes->access) && $episodes->access == 'subscriber'){{ 'selected' }}@endif>Subscriber (only paid subscription users)</option>
@@ -389,7 +396,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
 
         <script>
 
-            
+           
             $(document).ready(function ($) {
                 $("#duration").mask("00:00:00");
                 $('#intro_start_time').mask("00:00:00");
@@ -491,7 +498,15 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
         @section('javascript')
 
         <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+        <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
+
         <script>
+
+            CKEDITOR.replaceAll( 'description_editor', {
+                toolbar : 'simple'
+            });
+
+                        // Validation
 
             $.validator.addMethod('greaterThan', function(value, element) {
                 var intro_start_time = $("#intro_start_time").val();
