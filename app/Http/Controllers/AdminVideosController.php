@@ -6941,6 +6941,9 @@ class AdminVideosController extends Controller
 
                 $output = "";
                 $i = 1;
+
+                $delete = URL::to("admin/schedule/delete");
+
                 if (count($total_content) > 0) {
                     $total_row = $total_content->count();
                     if (!empty($total_content)) {
@@ -6972,7 +6975,8 @@ class AdminVideosController extends Controller
 
                   </tr>
                   ';
-                        }
+
+                }
                     } else {
                         $output = '
               <tr>
@@ -7093,6 +7097,8 @@ class AdminVideosController extends Controller
 
                 $output = "";
                 $i = 1;
+                $delete = URL::to("admin/schedule/delete");
+
                 if (count($total_content) > 0) {
                     $total_row = $total_content->count();
                     if (!empty($total_content)) {
@@ -7218,6 +7224,8 @@ class AdminVideosController extends Controller
 
                 $output = "";
                 $i = 1;
+                $delete = URL::to("admin/schedule/delete");
+
                 if (count($total_content) > 0) {
                     $total_row = $total_content->count();
                     if (!empty($total_content)) {
@@ -7277,6 +7285,8 @@ class AdminVideosController extends Controller
 
                 $output = "";
                 $i = 1;
+                $delete = URL::to("admin/schedule/delete");
+
                 if (count($total_content) > 0) {
                     $total_row = $total_content->count();
                     if (!empty($total_content)) {
@@ -7305,7 +7315,7 @@ class AdminVideosController extends Controller
                       <td>' .
                                 $row->shedule_endtime .
                                 '</td>  
-    
+
                       </tr>
                       ';
                         }
@@ -7829,5 +7839,16 @@ class AdminVideosController extends Controller
 
         // return response()->json($value);
     }
+
+    public function ScheduledVideoDelete($id)
+    {
+        // dd($id);
+        ScheduleVideos::where("id", $id)->delete();
+        $value["message"] = "File Deleted .";
+        return response()->json($value);
+        // return redirect::back();
+
+    }
+
 }
     
