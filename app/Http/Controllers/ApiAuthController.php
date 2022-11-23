@@ -996,7 +996,6 @@ public function verifyandupdatepassword(Request $request)
   {
     $videoid = $request->videoid;
 
-      
     $current_date = date('Y-m-d h:i:s a', time()); 
     $videodetail = Video::where('id',$videoid)->orderBy('created_at', 'desc')->get()->map(function ($item) {
         $item['details'] = strip_tags($item->details);
@@ -1008,6 +1007,7 @@ public function verifyandupdatepassword(Request $request)
         $item['mobile_image_url'] = URL::to('/').'/public/uploads/images/'.$item->mobile_image;
         $item['tablet_image_url'] = URL::to('/').'/public/uploads/images/'.$item->tablet_image;
         $item['transcoded_url'] = URL::to('/storage/app/public/').'/'.$item->path . '.m3u8';
+        $item['description']    = strip_tags(html_entity_decode($item->description));
         $ads_videos = AdsVideo::where('ads_videos.video_id',$item->id)
             ->join('advertisements', 'ads_videos.ads_id', '=', 'advertisements.id')
             ->first();
