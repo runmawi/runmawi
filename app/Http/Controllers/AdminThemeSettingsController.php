@@ -16,13 +16,15 @@ use App\ThemeSetting as ThemeSetting;
 use App\SiteTheme as SiteTheme;
 use Hash;
 use Illuminate\Support\Facades\Cache;
-use Image;
+use Intervention\Image\Facades\Image;
+use Intervention\Image\Filters\DemoFilter;
 use View;
 use DB;
 use App\SystemSetting as SystemSetting;
 use Session;
 use GuzzleHttp\Client;
 use GuzzleHttp\Message\Response;
+use Illuminate\Support\Facades\File; 
 
 class AdminThemeSettingsController extends Controller
 {
@@ -434,63 +436,79 @@ class AdminThemeSettingsController extends Controller
         }
       } 
     public function LanguageIndex(){
+
       $data = Session::all();
+
       if (!empty($data['password_hash'])) {
-      $package_id = auth()->user()->id;
-      $user_package =    User::where('id', $package_id)->first();
-            $package = $user_package->package;
-            $user =  User::where('id',1)->first();
-            $duedate = $user->package_ends;
-            $current_date = date('Y-m-d');
-            if ($current_date > $duedate)
-            {
-              $client = new Client();
-              $url = "https://flicknexs.com/userapi/allplans";
-              $params = [
-                  'userid' => 0,
-              ];
+
+        $package_id = auth()->user()->id;
+        $user_package =    User::where('id', $package_id)->first();
+
+        $package = $user_package->package;
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+
+        if ($current_date > $duedate)
+        {
+
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [ 'userid' => 0 ];
       
-              $headers = [
-                  'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
-              ];
-              $response = $client->request('post', $url, [
-                  'json' => $params,
-                  'headers' => $headers,
-                  'verify'  => false,
-              ]);
+            $headers = [
+                'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+            ];
+
+            $response = $client->request('post', $url, [
+                'json' => $params,
+                'headers' => $headers,
+                'verify'  => false,
+            ]);
       
-              $responseBody = json_decode($response->getBody());
-             $settings = Setting::first();
-             $data = array(
+            $responseBody = json_decode($response->getBody());
+            $settings = Setting::first();
+
+            $data = array(
               'settings' => $settings,
               'responseBody' => $responseBody,
-      );
+            );
+
                 return View::make('admin.expired_dashboard', $data);
-            }else{
+
+            }
+            else{
+
             if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
-        //$categories = VideoCategory::where('parent_id', '=', 0)->get();
 
-        $allCategories = VideoLanguage::all();
-          
-          $data = array (
-            'allCategories'=>$allCategories
-          );
-        return view('admin.languages.index',$data);
-      }else if($package == "Basic"){
+              $allCategories = VideoLanguage::all();
+       
+              $data = array (
+                'allCategories' => $allCategories ,
+                'languages'     => Language::all(),
+              );
 
-        return view('blocked');
+             return view('admin.languages.index',$data);
 
-    }
-  }
-  }else{
-    $system_settings = SystemSetting::first();
-    $user = User::where('id','=',1)->first();
-    return view('auth.login',compact('system_settings','user'));
+            }else if($package == "Basic"){
 
-  }
+              return view('blocked');
+          }
+        }
+      }
+      else{
+
+        $system_settings = SystemSetting::first();
+        $user = User::where('id','=',1)->first();
+
+        return view('auth.login',compact('system_settings','user'));
+      }
   }   
+
+  
     
     public function LanguageTransIndex(){
+      
       $data = Session::all();
       if (!empty($data['password_hash'])) {
       $package_id = auth()->user()->id;
@@ -646,27 +664,29 @@ class AdminThemeSettingsController extends Controller
     
     
     public function LanguageDelete($id){
+
       $data = Session::all();
+
       if (!empty($data['password_hash'])) {
-      $package_id = auth()->user()->id;
-      $user_package =    User::where('id', $package_id)->first();
-      $package = $user_package->package;
-      if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
-        VideoLanguage::destroy($id);
-       
-        return Redirect::to('admin/admin-languages')->with(array('note' => 'Successfully Deleted Category', 'note_type' => 'success') );
-      }else if($package == "Basic"){
 
-        return view('blocked');
+          $package_id = auth()->user()->id;
+          $user_package =    User::where('id', $package_id)->first();
+          $package = $user_package->package;
 
-    }
-  }else{
-    $system_settings = SystemSetting::first();
-    $user = User::where('id','=',1)->first();
-    return view('auth.login',compact('system_settings','user'));
+          if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
+            Language::destroy($id);
+            return Redirect::to('admin/admin-languages')->with(array('note' => 'Successfully Deleted Category', 'note_type' => 'success') );
+          }
+          else if($package == "Basic"){
+            return view('blocked');
+          }
+      }else{
+        $system_settings = SystemSetting::first();
+        $user = User::where('id','=',1)->first();
+        return view('auth.login',compact('system_settings','user'));
 
-  }
-  }  
+      }
+    }  
     
     public function LanguageTransDelete($id){
       $data = Session::all();
@@ -732,39 +752,67 @@ class AdminThemeSettingsController extends Controller
     }  
     
     public function LanguageStore(Request $request){
+
       $data = Session::all();
+  
       if (!empty($data['password_hash'])) {
-      $package_id = auth()->user()->id;
-      $user_package =    User::where('id', $package_id)->first();
-      $package = $user_package->package;
-      if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
-            $input = $request->all();
-          
-              $validatedData = $request->validate([
-                'name' => 'required',
-            ]);
-          
-                $s = new VideoLanguage();
-                $slider = new VideoLanguage();
+        
+        $package_id = auth()->user()->id;
+        $user_package =    User::where('id', $package_id)->first();
+        $package = $user_package->package;
 
-              $slider->name = $request['name'];
-            
-              $slider->save();
+        if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
+          
+          $input = $request->all();
+
+          $validatedData = $request->validate([
+            'name' => 'required',
+            'language_image' => 'required',
+          ]);
+
+          $language_image = ($request->file('language_image')) ? $request->file('language_image') : '';
+
+          if($language_image != '') {   
+  
+              $language_image = $language_image;
+
+              if(compress_image_enable() == 1){
+
+                  $language_filename  = time().'.'.compress_image_format();
+                  $language_PC_image  =  time() .'_'.'language_'.$language_filename ;
+                  Image::make($language_image)->save(base_path().'/public/uploads/Language/'.$language_PC_image,compress_image_resolution() );
+              }else{
+
+                  $language_filename  = time().'.'.$language_image->getClientOriginalExtension();
+                  $language_PC_image  =  time() .'_'.'language_'.$language_filename ;
+                  Image::make($language_image)->save(base_path().'/public/uploads/Language/'.$language_PC_image );
+              }
+          }
+          else{
+            $language_PC_image = "default_horizontal_image.jpg";
+          }
+
+          Language::create([
+            'name'  => $request->name ,
+            'language_image' =>  $language_PC_image ,
+          ]);
+
           return back()->with('success', 'New Language added successfully.');
-        }else if($package == "Basic"){
 
-          return view('blocked');
-  
+          }
+          else if($package == "Basic"){
+            return view('blocked');
+          }
+        }
+        else{
+            $system_settings = SystemSetting::first();
+            $user = User::where('id','=',1)->first();
+            return view('auth.login',compact('system_settings','user'));
+        }
       }
-    }else{
-      $system_settings = SystemSetting::first();
-      $user = User::where('id','=',1)->first();
-      return view('auth.login',compact('system_settings','user'));
-  
-    }
-    }
     
        public function LanguageTransEdit($id){
+
         $data = Session::all();
         if (!empty($data['password_hash'])) {
         $package_id = auth()->user()->id;
@@ -816,58 +864,64 @@ class AdminThemeSettingsController extends Controller
       }
       } 
     
-        public function LanguageEdit($id){
-          $data = Session::all();
-          if (!empty($data['password_hash'])) {
-          $package_id = auth()->user()->id;
-          $user_package =    User::where('id', $package_id)->first();
-          $package = $user_package->package;
-          $user =  User::where('id',1)->first();
-          $duedate = $user->package_ends;
-          $current_date = date('Y-m-d');
-          if ($current_date > $duedate)
-          {
-            $client = new Client();
-            $url = "https://flicknexs.com/userapi/allplans";
-            $params = [
-                'userid' => 0,
-            ];
-    
-            $headers = [
-                'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
-            ];
-            $response = $client->request('post', $url, [
-                'json' => $params,
-                'headers' => $headers,
-                'verify'  => false,
-            ]);
-    
-            $responseBody = json_decode($response->getBody());
-           $settings = Setting::first();
-           $data = array(
-            'settings' => $settings,
-            'responseBody' => $responseBody,
-    );
-              return View::make('admin.expired_dashboard', $data);
-          }else{
-          if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
-            $categories = VideoLanguage::where('id', '=', $id)->get();
-            $allCategories = VideoLanguage::all();
-            return view('admin.languages.edit',compact('categories','allCategories'));
-          }else if($package == "Basic"){
+        public function LanguageEdit ( $id ){
 
-            return view('blocked');
-    
+          $data = Session::all();
+
+          if (!empty($data['password_hash'])) {
+
+            $package_id = auth()->user()->id;
+            $user_package =    User::where('id', $package_id)->first();
+            $package = $user_package->package;
+            $user =  User::where('id',1)->first();
+            $duedate = $user->package_ends;
+            $current_date = date('Y-m-d');
+
+            if ($current_date > $duedate)
+            {
+              $client = new Client();
+              $url = "https://flicknexs.com/userapi/allplans";
+
+              $params = ['userid' => 0 ];
+              $headers = [  'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ' ];
+
+              $response = $client->request('post', $url, [
+                  'json' => $params,
+                  'headers' => $headers,
+                  'verify'  => false,
+              ]);
+      
+              $responseBody = json_decode($response->getBody());
+              $settings = Setting::first();
+
+              $data = array(
+                'settings' => $settings,
+                'responseBody' => $responseBody,
+              );
+
+              return View::make('admin.expired_dashboard', $data);
+            }
+            else{
+              if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
+              
+                $language = Language::where('id',$id)->first();
+
+                $data = array(
+                  'languages' =>  $language ,
+                );
+
+                return view('admin.languages.edit',$data );
+              }
+              else if($package == "Basic"){
+                return view('blocked');
+            }
+          }
+        }else{
+          $system_settings = SystemSetting::first();
+          $user = User::where('id','=',1)->first();
+          return view('auth.login',compact('system_settings','user'));
         }
       }
-      }else{
-        $system_settings = SystemSetting::first();
-        $user = User::where('id','=',1)->first();
-        return view('auth.login',compact('system_settings','user'));
-    
-      }
-        }
-    
     
      public function LanguageTransUpdate(Request $request){
       $data = Session::all();
@@ -898,31 +952,65 @@ class AdminThemeSettingsController extends Controller
    } 
     
     public function LanguageUpdate(Request $request){
+
       $data = Session::all();
-      if (!empty($data['password_hash'])) {
-      $package_id = auth()->user()->id;
-      $user_package =    User::where('id', $package_id)->first();
-      $package = $user_package->package;
-      if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
-        $input = $request->all();
-        $id = $request['id'];
-        $name = $request['name']; 
-        $category = VideoLanguage::find($id);
-        $category->name = $request['name'];
-        $category->save();
-         
-        return back()->with('success', 'New Language Updated successfully.');
-      }else if($package == "Basic"){
 
-        return view('blocked');
+      $id = $request->language_id;
 
-    }
-  }else{
-    $system_settings = SystemSetting::first();
-    $user = User::where('id','=',1)->first();
-    return view('auth.login',compact('system_settings','user'));
+        if (!empty($data['password_hash'])) {
 
-  }
+          $package_id = auth()->user()->id;
+          $user_package =    User::where('id', $package_id)->first();
+          $package = $user_package->package;
+
+          if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
+              
+              $input = $request->all();
+
+              $Language = Language::where('id',$id)->first();
+
+              $language_image = ($request->file('language_image')) ? $request->file('language_image') : '';
+
+              if($language_image != '') {   
+      
+                  $language_image = $language_image;
+
+                  if (File::exists(base_path('public/uploads/Language/'.$Language->language_image))) {
+                    File::delete(base_path('public/uploads/Language/'.$Language->language_image));
+                  }
+    
+                  if(compress_image_enable() == 1){
+    
+                      $language_filename  = time().'.'.compress_image_format();
+                      $language_PC_image  =  time() .'_'.'language_'.$language_filename ;
+                      Image::make($language_image)->save(base_path().'/public/uploads/Language/'.$language_PC_image,compress_image_resolution() );
+                  }else{
+    
+                      $language_filename  = time().'.'.$language_image->getClientOriginalExtension();
+                      $language_PC_image  =  time() .'_'.'language_'.$language_filename ;
+                      Image::make($language_image)->save(base_path().'/public/uploads/Language/'.$language_PC_image );
+                  }
+              }else{
+                $language_PC_image = $Language->language_image != null ?  $Language->language_image : null;
+              }
+
+              Language::where('id',$id)->update([
+                'name' => $request['name'] ,
+                'language_image' => $language_PC_image ,
+              ]);
+            
+              return back()->with('success', 'New Language Updated successfully.');
+          }
+          else if($package == "Basic"){
+            return view('blocked');
+          }
+        }else{
+
+          $system_settings = SystemSetting::first();
+          $user = User::where('id','=',1)->first();
+
+          return view('auth.login',compact('system_settings','user'));
+        }
   }
 
     public function slider_order(Request $request){

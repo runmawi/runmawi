@@ -398,7 +398,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/languages/store','AdminThemeSettingsController@LanguageStore');
     Route::get('/languages/edit/{id}', 'AdminThemeSettingsController@LanguageEdit');
     Route::get('/languages/delete/{id}', 'AdminThemeSettingsController@LanguageDelete');
-    Route::post('/languages/update', 'AdminThemeSettingsController@LanguageUpdate'); 
+    Route::post('/languages/update', 'AdminThemeSettingsController@LanguageUpdate')->name('LanguageUpdate'); 
 
     Route::get('/admin-languages-transulates', 'AdminThemeSettingsController@LanguageTransIndex');
 
