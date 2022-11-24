@@ -120,29 +120,50 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                         <p class="p1">Select the episodes image (9:16 ratio or 1080 X 1920px )</p>
 
                         <div class="panel-body">
+                            <input type="file" multiple="true" class="form-group" name="image" id="image" />
+
                             @if(!empty($episodes->image))
                                 <img src="{{ URL::to('/') . '/public/uploads/images/' . $episodes->image }}" class="episodes-img" width="200" />
                             @endif
-                            <input type="file" multiple="true" class="form-group" name="image" id="image" />
                         </div>
                     </div>
+
                     <div class="col-sm-6">
                         <label class="m-0">Episode Player Image</label>
                         <p class="p1">Select the player image ( 16:9 Ratio or 1280X720px)</p>
 
                         <div class="panel-body">
+                            <input type="file" multiple="true" class="form-group" name="player_image" id="player_image" />
+
                             @if(!empty($episodes->player_image))
                                 <img src="{{ URL::to('/') . '/public/uploads/images/' . $episodes->player_image }}" class="episodes-img" width="200" />
                             @endif
-                            <input type="file" multiple="true" class="form-group" name="player_image" id="player_image" />
                         </div>
                     </div>
 
                          {{-- for validate --}} 
                     <input type="hidden" id="check_image" name="check_image" value="@if(!empty($episodes->image) ) {{ "validate" }} @else {{ " " }} @endif"  />
                     <input type="hidden" id="player_check_image" name="player_check_image" value="@if(!empty($episodes->player_image) ) {{ "validate" }} @else {{ " " }} @endif"  />
-
                 </div>
+
+                <div class="row mb-3">
+
+                    <div class="col-sm-6">
+                        <label class="m-0">Episode TV Image</label>
+                        <p class="p1">Select the player image ( 1:1 Ratio or 1024 X 1024 px)</p>
+
+                        <div class="panel-body">
+                            <input type="file" multiple="true" class="form-group" name="tv_image" id="tv_image" />
+                            @if(!empty($episodes->tv_image))
+                                <img src="{{ URL::to('/') . '/public/uploads/images/' . $episodes->tv_image }}" class="episodes-img" width="200" />
+                            @endif
+                        </div>
+                    </div>
+
+                         {{-- for validate --}} 
+                    <input type="hidden" id="check_Tv_image" name="check_Tv_image" value="@if(!empty($episodes->tv_image) ) {{ "validate" }} @else {{ " " }} @endif"  />
+                </div>
+
 
                 <div class="row mb-3">
                     <div class="col-sm-12">
@@ -570,6 +591,23 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
         },'Please upload an image with 1280 x 720 pixels dimension  or 16:9 Ratio');
 
 
+        $.validator.addMethod('tv_image_dimention', function(value, element, param) {
+            if(element.files.length == 0){
+                return true; 
+            }
+
+            var width = $(element).data('imageWidth');
+            var height = $(element).data('imageHeight');
+            var ratio = $(element).data('imageratio');
+            var image_validation_status = "{{  image_validation_episode() }}" ;
+
+            if( image_validation_status == "0" || ratio == '1.00'||  width == param[0] && height == param[1]){
+                return true;
+            }else{
+                return false;
+            }
+        },'Please upload an image with 1024 x 1024 pixels dimension  or 1:1 Ratio');
+
         $('#image').change(function() {
 
             $('#image').removeData('imageWidth');
@@ -591,11 +629,11 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
             }
         });
 
-        $('#player_image').change(function() {
+        $('#tv_image').change(function() {
 
-            $('#player_image').removeData('imageWidth');
-            $('#player_image').removeData('imageHeight');
-            $('#player_image').removeData('imageratio');
+            $('#tv_image').removeData('imageWidth');
+            $('#tv_image').removeData('imageHeight');
+            $('#tv_image').removeData('imageratio');
 
             var file = this.files[0];
             var tmpImg = new Image();
@@ -605,9 +643,9 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                 width = tmpImg.naturalWidth,
                 height = tmpImg.naturalHeight;
 				ratio =  Number(width/height).toFixed(2) ;
-                $('#player_image').data('imageWidth', width);
-                $('#player_image').data('imageHeight', height);
-                $('#player_image').data('imageratio', ratio);
+                $('#tv_image').data('imageWidth', width);
+                $('#tv_image').data('imageHeight', height);
+                $('#tv_image').data('imageratio', ratio);
             }
         });
 
@@ -627,6 +665,12 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                     required: '#player_check_image:blank',
                     player_dimention:[1280,720]
                 },
+
+                tv_image: {
+                    required: '#check_Tv_image:blank',
+                    tv_image_dimention:[1024,1024]
+                },
+
 
                 intro_start_time: {
                     required: function(element){
