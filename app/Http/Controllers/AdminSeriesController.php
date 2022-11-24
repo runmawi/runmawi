@@ -276,6 +276,38 @@ class AdminSeriesController extends Controller
                 $player_image = "default_horizontal_image.jpg";
 
             }
+
+            // Series TV  Image  
+
+            $tv_image = (isset($data['tv_image'])) ? $data['tv_image'] : '';
+
+            if(!empty($tv_image) && $data['tv_image'] != 'validate'){
+
+                if($tv_image != ''  && $tv_image != null){
+                       $file_old = $image_path.$tv_image;
+                      if (file_exists($file_old)){
+                       unlink($file_old);
+                      }
+                  }
+                  $tv_image = $tv_image;
+
+                if(compress_image_enable() == 1){
+    
+                    $series_tv_image_filename  = time().'.'.compress_image_format();
+                    $series_tv_image_image     =  'series_tv_image_'.$series_tv_image_filename ;
+                    Image::make($tv_image)->save(base_path().'/public/uploads/images/'.$series_tv_image_image,compress_image_resolution() );
+                }else{
+    
+                    $series_tv_image_filename  = time().'.'.$player_image->getClientOriginalExtension();
+                    $series_tv_image_image     =  'series_tv_image_'.$series_tv_image_filename ;
+                    Image::make($tv_image)->save(base_path().'/public/uploads/images/'.$series_tv_image_image );
+                }  
+
+                $tv_image  =  $series_tv_image_image ; 
+
+            } else {
+                $tv_image = "default_horizontal_image.jpg";
+            }
             
 //          
 //         if($image != '') {   
@@ -353,6 +385,7 @@ class AdminSeriesController extends Controller
         $series->slug = $series_slug;
         $series->ppv_status = $ppv_status;
         $series->player_image = $player_image;
+        $series->tv_image = $tv_image;
         $series->banner = empty($data['banner']) ? 0 : 1;
         $series->search_tag =$data['search_tag'];
         $series->details =($data['details']);
@@ -566,7 +599,28 @@ class AdminSeriesController extends Controller
                 $player_image = $series->player_image;
                }
 
-            //    dd($player_image);
+            if($request->hasFile('tv_image')){
+
+                if (File::exists(base_path('public/uploads/images/'.$series->tv_image))) {
+                    File::delete(base_path('public/uploads/images/'.$series->tv_image));
+                }
+
+                $tv_image = $request->tv_image;
+    
+                if(compress_image_enable() == 1){
+    
+                    $Series_tv_filename   = 'Series-TV-Image'.time().'.'. compress_image_format();
+                    Image::make($tv_image)->save(base_path().'/public/uploads/images/'.$Series_tv_filename , compress_image_resolution() );
+    
+                }else{
+    
+                    $Series_tv_filename   = 'Series-TV-Image'.time().'.'.$file->getClientOriginalExtension();
+                    Image::make($tv_image)->save(base_path().'/public/uploads/images/'.$Series_tv_filename );
+                }
+
+                $series->tv_image = $Series_tv_filename;
+            }
+
 
         if(empty($data['active'])){
             $data['active'] = 0;
@@ -1464,6 +1518,25 @@ class AdminSeriesController extends Controller
             $player_image = "default_horizontal_image.jpg";
          }
 
+         if($request->hasFile('tv_image')){
+
+            $tv_image = $request->tv_image;
+
+            if(compress_image_enable() == 1){
+
+                $Episode_tv_filename   = 'Episode-TV-Image'.time().'.'. compress_image_format();
+                Image::make($tv_image)->save(base_path().'/public/uploads/images/'.$Episode_tv_filename , compress_image_resolution() );
+
+            }else{
+
+                $Episode_tv_filename   = 'Episode-TV-Image'.time().'.'.$file->getClientOriginalExtension();
+                Image::make($tv_image)->save(base_path().'/public/uploads/images/'.$Episode_tv_filename );
+            }
+
+            $episodes->tv_image = $Episode_tv_filename;
+
+        }
+
         if(!empty($data['searchtags'])){
             $searchtags = $data['searchtags'];
         }else{
@@ -1752,7 +1825,27 @@ class AdminSeriesController extends Controller
 
              }
 
-        // dd('$player_image');
+             if($request->hasFile('tv_image')){
+
+                if (File::exists(base_path('public/uploads/images/'.$episode->tv_image))) {
+                    File::delete(base_path('public/uploads/images/'.$episode->tv_image));
+                }
+
+                $tv_image = $request->tv_image;
+    
+                if(compress_image_enable() == 1){
+    
+                    $Episode_tv_filename   = 'Episode-TV-Image'.time().'.'. compress_image_format();
+                    Image::make($tv_image)->save(base_path().'/public/uploads/images/'.$Episode_tv_filename , compress_image_resolution() );
+    
+                }else{
+    
+                    $Episode_tv_filename   = 'Episode-TV-Image'.time().'.'.$file->getClientOriginalExtension();
+                    Image::make($tv_image)->save(base_path().'/public/uploads/images/'.$Episode_tv_filename );
+                }
+
+                $episode->tv_image = $Episode_tv_filename;
+            }
              
         if(empty($data['active'])){
             $data['active'] = 0;

@@ -109,40 +109,87 @@ $settings  = App\Setting::first();?>
 				</div> 
 			</div>
             </div>
+
+											{{-- Series Image --}}
 			<div class="row">
 				<div class="col-md-6">
-				<div class="panel panel-primary mt-3" data-collapsed="0"> <div class="panel-heading"> 
-				<div class="panel-title font-weight-bold"><label class="m-0">Series Image Cover</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-				<div class="panel-body col-sm-8 p-0" style="display: block;"> 
-                    <p class="p1">Select the series image ( 9:16 Ratio or 1080X1920px ):</p> 
-					@if(!empty($series->image))
-						<img src="{{ URL::to('/') . '/public/uploads/images/' . $series->image }}" class="series-img" width="200"/>
-					@endif
-					<input type="file" multiple="true" class="form-group image" name="image" id="image" />
-					{{-- for validate --}}
-					<input type="hidden" id="check_image" name="check_image" value="@if(!empty($series->image) ) {{ "validate" }} @else {{ " " }} @endif"  />
-					<input type="hidden" id="player_check_image" name="player_check_image" value="@if(!empty($series->player_image) ) {{ "validate" }} @else {{ " " }} @endif"  />
+					<div class="panel panel-primary mt-3" data-collapsed="0"> 
+						<div class="panel-heading"> 
+							<div class="panel-title font-weight-bold">
+								<label class="m-0">Series Image Cover</label>
+							</div> 
+							<div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
+						</div> 
 
-				</div> 
-			</div>
-			</div>
-			<div class="col-md-6">
-		<div class="panel panel-primary mt-3" data-collapsed="0"> <div class="panel-heading"> 
-				<div class="panel-title font-weight-bold"><label class="m-0">Series Player Image </label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-				<div class="panel-body col-sm-8 p-0" style="display: block;"> 
-                    <p class="p1">Select the Player image ( 16:9 Ratio or 1280X720px ):</p> 
-					@if(!empty($series->player_image))
-						<img src="{{ URL::to('/') . '/public/uploads/images/' . $series->player_image }}" class="series-img" width="200"/>
-					@endif
-					<input type="file" multiple="true" class="form-group" name="player_image" id="player_image" />
-					{{-- for validate --}}
-					<input type="hidden" id="player_image" name="player_image" value="@if(!empty($series->player_image) ) {{ "validate" }} @else {{ " " }} @endif"  />
+						<div class="panel-body col-sm-8 p-0" style="display: block;"> 
+							<p class="p1">Select the series image ( 9:16 Ratio or 1080X1920px ):</p> 
 
-				</div> 
-			</div>
-			</div>
+							<input type="file" multiple="true" class="form-group image" name="image" id="image" />
+
+							@if(!empty($series->image))
+								<img src="{{ URL::to('/') . '/public/uploads/images/' . $series->image }}" class="series-img" width="200"/>
+							@endif
+							
+							{{-- for validate --}}
+							<input type="hidden" id="check_image" name="check_image" value="@if(!empty($series->image) ) {{ "validate" }} @else {{ " " }} @endif"  />
+							<input type="hidden" id="player_check_image" name="player_check_image" value="@if(!empty($series->player_image) ) {{ "validate" }} @else {{ " " }} @endif"  />
+						</div> 
+					</div>
+				</div>
+
+											{{-- Series Player Image --}}
+
+				<div class="col-md-6">
+					<div class="panel panel-primary mt-3" data-collapsed="0"> <div class="panel-heading"> 
+						<div class="panel-title font-weight-bold"><label class="m-0">Series Player Image </label></div> 
+							<div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
+						</div> 
+
+						<div class="panel-body col-sm-8 p-0" style="display: block;"> 
+							<p class="p1">Select the Player image ( 16:9 Ratio or 1280X720px ):</p> 
+
+							<input type="file" multiple="true" class="form-group" name="player_image" id="player_image" />
+
+							@if(!empty($series->player_image))
+								<img src="{{ URL::to('/') . '/public/uploads/images/' . $series->player_image }}" class="series-img" width="200"/>
+							@endif
+
+							{{-- for validate --}}
+							<input type="hidden" id="player_image" name="player_image" value="@if(!empty($series->player_image) ) {{ "validate" }} @else {{ " " }} @endif"  />
+						</div> 
+					</div>
+				</div>
 			</div>
 
+			{{-- Series TV image --}}
+
+			<div class="row d-flex">
+
+				<div class="col-md-6">
+					<div class="panel panel-primary mt-3" data-collapsed="0"> 
+						<div class="panel-heading"> 
+							<div class="panel-title font-weight-bold">
+								<label class="m-0">Series TV Image Cover</label>
+							</div> 
+							<div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
+						</div> 
+
+						<div class="panel-body col-sm-8 p-0" style="display: block;"> 
+							<p class="p1">Select the TV series image ( 16:9 Ratio or 1920 X 1080 px ):</p> 
+
+							<input type="file" multiple="true" class="form-group image" name="tv_image" id="tv_image" />
+							
+							@if(!empty($series->tv_image))
+								<img src="{{ URL::to('/') . '/public/uploads/images/' . $series->tv_image }}" class="series-img" width="200"/>
+							@endif
+							
+							{{-- for validate --}}
+							<input type="hidden" id="check_tv_image" name="check_tv_image" value="@if(!empty($series->tv_image) ) {{ "validate" }} @else {{ " " }} @endif"  />
+						</div> 
+					</div>
+				</div>
+
+			</div>
 
 			<div class="panel panel-primary mt-3" data-collapsed="0"> <div class="panel-heading"> 
 
@@ -715,6 +762,25 @@ $('#submit-new-cat').click(function(){
             }
         },'Please upload an image with 1280 x 720 pixels dimension or 16:9 Ratio' );
 
+
+		        // TV Image upload validation
+		$.validator.addMethod('tv_Image_dimention', function(value, element, param) {
+            if(element.files.length == 0){
+                return true; 
+            }
+
+            var width = $(element).data('imageWidth');
+            var height = $(element).data('imageHeight');
+            var ratio = $(element).data('imageratio');
+            var image_validation_status = "{{  image_validation_series() }}" ;
+
+            if( image_validation_status == "0" || ratio == '1.78'|| width == param[0] && height == param[1]){
+                return true;
+            }else{
+                return false;
+            }
+        },'Please upload an image with 1920 X 1080 pixels dimension or 16:9 Ratio' );
+
 		$('.image').change(function() {
 
 			$('.image').removeData('imageWidth');
@@ -777,6 +843,27 @@ $('#submit-new-cat').click(function(){
             }
         });
 
+		$('#tv_image').change(function() {
+
+            $('#tv_image').removeData('imageWidth');
+            $('#tv_image').removeData('imageHeight');
+            $('#tv_image').removeData('imageratio');
+
+            var file = this.files[0];
+            var tmpImg = new Image();
+
+            tmpImg.src=window.URL.createObjectURL( file ); 
+            tmpImg.onload = function() {
+                width = tmpImg.naturalWidth,
+                height = tmpImg.naturalHeight;
+				ratio =  Number(width/height).toFixed(2) ;
+                $('#tv_image').data('imageWidth', width);
+                $('#tv_image').data('imageHeight', height);
+                $('#tv_image').data('imageratio', ratio);
+            }
+        });
+
+
 
 		$('form[id="series_form"]').validate({
 			rules: {
@@ -796,6 +883,11 @@ $('#submit-new-cat').click(function(){
 					required: '#player_check_image:blank',
 					player_dimention:[1280,720]
             	},
+
+				tv_image:{
+					required: '#check_tv_image:blank',
+					tv_Image_dimention:[1920 ,1080]
+				}
 			},
 			
 			messages: {

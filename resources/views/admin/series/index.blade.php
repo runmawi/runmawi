@@ -89,8 +89,7 @@ border-radius: 0px 4px 4px 0px;
 					<div class=" align-items-center list-user-action">
 						<a href="{{ URL::to('play_series') . '/' .$series_value->slug }}" class="iq-bg-warning" ><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>"> <!--Visit Site--></a>
 						<a href="{{ URL::to('admin/series/edit') . '/' . $series_value->id }}" class="iq-bg-success ml-2"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"> <!--Edit--></a>
-						<a href="{{ URL::to('admin/series/delete') . '/' . $series_value->id }}" class="iq-bg-danger ml-2"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"><i
-						onclick="return confirm('Are you sure?')" class=""></i> <!--Delete--></a>
+						<a href="{{ URL::to('admin/series/delete') . '/' . $series_value->id }}" class="iq-bg-danger ml-2" onclick="return confirm('Are you sure?')"  ><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"><i></i> <!--Delete--></a>
 					</div>
 				</td>
 			</tr>

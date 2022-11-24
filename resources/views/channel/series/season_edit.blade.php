@@ -470,7 +470,7 @@
                                     <td>
                                         <div class=" align-items-center">
                                             <a href="{{ URL::to('channel/episode/edit') . '/' . $episode->id }}" class="btn btn-xs btn-primary"><span class="fa fa-edit"></span> Edit</a>
-                                            <a href="{{ URL::to('channel/episode/delete') . '/' . $episode->id }}" class="btn btn-xs btn-danger delete"><span class="fa fa-trash"></span> Delete</a>
+                                            <a href="{{ URL::to('channel/episode/delete') . '/' . $episode->id }}" class="btn btn-xs btn-danger delete" onclick="return confirm('Are you sure?')" ><span class="fa fa-trash"></span> Delete</a>
                                         </div>
                                     </td>
                                 </tr>

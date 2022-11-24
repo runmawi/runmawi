@@ -749,6 +749,7 @@ Route::get('/episode/filedelete/{id}', 'AdminSeriesController@filedelete');
     Route::post('/episode_upload',  'AdminSeriesController@EpisodeUpload');
     Route::get('/episode/episode_edit/{id}',  'AdminSeriesController@EpisodeUploadEdit');
     Route::post('/EpisodeVideoUpload',  'AdminSeriesController@EpisodeVideoUpload');
+    
     Route::post('/AWSEpisodeUpload',  'AdminSeriesController@AWSEpisodeUpload');
     Route::get('/episode/AWSepisode_edit/{id}',  'AdminSeriesController@AWSEpisodeUploadEdit');
     Route::post('/AWSEpisodeVideoUpload',  'AdminSeriesController@AWSEpisodeVideoUpload');
