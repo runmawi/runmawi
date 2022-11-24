@@ -201,7 +201,7 @@ border-radius: 0px 4px 4px 0px;
 
                     <div class="">
                         <label class="m-0">TV Image Cover</label>
-                        <p class="p1"> Select the video image (1024 X 1024 px or 1:1 ratio):</p>
+                        <p class="p1"> Select the Live Stream image (1920 X 1080  Or 16:9 Ratio)  :</p>
                         <div class="panel-body">
                             <input type="file" multiple="true" class="form-group" name="live_stream_tv_image" id=live_stream_tv_image  />
                         </div>
@@ -843,12 +843,12 @@ $(document).ready(function(){
             var ratio = $(element).data('imageratio');
             var image_validation_status = "{{  image_validation_live() }}" ;
 
-            if( image_validation_status == "0" || ratio == '1.00' ||  width == param[0] && height == param[1]){
+            if( image_validation_status == "0" || ratio == '1.78' ||  width == param[0] && height == param[1]){
                 return true;
             }else{
                 return false;
             }
-        },'Please upload an image with 1024 x 1024 pixels dimension or 1:1 ratio');
+        },'Please upload an image with 1920  x 1080 pixels dimension or 16:9 ratio');
 
 
         $('#image').change(function() {
@@ -935,7 +935,7 @@ $(document).ready(function(){
 
         live_stream_tv_image: {
             required: '#tv_check_image:blank',
-            tv_image_dimention:[1024,1024]
+            tv_image_dimention:[1920,1080]
         },
 	 
 		mp4_url: {

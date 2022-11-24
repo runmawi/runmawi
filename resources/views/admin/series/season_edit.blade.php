@@ -180,7 +180,7 @@
 
                         <div class="col-sm-6">
                             <label class="m-0">Episode TV Image</label>
-                            <p class="p1">Select the player image ( 1:1 Ratio or 1024 X 1024 px)</p>
+                            <p class="p1">Select the player image ( 16:9 Ratio or 1920 X 1080 px)</p>
     
                             <div class="panel-body">
                                 <input type="file" multiple="true" class="form-group" name="tv_image" id="tv_image" />
@@ -775,12 +775,12 @@ var tagInput1 = new TagsInput({
             var ratio = $(element).data('imageratio');
             var image_validation_status = "{{  image_validation_episode() }}" ;
 
-            if( image_validation_status == "0" || ratio == '1.00'|| width == param[0] && height == param[1]){
+            if( image_validation_status == "0" || ratio == '1.78'|| width == param[0] && height == param[1]){
                 return true;
             }else{
                 return false;
             }
-        },'Please upload an image with 1024 x 1024 pixels dimension  or 1:1 Ratio');
+        },'Please upload an image with 1920 X 1080 pixels dimension  or 16:9 Ratio');
 
 
         $('#image').change(function() {
@@ -865,7 +865,7 @@ var tagInput1 = new TagsInput({
 
                 tv_image: {
                     required: true,
-                    tv_image_dimention:[1024,1024]
+                    tv_image_dimention:[1920,1080]
                 },
             },
             messages: {

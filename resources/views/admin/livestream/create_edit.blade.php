@@ -241,7 +241,7 @@ border-radius: 0px 4px 4px 0px;
                             <label class="m-0">TV Image Cover</label>
                             <div class="panel-body">
                                 <div class="new-video-upload mt-2" id="">
-                                    <p class="p1">Select The Live Stream TV Image( 1:1 Ratio Or 1024 X 1024px ):</p>
+                                    <p class="p1">Select The Live Stream TV Image  (1920 X 1080  Or 16:9 Ratio) :</p>
                                     <input type="file" multiple="true" class="form-group" name="live_stream_tv_image" id=live_stream_tv_image  />
                                 </div>
                             </div>
@@ -677,6 +677,7 @@ border-radius: 0px 4px 4px 0px;
         },'Please upload an image with 1280 x 720 pixels dimension or 16:9 ratio');
 
                         // TV Image upload validation
+                        
         $.validator.addMethod('tv_image_dimention', function(value, element, param) {
             if(element.files.length == 0){
                 return true; 
@@ -687,12 +688,12 @@ border-radius: 0px 4px 4px 0px;
             var ratio = $(element).data('imageratio');
             var image_validation_status = "{{  image_validation_live() }}" ;
 
-            if( image_validation_status == "0" || ratio == '1.00' ||  width == param[0] && height == param[1]){
+            if( image_validation_status == "0" || ratio == '1.78' ||  width == param[0] && height == param[1]){
                 return true;
             }else{
                 return false;
             }
-        },'Please upload an image with 1024 x 1024 pixels dimension or 1:1 ratio');
+        },'Please upload an image with 1920 X 1080 pixels dimension or 16:9 ratio');
 
 
         $('#image').change(function() {
@@ -788,7 +789,7 @@ border-radius: 0px 4px 4px 0px;
 
             live_stream_tv_image: {
                 required: true,
-                tv_image_dimention:[1024,1024]
+                tv_image_dimention:[1920,1080]
             },
 
             live_stream_video: {
