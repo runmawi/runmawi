@@ -209,7 +209,7 @@ class LiveStreamController extends Controller
              $view->save();
 
             //  M3U
-             $M3U_files = ('https://iptv-org.github.io/iptv/index.m3u');
+             $M3U_files =  $categoryVideos->m3u_url;
              $parser = new M3UFileParser($M3U_files);
              $M3U_channels = $parser->list() ;
 
@@ -232,6 +232,7 @@ class LiveStreamController extends Controller
                  'Related_videos' => LiveStream::whereNotIn('id',[$vid])->inRandomOrder()->get(),
                  'Paystack_payment_settings' => PaymentSetting::where('payment_type','Paystack')->first() ,
                  'M3U_channels' => $M3U_channels ,
+                 'M3U_files'    => $M3U_files ,
            );
 
            return Theme::view('livevideo', $data);
@@ -409,9 +410,9 @@ class LiveStreamController extends Controller
 
         try {
 
-          $M3u_category = $request->m3u_url;
+          $M3u_category = $request->m3u_url_category;
 
-          $m3u = ('https://iptv-org.github.io/iptv/index.m3u');
+          $m3u = $request->m3u_url;
 
           $parser = new M3UFileParser($m3u);
           $parser_list = $parser->list() ;

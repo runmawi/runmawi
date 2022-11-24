@@ -238,7 +238,7 @@ if ($ppv_exist > 0 ||  Auth::user()->subscribed() || $video_access == "free"  ||
                                 <div class="sidebar-heading border-bottom">Channels</div>
                                 <div class="list-group list-group-flush">
                                     <?php foreach( $M3U_channels as $M3U_index => $M3U_channel ){ ?>
-                                        <a data-toggle="modal" data-target="#myModal" data-MU3-category="<?=  $M3U_index ?>"  class="list-group-item list-group-item-action list-group-item-light" onclick="m3u_url(this)" > <?= $M3U_index ?> </a>
+                                        <a data-toggle="modal" data-target="#myModal" data-MU3-category="<?=  $M3U_index ?>"  data-MU3-url ="<?=  $M3U_files ?>"  class="list-group-item list-group-item-action list-group-item-light" onclick="m3u_url(this)" > <?= $M3U_index ?> </a>
                                     <?php } ?>
                                 </div>
                             </div>
@@ -253,7 +253,7 @@ if ($ppv_exist > 0 ||  Auth::user()->subscribed() || $video_access == "free"  ||
                     <div class="modal-content" style="background:#1B1212;">
 
                         <div class="modal-header">
-                            <h4 class="modal-title" id="myModalLabel"> </h4>
+                            <h4 class="modal-title" id="myModalLabel"> Channel Category </h4>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         </div>
 
