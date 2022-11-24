@@ -167,18 +167,34 @@
                         </div>
                         
                         <div class="col-sm-6">
-                        <label class="m-0">Episode Player Image</label>
-                        <p class="p1">Select the player image ( 1280 X 720px or 16:9 Ratio )</p>
+                            <label class="m-0">Episode Player Image</label>
+                            <p class="p1">Select the player image ( 1280 X 720px or 16:9 Ratio )</p>
 
-                        <div class="panel-body">
-                            @if(!empty($episodes->player_image))
-                                <img src="{{ URL::to('/') . '/public/uploads/images/' . $episodes->player_image }}" class="episodes-img" width="200" />
-                            @endif
-                            <input type="file" multiple="true" class="form-group" name="player_image" id="player_image" />
+                            <div class="panel-body">
+                                @if(!empty($episodes->player_image))
+                                    <img src="{{ URL::to('/') . '/public/uploads/images/' . $episodes->player_image }}" class="episodes-img" width="200" />
+                                @endif
+                                <input type="file" multiple="true" class="form-group" name="player_image" id="player_image" />
+                            </div>
                         </div>
+
+                        <div class="col-sm-6">
+                            <label class="m-0">Episode TV Image</label>
+                            <p class="p1">Select the player image ( 1:1 Ratio or 1024 X 1024 px)</p>
+    
+                            <div class="panel-body">
+                                <input type="file" multiple="true" class="form-group" name="tv_image" id="tv_image" />
+                                @if(!empty($episodes->tv_image))
+                                    <img src="{{ URL::to('/') . '/public/uploads/images/' . $episodes->tv_image }}" class="episodes-img" width="200" />
+                                @endif
+                            </div>
+                        </div>
+    
                     </div>
-                        
-                    </div>
+
+                       
+                             {{-- for validate --}} 
+                        <input type="hidden" id="check_Tv_image" name="check_Tv_image" value="@if(!empty($episodes->tv_image) ) {{ "validate" }} @else {{ " " }} @endif"  />
 
                     <div class="row mb-3">
                         <div class="col-sm-12">
@@ -480,7 +496,7 @@
                                         <div class=" align-items-center">
                                             <a href="{{ URL::to('admin/episode/episode_edit') . '/' . $episode->id }}" class="btn btn-xs btn-primary"><span class="fa fa-edit"></span>Edit Video</a>
                                             <a href="{{ URL::to('admin/episode/edit') . '/' . $episode->id }}" class="btn btn-xs btn-primary"><span class="fa fa-edit"></span> Edit</a>
-                                            <a href="{{ URL::to('admin/episode/delete') . '/' . $episode->id }}" class="btn btn-xs btn-danger delete"><span class="fa fa-trash"></span> Delete</a>
+                                            <a href="{{ URL::to('admin/episode/delete') . '/' . $episode->id }}" class="btn btn-xs btn-danger delete" onclick="return confirm('Are you sure?')" ><span class="fa fa-trash"></span> Delete</a>
                                         </div>
                                     </td>
                                 </tr>
@@ -747,6 +763,25 @@ var tagInput1 = new TagsInput({
             }
         },'Please upload an image with 1280 x 720 pixels dimension  or 16:9 Ratio');
 
+                // TV Image upload validation
+
+        $.validator.addMethod('tv_image_dimention', function(value, element, param) {
+            if(element.files.length == 0){
+                return true; 
+            }
+
+            var width = $(element).data('imageWidth');
+            var height = $(element).data('imageHeight');
+            var ratio = $(element).data('imageratio');
+            var image_validation_status = "{{  image_validation_episode() }}" ;
+
+            if( image_validation_status == "0" || ratio == '1.00'|| width == param[0] && height == param[1]){
+                return true;
+            }else{
+                return false;
+            }
+        },'Please upload an image with 1024 x 1024 pixels dimension  or 1:1 Ratio');
+
 
         $('#image').change(function() {
             $('#image').removeData('imageWidth');
@@ -791,6 +826,29 @@ var tagInput1 = new TagsInput({
         });
 
 
+        $('#tv_image').change(function() {
+
+            $('#tv_image').removeData('imageWidth');
+            $('#tv_image').removeData('imageHeight');
+            $('#tv_image').removeData('imageratio');
+
+            var file = this.files[0];
+            var tmpImg = new Image();
+
+            tmpImg.src=window.URL.createObjectURL( file ); 
+            tmpImg.onload = function() {
+                width = tmpImg.naturalWidth,
+                height = tmpImg.naturalHeight;
+				ratio =  Number(width/height).toFixed(2) ;
+
+                $('#tv_image').data('imageWidth', width);
+                $('#tv_image').data('imageHeight', height);
+                $('#tv_image').data('imageratio', ratio);
+
+            }
+        });
+
+
         $('form[id="Episode_new"]').validate({
             rules: {
                 title: "required",
@@ -803,6 +861,11 @@ var tagInput1 = new TagsInput({
                 player_image: {
                     required: true,
                     player_dimention:[1280,720]
+                },
+
+                tv_image: {
+                    required: true,
+                    tv_image_dimention:[1024,1024]
                 },
             },
             messages: {

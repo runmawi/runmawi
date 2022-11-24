@@ -8744,7 +8744,11 @@ $cpanel->end();
           $LiveCategory = [];
         }
 
-        $Alllanguage   = Language::orderBy('created_at', 'desc')->get();
+        $Alllanguage   = Language::latest('created_at')->get()->map(function ($item) {
+            $item['image_url'] =$item->language_image ?  URL::to('/').'/public/uploads/Language/'.$item->language_image : null ;
+            return $item;
+        });
+
 
         if(!empty($request->language_id)){
         $Language = Language::where('id', $request->language_id)->first();
@@ -8787,7 +8791,6 @@ $cpanel->end();
           'audios' => $audios,
           'albums' => $albums,
           'Recommendation' => $Recommendation,
-          // 'movie' => $movie,
           'movies' => $movies,
           'LiveCategory' => $LiveCategory,
           'Alllanguage' => $Alllanguage  ,
