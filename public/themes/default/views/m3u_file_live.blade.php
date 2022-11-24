@@ -80,8 +80,6 @@
 
                 if( data.status == true ){
 
-                    console.log( data.M3u_url_array );
-
                     var count = data.M3u_url_array.length ;
 
                     if( count > 0 && data.status == true ){
