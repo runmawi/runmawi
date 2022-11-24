@@ -7493,10 +7493,10 @@ class AdminVideosController extends Controller
             $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
             $storepath = $path.$filePath;
 
-            $getID3 = new getID3();
-            $Video_storepath = $file;
-            $VideoInfo = $getID3->analyze($Video_storepath);
-            $Video_duration = $VideoInfo["playtime_seconds"];
+            // $getID3 = new getID3();
+            // $Video_storepath = $file;
+            // $VideoInfo = $getID3->analyze($Video_storepath);
+            // $Video_duration = $VideoInfo["playtime_seconds"];
 
             $video = new Video();
             $video->disk = "public";
@@ -7528,7 +7528,7 @@ class AdminVideosController extends Controller
                 $video->tablet_image = "default_image.jpg";
             }
 
-            $video->duration = $Video_duration;
+            // $video->duration = $Video_duration;
             $video->save();
 
             $video_id = $video->id;
@@ -7564,10 +7564,10 @@ class AdminVideosController extends Controller
                 $m3u8_path = $path.$filePath;
                 $transcode_path = $path.$transcode_path;
   
-                $getID3 = new getID3();
-                $Video_storepath = $file;
-                $VideoInfo = $getID3->analyze($Video_storepath);
-                $Video_duration = $VideoInfo["playtime_seconds"];
+                // $getID3 = new getID3();
+                // $Video_storepath = $file;
+                // $VideoInfo = $getID3->analyze($Video_storepath);
+                // $Video_duration = $VideoInfo["playtime_seconds"];
 
                 $video = new Video();
                 $video->disk = "public";
@@ -7603,7 +7603,7 @@ class AdminVideosController extends Controller
                     $video->tablet_image = "default_image.jpg";
                 }
 
-                $video->duration = $Video_duration;
+                // $video->duration = $Video_duration;
                 $video->user_id = Auth::user()->id;
                 $video->save();
 
@@ -7644,10 +7644,10 @@ class AdminVideosController extends Controller
             $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
             $storepath = $path.$filePath;
 
-            $getID3 = new getID3();
-            $Video_storepath = $file;
-            $VideoInfo = $getID3->analyze($Video_storepath);
-            $Video_duration = $VideoInfo["playtime_seconds"];
+            // $getID3 = new getID3();
+            // $Video_storepath = $file;
+            // $VideoInfo = $getID3->analyze($Video_storepath);
+            // $Video_duration = $VideoInfo["playtime_seconds"];
 
             $video = new Video();
             $video->disk = "public";
@@ -7679,7 +7679,7 @@ class AdminVideosController extends Controller
                 $video->tablet_image = "default_image.jpg";
             }
 
-            $video->duration = $Video_duration;
+            // $video->duration = $Video_duration;
             $video->save();
 
             $video_id = $video->id;
@@ -7750,10 +7750,10 @@ class AdminVideosController extends Controller
             $file = $request->file('file');
 
              //  Video duration 
-             $getID3 = new getID3();
-             $Video_storepath = $file;
-             $VideoInfo = $getID3->analyze($Video_storepath);
-             $Video_duration = $VideoInfo["playtime_seconds"];
+            //  $getID3 = new getID3();
+            //  $Video_storepath = $file;
+            //  $VideoInfo = $getID3->analyze($Video_storepath);
+            //  $Video_duration = $VideoInfo["playtime_seconds"];
 
             // $video = new Video();
             $video->disk = "public";
@@ -7765,7 +7765,7 @@ class AdminVideosController extends Controller
             // $video->draft = 0;
             // $video->image = 'default_image.jpg';
 
-            $video->duration = $Video_duration;
+            // $video->duration = $Video_duration;
             $video->save();
 
             $video_id = $video->id;
@@ -7804,10 +7804,10 @@ class AdminVideosController extends Controller
             $file = $request->file('file');
 
              //  Video duration 
-             $getID3 = new getID3();
-             $Video_storepath = $file;
-             $VideoInfo = $getID3->analyze($Video_storepath);
-             $Video_duration = $VideoInfo["playtime_seconds"];
+            //  $getID3 = new getID3();
+            //  $Video_storepath = $file;
+            //  $VideoInfo = $getID3->analyze($Video_storepath);
+            //  $Video_duration = $VideoInfo["playtime_seconds"];
 
             //  $video = new Video();
             $video->disk = "public";
@@ -7821,7 +7821,7 @@ class AdminVideosController extends Controller
             $video->m3u8_url = $transcode_path;
             $video->type = "aws_m3u8";
             //  $video->image = 'default_image.jpg';
-            $video->duration = $Video_duration;
+            // $video->duration = $Video_duration;
             $video->user_id = Auth::user()->id;
             $video->save();
 
@@ -7854,10 +7854,10 @@ class AdminVideosController extends Controller
             $file = $request->file('file');
 
              //  Video duration 
-             $getID3 = new getID3();
-             $Video_storepath = $file;
-             $VideoInfo = $getID3->analyze($Video_storepath);
-             $Video_duration = $VideoInfo["playtime_seconds"];
+            //  $getID3 = new getID3();
+            //  $Video_storepath = $file;
+            //  $VideoInfo = $getID3->analyze($Video_storepath);
+            //  $Video_duration = $VideoInfo["playtime_seconds"];
 
             // $video = new Video();
             $video->disk = "public";
@@ -7868,7 +7868,7 @@ class AdminVideosController extends Controller
             $video->type = "mp4_url";
             // $video->draft = 0;
             $video->image = "default_image.jpg";
-            $video->duration = $Video_duration;
+            // $video->duration = $Video_duration;
             $video->save();
 
             $video_id = $video->id;
