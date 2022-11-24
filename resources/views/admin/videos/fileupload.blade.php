@@ -856,6 +856,7 @@ border-radius: 0px 4px 4px 0px;
                               <div class="col-sm-6 form-group">
                                  <label class="mb-1">  Video TV Thumbnail  </label><br>
                                  <input type="file" name="video_tv_image" id="video_tv_image" >
+                                 <span><p id="tv_image_image_error_msg" style="color:red;" >* Please upload an image with 1024 x 1024 pixels dimension or 1:1 ratio </p></span>
                                  @if(!empty($video->video_tv_image))
                                     <div class="col-sm-8 p-0">
                                        <img src="{{ URL::to('/') . '/public/uploads/images/' .$video->video_tv_image }}" class="video-img w-100 mt-1" />
@@ -1378,9 +1379,9 @@ border-radius: 0px 4px 4px 0px;
 
 $(document).ready(function(){
 
-      $('#player_image_error_msg').hide();
       $('#image_error_msg').hide();
-      
+      $('#player_image_error_msg,#tv_image_image_error_msg').hide();
+
       $('#slug_error').hide();
       $('#slug_validate').on('keyup blur keypress mouseover', function(e) {
 
@@ -2392,6 +2393,39 @@ if(this.textContent === 'destroy') {
          }
       }
    });
+
+   $('#video_tv_image').on('change', function(event) {
+
+         
+         $('#video_tv_image').removeData('imageWidth');
+         $('#video_tv_image').removeData('imageHeight');
+         $('#video_tv_image').removeData('imageratio');
+
+         var file = this.files[0];
+         var tmpImg = new Image();
+
+         tmpImg.src=window.URL.createObjectURL( file ); 
+         tmpImg.onload = function() {
+            width = tmpImg.naturalWidth,
+            height = tmpImg.naturalHeight;
+			   ratio =  Number(width/height).toFixed(2) ;
+            image_validation_status = "{{  image_validation_videos() }}" ;
+
+            $('#video_tv_image').data('imageWidth', width);
+            $('#video_tv_image').data('imageHeight', height);
+            $('#video_tv_image').data('imageratio', ratio);
+
+            if(  image_validation_status == "0" || ratio == '1.00' || width == '1024' && height == '1024' ){
+               $('.update_upload_img').removeAttr('disabled');
+               $('#tv_image_image_error_msg').hide();
+            }
+            else{
+               $('.update_upload_img').attr('disabled','disabled');
+               $('#tv_image_image_error_msg').show();
+            }
+         }
+   });
+
 
 </script>
 

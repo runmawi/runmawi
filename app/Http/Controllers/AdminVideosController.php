@@ -2310,46 +2310,81 @@ class AdminVideosController extends Controller
 
         $image = isset($data["image"]) ? $data["image"] : "";
         $trailer = isset($data["trailer"]) ? $data["trailer"] : "";
-        $files = isset($data["subtitle_upload"])
-            ? $data["subtitle_upload"]
-            : "";
-        $player_image = isset($data["player_image"])
-            ? $data["player_image"]
-            : "";
-        $video_title_image = isset($data["video_title_image"])
-            ? $data["video_title_image"]
-            : "";
+        $files = isset($data["subtitle_upload"])? $data["subtitle_upload"] : "";
+        $player_image = isset($data["player_image"]) ? $data["player_image"]: "";
+        $video_title_image = isset($data["video_title_image"]) ? $data["video_title_image"]: "";
         $image_path = public_path() . "/uploads/images/";
 
-        if ($player_image != "") {
-            //code for remove old file
-            if ($player_image != "" && $player_image != null) {
-                $file_old = $image_path . $player_image;
+
+        if ($image != "") {
+            if ($image != "" && $image != null) {
+                $file_old = $image_path . $image;
                 if (file_exists($file_old)) {
                     unlink($file_old);
                 }
             }
 
-            //upload new file
-            $player_image = $player_image;
-            // $data['player_image']  = $file->getClientOriginalName();
-            $data["player_image"] = str_replace(
-                " ",
-                "_",
-                $player_image->getClientOriginalName()
-            );
-            // dd($file->getClientOriginalName());
-            $player_image->move($image_path, $data["player_image"]);
-            // $player_image = $file->getClientOriginalName();
-            $player_image = str_replace(
-                " ",
-                "_",
-                $player_image->getClientOriginalName()
-            );
+            $file = $image;
+
+            if(compress_image_enable() == 1){
+
+                $image_filename  = time().'.'.compress_image_format();
+                $video_image     =  'pc-image-'.$image_filename ;
+                $Mobile_image    =  'Mobile-image-'.$image_filename ;
+                $Tablet_image    =  'Tablet-image-'.$image_filename ;
+
+                Image::make($file)->save( base_path() . "/public/uploads/images/" . $video_image,compress_image_resolution());
+                Image::make($file)->save( base_path() . "/public/uploads/images/" . $Mobile_image,compress_image_resolution());
+                Image::make($file)->save(base_path() . "/public/uploads/images/" . $Tablet_image, compress_image_resolution());
+
+                $data["image"] = $video_image;
+                $video->mobile_image = $Mobile_image;
+                $video->tablet_image = $Tablet_image;
+
+            }
+            else{
+                $image_filename  = time().'.'.$file->getClientOriginalExtension();
+
+                $video_image     =  'pc-image-'.$image_filename ;
+                $Mobile_image    =  'Mobile-image-'.$image_filename ;
+                $Tablet_image    =  'Tablet-image-'.$image_filename ;
+
+                Image::make($file)->save( base_path() . "/public/uploads/images/" . $video_image);
+                Image::make($file)->save( base_path() . "/public/uploads/images/" . $Mobile_image);
+                Image::make($file)->save(base_path() . "/public/uploads/images/" . $Tablet_image);
+
+                $data["image"] = $video_image;
+                $video->mobile_image = $Mobile_image;
+                $video->tablet_image = $Tablet_image;
+            }
+          
         } else {
-            //    $player_image = $video->player_image;
-            $player_image = "default_horizontal_image.jpg";
+            $data["image"] = $video->image;
         }
+
+
+        
+        if ($player_image != "") {
+               
+            $player_image = $player_image;
+
+            if(compress_image_enable() == 1){
+
+                $player_filename  = time().'.'.compress_image_format();
+                $players_image     =  'player-image-'.$player_filename ;
+                Image::make($player_image)->save(base_path().'/public/uploads/images/'.$players_image,compress_image_resolution() );
+
+            }
+            else{
+                $player_filename  = time().'.'.$player_image->getClientOriginalExtension();
+                $players_image     =  'player-image-'.$player_filename ;
+                Image::make($player_filename)->save(base_path().'/public/uploads/images/'.$players_image );
+            }
+
+        } else {
+            $players_image = $video->player_image;
+        }
+
 
                                // live_stream_tv_image
 
@@ -2496,43 +2531,9 @@ class AdminVideosController extends Controller
         $path = public_path() . "/uploads/videos/";
         $image_path = public_path() . "/uploads/images/";
 
-        if ($image != "") {
-            //code for remove old file
-            if ($image != "" && $image != null) {
-                $file_old = $image_path . $image;
-                if (file_exists($file_old)) {
-                    unlink($file_old);
-                }
-            }
-            //upload new file
-            $file = $image;
-            $files = $data["image"];
 
-            $filename = time() . ".webp";
 
-            $PC_image = "PC" . $filename;
-            $Mobile_image = "Mobile" . $filename;
-            $Tablet_image = "Tablet" . $filename;
-
-            Image::make($files)->save(
-                base_path() . "/public/uploads/images/" . $PC_image,
-                80
-            );
-            Image::make($files)->save(
-                base_path() . "/public/uploads/images/" . $Mobile_image,
-                80
-            );
-            Image::make($files)->save(
-                base_path() . "/public/uploads/images/" . $Tablet_image,
-                80
-            );
-
-            $video->mobile_image = $Mobile_image;
-            $video->tablet_image = $Tablet_image;
-            $data["image"] = $PC_image;
-        } else {
-            $data["image"] = $video->image;
-        }
+       
 
         // Video Title Thumbnail
 
@@ -2906,8 +2907,9 @@ class AdminVideosController extends Controller
         $video->draft = 1;
         $video->active = 1;
         $video->embed_code = $embed_code;
-        $video->player_image = $player_image;
+        $video->player_image = $players_image;
         $video->video_tv_image = $Tv_image; 
+        $video->image = $video_image; 
         $video->publish_type = $publish_type;
         $video->publish_time = $publish_time;
         $video->age_restrict = $data["age_restrict"];
