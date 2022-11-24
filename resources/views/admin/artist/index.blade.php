@@ -76,13 +76,15 @@ border-radius: 0px 4px 4px 0px;
 				<th><label> S.No </label></th>
 				<th><label> Image </label></th>
 				<th><label> Artist Name </label></th>
-				<th><label> Operation </label></th>
+				<th><label> Artist Type </label></th>
+				<th><label> Action </label></th>
 				
 				@foreach($artists as $key=>$artist)
 				<tr>
 					<td>{{ $key+1 }}</td>
 					<td><img src="{{ URL::to('/public/uploads/artists/') . '/'.$artist->image }}" width="100"></td>
-					<td valign="bottom"><p> {{ $artist->artist_name }} </p></td>
+					<td valign="bottom"><p> {{ $artist->artist_name ?  $artist->artist_name : "No  Arist Name Found"  }} </p></td>
+					<td valign="bottom"><p> {{ $artist->artist_type ?  str_replace('_', ' ', $artist->artist_type) : "No  Arist Type Found"  }} </p></td>
 					<td>
 						<p class=" align-items-center list-user-action">
 							<a href="{{ URL::to('admin/artists/edit') . '/' . $artist->id }}" class="iq-bg-warning"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"> </a>

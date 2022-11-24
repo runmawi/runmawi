@@ -8379,81 +8379,43 @@ $cpanel->end();
         $OrderHomeSetting = OrderHomeSetting::first();
         $OrderSetting = array();
 
-        //   echo "<pre>";
-        // print_r($OrderHomeSetting);exit;
-        // foreach($OrderHomeSetting as $key => $value){
-        //   if($value->video_name == 'latest_videos'){
-        //     $order_latest_videos = $value->order_id;
-        //   }else{ $order_latest_videos = []; }
-        //   if($value->video_name == 'category_videos'){
-        //     $order_category_videos = $value->order_id;
-        //   }else{ $order_category_videos = [];  }
-        //   if($value->video_name == 'live_videos'){
-        //     $order_live_videos = $value->order_id;
-        //   }else{  $order_live_videos = []; }
-        //   if($value->video_name == 'audios'){
-        //     $order_audios = $value->order_id;
-        //   }else{  $order_audios = []; }
-        //   if($value->video_name == 'albums'){
-        //     $order_albums = $value->order_id;
-        //   }else{  $order_albums = []; }
-        //   if($value->video_name == 'artist'){
-        //     $order_artist = $value->order_id;
-        //   }else{  $order_artist = []; }
-        //   if($value->video_name == 'series'){
-        //     $order_series = $value->order_id;
-        //   }else{  $order_series = []; }
-        //   if($value->video_name == 'featured_videos'){
-        //     $order_featured_videos = $value->order_id;
-        //   }else{  $order_featured_videos = [];  }
-        //   if($value->video_name == 'Recommendation'){
-        //     $order_Recommendation = $value->order_id;
-        //   }else{  $order_Recommendation = []; }
-        //   $OrderSetting[] = array(
-        //   'order_latest_videos' => $order_latest_videos,
-        //   'order_category_videos' => $order_category_videos,
-        //   'order_live_videos' => $order_live_videos,
-        //   'order_audios' => $order_audios,
-        //   'order_albums' => $order_albums,
-        //   'order_artist' => $order_artist,
-        //   'order_series' => $order_series,
-        //   'order_featured_videos' => $order_featured_videos,
-        //   'order_Recommendation' => $order_Recommendation,
-        //   );
-        // }
-
         $videocategories = VideoCategory::select('id','image','order')->get()->toArray();
-          $order_video_categories = VideoCategory::select('id','name','order')->get()->toArray();
-          $movies = array();
-          foreach ($videocategories as $key => $videocategory) {
+        $order_video_categories = VideoCategory::select('id','name','order')->get()->toArray();
+        $movies = array();
+
+        foreach ($videocategories as $key => $videocategory) {
+
             $videocategoryid = $videocategory['id'];
             $genre_image = $videocategory['image'];
 
-            $videos= Video::Join('categoryvideos','categoryvideos.video_id','=','videos.id')->where('categoryvideos.category_id',$videocategoryid)
-            ->where('active','=',1)->where('status','=',1)->where('draft','=',1)->orderBy('videos.created_at', 'desc')->get()->map(function ($item) {
-              $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-              $item['video_url'] = URL::to('/').'/storage/app/public/';
-              $item['category_name'] = VideoCategory::where('id',$item->category_id)->pluck('slug')->first();
-              $item['category_order'] = VideoCategory::where('id',$item->category_id)->pluck('order')->first();
-
-              return $item;
+            $videos= Video::Join('categoryvideos','categoryvideos.video_id','=','videos.id')
+              ->where('categoryvideos.category_id',$videocategoryid) ->where('active','=',1)
+              ->where('status','=',1)->where('draft','=',1)->orderBy('videos.created_at', 'desc')
+              ->get()->map(function ($item) {
+                $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+                $item['video_url'] = URL::to('/').'/storage/app/public/';
+                $item['category_name'] = VideoCategory::where('id',$item->category_id)->pluck('slug')->first();
+                $item['category_order'] = VideoCategory::where('id',$item->category_id)->pluck('order')->first();
+                return $item;
             });
 
-            $main_genre = CategoryVideo::Join('video_categories','video_categories.id','=','categoryvideos.category_id')
-            ->get('name');
+            $main_genre = CategoryVideo::Join('video_categories','video_categories.id','=','categoryvideos.category_id')->get('name'); 
             foreach($main_genre as $value){
               $category[] = $value['name']; 
             }
+
             if(!empty($category)){
-            $main_genre = implode(",",$category);
+              $main_genre = implode(",",$category);
             }else{
               $main_genre = "";
             }
+
             if(count($videos) > 0){
               $msg = 'success';
             }else{
               $msg = 'nodata';
             }
+
             $movies[] = array(
               "message" => $msg,
               'gener_name' =>  VideoCategory::where('id',$videocategoryid)->pluck('name')->first(),
@@ -8462,68 +8424,78 @@ $cpanel->end();
               "video" => $videos,
               "order_video_categories" => $order_video_categories,
             );
-          }
+        }
 
   
-        if(@$HomeSetting->featured_videos == 1){
-          $featured_videos = Video::where('active', '=', '1')->where('featured', '=', '1')->where('status', '=', '1')->where('draft', '=', '1')
-              ->orderBy('created_at', 'DESC')
-              ->get();
-          $featured_videos =  Video::where('active', '=', '1')->where('featured', '=', '1')->where('status', '=', '1')->where('draft', '=', '1')
-          ->orderBy('created_at', 'DESC')->get()->map(function ($item) {
-              $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-              $item['video_url'] = URL::to('/').'/storage/app/public/';
-              return $item;
+        if($HomeSetting->featured_videos == 1){
+
+          $featured_videos = Video::where('active', '=', '1')->where('featured', '=', '1')->where('status', '=', '1')
+              ->where('draft', '=', '1')->orderBy('created_at', 'DESC')->get();
+
+          $featured_videos =  Video::where('active', '=', '1')->where('featured', '=', '1')->where('status', '=', '1')
+             ->where('draft', '=', '1')->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+                $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+                $item['video_url'] = URL::to('/').'/storage/app/public/';
+                return $item;
             });
+
         }else{
+
           $featured_videos = [];
         }
 
-        if(@$HomeSetting->latest_videos == 1){
+        if($HomeSetting->latest_videos == 1){
+
           $latest_videos =  Video::where('status', '=', '1')->take(10)->where('active', '=', '1')->where('draft', '=', '1')
           ->orderBy('created_at', 'DESC')->get()->map(function ($item) {
               $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
               $item['video_url'] = URL::to('/').'/storage/app/public/';
               return $item;
             });
+
         }else{
+
           $latest_videos = [];
         }
 
-        if(@$HomeSetting->category_videos == 1){
-          // echo "<pre>";
+        if( $HomeSetting->category_videos == 1 ){
+
           $videocategories = VideoCategory::select('id','image','order')->get()->toArray();
           $order_video_categories = VideoCategory::select('id','name','order')->get()->toArray();
           $myData = array();
+
           foreach ($videocategories as $key => $videocategory) {
             $videocategoryid = $videocategory['id'];
             $genre_image = $videocategory['image'];
 
-            $videos= Video::Join('categoryvideos','categoryvideos.video_id','=','videos.id')->where('categoryvideos.category_id',$videocategoryid)
-            ->where('active','=',1)->where('status','=',1)->where('draft','=',1)->orderBy('videos.created_at', 'desc')->get()->map(function ($item) {
-              $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-              $item['video_url'] = URL::to('/').'/storage/app/public/';
-              $item['category_name'] = VideoCategory::where('id',$item->category_id)->pluck('slug')->first();
-              $item['category_order'] = VideoCategory::where('id',$item->category_id)->pluck('order')->first();
-
+            $videos= Video::Join('categoryvideos','categoryvideos.video_id','=','videos.id')
+              ->where('categoryvideos.category_id',$videocategoryid)->where('active','=',1)->where('status','=',1)->where('draft','=',1)
+              ->orderBy('videos.created_at', 'desc')->get()->map(function ($item) {
+                $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+                $item['video_url'] = URL::to('/').'/storage/app/public/';
+                $item['category_name'] = VideoCategory::where('id',$item->category_id)->pluck('slug')->first();
+                $item['category_order'] = VideoCategory::where('id',$item->category_id)->pluck('order')->first();
               return $item;
             });
 
-            $main_genre = CategoryVideo::Join('video_categories','video_categories.id','=','categoryvideos.category_id')
-            ->get('name');
+            $main_genre = CategoryVideo::Join('video_categories','video_categories.id','=','categoryvideos.category_id')->get('name');
+
             foreach($main_genre as $value){
               $category[] = $value['name']; 
             }
+
             if(!empty($category)){
-            $main_genre = implode(",",$category);
+              $main_genre = implode(",",$category);
             }else{
               $main_genre = "";
             }
+
             if(count($videos) > 0){
               $msg = 'success';
             }else{
               $msg = 'nodata';
             }
+
             $myData[] = array(
               "message" => $msg,
               'gener_name' =>  VideoCategory::where('id',$videocategoryid)->pluck('name')->first(),
@@ -8533,106 +8505,122 @@ $cpanel->end();
               "order_video_categories" => $order_video_categories,
             );
           }
-        }else{
+        }
+        else{
           $myData = [];
         }
 
-        if(@$HomeSetting->live_videos == 1){
-          $live_videos = LiveStream::where('active', '=', '1')->orderBy('id', 'DESC')->get()->map(function ($item) {
-            $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
-            return $item;
-          });
-        }else{
+        if( $HomeSetting->live_videos == 1 ){
+
+            $live_videos = LiveStream::where('active', '=', '1')->orderBy('id', 'DESC')->get()->map(function ($item) {
+              $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
+              return $item;
+            });
+        }
+        else{
           $live_videos = [];
         }
 
-        if(@$HomeSetting->series == 1){
+        if($HomeSetting->series == 1){
+
           $series = Series::where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
               $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
               $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+              $item['artist_name'] = Series::where('series_artists.series_id',$item->id)
+                                      ->join('series_artists', 'series_artists.series_id', '=', 'series.id')
+                                      ->join('artists', 'artists.id', '=', 'series_artists.artist_id')
+                                      ->pluck('artist_name');
               return $item;
             });
         }else{
+
           $series = [];
         }
 
-        if(@$HomeSetting->audios == 1){
+        if($HomeSetting->audios == 1){
+
           $audios = Audio::orderBy('created_at', 'desc')->get()->map(function ($item) {
             $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
             $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;     
             return $item;
           });
+
         }else{
+          
           $audios = [];
         }
 
-        if(@$HomeSetting->albums == 1){
+        if($HomeSetting->albums == 1){
+
           $albums = AudioAlbums::orderBy('created_at', 'desc')->get()->map(function ($item) {
             $item['image_url'] = URL::to('/').'/public/uploads/albums/'.$item->album;
             return $item;
           });
+
         }else{
           $albums = [];
         }
 
-        if(@$HomeSetting->Recommendation == 1){
+        if($HomeSetting->Recommendation == 1){
+
           $Recommendation = array();
 
-          $most_watch_user = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))->join('videos', 'videos.id', '=', 'recent_views.video_id')
-                ->groupBy('video_id');
-            if ($multiuser != null)
-            {
-                $most_watch_user = $most_watch_user->where('recent_views.sub_user', $multiuser);
-            }
-            else
-            {
-                $most_watch_user = $most_watch_user->where('recent_views.user_id', Auth::user()
-                    ->id);
-            }
+          $most_watch_user = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))
+                ->join('videos', 'videos.id', '=', 'recent_views.video_id')->groupBy('video_id');
+
+          $most_watch_user = $multiuser != null ?  $most_watch_user->where('recent_views.sub_user', $multiuser) :  $most_watch_user->where('recent_views.user_id', Auth::user()->id) ;
+
             if ($Family_Mode == 1)
             {
                 $most_watch_user = $most_watch_user->where('age_restrict', '<', 18);
             }
+
             if ($Kids_Mode == 1)
             {
                 $most_watch_user = $most_watch_user->where('age_restrict', '<', 10);
             }
-            $most_watch_user = $most_watch_user->orderByRaw('count DESC')
-                ->limit(20)
-                ->get();
 
-            $top_most_watched = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))->join('videos', 'videos.id', '=', 'recent_views.video_id')
-                        ->groupBy('video_id')
+            $most_watch_user = $most_watch_user->orderByRaw('count DESC')->limit(20)->get();
+
+            $top_most_watched = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))
+                        ->join('videos', 'videos.id', '=', 'recent_views.video_id') ->groupBy('video_id')
                         ->whereNotIn('videos.id', $blocking_videos);
+
                     if ($Family_Mode == 1)
                     {
                         $top_most_watched = $top_most_watched->where('age_restrict', '<', 18);
                     }
+
                     if ($Kids_Mode == 1)
                     {
                         $top_most_watched = $top_most_watched->where('age_restrict', '<', 10);
                     }
+
                     $top_most_watched = $top_most_watched->orderByRaw('count DESC')
                         ->limit(20)
                         ->get();
 
-                        $Most_watched_country = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))->join('videos', 'videos.id', '=', 'recent_views.video_id')
+                    $Most_watched_country = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))->join('videos', 'videos.id', '=', 'recent_views.video_id')
                         ->groupBy('video_id')
                         ->orderByRaw('count DESC');
+
                     if ($Family_Mode == 1)
                     {
                         $Most_watched_country = $Most_watched_country->where('age_restrict', '<', 18);
                     }
+
                     if ($Kids_Mode == 1)
                     {
                         $Most_watched_country = $Most_watched_country->where('age_restrict', '<', 10);
                     }
+
                     $Most_watched_country = $Most_watched_country->where('country', $countryName)->whereNotIn('videos.id', $blocking_videos)->limit(20)
                         ->get();
 
-                        $preference_genres = User::where('id', Auth::user()->id)
+                    $preference_genres = User::where('id', Auth::user()->id)
                         ->pluck('preference_genres')
                         ->first();
+
                     $preference_language = User::where('id', Auth::user()->id)
                         ->pluck('preference_language')
                         ->first();
@@ -8640,20 +8628,19 @@ $cpanel->end();
                     if ($preference_genres != null)
                     {
                         $video_genres = json_decode($preference_genres);
-                        $preference_gen = Video::whereIn('video_category_id', $video_genres)
-                        ->whereNotIn('videos.id', $blocking_videos) 
-                        ->where('active', '=', '1')
-                         ->where('status', '=', '1')
-                        ->where('draft', '=', '1')
-                        ;
+                        $preference_gen = Video::whereIn('video_category_id', $video_genres)->whereNotIn('videos.id', $blocking_videos) 
+                        ->where('active', '=', '1')->where('status', '=', '1')->where('draft', '=', '1') ;
+
                         if ($Family_Mode == 1)
                         {
                             $preference_gen = $preference_gen->where('age_restrict', '<', 18);
                         }
+
                         if ($Kids_Mode == 1)
                         {
                             $preference_gen = $preference_gen->where('age_restrict', '<', 10);
                         }
+
                         $preference_gen = $preference_gen->get();
                     }
                     else
@@ -8703,38 +8690,41 @@ $cpanel->end();
           );
         }
 
-
-
-        if(@$HomeSetting->live_category == 1){
-          // echo "<pre>";
+        if($HomeSetting->live_category == 1){
 
           $livecategories = LiveCategory::select('id','image','order')->groupBy('name')->get()->toArray();
           $order_live_categories = LiveCategory::select('id','name','order')->groupBy('name')->get()->toArray();
           $LiveCategory = array();
+
           foreach ($livecategories as $key => $livecategory) {
+
             $livecategoryid = $livecategory['id'];
             $genre_image = $livecategory['image'];
 
             $live_category= LiveStream::Join('livecategories','livecategories.live_id','=','live_streams.id')
-            ->where('livecategories.category_id',$livecategoryid)
-            ->where('active','=',1)->where('status','=',1)
-            ->orderBy('live_streams.created_at', 'desc')->get()->map(function ($item) {
-              $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-              $item['category_name'] = LiveCategory::where('id',$item->category_id)->pluck('slug')->first();
-              $item['category_order'] = LiveCategory::where('id',$item->category_id)->pluck('order')->first();
-              return $item;
-            });
+                          ->where('livecategories.category_id',$livecategoryid)
+                          ->where('active','=',1)->where('status','=',1)
+                          ->orderBy('live_streams.created_at', 'desc')->get()->map(function ($item) {
 
-            $main_genre = CategoryLive::Join('live_categories','live_categories.id','=','livecategories.category_id')
-            ->get('name');
+                            $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+                            $item['category_name'] = LiveCategory::where('id',$item->category_id)->pluck('slug')->first();
+                            $item['category_order'] = LiveCategory::where('id',$item->category_id)->pluck('order')->first();
+
+                            return $item;
+                          });
+
+            $main_genre = CategoryLive::Join('live_categories','live_categories.id','=','livecategories.category_id')->get('name');
+
             foreach($main_genre as $value){
               $category[] = $value['name']; 
             }
+
             if(!empty($category)){
-            $main_genre = implode(",",$category);
+              $main_genre = implode(",",$category);
             }else{
               $main_genre = "";
             }
+
             if(count($live_category) > 0){
               $msg = 'success';
             }else{
@@ -8748,36 +8738,35 @@ $cpanel->end();
               "live_category" => $live_category,
               "order_video_categories" => $order_video_categories,
             );
-            // print_r($LiveCategory);exit;
 
           }
         }else{
           $LiveCategory = [];
         }
 
-
         $Alllanguage   = Language::orderBy('created_at', 'desc')->get();
-        if(!empty($reques->language_id)){
-        $Language = Language::where('id', $reques->language_id)->first();
+
+        if(!empty($request->language_id)){
+        $Language = Language::where('id', $request->language_id)->first();
 
         if(!empty($Language)){
           $VideoLanguage   = Video::Join('languagevideos','languagevideos.video_id','=','videos.id')
-          ->where('languagevideos.language_id',$reques->language_id)->get();
+          ->where('languagevideos.language_id',$request->language_id)->get();
         }
         if(!empty($Language)){
           $languagesSeries = Series::Join('series_languages','series_languages.series_id','=','series.id')
-          ->where('series_languages.language_id',$reques->language_id)->get();
+          ->where('series_languages.language_id',$request->language_id)->get();
           }
 
         if(!empty($Language)){
           $languagesLive = LiveStream::Join('live_languages','live_languages.live_id','=','live_streams.id')
-          ->where('live_languages.language_id',$reques->language_id)->get();
+          ->where('live_languages.language_id',$request->language_id)->get();
           }
 
         if(!empty($Language)){
 
           $LanguagesAudio = Audio::Join('audio_languages','audio_languages.audio_id','=','audios.id')
-          ->where('audio_languages.language_id',$reques->language_id)->get();
+          ->where('audio_languages.language_id',$request->language_id)->get();
         }
 
       }else{
@@ -8806,11 +8795,8 @@ $cpanel->end();
           'languagesSeries' => $languagesSeries  ,
           'languagesLive' => $languagesLive  ,
           'LanguagesAudio' => $LanguagesAudio  ,
-
-
         );
 
-      return response()->json($response, 200);
         
       } catch (\Throwable $th) {
         $response = array(
@@ -8819,6 +8805,9 @@ $cpanel->end();
           'nodata' => [],
         );
     }
+
+    return response()->json($response, 200);
+
     }
 
     public function LanguageVideo(Request $request){

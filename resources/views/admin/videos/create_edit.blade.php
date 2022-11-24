@@ -773,8 +773,8 @@ border-radius: 0px 4px 4px 0px;
                               <div class="col-sm-6 form-group">
                                  <label class="mb-1">Video Thumbnail <span>(9:16 Ratio or 1080X1920px)</span></label><br />
                                  <input type="file" name="image" id="image" />
-                                 <span><p id="image_error_msg" style="color:red;" >* Please upload an image with 1080 x 1920 pixels dimension or 9:16 ratio </p></span>
-                                    @if(!empty($video->image))
+                                 <span><p id="image_error_msg" style="color:red;" >* Please upload an image with 1024 x 1024 pixels dimension or 9:16 ratio </p></span>
+                                    @if(!empty($video->image) && ($video->image) != null )
                                        <div class="col-sm-8 p-0">
                                           <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" class="video-img w-100 mt-1" />
                                        </div>
@@ -793,6 +793,22 @@ border-radius: 0px 4px 4px 0px;
                               </div>
 
                         </div>
+
+                        {{-- Video TV Thumbnail --}}
+
+                        <div class="row">
+                           <div class="col-sm-6 form-group">
+                              <label class="mb-1">  Video TV Thumbnail  </label><br>
+                              <input type="file" name="video_tv_image" id="video_tv_image" >
+                              <span><p id="tv_image_image_error_msg" style="color:red;" >* Please upload an image with 1024 x 1024 pixels dimension or 1:1 ratio </p></span>
+                              @if(!empty($video->video_tv_image))
+                                 <div class="col-sm-8 p-0">
+                                    <img src="{{ URL::to('/') . '/public/uploads/images/' .$video->video_tv_image }}" class="video-img w-100 mt-1" />
+                                 </div>
+                              @endif
+                           </div>
+                        </div>
+
 
                                           {{-- Video Title Thumbnail --}}
                         <div class="row">
@@ -1423,7 +1439,7 @@ $(document).ready(function($){
       $('#error_intro_start_time').hide();
       $('#error_intro_end_time').hide();
       $('#error_skip_intro_time').hide();
-      $('#player_image_error_msg').hide();
+      $('#player_image_error_msg,#tv_image_image_error_msg').hide();
       $('#image_error_msg').hide();
 
       
@@ -2582,6 +2598,39 @@ if(this.textContent === 'destroy') {
             else{
                $('.update_upload_img').attr('disabled','disabled');
                $('#player_image_error_msg').show();
+            }
+         }
+      });
+
+
+      $('#video_tv_image').on('change', function(event) {
+
+         
+         $('#video_tv_image').removeData('imageWidth');
+         $('#video_tv_image').removeData('imageHeight');
+         $('#video_tv_image').removeData('imageratio');
+
+         var file = this.files[0];
+         var tmpImg = new Image();
+
+         tmpImg.src=window.URL.createObjectURL( file ); 
+         tmpImg.onload = function() {
+            width = tmpImg.naturalWidth,
+            height = tmpImg.naturalHeight;
+			   ratio =  Number(width/height).toFixed(2) ;
+            image_validation_status = "{{  image_validation_videos() }}" ;
+
+            $('#video_tv_image').data('imageWidth', width);
+            $('#video_tv_image').data('imageHeight', height);
+            $('#video_tv_image').data('imageratio', ratio);
+
+            if(  image_validation_status == "0" || ratio == '1.00' || width == '1024' && height == '1024' ){
+               $('.update_upload_img').removeAttr('disabled');
+               $('#tv_image_image_error_msg').hide();
+            }
+            else{
+               $('.update_upload_img').attr('disabled','disabled');
+               $('#tv_image_image_error_msg').show();
             }
          }
       });
