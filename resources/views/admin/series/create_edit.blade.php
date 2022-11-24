@@ -175,7 +175,7 @@ $settings  = App\Setting::first();?>
 						</div> 
 
 						<div class="panel-body col-sm-8 p-0" style="display: block;"> 
-							<p class="p1">Select the TV series image ( 1:1 Ratio or 1024 X 1024px ):</p> 
+							<p class="p1">Select the TV series image ( 16:9 Ratio or 1920 X 1080 px ):</p> 
 
 							<input type="file" multiple="true" class="form-group image" name="tv_image" id="tv_image" />
 							
@@ -774,12 +774,12 @@ $('#submit-new-cat').click(function(){
             var ratio = $(element).data('imageratio');
             var image_validation_status = "{{  image_validation_series() }}" ;
 
-            if( image_validation_status == "0" || ratio == '1.00'|| width == param[0] && height == param[1]){
+            if( image_validation_status == "0" || ratio == '1.78'|| width == param[0] && height == param[1]){
                 return true;
             }else{
                 return false;
             }
-        },'Please upload an image with 1024 x 1024 pixels dimension or 1:1 Ratio' );
+        },'Please upload an image with 1920 X 1080 pixels dimension or 16:9 Ratio' );
 
 		$('.image').change(function() {
 
@@ -886,7 +886,7 @@ $('#submit-new-cat').click(function(){
 
 				tv_image:{
 					required: '#check_tv_image:blank',
-					tv_Image_dimention:[1024,1024]
+					tv_Image_dimention:[1920 ,1080]
 				}
 			},
 			
