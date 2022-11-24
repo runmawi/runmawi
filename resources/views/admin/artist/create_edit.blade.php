@@ -101,6 +101,13 @@ border-radius: 0px 4px 4px 0px;
 
                             <select class="form-control" name="artist_type" id="artist_type" >
                                 <option value="">  {{ 'Select the Artist Type' }} </option>
+
+                                <option value="Actor" @if (!empty($artist->artist_type) && $artist->artist_type == 'Actor'){{ 'selected' }} @endif > {{ 'Actor' }} </option>
+                                <option value="Director" @if (!empty($artist->artist_type) && $artist->artist_type == 'Director'){{ 'selected' }} @endif > {{ 'Director' }} </option>
+                                <option value="Producer" @if (!empty($artist->artist_type) && $artist->artist_type == 'Producer'){{ 'selected' }} @endif > {{ 'Producer' }} </option>
+                                <option value="Music_Composer" @if (!empty($artist->artist_type) && $artist->artist_type == 'Music_Composer '){{ 'selected' }} @endif > {{ 'Music Composer' }} </option>
+                                <option value="Singer" @if (!empty($artist->artist_type) && $artist->artist_type == 'Singer'){{ 'selected' }} @endif > {{ 'Singer' }} </option>
+                                <option value="Lyricist" @if (!empty($artist->artist_type) && $artist->artist_type == 'Lyricist'){{ 'selected' }} @endif > {{ 'Lyricist' }} </option>
                                 <option value="Art_Director" @if (!empty($artist->artist_type) && $artist->artist_type == 'Art_Director'){{ 'selected' }} @endif > {{ 'Art Director' }} </option>
                                 <option value="Director_of_Photography" @if (!empty($artist->artist_type) && $artist->artist_type == 'Director_of_Photography'){{ 'selected' }} @endif > {{ 'Director of Photography' }} </option>
                                 <option value="Costume_Designer" @if (!empty($artist->artist_type) && $artist->artist_type == 'Costume_Designer'){{ 'selected' }} @endif > {{ 'Costume Designer' }} </option>
@@ -122,7 +129,7 @@ border-radius: 0px 4px 4px 0px;
 
                     <div class="col-sm-6 mt-3" data-collapsed="0">
                         <div class="panel-body">
-                            @if(!empty($artist->image))
+                            @if(!empty($artist->image) &&  $artist->image != null )
                             <img src="{{ URL::to('/public/uploads/artists/') . '/'.$artist->image }}" class="movie-img" width="200" />
                             @endif
                         </div>
