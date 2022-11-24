@@ -800,7 +800,7 @@ border-radius: 0px 4px 4px 0px;
                            <div class="col-sm-6 form-group">
                               <label class="mb-1">  Video TV Thumbnail  </label><br>
                               <input type="file" name="video_tv_image" id="video_tv_image" >
-                              <span><p id="tv_image_image_error_msg" style="color:red;" >* Please upload an image with 1280 x 720 pixels dimension or 16:9 ratio </p></span>
+                              <span><p id="tv_image_image_error_msg" style="color:red;" >* Please upload an image with 1024 x 1024 pixels dimension or 1:1 ratio </p></span>
                               @if(!empty($video->video_tv_image))
                                  <div class="col-sm-8 p-0">
                                     <img src="{{ URL::to('/') . '/public/uploads/images/' .$video->video_tv_image }}" class="video-img w-100 mt-1" />
