@@ -1168,41 +1168,60 @@ class AdminVideosController extends Controller
         $image = isset($data["image"]) ? $data["image"] : "";
         $trailer = isset($data["trailer"]) ? $data["trailer"] : "";
         $mp4_url2 = isset($data["video"]) ? $data["video"] : "";
-        $files = isset($data["subtitle_upload"])
-            ? $data["subtitle_upload"]
-            : "";
-        $player_image = isset($data["player_image"])
-            ? $data["player_image"]
-            : "";
-        $video_title_image = isset($data["video_title_image"])
-            ? $data["video_title_image"]
-            : "";
+        $files = isset($data["subtitle_upload"])? $data["subtitle_upload"] : "";
+        $player_image = isset($data["player_image"]) ? $data["player_image"]: "";
+        $video_title_image = isset($data["video_title_image"])? $data["video_title_image"]: "";
         $image_path = public_path() . "/uploads/images/";
-
+    
         if ($player_image != "") {
             if ($player_image != "" && $player_image != null) {
-                //code for remove old file
+               
                 $file_old = $image_path . $player_image;
                 if (file_exists($file_old)) {
                     unlink($file_old);
                 }
             }
-            //upload new file
+            
             $player_image = $player_image;
-            $data["player_image"] = str_replace(
-                " ",
-                "_",
-                $player_image->getClientOriginalName()
-            );
 
-            $player_image->move($image_path, $data["player_image"]);
-            $player_image = str_replace(
-                " ",
-                "_",
-                $player_image->getClientOriginalName()
-            );
+            if(compress_image_enable() == 1){
+
+                $player_filename  = time().'.'.compress_image_format();
+                $players_image     =  'player-image-'.$player_filename ;
+                Image::make($player_image)->save(base_path().'/public/uploads/images/'.$players_image,compress_image_resolution() );
+
+            }
+            else{
+                $player_filename  = time().'.'.$player_image->getClientOriginalExtension();
+                $players_image     =  'player-image-'.$player_filename ;
+                Image::make($player_filename)->save(base_path().'/public/uploads/images/'.$players_image );
+            }
+
         } else {
-            $player_image = $video->player_image;
+            $players_image = $video->player_image;
+        }
+        
+                    // live_stream_tv_image
+
+        $video_tv_image = ($request->file('video_tv_image')) ? $request->file('video_tv_image') : '';
+
+        if($video_tv_image != '') {   
+                                        
+        $video_tv_image = $video_tv_image;
+
+        if(compress_image_enable() == 1){
+
+            $Tv_image_filename  = time().'.'.compress_image_format();
+            $Tv_image     =  'tv-live-image-'.$Tv_image_filename ;
+            Image::make($video_tv_image)->save(base_path().'/public/uploads/images/'.$Tv_image,compress_image_resolution() );
+        }else{
+
+            $Tv_image_filename  = time().'.'.$live_stream_tv_image->getClientOriginalExtension();
+            $Tv_image     =  'tv-live-image-'.$Tv_image_filename ;
+            Image::make($video_tv_image)->save(base_path().'/public/uploads/images/'.$Tv_image );
+        }
+        } else{
+            $Tv_image = "default_horizontal_image.jpg";
         }
 
         // Video Title Thumbnail
@@ -1230,9 +1249,7 @@ class AdminVideosController extends Controller
 
         // Enable Video Title Thumbnail
 
-        $video->enable_video_title_image = $request->enable_video_title_image
-            ? "1"
-            : "0";
+        $video->enable_video_title_image = $request->enable_video_title_image  ? "1" : "0";
 
         // Trailer Update
 
@@ -1585,7 +1602,6 @@ class AdminVideosController extends Controller
         $image_path = public_path() . "/uploads/images/";
 
         if ($image != "") {
-            //code for remove old file
             if ($image != "" && $image != null) {
                 $file_old = $image_path . $image;
                 if (file_exists($file_old)) {
@@ -1593,33 +1609,63 @@ class AdminVideosController extends Controller
                 }
             }
 
-            //upload new file
             $file = $image;
-            $filename = time() . ".webp";
 
-            $PC_image = "PC" . $filename;
-            $Mobile_image = "Mobile" . $filename;
-            $Tablet_image = "Tablet" . $filename;
+            if(compress_image_enable() == 1){
 
-            Image::make($file)->save(
-                base_path() . "/public/uploads/images/" . $PC_image,
-                80
-            );
-            Image::make($file)->save(
-                base_path() . "/public/uploads/images/" . $Mobile_image,
-                80
-            );
-            Image::make($file)->save(
-                base_path() . "/public/uploads/images/" . $Tablet_image,
-                80
-            );
+                $image_filename  = time().'.'.compress_image_format();
+                $video_image     =  'pc-image-'.$image_filename ;
+                $Mobile_image    =  'Mobile-image-'.$image_filename ;
+                $Tablet_image    =  'Tablet-image-'.$image_filename ;
 
-            $video->image = $PC_image;
-            $video->mobile_image = $Mobile_image;
-            $video->tablet_image = $Tablet_image;
+                Image::make($file)->save( base_path() . "/public/uploads/images/" . $video_image,compress_image_resolution());
+                Image::make($file)->save( base_path() . "/public/uploads/images/" . $Mobile_image,compress_image_resolution());
+                Image::make($file)->save(base_path() . "/public/uploads/images/" . $Tablet_image, compress_image_resolution());
+
+                $video->image = $video_image;
+                $video->mobile_image = $Mobile_image;
+                $video->tablet_image = $Tablet_image;
+
+            }
+            else{
+                $image_filename  = time().'.'.$file->getClientOriginalExtension();
+
+                $video_image     =  'pc-image-'.$image_filename ;
+                $Mobile_image    =  'Mobile-image-'.$image_filename ;
+                $Tablet_image    =  'Tablet-image-'.$image_filename ;
+
+                Image::make($file)->save( base_path() . "/public/uploads/images/" . $video_image);
+                Image::make($file)->save( base_path() . "/public/uploads/images/" . $Mobile_image);
+                Image::make($file)->save(base_path() . "/public/uploads/images/" . $Tablet_image);
+
+                $video->image = $video_image;
+                $video->mobile_image = $Mobile_image;
+                $video->tablet_image = $Tablet_image;
+            }
+          
         } else {
             $data["image"] = $video->image;
         }
+
+        if ($player_image != "") {
+           
+            if(compress_image_enable() == 1){
+
+                $player_filename  = time().'.'.compress_image_format();
+                $players_image     =  'player-image-'.$player_filename ;
+                Image::make($player_image)->save(base_path().'/public/uploads/images/'.$players_image,compress_image_resolution() );
+
+            }
+            else{
+                $player_filename  = time().'.'.$player_image->getClientOriginalExtension();
+                $players_image     =  'player-image-'.$player_filename ;
+                Image::make($player_filename)->save(base_path().'/public/uploads/images/'.$players_image );
+            }
+
+        } else {
+            $players_image = $video->player_image;
+        }
+
 
         if (isset($data["duration"])) {
             //$str_time = $data
@@ -1867,7 +1913,8 @@ class AdminVideosController extends Controller
         $video->access = $data["access"];
         //  $video->active=1;
         $video->uploaded_by = $uploaded_by;
-        $video->player_image = $player_image;
+        $video->player_image = $players_image;
+        $video->video_tv_image = $Tv_image;       
         $video->year = $year;
         $video->details = $details;
         $video->m3u8_url = $m3u8_url;
@@ -2302,6 +2349,30 @@ class AdminVideosController extends Controller
         } else {
             //    $player_image = $video->player_image;
             $player_image = "default_horizontal_image.jpg";
+        }
+
+                               // live_stream_tv_image
+
+        $video_tv_image = ($request->file('video_tv_image')) ? $request->file('video_tv_image') : '';
+
+        if($video_tv_image != '') {   
+                                        //upload new file
+        $video_tv_image = $video_tv_image;
+
+        if(compress_image_enable() == 1){
+
+            $Tv_image_filename  = time().'.'.compress_image_format();
+            $Tv_image     =  'tv-live-image-'.$Tv_image_filename ;
+
+            Image::make($video_tv_image)->save(base_path().'/public/uploads/images/'.$Tv_image,compress_image_resolution() );
+        }else{
+
+            $Tv_image_filename  = time().'.'.$live_stream_tv_image->getClientOriginalExtension();
+            $Tv_image     =  'tv-live-image-'.$Tv_image_filename ;
+            Image::make($video_tv_image)->save(base_path().'/public/uploads/images/'.$Tv_image );
+        }
+        } else{
+            $Tv_image = "default_horizontal_image.jpg";
         }
 
         if (empty($data["active"])) {
@@ -2768,29 +2839,16 @@ class AdminVideosController extends Controller
 
         if ($reels_videos != null) {
             foreach ($reels_videos as $Reel_Videos) {
-                $reelvideo_name =
-                    time() . rand(1, 50) . "." . $Reel_Videos->extension();
-                $reel_videos_slug = substr(
-                    $Reel_Videos->getClientOriginalName(),
-                    0,
-                    strpos($Reel_Videos->getClientOriginalName(), ".")
-                );
+                $reelvideo_name = time() . rand(1, 50) . "." . $Reel_Videos->extension();
+                $reel_videos_slug = substr(  $Reel_Videos->getClientOriginalName(), 0, strpos($Reel_Videos->getClientOriginalName(), "."));
                 $reelvideo_names = "reels" . $reelvideo_name;
 
-                $reelvideo = $Reel_Videos->move(
-                    public_path("uploads/reelsVideos"),
-                    $reelvideo_name
-                );
+                $reelvideo = $Reel_Videos->move( public_path("uploads/reelsVideos"),  $reelvideo_name );
 
                 $ffmpeg = \FFMpeg\FFMpeg::create();
-                $videos = $ffmpeg->open(
-                    "public/uploads/reelsVideos" . "/" . $reelvideo_name
-                );
-                $videos
-                    ->filters()
-                    ->clip(TimeCode::fromSeconds(1), TimeCode::fromSeconds(60));
-                $videos->save(
-                    new \FFMpeg\Format\Video\X264("libmp3lame"),
+                $videos = $ffmpeg->open(  "public/uploads/reelsVideos" . "/" . $reelvideo_name );
+                $videos->filters()->clip(TimeCode::fromSeconds(1), TimeCode::fromSeconds(60));
+                $videos->save( new \FFMpeg\Format\Video\X264("libmp3lame"),
                     "public/uploads/reelsVideos" . "/" . $reelvideo_names
                 );
 
@@ -2809,15 +2867,8 @@ class AdminVideosController extends Controller
         // Reels Thumbnail
 
         if (!empty($request->reels_thumbnail)) {
-            $Reels_thumbnail =
-                "reels_" .
-                time() .
-                "." .
-                $request->reels_thumbnail->extension();
-            $request->reels_thumbnail->move(
-                public_path("uploads/images"),
-                $Reels_thumbnail
-            );
+            $Reels_thumbnail = "reels_" . time() . "." . $request->reels_thumbnail->extension();
+            $request->reels_thumbnail->move(public_path("uploads/images"), $Reels_thumbnail);
 
             $video->reels_thumbnail = $Reels_thumbnail;
         }
@@ -2833,10 +2884,7 @@ class AdminVideosController extends Controller
 
         if ($url_linktym != null) {
             $StartParse = date_parse($request->url_linktym);
-            $startSec =
-                $StartParse["hour"] * 60 * 60 +
-                $StartParse["minute"] * 60 +
-                $StartParse["second"];
+            $startSec = $StartParse["hour"] * 60 * 60 + $StartParse["minute"] * 60 +$StartParse["second"];
             $video->url_linktym = $url_linktym;
             $video->url_linksec = $startSec;
             $video->urlEnd_linksec = $startSec + 60;
@@ -2859,6 +2907,7 @@ class AdminVideosController extends Controller
         $video->active = 1;
         $video->embed_code = $embed_code;
         $video->player_image = $player_image;
+        $video->video_tv_image = $Tv_image; 
         $video->publish_type = $publish_type;
         $video->publish_time = $publish_time;
         $video->age_restrict = $data["age_restrict"];
@@ -2886,7 +2935,6 @@ class AdminVideosController extends Controller
         }
 
         $video->update($data);
-        //  dd($video);
         if (
             $trailer != "" &&
             $pack == "Business" &&

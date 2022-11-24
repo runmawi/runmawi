@@ -28,58 +28,87 @@ border-radius: 0px 4px 4px 0px;
 </style>
 
 @section('css')
-<link rel="stylesheet" href="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.css') }}" />
-@stop @section('content')
+    <link rel="stylesheet" href="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.css') }}" />
+@stop 
+
+@section('content')
 
 <div id="content-page" class="content-page">
     <div class="d-flex">
-    <a class="black" href="{{ URL::to('admin/artists') }}">All Artists</a>
-    <a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/artists/create') }}">Add New Artist</a></div>
-    <!-- This is where -->
-    <div class="iq-card">
+
+        <a class="black" href="{{ URL::to('admin/artists') }}"> All Artists </a>
+        <a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/artists/create') }}">Add New Artist</a></div>
+                
+        <div class="iq-card">
+
         <!--<ol class="breadcrumb"> <li> <a href="{{ Url::to('/admin/artist_list') }}"><i class="fa fa-newspaper-o"></i>Manage Artist</a> </li> <li class="active">@if(!empty($artist->id)) <strong>{{ $artist->name }}</strong> @else <strong>Create Artist</strong> @endif</li> </ol>-->
         @if (Session::has('message'))
-        <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
-        @endif @if(count($errors) > 0) @foreach( $errors->all() as $message )
-        <div class="alert alert-danger display-hide" id="successMessage">
-            <button id="successMessage" class="close" data-close="alert"></button>
-            <span>{{ $message }}</span>
-        </div>
-        @endforeach @endif
+            <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
+        @endif 
+        
+        @if(count($errors) > 0) 
+            @foreach( $errors->all() as $message )
+                <div class="alert alert-danger display-hide" id="successMessage">
+                    <button id="successMessage" class="close" data-close="alert"></button>
+                    <span>{{ $message }}</span>
+                </div>
+            @endforeach 
+        @endif
+
         <div class="admin-section-title">
             @if(!empty($artist->id))
-            <h3 class="fs-title">Editing Artist - {{ $artist->artist_name }}</h3>
+                <h3 class="fs-title">Editing Artist - {{ $artist->artist_name }}</h3>
             @else
-            <h4 class="fs-title">Create Artist</h4>
+                <h4 class="fs-title">Create Artist</h4>
             @endif
         </div>
+
         <hr />
 
         <div class="clear"></div>
 
         <form id="artist_form" method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
+
             <div class="@if(!empty($artist->created_at)) col-sm-12 @else col-sm-12 @endif">
                 <div class="row mt-3 p-0">
                     <div class="col-sm-6 mt-3" data-collapsed="0">
-                        <label class="m-0">Artist</label>
+                        <label class="m-0"> Artist </label>
                         <div class="panel-body">
-                            <input type="text" class="form-control" name="artist_name" id="artist_name" value="@if(!empty($artist->artist_name)){{ $artist->artist_name }}@endif" />
+                            <input type="text" placeholder="Artist Name" class="form-control" name="artist_name" id="artist_name" value="@if(!empty($artist->artist_name)){{ $artist->artist_name }}@endif" />
                         </div>
                     </div>
                     
                     <div class="col-sm-6 mt-3" data-collapsed="0">
-                        <label class="m-0">Artist Slug</label>
+                        <label class="m-0"> Artist Slug </label>
                         <div class="panel-body">
-                            <input type="text" class="form-control" name="artist_slug" id="artist_slug" value="@if(!empty($artist->artist_slug)){{ $artist->artist_slug }}@endif" />                        </div>
+                            <input type="text"  placeholder="Artist Slug" class="form-control" name="artist_slug" id="artist_slug" value="@if(!empty($artist->artist_slug)){{ $artist->artist_slug }}@endif" />                        </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="row mt-3 p-3 align-items-center">
+
                     <div class="col-sm-6 mt-3" data-collapsed="0">
-                        <label class="m-0">Description</label>
+                        <label class="m-0"> {{ ucwords('Description') }}</label>
                         <div class="panel-body">
-                            <textarea class="form-control" name="description" id="description">@if(!empty($artist->description)){{ $artist->description }}@endif</textarea>
+                            <textarea class="form-control" placeholder="Artist Description" name="description" id="description">@if(!empty($artist->description)){{ $artist->description }}@endif</textarea>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 mt-3" data-collapsed="0">
+                        <label class="m-0"> {{ ucwords('Artist type') }}</label>
+                        <div class="panel-body">
+
+                            <select class="form-control" name="artist_type" id="artist_type" >
+                                <option value="">  {{ 'Select the Artist Type' }} </option>
+                                <option value="Art_Director" @if (!empty($artist->artist_type) && $artist->artist_type == 'Art_Director'){{ 'selected' }} @endif > {{ 'Art Director' }} </option>
+                                <option value="Director_of_Photography" @if (!empty($artist->artist_type) && $artist->artist_type == 'Director_of_Photography'){{ 'selected' }} @endif > {{ 'Director of Photography' }} </option>
+                                <option value="Costume_Designer" @if (!empty($artist->artist_type) && $artist->artist_type == 'Costume_Designer'){{ 'selected' }} @endif > {{ 'Costume Designer' }} </option>
+                                <option value="Production_Sound_Mixer" @if (!empty($artist->artist_type) && $artist->artist_type == 'Production_Sound_Mixer'){{ 'selected' }} @endif> {{ 'Production Sound Mixer' }} </option>
+                                <option value="Stunt_Coordinator" @if (!empty($artist->artist_type) && $artist->artist_type == 'Stunt_Coordinator'){{ 'selected' }} @endif > {{ 'Stunt Coordinator' }} </option>
+                                <option value="VFX_Coordinator" @if (!empty($artist->artist_type) && $artist->artist_type == 'VFX_Coordinator'){{ 'selected' }} @endif > {{ 'VFX Coordinator' }} </option>
+                            </select>
+
                         </div>
                     </div>
 
@@ -99,14 +128,17 @@ border-radius: 0px 4px 4px 0px;
                         </div>
                     </div>
                 </div>
+                
+
                 @if(isset($artist->id))
-                <input type="hidden" id="id" name="id" value="{{ $artist->id }}" />
+                    <input type="hidden" id="id" name="id" value="{{ $artist->id }}" />
                 @endif
 
                 <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+                
                 <div class=" p-0 mt-4">
-                <input type="submit" value="{{ $button_text }}" class="btn btn-primary mr-2" />
-            </div>
+                    <input type="submit" value="{{ $button_text }}" class="btn btn-primary mr-2" />
+                </div>
             </div>
             
             <div class="clear"></div>
@@ -153,6 +185,7 @@ border-radius: 0px 4px 4px 0px;
         rules: {
             artist_name: "required",
             description: "required",
+            artist_type: "required",
             parent_id: {
                 required: true,
             },
@@ -172,6 +205,7 @@ border-radius: 0px 4px 4px 0px;
         messages: {
             title: "This field is required",
             description: "This field is required",
+            artist_type: "This field is required",
             parent_id: {
                 required: "This field is required",
             },

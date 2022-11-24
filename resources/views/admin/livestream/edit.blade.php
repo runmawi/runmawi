@@ -196,9 +196,32 @@ border-radius: 0px 4px 4px 0px;
                 </div>
             </div>
 
+            <div class="row mt-3">
+                <div class="col-sm-6">
+
+                    <div class="">
+                        <label class="m-0">TV Image Cover</label>
+                        <p class="p1"> Select the video image (1024 X 1024 px or 1:1 ratio):</p>
+                        <div class="panel-body">
+                            <input type="file" multiple="true" class="form-group" name="live_stream_tv_image" id=live_stream_tv_image  />
+                        </div>
+                    </div>
+
+                    <div class="mt-2 text-center">
+                        <div class="panel-body">
+                            @if(!empty($video->Tv_live_image))
+                                <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->Tv_live_image }}" class="video-imgimg" width="200"/>
+                            @endif
+                        </div>
+                    </div>
+
+                </div>
+           </div>
+
                      {{-- for validate --}} 
                <input type="hidden" id="check_image" name="check_image" value="@if(!empty($video->image) ) {{ "validate" }} @else {{ " " }} @endif"  />
                <input type="hidden" id="player_check_image" name="player_check_image" value="@if(!empty($video->player_image) ) {{ "validate" }} @else {{ " " }} @endif"  />
+               <input type="hidden" id="tv_check_image" name="tv_check_image" value="@if(!empty($video->Tv_live_image) ) {{ "validate" }} @else {{ " " }} @endif"  />
                         
 
             <div class="row mt-3">
@@ -809,6 +832,24 @@ $(document).ready(function(){
             }
         },'Please upload an image with 1280 x 720 pixels dimension or 16:9 ratio');
 
+                                // TV Image upload validation
+        $.validator.addMethod('tv_image_dimention', function(value, element, param) {
+            if(element.files.length == 0){
+                return true; 
+            }
+
+            var width = $(element).data('imageWidth');
+            var height = $(element).data('imageHeight');
+            var ratio = $(element).data('imageratio');
+            var image_validation_status = "{{  image_validation_live() }}" ;
+
+            if( image_validation_status == "0" || ratio == '1.00' ||  width == param[0] && height == param[1]){
+                return true;
+            }else{
+                return false;
+            }
+        },'Please upload an image with 1024 x 1024 pixels dimension or 1:1 ratio');
+
 
         $('#image').change(function() {
 
@@ -850,6 +891,27 @@ $(document).ready(function(){
             }
         });
 
+        $('#live_stream_tv_image').change(function() {
+
+            $('#live_stream_tv_image').removeData('imageWidth');
+            $('#live_stream_tv_image').removeData('imageHeight');
+            $('#live_stream_tv_image').removeData('imageratio');
+
+            var file = this.files[0];
+            var tmpImg = new Image();
+
+            tmpImg.src=window.URL.createObjectURL( file ); 
+            tmpImg.onload = function() {
+                width = tmpImg.naturalWidth,
+                height = tmpImg.naturalHeight;
+				ratio =  Number(width/height).toFixed(2) ;
+                
+                $('#live_stream_tv_image').data('imageWidth', width);
+                $('#live_stream_tv_image').data('imageHeight', height);
+                $('#live_stream_tv_image').data('imageratio', ratio);
+            }
+        });
+
 
 
     //  validate 
@@ -871,6 +933,10 @@ $(document).ready(function(){
             player_dimention:[1280,720]
         },
 
+        live_stream_tv_image: {
+            required: '#tv_check_image:blank',
+            tv_image_dimention:[1024,1024]
+        },
 	 
 		mp4_url: {
 		required : function(element) {

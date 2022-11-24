@@ -398,7 +398,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::post('/languages/store','AdminThemeSettingsController@LanguageStore');
     Route::get('/languages/edit/{id}', 'AdminThemeSettingsController@LanguageEdit');
     Route::get('/languages/delete/{id}', 'AdminThemeSettingsController@LanguageDelete');
-    Route::post('/languages/update', 'AdminThemeSettingsController@LanguageUpdate'); 
+    Route::post('/languages/update', 'AdminThemeSettingsController@LanguageUpdate')->name('LanguageUpdate'); 
 
     Route::get('/admin-languages-transulates', 'AdminThemeSettingsController@LanguageTransIndex');
 
@@ -2006,4 +2006,3 @@ Route::get('/Paystack-live-rent-paymentverify', 'PaystackController@Paystack_liv
                     // Paystack-Live Rent
 Route::get('/m3u_file_m3u8url', 'LiveStreamController@m3u_file_m3u8url')->name('m3u_file_m3u8url');
 Route::get('/M3U_video_url', 'LiveStreamController@M3U_video_url')->name('M3U_video_url');
-
