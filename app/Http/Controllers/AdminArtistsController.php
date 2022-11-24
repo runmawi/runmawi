@@ -203,6 +203,7 @@ class AdminArtistsController extends Controller
                 "artist_name" => $data['artist_name'] ,
                 "description" => $data['description'] ,
                 "image"       => $data['image'] ,
+                "artist_type" => $request->artist_type,
                 "artist_slug" => $artist_slug ,
             ]);
 
@@ -339,6 +340,7 @@ class AdminArtistsController extends Controller
                 $artist->update([
                     "artist_name" => $data['artist_name'] ,
                     "description" => $data['description'] ,
+                    "artist_type" => $data['artist_type'] ,
                     "artist_slug" => $artist_slug ,
                 ]);
 

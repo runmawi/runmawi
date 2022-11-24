@@ -19,13 +19,15 @@
 	<div class="admin-section-title">
          <div class="">
 		<div class="row">
+
 			<div class="col-md-4">
 				<h4><i class="entypo-archive"></i> Languages </h4>
 			</div>
+
             <div class="col-md-8" align="right">
-            <a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add New</a></div>
-		</div>
-	
+            	<a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add New</a></div>
+			</div>
+
 
 	<!-- Add New Modal -->
 	<div class="modal fade" id="add-new">
@@ -41,14 +43,17 @@
 				<div class="modal-body">
 					<form id="new-cat-form" accept-charset="UTF-8" action="{{ URL::to('admin/languages/store') }}" method="post" enctype="multipart/form-data">
 						<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-				  
 
-                    <div class="form-group {{ $errors->has('active') ? 'has-error' : '' }}">
-                        <label>Name:</label>
-                        <input type="text" id="name" name="name" class="form-control">
-                     </div>
+						<div class="form-group {{ $errors->has('active') ? 'has-error' : '' }}">
+							<label>Name:</label>
+							<input type="text" id="name" name="name" class="form-control" placeholder="Language Name">
+						</div>
 
-
+						<div class="form-group {{ $errors->has('active') ? 'has-error' : '' }}">
+							<label> Thumbnail </label>
+							<p> Select The Language Image ( 1:1 Ratio or 1024 X 1024px ) :</p>
+							<input type="file" id="language_image" name="language_image" class="form-control">
+						</div>
 				    </form>
 				</div>
 				
@@ -60,11 +65,36 @@
 		</div>
 	</div>
 
-	<!-- Add New Modal -->
+	<!-- Update Modal -->
 	<div class="modal fade" id="update-category">
 		<div class="modal-dialog">
 			<div class="modal-content">
+				<div class="modal-header">
+                    <h4 class="modal-title">New Language</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
 				
+				<div class="modal-body">
+					<form id="new-cat-form" accept-charset="UTF-8" action="{{ URL::to('admin/languages/store') }}" method="post" enctype="multipart/form-data">
+						<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+
+						<div class="form-group {{ $errors->has('active') ? 'has-error' : '' }}">
+							<label>Name:</label>
+							<input type="text" id="name" name="name" class="form-control" placeholder="Language Name">
+						</div>
+
+						<div class="form-group {{ $errors->has('active') ? 'has-error' : '' }}">
+							<label> Thumbnail </label>
+							<p> Select The Language Image ( 1:1 Ratio or 1024 X 1024px ) :</p>
+							<input type="file" id="language_image" name="language_image" class="form-control">
+						</div>
+				    </form>
+				</div>
+				
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" id="submit-new-cat">Save changes</button>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -84,39 +114,47 @@
 				</div>
 			</div>
 			
-			
 			<div class="panel-body">
-		
 				<div id="nestable p-0" class="nested-list dd with-margins">
+					<table class="table table-bordered iq-card text-center">
+						<tr class="table-header r1">
+							<th class=""><label> S.No </label></th>
+							<th class=""><label> Thumbnail </label></th>
+							<th class=""><label> Name </label></th>
+							<th class=""><label> Action</label></th>
+							
+							@forelse( $languages as $key => $language )
+								<tr>
+									<td>{{  $key+1 }}</td>
 
-				
+									<td> 
+										@if( $language->language_image != null && $language->language_image != " " )
+											<img src="{{ URL::to('/public/uploads/Language/'.$language->language_image)  }}" class="" width="50px"/>
+										@else
+											{{ "No Language Image Found" }}
+										@endif
+									</td>
 
 
-            <table class="table table-bordered iq-card text-center">
-                <tr class="table-header r1">
-                    <th class=""><label>Language</label></th>
-                    <th class=""><label>Action</label></th>
-                    
-                    @foreach($allCategories as $language)
-                    <tr>
-                      
-                        
-                      <td><?php echo $language->name;?></td>
-                        <td class="">
-                            <div class=" align-items-center list-user-action"><a href="{{ URL::to('admin/languages/edit/') }}/{{$language->id}}" class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Edit"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a> <a href="{{ URL::to('admin/languages/delete/') }}/{{$language->id}}" class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Delete"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a></div>
-                           
-                        </td>
-                    </tr>
-                    @endforeach
-            </table>
-                    
-				
+									<td>{{  $language->name ?  $language->name : "No Language Name Found" }}</td>
+
+									<td class="">
+										<div class=" align-items-center list-user-action">
+
+											<a href="{{ URL::to('admin/languages/edit/') }}/{{$language->id}}" class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
+												data-original-title="Edit"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a> 
+											
+											<a href="{{ URL::to('admin/languages/delete/') }}/{{$language->id}}" onclick="return confirm('Are you sure?')"  class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
+												data-original-title="Delete"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
+										</div>
+									</td>
+								</tr>
+							@empty
+
+							@endforelse
+					</table>
 				</div>
-		
 			</div>
-		
 		</div>
              
      </div></div>
@@ -172,7 +210,24 @@
 
 
 		});
+		
 		</script>
+
+		    {{-- validation --}}
+
+			<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
+			<script>
+				$('form[id="new-cat-form"]').validate({
+					rules: {
+						name: "required",
+						language_image: "required",
+					},
+					submitHandler: function (form) {
+						form.submit();
+					},
+				});
+			</script>
 
 	@stop
 

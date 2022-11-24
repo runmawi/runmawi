@@ -35,8 +35,8 @@ use Intervention\Image\Facades\Image;
 use Intervention\Image\Filters\DemoFilter;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
-use File;
 use App\StorageSetting as StorageSetting;
+use Illuminate\Support\Facades\File; 
 
 class AdminLiveStreamController extends Controller
 {
@@ -166,6 +166,7 @@ class AdminLiveStreamController extends Controller
     {
         $data = $request->all();
 
+
         if(!empty($data['video_category_id'])){
             $category_id = $data['video_category_id'];
             unset($data['video_category_id']);
@@ -246,6 +247,32 @@ class AdminLiveStreamController extends Controller
             } else{
                 $player_image = "default_horizontal_image.jpg";
             }
+
+                            // live_stream_tv_image
+
+            $live_stream_tv_image = ($request->file('live_stream_tv_image')) ? $request->file('live_stream_tv_image') : '';
+
+            if($live_stream_tv_image != '') {   
+                
+                                        //upload new file
+                    $live_stream_tv_image = $live_stream_tv_image;
+
+                    if(compress_image_enable() == 1){
+
+                        $Tv_image_filename  = time().'.'.compress_image_format();
+                        $Tv_live_image     =  'tv-live-image-'.$Tv_image_filename ;
+
+                        Image::make($live_stream_tv_image)->save(base_path().'/public/uploads/images/'.$Tv_live_image,compress_image_resolution() );
+                    }else{
+
+                        $Tv_image_filename  = time().'.'.$live_stream_tv_image->getClientOriginalExtension();
+                        $Tv_live_image     =  'tv-live-image-'.$Tv_image_filename ;
+                        Image::make($live_stream_tv_image)->save(base_path().'/public/uploads/images/'.$Tv_live_image );
+                    }
+    
+                } else{
+                    $Tv_live_image = "default_horizontal_image.jpg";
+                }
             
         $data['user_id'] = Auth::user()->id;
         
@@ -350,6 +377,7 @@ class AdminLiveStreamController extends Controller
         $movie = new LiveStream;
 
         $StorageSetting = StorageSetting::first();
+        $settings = Setting::first();
 
     // live stream video
     if($StorageSetting->site_storage == 1){
@@ -381,6 +409,7 @@ class AdminLiveStreamController extends Controller
         }
     }elseif($StorageSetting->aws_storage == 1){
 
+        if($settings->transcoding_access  == 0 ) {
             $file = $data['live_stream_video'];
             $name = time() . $file->getClientOriginalName();
             // print_r($file);exit;
@@ -391,6 +420,38 @@ class AdminLiveStreamController extends Controller
             $filePath = $path.$filePath;
             
             $movie->live_stream_video = $filePath ; 
+        }elseif($settings->transcoding_access  == 1 ) {
+
+            $file = $data['live_stream_video'];
+            $name = time() . $file->getClientOriginalName();
+            // print_r($file);exit;
+
+            $transcode_path = @$StorageSetting->aws_transcode_path.'/'. $name;
+
+            $filePath = $StorageSetting->aws_live_path.'/'. $name;
+            
+            Storage::disk('s3')->put($filePath, file_get_contents($file));
+            $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+            $filePath = $path.$filePath;
+            $transcode_path = $path.$transcode_path;
+
+            
+            // $movie->live_stream_video = $filePath ;
+            $movie->live_stream_video = $transcode_path ; 
+
+        }
+        else{
+            $file = $data['live_stream_video'];
+            $name = time() . $file->getClientOriginalName();
+            // print_r($file);exit;
+            $filePath = $StorageSetting->aws_live_path.'/'. $name;
+            
+            Storage::disk('s3')->put($filePath, file_get_contents($file));
+            $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+            $filePath = $path.$filePath;
+            
+            $movie->live_stream_video = $filePath ; 
+        }
     }else{ 
         if(!empty($data['live_stream_video'])){
 
@@ -483,6 +544,7 @@ class AdminLiveStreamController extends Controller
         $movie->active = $active ;
         $movie->search_tags = $searchtags;
         $movie->player_image = $player_PC_image;
+        $movie->Tv_live_image = $Tv_live_image;
         $movie->user_id =Auth::User()->id;
         $movie->ios_ppv_price =$request->ios_ppv_price;
         $movie->save();
@@ -627,6 +689,7 @@ class AdminLiveStreamController extends Controller
         ]);
 
 $StorageSetting = StorageSetting::first();
+$settings = Setting::first();
 
 // live stream video
 if($StorageSetting->site_storage == 1){
@@ -659,16 +722,49 @@ if($StorageSetting->site_storage == 1){
         }
     }elseif($StorageSetting->aws_storage == 1){
 
-        $file = $data['live_stream_video'];
-        $name = time() . $file->getClientOriginalName();
-        // print_r($file);exit;
-        $filePath = $StorageSetting->aws_live_path.'/'. $name;
-        
-        Storage::disk('s3')->put($filePath, file_get_contents($file));
-        $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
-        $filePath = $path.$filePath;
-        
-        $movie->live_stream_video = $filePath ; 
+        if($settings->transcoding_access  == 0 ) {
+
+            $file = $data['live_stream_video'];
+            $name = time() . $file->getClientOriginalName();
+            // print_r($file);exit;
+            $filePath = $StorageSetting->aws_live_path.'/'. $name;
+            
+            Storage::disk('s3')->put($filePath, file_get_contents($file));
+            $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+            $filePath = $path.$filePath;
+            
+            $movie->live_stream_video = $filePath ; 
+        }elseif($settings->transcoding_access  == 1 ) {
+
+            $file = $data['live_stream_video'];
+            $name = time() . $file->getClientOriginalName();
+            // print_r($file);exit;
+
+            $transcode_path = @$StorageSetting->aws_transcode_path.'/'. $name;
+
+            $filePath = $StorageSetting->aws_live_path.'/'. $name;
+            
+            Storage::disk('s3')->put($filePath, file_get_contents($file));
+            $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+            $filePath = $path.$filePath;
+            $transcode_path = $path.$transcode_path;
+
+            
+            // $movie->live_stream_video = $filePath ;
+            $movie->live_stream_video = $transcode_path ; 
+
+        }else{
+            $file = $data['live_stream_video'];
+            $name = time() . $file->getClientOriginalName();
+            // print_r($file);exit;
+            $filePath = $StorageSetting->aws_live_path.'/'. $name;
+            
+            Storage::disk('s3')->put($filePath, file_get_contents($file));
+            $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+            $filePath = $path.$filePath;
+            
+            $movie->live_stream_video = $filePath ; 
+        }
     }else{ 
 
         if( !empty($data['url_type']) && $data['url_type'] == "live_stream_video" && !empty($data['live_stream_video'] ) ){
@@ -827,6 +923,37 @@ if($StorageSetting->site_storage == 1){
           } else{
               $player_PC_image = $video->player_image;
           }
+
+                 // live_stream_tv_image
+
+            $live_stream_tv_image = ($request->file('live_stream_tv_image')) ? $request->file('live_stream_tv_image') : '';
+
+            if($live_stream_tv_image != '') {   
+                
+                                        //upload new file
+                    $live_stream_tv_image = $live_stream_tv_image;
+
+                    if (File::exists(base_path('public/uploads/images/'.$video->Tv_live_image))) {
+                        File::delete(base_path('public/uploads/images/'.$video->Tv_live_image));
+                    }
+
+                    if(compress_image_enable() == 1){
+
+                        $Tv_image_filename  = time().'.'.compress_image_format();
+                        $Tv_live_image     =  'tv-live-image-'.$Tv_image_filename ;
+
+                        Image::make($live_stream_tv_image)->save(base_path().'/public/uploads/images/'.$Tv_live_image,compress_image_resolution() );
+                    }else{
+
+                        $Tv_image_filename  = time().'.'.$live_stream_tv_image->getClientOriginalExtension();
+                        $Tv_live_image     =  'tv-live-image-'.$Tv_image_filename ;
+                        Image::make($live_stream_tv_image)->save(base_path().'/public/uploads/images/'.$Tv_live_image );
+                    }
+    
+                } else{
+                    $Tv_live_image = $video->Tv_live_image ? $video->Tv_live_image : "default_horizontal_image.jpg";
+                }
+            
         
          $data['mp4_url']  = $request->get('mp4_url');
 
@@ -895,6 +1022,7 @@ if($StorageSetting->site_storage == 1){
         $video->url_type = $url_type;
         $video->ppv_price = $ppv_price;
         $video->player_image = $player_PC_image;
+        $video->Tv_live_image = $Tv_live_image;
         $video->image = $PC_image;
         $video->publish_status = $request['publish_status'];
         $video->publish_type = $request['publish_type'];
