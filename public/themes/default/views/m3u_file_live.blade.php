@@ -61,9 +61,10 @@
 
         function m3u_url(ele){
 
-           var m3u_url   = $(ele).attr('data-MU3-category');
+           var m3u_url_category   = $(ele).attr('data-MU3-category');
+           let m3u_url = $(ele).attr('data-MU3-url');
 
-           alert('Are you Select ' + m3u_url + ' ? ');
+           alert('Are you Select ' + m3u_url_category + ' ? ');
 
            $.ajax({
 
@@ -71,6 +72,7 @@
             type: "get",
             data: {
                     m3u_url : m3u_url ,
+                    m3u_url_category : m3u_url_category ,
                     async: false,
                 },       
                 
@@ -79,7 +81,6 @@
                 if( data.status == true ){
 
                     var count = data.M3u_url_array.length ;
-
 
                     if( count > 0 && data.status == true ){
 
@@ -90,7 +91,6 @@
                                     $.each( data.M3u_url_array , function( index, M3u_url_array ) {
                                     
                                         html +='<a data-toggle="modal" data-target="#myModal" class="list-group-item list-group-item-action list-group-item-light"  data-m3u-urls="'+ M3u_url_array +'" onclick="M3U_video_url(this)" > "'+ M3u_url_array +'"  </a>';
-
                                     });
 
                             html += '</div>';

@@ -5510,7 +5510,11 @@ return response()->json($response, 200);
 
     public function Alllanguage(Request $request) {
 
-      $all_languages = Language::orderBy('created_at', 'desc')->get();
+      $all_languages = Language::latest('created_at')->get()->map(function ($item) {
+        $item['image_url'] = $item->language_image ? URL::to('/').'/public/uploads/Language/'.$item->language_image : null ;
+        return $item;
+      });
+
       $count_all_languages = count($all_languages);
       $response = array(
           'status'=>'true',
@@ -8394,6 +8398,9 @@ $cpanel->end();
               ->get()->map(function ($item) {
                 $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
                 $item['video_url'] = URL::to('/').'/storage/app/public/';
+                $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+                $item['Tv_image_url'] = URL::to('/').'/public/uploads/images/'.$item->video_tv_image;
+                
                 $item['category_name'] = VideoCategory::where('id',$item->category_id)->pluck('slug')->first();
                 $item['category_order'] = VideoCategory::where('id',$item->category_id)->pluck('order')->first();
                 return $item;
@@ -8435,6 +8442,9 @@ $cpanel->end();
           $featured_videos =  Video::where('active', '=', '1')->where('featured', '=', '1')->where('status', '=', '1')
              ->where('draft', '=', '1')->orderBy('created_at', 'DESC')->get()->map(function ($item) {
                 $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+                $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+                $item['Tv_image_url'] = URL::to('/').'/public/uploads/images/'.$item->video_tv_image;
+
                 $item['video_url'] = URL::to('/').'/storage/app/public/';
                 return $item;
             });
@@ -8449,6 +8459,9 @@ $cpanel->end();
           $latest_videos =  Video::where('status', '=', '1')->take(10)->where('active', '=', '1')->where('draft', '=', '1')
           ->orderBy('created_at', 'DESC')->get()->map(function ($item) {
               $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+              $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+              $item['Tv_image_url'] = URL::to('/').'/public/uploads/images/'.$item->video_tv_image;
+
               $item['video_url'] = URL::to('/').'/storage/app/public/';
               return $item;
             });
@@ -8472,6 +8485,9 @@ $cpanel->end();
               ->where('categoryvideos.category_id',$videocategoryid)->where('active','=',1)->where('status','=',1)->where('draft','=',1)
               ->orderBy('videos.created_at', 'desc')->get()->map(function ($item) {
                 $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+                $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+                $item['Tv_image_url'] = URL::to('/').'/public/uploads/images/'.$item->video_tv_image;
+
                 $item['video_url'] = URL::to('/').'/storage/app/public/';
                 $item['category_name'] = VideoCategory::where('id',$item->category_id)->pluck('slug')->first();
                 $item['category_order'] = VideoCategory::where('id',$item->category_id)->pluck('order')->first();
@@ -8514,6 +8530,9 @@ $cpanel->end();
 
             $live_videos = LiveStream::where('active', '=', '1')->orderBy('id', 'DESC')->get()->map(function ($item) {
               $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
+              $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+              $item['Tv_image_url'] = URL::to('/').'/public/uploads/images/'.$item->Tv_live_image;
+
               return $item;
             });
         }
@@ -8525,7 +8544,8 @@ $cpanel->end();
 
           $series = Series::where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
               $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-              $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+              $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+              $item['Tv_image_url'] = URL::to('/').'/public/uploads/images/'.$item->tv_image;
               $item['artist_name'] = Series::where('series_artists.series_id',$item->id)
                                       ->join('series_artists', 'series_artists.series_id', '=', 'series.id')
                                       ->join('artists', 'artists.id', '=', 'series_artists.artist_id')
@@ -8707,6 +8727,9 @@ $cpanel->end();
                           ->orderBy('live_streams.created_at', 'desc')->get()->map(function ($item) {
 
                             $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+                            $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+                            $item['Tv_image_url'] = URL::to('/').'/public/uploads/images/'.$item->Tv_live_image;
+
                             $item['category_name'] = LiveCategory::where('id',$item->category_id)->pluck('slug')->first();
                             $item['category_order'] = LiveCategory::where('id',$item->category_id)->pluck('order')->first();
 
