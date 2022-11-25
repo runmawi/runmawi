@@ -152,7 +152,12 @@
                         </div>
                     </div>
 
-            <?php }  ?>
+            <?php } else{ ?>
+                    <div class="col-md-12 text-center mt-4">
+                        <h1 class="text-white text-center med">Coming Soon......</h1>
+                        <img class=" text-center w-100" src="<?php echo  URL::to('/assets/img/watch.png')?>" >
+                    </div>
+            <?php break; } ?>
             
             <?php }?>
     </div>
