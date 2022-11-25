@@ -651,7 +651,7 @@ $(".deleteVideo").click(function(){
         var id = $(this).data("id");
         var token = $(this).data("token");
         var url = '<?php echo URL::to('admin/schedule/delete') ?>';
-
+        var link_url = '<?php echo URL::to('admin/schedule/delete') ?>';
         // alert(url+'/'+id);
         $.ajax(
         {
@@ -666,8 +666,10 @@ $(".deleteVideo").click(function(){
             success: function ()
             {
                 // console.log("it Work");
-                location.reload(true);
+                // location.reload(true);
                 // window.location();
+                document.location.reload();
+
                 // location.href = location.href,
 
                 alert('Deleted Succefully..!');
