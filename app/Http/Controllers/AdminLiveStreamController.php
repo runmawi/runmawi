@@ -692,7 +692,7 @@ $StorageSetting = StorageSetting::first();
 $settings = Setting::first();
 
 // live stream video
-if($StorageSetting->site_storage == 1){
+if($StorageSetting->site_storage == 1 && !empty($data['live_stream_video']) ){
         if( !empty($data['url_type']) && $data['url_type'] == "live_stream_video" && !empty($data['live_stream_video'] ) ){
 
             $live_stream_video = $data['live_stream_video'];
@@ -720,7 +720,7 @@ if($StorageSetting->site_storage == 1){
             $video->live_stream_video = $M3u8_save_path;
            
         }
-    }elseif($StorageSetting->aws_storage == 1){
+    }elseif($StorageSetting->aws_storage == 1 && !empty($data['live_stream_video'])){
 
         if($settings->transcoding_access  == 0 ) {
 
@@ -734,7 +734,7 @@ if($StorageSetting->site_storage == 1){
             $filePath = $path.$filePath;
             
             $movie->live_stream_video = $filePath ; 
-        }elseif($settings->transcoding_access  == 1 ) {
+        }elseif($settings->transcoding_access  == 1 && !empty($data['live_stream_video']) ) {
 
             $file = $data['live_stream_video'];
             $name = time() . $file->getClientOriginalName();
