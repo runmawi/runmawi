@@ -948,8 +948,8 @@ $(document).ready(function(){
                 } else {
                     return false;
                 }
-                },
             },
+        },
 	 
 		mp4_url: {
 		required : function(element) {

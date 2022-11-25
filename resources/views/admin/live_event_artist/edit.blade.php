@@ -195,6 +195,27 @@ border-radius: 0px 4px 4px 0px;
                 </div>
             </div>
 
+            <div class="row mt-3">
+                <div class="col-sm-6">
+
+                    <div class="">
+                        <label class="m-0">TV Image Cover</label>
+                        <p class="p1"> Select the Live Stream image (1920 X 1080  Or 16:9 Ratio)  :</p>
+                        <div class="panel-body">    
+                            <input type="file" multiple="true" class="form-group" name="tv_image" id="tv_image"  />
+                        </div>
+                    </div>
+
+                    <div class="mt-2 text-center">
+                        <div class="panel-body">
+                            @if(!empty($video->tv_image))
+                                <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->tv_image }}" class="video-imgimg" width="200"/>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+           </div>
+
                      {{-- for validate --}} 
                {{-- <input type="hidden" id="check_image" name="check_image" value="@if(!empty($video->image) ) {{ "validate" }} @else {{ " " }} @endif"  />
                <input type="hidden" id="player_check_image" name="player_check_image" value="@if(!empty($video->player_image) ) {{ "validate" }} @else {{ " " }} @endif"  /> --}}
@@ -556,7 +577,7 @@ border-radius: 0px 4px 4px 0px;
                 </div>
 
                 <div class="col-sm-4">
-                    <div id="publishlater">
+                    <div id="publish_time_div">
                         <label class="m-0">Publish Time</label>
                         <div class="panel-body">
                             <input type="datetime-local" class="form-control" id="publish_time" name="publish_time" value="@if(!empty($video->publish_time)){{ $video->publish_time }}@endif" />
@@ -891,6 +912,19 @@ $(document).ready(function(){
             player_dimention:[1280,720]
         },
 
+        publish_time: {
+            required: function (element) {
+
+                var action =$("input[type=radio][name=publish_type]").val();
+
+                if (action == "publish_now") {
+                     return true;
+                } else {
+                    return false;
+                }
+            },
+        },
+
 	 
 		mp4_url: {
 		required : function(element) {
@@ -972,19 +1006,20 @@ $(document).ready(function(){
 
 	$('.js-example-basic-multiple').select2();
 
-	$('#publishlater').hide();
-	$('#publish_now').click(function(){
-		$('#publishlater').hide();
-	});
-	$('#publish_later').click(function(){
-		$('#publishlater').show();
-	});
+    var publish_time = $('#publish_time').val();
 
-	if($("#publish_now").val() == 'publish_now'){
-	$('#publishlater').hide();
-	}else if($("#publish_later").val() == 'publish_later'){
-		$('#publishlater').show();		
-	}
+    if( publish_time == "" ){
+        $('#publish_time_div').hide();
+    }
+
+    $('#publish_now').click(function(){
+        $('#publish_time_div').hide();
+    });
+
+    $('#publish_later').click(function(){
+        $('#publish_time_div').show();
+    });
+	
 });
 
 

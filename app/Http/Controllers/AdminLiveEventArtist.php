@@ -235,6 +235,9 @@ class AdminLiveEventArtist extends Controller
             } else{
                 $player_image = "default_horizontal_image.jpg";
             }
+
+
+         
             
         $data['user_id'] = Auth::user()->id;
         
@@ -324,6 +327,27 @@ class AdminLiveEventArtist extends Controller
         }    
 
         $movie = new LiveEventArtist;
+
+                                   //  TV Image
+            $tv_image = ($request->file('tv_image')) ? $request->file('tv_image') : '';
+
+            if($tv_image != '') {   
+              
+                $tv_image = $tv_image;
+
+                if(compress_image_enable() == 1){   //upload new file
+
+                    $tv_image_filename  = time().'.'.compress_image_format();
+                    $tv_image_PC_image     =  'TV-live-'.$tv_image_filename ;
+                    Image::make($tv_image)->save(base_path().'/public/uploads/images/'.$tv_image_PC_image,compress_image_resolution() );
+                }else{
+
+                    $tv_image_filename  = time().'.'.$tv_image->getClientOriginalExtension();
+                    $tv_image_PC_image     =  'TV-live-'.$player_filename ;
+                    Image::make($tv_image)->save(base_path().'/public/uploads/images/'.$tv_image_PC_image );
+                }
+                $movie->tv_image = $tv_image_PC_image;
+            } 
 
         // live stream video
         if(!empty($data['live_stream_video'])){
@@ -496,7 +520,6 @@ class AdminLiveEventArtist extends Controller
 
         $data = $request->all();       
 
-
         $id = $data['id'];
 
         if($data['access'] == "ppv"){
@@ -667,6 +690,28 @@ class AdminLiveEventArtist extends Controller
           } else{
               $player_PC_image = $video->player_image;
           }
+
+                                   //  TV Image
+            $live_tv_image = ($request->file('tv_image')) ? $request->file('tv_image') : '';
+
+            if($live_tv_image != '') {   
+              
+                $live_tv_image = $live_tv_image;
+
+                if(compress_image_enable() == 1){   //upload new file
+
+                    $live_tv_image_image_filename  = time().'.'.compress_image_format();
+                    $live_tv_image_image_PC_image     =  'TV-live-'.$live_tv_image_image_filename ;
+                    Image::make($live_tv_image)->save(base_path().'/public/uploads/images/'.$live_tv_image_image_PC_image,compress_image_resolution() );
+                }else{
+
+                    $live_tv_image_image_filename  = time().'.'.$live_tv_image->getClientOriginalExtension();
+                    $live_tv_image_image_PC_image     =  'TV-live-'.$live_tv_image_image_filename ;
+                    Image::make($live_tv_image)->save(base_path().'/public/uploads/images/'.$live_tv_image_image_PC_image );
+                }
+            } else{
+                $live_tv_image_image_PC_image = $video->tv_image;
+            }
         
          $data['mp4_url']  = $request->get('mp4_url');
 
@@ -719,6 +764,7 @@ class AdminLiveEventArtist extends Controller
         $video->url_type = $url_type;
         $video->ppv_price = $ppv_price;
         $video->player_image = $player_PC_image;
+        $video->tv_image = $live_tv_image_image_PC_image;
         $video->image = $PC_image;
         $video->publish_status = $request['publish_status'];
         $video->publish_type = $request['publish_type'];
