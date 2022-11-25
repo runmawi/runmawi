@@ -8484,13 +8484,18 @@ $cpanel->end();
             $videos= Video::Join('categoryvideos','categoryvideos.video_id','=','videos.id')
               ->where('categoryvideos.category_id',$videocategoryid)->where('active','=',1)->where('status','=',1)->where('draft','=',1)
               ->orderBy('videos.created_at', 'desc')->get()->map(function ($item) {
-                $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-                $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
-                $item['Tv_image_url'] = URL::to('/').'/public/uploads/images/'.$item->video_tv_image;
 
                 $item['video_url'] = URL::to('/').'/storage/app/public/';
                 $item['category_name'] = VideoCategory::where('id',$item->category_id)->pluck('slug')->first();
                 $item['category_order'] = VideoCategory::where('id',$item->category_id)->pluck('order')->first();
+
+                $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+                $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+                $item['Tv_image_url'] = URL::to('/').'/public/uploads/images/'.$item->video_tv_image;
+
+                $item['artist_name'] = Videoartist::join('artists','artists.id','=','video_artists.artist_id')
+                                        ->where('video_artists.video_id', $item->video_id)->pluck('artist_name') ;
+              
               return $item;
             });
 
