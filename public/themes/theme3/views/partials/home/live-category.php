@@ -36,8 +36,11 @@
                               if ($currentdate < $publish_time)
                               {
                                 $publish_time = date("D h:i", strtotime($livestream->publish_time));
+                                $publish_time  = \Carbon\Carbon::create($video->created_at, 'Asia/Kolkata')->format('h:i');
+                                $publish_day  = \Carbon\Carbon::create($video->created_at, 'Asia/Kolkata')->format('l');
                               }else{
                                 $publish_time = 'Published';
+                                $publish_day = '';
                               }
                           }
                           elseif ($livestream->publish_type == 'publish_now')
@@ -49,18 +52,22 @@
                               if ($currentdate == $publish_time)
                               {
                                 $publish_time = date("D h:i", strtotime($livestream->created_at));
+                                $publish_time  = \Carbon\Carbon::create($video->created_at, 'Asia/Kolkata')->format('h:i');
+                                $publish_day  = \Carbon\Carbon::create($video->created_at, 'Asia/Kolkata')->format('l');
                               }else{
                                 $publish_time = 'Published';
+                                $publish_day = '';
                               }
                           }else{
                             $publish_time = 'Published';
+                            $publish_day = '';
                           }
                         }else{
 
                             date_default_timezone_set('Asia/Kolkata');
                             $current_date = Date("M d , y H:i:s");
                             $date = date_create($current_date);
-                            
+
                             $currentdate = date_format($date, "y M D");
 
                             $publish_time = date("y M D", strtotime($livestream->created_at));
@@ -68,11 +75,13 @@
                               if ($currentdate == $publish_time)
                               {
                                 $publish_time = date("D h:i", strtotime($livestream->created_at));
+                                $publish_time  = \Carbon\Carbon::create($video->created_at, 'Asia/Kolkata')->format('h:i');
+                                $publish_day  = \Carbon\Carbon::create($video->created_at, 'Asia/Kolkata')->format('l');
                               }else{
                                 $publish_time = 'Published';
+                                $publish_day = '';
                               }
                           }
-                          
                           ?>
                         <li class="slide-item">
                             <a href="<?php echo URL::to('category') ?><?= '/videos/' . $livestream->slug ?>">
@@ -94,7 +103,7 @@
                                             </p>
                                         <?php } ?>
                                         <?php if($ThumbnailSetting->published_on == 1) { ?>                                            
-                                            <p class="published_on1"><?php echo $publish_time; ?></p>
+                                            <p class="published_on1"><?php echo $publish_day; ?> <span><?php echo $publish_time; ?></span></p>
                                         <?php  } ?>
 
                                     </div>

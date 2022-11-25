@@ -23,8 +23,12 @@
                                   if ($currentdate < $publish_time)
                                   {
                                     $publish_time = date("D h:i", strtotime($video->publish_time));
+                                $publish_time  = \Carbon\Carbon::create($video->created_at, 'Asia/Kolkata')->format('h:i');
+                                $publish_day  = \Carbon\Carbon::create($video->created_at, 'Asia/Kolkata')->format('l');
+
                                   }else{
                                     $publish_time = 'Published';
+                                    $publish_day = '';
                                   }
                               }
                               elseif ($video->publish_type == 'publish_now')
@@ -36,11 +40,18 @@
                                   if ($currentdate == $publish_time)
                                   {
                                     $publish_time = date("D h:i", strtotime($video->created_at));
+                                $publish_time  = \Carbon\Carbon::create($video->created_at, 'Asia/Kolkata')->format('h:i');
+                                $publish_day  = \Carbon\Carbon::create($video->created_at, 'Asia/Kolkata')->format('l');
+
                                   }else{
                                     $publish_time = 'Published';
+                                    $publish_day = '';
+
                                   }
                               }else{
                                 $publish_time = 'Published';
+                                $publish_day = '';
+
                               }
                             }else{
                               date_default_timezone_set('Asia/Kolkata');
@@ -53,8 +64,14 @@
                                   if ($currentdate == $publish_time)
                                   {
                                     $publish_time = date("D h:i", strtotime($video->created_at));
+                                $publish_day  = \Carbon\Carbon::create($video->created_at, 'Asia/Kolkata')->format('l');
+
+                                $publish_time  = \Carbon\Carbon::create($video->created_at, 'Asia/Kolkata')->format('h:i');
+
                                   }else{
                                     $publish_time = 'Published';
+                                    $publish_day = '';
+
                                   }
                               }
                             ?>
@@ -79,8 +96,8 @@
                                 <?php } ?>
                          
                          <?php } ?>   
-                         <?php if($ThumbnailSetting->published_on == 1) { ?>                                            
-                            <p class="published_on1"><?php echo $publish_time; ?></p>
+                         <?php if($ThumbnailSetting->published_on == 1) { ?>      
+                          <p class="published_on1"><?php echo $publish_day; ?> <span><?php echo $publish_time; ?></span></p>
                         <?php  } ?>
                     </div>
                     <div class="block-description" >
