@@ -666,7 +666,10 @@ $(".deleteVideo").click(function(){
             success: function ()
             {
                 // console.log("it Work");
-                // location.reload();
+                location.reload(true);
+                // window.location();
+                // location.href = location.href,
+
                 alert('Deleted Succefully..!');
 
             }
