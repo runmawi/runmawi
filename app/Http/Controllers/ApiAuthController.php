@@ -1007,6 +1007,7 @@ public function verifyandupdatepassword(Request $request)
         $item['pdf_files_url'] = URL::to('/').'/public/uploads/videoPdf/'.$item->pdf_files;
         $item['mobile_image_url'] = URL::to('/').'/public/uploads/images/'.$item->mobile_image;
         $item['tablet_image_url'] = URL::to('/').'/public/uploads/images/'.$item->tablet_image;
+        $item['video_tv_image'] = URL::to('/').'/public/uploads/images/'.$item->video_tv_image;
         $item['transcoded_url'] = URL::to('/storage/app/public/').'/'.$item->path . '.m3u8';
         $item['description']    = strip_tags(html_entity_decode($item->description));
         $ads_videos = AdsVideo::where('ads_videos.video_id',$item->id)
@@ -8484,13 +8485,18 @@ $cpanel->end();
             $videos= Video::Join('categoryvideos','categoryvideos.video_id','=','videos.id')
               ->where('categoryvideos.category_id',$videocategoryid)->where('active','=',1)->where('status','=',1)->where('draft','=',1)
               ->orderBy('videos.created_at', 'desc')->get()->map(function ($item) {
-                $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-                $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
-                $item['Tv_image_url'] = URL::to('/').'/public/uploads/images/'.$item->video_tv_image;
 
                 $item['video_url'] = URL::to('/').'/storage/app/public/';
                 $item['category_name'] = VideoCategory::where('id',$item->category_id)->pluck('slug')->first();
                 $item['category_order'] = VideoCategory::where('id',$item->category_id)->pluck('order')->first();
+
+                $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+                $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+                $item['Tv_image_url'] = URL::to('/').'/public/uploads/images/'.$item->video_tv_image;
+
+                $item['artist_name'] = Videoartist::join('artists','artists.id','=','video_artists.artist_id')
+                                        ->where('video_artists.video_id', $item->video_id)->pluck('artist_name') ;
+              
               return $item;
             });
 

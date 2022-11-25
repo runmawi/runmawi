@@ -1194,7 +1194,7 @@ class AdminVideosController extends Controller
             else{
                 $player_filename  = time().'.'.$player_image->getClientOriginalExtension();
                 $players_image     =  'player-image-'.$player_filename ;
-                Image::make($player_image)->save(base_path().'/public/uploads/images/'.$players_image );
+                Image::make($player_filename)->save(base_path().'/public/uploads/images/'.$players_image );
             }
 
         } else {
@@ -1205,25 +1205,24 @@ class AdminVideosController extends Controller
 
         $video_tv_image = ($request->file('video_tv_image')) ? $request->file('video_tv_image') : '';
 
-            if($video_tv_image != '') {   
-                                            
-            $video_tv_image = $video_tv_image;
+        if($video_tv_image != '') {   
+                                        
+        $video_tv_image = $video_tv_image;
 
-            if(compress_image_enable() == 1){
+        if(compress_image_enable() == 1){
 
-                $Tv_image_filename  = time().'.'.compress_image_format();
-                $Tv_image     =  'tv-live-image-'.$Tv_image_filename ;
-                Image::make($video_tv_image)->save(base_path().'/public/uploads/images/'.$Tv_image,compress_image_resolution() );
-                
-                $video->video_tv_image = $Tv_image;       
-            }else{
+            $Tv_image_filename  = time().'.'.compress_image_format();
+            $Tv_image     =  'tv-live-image-'.$Tv_image_filename ;
+            Image::make($video_tv_image)->save(base_path().'/public/uploads/images/'.$Tv_image,compress_image_resolution() );
+        }else{
 
-                $Tv_image_filename  = time().'.'.$video_tv_image->getClientOriginalExtension();
-                $Tv_image     =  'tv-live-image-'.$Tv_image_filename ;
-                Image::make($video_tv_image)->save(base_path().'/public/uploads/images/'.$Tv_image );
-                $video->video_tv_image = $Tv_image;       
-            }
-        } 
+            $Tv_image_filename  = time().'.'.$live_stream_tv_image->getClientOriginalExtension();
+            $Tv_image     =  'tv-live-image-'.$Tv_image_filename ;
+            Image::make($video_tv_image)->save(base_path().'/public/uploads/images/'.$Tv_image );
+        }
+        } else{
+            $Tv_image = "default_horizontal_image.jpg";
+        }
 
         // Video Title Thumbnail
 
@@ -1635,8 +1634,6 @@ class AdminVideosController extends Controller
                 $Mobile_image    =  'Mobile-image-'.$image_filename ;
                 $Tablet_image    =  'Tablet-image-'.$image_filename ;
 
-
-
                 Image::make($file)->save( base_path() . "/public/uploads/images/" . $video_image);
                 Image::make($file)->save( base_path() . "/public/uploads/images/" . $Mobile_image);
                 Image::make($file)->save(base_path() . "/public/uploads/images/" . $Tablet_image);
@@ -1662,7 +1659,7 @@ class AdminVideosController extends Controller
             else{
                 $player_filename  = time().'.'.$player_image->getClientOriginalExtension();
                 $players_image     =  'player-image-'.$player_filename ;
-                Image::make($player_image)->save(base_path().'/public/uploads/images/'.$players_image );
+                Image::make($player_filename)->save(base_path().'/public/uploads/images/'.$players_image );
             }
 
         } else {
@@ -1917,6 +1914,7 @@ class AdminVideosController extends Controller
         //  $video->active=1;
         $video->uploaded_by = $uploaded_by;
         $video->player_image = $players_image;
+        $video->video_tv_image = $Tv_image;       
         $video->year = $year;
         $video->details = $details;
         $video->m3u8_url = $m3u8_url;
@@ -2361,7 +2359,7 @@ class AdminVideosController extends Controller
             }
           
         } else {
-            $data["image"] = null;
+            $data["image"] = $video->image;
         }
 
 
@@ -2380,7 +2378,7 @@ class AdminVideosController extends Controller
             else{
                 $player_filename  = time().'.'.$player_image->getClientOriginalExtension();
                 $players_image     =  'player-image-'.$player_filename ;
-                Image::make($player_image)->save(base_path().'/public/uploads/images/'.$players_image );
+                Image::make($player_filename)->save(base_path().'/public/uploads/images/'.$players_image );
             }
 
         } else {
@@ -2404,7 +2402,7 @@ class AdminVideosController extends Controller
             Image::make($video_tv_image)->save(base_path().'/public/uploads/images/'.$Tv_image,compress_image_resolution() );
         }else{
 
-            $Tv_image_filename  = time().'.'.$video_tv_image->getClientOriginalExtension();
+            $Tv_image_filename  = time().'.'.$live_stream_tv_image->getClientOriginalExtension();
             $Tv_image     =  'tv-live-image-'.$Tv_image_filename ;
             Image::make($video_tv_image)->save(base_path().'/public/uploads/images/'.$Tv_image );
         }
@@ -2911,6 +2909,7 @@ class AdminVideosController extends Controller
         $video->embed_code = $embed_code;
         $video->player_image = $players_image;
         $video->video_tv_image = $Tv_image; 
+        $video->image = $video_image; 
         $video->publish_type = $publish_type;
         $video->publish_time = $publish_time;
         $video->age_restrict = $data["age_restrict"];
