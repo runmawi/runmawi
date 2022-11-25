@@ -480,8 +480,8 @@ border-radius: 0px 4px 4px 0px;
                         <div class="col-sm-4">
                             <label class="m-0">Publish Type</label>
                             <div class="panel-body p2" style="color: black;">
-                                <input type="radio" id="publish_now" name="publish_type" value="publish_now" checked /> Publish Now&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
-                                <input type="radio" id="publish_later" name="publish_type" value="publish_later" /> Publish Later
+                                <input type="radio" id="publish_now" name="publish_type"  value="publish_now" checked /> Publish Now&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+                                <input type="radio" id="publish_later" name="publish_type"  value="publish_later" /> Publish Later
                             </div>
                         </div>
 
@@ -764,6 +764,17 @@ border-radius: 0px 4px 4px 0px;
             url_type: "required",
             'language[]': {
                 required: true
+            },
+
+            publish_time: {
+                required: function (element) {
+                    var action =$("input[type=radio][name=publish_type]").val();
+                    if (action == "publish_now") {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                },
             },
 
             mp4_url: {
