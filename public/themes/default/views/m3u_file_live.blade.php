@@ -88,7 +88,10 @@
                                     
                                     $.each( data.M3u_url_array , function( index, M3u_url_array ) {
                                
-                                        html +='<a data-toggle="modal" data-target="#myModal" class="list-group-item list-group-item-action list-group-item-light"  data-m3u-urls="'+ M3u_url_array.M3u_video_url +'" onclick="M3U_video_url(this)" > "'+ M3u_url_array.M3u_video_name +'"  </a>';
+                                         let M3u_video_name = M3u_url_array.M3u_video_name ;
+                                         let replace_string = M3u_video_name.replace('tvg-id=','') ;
+
+                                        html +='<a data-toggle="modal" data-target="#myModal" class="list-group-item list-group-item-action list-group-item-light"  data-m3u-urls="'+ M3u_url_array.M3u_video_url +'" onclick="M3U_video_url(this)" > "'+ replace_string.replace( '"','') ; +'"  </a>';
                                     });
 
                             html += '</div>';
