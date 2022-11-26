@@ -64,8 +64,6 @@
            var m3u_url_category   = $(ele).attr('data-MU3-category');
            let m3u_url = $(ele).attr('data-MU3-url');
 
-           alert('Are you Select ' + m3u_url_category + ' ? ');
-
            $.ajax({
 
             url: "<?=  route('m3u_file_m3u8url') ?>",
@@ -89,8 +87,11 @@
                             html += '<div class="list-group list-group-flush" style="height: calc(100vh - 80px - 75px)!important;">';
                                     
                                     $.each( data.M3u_url_array , function( index, M3u_url_array ) {
-                                    
-                                        html +='<a data-toggle="modal" data-target="#myModal" class="list-group-item list-group-item-action list-group-item-light"  data-m3u-urls="'+ M3u_url_array +'" onclick="M3U_video_url(this)" > "'+ M3u_url_array +'"  </a>';
+                               
+                                         let M3u_video_name = M3u_url_array.M3u_video_name ;
+                                         let replace_string = M3u_video_name.replace('tvg-id=','') ;
+
+                                        html +='<a data-toggle="modal" data-target="#myModal" class="list-group-item list-group-item-action list-group-item-light"  data-m3u-urls="'+ M3u_url_array.M3u_video_url +'" onclick="M3U_video_url(this)" > "'+ replace_string.replace( '"','') ; +'"  </a>';
                                     });
 
                             html += '</div>';

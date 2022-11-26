@@ -421,13 +421,17 @@ class LiveStreamController extends Controller
 
               $mp3 = preg_match_all('/(?P<tag>#EXTINF:-1)|(?:(?P<prop_key>[-a-z]+)=\"(?P<prop_val>[^"]+)")|(?<something>,[^\r\n]+)|(?<url>http[^\s]+)/', $item, $match );
               $count = count( $match[0] );
-              $result = [];
-              $index = 0;
+              $tag_name = '1' ;
+              $url      = '5' ;
 
               for( $i =0; $i < $count; $i++ ){
-                $M3u_video_url = $match[0][$i];
+                  $M3u_videos = array(
+                      'M3u_video_url' => $match[0][$url] ,
+                      'M3u_video_name' => $match[0][$tag_name],
+                    );
               }
-              return $M3u_video_url;
+
+              return $M3u_videos;
           });
 
           $respond = array(
@@ -436,7 +440,6 @@ class LiveStreamController extends Controller
             'M3u_url_array' => $M3u_url_array ,
             'M3u_category' => $M3u_category ,
           );
-
 
         } catch (\Throwable $th) {
 
