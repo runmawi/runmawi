@@ -102,7 +102,7 @@ line-height: 33px;
           
       }
       label{
-          font-size: 18px;
+          font-size: 14px;
 line-height: 21px;
           padding-left: 5px;
           color: #000;
@@ -385,6 +385,22 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 
 </div>
            </div>
+           <?php  elseif($video->type == 'aws_m3u8'):  ?>
+          <div id="video_container" class="fitvid" atyle="z-index: 9999;">
+
+          <video  autoplay id="video"  allow="autoplay" class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
+          <source src="<?php echo $video->m3u8_url; ?>"  type='application/x-mpegURL' label='auto' > 
+  <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
+           <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
+           <?php } if($value['sub_language'] == "German"){ ?>
+           <track label="German" kind="subtitles" srclang="de" src="<?= $value['url'] ?>" >
+           <?php } if($value['sub_language'] == "Spanish"){ ?>
+           <track label="Spanish" kind="subtitles" srclang="es" src="<?= $value['url'] ?>" >
+           <?php } if($value['sub_language'] == "Hindi"){ ?>
+           <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value['url'] ?>" >
+           <?php } } } else { }  ?>  
+</video>
+</div>
            <?php  elseif($video->type == 'mp4_url'):  ?>
            
              
@@ -530,14 +546,14 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
     // dd( $video_access );
 
     ?>      
-     <div id="subscribers_only"style="background: url(<?=URL::to('/') . '/public/uploads/images/' .$video->player_image ?>);background-position:center; background-repeat: no-repeat; background-size: cover; height: 500px; margin-top: 20px;">
+     <div id="subscribers_only"style="background: linear-gradient(rgba(0,0,0, 0),rgba(0,0,0, 100)),url(<?=URL::to('/') . '/public/uploads/images/'.$video->player_image ?>); background-position:center; background-repeat: no-repeat; background-size: cover; height: 500px; margin-top: 20px;">
   <div id="subscribers_only">
   <div class="clear"></div>
-  <div style="position: absolute;top: 30%;width: 100%;">
+  <div style="padding-top:10%;">
   <h2 ><p style ="text-center">Sorry, this video is only available to</p> <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
   <?php if(!Auth::guest() && $video->access == 'subscriber' || !Auth::guest() && $video->access == 'ppv'|| !Auth::guest() && $video->access == 'guest' && !empty($video->ppv_price) ){ ?>
     <form class="text-center" method="get" action="<?= URL::to('/stripe/billings-details') ?>">
-      <button style="margin-top: 0%;" class="btn btn-primary"id="button">Purchase to watch this video</button>
+      <button style="margin-top: 0%;" class="btn btn-primary"id="button"> subscribe to watch this video</button>
     </form>
   <?php }else{ ?>
     <form method="get" action="<?= URL::to('signup') ?>">
@@ -704,6 +720,22 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
             <?php } ?></p>
         </div>
         </div>
+        <?php  elseif($video->type == 'aws_m3u8'):  ?>
+          <div id="video_container" class="fitvid" atyle="z-index: 9999;">
+
+          <video  autoplay id="video"  allow="autoplay" class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
+          <source src="<?php echo $video->m3u8_url; ?>"  type='application/x-mpegURL' label='auto' > 
+  <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
+           <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
+           <?php } if($value['sub_language'] == "German"){ ?>
+           <track label="German" kind="subtitles" srclang="de" src="<?= $value['url'] ?>" >
+           <?php } if($value['sub_language'] == "Spanish"){ ?>
+           <track label="Spanish" kind="subtitles" srclang="es" src="<?= $value['url'] ?>" >
+           <?php } if($value['sub_language'] == "Hindi"){ ?>
+           <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value['url'] ?>" >
+           <?php } } } else { }  ?>  
+</video>
+</div>
         <?php  elseif($video->type == 'mp4_url'):   ?>
         
           
@@ -1410,7 +1442,7 @@ $artists = [];
    </div>
 <?php } ?>
 </div>
-
+</div>
    <div class=" container-fluid video-list you-may-like overflow-hidden">
        <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Recomended Videos');?></h4>
            <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>   
