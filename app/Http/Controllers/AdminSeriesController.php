@@ -614,7 +614,7 @@ class AdminSeriesController extends Controller
     
                 }else{
     
-                    $Series_tv_filename   = 'Series-TV-Image'.time().'.'.$file->getClientOriginalExtension();
+                    $Series_tv_filename   = 'Series-TV-Image'.time().'.'.$tv_image->getClientOriginalExtension();
                     Image::make($tv_image)->save(base_path().'/public/uploads/images/'.$Series_tv_filename );
                 }
 
