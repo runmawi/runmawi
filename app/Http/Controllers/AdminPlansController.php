@@ -67,6 +67,7 @@ public function PaypalIndex()
 
     public function subscriptionindex()
     {
+        
         $user =  User::where('id',1)->first();
         $duedate = $user->package_ends;
         $current_date = date('Y-m-d');
@@ -100,18 +101,20 @@ public function PaypalIndex()
         $plans_data = SubscriptionPlan::all();
         $plans = $plans_data->groupBy('plans_name');
         $payment_settings = PaymentSetting::where('status',1)->get();
-        // dd($payment_settings);
         $currency = Currency::get();
         $allCurrency = CurrencySetting::first();
-        
+
+        $paystack_status = PaymentSetting::where('payment_type','Paystack')
+                        ->where('status',1)->where('paystack_status',1)->first();
+
         $devices = Devices::all();
          $data = array(
         	'plans' => $plans,
              'allplans'=> $plans,
              'devices'=> $devices,        	
              'payment_settings'=> $payment_settings,    
-             'allCurrency'=> $allCurrency,        	
-        	
+             'allCurrency'=> $allCurrency,   
+             'paystack_status'   => $paystack_status     	
         	);
          return view('admin.subscription_plans.index', $data);
         }
@@ -323,6 +326,7 @@ public function PaypalIndex()
                     $new_plan->ios_product_id = $request->ios_product_id;
                     $new_plan->ios_plan_price = $request->ios_plan_price;    
                     $new_plan->plan_content   = $request->plan_content;      
+                    $new_plan->andriod_paystack_url   = $request->andriod_paystack_url;      
                     $new_plan->save();
                         }
                     }
@@ -471,6 +475,7 @@ public function PaypalIndex()
         $plans->ios_product_id = $request->ios_product_id;
         $plans->ios_plan_price = $request->ios_plan_price;     
         $plans->plan_content   = $request->plan_content;     
+        $plans->andriod_paystack_url   = $request->andriod_paystack_url;     
 
         foreach($input['plan_id'] as $key => $values){
             if($key == $value){

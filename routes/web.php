@@ -796,6 +796,7 @@ Route::get('/episode/filedelete/{id}', 'AdminSeriesController@filedelete');
     Route::post('/dragdropScheduledVideos', 'AdminVideosController@DragDropScheduledVideos');
     Route::post('/reschedule_oneday', 'AdminVideosController@ReScheduleOneDay');
     Route::post('/reschedule_week', 'AdminVideosController@ReScheduleWeek');
+    Route::get('/ScheduleVideoBulk_delete', 'AdminVideosController@ScheduleVideoBulk_delete')->name('ScheduleVideoBulk_delete'); 
 
 
 

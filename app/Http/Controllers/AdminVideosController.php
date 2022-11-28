@@ -4895,6 +4895,8 @@ class AdminVideosController extends Controller
                                 $output .=
                                     '
                   <tr>
+                  <td>' . '#' .'</td>
+
                   <td>' .
                                     $i++ .
                                     '</td>
@@ -5051,6 +5053,8 @@ class AdminVideosController extends Controller
                                 $output .=
                                     '
                   <tr>
+                  <td>' . '#' .'</td>
+
                   <td>' .
                                     $i++ .
                                     '</td>
@@ -5173,6 +5177,8 @@ class AdminVideosController extends Controller
                                 $output .=
                                     '
                   <tr>
+                  <td>' . '#' .'</td>
+
                   <td>' .
                                     $i++ .
                                     '</td>
@@ -5447,6 +5453,8 @@ class AdminVideosController extends Controller
                                 $output .=
                                     '
                   <tr>
+                  <td>' . '#' .'</td>
+
                   <td>' .
                                     $i++ .
                                     '</td>
@@ -5610,6 +5618,8 @@ class AdminVideosController extends Controller
                                 $output .=
                                     '
                   <tr>
+                  <td>' . '#' .'</td>
+
                   <td>' .
                                     $i++ .
                                     '</td>
@@ -5735,6 +5745,8 @@ class AdminVideosController extends Controller
                                 $output .=
                                     '
                   <tr>
+                  <td>' . '#' .'</td>
+
                   <td>' .
                                     $i++ .
                                     '</td>
@@ -7003,6 +7015,7 @@ class AdminVideosController extends Controller
                             $output .=
                                 '
                   <tr>
+                  <td>' . '#' .'</td>
                   <td>' .
                                 $i++ .
                                 '</td>
@@ -7158,6 +7171,8 @@ class AdminVideosController extends Controller
                             $output .=
                                 '
                   <tr>
+                  <td>' . '#' .'</td>
+
                   <td>' .
                                 $i++ .
                                 '</td>
@@ -7285,6 +7300,8 @@ class AdminVideosController extends Controller
                             $output .=
                                 '
                   <tr>
+                  <td>' . '#' .'</td>
+
                   <td>' .
                                 $i++ .
                                 '</td>
@@ -7346,6 +7363,8 @@ class AdminVideosController extends Controller
                             $output .=
                                 '
                       <tr>
+                  <td>' . '#' .'</td>
+
                       <td>' .
                                 $i++ .
                                 '</td>
@@ -7898,6 +7917,93 @@ class AdminVideosController extends Controller
         return response()->json($value);
         // return redirect::back();
 
+    }
+
+    public function ScheduleVideoBulk_delete(Request $request)
+    {
+        try {
+            $data = $request->all();
+            $video_id = $request->video_id;
+            ScheduleVideos::whereIn("id", explode(",", $video_id))->delete();
+
+            $date = $data["date"];
+            $month = $data["month"];
+            $year = $data["year"];
+            $choosed_date = $year . "-" . $month . "-" . $date;
+            $date = date_create($choosed_date);
+            $date_choose = date_format($date, "Y/m");
+            $date_choosed = $date_choose . "/" . $data["date"];
+
+
+            $total_content = ScheduleVideos::where(
+                "shedule_date",
+                "=",
+                $date_choosed
+            )
+                ->orderBy("id", "desc")
+                ->get();
+
+            $output = "";
+            $i = 1;
+
+            $delete = URL::to("admin/schedule/delete");
+
+            if (count($total_content) > 0) {
+                $total_row = $total_content->count();
+                if (!empty($total_content)) {
+                    $currency = CurrencySetting::first();
+
+                    foreach ($total_content as $key => $row) {
+                        $output .=
+                            '
+              <tr>
+              <td>' . '#' .'</td>
+              <td>' .
+                            $i++ .
+                            '</td>
+              <td>' .
+                            $row->title .
+                            '</td>
+              <td>' .
+                            $row->type .
+                            '</td>  
+              <td>' .
+                            $row->shedule_date .
+                            '</td>       
+              <td>' .
+                            $row->sheduled_starttime .
+                            '</td>    
+
+              <td>' .
+                            $row->shedule_endtime .
+                            '</td>  
+
+              </tr>
+              ';
+
+            }
+                } else {
+                    $output = '
+          <tr>
+           <td align="center" colspan="5">No Data Found</td>
+          </tr>
+          ';
+                }
+            }
+
+            $value["success"] = 1;
+            $value["message"] = "Uploaded Successfully!";
+            $value["table_data"] = $output;
+            // $value["total_data"] = $total_row;
+            $value["total_content"] = $total_content;
+
+            return $value;
+
+
+            return response()->json(["message" => "true"]);
+        } catch (\Throwable $th) {
+            return response()->json(["message" => "false"]);
+        }
     }
 
 }
