@@ -157,19 +157,22 @@ $media_url = URL::to("/schedule/videos") . "/" . $schedule->name;
                         <!-- <div class="drop-zone"></div> -->
                 </div>
             </div>
+            <br>
+            <button style="margin-bottom: 10px" class="btn btn-primary delete_all" >Delete Selected Video</button>
+
                 <div class="row">
                             <div class="col-md-12">
                                 <table class="table text-center" id="schedule_videos_table" style="width:100%">
                                     <thead>
                                         <tr class="r1">
-                                            <th>#</th>
                                             <th>Select All <input type="checkbox" id="select_all"></th>
+                                            <th>#</th>
                                             <th>Title</th>
                                             <th>Type</th>
                                             <th>Schedule Date</th>
                                             <th>Scheduled Starttime</th>
                                             <th>Schedule Endtime</th>
-                                            <th>Action</th>
+                                            <!-- <th>Action</th> -->
                                         </tr>
                                     </thead>
                                 <tbody>
@@ -184,8 +187,8 @@ $media_url = URL::to("/schedule/videos") . "/" . $schedule->name;
                                         <td>{{ $video->shedule_endtime  }}</td>   
                                         <td>
 
-                                        <a class="iq-bg-danger deleteVideo" data-id="{{ $video->id }}" data-token="{{ csrf_token() }}"
-                                             onclick="return confirm('Are you sure?')" href="#"><i class="ri-delete-bin-line"></i></a></td> 
+                                        <!-- <a class="iq-bg-danger deleteVideo" data-id="{{ $video->id }}" data-token="{{ csrf_token() }}"
+                                             onclick="return confirm('Are you sure?')" href="#"><i class="ri-delete-bin-line"></i></a></td>  -->
                                         </tr>                               
 
                                      @endforeach
@@ -676,8 +679,88 @@ $(".deleteVideo").click(function(){
         });
 
         console.log("It failed");
+        
     });
 
+    $(".delete_all").hide();
+
+$('#select_all').on('click', function(e) {
+
+     if($(this).is(':checked',true))  
+     {
+        $(".delete_all").show();
+        $(".sub_chk").prop('checked', true);  
+     } else {  
+        $(".delete_all").hide();
+        $(".sub_chk").prop('checked',false);  
+     }  
+});
+
+
+$('.sub_chk').on('click', function(e) {
+
+  var checkboxes = $('input:checkbox:checked').length;
+
+  if(checkboxes > 0){
+     $(".delete_all").show();
+  }else{
+     $(".delete_all").hide();
+  }
+});
+
+
+    $('.delete_all').on('click', function(e) {
+
+var allVals = [];  
+ $(".sub_chk:checked").each(function() {  
+
+       allVals.push($(this).attr('data-id'));
+ });  
+    // alert(allVals);
+ if(allVals.length <=0)  
+ {  
+       alert("Please select Anyone video");  
+ }  
+ else 
+ {  
+    var check = confirm("Are you sure you want to delete selected videos?");  
+    if(check == true){  
+        var join_selected_values =allVals.join(","); 
+        var month = '{{ $Calendar['month'] }}';
+        var year = '{{ $Calendar['year'] }}';
+        var date = '{{ $Calendar['date'] }}';
+        
+        $.ajax({
+          url: '{{ URL::to('admin/ScheduleVideoBulk_delete') }}',
+          type: "get",
+          data:{ 
+             _token: "{{csrf_token()}}" ,
+             video_id: join_selected_values, 
+             month: month, 
+             date: date, 
+             year: year, 
+          },
+
+          success: function(value){
+   			console.log(value);
+               if(value == ''){
+                    swal.fire({
+                    title: 'Oops', 
+                    text: 'Something went wrong!', 
+                    allowOutsideClick:false,
+                    icon: 'error',
+                    title: 'Oops...',
+                    });
+                }else{
+                    $('tbody').html(value.table_data);
+                }
+           }
+
+
+       });
+    }  
+ }  
+});
 
 
 </script>
