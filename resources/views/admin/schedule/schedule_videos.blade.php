@@ -163,6 +163,7 @@ $media_url = URL::to("/schedule/videos") . "/" . $schedule->name;
                                     <thead>
                                         <tr class="r1">
                                             <th>#</th>
+                                            <th>Select All <input type="checkbox" id="select_all"></th>
                                             <th>Title</th>
                                             <th>Type</th>
                                             <th>Schedule Date</th>
@@ -174,6 +175,7 @@ $media_url = URL::to("/schedule/videos") . "/" . $schedule->name;
                                 <tbody>
                                 <tr>
                                     @foreach($ScheduledVideo as $key => $video)
+                                        <td><input type="checkbox" id="Sub_chck" class="sub_chk" data-id="{{$video->id}}"></td>
                                         <td>{{ $key+1  }}</td>   
                                         <td>{{ $video->title  }}</td>  
                                         <td>{{ $video->type  }}</td>   
@@ -651,7 +653,7 @@ $(".deleteVideo").click(function(){
         var id = $(this).data("id");
         var token = $(this).data("token");
         var url = '<?php echo URL::to('admin/schedule/delete') ?>';
-        var link_url = '<?php echo URL::to('admin/schedule/delete') ?>';
+
         // alert(url+'/'+id);
         $.ajax(
         {
@@ -666,12 +668,8 @@ $(".deleteVideo").click(function(){
             success: function ()
             {
                 // console.log("it Work");
-                // location.reload(true);
-                // window.location();
-                document.location.reload();
-
-                // location.href = location.href,
-
+                // location.reload();
+                // history.go(0);
                 alert('Deleted Succefully..!');
 
             }
