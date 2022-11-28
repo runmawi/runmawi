@@ -352,6 +352,6 @@ Route::group([
 
     Route::post('audio_language','ApiAuthController@LanguageAudio');
 
-
+    Route::post('TV_Language','ApiAuthController@TV_Language');
 
 });

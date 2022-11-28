@@ -8983,6 +8983,50 @@ $cpanel->end();
     return response()->json($response, 200);
 
     }
+
+    public function TV_Language(Request $request)
+    {
+
+      $Language_id = $request->Language_id;
+
+      $Language = Language::where('id', $Language_id)->first();
+
+        try{
+
+            $languagesVideo = Video::Join('languagevideos','languagevideos.video_id','=','videos.id')
+                              ->where('languagevideos.language_id',$Language_id)->get();
+
+            $languagesLive = LiveStream::whereJsonContains('language',$Language_id)->get();
+
+            $languagesSeries = Series::Join('series_languages','series_languages.series_id','=','series.id')
+                                ->where('series_languages.language_id',$Language_id)->get();
+
+            $LanguagesAudio = Audio::Join('audio_languages','audio_languages.audio_id','=','audio.id')
+                                ->where('audio_languages.language_id',$Language_id)->get();
+
+            $response = array(
+                'status'=> 'true',
+                'language_name'    => $Language ? $Language->name : "No data found",
+                'Language'         => $Language ,
+                'languages_Video'  => $languagesVideo ,
+                'languages_Live'   => $languagesLive,
+                'languages_Series' => $languagesSeries,
+                'Languages_Audio'  => $LanguagesAudio ,
+            );
+
+        } 
+        catch (\Throwable $th) {
+
+            $response = array(
+              'status'=>'false',
+              'message'=>$th->getMessage(),
+            );
+
+        }
+
+      return response()->json($response, 200);
+
+    }
 }
 
 

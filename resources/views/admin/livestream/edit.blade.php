@@ -561,7 +561,7 @@ border-radius: 0px 4px 4px 0px;
                 </div>
 
                 <div class="col-sm-4">
-                    <div id="publishlater">
+                    <div id="publish_time_div">
                         <label class="m-0">Publish Time</label>
                         <div class="panel-body">
                             <input type="datetime-local" class="form-control" id="publish_time" name="publish_time" value="@if(!empty($video->publish_time)){{ $video->publish_time }}@endif" />
@@ -569,7 +569,7 @@ border-radius: 0px 4px 4px 0px;
                     </div>
                 </div>
                 
-                <div class="col-sm-4" id="publishlater">
+                <div class="col-sm-4" id="">
                     <label class="m-0">Status Settings</label>
                     <div class="panel-body">
                         <div>
@@ -937,6 +937,19 @@ $(document).ready(function(){
             required: '#tv_check_image:blank',
             tv_image_dimention:[1920,1080]
         },
+
+        publish_time: {
+            required: function (element) {
+
+                var action =$("input[type=radio][name=publish_type]").val();
+
+                if (action == "publish_now") {
+                     return true;
+                } else {
+                    return false;
+                }
+            },
+        },
 	 
 		mp4_url: {
 		required : function(element) {
@@ -1079,21 +1092,20 @@ $(document).ready(function(){
 
 	$('.js-example-basic-multiple').select2();
 
-	$('#publishlater').hide();
+    var publish_time = $('#publish_time').val();
+
+    if( publish_time == "" ){
+        $('#publish_time_div').hide();
+    }
+
 	$('#publish_now').click(function(){
-		// alert($('#publish_now').val());
-		$('#publishlater').hide();
-	});
-	$('#publish_later').click(function(){
-		// alert($('#publish_later').val());
-		$('#publishlater').show();
+		$('#publish_time_div').hide();
 	});
 
-	if($("#publish_now").val() == 'publish_now'){
-	$('#publishlater').hide();
-	}else if($("#publish_later").val() == 'publish_later'){
-		$('#publishlater').show();		
-	}
+	$('#publish_later').click(function(){
+		$('#publish_time_div').show();
+	});
+
 });
 
 

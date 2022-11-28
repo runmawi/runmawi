@@ -170,10 +170,12 @@
                             </div>
                         </div>
                     </div>
-                                    
+
+                         
                     <div class="row mt-3">
                         <div class="col-sm-6">
                             <label class="m-0"> Video Source </label>
+                            <p class="p1" >Select The Live Stream Source :</p>
                             <div class="panel-body">
                                 <select class="form-control url_type" id="url_type" name="url_type" >
                                     <option value="" >Choose URL Format</option>
@@ -207,16 +209,14 @@
                             </div>
                         </div>
 
-                        
-
-                                        {{-- Enable Tips --}}
                         <div class="col-sm-6">
-                            <label class="m-0"> Enable Tips </label>
-                            <div class="mt-1">
-                                <label class="switch">
-                                    <input name="tips" id="tips" class="tips" type="checkbox" >
-                                    <span class="slider round"></span>
-                                </label>
+        
+                            <div class="">
+                                <label class="m-0">TV Image Cover</label>
+                                <p class="p1"> Select the Live Stream image (1920 X 1080  Or 16:9 Ratio)  :</p>
+                                <div class="panel-body">
+                                    <input type="file" multiple="true" class="form-group" name="tv_image" id=tv_image  />
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -233,6 +233,17 @@
                                         <span class="slider round"></span>
                                     </label>
                                 </div>
+                            </div>
+                        </div>
+
+                                        {{-- Enable Tips --}}
+                        <div class="col-sm-6">
+                            <label class="m-0"> Enable Tips </label>
+                            <div class="mt-1">
+                                <label class="switch">
+                                    <input name="tips" id="tips" class="tips" type="checkbox" >
+                                    <span class="slider round"></span>
+                                </label>
                             </div>
                         </div>
                     </div>
@@ -720,6 +731,17 @@
             player_image: {
                 required: true,
                 player_dimention:[1280,720]
+            },
+
+            publish_time: {
+                required: function (element) {
+                    var action =$("input[type=radio][name=publish_type]").val();
+                    if (action == "publish_now") {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                },
             },
 
             live_stream_video: {
