@@ -119,6 +119,17 @@
                 </div>  
             </div>
 
+			@if( $paystack_status != null )
+                <div class=" col-md-12">
+                    <div class="form-group">
+                        <label> {{ ucwords('andriod paystack url') }}</label>
+                        <div class=" col-md-6">
+                        <input type="url" class="form-control" id="andriod_paystack_url" name="andriod_paystack_url" value="{{ $plan->andriod_paystack_url }}" >
+                        </div> 
+                    </div> 
+                </div> 
+            @endif
+
                 <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
             
                 <input type="hidden" name="id" id="id" value="{{ $edit_plan[0]->id }}" />

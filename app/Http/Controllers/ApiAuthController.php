@@ -8996,7 +8996,8 @@ $cpanel->end();
             $languagesVideo = Video::Join('languagevideos','languagevideos.video_id','=','videos.id')
                               ->where('languagevideos.language_id',$Language_id)->get();
 
-            $languagesLive = LiveStream::whereJsonContains('language',$Language_id)->get();
+            $languagesLive = LiveStream::Join('live_languages','live_languages.live_id','=','live_streams.id')
+                                  ->where('live_languages.language_id',$Language_id)->get();
 
             $languagesSeries = Series::Join('series_languages','series_languages.series_id','=','series.id')
                                 ->where('series_languages.language_id',$Language_id)->get();
