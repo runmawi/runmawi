@@ -886,7 +886,7 @@ $('#submit-new-cat').click(function(){
 
 				tv_image:{
 					required: '#check_tv_image:blank',
-					tv_Image_dimention:[1920 ,1080]
+					// tv_Image_dimention:[1920 ,1080]
 				}
 			},
 			
