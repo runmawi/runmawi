@@ -337,9 +337,9 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                    <?php } ?></p>
                </div>
            </div>
-           <?php  elseif($video->type == 'm3u8_url'):  ?>
+           <?php  elseif($video->type == 'm3u8_url'):    ?>
         
-        <video  id="video" class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
+        <video  autoplay id="video" autoplay class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
                 <source src="<?php if(!empty($video->m3u8_url)){ echo $video->m3u8_url; }else { echo $video->trailer;} ?>"  type='application/x-mpegURL' label='auto' > 
 
                 <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
@@ -655,7 +655,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
         </div>
         <?php  elseif($video->type == 'm3u8_url'):  ?>
         
-        <video  id="video" class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
+        <video autoplay id="video" autoplay class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
                 <source src="<?php if(!empty($video->m3u8_url)){ echo $video->m3u8_url; }else { echo $video->trailer;} ?>"  type='application/x-mpegURL' label='auto' > 
 
                 <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
