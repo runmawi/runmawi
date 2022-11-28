@@ -3618,7 +3618,9 @@ class AdminVideosController extends Controller
             $value["video_id"] = $video_id;
             $value["video_title"] = $title;
 
-            return $value;
+            // return $value;
+            return redirect("/admin/videos");
+
         } elseif (
             $mp4_url != "" &&
             $pack == "Business" &&
@@ -3666,7 +3668,9 @@ class AdminVideosController extends Controller
             $value["video_id"] = $video_id;
             $value["video_title"] = $title;
 
-            return $value;
+            // return $value;
+            return redirect("/admin/videos");
+
         } elseif (
             $mp4_url != "" &&
             $pack == "Business" &&
@@ -3716,6 +3720,8 @@ class AdminVideosController extends Controller
             $value["success"] = 2;
             $value["message"] = "File not uploaded.";
             return response()->json($value);
+            // return redirect("/admin/videos");
+
         }
 
         // return response()->json($value);
@@ -3767,7 +3773,9 @@ class AdminVideosController extends Controller
             $value["message"] = "URL Updated Successfully!";
             $value["video_id"] = $video_id;
 
-            return $value;
+            // return $value;
+            return redirect("/admin/videos");
+
         }
     }
     }
@@ -3807,7 +3815,9 @@ class AdminVideosController extends Controller
             $value["message"] = "URL Updated Successfully!";
             $value["video_id"] = $video_id;
 
-            return $value;
+            // return $value;
+            return redirect("/admin/videos");
+
         }
     }
 
@@ -3848,7 +3858,9 @@ class AdminVideosController extends Controller
             $value["success"] = 1;
             $value["message"] = "URL Updated Successfully!";
             $value["video_id"] = $video_id;
-            return $value;
+            // return $value;
+            return redirect("/admin/videos");
+
         }
     }
     }
@@ -7796,7 +7808,9 @@ class AdminVideosController extends Controller
             $value["video_id"] = $video_id;
             $value["video_title"] = $title;
 
-            return $value;
+            // return $value;
+            return redirect("/admin/videos");
+
         } elseif (
             $mp4_url != "" &&
             $pack == "Business" &&
@@ -7853,7 +7867,9 @@ class AdminVideosController extends Controller
             $value["video_id"] = $video_id;
             $value["video_title"] = $title;
 
-            return $value;
+            // return $value;
+            return redirect("/admin/videos");
+
         } elseif (
             $mp4_url != "" &&
             $pack == "Business" &&
@@ -7899,7 +7915,9 @@ class AdminVideosController extends Controller
             $value["video_id"] = $video_id;
             $value["video_title"] = $title;
 
-            return $value;
+            // return $value;
+            return redirect("/admin/videos");
+
         } else {
             $value["success"] = 2;
             $value["message"] = "File not uploaded.";
