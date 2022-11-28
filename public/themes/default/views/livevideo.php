@@ -238,7 +238,7 @@ if ($ppv_exist > 0 ||  Auth::user()->subscribed() || $video_access == "free"  ||
                                 <div class="sidebar-heading border-bottom">Channels</div>
                                 <div class="list-group list-group-flush">
                                     <?php foreach( $M3U_channels as $M3U_index => $M3U_channel ){ ?>
-                                        <a data-toggle="modal" data-target="#myModal" data-MU3-category="<?=  $M3U_index ?>"  data-MU3-url ="<?=  $M3U_files ?>"  class="list-group-item list-group-item-action list-group-item-light" onclick="m3u_url(this)" > <?= $M3U_index ?> </a>
+                                        <a data-toggle="modal" data-target="#M3U-Modal" data-MU3-category="<?=  $M3U_index ?>"  data-MU3-url ="<?=  $M3U_files ?>"  class="list-group-item list-group-item-action list-group-item-light" onclick="m3u_url(this)" > <?= $M3U_index ?> </a>
                                     <?php } ?>
                                 </div>
                             </div>
@@ -248,7 +248,9 @@ if ($ppv_exist > 0 ||  Auth::user()->subscribed() || $video_access == "free"  ||
 	              
             <?php } ?>
 
-            <div class="modal fade  come-from-modal right" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                        <!-- Modal - M3U Modal  -->
+
+            <div class="modal fade  come-from-modal right" id="M3U-Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content" style="background:#1B1212;">
 
@@ -363,7 +365,53 @@ else{
                         <source type="application/x-mpegURL" src="<?php echo $video->live_stream_video ; ?>">
             </video>
 
-    <?php } ?>
+    <?php }elseif(!empty($video->url_type ) && $video->url_type == "m3u_url"){   ?>
+
+        <div class="container-fluid">
+            <div class="row ">
+                <div class="col-lg-9">
+
+                    <?php $m3u_url = session('m3u_url_link') ; ?>
+                    
+                    <video controls  autoplay crossorigin playsinline poster="<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                        <source  type="application/x-mpegURL"  src="<?php echo $m3u_url; ?>" >
+                </video>
+                </div>
+
+                <div class="col-lg-3 p-0">
+                    <div class="border-end" id="sidebar-wrapper">
+                        <div class="sidebar-heading border-bottom">Channels</div>
+                        <div class="list-group list-group-flush">
+                            <?php foreach( $M3U_channels as $M3U_index => $M3U_channel ){ ?>
+                                <a data-toggle="modal" data-target="#M3U-url-modal" data-MU3-category="<?=  $M3U_index ?>"  data-MU3-url ="<?=  $M3U_files ?>"  class="list-group-item list-group-item-action list-group-item-light" onclick="m3u_url(this)" > <?= $M3U_index ?> </a>
+                            <?php } ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+                                        <!-- Modal - M3U Modal  -->
+
+        <div class="modal fade  come-from-modal right" id="M3U-url-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content" style="background:#1B1212;">
+
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="myModalLabel"> Channel Category </h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        </div>
+
+                        <div class="modal-body data-plans ">
+                            <div class="list-group list-group-flush"  style="height: calc(100vh - 80px - 75px)!important;">
+                               <p > <?= "Please wait a short while" ?></p>
+                            </div>
+                        </div>
+                    
+                    </div>
+                </div>
+            </div>
+
+     <?php } ?>
 
     <?php  } else { ?>       
         <div id="subscribers_only"style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.5)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
