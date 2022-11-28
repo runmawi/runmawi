@@ -763,24 +763,6 @@ $('#submit-new-cat').click(function(){
         },'Please upload an image with 1280 x 720 pixels dimension or 16:9 Ratio' );
 
 
-		        // TV Image upload validation
-		$.validator.addMethod('tv_Image_dimention', function(value, element, param) {
-            if(element.files.length == 0){
-                return true; 
-            }
-
-            var width = $(element).data('imageWidth');
-            var height = $(element).data('imageHeight');
-            var ratio = $(element).data('imageratio');
-            var image_validation_status = "{{  image_validation_series() }}" ;
-
-            if( image_validation_status == "0" || ratio == '1.78'|| width == param[0] && height == param[1]){
-                return true;
-            }else{
-                return false;
-            }
-        },'Please upload an image with 1920 X 1080 pixels dimension or 16:9 Ratio' );
-
 		$('.image').change(function() {
 
 			$('.image').removeData('imageWidth');
@@ -843,26 +825,6 @@ $('#submit-new-cat').click(function(){
             }
         });
 
-		$('#tv_image').change(function() {
-
-            $('#tv_image').removeData('imageWidth');
-            $('#tv_image').removeData('imageHeight');
-            $('#tv_image').removeData('imageratio');
-
-            var file = this.files[0];
-            var tmpImg = new Image();
-
-            tmpImg.src=window.URL.createObjectURL( file ); 
-            tmpImg.onload = function() {
-                width = tmpImg.naturalWidth,
-                height = tmpImg.naturalHeight;
-				ratio =  Number(width/height).toFixed(2) ;
-                $('#tv_image').data('imageWidth', width);
-                $('#tv_image').data('imageHeight', height);
-                $('#tv_image').data('imageratio', ratio);
-            }
-        });
-
 
 
 		$('form[id="series_form"]').validate({
@@ -878,16 +840,12 @@ $('#submit-new-cat').click(function(){
 							required: true
 				},
 				
-
 				player_image: {
 					required: '#player_check_image:blank',
 					player_dimention:[1280,720]
             	},
 
-				tv_image:{
-					required: '#check_tv_image:blank',
-					// tv_Image_dimention:[1920 ,1080]
-				}
+				
 			},
 			
 			messages: {
