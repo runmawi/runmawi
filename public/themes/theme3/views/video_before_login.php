@@ -431,18 +431,15 @@ if(!empty($request_url)){
                    </video>
                    <?php }elseif($video->trailer_type !=null && $video->trailer_type == "m3u8" ){ ?>
 
-                      <video  id="videos" autoplay class=""  poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
+                      <video  id="videos"  class=""  poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
                           controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
                           type="application/x-mpegURL">
-                          <source 
-                            type="application/x-mpegURL" 
-                            src="<?php echo $video->trailer;?>"
-                          >
+                          <source   type="application/x-mpegURL"   src="<?php echo $video->trailer;?>"    >
                       </video>
 
                <?php }elseif($video->trailer_type !=null && $video->trailer_type == "m3u8_url" ){ ?>
 
-                   <video  class="videoPlayer1"  autoplay
+                   <video  class="videoPlayer1"  
                          controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
                          type="application/x-mpegURL">
                    </video>
@@ -450,8 +447,7 @@ if(!empty($request_url)){
                <?php }elseif($video->trailer_type !=null && $video->trailer_type == "embed_url" ){ ?>
 
                        <div class="videoPlayer1" id="">
-                         <iframe src="<?php echo $video->trailer ?>" allowfullscreen allowtransparency
-                           allow="autoplay">
+                         <iframe src="<?php echo $video->trailer ?>" allowfullscreen allowtransparency>
                          </iframe>
                        </div>
 

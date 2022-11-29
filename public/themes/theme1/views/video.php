@@ -760,7 +760,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 
                        <div class="videoPlayer1" id="">
                          <iframe src="<?php echo $video->trailer ?>"  
-                           allow="autoplay"  data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  >
+                             data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  >
                          </iframe>
                        </div>
 
