@@ -190,6 +190,9 @@ public function PaypalIndex()
 
         // dd($user_devices);
 
+        $paystack_status = PaymentSetting::where('payment_type','Paystack')
+                        ->where('status',1)->where('paystack_status',1)->first();
+
         $devices = Devices::all();
         $currency = Currency::get();
         $allCurrency = CurrencySetting::first();
@@ -199,6 +202,7 @@ public function PaypalIndex()
            'devices' => $devices,
            'payment_settings' => $payment_settings,
            'allCurrency' => $allCurrency,
+           'paystack_status' => $paystack_status ,
 
            );
        return view('admin.subscription_plans.edit',$data);
