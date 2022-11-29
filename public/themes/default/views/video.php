@@ -1113,10 +1113,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                         <video  id="videos" class=""  poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
                             controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
                             type="application/x-mpegURL">
-                            <source 
-                              type="application/x-mpegURL" 
-                              src="<?php echo $video->trailer;?>"
-                            >
+                            <source  type="application/x-mpegURL"  src="<?php echo $video->trailer;?>" >
                         </video>
 
                     <?php }elseif($video->trailer_type !=null && $video->trailer_type == "m3u8_url" ){ ?>
