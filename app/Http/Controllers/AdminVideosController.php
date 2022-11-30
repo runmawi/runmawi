@@ -67,6 +67,7 @@ use App\Channel as Channel;
 use App\ReSchedule as ReSchedule;
 use App\TimeZone as TimeZone;
 use App\StorageSetting as StorageSetting;
+use App\TimeFormat as TimeFormat;
 
 class AdminVideosController extends Controller
 {
@@ -7115,13 +7116,25 @@ class AdminVideosController extends Controller
                     $minute = floor(($sec / 60) % 60);
                     $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
                     $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
+                    $TimeFormat = TimeFormat::where('hours',$hours)->first();
+                    if(!empty($TimeFormat)){
 
+                        $shedule_endtime = $TimeFormat->hours_format .":" .$minutes ." " .$TimeFormat->format;
+
+                        $sheduled_endtime = $TimeFormat->hours_format . ":" . $minutes;
+    
+                        $starttime = $last_sheduled_endtime;
+                        $sheduled_starttime = $last_shedule_endtime;
+
+                    }else{
                     $shedule_endtime = $hours .":" .$minutes ." " .date("A", strtotime($now));
 
                     $sheduled_endtime = $hours . ":" . $minutes;
 
                     $starttime = $last_sheduled_endtime;
                     $sheduled_starttime = $last_shedule_endtime;
+
+                    }
                 }
                 $time_zone = $data["time_zone"];
 

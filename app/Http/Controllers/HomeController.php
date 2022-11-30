@@ -2545,8 +2545,12 @@ class HomeController extends Controller
         if ($request->ajax())
         {
 
-            $videos = Video::orwhere('videos.search_tags', 'LIKE', '%' . $request->country . '%')
+            $videos = Video::Select('videos.*','categoryvideos.category_id','categoryvideos.video_id','video_categories.name as category_name')
+                           ->Join('categoryvideos','categoryvideos.video_id','=','videos.id')
+                           ->Join('video_categories','video_categories.id','=','categoryvideos.category_id')
+                           ->orwhere('videos.search_tags', 'LIKE', '%' . $request->country . '%')
                            ->orwhere('videos.title', 'LIKE', '%' . $request->country . '%')
+                           ->orwhere('video_categories.name', 'LIKE', '%' . $request->country . '%')
                            ->where('active', '=', '1')
                            ->where('status', '=', '1')
                            ->where('draft', '=', '1')
@@ -2560,11 +2564,16 @@ class HomeController extends Controller
                            $videos = $videos->get();
 
 
-            $livestream = LiveStream::orwhere('search_tags', 'LIKE', '%' . $request->country . '%')
-                            ->orwhere('title', 'LIKE', '%' . $request->country . '%')
-                            ->where('active', '=', '1')
+            $livestream = LiveStream::Select('live_streams.*','livecategories.live_id','live_categories.name')
+                            ->Join('livecategories','livecategories.live_id','=','live_streams.id')
+                            ->Join('live_categories','live_categories.id','=','livecategories.category_id')
+                            ->orwhere('live_streams.search_tags', 'LIKE', '%' . $request->country . '%')
+                            ->orwhere('live_streams.title', 'LIKE', '%' . $request->country . '%')
+                            ->orwhere('live_categories.name', 'LIKE', '%' . $request->country . '%')           
+                            ->where('live_streams.active', '=', '1')
                             // ->where('status', '=', '1')
                             ->limit('10')
+                            ->groupBy('live_streams.id')
                             ->get();
 
             $audio = Audio::orwhere('search_tags', 'LIKE', '%' . $request->country . '%')
@@ -2574,16 +2583,27 @@ class HomeController extends Controller
                             ->limit('10')
                             ->get();
 
-            $Episode = Episode::orwhere('search_tags', 'LIKE', '%' . $request->country . '%')
+            $Episode = Episode::Select('episodes.*','series.id','series_categories.category_id','video_categories.name as Category_name')
+                            ->Join('series','series.id','=','episodes.series_id')
+                            ->Join('series_categories','series_categories.series_id','=','series.id')
+                            ->Join('video_categories','video_categories.id','=','series_categories.category_id')
+                            ->orwhere('episodes.search_tags', 'LIKE', '%' . $request->country . '%')
                             ->orwhere('episodes.title', 'LIKE', '%' . $request->country . '%')
-                            ->where('active', '=', '1')
-                            ->where('status', '=', '1')
+                            ->orwhere('video_categories.name', 'LIKE', '%' . $request->country . '%')           
+                            ->where('episodes.active', '=', '1')
+                            ->where('episodes.status', '=', '1')
+                            ->groupBy('episodes.id')
                             ->limit('10')
                             ->get(); 
                             
-            $Series = Series::where('search_tag', 'LIKE', '%' . $request->country . '%')
-                             ->orwhere('title', 'LIKE', '%' . $request->country . '%')
-                            ->where('active', '=', '1')
+            $Series = Series::Select('series.*','series_categories.category_id','video_categories.name as Category_name')
+                            ->Join('series_categories','series_categories.series_id','=','series.id')
+                            ->Join('video_categories','video_categories.id','=','series_categories.category_id')
+                            ->orwhere('series.search_tag', 'LIKE', '%' . $request->country . '%')
+                            ->orwhere('series.title', 'LIKE', '%' . $request->country . '%')
+                            ->orwhere('video_categories.name', 'LIKE', '%' . $request->country . '%')           
+                            ->where('series.active', '=', '1')
+                            ->groupBy('series.id')
                             ->limit('10')
                             ->get();  
 
@@ -2655,7 +2675,7 @@ class HomeController extends Controller
                 if(count($Series) > 0){
 
                     $Series_search = '<ul class="list-group" style="display: block; position: relative; z-index: 999999;;margin-bottom: 0;border-radius: 0;background: rgba(20, 20, 20, 0.8);">';
-                    $Series_search .= "<h6 style='margin: 0;text-align: left;padding: 10px;'> Live Videos</h6>";
+                    $Series_search .= "<h6 style='margin: 0;text-align: left;padding: 10px;'> Series Videos</h6>";
                     foreach ($Series as $row)
                     {
                         $Series_search .= '<li class="list-group-item">

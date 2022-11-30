@@ -57,6 +57,7 @@ class DatabaseSeeder extends Seeder
             SignupMenuSeeder::class,
             TimeZoneSeeder::class,
             StorageSettingSeeder::class,
+            TimeFormatSeeder::class,
         ]);
     
     }
