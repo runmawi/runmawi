@@ -591,12 +591,28 @@ class ApiAuthController extends Controller
         $email = Auth::user()->email;
         $mobile = Auth::user()->mobile;
         $avatar = Auth::user()->avatar;
+        if(Auth::user()->role == 'subscriber'){
+
+          $Subscription = Subscription::where('user_id',Auth::user()->id)->orderBy('created_at', 'DESC')->first();
+          $Subscription = Subscription::Join('subscription_plans','subscription_plans.plan_id','=','subscriptions.stripe_plan')
+          ->where('subscriptions.user_id',Auth::user()->id)
+          ->orderBy('subscriptions.created_at', 'desc')->first();
+
+          $plans_name = $Subscription->plans_name;
+          $plan_ends_at = $Subscription->ends_at;
+
+        }else{
+          $plans_name = '';
+          $plan_ends_at = '';
+        }
         $user_details = array([
           'user_id'=>$id,
           'role'=>$role,
           'username'=>$username,
           'email'=>$email,
           'mobile'=>$mobile,
+          'plans_name'=>$plans_name,
+          'plan_ends_at'=>$plan_ends_at,
           'avatar'=>URL::to('/').'/public/uploads/avatars/'.$avatar
         ] );
 
