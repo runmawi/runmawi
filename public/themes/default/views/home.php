@@ -32,7 +32,7 @@
       </div>
    </section>
    <?php  } ?>
-   <?php if(count($VideoSchedules) > 0){ ?>
+   <?php if(count(@$VideoSchedules) > 0){ ?>
    <section id="iq-favorites">
       <div class="container-fluid overflow-hidden">
          <div class="row">
