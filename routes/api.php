@@ -354,6 +354,7 @@ Route::group([
 
     Route::post('TV_Language','ApiAuthController@TV_Language');
 
+    Route::post('pages', 'ApiAuthController@Page');
 
 
 });
