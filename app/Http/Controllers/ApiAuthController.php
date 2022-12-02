@@ -8430,7 +8430,7 @@ $cpanel->end();
       return response()->json($response, 200);
     }
 
-    public function HomePage(Request $request)
+    public function PageHome(Request $request)
     {
 
       try{
