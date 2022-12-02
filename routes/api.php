@@ -22,7 +22,7 @@ Route::group([
     'prefix' => 'auth'
 ], function () {
 
-    Route::post('home_page','ApiAuthController@PageHome');
+    Route::get('home_page','ApiAuthController@PageHome');
     Route::post('login', 'ApiAuthController@login');
      Route::post('search','ApiAuthController@search');
     Route::post('signup', 'ApiAuthController@signup');
