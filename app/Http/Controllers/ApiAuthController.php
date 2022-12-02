@@ -9083,6 +9083,21 @@ $cpanel->end();
       return response()->json($response, 200);
 
     }
+
+    public function Page(Request $request)
+    {
+      $page_id = $request->page_id;
+     $pages = Page::where('id', '=', $page_id)->where('active', '=', 1)->get()->map(function ($item) {
+       $item['page_url'] = URL::to('page').'/'.$item->slug;
+       return $item;
+     });
+     $response = array(
+       'status' => 'true',
+       'pages' => $pages
+     );
+     return response()->json($response, 200);
+    }
+
 }
 
 
