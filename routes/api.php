@@ -22,7 +22,7 @@ Route::group([
     'prefix' => 'auth'
 ], function () {
 
-
+    Route::get('home_page','ApiAuthController@PageHome');
     Route::post('login', 'ApiAuthController@login');
      Route::post('search','ApiAuthController@search');
     Route::post('signup', 'ApiAuthController@signup');
@@ -342,7 +342,7 @@ Route::group([
 
     Route::post('related_series','ApiAuthController@related_series');
 
-    Route::get('home_page','ApiAuthController@HomePage');
+    // Route::get('home_page','ApiAuthController@HomePage');
 
     Route::post('video_language','ApiAuthController@LanguageVideo');
 
@@ -353,5 +353,7 @@ Route::group([
     Route::post('audio_language','ApiAuthController@LanguageAudio');
 
     Route::post('TV_Language','ApiAuthController@TV_Language');
+
+
 
 });
