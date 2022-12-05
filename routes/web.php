@@ -1989,11 +1989,11 @@ Route::get('/liveStream', 'AdminLiveStreamController@liveStream')->name('liveStr
 Route::post('/PPV_live_PurchaseUpdate', 'LiveStreamController@PPV_live_PurchaseUpdate')->name('PPV_live_PurchaseUpdate');
 Route::post('/unseen_expirydate_checking', 'LiveStreamController@unseen_expirydate_checking')->name('unseen_expirydate_checking');
 
-
 // Paystack
                     // Paystack-Subscription
 Route::post('/Paystack-Subscription', 'PaystackController@Paystack_CreateSubscription')->name('Paystack_CreateSubscription');
 Route::get('/paystack-verify-request', 'PaystackController@paystack_verify_request')->name('paystack_verify_request');
+Route::get('/paystack-Andriod-verify-request', 'PaystackController@paystack_Andriod_verify_request')->name('paystack_Andriod_verify_request');
 Route::get('/paystack-Subscription-update', 'PaystackController@paystack_Subscription_update')->name('paystack_Subscription_update');
 Route::get('/Paystack-Subscription-cancel/{subscription_id}', 'PaystackController@Paystack_Subscription_cancel')->name('Paystack_Subscription_cancel');
 
@@ -2005,6 +2005,6 @@ Route::get('/Paystack-video-rent-paymentverify', 'PaystackController@Paystack_Vi
 Route::get('/Paystack-live-rent/{live_id}/{amount}', 'PaystackController@Paystack_live_Rent')->name('Paystack_live_Rent');
 Route::get('/Paystack-live-rent-paymentverify', 'PaystackController@Paystack_live_Rent_Paymentverify')->name('Paystack_live_Rent_Paymentverify');
 
-                    // Paystack-Live Rent
+                    // Live Stream - M3U file
 Route::get('/m3u_file_m3u8url', 'LiveStreamController@m3u_file_m3u8url')->name('m3u_file_m3u8url');
 Route::get('/M3U_video_url', 'LiveStreamController@M3U_video_url')->name('M3U_video_url');

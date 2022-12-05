@@ -215,9 +215,70 @@ class PaystackController extends Controller
         }
     }
 
+    public function paystack_Andriod_verify_request ( Request $request )
+    {
+        try {
+                // Customer Details
+
+                $paystack_customer_id = $request->paystack_customer_id;
+                $customer_details = Paystack::fetchCustomer( $paystack_customer_id );
+    
+                    // Subscription Details
+    
+                $subcription_id = $customer_details['data']['subscriptions'][0]['subscription_code'] ;
+                $subcription_details = Paystack::fetchSubscription($subcription_id) ;
+    
+                $Sub_Startday  = Carbon::parse($subcription_details['data']['createdAt'])->setTimezone('UTC')->format('d/m/Y H:i:s'); 
+                $Sub_Endday    = Carbon::parse($subcription_details['data']['next_payment_date'] )->setTimezone('UTC')->format('d/m/Y H:i:s'); 
+                $trial_ends_at = Carbon::parse($subcription_details['data']['next_payment_date'] )->setTimezone('UTC')->toDateTimeString(); 
+    
+                    // Subscription Details - Storing
+    
+                $user_id = $request->user_id;
+
+                Subscription::create([
+                    'user_id'        =>  $user_id,
+                    'name'           =>  $subcription_details['data']['plan']['name'],
+                    'price'          =>  $subcription_details['data']['amount'] ,   // Amount Paise to Rupees
+                    'stripe_id'      =>  $subcription_details['data']['subscription_code'] ,
+                    'stripe_status'  =>  $subcription_details['data']['status'] ,
+                    'stripe_plan'    =>  $subcription_details['data']['plan']['plan_code'],
+                    'quantity'       =>  null,
+                    'countryname'    =>  Country_name(),
+                    'regionname'     =>  Region_name(),
+                    'cityname'       =>  city_name(),
+                    'PaymentGateway' =>  'Paystack',
+                    'trial_ends_at'  =>  $trial_ends_at,
+                    'ends_at'        =>  $trial_ends_at,
+                ]);
+    
+                User::where('id',$user_id)->update([
+                    'role'                 =>  'subscriber',
+                    'stripe_id'            =>  $subcription_details['data']['subscription_code'] ,
+                    'subscription_start'   =>  $Sub_Startday,
+                    'subscription_ends_at' =>  $Sub_Endday,
+                    'payment_gateway'      =>  'Paystack',
+                ]);
+
+                $response = array(
+                    'status'=>'true',
+                    'message'=>'Paystack Payment ! Verify & Subscription data stored Sucessfully '
+                );  
+
+        } catch (\Throwable $th) {
+
+                $response = array(
+                    'status'=>'false',
+                    'message'=> $th
+                );  
+        }
+
+        return response()->json($response, 200);
+    }
+
     public function paystack_Subscription_update( Request $request )
     {
-        
+        // 
     }
 
     public function Paystack_Subscription_cancel( Request $request , $subscription_id )

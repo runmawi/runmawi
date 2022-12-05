@@ -241,19 +241,15 @@
          <!-- <div class="clear" style="display:flex;justify-content: space-between;
             align-items: center;">
             <div> -->
-         <h4 id="tags">Tags: 
-            <?php if (isset($episode->tags))
-               {
-                   foreach ($episode->tags as $key => $tag): ?>
-            <span><a href="/episode/tag/<?=$tag->name
-               ?>"><?=$tag->name
-               ?></a></span><?php if ($key + 1 != count($episode->tags)): ?>,<?php
-               endif; ?>
-            <?php
-               endforeach;
-               }
-               ?>
-         </h4>
+               
+            <div class="col-sm-12 d-flex row">
+               <?php if($episode->search_tags != null ) : ?>
+                  <h4 >Tags  : </h4>
+                  <span class="mb-0" style=";font-size: 100%;color: white;"> <?= $episode->search_tags ?> </span>
+		         <?php  endif;?>
+            </div>
+       
+
       </div>
       <div class="series-details-container"><?=$episode->details
          ?></div>
@@ -276,45 +272,46 @@
       <div class="iq-main-header ">
          <h4 class="main-title">Season</h4>
       </div>
+
       <div class="col-sm-12 overflow-hidden">
          <div class="favorites-contens ml-2">
             <ul class="favorites-slider list-inline row mb-0" >
                <?php  
                   foreach($season as $key => $seasons):
-                       foreach($seasons->episodes as $key => $episodes):
-                  	if($episodes->id != $episode->id): ?>
-               <li class="slide-item">
-                  <a href="<?= ($settings->enable_https) ? secure_url('episodes') : URL::to('episode').'/'.@$episodes->series_title->title.'/'.$episodes->slug; ?>">
-                     <div class="block-images position-relative">
-                        <div class="img-box">
-                           <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class="w-100">
-                        </div>
-                        <div class="block-description">
-                           <h6><?= $episodes->title; ?> </h6>
-                           <p class="date" style="color:#fff;font-size:14px;"><?= date("F jS, Y", strtotime($episodes->created_at)); ?>
-                              <?php if($episodes->access == 'guest'): ?>
-                              <span class="label label-info">Free</span>
-                              <?php elseif($episodes->access == 'subscriber'): ?>
-                              <span class="label label-success">Subscribers Only</span>
-                              <?php elseif($episodes->access == 'registered'): ?>
-                              <span class="label label-warning">Registered Users</span>
-                              <?php endif; ?>
-                           </p>
-                           <div class="hover-buttons">
-                  <a  href="<?php echo URL::to('category')?><?='/videos/' .$episode->slug ?>">	
-                  <span class="text-white">
-                  <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                  Play Now
-                  </span>
-                  </a>
-                  </div>
-                  </div>
-                  </div>
-                  </a>
-               </li>
-               <?php 
-                  endif;
-                  endforeach; 
+                     foreach($seasons->episodes as $key => $episodes):
+                  	   if($episodes->id != $episode->id): ?>
+                              <li class="slide-item">
+                                 <a href="<?= ($settings->enable_https) ? secure_url('episodes') : URL::to('episode').'/'.@$episodes->series_title->title.'/'.$episodes->slug; ?>">
+                                    <div class="block-images position-relative">
+                                       <div class="img-box">
+                                          <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class="w-100">
+                                       </div>
+                                       <div class="block-description">
+                                          <h6><?= $episodes->title; ?> </h6>
+                                          <p class="date" style="color:#fff;font-size:14px;"><?= date("F jS, Y", strtotime($episodes->created_at)); ?>
+                                             <?php if($episodes->access == 'guest'): ?>
+                                             <span class="label label-info">Free</span>
+                                             <?php elseif($episodes->access == 'subscriber'): ?>
+                                             <span class="label label-success">Subscribers Only</span>
+                                             <?php elseif($episodes->access == 'registered'): ?>
+                                             <span class="label label-warning">Registered Users</span>
+                                             <?php endif; ?>
+                                          </p>
+                                          <div class="hover-buttons">
+                                             <a  href="<?php echo URL::to('category')?><?='/videos/' .$episode->slug ?>">	
+                                                <span class="text-white"> <i class="fa fa-play mr-1" aria-hidden="true"></i> Play Now </span>
+                                             </a>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </a>
+                              </li>
+                           <?php else: ?>
+                                 <div class="col-sm-12 d-flex">
+                                    <p> No Episode Found </p>
+                                 <div> <?php
+                              endif;
+                     endforeach; 
                   endforeach
                    ?>
             </ul>
