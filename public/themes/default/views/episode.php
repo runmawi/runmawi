@@ -97,7 +97,6 @@
 						</div>
 					<?php endif; ?>
 					 <div class="logo_player"> </div>
-
 	                                 <!-- Intro Skip and Recap Skip -->
                   <div class="col-sm-12 intro_skips">
                      <input type="button" class="skips" value="Skip Intro" id="intro_skip">
@@ -168,43 +167,43 @@
 	   <div id="series_title">
 		   <div class="">
             <div class="row align-items-center justify-content-between">
-			   <?php if($free_episode > 0 ||  $ppv_exits > 0 || Auth::user()->role == 'admin' ||  Auth::guest()){ } else{ ?>
-               <div class="col-md-6 p-0">
-                  <span class="text-white" style="font-size: 129%;font-weight: 700;">Purchase to Watch the Series:</span>
-               <?php 
-               if($series->access == 'subscriber'): ?> Subscribers <?php elseif($series->access == 'registered'): ?> Registered Users <?php endif; ?>
-			      </p>
-	      </div>
+               <?php if($free_episode > 0 ||  $ppv_exits > 0 || Auth::user()->role == 'admin' ||  Auth::guest()){ } else{ ?>
+                  <div class="col-md-6 p-0">
+                     <span class="text-white" style="font-size: 129%;font-weight: 700;">Purchase to Watch the Series:</span>
+                  <?php 
+                  if($series->access == 'subscriber'): ?> Subscribers <?php elseif($series->access == 'registered'): ?> Registered Users <?php endif; ?>
+                  </p>
+	         </div>
 
-         <div class="col-md-6">
             <?php if (!empty($season)) {   ;?>
-            <input type="hidden" id="season_id" name="season_id" value="<?php echo $season[0]->id; ?>">
-               <button class="btn btn-primary" onclick="pay(<?php echo $season[0]->ppv_price; ?>)" >
-               Purchase For <?php echo $currency->symbol.' '.$season[0]->ppv_price; ?></button>
-         </div>
-	<?php	} } ?>
+               <div class="col-md-6">
+                  <input type="hidden" id="season_id" name="season_id" value="<?php echo $season[0]->id; ?>">
+                     <button class="btn btn-primary" onclick="pay(<?php echo $season[0]->ppv_price; ?>)" >
+                     Purchase For <?php echo $currency->symbol.' '.$season[0]->ppv_price; ?></button>
+               </div>
+	         <?php	} } ?>
 	
-      <div class="col-md-6">
-			<span class="text-white" style="font-size: 120%;font-weight: 700;">You're watching:</span>
-			   <p class="mb-0" style=";font-size: 80%;color: white;">
-			<?php 
-            $seasons = App\SeriesSeason::where('series_id','=',$SeriesSeason->series_id)->with('episodes')->get();
-            foreach($seasons as $key=>$seasons_value){
-         ?>
+         <div class="col-md-6">
+            <span class="text-white" style="font-size: 120%;font-weight: 700;">You're watching:</span>
+               <p class="mb-0" style=";font-size: 80%;color: white;">
+            <?php 
+               $seasons = App\SeriesSeason::where('series_id','=',$SeriesSeason->series_id)->with('episodes')->get();
+               foreach($seasons as $key=>$seasons_value){
+            ?>
 
-			<?php
-			if(!empty($SeriesSeason) && $SeriesSeason->id == $seasons_value->id){ echo 'Season'.' '. ($key+1)   .' ';}  }
+            <?php
+            if(!empty($SeriesSeason) && $SeriesSeason->id == $seasons_value->id){ echo 'Season'.' '. ($key+1)   .' ';}  }
 
-			   $Episode = App\Episode::where('season_id','=',$SeriesSeason->id)->where('series_id','=',$SeriesSeason->series_id)->get();
+               $Episode = App\Episode::where('season_id','=',$SeriesSeason->id)->where('series_id','=',$SeriesSeason->series_id)->get();
 
-            foreach($Episode as $key=> $Episode_value){  ?>
-               <?php if(!empty($episode) && $episode->id == $Episode_value->id){ echo 'Episode'.' '. ($episode->episode_order)   .' ';} ?>
-            <?php } ?>
+               foreach($Episode as $key=> $Episode_value){  ?>
+                  <?php if(!empty($episode) && $episode->id == $Episode_value->id){ echo 'Episode'.' '. ($episode->episode_order)   .' ';} ?>
+               <?php } ?>
 
-			<p class="" style=";font-size: 100%;color: white;font-weight: 700;"><?= $episode->title ?></p>
-			<p class="desc"><?php echo $series->details;?></p>
-	   </div>
-            
+            <p class="" style=";font-size: 100%;color: white;font-weight: 700;"><?= $episode->title ?></p>
+            <p class="desc"><?php echo $series->details;?></p>
+         </div>
+               
 			<!-- <div class="col-md-2 text-center text-white">
 			   <span class="view-count  " style="float:right;">
 			      <i class="fa fa-eye"></i> 
@@ -283,20 +282,12 @@
 					</li>
             </ul>
 			</div>
-
-		<h4 id="tags">Tags: 
-		   <?php if(isset($episode->tags)) {
-		      foreach($episode->tags as $key => $tag){ ?>
-			      <span><a href="/episode/tag/<?= $tag->name ?>"><?= $tag->name ?></a></span><?php if($key+1 != count($episode->tags)): ?>,<?php endif; ?>
-		   <?php  } ?>
-            
+       
       </div>
-      <div>
-      </div>
-      <?php } 
-         ?>
+      <div></div>
    </div>
 </div>
+
 <input type="hidden" class="seriescategoryid" data-seriescategoryid="<?= $episode->genre_id ?>" value="<?= $episode->genre_id ?>">
 <br>
 <div class="container-fluid series-details">
@@ -317,22 +308,7 @@
                Purchase For <?php echo $currency->symbol.' '.$season[0]->ppv_price; ?></button>
             </div>
             <?php	} } ?>
-            <div class="col-md-6">
-               <span class="text-white" style="font-size: 120%;font-weight: 700;">You're watching:</span>
-               <p class="mb-0" style=";font-size: 80%;color: white;">
-                  <?php 
-                     $seasons = App\SeriesSeason::where('series_id','=',$SeriesSeason->series_id)->with('episodes')->get();
-                     foreach($seasons as $key=>$seasons_value){ ?>
-                  <?php
-                     if(!empty($SeriesSeason) && $SeriesSeason->id == $seasons_value->id){ echo 'Season'.' '. ($key+1)   .' ';}  }
-                     $Episode = App\Episode::where('season_id','=',$SeriesSeason->id)->where('series_id','=',$SeriesSeason->series_id)->get();
-                     // dd($Episode);
-                     foreach($Episode as $key=> $Episode_value){  ?>
-                  <?php if(!empty($episode) && $episode->id == $Episode_value->id){ echo 'Episode'.' '. ($episode->episode_order)   .' ';} ?>
-                  <?php } ?>
-               <p class="" style=";font-size: 100%;color: white;font-weight: 700;"><?= $episode->title ?></p>
-               <p class="desc"><?php echo $series->details;?></p>
-            </div>
+           
             <!--<div class="col-md-2 text-center text-white">
                <span class="view-count  " style="float:right;">
                <i class="fa fa-eye"></i> 
@@ -356,113 +332,73 @@
             $media_url = URL::to('/episode/').'/'.$series->title.'/'.$episode->slug;
             $embed_media_url = URL::to('/episode/embed').'/'.$series->title.'/'.$episode->slug;
             $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowfullscreen></iframe>';
-            // dd($like_dislike->liked);
-            ?>
-         <div class="col-md-5">
-            <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
-               <li>
-                  <?php if($episode_watchlater == null){ ?>
-                  <span id="<?php echo 'episode_add_watchlist_'.$episode->id ; ?>" class="slider_add_watchlist"  aria-hidden="true" data-list="<?php echo $episode->id ; ?>" data-myval="10" data-video-id="<?php echo $episode->id ; ?>" onclick="episodewatchlater(this)" > <i class="fa fa-plus-circle" aria-hidden="true"></i>  </span>
-                  <?php }else{?>
-                  <span id="<?php echo 'episode_add_watchlist_'.$episode->id ; ?>" class="slider_add_watchlist"  aria-hidden="true" data-list="<?php echo $episode->id ; ?>" data-myval="10"  data-video-id="<?php echo $episode->id ; ?>"  onclick="episodewatchlater(this)"> <i class="fa fa-minus-circle" aria-hidden="true"></i> </span>
-                  <?php } ?>
-               </li>
-               <li>
-                  <?php if($episode_Wishlist == null){ ?>
-                  <span id="<?php echo 'episode_add_wishlist_'.$episode->id ; ?>" class="episode_add_wishlist_"  aria-hidden="true" data-list="<?php echo $episode->id ; ?>" data-myval="10" data-video-id="<?php echo $episode->id ; ?>" onclick="episodewishlist(this)" ><i class="fa fa-heart-o" aria-hidden="true"></i>   </span>
-                  <?php }else{?>
-                  <span id="<?php echo 'episode_add_wishlist_'.$episode->id ; ?>" class="episode_add_wishlist_"  aria-hidden="true" data-list="<?php echo $episode->id ; ?>" data-myval="10"  data-video-id="<?php echo $episode->id ; ?>"  onclick="episodewishlist(this)"> <i class="fa  fa-heart" aria-hidden="true"></i></span>
-                  <?php } ?>
-               </li>
-               <li>
-                  <?php if(empty($like_dislike->liked) || !empty($like_dislike->liked) && $like_dislike->liked == 0){ ?>
-                  <span id="<?php echo 'episode_like_'.$episode->id ; ?>" class="episode_like_"  aria-hidden="true" data-list="<?php echo $episode->id ; ?>" data-myval="10" data-video-id="<?php echo $episode->id ; ?>" onclick="episodelike(this)" ><i class="ri-thumb-up-line" aria-hidden="true"></i>   </span>
-                  <?php }else{?>
-                  <span id="<?php echo 'episode_like_'.$episode->id ; ?>" class="episode_like_"  aria-hidden="true" data-list="remove" data-myval="10"  data-video-id="<?php echo $episode->id ; ?>"  onclick="episodelike(this)"> <i class="ri-thumb-up-fill" aria-hidden="true"></i></span>
-                  <?php } ?>
-               </li>
-               <li>
-                  <?php if(empty($like_dislike->disliked) ||  !empty($like_dislike->disliked) &&  $like_dislike->disliked == 0){ ?>
-                  <span id="<?php echo 'episode_dislike_'.$episode->id ; ?>" class="episode_dislike_"  aria-hidden="true" data-list="<?php echo $episode->id ; ?>" data-myval="10" data-video-id="<?php echo $episode->id ; ?>" onclick="episodedislike(this)" ><i class="ri-thumb-down-line" aria-hidden="true"></i>   </span>
-                  <?php }else{?>
-                  <span id="<?php echo 'episode_dislike_'.$episode->id ; ?>" class="episode_dislike_"  aria-hidden="true" data-list="remove" data-myval="10"  data-video-id="<?php echo $episode->id ; ?>"  onclick="episodedislike(this)"> <i class="ri-thumb-down-fill" aria-hidden="true"></i></span>
-                  <?php } ?>
-               </li>
-               <li class="share">
-                  <span><i class="ri-share-fill"></i></span>
-                  <div class="share-box">
-                     <div class="d-flex align-items-center"> 
-                        <a href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" class="share-ico"><i class="ri-facebook-fill"></i></a>
-                        <a href="https://twitter.com/intent/tweet?text=<?= $media_url ?>" class="share-ico"><i class="ri-twitter-fill"></i></a>
-                        <a href="#"onclick="Copy();" class="share-ico"><i class="ri-links-fill"></i></a>
-                     </div>
-                  </div>
-               </li>
-               <li>
-                  <a href="#"onclick="EmbedCopy();" class="share-ico"><span><i class="ri-links-fill mt-1"></i></span></a>
-               </li>
-            </ul>
-         </div>
-         <h4 id="tags">Tags: 
-            <?php if(isset($episode->tags)) {
-               foreach($episode->tags as $key => $tag): ?>
-            <span><a href="/episode/tag/<?= $tag->name ?>"><?= $tag->name ?></a></span><?php if($key+1 != count($episode->tags)): ?>,<?php endif; ?>
-            <?php endforeach; }
-               ?>
-         </h4>
+         ?>
       </div>
+
       <div class="series-details-container"><?= $episode->details ?></div>
+
       <?php if(isset($episodenext)){ ?>
-      <div class="next_episode" style="display: none;"><?= $episodenext->id ?></div>
-      <div class="next_url" style="display: none;"><?= $url ?></div>
+         <div class="next_episode" style="display: none;"><?= $episodenext->id ?></div>
+         <div class="next_url" style="display: none;"><?= $url ?></div>
       <?php }elseif(isset($episodeprev)){ ?>
-      <div class="prev_episode" style="display: none;"><?= $episodeprev->id ?></div>
-      <div class="next_url" style="display: none;"><?= $url ?></div>
+         <div class="prev_episode" style="display: none;"><?= $episodeprev->id ?></div>
+         <div class="next_url" style="display: none;"><?= $url ?></div>
       <?php } ?>
-      <div class="iq-main-header ">
-         <h4 class="main-title">Season</h4>
+
+      <div class="col-sm-12 d-flex row">
+         <?php if($episode->search_tags != null ) : ?>
+            <h4 >Tags  : </h4>
+            <span class="mb-0" style=";font-size: 100%;color: white;"> <?= $episode->search_tags ?> </span>
+		   <?php  endif;?>
       </div>
+
+             <!-- Season -->
+
+      <div class="iq-main-header ">
+         <h4 class="main-title"> Season </h4>
+      </div>
+      
       <div class="col-sm-12 overflow-hidden">
          <div class="favorites-contens ml-2">
             <ul class="favorites-slider list-inline row mb-0">
                <?php  
                   foreach($season as $key => $seasons):
-                       foreach($seasons->episodes as $key => $episodes):
-                  	if($episodes->id != $episode->id): ?>
-               <li class="slide-item">
-                  <a href="<?= ($settings->enable_https) ? secure_url('episodes') : URL::to('episode').'/'.@$episodes->series_title->title.'/'.$episodes->slug; ?>">
-                     <div class="block-images position-relative">
-                        <div class="img-box">
-                           <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class="w-100">
-                        </div>
-                        <div class="block-description">
-                           <h6><?= $episodes->title; ?> </h6>
-                           <p class="date" style="color:#fff;font-size:14px;"><?= date("F jS, Y", strtotime($episodes->created_at)); ?>
-                              <?php if($episodes->access == 'guest'): ?>
-                              <span class="label label-info">Free</span>
-                              <?php elseif($episodes->access == 'subscriber'): ?>
-                              <span class="label label-success">Subscribers Only</span>
-                              <?php elseif($episodes->access == 'registered'): ?>
-                              <span class="label label-warning">Registered Users</span>
-                              <?php endif; ?>
-                           </p>
-                           <div class="hover-buttons">
-                  <a  href="<?= ($settings->enable_https) ? secure_url('episodes') : URL::to('episode').'/'.@$episodes->series_title->title.'/'.$episodes->slug; ?>">	
-                  <span class="text-white">
-                  <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                  Play Now
-                  </span>
-                  </a>
-                  </div>
-                  </div>
-                  </div>
-                  </a>
-               </li>
-               <?php 
-                  endif;
-                  endforeach; 
-                  endforeach
-                   ?>
+                     foreach($seasons->episodes as $key => $episodes):
+                  	   if($episodes->id != $episode->id): ?>
+                           <li class="slide-item">
+                              <a href="<?= ($settings->enable_https) ? secure_url('episodes') : URL::to('episode').'/'.@$episodes->series_title->title.'/'.$episodes->slug; ?>">
+                                 <div class="block-images position-relative">
+                                    <div class="img-box">
+                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class="w-100">
+                                    </div>
+                                    <div class="block-description">
+                                       <h6><?= $episodes->title; ?> </h6>
+                                       <p class="date" style="color:#fff;font-size:14px;"><?= date("F jS, Y", strtotime($episodes->created_at)); ?>
+                                          <?php if($episodes->access == 'guest'): ?>
+                                             <span class="label label-info">Free</span>
+                                          <?php elseif($episodes->access == 'subscriber'): ?>
+                                             <span class="label label-success">Subscribers Only</span>
+                                          <?php elseif($episodes->access == 'registered'): ?>
+                                             <span class="label label-warning">Registered Users</span>
+                                          <?php endif; ?>
+                                       </p>
+
+                                       <div class="hover-buttons">
+                                          <a  href="<?= ($settings->enable_https) ? secure_url('episodes') : URL::to('episode').'/'.@$episodes->series_title->title.'/'.$episodes->slug; ?>">	
+                                                <span class="text-white"> <i class="fa fa-play mr-1" aria-hidden="true"></i> Play Now </span>
+                                          </a>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </a>
+                           </li>
+                        <?php else: ?>
+                           <div class="col-sm-12 d-flex">
+                              <p> No Episode Found </p>
+                           <div>
+                        <?php endif; ?>  
+                     <?php endforeach; ?>
+                  <?php endforeach; ?>
             </ul>
          </div>
       </div>
