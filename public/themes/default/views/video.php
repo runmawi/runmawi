@@ -2114,12 +2114,12 @@ location.reload();
     })();
 
   }else if(trailer_video_type == "m3u8"){
-  alert(trailer_video_type);
+  // alert(trailer_video_type);
   document.addEventListener("DOMContentLoaded", () => {
   const videos = document.querySelector('#videos');
-  alert(video);
+  // alert(video);
   const sources = videos.getElementsByTagName("source")[0].src;
-  alert(sources);
+  // alert(sources);
   const defaultOptions = {};
 
   if (Hls.isSupported()) {
