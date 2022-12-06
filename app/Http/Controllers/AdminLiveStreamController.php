@@ -407,7 +407,7 @@ class AdminLiveStreamController extends Controller
 
             $movie->live_stream_video = $M3u8_save_path;
         }
-    }elseif($StorageSetting->aws_storage == 1){
+    }elseif($StorageSetting->aws_storage == 1 && !empty($data['live_stream_video'])){
 
         if($settings->transcoding_access  == 0 ) {
             $file = $data['live_stream_video'];
