@@ -2361,6 +2361,7 @@ class AdminVideosController extends Controller
           
         } else {
             $data["image"] = $video->image;
+            $video_image = '';
         }
 
 
