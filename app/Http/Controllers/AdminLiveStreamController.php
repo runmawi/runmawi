@@ -411,11 +411,13 @@ class AdminLiveStreamController extends Controller
 
         if($settings->transcoding_access  == 0 ) {
             $file = $data['live_stream_video'];
-            $name = time() . $file->getClientOriginalName();
+            // $name = time() . $file->getClientOriginalName();
+            $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
+
             // print_r($file);exit;
             $filePath = $StorageSetting->aws_live_path.'/'. $name;
             
-            Storage::disk('s3')->put($filePath, file_get_contents($file));
+            Storage::disk('s3')    ->put($filePath, file_get_contents($file));
             $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
             $filePath = $path.$filePath;
             
@@ -423,8 +425,12 @@ class AdminLiveStreamController extends Controller
         }elseif($settings->transcoding_access  == 1 ) {
 
             $file = $data['live_stream_video'];
-            $name = time() . $file->getClientOriginalName();
-            // print_r($file);exit;
+            $file_folder_name =  $file->getClientOriginalName();
+            $name_mp4 =  $file->getClientOriginalName();
+            $newfile = explode(".mp4",$name_mp4);
+            $namem3u8 = $newfile[0].'.m3u8';   
+            // $name = time() . $file->getClientOriginalName();
+            $name = $namem3u8 == null ? str_replace(' ', '_', 'S3'.$namem3u8) : str_replace(' ', '_', 'S3'.$namem3u8) ;        
 
             $transcode_path = @$StorageSetting->aws_transcode_path.'/'. $name;
 
@@ -442,7 +448,8 @@ class AdminLiveStreamController extends Controller
         }
         else{
             $file = $data['live_stream_video'];
-            $name = time() . $file->getClientOriginalName();
+            // $name = time() . $file->getClientOriginalName();
+            $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
             // print_r($file);exit;
             $filePath = $StorageSetting->aws_live_path.'/'. $name;
             
@@ -725,7 +732,9 @@ if($StorageSetting->site_storage == 1 && !empty($data['live_stream_video']) ){
         if($settings->transcoding_access  == 0 ) {
 
             $file = $data['live_stream_video'];
-            $name = time() . $file->getClientOriginalName();
+            // $name = time() . $file->getClientOriginalName();
+            $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
+
             // print_r($file);exit;
             $filePath = $StorageSetting->aws_live_path.'/'. $name;
             
@@ -738,7 +747,10 @@ if($StorageSetting->site_storage == 1 && !empty($data['live_stream_video']) ){
 
             $file = $data['live_stream_video'];
             $name = time() . $file->getClientOriginalName();
-            // print_r($file);exit;
+            $name_mp4 =  $file->getClientOriginalName();
+            $newfile = explode(".mp4",$name_mp4);
+            $namem3u8 = $newfile[0].'.m3u8';   
+            $name = $namem3u8 == null ? str_replace(' ', '_', 'S3'.$namem3u8) : str_replace(' ', '_', 'S3'.$namem3u8) ;        
 
             $transcode_path = @$StorageSetting->aws_transcode_path.'/'. $name;
 
@@ -755,7 +767,8 @@ if($StorageSetting->site_storage == 1 && !empty($data['live_stream_video']) ){
 
         }else{
             $file = $data['live_stream_video'];
-            $name = time() . $file->getClientOriginalName();
+            // $name = time() . $file->getClientOriginalName();
+            $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
             // print_r($file);exit;
             $filePath = $StorageSetting->aws_live_path.'/'. $name;
             

@@ -703,7 +703,8 @@ class AdminAudioController extends Controller
             }elseif($StorageSetting->aws_storage == 1){
 
                 $file = $request->file('audio_upload');
-                $name = time() . $file->getClientOriginalName();
+                // $name = time() . $file->getClientOriginalName();
+                $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
                 // print_r($file);exit;
                 $filePath = $StorageSetting->aws_audio_path.'/'. $name;
                 
@@ -1185,7 +1186,8 @@ class AdminAudioController extends Controller
 
 
                         $file = $request->file('file');
-                        $name = time() . $request->file->getClientOriginalName();
+                        // $name = time() . $request->file->getClientOriginalName();
+                        $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
                         // print_r($file);exit;
                         $filePath = $StorageSetting->aws_audio_path.'/'. $name;
                         
@@ -1199,7 +1201,10 @@ class AdminAudioController extends Controller
                         $audio_duration_time = round( $audio_duration->duration,2 ) ;
                     }else{
                         
-
+                        $file = $request->file('file');
+                        // $name = time() . $request->file->getClientOriginalName();
+                        $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
+                  
                         Storage::disk('s3')->put($filePath, file_get_contents($file));
                         $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
                         $audio = $path.$filePath;

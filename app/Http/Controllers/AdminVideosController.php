@@ -1365,12 +1365,13 @@ class AdminVideosController extends Controller
 
                 $file = $request->file('trailer');
                 $file_folder_name =  $file->getClientOriginalName();
-                $name_mp4 = time() . $file->getClientOriginalName();
+                $name_mp4 =  $file->getClientOriginalName();
                 $newfile = explode(".mp4",$name_mp4);
-                $name = $newfile[0].'.m3u8';   
+                // $name = $newfile[0].'.m3u8';   
+                $name = $namem3u8 == null ? str_replace(' ', '_', 'S3'.$namem3u8) : str_replace(' ', '_', 'S3'.$namem3u8) ;        
                 $filePath = $StorageSetting->aws_video_trailer_path.'/'. $name;
                 $transcode_path = @$StorageSetting->aws_transcode_path.'/'. $name;
-                Storage::disk('s3')->put($filePath, file_get_contents($file));
+                Storage::disk('s3')->put($transcode_path, file_get_contents($file));
                 $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
                 $M3u8_path = $path.$filePath;
                 $M3u8_save_path = $path.$transcode_path;
@@ -2671,12 +2672,13 @@ class AdminVideosController extends Controller
 
                 $file = $request->file('trailer');
                 $file_folder_name =  $file->getClientOriginalName();
-                $name_mp4 = time() . $file->getClientOriginalName();
+                $name_mp4 = $file->getClientOriginalName();
                 $newfile = explode(".mp4",$name_mp4);
-                $name = $newfile[0].'.m3u8';   
+                // $name = $newfile[0].'.m3u8';   
+                $name = $namem3u8 == null ? str_replace(' ', '_', 'S3'.$namem3u8) : str_replace(' ', '_', 'S3'.$namem3u8) ;        
                 $filePath = $StorageSetting->aws_video_trailer_path.'/'. $name;
                 $transcode_path = @$StorageSetting->aws_transcode_path.'/'. $name;
-                Storage::disk('s3')->put($filePath, file_get_contents($file));
+                Storage::disk('s3')->put($transcode_path, file_get_contents($file));
                 $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
                 $M3u8_path = $path.$filePath;
                 $M3u8_save_path = $path.$transcode_path;
@@ -7532,7 +7534,7 @@ class AdminVideosController extends Controller
             
             $file = $request->file('file');
             $file_folder_name =  $file->getClientOriginalName();
-            $name = time() . $file->getClientOriginalName();
+            $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
             $filePath = $StorageSetting->aws_storage_path.'/'. $name;
             Storage::disk('s3')->put($filePath, file_get_contents($file));
             $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
@@ -7596,14 +7598,16 @@ class AdminVideosController extends Controller
             try {
                 $file = $request->file('file');
                 $file_folder_name =  $file->getClientOriginalName();
-                $name_mp4 = time() . $file->getClientOriginalName();
+                $name_mp4 = $file->getClientOriginalName();
                 $newfile = explode(".mp4",$name_mp4);
-                $name = $newfile[0].'.m3u8';   
+                $namem3u8 = $newfile[0].'.m3u8';   
+                $name = $namem3u8 == null ? str_replace(' ', '_', 'S3'.$namem3u8) : str_replace(' ', '_', 'S3'.$namem3u8) ;        
+
                 $transcode_path = @$StorageSetting->aws_transcode_path.'/'. $name;
-                // print_r($filePath);exit;
                 $filePath = $StorageSetting->aws_storage_path.'/'. $name;
                 $filePath_mp4 = $StorageSetting->aws_storage_path.'/'. $name_mp4;
-                Storage::disk('s3')->put($filePath, file_get_contents($file));
+                Storage::disk('s3')->put($transcode_path, file_get_contents($file));
+                print_r($name);exit;
                 $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
                 $storepath = $path.$filePath_mp4;
                 $m3u8_path = $path.$filePath;
@@ -7683,8 +7687,10 @@ class AdminVideosController extends Controller
         ) {
             $file = $request->file('file');
             $file_folder_name =  $file->getClientOriginalName();
-            $name = time() . $file->getClientOriginalName();
+            // $name = time() . $file->getClientOriginalName();
+            $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
             $filePath = $StorageSetting->aws_storage_path.'/'. $name;
+
             Storage::disk('s3')->put($filePath, file_get_contents($file));
             $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
             $storepath = $path.$filePath;
@@ -7783,7 +7789,8 @@ class AdminVideosController extends Controller
             
             $file = $request->file('file');
             $file_folder_name =  $file->getClientOriginalName();
-            $name = time() . $file->getClientOriginalName();
+            // $name = time() . $file->getClientOriginalName();
+            $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
             $filePath = $StorageSetting->aws_storage_path.'/'. $name;
             Storage::disk('s3')->put($filePath, file_get_contents($file));
             $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
@@ -7832,14 +7839,16 @@ class AdminVideosController extends Controller
         ) {
             $file = $request->file('file');
             $file_folder_name =  $file->getClientOriginalName();
-            $name_mp4 = time() . $file->getClientOriginalName();
+            $name_mp4 =  $file->getClientOriginalName();
             $newfile = explode(".mp4",$name_mp4);
-            $name = $newfile[0].'.m3u8';   
+            $namem3u8 = $newfile[0].'.m3u8';   
+            $name = $namem3u8 == null ? str_replace(' ', '_', 'S3'.$namem3u8) : str_replace(' ', '_', 'S3'.$namem3u8) ;        
+
             $transcode_path = @$StorageSetting->aws_transcode_path.'/'. $name;
             // print_r($filePath);exit;
             $filePath = $StorageSetting->aws_storage_path.'/'. $name;
             $filePath_mp4 = $StorageSetting->aws_storage_path.'/'. $name_mp4;
-            Storage::disk('s3')->put($filePath, file_get_contents($file));
+            Storage::disk('s3')->put($transcode_path, file_get_contents($file));
             $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
             $storepath = $path.$filePath_mp4;
             $m3u8_path = $path.$filePath;
@@ -7891,7 +7900,8 @@ class AdminVideosController extends Controller
         ) {
             $file = $request->file('file');
             $file_folder_name =  $file->getClientOriginalName();
-            $name = time() . $file->getClientOriginalName();
+            // $name = time() . $file->getClientOriginalName();
+            $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
             $filePath = $StorageSetting->aws_storage_path.'/'. $name;
             Storage::disk('s3')->put($filePath, file_get_contents($file));
             $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
