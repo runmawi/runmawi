@@ -157,6 +157,10 @@ class PaystackController extends Controller
     public function paystack_verify_request ( Request $request )
     {
 
+        // if( 0 == 1){
+        //     return $this->paystack_Andriod_verify_request( $request );
+        // }
+
         if( $request->trxref != null && $request->reference != null ){
 
                 // Customer Details
@@ -278,7 +282,7 @@ class PaystackController extends Controller
 
     public function paystack_Subscription_update( Request $request )
     {
-        // 
+        //
     }
 
     public function Paystack_Subscription_cancel( Request $request , $subscription_id )
