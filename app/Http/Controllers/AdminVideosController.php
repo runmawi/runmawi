@@ -68,6 +68,10 @@ use App\ReSchedule as ReSchedule;
 use App\TimeZone as TimeZone;
 use App\StorageSetting as StorageSetting;
 use App\TimeFormat as TimeFormat;
+use Aws\Common\Exception\MultipartUploadException;
+use Aws\S3\MultipartUploader;
+use Aws\S3\S3Client;
+use Aws\S3\S3MultiRegionClient;
 
 class AdminVideosController extends Controller
 {
@@ -7510,7 +7514,40 @@ class AdminVideosController extends Controller
     public function AWSUploadFile(Request $request)
     {
         $url = 'https://s3.' . env('AWS_DEFAULT_REGION') . '.amazonaws.com/' . env('AWS_BUCKET') . '/';
+        
 
+        $StorageSetting = StorageSetting::first();
+
+        $file = $request->file('file');
+        $file_folder_name =  $file->getClientOriginalName();
+        $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
+        $filePath = $StorageSetting->aws_storage_path.'/'. $name;
+        // Storage::disk('s3')->put($filePath, file_get_contents($file));
+        $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+        $storepath = $path.$filePath;
+
+        $bucket = 'inthesky';
+        $keyname = $name;
+                                
+        $s3 = new S3Client([
+            'version' => 'latest',
+            'region'  => 'ap-south-1'
+        ]);
+         
+        // Prepare the upload parameters.
+        $uploader = new MultipartUploader($s3, $storepath, [
+            'bucket' => $bucket,
+            'key'    => $keyname
+        ]);
+        
+        // Perform the upload.
+        try {
+            $result = $uploader->upload();
+            echo "Upload complete: {$result['ObjectURL']}\n";
+            } catch (MultipartUploadException $e) {
+            echo $e->getMessage() . "\n";
+        }
+        exit;
         $value = [];
         $data = $request->all();
 
