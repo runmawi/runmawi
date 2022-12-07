@@ -501,6 +501,9 @@ Route::get('/episode/filedelete/{id}', 'AdminSeriesController@filedelete');
     Route::get('/subscription-plans/delete/{id}', 'AdminPlansController@subscriptiondelete');
     Route::post('/subscription-plans/update', 'AdminPlansController@subscriptionupdate');
 
+    // Life-Time Subscription Plans
+    Route::get('/Life-time-subscription', 'AdminLifeTimeSubscriptionController@index')->name('Life-time-subscription-index');
+    Route::post('/Life-time-subscription-store', 'AdminLifeTimeSubscriptionController@update')->name('Life-time-subscription-update');
 
 
     Route::get('/paypalplans', 'AdminPlansController@PaypalIndex');
