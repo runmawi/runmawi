@@ -287,6 +287,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <li><a href="{{ URL::to('admin/paypalplans') }}"><i class="las la-eye"></i>Manage Paypal plans</a></li> -->
                         <li><a href="{{ URL::to('admin/subscription-plans') }}"><i class="las la-eye"></i>Manage Subscription plans</a></li>
                         <li><a href="{{ route('inapp_purchase') }}"><img height="30" width="30"  class="mr-2" src="<?php echo  URL::to('/assets/img/icon/manage-sub.svg')?>">Manage In App Purchase Plans</a></li>
+                        <li><a href="{{ route('Life-time-subscription-index') }}"> Life time subscription </a></li>
                          <!-- <li><a href="{{ URL::to('admin/coupons') }}"><i class="las la-eye"></i>Manage Stripe Coupons</a></li> -->
                          <li><a href="{{ URL::to('admin/devices') }}"><i class="las la-eye"></i>Devices</a></li>
                      </ul>
@@ -545,6 +546,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <li><a href="{{ URL::to('admin/paypalplans') }}"><i class="las la-eye"></i>Manage Paypal plans</a></li> -->
                         <li><a href="{{ URL::to('admin/subscription-plans') }}"><i class="las la-eye"></i>Manage Subscription plans</a></li>
                         <li><a href="{{ route('inapp_purchase') }}"><img height="30" width="30"  class="mr-2" src="<?php echo  URL::to('/assets/img/icon/manage-sub.svg')?>">Manage In App Purchase Plans</a></li>
+                        <li><a href="{{ route('Life-time-subscription-index') }}"> Life time subscription </a></li>
                          <!-- <li><a href="{{ URL::to('admin/coupons') }}"><i class="las la-eye"></i>Manage Stripe Coupons</a></li> -->
                          <li><a href="{{ URL::to('admin/devices') }}"><i class="las la-eye"></i>Devices</a></li>
 
@@ -846,7 +848,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <li><a href="{{ URL::to('admin/paypalplans') }}"><i class="las la-eye"></i>Manage Paypal plans</a></li> -->
                         <li><a href="{{ URL::to('admin/subscription-plans') }}">Manage Subscription plans</a></li>
                         <li><a href="{{ route('inapp_purchase') }}">Manage In App Purchase Plans</a></li>
-
+                        <li><a href="{{ route('Life-time-subscription-index') }}"> Life time subscription </a></li>
                          <!-- <li><a href="{{ URL::to('admin/coupons') }}"><i class="las la-eye"></i>Manage Stripe Coupons</a></li> -->
                          <li><a href="{{ URL::to('admin/devices') }}">Devices</a></li>
                      </ul>
@@ -1150,6 +1152,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <li><a href="{{ URL::to('admin/paypalplans') }}"><i class="las la-eye"></i>Manage Paypal plans</a></li> -->
                         <li><a href="{{ URL::to('admin/subscription-plans') }}"><i class="las la-eye"></i>Manage Subscription plans</a></li>
                         <li><a href="{{ route('inapp_purchase') }}"><img height="30" width="30"  class="mr-2" src="<?php echo  URL::to('/assets/img/icon/manage-sub.svg')?>">Manage In App Purchase Plans</a></li>
+                        <li><a href="{{ route('Life-time-subscription-index') }}"> Life time subscription </a></li>
                          <!-- <li><a href="{{ URL::to('admin/coupons') }}"><i class="las la-eye"></i>Manage Stripe Coupons</a></li> -->
                          <li><a href="{{ URL::to('admin/devices') }}"><i class="las la-eye"></i>Devices</a></li>
                      </ul>
