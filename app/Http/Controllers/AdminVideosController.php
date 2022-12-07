@@ -7590,7 +7590,8 @@ class AdminVideosController extends Controller
             $video->path = $path;
             $video->mp4_url = $storepath;
             $video->type = "mp4_url";
-            $video->draft = 0;
+            $video->draft = 1;
+            $video->status = 1;
             $video->image = "default_image.jpg";
 
             $PC_image_path = public_path("/uploads/images/default_image.jpg");
@@ -7677,7 +7678,8 @@ class AdminVideosController extends Controller
                 $video->mp4_url = $storepath;
                 $video->m3u8_url = $transcode_path;
                 $video->type = "aws_m3u8";
-                $video->draft = 0;
+                $video->draft = 1;
+                $video->status = 1;
                 $video->image = "default_image.jpg";
 
                 $PC_image_path = public_path(
@@ -7767,7 +7769,8 @@ class AdminVideosController extends Controller
             $video->path = $path;
             $video->mp4_url = $storepath;
             $video->type = "mp4_url";
-            $video->draft = 0;
+            $video->draft = 1;
+            $video->status = 1;
             $video->image = "default_image.jpg";
 
             $PC_image_path = public_path("/uploads/images/default_image.jpg");
@@ -7918,7 +7921,8 @@ class AdminVideosController extends Controller
             $video->path = $path;
             $video->mp4_url = $storepath;
             $video->type = "mp4_url";
-            $video->draft = 0;
+            $video->draft = 1;
+            $video->status = 1;
             $video->image = "default_image.jpg";
 
             $PC_image_path = public_path("/uploads/images/default_image.jpg");
@@ -7973,7 +7977,7 @@ class AdminVideosController extends Controller
                 $filePath = $StorageSetting->aws_storage_path.'/'. $name;
                 $filePath_mp4 = $StorageSetting->aws_storage_path.'/'. $name_mp4;
                 Storage::disk('s3')->put($transcode_path, file_get_contents($file));
-                print_r($name);exit;
+                // print_r($name);exit;
                 $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
                 $storepath = $path.$filePath_mp4;
                 $m3u8_path = $path.$filePath;
@@ -7993,7 +7997,8 @@ class AdminVideosController extends Controller
                 $video->mp4_url = $storepath;
                 $video->m3u8_url = $transcode_path;
                 $video->type = "aws_m3u8";
-                $video->draft = 0;
+                $video->draft = 1;
+                $video->status = 1;
                 $video->image = "default_image.jpg";
 
                 $PC_image_path = public_path(
@@ -8073,7 +8078,8 @@ class AdminVideosController extends Controller
             $video->path = $path;
             $video->mp4_url = $storepath;
             $video->type = "mp4_url";
-            $video->draft = 0;
+            $video->draft = 1;
+            $video->status = 1;
             $video->image = "default_image.jpg";
 
             $PC_image_path = public_path("/uploads/images/default_image.jpg");
