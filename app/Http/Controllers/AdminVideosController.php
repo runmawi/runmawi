@@ -68,6 +68,10 @@ use App\ReSchedule as ReSchedule;
 use App\TimeZone as TimeZone;
 use App\StorageSetting as StorageSetting;
 use App\TimeFormat as TimeFormat;
+use Aws\Common\Exception\MultipartUploadException;
+use Aws\S3\MultipartUploader;
+use Aws\S3\S3Client;
+use Aws\S3\S3MultiRegionClient;
 
 class AdminVideosController extends Controller
 {
@@ -7510,7 +7514,369 @@ class AdminVideosController extends Controller
     public function AWSUploadFile(Request $request)
     {
         $url = 'https://s3.' . env('AWS_DEFAULT_REGION') . '.amazonaws.com/' . env('AWS_BUCKET') . '/';
+        
 
+        $StorageSetting = StorageSetting::first();
+
+        $file = $request->file('file');
+        $file_folder_name =  $file->getClientOriginalName();
+        $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
+        $filePath = $StorageSetting->aws_storage_path.'/'. $name;
+        // Storage::disk('s3')->put($filePath, file_get_contents($file));
+        $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+        $storepath = $path.$filePath;
+
+        $s3 = new S3Client(['region' => 'ap-south-1', 'version' => 'latest']);
+
+        $path = $_FILES['file']['name'];
+        $file_name = "s3_" .pathinfo($path, PATHINFO_EXTENSION);
+        $file_temp = $_FILES['file']['tmp_name'];
+        $file_type = $_FILES['file']['type'];
+        $upload_path = 'public/'.$name;
+        $bucket_name = 'inthesky';
+        $value = [];
+        $data = $request->all();
+
+        $validator = Validator::make($request->all(), [
+            "file" => "required|mimes:video/mp4,video/x-m4v,video/*",
+        ]);
+        $mp4_url = isset($data["file"]) ? $data["file"] : "";
+
+        $path = public_path() . "/uploads/videos/";
+
+        $file = $request->file->getClientOriginalName();
+        $newfile = explode(".mp4", $file);
+        $file_folder_name = $newfile[0];
+
+        $package = User::where("id", 1)->first();
+        $pack = $package->package;
+        $mp4_url = $data["file"];
+        $settings = Setting::first();
+        $StorageSetting = StorageSetting::first();
+        if ($mp4_url != "" && $pack != "Business") {
+            
+            $file = $request->file('file');
+            $file_folder_name =  $file->getClientOriginalName();
+            $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
+            $filePath = '/public'.'/'. $name;
+            // Storage::disk('s3')->put($filePath, file_get_contents($file));
+            try {
+                $s3->putObject(
+                    array(
+                        'Bucket' => 'inthesky',
+                        'Key' => $upload_path,
+                        'SourceFile' => $file_temp,
+                        'ContentType' => $file_type,
+                        'StorageClass' => 'STANDARD'
+                    )
+                );
+                echo "Uploaded $file_name to $bucket_name.\n";
+            } catch (Exception $exception) {
+                echo "Failed to upload $file_name with error: " . $exception->getMessage();
+            }
+            
+            $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+            $storepath = $path.$filePath;
+
+            // $getID3 = new getID3();
+            // $Video_storepath = $file;
+            // $VideoInfo = $getID3->analyze($Video_storepath);
+            // $Video_duration = $VideoInfo["playtime_seconds"];
+
+            $video = new Video();
+            $video->disk = "public";
+            $video->title = $file_folder_name;
+            $video->original_name = "public";
+            $video->path = $path;
+            $video->mp4_url = $storepath;
+            $video->type = "mp4_url";
+            $video->draft = 0;
+            $video->image = "default_image.jpg";
+
+            $PC_image_path = public_path("/uploads/images/default_image.jpg");
+
+            if (file_exists($PC_image_path)) {
+                $Mobile_image = "Mobile-default_image.jpg";
+                $Tablet_image = "Tablet-default_image.jpg";
+
+                Image::make($PC_image_path)->save(
+                    base_path() . "/public/uploads/images/" . $Mobile_image
+                );
+                Image::make($PC_image_path)->save(
+                    base_path() . "/public/uploads/images/" . $Tablet_image
+                );
+
+                $video->mobile_image = $Mobile_image;
+                $video->tablet_image = $Tablet_image;
+            } else {
+                $video->mobile_image = "default_image.jpg";
+                $video->tablet_image = "default_image.jpg";
+            }
+
+            // $video->duration = $Video_duration;
+            $video->save();
+
+            $video_id = $video->id;
+            $video_title = Video::find($video_id);
+            $title = $video_title->title;
+
+            $value["success"] = 1;
+            $value["message"] = "Uploaded Successfully!";
+            $value["video_id"] = $video_id;
+            $value["video_title"] = $title;
+
+            \LogActivity::addVideoLog("Added Uploaded MP4  Video.", $video_id);
+
+            return $value;
+        } elseif (
+            $mp4_url != "" &&
+            $pack == "Business" &&
+            $settings->transcoding_access == 1
+        ) {
+            try {
+                $file = $request->file('file');
+                $file_folder_name =  $file->getClientOriginalName();
+                $name_mp4 = $file->getClientOriginalName();
+                $newfile = explode(".mp4",$name_mp4);
+                $namem3u8 = $newfile[0].'.m3u8';   
+                $name = $namem3u8 == null ? str_replace(' ', '_', 'S3'.$namem3u8) : str_replace(' ', '_', 'S3'.$namem3u8) ;        
+
+                $transcode_path = '/public '.'/'. $name;
+                $filePath = $StorageSetting->aws_storage_path.'/'. $name;
+                $filePath_mp4 = $StorageSetting->aws_storage_path.'/'. $name_mp4;
+                // Storage::disk('s3')->put($transcode_path, file_get_contents($file));
+                // print_r($name);exit;
+
+                    $s3->putObject(
+                        array(
+                            'Bucket' => 'inthesky',
+                            'Key' => $upload_path,
+                            'SourceFile' => $file_temp,
+                            'ContentType' => $file_type,
+                            'StorageClass' => 'STANDARD'
+                        )
+                    );
+
+
+                $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+                $storepath = $path.$filePath_mp4;
+                $m3u8_path = $path.$filePath;
+                $transcode_path = $path.$transcode_path;
+  
+                // $getID3 = new getID3();
+                // $Video_storepath = $file;
+                // $VideoInfo = $getID3->analyze($Video_storepath);
+                // $Video_duration = $VideoInfo["playtime_seconds"];
+
+                $video = new Video();
+                $video->disk = "public";
+                $video->status = 0;
+                $video->original_name = "public";
+                $video->path = $path;
+                $video->title = $file_folder_name;
+                $video->mp4_url = $storepath;
+                $video->m3u8_url = $transcode_path;
+                $video->type = "aws_m3u8";
+                $video->draft = 0;
+                $video->image = "default_image.jpg";
+
+                $PC_image_path = public_path(
+                    "/uploads/images/default_image.jpg"
+                );
+
+                if (file_exists($PC_image_path)) {
+                    $Mobile_image = "Mobile-default_image.jpg";
+                    $Tablet_image = "Tablet-default_image.jpg";
+
+                    Image::make($PC_image_path)->save(
+                        base_path() . "/public/uploads/images/" . $Mobile_image
+                    );
+                    Image::make($PC_image_path)->save(
+                        base_path() . "/public/uploads/images/" . $Tablet_image
+                    );
+
+                    $video->mobile_image = $Mobile_image;
+                    $video->tablet_image = $Tablet_image;
+                } else {
+                    $video->mobile_image = "default_image.jpg";
+                    $video->tablet_image = "default_image.jpg";
+                }
+
+                // $video->duration = $Video_duration;
+                $video->user_id = Auth::user()->id;
+                $video->save();
+
+                $video_id = $video->id;
+                $video_title = Video::find($video_id);
+                $title = $video_title->title;
+
+                $value["success"] = 1;
+                $value["message"] = "Uploaded Successfully!";
+                $value["video_id"] = $video_id;
+                $value["video_title"] = $title;
+
+                \LogActivity::addVideoLog(
+                    "Added Uploaded M3U8  Video.",
+                    $video_id
+                );
+
+                return $value;
+            } catch (\Exception $e) {
+                return response()->json(
+                    [
+                        "status" => "false",
+                        "Message" => "fails to upload ",
+                    ],
+                    200
+                );
+            }
+        } elseif (
+            $mp4_url != "" &&
+            $pack == "Business" &&
+            $settings->transcoding_access == 0
+        ) {
+            $file = $request->file('file');
+            $file_folder_name =  $file->getClientOriginalName();
+            // $name = time() . $file->getClientOriginalName();
+            $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
+            $filePath = '/public/'. $name;
+
+            // Storage::disk('s3')->put($filePath, file_get_contents($file));
+            $s3->putObject(
+                array(
+                    'Bucket' => 'inthesky',
+                    'Key' => $upload_path,
+                    'SourceFile' => $file_temp,
+                    'ContentType' => $file_type,
+                    'StorageClass' => 'STANDARD'
+                )
+            );
+
+            $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+            $storepath = $path.$filePath;
+
+            // $getID3 = new getID3();
+            // $Video_storepath = $file;
+            // $VideoInfo = $getID3->analyze($Video_storepath);
+            // $Video_duration = $VideoInfo["playtime_seconds"];
+
+            $video = new Video();
+            $video->disk = "public";
+            $video->title = $file_folder_name;
+            $video->original_name = "public";
+            $video->path = $path;
+            $video->mp4_url = $storepath;
+            $video->type = "mp4_url";
+            $video->draft = 0;
+            $video->image = "default_image.jpg";
+
+            $PC_image_path = public_path("/uploads/images/default_image.jpg");
+
+            if (file_exists($PC_image_path)) {
+                $Mobile_image = "Mobile-default_image.jpg";
+                $Tablet_image = "Tablet-default_image.jpg";
+
+                Image::make($PC_image_path)->save(
+                    base_path() . "/public/uploads/images/" . $Mobile_image
+                );
+                Image::make($PC_image_path)->save(
+                    base_path() . "/public/uploads/images/" . $Tablet_image
+                );
+
+                $video->mobile_image = $Mobile_image;
+                $video->tablet_image = $Tablet_image;
+            } else {
+                $video->mobile_image = "default_image.jpg";
+                $video->tablet_image = "default_image.jpg";
+            }
+
+            // $video->duration = $Video_duration;
+            $video->save();
+
+            $video_id = $video->id;
+            $video_title = Video::find($video_id);
+            $title = $video_title->title;
+
+            $value["success"] = 1;
+            $value["message"] = "Uploaded Successfully!";
+            $value["video_id"] = $video_id;
+            $value["video_title"] = $title;
+
+            \LogActivity::addVideoLog("Added Uploaded MP4  Video.", $video_id);
+
+            return $value;
+        } else {
+            $value["success"] = 2;
+            $value["message"] = "File not uploaded.";
+            return response()->json($value);
+        }
+
+        // return response()->json($value);
+    }
+
+
+    public function AWSUploadFileOld(Request $request)
+    {
+        $url = 'https://s3.' . env('AWS_DEFAULT_REGION') . '.amazonaws.com/' . env('AWS_BUCKET') . '/';
+        
+
+        $StorageSetting = StorageSetting::first();
+
+        $file = $request->file('file');
+        $file_folder_name =  $file->getClientOriginalName();
+        $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
+        $filePath = $StorageSetting->aws_storage_path.'/'. $name;
+        // Storage::disk('s3')->put($filePath, file_get_contents($file));
+        $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+        $storepath = $path.$filePath;
+
+        $s3 = new S3Client(['region' => 'ap-south-1', 'version' => 'latest']);
+
+        $path = $_FILES['file']['name'];
+$file_name = "s3_" .pathinfo($path, PATHINFO_EXTENSION);
+$file_temp = $_FILES['file']['tmp_name'];
+$file_type = $_FILES['file']['type'];
+$upload_path = $name;
+$bucket_name = 'inthesky';
+        try {
+            $s3->putObject(
+                array(
+                    'Bucket' => 'inthesky',
+                    'Key' => $upload_path,
+                    'SourceFile' => $file_temp,
+                    'ContentType' => $file_type,
+                    'StorageClass' => 'STANDARD'
+                )
+            );
+            echo "Uploaded $file_name to $bucket_name.\n";
+        } catch (Exception $exception) {
+            echo "Failed to upload $file_name with error: " . $exception->getMessage();
+            exit("Please fix error with file upload before continuing.");
+        }
+        
+
+        // $bucket = 'inthesky';
+        // $keyname = $name;
+                                
+        // $s3 = new S3Client([
+        //     'version' => 'latest',
+        //     'region'  => 'ap-south-1'
+        // ]);
+         
+        // // Prepare the upload parameters.
+        // $uploader = new MultipartUploader($s3, $storepath, [
+        //     'bucket' => $bucket,
+        //     'key'    => $keyname
+        // ]);
+        
+        // // Perform the upload.
+        // try {
+        //     $result = $uploader->upload();
+        //     echo "Upload complete: {$result['ObjectURL']}\n";
+        //     } catch (MultipartUploadException $e) {
+        //     echo $e->getMessage() . "\n";
+        // }
+        exit;
         $value = [];
         $data = $request->all();
 
