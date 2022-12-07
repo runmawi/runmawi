@@ -7977,7 +7977,7 @@ class AdminVideosController extends Controller
                 $filePath = $StorageSetting->aws_storage_path.'/'. $name;
                 $filePath_mp4 = $StorageSetting->aws_storage_path.'/'. $name_mp4;
                 Storage::disk('s3')->put($transcode_path, file_get_contents($file));
-                print_r($name);exit;
+                // print_r($name);exit;
                 $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
                 $storepath = $path.$filePath_mp4;
                 $m3u8_path = $path.$filePath;
