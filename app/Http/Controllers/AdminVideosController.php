@@ -7526,27 +7526,52 @@ class AdminVideosController extends Controller
         $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
         $storepath = $path.$filePath;
 
-        $bucket = 'inthesky';
-        $keyname = $name;
-                                
-        $s3 = new S3Client([
-            'version' => 'latest',
-            'region'  => 'ap-south-1'
-        ]);
-         
-        // Prepare the upload parameters.
-        $uploader = new MultipartUploader($s3, $storepath, [
-            'bucket' => $bucket,
-            'key'    => $keyname
-        ]);
-        
-        // Perform the upload.
+        $s3 = new S3Client(['region' => 'ap-south-1', 'version' => 'latest']);
+
+        $path = $_FILES['file']['name'];
+$file_name = "s3_" .pathinfo($path, PATHINFO_EXTENSION);
+$file_temp = $_FILES['file']['tmp_name'];
+$file_type = $_FILES['file']['type'];
+$upload_path = $name;
+$bucket_name = 'inthesky';
         try {
-            $result = $uploader->upload();
-            echo "Upload complete: {$result['ObjectURL']}\n";
-            } catch (MultipartUploadException $e) {
-            echo $e->getMessage() . "\n";
+            $s3->putObject(
+                array(
+                    'Bucket' => 'inthesky',
+                    'Key' => $upload_path,
+                    'SourceFile' => $file_temp,
+                    'ContentType' => $file_type,
+                    'StorageClass' => 'STANDARD'
+                )
+            );
+            echo "Uploaded $file_name to $bucket_name.\n";
+        } catch (Exception $exception) {
+            echo "Failed to upload $file_name with error: " . $exception->getMessage();
+            exit("Please fix error with file upload before continuing.");
         }
+        
+
+        // $bucket = 'inthesky';
+        // $keyname = $name;
+                                
+        // $s3 = new S3Client([
+        //     'version' => 'latest',
+        //     'region'  => 'ap-south-1'
+        // ]);
+         
+        // // Prepare the upload parameters.
+        // $uploader = new MultipartUploader($s3, $storepath, [
+        //     'bucket' => $bucket,
+        //     'key'    => $keyname
+        // ]);
+        
+        // // Perform the upload.
+        // try {
+        //     $result = $uploader->upload();
+        //     echo "Upload complete: {$result['ObjectURL']}\n";
+        //     } catch (MultipartUploadException $e) {
+        //     echo $e->getMessage() . "\n";
+        // }
         exit;
         $value = [];
         $data = $request->all();
