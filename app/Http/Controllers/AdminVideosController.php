@@ -7511,7 +7511,7 @@ class AdminVideosController extends Controller
 
 
 
-    public function AWSUploadFile(Request $request)
+    public function AWSUploadFileNEw(Request $request)
     {
         $url = 'https://s3.' . env('AWS_DEFAULT_REGION') . '.amazonaws.com/' . env('AWS_BUCKET') . '/';
         
@@ -7815,44 +7815,44 @@ class AdminVideosController extends Controller
     }
 
 
-    public function AWSUploadFileOld(Request $request)
+    public function AWSUploadFile(Request $request)
     {
         $url = 'https://s3.' . env('AWS_DEFAULT_REGION') . '.amazonaws.com/' . env('AWS_BUCKET') . '/';
         
 
         $StorageSetting = StorageSetting::first();
 
-        $file = $request->file('file');
-        $file_folder_name =  $file->getClientOriginalName();
-        $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
-        $filePath = $StorageSetting->aws_storage_path.'/'. $name;
-        // Storage::disk('s3')->put($filePath, file_get_contents($file));
-        $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
-        $storepath = $path.$filePath;
+        // $file = $request->file('file');
+        // $file_folder_name =  $file->getClientOriginalName();
+        // $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
+        // $filePath = $StorageSetting->aws_storage_path.'/'. $name;
+        // // Storage::disk('s3')->put($filePath, file_get_contents($file));
+        // $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+        // $storepath = $path.$filePath;
 
-        $s3 = new S3Client(['region' => 'ap-south-1', 'version' => 'latest']);
+        // $s3 = new S3Client(['region' => 'ap-south-1', 'version' => 'latest']);
 
-        $path = $_FILES['file']['name'];
-$file_name = "s3_" .pathinfo($path, PATHINFO_EXTENSION);
-$file_temp = $_FILES['file']['tmp_name'];
-$file_type = $_FILES['file']['type'];
-$upload_path = $name;
-$bucket_name = 'inthesky';
-        try {
-            $s3->putObject(
-                array(
-                    'Bucket' => 'inthesky',
-                    'Key' => $upload_path,
-                    'SourceFile' => $file_temp,
-                    'ContentType' => $file_type,
-                    'StorageClass' => 'STANDARD'
-                )
-            );
-            echo "Uploaded $file_name to $bucket_name.\n";
-        } catch (Exception $exception) {
-            echo "Failed to upload $file_name with error: " . $exception->getMessage();
-            exit("Please fix error with file upload before continuing.");
-        }
+        // $path = $_FILES['file']['name'];
+        // $file_name = "s3_" .pathinfo($path, PATHINFO_EXTENSION);
+        // $file_temp = $_FILES['file']['tmp_name'];
+        // $file_type = $_FILES['file']['type'];
+        // $upload_path = $name;
+        // $bucket_name = 'inthesky';
+        // try {
+        //     $s3->putObject(
+        //         array(
+        //             'Bucket' => 'inthesky',
+        //             'Key' => $upload_path,
+        //             'SourceFile' => $file_temp,
+        //             'ContentType' => $file_type,
+        //             'StorageClass' => 'STANDARD'
+        //         )
+        //     );
+        //     echo "Uploaded $file_name to $bucket_name.\n";
+        // } catch (Exception $exception) {
+        //     echo "Failed to upload $file_name with error: " . $exception->getMessage();
+        //     exit("Please fix error with file upload before continuing.");
+        // }
         
 
         // $bucket = 'inthesky';
@@ -7876,7 +7876,7 @@ $bucket_name = 'inthesky';
         //     } catch (MultipartUploadException $e) {
         //     echo $e->getMessage() . "\n";
         // }
-        exit;
+        // exit;
         $value = [];
         $data = $request->all();
 
