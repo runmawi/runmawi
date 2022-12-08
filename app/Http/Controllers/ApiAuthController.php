@@ -9109,6 +9109,98 @@ $cpanel->end();
      return response()->json($response, 200);
     }
 
+    public function TV_Search(Request $request)
+    {
+
+      $search_value =  $request['search'];
+
+
+      try{
+
+        $videos_count = Video::where('title', 'LIKE', '%'.$search_value.'%')->count();
+        $albums_count = AudioAlbums::where('albumname', 'LIKE', '%'.$search_value.'%')->count();
+        $audios_count = Audio::where('title', 'LIKE', '%'.$search_value.'%')->count();
+        $liveStream_count = LiveStream::where('title', 'LIKE', '%'.$search_value.'%')->count();
+        $series_count = Series::where('title', 'LIKE', '%'.$search_value.'%')->count();
+
+  
+        if ($liveStream_count > 0) {
+          $LiveStream = LiveStream::where('title', 'LIKE', '%'.$search_value.'%')->where('status','=',1)->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+            $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+            $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+            return $item;
+          });
+  
+          } else {
+            $LiveStream = [];
+          } 
+        if ($audios_count > 0) {
+          $audios = Audio::where('title', 'LIKE', '%'.$search_value.'%')->where('status','=',1)->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+            $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+            $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+            return $item;
+          });
+  
+          } else {
+            $audios = [];
+          } 
+
+        if ($albums_count > 0) {
+          $albums = AudioAlbums::where('albumname', 'LIKE', '%'.$search_value.'%')->orderBy('created_at', 'desc')->get()->map(function ($item) {
+        $item['image_url'] = URL::to('/').'/public/uploads/albums/'.$item->album;
+        return $item;
+        });
+  
+        } else {
+        $albums = [];
+        } 
+  
+        if ($videos_count > 0) {
+              $videos = Video::where('title', 'LIKE', '%'.$search_value.'%')->where('status','=',1)->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+          $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+          $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+          return $item;
+        });
+  
+        } else {
+          $videos = [];
+        } 
+  
+        if ($series_count > 0) {
+          $series = Series::where('title', 'LIKE', '%'.$search_value.'%')->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+          $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+          $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+
+          return $item;
+        });
+  
+        } else {
+          $series = [];
+        } 
+                          
+            $response = array(
+                'status'=> 'true',
+                'audios'         => $audios ,
+                'albums'  => $albums ,
+                'videos'   => $videos,
+                'series' => $series,
+                'livestream'  => $LiveStream ,
+            );
+
+        } 
+        catch (\Throwable $th) {
+
+            $response = array(
+              'status'=>'false',
+              'message'=>$th->getMessage(),
+            );
+
+        }
+
+      return response()->json($response, 200);
+    }
+
+
 }
 
 
