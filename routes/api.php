@@ -356,5 +356,7 @@ Route::group([
 
     Route::post('pages', 'ApiAuthController@Page');
 
+    Route::post('tv_search','ApiAuthController@TV_Search');
+
 
 });
