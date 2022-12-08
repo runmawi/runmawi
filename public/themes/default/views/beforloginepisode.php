@@ -306,10 +306,7 @@
                                     </div>
                                  </a>
                               </li>
-                           <?php else: ?>
-                                 <div class="col-sm-12 d-flex">
-                                    <p> No Episode Found </p>
-                                 <div> <?php
+                                  <?php
                               endif;
                      endforeach; 
                   endforeach
