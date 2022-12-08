@@ -306,6 +306,8 @@ Route::get('/live/{id}', 'LiveStreamController@Play');
 Route::get('/live/embed/{id}', 'LiveStreamController@EmbedLivePlay');
 
 
+Route::post('lifetime-subscription-payment', 'PaymentController@lifetime_subscription')->name('stripe.lifetime_subscription'); 
+
 Route::post('purchase-live', 'PaymentController@StoreLive')->name('stripe.store'); 
 Route::post('purchase-video', 'PaymentController@purchaseVideo');
 Route::post('purchase-videocount', 'AdminVideosController@purchaseVideocount');

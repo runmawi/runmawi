@@ -496,6 +496,8 @@ i.fa.fa-google-plus {
 
 @php
     $SubscriptionPlan = App\SubscriptionPlan::first();
+    $AdminLifeTimeSubscription = App\AdminLifeTimeSubscription::first();
+
     $signup_payment_content = App\SiteTheme::pluck('signup_payment_content')->first();
     $signup_step2_title = App\SiteTheme::pluck('signup_step2_title')->first();
 
@@ -585,6 +587,32 @@ i.fa.fa-google-plus {
                             </div>
                         @endforeach
                     </div>
+
+                                                {{-- Life Time Subscription --}}
+
+                    @if( $AdminLifeTimeSubscription != null && $AdminLifeTimeSubscription->status == 1 )
+                        <div class="LifeTimeSubscription_div row align-items-center m-0 p-0" id="LifeTimeSubscription_div" data-subscription-price={{ $AdminLifeTimeSubscription->price }} onclick="LifeTimeSubscription(this)" >
+                            <div style="" class="col-md-6 plan_details p-0 "  >
+                                <div class="row dg align-items-center mb-4" >
+                                    <div class="col-md-7 p-0">
+                                        <h4 class="text-black font-weight-bold"> {{ $AdminLifeTimeSubscription  ? $AdminLifeTimeSubscription->name : " " }} </h4>
+                                        <p> {{ $AdminLifeTimeSubscription  ? $AdminLifeTimeSubscription->name : " " . " Membership " }} </p>
+                                    </div>
+                                    <div class="vl "></div>
+                                    <div class="col-md-4 p-2" >
+                                        <h4 class="text-black"> {{ currency_symbol().$AdminLifeTimeSubscription->price }}  </h4>
+                                        <p>Billed as {{ $AdminLifeTimeSubscription  ? currency_symbol().$AdminLifeTimeSubscription->price : " "  }} </p>
+                                    </div>
+                                </div>
+                                                {{-- Stripe publishable Key --}}
+                                <input type="hidden" id="Stripe_publishable_key" name="Stripe_publishable_key" value="{{ env('STRIPE_KEY')}}">
+
+                                <div class="d-flex justify-content-between align-items-center " > 
+                                    <div class="bgk"></div>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
                 </div>
                     
                     <!-- Stripe Payment -->
@@ -928,6 +956,9 @@ for (var i = 0; i < btns.length; i++) {
             $('#plan_name').replaceWith('<input type="hidden" name="plan_name" id="plan_name" value="'+ plans_id +'">');
             $('.plan_price').empty(plan_price);
             $('.plan_price').append(currency_symbols+plan_price);
+
+            $('#coupon_amt_deduction').empty(plan_price);
+            $('#coupon_amt_deduction').append( currency_symbols+plan_price );
 
             $('.dg' ).removeClass('actives');
             $('#'+plan_id_class ).addClass('actives');
@@ -1376,6 +1407,83 @@ function paypalplan_details(ele){
                     } 
             });
         });
+
+        
+        // Life Time Subscription
+
+        function LifeTimeSubscription( ele ) {
+
+            let Stripe_publishable_key = document.getElementById("Stripe_publishable_key").value ;
+            var subscription_price = $(ele).attr('data-subscription-price');
+
+            var handler = StripeCheckout.configure({
+
+                key: Stripe_publishable_key,
+                locale: 'auto',
+                panelLabel: "Pay Now", 
+
+                token: function (token) {
+                    console.log(' Stripe token Created!!');  console.log( token ); 
+                    $('#token_response').html(JSON.stringify(token));
+
+                    $.ajax({
+                        url: '{{ route("stripe.lifetime_subscription") }}',
+                        method: 'post',
+                        data: {
+                            "_token": "<?= csrf_token(); ?>",
+                            subscription_price: subscription_price  , 
+                            stripeToken  : token.id,
+                            card_email   : token.email ,
+                            card_name    : token.card.name ,
+                            card_city    : token.card.address_city,
+                            card_country : token.card.country ,
+                            card_postal_code   : token.card.address_zip ,
+                            card_address_line1 : token.card.address_line1 ,
+                        },
+                    
+                success: function( response ){
+
+                    if( response.data.status == true ){
+                        swal({
+                            title: "Subscription Purchased Successfully!",
+                            text: "Your Payment done Successfully!",
+                            icon: payment_images+'/Successful_Payment.gif',
+                            buttons: false,      
+                            closeOnClickOutside: false,
+                        });
+
+                        setTimeout(function() {
+                            window.location.href = "{{ route('home')}}";
+                        }, 3000);
+                    }
+                    else if( response.data.status == false ){
+
+                        swal({
+                            title: "Payment Failed!",
+                            text: "Your Payment is failed",
+                            type: "warning"
+                            }).then(function() {
+                                location.reload();
+                            })
+                    }
+                   
+            },
+            error: (error) => {
+                swal('error');
+            
+                    }
+                })
+            
+            }
+        });
+
+        handler.open({
+            name: '{{ GetWebsiteName() }}',
+            description: 'Life Time Subscription',
+            amount: subscription_price * 100
+        });
+    } 
+
 </script>
 
 @php

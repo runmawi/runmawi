@@ -1680,4 +1680,95 @@ public function UpgadeSubscription(Request $request){
        dd($stripe_plan);
 
       }
+
+      public function lifetime_subscription( Request $request)
+      {
+
+        try {
+          $stripe = new \Stripe\StripeClient( env('STRIPE_SECRET') );
+
+                      // Stripe Customer Create
+
+          $customer = $stripe->customers->create(array(
+              "address" => [
+                      "line1"       => $request->card_address_line1,
+                      "postal_code" => $request->card_postal_code,
+                      "city"        => $request->card_city,
+                      "state"       => null,
+                      "country"     => $request->card_country,
+                  ],
+              "email"  => $request->card_email ,
+              "name"   => $request->card_name ,
+              "source" => $request->stripeToken ,
+          ));
+
+                      // Stripe Charge
+
+          $stripe_charge = $stripe->charges->create([
+                  "amount"   => $request->subscription_price * 100 ,
+                  "currency" => "USD",
+                  "customer" => $customer->id,
+                  "description" => "Life Time Subscription",
+          ]); 
+
+          $stripe_charge_retrieve = $stripe->charges->retrieve( $stripe_charge->id );
+
+          $Sub_Startday = date('d/m/Y H:i:s', $stripe_charge_retrieve['created']); 
+          $Sub_Endday = date('d/m/Y H:i:s', $stripe_charge_retrieve['created']); 
+          $trial_ends_at = date('d/m/Y H:i:s', $stripe_charge_retrieve['created']); 
+
+          $users_details = Auth::User() ;
+
+          if( $users_details != null ){
+              $user_id = Auth::user()->id;
+          }
+          else{
+              $userEmailId = $request->session()->get('register.email');
+              $user_id   = User::where('email',$userEmailId)->pluck('id')->first();
+          }
+
+          Subscription::create([
+              'user_id'        =>  $user_id,
+              'name'           =>  $stripe_charge_retrieve['billing_details']['name'],
+              'price'          =>  $stripe_charge_retrieve['amount'] ,  
+              'stripe_id'      =>  $stripe_charge_retrieve['id'] ,
+              'stripe_status'  =>  $stripe_charge_retrieve['status'] ,
+              'stripe_plan'    =>  $stripe_charge_retrieve['id'] ,
+              'quantity'       =>  null,
+              'countryname'    =>  Country_name(),
+              'regionname'     =>  Region_name(),
+              'cityname'       =>  city_name(),
+              'PaymentGateway' =>  'Stripe',
+              'trial_ends_at'  =>  $trial_ends_at,
+              'ends_at'        =>  $trial_ends_at,
+          ]);
+
+          User::where('id',$user_id)->update([
+              'role'                  =>  'subscriber',
+              'stripe_id'             =>  $stripe_charge_retrieve['id'] ,
+              'subscription_start'    =>  $Sub_Startday,
+              'subscription_ends_at'  =>  $Sub_Endday,
+              'payment_gateway'       =>  'Stripe',
+          ]);
+
+          $response = array(
+            'status'=> true,
+            'message'=> "Life time Subscription done Successfully",
+          );
+  
+          return response()->json(['data' => $response]);
+
+          // return redirect()->route('home');
+
+        } catch (\Throwable $th) {
+
+          $response = array(
+            'status'=> false,
+            'message'=> $th->getMessage(),
+          );
+  
+          return response()->json(['data' => $response]); 
+        }
+        
+      }
 }
