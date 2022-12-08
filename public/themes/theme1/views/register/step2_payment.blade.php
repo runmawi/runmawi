@@ -601,7 +601,10 @@ i.fa.fa-google-plus {
                                     <div class="vl "></div>
                                     <div class="col-md-4 p-2" >
                                         <h4 class="text-black"> {{ currency_symbol().$AdminLifeTimeSubscription->price }}  </h4>
-                                        <p>Billed as {{ $AdminLifeTimeSubscription  ? currency_symbol().$AdminLifeTimeSubscription->price : " "  }} </p>
+                                        <p class="mb-0">Billed as {{ $AdminLifeTimeSubscription  ? currency_symbol().$AdminLifeTimeSubscription->price : " "  }} </p>
+                                        <div class="text-center">
+                                            <button  type="submit" class="btn1 btn-lg  text-white " style="font-size:10px !important ; padding:5px 20px ;" >Pay Now</button>
+                                       </div>
                                     </div>
                                 </div>
                                                 {{-- Stripe publishable Key --}}

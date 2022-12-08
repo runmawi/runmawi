@@ -587,7 +587,10 @@ i.fa.fa-google-plus {
                                             <div class="vl "></div>
                                             <div class="col-md-4 p-2" >
                                                 <h4 class="text-black"> {{ currency_symbol().$AdminLifeTimeSubscription->price }}  </h4>
-                                                <p>Billed as {{ $AdminLifeTimeSubscription  ? currency_symbol().$AdminLifeTimeSubscription->price : " "  }} </p>
+                                                <p class="mb-0" >Billed as {{ $AdminLifeTimeSubscription  ? currency_symbol().$AdminLifeTimeSubscription->price : " "  }} </p>
+                                                <div class="text-center">
+                                                     <button  type="submit" class="btn1 btn-lg  text-white " style="font-size:10px !important ; padding:5px 20px ;" >Pay Now</button>
+                                                </div>
                                             </div>
                                         </div>
                                                         {{-- Stripe publishable Key --}}
@@ -1118,8 +1121,12 @@ i.fa.fa-google-plus {
                             card_address_line1 : token.card.address_line1 ,
 
                     },
-                success: (response) => {
-                    swal({
+
+                    
+                success: function( response ){
+
+                    if( response.data.status == true ){
+                        swal({
                             title: "Subscription Purchased Successfully!",
                             text: "Your Payment done Successfully!",
                             icon: payment_images+'/Successful_Payment.gif',
@@ -1127,9 +1134,21 @@ i.fa.fa-google-plus {
                             closeOnClickOutside: false,
                         });
 
-                    setTimeout(function() {
-                        window.location.href = "{{ route('home')}}";
-                    }, 3000);
+                        setTimeout(function() {
+                            window.location.href = "{{ route('home')}}";
+                        }, 3000);
+                    }
+                    else if( response.data.status == false ){
+
+                        swal({
+                            title: "Payment Failed!",
+                            text: "Your Payment is failed",
+                            type: "warning"
+                            }).then(function() {
+                                location.reload();
+                            })
+                    }
+                   
             },
             error: (error) => {
                 swal('error');
