@@ -2769,6 +2769,7 @@ public function verifyandupdatepassword(Request $request)
       $audio_categories_count = AudioCategory::where('name', 'LIKE', '%'.$search_value.'%')->count();
       $audios_count = Audio::where('title', 'LIKE', '%'.$search_value.'%')->count();
       $artist_count = Artist::where('artist_name', 'LIKE', '%'.$search_value.'%')->count();
+      $series_count = Series::where('title', 'LIKE', '%'.$search_value.'%')->count();
       $video_categories_count =  DB::table('video_categories')
       ->join('videos', 'videos.video_category_id', '=', 'video_categories.id')
       ->select('videos.*')
@@ -2884,6 +2885,15 @@ public function verifyandupdatepassword(Request $request)
         $video_artist = [];
       }
 
+      if ($series_count > 0) {
+        $series = Series::where('title', 'LIKE', '%'.$search_value.'%')->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        return $item;
+      });
+
+      } else {
+        $series = [];
+      } 
 
       $response = array(
         'channelvideos' => $videos,
@@ -2898,6 +2908,7 @@ public function verifyandupdatepassword(Request $request)
         'video_artist' => $video_artist,
         'artist_categories' => $artist_categories,
         'Audio_artist_detail' => $Audio_artist_detail,
+        'series' => $series,
       );
 
       return response()->json($response, 200);
