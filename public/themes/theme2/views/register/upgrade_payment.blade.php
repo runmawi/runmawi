@@ -7,8 +7,7 @@
 @section('content')
 
 
-    <script src="https://www.paypal.com/sdk/js?client-id=Aclkx_Wa7Ld0cli53FhSdeDt1293Vss8nSH6HcSDQGHIBCBo42XyfhPFF380DjS8N0qXO_JnR6Gza5p2&vault=true&intent=subscription" data-sdk-integration-source="button-factory">
-    </script>
+<script src="https://www.paypal.com/sdk/js?client-id=Aclkx_Wa7Ld0cli53FhSdeDt1293Vss8nSH6HcSDQGHIBCBo42XyfhPFF380DjS8N0qXO_JnR6Gza5p2&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
     <style>
         .round{
             background-color: #8a0303!important;
@@ -389,6 +388,11 @@ i.fa.fa-google-plus {
     color: brown;
     font-family: 'remixicon';
     }
+        .meth{
+            color: #fff;
+            font-weight: 500;
+            font-size: 20px;
+        }
     .small-heading {
   font-size: 14px;
   margin-bottom: 20px;
@@ -416,7 +420,8 @@ i.fa.fa-google-plus {
         }
     label{
         color: #fff!important;
-        font-weight: 600;
+        line-height: 0;
+      
     }
     .buttonClass {
   font-size:15px;
@@ -445,7 +450,7 @@ i.fa.fa-google-plus {
         background-color: #fff;
         margin: 5px;
         height: 110px;
-       
+       border: 5px solid #ddd;
        
     }
 
@@ -458,6 +463,7 @@ i.fa.fa-google-plus {
             padding: 10px;
             color: #000!important;
             border:  {{ '5px solid'.button_bg_color() .'!important' }} ;
+            transition: 0.5s;
         }
     .cont{
         background-color: #232c30;
@@ -488,6 +494,8 @@ i.fa.fa-google-plus {
 
 @php
     $SubscriptionPlan = App\SubscriptionPlan::first();
+    $AdminLifeTimeSubscription = App\AdminLifeTimeSubscription::first();
+
     $signup_payment_content = App\SiteTheme::pluck('signup_payment_content')->first();
     $signup_step2_title = App\SiteTheme::pluck('signup_step2_title')->first();
 
@@ -513,26 +521,26 @@ i.fa.fa-google-plus {
                      <div class="medium-heading text-white pb-3"> {{  $signup_step2_title  }} </div>
 
                     <div class="col-md-12 p-0">
-                        <h5> Payment Method</h5>
+                        <p class="meth"> Payment Method</p>
 
                             @if(!empty($Stripe_payment_settings) && $Stripe_payment_settings->stripe_status == 1)
-                                <div class="d-flex align-items-center">
-                                    <input type="radio" id="stripe_radio_button" class="payment_gateway" name="payment_gateway" value="stripe" > <br />
-                                    <label class="mt-2 ml-2"> {{ $stripe_lable }} </label> <br />
+                                <div class="align-items-center">
+                                    <input type="radio" id="stripe_radio_button" class="payment_gateway" name="payment_gateway" value="stripe" > 
+                                    <label class="ml-2"><p> {{ $stripe_lable }} </p></label> <br />
                                 </div>
                             @endif
 
                             @if( !empty($Paystack_payment_settings) && $Paystack_payment_settings->status == 1 )
-                                <div class="d-flex align-items-center">
+                                <div class=" align-items-center">
                                     <input type="radio" id="paystack_radio_button" class="payment_gateway" name="payment_gateway" value="paystack"> 
-                                    <label class="mt-2 ml-2" > {{ $paystack_lable }} </label> <br />
+                                    <label class="mt-2 ml-2" > <p>{{ $paystack_lable }} </p></label> <br />
                                 </div>
                             @endif
 
                             @if( !empty($PayPal_payment_settings) && $PayPal_payment_settings->paypal_status == 1 )
-                                <div class="d-flex align-items-center">
+                                <div class="align-items-center">
                                     <input type="radio" id="paystack_radio_button" class="payment_gateway" name="payment_gateway" value="paypal"> 
-                                    <label class="mt-2 ml-2" > {{ $paypal_lable }} </label> <br />
+                                    <label class="mt-2 ml-2" > <p>{{ $paypal_lable }} </p></label> <br />
                                 </div>
                             @endif
 
@@ -554,8 +562,8 @@ i.fa.fa-google-plus {
                                         </div>
                                         <div class="vl "></div>
                                         <div class="col-md-4 p-2" >
-                                            <h4 class="text-black">{{ "$".$plan->price }}</h4>
-                                            <p>Billed as {{ "$".$plan->price }}</p>
+                                            <h4 class="text-black">{{ currency_symbol().$plan->price }}</h4>
+                                            <p>Billed as {{ currency_symbol().$plan->price }}</p>
                                         </div>
                                     </div>
 
@@ -565,9 +573,38 @@ i.fa.fa-google-plus {
                                 </div>
                             @endforeach
                         </div>
+
+                                                {{-- Life Time Subscription --}}
+
+                            @if( $AdminLifeTimeSubscription != null && $AdminLifeTimeSubscription->status == 1 )
+                                <div class="LifeTimeSubscription_div row align-items-center m-0 p-0" id="LifeTimeSubscription_div" data-subscription-price={{ $AdminLifeTimeSubscription->price }} onclick="LifeTimeSubscription(this)" >
+                                    <div style="" class="col-md-6 plan_details p-0 "  >
+                                        <div class="row dg align-items-center mb-4" >
+                                            <div class="col-md-7 p-0">
+                                                <h4 class="text-black font-weight-bold"> {{ $AdminLifeTimeSubscription  ? $AdminLifeTimeSubscription->name : " " }} </h4>
+                                                <p> {{ $AdminLifeTimeSubscription  ? $AdminLifeTimeSubscription->name : " " . " Membership " }} </p>
+                                            </div>
+                                            <div class="vl "></div>
+                                            <div class="col-md-4 p-2" >
+                                                <h4 class="text-black"> {{ currency_symbol().$AdminLifeTimeSubscription->price }}  </h4>
+                                                <p class="mb-0" >Billed as {{ $AdminLifeTimeSubscription  ? currency_symbol().$AdminLifeTimeSubscription->price : " "  }} </p>
+                                                <div class="text-center">
+                                                     <button  type="submit" class="btn1 btn-lg  text-white " style="font-size:10px !important ; padding:5px 20px ;" >Pay Now</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                                        {{-- Stripe publishable Key --}}
+                                        <input type="hidden" id="Stripe_publishable_key" name="Stripe_publishable_key" value="{{ env('STRIPE_KEY')}}">
+
+                                        <div class="d-flex justify-content-between align-items-center " > 
+                                            <div class="bgk"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
                     </div>
 
-                    <div class="col-md-12 mt-5 p-0 ">
+                    <div class="col-md-12 mt-5">
                         <div class="cont stripe_payment">
       
                          <div class="d-flex justify-content-between align-items-center">
@@ -713,6 +750,9 @@ i.fa.fa-google-plus {
         $('#plan_name').replaceWith('<input type="hidden" name="plan_name" id="plan_name" value="'+ plans_id +'">');
         $('.plan_price').empty(plan_price);
         $('.plan_price').append( currency_symbols+plan_price );
+
+        $('#coupon_amt_deduction').empty(plan_price);
+        $('#coupon_amt_deduction').append( currency_symbols+plan_price );
 
         $('.dg' ).removeClass('actives');
         $('#'+plan_id_class ).addClass('actives');
@@ -1048,9 +1088,85 @@ i.fa.fa-google-plus {
                     } 
             });
         });
+
+        // Life Time Subscription
+
+        function LifeTimeSubscription( ele ) {
+
+            let Stripe_publishable_key = document.getElementById("Stripe_publishable_key").value ;
+            var subscription_price = $(ele).attr('data-subscription-price');
+
+            var handler = StripeCheckout.configure({
+
+                key: Stripe_publishable_key,
+                locale: 'auto',
+                panelLabel: "Pay Now", 
+
+                token: function (token) {
+                    console.log(' Stripe token Created!!');  console.log( token ); 
+                    $('#token_response').html(JSON.stringify(token));
+
+                    $.ajax({
+                        url: '{{ route("stripe.lifetime_subscription") }}',
+                        method: 'post',
+                        data: {
+                            "_token": "<?= csrf_token(); ?>",
+                            subscription_price: subscription_price  , 
+                            stripeToken  : token.id,
+                            card_email   : token.email ,
+                            card_name    : token.card.name ,
+                            card_city    : token.card.address_city,
+                            card_country : token.card.country ,
+                            card_postal_code   : token.card.address_zip ,
+                            card_address_line1 : token.card.address_line1 ,
+
+                    },
+
+                    
+                success: function( response ){
+
+                    if( response.data.status == true ){
+                        swal({
+                            title: "Subscription Purchased Successfully!",
+                            text: "Your Payment done Successfully!",
+                            icon: payment_images+'/Successful_Payment.gif',
+                            buttons: false,      
+                            closeOnClickOutside: false,
+                        });
+
+                        setTimeout(function() {
+                            window.location.href = "{{ route('home')}}";
+                        }, 3000);
+                    }
+                    else if( response.data.status == false ){
+
+                        swal({
+                            title: "Payment Failed!",
+                            text: "Your Payment is failed",
+                            type: "warning"
+                            }).then(function() {
+                                location.reload();
+                            })
+                    }
+                   
+            },
+            error: (error) => {
+                swal('error');
+            
+                    }
+                })
+            
+            }
+        });
+
+        handler.open({
+            name: '{{ GetWebsiteName() }}',
+            description: 'Life Time Subscription',
+            amount: subscription_price * 100
+        });
+        } 
+
 </script>
-
-
 
 @php
     include(public_path('themes/default/views/footer.blade.php'));
