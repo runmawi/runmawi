@@ -1126,7 +1126,7 @@ class AdminSeriesController extends Controller
         $series->ios_product_id = $ios_ppv_price;
         $series->save();
         
-        if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1 && $StorageSetting->aws_storage == 1) {
+        if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1 && $StorageSetting->aws_storage == 0) {
         ConvertSerieTrailer::dispatch($series,$storepath,$convertresolution,$trailer_video_name,$trailer_Video);
         }
         // $series = SeriesSeason::create($data);
