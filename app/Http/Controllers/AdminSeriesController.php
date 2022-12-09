@@ -971,6 +971,7 @@ class AdminSeriesController extends Controller
                     $file = $request->file('trailer');
                     $file_folder_name =  $file->getClientOriginalName();
                     // $name = time() . $file->getClientOriginalName();
+                    $name_mp4 = $file->getClientOriginalName();
                     $name_mp4 = $name_mp4 == null ? str_replace(' ', '_', 'S3'.$name_mp4) : str_replace(' ', '_', 'S3'.$name_mp4) ;        
                     $newfile = explode(".mp4",$name_mp4);
                     $namem3u8 = $newfile[0].'.m3u8';   
@@ -1246,6 +1247,7 @@ class AdminSeriesController extends Controller
 
             $file = $request->file('trailer');
             $file_folder_name =  $file->getClientOriginalName();
+            $name_mp4 = $file->getClientOriginalName();
             $name_mp4 = $name_mp4 == null ? str_replace(' ', '_', 'S3'.$name_mp4) : str_replace(' ', '_', 'S3'.$name_mp4) ;        
             $newfile = explode(".mp4",$name_mp4);
             $namem3u8 = $newfile[0].'.m3u8';   
