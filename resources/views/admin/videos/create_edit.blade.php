@@ -259,7 +259,7 @@ border-radius: 0px 4px 4px 0px;
                   <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
                </div>
                <br> <!-- fieldsets -->
-               @if($video->processed_low >= 100 && $video->type == "" || $video->type == "mp4_url"   || $video->type == "m3u8_url" || $video->type == "embed")
+               @if($video->processed_low >= 100 && $video->type == "" || $video->type == "mp4_url"   || $video->type == "m3u8_url" || $video->type == "aws_m3u8" || $video->type == "embed")
 
                <fieldset id="player_data">
                   <div class="form-card">
@@ -309,7 +309,13 @@ border-radius: 0px 4px 4px 0px;
                                  src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>"
                                  >
                            </video>
-                        
+                           @elseif ($video->type == 'aws_m3u8') 
+                           <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                              <source 
+                                 type="application/x-mpegURL" 
+                                 src="<?php if($video->type == "aws_m3u8"){ echo $video->m3u8_url; }else { echo $video->trailer; } ?>"
+                                 >
+                           </video>
                         @endif
                         </div>
                          </div>
@@ -1937,8 +1943,9 @@ $('#error_video_Category').hide();
 <script src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
 <script>
    var type = '<?= $video->type ?>';
-   
-   if(type != ""){
+   if(type != "" && type != 'aws_m3u8'){
+   // alert('type');
+
        const player = new Plyr('#videoPlayer',{
          controls: [
                      'play-large',
@@ -1960,6 +1967,68 @@ $('#error_video_Category').hide();
        });
        $("#nextplayer").click(function(){
       player.stop();
+   });
+   }else if(type == 'aws_m3u8'){
+   // alert(type);
+
+      document.addEventListener("DOMContentLoaded", () => {
+   const video = document.querySelector("video");
+   const source = video.getElementsByTagName("source")[0].src;
+   
+   // For more options see: https://github.com/sampotts/plyr/#options
+   // captions.update is required for captions to work with hls.js
+   const defaultOptions = {};
+   
+   if (Hls.isSupported()) {
+   // For more Hls.js options, see https://github.com/dailymotion/hls.js
+   const hls = new Hls();
+   hls.loadSource(source);
+   
+   // From the m3u8 playlist, hls parses the manifest and returns
+   // all available video qualities. This is important, in this approach,
+   // we will have one source on the Plyr player.
+   hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+   
+     // Transform available levels into an array of integers (height values).
+     const availableQualities = hls.levels.map((l) => l.height)
+   
+     // Add new qualities to option
+     defaultOptions.quality = {
+       default: availableQualities[0],
+       options: availableQualities,
+       // this ensures Plyr to use Hls to update quality level
+       forced: true,        
+       onChange: (e) => updateQuality(e),
+     }
+   
+     // Initialize here
+     const player = new Plyr(video, defaultOptions);
+     
+   $("#nextplayer").click(function(){
+      player.stop();
+   });
+   });
+   hls.attachMedia(video);
+   window.hls = hls;
+
+   } else {
+   // default options with no quality update in case Hls is not supported
+   const player = new Plyr(video, defaultOptions);
+
+   $("#nextplayer").click(function(){
+      alert();
+      player.stop();
+   });
+   }
+   
+   function updateQuality(newQuality) {
+   window.hls.levels.forEach((level, levelIndex) => {
+     if (level.height === newQuality) {
+       console.log("Found quality match with " + newQuality);
+       window.hls.currentLevel = levelIndex;
+     }
+   });
+   }
    });
    }
    else{
