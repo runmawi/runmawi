@@ -22,18 +22,6 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
  </svg>
 </section>
 
-
-<?php if(count($VideoSchedules) > 0){ ?>
-       <section id="iq-favorites">
-            <div class="container-fluid overflow-hidden">
-               <div class="row">
-                  <div class="col-sm-12 ">
-                     <?php include('partials/home/schedule.php'); ?>
-                  </div>
-               </div>
-            </div>
-         </section>
-   <?php } ?>
 <!-- Slider End -->
 
 
@@ -188,7 +176,22 @@ if($home_settings->live_videos == 1){ ?>
 </section>
 <?php } }?>
 
-
+<?php 
+      if($value->video_name == 'video_schedule'){
+      
+      if($home_settings->video_schedule == 1){
+         if(count(@$VideoSchedules) > 0){ ?>
+   <section id="iq-favorites">
+      <div class="container-fluid overflow-hidden">
+         <div class="row">
+            <div class="col-sm-12 ">
+            <?php include('partials/home/schedule.php'); ?>
+            </div>
+         </div>
+      </div>
+   </section>
+   <?php } } } ?>
+   
 <?php 
        if($value->video_name == 'audios'){
 if($home_settings->audios == 1){ ?>

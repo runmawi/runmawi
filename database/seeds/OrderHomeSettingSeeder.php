@@ -115,7 +115,7 @@ class OrderHomeSettingSeeder extends Seeder
                     'order_id' => 11,
                     'video_name' => 'video_schedule' ,
                     'header_name' => 'Video Schedule', 
-                    'url' => null,
+                    'url' => 'scheduled-videos',
                     'created_at' => Carbon::now(),
                     'updated_at' => null,
                 ],
