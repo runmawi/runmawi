@@ -971,14 +971,14 @@ class AdminSeriesController extends Controller
                     $file = $request->file('trailer');
                     $file_folder_name =  $file->getClientOriginalName();
                     // $name = time() . $file->getClientOriginalName();
-                    $name_mp4 =  $file->getClientOriginalName();
+                    $name_mp4 = $name_mp4 == null ? str_replace(' ', '_', 'S3'.$name_mp4) : str_replace(' ', '_', 'S3'.$name_mp4) ;        
                     $newfile = explode(".mp4",$name_mp4);
                     $namem3u8 = $newfile[0].'.m3u8';   
-                    $name = $namem3u8 == null ? str_replace(' ', '_', 'S3'.$namem3u8) : str_replace(' ', '_', 'S3'.$namem3u8) ;        
-        
+                    $name = $namem3u8 == null ? str_replace(' ', '_',$namem3u8) : str_replace(' ', '_',$namem3u8) ;        
                     $filePath = $StorageSetting->aws_season_trailer_path.'/'. $name;
                     $transcode_path = @$StorageSetting->aws_transcode_path.'/'. $name;
-                    Storage::disk('s3')->put($filePath, file_get_contents($file));
+                    $transcode_path_mp4 = @$StorageSetting->aws_storage_path.'/'. $name_mp4;
+                    Storage::disk('s3')->put($transcode_path_mp4, file_get_contents($file));
                     $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
                     $M3u8_save_path = $path.$transcode_path;
         
@@ -1246,13 +1246,14 @@ class AdminSeriesController extends Controller
 
             $file = $request->file('trailer');
             $file_folder_name =  $file->getClientOriginalName();
-            $name_mp4 =  $file->getClientOriginalName();
+            $name_mp4 = $name_mp4 == null ? str_replace(' ', '_', 'S3'.$name_mp4) : str_replace(' ', '_', 'S3'.$name_mp4) ;        
             $newfile = explode(".mp4",$name_mp4);
             $namem3u8 = $newfile[0].'.m3u8';   
-            $name = $namem3u8 == null ? str_replace(' ', '_', 'S3'.$namem3u8) : str_replace(' ', '_', 'S3'.$namem3u8) ;        
+            $name = $namem3u8 == null ? str_replace(' ', '_',$namem3u8) : str_replace(' ', '_',$namem3u8) ;        
             $filePath = $StorageSetting->aws_season_trailer_path.'/'. $name;
             $transcode_path = @$StorageSetting->aws_transcode_path.'/'. $name;
-            Storage::disk('s3')->put($filePath, file_get_contents($file));
+            $transcode_path_mp4 = @$StorageSetting->aws_storage_path.'/'. $name_mp4;
+            Storage::disk('s3')->put($transcode_path_mp4, file_get_contents($file));
             $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
             $M3u8_save_path = $path.$transcode_path;
 
@@ -2775,10 +2776,13 @@ class AdminSeriesController extends Controller
                 $file = $request->file('file');
 
                  //  Episode duration 
-                 $getID3 = new getID3();
-                 $Video_storepath = $file;
-                 $VideoInfo = $getID3->analyze($Video_storepath);
-                 $Video_duration = $VideoInfo["playtime_seconds"];
+                //  $getID3 = new getID3();
+                //  $Video_storepath = $file;
+                //  $VideoInfo = $getID3->analyze($Video_storepath);
+                //  $Video_duration = $VideoInfo["playtime_seconds"];
+                $ffprobe =  \FFMpeg\FFProbe::create();
+                $duration = $ffprobe->format($mp4_url)->get('duration');
+                $Video_duration = explode(".", $duration)[0];
     
             $newfile = explode(".mp4",$file);
             $file_folder_name = $newfile[0];       
@@ -2818,13 +2822,14 @@ class AdminSeriesController extends Controller
                 $file_folder_name =  $file->getClientOriginalName();
                 // $name = time() . $file->getClientOriginalName();
                 $name_mp4 =  $file->getClientOriginalName();
+                $name_mp4 == null ? str_replace(' ', '_', 'S3'.$name_mp4) : str_replace(' ', '_', 'S3'.$name_mp4) ;        
                 $newfile = explode(".mp4",$name_mp4);
                 $namem3u8 = $newfile[0].'.m3u8';   
-                $name = $namem3u8 == null ? str_replace(' ', '_', 'S3'.$namem3u8) : str_replace(' ', '_', 'S3'.$namem3u8) ;        
-    
+                $name = $namem3u8 == null ? str_replace(' ', '_',$namem3u8) : str_replace(' ', '_',$namem3u8) ;        
                 $filePath = $StorageSetting->aws_episode_path.'/'. $name;
                 $transcode_path = @$StorageSetting->aws_transcode_path.'/'. $name;
-                Storage::disk('s3')->put($filePath, file_get_contents($file));
+                $transcode_path_mp4 = @$StorageSetting->aws_episode_path.'/'. $name_mp4;
+                Storage::disk('s3')->put($transcode_path_mp4, file_get_contents($file));
                 $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
                 $storepath = $path.$filePath;
                 $transcode_path = $path.$transcode_path;
@@ -2836,10 +2841,13 @@ class AdminSeriesController extends Controller
                 $file = $request->file('file');
 
               //  Episode duration 
-              $getID3 = new getID3();
-              $Video_storepath = $file;
-              $VideoInfo = $getID3->analyze($Video_storepath);
-              $Video_duration = $VideoInfo["playtime_seconds"];
+              $ffprobe =  \FFMpeg\FFProbe::create();
+              $duration = $ffprobe->format($mp4_url)->get('duration');
+              $Video_duration = explode(".", $duration)[0];
+            //   $getID3 = new getID3();
+            //   $Video_storepath = $file;
+            //   $VideoInfo = $getID3->analyze($Video_storepath);
+            //   $Video_duration = $VideoInfo["playtime_seconds"];
     
              $video = new Episode();
              $video->title = $file_folder_name;
@@ -2918,16 +2926,20 @@ class AdminSeriesController extends Controller
             $file = $request->file('file');
 
                 //  Episode duration 
-                $getID3 = new getID3();
-                $Video_storepath = $file;
-                $VideoInfo = $getID3->analyze($Video_storepath);
-                $Video_duration = $VideoInfo["playtime_seconds"];
+                $ffprobe =  \FFMpeg\FFProbe::create();
+                $duration = $ffprobe->format($mp4_url)->get('duration');
+                $Video_duration = explode(".", $duration)[0];
+                // $getID3 = new getID3();
+                // $Video_storepath = $file;
+                // $VideoInfo = $getID3->analyze($Video_storepath);
+                // $Video_duration = $VideoInfo["playtime_seconds"];
 
         $newfile = explode(".mp4",$file);
         $file_folder_name = $newfile[0];       
             $original_name = ($request->file->getClientOriginalName()) ? $request->file->getClientOriginalName() : '';
             $episode = Episode::findOrFail($id);
             $episode->mp4_url = $storepath;
+            $episode->duration = $Video_duration;
             $episode->type = 'upload';
             $episode->save(); 
             $episode_id = $episode->id;
@@ -2956,12 +2968,13 @@ class AdminSeriesController extends Controller
         // $file_folder_name =  $file->getClientOriginalName();
         // $name = time() . $file->getClientOriginalName();
         $name_mp4 =  $file->getClientOriginalName();
+        $name_mp4 == null ? str_replace(' ', '_', 'S3'.$name_mp4) : str_replace(' ', '_', 'S3'.$name_mp4) ;        
         $newfile = explode(".mp4",$name_mp4);
         $namem3u8 = $newfile[0].'.m3u8';   
-        $name = $namem3u8 == null ? str_replace(' ', '_', 'S3'.$namem3u8) : str_replace(' ', '_', 'S3'.$namem3u8) ;        
-
+        $name = $namem3u8 == null ? str_replace(' ', '_',$namem3u8) : str_replace(' ', '_',$namem3u8) ;        
         $filePath = $StorageSetting->aws_episode_path.'/'. $name;
         $transcode_path = @$StorageSetting->aws_transcode_path.'/'. $name;
+        $transcode_path_mp4 = @$StorageSetting->aws_episode_path.'/'. $name_mp4;
         Storage::disk('s3')->put($filePath, file_get_contents($file));
         $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
         $storepath = $path.$filePath;
@@ -2970,10 +2983,14 @@ class AdminSeriesController extends Controller
         $file = $request->file('file');
 
             //  Episode duration 
-            $getID3 = new getID3();
-            $Video_storepath = $file;
-            $VideoInfo = $getID3->analyze($Video_storepath);
-            $Video_duration = $VideoInfo["playtime_seconds"];
+            
+            $ffprobe =  \FFMpeg\FFProbe::create();
+            $duration = $ffprobe->format($mp4_url)->get('duration');
+            $Video_duration = explode(".", $duration)[0];
+            // $getID3 = new getID3();
+            // $Video_storepath = $file;
+            // $VideoInfo = $getID3->analyze($Video_storepath);
+            // $Video_duration = $VideoInfo["playtime_seconds"];
 
             $video = Episode::findOrFail($id);
             $video->mp4_url = $path;
