@@ -151,6 +151,7 @@ class HomeSettingsController extends Controller
         }
 
         $settings->continue_watching =  $request->continue_watching !=null ? 1 : 0 ;
+        $settings->video_schedule = !empty($request->video_schedule) ?  "1" : "0" ;
 
         $settings->save();
         
@@ -327,7 +328,7 @@ class HomeSettingsController extends Controller
         }else{
             $settings->AutoIntro_skip = 0;
         }
-
+        $settings->video_schedule = !empty($request->video_schedule) ?  "1" : "0" ;
         $settings->save();
         return redirect::to('/admin/home-settings');
     }
