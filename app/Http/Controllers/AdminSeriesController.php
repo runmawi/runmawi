@@ -1005,7 +1005,7 @@ class AdminSeriesController extends Controller
 
             }else{              
 
-            if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1) {
+            if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1 && $StorageSetting->aws_storage == 1) {
 
                 $trailer = $data['trailer'];
                 $trailer_path  = URL::to('public/uploads/season_trailer/');
@@ -1125,7 +1125,7 @@ class AdminSeriesController extends Controller
         $series->ios_product_id = $ios_ppv_price;
         $series->save();
         
-        if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1) {
+        if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1 && $StorageSetting->aws_storage == 1) {
         ConvertSerieTrailer::dispatch($series,$storepath,$convertresolution,$trailer_video_name,$trailer_Video);
         }
         // $series = SeriesSeason::create($data);
@@ -1382,7 +1382,7 @@ class AdminSeriesController extends Controller
         $series_season->ios_product_id = $ios_ppv_price;
         $series_season->save();
 
-        if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1) {
+        if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1  && $StorageSetting->aws_storage == 1) {
             ConvertSerieTrailer::dispatch($series_season,$storepath,$convertresolution,$trailer_video_name,$trailer_Video);
         }
 
