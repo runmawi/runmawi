@@ -9118,6 +9118,9 @@ $cpanel->end();
       try{
 
         $videos_count = Video::where('title', 'LIKE', '%'.$search_value.'%')->count();
+        $videocategorie_count = VideoCategory::where('name', 'LIKE', '%'.$search_value.'%')->count();
+        $videolanguage_count = Language::where('name', 'LIKE', '%'.$search_value.'%')->count();
+        $videoartist_count = Artist::where('artist_name', 'LIKE', '%'.$search_value.'%')->count();
         $albums_count = AudioAlbums::where('albumname', 'LIKE', '%'.$search_value.'%')->count();
         $audios_count = Audio::where('title', 'LIKE', '%'.$search_value.'%')->count();
         $liveStream_count = LiveStream::where('title', 'LIKE', '%'.$search_value.'%')->count();
@@ -9177,7 +9180,68 @@ $cpanel->end();
         } else {
           $series = [];
         } 
-                          
+
+        $myData = array();
+
+        $videocategories = VideoCategory::where('name', 'LIKE', '%'.$search_value.'%')->get()->toArray();
+        $videolanguages = Language::where('name', 'LIKE', '%'.$search_value.'%')->get()->toArray();
+        $videoartists = Artist::where('artist_name', 'LIKE', '%'.$search_value.'%')->get()->toArray();
+
+        if ($videocategorie_count > 0 || $videolanguage_count > 0 || $videoartist_count > 0) {
+
+        foreach ($videocategories as $key => $videocategory) {
+          $videocategoryid = $videocategory['id'];
+          $genre_image = $videocategory['image'];
+          $videocategories= Video::Join('categoryvideos','categoryvideos.video_id','=','videos.id')
+          ->where('categoryvideos.category_id',$videocategoryid)
+          ->where('active','=',1)->where('status','=',1)->where('draft','=',1)->orderBy('videos.created_at', 'desc')->get()->map(function ($item) {
+            $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+            $item['video_url'] = URL::to('/').'/storage/app/public/';
+            $item['category_name'] = VideoCategory::where('id',$item->category_id)->pluck('slug')->first();
+            return $item;
+          });
+          $myData[] = array(
+            'gener_name' =>  VideoCategory::where('id',$videocategoryid)->pluck('name')->first(),
+            'home_genre' =>  VideoCategory::where('id',$videocategoryid)->pluck('home_genre')->first(),
+            'gener_id' =>  VideoCategory::where('id',$videocategoryid)->pluck('id')->first(),
+            "videocategories" => $videocategories
+          );
+        }
+        foreach ($videolanguages as $key => $videolanguage) {
+          $videolanguageid = $videolanguage['id'];
+          $genre_image = $videolanguage['language_image'];
+          $videolanguages= Video::Join('languagevideos','languagevideos.video_id','=','videos.id')
+          ->where('languagevideos.language_id',$videolanguageid)
+          ->where('active','=',1)->where('status','=',1)->where('draft','=',1)->orderBy('videos.created_at', 'desc')->get()->map(function ($item) {
+            $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+            $item['video_url'] = URL::to('/').'/storage/app/public/';
+            return $item;
+          });
+          $myData[] = array(
+            'gener_name' =>  Language::where('id',$videolanguageid)->pluck('name')->first(),
+            'gener_id' =>  Language::where('id',$videolanguageid)->pluck('id')->first(),
+            "videolanguages" => $videolanguages
+          );
+        }
+
+        foreach ($videoartists as $key => $videoartist) {
+          $videoartistid = $videoartist['id'];
+          $genre_image = $videoartist['image'];
+          $videoartists= Video::join('video_artists', 'video_artists.video_id', '=', 'videos.id')
+          ->where('video_artists.artist_id',$videoartistid)
+          ->where('active','=',1)->where('status','=',1)->where('draft','=',1)->orderBy('videos.created_at', 'desc')->get()->map(function ($item) {
+            $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+            $item['video_url'] = URL::to('/').'/storage/app/public/';
+            return $item;
+          });
+          $myData[] = array(
+            'gener_name' =>  Artist::where('id',$videoartistid)->pluck('artist_name')->first(),
+            'gener_id' =>  Artist::where('id',$videoartistid)->pluck('id')->first(),
+            "videoartists" => $videoartists
+          );
+        }
+
+      }     
             $response = array(
                 'status'=> 'true',
                 'audios'         => $audios ,
@@ -9185,6 +9249,7 @@ $cpanel->end();
                 'videos'   => $videos,
                 'series' => $series,
                 'livestream'  => $LiveStream ,
+                'myData'  => $myData ,
             );
 
         } 
