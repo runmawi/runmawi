@@ -7975,7 +7975,7 @@ class AdminVideosController extends Controller
                 $name = $namem3u8 == null ? str_replace(' ', '_', 'S3'.$namem3u8) : str_replace(' ', '_', 'S3'.$namem3u8) ;        
 
                 $transcode_path = @$StorageSetting->aws_transcode_path.'/'. $name;
-                $transcode_path_mp4 = @$StorageSetting->aws_transcode_path.'/'. $name_mp4;
+                $transcode_path_mp4 = @$StorageSetting->aws_storage_path.'/'. $name_mp4;
                 $filePath = $StorageSetting->aws_storage_path.'/'. $name;
                 $filePath_mp4 = $StorageSetting->aws_storage_path.'/'. $name_mp4;
                 Storage::disk('s3')->put($transcode_path_mp4, file_get_contents($file));
