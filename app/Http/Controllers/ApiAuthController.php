@@ -9108,7 +9108,6 @@ $cpanel->end();
      );
      return response()->json($response, 200);
     }
-
     public function TV_Search(Request $request)
     {
 
@@ -9121,11 +9120,23 @@ $cpanel->end();
         $videocategorie_count = VideoCategory::where('name', 'LIKE', '%'.$search_value.'%')->count();
         $videolanguage_count = Language::where('name', 'LIKE', '%'.$search_value.'%')->count();
         $videoartist_count = Artist::where('artist_name', 'LIKE', '%'.$search_value.'%')->count();
-        $albums_count = AudioAlbums::where('albumname', 'LIKE', '%'.$search_value.'%')->count();
-        $audios_count = Audio::where('title', 'LIKE', '%'.$search_value.'%')->count();
-        $liveStream_count = LiveStream::where('title', 'LIKE', '%'.$search_value.'%')->count();
-        $series_count = Series::where('title', 'LIKE', '%'.$search_value.'%')->count();
 
+        $albums_count = AudioAlbums::where('albumname', 'LIKE', '%'.$search_value.'%')->count();
+
+        $audios_count = Audio::where('title', 'LIKE', '%'.$search_value.'%')->count();
+        $audiocategories_count = AudioCategory::where('name', 'LIKE', '%'.$search_value.'%')->count();
+        $audiolanguages_count = Language::where('name', 'LIKE', '%'.$search_value.'%')->count();
+        $audioartists_count = Artist::where('artist_name', 'LIKE', '%'.$search_value.'%')->count();
+
+
+        $liveStream_count = LiveStream::where('title', 'LIKE', '%'.$search_value.'%')->count();
+        $LiveCategory_count = LiveCategory::where('name', 'LIKE', '%'.$search_value.'%')->count();
+        $LiveLanguage_count = Language::where('name', 'LIKE', '%'.$search_value.'%')->count();
+
+        $series_count = Series::where('title', 'LIKE', '%'.$search_value.'%')->count();
+        $seriescategorie_count = VideoCategory::where('name', 'LIKE', '%'.$search_value.'%')->count();
+        $serieslanguage_count = Language::where('name', 'LIKE', '%'.$search_value.'%')->count();
+        $seriesartist_count = Artist::where('artist_name', 'LIKE', '%'.$search_value.'%')->count();
   
         if ($liveStream_count > 0) {
           $LiveStream = LiveStream::where('title', 'LIKE', '%'.$search_value.'%')->where('status','=',1)->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
@@ -9180,8 +9191,8 @@ $cpanel->end();
         } else {
           $series = [];
         } 
-
-        $myData = array();
+// video management
+        $videoData = array();
 
         $videocategories = VideoCategory::where('name', 'LIKE', '%'.$search_value.'%')->get()->toArray();
         $videolanguages = Language::where('name', 'LIKE', '%'.$search_value.'%')->get()->toArray();
@@ -9200,7 +9211,7 @@ $cpanel->end();
             $item['category_name'] = VideoCategory::where('id',$item->category_id)->pluck('slug')->first();
             return $item;
           });
-          $myData[] = array(
+          $videoData[] = array(
             'gener_name' =>  VideoCategory::where('id',$videocategoryid)->pluck('name')->first(),
             'home_genre' =>  VideoCategory::where('id',$videocategoryid)->pluck('home_genre')->first(),
             'gener_id' =>  VideoCategory::where('id',$videocategoryid)->pluck('id')->first(),
@@ -9217,7 +9228,7 @@ $cpanel->end();
             $item['video_url'] = URL::to('/').'/storage/app/public/';
             return $item;
           });
-          $myData[] = array(
+          $videoData[] = array(
             'gener_name' =>  Language::where('id',$videolanguageid)->pluck('name')->first(),
             'gener_id' =>  Language::where('id',$videolanguageid)->pluck('id')->first(),
             "videolanguages" => $videolanguages
@@ -9234,7 +9245,7 @@ $cpanel->end();
             $item['video_url'] = URL::to('/').'/storage/app/public/';
             return $item;
           });
-          $myData[] = array(
+          $videoData[] = array(
             'gener_name' =>  Artist::where('id',$videoartistid)->pluck('artist_name')->first(),
             'gener_id' =>  Artist::where('id',$videoartistid)->pluck('id')->first(),
             "videoartists" => $videoartists
@@ -9242,6 +9253,190 @@ $cpanel->end();
         }
 
       }     
+
+  //  Audio Management 
+
+      $audioData = array();
+
+      $audiocategories = AudioCategory::where('name', 'LIKE', '%'.$search_value.'%')->get()->toArray();
+      $audiolanguages = Language::where('name', 'LIKE', '%'.$search_value.'%')->get()->toArray();
+      $audioartists = Artist::where('artist_name', 'LIKE', '%'.$search_value.'%')->get()->toArray();
+
+      if ($audiocategories_count > 0 || $audiolanguages_count > 0 || $audioartists_count > 0) {
+
+        foreach ($audiocategories as $key => $audiocategory) {
+          $audiocategoryid = $audiocategory['id'];
+          $genre_image = $audiocategory['image'];
+
+          $audiocategories = Audio::Join('category_audios','category_audios.audio_id','=','audio.id')
+          ->where('category_audios.category_id',$audiocategoryid)
+          ->orderBy('audio.created_at', 'desc')
+          ->get()->map(function ($item) {
+            $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+            // $item['auido_url'] = URL::to('/').'/storage/app/public/';
+            $item['category_name'] = AudioCategory::where('id',$item->category_id)->pluck('slug')->first();
+    
+            return $item;
+          });
+        $audioData[] = array(
+          'gener_name' =>  AudioCategory::where('id',$audiocategoryid)->pluck('name')->first(),
+          'gener_id' =>  AudioCategory::where('id',$audiocategoryid)->pluck('id')->first(),
+          "audiocategories" => $audiocategories
+        );
+      }
+      foreach ($audiolanguages as $key => $audiolanguage) {
+        $audiolanguageid = $audiolanguage['id'];
+        $genre_image = $audiolanguage['language_image'];
+        $audiolanguages= Audio::Join('audio_languages','audio_languages.audio_id','=','audio.id')
+        ->where('audio_languages.language_id',$audiolanguageid)
+        ->where('active','=',1)->where('status','=',1)->orderBy('audio.created_at', 'desc')->get()->map(function ($item) {
+          $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+          return $item;
+        });
+        $audioData[] = array(
+          'gener_name' =>  Language::where('id',$audiolanguageid)->pluck('name')->first(),
+          'gener_id' =>  Language::where('id',$audiolanguageid)->pluck('id')->first(),
+          "audiolanguages" => $audiolanguages
+        );
+      }
+
+      foreach ($audioartists as $key => $audioartist) {
+        $audioartistid = $audioartist['id'];
+        $genre_image = $audioartist['image'];
+        $audioartists= Audio::join('audio_artists', 'audio_artists.audio_id', '=', 'audio.id')
+        ->where('audio_artists.artist_id',$audioartistid)
+        ->where('active','=',1)->where('status','=',1)->orderBy('audio.created_at', 'desc')->get()->map(function ($item) {
+          $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+          return $item;
+        });
+        $audioData[] = array(
+          'gener_name' =>  Artist::where('id',$audioartistid)->pluck('artist_name')->first(),
+          'gener_id' =>  Artist::where('id',$audioartistid)->pluck('id')->first(),
+          "audioartists" => $audioartists
+        );
+      }
+
+    }     
+
+
+    
+  //  Series Management 
+
+  $seriesData = array();
+
+  $seriescategories = VideoCategory::where('name', 'LIKE', '%'.$search_value.'%')->get()->toArray();
+  $serieslanguages = Language::where('name', 'LIKE', '%'.$search_value.'%')->get()->toArray();
+  $seriesartists = Artist::where('artist_name', 'LIKE', '%'.$search_value.'%')->get()->toArray();
+
+  if ($seriescategorie_count > 0 || $serieslanguage_count > 0 || $seriesartist_count > 0) {
+
+    foreach ($seriescategories as $key => $seriescategorie) {
+      $seriescategorieid = $seriescategorie['id'];
+      $genre_image = $seriescategorie['image'];
+
+      $seriescategories = Series::Join('series_categories','series_categories.series_id','=','series.id')
+      ->where('series_categories.category_id',$seriescategorieid)
+      ->where('active','=',1)
+      ->orderBy('series.created_at', 'desc')
+      ->get()->map(function ($item) {
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        // $item['auido_url'] = URL::to('/').'/storage/app/public/';
+        $item['category_name'] = VideoCategory::where('id',$item->category_id)->pluck('slug')->first();
+
+        return $item;
+      });
+    $seriesData[] = array(
+      'gener_name' =>  VideoCategory::where('id',$seriescategorieid)->pluck('name')->first(),
+      'gener_id' =>  VideoCategory::where('id',$seriescategorieid)->pluck('id')->first(),
+      "seriescategories" => $seriescategories
+    );
+  }
+  foreach ($serieslanguages as $key => $serieslanguage) {
+    $serieslanguageid = $serieslanguage['id'];
+    $genre_image = $serieslanguage['language_image'];
+    $serieslanguage= Series::Join('series_languages','series_languages.series_id','=','series.id')
+    ->where('series_languages.language_id',$serieslanguageid)
+    ->where('active','=',1)->orderBy('series.created_at', 'desc')->get()->map(function ($item) {
+      $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+      return $item;
+    });
+    $seriesData[] = array(
+      'gener_name' =>  Language::where('id',$serieslanguageid)->pluck('name')->first(),
+      'gener_id' =>  Language::where('id',$serieslanguageid)->pluck('id')->first(),
+      "serieslanguage" => $serieslanguage
+    );
+  }
+
+  foreach ($seriesartists as $key => $seriesartist) {
+    $seriesartistid = $seriesartist['id'];
+    $genre_image = $seriesartist['image'];
+    $seriesartists= Series::join('series_artists', 'series_artists.series_id', '=', 'series.id')
+    ->where('series_artists.artist_id',$seriesartistid)
+    ->where('active','=',1)->orderBy('series.created_at', 'desc')->get()->map(function ($item) {
+      $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+      return $item;
+    });
+    $seriesData[] = array(
+      'gener_name' =>  Artist::where('id',$seriesartistid)->pluck('artist_name')->first(),
+      'gener_id' =>  Artist::where('id',$seriesartistid)->pluck('id')->first(),
+      "seriesartists" => $seriesartists
+    );
+  }
+
+}
+
+// Live Management
+$liveData = array();
+$livecategories = LiveCategory::where('name', 'LIKE', '%'.$search_value.'%')->get()->toArray();
+$livelanguages = Language::where('name', 'LIKE', '%'.$search_value.'%')->get()->toArray();
+
+
+if($LiveCategory_count > 0 || $LiveLanguage_count > 0){
+
+
+  foreach ($livecategories as $key => $livecategory) {
+
+    $livecategoryid = $livecategory['id'];
+    $genre_image = $livecategory['image'];
+    $live_category= LiveStream::Join('livecategories','livecategories.live_id','=','live_streams.id')
+      ->where('livecategories.category_id',$livecategoryid)
+      ->where('active','=',1)->where('status','=',1)
+      ->orderBy('live_streams.created_at', 'desc')->get()->map(function ($item) {
+
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+        $item['Tv_image_url'] = URL::to('/').'/public/uploads/images/'.$item->Tv_live_image;
+
+        $item['category_name'] = LiveCategory::where('id',$item->category_id)->pluck('slug')->first();
+        $item['category_order'] = LiveCategory::where('id',$item->category_id)->pluck('order')->first();
+
+        return $item;
+      });
+      $liveData[] = array(
+        'gener_name' =>  LiveCategory::where('id',$livecategoryid)->pluck('name')->first(),
+        'gener_id' =>  LiveCategory::where('id',$livecategoryid)->pluck('id')->first(),
+        "live_category" => $live_category,
+      );
+      }
+
+      foreach ($livelanguages as $key => $livelanguage) {
+      $livelanguageid = $livelanguage['id'];
+      $genre_image = $livelanguage['language_image'];
+      $livelanguages= LiveStream::Join('live_languages','live_languages.live_id','=','live_streams.id')
+      ->where('live_languages.language_id',$livelanguageid)
+      ->where('active','=',1)->orderBy('live_streams.created_at', 'desc')->get()->map(function ($item) {
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        return $item;
+      });
+      $liveData[] = array(
+        'gener_name' =>  Language::where('id',$livelanguage)->pluck('name')->first(),
+        'gener_id' =>  Language::where('id',$livelanguage)->pluck('id')->first(),
+        "livelanguages" => $livelanguages,
+      );
+
+      }
+    }
+    
             $response = array(
                 'status'=> 'true',
                 'audios'         => $audios ,
@@ -9249,7 +9444,12 @@ $cpanel->end();
                 'videos'   => $videos,
                 'series' => $series,
                 'livestream'  => $LiveStream ,
-                'myData'  => $myData ,
+                'videoData'  => $videoData ,
+                'audioData'  => $audioData ,
+                'seriesData'  => $seriesData ,
+                'liveData'  => $liveData ,
+
+
             );
 
         } 
@@ -9264,6 +9464,7 @@ $cpanel->end();
 
       return response()->json($response, 200);
     }
+
 
 
 }
