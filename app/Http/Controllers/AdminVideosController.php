@@ -1535,6 +1535,12 @@ class AdminVideosController extends Controller
             $data["mp4_url"] = null;
         }
 
+        if (!empty($video->m3u8_url)) {
+            $data["m3u8_url"] = $video->m3u8_url;
+        } else {
+            $data["m3u8_url"] = null;
+        }
+
         if (!empty($video->embed_code)) {
             $data["embed_code"] = $video->embed_code;
         } else {
