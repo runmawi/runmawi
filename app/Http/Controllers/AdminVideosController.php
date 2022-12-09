@@ -1535,6 +1535,12 @@ class AdminVideosController extends Controller
             $data["mp4_url"] = null;
         }
 
+        if (!empty($video->m3u8_url)) {
+            $data["m3u8_url"] = $video->m3u8_url;
+        } else {
+            $data["m3u8_url"] = null;
+        }
+
         if (!empty($video->embed_code)) {
             $data["embed_code"] = $video->embed_code;
         } else {
@@ -7972,10 +7978,10 @@ class AdminVideosController extends Controller
                 $name_mp4 = $name_mp4 == null ? str_replace(' ', '_', 'S3'.$name_mp4) : str_replace(' ', '_', 'S3'.$name_mp4) ;        
                 $newfile = explode(".mp4",$name_mp4);
                 $namem3u8 = $newfile[0].'.m3u8';   
-                $name = $namem3u8 == null ? str_replace(' ', '_', 'S3'.$namem3u8) : str_replace(' ', '_', 'S3'.$namem3u8) ;        
+                $name = $namem3u8 == null ? str_replace(' ', '_',$namem3u8) : str_replace(' ', '_',$namem3u8) ;        
 
                 $transcode_path = @$StorageSetting->aws_transcode_path.'/'. $name;
-                $transcode_path_mp4 = @$StorageSetting->aws_transcode_path.'/'. $name_mp4;
+                $transcode_path_mp4 = @$StorageSetting->aws_storage_path.'/'. $name_mp4;
                 $filePath = $StorageSetting->aws_storage_path.'/'. $name;
                 $filePath_mp4 = $StorageSetting->aws_storage_path.'/'. $name_mp4;
                 Storage::disk('s3')->put($transcode_path_mp4, file_get_contents($file));
@@ -8213,16 +8219,18 @@ class AdminVideosController extends Controller
         ) {
             $file = $request->file('file');
             $file_folder_name =  $file->getClientOriginalName();
-            $name_mp4 =  $file->getClientOriginalName();
+            $name_mp4 = $file->getClientOriginalName();
+            $name_mp4 = $name_mp4 == null ? str_replace(' ', '_', 'S3'.$name_mp4) : str_replace(' ', '_', 'S3'.$name_mp4) ;        
             $newfile = explode(".mp4",$name_mp4);
             $namem3u8 = $newfile[0].'.m3u8';   
-            $name = $namem3u8 == null ? str_replace(' ', '_', 'S3'.$namem3u8) : str_replace(' ', '_', 'S3'.$namem3u8) ;        
+            $name = $namem3u8 == null ? str_replace(' ', '_',$namem3u8) : str_replace(' ', '_',$namem3u8) ;        
 
             $transcode_path = @$StorageSetting->aws_transcode_path.'/'. $name;
-            // print_r($filePath);exit;
+            $transcode_path_mp4 = @$StorageSetting->aws_storage_path.'/'. $name_mp4;
             $filePath = $StorageSetting->aws_storage_path.'/'. $name;
             $filePath_mp4 = $StorageSetting->aws_storage_path.'/'. $name_mp4;
-            Storage::disk('s3')->put($transcode_path, file_get_contents($file));
+            Storage::disk('s3')->put($transcode_path_mp4, file_get_contents($file));
+            // print_r($name);exit;
             $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
             $storepath = $path.$filePath_mp4;
             $m3u8_path = $path.$filePath;

@@ -3176,6 +3176,28 @@ class HomeController extends Controller
         return Theme::view('latestvideo',['latestvideo'=>$data]);
 
     }
+
+    public function ScheduledVideo()
+    {
+
+        $ThumbnailSetting = ThumbnailSetting::first();
+
+        $date = \Carbon\Carbon::today()->subDays(30);
+      
+        $settings = Setting::first();
+    
+        $currency = CurrencySetting::first();
+
+        $data = array(
+            'currency' => $currency,
+            'ThumbnailSetting' => $ThumbnailSetting,
+            'Video_Schedules' => VideoSchedules::where('in_home',1)->get(),
+        );
+
+        return Theme::view('VideoSchedule',$data);
+
+    }
+
     public function LanguageVideo($lanid, $lan)
     {
 

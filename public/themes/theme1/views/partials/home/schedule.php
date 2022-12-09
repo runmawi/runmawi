@@ -3,7 +3,7 @@ if(count($VideoSchedules) > 0) : ?>
   <?php  if(!empty($data['password_hash'])) { 
 $id = Auth::user()->id ; } else { $id = 0 ; } ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-                    <h4 class="main-title"><a href="#">Scheduled Videos</a></h4>                      
+                    <h4 class="main-title"><a href="<?php if ($order_settings_list[10]->header_name) { echo URL::to('/').'/'.$order_settings_list[10]->url ;} else { echo "" ; } ?>">Scheduled Videos</a></h4>                      
                  </div>
                  <div class="favorites-contens">
                     <ul class="favorites-slider list-inline  row p-0 mb-0">

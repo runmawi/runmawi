@@ -1,16 +1,19 @@
-<?php   
-if(count($VideoSchedules) > 0) : ?>
-  <?php  if(!empty($data['password_hash'])) { 
-$id = Auth::user()->id ; } else { $id = 0 ; } ?>
-<div class="iq-main-header d-flex align-items-center justify-content-between">
-                    <h4 class="main-title"><a href="<?php if ($order_settings_list[10]->header_name) { echo URL::to('/').'/'.$order_settings_list[10]->url ;} else { echo "" ; } ?>">Scheduled Videos</a></h4>                      
-                 </div>
-                 <div class="favorites-contens">
-                    <ul class="favorites-slider list-inline  row p-0 mb-0">
-                         <?php  if(isset($VideoSchedules)) :
-                         foreach($VideoSchedules as $Schedule): 
-                          ?>
-                       <li class="slide-item">
+<?php 
+    include(public_path('themes/theme2/views/header.php'));
+    ?>
+<!-- MainContent -->
+<section id="iq-favorites">
+<div class="container-fluid">
+   <div class="row">
+      <div class="col-sm-12 page-height">
+         <div class="iq-main-header align-items-center justify-content-between">
+            <h3 class="vid-title">Scheduled Videos</h3>
+         </div>
+         <div class="favorites-contens">
+            <ul class="category-page list-inline row p-0 mb-0">
+               <?php if(isset($Video_Schedules)) :
+                  foreach($Video_Schedules as $Schedule): ?>
+               <li class="slide-item col-sm-2 col-md-2 col-xs-12">
                           <a href="<?php echo URL::to("/schedule/videos/embed") ?><?= '/' . $Schedule->name ?>">
                              <!-- block-images -->
                              <div class="block-images position-relative">
@@ -39,9 +42,11 @@ $id = Auth::user()->id ; } else { $id = 0 ; } ?>
                               
                           </a>
                        </li>
-                       <?php                     
-                        endforeach; 
-                                   endif; ?>
-                    </ul>
-                 </div>
-                 <?php endif; ?>
+               <?php endforeach; 
+                  endif; ?>
+            </ul>
+         </div>
+      </div>
+   </div>
+</div>
+<?php include(public_path('themes/theme2/views/footer.blade.php'));  ?>
