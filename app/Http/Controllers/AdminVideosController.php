@@ -7894,6 +7894,10 @@ class AdminVideosController extends Controller
         ]);
         $mp4_url = isset($data["file"]) ? $data["file"] : "";
 
+        $ffprobe =  \FFMpeg\FFProbe::create();
+        $duration = $ffprobe->format($mp4_url)->get('duration');
+        $Video_duration = explode(".", $duration)[0];
+
         $path = public_path() . "/uploads/videos/";
 
         $file = $request->file->getClientOriginalName();
@@ -7926,6 +7930,7 @@ class AdminVideosController extends Controller
             $video->original_name = "public";
             $video->path = $path;
             $video->mp4_url = $storepath;
+            $video->duration = $Video_duration;
             $video->type = "mp4_url";
             $video->draft = 1;
             $video->status = 1;
@@ -8001,6 +8006,7 @@ class AdminVideosController extends Controller
                 $video->status = 0;
                 $video->original_name = "public";
                 $video->path = $path;
+                $video->duration = $Video_duration;
                 $video->title = $file_folder_name;
                 $video->mp4_url = $storepath;
                 $video->m3u8_url = $transcode_path;
@@ -8084,6 +8090,7 @@ class AdminVideosController extends Controller
             $video->title = $file_folder_name;
             $video->original_name = "public";
             $video->path = $path;
+            $video->duration = $Video_duration;
             $video->mp4_url = $storepath;
             $video->type = "mp4_url";
             $video->draft = 1;
@@ -8149,6 +8156,10 @@ class AdminVideosController extends Controller
         ]);
         $mp4_url = isset($data["file"]) ? $data["file"] : "";
 
+        $ffprobe =  \FFMpeg\FFProbe::create();
+        $duration = $ffprobe->format($mp4_url)->get('duration');
+        $Video_duration = explode(".", $duration)[0];
+        
         $path = public_path() . "/uploads/videos/";
 
         $file = $request->file->getClientOriginalName();
@@ -8192,6 +8203,7 @@ class AdminVideosController extends Controller
             $video->title = $file_folder_name;
             $video->original_name = "public";
             $video->path = $path;
+            $video->duration = $Video_duration;
             $video->mp4_url = $storepath;
             $video->type = "mp4_url";
             // $video->draft = 0;
@@ -8252,6 +8264,7 @@ class AdminVideosController extends Controller
             $video->status = 0;
             $video->original_name = "public";
             $video->path = $path;
+            $video->duration = $Video_duration;
             $video->title = $file_folder_name;
             $video->mp4_url = $storepath;
             //  $video->draft = 0;
@@ -8305,6 +8318,7 @@ class AdminVideosController extends Controller
             $video->title = $file_folder_name;
             $video->original_name = "public";
             $video->path = $path;
+            $video->duration = $Video_duration;
             $video->mp4_url = $storepath;
             $video->type = "mp4_url";
             // $video->draft = 0;
