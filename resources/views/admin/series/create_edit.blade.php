@@ -371,12 +371,12 @@ $settings  = App\Setting::first();?>
 									
 								</div>
 
-							@elseif($button_text == "Update Series" )
+							@elseif($button_text == "Update Series")
 
 							@php
 								$season_id = App\Series::Select('series_seasons.id','series.season_trailer','series.id as series_id')
 											->Join('series_seasons','series_seasons.series_id','=','series.id')
-											->where('series_id',$series->id)
+											->where('series_id',@$series->id)
 											->get();
 							@endphp
 
