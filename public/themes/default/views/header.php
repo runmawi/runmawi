@@ -629,7 +629,7 @@
                      <div class="navbar-right menu-right pt-2">
                         <ul class="d-flex align-items-center list-inline m-0">
                            <li class="nav-item nav-icon" style="margin-right:1px;">
-                              <a href="<?php echo URL::to('/').'/searchResult';?>" class="search-toggle device-search">
+                              <a href="<?php echo URL::to('/').'/searchResult';?>" aria-label="search" class="search-toggle device-search">
                               <i class="ri-search-line"></i>
                               </a>
                               <div class="search-box iq-search-bar d-search">
