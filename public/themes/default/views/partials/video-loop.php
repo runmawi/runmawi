@@ -17,7 +17,7 @@
                               <a href="<?php echo URL::to('category')?><?='/videos/' .$watchlater_video->slug ?>">
                                  <div class="block-images position-relative">
                                     <div class="img-box">
-                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid w-100" alt="">
+                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid w-100" alt="recom">
                                     </div>
                                     <div class="block-description">
                                        <h6><?php  echo (strlen($watchlater_video->title) > 15) ? substr($watchlater_video->title,0,15).'...' : $watchlater_video->title; ?></h6>

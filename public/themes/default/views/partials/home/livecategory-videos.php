@@ -70,7 +70,7 @@ $currency = App\CurrencySetting::first();
                             <!-- block-images -->
                             <a href="<?= URL::to('/') ?><?= '/live'.'/' . $category_video->slug ?>">
                                     <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"
-                                        class="img-fluid w-100" alt="">
+                                        class="img-fluid w-100" alt="live-c">
                                         <!-- <video  width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"  data-play="hover" >
                                             <source src="<?php echo $category_video->trailer;  ?>" type="video/mp4">
                                             </video> -->
@@ -174,7 +174,7 @@ $currency = App\CurrencySetting::first();
                                     <div class="hover-buttons">
                                         <a type="button" class="text-white d-flex align-items-center"
                                             href="<?= URL::to('/') ?><?= '/live'.'/' . $category_video->slug ?>">
-                                            <img class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
+                                            <img class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%" alt="ply"/> Watch Now
                                         </a>
                                         <div class="d-flex">
                     </div>
