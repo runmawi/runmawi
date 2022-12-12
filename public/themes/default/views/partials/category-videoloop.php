@@ -85,7 +85,7 @@
                      <div class="block-images position-relative">
                         <div class="img-box">
                            <!-- block-images -->
-                           <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" class="img-fluid w-100" alt="">
+                           <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" class="img-fluid w-100" alt="cate">
                            <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  
                            <p class="p-tag1">
                               <?php if(!empty($category_video->ppv_price)) {
@@ -169,7 +169,7 @@
                   <div class="hover-buttons">
                   <a type="button" class="text-white d-flex align-items-center"
                      href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
-                  <img class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
+                  <img class="ply mr-1" alt="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
                   </a>
                   </div>
                   </a>

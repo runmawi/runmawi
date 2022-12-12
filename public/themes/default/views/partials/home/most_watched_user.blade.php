@@ -12,7 +12,7 @@
                         <div class="block-images position-relative">
                                 <div class="img-box">
                                     <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
-                                        <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid loading w-100" alt="">
+                                        <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>" class="img-fluid loading w-100" alt="m-img">
                                         <!-- <video width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$watchlater_video->image;  ?>"  data-play="hover" >
                                             <source src="<?php echo $watchlater_video->trailer;  ?>" type="video/mp4">
                                         </video> -->
@@ -110,7 +110,7 @@
                                     
                                    <div class="hover-buttons">
                                        <a class="text-white d-flex align-items-center" href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" >
-                                             <img class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
+                                             <img alt="ply" class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
                                       </a>
                                    
                                 </div>
