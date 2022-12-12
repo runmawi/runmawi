@@ -257,13 +257,13 @@ function myFunction() {
       <?php } 
     }
      ?>
- <script src="<?= URL::to('/'). '/assets/js/ls.bgset.min.js';?>" defer></script>
- <script src="<?= URL::to('/'). '/assets/js/lazysizes.min.js';?>" defer></script>
- <script src="<?= URL::to('/'). '/assets/js/plyr.polyfilled.js';?>" defer></script>
+ <script src="<?= URL::to('/'). '/assets/js/ls.bgset.min.js';?>"></script>
+ <script src="<?= URL::to('/'). '/assets/js/lazysizes.min.js';?>"></script>
+ <script src="<?= URL::to('/'). '/assets/js/plyr.polyfilled.js';?>"></script>
  <script src="<?= URL::to('/'). '/assets/js/hls.min.js';?>"></script>
- <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/0.14.5/hls.min.js.map" defer></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/0.14.5/hls.min.js.map"></script>
  <!-- <script src="<? //URL::to('/'). '/assets/js/plyr-3-7.js';?>"></script> -->
- <script src="<?= URL::to('/'). '/assets/js/hls.js';?>" defer></script>
+ <script src="<?= URL::to('/'). '/assets/js/hls.js';?>"></script>
           
 
 <script>
