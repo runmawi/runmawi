@@ -1143,24 +1143,9 @@ class AdminVideosController extends Controller
         ]);
 
         $id = $request->videos_id;
-        // dd($data);
         $package = User::where("id", 1)->first();
         $pack = $package->package;
         $settings = Setting::first();
-
-        /*Advertisement Video update starts*/
-        // if($data['ads_id'] != 0){
-        //         $ad_video = AdsVideo::where('video_id',$id)->first();
-
-        //         if($ad_video == null){
-        //             $ad_video = new AdsVideo;
-        //         }
-        //         $ad_video->video_id = $id;
-        //         $ad_video->ads_id = $data['ads_id'];
-        //         $ad_video->ad_roll = null;
-        //         $ad_video->save();
-        //     }
-        /*Advertisement Video update ends*/
 
         $video = Video::findOrFail($id);
 
@@ -1178,79 +1163,6 @@ class AdminVideosController extends Controller
         $video_title_image = isset($data["video_title_image"])? $data["video_title_image"]: "";
         $image_path = public_path() . "/uploads/images/";
     
-        if ($player_image != "") {
-            if ($player_image != "" && $player_image != null) {
-               
-                $file_old = $image_path . $player_image;
-                if (file_exists($file_old)) {
-                    unlink($file_old);
-                }
-            }
-            
-            $player_image = $player_image;
-
-            if(compress_image_enable() == 1){
-
-                $player_filename  = time().'.'.compress_image_format();
-                $players_image     =  'player-image-'.$player_filename ;
-                Image::make($player_image)->save(base_path().'/public/uploads/images/'.$players_image,compress_image_resolution() );
-
-            }
-            else{
-                $player_filename  = time().'.'.$player_image->getClientOriginalExtension();
-                $players_image     =  'player-image-'.$player_filename ;
-                Image::make($player_filename)->save(base_path().'/public/uploads/images/'.$players_image );
-            }
-
-        } else {
-            $players_image = $video->player_image;
-        }
-        
-                    // live_stream_tv_image
-
-        $video_tv_image = ($request->file('video_tv_image')) ? $request->file('video_tv_image') : '';
-
-        if($video_tv_image != '') {   
-                                        
-        $video_tv_image = $video_tv_image;
-
-        if(compress_image_enable() == 1){
-
-            $Tv_image_filename  = time().'.'.compress_image_format();
-            $Tv_image     =  'tv-live-image-'.$Tv_image_filename ;
-            Image::make($video_tv_image)->save(base_path().'/public/uploads/images/'.$Tv_image,compress_image_resolution() );
-        }else{
-
-            $Tv_image_filename  = time().'.'.$live_stream_tv_image->getClientOriginalExtension();
-            $Tv_image     =  'tv-live-image-'.$Tv_image_filename ;
-            Image::make($video_tv_image)->save(base_path().'/public/uploads/images/'.$Tv_image );
-        }
-        } else{
-            $Tv_image = "default_horizontal_image.jpg";
-        }
-
-        // Video Title Thumbnail
-
-        if ($video_title_image != "") {
-            if ($video_title_image != "" && $video_title_image != null) {
-                //code for remove old file
-                $video_title_image_file_old = $image_path . $video_title_image;
-                if (file_exists($video_title_image_file_old)) {
-                    unlink($video_title_image_file_old);
-                }
-            }
-            //upload new file
-            $video_title_images = "video_title_" . time() . ".webp";
-
-            Image::make($data["video_title_image"])->save(
-                base_path() . "/public/uploads/images/" . $video_title_images,
-                80
-            );
-
-            $video->video_title_image = $video_title_images;
-        } else {
-            $data["video_title_image"] = $video->video_title_image;
-        }
 
         // Enable Video Title Thumbnail
 
@@ -1262,7 +1174,7 @@ class AdminVideosController extends Controller
         $video->trailer_type = $data["trailer_type"];
 
         $StorageSetting = StorageSetting::first();
-        // dd($StorageSetting);
+
         if($StorageSetting->site_storage == 1){
             if (
                 $trailer != "" &&
@@ -1275,9 +1187,7 @@ class AdminVideosController extends Controller
                     $resolution = explode(",", $settings->transcoding_resolution);
                     foreach ($resolution as $value) {
                         if ($value == "240p") {
-                            $r_240p = (new Representation())
-                                ->setKiloBitrate(150)
-                                ->setResize(426, 240);
+                            $r_240p = (new Representation())->setKiloBitrate(150)->setResize(426, 240);
                             array_push($convertresolution, $r_240p);
                         }
                         if ($value == "360p") {
@@ -1488,12 +1398,10 @@ class AdminVideosController extends Controller
                 } else {
                     $data["trailer"] = $video->trailer;
                 }
-                // $data['trailer'] = "";
             }
             }
 
 
-        // dd($video->trailer);
 
         $update_mp4 = $request->get("video");
 
@@ -1660,7 +1568,16 @@ class AdminVideosController extends Controller
         }
 
         if ($player_image != "") {
-           
+            if ($player_image != "" && $player_image != null) {
+               
+                $file_old = $image_path . $player_image;
+                if (file_exists($file_old)) {
+                    unlink($file_old);
+                }
+            }
+            
+            $player_image = $player_image;
+
             if(compress_image_enable() == 1){
 
                 $player_filename  = time().'.'.compress_image_format();
@@ -1671,13 +1588,14 @@ class AdminVideosController extends Controller
             else{
                 $player_filename  = time().'.'.$player_image->getClientOriginalExtension();
                 $players_image     =  'player-image-'.$player_filename ;
-                Image::make($player_filename)->save(base_path().'/public/uploads/images/'.$players_image );
+                Image::make($player_image)->save(base_path().'/public/uploads/images/'.$players_image );
             }
 
         } else {
             $players_image = $video->player_image;
         }
-
+        
+       
 
         if (isset($data["duration"])) {
             //$str_time = $data
@@ -1792,10 +1710,7 @@ class AdminVideosController extends Controller
 
         if ($request->pdf_file != null) {
             $pdf_files = time() . "." . $request->pdf_file->extension();
-            $request->pdf_file->move(
-                public_path("uploads/videoPdf"),
-                $pdf_files
-            );
+            $request->pdf_file->move( public_path("uploads/videoPdf"), $pdf_files);
             $video->pdf_files = $pdf_files;
         }
 
@@ -1847,15 +1762,8 @@ class AdminVideosController extends Controller
         // Reels Thumbnail
 
         if (!empty($request->reels_thumbnail)) {
-            $Reels_thumbnail =
-                "reels_" .
-                time() .
-                "." .
-                $request->reels_thumbnail->extension();
-            $request->reels_thumbnail->move(
-                public_path("uploads/images"),
-                $Reels_thumbnail
-            );
+            $Reels_thumbnail ="reels_" .time() . "." .$request->reels_thumbnail->extension();
+            $request->reels_thumbnail->move(public_path("uploads/images"), $Reels_thumbnail);
 
             $video->reels_thumbnail = $Reels_thumbnail;
         }
@@ -1897,6 +1805,57 @@ class AdminVideosController extends Controller
             $uploaded_by = Auth::user()->role;
         }
 
+                     // Tv video Image 
+
+        if($request->hasFile('video_tv_image')){
+
+            if (File::exists(base_path('public/uploads/images/'.$video_title_image))) {
+                File::delete(base_path('public/uploads/images/'.$video_title_image));
+            }
+        
+            $video_tv_image = $request->video_tv_image;
+
+            if(compress_image_enable() == 1){
+
+                $Tv_image_format  = time().'.'.compress_image_format();
+                $Tv_image_filename     =  'tv-live-image-'.$Tv_image_format ;
+                Image::make($video_tv_image)->save(base_path().'/public/uploads/images/'.$Tv_image_filename,compress_image_resolution() );
+
+            }else{
+
+                $Tv_image_format  = time().'.'.$video_tv_image->getClientOriginalExtension();
+                $Tv_image_filename     =  'tv-live-image-'.$Tv_image_format ;
+                Image::make($video_tv_image)->save(base_path().'/public/uploads/images/'.$Tv_image_filename );
+            }
+            $video->video_tv_image = $Tv_image_filename;
+        }
+
+                    // Video Title Thumbnail
+
+        if($request->hasFile('video_title_image')){
+
+            if (File::exists(base_path('public/uploads/images/'.$video_title_image))) {
+                File::delete(base_path('public/uploads/images/'.$video_title_image));
+            }
+        
+            $video_title_image = $request->video_title_image;
+
+            if(compress_image_enable() == 1){
+
+                $video_title_image_format   = time().'.'.compress_image_format();
+                $video_title_image_filename =  'video-title-'.$video_title_image_format ;
+                Image::make($video_title_image)->save(base_path().'/public/uploads/images/'.$video_title_image_filename,compress_image_resolution() );
+            }else{
+
+                $video_title_image_format  = time().'.'.$video_title_image->getClientOriginalExtension();
+                $video_title_image_filename     =  'video-title-'.$video_title_image_format ;
+                Image::make($video_title_image)->save(base_path().'/public/uploads/images/'.$video_title_image_filename );
+            }
+
+            $video->video_title_image = $video_title_image_filename;
+        }
+
+
                 // Ads videos
         $video->pre_ads_category = $data["pre_ads_category"];
         $video->mid_ads_category = $data["mid_ads_category"];
@@ -1926,7 +1885,6 @@ class AdminVideosController extends Controller
         //  $video->active=1;
         $video->uploaded_by = $uploaded_by;
         $video->player_image = $players_image;
-        $video->video_tv_image = $Tv_image;       
         $video->year = $year;
         $video->details = $details;
         $video->m3u8_url = $m3u8_url;
@@ -2268,20 +2226,17 @@ class AdminVideosController extends Controller
         if (!Auth::user()->role == "admin") {
             return redirect("/home");
         }
-        // dd('test');
+
         $user_package = User::where("id", 1)->first();
         $data = $request->all();
 
         $validatedData = $request->validate([
             "title" => "required|max:255",
-            // 'video_country' =>'required',
         ]);
 
         $id = $data["video_id"];
         $video = Video::findOrFail($id);
-        // RelatedVideo
 
-        // dd($videos);
         if (!empty($video->embed_code)) {
             $embed_code = $video->embed_code;
         } else {
@@ -2324,7 +2279,6 @@ class AdminVideosController extends Controller
         $trailer = isset($data["trailer"]) ? $data["trailer"] : "";
         $files = isset($data["subtitle_upload"])? $data["subtitle_upload"] : "";
         $player_image = isset($data["player_image"]) ? $data["player_image"]: "";
-        $video_title_image = isset($data["video_title_image"]) ? $data["video_title_image"]: "";
         $image_path = public_path() . "/uploads/images/";
 
 
@@ -2375,8 +2329,6 @@ class AdminVideosController extends Controller
             $video_image = '';
         }
 
-
-        
         if ($player_image != "") {
                
             $player_image = $player_image;
@@ -2391,7 +2343,7 @@ class AdminVideosController extends Controller
             else{
                 $player_filename  = time().'.'.$player_image->getClientOriginalExtension();
                 $players_image     =  'player-image-'.$player_filename ;
-                Image::make($player_filename)->save(base_path().'/public/uploads/images/'.$players_image );
+                Image::make($player_image)->save(base_path().'/public/uploads/images/'.$players_image );
             }
 
         } else {
@@ -2399,29 +2351,50 @@ class AdminVideosController extends Controller
         }
 
 
-                               // live_stream_tv_image
+                         // Tv video Image 
 
-        $video_tv_image = ($request->file('video_tv_image')) ? $request->file('video_tv_image') : '';
+        if($request->hasFile('video_tv_image')){
 
-        if($video_tv_image != '') {   
-                                        //upload new file
-        $video_tv_image = $video_tv_image;
+        
+            $video_tv_image = $request->video_tv_image;
 
-        if(compress_image_enable() == 1){
+            if(compress_image_enable() == 1){
 
-            $Tv_image_filename  = time().'.'.compress_image_format();
-            $Tv_image     =  'tv-live-image-'.$Tv_image_filename ;
+                $Tv_image_format  = time().'.'.compress_image_format();
+                $Tv_image_filename     =  'tv-live-image-'.$Tv_image_format ;
+                Image::make($video_tv_image)->save(base_path().'/public/uploads/images/'.$Tv_image_filename,compress_image_resolution() );
 
-            Image::make($video_tv_image)->save(base_path().'/public/uploads/images/'.$Tv_image,compress_image_resolution() );
-        }else{
+            }else{
 
-            $Tv_image_filename  = time().'.'.$live_stream_tv_image->getClientOriginalExtension();
-            $Tv_image     =  'tv-live-image-'.$Tv_image_filename ;
-            Image::make($video_tv_image)->save(base_path().'/public/uploads/images/'.$Tv_image );
+                $Tv_image_format  = time().'.'.$video_tv_image->getClientOriginalExtension();
+                $Tv_image_filename     =  'tv-live-image-'.$Tv_image_format ;
+                Image::make($video_tv_image)->save(base_path().'/public/uploads/images/'.$Tv_image_filename );
+            }
+            $video->video_tv_image = $Tv_image_filename;
         }
-        } else{
-            $Tv_image = "default_horizontal_image.jpg";
+
+                    // Video Title Thumbnail
+
+        if($request->hasFile('video_title_image')){
+
+        
+            $video_title_image = $request->video_title_image;
+
+            if(compress_image_enable() == 1){
+
+                $video_title_image_format   = time().'.'.compress_image_format();
+                $video_title_image_filename =  'video-title-'.$video_title_image_format ;
+                Image::make($video_title_image)->save(base_path().'/public/uploads/images/'.$video_title_image_filename,compress_image_resolution() );
+            }else{
+
+                $video_title_image_format  = time().'.'.$video_title_image->getClientOriginalExtension();
+                $video_title_image_filename     =  'video-title-'.$video_title_image_format ;
+                Image::make($video_title_image)->save(base_path().'/public/uploads/images/'.$video_title_image_filename );
+            }
+
+            $video->video_title_image = $video_title_image_filename;
         }
+
 
         if (empty($data["active"])) {
             $data["active"] = 0;
@@ -2545,36 +2518,10 @@ class AdminVideosController extends Controller
         $image_path = public_path() . "/uploads/images/";
 
 
-
        
-
-        // Video Title Thumbnail
-
-        if ($video_title_image != "") {
-            if ($video_title_image != "" && $video_title_image != null) {
-                $video_title_image_file_old = $image_path . $video_title_image;
-                if (file_exists($video_title_image_file_old)) {
-                    unlink($video_title_image_file_old);
-                }
-            }
-            //upload new file
-            $video_title_images = "video_title_" . time() . ".webp";
-
-            Image::make($data["video_title_image"])->save(
-                base_path() . "/public/uploads/images/" . $video_title_images,
-                80
-            );
-
-            $video->video_title_image = $video_title_images;
-        } else {
-            $data["video_title_image"] = $video->video_title_image;
-        }
-
         // Enable Video Title Thumbnail
 
-        $video->enable_video_title_image = $request->enable_video_title_image
-            ? "1"
-            : "0";
+        $video->enable_video_title_image = $request->enable_video_title_image ? "1" : "0";
 
         $video->trailer_type = $data["trailer_type"];
         $StorageSetting = StorageSetting::first();
@@ -2922,7 +2869,6 @@ class AdminVideosController extends Controller
         $video->active = 1;
         $video->embed_code = $embed_code;
         $video->player_image = $players_image;
-        $video->video_tv_image = $Tv_image; 
         $video->image = $video_image; 
         $video->publish_type = $publish_type;
         $video->publish_time = $publish_time;
@@ -3180,6 +3126,7 @@ class AdminVideosController extends Controller
             "Your video will be available shortly after we process it"
         );
     }
+    
     public function Mp4url(Request $request)
     {
         $data = $request->all();
