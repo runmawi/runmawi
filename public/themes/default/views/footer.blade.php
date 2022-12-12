@@ -147,24 +147,24 @@
      <!-- back-to-top End -->
       <!-- jQuery, Popper JS -->
 
-      <script src="<?= URL::to('/'). '/assets/js/jquery-3.4.1.min.js';?>"></script>
-      <script src="<?= URL::to('/'). '/assets/js/popper.min.js';?>"></script>
+      <script src="<?= URL::to('/'). '/assets/js/jquery-3.4.1.min.js';?>" defer></script>
+      <script src="<?= URL::to('/'). '/assets/js/popper.min.js';?>" defer></script>
       <!-- Bootstrap JS -->
-      <script src="<?= URL::to('/'). '/assets/js/bootstrap.min.js';?>"></script>
+      <script src="<?= URL::to('/'). '/assets/js/bootstrap.min.js';?>" defer></script>
       <!-- Slick JS -->
-      <script src="<?= URL::to('/'). '/assets/js/slick.min.js';?>"></script>
+      <script src="<?= URL::to('/'). '/assets/js/slick.min.js';?>" defer></script>
       <!-- owl carousel Js -->
-      <script src="<?= URL::to('/'). '/assets/js/owl.carousel.min.js';?>"></script>
+      <script src="<?= URL::to('/'). '/assets/js/owl.carousel.min.js';?>" defer></script>
       <!-- select2 Js -->
-      <script src="<?= URL::to('/'). '/assets/js/select2.min.js';?>"></script>
+      <script src="<?= URL::to('/'). '/assets/js/select2.min.js';?>" defer></script>
       <!-- Magnific Popup-->
-      <script src="<?= URL::to('/'). '/assets/js/jquery.magnific-popup.min.js';?>"></script>
+      <script src="<?= URL::to('/'). '/assets/js/jquery.magnific-popup.min.js';?>" defer></script>
       <!-- Slick Animation-->
       <script src="<?= URL::to('/'). '/assets/js/slick-animation.min.js';?>"></script>
       <!-- Custom JS-->
-      <script src="<?= URL::to('/'). '/assets/js/custom.js';?>"></script>
-<script src="<?= URL::to('/'). '/assets/js/jquery.lazy.js';?>"></script>
-      <script src="<?= URL::to('/'). '/assets/js/jquery.lazy.min.js';?>"></script>
+      <script src="<?= URL::to('/'). '/assets/js/custom.js';?>" defer></script>
+<script src="<?= URL::to('/'). '/assets/js/jquery.lazy.js';?>" defer></script>
+      <script src="<?= URL::to('/'). '/assets/js/jquery.lazy.min.js';?>" defer></script>
        <script>
     $(document).ready(function () {
       $(".thumb-cont").hide();
@@ -257,12 +257,13 @@ function myFunction() {
       <?php } 
     }
      ?>
- <script src="<?= URL::to('/'). '/assets/js/ls.bgset.min.js';?>"></script>
- <script src="<?= URL::to('/'). '/assets/js/lazysizes.min.js';?>"></script>
- <script src="<?= URL::to('/'). '/assets/js/plyr.polyfilled.js';?>"></script>
+ <script src="<?= URL::to('/'). '/assets/js/ls.bgset.min.js';?>" defer></script>
+ <script src="<?= URL::to('/'). '/assets/js/lazysizes.min.js';?>" defer></script>
+ <script src="<?= URL::to('/'). '/assets/js/plyr.polyfilled.js';?>" defer></script>
  <script src="<?= URL::to('/'). '/assets/js/hls.min.js';?>"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/0.14.5/hls.min.js.map" defer></script>
  <!-- <script src="<? //URL::to('/'). '/assets/js/plyr-3-7.js';?>"></script> -->
- <script src="<?= URL::to('/'). '/assets/js/hls.js';?>"></script>
+ <script src="<?= URL::to('/'). '/assets/js/hls.js';?>" defer></script>
           
 
 <script>
