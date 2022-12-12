@@ -88,6 +88,18 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 								<?php } } ?>
 								</video>
 								</div>
+								<?php  elseif( $episode->type == 'aws_m3u8' ): ?>
+									<div id="series_container">
+									<video id="video" autoplay controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>"  controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+									
+									<source type="application/x-mpegURL" src="<?php echo $episode->path; ?>">
+									
+									<?php  if(isset($episodesubtitles)){
+										foreach ($episodesubtitles as $key => $episodesubtitles_file) { ?>
+											<track kind="captions" src="<?= $episodesubtitles_file->url; ?>" srclang="<?= $episodesubtitles_file->sub_language; ?>" label="<?= $episodesubtitles_file->shortcode; ?>" default>
+									<?php } } ?>
+										</video>
+									</div>
 					<?php  else: ?>                                  
 						<div id="series_container">
 						<video id="videoPlayer"  autoplay  class="video-js vjs-default-skin" controls preload="auto" poster="<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>" data-setup="{}" width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">

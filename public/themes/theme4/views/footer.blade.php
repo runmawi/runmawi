@@ -283,7 +283,7 @@ function myFunction() {
                       tagUrl: ads_path_tag 
                     }
         });
-   }else if(type != "" && request_url != 'm3u8' && type != 'aws_m3u8' && episode_type != 'm3u8'){
+   }else if(type != "" && request_url != 'm3u8' && type != 'aws_m3u8' && episode_type != 'aws_m3u8' && episode_type != 'm3u8'){
     // alert('m3u8')
 
         const player = new Plyr('#videoPlayer',{
@@ -346,7 +346,7 @@ function myFunction() {
                       tagUrl: ads_path_tag 
                     }
         });
-   }else if(episode_type == 'm3u8' && type != 'aws_m3u8') {
+   }else if(episode_type == 'm3u8' ||  episode_type == 'aws_m3u8' && type != 'aws_m3u8') {
 
     // alert('episode_type')
 

@@ -463,7 +463,7 @@ function myFunction() {
     
     // alert(ads_path)
 
-   if(type != "" &&  type != "m3u8_url" && type != 'aws_m3u8' && video_video == 'video'){
+   if(type != "" &&  type != "m3u8_url" && type != 'aws_m3u8' && episode_type != 'aws_m3u8' && video_video == 'video'){
     // alert('m3u8')
 
         const player = new Plyr('#videoPlayer',{
@@ -528,7 +528,7 @@ ads:{
                   }
         });
       //  } else if(user_logged_out == 1 && type == ''){
-      }else if(episode_type == 'm3u8' && type != 'aws_m3u8') {
+      }else if(episode_type == 'm3u8'  || episode_type == 'aws_m3u8' && type != 'aws_m3u8') {
 
 // alert('episode_type')
 
