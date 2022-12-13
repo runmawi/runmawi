@@ -52,7 +52,7 @@
                           
                           ?>
                        <li class="slide-item">
-                          <a href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
+                          <a href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" aria-label="Trending">
                              <!-- block-images -->
                              <div class="block-images position-relative">
                                 <div class="img-box">
