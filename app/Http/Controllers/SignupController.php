@@ -650,12 +650,19 @@ public function createStep3(Request $request)
             
             if ( NewSubscriptionCoupon() == 1 ) {                      
                 try {
-                    $user->newSubscription($stripe_plan, $plan)->withCoupon($apply_coupon)->create($paymentMethod);
+
+                    if( subscription_trails_status() == 1 ){
+                        $user->newSubscription( $stripe_plan, $plan )->trialUntil( subscription_trails_day() )->withCoupon( $apply_coupon )->create( $paymentMethod );
+                    }
+                    else{
+                        $user->newSubscription( $stripe_plan, $plan )->withCoupon( $apply_coupon )->create( $paymentMethod );
+                    }
 
                     $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
                     $customer_data = $stripe->invoices->upcoming([
                                     'customer' => $user->stripe_id ,
                     ]);
+
                     $nextPaymentAttemptDate =  Carbon::createFromTimeStamp($customer_data->period_end)->toDateTimeString()  ;
                     
                     $user->role = 'subscriber';
@@ -665,6 +672,10 @@ public function createStep3(Request $request)
                     $user->subscription_start = Carbon::now(); 
                     $user->subscription_ends_at = $nextPaymentAttemptDate; 
                     $user->payment_status = 'active'; 
+                    if( subscription_trails_status()  == 1 ){
+                        $user->Subscription_trail_status =  1 ; 
+                        $user->Subscription_trail_tilldate   = subscription_trails_day(); 
+                    }
                     $user->save();
 
                 } catch (IncompletePayment $exception) {
@@ -676,7 +687,6 @@ public function createStep3(Request $request)
                 }
 
                 try {
-
 
                     \Mail::send('emails.subscriptionmail', array(
                         'name' => ucwords($user->username),
@@ -708,12 +718,18 @@ public function createStep3(Request $request)
        
                     Email_notsent_log($user_id,$email_log,$email_template);
                 }
-
             } 
             else {
                     
                     try {
-                        $user->newSubscription($stripe_plan, $plan)->create($paymentMethod);
+
+                        if( subscription_trails_status() == 1 ){
+                            
+                            $user->newSubscription( $stripe_plan, $plan )->trialUntil( subscription_trails_day() )->withCoupon( $apply_coupon )->create( $paymentMethod );
+                        }
+                        else{
+                            $user->newSubscription( $stripe_plan, $plan )->withCoupon( $apply_coupon )->create( $paymentMethod );
+                        }
 
                         $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
                         $customer_data = $stripe->invoices->upcoming([
@@ -772,6 +788,10 @@ public function createStep3(Request $request)
                     $user->subscription_start = Carbon::now(); 
                     $user->subscription_ends_at = $nextPaymentAttemptDate; 
                     $user->payment_status = 'active'; 
+                    if( subscription_trails_status()  == 1 ){
+                        $user->Subscription_trail_status =  1 ; 
+                        $user->Subscription_trail_tilldate   = subscription_trails_day(); 
+                    }
                     $user->save();
 
                     $next_date = $plandetail->days;

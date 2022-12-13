@@ -713,3 +713,17 @@ function currency_symbol(){
     $currency = App\CurrencySetting::pluck('symbol')->first();
     return $currency ;
 }
+
+function subscription_trails_status(){
+
+    $subscription_trails_status = 1 ;
+    return $subscription_trails_status ;
+
+}
+
+function subscription_trails_day(){
+
+    $subscription_trails_day = Carbon\Carbon::now()->addDays( 30 );
+    return $subscription_trails_day ;
+
+}

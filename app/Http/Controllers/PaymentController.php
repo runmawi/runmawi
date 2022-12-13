@@ -1524,7 +1524,17 @@ public function UpgadeSubscription(Request $request){
                 $apply_coupon = $request->get('coupon_code') ?  $request->get('coupon_code') : null ;
 
                 $user=User::where('id',Auth::user()->id)->first();
-                $subscription_details = $user->newSubscription( $stripe_plan, $plan )->withCoupon($apply_coupon)->create( $paymentMethod );
+
+                if( subscription_trails_status() == 1 ){
+                  
+                    $subscription_details = $user->newSubscription( $stripe_plan, $plan )->trialUntil( subscription_trails_day() )->withCoupon($apply_coupon)->create( $paymentMethod );
+
+                }else{
+
+                    $subscription_details = $user->newSubscription( $stripe_plan, $plan )->withCoupon($apply_coupon)->create( $paymentMethod );
+                }
+
+                  // Retrieve Subscriptions
                 $subscription = $stripe->subscriptions->retrieve( $subscription_details->stripe_id );
 
                 $Sub_Startday  = Carbon::createFromTimestamp($subscription['current_period_start'])->toDateTimeString(); 
@@ -1546,16 +1556,23 @@ public function UpgadeSubscription(Request $request){
                     'trial_ends_at'  =>  $trial_ends_at,
                     'ends_at'        =>  $trial_ends_at,
                 ]);
+
         
-                User::where('id',Auth::user()->id)->update([
+                $user_data = array(
                     'role'                  =>  'subscriber',
                     'stripe_id'             =>  $subscription['customer'],
                     'subscription_start'    =>  $Sub_Startday,
                     'subscription_ends_at'  =>  $Sub_Endday,
                     'payment_type'          => 'recurring',
                     'payment_status'        => $subscription['status'],
-                ]);
+                );
 
+                if( subscription_trails_status()  == 1 ){
+                    $user_data +=  ['Subscription_trail_status' => 1 ];
+                    $user_data +=  ['Subscription_trail_tilldate' => subscription_trails_day() ];
+                }
+
+                User::where('id',Auth::user()->id)->update( $user_data );
                 
                 try {
 
