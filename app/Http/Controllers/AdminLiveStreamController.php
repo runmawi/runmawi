@@ -704,7 +704,11 @@ class AdminLiveStreamController extends Controller
         }else{
             $url_type = $data['url_type'];
         }  
-
+        if(!empty($video) &&  $url_type == null){
+            $url_type = $video->url_type;
+        }else{
+            $url_type = $data['url_type'];
+        } 
 $StorageSetting = StorageSetting::first();
 $settings = Setting::first();
 

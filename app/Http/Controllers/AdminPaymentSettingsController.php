@@ -39,18 +39,12 @@ class AdminPaymentSettingsController extends Controller
     public function save_payment_settings(Request $request){
 
 		$input = $request->all();
-        
-        $payment_settings = PaymentSetting::first();
-		if(empty($input['stripe_status'])){
-			$stripe_status = 0;
-		}else{
-			$stripe_status = 1;
-		}
-		if(empty($input['live_mode'])){
-			$live_mode = 0;
-		}else{
-			$live_mode = 1;
-		}
+
+        $payment_settings = PaymentSetting::where('payment_type','=','Stripe')->first();
+
+		$stripe_status = empty($input['stripe_status']) ? 0 : 1 ;
+
+		$live_mode = empty($input['live_mode']) ? 0 : 1 ;
 
 		$payment_settings->live_mode = $live_mode;
 		$payment_settings->stripe_status = $stripe_status;
@@ -62,7 +56,9 @@ class AdminPaymentSettingsController extends Controller
 		$payment_settings->plan_name = $request['plan_name'];
 		$payment_settings->stripe_lable = $request['stripe_lable'];
 		$payment_settings->payment_type = "Stripe";
-		
+		$payment_settings->subscription_trail_days = $request["subscription_trail_days"] ;
+		$payment_settings->subscription_trail_status = empty($input['subscription_trail_status']) ? 0 : 1 ;
+
 
 		if(empty($payment_settings->stripe_lable)){
 			$payment_settings->stripe_lable   = '';
@@ -108,7 +104,7 @@ class AdminPaymentSettingsController extends Controller
         $payment_settings->save();
 
 
-        $payment_settings = PaymentSetting::where('id','=',2)->first();
+        $payment_settings = PaymentSetting::where('payment_type','=','PayPal')->first();
 
 		if( $payment_settings != null){
 			
@@ -232,173 +228,14 @@ class AdminPaymentSettingsController extends Controller
 	if($paystack_payment_setting != null){
 
 		if(empty($request['paystack_live_mode'])){
-
 			$paystack_live_mode = 0;
-
-			if(env('PAYSTACK_PUBLIC_KEY') !== null && env('PAYSTACK_PUBLIC_KEY') !== ''){
-
-				$Replace_data =array( 'PAYSTACK_PUBLIC_KEY'   =>  $request['paystack_test_publishable_key']);
-		  
-				  file_put_contents($Env_path, implode('', 
-					  array_map(function($Env_path) use ($Replace_data) {
-						  return   stristr($Env_path,'PAYSTACK_PUBLIC_KEY') ? "PAYSTACK_PUBLIC_KEY=".$Replace_data['PAYSTACK_PUBLIC_KEY']."\n" : $Env_path;
-					  }, file($Env_path))
-				));
-			   
-			}
-			else{
-
-				$PAYSTACK_PUBLIC_KEY = 'PAYSTACK_PUBLIC_KEY='.$request['paystack_test_publishable_key'].PHP_EOL;
-				$file_open = fopen($Env_path, 'a');
-				fwrite($file_open, $PAYSTACK_PUBLIC_KEY);
-			}
-
-
-			if(env('PAYSTACK_SECRET_KEY') !== null && env('PAYSTACK_SECRET_KEY') !== ''){
-
-				$Replace_data =array( 'PAYSTACK_SECRET_KEY'   => $request['paystack_test_secret_key']  );
-		  
-				  file_put_contents($Env_path, implode('', 
-					  array_map(function($Env_path) use ($Replace_data) {
-						  return   stristr($Env_path,'PAYSTACK_SECRET_KEY') ? "PAYSTACK_SECRET_KEY=".$Replace_data['PAYSTACK_SECRET_KEY']."\n" : $Env_path;
-					  }, file($Env_path))
-				));
-			   
-			}
-			else{
-
-				$PAYSTACK_SECRET_KEY = 'PAYSTACK_SECRET_KEY='.$request['paystack_test_secret_key'].PHP_EOL;
-				$file_open = fopen($Env_path, 'a');
-				fwrite($file_open, $PAYSTACK_SECRET_KEY);
-			}
-
-
-			if(env('PAYSTACK_PAYMENT_URL') !== null && env('PAYSTACK_PAYMENT_URL') !== ''){
-
-				$Replace_data =array( 'PAYSTACK_PAYMENT_URL'   => 'https://api.paystack.co' );
-		  
-				  file_put_contents($Env_path, implode('', 
-					  array_map(function($Env_path) use ($Replace_data) {
-						  return   stristr($Env_path,'PAYSTACK_PAYMENT_URL') ? "PAYSTACK_PAYMENT_URL=".$Replace_data['PAYSTACK_PAYMENT_URL']."\n" : $Env_path;
-					  }, file($Env_path))
-				));
-
-			}
-			else{
-
-				$PAYSTACK_PAYMENT_URL = 'PAYSTACK_PAYMENT_URL='.'https://api.paystack.co'.PHP_EOL;
-				$file_open = fopen($Env_path, 'a');
-				fwrite($file_open, $PAYSTACK_PAYMENT_URL);
-
-			}
-
-
-			if(env('MERCHANT_EMAIL') !== null && env('MERCHANT_EMAIL') !== ''){
-
-				$Replace_data =array( 'MERCHANT_EMAIL'   => 'unicodeveloper@gmail.com' );
-		  
-				  file_put_contents($Env_path, implode('', 
-					  array_map(function($Env_path) use ($Replace_data) {
-						  return   stristr($Env_path,'MERCHANT_EMAIL') ? "MERCHANT_EMAIL=".$Replace_data['MERCHANT_EMAIL']."\n" : $Env_path;
-					  }, file($Env_path))
-				));
-
-			}
-			else{
-
-				$PAYSTACK_PAYMENT_URL = 'MERCHANT_EMAIL='.'unicodeveloper@gmail.com'.PHP_EOL;
-				$file_open = fopen($Env_path, 'a');
-				fwrite($file_open, $PAYSTACK_PAYMENT_URL);
-			}
-
 		}else{
-
 			$paystack_live_mode = 1;
-
-			if(env('PAYSTACK_PUBLIC_KEY') !== null && env('PAYSTACK_PUBLIC_KEY') !== ''){
-
-				$Replace_data =array( 'PAYSTACK_PUBLIC_KEY'   =>  $request['paystack_live_publishable_key'] );
-		  
-				  file_put_contents($Env_path, implode('', 
-					  array_map(function($Env_path) use ($Replace_data) {
-						  return   stristr($Env_path,'PAYSTACK_PUBLIC_KEY') ? "PAYSTACK_PUBLIC_KEY=".$Replace_data['PAYSTACK_PUBLIC_KEY']."\n" : $Env_path;
-					  }, file($Env_path))
-				));
-			   
-			}
-			else{
-
-				$PAYSTACK_PUBLIC_KEY = 'PAYSTACK_PUBLIC_KEY='.$request['paystack_live_publishable_key'].PHP_EOL;
-				$file_open = fopen($Env_path, 'a');
-				fwrite($file_open, $PAYSTACK_PUBLIC_KEY);
-			}
-
-
-			if(env('PAYSTACK_SECRET_KEY') !== null && env('PAYSTACK_SECRET_KEY') !== ''){
-
-				$Replace_data =array( 'PAYSTACK_SECRET_KEY'   => $request['paystack_live_secret_key']  );
-		  
-				  file_put_contents($Env_path, implode('', 
-					  array_map(function($Env_path) use ($Replace_data) {
-						  return   stristr($Env_path,'PAYSTACK_SECRET_KEY') ? "PAYSTACK_SECRET_KEY=".$Replace_data['PAYSTACK_SECRET_KEY']."\n" : $Env_path;
-					  }, file($Env_path))
-				));
-			   
-			}
-			else{
-
-				$PAYSTACK_SECRET_KEY = 'PAYSTACK_SECRET_KEY='.$request['paystack_live_secret_key'].PHP_EOL;
-				$file_open = fopen($Env_path, 'a');
-				fwrite($file_open, $PAYSTACK_SECRET_KEY);
-			}
-
-
-			if(env('PAYSTACK_PAYMENT_URL') !== null && env('PAYSTACK_PAYMENT_URL') !== ''){
-
-				$Replace_data =array( 'PAYSTACK_PAYMENT_URL'   => 'https://api.paystack.co' );
-		  
-				  file_put_contents($Env_path, implode('', 
-					  array_map(function($Env_path) use ($Replace_data) {
-						  return   stristr($Env_path,'PAYSTACK_PAYMENT_URL') ? "PAYSTACK_PAYMENT_URL=".$Replace_data['PAYSTACK_PAYMENT_URL']."\n" : $Env_path;
-					  }, file($Env_path))
-				));
-
-			}
-			else{
-
-				$PAYSTACK_PAYMENT_URL = 'PAYSTACK_PAYMENT_URL='.'https://api.paystack.co'.PHP_EOL;
-				$file_open = fopen($Env_path, 'a');
-				fwrite($file_open, $PAYSTACK_PAYMENT_URL);
-
-			}
-
-
-			if(env('MERCHANT_EMAIL') !== null && env('MERCHANT_EMAIL') !== ''){
-
-				$Replace_data =array( 'MERCHANT_EMAIL'   => 'unicodeveloper@gmail.com' );
-		  
-				  file_put_contents($Env_path, implode('', 
-					  array_map(function($Env_path) use ($Replace_data) {
-						  return   stristr($Env_path,'MERCHANT_EMAIL') ? "MERCHANT_EMAIL=".$Replace_data['MERCHANT_EMAIL']."\n" : $Env_path;
-					  }, file($Env_path))
-				));
-
-			}
-			else{
-
-				$PAYSTACK_PAYMENT_URL = 'MERCHANT_EMAIL='.'unicodeveloper@gmail.com'.PHP_EOL;
-				$file_open = fopen($Env_path, 'a');
-				fwrite($file_open, $PAYSTACK_PAYMENT_URL);
-			}
-
 		}
 
 		if(empty($request['paystack_status'])){
-
 			$paystack_status = 0;
-
 		}else{
-
 			$paystack_status = 1;
 		}
 
