@@ -122,31 +122,58 @@
                                 </div>
 
                                 <div class="col-md-6 mt-3">
-                                    <label>Test Secret Key:</label> 
-                                    <input type="text" class="form-control" name="test_secret_key" id="test_secret_key" placeholder="Test Secret Key" value="@if(!empty($payment_settings->test_secret_key) && Auth::user()->role != 'demo'){{ $payment_settings->test_secret_key }}@endif" />
+                                    <label>Stripe Label:</label> 
+                                    <input type="text" class="form-control" name="stripe_lable" id="stripe_lable" placeholder="Stripe Lable" value="@if(!empty($payment_settings->stripe_lable) && Auth::user()->role != 'demo'){{ $payment_settings->stripe_lable }}@endif" />
                                 </div>
+
+                                                        {{-- Test Key --}}
 
                                 <div class="col-md-6 mt-3">
                                     <label>Test Publishable Key:</label> 
                                     <input type="text" class="form-control" name="test_publishable_key" id="test_publishable_key" placeholder="Test Publishable Key" value="@if(!empty($payment_settings->test_publishable_key) && Auth::user()->role != 'demo'){{ $payment_settings->test_publishable_key }}@endif" />
                                 </div>
 
+
                                 <div class="col-md-6 mt-3">
-                                    <label>Live Secret Key:</label> 
-                                    <input type="text" class="form-control" name="live_secret_key" id="live_secret_key" placeholder="Live Secret Key" value="@if(!empty($payment_settings->live_secret_key) && Auth::user()->role != 'demo'){{ $payment_settings->live_secret_key }}@endif" />
+                                    <label>Test Secret Key:</label> 
+                                    <input type="text" class="form-control" name="test_secret_key" id="test_secret_key" placeholder="Test Secret Key" value="@if(!empty($payment_settings->test_secret_key) && Auth::user()->role != 'demo'){{ $payment_settings->test_secret_key }}@endif" />
                                 </div>
-                            
+
+                                                        {{-- Live Key --}}
+
                                 <div class="col-md-6 mt-3">
                                     <label>Live Publishable Key:</label> 
                                     <input type="text" class="form-control" name="live_publishable_key" id="live_publishable_key" placeholder="Live Publishable Key" value="@if(!empty($payment_settings->live_publishable_key) && Auth::user()->role != 'demo'){{ $payment_settings->live_publishable_key }}@endif" />
                                 </div>
+                               
+                                <div class="col-md-6 mt-3">
+                                    <label>Live Secret Key:</label> 
+                                    <input type="text" class="form-control" name="live_secret_key" id="live_secret_key" placeholder="Live Secret Key" value="@if(!empty($payment_settings->live_secret_key) && Auth::user()->role != 'demo'){{ $payment_settings->live_secret_key }}@endif" />
+                                </div>
+
+                                                        {{-- Subscription Trail --}}
 
                                 <div class="col-md-6 mt-3">
-                                    <label>Stripe Label:</label> 
-                                    <input type="text" class="form-control" name="stripe_lable" id="stripe_lable" placeholder="Stripe Lable" value="@if(!empty($payment_settings->stripe_lable) && Auth::user()->role != 'demo'){{ $payment_settings->stripe_lable }}@endif" />
+                                    <label for=""> Stripe Subscription Trail Status:  </label>
+                                    <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                        <div style="color:red;"> Disable </div>
+                                        <div class="mt-1">
+                                            <label class="switch">
+                                                <input type="checkbox"  @if ($payment_settings->subscription_trail_status == 1) {{ "checked='checked'" }} @else {{ "" }} @endif name="subscription_trail_status" id="subscription_trail_status">
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                        <div style="color:green;"> Enable </div>
+                                        <div class="make-switch" data-on="success" data-off="warning"></div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 mt-3">
+                                    <label> Stripe Subscription Trail Days: </label> 
+                                    <input type="number" min="1"  class="form-control" name="subscription_trail_days" id="subscription_trail_days" placeholder=" 1 - 100 " value="@if(!empty($payment_settings->subscription_trail_days) && Auth::user()->role != 'demo'){{ $payment_settings->subscription_trail_days }}@endif" />
                                 </div>
                             </div>
-                            <br>
+                            
                             <br>
                         @endif
 
