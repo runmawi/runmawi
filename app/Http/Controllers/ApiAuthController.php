@@ -104,6 +104,8 @@ use App\SystemSetting;
 use App\CurrencySetting;
 use App\MobileSideMenu;
 use App\CategoryLive;
+use App\TVLoginCode;
+
 
 class ApiAuthController extends Controller
 {
@@ -226,8 +228,6 @@ class ApiAuthController extends Controller
               $userdata = User::where('email', '=', $request->get('email'))->first();
               $userid = $userdata->id;
 
-              session(['paystack_Andriod_user_id' => $userid ]);
-
               send_password_notification('Notification From '.GetWebsiteName() ,'Your Account  has been Created Successfully','Your Account  has been Created Successfully','',$userid);
                 
         } 
@@ -279,7 +279,7 @@ class ApiAuthController extends Controller
               $Sub_Endday = date('d/m/Y H:i:s', $subscription['current_end']); 
               $trial_ends_at = Carbon::createFromTimestamp($subscription['current_end'])->toDateTimeString(); 
 
-                Subscription::create([
+                  Subscription::create([
                   'user_id'        =>  $userid,
                   'name'           =>  $plan_id['item']->name,
                   'price'          =>  $plan_id['item']->amount / 100,   // Amount Paise to Rupees
@@ -312,9 +312,43 @@ class ApiAuthController extends Controller
           }
             }elseif( $paymentMode == "Paystack" ){
 
+              $paystack_subcription_id = '124v';
+
+              $subcription_details = Paystack::fetchSubscription($paystack_subcription_id) ;
+
+              $paystack_Sub_Startday  = Carbon::parse($subcription_details['data']['createdAt'])->setTimezone('UTC')->format('d/m/Y H:i:s'); 
+              $paystack_Sub_Endday    = Carbon::parse($subcription_details['data']['next_payment_date'] )->setTimezone('UTC')->format('d/m/Y H:i:s'); 
+              $paystack_trial_ends_at = Carbon::parse($subcription_details['data']['next_payment_date'] )->setTimezone('UTC')->toDateTimeString(); 
+
+              Subscription::create([
+                'user_id'        =>  $userid,
+                'name'           =>  $subcription_details['data']['plan']['name'],
+                'price'          =>  $subcription_details['data']['amount'] ,   // Amount Paise to Rupees
+                'stripe_id'      =>  $subcription_details['data']['subscription_code'] ,
+                'stripe_status'  =>  $subcription_details['data']['status'] ,
+                'stripe_plan'    =>  $subcription_details['data']['plan']['plan_code'],
+                'quantity'       =>  null,
+                'countryname'    =>  Country_name(),
+                'regionname'     =>  Region_name(),
+                'cityname'       =>  city_name(),
+                'PaymentGateway' =>  'Paystack',
+                'trial_ends_at'  =>  $paystack_trial_ends_at,
+                'ends_at'        =>  $paystack_trial_ends_at,
+            ]);
+        
+            User::where('id',$userid)->update([
+                'role'                  =>  'subscriber',
+                'stripe_id'             =>  $subcription_details['data']['subscription_code'] ,
+                'subscription_start'    =>  $paystack_Sub_Startday,
+                'subscription_ends_at'  =>  $paystack_Sub_Endday,
+                'payment_gateway'       =>  'Paystack',
+                'payment_type'          => 'recurring',
+                'payment_status'        => 'active',
+            ]);
 
               return $response = array('status'=>'true',
-              'message' => 'Registered SS Successfully.');
+              'message' => 'Registered Successfully.');
+
             }
             else{
                      $payment_type = $input['payment_type'];
@@ -9433,7 +9467,165 @@ if($LiveCategory_count > 0 || $LiveLanguage_count > 0){
       return response()->json($response, 200);
     }
 
+    public function TVQRLogin(Request $request)
+    {
+    
+      $email =  $request['email'];
+      $password =  $request['password'];
+    
+      try{
 
+        $user = User::where('email',$email)->first();
+
+        if($user->role == 'subscriber'){
+          
+          $Subscription = Subscription::where('user_id',$user->id)->orderBy('created_at', 'DESC')->first();
+          $Subscription = Subscription::Join('subscription_plans','subscription_plans.plan_id','=','subscriptions.stripe_plan')
+          ->where('subscriptions.user_id',$user->id)
+          ->orderBy('subscriptions.created_at', 'desc')->first();
+
+          $plans_name = $Subscription->plans_name;
+          $plan_ends_at = $Subscription->ends_at;
+
+        }else{
+          $plans_name = '';
+          $plan_ends_at = '';
+        }
+            $response = array(
+                'status'=> 'true',
+                'message' => 'Logged In Successfully',
+                'user_details'=> $user,
+                'plans_name'=>$plans_name,
+                'plan_ends_at'=>$plan_ends_at,
+                'avatar'=>URL::to('/').'/public/uploads/avatars/'.$user->avatar
+            );
+    
+        } 
+        catch (\Throwable $th) {
+    
+            $response = array(
+              'status'=>'false',
+              'message'=>$th->getMessage(),
+            );
+    
+        }
+    
+      return response()->json($response, 200);
+    }
+
+    public function TVCodeVerification(Request $request)
+    {
+       
+      try{
+
+        TVLoginCode::create([
+          'email'    => $request->email,
+          'tv_code'  => $request->tv_code,
+          'status'   => 0,
+       ]);
+    
+        $response = array(
+            'status'=> 'true',
+            'message' => 'Added verfication code',
+            'tv_code' => $request->tv_code,
+        );
+    
+        } 
+        catch (\Throwable $th) {
+    
+            $response = array(
+              'status'=>'false',
+              'message'=>$th->getMessage(),
+            );
+    
+        }
+    
+      return response()->json($response, 200);
+    }
+
+    public function TVCodeLogin(Request $request)
+    {
+    
+      $tv_code =  $request['tv_code'];       
+    
+      try{
+    
+        TVLoginCode::where('tv_code',$tv_code)->first()
+        ->update([
+           'status'  => 1,
+        ]);
+        $TVLoginCode = TVLoginCode::where('tv_code',$tv_code)->where('status',1)->first();
+
+        if(!empty($TVLoginCode)){
+
+        $user = User::where('email',$TVLoginCode->email)->first();
+        if($user->role == 'subscriber'){
+          
+          $Subscription = Subscription::where('user_id',$user->id)->orderBy('created_at', 'DESC')->first();
+          $Subscription = Subscription::Join('subscription_plans','subscription_plans.plan_id','=','subscriptions.stripe_plan')
+          ->where('subscriptions.user_id',$user->id)
+          ->orderBy('subscriptions.created_at', 'desc')->first();
+
+          $plans_name = $Subscription->plans_name;
+          $plan_ends_at = $Subscription->ends_at;
+
+        }else{
+          $plans_name = '';
+          $plan_ends_at = '';
+        }
+
+      }
+          $response = array(
+              'status'=> 'true',
+              'message' => 'Logged In Successfully',
+              'user_details'=> $user,
+              'plans_name'=>$plans_name,
+              'plan_ends_at'=>$plan_ends_at,
+              'avatar'=>URL::to('/').'/public/uploads/avatars/'.$user->avatar
+          );
+    
+        } 
+        catch (\Throwable $th) {
+    
+            $response = array(
+              'status'=>'false',
+              'message'=>$th->getMessage(),
+            );
+    
+        }
+    
+      return response()->json($response, 200);
+    }
+
+    public function TVLogout(Request $request)
+    {
+       
+      try{
+
+        $TVLoginCode = TVLoginCode::where('email',$request->email)->where('status',1)->orderBy('created_at', 'DESC')->first();
+
+        TVLoginCode::where('email',$request->email)->where('status',1)->orderBy('created_at', 'DESC')->first()
+        ->update([
+           'status'  => 0,
+        ]);
+    
+        $response = array(
+            'status'=> 'true',
+            'message' => 'Logged Out Successfully',
+        );
+    
+        } 
+        catch (\Throwable $th) {
+    
+            $response = array(
+              'status'=>'false',
+              'message'=>$th->getMessage(),
+            );
+    
+        }
+    
+      return response()->json($response, 200);
+    }
 
 }
 

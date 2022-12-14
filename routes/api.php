@@ -358,5 +358,12 @@ Route::group([
 
     Route::post('tv_search','ApiAuthController@TV_Search');
 
+    Route::post('tv_barcode_login','ApiAuthController@TVQRLogin');
+
+    Route::post('tv_code_verification','ApiAuthController@TVCodeVerification');
+
+    Route::post('tv_code_login','ApiAuthController@TVCodeLogin');
+
+    Route::post('tv_logout','ApiAuthController@TVLogout');
 
 });
