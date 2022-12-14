@@ -217,8 +217,7 @@ class PaystackController extends Controller
                 }
 
             }else{
-                $user_id = '814' ;
-
+                $user_id = session('paystack_Andriod_user_id') ;
             }
 
                  // Subscription Details - Storing
@@ -249,6 +248,7 @@ class PaystackController extends Controller
 
             $request->session()->forget('paystack_customer_id');
             $request->session()->forget('paystack_payment_source');
+            $request->session()->forget('paystack_Andriod_user_id');
 
             $response = array(
                 'status'=>'true',
