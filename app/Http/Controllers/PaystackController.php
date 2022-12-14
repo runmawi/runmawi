@@ -217,6 +217,7 @@ class PaystackController extends Controller
                 }
 
             }else{
+                $user_id = '814' ;
 
             }
 
