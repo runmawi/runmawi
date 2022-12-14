@@ -226,6 +226,8 @@ class ApiAuthController extends Controller
               $userdata = User::where('email', '=', $request->get('email'))->first();
               $userid = $userdata->id;
 
+              session(['paystack_Andriod_user_id' => $userid ]);
+
               send_password_notification('Notification From '.GetWebsiteName() ,'Your Account  has been Created Successfully','Your Account  has been Created Successfully','',$userid);
                 
         } 
@@ -310,11 +312,9 @@ class ApiAuthController extends Controller
           }
             }elseif( $paymentMode == "Paystack" ){
 
-              session(['paystack_Andriod_user_id' => $userid ]);
 
               return $response = array('status'=>'true',
-              'message' => 'Registered Successfully.');
-
+              'message' => 'Registered SS Successfully.');
             }
             else{
                      $payment_type = $input['payment_type'];
