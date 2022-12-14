@@ -178,20 +178,34 @@ class LiveStreamController extends Controller
                     $publishable_key= null;
                 }        
              $currency = CurrencySetting::first();
-             if(!empty($categoryVideos->publish_time)){
-             $new_date = Carbon::parse($categoryVideos->publish_time)->format('M d , y H:i:s');
-             $currentdate = date("M d , y H:i:s");
+             if (!empty($categoryVideos->publish_time))
+             {
+                 $new_date = Carbon::parse($categoryVideos->publish_time)
+                     ->format('M d ,y H:i:s');
+                 $currentdate = date("M d , y H:i:s");
+                 date_default_timezone_set('Asia/Kolkata');
+                 $current_date = Date("M d , y H:i:s");
+                 $date = date_create($current_date);
+                 $currentdate = date_format($date, "M d ,y H:i:s");
+                //  "Dec 14 ,22 14:58:00" "Dec 14 ,22 14:58:00" "Dec 14 ,22 15:04:53"
+                 if ($currentdate < $new_date)
+                 {
 
-             if($currentdate < $new_date){
-              $new_date = Carbon::parse($categoryVideos->publish_time)->format('M d , y h:i:s');
+                     $new_date = Carbon::parse($categoryVideos->publish_time)
+                         ->format('M d , y H:i:s');
 
-             }else{
-              $new_date = null;
-            }
-             }else{
-              $new_date = null;
+                 }
+                 else
+                 {
+
+                     $new_date = null;
+                 }
              }
-
+             else
+             {
+                 $new_date = null;
+             }
+            //  dd($new_date);
              $payment_setting = PaymentSetting::where('status',1)->where('live_mode',1)->get();
 
              $Razorpay_payment_setting = PaymentSetting::where('payment_type','Razorpay')->where('status',1)->first();
