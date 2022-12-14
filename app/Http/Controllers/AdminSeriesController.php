@@ -298,7 +298,7 @@ class AdminSeriesController extends Controller
                     Image::make($tv_image)->save(base_path().'/public/uploads/images/'.$series_tv_image_image,compress_image_resolution() );
                 }else{
     
-                    $series_tv_image_filename  = time().'.'.$player_image->getClientOriginalExtension();
+                    $series_tv_image_filename  = time().'.'.$tv_image->getClientOriginalExtension();
                     $series_tv_image_image     =  'series_tv_image_'.$series_tv_image_filename ;
                     Image::make($tv_image)->save(base_path().'/public/uploads/images/'.$series_tv_image_image );
                 }  
