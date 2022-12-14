@@ -716,14 +716,16 @@ function currency_symbol(){
 
 function subscription_trails_status(){
 
-    $subscription_trails_status = 1 ;
-    return $subscription_trails_status ;
+    $subscription_trails_status = App\PaymentSetting::where('payment_type','=','Stripe')->pluck('subscription_trail_status')->first();
+    return $subscription_trails_status;
 
 }
 
 function subscription_trails_day(){
 
-    $subscription_trails_day = Carbon\Carbon::now()->addDays( 30 );
+    $Trail_days = App\PaymentSetting::where('payment_type','=','Stripe')->pluck('subscription_trail_days')->first();
+
+    $subscription_trails_day = Carbon\Carbon::now()->addDays( $Trail_days );
     return $subscription_trails_day ;
 
 }
