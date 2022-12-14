@@ -2940,6 +2940,7 @@ class HomeController extends Controller
             {
                 $videos = [];
             }
+            
 
             $livestreams = LiveStream::Select('live_streams.*','livecategories.live_id','live_categories.name')
                                 ->Join('livecategories','livecategories.live_id','=','live_streams.id')
