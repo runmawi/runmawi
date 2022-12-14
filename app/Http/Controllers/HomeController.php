@@ -2660,10 +2660,13 @@ class HomeController extends Controller
                         $Episodes = '<ul class="list-group" style="display: block; position: relative; z-index: 999999;;margin-bottom: 0;border-radius: 0;background: rgba(20, 20, 20, 0.8);">';
                         $Episodes .= "<h6 style='margin: 0;text-align: left;padding: 10px;'> Episode </h6>";
                         foreach ($Episode as $row)
-                        {   
-                            $series_slug = Series::where('id',$row->series_id)->pluck('slug')->first();
-                            $Episodes .= '<li class="list-group-item">
-                            <img width="35px" height="35px" src="' . URL::to('/') . '/public/uploads/images/' . $row->image . '"><a href="' . URL::to('/') . '/episode' .'/'. $series_slug . '/'. $row->slug . '" style="font-color: #c61f1f00;color: #000;text-decoration: none;">' . $row->title . '</a></li>';
+                        {  
+                            if( $row->slug != null ){
+
+                                $series_slug = Series::where('id',$row->series_id)->pluck('slug')->first();
+                                $Episodes .= '<li class="list-group-item">
+                                <img width="35px" height="35px" src="' . URL::to('/') . '/public/uploads/images/' . $row->image . '"><a href="' . URL::to('/') . '/episode' .'/'. $series_slug . '/'. $row->slug . '" style="font-color: #c61f1f00;color: #000;text-decoration: none;">' . $row->title . '</a></li>';
+                            }
                         }
                     }
                     else{
