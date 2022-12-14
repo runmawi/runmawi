@@ -64,7 +64,6 @@ class PaystackController extends Controller
 
     public function Paystack_CreateSubscription( Request $request )
     {
-
         try {
 
             $users_details =Auth::User();
@@ -109,6 +108,7 @@ class PaystackController extends Controller
             $customer_id = $customer_respond['data']['customer_code'] ;
 
             session(['paystack_customer_id' => $customer_id ]);
+            session(['paystack_payment_source' => "web" ]);
 
                  // Create Subscription 
 
@@ -156,16 +156,41 @@ class PaystackController extends Controller
 
     public function paystack_verify_request ( Request $request )
     {
+        try {
 
-        // if( 0 == 1){
-        //     return $this->paystack_Andriod_verify_request( $request );
-        // }
+            $reference_code = $request->reference ;
 
-        if( $request->trxref != null && $request->reference != null ){
+                    // Verify Payments API
+
+            $curl = curl_init();
+        
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => "https://api.paystack.co/transaction/verify/".$reference_code,
+                CURLOPT_RETURNTRANSFER => true, CURLOPT_ENCODING => "",  CURLOPT_MAXREDIRS => 10, CURLOPT_TIMEOUT => 30, CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "GET", CURLOPT_HTTPHEADER => $this->SecretKey_array,
+            ));
+
+            $reference_respond = curl_exec($curl);
+            $reference_error = curl_error($curl);
+            curl_close($curl);
+
+            $verify_reference = $reference_error ?  json_decode($reference_respond, true) : json_decode($reference_respond, true) ;
+
+                // Verify Payments Status (false)
+
+            if( $verify_reference['status'] == false ){
+
+                $response = array(
+                    'status'=>'false',
+                    'message'=> $verify_reference['message'] ,
+                );  
+
+                return response()->json($response, 200);
+            }
 
                 // Customer Details
 
-            $paystack_customer_id = session('paystack_customer_id');
+            $paystack_customer_id = $verify_reference['data']['customer']['customer_code']  ;
             $customer_details = Paystack::fetchCustomer( $paystack_customer_id );
 
                 // Subscription Details
@@ -177,17 +202,26 @@ class PaystackController extends Controller
             $Sub_Endday    = Carbon::parse($subcription_details['data']['next_payment_date'] )->setTimezone('UTC')->format('d/m/Y H:i:s'); 
             $trial_ends_at = Carbon::parse($subcription_details['data']['next_payment_date'] )->setTimezone('UTC')->toDateTimeString(); 
 
-                // Subscription Details - Storing
+                // User Id 
 
-            $users_details = Auth::User() ;
+            if( session('paystack_payment_source') == "web" ){
 
-            if( $users_details != null ){
-                $user_id = Auth::user()->id;
+                $users_details = Auth::User() ;
+
+                if( $users_details != null ){
+                    $user_id = Auth::user()->id;
+                }
+                else{
+                    $userEmailId = $request->session()->get('register.email');
+                    $user_id   = User::where('email',$userEmailId)->pluck('id')->first();
+                }
+
+            }else{
+                $user_id = '814' ;
+
             }
-            else{
-                $userEmailId = $request->session()->get('register.email');
-                $user_id   = User::where('email',$userEmailId)->pluck('id')->first();
-            }
+
+                 // Subscription Details - Storing
 
             Subscription::create([
                 'user_id'        =>  $user_id,
@@ -206,16 +240,43 @@ class PaystackController extends Controller
             ]);
 
             User::where('id',$user_id)->update([
-                'role'                  =>  'subscriber',
-                'stripe_id'             =>  $subcription_details['data']['subscription_code'] ,
+                'role'            =>  'subscriber',
+                'stripe_id'       =>  $subcription_details['data']['subscription_code'] ,
                 'subscription_start'    =>  $Sub_Startday,
                 'subscription_ends_at'  =>  $Sub_Endday,
                 'payment_gateway'       =>  'Paystack',
             ]);
 
             $request->session()->forget('paystack_customer_id');
+            $request->session()->forget('paystack_payment_source');
 
-            return redirect()->route('home');
+            $response = array(
+                'status'=>'true',
+                'message'=> $verify_reference['message']  ,
+            );  
+
+            if( session('paystack_payment_source') == "web" ){
+
+                return redirect()->route('home');
+            }else{
+
+                return response()->json( $response, 200 );
+            }
+
+        } catch (\Throwable $th) {
+            
+            $response = array(
+                'status'=>'false',
+                'message'=> $th->getMessage() ,
+            );  
+
+            if( session('paystack_payment_source') == "web" ){
+
+                return redirect()->route('home');
+            }else{
+
+                return response()->json( $response, 200 );
+            }
         }
     }
 
