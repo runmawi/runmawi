@@ -750,7 +750,34 @@ cursor: pointer;
                                        </div>
                               </span>
                            </form>
+                           {{-- TV Code --}}
+                           <hr style="border:0.5px solid #fff;">
 
+                           <div class="row align-items-center">
+                              <div class="col-md-8">
+                                 <span class="text-light font-size-13">Enter TV Code</span>
+                              </div>
+                              <div class="col-md-4 text-right">
+                                    <a type="button" class="text-white font-size-13" data-toggle="collapse" data-target="#user_tvcode">Add</a>
+                              </div>
+                           </div>
+
+                           
+                           <form id="tv-code" accept-charset="UTF-8" action="{{ URL::to('user/tv-code') }}"   enctype="multipart/form-data" method="post">
+                              @csrf
+                              <input type="hidden" name="users_id" value="{{ $user->id }}" />
+                              <input type="hidden" name="email" value="{{ $user->email }}" />
+                              <span id="user_tvcode" class="collapse">
+                                       <div class="row mt-3">
+                                          <div class="col-md-8">
+                                                <input type="text" name="tv_code" id="tv_code" />
+
+                                          </div>
+                                       <div class="col-md-4">
+                                             <a type="button" class="btn round tv-code">Update</a></div>
+                                       </div>
+                              </span>
+                           </form>
                           <hr style="border:0.5px solid #fff;">
                         <div class="row align-items-center">
                             <div class="col-md-8">
@@ -1985,6 +2012,10 @@ jQuery(document).ready(function($){
 
          $(".update_userEmail").click(function(){
             $('#update_userEmail').submit();
+         });
+
+         $(".tv-code").click(function(){
+            $('#tv-code').submit();
          });
 
       });

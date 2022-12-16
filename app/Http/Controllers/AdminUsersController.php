@@ -2798,7 +2798,8 @@ class AdminUsersController extends Controller
             $user_role = Auth::user()->role;
             $alldevices = LoggedDevice::where('user_id', '=', Auth::User()->id)
                 ->get();
-                // TVLoginCode
+            // $TVLoginCode = TVLoginCode::where('status',0)->orderBy('created_at', 'DESC')->first();
+            // dd($TVLoginCode);
             if ($user_role == 'registered' || $user_role == 'admin')
             {
                 $role_plan = $user_role;
@@ -2920,7 +2921,40 @@ class AdminUsersController extends Controller
             }
         }
     }
+
+    public function TVCode(Request $request)
+    {
+       
+      try{
+
+        TVLoginCode::create([
+          'email'    => $request->email,
+          'tv_code'  => $request->tv_code,
+          'status'   => 0,
+       ]);
     
+        $response = array(
+            'status'=> 'true',
+            'message' => 'Added verfication code',
+            'tv_code' => $request->tv_code,
+        );
+    
+        } 
+        catch (\Throwable $th) {
+    
+            $response = array(
+              'status'=>'false',
+              'message'=>$th->getMessage(),
+            );
+    
+        }
+        return Redirect::back()
+        ->with(array(
+        'message' => 'Successfully added!',
+        'note_type' => 'success'
+    ));
+    }
+
     public function Splash_edit(Request $request, $source, $id )
     {
 
