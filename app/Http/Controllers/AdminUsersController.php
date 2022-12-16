@@ -58,6 +58,7 @@ use App\ContinueWatching;
 use App\Wishlist;
 use App\Watchlater;
 use App\SiteTheme;
+use App\TVLoginCode;
 
 
 class AdminUsersController extends Controller
@@ -2797,7 +2798,7 @@ class AdminUsersController extends Controller
             $user_role = Auth::user()->role;
             $alldevices = LoggedDevice::where('user_id', '=', Auth::User()->id)
                 ->get();
-
+                // TVLoginCode
             if ($user_role == 'registered' || $user_role == 'admin')
             {
                 $role_plan = $user_role;

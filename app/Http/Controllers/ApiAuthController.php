@@ -62,6 +62,8 @@ use App\Jobs\ConvertVideoForStreaming;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use FFMpeg\Filters\Video\VideoFilters;
 use Illuminate\Support\Str;
+use Unicodeveloper\Paystack\Exceptions\IsNullException;
+use Unicodeveloper\Paystack\Exceptions\PaymentVerificationFailedException;
 use Mail;
 use Carbon\Carbon as Carbon;
 use App\Playerui as Playerui;
@@ -105,6 +107,7 @@ use App\CurrencySetting;
 use App\MobileSideMenu;
 use App\CategoryLive;
 use App\TVLoginCode;
+use Paystack;
 
 
 class ApiAuthController extends Controller
