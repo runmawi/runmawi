@@ -213,12 +213,6 @@ class ApiAuthController extends Controller
         $user = User::where('email', '=', $request->get('email'))->first();
         $username = User::where('username', '=', $request->get('username'))->first();
 
-        if(!empty($user)){
-          $userid = $user->id;
-        }else{
-          $userid = '';
-        }
-
         if ($user === null && $username === null) {
 
               $user = new User($user_data);
@@ -246,7 +240,11 @@ class ApiAuthController extends Controller
                 return response()->json($response, 200);
               }
         }
-
+        if(!empty($userdata)){
+          $userid = $user->id;
+        }else{
+          $userid = '';
+        }
     try {
       if($settings->free_registration && $settings->activation_email == 1){
 
@@ -482,10 +480,10 @@ class ApiAuthController extends Controller
                                         }
                                      }
                        }
-                       $plan_details = SubscriptionPlan::where("plan_id","=",$plan)->first();
-                       $next_date = $plan_details->days;
-                       $current_date = date('Y-m-d h:i:s');
-                       $date = Carbon::parse($current_date)->addDays($next_date);
+                      //  $plan_details = SubscriptionPlan::where("plan_id","=",$plan)->first();
+                      //  $next_date = $plan_details->days;
+                      //  $current_date = date('Y-m-d h:i:s');
+                      //  $date = Carbon::parse($current_date)->addDays($next_date);
 
                       // Mail::send('emails.subscriptionmail', array(
                       //          /* 'activation_code', $user->activation_code,*/
