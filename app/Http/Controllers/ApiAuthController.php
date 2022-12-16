@@ -213,6 +213,12 @@ class ApiAuthController extends Controller
         $user = User::where('email', '=', $request->get('email'))->first();
         $username = User::where('username', '=', $request->get('username'))->first();
 
+        if(!empty($user)){
+          $userid = $user->id;
+        }else{
+          $userid = '';
+        }
+
         if ($user === null && $username === null) {
 
               $user = new User($user_data);
