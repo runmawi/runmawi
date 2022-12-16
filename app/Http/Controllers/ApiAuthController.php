@@ -213,6 +213,7 @@ class ApiAuthController extends Controller
         $user = User::where('email', '=', $request->get('email'))->first();
         $username = User::where('username', '=', $request->get('username'))->first();
 
+
         if ($user === null && $username === null) {
 
               $user = new User($user_data);
@@ -9631,6 +9632,33 @@ if($LiveCategory_count > 0 || $LiveLanguage_count > 0){
       return response()->json($response, 200);
     }
 
+  public function TVAlphaNumeric(Request $request)
+  {
+     
+    try{
+      $length = 2;
+      $data = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcefghijklmnopqrstuvwxyz';
+       
+      $unique_symbols = substr(str_shuffle($data), 0, $length);
+      // $unique_symbols = substr(str_shuffle($data), 0, 8);
+          $response = array(
+            'status'=> 'true',
+            'unique_symbols' => $unique_symbols,
+        );
+    }
+      catch (\Throwable $th) {
+
+      $response = array(
+        'status'=>'false',
+        'message'=>$th->getMessage(),
+      );
+
+  }
+
+return response()->json($response, 200);
+
+
 }
+} 
 
 
