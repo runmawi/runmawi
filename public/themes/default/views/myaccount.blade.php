@@ -757,7 +757,7 @@ cursor: pointer;
 
                            <div class="row align-items-center">
                               <div class="col-md-8">
-                                 <span class="text-light font-size-13">Enter TV Code</span>
+                                 <span class="text-light font-size-13">Tv Activation Code</span>
                               </div>
                               <div class="col-md-4 text-right">
                                     <a type="button" class="text-white font-size-13" data-toggle="collapse" data-target="#user_tvcode">Add</a>
@@ -776,7 +776,7 @@ cursor: pointer;
 
                                           </div>
                                        <div class="col-md-4">
-                                             <a type="button" class="btn round tv-code">Update</a></div>
+                                             <a type="button" class="btn round tv-code">Add</a></div>
                                        </div>
                               </span>
                            </form>

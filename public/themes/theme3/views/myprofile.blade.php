@@ -202,6 +202,7 @@ $settings = App\Setting::first();
                         <li><a class="showSingle" target="5">Preference for videos</a></li>
                         <li><a class="showSingle" target="6">Profile</a></li>
                         <li><a class="showSingle" target="7">Recently Viewed Items</a></li>
+                        <li><a class="showSingle" target="8">Tv Activation Code</a></li>
                     </ul>
                 </div>
             </div>
@@ -531,6 +532,24 @@ $settings = App\Setting::first();
                     </div>
                  </div>
                 </div>
+                <div class="targetDiv" id="div8">
+                  
+                  <p class="text-white">Enter Tv Activation Code</p>
+        <form id="tv-code" accept-charset="UTF-8" action="{{ URL::to('user/tv-code') }}"   enctype="multipart/form-data" method="post">
+                      @csrf
+                      <input type="hidden" name="users_id" value="{{ $user->id }}" />
+                      <input type="hidden" name="email" value="{{ $user->email }}" />
+                               <div class="row mt-3">
+                                  <div class="col-md-8">
+                                        <input type="text" name="tv_code" id="tv_code" />
+
+                                  </div>
+                               <div class="col-md-4">
+                                     <a type="button" class="btn round tv-code text-white">Add</a></div>
+                               </div>
+                   </form>
+          </div>
+    </div>
             </div>
 <style>
 .form-control {
@@ -886,6 +905,12 @@ border-radius: 4px;
 
   
    <script>
+      $(document).ready(function () {
+
+$(".tv-code").click(function(){
+$('#tv-code').submit();
+});
+});
 $(document).ready(function () {
   $(".thumb-cont").hide();
   $(".show-details-button").on("click", function () {

@@ -1165,6 +1165,12 @@ border-radius: 5px;padding:10px;">
       <!-- Custom JS-->
       <script src="<?= URL::to('/'). '/assets/js/custom.js';?>"></script>
        <script>
+        $(document).ready(function () {
+
+$(".tv-code").click(function(){
+$('#tv-code').submit();
+});
+});
     $(document).ready(function () {
       $(".thumb-cont").hide();
       $(".show-details-button").on("click", function () {
