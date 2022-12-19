@@ -25,6 +25,27 @@
                 @if (Session::has('message'))
                     <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
                  @endif
+                 
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group" >
+                            <label>In App Enable Setting :</label>
+                            <!-- <label class="switch">
+                                <input name="inapp_enable" class="inapp_enable" id="inapp_enable" type="checkbox" @if( @$settings->inapp_enable == "1") checked  @endif >
+                                <span class="slider round"></span>
+                            </label> -->
+                            <div class="mt-1 d-flex align-items-center justify-content-around">
+                                <div class="mr-2">Disable</div>
+                                <label class="switch mt-2">
+                                <input  type="checkbox" name="inapp_enable" class="inapp_enable" id="inapp_enable">
+                                <span class="slider round"></span>
+                                </label>
+                                <div class="ml-2">Enable</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="row">
                     <div class="col-md-6">
@@ -67,6 +88,17 @@
                                         <label>Product ID :</label>
                                         <input type="text" id="product_id" name="product_id" value="" class="form-control" placeholder="Enter Product ID">
                                     </div>
+                                    <!-- <div class="form-group" >
+                                        <label>In App Status :</label>
+                                        <div class="mt-1 d-flex align-items-center justify-content-around">
+                                            <div class="mr-2">Disable</div>
+                                            <label class="switch mt-2">
+                                            <input  type="checkbox" id="enable" name="enable">
+                                            <span class="slider round"></span>
+                                            </label>
+                                            <div class="ml-2">Enable</div>
+                                        </div>
+                                    </div> -->
                                     
                                     <div class="modal-footer form-group">
                                         <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
@@ -138,10 +170,51 @@
 
 	@section('javascript')
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 		<script type="text/javascript">
 
             jQuery(document).ready(function($){
+                $('.inapp_enable').on('change', function(event) {
+                    var inapp_enable    = $("#inapp_enable").prop("checked");      
+                        if(inapp_enable == true){
+                            Swal.fire({
+                                title: 'In-App Enable',
+                            })
+
+                            var inapp_enable = 1;
+
+                                $.ajax({
+                                    url: "{{ URL::to('/admin/settings/store_inapp') }}",
+                                    type: "post",
+                            data: {
+                                            _token: '{{ csrf_token() }}',
+                                            inapp_enable: inapp_enable
+
+                                        },        success: function(value){
+                                        console.log(value);
+                                    }
+                                });
+                        }else{
+
+                            Swal.fire({
+                                title: 'In-App Disable',
+                            })
+
+                            var inapp_enable = 0;
+                                $.ajax({
+                                    url: "{{ URL::to('/admin/settings/store_inapp') }}",
+                                    type: "post",
+                            data: {
+                                            _token: '{{ csrf_token() }}',
+                                            inapp_enable: inapp_enable
+
+                                        },        success: function(value){
+                                        console.log(value);
+                                    }
+                                });
+                        }
+                });
 
                 $('#submit-new-cat').click(function(){
                     $('#new-cat-form').submit();

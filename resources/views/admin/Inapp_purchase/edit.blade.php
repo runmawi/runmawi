@@ -23,6 +23,19 @@
                             <label> Product ID :</label>
                             <input type="text" id="product_id" name="product_id" value="{{ $Inapp_Purchase->product_id }}" class="form-control" placeholder="Enter Product ID">
                         </div>
+
+                        <!-- <div class="form-group" >
+                            <label>In App Status :</label>
+                            <div class="mt-1 d-flex align-items-center justify-content-around">
+                                <div class="mr-2">Disable</div>
+                                <label class="switch mt-2">
+                                <input  type="checkbox" id="enable" name="enable"  @if ($Inapp_Purchase->enable == 1) {{ "checked='checked'" }} @else {{ "" }} @endif>
+                                <span class="slider round"></span>
+                                </label>
+                                <div class="ml-2">Enable</div>
+                            </div>
+                        </div> -->
+
                         <input type="hidden" name="id" id="id" value="{{ $Inapp_Purchase->id }}" />
                 </form>
             </div>

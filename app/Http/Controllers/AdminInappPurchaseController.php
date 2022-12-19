@@ -27,6 +27,7 @@ class AdminInappPurchaseController extends Controller
         InappPurchase::create([
             'plan_price' => $request->plan_price,
             'product_id' => $request->product_id,
+            // 'enable'  => !empty($request->enable) ?  "1" : "0" ,
         ]);
 
         return Redirect::back()->with(array('message' => 'Successfully Created In-App Purchase Plans!', 'note_type' => 'success') );
@@ -44,6 +45,7 @@ class AdminInappPurchaseController extends Controller
         InappPurchase::where('id',$request->id)->update([
             'plan_price' => $request->plan_price,
             'product_id' => $request->product_id,
+            // 'enable'  => !empty($request->enable) ?  "1" : "0" ,
         ]);
 
         return Redirect::back()->with(array('message' => 'Successfully Updated  In-App Purchase Plans!', 'note_type' => 'success') );

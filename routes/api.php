@@ -364,6 +364,9 @@ Route::group([
 
     Route::post('tv_code_login','ApiAuthController@TVCodeLogin');
 
+    Route::post('tv_uniquecode_login','ApiAuthController@TvUniqueCodeLogin');
+
+
     Route::post('tv_logout','ApiAuthController@TVLogout');
 
     Route::get('tv_unique_alphanumeric','ApiAuthController@TVAlphaNumeric');

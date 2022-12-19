@@ -278,8 +278,8 @@ $settings = App\Setting::first();
                          
                           <div class="mt-3 row align-items-center">
                               <div class="col-md-3"> <h5 class="card-title mb-2">Update Profile</h5></div>
-                              <div class="col-md-9"> <!-- <form action="<?php if (isset($ref) ) { echo URL::to('/').'/register1?ref='.$ref.'&coupon='.$coupon; } else { echo URL::to('/').'/register1'; } ?>" method="POST" id="stripe_plan" class="stripe_plan" name="member_signup" enctype="multipart/form-data"> -->
-                    <form action="{{ URL::to('admin/profileupdate') }}" method="POST"  enctype="multipart/form-data">
+                              <div class="col-md-9"> 
+                    <form action="{{ URL::to('/profileupdate') }}" method="POST"  enctype="multipart/form-data">
                     @csrf
                         <div class="row align-items-center">
                             <div class="col-sm-6">

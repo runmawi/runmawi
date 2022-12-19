@@ -333,6 +333,7 @@ Route::post('LiveWishlist', 'WishlistController@LiveWishlist');
 Route::get('wishlist_video/{id}', 'WishlistController@wishlist_video');
 Route::get('file-upload', 'FileUploadController@index');
 Route::post('file-upload/upload', 'FileUploadController@fileStore')->name('upload');
+Route::post('/profileupdate', 'AdminUsersController@ProfileImage');
 
 Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']], function() {
 //,'restrictIp'
@@ -594,6 +595,9 @@ Route::get('/episode/filedelete/{id}', 'AdminSeriesController@filedelete');
     /* Thumbnail Setting */
     Route::get('/ThumbnailSetting', 'AdminSettingsController@ThumbnailSetting')->name('ThumbnailSetting'); 
     Route::post('/ThumbnailSetting_Store', 'AdminSettingsController@ThumbnailSetting_Store'); 
+
+
+    Route::post('/settings/store_inapp', 'AdminSettingsController@Store_InApp'); 
 
     // Admin Landing page 
 
