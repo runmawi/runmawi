@@ -22,6 +22,8 @@ class MobileHomePageTableSeeder extends Seeder
                     'category_videos' => '1',
                     'live_videos' => '1' ,
                     'live_category' => 0 ,
+                    'videoCategories' => 0 ,
+                    'liveCategories' => 0 ,
                     'series' => null, 
                     'audios' => 0,
                     'albums' => 1,
