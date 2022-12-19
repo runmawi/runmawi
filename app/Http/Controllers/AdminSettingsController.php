@@ -667,6 +667,16 @@ if($watermark != '') {
     return view('videolayout.episode_header',compact('playerui_settings') );
 
   }  
+  public function Store_InApp(Request $request){
+
+    $input = $request->all();
+    $settings = Setting::find(1);
+    $settings->inapp_enable = $request['inapp_enable'];
+    $settings->save();
+
+    return 'added';
+  
+  }
     public function script_settings(Request $request){
 
       $input = $request->all();
