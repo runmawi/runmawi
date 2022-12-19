@@ -177,6 +177,35 @@ if($home_settings->audios == 1){ ?>
    </section>
    <?php } } } ?>
    
+   <?php 
+      if($value->video_name == 'videoCategories'){
+      
+      if($home_settings->videoCategories == 1){ ?>
+   <section id="iq-favorites">
+      <div class="container-fluid overflow-hidden">
+         <div class="row">
+            <div class="col-sm-12 ">
+               <?php include('partials/home/videoCategories.php'); ?>
+            </div>
+         </div>
+      </div>
+   </section>
+   <?php } } ?>
+   <?php 
+      if($value->video_name == 'liveCategories'){
+      
+      if($home_settings->liveCategories == 1){ ?>
+   <section id="iq-favorites">
+      <div class="container-fluid overflow-hidden">
+         <div class="row">
+            <div class="col-sm-12 ">
+               <?php include('partials/home/liveCategories.php'); ?>
+            </div>
+         </div>
+      </div>
+   </section>
+   <?php } } ?>
+
  <!-- Artist -->
  <?php 
        if($value->video_name == 'artist'){
