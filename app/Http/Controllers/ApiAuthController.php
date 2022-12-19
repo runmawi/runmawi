@@ -9555,12 +9555,14 @@ if($LiveCategory_count > 0 || $LiveLanguage_count > 0){
     {
     
       $tv_code =  $request['tv_code'];       
+      $uniqueId =  $request['uniqueId'];       
     
       try{
     
-        TVLoginCode::where('tv_code',$tv_code)->first()
+        TVLoginCode::where('tv_code',$tv_code)->orderBy('created_at', 'DESC')->first()
         ->update([
            'status'  => 1,
+            'uniqueId' =>  $request['uniqueId'],      
         ]);
         $TVLoginCode = TVLoginCode::where('tv_code',$tv_code)->where('status',1)->first();
 
