@@ -3,7 +3,7 @@
       $Script = App\Script::pluck('header_script')->toArray();
       // dd(($Script[2]));
       $theme_mode = App\SiteTheme::pluck('theme_mode')->first();
-      
+      $theme = App\SiteTheme::first();
       if(!empty(Auth::User()->id)){
       
          $id = Auth::User()->id;
@@ -405,7 +405,13 @@
                            <span class="navbar-menu-icon navbar-menu-icon--bottom"></span>
                         </div>
                      </a>
+                     <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
+                     <a class="navbar-brand mb-0" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->light_mode_logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a>
+                     <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?> 
+                     <a class="navbar-brand mb-0" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a>
+                     <?php }else { ?> 
                      <a class="navbar-brand mb-0" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a>
+                     <?php } ?>
                      <!-- dark mode 
                         <label class="switch toggle mt-3">
                         <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />

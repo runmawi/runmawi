@@ -8,6 +8,7 @@
 <?php
 $data = Session::all();
 $theme_mode = App\SiteTheme::pluck('theme_mode')->first();
+$theme = App\SiteTheme::first();
 
 $uri_path = $_SERVER['REQUEST_URI']; 
 $uri_parts = explode('/', $uri_path);
@@ -737,7 +738,14 @@ input:checked + .sliderk:before {
                                
  
                         <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
-                            <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a>
+
+                        <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
+                     <a class="navbar-brand mb-0" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->light_mode_logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a>
+                     <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?> 
+                     <a class="navbar-brand mb-0" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a>
+                     <?php }else { ?> 
+                     <a class="navbar-brand mb-0" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a>
+                     <?php } ?>
                         </div>
                         <div class="mobile-more-menu">
                            <a href="javascript:void(0);" class="more-toggle" id="dropdownMenuButton"
