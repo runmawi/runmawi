@@ -343,7 +343,9 @@ class ApiAuthController extends Controller
             //     'trial_ends_at'  =>  $paystack_trial_ends_at,
             //     'ends_at'        =>  $paystack_trial_ends_at,
             // ]);
-        
+            $next_date = $request->days;
+            $current_date = date('Y-m-d h:i:s');
+            $date = Carbon::parse($current_date)->addDays($next_date);
             
             Subscription::create([
               'user_id'        =>  $userid,
@@ -357,15 +359,15 @@ class ApiAuthController extends Controller
               'regionname'     =>  Region_name(),
               'cityname'       =>  city_name(),
               'PaymentGateway' =>  'Paystack',
-              'trial_ends_at'  =>  $request->paystack_trial_ends_at,
-              'ends_at'        =>  $request->paystack_trial_ends_at,
+              'trial_ends_at'  =>  $date,
+              'ends_at'        =>  $date,
           ]);
 
             User::where('id',$userid)->update([
                 'role'                  =>  'subscriber',
                 'stripe_id'             =>  $request->subscription_code ,
-                'subscription_start'    =>  $request->paystack_Sub_Startday,
-                'subscription_ends_at'  =>  $request->paystack_Sub_Endday,
+                'subscription_start'    =>  $current_date,
+                'subscription_ends_at'  =>  $date,
                 'payment_gateway'       =>  'Paystack',
                 'payment_type'          => 'recurring',
                 'payment_status'        => 'active',
