@@ -30,6 +30,8 @@ Route::get('admin/logActivity', 'HomeController@logActivity');
 
 Route::get('/scheduled-videos', 'HomeController@ScheduledVideo');
 Route::post('/user/tv-code', 'AdminUsersController@TVCode');
+Route::get('/user/tv-code/remove/{id}', 'AdminUsersController@RemoveTVCode');
+
 
 // Route::get('/admin/filemanager', 'FileManagerController@index');
 

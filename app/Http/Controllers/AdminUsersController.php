@@ -2956,6 +2956,30 @@ class AdminUsersController extends Controller
     ));
     }
 
+    
+    public function RemoveTVCode($id)
+    {
+       
+      try{
+
+       TVLoginCode::destroy($id);
+    
+        } 
+        catch (\Throwable $th) {
+    
+            $response = array(
+              'status'=>'false',
+              'message'=>$th->getMessage(),
+            );
+    
+        }
+        return Redirect::back()
+        ->with(array(
+        'message' => 'Removed TV Code',
+        'note_type' => 'success'
+    ));
+    }
+
     public function Splash_edit(Request $request, $source, $id )
     {
 
