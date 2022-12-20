@@ -535,19 +535,25 @@ $settings = App\Setting::first();
                 <div class="targetDiv" id="div8">
                   
                   <p class="text-white">Enter Tv Activation Code</p>
-        <form id="tv-code" accept-charset="UTF-8" action="{{ URL::to('user/tv-code') }}"   enctype="multipart/form-data" method="post">
-                      @csrf
-                      <input type="hidden" name="users_id" value="{{ $user->id }}" />
-                      <input type="hidden" name="email" value="{{ $user->email }}" />
-                               <div class="row mt-3">
-                                  <div class="col-md-8">
-                                        <input type="text" name="tv_code" id="tv_code" />
-
-                                  </div>
-                               <div class="col-md-4">
-                                     <a type="button" class="btn round tv-code text-white">Add</a></div>
-                               </div>
-                   </form>
+                  <form id="tv-code" accept-charset="UTF-8" action="{{ URL::to('user/tv-code') }}"   enctype="multipart/form-data" method="post">
+                              @csrf
+                              <input type="hidden" name="users_id" value="{{ $user->id }}" />
+                              <input type="hidden" name="email" value="{{ $user->email }}" />
+                              <span id="user_tvcode" class="collapse">
+                                       <div class="row mt-3">
+                                          <div class="col-md-8">
+                                                <input type="text" name="tv_code" id="tv_code" value="@if(!empty($UserTVLoginCode->tv_code)){{ $UserTVLoginCode->tv_code }}@endif" />
+                                          </div>
+                                       <div class="col-md-4">
+                                       @if(!empty($UserTVLoginCode->tv_code))
+                                             <a type="button" href="{{ URL::to('user/tv-code/remove/') }}/{{$UserTVLoginCode->id}}" style="background-color:#df1a10!important;" class="btn round tv-code-remove text-red">Remove</a>
+                                       @else
+                                       <a type="button"  class="btn round tv-code text-white">Add</a>
+                                       @endif
+                                          </div>
+                                       </div>
+                              </span>
+                           </form>
           </div>
     </div>
             </div>

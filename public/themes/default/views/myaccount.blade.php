@@ -772,11 +772,15 @@ cursor: pointer;
                               <span id="user_tvcode" class="collapse">
                                        <div class="row mt-3">
                                           <div class="col-md-8">
-                                                <input type="text" name="tv_code" id="tv_code" />
-
+                                                <input type="text" name="tv_code" id="tv_code" value="@if(!empty($UserTVLoginCode->tv_code)){{ $UserTVLoginCode->tv_code }}@endif" />
                                           </div>
                                        <div class="col-md-4">
-                                             <a type="button" class="btn round tv-code">Add</a></div>
+                                       @if(!empty($UserTVLoginCode->tv_code))
+                                             <a type="button" href="{{ URL::to('user/tv-code/remove/') }}/{{$UserTVLoginCode->id}}" style="background-color:#df1a10!important;" class="btn round tv-code-remove text-red">Remove</a>
+                                       @else
+                                       <a type="button"  class="btn round tv-code text-white">Add</a>
+                                       @endif
+                                          </div>
                                        </div>
                               </span>
                            </form>
