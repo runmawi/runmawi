@@ -2798,8 +2798,8 @@ class AdminUsersController extends Controller
             $user_role = Auth::user()->role;
             $alldevices = LoggedDevice::where('user_id', '=', Auth::User()->id)
                 ->get();
-            // $TVLoginCode = TVLoginCode::where('status',0)->orderBy('created_at', 'DESC')->first();
-            // dd($TVLoginCode);
+            $UserTVLoginCode = TVLoginCode::where('email',Auth::User()->email)->where('status',1)->first();
+            // dd($UserTVLoginCode);
             if ($user_role == 'registered' || $user_role == 'admin')
             {
                 $role_plan = $user_role;
@@ -2911,6 +2911,7 @@ class AdminUsersController extends Controller
                 'profile_details' => $profile_details,
                 'Multiuser' => $Multiuser,
                 'alldevices' => $alldevices,
+                'UserTVLoginCode' => $UserTVLoginCode,
                 'payment_package' => User::where('id',Auth::user()->id)->first() ,
             );
             
