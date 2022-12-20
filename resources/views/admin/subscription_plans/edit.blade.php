@@ -55,7 +55,9 @@
                     <!-- @foreach($payment_settings as $payment_setting)
 						@if($payment_setting->status == 1)
 							<label>{{ $payment_setting->payment_type }} Plan ID:</label>
-                            <input type="text" id="plans_id" name="plan_id[{{ $edit_plan[0]->subscription_plan_name }}]" value="{{ $edit_plan[0]->plan_id }}" class="form-control" placeholder="Plan ID">
+                            @foreach($edit_plan as $plan)
+                            <input type="text" id="plans_id" name="plan_id[{{ $payment_setting->payment_type }}]" value="@if($plan->type == $payment_setting->payment_type){{ $plan->plan_id }} @endif" class="form-control" placeholder="Plan ID">
+                            @endForeach
 							<p>* Get Plan Key From {{ $payment_setting->payment_type }}</p>
                         @endif
 				    @endForeach -->
