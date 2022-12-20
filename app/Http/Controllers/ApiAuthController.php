@@ -9635,10 +9635,12 @@ if($LiveCategory_count > 0 || $LiveLanguage_count > 0){
 
         $TVLoginCode = TVLoginCode::where('email',$request->email)->where('status',1)->orderBy('created_at', 'DESC')->first();
 
-        TVLoginCode::where('email',$request->email)->where('status',1)->orderBy('created_at', 'DESC')->first()
-        ->update([
-           'status'  => 0,
-        ]);
+        $TVLoginCode=TVLoginCode::where('email',$request->email)->where('status',1)->orderBy('created_at', 'DESC')->delete();
+
+        // TVLoginCode::where('email',$request->email)->where('status',1)->orderBy('created_at', 'DESC')->first()
+        // ->update([
+        //    'status'  => 0,
+        // ]);
     
         $response = array(
             'status'=> 'true',
