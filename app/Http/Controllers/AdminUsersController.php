@@ -2963,8 +2963,9 @@ class AdminUsersController extends Controller
       try{
 
     //    TVLoginCode::destroy($id);
-       $TVLoginCode=TVLoginCode::where('email',$request->email)->where('status',1)->orderBy('created_at', 'DESC')->first();
+       $TVLoginCode=TVLoginCode::where('id',$id)->where('status',1)->orderBy('created_at', 'DESC')->first();
        $email = $TVLoginCode->email;
+    // dd($email);
        TVLoginCode::where('email',$email)->where('status',1)->orderBy('created_at', 'DESC')->delete();
     
         } 
@@ -2976,6 +2977,8 @@ class AdminUsersController extends Controller
             );
     
         }
+    // dd($id);
+        
         return Redirect::back()
         ->with(array(
         'message' => 'Removed TV Code',
