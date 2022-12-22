@@ -23,24 +23,29 @@ class UsersImport implements ToModel
     */
     public function model( array $row )
     {
-        $inputs = array(
-            'role'      => $row[0],
-            'email'     => $row[1],
-            'password'  => Hash::make($row[1]),
-            'active'    =>  1 ,
-        );
+        $email_exist = User::where('email',$row[1])->first();
 
-        if(  $row[0] == "subscriber" ){
-            $inputs +=  [ 'subscription_ends_at' => Carbon::now()->addDays(30)->setTimezone('UTC')->format('d-m-Y H:i:s'), ];
-            $inputs +=  [ 'subscription_start'   => Carbon::now()->setTimezone('UTC')->format('d-m-Y H:i:s') , ];
+        if( empty($email_exist) ){
+
+            $inputs = array(
+                'role'      => $row[0],
+                'email'     => $row[1],
+                'password'  => Hash::make($row[1]),
+                'active'    =>  1 ,
+            );
+    
+            if(  $row[0] == "subscriber" ){
+                $inputs +=  [ 'subscription_ends_at' => Carbon::now()->addDays(30)->setTimezone('UTC')->format('d-m-Y H:i:s'), ];
+                $inputs +=  [ 'subscription_start'   => Carbon::now()->setTimezone('UTC')->format('d-m-Y H:i:s') , ];
+            }
+    
+            if ( $row[0] == "admin" ){
+                $inputs +=  [ 'package_ends' => Carbon::now()->addDays(30)->setTimezone('UTC')->format('d-m-Y') , ];
+                $inputs +=  [ 'package'      => "Pro" , ];
+                $inputs +=  [ 'plan_name'    => "pro" , ];
+            }
+    
+            return new user( $inputs );
         }
-
-        if ( $row[0] == "admin" ){
-            $inputs +=  [ 'package_ends' => Carbon::now()->addDays(30)->setTimezone('UTC')->format('d-m-Y') , ];
-            $inputs +=  [ 'package'      => "Pro" , ];
-            $inputs +=  [ 'plan_name'    => "pro" , ];
-        }
-
-        return new user( $inputs );
     }
 }
