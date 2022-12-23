@@ -120,8 +120,8 @@ class AdminUsersController extends Controller
                 ->take(9000)
                 ->get();
         else:
-            // $allUsers = User::orderBy('created_at', 'desc')->take(9000)->get();
-            $allUsers = User::orderBy('created_at', 'desc')->paginate(10);
+            $allUsers = User::orderBy('created_at', 'desc')->take(9000)->get();
+            // $allUsers = User::orderBy('created_at', 'desc')->paginate(10);
             // $allUsers = User::orderBy('created_at', 'desc')->get();
 
         endif;
@@ -3966,10 +3966,7 @@ class AdminUsersController extends Controller
 
         } catch (\Throwable $th) {
 
-            return Redirect::back()->with(
-                "import-error-message",
-                $th->getMessage()
-            );
+            return Redirect::back()->with("import-error-message", $th->getMessage() );
         }
     }
 }
