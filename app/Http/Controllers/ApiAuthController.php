@@ -6054,75 +6054,157 @@ public function LocationCheck(Request $request){
 
   }
 
-  public function Multiprofile(){
+  public function Multiprofile( Request $request ){
 
-    $parent_id =  Session::get('login_web_59ba36addc2b2f9401580f014c7f58ea4e30989d');
+      try {
+
+        $parent_id =  $request->user_id ;
+      
+        $subcriber_user = User::where('id',$parent_id)->first();
     
-    $subcriber_user = User::where('id',$parent_id)->first();
+        $users= Multiprofile::where('parent_id', $parent_id)->get();
+    
+        $response = array(
+          'status'  => 'true',
+          'message' => 'Multiprofile Retrieved  successfully' ,
+          'user'    => $subcriber_user,
+          'sub_users'=> $users
+        );
 
-    $users= Multiprofile::where('parent_id', $parent_id)->get();
+      } catch (\Throwable $th) {
 
-    $response = array(
-      'user'=>$subcriber_user,
-      'sub_users'=> $users
-    );
-  return response()->json($response, 200);
+        $data = array(
+          'status' => 'false',
+          'message' => $th->getMessage() ,
+        );
+        
+      }
 
-}
+      return response()->json($response, 200);
+  }
 
   public function Multiprofile_create(Request $request){
 
-          if($request->user_type != ''){
-              $user_type = 'Kids';
-          }else{
-              $user_type = 'Normal';
-          }         
-          if($request->image != ''){
-            $files = $request->image;
-            $filename =uniqid(). time(). '.' . $files->getClientOriginalExtension();
-            Image::make($files)->resize(300, 300)->save(base_path().'/public/multiprofile/'.$filename );
-          }
-          $parent_id =  Session::get('login_web_59ba36addc2b2f9401580f014c7f58ea4e30989d');
+      try {
 
-          $Multiprofile = Multiprofile::create([
-              'parent_id'       => $parent_id,
-              'user_name'       => $request->input('name'),
-              'user_type'       => $user_type,
-              'Profile_Image'   => $filename,
-          ]);
+        $input = array(
+          'parent_id'       => $request->user_id,
+          'user_name'       => $request->input('name'),
+          'user_type'       => ucwords($request->user_type),   // Kids or  Normal
+        );  
 
-          return response()->json([
-            'message' => 'Multiprofile data Saved successfully'
-        ], 200);
-  
+        if($request->image != ''){
+
+          $files = $request->image;
+          $filename =uniqid(). time(). '.' . $files->getClientOriginalExtension();
+          Image::make($files)->resize(300, 300)->save(base_path().'/public/multiprofile/'.$filename );
+          $input  += ['Profile_Image'   => $filename, ];
+        }
+
+        $Multiprofile = Multiprofile::create( $input );
+
+        $data = array(
+          'status' => 'true',
+          'message' => 'Multiprofile data Saved successfully' ,
+          'Multiprofile' => Multiprofile::findOrFail($Multiprofile->id),
+        );
+
+      } catch (\Throwable $th) {
+
+        $data = array(
+          'status' => 'false',
+          'message' => $th->getMessage() ,
+        );
+
+      }
+        return response()->json($data, 200);
 
     }
 
-    public function Multiprofile_update(Request $request,$id){
+    public function Multiprofile_edit(Request $request)
 
-        $Multiprofile = Multiprofile::find($id);  
-        if($request->user_type != ''){
-            $user_type = 'Kids';
-        }
-        else{
-            $user_type = 'Normal';
-        }
+    {
+      try {
 
-        if($request->image != ''){  
-            $files = $request->image;
-            $filename =uniqid(). time(). '.' . $files->getClientOriginalExtension();
-            Image::make($files)->resize(300, 300)->save(base_path().'/public/multiprofile/'.$filename );
-            $Multiprofile->Profile_Image = $filename;
-        }
-        $Multiprofile->user_name =  $request->get('name');  
-        $Multiprofile->user_type = $user_type;  
-        $Multiprofile->save();  
+        $Multiprofile = Multiprofile::findOrFail($request->sub_user_id);  
 
-         return response()->json([
-          'message' => 'Multiprofile Data Updated successfully'
-      ], 200);
+        $data = array(
+          'status' => 'true',
+          'message' => 'Multiprofile data Retrived successfully' ,
+          'Multiprofile' => $Multiprofile ,
+        );
+
+      } catch (\Throwable $th) {
+
+        $data = array(
+          'status' => 'false',
+          'message' => $th->getMessage() ,
+        );
 
       }
+        return response()->json($data, 200);
+    }
+
+    public function Multiprofile_update(Request $request){
+
+      try{
+
+        $input = array(
+          'parent_id'       => $request->user_id,
+          'user_name'       => $request->input('name'),
+          'user_type'       => ucwords($request->user_type),   // Kids or  Normal
+        );  
+
+        if($request->image != ''){
+
+          $files = $request->image;
+          $filename =uniqid(). time(). '.' . $files->getClientOriginalExtension();
+          Image::make($files)->resize(300, 300)->save(base_path().'/public/multiprofile/'.$filename );
+          $input  += ['Profile_Image'   => $filename, ];
+        }
+
+        $Multiprofile = Multiprofile::find( $request->sub_user_id )->update( $input );
+
+        $data = array(
+          'status' => 'true',
+          'message' => 'Multiprofile data updated successfully' ,
+          'Multiprofile' => Multiprofile::findOrFail( $request->sub_user_id),
+        );
+
+      } catch (\Throwable $th) {
+
+        $data = array(
+          'status' => 'false',
+          'message' => $th->getMessage() ,
+        );
+      }
+
+      return response()->json($data, 200);
+
+    }
+
+    public function Multiprofile_delete( Request $request)
+    {
+      try {
+          Multiprofile::find( $request->sub_user_id )->delete();
+
+            $data = array(
+              'status' => 'true',
+              'message' => 'Multiprofile deleted Successfully'  ,
+            );
+
+      } catch (\Throwable $th) {
+
+          $data = array(
+            'status' => 'false',
+            'message' => $th->getMessage() ,
+          );
+      }
+      
+      return response()->json($data, 200);
+
+
+    }
 
     public function freecontent_episodes(){
 
