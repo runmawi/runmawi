@@ -35,15 +35,17 @@ Route::get('/user/tv-code/remove/{id}', 'AdminUsersController@RemoveTVCode');
 
 // Route::get('/admin/filemanager', 'FileManagerController@index');
 
-//////////// User analytics
+// User analytics
 Route::post('/admin/exportCsv', 'AdminUsersController@exportCsv');
 Route::post('/admin/start_date_url', 'AdminUsersController@StartDateRecord');
 Route::post('/admin/end_date_url', 'AdminUsersController@StartEndDateRecord');
 Route::post('/admin/list_users_url', 'AdminUsersController@ListUsers');
 
+// Import Excel Users
+Route::get('/admin/import-users-view', 'AdminUsersController@import_users_view')->name('import_users_view');
+Route::post('/admin/users-import', 'AdminUsersController@users_import')->name('users_import');
 
-
-//////////// User Revenue analytics
+// User Revenue analytics
 Route::get('/admin/users/revenue', 'AdminUsersController@UserRevenue');
 Route::get('/admin/users/PayPerview_Revenue', 'AdminUsersController@PayPerviewRevenue');
 
@@ -52,8 +54,6 @@ Route::post('/admin/User_exportCsv', 'AdminUsersController@RevenueExportCsv');
 Route::post('/admin/subscriber_start_date_url', 'AdminUsersController@SubscriberRevenueStartDateRecord');
 Route::post('/admin/subscriber_end_date_url', 'AdminUsersController@SubscriberRevenueStartEndDateRecord');
 Route::post('/admin/UserSubscriber_exportCsv', 'AdminUsersController@UserSubscriberExportCsv');
-
-
 
 Route::post('/admin/payperview_start_date_url', 'AdminUsersController@PayPerviewRevenueStartDateRecord');
 Route::post('/admin/payperview_end_date_url', 'AdminUsersController@PayPerviewRevenueStartEndDateRecord');
@@ -352,7 +352,7 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
     Route::get('/mobile_app/Splash_edit/{source}/{id}', 'AdminUsersController@Splash_edit')->name('Splash_edit');
     Route::post('/mobile_app/Splash_update/{source}/{id}', 'AdminUsersController@Splash_update')->name('Splash_update');
 
-    Route::get('/users', 'AdminUsersController@index');
+    Route::get('/users', 'AdminUsersController@index')->name('users');
     Route::get('/user/create', 'AdminUsersController@create');
     Route::post('/user/store', 'AdminUsersController@store');
     Route::get('/user/edit/{id}', 'AdminUsersController@edit');

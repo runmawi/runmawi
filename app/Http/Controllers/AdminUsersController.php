@@ -59,7 +59,7 @@ use App\Wishlist;
 use App\Watchlater;
 use App\SiteTheme;
 use App\TVLoginCode;
-
+use App\Imports\UsersImport;
 
 class AdminUsersController extends Controller
 {
@@ -95,12 +95,7 @@ class AdminUsersController extends Controller
             return View::make('admin.expired_dashboard', $data);
         }else{
         $user = $request->user();
-        //dd($user->hasRole('admin','editor')); // and so on
-        // dd($user->can('permission-slug'));
-        //dd($user->hasRole('developer')); //will return true, if user has role
-        //dd($user->givePermissionsTo('create-tasks'));// will return permission, if not null
-        //dd($user->can('create-tasks')); // will return true, if user has permission
-        //exit;
+        
         $total_subscription = Subscription::where('stripe_status', '=', 'active')->count();
 
         $total_videos = Video::where('active', '=', 1)->count();
@@ -112,6 +107,7 @@ class AdminUsersController extends Controller
         $total_recent_subscription = Subscription::orderBy('created_at', 'DESC')->whereDate('created_at', '>=', \Carbon\Carbon::now()
             ->today())
             ->count();
+            
         $top_rated_videos = Video::where("rating", ">", 7)->get();
 
         //    $total_revenew = Subscription::all();
@@ -124,13 +120,12 @@ class AdminUsersController extends Controller
                 ->take(9000)
                 ->get();
         else:
-            // $users = User::orderBy('created_at', 'desc')->take(9000)->get();
-            // $allUsers = User::orderBy('created_at', 'desc')->paginate(10);
-            $allUsers = User::orderBy('created_at', 'desc')->get();
+            // $allUsers = User::orderBy('created_at', 'desc')->take(9000)->get();
+            $allUsers = User::orderBy('created_at', 'desc')->paginate(10);
+            // $allUsers = User::orderBy('created_at', 'desc')->get();
 
         endif;
-        // print_r($total_revenew);
-        // exit();
+      
         $data = array(
             'users' => $allUsers,
             'total_subscription' => $total_subscription,
@@ -3943,8 +3938,6 @@ class AdminUsersController extends Controller
     
         if ( $validation->fails() ) {
 
-            // print_r( $validation->errors()->all() );
-
             $message = "false";
         }
         else{
@@ -3952,5 +3945,31 @@ class AdminUsersController extends Controller
         }
             return $message;
     }
-}
 
+    public function import_users_view()
+    {
+        // User::where('id','!=',"1")->delete();
+
+       return view('admin.users.import_users');
+    }
+
+    public function users_import( Request $request) 
+    {
+        try {
+
+            Excel::import( new UsersImport,request()->file('file') );
+
+            return redirect( route( "users" ))->with(
+                "message",
+                "Successfully! Users Imported "
+            );
+
+        } catch (\Throwable $th) {
+
+            return Redirect::back()->with(
+                "import-error-message",
+                $th->getMessage()
+            );
+        }
+    }
+}
