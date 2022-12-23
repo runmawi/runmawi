@@ -18,8 +18,8 @@ class SiteThemeTableseeder extends Seeder
         $SiteTheme = array(
             array(  'dark_bg_color' =>  "#a3a3a3",
                     'light_bg_color' =>  "#f5b55c",
-                    'dark_mode_logo' =>  "WAKNEX NAME-8A Final.png", 
-                    'light_mode_logo' => "Logo-1.png", 
+                    'dark_mode_logo' =>  "trail-logo.png", 
+                    'light_mode_logo' => "trail-logo.png", 
                     'button_bg_color' => "#006AFF",
                     'signup_step2_title' => 'Subscribe us and Enjoy our premium shows',
                     'created_at' => Carbon::now(),

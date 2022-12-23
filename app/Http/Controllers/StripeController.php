@@ -108,8 +108,6 @@ class StripeController extends Controller
 
     public function PostcreateStep1(Request $request)
     {
-//        echo "asd";
-//        exit;
         
         if ($request->has('ref')) {
             session(['referrer' => $request->query('ref')]);
@@ -227,10 +225,6 @@ else {
 
 }
 }
-
-
-
-
 
 
 public function createStep2(Request $request)

@@ -702,6 +702,45 @@ class EmailTemplatesSeeder extends Seeder
                             'updated_at' => null,
                         ],
 
+                        [   'template_type' => 'Import Users Welcome Email & Reset Password ', 
+                            'heading' => 'Welcome Email & Reset Password ',
+                            'description' => '<p>Dear {Name},&nbsp;</p>
+
+                                        <p>Thank you for registering at {Website Name}.</p>
+                                        
+                                        <p>If you have any questions, please reply to this email and one of our team members will reply to you ASAP.&nbsp;<br />
+                                        &nbsp;</p>
+                                        
+                                        <p>You have been granted access to {Name site}.</p>
+                                        
+                                        <p>Please find the following url and credentials.&nbsp;</p>
+                                        
+                                        <p>Url: {Url}&nbsp;</p>
+                                        
+                                        <p>User Name: {UserName}&nbsp;</p>
+                                        
+                                        <p>Password: {Password}&nbsp;</p>
+                                        
+                                        <p>&nbsp;</p>
+
+                                        <p>We have received a request to reset your password on {Date}.&nbsp;</p>
+                                                
+                                        <p>Click on the below link or copy/paste the link in your browser address bar to reset your password.&nbsp;</p>
+                                                
+                                        <p>{link}&nbsp;</p>
+
+                                        
+                                        <p>Sincerely,&nbsp;</p>
+                                        
+                                        <p>Team {Website Name}.</p>
+                                        
+                                        <p>&nbsp;</p>',
+
+                            'role_type' => 'General Email Triggers' ,
+                            'created_at' => Carbon::now(),
+                            'updated_at' => null,
+                        ],
+
                     ];
 
                 EmailTemplate::insert($EmailTemplate);
