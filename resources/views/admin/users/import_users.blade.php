@@ -28,12 +28,25 @@
                         <div class="container mt-4">
                             <div class="row justify-content-between">
                                 <div class="col-md-6" >
+                                    <label for=""> {{ ucwords('Import Excel file') }} </label>
                                     <div class="form-group row">
-                                        <div class="col-md-12 form-group" align="right">
+                                        <div class="col-md-12 form-group" align="left">
                                             <input type="file" name="file" class="form-control">
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="col-md-6" >
+                                    <label for=""> {{ ucwords('Sample Excel file') }}   </label>
+                                    <div class="form-group row">
+                                        <div class="col-md-12 form-group" align="left">
+                                            <div class="text-white">
+                                                <a href="{{ URL::to("/public/sample_Excel/Sample-Excel.xlsx")}}" style="font-size:48px; color: #1fa113 !important;" class="fa fa-file-excel-o video_pdf"  download ></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
 
