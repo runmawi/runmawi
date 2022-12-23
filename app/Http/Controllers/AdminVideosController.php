@@ -3629,8 +3629,8 @@ class AdminVideosController extends Controller
             $value["video_id"] = $video_id;
             $value["video_title"] = $title;
 
-            // return $value;
-            return redirect("/admin/videos");
+            return $value;
+            // return redirect("/admin/videos");
 
         } elseif (
             $mp4_url != "" &&

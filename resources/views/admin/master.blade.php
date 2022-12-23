@@ -221,6 +221,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                        <ul id="user" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/users') }}"><i class="las la-user-plus"></i>All Users</a></li>
                         <li><a href="{{ URL::to('admin/user/create') }}"><i class="las la-eye"></i>Add New User</a></li>
+                        <li><a href="{{ route('import_users_view') }}"> Import Users </a></li>
                         <li><a href="{{ URL::to('admin/MultiUser-limit') }}"><img height="30" width="30" class="mr-2" src="<?php echo  URL::to('/assets/img/icon/add-new-user.svg')?>">Multi User Management</a></li>
                      </ul>
                       
@@ -469,6 +470,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                        <ul id="user" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/users') }}"><i class="las la-user-plus"></i>All Users</a></li>
                         <li><a href="{{ URL::to('admin/user/create') }}"><i class="las la-eye"></i>Add New User</a></li>
+                        <li><a href="{{ route('import_users_view') }}"> Import Users </a></li>
                         <li><a href="{{ URL::to('admin/MultiUser-limit') }}"><img height="30" width="30" class="mr-2" src="<?php echo  URL::to('/assets/img/icon/add-new-user.svg')?>">Multi User Management</a></li>
                      </ul>
                       
@@ -771,6 +773,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                        <ul id="user" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                            <li><a href="{{ URL::to('admin/users') }}">All Users</a></li>
                            <li><a href="{{ URL::to('admin/user/create') }}">Add New User</a></li>
+                           <li><a href="{{ route('import_users_view') }}"> Import Users </a></li>
                            <li><a href="{{ URL::to('admin/MultiUser-limit') }}">Multi User Management</a></li>
                         </ul>
                      </li>
@@ -1076,6 +1079,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                        <ul id="user" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/users') }}"><i class="las la-user-plus"></i>All Users</a></li>
                         <li><a href="{{ URL::to('admin/user/create') }}"><i class="las la-eye"></i>Add New User</a></li>
+                        <li><a href="{{ route('import_users_view') }}"> Import Users </a></li>
                         <li><a href="{{ URL::to('admin/MultiUser-limit') }}"><img height="30" width="30" class="mr-2" src="<?php echo  URL::to('/assets/img/icon/add-new-user.svg')?>">Multi User Management</a></li>
                      </ul>
                       
