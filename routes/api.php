@@ -237,9 +237,12 @@ Route::group([
 
 //  Multi-profile
     Route::get('Multiprofile', 'ApiAuthController@Multiprofile');
-    Route::Post('Multiprofile_create', 'ApiAuthController@Multiprofile_create');
-    Route::Post('Multiprofile_update/{id}', 'ApiAuthController@Multiprofile_update');
-    Route::get('subusers/{id}', 'ApiAuthController@subusers');
+    Route::post('Multiprofile_create', 'ApiAuthController@Multiprofile_create');
+    Route::get('Multiprofile_edit', 'ApiAuthController@Multiprofile_edit');
+    Route::post('Multiprofile_update', 'ApiAuthController@Multiprofile_update');
+    Route::post('Multiprofile_delete', 'ApiAuthController@Multiprofile_delete');
+
+    Route::get('subusers', 'ApiAuthController@subusers');
 
 // freecontent Episodes
     Route::get('freecontent_episodes', 'ApiAuthController@freecontent_episodes');
