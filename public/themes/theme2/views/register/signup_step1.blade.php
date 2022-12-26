@@ -8,8 +8,7 @@ $uri_path = $_SERVER['REQUEST_URI'];
 $uri_parts = explode('/', $uri_path);
 $request_url = end($uri_parts);
 $uppercase =  ucfirst($request_url);
-// print_r($uppercase);
-// exit();
+
       ?>
       <!-- Required meta tags -->
     <meta charset="UTF-8">
@@ -1501,9 +1500,8 @@ $(document).ready(function() {
        <script src="<?= URL::to('/'). '/assets/js/jquery.lazy.js';?>"></script>
       <script src="<?= URL::to('/'). '/assets/js/jquery.lazy.min.js';?>"></script>
 
-
-
 @php
-    @include(public_path('themes\theme2\views\footer.blade.php'));
+    include(public_path('themes/theme2/views/footer.blade.php'));
 @endphp
+
 @endsection 
