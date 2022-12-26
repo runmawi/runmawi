@@ -655,6 +655,9 @@ class ApiAuthController extends Controller
         $email = Auth::user()->email;
         $mobile = Auth::user()->mobile;
         $avatar = Auth::user()->avatar;
+
+        session(['paystack_Andriod_user_id' => $id ]);
+
         if(Auth::user()->role == 'subscriber'){
 
           $Subscription = Subscription::where('user_id',Auth::user()->id)->orderBy('created_at', 'DESC')->first();
