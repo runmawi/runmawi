@@ -110,7 +110,7 @@ use App\TVLoginCode;
 use Paystack;
 use App\VideoCommission;
 use App\ModeratorsUser;
-
+use App\Paystack_Andriod_UserId;
 
 class ApiAuthController extends Controller
 {
@@ -610,36 +610,37 @@ class ApiAuthController extends Controller
       'password' => $request->get('password')
     );
 
+
     if(!empty($users)){
-
-    $user_id = $users->id;
-    $adddevice = new LoggedDevice;
-    $adddevice->user_id = $user_id;
-    $adddevice->user_ip = $userIp;
-    $adddevice->device_name = $device_name;
-    $adddevice->save();
-
+      $user_id = $users->id;
+      $adddevice = new LoggedDevice;
+      $adddevice->user_id = $user_id;
+      $adddevice->user_ip = $userIp;
+      $adddevice->device_name = $device_name;
+      $adddevice->save();
     }
   
     if ( Auth::attempt($email_login) || Auth::attempt($username_login) || Auth::attempt($mobile_login)  ){
 
-      if($settings->free_registration && !Auth::user()->stripe_active){
-        // Auth::user()->role = 'registered';
-        // print_r(Auth::user()->role); exit();
-        if(Auth::user()->role == 'registered'){
-        $user = User::find(Auth::user()->id);
-        $user->role = 'registered';
-        $user->token = $token;
-        $user->save();
-        }else if(Auth::user()->role == 'admin'){
-        // print_r(Auth::user()->role); exit();
+      Paystack_Andriod_UserId::truncate();
+      Paystack_Andriod_UserId::create([ 'user_id' => Auth::user()->id ]);
 
-        $user = User::find(Auth::user()->id);
-        $user->role = 'admin';
-        $user->token = $token;
-        $user->save();
+      if($settings->free_registration && !Auth::user()->stripe_active){
+      
+        if(Auth::user()->role == 'registered'){
+          $user = User::find(Auth::user()->id);
+          $user->role = 'registered';
+          $user->token = $token;
+          $user->save();
+
+        }else if(Auth::user()->role == 'admin'){
+
+          $user = User::find(Auth::user()->id);
+          $user->role = 'admin';
+          $user->token = $token;
+          $user->save();
+
         }else if(Auth::user()->role == 'subscriber'){
-          // print_r(Auth::user()->role); exit();
           $user = User::find(Auth::user()->id);
           $user->role = 'subscriber';
           $user->token = $token;
@@ -648,15 +649,14 @@ class ApiAuthController extends Controller
       }
 
       if(Auth::user()->role == 'subscriber' || (Auth::user()->role == 'admin' || Auth::user()->role == 'demo') || (Auth::user()->role == 'registered') ):
-        $id = Auth::user()->id;
+      
+        $id   = Auth::user()->id;
         $role = Auth::user()->role;
         $username = Auth::user()->username;
         $password = Auth::user()->password;
-        $email = Auth::user()->email;
+        $email  = Auth::user()->email;
         $mobile = Auth::user()->mobile;
         $avatar = Auth::user()->avatar;
-
-        session(['paystack_Andriod_user_id' => $id ]);
 
         if(Auth::user()->role == 'subscriber'){
 
