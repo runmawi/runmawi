@@ -260,6 +260,11 @@ font-weight: 600;
     font-family: 'Roboto', sans-serif;
 }
 </style>
+
+<?php $jsonString = file_get_contents(base_path('assets/country_code.json'));   
+
+$jsondata = json_decode($jsonString, true); ?>
+
 <section class="mb-0" ><!--style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;"-->
     
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
