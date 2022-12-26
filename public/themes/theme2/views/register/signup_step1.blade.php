@@ -18,7 +18,8 @@ $uppercase =  ucfirst($request_url);
     <meta name="description" content= "<?php echo $settings->website_description ; ?>" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
+<link rel="preconnect" href="https://fonts.googleapis.com">
+       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
     <!-- Favicon -->
     <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
@@ -26,7 +27,7 @@ $uppercase =  ucfirst($request_url);
      <!-- Bootstrap CSS -->
       <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
       <!-- Typography CSS -->
-      <link rel="stylesheet" href="<?= style_sheet_link(); ?>" />
+         <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme2/assets/css/style.css') ?>" />
       <!-- Style -->
       <link rel="stylesheet" href="<?= typography_link(); ?>" />
       <!-- Responsive -->
@@ -36,6 +37,27 @@ $uppercase =  ucfirst($request_url);
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
   </script>
 <style>
+    h3{
+        font-weight: 600;
+    }
+     a:link{
+        margin-right: 5px;
+    }
+    h1,h2,h3,h4{
+        font-family: 'Roboto', sans-serif;
+
+    }
+    h2{
+        font-weight: 700;
+        font-weight: 40px!important;
+    }
+    main.py-4{
+        padding-bottom: 0!important;
+        padding-top: 0!important;
+    }
+    body{
+        background: #fff;
+    }
     /*.sign-user_card {
         background: none !important;
     }*/
@@ -168,6 +190,23 @@ i.fa.fa-google-plus {
     color: brown;
     font-family: 'remixicon';
     }
+   
+    .agree {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 18px;
+    display: flex;
+    align-items: center;
+    color: #000;
+}
+    .get{
+    font-family: 'Roboto';
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 32px;
+}
     #fileLabel{
         position: absolute;
         top: 8px;
@@ -177,23 +216,93 @@ i.fa.fa-google-plus {
         background:rgba(11, 11, 11,1);
         font-size: 12px;
     }
+      .signup-desktop{
+        background-color: #fff;
+          border-radius: 5px!important;
+        border:1px solid #252525!important;
+        font-family: 'Roboto', sans-serif;
+
+font-style: normal;
+font-weight: 600;
+
+    }
+     .nees{
+        margin: 2px;
+    }
+    .nees1{
+        margin: 10px;
+    }
+    .signup-desktop i{
+        font-size: 22px;
+    }
+     .signup-desktop:hover{
+        background-color: burlywood;
+         color: #fff;
+
+    }
+    .signup{
+       background: rgba(1, 220, 130, 1)!important;
+        padding: 10px 30px;
+          font-family: 'Roboto', sans-serif;
+        font-weight: 600;
+
+    }
+    p{
+    font-family: 'Roboto';
+
+}
+    .in {
+    font-size: 35px;
+    line-height: 40px;
+    font-weight: 600;
+    color: #000;
+    text-align: left;
+    font-family: 'Roboto', sans-serif;
+}
 </style>
 
-<section style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;">
-@section('content')
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  <?php $jsonString = file_get_contents(base_path('assets/country_code.json'));   
+<?php $jsonString = file_get_contents(base_path('assets/country_code.json'));   
 
-    $jsondata = json_decode($jsonString, true); ?>
-<?php 
-    $ref = Request::get('ref');
-    $coupon = Request::get('coupon');
-    // dd($SignupMenu);
-?>
-<div class="container">
+$jsondata = json_decode($jsonString, true); ?>
+
+<section class="mb-0" ><!--style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;"-->
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+  <a class="navbar-brand" href="#"><img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;"></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+    
+
+      <button class="btn btn-outline-success my-2 mr-2 my-sm-0" type="submit">Sign in</button>
+      <a class="btn btn-success my-2 my-sm-0"  href="{{ route('signup') }}" style="" >Sign up</a>
+    
+  </div>
+</div></nav>
+<div class="position-relative" style="margin-top:-70px;">
+<div class="fixe">
+    <div class="row m-0 p-0">
+        <div class="col-md-4 col-lg-4 p-0">
+             <img class="w-100" src="<?php echo  URL::to('/assets/img/h1.png')?>" style="">
+             <img class="w-100 mt-2" src="<?php echo  URL::to('/assets/img/h2.png')?>" style="">
+        </div>
+        <div class="col-md-4 col-lg-4 ">
+            <div class="row">
+                <div class="col-md-6 p-0">
+                    <div class="nees">
+                     <img class="w-100 " src="<?php echo  URL::to('/assets/img/h3.png')?>" style=""></div>
+                </div>
+                <div class="col-md-6 p-0">
+                    <div class="nees">
+                     <img class="w-100 " src="<?php echo  URL::to('/assets/img/h4.png')?>" style=""></div>
+                </div>
+            </div>
+            <div class="">
       <div class="row justify-content-center align-items-center height-self-center">
-         <div class="col-sm-9 col-md-7 col-lg-5 align-self-center">
+         <div class="col-sm-12 col-md-12 col-lg-12 align-self-center">
 
                             {{-- recaptcha --}}
                 <div class="col-md-12">
@@ -208,8 +317,27 @@ i.fa.fa-google-plus {
                <div class="sign-in-page-data">
                   <div class="sign-in-from w-100 m-auto">
                       <div align="center">
-                          <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" style="margin-bottom:1rem;">       <h3 class="mb-3 text-center">Sign Up</h3>
+                         <!-- <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" style="margin-bottom:1rem;"> -->      <h1 class="in mb-3 text-center text-black">Look Into Nemisa Tv For Realistic Experience<br>Join Now</h1>
+                          <p class="get">Get 5 free days of Nemisa Tv</p>
                       </div>
+                       <div class="form-group row mb-0 justify-content-center">
+						@if ( config('social.google') == 1 )
+                           
+                            <div class="col-md-3 ">
+                            <a href="{{ url('/auth/redirect/google') }}" style="border:none;color:#fff;"  class="btn signup-desktop"><i class="fa fa-google"></i> Google</a>
+                            </div>
+                        @endif  
+						@if ( config('social.facebook') == 1 )
+                            <div class="col-md-3 ">
+                                <a href="{{ url('/auth/redirect/facebook') }}" class="btn signup-desktop" style="border:none;color:#fff;"><img class="" src="<?php echo  URL::to('/assets/img/ff.png')?>" style=""> Facebook</a>
+                            </div>
+						@endif 
+						</div>
+                      <div class=" pt-4 mb-2">
+                          <hr>
+                          <p class="bg-white" style="position: relative;top: -28px;left: 44%;z-index: 1;width: 10%;display: flex;justify-content: center;font-size:12px;">OR</p>
+                      </div>
+                      
                       <form action="<?php if (isset($ref) ) { echo URL::to('/').'/register1?ref='.$ref.'&coupon='.$coupon; } else { echo URL::to('/').'/register1'; } ?>" method="POST" id="stripe_plan" class="stripe_plan" name="member_signup" enctype="multipart/form-data">
                         @csrf
                             <div class="form-group">
@@ -283,7 +411,8 @@ i.fa.fa-google-plus {
                                  <div class="col-md-12">
                                      <div class="row">
                                      <div class="col-md-12">
-                                <input id="password" type="password" placeholder="Password" class="form-control @error('password') is-invalid @enderror pwd" name="password" required autocomplete="new-password">
+                                <input id="password" type="password" placeholder="Password" class="form-control @error('password') is-invalid @enderror pwd" name="password" required autocomplete="new-password" style="margin-bottom: 0!important;">
+                                          <span style="color:#252525;font-family: 'Roboto';font-style: normal;font-weight: 400;font-size: 9px;line-height: 32px;">Password must be at least 8 characters long.</span>
                                          </div>
                                          <div >
                                 <span class="input-group-btn" id="eyeSlash">
@@ -304,10 +433,10 @@ i.fa.fa-google-plus {
                             
                             
                                 @if(!empty($SignupMenu) && $SignupMenu->password_confirm == 1)
-                            <div class="col-md-12">
+                            <div class="col-md-12 mb-0">
                                 <div class="row">
-                                     <div class="col-md-12">
-                                <input id="password-confirm" type="password" class="form-control" placeholder="Confirm Password" name="password_confirmation" required autocomplete="new-password">
+                                     <div class="col-md-12 mb-0">
+                                <input id="password-confirm" type="password" class="form-control mb-0" placeholder="Confirm Password" name="password_confirmation" required autocomplete="new-password" style="margin-bottom: 0!important;">
                                     </div>
                                     <div >
                               <span class="input-group-btn" id="eyeSlash1">
@@ -319,12 +448,12 @@ i.fa.fa-google-plus {
                                     </div>
                                 </div>
     
-                                <span style="color: var(--iq-white);font-size: 14px;font-style: italic;">(Password should be at least 8 characters in length and should include at least one upper case letter, one number, and one special character.)</span>
+                                <span style="color:#000;font-size: 10px;font-style: italic;">Password must be at least 8 characters long.</span>
                             </div>
                                  
-                            </div>            
+                                      
                                 @endif
-                            
+                            </div>  
                             
                        <div class="form-group row">
                         </div>
@@ -349,24 +478,24 @@ i.fa.fa-google-plus {
                                 @endif
                             </div>
 
-							<div class="col-md-12" id="mob">
+							<!--<div class="col-md-12" id="mob">
                                 <input id="password-confirm" type="checkbox" name="terms" value="1" required>
-								<label for="password-confirm" class="col-form-label text-md-right" style="display: inline-block;">{{ __('Yes') }} ,<a data-toggle="modal" data-target="#terms" style="text-decoration:none;color: #fff;"> {{ __('I Agree to Terms and  Conditions' ) }}</a></label>
-                            </div>
+								<label for="password-confirm" class="col-form-label text-md-right text-black" style="display: inline-block;">{{ __('Yes') }} ,<a data-toggle="modal" data-target="#terms" style="text-decoration:none;color: #fff;"> {{ __('I Agree to Terms and  Conditions' ) }}</a></label>
+                            </div>-->
 
-                            <div class="sign-up-buttons col-md-12" align="right">
+                            <div class="sign-up-buttons col-md-12 " align="right">
                                   <button type="button" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile" style="display: none;"> Verify Profile</button>
-                                  <button class="btn btn-hover btn-primary btn-block signup" style="display: block;" type="submit" name="create-account">{{ __('Sign Up Today') }}</button>
+                                  <button class="btn  btn-primary btn-block signup" style="display: block;color:#000;" type="submit" name="create-account">{{ __('START EXPLORING TODAY') }}</button>
                                 </div>
                             </div>
-                        
+                        <p class="text-left agree mb-0" >By signing up you agree to Nemisa Tv Terms of Service and Privacy Policy. This page is protected by reCAPTCHA and is subject to Google's Terms of Service and Privacy Policy.</p>
                         
                     </form>
-                       <div class="mt-3">
-                  <div class="d-flex justify-content-center links">
+                       <!--<div class="mt-3">
+                  <div class="d-flex justify-content-center links text-black">
                      Already have an account? <a href="<?= URL::to('/login')?>" class="text-primary ml-2">Sign In</a>
                   </div>                        
-               </div>
+               </div>-->
                   </div>
                   
                </div>    
@@ -375,6 +504,492 @@ i.fa.fa-google-plus {
          </div>
       </div>
    </div>
+
+             <div class="row">
+                <div class="col-md-6 p-0">
+                    <div class="nees">
+                     <img class="w-100 " src="<?php echo  URL::to('/assets/img/r1.png')?>" style=""></div>
+                </div>
+                <div class="col-md-6 p-0">
+                    <div class="nees">
+                     <img class="w-100 " src="<?php echo  URL::to('/assets/img/r2.png')?>" style=""></div>
+                </div>
+            </div>
+        
+        </div>
+        <div class="col-md-4 col-lg-4 p-0">
+            <img class="w-100" src="<?php echo  URL::to('/assets/img/h6.png')?>" style="">
+            <img class="w-100 mt-2" src="<?php echo  URL::to('/assets/img/h7.png')?>" style="">
+        </div>
+    </div>
+    </div></div>
+    <section class="sec-2">
+        <div class="container">
+            <div class="row align-items-center p-3">
+                <div class="col-lg-6">
+                    <h2 class="text-center text-black">Nemisa Tv - The <br>World in You</h2>
+                </div>
+                <div class="col-lg-6">
+                    <ul class="tune">
+                        <li>Tune in and leave no stone untuned.</li>
+                        <li>Beat the bushes of masters.</li>
+                        <li>Get connected with global community.</li>
+                        <li>Travel your journey with hot pics for you.</li>
+.
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="sec-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="tn-bg">
+                        <h2>34K+</h2>
+                        <p>CLASSES</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                <div class="tn-bg">
+                        <h2>800K+</h2>
+                        <p>MEMBERS</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="tn-bg">
+                        <h2>11K+</h2>
+                        <p>TEACHERS</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="tn-bg">
+                        <h2>4.8*</h2>
+                        <p>APP STORE RATING</p>
+                    </div>
+                </div>
+            </div>
+            <h3 class="text-center mt-5">Explore More With Nemisa Tv</h3>
+            <div class="mt-5">
+                <ul class="nav nav-pills mb-3 justify-content-center " id="pills-tab" role="tablist">
+                  <li class="nav-item">
+                    <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">All Genres</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Musical</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Documentry</a>
+                     
+                  </li>
+                    <li class="nav-item">
+                         <a class="nav-link" id="pills-conta-tab" data-toggle="pill" href="#pills-conta" role="tab" aria-controls="pills-conta" aria-selected="false">Animation</a>
+                    </li>
+                    <li class="nav-item">
+                         <a class="nav-link" id="pills-mul-tab" data-toggle="pill" href="#pills-mul" role="tab" aria-controls="pills-mul" aria-selected="false">Multimedia</a>
+                    </li>
+                    <li class="nav-item">
+                         <a class="nav-link" id="pills-cast-tab" data-toggle="pill" href="#pills-cast" role="tab" aria-controls="pills-cast" aria-selected="false">Vodcast</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="pills-new-tab" data-toggle="pill" href="#pills-new" role="tab" aria-controls="pills-new" aria-selected="false">News</a>
+                    </li>
+                    <li class="nav-item">
+                         <a class="nav-link" id="pills-nar-tab" data-toggle="pill" href="#pills-nar" role="tab" aria-controls="pills-nar" aria-selected="false">Webinar</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" id="pills-Film-tab" data-toggle="pill" href="#pills-Film" role="tab" aria-controls="pills-Film" aria-selected="false">Film & Video</a>
+                    </li>
+                    <li class="nav-item">
+                          <a class="nav-link" id="pills-kids-tab" data-toggle="pill" href="#pills-kids" role="tab" aria-controls="pills-kids" aria-selected="false">Comic & Kids</a>
+                    </li><br>
+                    <li class="nav-item">
+                         <a class="nav-link" id="pills-live-tab" data-toggle="pill" href="#pills-live" role="tab" aria-controls="pills-live" aria-selected="false">Live Recording</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="pills-2d-tab" data-toggle="pill" href="#pills-2d" role="tab" aria-controls="pills-2d" aria-selected="false">2D & 3D Printing</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="pills-edu-tab" data-toggle="pill" href="#pills-edu" role="tab" aria-controls="pills-edu" aria-selected="false">Educational</a>
+                    </li>
+                    <li class="nav-item">
+                         <a class="nav-link" id="pills-cas-tab" data-toggle="pill" href="#pills-cas" role="tab" aria-controls="pills-cas" aria-selected="false">Padcast</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="pills-eve-tab" data-toggle="pill" href="#pills-eve" role="tab" aria-controls="pills-eve" aria-selected="false">Event</a>
+                    </li>
+                    <li class="nav-item">
+                         <a class="nav-link" id="pills-rad-tab" data-toggle="pill" href="#pills-rad" role="tab" aria-controls="pills-rad" aria-selected="false">Radio</a>
+                    </li>
+</ul>
+<div class="tab-content" id="pills-tabContent">
+  <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+      <div class="row">
+          <div class="col-md-3 p-0">
+              <div class="card" style="">
+   <img class="w-100 " src="<?php echo  URL::to('/assets/img/r1.png')?>" style="">
+  <div class="card-body">
+    
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+   <div class="d-flex small-t justify-content-between">
+       <p class="">Diana and Roma EN</p>
+       <p>1H 15Min</p>
+      </div>
+  </div>
+</div>
+          </div>
+          <div class="col-md-3 p-0">
+              <div class="card" style="">
+   <img class="w-100 " src="<?php echo  URL::to('/assets/img/r1.png')?>" style="">
+  <div class="card-body">
+    
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+   <div class="d-flex small-t justify-content-between">
+       <p class="">Diana and Roma EN</p>
+       <p>1H 15Min</p>
+      </div>
+  </div>
+</div>
+          </div>
+          <div class="col-md-3 p-0">
+               <div class="card" style="">
+   <img class="w-100 " src="<?php echo  URL::to('/assets/img/r1.png')?>" style="">
+  <div class="card-body">
+   
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+   <div class="d-flex small-t justify-content-between">
+       <p class="">Diana and Roma EN</p>
+       <p>1H 15Min</p>
+      </div>
+  </div>
+          </div>
+         
+            
+      </div>
+           <div class="col-md-3 p-0">
+               <div class="card" style="">
+   <img class="w-100 " src="<?php echo  URL::to('/assets/img/r1.png')?>" style="">
+  <div class="card-body">
+   
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+   <div class="d-flex small-t justify-content-between">
+       <p class="">Diana and Roma EN</p>
+       <p>1H 15Min</p>
+      </div>
+  </div>
+              </div>
+          </div></div>    <div class="row mt-2">
+          <div class="col-md-3 p-0">
+              <div class="card" style="">
+   <img class="w-100 " src="<?php echo  URL::to('/assets/img/r2.png')?>" style="">
+  <div class="card-body">
+    
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+   <div class="d-flex small-t justify-content-between">
+       <p class="">Diana and Roma EN</p>
+       <p>1H 15Min</p>
+      </div>
+  </div>
+</div>
+          </div>
+          <div class="col-md-3 p-0">
+              <div class="card" style="">
+   <img class="w-100 " src="<?php echo  URL::to('/assets/img/r2.png')?>" style="">
+  <div class="card-body">
+    
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+   <div class="d-flex small-t justify-content-between">
+       <p class="">Diana and Roma EN</p>
+       <p>1H 15Min</p>
+      </div>
+  </div>
+</div>
+          </div>
+          <div class="col-md-3 p-0">
+               <div class="card" style="">
+   <img class="w-100 " src="<?php echo  URL::to('/assets/img/r2.png')?>" style="">
+  <div class="card-body">
+   
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+   <div class="d-flex small-t justify-content-between">
+       <p class="">Diana and Roma EN</p>
+       <p>1H 15Min</p>
+      </div>
+  </div>
+          </div>
+         
+            
+      </div>
+           <div class="col-md-3 p-0">
+               <div class="card" style="">
+   <img class="w-100 " src="<?php echo  URL::to('/assets/img/r1.png')?>" style="">
+  <div class="card-body">
+   
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+   <div class="d-flex small-t justify-content-between">
+       <p class="">Diana and Roma EN</p>
+       <p>1H 15Min</p>
+      </div>
+  </div>
+              </div>
+          </div></div></div>
+  <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+       <div class="row">
+          <div class="col-md-3 p-0">
+              <div class="card" style="">
+   <img class="w-100 " src="<?php echo  URL::to('/assets/img/r2.png')?>" style="">
+  <div class="card-body">
+    
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+   <div class="d-flex small-t justify-content-between">
+       <p class="">Diana and Roma EN</p>
+       <p>1H 15Min</p>
+      </div>
+  </div>
+</div>
+          </div>
+          <div class="col-md-3 p-0">
+              <div class="card" style="">
+   <img class="w-100 " src="<?php echo  URL::to('/assets/img/r2.png')?>" style="">
+  <div class="card-body">
+    
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+   <div class="d-flex small-t justify-content-between">
+       <p class="">Diana and Roma EN</p>
+       <p>1H 15Min</p>
+      </div>
+  </div>
+</div>
+          </div>
+          <div class="col-md-3 p-0">
+               <div class="card" style="">
+   <img class="w-100 " src="<?php echo  URL::to('/assets/img/r2.png')?>" style="">
+  <div class="card-body">
+   
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+   <div class="d-flex small-t justify-content-between">
+       <p class="">Diana and Roma EN</p>
+       <p>1H 15Min</p>
+      </div>
+  </div>
+          </div>
+         
+            
+      </div>
+           <div class="col-md-3 p-0">
+               <div class="card" style="">
+   <img class="w-100 " src="<?php echo  URL::to('/assets/img/r1.png')?>" style="">
+  <div class="card-body">
+   
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+   <div class="d-flex small-t justify-content-between">
+       <p class="">Diana and Roma EN</p>
+       <p>1H 15Min</p>
+      </div>
+  </div>
+              </div>
+          </div></div>
+    </div>
+  <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+          <div class="row">
+          <div class="col-md-3 p-0">
+              <div class="card" style="">
+   <img class="w-100 " src="<?php echo  URL::to('/assets/img/r2.png')?>" style="">
+  <div class="card-body">
+    
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+   <div class="d-flex small-t justify-content-between">
+       <p class="">Diana and Roma EN</p>
+       <p>1H 15Min</p>
+      </div>
+  </div>
+</div>
+          </div>
+          <div class="col-md-3 p-0">
+              <div class="card" style="">
+   <img class="w-100 " src="<?php echo  URL::to('/assets/img/r2.png')?>" style="">
+  <div class="card-body">
+    
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+   <div class="d-flex small-t justify-content-between">
+       <p class="">Diana and Roma EN</p>
+       <p>1H 15Min</p>
+      </div>
+  </div>
+</div>
+          </div>
+          <div class="col-md-3 p-0">
+               <div class="card" style="">
+   <img class="w-100 " src="<?php echo  URL::to('/assets/img/r2.png')?>" style="">
+  <div class="card-body">
+   
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+   <div class="d-flex small-t justify-content-between">
+       <p class="">Diana and Roma EN</p>
+       <p>1H 15Min</p>
+      </div>
+  </div>
+          </div>
+         
+            
+      </div>
+           <div class="col-md-3 p-0">
+               <div class="card" style="">
+   <img class="w-100 " src="<?php echo  URL::to('/assets/img/r1.png')?>" style="">
+  <div class="card-body">
+   
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+   <div class="d-flex small-t justify-content-between">
+       <p class="">Diana and Roma EN</p>
+       <p>1H 15Min</p>
+      </div>
+  </div>
+              </div>
+          </div></div>
+    </div>
+    <div class="tab-pane fade" id="pills-conta" role="tabpanel" aria-labelledby="pills-conta-tab">    <div class="row">
+          <div class="col-md-3 p-0">
+              <div class="card" style="">
+   <img class="w-100 " src="<?php echo  URL::to('/assets/img/r2.png')?>" style="">
+  <div class="card-body">
+    
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+   <div class="d-flex small-t justify-content-between">
+       <p class="">Diana and Roma EN</p>
+       <p>1H 15Min</p>
+      </div>
+  </div>
+</div>
+          </div>
+          <div class="col-md-3 p-0">
+              <div class="card" style="">
+   <img class="w-100 " src="<?php echo  URL::to('/assets/img/r2.png')?>" style="">
+  <div class="card-body">
+    
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+   <div class="d-flex small-t justify-content-between">
+       <p class="">Diana and Roma EN</p>
+       <p>1H 15Min</p>
+      </div>
+  </div>
+</div>
+          </div>
+          <div class="col-md-3 p-0">
+               <div class="card" style="">
+   <img class="w-100 " src="<?php echo  URL::to('/assets/img/r2.png')?>" style="">
+  <div class="card-body">
+   
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+   <div class="d-flex small-t justify-content-between">
+       <p class="">Diana and Roma EN</p>
+       <p>1H 15Min</p>
+      </div>
+  </div>
+          </div>
+         
+            
+      </div>
+           <div class="col-md-3 p-0">
+               <div class="card" style="">
+   <img class="w-100 " src="<?php echo  URL::to('/assets/img/r1.png')?>" style="">
+  <div class="card-body">
+   
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+   <div class="d-flex small-t justify-content-between">
+       <p class="">Diana and Roma EN</p>
+       <p>1H 15Min</p>
+      </div>
+  </div>
+              </div>
+          </div></div></div>
+</div>
+            </div>
+                <div class="text-center mt-5 pt-2">
+                    <a class="btn btn-success my-2 my-sm-0" style="font-weight:600;" herf="#">Explore More</a>
+            </div></div>
+            <div class="container-fluid mt-5 pt-5">
+                <h2 class="text-center">Top Pics for You </h2>
+                <div class="row mt-4">
+                    <div class="col-md-6 p-0">
+                        <div class="nees1">
+                          <img class="w-100 " src="<?php echo  URL::to('/assets/img/t1.png')?>" style=""></div>
+                    </div>
+                    <div class="col-md-6 p-0">
+                         <div class="nees1">
+                             <img class="w-100 " src="<?php echo  URL::to('/assets/img/t2.png')?>" style=""></div>
+                    </div>
+                    <div class="col-md-6 p-0">
+                        <div class="nees1">
+                            <img class="w-100 " src="<?php echo  URL::to('/assets/img/t3.png')?>" style=""></div>
+                    </div>
+                    <div class="col-md-6 p-0">
+                        <div class="nees1">
+                            <img class="w-100 " src="<?php echo  URL::to('/assets/img/t4.png')?>" style=""></div>
+                    </div>
+                    <div class="col-md-6 p-0">
+                        <div class="nees1">
+                            <img class="w-100 " src="<?php echo  URL::to('/assets/img/t5.png')?>" style=""></div>
+                    </div>
+                    <div class="col-md-6 p-0">
+                        <div class="nees1">
+                            <img class="w-100 " src="<?php echo  URL::to('/assets/img/t6.png')?>" style=""></div>
+                    </div>
+                    
+                </div>
+                
+            </div>
+    </section>
+    <section class="sec-4">
+        <div class="container-fluid">
+            <h2 class="text-center text-black mb-5">Members Endorsement</h2>
+            <div class="text-center mt-4 mb-3">
+                <img  src="<?php echo  URL::to('/assets/img/cli.png')?>" style=""></div>
+            <div class="">
+                <p class="ital"> <img class="w-20" src="<?php echo  URL::to('/assets/img/comma.png')?>" style="margin-top:-35px;">I come to Nemisa tv for the curation and class quality. That's really worth the cost of membership to me.</p>
+                <p class="text-center mt-2">—Jason R, Nemisa Student</p>
+            </div>
+        </div>
+    </section>
+    <section class="sec-3">
+        <div class="contianer">
+            <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2>Free edutainment for the digital warrior</h2>
+                <p class="text-white mt-2">Advancing South Africans for the future with content that is missioned to deliver tangible digital skills to bridge the digital divide.</p>
+                <p class="text-white mt-2">WATCH EVERYWHERE, STREAM LIVE, QUALITY VIDEOS</p>
+            </div>
+            <div class="col-lg-6">
+                 <img class="w-100 " src="<?php echo  URL::to('/assets/img/m1.png')?>" style="">
+            </div>
+        </div></div>
+    </section>
+
+   <!--<div class="container">
+      <div class="row  align-items-center justify-content-center height-self-center">
+         <div class="col-lg-6 col-12 col-md-12 align-self-center">
+             <div class="text-center">
+                 <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;">
+             </div>
+            
+         </div>
+          
+      </div>
+   </div>-->
+</section>
+
+<section style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;">
+@section('content')
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <?php $jsonString = file_get_contents(base_path('assets/country_code.json'));   
+
+    $jsondata = json_decode($jsonString, true); ?>
+<?php 
+    $ref = Request::get('ref');
+    $coupon = Request::get('coupon');
+    // dd($SignupMenu);
+?>
 
 <!-- Modal -->
   <div class="modal fade" id="terms" role="dialog" >
@@ -447,6 +1062,7 @@ i.fa.fa-google-plus {
   </div>
 </div>
     </section>
+       
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 <script>
@@ -887,5 +1503,7 @@ $(document).ready(function() {
 
 
 
-
+@php
+    @include(public_path('themes\theme2\views\footer.blade.php'));
+@endphp
 @endsection 
