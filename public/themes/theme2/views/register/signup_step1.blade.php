@@ -58,6 +58,9 @@ $uppercase =  ucfirst($request_url);
     body{
         background: #fff;
     }
+    input{
+        color: #000;
+    }
     /*.sign-user_card {
         background: none !important;
     }*/
@@ -151,12 +154,12 @@ $uppercase =  ucfirst($request_url);
     background: transparent !important;
     border: 1px solid var(--iq-body-text);
     font-size: 14px;
-    color: var(--iq-white) !important;
+    color: #000!important;
     border-radius: 0;
     margin-bottom: 1rem !important;
 }
     .form-control:focus {
-     color: var(--iq-white) !important;
+    
     background-color: #fff;
     border-color: #80bdff;
     outline: 0;
