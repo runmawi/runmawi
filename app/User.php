@@ -27,16 +27,18 @@ class User extends Authenticatable
     
     private $token;
     
-    
-    
 	/**
 	 * The attributes that are mass assignable.
 	 *
 	 * @var array
 	 */
-//	protected $fillable = [ 'username', 'active', 'email', 'terms','ccode', 'name', 'mobile', 'referrer_id','avatar','terms','stripe_active','sub_admin', 'password', 'role', 'status', 'disabled', 'activation_code'];
     
-    protected $fillable = ['username', 'active', 'email', 'name', 'paypal_id', 'subscription_start', 'coupon_expired', 'payment_type', 'paypal_end_at', 'ccode', 'mobile','avatar','terms','stripe_active','sub_admin','referral_token', 'password', 'role', 'status', 'disabled', 'activation_code','provider', 'provider_id','g-recaptcha-response'];
+    protected $fillable = [
+                            'username', 'active', 'email', 'name', 'paypal_id', 'subscription_start','plan_name',
+                            'coupon_expired', 'payment_type', 'paypal_end_at', 'ccode', 'mobile',
+                            'avatar','terms','stripe_active','sub_admin','referral_token', 'password', 'role', 'status', 'disabled', 'activation_code','provider',
+                            'provider_id','g-recaptcha-response','subscription_ends_at','package','package_ends'
+                        ];
    
         /**
         *The attributes excluded from the model's JSON form.
