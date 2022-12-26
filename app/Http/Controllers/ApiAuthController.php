@@ -9878,7 +9878,7 @@ public function Paystack_VideoRent_Paymentverify ( Request $request )
 
               // Verify Payment
 
-          $reference_code = $request->reference_code;
+          $reference_code = $request->reference_id;
 
           $curl = curl_init();
           
@@ -9977,7 +9977,7 @@ public function Paystack_VideoRent_Paymentverify ( Request $request )
           
                // Verify Payment
 
-          $reference_code = $request->reference_code;
+          $reference_code = $request->reference_id;
 
           $curl = curl_init();
           
