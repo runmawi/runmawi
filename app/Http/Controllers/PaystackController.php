@@ -583,7 +583,7 @@ class PaystackController extends Controller
             $purchase = new PpvPurchase;
             $purchase->user_id       =  Auth::user()->id ;
             $purchase->live_id       = $request->live_id ;
-            $purchase->total_amount  = $payment_result['data']['amount'] ; ;
+            $purchase->total_amount  = $payment_result['data']['amount'] ; 
             $purchase->admin_commssion = $admin_commssion;
             $purchase->moderator_commssion = $moderator_commssion;
             $purchase->status = 'active';
@@ -596,7 +596,7 @@ class PaystackController extends Controller
             $livepurchase->video_id = $request->live_id;
             $livepurchase->to_time = $to_time;
             $livepurchase->expired_date = $to_time;
-            $livepurchase->amount = $request->get('amount')/100 ;
+            $livepurchase->amount =  $payment_result['data']['amount'] ;
             $livepurchase->from_time = Carbon::now()->format('Y-m-d H:i:s');
             $livepurchase->unseen_expiry_date = ppv_expirytime_notstarted();
             $livepurchase->status = 1;

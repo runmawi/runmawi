@@ -271,6 +271,10 @@ Route::group([
     Route::post('RazorpaySubscriptionCancel', 'ApiAuthController@RazorpaySubscriptionCancel');
     Route::post('RazorpaySubscriptionUpdate', 'ApiAuthController@RazorpaySubscriptionUpdate');
 
+// Paystack
+    Route::post('Paystack-liveRent-Paymentverify', 'ApiAuthController@Paystack_liveRent_Paymentverify')->name('Paystack_liveRent_Paymentverify');
+    Route::post('Paystack-VideoRent-Paymentverify', 'ApiAuthController@Paystack_VideoRent_Paymentverify')->name('Paystack_VideoRent_Paymentverify');
+
 // Ads
     Route::post('AdsView', 'ApiAuthController@AdsView');
     Route::post('Adstatus_upate', 'ApiAuthController@Adstatus_upate');
