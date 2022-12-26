@@ -14,6 +14,7 @@ use Carbon\Carbon;
 use App\PaymentSetting;
 use App\Subscription;
 use App\PpvPurchase;
+use App\Paystack_Andriod_UserId;
 use App\VideoCommission;
 use App\ModeratorsUser;
 use App\Video;
@@ -217,7 +218,7 @@ class PaystackController extends Controller
                 }
 
             }else{
-                $user_id = session('paystack_Andriod_user_id') ;
+                $user_id = Paystack_Andriod_UserId::pluck('user_id')->first();
             }
 
                  // Subscription Details - Storing
@@ -258,8 +259,9 @@ class PaystackController extends Controller
             if( session('paystack_payment_source') == "web" ){
 
                 return redirect()->route('home');
-            }else{
-
+            }
+            else{
+                Paystack_Andriod_UserId::truncate();
                 return response()->json( $response, 200 );
             }
 
@@ -275,6 +277,7 @@ class PaystackController extends Controller
                 return redirect()->route('home');
             }else{
 
+                Paystack_Andriod_UserId::truncate();
                 return response()->json( $response, 200 );
             }
         }
