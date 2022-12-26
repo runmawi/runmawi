@@ -936,8 +936,8 @@ font-weight: 600;
             </div>
     </section>
     <section class="sec-4">
-        <div class="container">
-            <h2 class="text-center text-black">Members Endorsement</h2>
+        <div class="container-fluid">
+            <h2 class="text-center text-black mb-5">Members Endorsement</h2>
             <div class="text-center mt-4 mb-3">
                 <img  src="<?php echo  URL::to('/assets/img/cli.png')?>" style=""></div>
             <div class="">
