@@ -181,7 +181,43 @@ class MultiprofileController extends Controller
     public function profile_delete($id){
 
         $profile_delete=Multiprofile::find($id)->delete();
+
         return redirect('myprofile');
     }
 
+    public function Multi_Profile_Create( Request $request )
+    {
+        return view ('multiprofile.profile_create');
+
+    }
+
+    public function Multi_Profile_Store(Request $request)
+    {
+        if($request->user_type != ''){
+            $user_type = 'Kids';
+        }
+        else{
+            $user_type = 'Normal';
+        }
+
+        $parent_id = Auth::User()->id;
+
+        if($request->image != null){
+            $files = $request->image;
+            $filename =uniqid(). time(). '.' . $files->getClientOriginalExtension();
+            Image::make($files)->resize(300, 300)->save(base_path().'/public/multiprofile/'.$filename );
+        }
+        else{
+            $filename='chooseimage.jpg';
+        }
+       
+        $Multiprofile = Multiprofile::create([
+            'parent_id'       => $parent_id,
+            'user_name'       => $request->input('name'),
+            'user_type'       => $user_type,
+            'Profile_Image'   => $filename,
+         ]);
+    
+         return redirect( route('myprofile') );
+    }
 }
