@@ -9,7 +9,7 @@
         <div class="container-fluid px-5">
             <div class="row align-items-center  justify-content-between ">
                 <div class="col-sm-8 small m-0 text-white exp p-0">
-                    <ul class="text-white p-0 mt-3 d-flex">
+                   <!-- <ul class="text-white p-0 mt-3 d-flex">
                       <?php $column2_footer = App\FooterLink::where('column_position',2)->orderBy('order')->get();  
                         foreach ($column2_footer as $key => $footer_link){ ?>
                           <li><a href="<?php echo URL::to('/'.$footer_link->link) ?>">
@@ -17,9 +17,9 @@
                               </a>
                           </li>
                       <?php  } ?>
-                    </ul>
+                    </ul>-->
 
-                    <ul class="text-white p-0 mt-3 d-flex">
+                   <!-- <ul class="text-white p-0 mt-3 d-flex">
                       <?php  
                       
                         if( Auth::user() != null && Auth::user()->package == "Business" ):
@@ -38,7 +38,7 @@
                               </a>
                           </li>
                       <?php  } ?>
-                    </ul>
+                    </ul>-->
                     
                  
                          <!--   <li><a href="<?php echo URL::to('/contact-us/') ;?>">Contact us</a></li> -->
@@ -46,36 +46,36 @@
                     </ul>
 
                      <div class="mt-2 p-2">
-                    <div class="small m-0 text-white"><p>The Best Streaming Platform</p></div>
+                    <div class="small m-0 text-white"></div>
                     <div class="d-flex p-0 text-white icon mt-4">
-<p>Social :</p>
+<p>Follow US :</p>
                     <?php if(!empty($settings->facebook_page_id)){?>
-                      <a href="https://www.facebook.com/<?php echo FacebookId();?>" target="_blank"  class="">
-                        <i class="fa fa-facebook" aria-hidden="true" style="padding: 0px 10px;"></i>
+                      <a href="https://www.facebook.com/<?php echo FacebookId();?>" target="_blank"  class="ml-1">
+                        <img class="w-100" src="<?php echo  URL::to('/assets/img/ff.png')?>" style="">
                         </a>
                     <?php } ?>
 
                     <?php if(!empty($settings->skype_page_id)){?>
-                      <a href="https://www.skype.com/en/<?php echo SkypeId();?>" target="_blank"  class="">
+                      <a href="https://www.skype.com/en/<?php echo SkypeId();?>" target="_blank"  class="ml-1">
                         <i class="fa fa-skype"></i>
                         </a>
                     <?php } ?>
 
                     <?php if(!empty($settings->twitter_page_id)){?>
-                      <a href="https://twitter.com/<?php echo TwiterId();?>" target="_blank"  class="">
-                        <i class="fa fa-twitter" aria-hidden="true"style="padding: 0px 10px;"></i>
+                      <a href="https://twitter.com/<?php echo TwiterId();?>" target="_blank"  class="ml-1">
+                       <img class="w-100" src="<?php echo  URL::to('/assets/img/tw.png')?>" style="">
                         </a>
                     <?php } ?>
 
                     <?php if(!empty($settings->instagram_page_id)){?>
-                      <a href="https://www.instagram.com/<?php echo InstagramId();?>" target="_blank"  class="">
-                        <i class="fa fa-instagram" aria-hidden="true"style="padding: 0px 10px;"></i>
+                      <a href="https://www.instagram.com/<?php echo InstagramId();?>" target="_blank"  class="ml-1">
+                        <img class="w-100" src="<?php echo  URL::to('/assets/img/insta.png')?>" style="">
                         </a>
                     <?php } ?>
 
                     <?php if(!empty($settings->linkedin_page_id)){?>
-                      <a href="https://www.linkedin.com/<?php echo linkedinId();?>" target="_blank"  class="">
-                        <i class="fa fa-linkedin" aria-hidden="true" style="padding: 0px 10px;"></i>
+                      <a href="https://www.linkedin.com/<?php echo linkedinId();?>" target="_blank"  class="ml-1">
+                        <img class="w-100" src="<?php echo  URL::to('/assets/img/link.png')?>" style="">
                         </a>
                     <?php } ?>
 
@@ -87,19 +87,19 @@
                     <?php } ?>
 
                     <?php if(!empty($settings->youtube_page_id)){?>
-                      <a href="https://www.youtube.com/<?php echo YoutubeId();?>" target="_blank"  class="">
-                        <i class="fa fa-youtube"></i>
+                      <a href="https://www.youtube.com/<?php echo YoutubeId();?>" target="_blank"  class="ml-1">
+                        <img class="w-100" src="<?php echo  URL::to('/assets/img/yout.png')?>" style="">
                         </a>
                     <?php } ?>
 
                     <?php if(!empty($settings->google_page_id)){?>
-                      <a href="https://www.google.com/<?php echo GoogleId();?>" target="_blank" class="">
+                      <a href="https://www.google.com/<?php echo GoogleId();?>" target="_blank" class="ml-1">
                         <i class="fa fa-google-plus"></i>
                         </a>
                     <?php } ?>
 
                 </div>
-                         <p>2022 flicknexs Networks India Pvt. Ltd.</p>
+                       
                     </div></div>
              <!--   <div class="col-sm-3">
                     <div class="small m-0 text-white"><p>The Best Streaming Platform</p></div>
@@ -197,7 +197,11 @@
                     <?php } ?>
                 </div>
             </div>
+    <p class="text-center">All memberships will be billed automatically on a recurring basis until canceled. If eligible for a free trial, cancel before the trial ends to avoid being charged. Offer only valid for new paid subscribers. See full terms of service here.</p>
         </div>
+<div class="container-fluid">
+               <p class="mb-0 text-center font-size-14 text-body" style="color:#fff!important;"><?php echo $settings->website_name ; ?> - <?php echo Carbon::now()->year ; ?> All Rights Reserved</p>
+            </div>
     </footer>
 <!--<footer class="mb-0">
          <div class="container-fluid">
