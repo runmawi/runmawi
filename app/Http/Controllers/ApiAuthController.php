@@ -6103,7 +6103,10 @@ public function LocationCheck(Request $request){
       
         $subcriber_user = User::where('id',$parent_id)->first();
     
-        $users= Multiprofile::where('parent_id', $parent_id)->get();
+        $users= Multiprofile::where('parent_id', $parent_id)->get()->map(function ($item) {
+          $item['image_url'] = URL::to('/').'/public/multiprofile/'.$item->Profile_Image;
+          return $item;
+        });
     
         $response = array(
           'status'  => 'true',
