@@ -266,7 +266,7 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
 Route::get('serieslist', array('uses' => 'ChannelController@series', 'as' => 'series') );
 Route::get('series/category/{id}', 'ChannelController@series_genre' );
 Route::get('watchlater', 'WatchLaterController@show_watchlaters');
-Route::get('myprofile', 'AdminUsersController@myprofile');
+Route::get('myprofile', 'AdminUsersController@myprofile')->name('myprofile');
 Route::get('refferal', 'AdminUsersController@refferal');
 Route::post('/profile/update', 'AdminUsersController@profileUpdate');   
 Route::get('/latest-videos', 'HomeController@LatestVideos');
@@ -1902,11 +1902,14 @@ Route::post('fileAudio', 'ModeratorsUserController@fileAudio');
 
 Route::PATCH('/Profile-details/{id}', 'MultiprofileController@profile_details')->name('profile_details');
 Route::get('/profile_delete/{id}', 'MultiprofileController@profile_delete')->name('profile_delete');
-Route::get('/profileDetails_edit/{id}', 'MultiprofileController@profileDetails_edit')->name('profileDetails_edit');
+Route::get('/profile-details_edit/{id}', 'MultiprofileController@profileDetails_edit')->name('profile-details_edit');
 
 Route::resources([
     'Choose-profile' => MultiprofileController::class,
 ]);
+
+Route::get('/Multi-profile/create', 'MultiprofileController@Multi_Profile_Create')->name('Multi-profile-create');
+Route::post('/Multi-profile/store', 'MultiprofileController@Multi_Profile_Store')->name('Multi-profile-store');
 
 // welcome-screen
 Route::post('/welcome-screen', 'WelcomeScreenController@Screen_store')->name('welcome-screen');

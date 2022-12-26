@@ -461,24 +461,33 @@ $settings = App\Setting::first();
                 </div>
                 <div class="targetDiv" id="div6"><div class=" mb-3">
            <h4 class="card-title mb-0 manage"> Profile</h4>
-              <div class="col-md-12 profile_image">
-                  @forelse  ($profile_details as $profile)
+              <div class="col-md-12 profile_image">                  
+                  @forelse  ( $profile_details as $profile )
+
                     <div class="">
-                             <img src="{{URL::asset('public/multiprofile/').'/'.$profile->Profile_Image}}" alt="user" class="multiuser_img" style="width:120px">
-                            
-                             <h2 class="name">{{ $profile ? $profile->user_name : ''  }}</h2>
-                         <div class="circle">
-                                <a  href="{{ URL::to('profileDetails_edit', $profile->id)}}">
-                                       <i class="fa fa-pencil"></i> </a>
-                                @if($Multiuser == null)
-                                 <a  href="{{ URL::to('profile_delete', $profile->id)}}" onclick="return confirm('Are you sure to delete this Profile?')" >
-                                   <i class="fa fa-trash"></i> </a> 
-                                @endif
-                             </div>
-                    </div>
+                        <img src="{{URL::asset('public/multiprofile/').'/'.$profile->Profile_Image}}" alt="user" class="multiuser_img" style="width:120px">
+                        <h2 class="name">{{ $profile ? $profile->user_name : ''  }}</h2>
+
+                        <div class="circle">
+                           <a  href="{{ route('profile-details_edit', $profile->id ) }}"> <i class="fa fa-pencil"></i> </a>
+
+                           @if($Multiuser == null)
+                              <a  href="{{ URL::to('profile_delete', $profile->id)}}" onclick="return confirm('Are you sure to delete this Profile?')" >
+                                 <i class="fa fa-trash"></i>
+                              </a> 
+                           @endif
+
+                        </div>
+                    </div> 
                   @empty
-                    <div class="col-sm-6">  <p class="name">No Profile</p>  </div>
+                    <div class="col-sm-6">  
+                        <p class="name"> No Profile </p>  </div>
                   @endforelse
+
+                  <div class="col-md-6" style="margin-top: 63px;">
+                     <li> <a class="fa fa-plus-circle fa-100x" style="color: white !important; " href="{{ route('Multi-profile-create') }}" ></a> </li>
+                  </div>
+
               </div>    
           </div> </div>
                 <div class="targetDiv" id="div7">
