@@ -820,7 +820,7 @@ font-weight: 600;
 
     
 @php
-    include(public_path('themes\theme2\views\footer.blade.php'));
+    include(public_path('themes/theme2/views/footer.blade.php'));
 @endphp
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
