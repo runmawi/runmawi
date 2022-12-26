@@ -6247,7 +6247,6 @@ public function LocationCheck(Request $request){
       
       return response()->json($data, 200);
 
-
     }
 
     public function freecontent_episodes(){
