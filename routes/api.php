@@ -236,7 +236,7 @@ Route::group([
     Route::post('addfavoriteEpisode', 'ApiAuthController@addfavoriteEpisode');
 
 //  Multi-profile
-    Route::get('Multiprofile', 'ApiAuthController@Multiprofile');
+    Route::post('Multiprofile', 'ApiAuthController@Multiprofile');
     Route::post('Multiprofile_create', 'ApiAuthController@Multiprofile_create');
     Route::get('Multiprofile_edit', 'ApiAuthController@Multiprofile_edit');
     Route::post('Multiprofile_update', 'ApiAuthController@Multiprofile_update');
