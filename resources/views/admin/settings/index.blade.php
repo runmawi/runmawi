@@ -115,42 +115,43 @@ border-radius: 0px 4px 4px 0px;
 	</div>
 	<!-- <div class="clear"></div> -->
     <!-- <body> -->
-        <div class="d-flex" id="wrapper">
+        <div class="row" id="wrapper">
             <!-- Sidebar-->
-            <div class="border-end bg-white" id="sidebar-wrapper">
+            <div class="col-lg-3">
+            <div class=" bg-white" id="sidebar-wrapper">
                 <!-- <div class="sidebar-heading border-bottom bg-light">Start Bootstrap</div> -->
                 <div class="list-group list-group-flush">
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="rtmp_url_setting" href="#!">RTMP Streaming URL Settings </a>  
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="site_setting" href="#!">Site Settings</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="ppv_setting" href="#!">PPV Settings</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="video_setting" href="#!">Video Settings</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="registration_setting" href="#!">Registration Settings</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="email_setting" href="#!">Email Settings</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="social_setting" href="#!">Social Networks Settings</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="series_setting" href="#!">Series Settings</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light " id="rtmp_url_setting" href="#!">RTMP Streaming URL Settings </a>  
+                    <a class="list-group-item list-group-item-action list-group-item-light " id="site_setting" href="#!">Site Settings</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light " id="ppv_setting" href="#!">PPV Settings</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light " id="video_setting" href="#!">Video Settings</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light " id="registration_setting" href="#!">Registration Settings</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light " id="email_setting" href="#!">Email Settings</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light " id="social_setting" href="#!">Social Networks Settings</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light " id="series_setting" href="#!">Series Settings</a>
                     <?php if(Auth::User()->role =="admin" && Auth::User()->package =="Business"){  ?>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="transcoding_setting" href="#!"> Transcoding Settings</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light " id="transcoding_setting" href="#!"> Transcoding Settings</a>
                     <?php } ?>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="subscription_setting" href="#!">Coupon Code Settings</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="login_setting" href="#!">Login Page Settings</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="advertisement_setting" href="#!">Advertisement Settings</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="app_setting" href="#!">APP Settings</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="script_setting" href="#!">Script Settings</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="default_Image_setting" href="#!"> Default Image Settings</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="cpp_payouts_setting" href="#!">  Payouts Settings</a> 
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="recpatcha_setting" href="#!">{{  ucwords('recaptcha settings') }}</a>  
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="timezone_setting" href="#!">TimeZone Settings</a>  
+                    <a class="list-group-item list-group-item-action list-group-item-light " id="subscription_setting" href="#!">Coupon Code Settings</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light " id="login_setting" href="#!">Login Page Settings</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light " id="advertisement_setting" href="#!">Advertisement Settings</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light " id="app_setting" href="#!">APP Settings</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light " id="script_setting" href="#!">Script Settings</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light " id="default_Image_setting" href="#!"> Default Image Settings</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light " id="cpp_payouts_setting" href="#!">  Payouts Settings</a> 
+                    <a class="list-group-item list-group-item-action list-group-item-light" id="recpatcha_setting" href="#!">{{  ucwords('recaptcha settings') }}</a>  
+                    <a class="list-group-item list-group-item-action list-group-item-light " id="timezone_setting" href="#!">TimeZone Settings</a>  
                     <!-- Content Partner -->
                 </div>
-            </div>
+            </div></div>
 
 
-
+<div class="col-lg-8 p-0">
 	<form method="POST" action="{{ URL::to('admin/settings/save_settings') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
 	
             <!-- Page content wrapper-->
-           <div class="container-fluid" id="site" style="padding-left:20px;">
-               <div class="row ">
+           <div class="container-fluid" id="site" style="">
+               <div class="row p-2">
                     <div class="panel-heading">
                     <div class="panel-title"><label>Site Name</label></div>
                     <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
@@ -292,7 +293,7 @@ border-radius: 0px 4px 4px 0px;
 
         <!-- <div class="container-fluid" id="ppv" > -->
        
-        <div class="container-fluid row align-items-center mt-3" id="ppv">
+        <div class="container-fluid row align-items-center mt-3 p-3" id="ppv">
             <div class="col-sm-6">
                 <div class="panel panel-primary" data-collapsed="0">
                     <div class="panel-heading">
@@ -310,7 +311,7 @@ border-radius: 0px 4px 4px 0px;
                     </div>
                 </div>
             </div>
-        <div class="row mt-3">
+        <div class="row mt-3 p-2">
             <div class="col-sm-6" id="Pay_Per_view_Hours">
                 <div class="panel panel-primary" data-collapsed="0">
                     <div class="panel-heading">
@@ -353,7 +354,7 @@ border-radius: 0px 4px 4px 0px;
         </div>
 
 
-        <div class="row mt-3">
+        <div class="row mt-3 p-2">
             <div class="col-sm-6" id="Pay_Per_view_Hours">
                 <div class="panel panel-primary" data-collapsed="0">
                     <div class="panel-heading">
@@ -1182,13 +1183,13 @@ border-radius: 0px 4px 4px 0px;
 
     <div class="container-fluid" id="rtmp_url" >
         <h5>RTMP Video Streaming</h5>
-        <div class="row">
+        <div class="row p-0">
             <form method="POST" action="{{ URL::to('admin/rtmp_setting/update') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="Setting_rtmpURL">
                 
-                <div class="row mt-4 p-0">
+                <div class="row mt-4">
                     <div class="col-md-12">
                         <div class="panel panel-primary p-0" data-collapsed="0"> <div class="panel-heading"> 
-                            <div class="panel-title ml-1" > 
+                            <div class="panel-title ml-3" > 
                                 <label>RTMP URL</label> 
                             </div> 
 
@@ -1309,7 +1310,7 @@ border-radius: 0px 4px 4px 0px;
             </div>
         </div>
 
-    </div></div></div></div>
+             </div></div></div></div></div>
     <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
     
     <script>
