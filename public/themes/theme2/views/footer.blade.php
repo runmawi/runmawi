@@ -45,9 +45,9 @@
                       <?php } ?>
 
                       <?php if(!empty($settings->whatsapp_page_id)){?>
-                      <a href="https://www.whatsapp.com/<?php echo YoutubeId();?>" target="_blank" class="">
+                     <!-- <a href="https://www.whatsapp.com/<?php echo YoutubeId();?>" target="_blank" class="">
                           <i class="fa fa-whatsapp"></i>
-                      </a>
+                      </a>-->
                       <?php } ?>
 
                       <?php if(!empty($settings->youtube_page_id)){?>

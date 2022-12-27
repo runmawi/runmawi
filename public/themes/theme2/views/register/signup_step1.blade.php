@@ -36,6 +36,9 @@ $uppercase =  ucfirst($request_url);
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
   </script>
 <style>
+    .btn{
+        border-radius: 4px!important;
+    }
     h3{
         font-weight: 600;
     }
@@ -279,8 +282,8 @@ $jsondata = json_decode($jsonString, true); ?>
   <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
     
 
-      <button class="btn btn-outline-success my-2 mr-2 my-sm-0" type="submit">Sign in</button>
-      <a class="btn btn-success my-2 my-sm-0"  href="{{ route('signup') }}" style="" >Sign up</a>
+      <a class="btn btn-success  my-2 mr-2 my-sm-0" href="{{ route('login') }}" >Sign in</a>
+      <a class="btn btn-outline-success my-2 my-sm-0"  href="{{ route('signup') }}" style="" >Sign up</a>
     
   </div>
 </div></nav>
