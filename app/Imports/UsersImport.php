@@ -25,9 +25,9 @@ class UsersImport implements ToModel, WithHeadingRow
     */
     public function model(array $row)
     {
-        $email_exist = User::where('email',$row['role'])->first();
+        $email_exist = User::where('email',$row['e_mail'])->first();
 
-        if( empty($email_exist) ){
+        if( empty($email_exist) &&  $row['e_mail'] != null && $row['role'] ){
 
             $inputs = array(
                 'role'      => $row['role'],
