@@ -322,7 +322,7 @@ $jsondata = json_decode($jsonString, true); ?>
                <div class="sign-in-page-data">
                   <div class="sign-in-from w-100 m-auto">
                       <div align="center">
-                         <!-- <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" style="margin-bottom:1rem;"> -->      <h1 class="in mb-3 text-center text-black">Look Into Nemisa Tv For Realistic Experience<br>Join Now</h1>
+                         <!-- <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" style="margin-bottom:1rem;"> -->      <h1 class="in mb-3 text-center text-black pt-3">Look Into Nemisa Tv For Realistic Experience<br>Join Now</h1>
                           <p class="get">Get 5 free days of Nemisa Tv</p>
                       </div>
                        <div class="form-group row mb-0 justify-content-center">
@@ -490,7 +490,7 @@ $jsondata = json_decode($jsonString, true); ?>
 
                             <div class="sign-up-buttons col-md-12 " align="right">
                                   <button type="button" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile" style="display: none;"> Verify Profile</button>
-                                  <button class="btn  btn-primary btn-block signup" style="display: block;color:#000;" type="submit" name="create-account">{{ __('START EXPLORING TODAY') }}</button>
+                                  <button class="btn  btn-primary btn-block signup" style="display: block;color:#000;font-size:20px;" type="submit" name="create-account">{{ __('START EXPLORING TODAY') }}</button>
                                 </div>
                             </div>
                         <p class="text-left agree mb-0" >By signing up you agree to Nemisa Tv Terms of Service and Privacy Policy. This page is protected by reCAPTCHA and is subject to Google's Terms of Service and Privacy Policy.</p>
@@ -548,8 +548,8 @@ $jsondata = json_decode($jsonString, true); ?>
         </div>
     </section>
     <section class="sec-3">
-        <div class="container">
-            <div class="row">
+        <div class="container-fluid">
+            <div class="row mt-5 pt-5">
                 <div class="col-md-3">
                     <div class="tn-bg">
                         <h2>34K+</h2>
@@ -575,7 +575,7 @@ $jsondata = json_decode($jsonString, true); ?>
                     </div>
                 </div>
             </div>
-            <h3 class="text-center mt-5">Explore More With Nemisa Tv</h3>
+            <h3 class="text-center mt-5 pt-5">Explore More With Nemisa Tv</h3>
             <div class="mt-5">
                 <ul class="nav nav-pills mb-3 justify-content-center " id="pills-tab" role="tablist">
                   <li class="nav-item">
@@ -911,7 +911,7 @@ $jsondata = json_decode($jsonString, true); ?>
 </div>
             </div>
                 <div class="text-center mt-5 pt-2">
-                    <a class="btn btn-success my-2 my-sm-0" style="font-weight:600;" herf="#">Explore More</a>
+                    <a class="btn btn-success my-2 my-sm-0" style="font-weight:600;font-size: 20px;" herf="#">Explore More</a>
             </div></div>
             <div class="container-fluid mt-5 pt-5">
                 <h2 class="text-center">Top Pics for You </h2>
@@ -957,7 +957,7 @@ $jsondata = json_decode($jsonString, true); ?>
         </div>
     </section>
     <section class="sec-3">
-        <div class="contianer">
+        <div class="container-fluid">
             <div class="row align-items-center">
             <div class="col-lg-6">
                 <h2>Free edutainment for the digital warrior</h2>
