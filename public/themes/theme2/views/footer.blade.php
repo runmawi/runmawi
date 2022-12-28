@@ -9,7 +9,7 @@
 <footer class="py-4 mt-auto">
   <div class="container-fluid px-5">
       <div class="row align-items-center justify-content-between">
-          <div class="col-sm-8 small m-0 text-white exp p-0">
+          <div class="col-sm-7 small m-0 text-white exp p-0">
               <div class="mt-2 p-2">
                   <div class="small m-0 text-white"></div>
                   <div class="d-flex p-0 text-white icon mt-4">
@@ -67,9 +67,9 @@
 
           <?php $app_settings = App\AppSetting::where('id','=',1)->first(); ?>
 
-          <div class="col-sm-4 small m-0 text-white text-right">
-              <h3 class="font-weight-bold mb-2">Download App</h3>
-              <p>Available on Play Store</p>
+          <div class="col-sm-3. small m-0 text-white text-right">
+              <h3 class="font-weight-bold mb-2 text-left">Download App</h3>
+              <p class="text-left">Available on Play Store</p>
               <?php if(!empty($app_settings->android_url)){ ?>
               <img class="" height="80" width="140" src="<?php echo  URL::to('/assets/img/apps1.png')?>" style="margin-top: -20px;" />
               <?php } ?>
@@ -81,7 +81,7 @@
               <?php } ?>
           </div>
       </div>
-      <p class="text-center">
+      <p class="text-center mt-5 mb-4">
           All memberships will be billed automatically on a recurring basis until canceled. If eligible for a free trial, cancel before the trial ends to avoid being charged. Offer only valid for new paid subscribers. See full terms of
           service here.
       </p>
