@@ -1294,13 +1294,13 @@ line-height: 20px;
 	.tvtag{
 		font-weight: bold;
 		color: #fff;
-		font-family: 'Proxima Nova','Helvetica Neue',Helvetica,Arial,sans-serif;
+	
 		font-size: 3.125rem;
 		
 	}
 	.tvscene{
 		font-size: 25px;
-		font-family: 'Proxima Nova','Helvetica Neue',Helvetica,Arial,sans-serif;
+	
 		color: #fff;
        padding-top: 10px;
 		
@@ -2395,11 +2395,12 @@ color: #000!important;
 .agree{
 font-style: normal;
 font-weight: 400;
-font-size: 12px;
+font-size: 10px;
 line-height: 18px;
 display: flex;
 align-items: center;
 color: #000;
+    font-family: 'Roboto', sans-serif;
 
 }
 

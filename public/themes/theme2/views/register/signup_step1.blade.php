@@ -199,7 +199,7 @@ i.fa.fa-google-plus {
     .agree {
     font-style: normal;
     font-weight: 400;
-    font-size: 11px;
+    font-size: 10px;
     line-height: 18px;
     display: flex;
     align-items: center;
