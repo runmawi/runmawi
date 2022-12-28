@@ -82,6 +82,9 @@ font-size: 30px;
 
 
     }
+     .btn-outline-success{
+        border: none;
+    }
     	.input-icons i {
 			position: absolute;
             left: 20px;
