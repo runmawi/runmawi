@@ -9824,6 +9824,49 @@ public function TvUniqueCodeLogin(Request $request)
 }
 
 
+
+
+public function CheckBecomeSubscription(Request $request)
+{
+
+  $user_id =  $request['user_id'];       
+
+  try{
+
+    $Subscription = Subscription::where('user_id',$user_id)->whereDate('created_at','=',\Carbon\Carbon::now()->today())->first();
+    
+    if(!empty($Subscription)){
+
+    $user = User::where('id',$Subscription->user_id)->first();
+
+    if($user->role == 'subscriber'){
+      $role = $user->role;
+    }else{
+      $role = $user->role;
+    }
+
+  }
+      $response = array(
+          'status'=> 'true',
+          'message' => 'Verfied Become Subscription',
+          'user_role'=> $role,
+          'user_details'=> $user,
+      );
+
+    } 
+    catch (\Throwable $th) {
+
+        $response = array(
+          'status'=>'false',
+          'message'=>$th->getMessage(),
+        );
+
+    }
+
+  return response()->json($response, 200);
+}
+
+
 } 
 
 

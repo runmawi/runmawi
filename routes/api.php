@@ -374,4 +374,7 @@ Route::group([
 
     Route::get('tv_unique_alphanumeric','ApiAuthController@TVAlphaNumeric');
 
+    Route::post('verfiy_become_subscription','ApiAuthController@CheckBecomeSubscription');
+
+
 });
