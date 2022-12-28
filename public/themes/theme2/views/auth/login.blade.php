@@ -71,7 +71,7 @@ $system_settings = App\SystemSetting::find(1);
     }
     .in{
        
-font-size: 35px;
+font-size: 30px;
         line-height: 40px;
         font-weight: 600;
         color: #000;
@@ -174,7 +174,7 @@ i.fa.fa-google-plus {
         background-color: #fff;
         border:1px solid #252525!important;
         font-family: 'Roboto', sans-serif;
-
+ padding: 7px 8px!important;
 font-style: normal;
 font-weight: 600;
 
