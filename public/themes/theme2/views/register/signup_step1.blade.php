@@ -241,7 +241,7 @@ line-height: 32px;
       .signup-desktop{
         background-color: #fff;
           border-radius: 5px!important;
-        border:1px solid #252525!important;
+        border:none!important;
         font-family: 'Roboto', sans-serif;
           padding: 5px 10px!important;
 
@@ -257,6 +257,9 @@ font-weight: 600;
     }
     .signup-desktop i{
         font-size: 22px;
+    }
+    .btn-outline-success{
+        border: none;
     }
      .signup-desktop:hover{
         background-color: burlywood;
@@ -350,17 +353,19 @@ $jsondata = json_decode($jsonString, true); ?>
                                   <p class="get">Get 5 free days of Nemisa Tv</p>
                       </div>
                        <div class="form-group row mb-0 p-0 m-0 justify-content-center">
-						@if ( config('social.google') == 1 )
-                           
-                            <div class="col-md-3 p-0">
+						
+                            <div class="col-md-8 p-0 d-flex justify-content-center">
+                                @if ( config('social.google') == 1 )
                             <a href="{{ url('/auth/redirect/google') }}" style="border:none;color:#fff;"  class="btn signup-desktop"><i class="fa fa-google"></i> Google</a>
+                                 @endif  
+                                @if ( config('social.facebook') == 1 )
+                                  <a href="{{ url('/auth/redirect/facebook') }}" class="btn signup-desktop" style="border:none;color:#fff;"><img class="" src="<?php echo  URL::to('/assets/img/ff.png')?>" style=""> Facebook</a>
+                                	@endif 
                             </div>
-                        @endif  
-						@if ( config('social.facebook') == 1 )
-                            <div class="col-md-3 p-0">
-                                <a href="{{ url('/auth/redirect/facebook') }}" class="btn signup-desktop" style="border:none;color:#fff;"><img class="" src="<?php echo  URL::to('/assets/img/ff.png')?>" style=""> Facebook</a>
-                            </div>
-						@endif 
+                       
+						
+                         
+					
 						</div>
                       <div class=" pt-4 mb-2">
                           <hr>
