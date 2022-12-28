@@ -10097,13 +10097,23 @@ public function CheckBecomeSubscription(Request $request)
       $role = $user->role;
     }
 
-  }
+    $response = array(
+      'status'=> 'true',
+      'message' => 'Verfied Become Subscription',
+      'user_role'=> $role,
+      'user_details'=> $user,
+  );
+
+  }else{
+
       $response = array(
-          'status'=> 'true',
-          'message' => 'Verfied Become Subscription',
-          'user_role'=> $role,
-          'user_details'=> $user,
-      );
+        'status'=> 'true',
+        'message' => 'Verfied Become Subscription',
+        'user_role'=> '',
+        'user_details'=> '',
+    );
+  }
+
 
     } 
     catch (\Throwable $th) {
