@@ -803,7 +803,7 @@ font-weight: 600;
             </div>
         </div>
     </section>
-    <section class="sec-3">
+    <section class="sec-3" style="padding:80px 30px 80px 30">
         <div class="container">
             <div class="row align-items-center">
             <div class="col-lg-6">

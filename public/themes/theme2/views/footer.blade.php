@@ -57,9 +57,9 @@
                       <?php } ?>
 
                       <?php if(!empty($settings->google_page_id)){?>
-                      <a href="https://www.google.com/<?php echo GoogleId();?>" target="_blank" class="ml-1">
+                      <!--<a href="https://www.google.com/<?php echo GoogleId();?>" target="_blank" class="ml-1">
                           <i class="fa fa-google-plus"></i>
-                      </a>
+                      </a>-->
                       <?php } ?>
                   </div>
               </div>
