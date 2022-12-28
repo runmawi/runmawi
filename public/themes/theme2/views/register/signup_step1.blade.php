@@ -8,8 +8,7 @@ $uri_path = $_SERVER['REQUEST_URI'];
 $uri_parts = explode('/', $uri_path);
 $request_url = end($uri_parts);
 $uppercase =  ucfirst($request_url);
-// print_r($uppercase);
-// exit();
+
       ?>
       <!-- Required meta tags -->
     <meta charset="UTF-8">
@@ -18,8 +17,7 @@ $uppercase =  ucfirst($request_url);
     <meta name="description" content= "<?php echo $settings->website_description ; ?>" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+ <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
     <!-- Favicon -->
     <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
@@ -37,6 +35,19 @@ $uppercase =  ucfirst($request_url);
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
   </script>
 <style>
+    .sec-4 h2{
+        font-size: 40px;
+    }
+    .adv{
+        font-size: 20px;
+
+    }
+    .sec-3 h2{
+        font-size: 40px;
+    }
+    .btn{
+        border-radius: 4px!important;
+    }
     h3{
         font-weight: 600;
     }
@@ -47,9 +58,12 @@ $uppercase =  ucfirst($request_url);
         font-family: 'Roboto', sans-serif;
 
     }
+    .sec-2 h2{
+        font-size: 40px;
+    }
     h2{
         font-weight: 700;
-        font-weight: 40px!important;
+        font-weight: 40px;
     }
     main.py-4{
         padding-bottom: 0!important;
@@ -57,6 +71,9 @@ $uppercase =  ucfirst($request_url);
     }
     body{
         background: #fff;
+    }
+    input{
+        color: #000;
     }
     /*.sign-user_card {
         background: none !important;
@@ -151,12 +168,12 @@ $uppercase =  ucfirst($request_url);
     background: transparent !important;
     border: 1px solid var(--iq-body-text);
     font-size: 14px;
-    color: var(--iq-white) !important;
+    color: #000!important;
     border-radius: 0;
     margin-bottom: 1rem !important;
 }
     .form-control:focus {
-     color: var(--iq-white) !important;
+    
     background-color: #fff;
     border-color: #80bdff;
     outline: 0;
@@ -188,25 +205,30 @@ i.fa.fa-google-plus {
     }
     .error {
     color: brown;
-    font-family: 'remixicon';
+   font-family: 'Roboto', sans-serif;
+
     }
    
     .agree {
     font-style: normal;
     font-weight: 400;
-    font-size: 11px;
+    font-size: 10px;
     line-height: 18px;
     display: flex;
     align-items: center;
     color: #000;
 }
     .get{
-    font-family: 'Roboto';
+   font-family: 'Roboto', sans-serif;
+
 font-style: normal;
 font-weight: 500;
 font-size: 20px;
 line-height: 32px;
 }
+    .form-group{
+        margin-bottom: 0;
+    }
     #fileLabel{
         position: absolute;
         top: 8px;
@@ -219,8 +241,9 @@ line-height: 32px;
       .signup-desktop{
         background-color: #fff;
           border-radius: 5px!important;
-        border:1px solid #252525!important;
+        border:none!important;
         font-family: 'Roboto', sans-serif;
+          padding: 5px 10px!important;
 
 font-style: normal;
 font-weight: 600;
@@ -235,6 +258,9 @@ font-weight: 600;
     .signup-desktop i{
         font-size: 22px;
     }
+    .btn-outline-success{
+        border: none;
+    }
      .signup-desktop:hover{
         background-color: burlywood;
          color: #fff;
@@ -248,9 +274,14 @@ font-weight: 600;
 
     }
     p{
-    font-family: 'Roboto';
+   font-family: 'Roboto', sans-serif;
+
 
 }
+    .poli{
+        font-family: 'Roboto', sans-serif;
+        font-size: 11px;
+    }
     .in {
     font-size: 35px;
     line-height: 40px;
@@ -277,8 +308,8 @@ $jsondata = json_decode($jsonString, true); ?>
   <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
     
 
-      <button class="btn btn-outline-success my-2 mr-2 my-sm-0" type="submit">Sign in</button>
-      <a class="btn btn-success my-2 my-sm-0"  href="{{ route('signup') }}" style="" >Sign up</a>
+      <a class="btn btn-success  my-2 mr-2 my-sm-0" href="{{ route('login') }}" >Sign in</a>
+      <a class="btn btn-outline-success my-2 my-sm-0"  href="{{ route('signup') }}" style="" >Sign up</a>
     
   </div>
 </div></nav>
@@ -290,6 +321,7 @@ $jsondata = json_decode($jsonString, true); ?>
              <img class="w-100 mt-2" src="<?php echo  URL::to('/assets/img/h2.png')?>" style="">
         </div>
         <div class="col-md-4 col-lg-4 ">
+            <div class="" style="margin:0 5px auto;">
             <div class="row">
                 <div class="col-md-6 p-0">
                     <div class="nees">
@@ -300,9 +332,9 @@ $jsondata = json_decode($jsonString, true); ?>
                      <img class="w-100 " src="<?php echo  URL::to('/assets/img/h4.png')?>" style=""></div>
                 </div>
             </div>
-            <div class="">
-      <div class="row justify-content-center align-items-center height-self-center">
-         <div class="col-sm-12 col-md-12 col-lg-12 align-self-center">
+            <div class="p-0" style="margin:5px 4px 5px auto;">
+      <div class="row p-0" >
+         <div class="col-sm-12 col-md-12 col-lg-12 p-0">
 
                             {{-- recaptcha --}}
                 <div class="col-md-12">
@@ -317,25 +349,27 @@ $jsondata = json_decode($jsonString, true); ?>
                <div class="sign-in-page-data">
                   <div class="sign-in-from w-100 m-auto">
                       <div align="center">
-                         <!-- <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" style="margin-bottom:1rem;"> -->      <h1 class="in mb-3 text-center text-black">Look Into Nemisa Tv For Realistic Experience<br>Join Now</h1>
-                          <p class="get">Get 5 free days of Nemisa Tv</p>
+                         <!-- <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" style="margin-bottom:1rem;"> -->      <h1 class="in mb-3 text-center text-black pt-3">Look Into Nemisa Tv For Realistic Experience Join Now</h1>
+                                  <p class="get">Get 5 free days of Nemisa Tv</p>
                       </div>
-                       <div class="form-group row mb-0 justify-content-center">
-						@if ( config('social.google') == 1 )
-                           
-                            <div class="col-md-3 ">
+                       <div class="form-group row mb-0 p-0 m-0 justify-content-center">
+						
+                            <div class="col-md-8 p-0 d-flex justify-content-center">
+                                @if ( config('social.google') == 1 )
                             <a href="{{ url('/auth/redirect/google') }}" style="border:none;color:#fff;"  class="btn signup-desktop"><i class="fa fa-google"></i> Google</a>
+                                 @endif  
+                                @if ( config('social.facebook') == 1 )
+                                  <a href="{{ url('/auth/redirect/facebook') }}" class="btn signup-desktop" style="border:none;color:#fff;"><img class="" src="<?php echo  URL::to('/assets/img/ff.png')?>" style=""> Facebook</a>
+                                	@endif 
                             </div>
-                        @endif  
-						@if ( config('social.facebook') == 1 )
-                            <div class="col-md-3 ">
-                                <a href="{{ url('/auth/redirect/facebook') }}" class="btn signup-desktop" style="border:none;color:#fff;"><img class="" src="<?php echo  URL::to('/assets/img/ff.png')?>" style=""> Facebook</a>
-                            </div>
-						@endif 
+                       
+						
+                         
+					
 						</div>
                       <div class=" pt-4 mb-2">
                           <hr>
-                          <p class="bg-white" style="position: relative;top: -28px;left: 44%;z-index: 1;width: 10%;display: flex;justify-content: center;font-size:12px;">OR</p>
+                          <p class="bg-white" style="position: relative;top: -28px;left: 44%;z-index: 1;width: 10%;display: flex;justify-content: center;font-size:12px;">Or</p>
                       </div>
                       
                       <form action="<?php if (isset($ref) ) { echo URL::to('/').'/register1?ref='.$ref.'&coupon='.$coupon; } else { echo URL::to('/').'/register1'; } ?>" method="POST" id="stripe_plan" class="stripe_plan" name="member_signup" enctype="multipart/form-data">
@@ -485,10 +519,12 @@ $jsondata = json_decode($jsonString, true); ?>
 
                             <div class="sign-up-buttons col-md-12 " align="right">
                                   <button type="button" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile" style="display: none;"> Verify Profile</button>
-                                  <button class="btn  btn-primary btn-block signup" style="display: block;color:#000;" type="submit" name="create-account">{{ __('START EXPLORING TODAY') }}</button>
+                                  <button class="btn  btn-primary btn-block signup" style="display: block;color:#000;font-size:20px;" type="submit" name="create-account">{{ __('START EXPLORING TODAY') }}</button>
+                                 <p class="text-left poli mb-0 mt-2" >By signing up you agree to Nemisa Tv Terms of Service and Privacy Policy. This page is protected by reCAPTCHA and is subject to Google's Terms of Service and Privacy Policy.</p>
                                 </div>
+                            
                             </div>
-                        <p class="text-left agree mb-0" >By signing up you agree to Nemisa Tv Terms of Service and Privacy Policy. This page is protected by reCAPTCHA and is subject to Google's Terms of Service and Privacy Policy.</p>
+                       
                         
                     </form>
                        <!--<div class="mt-3">
@@ -515,7 +551,7 @@ $jsondata = json_decode($jsonString, true); ?>
                      <img class="w-100 " src="<?php echo  URL::to('/assets/img/r2.png')?>" style=""></div>
                 </div>
             </div>
-        
+        </div>
         </div>
         <div class="col-md-4 col-lg-4 p-0">
             <img class="w-100" src="<?php echo  URL::to('/assets/img/h6.png')?>" style="">
@@ -526,10 +562,10 @@ $jsondata = json_decode($jsonString, true); ?>
     <section class="sec-2">
         <div class="container">
             <div class="row align-items-center p-3">
-                <div class="col-lg-6">
+                <div class="col-lg-5">
                     <h2 class="text-center text-black">Nemisa Tv - The <br>World in You</h2>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-7">
                     <ul class="tune">
                         <li>Tune in and leave no stone untuned.</li>
                         <li>Beat the bushes of masters.</li>
@@ -543,34 +579,34 @@ $jsondata = json_decode($jsonString, true); ?>
         </div>
     </section>
     <section class="sec-3">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-3">
+        <div class="container-fluid">
+            <div class="row mt-5 pt-5">
+                <div class="col-md-3 p-0">
                     <div class="tn-bg">
                         <h2>34K+</h2>
                         <p>CLASSES</p>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3 p-0">
                 <div class="tn-bg">
                         <h2>800K+</h2>
                         <p>MEMBERS</p>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3 p-0">
                     <div class="tn-bg">
                         <h2>11K+</h2>
                         <p>TEACHERS</p>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3 p-0">
                     <div class="tn-bg">
                         <h2>4.8*</h2>
                         <p>APP STORE RATING</p>
                     </div>
                 </div>
             </div>
-            <h3 class="text-center mt-5">Explore More With Nemisa Tv</h3>
+            <h2 class="text-center mt-5 pt-5">Explore More With Nemisa Tv</h2>
             <div class="mt-5">
                 <ul class="nav nav-pills mb-3 justify-content-center " id="pills-tab" role="tablist">
                   <li class="nav-item">
@@ -906,7 +942,7 @@ $jsondata = json_decode($jsonString, true); ?>
 </div>
             </div>
                 <div class="text-center mt-5 pt-2">
-                    <a class="btn btn-success my-2 my-sm-0" style="font-weight:600;" herf="#">Explore More</a>
+                    <a class="btn btn-success my-2 my-sm-0" style="font-weight:600;font-size: 20px;" herf="#">Explore More</a>
             </div></div>
             <div class="container-fluid mt-5 pt-5">
                 <h2 class="text-center">Top Pics for You </h2>
@@ -941,8 +977,8 @@ $jsondata = json_decode($jsonString, true); ?>
             </div>
     </section>
     <section class="sec-4">
-        <div class="container">
-            <h2 class="text-center text-black">Members Endorsement</h2>
+        <div class="container-fluid">
+            <h2 class="text-center text-black mb-5">Members Endorsement</h2>
             <div class="text-center mt-4 mb-3">
                 <img  src="<?php echo  URL::to('/assets/img/cli.png')?>" style=""></div>
             <div class="">
@@ -951,13 +987,13 @@ $jsondata = json_decode($jsonString, true); ?>
             </div>
         </div>
     </section>
-    <section class="sec-3">
-        <div class="contianer">
-            <div class="row align-items-center">
-            <div class="col-lg-6">
+    <section class="sec-3" style="padding:80px 30px 80px 30px;">
+        <div class="container-fluid">
+            <div class="row align-items-center justify-content-between">
+            <div class="col-lg-5">
                 <h2>Free edutainment for the digital warrior</h2>
-                <p class="text-white mt-2">Advancing South Africans for the future with content that is missioned to deliver tangible digital skills to bridge the digital divide.</p>
-                <p class="text-white mt-2">WATCH EVERYWHERE, STREAM LIVE, QUALITY VIDEOS</p>
+                <p class="text-white adv mt-4">Advancing South Africans for the future with content that is missioned to deliver tangible digital skills to bridge the digital divide.</p>
+                <p class="text-white adv mt-4">WATCH EVERYWHERE, STREAM LIVE, QUALITY VIDEOS</p>
             </div>
             <div class="col-lg-6">
                  <img class="w-100 " src="<?php echo  URL::to('/assets/img/m1.png')?>" style="">
@@ -1062,9 +1098,7 @@ $jsondata = json_decode($jsonString, true); ?>
   </div>
 </div>
     </section>
-       @php
-    @include(public_path('themes\theme2\views\footer.blade.php'));
-@endphp
+       
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 <script>
@@ -1503,7 +1537,8 @@ $(document).ready(function() {
        <script src="<?= URL::to('/'). '/assets/js/jquery.lazy.js';?>"></script>
       <script src="<?= URL::to('/'). '/assets/js/jquery.lazy.min.js';?>"></script>
 
-
-
+@php
+    include(public_path('themes/theme2/views/footer.blade.php'));
+@endphp
 
 @endsection 

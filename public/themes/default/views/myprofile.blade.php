@@ -461,18 +461,21 @@ $settings = App\Setting::first();
                 </div>
                 <div class="targetDiv" id="div6"><div class=" mb-3">
            <h4 class="card-title mb-0 manage"> Profile</h4>
-              <div class="col-md-12 profile_image">                  
+              <div class="col-md-12 profile_image mt-3 p-0">                  
                   @forelse  ( $profile_details as $profile )
 
                     <div class="">
-                        <img src="{{URL::asset('public/multiprofile/').'/'.$profile->Profile_Image}}" alt="user" class="multiuser_img" style="width:120px">
-                        <h2 class="name">{{ $profile ? $profile->user_name : ''  }}</h2>
+                        <div>
+                         <h2 class="name">{{ $profile ? $profile->user_name : ''  }}</h2>
 
-                        <div class="circle">
+                        <img src="{{URL::asset('public/multiprofile/').'/'.$profile->Profile_Image}}" alt="user" class="multiuser_img" style="width:120px">
+                        </div>
+                        <div class=" text-center text-white">
+                            
                            <a  href="{{ route('profile-details_edit', $profile->id ) }}"> <i class="fa fa-pencil"></i> </a>
 
                            @if($Multiuser == null)
-                              <a  href="{{ URL::to('profile_delete', $profile->id)}}" onclick="return confirm('Are you sure to delete this Profile?')" >
+                              <a class="ml-2"  href="{{ URL::to('profile_delete', $profile->id)}}" onclick="return confirm('Are you sure to delete this Profile?')" >
                                  <i class="fa fa-trash"></i>
                               </a> 
                            @endif

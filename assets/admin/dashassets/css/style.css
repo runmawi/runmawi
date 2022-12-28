@@ -1235,7 +1235,7 @@ select{
 }
 .list-group-flush .list-group-item {
     border: 0;
-    padding: 15px 30px;
+   /* padding: 15px 30px;*/
     margin: 5px 5px;
     border-radius: 10px;
     box-shadow: 0px 0px 5px #e5e5e5;
@@ -1389,4 +1389,7 @@ div.dataTables_wrapper div.dataTables_filter input{
 .calendar .days li .date {
     margin-bottom: 0.5rem;
     color: #000;
+}
+#sidebar-wrapper .list-group{
+    max-width: 15rem;
 }

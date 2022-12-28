@@ -236,7 +236,7 @@ Route::group([
     Route::post('addfavoriteEpisode', 'ApiAuthController@addfavoriteEpisode');
 
 //  Multi-profile
-    Route::get('Multiprofile', 'ApiAuthController@Multiprofile');
+    Route::post('Multiprofile', 'ApiAuthController@Multiprofile');
     Route::post('Multiprofile_create', 'ApiAuthController@Multiprofile_create');
     Route::get('Multiprofile_edit', 'ApiAuthController@Multiprofile_edit');
     Route::post('Multiprofile_update', 'ApiAuthController@Multiprofile_update');
@@ -270,6 +270,10 @@ Route::group([
     Route::post('RazorpayStore', 'ApiAuthController@RazorpayStore');
     Route::post('RazorpaySubscriptionCancel', 'ApiAuthController@RazorpaySubscriptionCancel');
     Route::post('RazorpaySubscriptionUpdate', 'ApiAuthController@RazorpaySubscriptionUpdate');
+
+// Paystack
+    Route::post('Paystack-liveRent-Paymentverify', 'ApiAuthController@Paystack_liveRent_Paymentverify')->name('Paystack_liveRent_Paymentverify');
+    Route::post('Paystack-VideoRent-Paymentverify', 'ApiAuthController@Paystack_VideoRent_Paymentverify')->name('Paystack_VideoRent_Paymentverify');
 
 // Ads
     Route::post('AdsView', 'ApiAuthController@AdsView');

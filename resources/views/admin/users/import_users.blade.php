@@ -37,7 +37,7 @@
                                 </div>
 
                                 <div class="col-md-6" >
-                                    <label for=""> {{ ucwords('Sample Excel file') }}   </label>
+                                    <label for=""> {{ ucwords('Sample Import Excel file') }}   </label>
                                     <div class="form-group row">
                                         <div class="col-md-12 form-group" align="left">
                                             <div class="text-white">

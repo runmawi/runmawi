@@ -108,7 +108,9 @@ use App\MobileSideMenu;
 use App\CategoryLive;
 use App\TVLoginCode;
 use Paystack;
-
+use App\VideoCommission;
+use App\ModeratorsUser;
+use App\Paystack_Andriod_UserId;
 
 class ApiAuthController extends Controller
 {
@@ -126,6 +128,39 @@ class ApiAuthController extends Controller
               $this->razorpaykeysecret = $PaymentSetting->live_secret_key;
           }
       }
+
+          // Paystack
+
+        $this->customer_create_api_url = "https://api.paystack.co/customer";
+        $this->Subscription_create_api_url = "https://api.paystack.co/transaction/initialize";
+        $this->Subscription_cancel_api_url = "https://api.paystack.co/subscription/disable";
+
+
+        $PaymentSetting = PaymentSetting::where('payment_type','Paystack')->first();
+
+        if( $PaymentSetting != null ){
+
+            if( $PaymentSetting->paystack_live_mode == 0 ){
+
+                $this->paystack_keyId = getenv('PAYSTACK_PUBLIC_KEY');
+                $this->paystack_keysecret =   getenv('PAYSTACK_SECRET_KEY') ;
+
+            }else{
+
+                $this->paystack_keyId = getenv('PAYSTACK_PUBLIC_KEY');
+                $this->paystack_keysecret =   getenv('PAYSTACK_SECRET_KEY') ;
+            }
+
+            $this->SecretKey_array =  array(
+                "Authorization: Bearer $this->paystack_keysecret",
+                "Cache-Control: no-cache",
+            );
+        }else{
+            $response = array(
+              "status"  => 'false' , 
+              "message" => "Paystack Key Missing", 
+            );
+        }
   }
 
   public function signup(Request $request)
@@ -575,36 +610,37 @@ class ApiAuthController extends Controller
       'password' => $request->get('password')
     );
 
+
     if(!empty($users)){
-
-    $user_id = $users->id;
-    $adddevice = new LoggedDevice;
-    $adddevice->user_id = $user_id;
-    $adddevice->user_ip = $userIp;
-    $adddevice->device_name = $device_name;
-    $adddevice->save();
-
+      $user_id = $users->id;
+      $adddevice = new LoggedDevice;
+      $adddevice->user_id = $user_id;
+      $adddevice->user_ip = $userIp;
+      $adddevice->device_name = $device_name;
+      $adddevice->save();
     }
   
     if ( Auth::attempt($email_login) || Auth::attempt($username_login) || Auth::attempt($mobile_login)  ){
 
-      if($settings->free_registration && !Auth::user()->stripe_active){
-        // Auth::user()->role = 'registered';
-        // print_r(Auth::user()->role); exit();
-        if(Auth::user()->role == 'registered'){
-        $user = User::find(Auth::user()->id);
-        $user->role = 'registered';
-        $user->token = $token;
-        $user->save();
-        }else if(Auth::user()->role == 'admin'){
-        // print_r(Auth::user()->role); exit();
+      Paystack_Andriod_UserId::truncate();
+      Paystack_Andriod_UserId::create([ 'user_id' => Auth::user()->id ]);
 
-        $user = User::find(Auth::user()->id);
-        $user->role = 'admin';
-        $user->token = $token;
-        $user->save();
+      if($settings->free_registration && !Auth::user()->stripe_active){
+      
+        if(Auth::user()->role == 'registered'){
+          $user = User::find(Auth::user()->id);
+          $user->role = 'registered';
+          $user->token = $token;
+          $user->save();
+
+        }else if(Auth::user()->role == 'admin'){
+
+          $user = User::find(Auth::user()->id);
+          $user->role = 'admin';
+          $user->token = $token;
+          $user->save();
+
         }else if(Auth::user()->role == 'subscriber'){
-          // print_r(Auth::user()->role); exit();
           $user = User::find(Auth::user()->id);
           $user->role = 'subscriber';
           $user->token = $token;
@@ -613,13 +649,15 @@ class ApiAuthController extends Controller
       }
 
       if(Auth::user()->role == 'subscriber' || (Auth::user()->role == 'admin' || Auth::user()->role == 'demo') || (Auth::user()->role == 'registered') ):
-        $id = Auth::user()->id;
+      
+        $id   = Auth::user()->id;
         $role = Auth::user()->role;
         $username = Auth::user()->username;
         $password = Auth::user()->password;
-        $email = Auth::user()->email;
+        $email  = Auth::user()->email;
         $mobile = Auth::user()->mobile;
         $avatar = Auth::user()->avatar;
+
         if(Auth::user()->role == 'subscriber'){
 
           $Subscription = Subscription::where('user_id',Auth::user()->id)->orderBy('created_at', 'DESC')->first();
@@ -3065,44 +3103,50 @@ public function verifyandupdatepassword(Request $request)
      {
         
         $stripe_plan = SubscriptionPlan();
-      $user_id = $request->get('userid');
-      $plan = $request->get('subscrip_plan');
-      $user = User::find($user_id);
-      $paymentMethod = $request->get('py_id');
-    $user->newSubscription('test', $plan)->create($paymentMethod);
+        $user_id = $request->get('userid');
+        $plan = $request->get('subscrip_plan');
+        $user = User::find($user_id);
+        $paymentMethod = $request->get('py_id');
+
+      $user->newSubscription('test', $plan)->create($paymentMethod);
+
        if ( $user->subscribed('test') ) { 
-      $user = User::find($user_id);
-      $user->role = 'subscriber';
-      $user->active = 1;
-      $user->save();
-      $users = User::find($user_id);
-      $id = $users->id;
-      $role = $users->role;
-      $username = $users->username;
-      $password = $users->password;
-      $email = $users->email;
-      $avatar = $users->avatar;
 
-      $user_details = array([
-        'user_id'=>$id,
-        'role'=>$role,
-        'username'=>$username,
-        'email'=>$email,
-        'avatar'=>URL::to('/').'/public/uploads/avatars/'.$avatar
-      ] );
+        $user = User::find($user_id);
+        $user->role = 'subscriber';
+        $user->active = 1;
+        $user->save();
 
-      $response = array(
-          'status' => 'true',
-          'next-billing' => '',
-          'user_details'=> $user_details
+        $users = User::find($user_id);
+        $id = $users->id;
+        $role = $users->role;
+        $username = $users->username;
+        $password = $users->password;
+        $email = $users->email;
+        $avatar = $users->avatar;
+
+        $user_details = array([
+          'user_id'=>$id,
+          'role'=>$role,
+          'username'=>$username,
+          'email'=>$email,
+          'avatar'=>URL::to('/').'/public/uploads/avatars/'.$avatar
+        ] );
+
+        $response = array(
+            'status' => 'true',
+            'next-billing' => '',
+            'user_details'=> $user_details
         );
-            }else{
-                $response = array(
-                    'status' => 'false'
+        }
+        else{
+            $response = array(
+                'status' => 'false'
                 );
-            }
+        }
 
-    return response()->json($response, 200);
+       return response()->json($response, 200);
+
     }
     
     
@@ -6062,7 +6106,10 @@ public function LocationCheck(Request $request){
       
         $subcriber_user = User::where('id',$parent_id)->first();
     
-        $users= Multiprofile::where('parent_id', $parent_id)->get();
+        $users= Multiprofile::where('parent_id', $parent_id)->get()->map(function ($item) {
+          $item['image_url'] = URL::to('/').'/public/multiprofile/'.$item->Profile_Image;
+          return $item;
+        });
     
         $response = array(
           'status'  => 'true',
@@ -6202,7 +6249,6 @@ public function LocationCheck(Request $request){
       }
       
       return response()->json($data, 200);
-
 
     }
 
@@ -9771,7 +9817,6 @@ return response()->json($response, 200);
 }
 
 
-
 public function TvUniqueCodeLogin(Request $request)
 {
 
@@ -9817,12 +9862,219 @@ public function TvUniqueCodeLogin(Request $request)
           'status'=>'false',
           'message'=>$th->getMessage(),
         );
-
     }
 
   return response()->json($response, 200);
 }
 
+public function Paystack_VideoRent_Paymentverify ( Request $request )
+  {
+      try {
+
+          $setting = Setting::first();  
+          $ppv_hours = $setting->ppv_hours;
+  
+          $d = new \DateTime('now');
+          $now = $d->format('Y-m-d h:i:s a');
+          $time = date('h:i:s', strtotime($now));
+          $to_time = date('Y-m-d h:i:s a',strtotime('+'.$ppv_hours.' hour',strtotime($now)));       
+
+              // Verify Payment
+
+          $reference_code = $request->reference_id;
+
+          $curl = curl_init();
+          
+          curl_setopt_array($curl, array(
+              CURLOPT_URL => "https://api.paystack.co/transaction/verify/$reference_code",
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_ENCODING => "",
+              CURLOPT_MAXREDIRS => 10,
+              CURLOPT_TIMEOUT => 30,
+              CURLOPT_SSL_VERIFYHOST => 0,
+              CURLOPT_SSL_VERIFYPEER => 0,
+              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+              CURLOPT_CUSTOMREQUEST => "GET",
+              CURLOPT_HTTPHEADER => $this->SecretKey_array,
+          ));
+          
+          $result = curl_exec($curl);
+          $payment_result = json_decode($result, true);
+          $err = curl_error($curl);
+          curl_close($curl);
+
+                              // Store data
+
+          $video = Video::where('id','=',$request->video_id)->first();
+
+          if(!empty($video)){
+              $moderators_id = $video->user_id;
+          }
+
+          if(!empty($moderators_id)){
+              $moderator = ModeratorsUser::where('id','=',$moderators_id)->first();  
+              $total_amount = $video->ppv_price;
+              $title =  $video->title;
+              $commssion = VideoCommission::first();
+              $percentage = $commssion->percentage; 
+              $ppv_price = $video->ppv_price;
+              $admin_commssion = ($percentage/100) * $ppv_price ;
+              $moderator_commssion = $ppv_price - $percentage;
+              $moderator_id = $moderators_id;
+          }
+          else
+          {
+              $total_amount = $video->ppv_price;
+              $title =  $video->title;
+              $commssion = VideoCommission::first();
+              $percentage = null; 
+              $ppv_price = $video->ppv_price;
+              $admin_commssion =  null;
+              $moderator_commssion = null;
+              $moderator_id = null;
+          }
+
+          $purchase = new PpvPurchase;
+          $purchase->user_id      = $request->user_id ;
+          $purchase->video_id     = $request->video_id ;
+          $purchase->total_amount = $payment_result['data']['amount'] ;
+          $purchase->admin_commssion = $admin_commssion;
+          $purchase->moderator_commssion = $moderator_commssion;
+          $purchase->status = 'active';
+          $purchase->to_time = $to_time;
+          $purchase->moderator_id = $moderator_id;
+          $purchase->save();
+
+          if ($err) {                 // Error 
+              $response = array( 
+                  "status"  => 'false' , 
+                  "message" => $err  
+              );
+          } 
+          else {                      // Success 
+              $response = array(
+                  "status"  => 'true' ,
+                  "message" => "Payment done! Successfully for PPV video-id = " .$request->video_id , 
+              );
+          }
+
+      } catch (\Exception $e) {
+
+          $response = array(
+              "status"  => 'false' , 
+              "message" => $e->getMessage(), 
+          );
+      }
+
+      return response()->json($response, 200);
+  }
+
+  public function Paystack_liveRent_Paymentverify( Request $request )
+  {
+      try {
+
+          $setting = Setting::first();  
+          $ppv_hours = $setting->ppv_hours;
+
+          $to_time = ppv_expirytime_started(); 
+          
+               // Verify Payment
+
+          $reference_code = $request->reference_id;
+
+          $curl = curl_init();
+          
+          curl_setopt_array($curl, array(
+              CURLOPT_URL => "https://api.paystack.co/transaction/verify/$reference_code",
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_ENCODING => "",
+              CURLOPT_MAXREDIRS => 10,
+              CURLOPT_TIMEOUT => 30,
+              CURLOPT_SSL_VERIFYHOST => 0,
+              CURLOPT_SSL_VERIFYPEER => 0,
+              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+              CURLOPT_CUSTOMREQUEST => "GET",
+              CURLOPT_HTTPHEADER => $this->SecretKey_array,
+          ));
+          
+          $result = curl_exec($curl);
+          $payment_result = json_decode($result, true);
+          $err = curl_error($curl);
+          curl_close($curl);
+
+          $video = LiveStream::where('id','=',$request->live_id)->first();
+
+          if(!empty($video)){
+          $moderators_id = $video->user_id;
+          }
+
+          if(!empty($moderators_id)){
+              $moderator        = ModeratorsUser::where('id','=',$moderators_id)->first();  
+              $total_amount     = $video->ppv_price;
+              $title            =  $video->title;
+              $commssion        = VideoCommission::first();
+              $percentage       = $commssion->percentage; 
+              $ppv_price        = $video->ppv_price;
+              $admin_commssion  = ($percentage/100) * $ppv_price ;
+              $moderator_commssion = $ppv_price - $percentage;
+              $moderator_id = $moderators_id;
+          }
+          else
+          {
+              $total_amount   = $video->ppv_price;
+              $title          =  $video->title;
+              $commssion      = VideoCommission::first();
+              $percentage     = null; 
+              $ppv_price       = $video->ppv_price;
+              $admin_commssion =  null;
+              $moderator_commssion = null;
+              $moderator_id = null;
+          }
+
+          $purchase = new PpvPurchase;
+          $purchase->user_id       =  $request->user_id ;
+          $purchase->live_id       =  $request->live_id ;
+          $purchase->total_amount  =  $payment_result['data']['amount'] ; 
+          $purchase->admin_commssion = $admin_commssion;
+          $purchase->moderator_commssion = $moderator_commssion;
+          $purchase->status = 'active';
+          $purchase->to_time = $to_time;
+          $purchase->moderator_id = $moderator_id;
+          $purchase->save();
+
+          $livepurchase = new LivePurchase;
+          $livepurchase->user_id  =  $request->user_id ;
+          $livepurchase->video_id = $request->live_id;
+          $livepurchase->to_time = $to_time;
+          $livepurchase->expired_date = $to_time;
+          $livepurchase->amount = $payment_result['data']['amount'] ;
+          $livepurchase->from_time = Carbon::now()->format('Y-m-d H:i:s');
+          $livepurchase->unseen_expiry_date = ppv_expirytime_notstarted();
+          $livepurchase->status = 1;
+          $livepurchase->save();
+
+          if ($err) {                 // Error 
+              $response = array( 
+                  "status"  => 'false' , 
+                  "message" => $err  
+              );
+          } 
+          else {                      // Success 
+              $response = array(
+                  "status"  => 'true' ,
+                  "message" => "Payment done! Successfully for PPV Live-id = " .$request->live_id , 
+              );
+          }
+
+      } catch (\Exception $e) {
+
+          $response = array(
+              "status"  => 'false' , 
+              "message" => $e->getMessage(), 
+         );
+      }
+      return response()->json($response, 200);
+  }
 
 
 
@@ -9868,5 +10120,3 @@ public function CheckBecomeSubscription(Request $request)
 
 
 } 
-
-
