@@ -717,7 +717,7 @@ a.title-dec{
   border: none;
   outline: none;
   cursor: pointer;
-  font-size: 17px;
+  font-size: 20px;
 	
 	text-transform: uppercase;
     color: #ccc !important;
@@ -733,7 +733,7 @@ a.title-dec{
 .nav-link{
     padding: 5px 20px;
       border: 1px solid #fff !important;
-   font-size: 15px;
+   font-size: 20px;
     font-family: 'Roboto', sans-serif;
 font-weight: 500;
 }
@@ -1068,7 +1068,7 @@ li.list-group-item {width: 375px;}
 }
 	.card {
 		background-color: #fff;
-		margin: 5px 8px auto;
+		margin: 15px 10px auto;
         border:none;
 			}
 .card img{
@@ -1551,7 +1551,7 @@ td{
     padding: 5px;
 }
 .sign-in-from{
-    padding: 10px;
+    padding: 25px;
 }
 .soc{
     text-align: left;
@@ -2036,7 +2036,7 @@ footer ul li{
     -webkit-font-smoothing: antialiased;
 }
 footer p{
-  font-size: 16px;
+  font-size: 18px;
 }
 .bhk{
     background: linear-gradient(180deg, #4A4444 0%, rgba(196, 196, 196, 0) 100%);
@@ -2400,7 +2400,7 @@ line-height: 18px;
 display: flex;
 align-items: center;
 color: #000;
-    font-family: 'Roboto', sans-serif;
+font-family: 'Roboto', sans-serif;
 
 }
 
@@ -2461,8 +2461,11 @@ color: #000;
     list-style: disc;
     padding: 5px 10px;
     font-weight: 600;
-    font-size: 20px;
-    font-family: 'Roboto';
+   line-height: 52px;
+  font-family: 'Roboto', sans-serif;
+
+color: #252525;
+font-size: 30px;
 
 
 }
@@ -2476,9 +2479,10 @@ color: #000;
     text-align: center;
     background: rgba(13, 130, 130, 1);
 border-radius: 15px;
+    margin: 10px;
 }
 .tn-bg h2{
-   font-size: 30px;
+   font-size: 40px;
 line-height: 52px;
     font-weight: 600;
 /* or 130% */
@@ -2489,7 +2493,8 @@ color: #01DC82;
 }
 .tn-bg p{
     font-weight: 600;
-font-size: 20px;
+font-weight: 600;
+font-size: 25px;
 line-height: 52px;
     color: #fff;
 }
