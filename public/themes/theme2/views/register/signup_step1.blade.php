@@ -227,6 +227,7 @@ line-height: 32px;
           border-radius: 5px!important;
         border:1px solid #252525!important;
         font-family: 'Roboto', sans-serif;
+          padding: 7px 8px!important;
 
 font-style: normal;
 font-weight: 600;
@@ -259,7 +260,7 @@ font-weight: 600;
 
 }
     .in {
-    font-size: 35px;
+    font-size: 30px;
     line-height: 40px;
     font-weight: 600;
     color: #000;
@@ -325,17 +326,17 @@ $jsondata = json_decode($jsonString, true); ?>
                   <div class="sign-in-from w-100 m-auto">
                       <div align="center">
                          <!-- <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" style="margin-bottom:1rem;"> -->      <h1 class="in mb-3 text-center text-black pt-3">Look Into Nemisa Tv For Realistic Experience<br>Join Now</h1>
-                          <p class="get">Get 5 free days of Nemisa Tv</p>
+                                  <p class="get">Get 5 free days of Nemisa Tv</p>
                       </div>
-                       <div class="form-group row mb-0 justify-content-center">
+                       <div class="form-group row mb-0 p-0 m-0 justify-content-center">
 						@if ( config('social.google') == 1 )
                            
-                            <div class="col-md-3 ">
+                            <div class="col-md-3 p-0">
                             <a href="{{ url('/auth/redirect/google') }}" style="border:none;color:#fff;"  class="btn signup-desktop"><i class="fa fa-google"></i> Google</a>
                             </div>
                         @endif  
 						@if ( config('social.facebook') == 1 )
-                            <div class="col-md-3 ">
+                            <div class="col-md-3 p-0">
                                 <a href="{{ url('/auth/redirect/facebook') }}" class="btn signup-desktop" style="border:none;color:#fff;"><img class="" src="<?php echo  URL::to('/assets/img/ff.png')?>" style=""> Facebook</a>
                             </div>
 						@endif 
