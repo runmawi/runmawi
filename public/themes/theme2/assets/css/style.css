@@ -734,7 +734,8 @@ a.title-dec{
     padding: 5px 20px;
       border: 1px solid #fff !important;
    font-size: 15px;
-    font-family: 'Proxima Nova'!important;
+    font-family: 'Roboto', sans-serif;
+font-weight: 500;
 }
 .nav-link.active {
   border: 1px solid rgba(1, 220, 130, 1) !important;
@@ -2445,7 +2446,7 @@ color: #000;
      font-size: 12px;
     
      border-radius: 3px;
-    font-family: 'Chivo';
+   font-family: 'Roboto', sans-serif;
      font-weight: 500;
       border-top: none;
      border-left: none;  
@@ -2503,7 +2504,7 @@ line-height: 52px;
     text-align: center;
 }
 .get{
-    font-family: 'Roboto';
+   font-family: 'Roboto', sans-serif;
 font-style: normal;
 font-weight: 500;
 font-size: 20px;
