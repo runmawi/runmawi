@@ -542,9 +542,9 @@ border-radius: 2px; display: block; margin: 0 auto; }
 .sign-user_logo img { height: 100px; width: 100px; border-radius: 50%; border: 2px solid white; }
 .sign-in-page .form-control, .m-profile .form-control { color:#fff; }
 .sign-in-page .form-control:focus, .m-profile .form-control:focus { background: transparent; box-shadow: none; border: 1px solid var(--iq-primary); }
-::placeholder { color: #CACACA!important; opacity: 1; word-spacing: 2px !important;font-size: 16px;letter-spacing: 1px;font-weight: 400; }
-:-ms-input-placeholder {color: #CACACA!important;  word-spacing: 2px !important;}
-::-ms-input-placeholder { color: #CACACA!important;  word-spacing: 2px !important;}
+::placeholder { color: #CACACA!important; opacity: 1; font-size: 16px;font-weight: 400; }
+:-ms-input-placeholder {color: #CACACA!important;  }
+::-ms-input-placeholder { color: #CACACA!important; }
 
 
 #flex{
@@ -2466,7 +2466,7 @@ color: #000;
 }
 .sec-3{
     background: rgba(0, 60, 60, 1);
-      padding: 5%;
+      padding: 10px;
 
 }
 .tn-bg{
