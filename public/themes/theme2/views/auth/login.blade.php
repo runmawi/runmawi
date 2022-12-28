@@ -92,7 +92,7 @@ font-size: 35px;
 			margin-bottom: 10px;
 		}
 		.get{
-    font-family: 'Roboto';
+   font-family: 'Roboto', sans-serif;
 font-style: normal;
 font-weight: 500;
 font-size: 20px;
@@ -192,7 +192,7 @@ font-weight: 600;
 
     }
     p{
-    font-family: 'Roboto';
+   font-family: 'Roboto', sans-serif;
 
 }
 </style>
