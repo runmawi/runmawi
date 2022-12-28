@@ -17,8 +17,7 @@ $uppercase =  ucfirst($request_url);
     <meta name="description" content= "<?php echo $settings->website_description ; ?>" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+ <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
     <!-- Favicon -->
     <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
@@ -193,7 +192,8 @@ i.fa.fa-google-plus {
     }
     .error {
     color: brown;
-    font-family: 'remixicon';
+   font-family: 'Roboto', sans-serif;
+
     }
    
     .agree {
@@ -206,7 +206,8 @@ i.fa.fa-google-plus {
     color: #000;
 }
     .get{
-    font-family: 'Roboto';
+   font-family: 'Roboto', sans-serif;
+
 font-style: normal;
 font-weight: 500;
 font-size: 20px;
@@ -253,7 +254,8 @@ font-weight: 600;
 
     }
     p{
-    font-family: 'Roboto';
+   font-family: 'Roboto', sans-serif;
+
 
 }
     .in {
@@ -956,7 +958,7 @@ $jsondata = json_decode($jsonString, true); ?>
             </div>
         </div>
     </section>
-    <section class="sec-3">
+    <section class="sec-3" style="padding:80px 30px 80px 30px;">
         <div class="container-fluid">
             <div class="row align-items-center">
             <div class="col-lg-6">
