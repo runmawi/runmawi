@@ -1062,7 +1062,7 @@ border-radius: 5px;padding:10px;">
                                     </td>
                                     <td>{{ @$val->rating }}<i class="lar la-star mr-2"></i></td>
                                     <td>@if(isset(@$val->categories->name)) {{ @$val->categories->name }} @endif</td>
-                                    <td>{{ $val->views }}</td> 
+                                    <td>{{ @$val->views }}</td> 
                                   
                                      <td>{{ @$val->created_at }}</td> 
                                     <td><i class="las la-heart text-primary"></i></td>
