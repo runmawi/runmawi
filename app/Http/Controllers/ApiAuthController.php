@@ -6110,12 +6110,21 @@ public function LocationCheck(Request $request){
           $item['image_url'] = URL::to('/').'/public/multiprofile/'.$item->Profile_Image;
           return $item;
         });
+
+        $multi_users = Multiprofile::join('users', 'sub_users.parent_id', '=', 'users.id')
+        ->where('sub_users.parent_id', $parent_id)->where('users.id', $parent_id)
+        ->get()->map(function ($item) {
+          $item['image_url'] = URL::to('/').'/public/multiprofile/'.$item->Profile_Image;
+          return $item;
+        });
+        
     
         $response = array(
           'status'  => 'true',
           'message' => 'Multiprofile Retrieved  successfully' ,
           'user'    => $subcriber_user,
-          'sub_users'=> $users
+          'sub_users'=> $users,
+          'multi_users'=> $multi_users
         );
 
       } catch (\Throwable $th) {
