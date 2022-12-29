@@ -1052,7 +1052,7 @@ border-radius: 5px;padding:10px;">
                                        <div class="media align-items-center">
                                           <div class="iq-movie">
                                           <a href="javascript:void(0);"><img
-                                                   src="{{ URL::to('/') . '/public/uploads/images/' . $val->image }}"
+                                                   src="{{ URL::to('/') . '/public/uploads/images/' . @$val->image }}"
                                                    class="img-border-radius avatar-40 img-fluid" alt=""></a>  </div>
                                           <div class="media-body text-white text-left ml-3">
                                              <p class="mb-0"></p>
@@ -1060,11 +1060,11 @@ border-radius: 5px;padding:10px;">
                                           </div>
                                        </div>
                                     </td>
-                                    <td>{{ $val->rating }}<i class="lar la-star mr-2"></i></td>
-                                    <td>@if(isset($val->categories->name)) {{ $val->categories->name }} @endif</td>
+                                    <td>{{ @$val->rating }}<i class="lar la-star mr-2"></i></td>
+                                    <td>@if(isset(@$val->categories->name)) {{ @$val->categories->name }} @endif</td>
                                     <td>{{ $val->views }}</td> 
                                   
-                                     <td>{{ $val->created_at }}</td> 
+                                     <td>{{ @$val->created_at }}</td> 
                                     <td><i class="las la-heart text-primary"></i></td>
                                  </tr>
                                  @endforeach                                                                     
