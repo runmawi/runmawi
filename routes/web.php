@@ -2000,6 +2000,10 @@ Route::post('/purchase-live-artist-event', 'LiveEventArtistStream@rent_live_arti
 
 Route::get('/liveStream', 'AdminLiveStreamController@liveStream')->name('liveStream');
 
+Route::get('admin/Livestream_bulk_delete', 'AdminLiveStreamController@Livestream_bulk_delete')->name('Livestream_bulk_delete'); 
+
+Route::get('admin/Audios_bulk_delete', 'AdminAudioController@Audios_bulk_delete')->name('Audios_bulk_delete'); 
+
 // PPV_live_PurchaseUpdate
 
 Route::post('/PPV_live_PurchaseUpdate', 'LiveStreamController@PPV_live_PurchaseUpdate')->name('PPV_live_PurchaseUpdate');

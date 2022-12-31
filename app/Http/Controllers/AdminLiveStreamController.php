@@ -2240,7 +2240,20 @@ if($StorageSetting->site_storage == 1 && !empty($data['live_stream_video']) ){
             return response()->json($response, 200);
         }
 
-
+       
     }
 
+    public function Livestream_bulk_delete( Request $request )
+    {
+         try {
+            $LiveStream_Video = $request->live_stream_video_id;
+
+            LiveStream::whereIn("id", explode(",", $LiveStream_Video))->delete();
+
+            return response()->json(["message" => "true"]);
+        } 
+        catch (\Throwable $th) {
+            return response()->json(["message" => "false"]);
+        }
+    }
 }
