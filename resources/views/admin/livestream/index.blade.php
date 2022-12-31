@@ -74,6 +74,9 @@ border-radius: 0px 4px 4px 0px;
 			<div class="col-md-6" align="right">	
 <!--				<form method="get" role="form" class="search-form-full"> <div class="form-group"> <input type="text" class="form-control" value="<?= Request::get('s'); ?>" name="s" id="search-input" placeholder="Search..."> <i class="entypo-search"></i> </div> </form>-->
                 <a href="{{ URL::to('admin/livestream/create') }}" class="btn btn-primary mb-3"><i class="fa fa-plus-circle"></i> Add New</a>
+			 
+				{{-- Bulk video delete --}}
+			 	<button style="margin-bottom: 10px" class="btn btn-primary delete_all"> Delete Selected Video </button>
 			</div>
 		</div>    
 	
@@ -84,6 +87,7 @@ border-radius: 0px 4px 4px 0px;
 			<table class="data-tables table livestream_table iq-card text-center p-0" style="width:100%">
 				<thead>
 					<tr class="r1">
+						<th>Select All <input type="checkbox" id="select_all"></th>
 						<th>Image</th>
 						<th>Title</th>
 						<th>User Name</th>
@@ -96,8 +100,11 @@ border-radius: 0px 4px 4px 0px;
 					</tr>
 				</thead>
 				<tbody>
-					@foreach($videos as $video)
-					<tr>
+					@foreach($videos as $key => $video)
+
+					<tr id="tr_{{ $video->id }}">
+						<td><input type="checkbox"  class="sub_chk" data-id="{{$video->id}}"></td>
+
 						<td><img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" width="50" /></td>
 						<td><?php if(strlen($video->title) > 25){ echo substr($video->title, 0, 25) . '...'; } else { echo $video->title; } ?></td>
 						<td> <?php if(!empty(@$video->cppuser->username)){ echo @$video->cppuser->username; }else{ @$video->usernames->username; }?></td>
@@ -457,6 +464,89 @@ border-radius: 0px 4px 4px 0px;
 	}
 	}
 </script>
+
+<script type="text/javascript">
+	$(document).ready(function () {
+ 
+	   $(".delete_all").hide();
+ 
+		$('#select_all').on('click', function(e) {
+ 
+			 if($(this).is(':checked',true))  
+			 {
+				$(".delete_all").show();
+				$(".sub_chk").prop('checked', true);  
+			 } else {  
+				$(".delete_all").hide();
+				$(".sub_chk").prop('checked',false);  
+			 }  
+		});
+ 
+ 
+	   $('.sub_chk').on('click', function(e) {
+ 
+		  var checkboxes = $('input:checkbox:checked').length;
+ 
+		  if(checkboxes > 0){
+			 $(".delete_all").show();
+		  }else{
+			 $(".delete_all").hide();
+		  }
+	   });
+ 
+ 
+		$('.delete_all').on('click', function(e) {
+ 
+			var allVals = [];  
+			 $(".sub_chk:checked").each(function() {  
+ 
+				   allVals.push($(this).attr('data-id'));
+			 });  
+ 
+			 if(allVals.length <=0)  
+			 {  
+				   alert("Please select Anyone Live Stream");  
+			 }  
+			 else 
+			 {  
+				var check = confirm("Are you sure you want to delete selected Live Stream?");  
+				if(check == true){  
+					var join_selected_values =allVals.join(","); 
+ 
+					$.ajax({
+					  url: '{{ URL::to('admin/Livestream_bulk_delete') }}',
+					  type: "get",
+					  data:{ 
+						 _token: "{{csrf_token()}}" ,
+						 live_stream_video_id: join_selected_values, 
+					  },
+					  success: function(data) {
+ 
+						 if(data.message == 'true'){
+ 
+							location.reload();
+ 
+						 }else if(data.message == 'false'){
+ 
+							swal.fire({
+							title: 'Oops', 
+							text: 'Something went wrong!', 
+							allowOutsideClick:false,
+							icon: 'error',
+							title: 'Oops...',
+							}).then(function() {
+							   location.href = '{{ URL::to('admin/livestream') }}';
+							});
+						 }
+					  },
+				   });
+				}  
+			 }  
+		});
+ 
+	});
+</script>
+
 	@stop
 
 @stop

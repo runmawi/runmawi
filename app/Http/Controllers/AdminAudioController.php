@@ -1251,4 +1251,18 @@ class AdminAudioController extends Controller
 
     }
 
+    public function Audios_bulk_delete( Request $request )
+    {
+         try {
+            $audio_id = $request->audio_id;
+
+            Audio::whereIn("id", explode(",", $audio_id))->delete();
+
+            return response()->json(["message" => "true"]);
+        } 
+        catch (\Throwable $th) {
+            return response()->json(["message" => "false"]);
+        }
+    }
+
 }
