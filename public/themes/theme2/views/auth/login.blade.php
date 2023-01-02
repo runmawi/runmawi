@@ -10,7 +10,6 @@ $system_settings = App\SystemSetting::find(1);
       <meta http-equiv="X-UA-Compatible" content="ie=edge">
       <title>Login | <?php echo $settings->website_name ; ?></title>
     <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
-    <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
 
       <!-- Favicon -->
       <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
@@ -72,7 +71,7 @@ $system_settings = App\SystemSetting::find(1);
     }
     .in{
        
-font-size: 35px;
+font-size: 30px;
         line-height: 40px;
         font-weight: 600;
         color: #000;
@@ -82,6 +81,9 @@ font-size: 35px;
 
 
 
+    }
+     .btn-outline-success{
+        border: none;
     }
     	.input-icons i {
 			position: absolute;
@@ -93,11 +95,11 @@ font-size: 35px;
 			margin-bottom: 10px;
 		}
 		.get{
-    font-family: 'Roboto';
+   font-family: 'Roboto', sans-serif;
 font-style: normal;
 font-weight: 500;
 font-size: 20px;
-line-height: 32px;
+line-height: 55px;
 }
 		.icon {
 			padding: 10px;
@@ -175,7 +177,7 @@ i.fa.fa-google-plus {
         background-color: #fff;
         border:1px solid #252525!important;
         font-family: 'Roboto', sans-serif;
-
+ padding: 7px 8px!important;
 font-style: normal;
 font-weight: 600;
 
@@ -193,7 +195,7 @@ font-weight: 600;
 
     }
     p{
-    font-family: 'Roboto';
+   font-family: 'Roboto', sans-serif;
 
 }
 </style>
@@ -244,12 +246,12 @@ font-weight: 600;
                       <div class="form-group row mb-0 justify-content-center">
 						@if ( config('social.google') == 1 )
                            
-                            <div class="col-md-3 ">
+                            <div class="col-md-3 p-0">
                             <a href="{{ url('/auth/redirect/google') }}" style="border:none;color:#fff;"  class="btn signup-desktop"><i class="fa fa-google"></i> Google</a>
                             </div>
                         @endif  
 						@if ( config('social.facebook') == 1 )
-                            <div class="col-md-3 ">
+                            <div class="col-md-3 p-0">
                                 <a href="{{ url('/auth/redirect/facebook') }}" class="btn signup-desktop" style="border:none;color:#fff;"><img class="" src="<?php echo  URL::to('/assets/img/ff.png')?>" style=""> Facebook</a>
                             </div>
 						@endif 
@@ -379,7 +381,7 @@ font-weight: 600;
    </div>-->
 </section>
     <section class="sec-2">
-        <div class="container">
+        <div class="container-fluid">
             <div class="row align-items-center p-3">
                 <div class="col-lg-6">
                     <h2 class="text-center text-black">Nemisa Tv - The <br>World in You</h2>
@@ -398,8 +400,8 @@ font-weight: 600;
         </div>
     </section>
     <section class="sec-3">
-        <div class="container">
-            <div class="row">
+        <div class="container-fluid">
+            <div class="row mt-5 pt-4">
                 <div class="col-md-3">
                     <div class="tn-bg">
                         <h2>34K+</h2>
@@ -425,7 +427,7 @@ font-weight: 600;
                     </div>
                 </div>
             </div>
-            <h3 class="text-center mt-5">Explore More With Nemisa Tv</h3>
+            <h3 class="text-center mt-5 pt-5">Explore More With Nemisa Tv</h3>
             <div class="mt-5">
                 <ul class="nav nav-pills mb-3 justify-content-center " id="pills-tab" role="tablist">
                   <li class="nav-item">
@@ -761,7 +763,7 @@ font-weight: 600;
 </div>
             </div>
                 <div class="text-center mt-5 pt-2">
-                    <a class="btn btn-success my-2 my-sm-0" style="font-weight:600;" herf="#">Explore More</a>
+                    <a class="btn btn-success my-2 my-sm-0" style="font-weight:600;font-size: 20px;" herf="#">Explore More</a>
             </div></div>
             <div class="container-fluid mt-5 pt-5">
                 <h2 class="text-center">Top Pics for You </h2>
@@ -804,8 +806,8 @@ font-weight: 600;
             </div>
         </div>
     </section>
-    <section class="sec-3">
-        <div class="contianer">
+    <section class="sec-3" style="padding:80px 30px 80px 30">
+        <div class="container">
             <div class="row align-items-center">
             <div class="col-lg-6">
                 <h2>Free edutainment for the digital warrior</h2>

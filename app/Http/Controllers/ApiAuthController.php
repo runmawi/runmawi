@@ -6110,12 +6110,21 @@ public function LocationCheck(Request $request){
           $item['image_url'] = URL::to('/').'/public/multiprofile/'.$item->Profile_Image;
           return $item;
         });
+
+        $multi_users = Multiprofile::join('users', 'sub_users.parent_id', '=', 'users.id')
+        ->where('sub_users.parent_id', $parent_id)->where('users.id', $parent_id)
+        ->get()->map(function ($item) {
+          $item['image_url'] = URL::to('/').'/public/multiprofile/'.$item->Profile_Image;
+          return $item;
+        });
+        
     
         $response = array(
           'status'  => 'true',
           'message' => 'Multiprofile Retrieved  successfully' ,
           'user'    => $subcriber_user,
-          'sub_users'=> $users
+          'sub_users'=> $users,
+          'multi_users'=> $multi_users
         );
 
       } catch (\Throwable $th) {
@@ -10075,5 +10084,58 @@ public function Paystack_VideoRent_Paymentverify ( Request $request )
       }
       return response()->json($response, 200);
   }
+
+
+
+public function CheckBecomeSubscription(Request $request)
+{
+
+  $user_id =  $request['user_id'];       
+
+  try{
+
+    $Subscription = Subscription::where('user_id',$user_id)->whereDate('created_at','=',\Carbon\Carbon::now()->today())->first();
+    
+    if(!empty($Subscription)){
+
+    $user = User::where('id',$Subscription->user_id)->first();
+
+    if($user->role == 'subscriber'){
+      $role = $user->role;
+    }else{
+      $role = $user->role;
+    }
+
+    $response = array(
+      'status'=> 'true',
+      'message' => 'Verfied Become Subscription',
+      'user_role'=> $role,
+      'user_details'=> $user,
+  );
+
+  }else{
+
+      $response = array(
+        'status'=> 'true',
+        'message' => 'Verfied Become Subscription',
+        'user_role'=> '',
+        'user_details'=> '',
+    );
+  }
+
+
+    } 
+    catch (\Throwable $th) {
+
+        $response = array(
+          'status'=>'false',
+          'message'=>$th->getMessage(),
+        );
+
+    }
+
+  return response()->json($response, 200);
+}
+
 
 } 
