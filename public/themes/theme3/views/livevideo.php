@@ -127,18 +127,9 @@ if ($ppv_exist > 0 || $video_access == "free" || Auth::user()->subscribed() || A
                 <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
 
                  <video id="video" autoplay controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
-                    <source  type="application/x-mpegURL"  src="<?php echo $video->hls_url ; ?>" >
+                    <source  type="application/x-mpegURL"  src="<?php echo $video->live_stream_video ; ?>" >
                 </video>
 
-       <?php  }elseif(!empty($video->url_type ) && $video->url_type == "live_stream_video"){  ?>
-
-        <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->live_stream_video; ?>">
-        <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
-        <input type="hidden" id="live" name="live" value="live">
-        <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
-            <video id="video" autoplay controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
-                        <source type="application/x-mpegURL" src="<?php echo $video->live_stream_video ; ?>">
-            </video>
             <?php  }elseif(!empty($video->url_type ) && $video->url_type == "aws_m3u8"){  ?>
 
                     <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->live_stream_video; ?>">
@@ -149,7 +140,7 @@ if ($ppv_exist > 0 || $video_access == "free" || Auth::user()->subscribed() || A
                     <video id="video" autoplay controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
                         <source  type="application/x-mpegURL"  src="<?php echo $video->hls_url ; ?>" >
                     </video>
-    <?php } ?>
+            <?php } ?>
 
         <div class="playertextbox hide">
             <p> <?php if (isset($videonext)) { ?>
@@ -245,7 +236,8 @@ else{
             <video id="video" autoplay controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
                         <source type="application/x-mpegURL" src="<?php echo $video->live_stream_video ; ?>">
             </video>
-            <?php  }elseif(!empty($video->url_type ) && $video->url_type == "aws_m3u8"){  ?>
+
+        <?php  }elseif(!empty($video->url_type ) && $video->url_type == "aws_m3u8"){  ?>
 
                 <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->live_stream_video; ?>">
                 <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
@@ -256,7 +248,7 @@ else{
                     <source  type="application/x-mpegURL"  src="<?php echo $video->hls_url ; ?>" >
                 </video>
 
-    <?php } ?>
+        <?php } ?>
 
     <?php  } else { ?>       
         <div id="subscribers_only"style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.5)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
