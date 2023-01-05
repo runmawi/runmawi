@@ -4364,7 +4364,7 @@ class AdminVideosController extends Controller
     public function ScheduleStore(Request $request)
     {
         $data = $request->all();
-
+        
 
         $image = isset($data["image"]) ? $data["image"] : "";
         $player_image = isset($data["player_image"]) ? $data["player_image"] : "";
@@ -4385,10 +4385,11 @@ class AdminVideosController extends Controller
             $file = $image;
             $image = $image_url.'/'.str_replace(" ","_",$file->getClientOriginalName());
 
-            $file->move($image_path, $data["image"]);
+            $file->move($image_path, $image);
         } else {
             $image = "default.jpg";
         }
+
 
         if ($player_image != "") {
             //code for remove old file
