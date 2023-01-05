@@ -4364,7 +4364,7 @@ class AdminVideosController extends Controller
     public function ScheduleStore(Request $request)
     {
         $data = $request->all();
-
+        
 
         $image = isset($data["image"]) ? $data["image"] : "";
         $player_image = isset($data["player_image"]) ? $data["player_image"] : "";
@@ -4385,10 +4385,11 @@ class AdminVideosController extends Controller
             $file = $image;
             $image = $image_url.'/'.str_replace(" ","_",$file->getClientOriginalName());
 
-            $file->move($image_path, $data["image"]);
+            $file->move($image_path, $image);
         } else {
             $image = "default.jpg";
         }
+
 
         if ($player_image != "") {
             //code for remove old file
@@ -7219,13 +7220,30 @@ class AdminVideosController extends Controller
                 $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
                 $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
 
-                $shedule_endtime = $hours .":" .$minutes ." " .date("A", strtotime($now));
-                // echo "<pre>"; print_r($Video_duration);exit();
+                $TimeFormat = TimeFormat::where('hours',$hours)->first();
+                if(!empty($TimeFormat)){
 
-                $sheduled_endtime = $hours . ":" . $minutes;
-                $starttime = date("h:i", strtotime($store_current_time));
-                $sheduled_starttime = date("h:i A", strtotime($store_current_time));
+                    $shedule_endtime = $TimeFormat->hours_format .":" .$minutes ." " .$TimeFormat->format;
+
+                    $sheduled_endtime = $TimeFormat->hours_format . ":" . $minutes;
+                    $starttime = date("h:i", strtotime($store_current_time));
+                    $sheduled_starttime = date("h:i A", strtotime($store_current_time));
+
+                }else{
+                    $shedule_endtime = $hours .":" .$minutes ." " .date("A", strtotime($now));
+
+                    $sheduled_endtime = $hours . ":" . $minutes;
+
+                    $starttime = date("h:i", strtotime($store_current_time));
+                    $sheduled_starttime = date("h:i A", strtotime($store_current_time));
+                }
+                
+
+
                 $time_zone = $data["time_zone"];
+                // echo "<pre>"; print_r($store_current_time);
+                // echo "<pre>"; print_r($shedule_endtime);exit();
+                // exit();
 
                 $video = new ScheduleVideos();
                 $video->title = $videochooed->title;

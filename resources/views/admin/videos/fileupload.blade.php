@@ -472,7 +472,7 @@ border-radius: 0px 4px 4px 0px;
                                   </label>
 
                                  <input type="text"   class="form-control" name="slug" id="slug" placeholder="Video Slug" value="@if(!empty($video->slug)){{ $video->slug }}@endif">
-                                 <span><p id="slug_error" style="color:red;">This slug already used </p></span>
+                                 <!-- <span><p id="slug_error" style="color:red;">This slug already used </p></span> -->
                               </div>
 
                            </div>
@@ -1377,49 +1377,49 @@ border-radius: 0px 4px 4px 0px;
 
          // validation for slug
 
-$(document).ready(function(){
+// $(document).ready(function(){
 
-      $('#image_error_msg').hide();
-      $('#player_image_error_msg,#tv_image_image_error_msg').hide();
+//       $('#image_error_msg').hide();
+//       $('#player_image_error_msg,#tv_image_image_error_msg').hide();
 
-      $('#slug_error').hide();
-      $('#slug_validate').on('keyup blur keypress mouseover', function(e) {
+//       $('#slug_error').hide();
+//       $('#slug_validate').on('keyup blur keypress mouseover', function(e) {
 
-         var title = $('#title').val();
-         var slug_name=title.replace(/ /g,"_");
+//          var title = $('#title').val();
+//          var slug_name=title.replace(/ /g,"_");
 
-         if($('#slug').val().length == 0 ){
-            var slug = $('#slug').val(slug_name);
-         }else{
-            var slug = $('#slug').val();
-         }
+//          if($('#slug').val().length == 0 ){
+//             var slug = $('#slug').val(slug_name);
+//          }else{
+//             var slug = $('#slug').val();
+//          }
       
-         $.ajax({
-         type: "POST", 
-         dataType: "json", 
-         url: "{{ url('admin/video_slug_validate') }}",
-               data: {
-                  _token  : "{{csrf_token()}}" ,
-                  slug : slug,
-                  type : "create",
-                  video_id: null,
-         },
-         success: function(data) {
-               console.log(data.message);
-               if(data.message == "true"){
+//          $.ajax({
+//          type: "POST", 
+//          dataType: "json", 
+//          url: "{{ url('admin/video_slug_validate') }}",
+//                data: {
+//                   _token  : "{{csrf_token()}}" ,
+//                   slug : slug,
+//                   type : "create",
+//                   video_id: null,
+//          },
+//          success: function(data) {
+//                console.log(data.message);
+//                if(data.message == "true"){
                   
-                  $('#next2').attr('disabled','disabled');
-                  $('#slug_error').show();
-               }
-               else if(data.message = "false"){
-                  $('#next2').removeAttr('disabled');
-                  $('#slug_error').hide();
+//                   $('#next2').attr('disabled','disabled');
+//                   $('#slug_error').show();
+//                }
+//                else if(data.message = "false"){
+//                   $('#next2').removeAttr('disabled');
+//                   $('#slug_error').hide();
 
-               }
-            },
-         });
-      })
-});
+//                }
+//             },
+//          });
+//       })
+// });
 
   
 $(document).ready(function($){

@@ -234,17 +234,8 @@ if ($ppv_exist > 0 ||  Auth::user()->subscribed() || $video_access == "free"  ||
 
             <?php  }elseif(!empty($video->url_type ) && $video->url_type == "m3u_url"){   ?>
                 <div class="container-fluid">
-                    <div class="row ">
-                        <div class="col-lg-9">
-
-                            <?php $m3u_url = session('m3u_url_link') ; ?>
-                            
-                            <video controls  autoplay crossorigin playsinline poster="<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
-                                <source  type="application/x-mpegURL"  src="<?php echo $m3u_url; ?>" >
-                           </video>
-                        </div>
-
-                        <div class="col-lg-3 p-0">
+                    <div class="row">
+                        <div class="col-lg-3 ">
                             <div class="border-end" id="sidebar-wrapper">
                                 <div class="sidebar-heading border-bottom">Channels</div>
                                 <div class="list-group list-group-flush">
@@ -254,6 +245,16 @@ if ($ppv_exist > 0 ||  Auth::user()->subscribed() || $video_access == "free"  ||
                                 </div>
                             </div>
                         </div>
+                        <div class="col-lg-9">
+
+                            <?php $m3u_url = session('m3u_url_link') ; ?>
+                            
+                            <video controls  autoplay crossorigin playsinline poster="<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  style="height:100%;">
+                                <source  type="application/x-mpegURL"  src="<?php echo $m3u_url; ?>" >
+                           </video>
+                        </div>
+
+                        
                     </div>
                 </div>
 	              
