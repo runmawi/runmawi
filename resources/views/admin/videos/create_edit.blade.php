@@ -202,7 +202,7 @@ border-radius: 0px 4px 4px 0px;
       <h4 class="card-title">Add Video</h4>
    </div>
 </div>
-@if($page == 'Edit' && $video->status == 0)
+@if($page == 'Edit' && $video->status == 0  && $video->type != 'embed' && $video->type != 'mp4_url' && $video->type != 'm3u8_url')
       <div class="col-sm-12">
          Video Transcoding is under Progress
          <div class="progress">
@@ -1065,7 +1065,7 @@ border-radius: 0px 4px 4px 0px;
                                  </div>
                                  <div class="percent">0%</div > -->
                               @endif
-                              @if($page == 'Edit' && $video->status == 0)
+                              @if($page == 'Edit' && $video->status == 0 && $video->type != 'embed' && $video->type != 'mp4_url' && $video->type != 'm3u8_url')
                               <br><br><br>
                               <div class="col-sm-12">
                                  Video Transcoding is under Progress
