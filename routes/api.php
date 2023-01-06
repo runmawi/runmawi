@@ -180,16 +180,16 @@ Route::group([
     Route::post('remove_continue_watchingepisode', 'ApiAuthController@remove_continue_watchingepisode');
 
     Route::post('EpisodeContinuewatching', 'ApiAuthController@EpisodeContinuewatching');
-    
+
     Route::post('listcontinuewatchingsepisode', 'ApiAuthController@listcontinuewatchingsepisode');
-    
+
     Route::post('addchilduserprofile', 'ApiAuthController@addchilduserprofile');
 
     Route::post('viewchildprofile', 'ApiAuthController@viewchildprofile');
     Route::post('updatechildprofile', 'ApiAuthController@updatechildprofile');
 
     Route::post('savefavouritecategory', 'ApiAuthController@savefavouritecategory');
-    
+
     Route::get('getRecentAudios', 'ApiAuthController@getRecentAudios');
     Route::post('audiodetail', 'ApiAuthController@audiodetail');
     Route::post('next_audio', 'ApiAuthController@next_audio');
@@ -227,7 +227,7 @@ Route::group([
     Route::get('SubscriberedUsers ','ApiAuthController@SubscriberedUsers');
     Route::post('LocationCheck ','ApiAuthController@LocationCheck');
 
-    
+
     Route::post('myWishlistsEpisode', 'ApiAuthController@myWishlistsEpisode');
     Route::post('mywatchlatersEpisode', 'ApiAuthController@mywatchlatersEpisode');
     Route::post('myFavoritesEpisode', 'ApiAuthController@myFavoritesEpisode');
@@ -255,7 +255,7 @@ Route::group([
     Route::get('Preference_genres', 'ApiAuthController@Preference_genres');
     Route::get('Preference_Language', 'ApiAuthController@Preference_Language');
     Route::get('category_Mostwatchedvideos', 'ApiAuthController@category_Mostwatchedvideos');
-    
+
     Route::get('ComingSoon ','ApiAuthController@ComingSoon');
     Route::post('video_cast', 'ApiAuthController@video_cast');
     Route::post('series_cast', 'ApiAuthController@series_cast');
@@ -265,7 +265,7 @@ Route::group([
     Route::post('PurchaseSeries', 'ApiAuthController@PurchaseSeries');
 
 
-// Razorpay 
+// Razorpay
     Route::post('RazorpaySubscription', 'ApiAuthController@RazorpaySubscription');
     Route::post('RazorpayStore', 'ApiAuthController@RazorpayStore');
     Route::post('RazorpaySubscriptionCancel', 'ApiAuthController@RazorpaySubscriptionCancel');
@@ -278,8 +278,9 @@ Route::group([
 // Ads
     Route::post('AdsView', 'ApiAuthController@AdsView');
     Route::post('Adstatus_upate', 'ApiAuthController@Adstatus_upate');
-    Route::get('profileimage_default', 'ApiAuthController@profileimage_default');
+    Route::post('videos-ads-list', 'ApiAuthController@Videos_ads_list');
 
+    Route::get('profileimage_default', 'ApiAuthController@profileimage_default');
 
 // Home Setting Status
     Route::get('homesetting', 'ApiAuthController@homesetting');
@@ -311,7 +312,7 @@ Route::group([
     // Audio Like & dislike - IOS
     Route::post('Audiolike_ios', 'ApiAuthController@Audiolike_ios');
     Route::post('Audiodislike_ios', 'ApiAuthController@Audiodislike_ios');
-    
+
     Route::post('live_like_ios', 'ApiAuthController@live_like_ios');
     Route::post('live_dislike_ios', 'ApiAuthController@live_dislike_ios');
     Route::post('live_addwatchalter', 'ApiAuthController@live_addwatchalter');
