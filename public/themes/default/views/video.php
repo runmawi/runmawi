@@ -1966,15 +1966,15 @@ $(document).ready(function(){
 
 <?php
 
-  include('AdsvideoPre.php'); 
-  include('AdsvideoMid.php');
-  include('AdsvideoPost.php');
+  if(  plans_ads_enable() == 1 ){
+    include('AdsvideoPre.php'); 
+    include('AdsvideoMid.php');
+    include('AdsvideoPost.php');
 
-  include('Adstagurl.php'); 
+    include('Adstagurl.php'); 
+  }
 
 ?>
-
-
 
 <!-- Ads End -->
 

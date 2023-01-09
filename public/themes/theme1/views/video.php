@@ -1635,11 +1635,18 @@ $(document).ready(function(){
 
 </script>
 
-<?php include('AdsvideoPre.php'); ?>
+<?php 
 
-<?php include('AdsvideoMid.php'); ?>
+  if(  plans_ads_enable() == 1 ){
 
-<?php include('AdsvideoPost.php'); ?>
+    include('AdsvideoPre.php'); 
+    include('AdsvideoPost.php');
+    include('AdsvideoMid.php');
+
+    include('Adstagurl.php'); 
+  }
+
+?>
 
 
 <script>

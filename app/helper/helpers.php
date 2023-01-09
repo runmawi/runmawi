@@ -724,8 +724,38 @@ function subscription_trails_status(){
 function subscription_trails_day(){
 
     $Trail_days = App\PaymentSetting::where('payment_type','=','Stripe')->pluck('subscription_trail_days')->first();
-
     $subscription_trails_day = Carbon\Carbon::now()->addDays( $Trail_days );
     return $subscription_trails_day ;
+
+}
+
+function plans_ads_enable()
+{
+    if(Auth::guest() == true ){
+        return 1 ;
+    }
+
+    if( Auth::user()->role == "registered" ){
+        return 1 ;
+    }
+
+    if( Auth::user()->role == "admin" ){
+        return 0 ;
+    }
+
+    $Subscription_ads_status = App\Subscription::Join('subscription_plans','subscription_plans.plan_id','=','subscriptions.stripe_plan')
+                    ->where('subscriptions.user_id',Auth::user()->id)
+                    ->latest('subscriptions.created_at')
+                    ->pluck('ads_status')
+                    ->first();
+
+    if( $Subscription_ads_status != null && $Subscription_ads_status == 1 ){
+        return $Subscription_ads_status ;
+    }
+    elseif(  $Subscription_ads_status == null ){
+        return 1 ;
+    }else{
+        return 1 ;
+    }
 
 }
