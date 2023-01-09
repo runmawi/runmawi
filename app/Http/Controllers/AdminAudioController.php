@@ -882,7 +882,7 @@ class AdminAudioController extends Controller
     return $value;  
 
     }                    
-    public function AWSUploadAudio(Request $request)
+    public function uploadAudio(Request $request)
     {
 
         $audio_upload = $request->file('file');
@@ -1159,7 +1159,7 @@ class AdminAudioController extends Controller
     }
 
 
-    public function uploadAudio(Request $request)
+    public function AWSUploadAudio(Request $request)
     {
 
         $audio_upload = $request->file('file');
