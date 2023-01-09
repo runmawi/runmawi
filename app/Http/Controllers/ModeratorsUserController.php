@@ -144,35 +144,22 @@ class ModeratorsUserController extends Controller
         $data = Session::all();
         if (!empty($data["password_hash"])) {
             $package_id = auth()->user()->id;
-            $user_package = DB::table("users")
-                ->where("id", $package_id)
-                ->first();
+            $user_package = DB::table("users")->where("id", $package_id)->first();
+
             $package = $user_package->package;
-            if (
-                $package == "Pro" ||
-                $package == "Business" ||
-                ($package == "" && Auth::User()->role == "admin")
-            ) {
+            if ($package == "Pro" || $package == "Business" || ($package == "" && Auth::User()->role == "admin")) {
                 $input = $request->all();
-                $role = ModeratorsRole::where(
-                    "id",
-                    "=",
-                    $request->user_role
-                )->get();
-                // echo "<pre>";
-                // print_r($role);
-                // exit();
+                $role = ModeratorsRole::where( "id", "=",$request->user_role )->get();
+               
                 $permission = $role[0]->user_permission;
                 $userrolepermissiom = explode(",", $permission);
-                // print_r ();
 
                 $request->validate([
-                    "email_id" =>
-                        "required|email|unique:moderators_users,email",
-                    "password" => "min:6",
-                    "confirm_password" =>
-                        "required_with:password|same:password|min:6",
+                    "email_id" =>"required|email|unique:moderators_users,email",
+                    "password" => "min:6", 
+                    "confirm_password" =>"required_with:password|same:password|min:6",
                 ]);
+
                 if (!empty($request->confirm_password)) {
                     $confirm_password = $request->confirm_password;
                 } else {
@@ -195,7 +182,6 @@ class ModeratorsUserController extends Controller
                 $moderatorsuser->description = $request->description;
                 $moderatorsuser->status = 1;
                 $moderatorsuser->ccode = $ccode;
-                // $moderatorsuser->hashedpassword = $request->picture;
                 $moderatorsuser->user_role = $request->user_role;
                 $moderatorsuser->user_permission = $permission;
 
@@ -217,8 +203,6 @@ class ModeratorsUserController extends Controller
                     $file->move($path, $moderatorsuser->picture);
                 }
                 if ($request->picture == "") {
-                    // print_r('oldtesting pic');
-                    // exit();
                     $moderatorsuser->picture = "Default.png";
                 } else {
                     $moderatorsuser->picture = $file->getClientOriginalName();
@@ -226,6 +210,7 @@ class ModeratorsUserController extends Controller
 
                 $moderatorsuser->save();
                 $user_id = $moderatorsuser->id;
+
 
                 foreach ($userrolepermissiom as $key => $value) {
                     $userrolepermissiom = new UserAccess();
@@ -245,26 +230,6 @@ class ModeratorsUserController extends Controller
 
                 $template = EmailTemplate::where("id", "=", 13)->first();
                 $heading = $template->heading;
-                //   echo "<pre>";
-                // print_r($heading);
-                // exit();
-                // Mail::send(
-                //     "emails.partner_registration",
-                //     [
-                //         /* 'activation_code', $user->activation_code,*/
-                //         "name" => $request->username,
-                //         "email" => $request->email_id,
-                //         "password" => $request->password,
-                //     ],
-                //     function ($message) use ($request, $template, $heading) {
-                //         $message->from(AdminMail(), GetWebsiteName());
-                //         $message
-                //             ->to($request->email_id, $request->username)
-                //             ->subject($heading . $request->username);
-                //     }
-                // );
-
-
                 
                     // Mail for Content Partner Welcome Email
 
@@ -285,7 +250,7 @@ class ModeratorsUserController extends Controller
     
                         $email_log      = 'Mail Sent Successfully from Welcome on Partner’s Registration';
                         $email_template = "11";
-                        $user_id = $moderatorsuser->id;
+                        $user_id = $user_id;
     
                         Email_sent_log($user_id,$email_log,$email_template);
     
@@ -294,7 +259,7 @@ class ModeratorsUserController extends Controller
     
                         $email_log      = $e->getMessage();
                         $email_template = "11";
-                        $user_id = $moderatorsuser->id;
+                        $user_id =  $user_id;
     
                         Email_notsent_log($user_id,$email_log,$email_template);
     
