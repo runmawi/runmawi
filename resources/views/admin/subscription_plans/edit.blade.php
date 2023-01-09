@@ -121,16 +121,30 @@
                 </div>  
             </div>
 
-			@if( $paystack_status != null )
-                <div class=" col-md-12">
-                    <div class="form-group">
-                        <label> {{ ucwords('andriod paystack url') }}</label>
-                        <div class=" col-md-6">
-                        <input type="url" class="form-control" id="andriod_paystack_url" name="andriod_paystack_url" value="{{ $plan->andriod_paystack_url }}" >
-                        </div> 
+            <div class="row d-flex col-md-12">
+                <div class="col-md-6">
+                    <div class="form-group ">
+                        <label> {{ ucwords('enable ads') }}</label>
+                        <div class="mt-1">
+                            <label class="switch">
+                                <input name="ads_status" class="ads_status" id="ads_status" type="checkbox" @if( $plan->ads_status != null &&  $plan->ads_status == 1 ) checked @endif>
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
                     </div> 
                 </div> 
-            @endif
+
+                @if( $paystack_status != null )
+                    <div class="col-md-6">
+                        <div class="form-group ">
+                            <label> {{ ucwords('andriod paystack url') }}</label>
+                            <div class="col-md-12">
+                                <input type="url" class="form-control" id="andriod_paystack_url" name="andriod_paystack_url" value="{{ $plan->andriod_paystack_url }}" >
+                            </div> 
+                        </div> 
+                    </div> 
+                @endif
+            </div>
 
                 <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
             
