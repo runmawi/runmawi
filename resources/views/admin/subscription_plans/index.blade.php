@@ -143,6 +143,16 @@
 		                        <input type="text" id="ios_plan_price" name="ios_plan_price" value="" class="form-control" placeholder="IOS Plan Price">
 		                    </div>
 
+							<div class="form-group ">
+								<label> {{ ucwords('enable ads') }}</label>
+								<div class="mt-1">
+									<label class="switch">
+										<input name="ads_status" class="ads_status" id="ads_status" type="checkbox">
+										<span class="slider round"></span>
+									</label>
+								</div>
+							</div> 
+
 							<div>
 								<label> Devices :</label>
 							</div>

@@ -31,7 +31,9 @@
              <label for="categories" style="font-size:12px;">Categories (Need to Display video categories in this Menu) ? </label><br>
              <input type="radio" name="in_menu" value="none" <?php if( $menu->in_menu == "none") { echo "checked";} ?>/>  <label class="ml-1">None</label>
              <input type="radio" name="in_menu" value="video" <?php if( $menu->in_menu == "video") { echo "checked";} ?> /><label class="ml-1">Video Categories</label>
+             <input type="radio" name="in_menu" value="audios" <?php if( $menu->in_menu == "audios") { echo "checked";} ?> /><label class="ml-1">Audio Categories</label>
 			 <input type="radio" name="in_menu" value="live" <?php if( $menu->in_menu == "live") { echo "checked";} ?>/><label class="ml-1"> Live Categories</label>
+			 <input type="radio" name="in_menu" value="posts" <?php if( $menu->in_menu == "posts") { echo "checked";} ?>/><label class="ml-1"> Post Categories</label>
 			 <input type="radio" name="in_menu" value="tv_show" <?php if( $menu->in_menu == "tv_show") { echo "checked";} ?>/><label class="ml-1"> Tv Shows</label>
         
         <input type="hidden" name="id" id="id" value="{{ $menu->id }}" />

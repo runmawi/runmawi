@@ -235,13 +235,17 @@ public function PaypalIndex()
     }
 
     public function store(Request $request) {
+
             $input = $request->all();
+
+
             $validatedData = $request->validate([
                 'plans_name' => 'required|max:255',
                 'days' => 'required|max:255',
                 'price' => 'required|max:255',
                 'type' => 'required|max:255'
             ]);  
+
                 $devices = $request->devices;
                 $plan_devices = implode(",",$devices);
                 $new_plan = new Plan;
@@ -296,86 +300,46 @@ public function PaypalIndex()
            $validatedData = $request->validate([
                 'plans_name' => 'required|max:255',
                 'type' => 'required',
-
             ]);  
 
-          
             $devices = $request->devices;
-            if(!empty($devices)){
-                $plan_devices = implode(",",$devices);
-            }else{
-                $plan_devices = null;
-            }
 
             if(!empty($request->plan_id)){
-                foreach($request->plan_id as $key => $value){
 
-                    foreach($request->type as $typekey => $types){
-                        if($typekey == $key){
-    
-                    $new_plan = new SubscriptionPlan;
-                    $new_plan->type = $types;
-                    $new_plan->plans_name = $request->plans_name;
-                    $new_plan->payment_type = $request->payment_type;
-                    $new_plan->price = $request->price;
-                    $new_plan->plan_id = $value;
-                    $new_plan->billing_interval = $request->billing_interval;
-                    $new_plan->billing_type = $request->billing_type;
-                    $new_plan->days = $request->days;
-                    $new_plan->video_quality = $request->video_quality;
-                    $new_plan->resolution = $request->resolution;
-                    $new_plan->devices = $plan_devices;
-                    $new_plan->subscription_plan_name = $request->plans_name.$types;
-                    $new_plan->user_id = Auth::User()->id;  
-                    $new_plan->ios_product_id = $request->ios_product_id;
-                    $new_plan->ios_plan_price = $request->ios_plan_price;    
-                    $new_plan->plan_content   = $request->plan_content;      
-                    $new_plan->andriod_paystack_url   = $request->andriod_paystack_url;      
-                    $new_plan->save();
+                    foreach($request->plan_id as $key => $value){
+                        
+                        foreach($request->type as $typekey => $types){
+
+                            if($typekey == $key){
+                                $new_plan = new SubscriptionPlan;
+                                $new_plan->type = $types;
+                                $new_plan->plans_name = $request->plans_name;
+                                $new_plan->payment_type = $request->payment_type;
+                                $new_plan->price = $request->price;
+                                $new_plan->plan_id = $value;
+                                $new_plan->billing_interval = $request->billing_interval;
+                                $new_plan->billing_type = $request->billing_type;
+                                $new_plan->days = $request->days;
+                                $new_plan->video_quality = $request->video_quality;
+                                $new_plan->resolution = $request->resolution;
+                                $new_plan->devices = !empty($devices) ? implode(",",$devices) : null ;
+                                $new_plan->subscription_plan_name = $request->plans_name.$types;
+                                $new_plan->user_id = Auth::User()->id;  
+                                $new_plan->ios_product_id = $request->ios_product_id;
+                                $new_plan->ios_plan_price = $request->ios_plan_price;    
+                                $new_plan->plan_content   = $request->plan_content;      
+                                $new_plan->andriod_paystack_url   = $request->andriod_paystack_url; 
+                                $new_plan->ads_status  = !empty($input['ads_status']) == true ? 1 : 0 ;    
+                                $new_plan->save();
+                            }
                         }
                     }
-                    }
-                }else{
+            }else{
                     return Redirect::back()->with(array('message' => 'Please Enable Payment Systems to ADD PLAN ID and ADD Devices', 'note_type' => 'success'));
             }
-            // foreach($request->plan_id as $key => $value){
-
-            //     $new_plan = new SubscriptionPlan;
-            //     $new_plan->plans_name = $request->plans_name;
-            //     $new_plan->payment_type = $request->payment_type;
-            //     $new_plan->price = $request->price;
-            //     $new_plan->plan_id = $value;
-            //     $new_plan->billing_interval = $request->billing_interval;
-            //     $new_plan->billing_type = $request->billing_type;
-            //     $new_plan->days = $request->days;
-            //     $new_plan->video_quality = $request->video_quality;
-            //     $new_plan->resolution = $request->resolution;
-            //     $new_plan->devices = $plan_devices;
-            //     $new_plan->user_id = Auth::User()->id;
-            //     foreach($request->type as $key => $types){
-            //     $new_plan->type = $types;
-            //     $new_plan->save();
-            // } 
-            //     $new_plan->save();
-            
-            //     }
-                // $new_plan = new SubscriptionPlan;
-                // $new_plan->name = $request->plans_name;
-                // $new_plan->payment_type = $request->payment_type;
-                // $new_plan->price = $request->price;
-                // $new_plan->plan_id = $request->plan_id;
-                // $new_plan->billing_interval = $request->billing_interval;
-                // $new_plan->billing_type = $request->billing_type;
-                // $new_plan->days = $request->days;
-                // $new_plan->video_quality = $request->video_quality;
-                // $new_plan->resolution = $request->resolution;
-                // $new_plan->devices = $plan_devices;
                 
-                return Redirect::back()->with(array('note' => 'You have been successfully Added New Country', 'note_type' => 'success'));
-     
-          
+         return Redirect::back()->with(array('note' => 'You have been successfully Added New Country', 'note_type' => 'success'));
     }
-    
     
     public function update(Request $request) {
 
@@ -449,12 +413,13 @@ public function PaypalIndex()
             'plan_id' => 'required|max:255',
             'price' => 'required|max:255',
         ]);
-        
-        $input = $request->all();
 
+        $input = $request->all();
+        
         $devices = $request['devices'];
+
         if(!empty($devices)){
-        $plan_devices = implode(",",$devices);
+            $plan_devices = implode(",",$devices);
         }else{
             $plan_devices = null;
         }
@@ -468,28 +433,31 @@ public function PaypalIndex()
         }
 
         $planid = $input['plan_id'];
-        foreach($subscription_plan_name as $value){
-        $plans = SubscriptionPlan::where('subscription_plan_name',$value)->first();
-    	$plans->plans_name = $request['plans_name'];
-    	$plans->price = $request['price'];
-    	$plans->payment_type = $request['payment_type'];
-        $plans->video_quality = $input['video_quality'];
-        $plans->resolution = $input['resolution'];
-        $plans->devices = $plan_devices;
-        $plans->ios_product_id = $request->ios_product_id;
-        $plans->ios_plan_price = $request->ios_plan_price;     
-        $plans->plan_content   = $request->plan_content;     
-        $plans->andriod_paystack_url   = $request->andriod_paystack_url;     
 
-        foreach($input['plan_id'] as $key => $values){
-            if($key == $value){
-            $plans->plan_id  = $values;
-            }
+        foreach($subscription_plan_name as $value){
+            $plans = SubscriptionPlan::where('subscription_plan_name',$value)->first();
+            $plans->plans_name = $request['plans_name'];
+            $plans->price = $request['price'];
+            $plans->payment_type = $request['payment_type'];
+            $plans->video_quality = $input['video_quality'];
+            $plans->resolution = $input['resolution'];
+            $plans->devices = $plan_devices;
+            $plans->ios_product_id = $request->ios_product_id;
+            $plans->ios_plan_price = $request->ios_plan_price;     
+            $plans->plan_content   = $request->plan_content;     
+            $plans->andriod_paystack_url   = $request->andriod_paystack_url;     
+            $plans->ads_status             = !empty($input['ads_status']) == true ? 1 : 0 ;     
+
+            foreach($input['plan_id'] as $key => $values){
+                if($key == $value){
+                    $plans->plan_id  = $values;
+                }
         }
         $plans->save();
         }
         return Redirect::to('admin/subscription-plans/')->with(array('note' => 'You have been successfully Added New Plan', 'note_type' => 'success'));
     }
+    
     // public function subscriptionupdate(Request $request) {
     //     $validatedData = $request->validate([
     //         'plans_name' => 'required|max:255',

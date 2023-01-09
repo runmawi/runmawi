@@ -1768,12 +1768,17 @@ $(document).ready(function(){
 </script>
 
 <!-- Ads -->
+<?php 
 
-<?php include('AdsvideoPre.php'); ?>
+  if(  plans_ads_enable() == 1 ){
 
-<?php include('AdsvideoMid.php'); ?>
+    include('AdsvideoPre.php'); 
+    include('AdsvideoPost.php');
+    include('AdsvideoMid.php');
 
-<?php include('AdsvideoPost.php'); ?>
+  }
+?>
+
 
 <!-- End Ads -->
 

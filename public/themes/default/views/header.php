@@ -536,7 +536,26 @@
                                     <?php } ?>
                                  </ul>
                               </li>
+                              <!-- Audios dropdown -->
+                              <?php }elseif ( $menu->in_menu == "audios") { 
+                                 $AudioCategory = App\AudioCategory::get();
+                                 ?>
+                              <li class="dropdown menu-item">
+                                 <a class="dropdown-toggle" id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                                 <?php echo __($menu->name);?> <i class="fa fa-angle-down"></i>
+                                 </a>
+                                 <ul class="dropdown-menu categ-head">
+                                    <?php foreach ( $AudioCategory as $category){ ?>
+                                    <li>
+                                       <a class="dropdown-item cont-item" href="<?php echo URL::to('/live/category').'/'.$category->name;?>"> 
+                                       <?php echo $category->name;?> 
+                                       </a>
+                                    </li>
+                                    <?php } ?>
+                                 </ul>
+                              </li>
                               <!-- Tv show dropdown -->
+
                               <?php }elseif ( $menu->in_menu == "tv_show") { 
                                  $tv_shows_series = App\Series::get();
                                  ?>
