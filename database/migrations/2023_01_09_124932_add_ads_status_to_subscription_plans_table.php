@@ -14,7 +14,7 @@ class AddAdsStatusToSubscriptionPlansTable extends Migration
     public function up()
     {
         Schema::table('subscription_plans', function (Blueprint $table) {
-            $table->string('ads_status')->nullable()->after('devices');
+            $table->tinyInteger('ads_status')->default(0)->after('devices');
         });
     }
 
