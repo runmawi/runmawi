@@ -217,8 +217,8 @@ i.fa.fa-google-plus {
       </div>
    </div>
 </section>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"async defer></script>                
+<script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script defer src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"async defer></script>                
 <script>
     $(document).ready(function(){
         // $('#message').fadeOut(120);
@@ -241,24 +241,24 @@ i.fa.fa-google-plus {
 
 
       <!-- jQuery, Popper JS -->
-      <script src="assets/js/jquery-3.4.1.min.js"></script>
-      <script src="assets/js/popper.min.js"></script>
+      <script defer src="assets/js/jquery-3.4.1.min.js"></script>
+      <script defer src="assets/js/popper.min.js"></script>
       <!-- Bootstrap JS -->
-      <script src="assets/js/bootstrap.min.js"></script>
+      <script defer src="assets/js/bootstrap.min.js"></script>
       <!-- Slick JS -->
-      <script src="assets/js/slick.min.js"></script>
+      <script defer src="assets/js/slick.min.js"></script>
       <!-- owl carousel Js -->
-      <script src="assets/js/owl.carousel.min.js"></script>
+      <script defer src="assets/js/owl.carousel.min.js"></script>
       <!-- select2 Js -->
-      <script src="assets/js/select2.min.js"></script>
+      <script defer src="assets/js/select2.min.js"></script>
       <!-- Magnific Popup-->
-      <script src="assets/js/jquery.magnific-popup.min.js"></script>
+      <script defer src="assets/js/jquery.magnific-popup.min.js"></script>
       <!-- Slick Animation-->
-      <script src="assets/js/slick-animation.min.js"></script>
+      <script defer src="assets/js/slick-animation.min.js"></script>
       <!-- Custom JS-->
-      <script src="assets/js/custom.js"></script>
-    <script src="assets/js/jquery.lazy.js"></script>
-      <script src="assets/js/jquery.lazy.min.js"></script>
+      <script defer src="assets/js/custom.js"></script>
+    <script defer src="assets/js/jquery.lazy.js"></script>
+      <script defer src="assets/js/jquery.lazy.min.js"></script>
 
 </html>
 
