@@ -158,7 +158,7 @@
       <!-- select2 Js -->
       <script defer src="<?= URL::to('/'). '/assets/js/select2.min.js';?>"></script>
       <!-- Magnific Popup-->
-      <script defer src="<?= URL::to('/'). '/assets/js/jquery.magnific-popup.min.js';?>"></script>
+      <script  src="<?= URL::to('/'). '/assets/js/jquery.magnific-popup.min.js';?>"></script>
       <!-- Slick Animation-->
       <script defer src="<?= URL::to('/'). '/assets/js/slick-animation.min.js';?>"></script>
       <!-- Custom JS-->
