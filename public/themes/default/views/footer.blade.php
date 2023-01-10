@@ -147,7 +147,7 @@
      <!-- back-to-top End -->
       <!-- jQuery, Popper JS -->
 
-      <script defer src="<?= URL::to('/'). '/assets/js/jquery-3.4.1.min.js';?>"></script>
+      <script  src="<?= URL::to('/'). '/assets/js/jquery-3.4.1.min.js';?>"></script>
       <script defer src="<?= URL::to('/'). '/assets/js/popper.min.js';?>"></script>
       <!-- Bootstrap JS -->
       <script defer src="<?= URL::to('/'). '/assets/js/bootstrap.min.js';?>"></script>
