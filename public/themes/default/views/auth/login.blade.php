@@ -88,7 +88,7 @@ i.fa.fa-google-plus {
                   <div class="sign-in-from  m-auto" align="center">
                       <div class="row justify-content-center">
                           <div class="col-md-12">
-                          <img class=""  src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;"></div></div>
+                          <img alt="apps-logo" class=""  src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;"></div></div>
                       <?php if($settings->demo_mode == 1) { ?>
                         <div class="demo_cred">
                             <p class="links" style="font-weight: 600; border-bottom: 2px dashed #fff;">Demo Login</p>
@@ -184,7 +184,7 @@ i.fa.fa-google-plus {
                                 </div>
                                 <div>
                                      <a href="{{ url('/auth/redirect/facebook') }}" class="" >
-                                     <img src="<?php echo URL::to('/').'/assets/img/fb.png'; ?>" width="30" style="margin-bottom:1rem;"></a>
+                                     <img alt="apps-logo" src="<?php echo URL::to('/').'/assets/img/fb.png'; ?>" width="30" style="margin-bottom:1rem;"></a>
                                     </div>
                                <?php } ?>
 
@@ -195,7 +195,7 @@ i.fa.fa-google-plus {
                                 <?php if($system_settings != null && $system_settings->google == 0 ){  }else{ ?>
                                     <div>
                                     <a href="{{ url('/auth/redirect/google') }}" class="" >
-                                        <img src="<?php echo URL::to('/').'/assets/img/google.png'; ?>" width="30" style="margin-bottom:1rem;"></a>
+                                        <img alt="apps-logo" src="<?php echo URL::to('/').'/assets/img/google.png'; ?>" width="30" style="margin-bottom:1rem;"></a>
 
                                     </div>
                                 <?php  } ?>
