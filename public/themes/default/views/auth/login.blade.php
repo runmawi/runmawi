@@ -14,7 +14,9 @@ $system_settings = App\SystemSetting::find(1);
       <!-- Favicon -->
       <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
       <!-- Bootstrap CSS -->
-      <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+    <link rel="preload" href="assets/css/bootstrap.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="assets/css/bootstrap.min.css"></noscript>assets/css/bootstrap.min.css
+      <link rel="stylesheet" href="" />
       <!-- Typography CSS -->
       <link rel="stylesheet" href="<?= typography_link()?>" />
       <!-- Style -->
