@@ -9,54 +9,54 @@
             <div class="block-space">
                <div class="row justify-content-between">
                    <div class="col-lg-4 col-md-4 col-sm-12 r-mt-15">
-                       <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="Flicknexs"> </a>
+                       <a aria-label="apps" class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img alt="apps-logo" src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="Flicknexs"> </a>
                      <div class="d-flex mt-2">
 
                       <?php if(!empty($settings->facebook_page_id)){?>
-                        <a href="https://www.facebook.com/<?php echo FacebookId();?>" target="_blank"  class="s-icon">
+                        <a aria-label="facebook" href="https://www.facebook.com/<?php echo FacebookId();?>" target="_blank"  class="s-icon">
                           <i class="ri-facebook-fill"></i>
                           </a>
                       <?php } ?>
 
                       <?php if(!empty($settings->skype_page_id)){?>
-                        <a href="https://www.skype.com/en/<?php echo SkypeId();?>" target="_blank"  class="s-icon">
+                        <a aria-label="skype" href="https://www.skype.com/en/<?php echo SkypeId();?>" target="_blank"  class="s-icon">
                           <i class="ri-skype-fill"></i>
                           </a>
                       <?php } ?>
 
                       <?php if(!empty($settings->twitter_page_id)){?>
-                        <a href="https://twitter.com/<?php echo TwiterId();?>" target="_blank"  class="s-icon">
+                        <a aria-label="tw" href="https://twitter.com/<?php echo TwiterId();?>" target="_blank"  class="s-icon">
                           <i class="ri-twitter-fill"></i>
                           </a>
                       <?php } ?>
 
                       <?php if(!empty($settings->instagram_page_id)){?>
-                        <a href="https://www.instagram.com/<?php echo InstagramId();?>" target="_blank"  class="s-icon">
+                        <a aria-label="ins" href="https://www.instagram.com/<?php echo InstagramId();?>" target="_blank"  class="s-icon">
                           <i class="ri-instagram-fill"></i>
                           </a>
                       <?php } ?>
 
                       <?php if(!empty($settings->linkedin_page_id)){?>
-                        <a href="https://www.linkedin.com/<?php echo linkedinId();?>" target="_blank"  class="s-icon">
+                        <a aria-label="link" href="https://www.linkedin.com/<?php echo linkedinId();?>" target="_blank"  class="s-icon">
                           <i class="ri-linkedin-fill"></i>
                           </a>
                       <?php } ?>
 
 
                       <?php if(!empty($settings->whatsapp_page_id)){?>
-                        <a href="https://www.whatsapp.com/<?php echo YoutubeId();?>" target="_blank"  class="s-icon">
+                        <a aria-label="whatsapp" href="https://www.whatsapp.com/<?php echo YoutubeId();?>" target="_blank"  class="s-icon">
                           <i class="ri-whatsapp-fill"></i>
                           </a>
                       <?php } ?>
 
                       <?php if(!empty($settings->youtube_page_id)){?>
-                        <a href="https://www.youtube.com/<?php echo YoutubeId();?>" target="_blank"  class="s-icon">
+                        <a aria-label="youtube" href="https://www.youtube.com/<?php echo YoutubeId();?>" target="_blank"  class="s-icon">
                           <i class="ri-youtube-fill"></i>
                           </a>
                       <?php } ?>
 
                       <?php if(!empty($settings->google_page_id)){?>
-                        <a href="https://www.google.com/<?php echo GoogleId();?>" target="_blank" class="s-icon">
+                        <a aria-label="google" href="https://www.google.com/<?php echo GoogleId();?>" target="_blank" class="s-icon">
                           <i class="fa fa-google-plus"></i>
                           </a>
                       <?php } ?>
@@ -126,13 +126,13 @@
                    <div class="col-lg-3 col-md-2 p-0">
                        <div >
                        <?php if(!empty($app_settings->android_url)){ ?> 
-                       <img class="" height="80" width="140" src="<?php echo  URL::to('/assets/img/apps1.png')?>" style="margin-top:-20px;">
+                       <img alt="apps-logo" class="" height="80" width="140" src="<?php echo  URL::to('/assets/img/apps1.png')?>" style="margin-top:-20px;">
                         <?php } ?>
                        <?php if(!empty($app_settings->ios_url)){ ?> 
-                       <img class="" height="80" width="140" src="<?php echo  URL::to('/assets/img/apps.png')?>" style="margin-top:-20px;">
+                       <img alt="apps-logo" class="" height="80" width="140" src="<?php echo  URL::to('/assets/img/apps.png')?>" style="margin-top:-20px;">
                         <?php } ?>
                        <?php if(!empty($app_settings->android_tv)){ ?> 
-                       <img class="" height="100" width="150" src="<?php echo  URL::to('/assets/img/and.png')?>" style="margin-top:-20px;">
+                       <img alt="apps-logo" class="" height="100" width="150" src="<?php echo  URL::to('/assets/img/and.png')?>" style="margin-top:-20px;">
                         <?php } ?>
                    </div></div>
                   
@@ -147,24 +147,24 @@
      <!-- back-to-top End -->
       <!-- jQuery, Popper JS -->
 
-      <script src="<?= URL::to('/'). '/assets/js/jquery-3.4.1.min.js';?>"></script>
-      <script src="<?= URL::to('/'). '/assets/js/popper.min.js';?>"></script>
+      <script  src="<?= URL::to('/'). '/assets/js/jquery-3.4.1.min.js';?>"></script>
+      <script defer src="<?= URL::to('/'). '/assets/js/popper.min.js';?>"></script>
       <!-- Bootstrap JS -->
-      <script src="<?= URL::to('/'). '/assets/js/bootstrap.min.js';?>"></script>
+      <script defer src="<?= URL::to('/'). '/assets/js/bootstrap.min.js';?>"></script>
       <!-- Slick JS -->
-      <script src="<?= URL::to('/'). '/assets/js/slick.min.js';?>"></script>
+      <script  src="<?= URL::to('/'). '/assets/js/slick.min.js';?>"></script>
       <!-- owl carousel Js -->
-      <script src="<?= URL::to('/'). '/assets/js/owl.carousel.min.js';?>"></script>
+      <script  src="<?= URL::to('/'). '/assets/js/owl.carousel.min.js';?>"></script>
       <!-- select2 Js -->
-      <script src="<?= URL::to('/'). '/assets/js/select2.min.js';?>"></script>
+      <script defer src="<?= URL::to('/'). '/assets/js/select2.min.js';?>"></script>
       <!-- Magnific Popup-->
-      <script src="<?= URL::to('/'). '/assets/js/jquery.magnific-popup.min.js';?>"></script>
+      <script  src="<?= URL::to('/'). '/assets/js/jquery.magnific-popup.min.js';?>"></script>
       <!-- Slick Animation-->
-      <script src="<?= URL::to('/'). '/assets/js/slick-animation.min.js';?>"></script>
+      <script defer src="<?= URL::to('/'). '/assets/js/slick-animation.min.js';?>"></script>
       <!-- Custom JS-->
-      <script src="<?= URL::to('/'). '/assets/js/custom.js';?>"></script>
-<script src="<?= URL::to('/'). '/assets/js/jquery.lazy.js';?>"></script>
-      <script src="<?= URL::to('/'). '/assets/js/jquery.lazy.min.js';?>"></script>
+      <script  src="<?= URL::to('/'). '/assets/js/custom.js';?>"></script>
+<script  src="<?= URL::to('/'). '/assets/js/jquery.lazy.js';?>"></script>
+      <script defer src="<?= URL::to('/'). '/assets/js/jquery.lazy.min.js';?>"></script>
        <script>
     $(document).ready(function () {
       $(".thumb-cont").hide();
@@ -257,13 +257,13 @@ function myFunction() {
       <?php } 
     }
      ?>
- <script src="<?= URL::to('/'). '/assets/js/ls.bgset.min.js';?>"></script>
- <script src="<?= URL::to('/'). '/assets/js/lazysizes.min.js';?>"></script>
- <script src="<?= URL::to('/'). '/assets/js/plyr.polyfilled.js';?>"></script>
- <script src="<?= URL::to('/'). '/assets/js/hls.min.js';?>"></script>
+ <script  src="<?= URL::to('/'). '/assets/js/ls.bgset.min.js';?>"></script>
+ <script  src="<?= URL::to('/'). '/assets/js/lazysizes.min.js';?>"></script>
+ <script  src="<?= URL::to('/'). '/assets/js/plyr.polyfilled.js';?>"></script>
+ <script  src="<?= URL::to('/'). '/assets/js/hls.min.js';?>"></script>
  <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/0.14.5/hls.min.js.map"></script>
  <!-- <script src="<? //URL::to('/'). '/assets/js/plyr-3-7.js';?>"></script> -->
- <script src="<?= URL::to('/'). '/assets/js/hls.js';?>"></script>
+ <script  src="<?= URL::to('/'). '/assets/js/hls.js';?>"></script>
           
 
 <script>
@@ -279,7 +279,7 @@ function myFunction() {
     }
 </script>
 
-<script src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
+<script defer src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
       <script>
     var type = $('#video_type').val();
     // var type = $('#hls_m3u8').val();
