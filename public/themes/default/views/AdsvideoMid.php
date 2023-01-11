@@ -17,7 +17,7 @@
   ->where('advertisements.status',1)
   ->where('videos.id',$video->id)
   ->where('ads_position','mid')
-//   ->where('advertisements.id',$video->mid_ads)
+  ->where('advertisements.id',$video->mid_ads)
   ->get();
 
 

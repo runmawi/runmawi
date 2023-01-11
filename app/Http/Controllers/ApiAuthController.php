@@ -1251,6 +1251,7 @@ public function verifyandupdatepassword(Request $request)
             ->where('advertisements.status',1)
             ->where('advertisements.ads_category',$video->pre_ads_category)
             ->where('ads_position','pre')
+            ->where('advertisements.id',$video->pre_ads)
             ->get()->map->only('ads_path','ads_video')->map(function ($item) {
                 $item['ads_type'] = $item['ads_video'] == null ? "Google_tag" : "upload_ads";
                 $item['ads_videos_url'] = URL::to('public/uploads/AdsVideos/'.$item['ads_video']);
@@ -1266,6 +1267,7 @@ public function verifyandupdatepassword(Request $request)
             ->where('advertisements.ads_category',$video->mid_ads_category)
             ->where('videos.id',$video->id)
             ->where('ads_position','mid')
+            ->where('advertisements.id',$video->mid_ads)
             ->get()->map->only('ads_path','ads_video')->map(function ($item) {
                 $item['ads_type'] = $item['ads_video'] == null ? "Google_tag" : "upload_ads";
                 $item['ads_videos_url'] = URL::to('public/uploads/AdsVideos/'.$item['ads_video']);
@@ -1273,12 +1275,15 @@ public function verifyandupdatepassword(Request $request)
             });
 
     $Ads_Videos_Mid[] = count($AdsVideosMid) >= 1 ? $AdsVideosMid->random() : [] ;
+
     $AdsVideosPost = AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
             ->Join('videos','advertisements.ads_category','=','videos.post_ads_category')
             ->where('ads_events.status',1)->where('advertisements.status',1)
             ->where('advertisements.ads_category',$video->post_ads_category)
             ->where('videos.id',$video->id)
             ->where('ads_position','post')
+            ->where('advertisements.id',$video->post_ads)
+
             ->get()->map->only('ads_path','ads_video')->map(function ($item) {
                 $item['ads_type'] = $item['ads_video'] == null ? "Google_tag" : "upload_ads";
                 $item['ads_videos_url'] = URL::to('public/uploads/AdsVideos/'.$item['ads_video']);
@@ -7032,6 +7037,7 @@ public function Videos_ads_list(Request $request)
             ->where('advertisements.status',1)
             ->where('advertisements.ads_category',$video->pre_ads_category)
             ->where('ads_position','pre')
+            ->where('advertisements.id',$video->pre_ads)
             ->get()->map->only('ads_path','ads_video')->map(function ($item) {
                 $item['ads_type'] = $item['ads_video'] == null ? "Google_tag" : "upload_ads";
                 $item['ads_videos_url'] = URL::to('public/uploads/AdsVideos/'.$item['ads_video']);
@@ -7047,6 +7053,7 @@ public function Videos_ads_list(Request $request)
             ->where('advertisements.ads_category',$video->mid_ads_category)
             ->where('videos.id',$video->id)
             ->where('ads_position','mid')
+            ->where('advertisements.id',$video->mid_ads)
             ->get()->map->only('ads_path','ads_video')->map(function ($item) {
                 $item['ads_type'] = $item['ads_video'] == null ? "Google_tag" : "upload_ads";
                 $item['ads_videos_url'] = URL::to('public/uploads/AdsVideos/'.$item['ads_video']);
@@ -7061,6 +7068,7 @@ public function Videos_ads_list(Request $request)
             ->where('advertisements.ads_category',$video->post_ads_category)
             ->where('videos.id',$video->id)
             ->where('ads_position','post')
+            ->where('advertisements.id',$video->post_ads)
             ->get()->map->only('ads_path','ads_video')->map(function ($item) {
                 $item['ads_type'] = $item['ads_video'] == null ? "Google_tag" : "upload_ads";
                 $item['ads_videos_url'] = URL::to('public/uploads/AdsVideos/'.$item['ads_video']);

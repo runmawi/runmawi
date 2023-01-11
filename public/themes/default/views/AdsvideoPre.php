@@ -13,7 +13,7 @@
     ->where('advertisements.ads_category',$video->pre_ads_category)
     ->where('videos.id',$video->id)
     ->where('ads_position','pre')
-    // ->where('advertisements.id',$video->pre_ads)
+    ->where('advertisements.id',$video->pre_ads)
     ->get();
 
 
