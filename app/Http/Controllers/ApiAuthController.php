@@ -998,35 +998,25 @@ public function verifyandupdatepassword(Request $request)
 
   public function latestvideos()
   {
-    $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-    $countryName =  $geoip->getCountry();
-    $getfeching = Geofencing::first();
 
-    $block_videos=BlockVideo::where('country_id',$countryName)->get();
+      $latestvideos = Video::where('active','=',1)->where('status','=', 1);
 
-        if(!$block_videos->isEmpty()){
-          foreach($block_videos as $block_video){
-              $blockvideos[]=$block_video->video_id;
+        if(Geofencing() !=null && Geofencing()->geofencing == 'ON')
+          {
+            $latestvideos = $latestvideos  ->whereNotIn('videos.id',Block_videos());
           }
-      }
-      $blockvideos[]='';
 
-    $latestvideos = Video::where('active','=',1)->where('status','=', 1)->orderBy('created_at', 'desc');
-          if($getfeching !=null && $getfeching->geofencing == 'ON'){
-            $latestvideos = $latestvideos->whereNotIn('id',$blockvideos);
-            }
-    $latestvideos =$latestvideos->orderBy('created_at', 'desc')->get()->map(function ($item) {
-        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-        $item['video_url'] = URL::to('/').'/storage/app/public/';
-        return $item;
-      });
+      $latestvideos =$latestvideos->latest('created_at')->limit(50)->get()->map(function ($item) {
+          $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+          $item['video_url'] = URL::to('/').'/storage/app/public/';
+          return $item;
+        });
 
-      $response = array(
-        // 'status'=>'true',
-        'latestvideos' => $latestvideos
-      );
-      return response()->json($response, 200);
-
+        $response = array(
+          'latestvideos' => $latestvideos
+        );
+        
+        return response()->json($response, 200);
   }
 
 
@@ -1283,7 +1273,6 @@ public function verifyandupdatepassword(Request $request)
             });
 
     $Ads_Videos_Mid[] = count($AdsVideosMid) >= 1 ? $AdsVideosMid->random() : [] ;
-
     $AdsVideosPost = AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
             ->Join('videos','advertisements.ads_category','=','videos.post_ads_category')
             ->where('ads_events.status',1)->where('advertisements.status',1)
