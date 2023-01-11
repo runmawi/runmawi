@@ -9,7 +9,7 @@
             <div class="block-space">
                <div class="row justify-content-between">
                    <div class="col-lg-4 col-md-4 col-sm-12 r-mt-15">
-                       <a aria-label="apps" class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img alt="apps-logo" src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="Flicknexs"> </a>
+                       <a aria-label="apps" class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img alt="apps-logo" src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="" alt="Flicknexs"> </a>
                      <div class="d-flex mt-2">
 
                       <?php if(!empty($settings->facebook_page_id)){?>
