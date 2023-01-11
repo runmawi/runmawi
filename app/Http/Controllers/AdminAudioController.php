@@ -557,6 +557,9 @@ class AdminAudioController extends Controller
 
         if(empty($data['active'])){
             $data['active'] = 0;
+            $data['status'] = 0;
+        }else{
+            $data['status'] = 1;
         }
 
         if(empty($data['featured'])){
@@ -564,9 +567,9 @@ class AdminAudioController extends Controller
         }
 
         if(empty($data['ppv_status'])){
-            $data['ppv_status'] = 0;
+            $status = 0;
         }else{
-        $data['ppv_status'] = 1;
+        $status = 1;
         }
 
         if(!empty($data['searchtags'])){
@@ -588,6 +591,7 @@ class AdminAudioController extends Controller
         $audio->banner =  $banner;
         $audio->ios_ppv_price =  $request->ios_ppv_price;
         $audio->player_image =  $player_image;
+        $audio->status =  $status;
         $audio->save();
         // dd($audio->id);
 
