@@ -8,7 +8,7 @@
     }
     .come-from-modal.left .modal-dialog,
 .come-from-modal.right .modal-dialog {
-    position: fixed;
+   
     margin: auto;
     width: 400px;
     background-color: #000!important;
@@ -135,6 +135,17 @@ font-weight: 400;
     max-width: none;
     width: 100%;
     }  
+    .modal {
+    position: fixed;
+    top: 0;
+        right:auto;
+    bottom: 0;
+    left: 0;
+    z-index: 1050;
+    display: none;
+    overflow: hidden;
+    outline: 0;
+}
 </style>
 
 <style>
