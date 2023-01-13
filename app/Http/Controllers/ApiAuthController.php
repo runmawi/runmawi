@@ -1170,6 +1170,44 @@ public function verifyandupdatepassword(Request $request)
     return response()->json($response, 200);
   }
 
+  public function channelvideosIOS(Request $request)
+  {
+    try {
+      $channelid     = $request->channelid ;
+      $current_page_no       = $request->current_page_no ;
+      $per_page_no   = $request->per_page_no ;
+
+      $videos= Video::Join('categoryvideos','categoryvideos.video_id','=','videos.id')
+              ->where('categoryvideos.category_id',$channelid )
+              ->where('active','=',1)->where('status','=',1) ;
+  
+              if(Geofencing() !=null && Geofencing()->geofencing == 'ON')
+              {
+                $videos = $videos  ->whereNotIn('videos.id',Block_videos());
+              }
+  
+      $videos = $videos->latest('videos.created_at')->paginate( $per_page_no , ['*'], 'page', $current_page_no );
+     
+      $VideoCategory_name = VideoCategory::where('id','=',$channelid)->pluck('name')->first();
+  
+      $response = array(
+        'status'     => 'True' ,
+        "message"    => 'Successfully Retrieved Videos' ,
+        'main_genre' => $VideoCategory_name,
+        'categoryVideos' => $videos
+      );
+  
+    } catch (\Throwable $th) {
+      
+      $response = array(
+        'status'     => 'False' ,
+        "message"    => $th->getMessage() ,
+      );
+    }
+    
+    return response()->json($response, 200);
+  }
+
   public function videodetail(Request $request)
   {
     $videoid = $request->videoid;
@@ -10105,6 +10143,15 @@ public function CheckBecomeSubscription(Request $request)
     }
 
   return response()->json($response, 200);
+}
+ 
+public function test( $page_no)
+{
+
+  $getCategories = Video::Paginate( 20, ['*'], 'page', $page_no );
+
+  return response()->json($getCategories,200);
+
 }
 
 

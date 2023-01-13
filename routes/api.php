@@ -22,6 +22,7 @@ Route::group([
     'prefix' => 'auth'
 ], function () {
 
+
     Route::get('home_page','ApiAuthController@PageHome');
     Route::post('login', 'ApiAuthController@login');
      Route::post('search','ApiAuthController@search');
@@ -34,6 +35,7 @@ Route::group([
     Route::get('latestvideos', 'ApiAuthController@latestvideos');
     Route::get('categorylist', 'ApiAuthController@categorylist');
     Route::post('channelvideos', 'ApiAuthController@channelvideos');
+    Route::post('channelvideosIOS','ApiAuthController@channelvideosIOS');
     Route::get('categoryvideos', 'ApiAuthController@categoryvideos');
     Route::get('categoryvideosIOS', 'ApiAuthController@categoryvideosIOS');
     Route::post('videodetail', 'ApiAuthController@videodetail');
