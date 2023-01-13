@@ -913,6 +913,65 @@ class ApiAuthController extends Controller
     return response()->json($response, 200);
   }
 
+  public function categoryvideosIOS(Request $request)
+  {
+
+    $videocategories = VideoCategory::select('id','image')->get()->toArray();
+
+    $myData = array();
+
+    foreach ($videocategories as $key => $videocategory) {
+
+        $videocategoryid = $videocategory['id'];
+        $genre_image = $videocategory['image'];
+
+        $videos= Video::Join('categoryvideos','categoryvideos.video_id','=','videos.id')
+          ->where('categoryvideos.category_id',$videocategoryid)
+          ->where('active','=',1)->where('status','=',1)
+          ->where('draft','=',1)->latest('videos.created_at')->limit(12);
+
+          if(Geofencing() !=null && Geofencing()->geofencing == 'ON')
+          {
+            $videos = $videos->whereNotIn('videos.id',Block_videos());
+          }
+
+          $videos = $videos->get()->map(function ($item) {
+            $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+            $item['video_url'] = URL::to('/').'/storage/app/public/';
+            $item['category_name'] = VideoCategory::where('id',$item->category_id)->pluck('slug')->first();
+            return $item;
+        });
+     
+        $main_genre = CategoryVideo::Join('video_categories','video_categories.id','=','categoryvideos.category_id')->get('name');
+
+        foreach($main_genre as $value){
+          $category[] = $value['name'];
+        }
+
+        $main_genre =  !empty($category) ? implode(",",$category) : " ";
+
+        $msg = count($videos) > 0 ?  'success' : "";
+
+        $myData[] = array(
+          "message" => $msg,
+          'gener_name' =>  VideoCategory::where('id',$videocategoryid)->pluck('name')->first(),
+          'home_genre' =>  VideoCategory::where('id',$videocategoryid)->pluck('home_genre')->first(),
+          'gener_id' =>  VideoCategory::where('id',$videocategoryid)->pluck('id')->first(),
+          "videos" => $videos
+        );
+    }
+
+    $response = array(
+      'status' => 'true',
+      'genre_movies' => $myData,
+      'main_genre' => $msg,
+      'main_genre' => $main_genre,
+
+    );
+
+    return response()->json($response, 200);
+
+  }
 
   public function changepassword(Request $request)
   {
@@ -1045,7 +1104,6 @@ public function verifyandupdatepassword(Request $request)
   {
     $channelid = $request->channelid;
 
-
     $videocategories = VideoCategory::select('id','image')->where('id','=',$channelid)->get()->toArray();
     $myData = array();
 
@@ -1057,17 +1115,20 @@ public function verifyandupdatepassword(Request $request)
       $item['video_url'] = URL::to('/').'/storage/app/public/';
       return $item;
     });
-    //
 
     foreach ($videocategories as $key => $videocategory) {
-      $videocategoryid = $videocategory['id'];
-      $genre_image = $videocategory['image'];
-      $videos= Video::Join('categoryvideos','categoryvideos.video_id','=','videos.id')->where('categoryvideos.category_id',$videocategoryid)
-      ->where('active','=',1)->where('status','=',1)->orderBy('videos.created_at', 'desc')->get()->map(function ($item) {
-        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-        $item['video_url'] = URL::to('/').'/storage/app/public/';
-        return $item;
-      });
+        $videocategoryid = $videocategory['id'];
+        $genre_image = $videocategory['image'];
+
+        $videos= Video::Join('categoryvideos','categoryvideos.video_id','=','videos.id')
+                ->where('categoryvideos.category_id',$videocategoryid)
+                ->where('active','=',1)->where('status','=',1)
+                ->orderBy('videos.created_at', 'desc')->paginate(1)->map(function ($item) {
+                $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+                $item['video_url'] = URL::to('/').'/storage/app/public/';
+                return $item;
+        });
+
       $categorydetails = VideoCategory::where('id','=',$videocategoryid)->first();
 
       if(count($videos_category) > 0){
@@ -1077,6 +1138,7 @@ public function verifyandupdatepassword(Request $request)
         $msg = 'nodata';
         $status = 'False';
       }
+
       if(count($videos) > 0){
         $msg = 'success';
         $status = 'True';
@@ -1084,13 +1146,14 @@ public function verifyandupdatepassword(Request $request)
         $msg = 'nodata';
         $status = 'False';
       }
+
       $myData[] = array(
         "genre_name"   => $categorydetails->name,
-        "genre_id"   => $videocategoryid,
-        "genre_image"   => URL::to('/').'/public/uploads/videocategory/'.$genre_image,
+        "genre_id"     => $videocategoryid,
+        "genre_image"  => URL::to('/').'/public/uploads/videocategory/'.$genre_image,
         "message" => $msg,
-        "videos" => $videos,
-        "videos_category"   => $videos_category,
+        "videos"  => $videos,
+        "videos_category" => $videos_category,
       );
 
     }
@@ -1102,7 +1165,9 @@ public function verifyandupdatepassword(Request $request)
       'main_genre' => $videos_cat[0]->name,
       'categoryVideos' => $videos
     );
+
     return response()->json($response, 200);
+
   }
 
   public function videodetail(Request $request)
@@ -6318,32 +6383,33 @@ public function LocationCheck(Request $request){
 
     public function MostwatchedVideos(){
 
-      $Recomended = HomeSetting::first();
+        $Recommendation = HomeSetting::pluck('Recommendation')->first();
 
-      $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-      $countryName =  $geoip->getCountry();
-      $getfeching = Geofencing::first();
+        if( $Recommendation == 1 ){
 
-      if( $getfeching->geofencing == 'ON'){
-
-          $block_videos=BlockVideo::where('country_id',$countryName)->get();
-            if(!$block_videos->isEmpty()){
-                foreach($block_videos as $block_video){
-                    $blockvideos[]=$block_video->video_id;
+          $Mostwatchedvideos = RecentView::select('video_id','videos.*',DB::raw('COUNT(video_id) AS count'))
+                ->join('videos', 'videos.id', '=', 'recent_views.video_id');
+                if(Geofencing() !=null && Geofencing()->geofencing == 'ON')
+                {
+                  $Mostwatchedvideos = $Mostwatchedvideos->whereNotIn('videos.id',Block_videos());
                 }
-            }  else{  $blockvideos=[];  } }
-            else {  $blockvideos=[];  }
+          $Mostwatchedvideos =$Mostwatchedvideos->groupBy('video_id')
+                ->orderByRaw('count DESC' )->limit(20)->get()->map(function ($item) {
+                  $item['Thumbnail'] = URL::to('/').'/public/uploads/images/'.$item->image ;
+                  $item['Player_thumbnail'] = URL::to('/').'/public/uploads/images/'.$item->player_image ;
+                  $item['TV_Thumbnail'] = URL::to('/').'/public/uploads/images/'.$item->video_tv_image ;
+                  $item['Video_Title_Thumbnail'] = URL::to('/').'/public/uploads/images/'.$item->video_title_image ;
+                  return $item;
+            });
+        } 
 
-      if( $Recomended->Recommendation == 1 ){
-
-        $Mostwatchedvideos = RecentView::select('video_id','videos.*',DB::raw('COUNT(video_id) AS count'))
-              ->join('videos', 'videos.id', '=', 'recent_views.video_id')->whereNotIn('videos.id',$blockvideos)->groupBy('video_id')
-              ->orderByRaw('count DESC' )->limit(20)->get();
-      } else{   $Mostwatchedvideos =[];
-       }
-        return response()->json([
+        $response = array(
+          'status'  => 'true',
           'message' => 'Most watched videos  Retrieve successfully',
-          'Mostwatchedvideos' => $Mostwatchedvideos ], 200);
+          'Mostwatchedvideos' => !empty($Mostwatchedvideos) ? $Mostwatchedvideos  : [] ,
+        );
+
+        return response()->json($response, 200);
     }
 
     public function MostwatchedVideosUser(){

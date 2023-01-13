@@ -35,6 +35,7 @@ Route::group([
     Route::get('categorylist', 'ApiAuthController@categorylist');
     Route::post('channelvideos', 'ApiAuthController@channelvideos');
     Route::get('categoryvideos', 'ApiAuthController@categoryvideos');
+    Route::get('categoryvideosIOS', 'ApiAuthController@categoryvideosIOS');
     Route::post('videodetail', 'ApiAuthController@videodetail');
     Route::get('livestreams', 'ApiAuthController@livestreams');
     Route::post('livestreamdetail', 'ApiAuthController@livestreamdetail');
