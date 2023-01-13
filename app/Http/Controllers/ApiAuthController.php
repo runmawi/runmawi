@@ -1105,28 +1105,29 @@ public function verifyandupdatepassword(Request $request)
 
   public function channelvideos(Request $request)
   {
+    
     $channelid = $request->channelid;
 
     $videocategories = VideoCategory::select('id','image')->where('id','=',$channelid)->get()->toArray();
     $myData = array();
 
     $videos_category= Video::Join('categoryvideos','categoryvideos.video_id','=','videos.id')
-    // ->Join('video_categories','video_categories.id','=',$channelid)
-    ->where('categoryvideos.category_id',$channelid)
-    ->where('active','=',1)->where('status','=',1)->orderBy('videos.created_at', 'desc')->get()->map(function ($item) {
-      $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-      $item['video_url'] = URL::to('/').'/storage/app/public/';
-      return $item;
+        ->where('categoryvideos.category_id',$channelid)
+        ->where('active','=',1)->where('status','=',1)->orderBy('videos.created_at', 'desc')->get()->map(function ($item) {
+          $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+          $item['video_url'] = URL::to('/').'/storage/app/public/';
+          return $item;
     });
 
     foreach ($videocategories as $key => $videocategory) {
+
         $videocategoryid = $videocategory['id'];
         $genre_image = $videocategory['image'];
 
         $videos= Video::Join('categoryvideos','categoryvideos.video_id','=','videos.id')
                 ->where('categoryvideos.category_id',$videocategoryid)
                 ->where('active','=',1)->where('status','=',1)
-                ->orderBy('videos.created_at', 'desc')->paginate(1)->map(function ($item) {
+                ->orderBy('videos.created_at', 'desc')->get()->map(function ($item) {
                 $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
                 $item['video_url'] = URL::to('/').'/storage/app/public/';
                 return $item;
@@ -1164,13 +1165,12 @@ public function verifyandupdatepassword(Request $request)
     $videos_cat = VideoCategory::where('id','=',$channelid)->get();
 
     $response = array(
-      'status' => $status ,
+      'status'     => $status ,
       'main_genre' => $videos_cat[0]->name,
       'categoryVideos' => $videos
     );
 
     return response()->json($response, 200);
-
   }
 
   public function videodetail(Request $request)
