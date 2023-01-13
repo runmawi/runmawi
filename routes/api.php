@@ -278,7 +278,6 @@ Route::group([
 // Ads
     Route::post('AdsView', 'ApiAuthController@AdsView');
     Route::post('Adstatus_upate', 'ApiAuthController@Adstatus_upate');
-    Route::post('videos-ads-list', 'ApiAuthController@Videos_ads_list');
 
     Route::get('profileimage_default', 'ApiAuthController@profileimage_default');
 
