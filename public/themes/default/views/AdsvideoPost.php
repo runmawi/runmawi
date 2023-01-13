@@ -18,7 +18,7 @@ $AdsVideosPost = App\AdsEvent::Join('advertisements','advertisements.id','=','ad
   ->where('advertisements.ads_category',$video->post_ads_category)
   ->where('videos.id',$video->id)
   ->where('ads_position','post')
-//   ->where('advertisements.id',$video->post_ads)
+  ->where('advertisements.id',$video->post_ads)
   ->get();
 
 

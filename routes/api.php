@@ -35,6 +35,7 @@ Route::group([
     Route::get('categorylist', 'ApiAuthController@categorylist');
     Route::post('channelvideos', 'ApiAuthController@channelvideos');
     Route::get('categoryvideos', 'ApiAuthController@categoryvideos');
+    Route::get('categoryvideosIOS', 'ApiAuthController@categoryvideosIOS');
     Route::post('videodetail', 'ApiAuthController@videodetail');
     Route::get('livestreams', 'ApiAuthController@livestreams');
     Route::post('livestreamdetail', 'ApiAuthController@livestreamdetail');
@@ -278,7 +279,6 @@ Route::group([
 // Ads
     Route::post('AdsView', 'ApiAuthController@AdsView');
     Route::post('Adstatus_upate', 'ApiAuthController@Adstatus_upate');
-    Route::post('videos-ads-list', 'ApiAuthController@Videos_ads_list');
 
     Route::get('profileimage_default', 'ApiAuthController@profileimage_default');
 
