@@ -381,5 +381,18 @@ Route::group([
 
     Route::post('verfiy_become_subscription','ApiAuthController@CheckBecomeSubscription');
 
+    
+    Route::get('videoschedules','ApiAuthController@VideoSchedules');
+
+    Route::get('scheduledvideos','ApiAuthController@ScheduledVideos');
+
+    Route::get('rescheduledvideos','ApiAuthController@ReScheduledVideos');
+
+    Route::post('video_schedule','ApiAuthController@Video_Schedules');
+
+    Route::post('scheduled_video','ApiAuthController@Scheduled_Videos');
+
+    Route::post('rescheduled_video','ApiAuthController@ReScheduled_Videos');
+
 
 });

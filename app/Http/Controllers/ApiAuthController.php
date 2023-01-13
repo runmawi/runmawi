@@ -112,6 +112,9 @@ use App\VideoCommission;
 use App\ModeratorsUser;
 use App\Paystack_Andriod_UserId;
 use App\AdsEvent;
+use App\VideoSchedules as VideoSchedules;
+use App\ScheduleVideos as ScheduleVideos;
+use App\ReSchedule as ReSchedule;
 
 class ApiAuthController extends Controller
 {
@@ -1102,28 +1105,29 @@ public function verifyandupdatepassword(Request $request)
 
   public function channelvideos(Request $request)
   {
+    
     $channelid = $request->channelid;
 
     $videocategories = VideoCategory::select('id','image')->where('id','=',$channelid)->get()->toArray();
     $myData = array();
 
     $videos_category= Video::Join('categoryvideos','categoryvideos.video_id','=','videos.id')
-    // ->Join('video_categories','video_categories.id','=',$channelid)
-    ->where('categoryvideos.category_id',$channelid)
-    ->where('active','=',1)->where('status','=',1)->orderBy('videos.created_at', 'desc')->get()->map(function ($item) {
-      $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-      $item['video_url'] = URL::to('/').'/storage/app/public/';
-      return $item;
+        ->where('categoryvideos.category_id',$channelid)
+        ->where('active','=',1)->where('status','=',1)->orderBy('videos.created_at', 'desc')->get()->map(function ($item) {
+          $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+          $item['video_url'] = URL::to('/').'/storage/app/public/';
+          return $item;
     });
 
     foreach ($videocategories as $key => $videocategory) {
+
         $videocategoryid = $videocategory['id'];
         $genre_image = $videocategory['image'];
 
         $videos= Video::Join('categoryvideos','categoryvideos.video_id','=','videos.id')
                 ->where('categoryvideos.category_id',$videocategoryid)
                 ->where('active','=',1)->where('status','=',1)
-                ->orderBy('videos.created_at', 'desc')->paginate(1)->map(function ($item) {
+                ->orderBy('videos.created_at', 'desc')->get()->map(function ($item) {
                 $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
                 $item['video_url'] = URL::to('/').'/storage/app/public/';
                 return $item;
@@ -1161,13 +1165,12 @@ public function verifyandupdatepassword(Request $request)
     $videos_cat = VideoCategory::where('id','=',$channelid)->get();
 
     $response = array(
-      'status' => $status ,
+      'status'     => $status ,
       'main_genre' => $videos_cat[0]->name,
       'categoryVideos' => $videos
     );
 
     return response()->json($response, 200);
-
   }
 
   public function videodetail(Request $request)
@@ -10108,4 +10111,185 @@ public function CheckBecomeSubscription(Request $request)
 }
 
 
+public function VideoSchedules(Request $request)
+{
+
+  try{
+
+    $video_schedules = VideoSchedules::get();
+
+    $response = array(
+      'status'=> 'true',
+      'message' => 'Video Schedules Retrived Data',
+      'video_schedules'=> $video_schedules,
+  );
+
+
+    }
+    catch (\Throwable $th) {
+
+        $response = array(
+          'status'=>'false',
+          'message'=>$th->getMessage(),
+        );
+
+    }
+
+  return response()->json($response, 200);
+}
+
+
+
+public function ScheduledVideos(Request $request)
+{
+
+  try{
+
+    $scheduled_videos = ScheduleVideos::get();
+
+    $response = array(
+      'status'=> 'true',
+      'message' => 'Scheduled Videos Retrived Data',
+      'scheduled_videos'=> $scheduled_videos,
+  );
+
+
+    }
+    catch (\Throwable $th) {
+
+        $response = array(
+          'status'=>'false',
+          'message'=>$th->getMessage(),
+        );
+
+    }
+
+  return response()->json($response, 200);
+}
+
+
+public function ReScheduledVideos(Request $request)
+{
+
+  try{
+
+    $rescheduled_videos = ReSchedule::get();
+
+    $response = array(
+      'status'=> 'true',
+      'message' => 'ReScheduled Videos Retrived Data',
+      'rescheduled_videos'=> $rescheduled_videos,
+  );
+
+
+    }
+    catch (\Throwable $th) {
+
+        $response = array(
+          'status'=>'false',
+          'message'=>$th->getMessage(),
+        );
+
+    }
+
+  return response()->json($response, 200);
+}
+
+public function Video_Schedules(Request $request)
+{
+
+  try{
+
+    $Schedule_id =  $request['schedule_id'];
+
+    $VideoSchedules = VideoSchedules::where("id", "=", $Schedule_id)
+    ->first(); 
+
+    $response = array(
+      'status'=> 'true',
+      'message' => 'Video Schedules Retrived Data',
+      'VideoSchedules'=> $VideoSchedules,
+  );
+
+
+    }
+    catch (\Throwable $th) {
+
+        $response = array(
+          'status'=>'false',
+          'message'=>$th->getMessage(),
+        );
+
+    }
+
+  return response()->json($response, 200);
+}
+
+
+public function Scheduled_Videos(Request $request)
+{
+
+  try{
+
+    $Schedule_id =  $request['schedule_id'];
+    $shedule_date =  $request['shedule_date'];
+
+    $VideoSchedules = VideoSchedules::where("id", "=", $Schedule_id)
+    ->first(); 
+    $scheduled_videos = ScheduleVideos::where('schedule_id',$Schedule_id)->where('shedule_date',$shedule_date)->get();
+
+    $response = array(
+      'status'=> 'true',
+      'message' => 'Schedule Videos Videos Retrived Data',
+      'VideoSchedules'=> $VideoSchedules,
+      'scheduled_videos'=> $scheduled_videos,
+
+  );
+
+
+    }
+    catch (\Throwable $th) {
+
+        $response = array(
+          'status'=>'false',
+          'message'=>$th->getMessage(),
+        );
+
+    }
+
+  return response()->json($response, 200);
+}
+
+
+public function ReScheduled_Videos(Request $request)
+{
+
+  try{
+
+    $Schedule_id =  $request['schedule_id'];
+    $reschedule_date =  $request['reschedule_date'];
+
+    $VideoSchedules = VideoSchedules::where("id", "=", $Schedule_id)
+    ->first(); 
+    $scheduled_videos = ReScheduled::where('schedule_id',$Schedule_id)->where('reschedule_date',$reschedule_date)->get();
+
+    $response = array(
+      'status'=> 'true',
+      'message' => 'ReScheduled Videos Retrived Data',
+      'VideoSchedules'=> $VideoSchedules,
+  );
+
+
+    }
+    catch (\Throwable $th) {
+
+        $response = array(
+          'status'=>'false',
+          'message'=>$th->getMessage(),
+        );
+
+    }
+
+  return response()->json($response, 200);
+}
 }
