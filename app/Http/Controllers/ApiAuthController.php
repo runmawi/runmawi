@@ -6318,32 +6318,33 @@ public function LocationCheck(Request $request){
 
     public function MostwatchedVideos(){
 
-      $Recomended = HomeSetting::first();
+        $Recommendation = HomeSetting::pluck('Recommendation')->first();
 
-      $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-      $countryName =  $geoip->getCountry();
-      $getfeching = Geofencing::first();
+        if( $Recommendation == 1 ){
 
-      if( $getfeching->geofencing == 'ON'){
-
-          $block_videos=BlockVideo::where('country_id',$countryName)->get();
-            if(!$block_videos->isEmpty()){
-                foreach($block_videos as $block_video){
-                    $blockvideos[]=$block_video->video_id;
+          $Mostwatchedvideos = RecentView::select('video_id','videos.*',DB::raw('COUNT(video_id) AS count'))
+                ->join('videos', 'videos.id', '=', 'recent_views.video_id');
+                if(Geofencing() !=null && Geofencing()->geofencing == 'ON')
+                {
+                  $Mostwatchedvideos = $Mostwatchedvideos->whereNotIn('videos.id',Block_videos());
                 }
-            }  else{  $blockvideos=[];  } }
-            else {  $blockvideos=[];  }
+          $Mostwatchedvideos =$Mostwatchedvideos->groupBy('video_id')
+                ->orderByRaw('count DESC' )->limit(20)->get()->map(function ($item) {
+                  $item['Thumbnail'] = URL::to('/').'/public/uploads/images/'.$item->image ;
+                  $item['Player_thumbnail'] = URL::to('/').'/public/uploads/images/'.$item->player_image ;
+                  $item['TV_Thumbnail'] = URL::to('/').'/public/uploads/images/'.$item->video_tv_image ;
+                  $item['Video_Title_Thumbnail'] = URL::to('/').'/public/uploads/images/'.$item->video_title_image ;
+                  return $item;
+            });
+        } 
 
-      if( $Recomended->Recommendation == 1 ){
-
-        $Mostwatchedvideos = RecentView::select('video_id','videos.*',DB::raw('COUNT(video_id) AS count'))
-              ->join('videos', 'videos.id', '=', 'recent_views.video_id')->whereNotIn('videos.id',$blockvideos)->groupBy('video_id')
-              ->orderByRaw('count DESC' )->limit(20)->get();
-      } else{   $Mostwatchedvideos =[];
-       }
-        return response()->json([
+        $response = array(
+          'status'  => 'true',
           'message' => 'Most watched videos  Retrieve successfully',
-          'Mostwatchedvideos' => $Mostwatchedvideos ], 200);
+          'Mostwatchedvideos' => !empty($Mostwatchedvideos) ? $Mostwatchedvideos  : [] ,
+        );
+
+        return response()->json($response, 200);
     }
 
     public function MostwatchedVideosUser(){
