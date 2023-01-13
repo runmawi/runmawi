@@ -9,7 +9,7 @@
             <div class="block-space">
                <div class="row justify-content-between">
                    <div class="col-lg-4 col-md-4 col-sm-12 r-mt-15">
-                       <a aria-label="apps" class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img alt="apps-logo" src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="Flicknexs"> </a>
+                       <a aria-label="apps" class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img alt="apps-logo" src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="" alt="Flicknexs"> </a>
                      <div class="d-flex mt-2">
 
                       <?php if(!empty($settings->facebook_page_id)){?>
@@ -148,23 +148,23 @@
       <!-- jQuery, Popper JS -->
 
       <script  src="<?= URL::to('/'). '/assets/js/jquery-3.4.1.min.js';?>"></script>
-      <script defer src="<?= URL::to('/'). '/assets/js/popper.min.js';?>"></script>
+      <script  src="<?= URL::to('/'). '/assets/js/popper.min.js';?>"></script>
       <!-- Bootstrap JS -->
-      <script defer src="<?= URL::to('/'). '/assets/js/bootstrap.min.js';?>"></script>
+      <script src="<?= URL::to('/'). '/assets/js/bootstrap.min.js';?>"></script>
       <!-- Slick JS -->
       <script  src="<?= URL::to('/'). '/assets/js/slick.min.js';?>"></script>
       <!-- owl carousel Js -->
       <script  src="<?= URL::to('/'). '/assets/js/owl.carousel.min.js';?>"></script>
       <!-- select2 Js -->
-      <script defer src="<?= URL::to('/'). '/assets/js/select2.min.js';?>"></script>
+      <script src="<?= URL::to('/'). '/assets/js/select2.min.js';?>"></script>
       <!-- Magnific Popup-->
       <script  src="<?= URL::to('/'). '/assets/js/jquery.magnific-popup.min.js';?>"></script>
       <!-- Slick Animation-->
-      <script defer src="<?= URL::to('/'). '/assets/js/slick-animation.min.js';?>"></script>
+      <script src="<?= URL::to('/'). '/assets/js/slick-animation.min.js';?>"></script>
       <!-- Custom JS-->
       <script  src="<?= URL::to('/'). '/assets/js/custom.js';?>"></script>
 <script  src="<?= URL::to('/'). '/assets/js/jquery.lazy.js';?>"></script>
-      <script defer src="<?= URL::to('/'). '/assets/js/jquery.lazy.min.js';?>"></script>
+      <script src="<?= URL::to('/'). '/assets/js/jquery.lazy.min.js';?>"></script>
        <script>
     $(document).ready(function () {
       $(".thumb-cont").hide();
