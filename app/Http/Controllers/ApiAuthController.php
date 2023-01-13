@@ -1252,13 +1252,13 @@ public function verifyandupdatepassword(Request $request)
             ->where('advertisements.ads_category',$video->pre_ads_category)
             ->where('ads_position','pre')
             ->where('advertisements.id',$video->pre_ads)
+            ->groupBy('advertisements.id')
             ->get()->map->only('ads_path','ads_video')->map(function ($item) {
                 $item['ads_type'] = $item['ads_video'] == null ? "Google_tag" : "upload_ads";
                 $item['ads_videos_url'] = URL::to('public/uploads/AdsVideos/'.$item['ads_video']);
                 return $item;
             });
 
-    $Ads_Videos_Pre[] = count($AdsVideosPre) >= 1 ? $AdsVideosPre->random() : [];
 
     $AdsVideosMid = AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
             ->Join('videos','advertisements.ads_category','=','videos.mid_ads_category')
@@ -1268,13 +1268,13 @@ public function verifyandupdatepassword(Request $request)
             ->where('videos.id',$video->id)
             ->where('ads_position','mid')
             ->where('advertisements.id',$video->mid_ads)
+            ->groupBy('advertisements.id')
             ->get()->map->only('ads_path','ads_video')->map(function ($item) {
                 $item['ads_type'] = $item['ads_video'] == null ? "Google_tag" : "upload_ads";
                 $item['ads_videos_url'] = URL::to('public/uploads/AdsVideos/'.$item['ads_video']);
                 return $item;
             });
 
-    $Ads_Videos_Mid[] = count($AdsVideosMid) >= 1 ? $AdsVideosMid->random() : [] ;
 
     $AdsVideosPost = AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
             ->Join('videos','advertisements.ads_category','=','videos.post_ads_category')
@@ -1283,14 +1283,13 @@ public function verifyandupdatepassword(Request $request)
             ->where('videos.id',$video->id)
             ->where('ads_position','post')
             ->where('advertisements.id',$video->post_ads)
-
+            ->groupBy('advertisements.id')
             ->get()->map->only('ads_path','ads_video')->map(function ($item) {
                 $item['ads_type'] = $item['ads_video'] == null ? "Google_tag" : "upload_ads";
                 $item['ads_videos_url'] = URL::to('public/uploads/AdsVideos/'.$item['ads_video']);
                 return $item;
             });
 
-    $Ads_Videos_Post[] = count($AdsVideosPost) >= 1 ? $AdsVideosPost->random() : [] ;
 
     $response = array(
       'status' => $status,
@@ -1310,9 +1309,9 @@ public function verifyandupdatepassword(Request $request)
       'main_genre' => $main_genre,
       'languages' => $languages,
       'videoads' => $videoads,
-      'Ads_videos_Pre' => $Ads_Videos_Pre,
-      'Ads_videos_Mid' => $Ads_Videos_Mid,
-      'Ads_videos_post' => $Ads_Videos_Post,
+      'Ads_videos_Pre' => $AdsVideosPre,
+      'Ads_videos_Mid' => $AdsVideosMid,
+      'Ads_videos_post' => $AdsVideosPost,
     );
 
     return response()->json($response, 200);
@@ -7024,75 +7023,6 @@ public function Adstatus_upate(Request $request)
       'status'  => 'true',
       'Message' => 'Ads status changed Successfully'], 200);
 }
-
-public function Videos_ads_list(Request $request)
-{
-    try {
-
-        $video = Video::find( $request->video_id);
-
-        $AdsVideosPre = AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
-            ->Join('videos','advertisements.ads_category','=','videos.pre_ads_category')
-            ->where('ads_events.status',1)
-            ->where('advertisements.status',1)
-            ->where('advertisements.ads_category',$video->pre_ads_category)
-            ->where('ads_position','pre')
-            ->where('advertisements.id',$video->pre_ads)
-            ->get()->map->only('ads_path','ads_video')->map(function ($item) {
-                $item['ads_type'] = $item['ads_video'] == null ? "Google_tag" : "upload_ads";
-                $item['ads_videos_url'] = URL::to('public/uploads/AdsVideos/'.$item['ads_video']);
-                return $item;
-            });
-
-        $Ads_Videos_Pre = count($AdsVideosPre) >= 1 ? $AdsVideosPre->random() : [];
-
-        $AdsVideosMid = AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
-            ->Join('videos','advertisements.ads_category','=','videos.mid_ads_category')
-            ->where('ads_events.status',1)
-            ->where('advertisements.status',1)
-            ->where('advertisements.ads_category',$video->mid_ads_category)
-            ->where('videos.id',$video->id)
-            ->where('ads_position','mid')
-            ->where('advertisements.id',$video->mid_ads)
-            ->get()->map->only('ads_path','ads_video')->map(function ($item) {
-                $item['ads_type'] = $item['ads_video'] == null ? "Google_tag" : "upload_ads";
-                $item['ads_videos_url'] = URL::to('public/uploads/AdsVideos/'.$item['ads_video']);
-                return $item;
-            });
-
-        $Ads_Videos_Mid = count($AdsVideosMid) >= 1 ? $AdsVideosMid->random() : [] ;
-
-        $AdsVideosPost = AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
-            ->Join('videos','advertisements.ads_category','=','videos.post_ads_category')
-            ->where('ads_events.status',1)->where('advertisements.status',1)
-            ->where('advertisements.ads_category',$video->post_ads_category)
-            ->where('videos.id',$video->id)
-            ->where('ads_position','post')
-            ->where('advertisements.id',$video->post_ads)
-            ->get()->map->only('ads_path','ads_video')->map(function ($item) {
-                $item['ads_type'] = $item['ads_video'] == null ? "Google_tag" : "upload_ads";
-                $item['ads_videos_url'] = URL::to('public/uploads/AdsVideos/'.$item['ads_video']);
-                return $item;
-            });
-
-        $Ads_Videos_Post = count($AdsVideosPost) >= 1 ? $AdsVideosPost->random() : [] ;
-
-        $response = array(
-            'status'=>'true',
-            'Ads_Videos_Pre' => $Ads_Videos_Pre,
-            'Ads_Videos_Mid' => $Ads_Videos_Mid,
-            'Ads_Videos_post' => $Ads_Videos_Post,
-        );
-    }
-    catch (\Throwable $th) {
-        $response = array(
-            'status'=>'false',
-            'message'=>$th->getMessage(),
-        );
-    }
-    return response()->json($response, 200);
-}
-
 
    public function profileimage_default()
 {
