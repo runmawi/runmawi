@@ -3898,6 +3898,15 @@ class ChannelController extends Controller
                             $new_date = null;
                         }
                     }
+                }else{
+                    if(@$ScheduleVideos->sheduled_starttime <= $current_time && @$ScheduleVideos->shedule_endtime >= $current_time 
+                    ){
+                        $new_date = Carbon::parse($shedule_date.' '.@$ScheduleVideos->shedule_endtime)
+                        ->format('M d , y h:i:s a');
+
+                    }else{
+                        $new_date = null;
+                    }
                 }
   
                 }
