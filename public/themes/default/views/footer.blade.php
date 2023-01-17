@@ -3,13 +3,22 @@
        $user = App\User::where('id','=',1)->first(); 
        $app_setting = App\AppSetting::where('id','=',1)->where('status','hidden')->first();
        $session = session()->all();
+       $theme_mode = App\SiteTheme::pluck('theme_mode')->first();
+       $theme = App\SiteTheme::first();
 ?>
 <footer class="mb-0">
          <div class="container-fluid">
             <div class="block-space">
                <div class="row justify-content-between">
                    <div class="col-lg-4 col-md-4 col-sm-12 r-mt-15">
-                       <a aria-label="apps" class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img alt="apps-logo" src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="" alt="Flicknexs"> </a>
+                       <!-- <a aria-label="apps" class="navbar-brand" href="<?php //echo URL::to('home') ?>"> <img alt="apps-logo" src="<?php // URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="" alt="Flicknexs"> </a> -->
+                       <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
+                     <a class="navbar-brand mb-0" href="<?php echo URL::to('home') ?>"> <img alt="logo" src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->light_mode_logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a>
+                     <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?> 
+                     <a class="navbar-brand mb-0" href="<?php echo URL::to('home') ?>"> <img alt="logo" src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a>
+                     <?php }else { ?> 
+                     <a class="navbar-brand mb-0" href="<?php echo URL::to('home') ?>"> <img alt="logo" src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a>
+                     <?php } ?>
                      <div class="d-flex mt-2">
 
                       <?php if(!empty($settings->facebook_page_id)){?>
