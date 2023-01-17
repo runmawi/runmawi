@@ -7051,8 +7051,10 @@ class AdminVideosController extends Controller
                 $last_current_time = $choosedtime_exitvideos->current_time;
                 $last_sheduled_endtime =
                     $choosedtime_exitvideos->sheduled_endtime;
+                    // print_r($last_shedule_endtime);
+                    // print_r($last_sheduled_endtime);exit;
 
-                if ($last_shedule_endtime < $current_time) {
+                if ($last_shedule_endtime > $current_time) {
                     $time = $choose_current_time;
                     $minutes = $time[0] * 60.0 + $time[1] * 1.0;
                     $totalSecs = $minutes * 60;
@@ -7211,7 +7213,7 @@ class AdminVideosController extends Controller
             }else{
                 $Video_duration = $videochooed->duration;
             }
-            if($current_time < $store_current_time){
+            if($current_time > $store_current_time){
 
                 $choose_current_time =  explode(":", date("h:i", strtotime($current_time)));
 
@@ -7244,8 +7246,42 @@ class AdminVideosController extends Controller
                     $starttime = date("h:i", strtotime($current_time));
                     $sheduled_starttime = date("h:i A", strtotime($current_time));
                 }
+            }elseif($current_time < $store_current_time){
 
-            }else{
+                    $choose_current_time =  explode(":", date("h:i", strtotime($current_time)));
+    
+                    $time = $choose_current_time;
+                    // echo "<pre>"; print_r($choose_current_time);
+    
+                    $minutes = $time[0] * 60.0 + $time[1] * 1.0;
+                    $totalSecs = $minutes * 60;
+                    $sec = $totalSecs + $Video_duration;
+    
+                    $hour = floor($sec / 3600);
+                    $minute = floor(($sec / 60) % 60);
+                    $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
+                    $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
+    
+                    $TimeFormat = TimeFormat::where('hours',$hours)->first();
+                    if(!empty($TimeFormat)){
+    
+                        $shedule_endtime = $TimeFormat->hours_format .":" .$minutes ." " .date("A", strtotime($now));
+    
+                        $sheduled_endtime = $TimeFormat->hours_format . ":" . $minutes;
+                        $starttime = date("h:i", strtotime($current_time));
+                        $sheduled_starttime = date("h:i A", strtotime($current_time));
+    
+                    }else{
+                        $shedule_endtime = $hours .":" .$minutes ." " .date("A", strtotime($now));
+    
+                        $sheduled_endtime = $hours . ":" . $minutes;
+    
+                        $starttime = date("h:i", strtotime($current_time));
+                        $sheduled_starttime = date("h:i A", strtotime($current_time));
+                    }
+   
+                }
+            else{
 
                 // $Video_duration = $videochooed->duration;
                 $time = $choose_current_time;

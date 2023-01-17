@@ -3850,15 +3850,6 @@ class ChannelController extends Controller
             $choosed_date = $year.'/'.$choosedmonth.'/'.$date;
             $shedule_date = $year.'/'.$choosedmonth.'/'.$data["date"];
 
-
-            // dd($string);
-
-
-            // $d = new \DateTime("now");
-            // $d->setTimezone(new \DateTimeZone("Asia/Kolkata"));
-            // $now = $d->format("Y-m-d h:i:s a");
-            // $current_time = date("h:i A", strtotime($now));
-            // $current_date = date("Y/m/d", strtotime($now));
             if(!empty($settings->default_time_zone)){
             date_default_timezone_set($settings->default_time_zone);
             }else{ 
@@ -3870,56 +3861,58 @@ class ChannelController extends Controller
             $current_time = date("h:i A", time());
             $current_date = date("Y/m/d", time());
 
-            // dd();
             if($current_date == $choosed_date){
                 $ScheduleVideos = ScheduleVideos::where("shedule_date", "=", $shedule_date)
                 ->where("schedule_id", "=", $schedule_id)
-                ->where("sheduled_starttime", "<=", $current_time)
-                ->where("shedule_endtime", ">=", $current_time)
+                ->where("sheduled_starttime", "<=", '12:55 PM')
+                // ->where("shedule_endtime", ">=", '12:55 PM')
                 ->first();
 
                 $nextVideos = ScheduleVideos::where("shedule_date", "=", $shedule_date)
                 ->where("schedule_id", "=", $schedule_id)
                 ->where("sheduled_starttime", ">=", $current_time)
                 ->first();
-            // dd($current_time);
+            // dd($nextVideos);
             
                 if (!empty($ScheduleVideos))
                 {
-                    if(@$ScheduleVideos->sheduled_starttime <= $current_time && @$ScheduleVideos->shedule_endtime >= $current_time 
-                    // || $ScheduleVideos->sheduled_starttime == $current_time && $ScheduleVideos->shedule_endtime >= $current_time
-                    ){
-                        $new_date = Carbon::parse($shedule_date.' '.@$ScheduleVideos->shedule_endtime)
-                        // ->format('h:i:s a');
-                        ->format('M d , y h:i:s a');
 
+                $sheduled_starttime = explode(":",$ScheduleVideos->sheduled_starttime);
+                if(count($sheduled_starttime) > 0){
+                    if($sheduled_starttime[0] == 12){
+                        if(@$ScheduleVideos->sheduled_starttime >= $current_time && @$ScheduleVideos->shedule_endtime >= $current_time 
+                        ){
+                            $new_date = Carbon::parse($shedule_date.' '.@$ScheduleVideos->shedule_endtime)
+                            ->format('M d , y h:i:s a');
+    
+                        }else{
+                            $new_date = null;
+                        }
                     }else{
-                        $new_date = null;
+                        if(@$ScheduleVideos->sheduled_starttime <= $current_time && @$ScheduleVideos->shedule_endtime >= $current_time 
+                        ){
+                            $new_date = Carbon::parse($shedule_date.' '.@$ScheduleVideos->shedule_endtime)
+                            ->format('M d , y h:i:s a');
+    
+                        }else{
+                            $new_date = null;
+                        }
                     }
+                }
+  
                 }
                 else
                 {
                     $new_date = null;
                 }
-                // $new_date = 'Sep 28 , 22 08:51:00 pm';
-            // dd($ScheduleVideos);
 
-                // echo "<pre>";
-                // print_r($ScheduleVideos);
                 if(!empty($new_date) &&  !empty($nextVideos) && $new_date != null){
                     $next_start = Carbon::parse($shedule_date.' '.@$nextVideos->sheduled_starttime)
                     ->format('M d , y h:i:s a');
                 }else{
                     $next_start = '';
                 }
-                // echo "<pre>";
-                // print_r($next_start);
-                // exit;
-                    
-                    // dd($next_start);
-                    // dd($new_date);
                     if(!empty($next_start) || !empty($new_date)){
-                        // dd($new_date);
                         $data = [
                         "nextVideos" => $nextVideos,
                         "ScheduleVideos" => $ScheduleVideos,
@@ -3927,8 +3920,6 @@ class ChannelController extends Controller
                         "next_start" => $next_start,
                         "Choose_current_date" => '',
                         ];
-                        // dd($data);
-
                         return view("admin.schedule.video", $data);
 
                     }else{
