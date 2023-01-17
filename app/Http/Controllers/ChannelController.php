@@ -3862,11 +3862,31 @@ class ChannelController extends Controller
             $current_date = date("Y/m/d", time());
 
             if($current_date == $choosed_date){
-                $ScheduleVideos = ScheduleVideos::where("shedule_date", "=", $shedule_date)
-                ->where("schedule_id", "=", $schedule_id)
-                ->where("sheduled_starttime", "<=", $current_time)
-                // ->where("shedule_endtime", ">=", $current_time)
-                ->first();
+
+                $currenttime = explode(":",$current_time);
+                if(count($currenttime) > 0){
+                    if($currenttime[0] == 12){
+                        $ScheduleVideos = ScheduleVideos::where("shedule_date", "=", $shedule_date)
+                        ->where("schedule_id", "=", $schedule_id)
+                        ->where("sheduled_starttime", "<=", $current_time)
+                        // ->where("shedule_endtime", ">=", $current_time)
+                        ->first();
+    
+                    }else{
+
+                        $ScheduleVideos = ScheduleVideos::where("shedule_date", "=", $shedule_date)
+                        ->where("schedule_id", "=", $schedule_id)
+                        ->where("sheduled_starttime", "<=", $current_time)
+                        ->where("shedule_endtime", ">=", $current_time)
+                        ->first();
+
+                    }
+                }
+                // $ScheduleVideos = ScheduleVideos::where("shedule_date", "=", $shedule_date)
+                // ->where("schedule_id", "=", $schedule_id)
+                // ->where("sheduled_starttime", "<=", $current_time)
+                // // ->where("shedule_endtime", ">=", $current_time)
+                // ->first();
 
                 $nextVideos = ScheduleVideos::where("shedule_date", "=", $shedule_date)
                 ->where("schedule_id", "=", $schedule_id)
@@ -3978,20 +3998,38 @@ class ChannelController extends Controller
 
             $current_time = date("h:i A", time());
             $current_date = date("Y/m/d", time());
+            // $current_time  = '12:49 PM';
             $shedule_date = $current_date;
             // dd($current_date);
             $VideoSchedules = VideoSchedules::where("name", "=", $name)
             ->first(); 
             if(!empty($VideoSchedules)){
 
-
-                $ScheduleVideos = ScheduleVideos::where("schedule_id", "=", @$VideoSchedules->id)
-                ->where("sheduled_starttime", ">=", $current_time)
-                // ->where("sheduled_starttime", "<=", $current_time)
+                $currenttime = explode(":",$current_time);
+                if(count($currenttime) > 0){
+                    if($currenttime[0] == 12){
+                        $ScheduleVideos = ScheduleVideos::where("schedule_id", "=", @$VideoSchedules->id)
+                        ->where("sheduled_starttime", ">=", $current_time)
+                        // ->where("sheduled_starttime", "<=", $current_time)
+                        // ->where("shedule_endtime", ">=", $current_time)
+                        ->where("shedule_date", "=", $current_date)
+                        ->first();
+                    }else{
+                        $ScheduleVideos = ScheduleVideos::where("schedule_id", "=", @$VideoSchedules->id)
+                        ->where("sheduled_starttime", ">=", $current_time)
+                        // ->where("sheduled_starttime", "<=", $current_time)
+                        ->where("shedule_endtime", ">=", $current_time)
+                        ->where("shedule_date", "=", $current_date)
+                        ->first();
+                    }
+                }
+                // $ScheduleVideos = ScheduleVideos::where("schedule_id", "=", @$VideoSchedules->id)
+                // ->where("sheduled_starttime", ">=", $current_time)
+                // // ->where("sheduled_starttime", "<=", $current_time)
                 // ->where("shedule_endtime", ">=", $current_time)
-                ->where("shedule_date", "=", $current_date)
-                ->first();
-                
+                // ->where("shedule_date", "=", $current_date)
+                // ->first();
+                // dd($ScheduleVideos);
                 $nextVideos = ScheduleVideos::where("schedule_id", "=", @$VideoSchedules->id)
                 ->where("sheduled_starttime", ">=", $current_time)
                 ->first();
@@ -4014,14 +4052,16 @@ class ChannelController extends Controller
                             $new_date = null;
                         }
                     }else{
-                        if(@$ScheduleVideos->sheduled_starttime <= $current_time && @$ScheduleVideos->shedule_endtime >= $current_time 
-                        ){
+                        
+                        // if(@$ScheduleVideos->sheduled_starttime <= $current_time && @$ScheduleVideos->shedule_endtime >= $current_time 
+                        // ){
+                            
                             $new_date = Carbon::parse($shedule_date.' '.@$ScheduleVideos->shedule_endtime)
                             ->format('M d , y h:i:s a');
     
-                        }else{
-                            $new_date = null;
-                        }
+                        // }else{
+                        //     $new_date = null;
+                        // }
                     }
                 }else{
                     if(@$ScheduleVideos->sheduled_starttime <= $current_time && @$ScheduleVideos->shedule_endtime >= $current_time 
