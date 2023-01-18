@@ -18,6 +18,20 @@ class TimeFormatSeeder extends Seeder
 
         $data = [
             [
+                'hours' => '12',
+                'hours_format' => '12',
+                'format' => 'AM',
+                'created_at' => Carbon::now(),
+                'updated_at' => null,
+            ],
+            [
+                'hours' => '12',
+                'hours_format' => '12',
+                'format' => 'PM',
+                'created_at' => Carbon::now(),
+                'updated_at' => null,
+            ],
+            [
                 'hours' => '13',
                 'hours_format' => '01',
                 'format' => 'PM',

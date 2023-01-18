@@ -266,7 +266,7 @@ class LiveStreamController extends Controller
           $userIp = $geoip->getip();    
           $countryName = $geoip->getCountry();
           $ThumbnailSetting = ThumbnailSetting::first();
-          $parentCategories = LiveCategory::where('name',$cid)->first();
+          $parentCategories = LiveCategory::where('slug',$cid)->first();
           if(!empty($parentCategories)){
             $parentCategories_id = $parentCategories->id;
             $parentCategories_name = $parentCategories->name;

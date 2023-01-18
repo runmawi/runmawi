@@ -300,6 +300,8 @@ $media_url = URL::to("/schedule/videos") . "/" . $schedule->name;
                         alert('Please Choose Time');
                     }else if(value == ''){
                         alert('Please Choose Time');
+                    }else if(value.schedule_time == 'Today Slot Are Full'){
+                        alert('Today Slot Are Full Please Change The Calendar and Start Schedule.');
                     }else{
                         $('tbody').html(value.table_data);
                     }
@@ -358,7 +360,8 @@ $media_url = URL::to("/schedule/videos") . "/" . $schedule->name;
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
     <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         
     $.ajaxSetup({
@@ -643,6 +646,22 @@ function drop(video_id) {
    			console.log(value);
                if(value == ''){
                         alert('Please Choose Time');
+                    }else if(value.schedule_time == 'Today Slot Are Full'){
+                        swal.fire({
+                    // title: 'Oops', 
+                    text: 'Today Slot Are Full Please Change The Calendar and Start Schedule!', 
+                    allowOutsideClick:false,
+                    // icon: 'error',
+                    // title: 'Oops...',
+                    });
+                        // alert('Today Slot Are Full Please Change The Calendar and Start Schedule.');
+                    }else if(value.schedule_time == 'Change the Slot time'){
+                        swal.fire({
+                    // title: 'Oops', 
+                    text: 'Change The Slot And Please Start to Schedule!', 
+                    allowOutsideClick:false,
+
+                    });
                     }else{
                         $('tbody').html(value.table_data);
                     }
