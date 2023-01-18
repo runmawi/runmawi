@@ -2470,7 +2470,8 @@ font-size: 30px;
 
 }
 .sec-3{
-    background: rgba(0, 60, 60, 1);
+  background: linear-gradient(180deg, #0D8282 0%, #003C3C 100%);
+
       padding: 10px;
 
 }
@@ -2508,6 +2509,7 @@ line-height: 52px;
     font-weight: 600;
     font-size: 35px;
     text-align: center;
+    line-height: 52px;
 }
 .get{
    font-family: 'Roboto', sans-serif;

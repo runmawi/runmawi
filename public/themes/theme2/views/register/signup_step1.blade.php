@@ -313,25 +313,15 @@ $jsondata = json_decode($jsonString, true); ?>
     
   </div>
 </div></nav>
-<div class="position-relative" style="margin-top:-70px;">
+<div class="position-relative" style="margin-top:-70px;background-image:url('<?php echo  URL::to('/assets/img/ban33.png')?>');background-repeat: no-repeat;background-size: cover;">
 <div class="fixe">
-    <div class="row m-0 p-0">
+    <div class="row m-0 p-0" style="padding:50px 0 0 50px;">
         <div class="col-md-4 col-lg-4 p-0">
-             <img class="w-100" src="<?php echo  URL::to('/assets/img/h1.png')?>" style="">
-             <img class="w-100 mt-2" src="<?php echo  URL::to('/assets/img/h2.png')?>" style="">
+            
         </div>
         <div class="col-md-4 col-lg-4 ">
             <div class="" style="margin:0 5px auto;">
-            <div class="row">
-                <div class="col-md-6 p-0">
-                    <div class="nees">
-                     <img class="w-100 " src="<?php echo  URL::to('/assets/img/h3.png')?>" style=""></div>
-                </div>
-                <div class="col-md-6 p-0">
-                    <div class="nees">
-                     <img class="w-100 " src="<?php echo  URL::to('/assets/img/h4.png')?>" style=""></div>
-                </div>
-            </div>
+           
             <div class="p-0" style="margin:5px 4px 5px auto;">
       <div class="row p-0" >
          <div class="col-sm-12 col-md-12 col-lg-12 p-0">
@@ -541,21 +531,11 @@ $jsondata = json_decode($jsonString, true); ?>
       </div>
    </div>
 
-             <div class="row">
-                <div class="col-md-6 p-0">
-                    <div class="nees">
-                     <img class="w-100 " src="<?php echo  URL::to('/assets/img/r1.png')?>" style=""></div>
-                </div>
-                <div class="col-md-6 p-0">
-                    <div class="nees">
-                     <img class="w-100 " src="<?php echo  URL::to('/assets/img/r2.png')?>" style=""></div>
-                </div>
-            </div>
+            
         </div>
         </div>
         <div class="col-md-4 col-lg-4 p-0">
-            <img class="w-100" src="<?php echo  URL::to('/assets/img/h6.png')?>" style="">
-            <img class="w-100 mt-2" src="<?php echo  URL::to('/assets/img/h7.png')?>" style="">
+          
         </div>
     </div>
     </div></div>
