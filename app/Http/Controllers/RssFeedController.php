@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 use Vedmant\FeedReader\Facades\FeedReader ;
 use App\ThumbnailSetting ;
 use App\HomeSetting;
+use App\Video;
+use App\LiveStream;
+use App\Episode;
+use App\Audio;
 use SimplePie;
 use Theme;
 
@@ -25,6 +29,76 @@ class RssFeedController extends Controller
         );
 
         return Theme::view('Rss-feed.index', $data);
+    }
+
+    public function videos_view()
+    {
+        $data = array(
+            'title'       => GetWebsiteName() ,
+            'description' => GetWebsiteName() ,
+            'link'      => route('Rss-Feed-videos-view') ,
+            'language'  => 'en' ,
+            'pubDate' => now() ,
+            'videos'  => Video::latest()->get(),
+        );
+
+        return response()->view('Rss-feed.videos_view', $data)->header('Content-Type', 'text/xml');
+    }
+
+    public function livestream_view()
+    {
+        $data = array(
+            'title'       => GetWebsiteName() ,
+            'description' => GetWebsiteName() ,
+            'link'      => route('Rss-Feed-Livestream-view') ,
+            'language'  => 'en' ,
+            'pubDate' => now() ,
+            'livestreams'  => LiveStream::latest()->get(),
+        );
+
+        return response()->view('Rss-feed.livestream_view', $data)->header('Content-Type', 'text/xml');
+    }
+
+    public function episode_view()
+    {
+        $data = array(
+            'title'       => GetWebsiteName() ,
+            'description' => GetWebsiteName() ,
+            'link'      => route('Rss-Feed-episode-view') ,
+            'language'  => 'en' ,
+            'pubDate' => now() ,
+            'episodes'  => Episode::latest()->get(),
+        );
+
+        return response()->view('Rss-feed.Episode_view', $data)->header('Content-Type', 'text/xml');
+    }
+
+    public function audios_view()
+    {
+        $data = array(
+            'title'       => GetWebsiteName() ,
+            'description' => GetWebsiteName() ,
+            'link'      => route('Rss-Feed-audios-view') ,
+            'language'  => 'en' ,
+            'pubDate' => now() ,
+            'audios'  => Audio::latest()->get(),
+        );
+
+        return response()->view('Rss-feed.audio_view', $data)->header('Content-Type', 'text/xml');
+    }
+
+    public function artist_view()
+    {
+        $data = array(
+            'title'       => GetWebsiteName() ,
+            'description' => GetWebsiteName() ,
+            'link'      => route('Rss-Feed-view') ,
+            'language'  => 'en' ,
+            'pubDate' => now() ,
+            'artists'  => Video::latest()->get(),
+        );
+
+        return response()->view('Rss-feed.view', $data)->header('Content-Type', 'text/xml');
     }
 
     public function feed(Request $request)
