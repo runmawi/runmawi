@@ -2030,4 +2030,4 @@ Route::get('/m3u_file_m3u8url', 'LiveStreamController@m3u_file_m3u8url')->name('
 Route::get('/M3U_video_url', 'LiveStreamController@M3U_video_url')->name('M3U_video_url');
 
                         //Rss Feed
-Route::get('/feed', 'RssFeedController@feed')->name('feed');
+Route::get('/Rss-Feed-index', 'RssFeedController@index')->name('Rss-Feed-index');
