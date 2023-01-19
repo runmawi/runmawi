@@ -1,6 +1,6 @@
 <?php 
-   include(public_path('themes/default/views/header.php'));
-   include(public_path('themes/default/views/Rss-feed/Rss_feed_style.blade.php'));
+   include(public_path('themes/theme3/views/header.php'));
+   include(public_path('themes/theme3/views/Rss-feed/Rss_feed_style.blade.php'));
 ?>
 
 <section id="iq-favorites">
@@ -53,5 +53,5 @@
 <section>
 
 <?php
-    //  include(public_path('themes/default/views/footer.blade.php'));  
+    //  include(public_path('themes/theme3/views/footer.blade.php'));  
      ?>
