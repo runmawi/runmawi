@@ -25,7 +25,9 @@ class RssFeedController extends Controller
     public function index()
     {
         $data = array(
-            'thumbnail_setting' => ThumbnailSetting::first(),
+            'videos_count'  => Video::count(),
+            'livestreams_count'  => livestream::count(),
+            'Episode_count'  => Episode::count(),
         );
 
         return Theme::view('Rss-feed.index', $data);
