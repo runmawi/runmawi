@@ -5,10 +5,28 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Vedmant\FeedReader\Facades\FeedReader ;
+use App\ThumbnailSetting ;
+use App\HomeSetting;
 use SimplePie;
+use Theme;
 
 class RssFeedController extends Controller
 {
+    public function __construct()
+    {
+        $this->Theme = HomeSetting::pluck('theme_choosen')->first();
+        Theme::uses( $this->Theme );
+    }
+
+    public function index()
+    {
+        $data = array(
+            'thumbnail_setting' => ThumbnailSetting::first(),
+        );
+
+        return Theme::view('Rss-feed.index', $data);
+    }
+
     public function feed(Request $request)
     {
         try {
