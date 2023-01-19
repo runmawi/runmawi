@@ -2031,3 +2031,9 @@ Route::get('/M3U_video_url', 'LiveStreamController@M3U_video_url')->name('M3U_vi
 
                         //Rss Feed
 Route::get('/Rss-Feed-index', 'RssFeedController@index')->name('Rss-Feed-index');
+Route::get('/Rss-Feed-videos', 'RssFeedController@videos_view')->name('Rss-Feed-videos-view');
+Route::get('/Rss-Feed-Livestream', 'RssFeedController@livestream_view')->name('Rss-Feed-Livestream-view');
+Route::get('/Rss-Feed-episode', 'RssFeedController@episode_view')->name('Rss-Feed-episode-view');
+Route::get('/Rss-Feed-audios', 'RssFeedController@audios_view')->name('Rss-Feed-audios-view');
+
+Route::get('/feed', 'RssFeedController@feed')->name('feed');
