@@ -2028,3 +2028,6 @@ Route::get('/Paystack-live-rent-paymentverify', 'PaystackController@Paystack_liv
                     // Live Stream - M3U file
 Route::get('/m3u_file_m3u8url', 'LiveStreamController@m3u_file_m3u8url')->name('m3u_file_m3u8url');
 Route::get('/M3U_video_url', 'LiveStreamController@M3U_video_url')->name('M3U_video_url');
+
+                        //Rss Feed
+Route::get('/feed', 'RssFeedController@feed')->name('feed');
