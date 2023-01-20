@@ -11,9 +11,9 @@
       <div class="row align-items-center justify-content-between d-flex">
           <div class="col-sm-7 small m-0 text-white exp p-0">
               <div class="mt-2 p-2">
-                  <h2 class="nem mb-4">Enjoy <br>
-10,000+ hours<br>
-Of shows</h2>
+                  <h2 class="nem mb-4 col-md-6">Hours of Infortainment 
+edutainment and
+entertainment.</h2>
                   <ul class="d-flex p-0">
                       <li>  <a href="" target="_blank" class="">FAQ</a></li>
                       <li><a href="" target="_blank" class="">HELP</a></li>
@@ -88,9 +88,11 @@ Of shows</h2>
                           <i class="fa fa-google-plus"></i>
                       </a>-->
                       <?php } ?>
+                        
                   </div>
-            
+              <p class="p-0 mr-3 mt-3">Questions? Call 000-800-123-123</p>
           </div>
+         
       </div>
       
   </div>
