@@ -1176,9 +1176,9 @@ public function verifyandupdatepassword(Request $request)
   public function channelvideosIOS(Request $request)
   {
     try {
-      $channelid     = $request->channelid ;
-      $current_page_no       = $request->current_page_no ;
-      $per_page_no   = $request->per_page_no ;
+      $channelid       = $request->channelid ;
+      $current_page_no = $request->current_page_no ;
+      $per_page_no     = $request->per_page_no ;
 
       $videos= Video::Join('categoryvideos','categoryvideos.video_id','=','videos.id')
               ->where('categoryvideos.category_id',$channelid )
@@ -1189,8 +1189,12 @@ public function verifyandupdatepassword(Request $request)
                 $videos = $videos  ->whereNotIn('videos.id',Block_videos());
               }
   
-      $videos = $videos->latest('videos.created_at')->paginate( $per_page_no , ['*'], 'page', $current_page_no );
-     
+      $videos = $videos->latest('videos.created_at')->paginate( $per_page_no , ['*'], 'page', $current_page_no )
+      ->map(function ($item) {
+        $item['views'] = $item['views'] == null ? 0 : $item['views'];
+        return $item;
+      });
+
       $VideoCategory_name = VideoCategory::where('id','=',$channelid)->pluck('name')->first();
   
       $response = array(
