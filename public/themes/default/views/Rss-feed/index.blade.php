@@ -5,7 +5,7 @@
 
 <section id="iq-favorites">
 
-    <div class="pricing-wrapper clearfix">
+    <div class="pricing-wrapper clearfix mb-5 pb-5">
 		<h1 class="pricing-table-title">{{ 'RSS  LIST' }} </h1>
 
         <a  href="{{ route('Rss-Feed-videos-view') }}" >
@@ -52,6 +52,5 @@
 	</div>
 <section>
 
-<?php
-    //  include(public_path('themes/default/views/footer.blade.php'));  
+<?php include(public_path('themes/default/views/footer.blade.php'));  
      ?>
