@@ -350,7 +350,55 @@ function myFunction() {
 
     // alert('episode_type')
 
-    document.addEventListener("DOMContentLoaded", () => {
+//     document.addEventListener("DOMContentLoaded", () => {
+//   const video = document.querySelector("video");
+//   const source = video.getElementsByTagName("source")[0].src;
+  
+//   // For more options see: https://github.com/sampotts/plyr/#options
+//   // captions.update is required for captions to work with hls.js
+//   const defaultOptions = {};
+
+//   if (Hls.isSupported()) {
+//     // For more Hls.js options, see https://github.com/dailymotion/hls.js
+//     const hls = new Hls();
+//     hls.loadSource(source);
+
+//     // From the m3u8 playlist, hls parses the manifest and returns
+//     // all available video qualities. This is important, in this approach,
+//     // we will have one source on the Plyr player.
+//     hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+
+//       // Transform available levels into an array of integers (height values).
+//       const availableQualities = hls.levels.map((l) => l.height)
+
+//       // Add new qualities to option
+//       defaultOptions.quality = {
+//         default: availableQualities[0],
+//         options: availableQualities,
+//         // this ensures Plyr to use Hls to update quality level
+//         forced: true,        
+//         onChange: (e) => updateQuality(e),
+//       }
+
+//       // Initialize here
+//       const player = new Plyr(video, defaultOptions);
+//     });
+//     hls.attachMedia(video);
+//     window.hls = hls;
+//   }
+
+//   function updateQuality(newQuality) {
+//     window.hls.levels.forEach((level, levelIndex) => {
+//       if (level.height === newQuality) {
+//         console.log("Found quality match with " + newQuality);
+//         window.hls.currentLevel = levelIndex;
+//       }
+//     });
+//   }
+// });
+    
+
+document.addEventListener("DOMContentLoaded", () => {
   const video = document.querySelector("video");
   const source = video.getElementsByTagName("source")[0].src;
   
@@ -358,45 +406,67 @@ function myFunction() {
   // captions.update is required for captions to work with hls.js
   const defaultOptions = {};
 
-  if (Hls.isSupported()) {
-    // For more Hls.js options, see https://github.com/dailymotion/hls.js
-    const hls = new Hls();
-    hls.loadSource(source);
+  if (!Hls.isSupported()) {
+      video.src = source;
+      var player = new Plyr(video, defaultOptions);
+    } else {
+      // For more Hls.js options, see https://github.com/dailymotion/hls.js
+      const hls = new Hls();
+      hls.loadSource(source);
 
-    // From the m3u8 playlist, hls parses the manifest and returns
-    // all available video qualities. This is important, in this approach,
-    // we will have one source on the Plyr player.
-    hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+      // From the m3u8 playlist, hls parses the manifest and returns
+                  // all available video qualities. This is important, in this approach,
+                // we will have one source on the Plyr player.
+              hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
 
-      // Transform available levels into an array of integers (height values).
-      const availableQualities = hls.levels.map((l) => l.height)
+                // Transform available levels into an array of integers (height values).
+                const availableQualities = hls.levels.map((l) => l.height)
+            availableQualities.unshift(0) //prepend 0 to quality array
 
-      // Add new qualities to option
-      defaultOptions.quality = {
-        default: availableQualities[0],
-        options: availableQualities,
-        // this ensures Plyr to use Hls to update quality level
-        forced: true,        
-        onChange: (e) => updateQuality(e),
-      }
+                // Add new qualities to option
+          defaultOptions.quality = {
+            default: 0, //Default - AUTO
+              options: availableQualities,
+              forced: true,        
+              onChange: (e) => updateQuality(e),
+          }
+          // Add Auto Label 
+          defaultOptions.i18n = {
+            qualityLabel: {
+              0: 'Auto',
+            },
+          }
 
-      // Initialize here
-      const player = new Plyr(video, defaultOptions);
-    });
+          hls.on(Hls.Events.LEVEL_SWITCHED, function (event, data) {
+              var span = document.querySelector(".plyr__menu__container [data-plyr='quality'][value='0'] span")
+              if (hls.autoLevelEnabled) {
+                span.innerHTML = `AUTO (${hls.levels[data.level].height}p)`
+              } else {
+                span.innerHTML = `AUTO`
+              }
+            })
+      
+              // Initialize new Plyr player with quality options
+          var player = new Plyr(video, defaultOptions);
+          });	
+
     hls.attachMedia(video);
-    window.hls = hls;
-  }
-
-  function updateQuality(newQuality) {
-    window.hls.levels.forEach((level, levelIndex) => {
-      if (level.height === newQuality) {
-        console.log("Found quality match with " + newQuality);
-        window.hls.currentLevel = levelIndex;
+        window.hls = hls;		 
       }
-    });
-  }
+
+      function updateQuality(newQuality) {
+        if (newQuality === 0) {
+          window.hls.currentLevel = -1; //Enable AUTO quality if option.value = 0
+        } else {
+          window.hls.levels.forEach((level, levelIndex) => {
+            if (level.height === newQuality) {
+              console.log("Found quality match with " + newQuality);
+              window.hls.currentLevel = levelIndex;
+            }
+          });
+        }
+      }
 });
-    
 
 $(window).on("beforeunload", function() { 
 
@@ -447,59 +517,74 @@ return;
 
     // alert(type);
     document.addEventListener("DOMContentLoaded", () => {
-    const video = document.querySelector("video");
-    const source = video.getElementsByTagName("source")[0].src;
-    // alert(video);
-    // alert(source);
+        const video = document.querySelector("video");
+        const source = video.getElementsByTagName("source")[0].src;
+        if (!Hls.isSupported()) {
+      video.src = source;
+      var player = new Plyr(video, defaultOptions);
+    } else {
+      // For more Hls.js options, see https://github.com/dailymotion/hls.js
+      const hls = new Hls();
+      hls.loadSource(source);
 
+      // From the m3u8 playlist, hls parses the manifest and returns
+                  // all available video qualities. This is important, in this approach,
+                // we will have one source on the Plyr player.
+              hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
 
-    // For more options see: https://github.com/sampotts/plyr/#options
-    // captions.update is required for captions to work with hls.js
-    const defaultOptions = {};
+                // Transform available levels into an array of integers (height values).
+                const availableQualities = hls.levels.map((l) => l.height)
+            availableQualities.unshift(0) //prepend 0 to quality array
 
-    if (Hls.isSupported()) {
-    // For more Hls.js options, see https://github.com/dailymotion/hls.js
-    const hls = new Hls();
-    hls.loadSource(source);
+                // Add new qualities to option
+          defaultOptions.quality = {
+            default: 0, //Default - AUTO
+              options: availableQualities,
+              forced: true,        
+              onChange: (e) => updateQuality(e),
+          }
+          // Add Auto Label 
+          defaultOptions.i18n = {
+            qualityLabel: {
+              0: 'Auto',
+            },
+          }
 
-    // From the m3u8 playlist, hls parses the manifest and returns
-    // all available video qualities. This is important, in this approach,
-    // we will have one source on the Plyr player.
-    hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+          hls.on(Hls.Events.LEVEL_SWITCHED, function (event, data) {
+              var span = document.querySelector(".plyr__menu__container [data-plyr='quality'][value='0'] span")
+              if (hls.autoLevelEnabled) {
+                span.innerHTML = `AUTO (${hls.levels[data.level].height}p)`
+              } else {
+                span.innerHTML = `AUTO`
+              }
+            })
+      
+              // Initialize new Plyr player with quality options
+          var player = new Plyr(video, defaultOptions);
+          });	
 
-      // Transform available levels into an array of integers (height values).
-      const availableQualities = hls.levels.map((l) => l.height)
-
-      // Add new qualities to option
-      defaultOptions.quality = {
-        default: availableQualities[0],
-        options: availableQualities,
-        // this ensures Plyr to use Hls to update quality level
-        forced: true,        
-        onChange: (e) => updateQuality(e),
-      }
-
-      // Initialize here
-      const player = new Plyr(video, defaultOptions);
-    });
     hls.attachMedia(video);
-    window.hls = hls;
-    }
-
-    function updateQuality(newQuality) {
-    window.hls.levels.forEach((level, levelIndex) => {
-      if (level.height === newQuality) {
-        console.log("Found quality match with " + newQuality);
-        window.hls.currentLevel = levelIndex;
+        window.hls = hls;		 
       }
-    });
-    }
+
+      function updateQuality(newQuality) {
+        if (newQuality === 0) {
+          window.hls.currentLevel = -1; //Enable AUTO quality if option.value = 0
+        } else {
+          window.hls.levels.forEach((level, levelIndex) => {
+            if (level.height === newQuality) {
+              console.log("Found quality match with " + newQuality);
+              window.hls.currentLevel = levelIndex;
+            }
+          });
+        }
+      }
     });
 
 }
 else{
 // alert();
-          document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
   const video = document.querySelector("video");
   const source = video.getElementsByTagName("source")[0].src;
   
@@ -508,34 +593,58 @@ else{
   const defaultOptions = {};
 
   if (Hls.isSupported()) {
-    // For more Hls.js options, see https://github.com/dailymotion/hls.js
-    const hls = new Hls();
-    hls.loadSource(source);
+const hls = new Hls();
+		hls.loadSource(source);
 
-    // From the m3u8 playlist, hls parses the manifest and returns
-    // all available video qualities. This is important, in this approach,
-    // we will have one source on the Plyr player.
-    hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+    	       hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
 
-      // Transform available levels into an array of integers (height values).
-      const availableQualities = hls.levels.map((l) => l.height)
-      // alert(availableQualities);
-      // console.log(availableQualities[]);
-      // Add new qualities to option
-      defaultOptions.quality = {
-        default: availableQualities[3],
-        options: availableQualities,
-        // this ensures Plyr to use Hls to update quality level
-        forced: true,        
-        onChange: (e) => updateQuality(e),
+	      	     // Transform available levels into an array of integers (height values).
+	      	    const availableQualities = hls.levels.map((l) => l.height)
+	      	availableQualities.unshift(0) //prepend 0 to quality array
+
+	      	    // Add new qualities to option
+		    defaultOptions.quality = {
+		    	default: 0, //Default - AUTO
+		        options: availableQualities,
+		        forced: true,        
+		        onChange: (e) => updateQuality(e),
+		    }
+		    // Add Auto Label 
+		    defaultOptions.i18n = {
+		    	qualityLabel: {
+		    		0: 'Auto',
+		    	},
+		    }
+
+		    hls.on(Hls.Events.LEVEL_SWITCHED, function (event, data) {
+	          var span = document.querySelector(".plyr__menu__container [data-plyr='quality'][value='0'] span")
+	          if (hls.autoLevelEnabled) {
+	            span.innerHTML = `AUTO (${hls.levels[data.level].height}p)`
+	          } else {
+	            span.innerHTML = `AUTO`
+	          }
+	        })
+    
+             // Initialize new Plyr player with quality options
+		     var player = new Plyr(video, defaultOptions);
+         });	
+
+	hls.attachMedia(video);
+    	window.hls = hls;		 
+    
+
+    function updateQuality(newQuality) {
+      if (newQuality === 0) {
+        window.hls.currentLevel = -1; //Enable AUTO quality if option.value = 0
+      } else {
+        window.hls.levels.forEach((level, levelIndex) => {
+          if (level.height === newQuality) {
+            console.log("Found quality match with " + newQuality);
+            window.hls.currentLevel = levelIndex;
+          }
+        });
       }
-
-      // Initialize here
-      const player = new Plyr(video, defaultOptions);
-    });
-    hls.attachMedia(video);
-    window.hls = hls;
-
+    }
 
     $(window).on("beforeunload", function() { 
 
@@ -638,14 +747,6 @@ return;
 }); 
   }
 
-  function updateQuality(newQuality) {
-    window.hls.levels.forEach((level, levelIndex) => {
-      if (level.height === newQuality) {
-        console.log("Found quality match with " + newQuality);
-        window.hls.currentLevel = levelIndex;
-      }
-    });
-  }
 });
 
 }
