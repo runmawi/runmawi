@@ -165,7 +165,7 @@ class AdminLiveStreamController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-
+        $randomString = Str::random(3);
 
         if(!empty($data['video_category_id'])){
             $category_id = $data['video_category_id'];
@@ -385,7 +385,7 @@ class AdminLiveStreamController extends Controller
 
             $live_stream_video = $data['live_stream_video'];
             $live_stream_videopath  = URL::to('public/uploads/LiveStream/');
-            $LiveStream_Video =  time().'_'.$live_stream_video->getClientOriginalName();  
+            $LiveStream_Video =  time().$randomString.'-livestream-video';  
             $live_stream_video->move(public_path('uploads/LiveStream/'), $LiveStream_Video);
             $live_video_name = strtok($LiveStream_Video, '.');
             $M3u8_save_path = $live_stream_videopath.'/'.$live_video_name.'.m3u8';
@@ -410,11 +410,10 @@ class AdminLiveStreamController extends Controller
     }elseif($StorageSetting->aws_storage == 1 && !empty($data['live_stream_video'])){
 
         if($settings->transcoding_access  == 0 ) {
+
             $file = $data['live_stream_video'];
-            // $name = time() . $file->getClientOriginalName();
             $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
 
-            // print_r($file);exit;
             $filePath = $StorageSetting->aws_live_path.'/'. $name;
             
             Storage::disk('s3')    ->put($filePath, file_get_contents($file));
@@ -431,7 +430,6 @@ class AdminLiveStreamController extends Controller
 
             $newfile = explode(".mp4",$name_mp4);
             $namem3u8 = $newfile[0].'.m3u8';   
-            // $name = time() . $file->getClientOriginalName();
             $namem3u8 = null ? str_replace(' ', '_',$namem3u8) : str_replace(' ', '_',$namem3u8) ;        
 
             $transcode_path = @$StorageSetting->aws_transcode_path.'/'. $namem3u8;
@@ -443,7 +441,6 @@ class AdminLiveStreamController extends Controller
             $transcode_path = $path.$transcode_path;
 
             
-            // $movie->live_stream_video = $filePath ;
             if($data['url_type'] == 'live_stream_video' ){
             $movie->live_stream_video = $filePath ; 
             $movie->hls_url = $transcode_path ; 
@@ -452,9 +449,7 @@ class AdminLiveStreamController extends Controller
         }
         else{
             $file = $data['live_stream_video'];
-            // $name = time() . $file->getClientOriginalName();
             $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
-            // print_r($file);exit;
             $filePath = $StorageSetting->aws_live_path.'/'. $name;
             
             Storage::disk('s3')->put($filePath, file_get_contents($file));
@@ -678,47 +673,39 @@ class AdminLiveStreamController extends Controller
     
     public function update(Request $request)
     {
-
         $data = $request->all();       
 
+        $randomString = Str::random(3);
+
         $id = $data['id'];
-        if($data['access'] == "ppv"){
-            $ppv_price = $data['ppv_price'];
-        }else{
-        // dd($data);
-
-            $ppv_price = null;
-        }
+        $ppv_price  =  $data['access'] == "ppv" ? $data['ppv_price'] : null ;
+     
         $video = LiveStream::findOrFail($id);  
-
-         $validatedData = $request->validate([
-            'title' => 'required|max:255',
-            // 'slug' => 'required|max:255',
-            // 'description' => 'required',
-            // 'details' => 'required|max:255',
-            // 'year' => 'required'
-        ]);
         
         if(empty($data['url_type'])){
             $url_type = null;
         }else{
             $url_type = $data['url_type'];
         }  
+
         if(!empty($video) &&  $url_type == null){
             $url_type = $video->url_type;
         }else{
             $url_type = $data['url_type'];
         } 
-$StorageSetting = StorageSetting::first();
-$settings = Setting::first();
+
+        $StorageSetting = StorageSetting::first();
+        $settings = Setting::first();
 
 // live stream video
-if($StorageSetting->site_storage == 1 && !empty($data['live_stream_video']) ){
+    if($StorageSetting->site_storage == 1 && !empty($data['live_stream_video']) ){
+
         if( !empty($data['url_type']) && $data['url_type'] == "live_stream_video" && !empty($data['live_stream_video'] ) ){
 
-            $live_stream_video = $data['live_stream_video'];
             $live_stream_videopath  = URL::to('public/uploads/LiveStream/');
-            $LiveStream_Video =  time().'_'.$live_stream_video->getClientOriginalName();  
+
+            $live_stream_video = $data['live_stream_video'];
+            $LiveStream_Video =  time().$randomString.'-livestream-video';  
             $live_stream_video->move(public_path('uploads/LiveStream/'), $LiveStream_Video);
             $live_video_name = strtok($LiveStream_Video, '.');
             $M3u8_save_path = $live_stream_videopath.'/'.$live_video_name.'.m3u8';
@@ -741,15 +728,13 @@ if($StorageSetting->site_storage == 1 && !empty($data['live_stream_video']) ){
             $video->live_stream_video = $M3u8_save_path;
            
         }
-    }elseif($StorageSetting->aws_storage == 1 && !empty($data['live_stream_video'])){
+    }
+    elseif($StorageSetting->aws_storage == 1 && !empty($data['live_stream_video'])){
 
         if($settings->transcoding_access  == 0 ) {
 
             $file = $data['live_stream_video'];
-            // $name = time() . $file->getClientOriginalName();
             $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
-
-            // print_r($file);exit;
             $filePath = $StorageSetting->aws_live_path.'/'. $name;
             
             Storage::disk('s3')->put($filePath, file_get_contents($file));
@@ -757,7 +742,8 @@ if($StorageSetting->site_storage == 1 && !empty($data['live_stream_video']) ){
             $filePath = $path.$filePath;
             
             $video->live_stream_video = $filePath ; 
-        }elseif($settings->transcoding_access  == 1 && !empty($data['live_stream_video']) ) {
+        }
+        elseif($settings->transcoding_access  == 1 && !empty($data['live_stream_video']) ) {
 
             $file = $data['live_stream_video'];
             $file_folder_name =  $file->getClientOriginalName();
@@ -766,7 +752,6 @@ if($StorageSetting->site_storage == 1 && !empty($data['live_stream_video']) ){
 
             $newfile = explode(".mp4",$name_mp4);
             $namem3u8 = $newfile[0].'.m3u8';   
-            // $name = time() . $file->getClientOriginalName();
             $namem3u8 = null ? str_replace(' ', '_',$namem3u8) : str_replace(' ', '_',$namem3u8) ;        
 
             $transcode_path = @$StorageSetting->aws_transcode_path.'/'. $namem3u8;
@@ -778,18 +763,15 @@ if($StorageSetting->site_storage == 1 && !empty($data['live_stream_video']) ){
             $transcode_path = $path.$transcode_path;
 
             
-            // $movie->live_stream_video = $filePath ;
             if($data['url_type'] == 'live_stream_video' ){
                 $video->live_stream_video= $filePath ; 
                 $video->hls_url = $transcode_path ; 
-            $url_type = 'aws_m3u8' ; 
+                $url_type = 'aws_m3u8' ; 
             }
 
         }else{
             $file = $data['live_stream_video'];
-            // $name = time() . $file->getClientOriginalName();
             $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
-            // print_r($file);exit;
             $filePath = $StorageSetting->aws_live_path.'/'. $name;
             
             Storage::disk('s3')->put($filePath, file_get_contents($file));
@@ -802,9 +784,9 @@ if($StorageSetting->site_storage == 1 && !empty($data['live_stream_video']) ){
 
         if( !empty($data['url_type']) && $data['url_type'] == "live_stream_video" && !empty($data['live_stream_video'] ) ){
 
-            $live_stream_video = $data['live_stream_video'];
             $live_stream_videopath  = URL::to('public/uploads/LiveStream/');
-            $LiveStream_Video =  time().'_'.$live_stream_video->getClientOriginalName();  
+            $live_stream_video = $data['live_stream_video'];
+            $LiveStream_Video =  time().$randomString.'-livestream-video';  
             $live_stream_video->move(public_path('uploads/LiveStream/'), $LiveStream_Video);
             $live_video_name = strtok($LiveStream_Video, '.');
             $M3u8_save_path = $live_stream_videopath.'/'.$live_video_name.'.m3u8';

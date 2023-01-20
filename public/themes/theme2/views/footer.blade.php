@@ -8,11 +8,38 @@
 
 <footer class="py-4 mt-auto">
   <div class="container-fluid px-5">
-      <div class="row align-items-center justify-content-between">
+      <div class="row align-items-center justify-content-between d-flex">
           <div class="col-sm-7 small m-0 text-white exp p-0">
               <div class="mt-2 p-2">
+                  <h2 class="nem mb-4 col-md-6">Hours of Infortainment 
+edutainment and
+entertainment.</h2>
+                  <ul class="d-flex p-0">
+                      <li>  <a href="" target="_blank" class="">FAQ</a></li>
+                      <li><a href="" target="_blank" class="">HELP</a></li>
+                      <li><a href="" target="_blank" class="">ACCOUNT</a></li>
+                      <li><a href="" target="_blank" class="">TERMS OF USE</a></li>
+                      <li><a href="" target="_blank" class="">CONATCT US</a></li>
+                  </ul>
                   <div class="small m-0 text-white"></div>
-                  <div class="d-flex p-0 text-white icon mt-4">
+                 </div>
+          </div>
+
+          <?php $app_settings = App\AppSetting::where('id','=',1)->first(); ?>
+
+          <div class="col-sm-3. small m-0 text-white text-right">
+              <h3 class="font-weight-bold mb-2 text-left">Download App</h3>
+              <p class="text-left">Available on Play Store</p>
+              <?php if(!empty($app_settings->android_url)){ ?>
+              <img class="" height="80" width="140" src="<?php echo  URL::to('/assets/img/apps1.png')?>" style="margin-top: -20px;" />
+              <?php } ?>
+              <?php if(!empty($app_settings->ios_url)){ ?>
+              <img class="" height="80" width="140" src="<?php echo  URL::to('/assets/img/apps.png')?>" style="margin-top: -20px;" />
+              <?php } ?>
+              <?php if(!empty($app_settings->android_tv)){ ?>
+              <img class="" height="100" width="150" src="<?php echo  URL::to('/assets/img/and.png')?>" style="margin-top: -20px;" />
+              <?php } ?>
+                 <div class="d-flex p-0 text-white icon mt-4 align-items-baseline">
                       <p>Follow US :</p>
                       <?php if(!empty($settings->facebook_page_id)){?>
                       <a href="https://www.facebook.com/<?php echo FacebookId();?>" target="_blank" class="ml-1">
@@ -61,30 +88,13 @@
                           <i class="fa fa-google-plus"></i>
                       </a>-->
                       <?php } ?>
+                        
                   </div>
-              </div>
+              <p class="p-0 mr-3 mt-3">Questions? Call 000-800-123-123</p>
           </div>
-
-          <?php $app_settings = App\AppSetting::where('id','=',1)->first(); ?>
-
-          <div class="col-sm-3. small m-0 text-white text-right">
-              <h3 class="font-weight-bold mb-2 text-left">Download App</h3>
-              <p class="text-left">Available on Play Store</p>
-              <?php if(!empty($app_settings->android_url)){ ?>
-              <img class="" height="80" width="140" src="<?php echo  URL::to('/assets/img/apps1.png')?>" style="margin-top: -20px;" />
-              <?php } ?>
-              <?php if(!empty($app_settings->ios_url)){ ?>
-              <img class="" height="80" width="140" src="<?php echo  URL::to('/assets/img/apps.png')?>" style="margin-top: -20px;" />
-              <?php } ?>
-              <?php if(!empty($app_settings->android_tv)){ ?>
-              <img class="" height="100" width="150" src="<?php echo  URL::to('/assets/img/and.png')?>" style="margin-top: -20px;" />
-              <?php } ?>
-          </div>
+         
       </div>
-      <p class="text-center mt-5 mb-4">
-          All memberships will be billed automatically on a recurring basis until canceled. If eligible for a free trial, cancel before the trial ends to avoid being charged. Offer only valid for new paid subscribers. See full terms of
-          service here.
-      </p>
+      
   </div>
   <div class="container-fluid">
       <p class="mb-0 text-center font-size-14 text-body" style="color: #fff !important;">

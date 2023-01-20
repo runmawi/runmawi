@@ -45,6 +45,7 @@
         "symfony/psr-http-message-bridge": "^2.0",
         "unicodeveloper/laravel-paystack": "^1.0",
         "unisharp/laravel-filemanager": "^2.4",
+        "vedmant/laravel-feed-reader": "^1.5",
         "victorybiz/geoip-location": "^1.1",
         "wapmorgan/mp3info": "^0.0.8",
         "yajra/laravel-datatables-oracle": "~9.0",
