@@ -52,6 +52,9 @@ $uppercase =  ucfirst($request_url);
         text-align: center!important;
         bottom: -40px!important;
     }
+    .mn{
+        margin: 5px 15px;
+    }
     @media only screen and (max-width : 320px) {
         .img-lan{
             width: 100%;
@@ -376,7 +379,7 @@ line-height: 32px;
     .div1{
        padding:50px 90px 100px 20px;
     }
-    .h-100{height: 600px!important;display: flex;
+    .h-100{display: flex;
     justify-content: center;
     flex-direction: column;
     align-items: center;
@@ -409,6 +412,18 @@ line-height: 32px;
     .nav-link{
         font-size: 17px;
     }
+    .io{
+        position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    color: white;
+        text-align: center;
+    }
 </style>
 
 <?php $jsonString = file_get_contents(base_path('assets/country_code.json'));   
@@ -427,7 +442,7 @@ $jsondata = json_decode($jsonString, true); ?>
   <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
     
 <a type="button" class="btn btn-primary mr-3">Become a Partner</a>
-      <a class="btn btn-success  my-2 mr-2 my-sm-0" href="{{ route('login') }}" >Sign in</a>
+      <a class="btn btn-success  my-2 mr-2 my-sm-0" href="{{ route('login') }}" >Join Now</a>
      
     
   </div>
@@ -435,7 +450,7 @@ $jsondata = json_decode($jsonString, true); ?>
 <div class="position-relative" style="margin-top:-70px;background-image:url('<?php echo  URL::to('/assets/img/ban33.png')?>');background-repeat: no-repeat;background-size: cover;">
 <div class="fixe">
     <div class="row m-0  p-0" >
-        <div class="col-md-12 col-lg-12 p-0 text-center h-100" style="padding: 150px 0 150px 0!important;">
+        <div class="col-md-12 col-lg-12 p-0 text-center h-100" style="padding: 17% 0 17% 0!important;">
             <h1 class="mb-3">Welcome to <span class="nem">Nemisa Tv</span></h1>
             <h2 class="dig mt-1 mb-5">The home of 4IR and digital knowledge.</h2>
             <p class="text-white">South Africa’s first free video sharing social platform where we mix knowledge <br>and entertainment for unique learning experience</p>
@@ -465,9 +480,9 @@ $jsondata = json_decode($jsonString, true); ?>
                   
                    
                    <div class="row p-0">
-                       <div class="col-md-4"> <img class="img-lan" src="<?php echo  URL::to('/assets/img/v1.png')?>" style=""></div>
-                       <div class="col-md-4 " style="">   <img class="mt-4 img-lan" src="<?php echo  URL::to('/assets/img/v2.png')?>" style=""></div>
-                       <div class="col-md-4 "  style="">  <img class="mt-5 img-lan" src="<?php echo  URL::to('/assets/img/v3.png')?>" style=""></div>
+                       <div class="col-md-4 p-0"> <img class="img-lan" src="<?php echo  URL::to('/assets/img/v1.png')?>" style=""></div>
+                       <div class="col-md-4 p-0" style="">   <img class="mt-4 img-lan" src="<?php echo  URL::to('/assets/img/v2.png')?>" style=""></div>
+                       <div class="col-md-4 p-0"  style="">  <img class="mt-5 img-lan" src="<?php echo  URL::to('/assets/img/v3.png')?>" style=""></div>
                     </div>
                 </div>
             </div>
@@ -548,7 +563,7 @@ $jsondata = json_decode($jsonString, true); ?>
           </div>
           <div class="col-md-3 p-0">
               <div class="card" style="">
-   <img class="w-100 " src="<?php echo  URL::to('/assets/img/r1.png')?>" style="">
+   <img class="w-100 " src="<?php echo  URL::to('/assets/img/r2.png')?>" style="">
   <div class="card-body">
     
     <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
@@ -561,7 +576,7 @@ $jsondata = json_decode($jsonString, true); ?>
           </div>
           <div class="col-md-3 p-0">
                <div class="card" style="">
-   <img class="w-100 " src="<?php echo  URL::to('/assets/img/r1.png')?>" style="">
+   <img class="w-100 " src="<?php echo  URL::to('/assets/img/r3.png')?>" style="">
   <div class="card-body">
    
     <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
@@ -576,7 +591,7 @@ $jsondata = json_decode($jsonString, true); ?>
       </div>
            <div class="col-md-3 p-0">
                <div class="card" style="">
-   <img class="w-100 " src="<?php echo  URL::to('/assets/img/r1.png')?>" style="">
+   <img class="w-100 " src="<?php echo  URL::to('/assets/img/r4.png')?>" style="">
   <div class="card-body">
    
     <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
@@ -829,22 +844,38 @@ $jsondata = json_decode($jsonString, true); ?>
             <div id="slide">
                 <div>    
             <div class="row align-items-center justify-content-center mt-5" >
-                <div class="col-lg-2">
+                <div class="col-lg-2 position-relative p-0">
                     <img class="w-100" src="<?php echo  URL::to('/assets/img/lan/r1.png')?>" style=>
+                    <p class="io">Radio</p>
                 </div>
-                <div class="col-lg-2">
-                     <img class="w-100" src="<?php echo  URL::to('/assets/img/lan/r2.png')?>" style=>
-                     <img class="w-100 mt-3" src="<?php echo  URL::to('/assets/img/lan/r3.png')?>" style=>
+                <div class="col-lg-2 p-0">
+                    <div class="position-relative mn"> <img class="w-100" src="<?php echo  URL::to('/assets/img/lan/r2.png')?>" style=>
+                       <p class="io">Education</p></div>
+                    <div class="position-relative mn">  <img class="w-100 mt-3" src="<?php echo  URL::to('/assets/img/lan/r3.png')?>" style=>
+                       <p class="io">Live <br>Streaming</p></div>
+                    
+                   
                 </div>
-                <div class="col-lg-2">
+                <div class="col-lg-2 position-relative p-0">
                      <img class="w-100" src="<?php echo  URL::to('/assets/img/lan/r4.png')?>" style=>
+                     <p class="io">Pod Cast</p>
+                    
                 </div>
-                <div class="col-lg-2">
-                     <img class="w-100" src="<?php echo  URL::to('/assets/img/lan/r5.png')?>" style=>
-                     <img class="w-100 mt-3" src="<?php echo  URL::to('/assets/img/lan/r6.png')?>" style=>
+                <div class="col-lg-2 p-0">
+                    <div class="position-relative mn">
+                        <img class="w-100" src="<?php echo  URL::to('/assets/img/lan/r2.png')?>" style=>
+                      <p class="io">Online <br>Streaming </p>
+                    </div>
+                    <div class="position-relative mn">
+                        <img class="w-100 mt-3" src="<?php echo  URL::to('/assets/img/lan/r6.png')?>" style=>
+                      <p class="io">Movies</p>
+                    </div>
+                     
+                     
                 </div>
-                <div class="col-lg-2">
+                <div class="col-lg-2 position-relative p-0">
                      <img class="w-100" src="<?php echo  URL::to('/assets/img/lan/r7.png')?>" style=>
+                     <p class="io">Animation</p>
                 </div>
             </div></div>
             <div>
@@ -875,45 +906,49 @@ $jsondata = json_decode($jsonString, true); ?>
     <section class="sec-3 p-0" style="background:#003C3C
 !important;">
          <div style="background-image:url('<?php echo  URL::to('/assets/img/lan/ntv.png')?>');background-repeat: no-repeat;
-    background-position: right;
-    background-size: contain;padding:30px 0 70px 0;">
+    background-position: right bottom;
+   padding:30px;">
        
         <div class="container">
              <h2 class="mb-4">Benefits you Can’t <br>
 Resist</h2>
         <div class="row">
             <div class="col-lg-6">
-                <div class="row mt-5 align-items-end">
+                <div class="row mt-5 ">
                     <div class="col-lg-6">
                         <div>
-                             <img class="" src="<?php echo  URL::to('/assets/img/lan/v1.png')?>" style=>
+                             <img class="mb-1" src="<?php echo  URL::to('/assets/img/lan/v1.png')?>" style=>
                         <h4 class="">Hours of content</h4>
                         <p style="color:#00DADA;">Watch your favorite content across Languages & topics</p>
                         </div>
-                        <div class=" lan">
-                             <img class="" src="<?php echo  URL::to('/assets/img/lan/v3.png')?>" style=>
-                        <h4 class="">100+ Languages</h4>
-                        <p style="color:#00DADA;">Watch your favorite content across Languages & topics</p>
+                        <div class=" lan" style="margin-top:65px;">
+                             <img class="mb-1" src="<?php echo  URL::to('/assets/img/lan/v3.png')?>" style=>
+                        <h4 class="">User Feedback and<br> Interaction</h4>
+                        <p style="color:#00DADA;">Learn by interacting with experts and other users.</p>
                         </div>
                        
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-6 p-0">
                         <div>
-                        <img class="" src="<?php echo  URL::to('/assets/img/lan/v2.png')?>" style=>
+                        <img class="mb-1" src="<?php echo  URL::to('/assets/img/lan/v2.png')?>" style=>
                         <h4 class="">Audience Tested</h4>
-                        <p style="color:#00DADA;">Watch your favorite content across Languages & topics</p>
+                        <p style="color:#00DADA;">Enjoy the wide variety of movies & Educations Content much more choice of Audience</p>
                         </div>
                         <div class="lan ">
-                             <img class="" src="<?php echo  URL::to('/assets/img/lan/v4.png')?>" style=>
-                        <h4 class="">10,000+ Titles</h4>
-                        <p style="color:#00DADA;">Watch your favorite content across Languages & topics</p>
+                             <img class="mb-1" src="<?php echo  URL::to('/assets/img/lan/v4.png')?>" style=>
+                        <h4 class="">Aggregated User generated content</h4>
+                        <p style="color:#00DADA;">Create and contribute your own digital content to empower other users.</p>
                         </div>
+                         
                     </div>
+                    <div class="lan col-lg-6 " style="margin-top:20px;">
+                             <img class="mb-1" src="<?php echo  URL::to('/assets/img/lan/v5.png')?>" style=>
+                        <h4 class="">Curated multiformat<br> training content</h4>
+                        <p style="color:#00DADA;">Diverse learning content that focuses on the visual, audio, social, solitary, verbal and logical.</p>
+                        </div>
                 </div>
             </div>
-            <div class="col-lg-5">
-                  <img class="w-100" src="" style=>
-            </div>
+            
             </div></div></div>
     </section>
     <section class="sec-4 mt-5">
