@@ -60,6 +60,40 @@
                                             </div> 
                                         </div>
 
+                                                 {{-- Custom Bootstrap Link  --}}
+                                        <br>
+                                        <div class="row">
+                                            
+                                            <div class="container"> 
+                                                <label class="m-0"> Bootstrap & Script Link
+                                                    <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title="Please add Bootstrap or Script Link as <link> ..... </link> or <script> .... </script>"  href="#">
+                                                        <i class="las la-exclamation-circle"></i>
+                                                    </a>:
+                                                </label>
+
+                                                <div class="col-md-12 p-0  align-items-center"> 
+                                                    <textarea  rows="7" name="bootstrap_link" class="form-control mt-2"  placeholder="Bootstrap Link" value="{{ $bootstrap_link }}" > {{ $bootstrap_link }}</textarea>
+                                                </div> 
+                                            </div> 
+                                        </div>
+
+                                                 {{-- Custom Script Content --}}
+                                        <br>
+                                        <div class="row">
+                                            
+                                            <div class="container"> 
+                                                <label class="m-0"> Custom JavaScript Content
+                                                    <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title="Please add Script Content Link as <link> ..... </link>"  href="#">
+                                                        <i class="las la-exclamation-circle"></i>
+                                                    </a>:
+                                                </label>
+
+                                                <div class="col-md-12 p-0  align-items-center"> 
+                                                    <textarea  rows="7" name="script_content" class="form-control mt-2"  placeholder="Script Content" value="{{ $stript_content }}" > {{ $stript_content }}</textarea>
+                                                </div> 
+                                            </div> 
+                                        </div>
+
                                         <div class="row">
                                             <div class="col-sm-4">
                                                 <input type="checkbox" id="sections_1" class="date" name="date[]" value="section_1" @if(!empty($section_1['0'])) checked @endif/>

@@ -422,6 +422,11 @@ function GetWebsiteName(){
     return  $setting->website_name; 
 }
 
+function Getwebsitedescription(){
+    $setting = App\Setting::first();
+    return  $setting->website_description; 
+}
+
 function GetAllVideoCategory(){
     $all_category = App\VideoCategory::all();
     return  $all_category; 
