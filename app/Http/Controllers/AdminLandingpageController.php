@@ -93,7 +93,7 @@ class AdminLandingpageController extends Controller
           $last_id = $AdminLandingPage->id;
 
           $custom_css = AdminLandingPage::where('id',$last_id)->update([
-                  'custom_css' => $request->custom_css ,
+            'custom_css' => $request->custom_css ,
           ]);
 
           $bootstrap_link = AdminLandingPage::where('id',$last_id)->update([
@@ -121,7 +121,6 @@ class AdminLandingpageController extends Controller
             'stript_content'  => AdminLandingPage::where('landing_page_id',$id)->orderBy('id', 'desc')->pluck('script_content')->first(),
             'landing_page_id' => $id ,
         ];
-
         
         return view('admin.Landing_page.edit',$data);
     }
@@ -194,7 +193,7 @@ class AdminLandingpageController extends Controller
       $last_id = $AdminLandingPage->id;
 
       $custom_css = AdminLandingPage::where('id',$last_id)->update([
-              'custom_css' => $request->custom_css ,
+        'custom_css' => $request->custom_css ,
       ]);
 
       $bootstrap_link = AdminLandingPage::where('id',$last_id)->update([
@@ -206,7 +205,6 @@ class AdminLandingpageController extends Controller
       ]);
 
       return Redirect::route('landing_page_index')->with('message', 'Successfully! Updated Landing Page');
-
     }
 
     public function delete(Request $request,$id)
@@ -231,7 +229,6 @@ class AdminLandingpageController extends Controller
       } catch (\Throwable $th) {
           return response()->json(['message'=>"false"]);
       }
-
     }
 
     public function preview(Request $request,$landing_page_id)
