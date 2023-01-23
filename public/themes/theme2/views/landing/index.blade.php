@@ -480,9 +480,9 @@ $jsondata = json_decode($jsonString, true); ?>
                   
                    
                    <div class="row p-0">
-                       <div class="col-md-4 p-0"> <img class="img-lan" src="<?php echo  URL::to('/assets/img/v1.png')?>" style=""></div>
-                       <div class="col-md-4 p-0" style="">   <img class="mt-4 img-lan" src="<?php echo  URL::to('/assets/img/v2.png')?>" style=""></div>
-                       <div class="col-md-4 p-0"  style="">  <img class="mt-5 img-lan" src="<?php echo  URL::to('/assets/img/v3.png')?>" style=""></div>
+                       <div class="col-lg-4 col-sm-4 col-md-4 p-0"> <img class="img-lan" src="<?php echo  URL::to('/assets/img/v1.png')?>" style=""></div>
+                       <div class="col-lg-4 col-sm-4 col-md-4 p-0" style="">   <img class="mt-4 img-lan" src="<?php echo  URL::to('/assets/img/v2.png')?>" style=""></div>
+                       <div class="col-lg-4 col-sm-4 col-md-4 p-0"  style="">  <img class="mt-5 img-lan" src="<?php echo  URL::to('/assets/img/v3.png')?>" style=""></div>
                     </div>
                 </div>
             </div>
