@@ -26,6 +26,8 @@ class LandingpageController extends Controller
             'sections_3' => AdminLandingPage::where('status',1)->where('section',3)->pluck('content'),
             'sections_4' => AdminLandingPage::where('status',1)->where('section',4)->pluck('content'),
             'custom_css' => AdminLandingPage::where('status',1)->orderBy('id','desc')->pluck('custom_css')->first(),
+            'bootstrap_link'  => AdminLandingPage::where('status',1)->orderBy('id', 'desc')->pluck('bootstrap_link')->first(),
+            'script_content'  => AdminLandingPage::where('status',1)->orderBy('id', 'desc')->pluck('script_content')->first(),
         ];
 
         return Theme::view('landing.index',$data);
