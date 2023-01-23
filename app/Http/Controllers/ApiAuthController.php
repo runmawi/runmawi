@@ -1192,7 +1192,10 @@ public function verifyandupdatepassword(Request $request)
       $videos = $videos->latest('videos.created_at')->paginate( $per_page_no , ['*'], 'page', $current_page_no );
      
       $videos->getCollection()->transform(function ($value) {
-          $value['views'] = $value['views'] == null ? 0 : $value['views'];
+          $value['player_image']   = $value['player_image'] == null ? 'null' : $value['player_image'];
+          $value['video_tv_image'] = $value['video_tv_image'] == null ? 'null' : $value['video_tv_image'];
+          $value['duration'] = $value['duration'] == null ? 0 : $value['duration'];
+          $value['views']    = $value['views'] == null ? 0 : $value['views'];
           return $value;
       }); 
 
