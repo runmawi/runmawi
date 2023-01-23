@@ -161,8 +161,6 @@ class RssFeedController extends Controller
             );
         }
 
-        dd( $response );
-
         return response()->json($response, 200);
 
     }

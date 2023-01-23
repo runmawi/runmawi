@@ -93,7 +93,15 @@ class AdminLandingpageController extends Controller
           $last_id = $AdminLandingPage->id;
 
           $custom_css = AdminLandingPage::where('id',$last_id)->update([
-                  'custom_css' => $request->custom_css ,
+            'custom_css' => $request->custom_css ,
+          ]);
+
+          $bootstrap_link = AdminLandingPage::where('id',$last_id)->update([
+            'bootstrap_link' => $request->bootstrap_link ,
+          ]);
+    
+          $script_content = AdminLandingPage::where('id',$last_id)->update([
+            'script_content' => $request->script_content ,
           ]);
 
         return Redirect::route('landing_page_index')->with('message', 'Successfully! Created Landing Page');
@@ -109,9 +117,11 @@ class AdminLandingpageController extends Controller
             'title'     => AdminLandingPage::where('landing_page_id',$id)->pluck('title')->first(),
             'slug'      => AdminLandingPage::where('landing_page_id',$id)->pluck('slug')->first(),
             'custom_css'  => AdminLandingPage::where('landing_page_id',$id)->orderBy('id', 'desc')->pluck('custom_css')->first(),
+            'bootstrap_link'  => AdminLandingPage::where('landing_page_id',$id)->orderBy('id', 'desc')->pluck('bootstrap_link')->first(),
+            'stript_content'  => AdminLandingPage::where('landing_page_id',$id)->orderBy('id', 'desc')->pluck('script_content')->first(),
             'landing_page_id' => $id ,
         ];
-
+        
         return view('admin.Landing_page.edit',$data);
     }
 
@@ -183,11 +193,18 @@ class AdminLandingpageController extends Controller
       $last_id = $AdminLandingPage->id;
 
       $custom_css = AdminLandingPage::where('id',$last_id)->update([
-              'custom_css' => $request->custom_css ,
+        'custom_css' => $request->custom_css ,
+      ]);
+
+      $bootstrap_link = AdminLandingPage::where('id',$last_id)->update([
+        'bootstrap_link' => $request->bootstrap_link ,
+      ]);
+
+      $script_content = AdminLandingPage::where('id',$last_id)->update([
+        'script_content' => $request->script_content ,
       ]);
 
       return Redirect::route('landing_page_index')->with('message', 'Successfully! Updated Landing Page');
-
     }
 
     public function delete(Request $request,$id)
@@ -212,7 +229,6 @@ class AdminLandingpageController extends Controller
       } catch (\Throwable $th) {
           return response()->json(['message'=>"false"]);
       }
-
     }
 
     public function preview(Request $request,$landing_page_id)
@@ -224,7 +240,9 @@ class AdminLandingpageController extends Controller
         'sections_3' => AdminLandingPage::where('landing_page_id',$landing_page_id)->where('section',3)->pluck('content'),
         'sections_4' => AdminLandingPage::where('landing_page_id',$landing_page_id)->where('section',4)->pluck('content'),
         'custom_css' => AdminLandingPage::where('landing_page_id',$landing_page_id)->orderBy('id','desc')->pluck('custom_css')->first(),
-    ];
+        'bootstrap_link'  => AdminLandingPage::where('landing_page_id',$landing_page_id)->orderBy('id', 'desc')->pluck('bootstrap_link')->first(),
+        'script_content'  => AdminLandingPage::where('landing_page_id',$landing_page_id)->orderBy('id', 'desc')->pluck('script_content')->first(),
+      ];
 
       return view('admin.Landing_page.preview',$data);
     }

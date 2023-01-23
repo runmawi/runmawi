@@ -2122,37 +2122,65 @@ location.reload();
   // alert(sources);
   const defaultOptions = {};
 
+
+
+  
   if (Hls.isSupported()) {
     const hlstwo = new Hls();
     hlstwo.loadSource(sources);
-    hlstwo.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
 
-      const availableQualities = hlstwo.levels.map((l) => l.height)
+      // From the m3u8 playlist, hls parses the manifest and returns
+                  // all available video qualities. This is important, in this approach,
+                // we will have one source on the Plyr player.
+                hlstwo.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
 
-      // Add new qualities to option
-      defaultOptions.quality = {
-        default: availableQualities[0],
-        options: availableQualities,
-        // this ensures Plyr to use Hls to update quality level
-        forced: true,        
-        onChange: (e) => updateQuality(e),
+                // Transform available levels into an array of integers (height values).
+                const availableQualities = hlstwo.levels.map((l) => l.height)
+            availableQualities.unshift(0) //prepend 0 to quality array
+
+                // Add new qualities to option
+          defaultOptions.quality = {
+            default: 0, //Default - AUTO
+              options: availableQualities,
+              forced: true,        
+              onChange: (e) => updateQuality(e),
+          }
+          // Add Auto Label 
+          defaultOptions.i18n = {
+            qualityLabel: {
+              0: 'Auto',
+            },
+          }
+
+          hlstwo.on(Hls.Events.LEVEL_SWITCHED, function (event, data) {
+              var span = document.querySelector(".plyr__menu__container [data-plyr='quality'][value='0'] span")
+              if (hlstwo.autoLevelEnabled) {
+                span.innerHTML = `AUTO (${hlstwo.levels[data.level].height}p)`
+              } else {
+                span.innerHTML = `AUTO`
+              }
+            })
+      
+              // Initialize new Plyr player with quality options
+          var player = new Plyr(videos, defaultOptions);
+          });	
+
+          hlstwo.attachMedia(videos);
+        window.hlstwo = hlstwo;		 
       }
 
-      // Initialize here
-      const player = new Plyr(videos, defaultOptions);
-    });
-    hlstwo.attachMedia(videos);
-    window.hlstwo = hlstwo;
-  }
-
-  function updateQuality(newQuality) {
-    window.hlstwo.levels.forEach((level, levelIndex) => {
-      if (level.height === newQuality) {
-        console.log("Found quality match with " + newQuality);
-        window.hlstwo.currentLevel = levelIndex;
+      function updateQuality(newQuality) {
+        if (newQuality === 0) {
+          window.hlstwo.currentLevel = -1; //Enable AUTO quality if option.value = 0
+        } else {
+          window.hlstwo.levels.forEach((level, levelIndex) => {
+            if (level.height === newQuality) {
+              console.log("Found quality match with " + newQuality);
+              window.hlstwo.currentLevel = levelIndex;
+            }
+          });
+        }
       }
-    });
-  }
 });
 
   }

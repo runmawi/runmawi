@@ -1176,13 +1176,13 @@ public function verifyandupdatepassword(Request $request)
   public function channelvideosIOS(Request $request)
   {
     try {
-      $channelid     = $request->channelid ;
-      $current_page_no       = $request->current_page_no ;
-      $per_page_no   = $request->per_page_no ;
+      $channelid       = $request->channelid ;
+      $current_page_no = $request->current_page_no ;
+      $per_page_no     = $request->per_page_no ;
 
       $videos= Video::Join('categoryvideos','categoryvideos.video_id','=','videos.id')
               ->where('categoryvideos.category_id',$channelid )
-              ->where('active','=',1)->where('status','=',1) ;
+              ->where('active','=',1)->where('status','=',1)->where('draft',1) ;
   
               if(Geofencing() !=null && Geofencing()->geofencing == 'ON')
               {
@@ -1191,6 +1191,14 @@ public function verifyandupdatepassword(Request $request)
   
       $videos = $videos->latest('videos.created_at')->paginate( $per_page_no , ['*'], 'page', $current_page_no );
      
+      $videos->getCollection()->transform(function ($value) {
+          $value['player_image']   = $value['player_image'] == null ? 'null' : $value['player_image'];
+          $value['video_tv_image'] = $value['video_tv_image'] == null ? 'null' : $value['video_tv_image'];
+          $value['duration'] = $value['duration'] == null ? 0 : $value['duration'];
+          $value['views']    = $value['views'] == null ? 0 : $value['views'];
+          return $value;
+      }); 
+
       $VideoCategory_name = VideoCategory::where('id','=',$channelid)->pluck('name')->first();
   
       $response = array(
