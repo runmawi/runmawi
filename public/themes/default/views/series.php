@@ -417,6 +417,7 @@ var publishable_key = $('#publishable_key').val();
 // alert(livepayment);
 
 $(document).ready(function () {  
+  $("#videoPlayer1").hide();
 
  $('.videoModalClose').click(function (){
   $('#videoPlayer1')[0].pause();
@@ -425,6 +426,8 @@ $(document).ready(function () {
 });
 
 	var imageseason = '<?= $season_trailer ?>' ;
+// alert(imageseason);
+
 // console.log(imageseason)
 $("#videoPlayer1").hide();
 $("#videos").hide();
@@ -448,8 +451,10 @@ if('season_'+$val.id == season_id){
     });
 
   }else{
-    $("#videoPlayer1").hide();
+// alert($val.trailer_type)	
+
     $("#videos").show();
+    $("#videoPlayer1").hide();
    $("#m3u8urlsource").attr("src", $val.trailer);
   
   
