@@ -3173,23 +3173,20 @@ class HomeController extends Controller
 
     public function LatestVideos()
     {
-        $latest_videos_count = Video::where('active', '=', '1')
-                            ->where('status', '=', '1')->where('draft', '=', '1')
-                            ->latest('created_at', 'DESC')
-                            ->count();
+        $latest_videos_count = Video::where('active', '=', '1')->where('status', '=', '1')
+                                ->where('draft', '=', '1')->latest()->count();
 
         if ($latest_videos_count > 0)
         {
-            $latest_videos = Video::where('active', '=', '1')
-            ->where('status', '=', '1')
-            ->where('draft', '=', '1')
-            ->orderBy('created_at', 'DESC');
+            $latest_videos = Video::where('active', '=', '1')->where('status', '=', '1')
+                ->where('draft', '=', '1')->latest();
 
-            if (Geofencing() != null && Geofencing()->geofencing == 'ON')
-            {
-                $latest_videos = $latest_videos->whereNotIn('videos.id', Block_videos());
-            }
-                $latest_videos = $latest_videos->limit(50)->get();
+                if (Geofencing() != null && Geofencing()->geofencing == 'ON')
+                {
+                    $latest_videos = $latest_videos->whereNotIn('videos.id', Block_videos());
+                }
+                
+            $latest_videos = $latest_videos->limit(50)->get();
         }
         else
         {
@@ -3197,9 +3194,7 @@ class HomeController extends Controller
         }
 
         $settings = Setting::first();
-
         $PPV_settings = Setting::where('ppv_status', '=', 1)->first();
-
         $ppv_gobal_price = !empty($PPV_settings) ? $PPV_settings->ppv_price : null;
        
         $data = array(
@@ -3208,6 +3203,7 @@ class HomeController extends Controller
             'currency'         => CurrencySetting::first(),
             'ThumbnailSetting' => ThumbnailSetting::first(),
         );
+
         return Theme::view('latestvideo',['latestvideo'=>$data]);
     }
 
