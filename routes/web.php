@@ -1107,6 +1107,7 @@ Route::post('/dislike-video', 'HomeController@DisLikeVideo');
 
 Route::get('/auth/redirect/{provider}', 'GoogleLoginController@redirect');
 Route::get('/callback/{provider}', 'GoogleLoginController@callback');
+ 
 
 
 Auth::routes();

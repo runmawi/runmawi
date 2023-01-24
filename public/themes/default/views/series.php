@@ -335,7 +335,6 @@ $series = $series_data ;
 				<?php endif;?>
 				<?php $payment_type = App\PaymentSetting::get(); ?>
 
-<?php include('footer.blade.php');?>
 
 
 				          <!-- Modal -->
@@ -851,3 +850,4 @@ if (!Hls.isSupported()) {
 })
 
 </script>
+<?php include('footer.blade.php');?>
