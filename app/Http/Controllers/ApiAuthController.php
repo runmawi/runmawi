@@ -2888,7 +2888,10 @@ public function verifyandupdatepassword(Request $request)
                 ->where('videos.id', '!=', $videoid)
                 ->where('categoryvideos.category_id', '=', $value->category_id)
                 ->limit(10)
-                ->get();
+                ->get()->map(function ($item) {
+                    $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+                    return $item;
+                  });
         }
 
         $response = array(

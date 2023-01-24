@@ -335,7 +335,6 @@ $series = $series_data ;
 				<?php endif;?>
 				<?php $payment_type = App\PaymentSetting::get(); ?>
 
-<?php include('footer.blade.php');?>
 
 
 				          <!-- Modal -->
@@ -417,7 +416,6 @@ var publishable_key = $('#publishable_key').val();
 // alert(livepayment);
 
 $(document).ready(function () {  
-  $("#videoPlayer1").hide();
 
  $('.videoModalClose').click(function (){
   $('#videoPlayer1')[0].pause();
@@ -426,8 +424,6 @@ $(document).ready(function () {
 });
 
 	var imageseason = '<?= $season_trailer ?>' ;
-// alert(imageseason);
-
 // console.log(imageseason)
 $("#videoPlayer1").hide();
 $("#videos").hide();
@@ -451,10 +447,8 @@ if('season_'+$val.id == season_id){
     });
 
   }else{
-// alert($val.trailer_type)	
-
-    $("#videos").show();
     $("#videoPlayer1").hide();
+    $("#videos").show();
    $("#m3u8urlsource").attr("src", $val.trailer);
   
   
@@ -856,3 +850,4 @@ if (!Hls.isSupported()) {
 })
 
 </script>
+<?php include('footer.blade.php');?>
