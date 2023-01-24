@@ -3173,17 +3173,13 @@ class HomeController extends Controller
 
     public function LatestVideos()
     {
+        $latest_videos_count = Video::where('active', '=', '21')
+                            ->where('status', '=', '1')->where('draft', '=', '1')
+                            ->latest('created_at', 'DESC')
+                            ->count();
 
-        $ThumbnailSetting = ThumbnailSetting::first();
-
-        $date = \Carbon\Carbon::today()->subDays(30);
-       
-        $latest_videos_count = Video::where('active', '=', '1')->orderBy('created_at', 'DESC')
-            ->count();
-            
         if ($latest_videos_count > 0)
         {
-            
             $latest_videos = Video::where('active', '=', '1')
             ->where('status', '=', '1')
             ->where('draft', '=', '1')
@@ -3193,39 +3189,26 @@ class HomeController extends Controller
             {
                 $latest_videos = $latest_videos->whereNotIn('videos.id', Block_videos());
             }
-                $latest_videos = $latest_videos->limit(10)->get();
+                $latest_videos = $latest_videos->limit(50)->get();
         }
         else
         {
-            $latest_videos = [];
+            $latest_videos = array();
         }
 
-      
         $settings = Setting::first();
+
         $PPV_settings = Setting::where('ppv_status', '=', 1)->first();
-        if (!empty($PPV_settings))
-        {
-            $ppv_gobal_price = $PPV_settings->ppv_price;
-        }
-        else
-        {
-            $ppv_gobal_price = null;
-        }
 
-        $currency = CurrencySetting::first();
-
+        $ppv_gobal_price = !empty($PPV_settings) ? $PPV_settings->ppv_price : null;
+       
         $data = array(
-            'latest_videos' => $latest_videos,
-            'ppv_gobal_price' => $ppv_gobal_price,
-            'currency' => $currency,
-            'ThumbnailSetting' => $ThumbnailSetting,
+            'latest_videos'    => $latest_videos,
+            'ppv_gobal_price'  => $ppv_gobal_price,
+            'currency'         => CurrencySetting::first(),
+            'ThumbnailSetting' => ThumbnailSetting::first(),
         );
-// dd($data);
-        // return view('latestvideo',$data);
-        // return Theme::View('latestvideo', $data);
-
         return Theme::view('latestvideo',['latestvideo'=>$data]);
-
     }
 
     public function ScheduledVideo()
