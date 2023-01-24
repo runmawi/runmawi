@@ -27,7 +27,8 @@ class AddPaidToBootstrapLinkTable extends Migration
     public function down()
     {
         Schema::table('admin_landing_pages', function (Blueprint $table) {
-            //
+            Schema::dropIfExists('script_content');
+            Schema::dropIfExists('bootstrap_link');
         });
     }
 }
