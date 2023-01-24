@@ -727,8 +727,8 @@ window.location = '<?= URL::to('login') ?>';
     }
   }
 
-  document.querySelector('#source-audio').src = <?php echo json_encode($audios->mp3_url) ; ?>  
-  document.querySelector('.title').innerHTML = <?php echo json_encode($audios->title) ; ?>  
+  document.querySelector('#source-audio').src = <?php echo json_encode(@$audios->mp3_url) ; ?>  
+  document.querySelector('.title').innerHTML = <?php echo json_encode(@$audios->title) ; ?>  
 
   var currentAudio = document.getElementById("myAudio");
 
