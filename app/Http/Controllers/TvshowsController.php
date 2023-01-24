@@ -554,7 +554,7 @@ class TvshowsController extends Controller
 
         $season_trailer = SeriesSeason::where('series_id','=',$id)->get();
 
-        // dd($series);
+        // dd($season_trailer);
 
         // dd($season);
 

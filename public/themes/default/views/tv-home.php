@@ -13,7 +13,7 @@
    }
    }
    ?>
-<!-- 
+
    <section id="home" class="iq-main-slider p-0">
        <div id="home-slider" class="slider m-0 p-0">
            <?php include('partials/home/slider.php'); ?>

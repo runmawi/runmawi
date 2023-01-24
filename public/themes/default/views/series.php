@@ -836,8 +836,6 @@ if (!Hls.isSupported()) {
         }
       }
 });
-}
-});
 
 
 }

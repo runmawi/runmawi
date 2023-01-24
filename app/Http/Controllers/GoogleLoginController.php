@@ -87,8 +87,6 @@ function createUser($getInfo,$provider){
     return $user;
 
   }
-
-
 }
 }
 
