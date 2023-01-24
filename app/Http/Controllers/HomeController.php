@@ -3173,7 +3173,7 @@ class HomeController extends Controller
 
     public function LatestVideos()
     {
-        $latest_videos_count = Video::where('active', '=', '21')
+        $latest_videos_count = Video::where('active', '=', '1')
                             ->where('status', '=', '1')->where('draft', '=', '1')
                             ->latest('created_at', 'DESC')
                             ->count();
