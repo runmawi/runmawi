@@ -983,8 +983,8 @@ li.list-group-item a{
 
 }
 .rounded-circle{
-    width: 100px;
-    height: 100px;
+   /* width: 100px;
+    height: 100px;*/
 }
 .search_content{
 top: 40px !important;
