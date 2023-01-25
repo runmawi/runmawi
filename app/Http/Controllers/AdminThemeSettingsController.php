@@ -439,7 +439,7 @@ class AdminThemeSettingsController extends Controller
 
       $data = Session::all();
 
-      if (!empty($data['password_hash'])) {
+      if (!Auth::guest()) {
 
         $package_id = auth()->user()->id;
         $user_package =    User::where('id', $package_id)->first();
@@ -510,7 +510,7 @@ class AdminThemeSettingsController extends Controller
     public function LanguageTransIndex(){
       
       $data = Session::all();
-      if (!empty($data['password_hash'])) {
+      if (!Auth::guest()) {
       $package_id = auth()->user()->id;
       $user_package =    User::where('id', $package_id)->first();
       $package = $user_package->package;
@@ -667,7 +667,7 @@ class AdminThemeSettingsController extends Controller
 
       $data = Session::all();
 
-      if (!empty($data['password_hash'])) {
+      if (!Auth::guest()) {
 
           $package_id = auth()->user()->id;
           $user_package =    User::where('id', $package_id)->first();
@@ -690,7 +690,7 @@ class AdminThemeSettingsController extends Controller
     
     public function LanguageTransDelete($id){
       $data = Session::all();
-      if (!empty($data['password_hash'])) {
+      if (!Auth::guest()) {
       $package_id = auth()->user()->id;
       $user_package =    User::where('id', $package_id)->first();
       $package = $user_package->package;
@@ -714,7 +714,7 @@ class AdminThemeSettingsController extends Controller
     
       public function LanguageTransStore(Request $request){
         $data = Session::all();
-        if (!empty($data['password_hash'])) {
+        if (!Auth::guest()) {
         $package_id = auth()->user()->id;
         $user_package =    User::where('id', $package_id)->first();
         $package = $user_package->package;
@@ -755,7 +755,7 @@ class AdminThemeSettingsController extends Controller
 
       $data = Session::all();
   
-      if (!empty($data['password_hash'])) {
+      if (!Auth::guest()) {
         
         $package_id = auth()->user()->id;
         $user_package =    User::where('id', $package_id)->first();
@@ -814,7 +814,7 @@ class AdminThemeSettingsController extends Controller
        public function LanguageTransEdit($id){
 
         $data = Session::all();
-        if (!empty($data['password_hash'])) {
+        if (!Auth::guest()) {
         $package_id = auth()->user()->id;
         $user_package =    User::where('id', $package_id)->first();
         $package = $user_package->package;
@@ -868,7 +868,7 @@ class AdminThemeSettingsController extends Controller
 
           $data = Session::all();
 
-          if (!empty($data['password_hash'])) {
+          if (!Auth::guest()) {
 
             $package_id = auth()->user()->id;
             $user_package =    User::where('id', $package_id)->first();
@@ -925,7 +925,7 @@ class AdminThemeSettingsController extends Controller
     
      public function LanguageTransUpdate(Request $request){
       $data = Session::all();
-      if (!empty($data['password_hash'])) {
+      if (!Auth::guest()) {
       $package_id = auth()->user()->id;
       $user_package =    User::where('id', $package_id)->first();
       $package = $user_package->package;
@@ -957,7 +957,7 @@ class AdminThemeSettingsController extends Controller
 
       $id = $request->language_id;
 
-        if (!empty($data['password_hash'])) {
+        if (!Auth::guest()) {
 
           $package_id = auth()->user()->id;
           $user_package =    User::where('id', $package_id)->first();

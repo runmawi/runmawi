@@ -25,7 +25,7 @@ class AdminArtistsController extends Controller
     public function index(Request $request)
     {
         $data = Session::all();
-        if (!empty($data['password_hash'])) {
+        if (!Auth::guest()) {
         $package_id = auth()->user()->id;
         $user_package =     User::where('id', $package_id)->first();
         $package = $user_package->package;
@@ -93,7 +93,7 @@ class AdminArtistsController extends Controller
     public function create()
     {
         $data = Session::all();
-        if (!empty($data['password_hash'])) {
+        if (!Auth::guest()) {
         $package_id = auth()->user()->id;
         $user_package =     User::where('id', $package_id)->first();
         $package = $user_package->package;
@@ -151,7 +151,7 @@ class AdminArtistsController extends Controller
     {
         $data = Session::all();
 
-        if (!empty($data['password_hash'])) {
+        if (!Auth::guest()) {
 
             $package_id = auth()->user()->id;
             $user_package =     User::where('id', $package_id)->first();
@@ -226,7 +226,7 @@ class AdminArtistsController extends Controller
     public function edit($id)
     {
         $data = Session::all();
-        if (!empty($data['password_hash'])) {
+        if (!Auth::guest()) {
         $package_id = auth()->user()->id;
         $user_package =     User::where('id', $package_id)->first();
         $package = $user_package->package;
@@ -288,7 +288,7 @@ class AdminArtistsController extends Controller
     {
         $data = Session::all();
 
-        if (!empty($data['password_hash'])) {
+        if (!Auth::guest()) {
 
             $package_id = auth()->user()->id;
             $user_package =     User::where('id', $package_id)->first();
@@ -365,7 +365,7 @@ class AdminArtistsController extends Controller
     public function destroy($id)
     {
         $data = Session::all();
-        if (!empty($data['password_hash'])) {
+        if (!Auth::guest()) {
         $package_id = auth()->user()->id;
         $user_package =     User::where('id', $package_id)->first();
         $package = $user_package->package;

@@ -132,13 +132,13 @@ class LiveStreamController extends Controller
 
           $vid =  $categoryVideos->id;
           //  $categoryVideos = LiveStream::where('id',$vid)->first();
-        if(!empty($data['password_hash'])){
+        if(!Auth::guest()){
            $user_id = Auth::user()->id;
           }
 
            $settings = Setting::first(); 
 
-        if(!empty($data['password_hash'])){
+        if(!Auth::guest()){
             $ppv_exist = LivePurchase::where('video_id',$vid)->where('user_id',$user_id)->where('status',1)->latest()->count();
             $ppv_exists = LivePurchase::where('video_id',$vid)->where('user_id',$user_id)->where('status',1)->latest()->count();
 

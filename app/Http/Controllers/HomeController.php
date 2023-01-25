@@ -97,7 +97,7 @@ class HomeController extends Controller
         $userIp = $geoip->getip();
         $system_settings = SystemSetting::first();
         $user = User::where('id', '=', 1)->first();
-        if (empty($data['password_hash']))
+        if (Auth::guest())
         {
             return view('auth.login', compact('system_settings', 'user'));
             // return View::make('auth.login', $data);
@@ -283,14 +283,14 @@ class HomeController extends Controller
         $Recomended = HomeSetting::first();
         $ThumbnailSetting = ThumbnailSetting::first();
 
-        if($settings->enable_landing_page == 1 && empty($data['password_hash'])){
+        if($settings->enable_landing_page == 1 && Auth::guest()){
 
             $landing_page_slug = AdminLandingPage::where('status',1)->pluck('slug')->first() ? AdminLandingPage::where('status',1)->pluck('slug')->first() : "landing-page" ;
 
             return redirect()->route('landing_page', $landing_page_slug );
         }
 
-        if ($settings->access_free == 1 && empty($data['password_hash']) && !isset($data['user']))
+        if ($settings->access_free == 1 && Auth::guest() && !isset($data['user']))
         {
             $latest_series = Series::where('active', '=', '1')->orderBy('created_at', 'DESC')
             ->get(); 
@@ -451,7 +451,7 @@ class HomeController extends Controller
             $data = Session::all();
             $user = User::where('id', '=', 1)->first();
             // $session_password = $data['password_hash'];
-            if (empty($data['password_hash']) && !isset($data['user']))
+            if (Auth::guest() && !isset($data['user']))
             {
                 return Theme::view('auth.login');
 
@@ -1361,7 +1361,7 @@ class HomeController extends Controller
         $multiuser = Session::get('subuser_id');
         $getfeching = Geofencing::first();
         $Recomended = HomeSetting::first();
-        if ($settings->access_free == 1 && empty($data['password_hash']) && !isset($data['user']))
+        if ($settings->access_free == 1 && Auth::guest() && !isset($data['user']))
         {
             return Redirect::to('/');
         }
@@ -1377,7 +1377,7 @@ class HomeController extends Controller
             $system_settings = SystemSetting::first();
             $user = User::where('id', '=', 1)->first();
             // $session_password = $data['password_hash'];
-            if (empty($data['password_hash']) && !isset($data['user']))
+            if (Auth::guest() && !isset($data['user']))
             {
                 return Theme::view('auth.login');
             }

@@ -113,6 +113,14 @@ border-radius: 0px 4px 4px 0px;
                                 </div>
                             </div>
 
+							<!-- Live MP3 Audio -->        
+							<div id="audio_live_file" style="">
+                                <div class="new-audio-file mt-3" @if(!empty($audio->type) && $audio->type == 'livefile'){{ 'style="display:block"' }}@endif>
+                                    <label for="live_mp3_url"><label>Live Mp3 File URL:</label></label>
+                                    <input type="text" class="form-control" name="live_mp3_url" id="live_mp3_url" value="@if(!empty($audio->mp3_url)){{ $audio->mp3_url }}@endif" />
+                                </div>
+                            </div>
+
                             <!-- Audio upload -->        
                             <div id="video_upload" style="">
                                 <div class='content file'>
@@ -138,7 +146,8 @@ border-radius: 0px 4px 4px 0px;
                                 <form action="{{URL::to('admin/Audiofile')}}" method= "post"  >
 
                                 <input type="radio" value="audio_upload" id="audio_upload" name="audiofile" checked="checked"> Audio Upload &nbsp; &nbsp; &nbsp; &nbsp;
-                                <input type="radio" value="audiofile"  id="audiofile" name="audiofile"> Audio File
+                                <input type="radio" value="audiofile"  id="audiofile" name="audiofile"> Audio File &nbsp; &nbsp; &nbsp; &nbsp;
+                                <input type="radio" value="audiolivefile"  id="audiolive" name="audiolive">Live Audio File
 
                                 </form>
                                 </div>
@@ -157,6 +166,8 @@ border-radius: 0px 4px 4px 0px;
 $(document).ready(function(){
 	$('#video_upload').show();
 	$('#audio_file').hide();
+	$('#audio_live_file').hide();
+
 
 $('#audio_upload').click(function(){
 	$('#video_upload').show();
@@ -173,6 +184,15 @@ $('#audiofile').click(function(){
 
 	// $('#audio_upload').removeClass('checked'); 
 
+
+})
+$('#audiolive').click(function(){
+	$('#video_upload').hide();
+	$('#audio_file').hide();
+	$('#audio_live_file').show();
+	$("#video_upload").removeClass('collapse');
+	$("#audio_file").removeClass('collapse');
+	$("#audio_live_file").addClass('collapse');
 
 })
 });
@@ -206,6 +226,26 @@ $('#mp3_url').change(function(){
 data: {
                _token: '{{ csrf_token() }}',
                mp3: $('#mp3_url').val()
+
+         },        success: function(value){
+			console.log(value);
+			$('#audio_id').val(value.audio_id);
+            $('#Next').show();
+
+        }
+    });
+})
+
+
+
+$('#live_mp3_url').change(function(){
+	alert($('#live_mp3_url').val());
+	$.ajax({
+		url: '{{ URL::to('admin/AudioLivefile') }}',
+        type: "post",
+data: {
+               _token: '{{ csrf_token() }}',
+               mp3: $('#live_mp3_url').val()
 
          },        success: function(value){
 			console.log(value);
@@ -724,6 +764,7 @@ $('#duration').mask('00:00:00');
   $('#optionradio').hide();
   $('#heading_option').hide();
   $('#audio_file').hide();
+  $('#audio_live_file').hide();
   $('#Next').hide();
   $('#video_details').show();
 
