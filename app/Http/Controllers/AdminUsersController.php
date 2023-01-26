@@ -622,7 +622,7 @@ class AdminUsersController extends Controller
         $data = Session::all();
 
         // $session_password = $data['password_hash'];
-        if (empty($data['password_hash']))
+        if (Auth::guest())
         {
             $system_settings = SystemSetting::first();
 
@@ -2779,7 +2779,7 @@ class AdminUsersController extends Controller
         $data = Session::all();
 
         // $session_password = $data['password_hash'];
-        if (empty($data['password_hash']))
+        if (Auth::guest())
         {
             $system_settings = SystemSetting::first();
 

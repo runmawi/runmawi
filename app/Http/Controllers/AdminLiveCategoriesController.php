@@ -23,7 +23,7 @@ class AdminLiveCategoriesController extends Controller
 {
       public function index(){
         $data = Session::all();
-        if (!empty($data['password_hash'])) {
+        if (!Auth::guest()) {
         $package_id = auth()->user()->id;
         // dd('test');
         $user_package =    User::where('id', $package_id)->first();
@@ -86,7 +86,7 @@ class AdminLiveCategoriesController extends Controller
     
      public function store(Request $request){
       $data = Session::all();
-      if (!empty($data['password_hash'])) {
+      if (!Auth::guest()) {
       $package_id = auth()->user()->id;
       $user_package =    User::where('id', $package_id)->first();
       $package = $user_package->package;
@@ -174,7 +174,7 @@ class AdminLiveCategoriesController extends Controller
     
     public function edit($id){
       $data = Session::all();
-        if (!empty($data['password_hash'])) {
+        if (!Auth::guest()) {
       $package_id = auth()->user()->id;
       $user_package =    User::where('id', $package_id)->first();
       $package = $user_package->package;
@@ -199,7 +199,7 @@ class AdminLiveCategoriesController extends Controller
     
         public function update(Request $request){
           $data = Session::all();
-        if (!empty($data['password_hash'])) {
+        if (!Auth::guest()) {
           $package_id = auth()->user()->id;
           $user_package =    User::where('id', $package_id)->first();
           $package = $user_package->package;
@@ -274,7 +274,7 @@ class AdminLiveCategoriesController extends Controller
     
         public function destroy($id){
           $data = Session::all();
-        if (!empty($data['password_hash'])) {
+        if (!Auth::guest()) {
           $package_id = auth()->user()->id;
           $user_package =    User::where('id', $package_id)->first();
           $package = $user_package->package;

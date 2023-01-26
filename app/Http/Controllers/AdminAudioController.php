@@ -63,7 +63,7 @@ class AdminAudioController extends Controller
     public function index(Request $request)
     {
         $data = Session::all();
-        if (!empty($data['password_hash'])) {
+        if (!Auth::guest()) {
         $package_id = auth()->user()->id;
         $user_package =    User::where('id', $package_id)->first();
         $package = $user_package->package;
@@ -136,7 +136,7 @@ class AdminAudioController extends Controller
     public function create()
     {
         $data = Session::all();
-        if (!empty($data['password_hash'])) {
+        if (!Auth::guest()) {
         $package_id = auth()->user()->id;
         $user_package =    User::where('id', $package_id)->first();
         $package = $user_package->package;
@@ -225,7 +225,7 @@ class AdminAudioController extends Controller
     {
         $data = Session::all();
         // dd($data);
-        if (!empty($data['password_hash'])) {
+        if (!Auth::guest()) {
         $package_id = auth()->user()->id;
         $user_package =    User::where('id', $package_id)->first();
         $package = $user_package->package;
@@ -364,7 +364,7 @@ class AdminAudioController extends Controller
         $data = Session::all();
         $countries=CountryCode::all();
 
-        if (!empty($data['password_hash'])) {
+        if (!Auth::guest()) {
         $package_id = auth()->user()->id;
         $user_package =    User::where('id', $package_id)->first();
         $package = $user_package->package;
@@ -445,7 +445,7 @@ class AdminAudioController extends Controller
 
         $data = Session::all();
 
-        if (!empty($data['password_hash'])) {
+        if (!Auth::guest()) {
             $package_id = auth()->user()->id;
             $user_package =    User::where('id', $package_id)->first();
             $package = $user_package->package;
@@ -792,7 +792,7 @@ class AdminAudioController extends Controller
     public function destroy($id)
     {
         $data = Session::all();
-        if (!empty($data['password_hash'])) {
+        if (!Auth::guest()) {
         $package_id = auth()->user()->id;
         $user_package =    User::where('id', $package_id)->first();
         $package = $user_package->package;
@@ -885,7 +885,22 @@ class AdminAudioController extends Controller
     $value['audio_id'] = $audio_id;
     return $value;  
 
-    }                    
+    }            
+    public function AudioLivefile(Request $request)
+    {
+        
+    $audio = new Audio();
+    $audio->mp3_url = $request['mp3'];
+    $audio->type = 'live_mp3';
+    $audio->save(); 
+    $audio_id = $audio->id;
+
+    $value['success'] = 1;
+    $value['message'] = 'Uploaded Successfully!';
+    $value['audio_id'] = $audio_id;
+    return $value;  
+
+    }           
     public function uploadAudio(Request $request)
     {
 

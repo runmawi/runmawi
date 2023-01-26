@@ -183,7 +183,7 @@ class ChannelController extends Controller
         $ThumbnailSetting = ThumbnailSetting::first();
         $StorageSetting = StorageSetting::first();
 
-        if (!empty($data['password_hash']))
+        if (!Auth::guest())
         {
 
             $get_video_id = \App\Video::where('slug', $slug)->first();
@@ -1633,7 +1633,7 @@ class ChannelController extends Controller
         $stateName = $geoip->getregion();
         $ThumbnailSetting = ThumbnailSetting::first();
 
-        if (!empty($data['password_hash']))
+        if (!Auth::guest())
         {
 
             $get_video_id = \App\Video::where('slug', $slug)->first();
@@ -2882,7 +2882,7 @@ class ChannelController extends Controller
         $data['password_hash'] = "";
         $data = session()->all();
 
-        if (!empty($data['password_hash']))
+        if (!Auth::guest())
         {
             $get_video_id = \App\Video::where('slug', $slug)->first();
             $vid = $get_video_id->id;
@@ -3181,7 +3181,7 @@ class ChannelController extends Controller
         $data['password_hash'] = "";
         $data = session()->all();
 
-        if (!empty($data['password_hash']))
+        if (!Auth::guest())
         {
 
             $get_video_id = \App\Video::where('slug', $slug)->first();

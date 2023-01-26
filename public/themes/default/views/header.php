@@ -30,7 +30,7 @@
       $request_url = end($uri_parts);
       $uppercase =  ucfirst($request_url);
       
-      if(!empty($data['password_hash']) && empty($uppercase) || empty($data['password_hash']) && empty($uppercase)){
+      if(!Auth::guest() && empty($uppercase) || Auth::guest() && empty($uppercase)){
          $uppercase = "Home" ;
       }else{ }
       

@@ -257,10 +257,11 @@ border-radius: 0px 4px 4px 0px;
 									<select id="type" name="type" class="form-control">
 										<option value="file" @if(!empty($audio->type) && $audio->type == 'file'){{ 'selected' }}@endif>Audio File</option>
 										<option value="upload" @if(!empty($audio->type) && $audio->type == 'upload'){{ 'selected' }}@endif>Upload Audio</option>
+										<option value="live_mp3" @if(!empty($audio->type) && $audio->type == 'live_mp3'){{ 'selected' }}@endif>Live Audio File Audio</option>
 									</select>
 								
 
-									<div class="new-audio-file mt-3" @if(!empty($audio->type) && $audio->type == 'file'){{ 'style="display:block"' }}@endif>
+									<div class="new-audio-file mt-3" @if(!empty($audio->type) && $audio->type == 'file' || $audio->type == 'live_mp3'){{ 'style="display:block"' }}@endif>
 										<label for="mp3_url"><label class="mb-1">Mp3 File URL:</label></label>
 										<input type="text" class="form-control" name="mp3_url" id="mp3_url" value="@if(!empty($audio->mp3_url)){{ $audio->mp3_url }}@endif" />
 									</div>
@@ -269,7 +270,7 @@ border-radius: 0px 4px 4px 0px;
 										<label  for="upload">Upload Audio</label>
 										<input type="file" name="audio_upload" id="audio_upload">
 									</div>
-									@if(!empty($audio->type) && ($audio->type == 'upload' || $audio->type == 'file'))
+									@if(!empty($audio->type) && ($audio->type == 'upload' || $audio->type == 'file' || $audio->type == 'live_mp3'))
 									<br>
 									<audio width="200" height="200" controls>
 										<source src="{{ $audio->mp3_url }}" type="audio/mp3">
