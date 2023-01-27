@@ -1497,6 +1497,7 @@ public function verifyandupdatepassword(Request $request)
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
         $item['live_description'] = $item->description ? $item->description : "" ;
+        $item['trailer'] = null ;
         return $item;
       });
 
