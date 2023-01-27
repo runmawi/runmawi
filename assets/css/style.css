@@ -982,6 +982,10 @@ li.list-group-item a{
    padding-left: 10px !important;
 
 }
+#main-header {
+    color: #fff;
+    height: 60px;
+}
 .rounded-circle{
    /* width: 100px;
     height: 100px;*/
@@ -1001,6 +1005,22 @@ li.list-group-item {/*width: 375px;*/ background-color: #000;}
 		    padding: 30px;
           
 	}
+ .published_on1{
+        color: #fff!important;
+         position: absolute;
+         bottom: 0;
+         left: 0;
+         background-color: #00a8e1;
+         padding: 7px;
+         font-size: 12px;
+        
+         border-radius: 3px;
+        font-family: 'Chivo';
+         font-weight: 500;
+          border-top: none;
+         border-left: none;  
+         border-bottom-right-radius: 15px;
+     }
 	.inway{
 		background-color: #4895d1;
 		border-color: #4895d1;
@@ -1120,6 +1140,9 @@ li.list-group-item {/*width: 375px;*/ background-color: #000;}
 		font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
 		font-size: 4.125rem;
 	}
+html,body{
+    height: 100%;
+}
 	.watch{
 		font-size: 1.225rem;
         font-weight: normal;
