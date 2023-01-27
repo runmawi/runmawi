@@ -586,14 +586,12 @@ class AdminAudioController extends Controller
 
         $audio->update($data);
         $audio->ppv_price =  $ppv_price;
-        $audio->ppv_status =  $data['ppv_status'];
         $audio->search_tags =  $searchtags;
         $audio->banner =  $banner;
         $audio->ios_ppv_price =  $request->ios_ppv_price;
         $audio->player_image =  $player_image;
         $audio->status =  $status;
         $audio->save();
-        // dd($audio->id);
 
         if(!empty($data['artists'])){
             $artistsdata = $data['artists'];
@@ -657,7 +655,6 @@ class AdminAudioController extends Controller
 
             }
         }
-            // dd($input);
 
             $StorageSetting = StorageSetting::first();
 
@@ -707,9 +704,7 @@ class AdminAudioController extends Controller
             }elseif($StorageSetting->aws_storage == 1){
 
                 $file = $request->file('audio_upload');
-                // $name = time() . $file->getClientOriginalName();
                 $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
-                // print_r($file);exit;
                 $filePath = $StorageSetting->aws_audio_path.'/'. $name;
                 
                 Storage::disk('s3')->put($filePath, file_get_contents($file));

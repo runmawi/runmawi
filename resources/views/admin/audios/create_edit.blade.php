@@ -122,20 +122,20 @@ border-radius: 0px 4px 4px 0px;
                             </div>
 
                             <!-- Audio upload -->        
-                            <div id="video_upload" style="">
-                                <div class='content file'>
-                                    <h4 class="card-title upload-ui font-weight-bold">Upload Audio</h4>
-                                    <!-- Dropzone -->
-                                    <form action="{{ $dropzone_url }}" method= "post" class='dropzone' id="audio_source" ></form> 
-                                </div> 
+                            	<div id="video_upload" style="">
+									<div class='content file'>
+										<h4 class="card-title upload-ui font-weight-bold">Upload Audio</h4>
+										<!-- Dropzone -->
+										<form action="{{ $dropzone_url }}" method= "post" class='dropzone' id="audio_source" ></form> 
+									</div> 
                                 <div>
-<!--                                    <input type="button" id="Next" value='Next' class='btn btn-secondary'>-->
                                 </div>
                             </div> 
    
-                            <div class="text-center" style="margin-top: 30px;">
-                                <input type="button" id="Next" value='Proceed to Next Step' class='btn btn-primary'>
-                            </div>
+								<div class="text-center" style="margin: 20px;">
+									<input type="button" id="Next" value='Proceed to Next Step' class='btn btn-primary'>
+								</div>
+                           
                             <input type="hidden" id="base_url" value="<?php echo URL::to('admin/Audiofile');?>">
                         </div>
                     <hr />
@@ -144,13 +144,11 @@ border-radius: 0px 4px 4px 0px;
                         <div id="optionradio"  >
                             <div style="" id="optionradio">
                                 <form action="{{URL::to('admin/Audiofile')}}" method= "post"  >
-
-                                <input type="radio" value="audio_upload" id="audio_upload" name="audiofile" checked="checked"> Audio Upload &nbsp; &nbsp; &nbsp; &nbsp;
-                                <input type="radio" value="audiofile"  id="audiofile" name="audiofile"> Audio File &nbsp; &nbsp; &nbsp; &nbsp;
-                                <input type="radio" value="audiolivefile"  id="audiolive" name="audiolive">Live Audio File
-
+									<input type="radio" value="audio_upload" id="audio_upload" name="audiofile" checked="checked"> Audio Upload &nbsp; &nbsp; &nbsp; &nbsp;
+									<input type="radio" value="audiofile"  id="audiofile" name="audiofile"> Audio File &nbsp; &nbsp; &nbsp; &nbsp;
+									<input type="radio" value="audiolivefile"  id="audiolive" name="audiolive">Live Audio File
                                 </form>
-                                </div>
+                            </div>
                         </div>
                     </div>
             </div>
@@ -167,38 +165,43 @@ $(document).ready(function(){
 	$('#video_upload').show();
 	$('#audio_file').hide();
 	$('#audio_live_file').hide();
+	
+	$('#audio_upload').click(function(){
+		$('#audiolive').attr('checked', false);
+		$('#audio_file').hide();
+		$('#Next').hide();
+		$('#audio_live_file').hide();
+		$("#audio_file").removeClass('collapse');
+		$("#audio_live_file").removeClass('collapse');
+		$("#video_upload").addClass('collapse');
+		$('#video_upload').show();
+	})
 
+	$('#audiofile').click(function(){
+		$('#audiolive').attr('checked', false);
+		$('#video_upload').hide();
+		$('#audio_live_file').hide();
+		$('#Next').hide();
+		$("#video_upload").removeClass('collapse');
+		$("#audio_live_file").removeClass('collapse');
+		$("#audio_file").addClass('collapse');
+		$('#audio_file').show();
+	})
 
-$('#audio_upload').click(function(){
-	$('#video_upload').show();
-	$('#audio_file').hide();
-	$("#video_upload").addClass('collapse');
-	$("#audio_file").removeClass('collapse');
+	$('#audiolive').click(function(){
+		$('#audiofile').attr('checked', false);
+		$('#audio_upload').attr('checked', false);
+		$('#audiolive').attr('checked', true);
+		$('#Next').hide();
+		$('#video_upload').hide();
+		$('#audio_file').hide();
+		$("#video_upload").removeClass('collapse');
+		$("#audio_file").removeClass('collapse');
+		$("#audio_live_file").addClass('collapse');
+		$('#audio_live_file').show();
+	})
 
-})
-$('#audiofile').click(function(){
-	$('#video_upload').hide();
-	$('#audio_file').show();
-	$("#video_upload").removeClass('collapse');
-	$("#audio_file").addClass('collapse');
-
-	// $('#audio_upload').removeClass('checked'); 
-
-
-})
-$('#audiolive').click(function(){
-	$('#video_upload').hide();
-	$('#audio_file').hide();
-	$('#audio_live_file').show();
-	$("#video_upload").removeClass('collapse');
-	$("#audio_file").removeClass('collapse');
-	$("#audio_live_file").addClass('collapse');
-
-})
 });
-
-
-
 
 </script>
  
