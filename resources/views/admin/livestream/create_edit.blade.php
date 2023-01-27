@@ -259,10 +259,9 @@ border-radius: 0px 4px 4px 0px;
                     </div>
                                     
                                         {{-- Re-Stream  --}}
-                    <div class="row mt-3">
+                    <div class="row mt-3 d-flex ">
                         <div class="col-sm-6">
                             <label class="m-0">Enable ReStream</label>
-
                             <div class="panel-body">
                                 <div class="mt-1">
                                     <label class="switch">
@@ -270,6 +269,13 @@ border-radius: 0px 4px 4px 0px;
                                         <span class="slider round"></span>
                                     </label>
                                 </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label class="m-0">Search Tags</label>
+                            <div class="panel-body">
+                                <input type="text" id="tag-input1" name="searchtags">
                             </div>
                         </div>
                     </div>
@@ -347,17 +353,7 @@ border-radius: 0px 4px 4px 0px;
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-3">
-                        <div class="col-sm-12">
-                            <label class="m-0">Search Tags</label>
 
-                            <div class="panel-body">
-                            <!-- <input type="text" id="#inputTag" value="" data-role="tagsinput">  -->
-                            <input type="text" id="tag-input1" name="searchtags">
-
-                        </div>
-                        </div>
-                    </div>
                     <div class="row mt-3">
                         <div class="col-sm-12">
                             <label class="m-0">Live Stream Details, Links, and Info</label>
@@ -429,6 +425,62 @@ border-radius: 0px 4px 4px 0px;
                             </div>
                         </div>
                     </div>
+                                {{-- Ads Category--}} 
+                    <div class="row mt-3">
+                        <div class="col-sm-4">
+                            <label class="m-0">Choose Pre-Ad Category</label>
+                            <select class="form-control" name="pre_ads_category" id="pre_ads_category">
+                               <option value=" ">Select Pre-Ad Category</option>
+                                 @foreach($ads_category as $key => $ads )
+                                     <option value="{{ $ads->id }}" > {{ ucwords($ads->name) }}</option>
+                                 @endforeach
+                            </select>
+                        </div>
+ 
+                        <div class="col-sm-4">
+                            <label class="m-0">Choose Mid-Ad Category</label>
+                            <select class="form-control" name="mid_ads_category" id="mid_ads_category">
+                               <option value=" ">Select Mid-Ad Category</option>
+                                 @foreach($ads_category as $key => $ads )
+                                     <option value="{{ $ads->id }}"  > {{ ucwords($ads->name) }}</option>
+                                 @endforeach
+                            </select>
+                        </div>
+ 
+                        <div class="col-sm-4">
+                            <label class="m-0">Choose Post-Ad Category</label>
+                            <select class="form-control" name="post_ads_category" id="post_ads_category">
+                               <option value=" ">Select Post-Ad Category</option>
+                                 @foreach($ads_category as $key => $ads )
+                                     <option value="{{ $ads->id }}" > {{ ucwords($ads->name) }}</option>
+                                 @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                                {{-- Ads --}}
+                    <div class="row mt-3">
+                        <div class="col-sm-4" id="pre_ads_div" >
+                            <label class="m-0">Choose Pre-Ad </label>
+                            <select class="form-control" name="pre_ads" id="pre_ads">
+                               <option value=" ">Select Pre-Ad </option>
+                            </select>
+                        </div>
+ 
+                        <div class="col-sm-4" id="mid_ads_div">
+                            <label class="m-0">Choose Mid-Ad </label>
+                            <select class="form-control" name="mid_ads" id="mid_ads">
+                               <option value=" ">Select Mid-Ad </option>
+                            </select>
+                        </div>
+ 
+                        <div class="col-sm-4" id="post_ads_div">
+                            <label class="m-0">Choose Post-Ad </label>
+                            <select class="form-control" name="post_ads" id="post_ads">
+                               <option value=" ">Select Post-Ad </option>
+                            </select>
+                        </div>
+                    </div>
 
                     <div class="row mt-3">
                         <div class="col-sm-4">
@@ -452,29 +504,29 @@ border-radius: 0px 4px 4px 0px;
                         </div>
                     </div>
 
-                    <div class="row" id="ppv_price">
-                        <div class="col-sm-4">
-                            <label class="m-0">PPV Price</label>
-                            <p class="p1">Apply PPV Price from Global Settings?  <input type="checkbox" id="ppv_purchase_active" /> </p>
-                            <div class="panel-body">
-                                <input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($video->ppv_price)){{ $video->ppv_price }}@endif" />
-                                <div class="clear"></div>
+                        <div class="row" id="ppv_price">
+                            <div class="col-sm-4">
+                                <label class="m-0">PPV Price</label>
+                                <p class="p1">Apply PPV Price from Global Settings?  <input type="checkbox" id="ppv_purchase_active" /> </p>
+                                <div class="panel-body">
+                                    <input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($video->ppv_price)){{ $video->ppv_price }}@endif" />
+                                    <div class="clear"></div>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="col-sm-4">
-                            <label class="m-0"> IOS PPV Price</label>
-                            <p class="p1">Apply IOS PPV Price from Global Settings?</p>
-                            <div class="panel-body">
-                                <select  name="ios_ppv_price" class="form-control" id="ios_ppv_price">
-                                    <option value= "" >Select IOS PPV Price: </option>
-                                    @foreach($InappPurchase as $Inapp_Purchase)
-                                       <option value="{{ $Inapp_Purchase->product_id }}"> {{ $Inapp_Purchase->plan_price }}</option>
-                                    @endforeach
-                                 </select>
+                            <div class="col-sm-4">
+                                <label class="m-0"> IOS PPV Price</label>
+                                <p class="p1">Apply IOS PPV Price from Global Settings?</p>
+                                <div class="panel-body">
+                                    <select  name="ios_ppv_price" class="form-control" id="ios_ppv_price">
+                                        <option value= "" >Select IOS PPV Price: </option>
+                                        @foreach($InappPurchase as $Inapp_Purchase)
+                                        <option value="{{ $Inapp_Purchase->product_id }}"> {{ $Inapp_Purchase->plan_price }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
                     <div class="row mt-3">
                         <div class="col-sm-4">
@@ -1303,5 +1355,5 @@ var tagInput1 = new TagsInput({
     tagInput1.addData([])
 
     </script>
-
+@include('admin.livestream.Ads_live'); 
 @stop @stop
