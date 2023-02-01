@@ -365,6 +365,13 @@
 		   <?php  endif;?>
       </div>
 
+      <div class="row">
+                <div class=" container-fluid video-list you-may-like overflow-hidden">
+                    <h4 class="" style="color:#fffff;"><?php echo __('Comment Section');?></h4>
+                    <?php include('comments/index.blade.php');?>
+                </div>
+            </div>
+
              <!-- Season -->
 
       <div class="iq-main-header ">

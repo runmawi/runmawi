@@ -522,12 +522,12 @@ class AdminLiveStreamController extends Controller
         $movie->player_image = $player_PC_image;
         $movie->Tv_live_image = $Tv_live_image;
         $movie->user_id =Auth::User()->id;
-        $movie->pre_ads_category  = $request->pre_ads_category;
-        $movie->mid_ads_category  = $request->mid_ads_category;
-        $movie->post_ads_category = $request->post_ads_category;
-        $movie->pre_ads = $request->pre_ads;
-        $movie->mid_ads = $request->mid_ads;
-        $movie->post_ads = $request->post_ads;
+        // $movie->pre_ads_category  = $request->pre_ads_category;
+        // $movie->mid_ads_category  = $request->mid_ads_category;
+        // $movie->post_ads_category = $request->post_ads_category;
+        // $movie->pre_ads = $request->pre_ads;
+        // $movie->mid_ads = $request->mid_ads;
+        // $movie->post_ads = $request->post_ads;
         $movie->save();
 
         $shortcodes = $request['short_code'];
@@ -1027,12 +1027,12 @@ class AdminLiveStreamController extends Controller
         $video->access = $request->access;
         $video->ios_ppv_price = $request->ios_ppv_price;
         $video->m3u_url = $request->m3u_url;
-        $video->pre_ads_category  = $request->pre_ads_category;
-        $video->mid_ads_category  = $request->mid_ads_category;
-        $video->post_ads_category = $request->post_ads_category;
-        $video->pre_ads = $request->pre_ads;
-        $video->mid_ads = $request->mid_ads;
-        $video->post_ads = $request->post_ads;
+        // $video->pre_ads_category  = $request->pre_ads_category;
+        // $video->mid_ads_category  = $request->mid_ads_category;
+        // $video->post_ads_category = $request->post_ads_category;
+        // $video->pre_ads = $request->pre_ads;
+        // $video->mid_ads = $request->mid_ads;
+        // $video->post_ads = $request->post_ads;
         $video->save();
 
         if(!empty($data['video_category_id'])){

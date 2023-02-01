@@ -183,6 +183,8 @@ class ChannelController extends Controller
         $ThumbnailSetting = ThumbnailSetting::first();
         $StorageSetting = StorageSetting::first();
 
+        $source_id = Video::where('slug',$slug)->pluck('id')->first();
+
         if (!Auth::guest())
         {
 
@@ -752,6 +754,8 @@ class ChannelController extends Controller
                     'subtitles_name' => $subtitles,
                     'ThumbnailSetting' => $ThumbnailSetting,
                     // 'latestviews' => $latestviews,
+                    'source_id'      => $source_id,
+                    'commentable_type' => "play_videos" ,
                     'Paystack_payment_settings' => PaymentSetting::where('payment_type','Paystack')->first() ,
                     'Razorpay_payment_settings' => PaymentSetting::where('payment_type','Razorpay')->first() ,
                 );
@@ -1084,6 +1088,8 @@ class ChannelController extends Controller
                     'artistsname' => $artistsname,
                     'lang_name' => $lang_name,
                     'subtitles_name' => $subtitles,
+                    'source_id'      => $source_id,
+                    'commentable_type' => "play_videos" ,
                     'Paystack_payment_settings' => PaymentSetting::where('payment_type','Paystack')->first() ,
                     'Razorpay_payment_settings' => PaymentSetting::where('payment_type','Razorpay')->first() ,
                 );
@@ -1301,6 +1307,8 @@ class ChannelController extends Controller
                     'artistsname' => $artistsname,
                     'lang_name' => $lang_name,
                     'subtitles_name' => $subtitles,
+                    'source_id'      => $source_id,
+                    'commentable_type' => "play_videos" ,
                 );
 
             }
@@ -1614,6 +1622,8 @@ class ChannelController extends Controller
                     'lang_name' => $lang_name,
                     'subtitles_name' => $subtitles,
                     'artists' => $artists,
+                    'source_id'      => $source_id,
+                    'commentable_type' => "play_videos" ,
                 );
 
             }
