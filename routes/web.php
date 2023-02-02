@@ -655,6 +655,10 @@ Route::get('/episode/filedelete/{id}', 'AdminSeriesController@filedelete');
     // Compress Image
     Route::get('/compress-image-setting', 'AdminSettingsController@compress_image')->name('compress_image');
     Route::post('/compress-image-store', 'AdminSettingsController@compress_image_store')->name('compress_image_store');
+    
+    // Comment Section Image
+    Route::get('/comment-section-setting', 'AdminSettingsController@comment_section')->name('comment_section');
+    Route::post('/comment-section-update', 'AdminSettingsController@comment_section_update')->name('comment_section_update');
 
     //   Home Page Popup 
     Route::get('/pop-up', 'AdminHomePopupController@index')->name('homepage_popup'); 
