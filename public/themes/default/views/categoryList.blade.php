@@ -14,7 +14,7 @@
                       @if(isset($category_list)) 
                         @foreach($category_list as $category_lists)
                             <li class="slide-item col-sm-2 col-md-2 col-xs-12">
-                                <a href=" {{ URL::to('home') }} ">
+                                <a href="{{ URL::to('category').'/'.$category_lists->slug   }} ">
                                     <div class="block-images position-relative">
                                         <div class="img-box">
                                             <img src="<?php echo URL::to('/').'/public/uploads/videocategory/'.$category_lists->image;  ?>" class="img-fluid w-100" alt="">
