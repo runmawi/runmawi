@@ -178,7 +178,7 @@ endif; ?>
 
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
             <div class="slide slick-bg s-bg-1 lazy"
-            style="background:linear-gradient(180deg, rgba(9, 0, 21, 0) -1.41%, #090015 80.7%), url('<?php echo URL::to('/').'/public/uploads/images/' .$videos->player_image;?>'); background-repeat:no-repeat;background-size:contain;background-postion:top ;">
+            style="background:linear-gradient(180deg, rgba(9, 0, 21, 0) -1.41%, #090015 90.7%), url('<?php echo URL::to('/').'/public/uploads/images/' .$videos->player_image;?>'); background-repeat:no-repeat;background-size:contain;background-position:right; ">
             <div class="container-fluid position-relative h-100">
                 <div class="slider-inner h-slider mt-3">
 

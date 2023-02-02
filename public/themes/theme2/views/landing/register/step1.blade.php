@@ -147,7 +147,6 @@ $uppercase =  ucfirst($request_url);
     border-radius: 0;
     margin-bottom: 1rem !important;
     border: none!important;
-  font-family: 'Proxima Nova';
 font-style: normal;
 font-weight: 400;
 font-size: 20px;

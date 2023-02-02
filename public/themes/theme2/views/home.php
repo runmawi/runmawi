@@ -39,7 +39,7 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
     </section>
     <?php  } ?>
 
-    <section id="iq-continue">
+   <!-- <section id="iq-continue">
          <div class="container-fluid">
              <h4 class="mb-3">New Live</h4></div>
         <div class="container-fluid p-0 overflow-hidden
@@ -48,7 +48,7 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
               <div class="col-sm-12 ">
                
                   <div class="block-images position-relative">
-                    <!-- block-images -->
+                   block-images 
                     <div class="img-box">
                          <img src="<?php echo URL::to('assets/img/conjuring.png') ?> " alt="Play store" class="w-">
                       
