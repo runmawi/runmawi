@@ -59,8 +59,9 @@ General
 *::-moz-selection { background: var(--iq-primary); color: var(--iq-white); text-shadow: none; }
 ::-moz-selection { background: var(--iq-primary); color: var(--iq-white); text-shadow: none; }
 ::selection { background: var(--iq-primary); color: var(--iq-white); text-shadow: none; }
-body { font-family: 'Roboto', sans-serif;
-font-weight: 400; font-style: normal; font-size: 16px; line-height: 1.5; padding: 0; margin: 0; color: var(--iq-body-text); /*background: var(--iq-body-bg);*/ }
+body { font-family:  'Proxima Nova'!important;
+font-style: normal;
+font-weight: normal;font-weight: 400; font-style: normal; font-size: 16px; line-height: 1.5; padding: 0; margin: 0; color: var(--iq-body-text); /*background: var(--iq-body-bg);*/ }
 a, .btn { -webkit-transition: all 0.5s ease-out 0s; -moz-transition: all 0.5s ease-out 0s; -ms-transition: all 0.5s ease-out 0s; -o-transition: all 0.5s ease-out 0s; transition: all 0.5s ease-out 0s; }
 a, button, input, btn { outline: medium none; }
 a { color: var(--iq-body-text); text-decoration: none; }
@@ -218,8 +219,7 @@ Avatar Size
 /*----------------------------------------------
 Tab Pills
 ------------------------------------------------*/
-.nav-pills .nav-item a { color: var(--iq-body-text); border-radius: 50px;font-family: 'Roboto'!important;font-weight: 500;
- }
+.nav-pills .nav-item a { color: var(--iq-body-text); border-radius: 50px; }
 .nav-pills .nav-link.active, .nav-pills .show>.nav-link { color: var(--iq-white); background: transparent; }
 .nav-pills .nav-link:hover { color: var(--iq-primary); }
 .nav-tabs { border-bottom: 2px solid var(--iq-light-primary); margin-bottom: 15px; }
