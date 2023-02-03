@@ -1,20 +1,27 @@
 <?php  $comment_loop =  App\WebComment::where('source_id',$source_id)->where('commentable_type',$commentable_type)->whereNull('child_id')->get(); ?>
-
+<?php  include(public_path('themes/default/views/comments/commentbox.blade.php')); ?>
+<div class="bg-border col-lg-6 p-2">
 <?php foreach( $comment_loop as $key => $comment ): ?>
-    <img class="mr-3" src="https://www.gravatar.com/avatar.jpg" width="50px" alt="{{ $comment->user_name }} Avatar">
+
+    
     <div class="media-body">
-        <h5 class="mt-0 mb-1"><?= $comment->user_name ?> <small class="text-muted">- <?= $comment->created_at->diffForHumans() ?></small></h5>
-        <div style="white-space: pre-wrap;"><?= ( $comment->comment ) ?></div>
+        <div class="d-flex align-items-center"><img class="mr-3" src="https://www.gravatar.com/avatar.jpg" width="50px" alt="{{ $comment->user_name }} Avatar" style="border-radius: 30px;"> <h5 class="mt-0 mb-1"><?= $comment->user_name ?><br> <small class="text-muted"> <?= $comment->created_at->diffForHumans() ?></small></h5></div>
+       
+        <div style="white-space: pre-wrap;" class="mt-2 mb-2 text-white"><?= ( $comment->comment ) ?></div>
 
             <div>
                 <?php if( Auth::user() != null && Auth::user()->id != $comment->user_id  && Auth::user()->role != 'register' ):?>
-                    <button data-toggle="modal" data-target="#reply-modal-<?= $comment->id ?>" class="btn btn-sm btn-link text-uppercase">Reply</button>
+                    <a data-toggle="modal" data-target="#reply-modal-<?= $comment->id ?>" class=" text-uppercase text-secondary"> <i class="fa fa-share" aria-hidden="true"></i>
+Reply</a>
                 <?php endif; ?>
 
                 <?php if( Auth::user() != null && Auth::user()->id == $comment->user_id && Auth::user()->role != 'register' ):?>
                 
-                    <button data-toggle="modal" data-target="#comment-modal-<?= $comment->id ?>" class="btn btn-sm btn-link text-uppercase">Edit</button>
-                    <a href="<?= route('comments.destroy', $comment->id) ?>" class="btn btn-sm btn-link text-danger text-uppercase">Delete</a>
+                    <a data-toggle="modal" data-target="#comment-modal-<?= $comment->id ?>" class=" edu  text-success text-uppercase"><i class="fa fa-pencil" aria-hidden="true"></i>
+
+</a>
+                    <a href="<?= route('comments.destroy', $comment->id) ?>" class="dele text-uppercase text-danger"><i class="fa fa-trash-o" aria-hidden="true"></i>
+</a>
                     
                     <a  id="comment-delete-form-<?= $comment->id ?>" href="<?= route('comments.destroy', $comment->id) ?>" method="get" style="display: none;"></a>
                 <?php endif; ?>
@@ -29,16 +36,17 @@
         if(count($reply_comment) > 0 ):
 
             foreach ($reply_comment as $key => $reply_comments) : ?>
-                <div style="white-space: pre-wrap;"><?= ( $reply_comments->comment ) ?></div>
+                <div style="white-space: pre-wrap;" class="rep text-white"><?= ( $reply_comments->comment ) ?></div>
 
                 <div>
 
                     <?php if( Auth::user() != null && Auth::user()->id == $reply_comments->user_id && Auth::user()->role != 'register' ):?>
                     
-                        <button data-toggle="modal" data-target="#reply-edit-comment-modal-<?= $reply_comments->id ?>" class="btn btn-sm btn-link text-uppercase">Edit</button>
+                        <a data-toggle="modal" data-target="#reply-edit-comment-modal-<?= $reply_comments->id ?>" class="text-success text-uppercase"><i class="fa fa-pencil" aria-hidden="true"></i>
 
-                        <a href="<?= route('comments.destroy', $reply_comments->id) ?>" class="btn btn-sm btn-link text-danger text-uppercase">Delete</a>
-                        
+</a>
+                        <a href="<?= route('comments.destroy', $reply_comments->id) ?>" cclass="dele text-uppercase text-danger"><i class="fa fa-trash-o" aria-hidden="true"></i>
+</a>
                         <a  id="comment-delete-form-<?= $reply_comments->id ?>" href="<?= route('comments.destroy', $reply_comments->id) ?>" method="get" style="display: none;"></a>
                     <?php endif; ?>
                 </div>
@@ -56,6 +64,5 @@
     </div>
 
 <?php endforeach; ?>
+</div>
 
-
-<?php  include(public_path('themes/default/views/comments/commentbox.blade.php')); ?>

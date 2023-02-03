@@ -29,7 +29,7 @@
         if(count($reply_comment) > 0 ):
 
             foreach ($reply_comment as $key => $reply_comments) : ?>
-                <div style="white-space: pre-wrap;"><?= ( $reply_comments->comment ) ?></div>
+                <div class="rep text-white" style="white-space: pre-wrap;"><?= ( $reply_comments->comment ) ?></div>
 
                 <div>
 
