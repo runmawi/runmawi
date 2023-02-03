@@ -334,9 +334,19 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 		<div class="next_url" style="display: none;"><?= $url ?></div>
 		<?php } ?>
 
+		<?php if( App\CommentSection::first() != null && App\CommentSection::pluck('livestream')->first() == 1 ): ?>
+            <div class="row">
+            	<div class=" container-fluid video-list you-may-like overflow-hidden">
+                    <h4 class="" style="color:#fffff;"><?php echo __('Comments');?></h4>
+                    <?php include('comments/index.blade.php');?>
+                </div>
+            </div>
+        <?php endif; ?>
+		
 		<div class="iq-main-header  d-flex align-items-center justify-content-between mt-3 p-0">
-  <h6 class="main-title">Season</h6>                      
-</div>
+  			<h6 class="main-title">Season</h6>                      
+		</div>
+
 <div class="favorites-contens">
   <ul class="favorites-slider list-inline  row p-0 mb-0">
     <?php  
