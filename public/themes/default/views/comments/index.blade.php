@@ -1,5 +1,7 @@
 <?php  $comment_loop =  App\WebComment::where('source_id',$source_id)->where('commentable_type',$commentable_type)->whereNull('child_id')->get(); ?>
+
 <?php  include(public_path('themes/default/views/comments/commentbox.blade.php')); ?>
+
 <div class="bg-border col-lg-6 p-2">
 <?php foreach( $comment_loop as $key => $comment ): ?>
 
