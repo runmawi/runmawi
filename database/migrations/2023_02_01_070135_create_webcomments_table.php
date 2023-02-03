@@ -17,7 +17,8 @@ class CreateWebcommentsTable extends Migration
             $table->id();
             
             $table->integer('user_id')->nullable();
-            $table->integer('user_name')->nullable();
+            $table->string('user_name')->nullable();
+            $table->string('first_letter',15)->nullable();
             $table->string('user_role')->nullable();
             $table->string('commenter_type')->nullable();
 

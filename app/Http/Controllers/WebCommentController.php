@@ -35,6 +35,7 @@ class WebCommentController extends Controller
             'user_id'   => Auth::user()->id ,
             'user_role' => Auth::user()->role ,
             'user_name' => Auth::user()->username ,
+            'first_letter' => Auth::user()->username != null ? Auth::user()->username : 'No Name',
             'commenter_type'   => 'App\User' ,
             'commentable_type' => $request->source ,
             'source'      => ( $request->source == 'LiveStream_play' ) ? "App\LiveStream" : (( $request->source == "Videos_play" )  ? "App\Videos" : "App\Episode")  ,
@@ -51,10 +52,12 @@ class WebCommentController extends Controller
 
     public function comment_update(Request $request,$id)
     {
+
         $inputs = array(
             'user_id'   => Auth::user()->id ,
             'user_role' => Auth::user()->role ,
             'user_name' => Auth::user()->username ,
+            'first_letter' => Auth::user()->username != null ? ucfirst(mb_substr(Auth::user()->username, 0, 1))  : 'No Name',
             'commenter_type'   => 'App\User' ,
             'commentable_type' => $request->source ,
             'source'      => ( $request->source == 'LiveStream_play' ) ? "App\LiveStream" : (( $request->source == "play_videos" )  ? "App\Videos" : "App\Episode")  ,
@@ -62,7 +65,7 @@ class WebCommentController extends Controller
             'comment'  => $request->message ,
             'approved' => 1 ,
         );
-        
+
         WebComment::findorfail($id)->update($inputs);
 
         return Redirect::back();
