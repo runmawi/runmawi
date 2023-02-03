@@ -344,6 +344,8 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                             <li  data-tour="step: 3; title: Manage Theme; content: Go to 'Manage Template' to choose a template for our website from our catalogue" class=" " data-tour="step: 3; title: Manage Theme; content: Go to 'Manage Template' to choose a template for our website from our catalogue"><a href="{{ URL::to('admin/ThemeIntegration') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Theme</span></a></li>
                             <li><a href="{{ route('compress_image') }}" class="iq-waves-effect"> Image Settings </a></li>
                             <li><a href="{{ route('homepage_popup') }}" class="iq-waves-effect"> Home Page Pop Up Settings </a></li>
+                            <li><a href="{{ route('comment_section') }}" class="iq-waves-effect"> Comment Section Settings </a></li>
+
                      </ul>
                   </li>
                   <!-- Ads Menu starts -->
@@ -913,6 +915,8 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                             <li  data-tour="step: 3; title: Manage Theme; content: Go to 'Manage Template' to choose a template for our website from our catalogue" class=" " data-tour="step: 3; title: Manage Theme; content: Go to 'Manage Template' to choose a template for our website from our catalogue"><a href="{{ URL::to('admin/ThemeIntegration') }}" class="iq-waves-effect">Theme</a></li>
                             <li><a href="{{ route('compress_image') }}" class="iq-waves-effect"> Image Settings </a></li>
                             <li><a href="{{ route('homepage_popup') }}" class="iq-waves-effect">{{ ucwords('Home page Pop Up settings')  }} </a></li>
+                            <li><a href="{{ route('comment_section') }}" class="iq-waves-effect"> Comment Section Settings </a></li>
+
 
                         </ul>
                     </li>
@@ -1213,6 +1217,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                             <li  data-tour="step: 3; title: Manage Theme; content: Go to 'Manage Template' to choose a template for our website from our catalogue" class=" " data-tour="step: 3; title: Manage Theme; content: Go to 'Manage Template' to choose a template for our website from our catalogue"><a href="{{ URL::to('admin/ThemeIntegration') }}" ><i class="ri-price-tag-line"></i>Theme</a></li>
                             <li><a href="{{ route('compress_image') }}" class="iq-waves-effect"> Image Settings </a></li>
                             <li><a href="{{ route('homepage_popup') }}" class="iq-waves-effect"> {{ ucwords('Home page Pop Up settings') }} </a></li>
+                            <li><a href="{{ route('comment_section') }}" class="iq-waves-effect"> Comment Section Settings </a></li>
                            </ul>
                     </li>
                     <!-- Ads Menu starts class="iq-waves-effect"-->

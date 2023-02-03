@@ -1183,6 +1183,15 @@ $artists = [];
    </div>
 <?php } ?>
 
+        <?php if( App\CommentSection::first() != null && App\CommentSection::pluck('videos')->first() == 1 ): ?>
+            <div class="row">
+                <div class=" container-fluid video-list you-may-like overflow-hidden">
+                    <h4 class="" style="color:#fffff;"><?php echo __('Comments');?></h4>
+                    <?php include('comments/index.blade.php');?>
+                </div>
+            </div>
+        <?php endif; ?>
+
 
    <div class="container-fluid video-list you-may-like  overflow-hidden">
        <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Recomended Videos');?></h4>

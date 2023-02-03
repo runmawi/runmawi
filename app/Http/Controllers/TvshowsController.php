@@ -184,7 +184,9 @@ class TvshowsController extends Controller
             $auth_user_id = Auth::user()->id ;
         }
 
-        $episodess = Episode::where('slug','=',$episode_name)->orderBy('id', 'DESC')->first();    
+        $episodess = Episode::where('slug','=',$episode_name)->orderBy('id', 'DESC')->first();   
+        
+        $source_id =  Episode::where('slug','=',$episode_name)->pluck('id')->first();   
 
         $episode_watchlater = Watchlater::where('episode_id',$episodess->id)->where('user_id',$auth_user_id)->first();
 
@@ -406,6 +408,8 @@ class TvshowsController extends Controller
                 'episode_watchlater' => $episode_watchlater,
                 'episode_Wishlist'   => $episode_Wishlist,
                 'like_dislike'   => $like_dislike,
+                'source_id'      => $source_id,
+                'commentable_type' => "play_episode" ,
                 );
 
             if(Auth::guest() && $settings->access_free == 1){
@@ -438,6 +442,8 @@ class TvshowsController extends Controller
                     'episode_watchlater' => $episode_watchlater,
                     'episode_Wishlist'   => $episode_Wishlist,
                     'like_dislike'   => $like_dislike,
+                    'source_id'      => $source_id,
+                    'commentable_type' => "play_episode" ,
                     );
 
                     if(Auth::guest() && $settings->access_free == 1){

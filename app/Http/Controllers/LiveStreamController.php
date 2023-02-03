@@ -82,8 +82,9 @@ class LiveStreamController extends Controller
           $data = session()->all();
 
           $categoryVideos = LiveStream::where('slug',$vid)->first();
-
+          $source_id = LiveStream::where('slug',$vid)->pluck('id')->first();
           
+
         if(@$categoryVideos->uploaded_by == 'Channel'){
           $user_id = $categoryVideos->user_id;
 
@@ -247,6 +248,8 @@ class LiveStreamController extends Controller
                  'Paystack_payment_settings' => PaymentSetting::where('payment_type','Paystack')->first() ,
                  'M3U_channels' => $M3U_channels ,
                  'M3U_files'    => $M3U_files ,
+                 'source_id'        => $source_id,
+                 'commentable_type' => "LiveStream_play" ,
            );
 
            return Theme::view('livevideo', $data);

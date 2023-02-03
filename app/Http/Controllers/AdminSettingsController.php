@@ -25,6 +25,7 @@ use App\LinkingSetting;
 use App\CompressImage;
 use App\Captcha;
 use App\TimeZone;
+use App\CommentSection;
 
 
 //use Illuminate\Http\Request;
@@ -1073,4 +1074,38 @@ if($watermark != '') {
 
       return Redirect::to('admin/settings')->with(array('message' => 'Successfully Updated Re-captcha Settings!', 'note_type' => 'success') );
     }
+
+    public function comment_section(Request $request)
+    {
+        $comment_section = CommentSection::first();
+
+        return view ('admin.settings.comment_section',compact('comment_section',$comment_section));
+    }
+
+    public function comment_section_update(Request $request)
+    {
+
+      $comment_section = CommentSection::first();
+
+      if($comment_section == null){
+
+        CommentSection::create([
+            'videos'     => ( $request->videos == null ) ? '0' : '1'  ,
+            'livestream' => ( $request->livestream == null ) ? '0' : '1'  ,
+            'episode'    => ( $request->episode == null ) ? '0' : '1'  ,
+          ]);
+
+      }else{
+
+        CommentSection::first()->update([
+          'videos'      => ( $request->videos == null ) ? '0' : '1'  ,
+          'livestream'  => ( $request->livestream == null ) ? '0' : '1'  ,
+          'episode'     => ( $request->episode == null ) ? '0' : '1'  ,
+        ]);
+
+      }
+     
+      return redirect()->route('comment_section')->with(array('message' => 'Successfully Updated!', 'note_type' => 'success') );
+    }
+
 }

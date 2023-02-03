@@ -172,7 +172,7 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
 
     /*TV-shows */ 
     Route::get('tv-shows', 'TvshowsController@index');
-    Route::get('episode/{series_name}/{episode_name}', 'TvshowsController@play_episode');
+    Route::get('episode/{series_name}/{episode_name}', 'TvshowsController@play_episode')->name('play_episode');
     Route::get('episode/embed/{series_name}/{episode_name}', 'TvshowsController@Embedplay_episode');
     Route::get('episode/{episode_name}', 'TvshowsController@PlayEpisode');
     // Route::get('episode/{series_name}/{episode_name}/{id}', 'TvshowsController@play_episode');
@@ -306,7 +306,8 @@ Route::get('/channels', 'ChannelController@index');
 Route::get('/ppvVideos', 'ChannelController@ppvVideos');
 Route::get('/live', 'LiveStreamController@Index');
 // Route::get('/live/{play}/{id}', 'LiveStreamController@Play');
-Route::get('/live/{id}', 'LiveStreamController@Play');
+
+Route::get('/live/{id}', 'LiveStreamController@Play')->name('LiveStream_play');
 Route::get('/live/embed/{id}', 'LiveStreamController@EmbedLivePlay');
 
 
@@ -654,6 +655,10 @@ Route::get('/episode/filedelete/{id}', 'AdminSeriesController@filedelete');
     // Compress Image
     Route::get('/compress-image-setting', 'AdminSettingsController@compress_image')->name('compress_image');
     Route::post('/compress-image-store', 'AdminSettingsController@compress_image_store')->name('compress_image_store');
+    
+    // Comment Section Image
+    Route::get('/comment-section-setting', 'AdminSettingsController@comment_section')->name('comment_section');
+    Route::post('/comment-section-update', 'AdminSettingsController@comment_section_update')->name('comment_section_update');
 
     //   Home Page Popup 
     Route::get('/pop-up', 'AdminHomePopupController@index')->name('homepage_popup'); 
@@ -2039,3 +2044,11 @@ Route::get('/Rss-Feed-episode', 'RssFeedController@episode_view')->name('Rss-Fee
 Route::get('/Rss-Feed-audios', 'RssFeedController@audios_view')->name('Rss-Feed-audios-view');
 
 Route::get('/feed', 'RssFeedController@feed')->name('feed');
+
+Route::get('/comment_index', 'WebCommentController@comment_index')->name('comment.index');
+Route::get('/comment_store', 'WebCommentController@comment_store')->name('comments.store');
+Route::get('/comment_edit', 'WebCommentController@comment_edit')->name('comments.edit');
+Route::get('/comment_update/{id}', 'WebCommentController@comment_update')->name('comments.update');
+Route::get('/comment_destroy/{id}', 'WebCommentController@comment_destroy')->name('comments.destroy');
+
+Route::get('/comment_reply/{id}', 'WebCommentController@comment_reply')->name('comments.reply');
