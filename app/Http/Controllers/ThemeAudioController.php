@@ -85,7 +85,9 @@ class ThemeAudioController extends Controller{
         $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
         $userIp = $geoip->getip();    
         $countryName = $geoip->getCountry();
-        
+
+        $source_id = Audio::where('slug',$slug)->pluck('id')->first();
+
         if (!empty($name)) {
           
              $audio = Audio::select('id')->where('slug','=',$name)->where('status','=',1)->first();
@@ -210,7 +212,8 @@ class ThemeAudioController extends Controller{
                 'json_list' => null ,
                 'audios'  => null ,
                 'ablum_audios' =>  null,
-
+                'source_id'   => $source_id,    
+                'commentable_type' => "play_audios" ,
                 );
 
                 return Theme::view('audio', $data);
@@ -252,6 +255,8 @@ class ThemeAudioController extends Controller{
                 'audio_categories' => AudioCategory::all(),
                 'pages' => Page::where('active', '=', 1)->get(),
                 'ablum_audios' =>  $merged_audios,
+                'source_id'   => $source_id,
+                'commentable_type' => "play_audios" ,
                 );
             } else {
                 $data = array(
