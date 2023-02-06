@@ -1093,6 +1093,7 @@ if($watermark != '') {
             'videos'     => ( $request->videos == null ) ? '0' : '1'  ,
             'livestream' => ( $request->livestream == null ) ? '0' : '1'  ,
             'episode'    => ( $request->episode == null ) ? '0' : '1'  ,
+            'audios'     => ( $request->audios == null ) ? '0' : '1'  ,
           ]);
 
       }else{
@@ -1101,6 +1102,7 @@ if($watermark != '') {
           'videos'      => ( $request->videos == null ) ? '0' : '1'  ,
           'livestream'  => ( $request->livestream == null ) ? '0' : '1'  ,
           'episode'     => ( $request->episode == null ) ? '0' : '1'  ,
+          'audios'      => ( $request->audios == null ) ? '0' : '1'  ,
         ]);
 
       }
