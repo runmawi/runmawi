@@ -43,7 +43,10 @@
         padding-left: 15px;
     }
 </style>
-<div class="mt-4 p-0">
+
+<?php if(Auth::guest() != true): ?>
+
+    <div class="mt-4 p-0">
         <div class="">
             <form method="get" action="<?= route('comments.store') ?>">
                 <div class="row align-items-end">
@@ -68,3 +71,4 @@
     </div>
 
     <br />
+<?php endif; ?>
