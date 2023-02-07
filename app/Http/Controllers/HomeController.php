@@ -358,16 +358,14 @@ class HomeController extends Controller
                     ->pluck('videoid')
                     ->toArray();
                 $cnt_watching = Video::with('cnt_watch')->whereIn('id', $getcnt_watching)->get();
-                //  echo "<pre>";print_r($cnt_watching);exit();
                 
             }
             else
             {
                 $cnt_watching = [];
-                //  echo "<pre>";print_r($cnt_watching);exit();
-                // dd('$agent');
                 
             }
+
             $latest_series = Series::where('active', '=', '1')->orderBy('created_at', 'DESC')
             ->get();
             $currency = CurrencySetting::first();
@@ -3698,6 +3696,10 @@ class HomeController extends Controller
 
     public function Multipleprofile()
     {
+
+        if(Auth::user() == null){
+            return redirect::to('/login');
+        }
 
         $Website_name = Setting::first();
         $parent_id = Session::get('login_web_59ba36addc2b2f9401580f014c7f58ea4e30989d');
