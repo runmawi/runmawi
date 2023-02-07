@@ -182,13 +182,10 @@
 
 	</script>
 
-<script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
+<script type="text/javascript" src="https://cdn.ckeditor.com/4.13.0/standard/ckeditor.js"></script>
 
 <script>
-CKEDITOR.replace( 'summary-ckeditor', {
-    filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
-    filebrowserUploadMethod: 'form'
-});
+	CKEDITOR.replace( 'summary-ckeditor' );
 </script>
 
 	{{-- validate --}}
