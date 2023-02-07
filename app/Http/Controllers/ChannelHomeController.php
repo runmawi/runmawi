@@ -67,6 +67,17 @@ use App\LiveStream;
 class ChannelHomeController extends Controller
 {
 
+    public function __construct()
+    {
+        //$this->middleware('auth');
+        $settings = Setting::first();
+        $this->videos_per_page = $settings->videos_per_page;
+
+        $this->Theme = HomeSetting::pluck('theme_choosen')
+            ->first();
+        Theme::uses($this->Theme);
+    }
+    
     public function ChannelHome($slug)
     {
         $settings = Setting::first();
@@ -104,6 +115,25 @@ class ChannelHomeController extends Controller
             
             return Theme::view('ChannelHome', $data);
         }
+    }
+
+
+    
+    public function ChannelList()
+    {
+        $settings = Setting::first();
+        $channels = Channel::get(); 
+        $currency = CurrencySetting::first();
+        $ThumbnailSetting = ThumbnailSetting::first();
+          
+            $data = array(
+                'currency' => $currency,
+                'channels' => $channels,
+                'ThumbnailSetting' => $ThumbnailSetting,
+            );
+            
+            return Theme::view('ChannelList', $data);
+        
     }
 
 }

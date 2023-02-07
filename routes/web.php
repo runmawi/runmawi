@@ -1967,6 +1967,7 @@ Route::get('pages/{landing_page_slug}', 'LandingpageController@landing_page')->n
 
   // Channel List
   Route::get('channel/{slug}', 'ChannelHomeController@ChannelHome')->name('ChannelHome');
+  Route::get('Channel-list', 'ChannelHomeController@ChannelList')->name('ChannelList');
 
     // Razorpay 
 Route::group(['middleware' => ['RazorpayMiddleware']], function() {
