@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddChannelImageToChannels extends Migration
+class AddChannelSlugImageToChannels extends Migration
 {
     /**
      * Run the migrations.
@@ -15,7 +15,8 @@ class AddChannelImageToChannels extends Migration
     {
         Schema::table('channels', function (Blueprint $table) {
             //
-            $table->longText('channel_image')->nullable()->after('unhased_password');
+            $table->longText('channel_slug')->nullable()->after('channel_image');
+
         });
     }
 
@@ -28,7 +29,7 @@ class AddChannelImageToChannels extends Migration
     {
         Schema::table('channels', function (Blueprint $table) {
             //
-            Schema::dropIfExists('channel_image');
+            Schema::dropIfExists('channel_slug');
         });
     }
 }

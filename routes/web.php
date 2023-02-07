@@ -1964,6 +1964,10 @@ Route::get('categoryfilter', 'ChannelController@categoryfilter')->name('category
     // Landing page 
 Route::get('pages/{landing_page_slug}', 'LandingpageController@landing_page')->name('landing_page');
 
+
+  // Channel List
+  Route::get('channel/{slug}', 'ChannelHomeController@ChannelHome')->name('ChannelHome');
+
     // Razorpay 
 Route::group(['middleware' => ['RazorpayMiddleware']], function() {
 
