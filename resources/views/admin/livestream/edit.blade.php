@@ -500,69 +500,37 @@ border-radius: 0px 4px 4px 0px;
                 </div>
             </div>
 
-                                    {{-- Ads Category--}}
+                                                            {{-- Ads --}}
             <div class="row mt-3">
-                <div class="col-sm-4 form-group mt-3">
-                    <label class="">Choose Pre-Ad Category</label>
-                    <select class="form-control" name="pre_ads_category" id="pre_ads_category">
-                       <option value=" ">Select Pre-Ad Category</option>
-                       @foreach($ads_category as $ad)
-                          <option value="{{ $ad->id }}" @if( $video->pre_ads_category == $ad->id ) {{ 'selected' }} @endif  > {{ ucwords($ad->name) }}</option>
-                       @endforeach
-                    </select>
-                 </div>
-
-                 <div class="col-sm-4 form-group mt-3">
-                    <label class="">Choose Mid-Ad Category</label>
-                    <select class="form-control" name="mid_ads_category" id="mid_ads_category">
-                       <option value=" ">Select Mid-Ad Category</option>
-                       @foreach($ads_category as $ad)
-                          <option value="{{ $ad->id }}" @if( $video->mid_ads_category == $ad->id ) {{ 'selected' }} @endif  > {{ ucwords($ad->name) }}</option>
-                       @endforeach
-                    </select>
-                 </div>
-
-                 <div class="col-sm-4 form-group mt-3">
-                    <label class="">Choose Post-Ad Category</label>
-                    <select class="form-control" name="post_ads_category" id="post_ads_category">
-                       <option value=" ">Select Post-Ad Category</option>
-                       @foreach($ads_category as $ad)
-                          <option value="{{ $ad->id }}" @if( $video->post_ads_category == $ad->id ) {{ 'selected' }} @endif  > {{ ucwords($ad->name) }}</option>
-                       @endforeach
-                    </select>
-                 </div>
-
-                    {{-- Ads --}}
-
-                 <div class="col-sm-4 form-group mt-3" id="pre_ads_div" >
-                    <label class="">Choose Pre-Ad </label>
+                <div class="col-sm-4" id="pre_ads_div" >
+                    <label class="m-0">Choose Pre-Ad </label>
                     <select class="form-control" name="pre_ads" id="pre_ads">
                        <option value=" ">Select Pre-Ad </option>
-                       @if( $pre_ads != null)
-                          <option id="pre_ads_value" value="{{ $pre_ads->id  }} " {{ 'selected' }}> {{ $pre_ads->ads_name }} </option>
-                       @endif
+                        @foreach($pre_ads as $key => $ads )
+                            <option  @if( $ads->id == $video->pre_ads ) {{ 'selected' }} @endif >{{ ucwords($ads->ads_name) }} </option>
+                        @endforeach
                     </select>
-                 </div>
-
-                 <div class="col-sm-4 form-group mt-3" id="mid_ads_div">
-                    <label class="">Choose Mid-Ad </label>
+                </div>
+ 
+                <div class="col-sm-4" id="mid_ads_div">
+                    <label class="m-0">Choose Mid-Ad </label>
                     <select class="form-control" name="mid_ads" id="mid_ads">
                        <option value=" ">Select Mid-Ad </option>
-                       @if( $mid_ads != null)
-                           <option id="mid_ads_value" value="{{ $mid_ads->id  }} " {{ 'selected' }} > {{ $mid_ads->ads_name }} </option>
-                       @endif
+                        @foreach($mid_ads as $key => $ads )
+                            <option  @if( $ads->id == $video->mid_ads ) {{ 'selected' }} @endif >{{ ucwords($ads->ads_name) }} </option>
+                        @endforeach
                     </select>
-                 </div>
-
-                 <div class="col-sm-4 form-group mt-3" id="post_ads_div">
-                    <label class="">Choose Post-Ad </label>
+                </div>
+ 
+                <div class="col-sm-4" id="post_ads_div">
+                    <label class="m-0">Choose Post-Ad </label>
                     <select class="form-control" name="post_ads" id="post_ads">
                        <option value=" ">Select Post-Ad </option>
-                       @if( $post_ads != null)
-                          <option id="post_ads_value" value="{{ $post_ads->id  }} " {{ 'selected' }} > {{ $post_ads->ads_name }} </option>
-                       @endif
+                        @foreach($post_ads as $key => $ads )
+                            <option  @if( $ads->id == $video->post_ads ) {{ 'selected' }} @endif >{{ ucwords($ads->ads_name) }} </option>
+                        @endforeach
                     </select>
-                 </div>
+                </div>
             </div>
             
             <div class="row mt-3">

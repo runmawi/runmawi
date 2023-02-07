@@ -97,6 +97,9 @@ line-height: 22px;
 
 color: #161616;  
 }
+#msform input:focus, #msform textarea:focus{
+    border:none!important;
+}
 /* Definition Lists */
 dl dd { margin-bottom: 15px; }
 dl dd:last-child { margin-bottom: 0px; }
