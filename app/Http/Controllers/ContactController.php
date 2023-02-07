@@ -60,7 +60,7 @@ class ContactController extends Controller
         $contact->subject =  $data['subject'];
         $contact->message =  $data['message'];
         $contact->screenshot = $data['screenshot'];
-        $contact->user_id = Auth::user()->id;
+        $contact->user_id = Auth::user() ? Auth::user()->id : null ;
         $contact->save();
 
                     // Mail for Contact us
@@ -92,7 +92,7 @@ class ContactController extends Controller
 
             $email_log      = 'Mail Sent Successfully from Contact us';
             $email_template = "6";
-            $user_id = Auth::user()->id;
+            $user_id = Auth::user() ? Auth::user()->id : null;
 
             Email_sent_log($user_id,$email_log,$email_template);
 
@@ -103,7 +103,7 @@ class ContactController extends Controller
 
             $email_log      = $e->getMessage();
             $email_template = "6";
-            $user_id = Auth::user()->id;
+            $user_id = Auth::user() ? Auth::user()->id : null ;
 
             Email_notsent_log($user_id,$email_log,$email_template);
 

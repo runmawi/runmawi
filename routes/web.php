@@ -598,7 +598,9 @@ Route::get('/episode/filedelete/{id}', 'AdminSeriesController@filedelete');
     /* Thumbnail Setting */
     Route::get('/ThumbnailSetting', 'AdminSettingsController@ThumbnailSetting')->name('ThumbnailSetting'); 
     Route::post('/ThumbnailSetting_Store', 'AdminSettingsController@ThumbnailSetting_Store'); 
-
+    
+    /* Ck-editor  Image Upload Setting */
+    Route::post('ckeditor/upload', 'CkeditorController@upload')->name('ckeditor.upload');
 
     Route::post('/settings/store_inapp', 'AdminSettingsController@Store_InApp'); 
 
