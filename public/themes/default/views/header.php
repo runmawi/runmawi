@@ -395,7 +395,7 @@
       <div class="main-header">
          <div class="container-fluid" >
             <div class="row">
-               <div class="col-sm-12">
+               <div class="col-sm-12 mt-2">
                   <nav class="navbar navbar-expand-lg navbar-light p-0">
                      <a href="#" class="navbar-toggler c-toggler" data-toggle="collapse"
                         data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
