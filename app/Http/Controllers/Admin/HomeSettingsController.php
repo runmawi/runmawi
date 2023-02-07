@@ -154,6 +154,9 @@ class HomeSettingsController extends Controller
         $settings->video_schedule = !empty($request->video_schedule) ?  "1" : "0" ;
         $settings->videoCategories = !empty($request->videoCategories) ?  "1" : "0" ;
         $settings->liveCategories = !empty($request->liveCategories) ?  "1" : "0" ;
+        $settings->channel_partner = !empty($request->channel_partner) ?  "1" : "0" ;
+        $settings->content_partner = !empty($request->content_partner) ?  "1" : "0" ;
+
 
         $settings->save();
         
@@ -333,6 +336,8 @@ class HomeSettingsController extends Controller
         $settings->video_schedule = !empty($request->video_schedule) ?  "1" : "0" ;
         $settings->videoCategories = !empty($request->videoCategories) ?  "1" : "0" ;
         $settings->liveCategories = !empty($request->liveCategories) ?  "1" : "0" ;
+        $settings->channel_partner = !empty($request->channel_partner) ?  "1" : "0" ;
+        $settings->content_partner = !empty($request->content_partner) ?  "1" : "0" ;
         $settings->save();
         return redirect::to('/admin/home-settings');
     }

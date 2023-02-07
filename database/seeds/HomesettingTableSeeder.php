@@ -30,6 +30,8 @@ class HomesettingTableSeeder extends Seeder
                     'albums' => 1,
                     'Recommendation' => 0,
                     'video_schedule' => 0,
+                    'channel_partner' => 0,
+                    'content_partner' => 0,
                     'AutoIntro_skip' => null,
                     'artist' => '1',
                     'user_id' => null,

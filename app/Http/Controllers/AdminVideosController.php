@@ -3898,10 +3898,10 @@ class AdminVideosController extends Controller
             $myData = [];
             foreach ($videocategories as $key => $videocategory) {
                 $videocategoryid = $videocategory["id"];
-                $videos = Video::where("videos.status", "=", 0)
+                $videos = Video::where("videos.active", "=", 0)
                     ->join("channels", "videos.user_id", "=", "channels.id")
                     ->select("channels.channel_name", "videos.*")
-                    ->groupby("videos.id")
+                    // ->groupby("videos.id")
                     ->where("videos.uploaded_by", "Channel")
                     ->orderBy("videos.created_at", "DESC")
                     ->paginate(9);
@@ -3909,7 +3909,7 @@ class AdminVideosController extends Controller
             $data = [
                 "videos" => $videos,
             ];
-            // dd($videos);
+            // dd($data);
             return View(
                 "admin.videos.videoapproval.approval_channel_video",
                 $data
@@ -3924,6 +3924,8 @@ class AdminVideosController extends Controller
 
         $video = Video::findOrFail($id);
         $video->status = 1;
+        $video->active = 1;
+        $video->draft = 1;
         $video->save();
 
         return Redirect::back()->with(
