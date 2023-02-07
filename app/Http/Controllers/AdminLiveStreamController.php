@@ -38,6 +38,7 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use App\StorageSetting as StorageSetting;
 use Illuminate\Support\Facades\File; 
+use App\Advertisement;
 
 class AdminLiveStreamController extends Controller
 {
@@ -153,8 +154,10 @@ class AdminLiveStreamController extends Controller
                 'liveStreamVideo_error' => '0',
                 'Rtmp_urls' => RTMP::all(),
                 'InappPurchase' => InappPurchase::all(),
+                'pre_ads' => Advertisement::where('ads_position','pre')->where('status',1)->get(),
+                'mid_ads' => Advertisement::where('ads_position','mid')->where('status',1)->get(),
+                'post_ads' => Advertisement::where('ads_position','post')->where('status',1)->get(),
                 'ppv_gobal_price' => $settings->ppv_price != null ?  $settings->ppv_price : " ",
-                "ads_category" => Adscategory::all(),
             );
 
             return View::make('admin.livestream.create_edit', $data);
@@ -522,12 +525,9 @@ class AdminLiveStreamController extends Controller
         $movie->player_image = $player_PC_image;
         $movie->Tv_live_image = $Tv_live_image;
         $movie->user_id =Auth::User()->id;
-        // $movie->pre_ads_category  = $request->pre_ads_category;
-        // $movie->mid_ads_category  = $request->mid_ads_category;
-        // $movie->post_ads_category = $request->post_ads_category;
-        // $movie->pre_ads = $request->pre_ads;
-        // $movie->mid_ads = $request->mid_ads;
-        // $movie->post_ads = $request->post_ads;
+        $movie->pre_ads = $request->pre_ads;
+        $movie->mid_ads = $request->mid_ads;
+        $movie->post_ads = $request->post_ads;
         $movie->save();
 
         $shortcodes = $request['short_code'];
@@ -630,16 +630,11 @@ class AdminLiveStreamController extends Controller
             'title' => $title ? $title : null,
             'hls_url' => $hls_url ? $hls_url : null,
             'InappPurchase' => InappPurchase::all(),
-            "ads_category" => Adscategory::all(),
+            'pre_ads' => Advertisement::where('ads_position','pre')->where('status',1)->get(),
+            'mid_ads' => Advertisement::where('ads_position','mid')->where('status',1)->get(),
+            'post_ads' => Advertisement::where('ads_position','post')->where('status',1)->get(),
 
-            'pre_ads'  => LiveStream::select('advertisements.*')->join('advertisements','advertisements.id','=','live_streams.pre_ads')
-                            ->where('live_streams.id',$id)->first(),
-
-            'mid_ads'  => LiveStream::select('advertisements.*')->join('advertisements','advertisements.id','=','live_streams.mid_ads')
-                        ->where('live_streams.id',$id)->first(),
-
-            'post_ads' => LiveStream::select('advertisements.*')->join('advertisements','advertisements.id','=','live_streams.post_ads')
-                        ->where('live_streams.id',$id)->first(),
+            
 
             );
 
@@ -1027,12 +1022,9 @@ class AdminLiveStreamController extends Controller
         $video->access = $request->access;
         $video->ios_ppv_price = $request->ios_ppv_price;
         $video->m3u_url = $request->m3u_url;
-        // $video->pre_ads_category  = $request->pre_ads_category;
-        // $video->mid_ads_category  = $request->mid_ads_category;
-        // $video->post_ads_category = $request->post_ads_category;
-        // $video->pre_ads = $request->pre_ads;
-        // $video->mid_ads = $request->mid_ads;
-        // $video->post_ads = $request->post_ads;
+        $video->pre_ads = $request->pre_ads;
+        $video->mid_ads = $request->mid_ads;
+        $video->post_ads = $request->post_ads;
         $video->save();
 
         if(!empty($data['video_category_id'])){

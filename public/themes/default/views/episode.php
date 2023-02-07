@@ -364,7 +364,9 @@
             <span class="mb-0" style=";font-size: 100%;color: white;"> <?= $episode->search_tags ?> </span>
 		   <?php  endif;?>
       </div>
-
+                              
+               <!-- Comment Section -->
+               
       <?php if( App\CommentSection::first() != null && App\CommentSection::pluck('livestream')->first() == 1 ): ?>
        <div class="row">
            <div class=" container-fluid video-list you-may-like overflow-hidden">
