@@ -90,7 +90,6 @@
             </div>
 
 
-
 			<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 				<div class="panel-title"><label>Page Content</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body mt-3" style="display: block; padding:0px;">
@@ -182,10 +181,17 @@
 
 	</script>
 
-<script type="text/javascript" src="https://cdn.ckeditor.com/4.13.0/standard/ckeditor.js"></script>
 
-<script>
-	CKEDITOR.replace( 'summary-ckeditor' );
+<script src="https://cdn.ckeditor.com/4.12.1/standard/ckeditor.js"></script>
+
+<script type="text/javascript">
+
+	CKEDITOR.replace('summary-ckeditor', {
+		filebrowserUploadUrl: "{{route('ckeditor.upload', ['_token' => csrf_token() ])}}",
+		filebrowserUploadMethod: 'form'
+		
+	});
+
 </script>
 
 	{{-- validate --}}
