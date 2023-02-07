@@ -74,7 +74,12 @@
 						
 
                                 </div>
-                                
+
+                            <div class="col-md-12">
+                                <label for="" style="color: white;">Upload Home Page Image  :</label>
+                                <input type="file" multiple="true" class="form-control" style="padding: 0px;"  name="image" id="image"/>
+                            </div>
+
                             <div class="col-md-12">
                                 <label for="" style="color: white;">Upload your best work ( Intro Video )  :</label>
                                 <input type="file" multiple="true" class="form-control" style="padding: 0px;" accept="video/mp4,video/x-m4v,video/*" name="intro_video" id="intro_video"/>

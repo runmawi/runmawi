@@ -82,9 +82,38 @@ class ChannelLoginController extends Controller
         {
 
             $intro_video = (isset($input['intro_video'])) ? $input['intro_video'] : '';
+            $image = (isset($input['image'])) ? $input['image'] : '';
+
 
             $logopath = URL::to("/public/uploads/channel/");
             $path = public_path() . "/uploads/channel/";
+
+
+            if ($image != '')
+            {
+                //code for remove old file
+                if ($image != '' && $image != null)
+                {
+                    $file_old = $path . $image;
+                    if (file_exists($file_old))
+                    {
+                        unlink($file_old);
+                    }
+                }
+                //upload new file
+                $randval = Str::random(16);
+                $file = $image;
+                $image_ext = $randval . '.' . $request->file('image')
+                    ->extension();
+                $file->move($path, $image_ext);
+
+                $image = URL::to('/') . '/public/uploads/channel/' . $image_ext;
+
+            }
+            else
+            {
+                $image = null;
+            }
 
             if ($intro_video != '')
             {
@@ -122,6 +151,7 @@ class ChannelLoginController extends Controller
             $channel->ccode = $request->ccode;
             $channel->activation_code = $string;
             $channel->intro_video = $intro_video;
+            $channel->channel_image = $image;
             $channel->status = 0;
             $channel->save();
 
