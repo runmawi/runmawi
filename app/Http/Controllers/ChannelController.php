@@ -3858,7 +3858,7 @@ class ChannelController extends Controller
             $schedule_id = $data["schedule_id"];
             $choosedmonth = date('m',strtotime($month));
             $choosed_date = $year.'/'.$choosedmonth.'/'.$date;
-            $shedule_date = $year.'/'.$choosedmonth.'/'.$data["date"];
+            $shedule_date = $year.'/'.$choosedmonth.'/'.str_pad($data["date"], 2, "0", STR_PAD_LEFT);
 
             if(!empty($settings->default_time_zone)){
             date_default_timezone_set($settings->default_time_zone);
