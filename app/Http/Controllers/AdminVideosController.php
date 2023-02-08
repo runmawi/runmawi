@@ -4565,7 +4565,7 @@ class AdminVideosController extends Controller
 
         $date = date_create($choosed_date);
         $date_choose = date_format($date, "Y/m");
-        $date_choosed = $date_choose . "/" . $data["date"];
+        $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
         
         $d = new \DateTime("now");
         $d->setTimezone(new \DateTimeZone("Asia/Kolkata"));
@@ -4658,7 +4658,7 @@ class AdminVideosController extends Controller
 
             $date = date_create($choosed_date);
             $date_choose = date_format($date, "Y/m");
-            $date_choosed = $date_choose . "/" . $data["date"];
+            $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
 
             
             $now = date("Y-m-d h:i:s a");
@@ -4715,7 +4715,7 @@ class AdminVideosController extends Controller
 
                 $date = date_create($choosed_date);
                 $date_choose = date_format($date, "Y/m");
-                $date_choosed = $date_choose . "/" . $data["date"];
+                $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
                 // echo "<pre>";print_r($date_choosed);exit;
 
                 $choosedtime_exitvideos = ScheduleVideos::selectRaw("*")
@@ -4850,7 +4850,7 @@ class AdminVideosController extends Controller
 
                     $date = date_create($choosed_date);
                     $date_choose = date_format($date, "Y/m");
-                    $date_choosed = $date_choose . "/" . $data["date"];
+                    $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
 
                     // print_r($date_choosed);exit;
                     $total_content = ScheduleVideos::where(
@@ -5008,7 +5008,7 @@ class AdminVideosController extends Controller
 
                     $date = date_create($choosed_date);
                     $date_choose = date_format($date, "Y/m");
-                    $date_choosed = $date_choose . "/" . $data["date"];
+                    $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
 
                     // print_r($date_choosed);exit;
                     $total_content = ScheduleVideos::where(
@@ -5132,7 +5132,7 @@ class AdminVideosController extends Controller
 
                     $date = date_create($choosed_date);
                     $date_choose = date_format($date, "Y/m");
-                    $date_choosed = $date_choose . "/" . $data["date"];
+                    $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
 
                     // print_r($date_choosed);exit;
                     $total_content = ScheduleVideos::where(
@@ -5239,7 +5239,7 @@ class AdminVideosController extends Controller
     
                 $date = date_create($choosed_date);
                 $date_choose = date_format($date, "Y/m");
-                $date_choosed = $date_choose . "/" . $data["date"];
+                $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
     
                 
                 $now = date("Y-m-d h:i:s a");
@@ -5408,7 +5408,7 @@ class AdminVideosController extends Controller
 
                     $date = date_create($choosed_date);
                     $date_choose = date_format($date, "Y/m");
-                    $date_choosed = $date_choose . "/" . $data["date"];
+                    $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
 
                     // print_r($date_choosed);exit;
                     $total_content = ScheduleVideos::where(
@@ -5573,7 +5573,7 @@ class AdminVideosController extends Controller
 
                     $date = date_create($choosed_date);
                     $date_choose = date_format($date, "Y/m");
-                    $date_choosed = $date_choose . "/" . $data["date"];
+                    $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
 
                     // print_r($date_choosed);exit;
                     $total_content = ScheduleVideos::where(
@@ -5700,7 +5700,7 @@ class AdminVideosController extends Controller
 
                     $date = date_create($choosed_date);
                     $date_choose = date_format($date, "Y/m");
-                    $date_choosed = $date_choose . "/" . $data["date"];
+                    $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
 
                     // print_r($date_choosed);exit;
                     $total_content = ScheduleVideos::where(
@@ -5801,7 +5801,7 @@ class AdminVideosController extends Controller
 
                 $date = date_create($choosed_date);
                 $date_choose = date_format($date, "Y/m");
-                $date_choosed = $date_choose . "/" . $data["date"];
+                $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
                 // echo "<pre>";print_r($date_choosed);exit;
 
                 $choosedtime_exitvideos = ScheduleVideos::selectRaw("*")
@@ -5949,7 +5949,7 @@ class AdminVideosController extends Controller
 
                     $date = date_create($choosed_date);
                     $date_choose = date_format($date, "Y/m");
-                    $date_choosed = $date_choose . "/" . $data["date"];
+                    $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
 
                     // print_r($date_choosed);exit;
                     $total_content = ScheduleVideos::where(
@@ -6105,7 +6105,7 @@ class AdminVideosController extends Controller
 
                     $date = date_create($choosed_date);
                     $date_choose = date_format($date, "Y/m");
-                    $date_choosed = $date_choose . "/" . $data["date"];
+                    $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
 
                     // print_r($date_choosed);exit;
                     $total_content = ScheduleVideos::where(
@@ -6227,7 +6227,7 @@ class AdminVideosController extends Controller
 
                     $date = date_create($choosed_date);
                     $date_choose = date_format($date, "Y/m");
-                    $date_choosed = $date_choose . "/" . $data["date"];
+                    $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
 
                     // print_r($date_choosed);exit;
                     $total_content = ScheduleVideos::where(
@@ -6627,7 +6627,7 @@ class AdminVideosController extends Controller
 
         $date = date_create($choosed_date);
         $date_choose = date_format($date, "Y/m");
-        $date_choosed = $date_choose . "/" . $data["date"];
+        $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
     
         $stop_date = date('Y-m-d', strtotime("+1 day", strtotime($date_choosed)));
         $time_zone = $data["time_zone"];
@@ -6802,7 +6802,9 @@ class AdminVideosController extends Controller
     $choosed_date = $year . "-" . $month . "-" . $date;
     $date = date_create($choosed_date);
     $date_choose = date_format($date, "Y/m");
-    $date_choosed = $date_choose . "/" . $data["date"];
+    $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
+// print_r($date_choosed);exit;
+
 
     // schedule time Choosed By user
 
@@ -6842,7 +6844,7 @@ class AdminVideosController extends Controller
     )
         ->orderBy("id", "desc")
         ->get();
-
+// print_r($total_content);exit;
         // Scheduled Video Exits Check 
 
     $choosedtime_Scheduledvideo = ScheduleVideos::selectRaw("*")
@@ -6870,8 +6872,11 @@ class AdminVideosController extends Controller
         
         $last_shedule_endtime = $ScheduleVideos->shedule_endtime;  // AM or PM
         $last_sheduled_endtime = $ScheduleVideos->sheduled_endtime; // Just Time
-            // print_r($last_shedule_endtime);exit;
-         if($current_time < $last_shedule_endtime){
+
+        // print_r($current_time);
+        // print_r($last_shedule_endtime);exit;
+
+         if($current_time > $last_shedule_endtime){
             // echo'<pre>'; print_r('testnew');exit;     
 
             $time = explode(":", $last_sheduled_endtime);
@@ -6889,8 +6894,12 @@ class AdminVideosController extends Controller
 
             $starttime = $last_sheduled_endtime;
             $sheduled_starttime = $last_shedule_endtime;
+    //   print_r($last_shedule_endtime);
+    // //   print_r(date("A", strtotime($now)));
+    //     print_r($last_sheduled_endtime);exit;
 
-            if($shedule_endtime < '12:00 AM' && $last_sheduled_endtime < '12:00 AM' && date("A", strtotime($now)) == 'AM'){
+            if($sheduled_endtime < '12:00 AM' && $last_shedule_endtime < '12:00 AM' 
+            && date("A", strtotime($now)) == 'AM'){
 
                 $shedule_endtime =
                     $hours .
@@ -6903,9 +6912,12 @@ class AdminVideosController extends Controller
                 $starttime = date("h:i ", strtotime($store_current_time));
                 $sheduled_starttime = date("h:i A", strtotime($store_current_time));
     
-                }else{
+                }
+                else{
     
                     $TimeFormat = TimeFormat::where('hours',$hours)->where('format','PM')->first();
+                    // print_r($TimeFormat);exit;
+
                     if(!empty($TimeFormat)){
         
                         $shedule_endtime = $TimeFormat->hours_format .":" .$minutes ." " .$TimeFormat->format;
@@ -6925,6 +6937,65 @@ class AdminVideosController extends Controller
         
                 }
     
+         }elseif($current_time < $last_shedule_endtime){
+
+            $time = explode(":", $last_sheduled_endtime);
+            $minutes = $time[0] * 60.0 + $time[1] * 1.0;
+            $totalSecs = $minutes * 60;
+            $sec = $totalSecs + $video_duration;
+            // $sec = 45784.249244444;
+            $hour = floor($sec / 3600);
+            $minute = floor(($sec / 60) % 60);
+            $hours = str_pad($hour, 2, "0", STR_PAD_LEFT);
+            $minutes = str_pad($minute, 2, "0", STR_PAD_LEFT);
+
+            $shedule_endtime = $hours .":" .$minutes ." " .date("A", strtotime($now));
+            $sheduled_endtime = $hours . ":" . $minutes;
+
+            $starttime = $last_sheduled_endtime;
+            $sheduled_starttime = $last_shedule_endtime;
+            // print_r($last_shedule_endtime);
+            // print_r($hours);
+
+
+            $TimeFormat = TimeFormat::where('hours',$hours)->where('format','PM')->first();
+            $TimeFormatformat = TimeFormat::where('hours_format',$hours)->where('format','PM')->first();
+
+            // print_r($TimeFormatformat);
+
+            // exit;
+ 
+            if(!empty($TimeFormat)){
+
+                $shedule_endtime = $TimeFormat->hours_format .":" .$minutes ." " .$TimeFormat->format;
+
+                $sheduled_endtime = $TimeFormat->hours_format . ":" . $minutes;
+                $starttime = $last_sheduled_endtime;
+                $sheduled_starttime = $last_shedule_endtime;
+            }elseif(!empty($TimeFormatformat)){
+                $shedule_endtime = $TimeFormatformat->hours_format .":" .$minutes ." " .$TimeFormatformat->format;
+
+                $sheduled_endtime = $TimeFormatformat->hours_format . ":" . $minutes;
+                $starttime = $last_sheduled_endtime;
+                $sheduled_starttime = $last_shedule_endtime;
+
+                $total_content = ScheduleVideos::where(
+                    "shedule_date",
+                    "=",
+                    $date_choosed
+                )
+                    ->orderBy("id", "desc")
+                    ->get();
+                    
+            }else{
+                $shedule_endtime = $hours .":" .$minutes ." " .date("A", strtotime($now));
+
+                $sheduled_endtime = $hours . ":" . $minutes;
+
+                $starttime = date("h:i", strtotime($store_current_time));
+                $sheduled_starttime = date("h:i A", strtotime($store_current_time));
+
+            }
          }else{
             // echo'<pre>'; print_r('testone');exit;     
             $last_shedule_endtime = @$ScheduleVideos->shedule_endtime;  // AM or PM
@@ -6955,7 +7026,7 @@ class AdminVideosController extends Controller
                 }else{
 
                 }
-            // echo'<pre>'; print_r($shedule_endtime);exit;     
+            // echo'<pre>'; print_r($last_shedule_endtime);exit;     
 
              }else{
                     $time = $choose_current_time;
@@ -7049,7 +7120,8 @@ class AdminVideosController extends Controller
 
             $date = date_create($choosed_date);
             $date_choose = date_format($date, "Y/m");
-            $date_choosed = $date_choose . "/" . $data["date"];
+            $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
+            
 
             $total_content = ScheduleVideos::where(
                 "shedule_date",
@@ -7126,7 +7198,7 @@ class AdminVideosController extends Controller
 
                 $date = date_create($choosed_date);
                 $date_choose = date_format($date, "Y/m");
-                $date_choosed = $date_choose . "/" . $data["date"];
+                $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
 
                 $total_content = ScheduleVideos::where(
                     "shedule_date",
@@ -7153,6 +7225,10 @@ class AdminVideosController extends Controller
 
         $TimeFormat = TimeFormat::where('hours',$hours)->first();
         if($schedule_time == '12:00 PM to 12:00 AM' && empty($ScheduleVideos)  ){
+        // echo "<pre>" ; print_r($currentDate);
+        // echo "<pre>" ; print_r($date_choosed);
+
+        // exit;
             
         if(!empty($TimeFormat)){
 
@@ -7170,7 +7246,6 @@ class AdminVideosController extends Controller
             $starttime = date("h:i", strtotime($choose_end_time));
             $sheduled_starttime = date("h:i A", strtotime($choose_end_time));
         }
-
                 $video = new ScheduleVideos();
                 $video->title = $Video_data->title;
                 $video->type = $Video_data->type;
@@ -7204,7 +7279,7 @@ class AdminVideosController extends Controller
 
                 $date = date_create($choosed_date);
                 $date_choose = date_format($date, "Y/m");
-                $date_choosed = $date_choose . "/" . $data["date"];
+                $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
 
                 $total_content = ScheduleVideos::where(
                     "shedule_date",
@@ -7213,8 +7288,72 @@ class AdminVideosController extends Controller
                 )
                     ->orderBy("id", "desc")
                     ->get();
-        }else{
-            
+        }elseif($schedule_time == '12:00 PM to 12:00 AM' && empty($ScheduleVideos)  ){
+            // echo "<pre>" ; print_r($ScheduleVideos);exit;
+                
+            if(!empty($TimeFormat)){
+    
+                $shedule_endtime = $TimeFormat->hours_format .":" .$minutes ." " .date("A", strtotime($choose_end_time));
+    
+                $sheduled_endtime = $TimeFormat->hours_format . ":" . $minutes;
+                $starttime = date("h:i", strtotime($choose_end_time));
+                $sheduled_starttime = date("h:i A", strtotime($choose_end_time));
+    
+            }else{
+                $shedule_endtime = $hours .":" .$minutes ." " .date("A", strtotime($choose_end_time));
+    
+                $sheduled_endtime = $hours . ":" . $minutes;
+    
+                $starttime = date("h:i", strtotime($choose_end_time));
+                $sheduled_starttime = date("h:i A", strtotime($choose_end_time));
+            }
+            // print_r('testaa'); exit();
+    
+                    $video = new ScheduleVideos();
+                    $video->title = $Video_data->title;
+                    $video->type = $Video_data->type;
+                    $video->active = 1;
+                    $video->original_name = "public";
+                    $video->disk = "public";
+                    $video->mp4_url = $Video_data->mp4_url;
+                    $video->path = $Video_data->path;
+                    $video->shedule_date = $date_choosed;
+                    $video->shedule_time = $schedule_time;
+                    $video->shedule_endtime = $shedule_endtime;
+                    $video->sheduled_endtime = $sheduled_endtime;
+                    $video->current_time = date("h:i A", strtotime($now));
+                    $video->starttime = $starttime;
+                    $video->sheduled_starttime = $sheduled_starttime;
+                    $video->video_order = 1;
+                    $video->schedule_id = $schedule_id;
+                    $video->duration = $video_duration;
+                    $video->choose_start_time = $choose_start_time;
+                    $video->choose_end_time = $choose_end_time;
+                    $video->time_zone  = $time_zone ;
+                    $video->status = 1;
+                    $video->save();
+    
+                    $video_id = $video->id;
+                    $video_title = ScheduleVideos::find($video_id);
+                    $title = $video_title->title;
+    
+                    $choosed_date =
+                        $data["year"] . "-" . $data["month"] . "-" . $data["date"];
+    
+                    $date = date_create($choosed_date);
+                    $date_choose = date_format($date, "Y/m");
+                    $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
+                    
+    
+                    $total_content = ScheduleVideos::where(
+                        "shedule_date",
+                        "=",
+                        $date_choosed
+                    )
+                        ->orderBy("id", "desc")
+                        ->get();
+            }else{
+            // print_r('test'); exit();
                 $last_shedule_endtime = $ScheduleVideos->shedule_endtime;  // AM or PM
                 $last_sheduled_endtime = $ScheduleVideos->sheduled_endtime; // Just Time
                 if($schedule_time == '12:00 PM to 12:00 AM' && $last_shedule_endtime < '12:00 AM' ){
@@ -7267,7 +7406,8 @@ class AdminVideosController extends Controller
 
                     $date = date_create($choosed_date);
                     $date_choose = date_format($date, "Y/m");
-                    $date_choosed = $date_choose . "/" . $data["date"];
+                    $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
+
 
                     $total_content = ScheduleVideos::where(
                         "shedule_date",
@@ -7289,6 +7429,13 @@ class AdminVideosController extends Controller
                 // exit;
             }
         }
+        $total_content = ScheduleVideos::where(
+            "shedule_date",
+            "=",
+            $date_choosed
+        )->where('schedule_id', $schedule_id)
+            ->orderBy("id", "desc")
+            ->get();
     $output = "";
         $i = 1;
         $delete = URL::to("admin/schedule/delete");
@@ -7395,7 +7542,8 @@ class AdminVideosController extends Controller
 
             $date = date_create($choosed_date);
             $date_choose = date_format($date, "Y/m");
-            $date_choosed = $date_choose . "/" . $data["date"];
+            $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
+
 
             
             $now = date("Y-m-d h:i:s a");
@@ -8996,7 +9144,7 @@ class AdminVideosController extends Controller
             $choosed_date = $year . "-" . $month . "-" . $date;
             $date = date_create($choosed_date);
             $date_choose = date_format($date, "Y/m");
-            $date_choosed = $date_choose . "/" . $data["date"];
+            $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
 
 
             $total_content = ScheduleVideos::where(
