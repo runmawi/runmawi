@@ -321,6 +321,37 @@ border-radius: 0px 4px 4px 0px;
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-sm-4">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                                <div><label class="mt-1"> @if (@$order_settings_list[13]->header_name) {{ @$order_settings_list[13]->header_name }} @else {{ ""  }} @endif </label></div>
+                               
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                         <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                        <input  type="checkbox"  name="channel_partner"   @if ($settings->channel_partner == 1) {{ "checked='checked'" }} @else {{ "" }} @endif>
+                                        <span class="slider round"></span>
+                                        </label>
+                                           <div class="ml-2">ON</div>
+                                    </div>
+                                 
+                                </div>
+                            </div>
+
+                            <!-- <div class="col-sm-4">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                                <div><label class="mt-1"> @if (@$order_settings_list[14]->header_name) {{ @$order_settings_list[14]->header_name }} @else {{ ""  }} @endif </label></div>
+                               
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                         <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                        <input  type="checkbox"  name="content_partner"   @if ($settings->content_partner == 1) {{ "checked='checked'" }} @else {{ "" }} @endif>
+                                        <span class="slider round"></span>
+                                        </label>
+                                           <div class="ml-2">ON</div>
+                                    </div>
+                                 
+                                </div>
+                            </div> -->
                                             
                                             {{-- This option moved to Pop-up setting  --}}
                                             
@@ -599,7 +630,37 @@ border-radius: 0px 4px 4px 0px;
                                    
                                 </div>
                             </div>
+                            <div class="col-sm-4">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                                <div><label class="mt-1"> @if (@$order_settings_list[13]->header_name) {{ @$order_settings_list[13]->header_name }} @else {{ ""  }} @endif </label></div>
+                               
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                         <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                        <input  type="checkbox"  name="channel_partner"   @if ($mobilesettings->channel_partner == 1) {{ "checked='checked'" }} @else {{ "" }} @endif>
+                                        <span class="slider round"></span>
+                                        </label>
+                                           <div class="ml-2">ON</div>
+                                    </div>
+                                 
+                                </div>
+                            </div>
 
+                            <!-- <div class="col-sm-4">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                                <div><label class="mt-1"> @if (@$order_settings_list[14]->header_name) {{ @$order_settings_list[14]->header_name }} @else {{ ""  }} @endif </label></div>
+                               
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                         <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                        <input  type="checkbox"  name="content_partner"   @if ($mobilesettings->content_partner == 1) {{ "checked='checked'" }} @else {{ "" }} @endif>
+                                        <span class="slider round"></span>
+                                        </label>
+                                           <div class="ml-2">ON</div>
+                                    </div>
+                                 
+                                </div> -->
+                            </div>
                         <!-- </div> -->
         </div>
                         
