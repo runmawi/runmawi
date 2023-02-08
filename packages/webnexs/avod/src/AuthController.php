@@ -94,6 +94,7 @@ class AuthController extends Controller
         $advertiser_emailid = $data['email_id'];
         $customerName = $data['company_name'];
         $adminemail = User::where('role','=','admin')->first()->email;
+
         $details = [
             'title' => "Dear " .$customerName,
             'body' => "We are happy to have you on board.\n
@@ -101,8 +102,11 @@ class AuthController extends Controller
             If you have any questions, please write to us at ".$adminemail." for queries and suggestions."
         ];
 
-        \Mail::to($advertiser_emailid)->send(new \App\Mail\MyTestMail($details));
-
+        try {
+            \Mail::to($advertiser_emailid)->send(new \App\Mail\MyTestMail($details));
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
 
         return Redirect::to("advertiser/login")->withSuccess('Great! You have Successfully registered');
     }
@@ -187,7 +191,13 @@ class AuthController extends Controller
                         Please write to us at ".$adminemail." for queries and suggestions."
                     ];
 
-                    \Mail::to($advertiser_emailid)->send(new \App\Mail\MyTestMail($details));
+                    try {
+                        \Mail::to($advertiser_emailid)->send(new \App\Mail\MyTestMail($details));
+
+                    } catch (\Throwable $th) {
+                        //throw $th;
+                    }
+
                     echo "success";  exit;    
                 } catch (IncompletePayment $exception) {
 
@@ -240,7 +250,12 @@ class AuthController extends Controller
                 'body' => "Your ".$plan_name." limit for the plan has been reached, to add more ads please login to your account to upgrade plan."
             ];
 
-            \Mail::to($advertiser_emailid)->send(new \App\Mail\MyTestMail($details));
+            try {
+                \Mail::to($advertiser_emailid)->send(new \App\Mail\MyTestMail($details));
+
+            } catch (\Throwable $th) {
+                //throw $th;
+            }
 
             return Redirect::to("/advertiser")->withError('Opps! Your limit has completed.Please update your plan');
         }elseif(!empty(session('advertiser_id')) && $activeplan > 0 && $getdata->ads_limit > $getdata->no_of_uploads ){
@@ -600,7 +615,14 @@ class AuthController extends Controller
                     Please write to us at ".$adminemail." for queries and suggestions."
                 ];
 
-                \Mail::to($advertiser_emailid)->send(new \App\Mail\MyTestMail($details));
+                try {
+
+                    \Mail::to($advertiser_emailid)->send(new \App\Mail\MyTestMail($details));
+
+                } catch (\Throwable $th) {
+                    //throw $th;
+                }
+
 
                 return Redirect::to("advertiser/")->withSuccess('success','Payment Successful');
                 
@@ -647,11 +669,18 @@ class AuthController extends Controller
               'token' => $token, 
               'created_at' => Carbon::now()
             ]);
+
+            try {
+                
+                \Mail::send('avod::forgetPasswordemail', ['token' => $token], function($message) use($request){
+                    $message->to($request->email_id);
+                    $message->subject('Reset Password');
+                });
+
+            } catch (\Throwable $th) {
+                //throw $th;
+            }
   
-          \Mail::send('avod::forgetPasswordemail', ['token' => $token], function($message) use($request){
-              $message->to($request->email_id);
-              $message->subject('Reset Password');
-          });
   
           return Redirect::to("advertiser/login")->withSuccess('We have e-mailed your password reset link!');
       }
