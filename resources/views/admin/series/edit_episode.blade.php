@@ -652,6 +652,27 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
         });
 
 
+        $('#player_image').change(function() {
+
+            $('#player_image').removeData('imageWidth');
+            $('#player_image').removeData('imageHeight');
+            $('#player_image').removeData('imageratio');
+
+            var file = this.files[0];
+            var tmpImg = new Image();
+
+            tmpImg.src=window.URL.createObjectURL( file ); 
+            tmpImg.onload = function() {
+                width = tmpImg.naturalWidth,
+                height = tmpImg.naturalHeight;
+				ratio =  Number(width/height).toFixed(2) ;
+                $('#player_image').data('imageWidth', width);
+                $('#player_image').data('imageHeight', height);
+                $('#player_image').data('imageratio', ratio);
+            }
+        });
+
+
         $("#Episode_edit").validate({
             rules: {
                 title: { 
