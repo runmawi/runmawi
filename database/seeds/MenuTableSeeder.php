@@ -32,7 +32,7 @@ class MenuTableSeeder extends Seeder
                 'order' => 2,
                 'in_menu' => 'video' ,
                 'name' => 'Categories', 
-                'url' => '/home',
+                'url' => '/categoryList',
                 'created_at' => Carbon::now(),
                 'updated_at' => null,
             ],

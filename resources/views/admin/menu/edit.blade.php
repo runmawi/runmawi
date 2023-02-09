@@ -53,7 +53,14 @@
 </div>
 
 <div class="modal-footer">
-	
+
+	<?php if($menu->select_url == "add_Site_url" || !empty($menu->url) ){ ?> 
+		<a type="button" class="btn btn-primary"  href="{{ URL::to('/').$menu->url }}">Preview</a>
+	<?php }elseif($menu->select_url == "add_Custom_url" || !empty($menu->custom_url) ){ ?>
+		<a type="button" class="btn btn-primary"  href="{{ URL::to('/').$menu->custom_url }}">Preview</a>
+	<?php } else{ ?>
+		<a type="button" class="btn btn-primary"  href="{{ URL::to('/').$menu->url }}">Preview</a>
+	<?php } ?>
 	<button type="button" class="btn btn-primary" id="submit-update-menu">Update</button>
     <a type="button" class="btn btn-danger" data-dismiss="modal" href="{{ URL::to('admin/menu') }}">Close</a>
 </div>
