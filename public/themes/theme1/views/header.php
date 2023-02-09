@@ -433,7 +433,7 @@ input:checked + .sliderk:before {
                                <ul id="top-menu" class="nav navbar-nav <?php if ( Session::get('locale') == 'arabic') { echo "navbar-right"; } else { echo "navbar-left";}?>">
                                           <?php
                                         $stripe_plan = SubscriptionPlan();
-                                        if(Auth::User()->role != 'admin'){
+                                       if(!Auth::guest() && Auth::User()->role != 'admin' || Auth::guest()){
                                           $menus = App\Menu::orderBy('order', 'asc')->where('in_home',1)->get();
                                        }else{
                                           $menus = App\Menu::orderBy('order', 'asc')->get();
