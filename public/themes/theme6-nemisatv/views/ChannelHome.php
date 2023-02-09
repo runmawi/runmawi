@@ -6,6 +6,7 @@
    
    ?>
 <?php 
+if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 0 || count($audios) > 0){
       if(count($latest_video) > 0 ){
       
        ?>
@@ -65,7 +66,11 @@
          </div>
       </div>
    </section>
-   <?php }  ?>
+   <?php } }else{ ?>
+      <div class="col-md-12 text-center mt-4">
+             <img class="w-50" src="<?php echo  URL::to('/assets/img/sub.png')?>">
+         </div>
+<?php   } ?>
    <?php
    include(public_path('themes/default/views/partials/home/Trailer-script.php'));
    include(public_path('themes/default/views/partials/home/home_pop_up.php'));

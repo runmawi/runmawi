@@ -535,8 +535,11 @@ input:checked + .sliderk:before {
                                           <?php
                                         $stripe_plan = SubscriptionPlan();
                                        //  $menus = App\Menu::all();
-                                       $menus = App\Menu::orderBy('order', 'asc')->get();
-                                        $languages = App\Language::all();
+                                       if(Auth::User()->role != 'admin'){
+                                          $menus = App\Menu::orderBy('order', 'asc')->where('in_home',1)->get();
+                                       }else{
+                                          $menus = App\Menu::orderBy('order', 'asc')->get();
+                                       }                                        $languages = App\Language::all();
                                         $LiveCategory = App\LiveCategory::all();
                                         foreach ($menus as $menu) { 
                                         if ( $menu->in_menu == "video") { 
