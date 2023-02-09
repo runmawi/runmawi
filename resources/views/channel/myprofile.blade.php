@@ -45,80 +45,36 @@
                         @endif
 					<div class="iq-card-body">
 						<h5></h5>
-						<form id="user_update" method="POST" action="{{ URL::to('cpp/update-myprofile') }}" accept-charset="UTF-8" enctype="multipart/form-data">
+						<form id="user_update" method="POST" action="{{ URL::to('channel/update-myprofile') }}" accept-charset="UTF-8" enctype="multipart/form-data">
 							<div class=" col-md-12 align-items-center">
                                 <div class="row">
                                     <div class="col-md-6 form-group">
                                         <label> User Name:</label>
-                                        <input type="text" class="form-control" name="username" id="username" placeholder="UserName"  value="@if(!empty($user->username)){{ $user->username }}@endif" />
+                                        <input type="text" class="form-control" name="channel_name" id="channel_name"  value="@if(!empty($channel->channel_name)){{ $channel->channel_name }}@endif" />
                                     </div>
                                     <div class="col-md-6 form-group">
                                         <label> Email:</label>
-                                        <input type="email" class="form-control" name="email" id="email" placeholder="Email"  value="@if(!empty($user->email)){{ $user->email }}@endif" />
+                                        <input type="email" class="form-control" name="email" id="email" placeholder="Email"  value="@if(!empty($channel->email)){{ $channel->email }}@endif" />
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 form-group">
                                         <label> Phone Number:</label>
-                                        <input type="number" class="form-control" name="mobile_number" id="mobile_number" placeholder="Mobile Number"  value="@if(!empty($user->mobile_number)){{ $user->mobile_number }}@endif" />
+                                        <input type="number" class="form-control" name="mobile_number" id="mobile_number" placeholder="Mobile Number"  value="@if(!empty($channel->mobile_number)){{ $channel->mobile_number }}@endif" />
                                     </div>
                                     <div class="col-md-6 form-group">
                                         <label> Profile Picture:</label>
                                         <input type="file" multiple="true" class="form-control" style="padding: 0px;" name="picture" id="picture" />
-                                        @if(!empty($user->picture))
-                                            <img src="{{ URL::to('/') . '/public/uploads/moderator_albums/' . @$user->picture }}" class="video-img" width="200" height="200"/>
+                                        @if(!empty($channel->channel_image))
+                                            <img src="{{ @$channel->channel_image }}" class="video-img" width="200" height="200"/>
                                         @endif
                                     </div>
                                 </div>
-
-                                <div class="row">
-                                    <div class="col-md-6 form-group">
-                                        <label> UPI ID:</label>
-                                        <input type="text" class="form-control" name="upi_id" id="upi_id" placeholder="UPI ID"  value="@if(!empty($user->upi_id)){{ $user->upi_id }}@endif" />
-                                    </div>
-                                    <div class="col-md-6 form-group">
-                                        <label> UPI Phone Number:</label>
-                                        <input type="text" class="form-control" name="upi_mobile_number" id="upi_mobile_number" placeholder="UPI Mobile Number"  value="@if(!empty($user->upi_mobile_number)){{ $user->upi_mobile_number }}@endif" />
-                                    </div>
-                                </div>
-
-                                <!-- <div class="row">
-                                    <div class="col-md-6 form-group">
-                                        <label> Bank Name:</label>
-                                        <input type="text" class="form-control" name="bank_name" id="bank_name" placeholder="Bank Name"  value="@if(!empty($user->bank_name)){{ $user->bank_name }}@endif" />
-                                    </div>
-                                    <div class="col-md-6 form-group">
-                                        <label> Branch Name:</label>
-                                        <input type="text" class="form-control" name="branch_name" id="branch_name" placeholder="Branch Name"  value="@if(!empty($user->branch_name)){{ $user->branch_name }}@endif" />
-                                    </div>
-                                </div> -->
-
-                                <!-- <div class="row">
-                                    <div class="col-md-6 form-group">
-                                        <label> Account No:</label>
-                                        <input type="text" class="form-control" name="account_number" id="account_number" placeholder="Account Number"  value="@if(!empty($user->account_number)){{ $user->account_number }}@endif" />
-                                    </div>
-                                    <div class="col-md-6 form-group">
-                                        <label> IFSC Code:</label>
-                                        <input type="text" class="form-control" name="IFSC_Code" id="IFSC_Code" placeholder="IFSC Code"  value="@if(!empty($user->IFSC_Code)){{ $user->IFSC_Code }}@endif" />
-                                    </div>
-                                </div> -->
-
-                                <!-- <div class="row">
-                                    <div class="col-md-6 form-group">
-                                        <label> Cancelled Cheque:</label>
-                                        <input type="file" multiple="true" class="form-control" style="padding: 0px;" name="cancelled_cheque" id="cancelled_cheque" />
-                                        @if(!empty($user->cancelled_cheque))
-                                            <img src="{{ URL::to('/') . '/public/uploads/moderator_albums/' . @$user->cancelled_cheque }}" class="video-img" width="200" height="200"/>
-                                        @endif
-                                    </div>
-                                </div>
-							</div> -->
                                
 
 								<div class="col-md-6 mt-3">
 								<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-								<input type="hidden" name="id" value="{{ @$user->id }}" />
+								<input type="hidden" name="id" value="{{ @$channel->id }}" />
 								<input type="submit" value="Update" class="btn btn-primary pull-right" />
                                     </div>
                             </div>
@@ -152,7 +108,7 @@
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 <script>
 
- var  cheque = "{{ $user->cancelled_cheque }}";
+ var  cheque = "{{ @$channel->cancelled_cheque }}";
 
 //  alert(image);
    $('form[id="user_update"]').validate({
@@ -163,7 +119,7 @@
         // upi_mobile_number : 'required',
         // cancelled_cheque: {
         //         required: function (element) {
-        //             var  cheque = "{{ $user->cancelled_cheque }}";
+        //             var  cheque = "{{ @$channel->cancelled_cheque }}";
         //             if (cheque == "") {
         //                 return true;
         //             } else {
@@ -173,7 +129,7 @@
         //     },
             picture: {
                 required: function (element) {
-                    var  image = "{{ $user->picture }}";
+                    var  image = "{{ @$channel->picture }}";
                     if (image == "") {
                         return true;
                     } else {

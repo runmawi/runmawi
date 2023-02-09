@@ -1323,8 +1323,8 @@ Route::post('/audios/audioupdate', array('before' => 'demo', 'uses' => 'CPPAdmin
     Route::post('payouts_exportCsv', 'ChannelAnalyticsController@PayoutsExportCsv');
 
 
-    Route::get('myprofile', 'ModeratorsUserController@ChannelMyProfile');
-    Route::post('update-myprofile', 'ModeratorsUserController@ChannelUpdateMyProfile');
+    Route::get('myprofile', 'ChannelLoginController@ChannelMyProfile');
+    Route::post('update-myprofile', 'ChannelLoginController@ChannelUpdateMyProfile');
 
     Route::get('/view_by_region', 'ChannelAnalyticsController@ChannelViewsRegion');
     Route::get('/regionvideos', 'ChannelAnalyticsController@ChannelRegionVideos');
