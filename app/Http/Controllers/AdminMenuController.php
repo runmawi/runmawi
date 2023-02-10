@@ -92,6 +92,8 @@ class AdminMenuController extends Controller
             $new_menu_order = 1;
         }
         $request['order'] = $new_menu_order;
+        $input['in_home'] = $request->in_home  == "on"  ? 1 : 0 ;
+        // dd($input);
         $menu= Menu::create($input);
         if(isset($menu->id)){
             return Redirect::to('admin/menu')->with(array('note' => 'Successfully Added New Menu Item', 'note_type' => 'success') );
@@ -144,6 +146,7 @@ class AdminMenuController extends Controller
 
     public function update(Request $request){
         $input = $request->all();
+        $input['in_home'] = $request->in_home  == "on"  ? 1 : 0 ;
         $menu = Menu::find($input['id'])->update($input);
         if(isset($menu)){
             return Redirect::to('admin/menu')->with(array('note' => 'Successfully Updated Category', 'note_type' => 'success') );

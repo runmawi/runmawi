@@ -51,6 +51,7 @@ use App\Geofencing;
 use Theme;
 Use App\HomeSetting;
 use App\ThumbnailSetting;
+use App\AdminLandingPage;
 
 class ThemeAudioController extends Controller{
 
@@ -275,7 +276,15 @@ class ThemeAudioController extends Controller{
     public function audios(Request $request)
     {   
 
+        $settings = Setting::first();
 
+        if($settings->enable_landing_page == 1 && Auth::guest()){
+  
+            $landing_page_slug = AdminLandingPage::where('status',1)->pluck('slug')->first() ? AdminLandingPage::where('status',1)->pluck('slug')->first() : "landing-page" ;
+  
+            return redirect()->route('landing_page', $landing_page_slug );
+        }
+        
         if(Auth::guest()):
             return Redirect::to('/login');
         endif;

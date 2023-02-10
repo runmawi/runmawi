@@ -140,10 +140,13 @@ class ChannelLoginController extends Controller
             {
                 $intro_video = null;
             }
+
+
             // dd($intro_video);
             $string = Str::random(60);
             $channel = new Channel;
             $channel->channel_name = $request->channel_name;
+            $channel->channel_slug = str_replace(' ', '_', $request->channel_name);
             $channel->email = $request->email_id;
             $channel->password = Hash::make($request->password);
             $channel->unhased_password = $request->password;
@@ -647,6 +650,93 @@ Please recheck the credentials before you try again!');
         return Redirect::back()->with('message', 'Please Enter Valid Email');
 
       }
+
+  }
+
+  public function ChannelMyProfile()
+  {
+      $data = Session::all();
+
+      $id = $data['channel']->id;
+    //   dd($id);
+
+      $Channel = Channel::where('id',$id)->first();
+
+      $data = [
+          "channel" => $Channel,
+      ];
+      // dd($data['user']);
+      return view("channel.myprofile",$data);
+
+  }
+
+  public function ChannelUpdateMyProfile(Request $request)
+  {
+      $Session = Session::all();
+      $data = $request->all();
+      
+      $id = $data['id'];
+
+      
+      $channel = Channel::where('id',$id)->first();
+      // dd($data);
+      if(!empty($data['channel_name'])){
+          $channel_name = $data['channel_name'];
+      }else{
+          $channel_name = $channel->channel_name;
+      } 
+
+      if(!empty($data['email'])){
+          $email = $data['email'];
+      }else{
+          $email = $channel->email;
+      }  
+      if(!empty($data['mobile_number'])){
+          $mobile_number = $data['mobile_number'];
+      }else{
+          $mobile_number = $channel->mobile_number;
+      }  
+
+
+      $image = (isset($data['picture'])) ? $data['picture'] : '';
+
+      $logopath = URL::to("/public/uploads/channel/");
+      $path = public_path() . "/uploads/channel/";
+
+
+      if ($image != '')
+      {
+          //code for remove old file
+          if ($image != '' && $image != null)
+          {
+              $file_old = $path . $image;
+              if (file_exists($file_old))
+              {
+                  unlink($file_old);
+              }
+          }
+          //upload new file
+          $randval = Str::random(16);
+          $file = $image;
+          $image_ext = $randval . '.' . $request->file('picture')
+              ->extension();
+          $file->move($path, $image_ext);
+
+          $image = URL::to('/') . '/public/uploads/channel/' . $image_ext;
+
+      }
+      else
+      {
+          $image = null;
+      }
+      $channel->channel_name = $channel_name;
+      $channel->email = $email;
+      $channel->mobile_number = $mobile_number;
+      $channel->channel_image = $image;
+      $channel->channel_slug = str_replace(' ', '_', $request->channel_name);
+      $channel->save();
+
+      return \Redirect::back()->with('message','Update User Profile');
 
   }
 

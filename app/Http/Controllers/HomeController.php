@@ -1359,6 +1359,12 @@ class HomeController extends Controller
         $multiuser = Session::get('subuser_id');
         $getfeching = Geofencing::first();
         $Recomended = HomeSetting::first();
+        if($settings->enable_landing_page == 1 && Auth::guest()){
+
+            $landing_page_slug = AdminLandingPage::where('status',1)->pluck('slug')->first() ? AdminLandingPage::where('status',1)->pluck('slug')->first() : "landing-page" ;
+
+            return redirect()->route('landing_page', $landing_page_slug );
+        }
         if ($settings->access_free == 1 && Auth::guest() && !isset($data['user']))
         {
             return Redirect::to('/');
@@ -3171,6 +3177,14 @@ class HomeController extends Controller
 
     public function LatestVideos()
     {
+        $settings = Setting::first();
+
+        if($settings->enable_landing_page == 1 && Auth::guest()){
+
+            $landing_page_slug = AdminLandingPage::where('status',1)->pluck('slug')->first() ? AdminLandingPage::where('status',1)->pluck('slug')->first() : "landing-page" ;
+
+            return redirect()->route('landing_page', $landing_page_slug );
+        }
         $latest_videos_count = Video::where('active', '=', '1')->where('status', '=', '1')
                                 ->where('draft', '=', '1')->latest()->count();
 
