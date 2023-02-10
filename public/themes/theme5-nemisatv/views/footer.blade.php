@@ -1,0 +1,768 @@
+<?php 
+  $settings = App\Setting::first();
+  $user = App\User::where('id','=',1)->first(); 
+  $app_setting = App\AppSetting::where('id','=',1)->where('status','hidden')->first();
+  $session = session()->all();
+  use Carbon\Carbon;
+?>
+
+<footer class="py-4 mt-auto">
+  <div class="container-fluid px-5 mt-5">
+      <p class="text-white text-center mb-4">Chat-box will be sent later.</p>
+        <h3 class="font-weight-bold mb-2 text-center mb-4">Download App</h3>
+      <div class="row  justify-content-center ">
+        
+          <!--<div class="col-sm-7 small m-0 text-white exp p-0">
+              <div class="mt-2 ">
+                  <p class="nem mb-4 col-md-9" id="ikm" style="">Hours of Infotaiment 
+edutainment and
+entertainment.</p>
+                  <ul class="d-flex p-0 wrap">
+                      <li>  <a href="" target="_blank" class="">FAQ</a></li>
+                      <li><a href="" target="_blank" class="">HELP</a></li>
+                      <li><a href="" target="_blank" class="">ACCOUNT</a></li>
+                      <li><a href="" target="_blank" class="">TERMS OF USE</a></li>
+                      <li><a href="" target="_blank" class="">CONTACT US</a></li>
+                  </ul>
+                  <div class="small m-0 text-white"></div>
+                 </div>
+          </div>-->
+
+          <?php $app_settings = App\AppSetting::where('id','=',1)->first(); ?>
+
+          <div class="col-sm-3. small m-0 text-white text-right">
+             <div class="map1">
+                 <p class="text-left">Available on Play Store</p>
+              <?php if(!empty($app_settings->android_url)){ ?>
+              <img class="" height="80" width="140" src="<?php echo  URL::to('/assets/img/apps1.png')?>" style="margin-top: -20px;" />
+              <?php } ?>
+              <?php if(!empty($app_settings->ios_url)){ ?>
+              <img class="" height="80" width="140" src="<?php echo  URL::to('/assets/img/apps.png')?>" style="margin-top: -20px;" />
+              <?php } ?>
+              <?php if(!empty($app_settings->android_tv)){ ?>
+              <img class="" height="100" width="150" src="<?php echo  URL::to('/assets/img/and.png')?>" style="margin-top: -20px;" />
+              <?php } ?>
+              </div>
+              
+            <!--  <p class="p-0 mr-3 mt-3">Questions? Call 000-800-123-123</p>-->
+          </div>
+          <div class="col-sm-3. small m-0 text-white text-right">
+               <div class="map1">
+                    <div class="d-flex p-0 text-white icon align-items-baseline">
+                      <p>Follow US :</p>
+                      <?php if(!empty($settings->facebook_page_id)){?>
+                      <a href="https://www.facebook.com/<?php echo FacebookId();?>" target="_blank" class="ml-1">
+                          <img class="w-100" src="<?php echo  URL::to('/assets/img/ff.png')?>" style="" />
+                      </a>
+                      <?php } ?>
+
+                      <?php if(!empty($settings->skype_page_id)){?>
+                      <a href="https://www.skype.com/en/<?php echo SkypeId();?>" target="_blank" class="ml-1">
+                          <i class="fa fa-skype"></i>
+                      </a>
+                      <?php } ?>
+
+                      <?php if(!empty($settings->twitter_page_id)){?>
+                      <a href="https://twitter.com/<?php echo TwiterId();?>" target="_blank" class="ml-1">
+                          <img class="w-100" src="<?php echo  URL::to('/assets/img/tw.png')?>" style="" />
+                      </a>
+                      <?php } ?>
+
+                      <?php if(!empty($settings->instagram_page_id)){?>
+                      <a href="https://www.instagram.com/<?php echo InstagramId();?>" target="_blank" class="ml-1">
+                          <img class="w-100" src="<?php echo  URL::to('/assets/img/insta.png')?>" style="" />
+                      </a>
+                      <?php } ?>
+
+                      <?php if(!empty($settings->linkedin_page_id)){?>
+                      <a href="https://www.linkedin.com/<?php echo linkedinId();?>" target="_blank" class="ml-1">
+                          <img class="w-100" src="<?php echo  URL::to('/assets/img/link.png')?>" style="" />
+                      </a>
+                      <?php } ?>
+
+                      <?php if(!empty($settings->whatsapp_page_id)){?>
+                     <!-- <a href="https://www.whatsapp.com/<?php echo YoutubeId();?>" target="_blank" class="">
+                          <i class="fa fa-whatsapp"></i>
+                      </a>-->
+                      <?php } ?>
+
+                      <?php if(!empty($settings->youtube_page_id)){?>
+                      <a href="https://www.youtube.com/<?php echo YoutubeId();?>" target="_blank" class="ml-1">
+                          <img class="w-100" src="<?php echo  URL::to('/assets/img/yout.png')?>" style="" />
+                      </a>
+                      <?php } ?>
+
+                      <?php if(!empty($settings->google_page_id)){?>
+                      <!--<a href="https://www.google.com/<?php echo GoogleId();?>" target="_blank" class="ml-1">
+                          <i class="fa fa-google-plus"></i>
+                      </a>-->
+                      <?php } ?>
+                        
+                  </div>
+             
+              </div>
+                 
+          </div>
+         
+      </div>
+      
+  </div>
+  <div class="container-fluid">
+      <p class="mb-0 text-center font-size-14 text-body" style="color: #208585 !important;">
+          <?php echo $settings->website_name ; ?> -
+          <?php echo Carbon::now()->year ; ?> All Rights Reserved
+      </p>
+  </div>
+</footer>
+
+      <!-- jQuery, Popper JS -->
+      <script defer src="<?= URL::to('/'). '/assets/js/jquery-3.4.1.min.js';?>"></script>
+      <script defer src="<?= URL::to('/'). '/assets/js/popper.min.js';?>"></script>
+      <!-- Bootstrap JS -->
+      <script defer src="<?= URL::to('/'). '/assets/js/bootstrap.min.js';?>"></script>
+      <!-- Slick JS -->
+      <script defer src="<?= URL::to('/'). '/assets/js/slick.min.js';?>"></script>
+      <!-- owl carousel Js -->
+      <script defer src="<?= URL::to('/'). '/assets/js/owl.carousel.min.js';?>"></script>
+      <!-- select2 Js -->
+      <script defer src="<?= URL::to('/'). '/assets/js/select2.min.js';?>"></script>
+      <!-- Magnific Popup-->
+      <script defer src="<?= URL::to('/'). '/assets/js/jquery.magnific-popup.min.js';?>"></script>
+      <!-- Slick Animation-->
+      <script defer src="<?= URL::to('/'). '/assets/js/slick-animation.min.js';?>"></script>
+      <!-- Custom JS-->
+
+      <script defer type="text/javascript" src="<?php echo URL::to('public/themes/theme5-nemisatv/assets/js/custom.js'); ?>"></script>
+      
+      <?php 
+      $footer_script = App\Script::pluck('footer_script')->toArray();
+      if(count($footer_script) > 0){
+        foreach($footer_script as $Scriptfooter){ ?>
+        <?= $Scriptfooter ?>
+
+      <?php } 
+    }
+     ?>
+       <script>
+    $(document).ready(function () {
+      $(".thumb-cont").hide();
+      $(".show-details-button").on("click", function () {
+        var idval = $(this).attr("data-id");
+        $(".thumb-cont").hide();
+        $("#" + idval).show();
+      });
+		$(".closewin").on("click", function () {
+        var idval = $(this).attr("data-id");
+        $(".thumb-cont").hide();
+        $("#" + idval).hide();
+      });
+    });
+  </script>
+
+<script>
+function about(evt , id) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablink");
+  for (i = 0; i < tablinks.length; i++) {
+    
+  }
+	
+  document.getElementById(id).style.display = "block";
+ 
+}
+// Get the element with id="defaultOpen" and click on it
+//document.getElementById("defaultOpen").click();
+</script>
+
+<script type="text/javascript">
+  $(document).ready(function () {
+    $('.searches').on('keyup',function() {
+      var query = $(this).val();
+      
+       if (query !=''){
+      $.ajax({
+        url:"<?php echo URL::to('/search');?>",
+        type:"GET",
+        data:{
+          'country':query}
+        ,
+        success:function (data) {
+          $(".home-search").hide();
+          $('.search_list').html(data);
+        }
+      }
+            )
+       } else {
+            $('.search_list').html("");
+       }
+    }
+                     );
+    $(document).on('click', 'li', function(){
+      var value = $(this).text();
+      $('.search').val(value);
+      $('.search_list').html("");
+      $(".home-search").show();
+
+    }
+                  );
+  }
+                   );
+</script>
+
+<script defer src="<?= URL::to('/'). '/assets/js/ls.bgset.min.js';?>"></script>
+ <script defer src="<?= URL::to('/'). '/assets/js/lazysizes.min.js';?>"></script>
+ <script defer src="<?= URL::to('/'). '/assets/js/plyr.polyfilled.js';?>"></script>
+ <script defer src="<?= URL::to('/'). '/assets/js/hls.min.js';?>"></script>
+ <script defer src="<?= URL::to('/'). '/assets/js/plyr.js';?>"></script>
+ <script defer src="<?= URL::to('/'). '/assets/js/hls.js';?>"></script>
+ <script defer src="<?= URL::to('/'). '/assets/js/.js';?>"></script>
+<script defer src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
+        
+
+ <script>
+    var type = $('#video_type').val();
+    // var type = $('#hls_m3u8').val();
+    var request_url = $('#request_url').val();
+    var live = $('live').val();
+    // var live = $('live').val();
+    var video_video = $('video_video').val();
+
+    var user_logged_out =  $('#user_logged_out').val();
+    var hls =  $('#hls').val();
+    var ads_path =  $('#ads_path').val();
+    var processed_low =  $('#processed_low').val();
+    var episode_type  = $('#episode_type').val();
+    
+    // alert(ads_path)
+
+   if(type != "" &&  type != "m3u8_url" && type != 'aws_m3u8' && episode_type != 'aws_m3u8' && video_video == 'video'){
+    // alert('m3u8')
+
+        const player = new Plyr('#videoPlayer',{
+          controls: [
+
+      'play-large',
+			'restart',
+			'rewind',
+			'play',
+			'fast-forward',
+			'progress',
+			'current-time',
+			'mute',
+			'volume',
+			'captions',
+			'settings',
+			'pip',
+			'airplay',
+			'fullscreen',
+			'capture'
+		],
+    i18n:{
+    // your other i18n
+    capture: 'capture'
+},
+ads:{ 
+      enabled: true, 
+      publisherId: '', 
+      tagUrl: ads_path 
+    }
+
+        });
+   }else if(type != "" && request_url != 'm3u8' && type != 'aws_m3u8' && episode_type != 'm3u8'){
+    // alert('m3u8')
+
+        const player = new Plyr('#videoPlayer',{
+          controls: [
+                      'play-large',
+                      'restart',
+                      'rewind',
+                      'play',
+                      'fast-forward',
+                      'progress',
+                      'current-time',
+                      'mute',
+                      'volume',
+                      'captions',
+                      'settings',
+                      'pip',
+                      'airplay',
+                      'fullscreen',
+                      'capture'
+		                ],
+              i18n:{
+                    capture: 'capture'
+                  },
+
+              ads:{ 
+                    enabled: true, 
+                    publisherId: '', 
+                    tagUrl: ads_path 
+                  }
+        });
+      //  } else if(user_logged_out == 1 && type == ''){
+      }else if(episode_type == 'm3u8'  || episode_type == 'aws_m3u8' && type != 'aws_m3u8') {
+
+// alert('episode_type')
+
+document.addEventListener("DOMContentLoaded", () => {
+  const video = document.querySelector("video");
+  const source = video.getElementsByTagName("source")[0].src;
+  
+  // For more options see: https://github.com/sampotts/plyr/#options
+  // captions.update is required for captions to work with hls.js
+  const defaultOptions = {};
+
+  if (!Hls.isSupported()) {
+      video.src = source;
+      var player = new Plyr(video, defaultOptions);
+    } else {
+      // For more Hls.js options, see https://github.com/dailymotion/hls.js
+      const hls = new Hls();
+      hls.loadSource(source);
+
+      // From the m3u8 playlist, hls parses the manifest and returns
+                  // all available video qualities. This is important, in this approach,
+                // we will have one source on the Plyr player.
+              hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+
+                // Transform available levels into an array of integers (height values).
+                const availableQualities = hls.levels.map((l) => l.height)
+            availableQualities.unshift(0) //prepend 0 to quality array
+
+                // Add new qualities to option
+          defaultOptions.quality = {
+            default: 0, //Default - AUTO
+              options: availableQualities,
+              forced: true,        
+              onChange: (e) => updateQuality(e),
+          }
+          // Add Auto Label 
+          defaultOptions.i18n = {
+            qualityLabel: {
+              0: 'Auto',
+            },
+          }
+
+          hls.on(Hls.Events.LEVEL_SWITCHED, function (event, data) {
+              var span = document.querySelector(".plyr__menu__container [data-plyr='quality'][value='0'] span")
+              if (hls.autoLevelEnabled) {
+                span.innerHTML = `AUTO (${hls.levels[data.level].height}p)`
+              } else {
+                span.innerHTML = `AUTO`
+              }
+            })
+      
+              // Initialize new Plyr player with quality options
+          var player = new Plyr(video, defaultOptions);
+          });	
+
+    hls.attachMedia(video);
+        window.hls = hls;		 
+      }
+
+      function updateQuality(newQuality) {
+        if (newQuality === 0) {
+          window.hls.currentLevel = -1; //Enable AUTO quality if option.value = 0
+        } else {
+          window.hls.levels.forEach((level, levelIndex) => {
+            if (level.height === newQuality) {
+              console.log("Found quality match with " + newQuality);
+              window.hls.currentLevel = levelIndex;
+            }
+          });
+        }
+      }
+});
+
+$(window).on("beforeunload", function() { 
+
+var vid = document.getElementById("video");
+  var currentTime = vid.currentTime;
+  var duration = vid.duration;
+var bufferedTimeRanges = vid.buffered;
+var bufferedTimeRangesLength = bufferedTimeRanges.length;
+var seekableEnd = vid.seekable.end(vid.seekable.length - 1);
+  var videotype= $('#video_type').val();
+
+  var videoid = $('#video_id').val();
+  $.post('<?= URL::to('player_analytics_store') ?>', { video_id : videoid,duration : duration,currentTime:currentTime,seekableEnd : seekableEnd,bufferedTimeRanges : bufferedTimeRangesLength,_token: '<?= csrf_token(); ?>' }, function(data){
+});
+return;
+}); 
+
+
+$(window).on("beforeunload", function() { 
+
+var vid = document.getElementById("video");
+var currentTime = vid.currentTime;
+var duration = vid.duration;
+var videotype= $('#video_type').val();
+
+var videoid = $('#video_id').val();
+$.post('<?= URL::to('continue-watching') ?>', { video_id : videoid,duration : duration,currentTime:currentTime, _token: '<?= csrf_token(); ?>' }, function(data){
+});
+
+return;
+}); 
+
+
+}
+   else if(user_logged_out == 1 && type == '' && type != 'aws_m3u8' && processed_low != 100 || user_logged_out == 1 && type == '' && processed_low == ""){
+
+        const player = new Plyr('#videoPlayer',{
+          controls: [
+
+      'play-large',
+			'restart',
+			'rewind',
+			'play',
+			'fast-forward',
+			'progress',
+			'current-time',
+			'mute',
+			'volume',
+			'captions',
+			'settings',
+			'pip',
+			'airplay',
+			'fullscreen',
+			'capture'
+		],
+    i18n:{
+    capture: 'capture'
+},
+              ads:{ 
+                    enabled: true, 
+                    publisherId: '', 
+                    tagUrl: ads_path 
+                  }
+
+        });
+   }else if(hls == "hls" && type != 'aws_m3u8'){
+        const player = new Plyr('#videoPlayer',{
+          controls: [
+                  'play-large',
+                  'restart',
+                  'rewind',
+                  'play',
+                  'fast-forward',
+                  'progress',
+                  'current-time',
+                  'mute',
+                  'volume',
+                  'captions',
+                  'settings',
+                  'pip',
+                  'airplay',
+                  'fullscreen',
+                  'capture'
+		            ],
+            i18n:{
+                capture: 'capture'
+                },
+
+            ads:{ 
+                  enabled: true, 
+                  publisherId: '', 
+                  tagUrl: ads_path 
+                }
+        });
+   }else if(type == 'aws_m3u8' && type != 'aws_m3u8'){
+    document.addEventListener("DOMContentLoaded", () => {
+        const video = document.querySelector("video");
+        const source = video.getElementsByTagName("source")[0].src;
+        if (!Hls.isSupported()) {
+      video.src = source;
+      var player = new Plyr(video, defaultOptions);
+    } else {
+      // For more Hls.js options, see https://github.com/dailymotion/hls.js
+      const hls = new Hls();
+      hls.loadSource(source);
+
+      // From the m3u8 playlist, hls parses the manifest and returns
+                  // all available video qualities. This is important, in this approach,
+                // we will have one source on the Plyr player.
+              hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+
+                // Transform available levels into an array of integers (height values).
+                const availableQualities = hls.levels.map((l) => l.height)
+            availableQualities.unshift(0) //prepend 0 to quality array
+
+                // Add new qualities to option
+          defaultOptions.quality = {
+            default: 0, //Default - AUTO
+              options: availableQualities,
+              forced: true,        
+              onChange: (e) => updateQuality(e),
+          }
+          // Add Auto Label 
+          defaultOptions.i18n = {
+            qualityLabel: {
+              0: 'Auto',
+            },
+          }
+
+          hls.on(Hls.Events.LEVEL_SWITCHED, function (event, data) {
+              var span = document.querySelector(".plyr__menu__container [data-plyr='quality'][value='0'] span")
+              if (hls.autoLevelEnabled) {
+                span.innerHTML = `AUTO (${hls.levels[data.level].height}p)`
+              } else {
+                span.innerHTML = `AUTO`
+              }
+            })
+      
+              // Initialize new Plyr player with quality options
+          var player = new Plyr(video, defaultOptions);
+          });	
+
+    hls.attachMedia(video);
+        window.hls = hls;		 
+      }
+
+      function updateQuality(newQuality) {
+        if (newQuality === 0) {
+          window.hls.currentLevel = -1; //Enable AUTO quality if option.value = 0
+        } else {
+          window.hls.levels.forEach((level, levelIndex) => {
+            if (level.height === newQuality) {
+              console.log("Found quality match with " + newQuality);
+              window.hls.currentLevel = levelIndex;
+            }
+          });
+        }
+      }
+    });
+    }
+else{
+  document.addEventListener("DOMContentLoaded", () => {
+  const video = document.querySelector("video");
+  const source = video.getElementsByTagName("source")[0].src;
+  
+  // For more options see: https://github.com/sampotts/plyr/#options
+  // captions.update is required for captions to work with hls.js
+  const defaultOptions = {};
+
+  if (Hls.isSupported()) {
+const hls = new Hls();
+		hls.loadSource(source);
+
+    	       hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+
+	      	     // Transform available levels into an array of integers (height values).
+	      	    const availableQualities = hls.levels.map((l) => l.height)
+	      	availableQualities.unshift(0) //prepend 0 to quality array
+
+	      	    // Add new qualities to option
+		    defaultOptions.quality = {
+		    	default: 0, //Default - AUTO
+		        options: availableQualities,
+		        forced: true,        
+		        onChange: (e) => updateQuality(e),
+		    }
+		    // Add Auto Label 
+		    defaultOptions.i18n = {
+		    	qualityLabel: {
+		    		0: 'Auto',
+		    	},
+		    }
+
+		    hls.on(Hls.Events.LEVEL_SWITCHED, function (event, data) {
+	          var span = document.querySelector(".plyr__menu__container [data-plyr='quality'][value='0'] span")
+	          if (hls.autoLevelEnabled) {
+	            span.innerHTML = `AUTO (${hls.levels[data.level].height}p)`
+	          } else {
+	            span.innerHTML = `AUTO`
+	          }
+	        })
+    
+             // Initialize new Plyr player with quality options
+		     var player = new Plyr(video, defaultOptions);
+         });	
+
+	hls.attachMedia(video);
+    	window.hls = hls;		 
+    
+
+    function updateQuality(newQuality) {
+      if (newQuality === 0) {
+        window.hls.currentLevel = -1; //Enable AUTO quality if option.value = 0
+      } else {
+        window.hls.levels.forEach((level, levelIndex) => {
+          if (level.height === newQuality) {
+            console.log("Found quality match with " + newQuality);
+            window.hls.currentLevel = levelIndex;
+          }
+        });
+      }
+    }
+
+    $(window).on("beforeunload", function() { 
+
+  var vid = document.getElementById("video");
+  var currentTime = vid.currentTime;
+  var duration = vid.duration;
+  var bufferedTimeRanges = vid.buffered;
+  var bufferedTimeRangesLength = bufferedTimeRanges.length;
+  var seekableEnd = vid.seekable.end(vid.seekable.length - 1);
+  var videotype= $('#video_type').val();
+
+  var videoid = $('#video_id').val();
+  $.post('<?= URL::to('player_analytics_store') ?>', { video_id : videoid,duration : duration,currentTime:currentTime,seekableEnd : seekableEnd,bufferedTimeRanges : bufferedTimeRangesLength,_token: '<?= csrf_token(); ?>' }, function(data){
+});
+return;
+}); 
+
+$(window).on("beforeunload", function() { 
+
+var vid = document.getElementById("video");
+var currentTime = vid.currentTime;
+var duration = vid.duration;
+var videotype= $('#video_type').val();
+
+var videoid = $('#video_id').val();
+$.post('<?= URL::to('continue-watching') ?>', { video_id : videoid,duration : duration,currentTime:currentTime, _token: '<?= csrf_token(); ?>' }, function(data){
+});
+
+return;
+}); 
+  } else {
+   
+    const player = new Plyr('#video',{
+          controls: [
+                    'play-large',
+                    'restart',
+                    'rewind',
+                    'play',
+                    'fast-forward',
+                    'progress',
+                    'current-time',
+                    'mute',
+                    'volume',
+                    'captions',
+                    'settings',
+                    'pip',
+                    'airplay',
+                    'fullscreen',
+                    'capture'
+		              ],
+            i18n:{
+                capture: 'capture'
+            },
+
+            ads:{ 
+                  enabled: true, 
+                  publisherId: '', 
+                  tagUrl: ads_path 
+                }
+        });
+
+        $(window).on("beforeunload", function() { 
+
+var vid = document.getElementById("video");
+  var currentTime = vid.currentTime;
+  var duration = vid.duration;
+var bufferedTimeRanges = vid.buffered;
+var bufferedTimeRangesLength = bufferedTimeRanges.length;
+var seekableEnd = vid.seekable.end(vid.seekable.length - 1);
+  var videotype= $('#video_type').val();
+
+  var videoid = $('#video_id').val();
+  $.post('<?= URL::to('player_analytics_store') ?>', { video_id : videoid,duration : duration,currentTime:currentTime,seekableEnd : seekableEnd,bufferedTimeRanges : bufferedTimeRangesLength,_token: '<?= csrf_token(); ?>' }, function(data){
+});
+return;
+}); 
+  }
+
+});
+
+}
+
+
+         
+      </script>
+  <script type="text/javascript">
+	$("img").lazyload({
+	    effect : "fadeIn"
+	});
+</script>
+
+<script>
+  if ('loading' in HTMLImageElement.prototype) {
+    const images = document.querySelectorAll('img[loading="lazy"]');
+    images.forEach(img => {
+      img.src = img.dataset.src;
+    });
+  } else {
+    const script = document.createElement('script');
+    script.src =
+      'https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.1.2/lazysizes.min.js';
+    document.body.appendChild(script);
+  }
+</script>
+
+
+<?php  
+                  //  Prevent Inspect 
+  $Prevent_inspect = App\SiteTheme::pluck('prevent_inspect')->first();
+  if( $Prevent_inspect == 1){
+?>
+
+<script>
+        $(document).keydown(function (event) {
+            if (event.keyCode == 123) { 
+                alert("This function has been disabled"); // Prevent F12
+                return false;
+            } 
+            else if(event.ctrlKey && event.shiftKey && event.keyCode == 'I'.charCodeAt(0)){ 
+                alert("This function has been disabled ");   // Prevent Ctrl + Shift + I
+                return false;
+            }
+            else if(event.ctrlKey && event.shiftKey && event.keyCode == 'J'.charCodeAt(0)){
+                alert("This function has been disabled ");   // Prevent Ctrl + Shift + J
+                return false;
+            }
+            else if(event.ctrlKey && event.shiftKey && event.keyCode == 'C'.charCodeAt(0)){
+                alert("This function has been disabled ");   // Prevent Ctrl + Shift + c
+                return false;
+            }
+            else if(event.ctrlKey && event.keyCode == 'U'.charCodeAt(0)){
+                alert("This function has been disabled ");  // Prevent  Ctrl + U
+                return false;
+            }
+        });
+
+        $(document).on("contextmenu", function (e) {        
+            alert("This function has been disabled");
+            e.preventDefault();
+        });
+</script>
+
+<?php } ?>
+<?php if( get_image_loader() == 1) { ?>
+<script>
+    const loaderEl = document.getElementsByClassName('fullpage-loader')[0];
+document.addEventListener('readystatechange', (event) => {
+	// const readyState = "interactive";
+	const readyState = "complete";
+    
+	if(document.readyState == readyState) {
+		// when document ready add lass to fadeout loader
+		loaderEl.classList.add('fullpage-loader--invisible');
+		
+		// when loader is invisible remove it from the DOM
+		setTimeout(()=>{
+			loaderEl.parentNode.removeChild(loaderEl);
+		}, 100)
+	}
+});
+
+
+</script>
+<?php } ?>
+
+</body>
+</html>
