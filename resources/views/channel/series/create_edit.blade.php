@@ -777,8 +777,6 @@ $('#submit-new-cat').click(function(){
 
 		$('form[id="series_form"]').validate({
 			rules: {
-				title: 'required',
-
 				image: {
 					required: '#check_image:blank',
 					dimention:[1080,1920]

@@ -284,6 +284,18 @@
          ?></div>
       <?php
          } ?>
+
+                        <!-- Comment Section -->
+               
+      <?php if( App\CommentSection::first() != null && App\CommentSection::pluck('livestream')->first() == 1 ): ?>
+       <div class="row">
+           <div class=" container-fluid video-list you-may-like overflow-hidden">
+               <h4 class="" style="color:#fffff;"><?php echo __('Comments');?></h4>
+               <?php include('comments/index.blade.php');?>
+           </div>
+       </div>
+      <?php endif; ?>
+      
       <div class="iq-main-header ">
          <h4 class="main-title">Season</h4>
       </div>
