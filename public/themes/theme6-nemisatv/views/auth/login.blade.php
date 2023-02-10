@@ -9,18 +9,18 @@ $system_settings = App\SystemSetting::find(1);
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="X-UA-Compatible" content="ie=edge">
       <title>Login | <?php echo $settings->website_name ; ?></title>
-    
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 
       <!-- Favicon -->
       <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
       <!-- Bootstrap CSS -->
-      <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme6-nemisatv/assets/css/bootstrap.min.css')?>" rel="stylesheet">
+      <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme1/assets/css/bootstrap.min.css')?>" rel="stylesheet">
       <!-- Typography CSS -->
-      <link href="<?php echo URL::to('public/themes/theme6-nemisatv/assets/css/typography.css') ?>" rel="stylesheet">
+      <link href="<?php echo URL::to('public/themes/theme2/assets/css/typography.css') ?>" rel="stylesheet">
       <!-- Style -->
-      <link href="<?php echo URL::to('public/themes/theme6-nemisatv/assets/css/style.css') ?>" rel="stylesheet">
-      <link href="<?php echo URL::to('public/themes/theme6-nemisatv/assets/css/responsive.css') ?>" rel="stylesheet">
-                  <link href="<?php echo URL::to('public/themes/theme6-nemisatv/assets/fonts/font.css') ?>" rel="stylesheet">
+      <link href="<?php echo URL::to('public/themes/theme2/assets/css/style.css') ?>" rel="stylesheet">
+      <link href="<?php echo URL::to('public/themes/theme2/assets/css/responsive.css') ?>" rel="stylesheet">
+                  <link href="<?php echo URL::to('public/themes/theme2/assets/fonts/font.css') ?>" rel="stylesheet">
 
       <!-- Responsive -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -181,7 +181,7 @@ i.fa.fa-google-plus {
     .signup-desktop{
         background-color: #fff;
         border:1px solid #252525!important;
-       
+        font-family: 'Roboto', sans-serif;
  padding: 7px 8px!important;
 font-style: normal;
 font-weight: 600;
@@ -400,7 +400,7 @@ font-weight: 600;
 
     
 @php
-    include(public_path('themes/theme6-nemisatv/views/footer.blade.php'));
+    include(public_path('themes/theme2/views/footer.blade.php'));
 @endphp
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

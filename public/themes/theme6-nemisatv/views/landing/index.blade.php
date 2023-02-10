@@ -22,11 +22,11 @@ $uppercase =  ucfirst($request_url);
     <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
-        <link href="<?php echo URL::to('public/themes/theme2/assets/fonts/font.css') ?>" rel="stylesheet">
+        <link href="<?php echo URL::to('public/themes/theme6-nemisatv/assets/fonts/font.css') ?>" rel="stylesheet">
      <!-- Bootstrap CSS -->
       <!-- Typography CSS -->
-         <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme2/assets/css/style.css') ?>" />
-         <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme2/assets/css/bootstrap.min.css') ?>" />
+         <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme6-nemisatv/assets/css/style.css') ?>" />
+         <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme6-nemisatv/assets/css/bootstrap.min.css') ?>" />
       <!-- Style -->
       <link rel="stylesheet" href="<?= typography_link(); ?>" />
       <!-- Responsive -->
@@ -39,6 +39,10 @@ $uppercase =  ucfirst($request_url);
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
   </script>
 <style>
+    .map{
+        height: 90px;
+        font-size: 18px;
+    }
     .wat{
         padding: 10px 18px 10px 18px;
     }
@@ -58,6 +62,9 @@ $uppercase =  ucfirst($request_url);
         color: #01DC82!important;
         font-size: 30px;
     }
+    .card-text{
+        color: #000;
+    }
     .slick-dots{
         top: 100%;
         margin: 0;
@@ -70,6 +77,37 @@ $uppercase =  ucfirst($request_url);
         margin: 5px 15px;
     }
     @media only screen and (max-width : 320px) {
+        .sec-21 {
+            padding: 10px!important;
+        }
+        .nav-pills {
+    border-radius: 5px;
+    padding: 0 0px 0 0px!important;
+}
+        .banner-top{
+            background-color: rgb(23, 39, 52,0.8);
+    background-blend-mode: multiply;
+        }
+        .banner-top h1{
+            font-size: 25px!important;
+        }
+        .navbar-fixed-top{
+            height: auto;
+        }
+        .map {
+    height: 94px;
+    font-size: 13px;
+}
+        .img-lan1{
+            width: 60%!important;
+           
+        }
+        .imk{
+             margin-top: 15px!important;
+        }
+        .sec-31{
+            padding: 10px!important;
+        }
         .img-lan{
             width: 100%;
         }
@@ -82,11 +120,12 @@ $uppercase =  ucfirst($request_url);
     h2{
         
         text-align: center;
-        font-size: 25px!important;
+       
     }
         .sec-21{
              text-align: center;
         }
+        
     .lan{
          padding: 0; 
     }
@@ -116,7 +155,7 @@ $uppercase =  ucfirst($request_url);
             text-align: left!important;
         }
         h1{
-            font-size: 40px!important;
+            font-size: 30px!important;
         }
          .position-relative{
             margin-top: 0!important;
@@ -149,7 +188,7 @@ $uppercase =  ucfirst($request_url);
              font-family: 'futurabook';
 
   text-transform: uppercase;
-font-size: 40px;
+font-size: 30px;
 font-weight: 600;
 line-height: 65px;
 letter-spacing: 0em;
@@ -364,13 +403,15 @@ line-height: 32px;
   left: 0;
   width: 0;
   height: 100%;
-  background: #02BDB6;
+   background: #F6D55C;
   transition: all .35s;
     z-index: -1;
+     border-radius: 4px!important;
 }
 
 .btn-success:hover{
   color: #fff!important;
+   border-color:1px solid  #ED553B!importan;
     
 }
 
@@ -378,20 +419,20 @@ line-height: 32px;
   width: 100%;
 }
     .sec-21 .btn-success{
-         background-color: transparent!important;
+         
         font-size: 20px;
     }
     .sec-21 .btn-success:hover{
         color: #fffff!important;
     }
     .sec-3 .btn-success{
-        background-color: transparent!important;
+       
     }
       .signup-desktop{
         background-color: #fff;
           border-radius: 5px!important;
         border:none!important;
-        font-family: 'Roboto', sans-serif;
+     
           padding: 5px 10px!important;
 
 font-style: normal;
@@ -434,11 +475,11 @@ line-height: 32px;
 
 }
     .nav-link.active{
-        color: #01DC82!important;
+        color: #F6D55C!important;
        background: !important;
         padding:10px 0 ;
           border: none!important;
-        border-bottom: 2px solid #01DC82!important;
+        border-bottom: 2px solid #F6D55C!important;
         
 
 
@@ -457,7 +498,7 @@ line-height: 32px;
         padding: 70px 0 70px 0;
     }
     .sec-3{
-       background: #183F5F;
+       background: #3CAEA3;
 
     }
     .in {
@@ -469,9 +510,9 @@ line-height: 32px;
     font-family: 'Roboto', sans-serif;
 }
     .btn-success{
-       color: #02BDB6!important;
-        background: ;
-     border: 2px solid #02BDB6;
+       color: #fff!important;
+        background: #ED553B!important;
+     border: none!important;
 
        
 border-radius: 5px;
@@ -490,10 +531,10 @@ border-radius: 5px;
         padding-left: 0!important;
     }
     .nav-item{
-        padding: 5px 10px
+        padding: 5px 7px
     }
     .nav-item:hover{
-        padding: 5px 10px
+        padding: 5px 7px
     }
     .div1{
        padding:20px 90px 100px 20px;
@@ -514,8 +555,8 @@ border-radius: 5px;
     .dig{
         font-style: normal;
 font-weight: 400;
-font-size: 30px;
-line-height: 32px;
+font-size: 20px;
+line-height: 0;
          text-transform: uppercase;
 
     }
@@ -550,6 +591,7 @@ linear-gradient(0deg, rgba(1, 220, 130, 0.75), rgba(1, 220, 130, 0.75));
     .tune li{
         font-size: 20px;
         line-height: 40px;
+        color: #fff;
     }
     .slick-next:before {
     content: '→';
@@ -573,13 +615,19 @@ linear-gradient(0deg, rgba(1, 220, 130, 0.75), rgba(1, 220, 130, 0.75));
   overflow: hidden; /* [1.2] Hide the overflowing of child elements */
 }
     .card a{
-        background: rgba(29, 99, 155, 0.5)!important;
+        background: #173F5F!important;
     }
 /* [2] Transition property for smooth transformation of images */
 .card img {
   transition: transform .5s ease;
 }
-   
+    .small-t p{
+        color: #000;
+    }
+    .sec-31{
+        background: #183F5F;
+
+    }
 /* [3] Finally, transforming the image when container gets hovered */
 
     .card img:hover {
@@ -591,8 +639,11 @@ linear-gradient(0deg, rgba(1, 220, 130, 0.75), rgba(1, 220, 130, 0.75));
  
     }
     .sec-3 h2{
-        color: #02BDB6;
+      
 
+    }
+    .nav-link{
+        color: #fff!important;
     }
     .io{
         position: absolute;
@@ -614,12 +665,11 @@ linear-gradient(0deg, rgba(1, 220, 130, 0.75), rgba(1, 220, 130, 0.75));
     padding: -1px 0 0 0;
     height: 30px;
      
-
+color: #F6D55C!important;
         border: none;
     }
     .nav-pills{
-       background: rgba(29, 99, 155, 0.1);
-border: 1px solid rgba(29, 99, 155, 0.5);
+     
 border-radius: 5px;
 padding: 0 25px 0 25px!important;
     }
@@ -628,7 +678,7 @@ padding: 0 25px 0 25px!important;
         background: #FA8F21!important;
     }
     .sec-21{
-        background-color:  #183F5F;
+        background-color:  #3CAEA3;
         color: #fff;
         padding: 40px;
         
@@ -647,6 +697,7 @@ padding: 0 25px 0 25px!important;
    
     border-radius: 5px!important;
 }
+    
     .slick-dots li {
     margin: -2px;
 }
@@ -667,9 +718,82 @@ padding: 0 25px 0 25px!important;
         padding: 7px 20px;
     }
     .card img{
-        max-height: 194px;
+        max-height:180px;
     }
     .vid{
+        margin: 0 auto;
+    }
+    .bg-color{
+        border:10px solid #3CAEA3;
+
+        margin: 0 8px auto;
+        position: relative;
+        padding: 30px 0px 20px 20px;
+    }
+    .bg-color1{
+         position: relative;
+  border:10px solid #ED553B;
+        padding: 30px 0px 20px 20px;
+         margin: 25px 8px auto;
+    }
+    .bg-color{
+       border:10px solid #3CAEA3;
+    
+         margin: 25px 8px auto;
+         position: relative;
+    }
+    .bg-color p{
+        color: #fff;
+    }
+    .bg-color1 p{
+        color: #fff;
+    }
+    .bg-color h3{
+        color: #F6D55C;
+        font-weight: 600;
+font-size: 30px;
+line-height: 52px;
+          position: relative;
+    }
+    .bg-color1 h3{
+        color: #F6D55C;
+        font-weight: 600;
+font-size: 30px;
+line-height: 52px;
+          position: relative;
+    }
+    .comp{
+        position: absolute;
+        background: #183F5F;
+        padding: 15px;
+       top: -36px;
+    left: -19px;
+       
+    }
+     .clive{
+        position: absolute;
+        background: #183F5F;
+        padding: 15px;
+       top: -36px;
+    left: -19px;
+       
+    }
+    .set{
+        position: absolute;
+        background: #183F5F;
+        padding: 15px;
+       top: -36px;
+    left: -19px;
+       
+    }
+    .btn-outline-danger{
+       
+        color: #ED553B!important;
+    }
+    .btn-outline-danger:hover{
+         color: #000!important;
+    }
+    .all-video{
         margin: 0 auto;
     }
 </style>
@@ -689,20 +813,20 @@ $jsondata = json_decode($jsonString, true); ?>
 
   <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
     
-<a type="button" class="btn btn-primary bp mr-3">Become a Partner</a>
-      <a class="btn btn-success  my-2 mr-2 my-sm-0 bp" href="{{ route('signup') }}" style="color:#000!important;">Join Now</a>
+<a type="button" class="btn btn-outline-danger bp mr-3">Become a Partner</a>
+      <a class="btn btn-success  my-2 mr-2 my-sm-0 bp" href="{{ route('signup') }}" style="">Join Now</a>
      
     
   </div>
 </div></nav>
-<div class="position-relative" style="background-image:url('<?php echo  URL::to('/assets/img/ban33.png')?>');background-repeat: no-repeat;background-size: cover;">
+<div class="position-relative" style="background-image:url('<?php echo  URL::to('/assets/img/lan/v.png')?>');background-repeat: no-repeat;background-size: 100% 100%;">
 <div class="fixe">
     <div class="row m-0  p-0" style="">
-        <div class="col-md-12 col-lg-12 p-0 text-center h-100" style="padding: 24% 0 17% 0!important;background-image:url('<?php echo  URL::to('/assets/img/lan/vc.png')?>');background-repeat: no-repeat;background-position: center 350px;
+        <div class="col-md-12 col-lg-12 p-0 text-center h-100 banner-top" style="padding: 17% 0 36% 0!important;background-image:url('<?php echo  URL::to('/assets/img/lan/v')?>');background-repeat: no-repeat;background-position: center 350px;
     background-size: 50%;">
             <h1 class="mb-3 mt-5 pt-5">Welcome to <span class="">Nemisa Tv</span></h1>
             <h2 class="dig mt-1 mb-5">The home of 4IR and digital knowledge.</h2>
-            <p class="text-white" style="font-size:16px;">South Africa’s first free video sharing social platform where we mix knowledge <br>and entertainment for unique learning experience</p>
+          <!--  <p class="text-white" style="font-size:16px;">South Africa’s first free video sharing social platform where we mix knowledge <br>and entertainment for unique learning experience</p>-->
         </div>
         
       
@@ -717,25 +841,58 @@ $jsondata = json_decode($jsonString, true); ?>
                     <p class="mt-2">Nemisa TV is a free to the public video sharing platform with unlimited video, audio and animation content. Through this platform, we aim to entertain, upkill and prepare for the fourth industrial revolution skills.</p>
                 <p class="mt-4 mb-3">Nemisa TV provides resources that include career openings, learner ships, interships, bursaries, funding, sponsorships, workshops and events.</p>
                     
-                   <a href="{{ route('login') }}" type="button" class="btn btn-success" style="padding: 5px 35px;">Join Now</a>
+                   <a href="{{ route('login') }}" type="button" class="btn btn-success" style="padding: 8px 35px;">Join Now</a>
 
                 
                 </div>
-                <div class="col-lg-6">
-                     <img class="w-100 " src="<?php echo  URL::to('/assets/img/sec2.png')?>" style="">
+                <div class="col-lg-6 imk">
+                    
+                     <img class="img-lan1" src="<?php echo  URL::to('/assets/img/lan/g2.png')?>" style="">
+                     <img class="img-lan1" src="<?php echo  URL::to('/assets/img/lan/g1.png')?>" style="margin-left: 38%;
+    margin-top: -15%;">
+                    <div class="row">
+                        <div class="col-md-6 ">
+                            
+                              
+                        </div>
+                        <div class="col-md-6 position-relative">
+                          
+                        </div>
+                    </div>
+                    
+                    
                 </div>
                
-               
+            
             </div>
         </div>
         
     </section>
-    <section class="sec-2">
+    <section class="sec-2" style="background-image:url('<?php echo  URL::to('/assets/img/lan/bg.png')?>');background-repeat: no-repeat;background-size: cover;">
         <div class="container">
-            <div class="div1" >
+            <div class=""  style="padding:5% 0 5% 0;">
             <div class="row m-0 p-0 justify-content-around align-items-center">
+                
+                <div class="col-lg-6">
+                    
+               <video id="player" height="618"  controls autoplay poster=
+"<?php echo  URL::to('/assets/img/lan/vi1.png')?>">
+            <source src=
+"<?php echo  URL::to('/assets/img/vq.mp4')?>"
+                                                            type="video/mp4">
+            <source src=
+""
+                                                            type="video/ogg">
+        </video>
+                   
+                  <!-- <div class="row p-0">
+                       <div class=" col-4 col-md-4 p-0"> <img class="img-lan" src="<?php echo  URL::to('/assets/img/v1.png')?>" style=""></div>
+                       <div class=" col-4 col-md-4 p-0" style="">   <img class="mt-4 img-lan" src="<?php echo  URL::to('/assets/img/v2.png')?>" style=""></div>
+                       <div class=" col-4 col-md-4 p-0"  style="">  <img class="mt-5 img-lan" src="<?php echo  URL::to('/assets/img/v3.png')?>" style=""></div>
+                    </div>color: #1D639B;-->
+                </div>
                 <div class="col-lg-6 p-0">
-                    <h2 class="" style="color: #1D639B;
+                    <h2 class="" style="
 ">Nemisa Tv - Bringing the world of digital technology to you.</h2>
                      <ul class="tune mt-3">
                          <li> Be transformed by the entertaining learning opportunities offered.</li>
@@ -747,26 +904,17 @@ $jsondata = json_decode($jsonString, true); ?>
 
                     </ul>
                 </div>
-                <div class="col-lg-6">
-                    
-                  
-                   
-                   <div class="row p-0">
-                       <div class=" col-4 col-md-4 p-0"> <img class="img-lan" src="<?php echo  URL::to('/assets/img/v1.png')?>" style=""></div>
-                       <div class=" col-4 col-md-4 p-0" style="">   <img class="mt-4 img-lan" src="<?php echo  URL::to('/assets/img/v2.png')?>" style=""></div>
-                       <div class=" col-4 col-md-4 p-0"  style="">  <img class="mt-5 img-lan" src="<?php echo  URL::to('/assets/img/v3.png')?>" style=""></div>
-                    </div>
-                </div>
             </div>
         </div>
             </div>
     </section>
-    <section class="sec-3">
-        <div class="container-fluid">
-            
-            <h2 class="text-center mt-5 ">Explore More With Nemisa Tv</h2>
-            <div class="mt-5">
-                <ul class="nav nav-pills mb-3  m-0 p-0" id="pills-tab" role="tablist">
+    <section class="">
+         <div class="sec-3">
+        <div class="container-fluid ">
+           
+            <h2 class="text-center mt-2 ">Explore More With Nemisa Tv</h2>
+            <div class="mt-3 ">
+                <ul class="nav nav-pills   m-0 p-0" id="pills-tab" role="tablist">
                   <li class="nav-item">
                     <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">All Genres</a>
                   </li>
@@ -810,10 +958,10 @@ $jsondata = json_decode($jsonString, true); ?>
   
 
                    
-                    </div>
+                    </div></div></div>
                    
-</ul>
-             
+</ul> </div>
+         <div class="container">     
 <div class="tab-content" id="pills-tabContent">
   <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
       <div class="row favorites-sli1">
@@ -1131,23 +1279,23 @@ $jsondata = json_decode($jsonString, true); ?>
   </div>
               </div>
           </div></div></div>
-     <div class="text-center mt-3 mb-5 pb-2">
-                    <a class="btn btn-success my-2 my-sm-0" style="font-weight:600;font-size: 20px;" herf="#"><span>All Videos <i class="fa fa-angle-right" aria-hidden="true"></i></span>
+     <div class="text-center mt-3 mb-5 pb-2 col-lg-3 all-video">
+                    <a class="btn btn-success my-2 my-sm-0 w-100" style="font-weight:600;font-size: 20px;" herf="#"><span>All Videos <i class="fa fa-angle-right" aria-hidden="true"></i></span>
 
 </a>
             </div>
 </div>
                 
             </div>
-               </div>
+              
            
     </section>
-       <section>
+      <!-- <section>
            <div>
                <img class="w-100" src="<?php echo  URL::to('/assets/img/rt.png')?>" alt="">
            </div>
-       </section>
-    <section class="sec- mt-5">
+       </section>-->
+   <!-- <section class="sec- mt-5">
         <div class="container">
             <div class="row">
                 <div class="col-md-4 text-center">
@@ -1167,7 +1315,7 @@ $jsondata = json_decode($jsonString, true); ?>
                 </div>
             </div>
         </div>
-    </section>
+    </section>-->
     <section class="sec- mt-5" id="disp">
        
         <div class="container-fluid mb-5">
@@ -1322,7 +1470,46 @@ $jsondata = json_decode($jsonString, true); ?>
         </div>
             </div>
     </section>
-    <section class="sec-3 p-0" >
+        <section class="sec-2" style="background-image:url('<?php echo  URL::to('/assets/img/lan/bg1.png')?>');background-repeat: no-repeat;background-size: cover;">
+        <div class="container">
+            <div class=""  style="padding:5% 0 5% 0;">
+                <div class="row m-0 p-0 justify-content-around align-items-center">
+                
+                <div class="col-lg-6">
+                     <video id="player1" height="618"  controls autoplay poster=
+"<?php echo  URL::to('/assets/img/lan/vi1.png')?>">
+            <source src=
+"<?php echo  URL::to('/assets/img/vq.mp4')?>"
+                                                            type="video/mp4">
+            <source src=
+""
+                                                            type="video/ogg">
+        </video>
+              
+                   
+                  <!-- <div class="row p-0">
+                       <div class=" col-4 col-md-4 p-0"> <img class="img-lan" src="<?php echo  URL::to('/assets/img/v1.png')?>" style=""></div>
+                       <div class=" col-4 col-md-4 p-0" style="">   <img class="mt-4 img-lan" src="<?php echo  URL::to('/assets/img/v2.png')?>" style=""></div>
+                       <div class=" col-4 col-md-4 p-0"  style="">  <img class="mt-5 img-lan" src="<?php echo  URL::to('/assets/img/v3.png')?>" style=""></div>
+                    </div>color: #1D639B;-->
+                </div>
+                <div class="col-lg-6 ">
+                    <h2 class="" style="
+">BENEFITS YOU CANT RESIST</h2>
+                     <p class="text-white mt-3" style="font-size: 22px;
+line-height: 40px;">Use  the information as it is and the icons, please don’t
+forgot to place the fullstops on the sentences. The image
+next to it,  Please remove it and replace with this video.</p>
+                        
+
+                       
+
+                   
+                </div>
+            </div>
+            </div></div>
+       </section>
+    <!--<section class="sec-31 p-0" >
          <div class="pt" style="background-image:url('<?php echo  URL::to('/assets/img/lan/ntv.png')?>');background-repeat: no-repeat;
     background-position: right bottom;
    padding:30px;">
@@ -1368,53 +1555,116 @@ Resist</h2>
             </div>
             
             </div></div></div>
+    </section>-->
+      
+    <section class="sec-4 mt-5">
+        <div class="container-fluid">
+            <h2 class="text-center text-black mb-5">Members Endorsement</h2>
+          <div class="row mt-4">
+              <div class="col-lg-4">
+                    <img class="w-100"  src="<?php echo  URL::to('/assets/img/lan/c1.png')?>" style="">
+                  <p class="mt-1 map">“Through the digital marketing course on NEMISA TV. I was able to create  a successful  online skateboard.”</p>
+                  <h4 class="text-black">LIYA NDAMASE</h4>
+                  <p>Television</p>
+              </div>
+              <div class="col-lg-4">
+               <img class="w-100"  src="<?php echo  URL::to('/assets/img/lan/c2.png')?>" style="">
+                   <p class="mt-1 map">“Salute has inspired me to work smarter on
+my craft using Technology as a Dj.”</p>
+                  <h4 class="text-black">MUSA BALOYI</h4>
+                  <p>Sound</p>
+              </div>
+              <div class="col-lg-4">
+                   <img class="w-100"  src="<?php echo  URL::to('/assets/img/lan/c3.png')?>" style="">
+                   <p class="mt-1 map">“Salute has inspired me to work smarter on
+my craft using Technology as a Dj.”</p>
+                  <h4 class="text-black">MUSA BALOYI</h4>
+                  <p>Sound</p>
+              </div>
+            </div>
+           <!-- <div class="">
+                <p class="ital nem"> <img class="w-20" src="<?php echo  URL::to('/assets/img/comma.png')?>" style="margin-top:-35px;">I come to Nemisa tv for the curation and class quality. That's really worth the cost of membership to me.</p>
+                <p class="text-center mt-4">—Jason R, Nemisa Student</p>
+            </div>-->
+              <div class="text-center mt-5 mb-3">
+              </div>
+        </div>
     </section>
-       <section class="sec-21" style="background:#110F2C;">
-           <div class="conatiner-fluid text-center">
-               <h2 class="mb-3">HOURS OF Infotainment, Edutainment <br>and Entertainment</h2>
+        
+    <section class="sec-31" style="padding:40px 30px 40px 30px;">
+        <div class="conatiner-fluid text-center">
+               <h2 class="mb-3">Hours Of Infotainment, Edutainment <br>and Entertainment</h2>
                <div class="col-lg-7 vid">
-                   <video controls autoplay>
-                         <source src="<?php echo  URL::to('/assets/img/dance.mp4')?>" type="video/mp4">
-
-                   </video>
+                    <video id="player2"  controls autoplay poster=
+"<?php echo  URL::to('/assets/img/dan.png')?>">
+            <source src=
+"<?php echo  URL::to('/assets/img/dance.mp4')?>"
+                                                            type="video/mp4">
+            <source src=
+""
+                                                            type="video/ogg">
+        </video>
+                   
                     <!--<video controls crossorigin playsinline poster="<?php echo  URL::to('/assets/img/dan.png')?>" id="player">
   <source src="<?php echo  URL::to('/assets/img/dance.mp4')?>" type="video/mp4">
   
 </video>  -->
               </div>
                <h3 class="mt-3">FREE EDUTAINMENT for the DIGITAL WARRIOR</h3>
-               <P>advancing South Africans in enhamncing their digital literacy.</P>
-               <p>WATCH EVERYWHERE, STREAM LIVE, QUALITY VIDEOS</p>
-                <a class="btn btn-success  my-2 mr-2 my-sm-0 " style="font-size:20px;" href="{{ route('login') }}" >Get Started</a>
-           </div>
-           
-       </section>
-    <section class="sec-4 mt-5">
-        <div class="container-fluid">
-            <h2 class="text-center text-black mb-5">Members Endorsement</h2>
-          
-            <div class="">
-                <p class="ital nem"> <img class="w-20" src="<?php echo  URL::to('/assets/img/comma.png')?>" style="margin-top:-35px;">I come to Nemisa tv for the curation and class quality. That's really worth the cost of membership to me.</p>
-                <p class="text-center mt-4">—Jason R, Nemisa Student</p>
+               <P class="text-white">advancing South Africans in enhamncing their digital literacy.</P>
+               <p style="color:#F6D55C
+">WATCH EVERYWHERE, STREAM LIVE, QUALITY VIDEOS</p>
+            <div class="all-video col-lg-3">
+                 <a class="btn btn-success  my-2 mr-2 my-sm-0 w-100" style="font-size:20px;" href="{{ route('login') }}" >Get Started</a>
             </div>
-              <div class="text-center mt-5 mb-3">
-                <img  src="<?php echo  URL::to('/assets/img/cli.png')?>" style=""></div>
-        </div>
-    </section>
-    <section class="sec-3" style="padding:80px 30px 80px 30px;">
-        <div class="container-fluid">
-            <div class="row align-items-center justify-content-between">
+               
+           </div>
+        <div class="container-fluid mt-5">
+           <!-- <div class="row align-items-center justify-content-between">
                 <div class="col-lg-6">
                  <img class="img-lan w-100" src="<?php echo  URL::to('/assets/img/m1.png')?>" style="">
             </div>
-            <div class="col-lg-5">
+            <div class="col-lg-6 p-0">
                 <h2>Free edutainment for the digital warrior</h2>
                 <p class="text-white adv mt-4">Advancing South Africans for the future with content that is missioned to deliver tangible digital skills to bridge the digital divide.</p>
                 <p class="text-white adv mt-4">WATCH EVERYWHERE, STREAM LIVE, QUALITY VIDEOS</p>
                 <a class="btn btn-lg btn-success  my-2 mr-2 my-sm-0 btn-block" style="padding:12px;width:70%;" href="{{ route('login') }}" ><span>Get Started</span></a>
             </div>
             
-        </div></div>
+        </div>-->
+            <div class="row mt-5">
+                <div class="col-lg-4">
+                    <div class="bg-color">
+                        <div class="comp">
+                             <img class="" src="<?php echo  URL::to('/assets/img/comp.png')?>" style="">
+                        </div>
+                        <h3>WATCH EVERYWHERE</h3>
+                        <p>Watch videos, podcasts and live events
+on your phone, tablet or laptop. No matter which device you use, we are always a click away!</p>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                     <div class="bg-color1">
+                          <div class="clive">
+                             <img class=" " src="<?php echo  URL::to('/assets/img/clive.png')?>" style="">
+                        </div>
+                        <h3>STREAM LIVE</h3>
+                        <p>Watch videos, podcasts and live events
+on your phone, tablet or laptop. No matter which device you use, we are always a click away!</p>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="bg-color">
+                         <div class="set">
+                             <img class=" " src="<?php echo  URL::to('/assets/img/set.png')?>" style="">
+                        </div>
+                        <h3>QUALITY VIDEOS</h3>
+                        <p>Watch videos, podcasts and live events
+on your phone, tablet or laptop. No matter which device you use, we are always a click away!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
    <!--<div class="container">
@@ -1448,7 +1698,84 @@ Resist</h2>
        
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+<script>
+ document.addEventListener('DOMContentLoaded', () => { 
+  // This is the bare minimum JavaScript. You can opt to pass no arguments to setup.
+  const player = new Plyr('#player1');
+  
+  // Expose
+  window.player = player;
 
+  // Bind event listener
+  function on(selector, type, callback) {
+    document.querySelector(selector).addEventListener(type, callback, false);
+  }
+
+  // Play
+  on('.js-play', 'click', () => { 
+    player.play();
+  });
+
+  // Pause
+  on('.js-pause', 'click', () => { 
+    player.pause();
+  });
+
+  // Stop
+  on('.js-stop', 'click', () => { 
+    player.stop();
+  });
+
+  // Rewind
+  on('.js-rewind', 'click', () => { 
+    player.rewind();
+  });
+
+  // Forward
+  on('.js-forward', 'click', () => { 
+    player.forward();
+  });
+});
+</script>
+    <script>
+ document.addEventListener('DOMContentLoaded', () => { 
+  // This is the bare minimum JavaScript. You can opt to pass no arguments to setup.
+  const player = new Plyr('#player2');
+  
+  // Expose
+  window.player = player;
+
+  // Bind event listener
+  function on(selector, type, callback) {
+    document.querySelector(selector).addEventListener(type, callback, false);
+  }
+
+  // Play
+  on('.js-play', 'click', () => { 
+    player.play();
+  });
+
+  // Pause
+  on('.js-pause', 'click', () => { 
+    player.pause();
+  });
+
+  // Stop
+  on('.js-stop', 'click', () => { 
+    player.stop();
+  });
+
+  // Rewind
+  on('.js-rewind', 'click', () => { 
+    player.rewind();
+  });
+
+  // Forward
+  on('.js-forward', 'click', () => { 
+    player.forward();
+  });
+});
+</script>
 <script>
     document.addEventListener('DOMContentLoaded', () => { 
   // This is the bare minimum JavaScript. You can opt to pass no arguments to setup.
@@ -1490,6 +1817,6 @@ Resist</h2>
     </script>
 
  @php
-    include(public_path('themes/theme2/views/footer.blade.php'));
+    include(public_path('themes/theme6-nemisatv/views/footer.blade.php'));
 @endphp
 

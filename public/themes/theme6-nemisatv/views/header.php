@@ -130,10 +130,10 @@ $site_page_url = $http_site_url[1];
     <!-- Typography CSS -->
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/variable.css';?>" />
     <!-- Style -->
-      <link href="<?php echo URL::to('public/themes/theme6-nemisatv/assets/css/style.css') ?>" rel="stylesheet">
-       <link href="<?php echo URL::to('public/themes/theme6-nemisatv/assets/css/typography.css') ?>" rel="stylesheet">
-       <link href="<?php echo URL::to('public/themes/theme6-nemisatv/assets/css/responsive.css') ?>" rel="stylesheet">
-              <link href="<?php echo URL::to('public/themes/theme6-nemisatv/assets/fonts/font.css') ?>" rel="stylesheet">
+      <link href="<?php echo URL::to('public/themes/theme2/assets/css/style.css') ?>" rel="stylesheet">
+       <link href="<?php echo URL::to('public/themes/theme2/assets/css/typography.css') ?>" rel="stylesheet">
+       <link href="<?php echo URL::to('public/themes/theme2/assets/css/responsive.css') ?>" rel="stylesheet">
+              <link href="<?php echo URL::to('public/themes/theme2/assets/fonts/font.css') ?>" rel="stylesheet">
 
      
 
@@ -792,8 +792,11 @@ main .sidebar {
                               <ul id="top-menu" class="nav navbar-nav <?php if ( Session::get('locale') == 'arabic') { echo "navbar-right"; } else { echo "navbar-left";}?>">
                                           <?php
                                         $stripe_plan = SubscriptionPlan();
-                                        $menus = App\Menu::all();
-                                        $languages = App\Language::all();
+                                        if(!Auth::guest() && Auth::User()->role != 'admin' || Auth::guest()){
+                                          $menus = App\Menu::orderBy('order', 'asc')->where('in_home','!=',0)->orWhere('in_home', '=', null)->get();
+                                       }else{
+                                          $menus = App\Menu::orderBy('order', 'asc')->get();
+                                       }                                        $languages = App\Language::all();
                                         foreach ($menus as $menu) { 
                                         if ( $menu->in_menu == "video") { 
                                           $cat = App\VideoCategory::orderBy("order")->where('in_home',1)->get();

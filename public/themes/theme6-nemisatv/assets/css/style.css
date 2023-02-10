@@ -2004,9 +2004,9 @@ body{
   }
   footer{
       color: #fff;
-      -webkit-box-shadow: -1px 6px 13px 0px rgba(0,0,0,0.44);
+      /*-webkit-box-shadow: -1px 6px 13px 0px rgba(0,0,0,0.44);
       -moz-box-shadow: -1px 6px 13px 0px rgba(0,0,0,0.44);
-      box-shadow: -1px 6px 13px 0px rgba(0,0,0,0.44);
+      box-shadow: -1px 6px 13px 0px rgba(0,0,0,0.44);*/
       padding: 20px;
      
   }
@@ -2022,6 +2022,9 @@ body{
     text-decoration: none;
     background: #0584CB;
       border-radius: 30px;
+}
+.map1{
+    margin: 5px 10px auto;
 }
 .form-control {
     display: block;

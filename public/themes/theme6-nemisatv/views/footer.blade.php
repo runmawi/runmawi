@@ -7,9 +7,12 @@
 ?>
 
 <footer class="py-4 mt-auto">
-  <div class="container-fluid px-5">
-      <div class="row align-items-center justify-content-between d-flex">
-          <div class="col-sm-7 small m-0 text-white exp p-0">
+  <div class="container-fluid px-5 mt-5">
+      <p class="text-white text-center mb-4">Chat-box will be sent later.</p>
+        <h3 class="font-weight-bold mb-2 text-center mb-4">Download App</h3>
+      <div class="row  justify-content-center ">
+        
+          <!--<div class="col-sm-7 small m-0 text-white exp p-0">
               <div class="mt-2 ">
                   <p class="nem mb-4 col-md-9" id="ikm" style="">Hours of Infotaiment 
 edutainment and
@@ -23,13 +26,13 @@ entertainment.</p>
                   </ul>
                   <div class="small m-0 text-white"></div>
                  </div>
-          </div>
+          </div>-->
 
           <?php $app_settings = App\AppSetting::where('id','=',1)->first(); ?>
 
           <div class="col-sm-3. small m-0 text-white text-right">
-              <h3 class="font-weight-bold mb-2 text-left">Download App</h3>
-              <p class="text-left">Available on Play Store</p>
+             <div class="map1">
+                 <p class="text-left">Available on Play Store</p>
               <?php if(!empty($app_settings->android_url)){ ?>
               <img class="" height="80" width="140" src="<?php echo  URL::to('/assets/img/apps1.png')?>" style="margin-top: -20px;" />
               <?php } ?>
@@ -39,7 +42,13 @@ entertainment.</p>
               <?php if(!empty($app_settings->android_tv)){ ?>
               <img class="" height="100" width="150" src="<?php echo  URL::to('/assets/img/and.png')?>" style="margin-top: -20px;" />
               <?php } ?>
-                 <div class="d-flex p-0 text-white icon mt-4 align-items-baseline">
+              </div>
+              
+            <!--  <p class="p-0 mr-3 mt-3">Questions? Call 000-800-123-123</p>-->
+          </div>
+          <div class="col-sm-3. small m-0 text-white text-right">
+               <div class="map1">
+                    <div class="d-flex p-0 text-white icon align-items-baseline">
                       <p>Follow US :</p>
                       <?php if(!empty($settings->facebook_page_id)){?>
                       <a href="https://www.facebook.com/<?php echo FacebookId();?>" target="_blank" class="ml-1">
@@ -90,7 +99,9 @@ entertainment.</p>
                       <?php } ?>
                         
                   </div>
-              <p class="p-0 mr-3 mt-3">Questions? Call 000-800-123-123</p>
+             
+              </div>
+                 
           </div>
          
       </div>

@@ -17,21 +17,21 @@ $uppercase =  ucfirst($request_url);
     <meta name="description" content= "<?php echo $settings->website_description ; ?>" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
- 
+ <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
     <!-- Favicon -->
     <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
      <!-- Bootstrap CSS -->
       <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
-                         <link href="<?php echo URL::to('public/themes/theme6-nemisatv/assets/fonts/font.css') ?>" rel="stylesheet">
+                         <link href="<?php echo URL::to('public/themes/theme2/assets/fonts/font.css') ?>" rel="stylesheet">
 
       <!-- Typography CSS -->
-         <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme6-nemisatv/assets/css/style.css') ?>" />
+         <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme2/assets/css/style.css') ?>" />
       <!-- Style -->
       <link rel="stylesheet" href="<?= typography_link(); ?>" />
       <!-- Responsive -->
-      <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme6-nemisatv/assets/css/responsive.css') ?>" />
+      <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme2/assets/css/responsive.css') ?>" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
