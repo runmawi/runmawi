@@ -666,6 +666,7 @@
    <?php }elseif(isset($videos_category_prev)){ ?>
    <div class="prev_cat_video" style="display: none;"><?= $videos_category_prev->slug ?></div>
    <?php } ?>
+
    <div class="clear"></div>
    <!--
       <div id="tags">Tags: 
@@ -674,6 +675,16 @@
       <php endforeach; ?>
       </div>
       -->
+
+      <?php if( App\CommentSection::first() != null && App\CommentSection::pluck('videos')->first() == 1 ): ?>
+            <div class="row m-0 p-0">
+                <div class=" container-fluid video-list you-may-like overflow-hidden">
+                    <h4 class="" style="color:#fffff;"><?php echo __('Comments');?></h4>
+                    <?php include('comments/index.blade.php');?>
+                </div>
+            </div>
+          <?php endif; ?>
+          
    <div class="container-fluid video-list you-may-like overflow-hidden ">
       <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Recomended Videos');?></h4>
       <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>   
