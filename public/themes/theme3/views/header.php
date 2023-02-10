@@ -598,7 +598,7 @@ input:checked + .sliderk:before {
                                           <?php
                                         $stripe_plan = SubscriptionPlan();
                                         if(!Auth::guest() && Auth::User()->role != 'admin' || Auth::guest()){
-                                          $menus = App\Menu::orderBy('order', 'asc')->where('in_home',1)->get();
+                                          $menus = App\Menu::orderBy('order', 'asc')->where('in_home','!=',0)->orWhere('in_home', '=', null)->get();
                                        }else{
                                           $menus = App\Menu::orderBy('order', 'asc')->get();
                                        }                                        $languages = App\Language::all();
@@ -1376,7 +1376,7 @@ $("#toggle").click(function(){
                                           <?php
                                         $stripe_plan = SubscriptionPlan();
                                         if(!Auth::guest() && Auth::User()->role != 'admin' || Auth::guest()){
-                                          $menus = App\Menu::orderBy('order', 'asc')->where('in_home',1)->get();
+                                          $menus = App\Menu::orderBy('order', 'asc')->where('in_home','!=',0)->orWhere('in_home', '=', null)->get();
                                        }else{
                                           $menus = App\Menu::orderBy('order', 'asc')->get();
                                        }
