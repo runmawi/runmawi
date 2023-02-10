@@ -857,7 +857,6 @@ $('#submit-new-cat').click(function(){
 
 $('form[id="new-cat-form"]').validate({
 	rules: {
-		trailer: 'required',
 		image: {
 				required:true,
 				season_dimention:[1280,720]
