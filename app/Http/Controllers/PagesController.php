@@ -13,11 +13,22 @@ use App\HomeSetting;
 use Auth;
 use View;
 use Theme;
+use App\AdminLandingPage;
 
 class PagesController extends Controller{
  
   public function index($slug){
 
+    $settings = Setting::first();
+
+    if($settings->enable_landing_page == 1 && Auth::guest()){
+
+        $landing_page_slug = AdminLandingPage::where('status',1)->pluck('slug')->first() ? AdminLandingPage::where('status',1)->pluck('slug')->first() : "landing-page" ;
+
+        return redirect()->route('landing_page', $landing_page_slug );
+    }
+    
+    
     $Theme = HomeSetting::pluck('theme_choosen')->first();
     Theme::uses(  $Theme );
  
