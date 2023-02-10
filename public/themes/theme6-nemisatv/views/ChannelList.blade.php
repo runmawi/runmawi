@@ -1,5 +1,9 @@
 @php
+<<<<<<< HEAD
     include(public_path('themes/theme2/views/header.php'));
+=======
+    include(public_path('themes/theme6-nemisatv/views/header.php'));
+>>>>>>> 88cd696cb403021b77c2fad68c01a1e1ccd1026b
 @endphp
     
 <section id="iq-favorites">
@@ -45,5 +49,9 @@
 
 
 @php
+<<<<<<< HEAD
 include(public_path('themes/theme2/views/footer.blade.php'));
+=======
+include(public_path('themes/theme6-nemisatv/views/footer.blade.php'));
+>>>>>>> 88cd696cb403021b77c2fad68c01a1e1ccd1026b
 @endphp

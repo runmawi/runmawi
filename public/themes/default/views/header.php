@@ -482,7 +482,12 @@
                               <?php
                                  $stripe_plan = SubscriptionPlan();
                                  //  $menus = App\Menu::all();
-                                 $menus = App\Menu::orderBy('order', 'asc')->get();
+                                 if(!Auth::guest() && Auth::User()->role != 'admin' || Auth::guest()){
+                                    $menus = App\Menu::orderBy('order', 'asc')->where('in_home','!=',0)->orWhere('in_home', '=', null)->get();
+                                 }else{
+                                    $menus = App\Menu::orderBy('order', 'asc')->get();
+                                 }
+                                 // dd($menus);
                                  $languages = App\Language::all();
                                  $LiveCategory = App\LiveCategory::all();
                                  foreach ($menus as $menu) { 

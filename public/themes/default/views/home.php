@@ -112,6 +112,20 @@
    </section>
    <?php } } ?>
    <?php 
+      if($value->video_name == 'ChannelPartner'){
+      
+      if($home_settings->channel_partner == 1){ ?>
+   <section id="iq-favorites">
+      <div class="container-fluid overflow-hidden">
+         <div class="row">
+            <div class="col-sm-12 ">
+               <?php include('partials/home/ChannelPartners.php'); ?>
+            </div>
+         </div>
+      </div>
+   </section>
+   <?php } } ?>
+   <?php 
       if($value->video_name == 'live_videos'){
       
       if($home_settings->live_videos == 1){ ?>

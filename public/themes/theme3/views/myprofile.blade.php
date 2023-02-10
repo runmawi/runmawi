@@ -548,7 +548,7 @@ $settings = App\Setting::first();
                                        @if(!empty($UserTVLoginCode->tv_code))
                                              <a type="button" href="{{ URL::to('user/tv-code/remove/') }}/{{$UserTVLoginCode->id}}" style="background-color:#df1a10!important;" class="btn round tv-code-remove text-red">Remove</a>
                                        @else
-                                       <a type="button"  class="btn round tv-code text-white">Add</a>
+                                       <a type="button" id='tvCode' style='z-index:999; position: absolute;' class="btn round tv-code text-white">Add</a>
                                        @endif
                                           </div>
                                        </div>

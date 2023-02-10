@@ -598,7 +598,9 @@ Route::get('/episode/filedelete/{id}', 'AdminSeriesController@filedelete');
     /* Thumbnail Setting */
     Route::get('/ThumbnailSetting', 'AdminSettingsController@ThumbnailSetting')->name('ThumbnailSetting'); 
     Route::post('/ThumbnailSetting_Store', 'AdminSettingsController@ThumbnailSetting_Store'); 
-
+    
+    /* Ck-editor  Image Upload Setting */
+    Route::post('ckeditor/upload', 'CkeditorController@upload')->name('ckeditor.upload');
 
     Route::post('/settings/store_inapp', 'AdminSettingsController@Store_InApp'); 
 
@@ -1321,8 +1323,8 @@ Route::post('/audios/audioupdate', array('before' => 'demo', 'uses' => 'CPPAdmin
     Route::post('payouts_exportCsv', 'ChannelAnalyticsController@PayoutsExportCsv');
 
 
-    Route::get('myprofile', 'ModeratorsUserController@ChannelMyProfile');
-    Route::post('update-myprofile', 'ModeratorsUserController@ChannelUpdateMyProfile');
+    Route::get('myprofile', 'ChannelLoginController@ChannelMyProfile');
+    Route::post('update-myprofile', 'ChannelLoginController@ChannelUpdateMyProfile');
 
     Route::get('/view_by_region', 'ChannelAnalyticsController@ChannelViewsRegion');
     Route::get('/regionvideos', 'ChannelAnalyticsController@ChannelRegionVideos');
@@ -1963,6 +1965,11 @@ Route::get('categoryfilter', 'ChannelController@categoryfilter')->name('category
 
     // Landing page 
 Route::get('pages/{landing_page_slug}', 'LandingpageController@landing_page')->name('landing_page');
+
+
+  // Channel List
+  Route::get('channel/{slug}', 'ChannelHomeController@ChannelHome')->name('ChannelHome');
+  Route::get('Channel-list', 'ChannelHomeController@ChannelList')->name('ChannelList');
 
     // Razorpay 
 Route::group(['middleware' => ['RazorpayMiddleware']], function() {

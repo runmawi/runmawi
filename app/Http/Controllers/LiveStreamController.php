@@ -32,6 +32,7 @@ use Intervention\Image\ImageManagerStatic as Image;
 use App\Channel;
 use App\ModeratorsUser;
 use App\M3UFileParser;
+use App\AdminLandingPage;
 
 class LiveStreamController extends Controller
 {
@@ -52,6 +53,15 @@ class LiveStreamController extends Controller
     public function Index()
     {
         
+      $settings = Setting::first();
+
+      if($settings->enable_landing_page == 1 && Auth::guest()){
+
+          $landing_page_slug = AdminLandingPage::where('status',1)->pluck('slug')->first() ? AdminLandingPage::where('status',1)->pluck('slug')->first() : "landing-page" ;
+
+          return redirect()->route('landing_page', $landing_page_slug );
+      }
+      
         $Theme = HomeSetting::pluck('theme_choosen')->first();
         Theme::uses( $Theme );
 

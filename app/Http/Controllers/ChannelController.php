@@ -61,6 +61,7 @@ use App\VideoSchedules as VideoSchedules;
 use App\Channel;
 use App\ModeratorsUser;
 use App\StorageSetting;
+use App\AdminLandingPage;
 
 
 class ChannelController extends Controller
@@ -3630,6 +3631,15 @@ class ChannelController extends Controller
 
         try
         {
+            $settings = Setting::first();
+
+            if($settings->enable_landing_page == 1 && Auth::guest()){
+    
+                $landing_page_slug = AdminLandingPage::where('status',1)->pluck('slug')->first() ? AdminLandingPage::where('status',1)->pluck('slug')->first() : "landing-page" ;
+    
+                return redirect()->route('landing_page', $landing_page_slug );
+            }
+            
             $data = array(
                 "category_list" => VideoCategory::all() ,
             );
@@ -3858,7 +3868,7 @@ class ChannelController extends Controller
             $schedule_id = $data["schedule_id"];
             $choosedmonth = date('m',strtotime($month));
             $choosed_date = $year.'/'.$choosedmonth.'/'.$date;
-            $shedule_date = $year.'/'.$choosedmonth.'/'.$data["date"];
+            $shedule_date = $year.'/'.$choosedmonth.'/'.str_pad($data["date"], 2, "0", STR_PAD_LEFT);
 
             if(!empty($settings->default_time_zone)){
             date_default_timezone_set($settings->default_time_zone);
