@@ -61,7 +61,6 @@
        
         <?php  include(public_path('themes/default/views/comments/comment_edit_modal.blade.php')); ?>
         <?php  include(public_path('themes/default/views/comments/comment_edit_reply_modal.blade.php')); ?>
-
         <?php  include(public_path('themes/default/views/comments/comment_reply_modal.blade.php')); ?>
 
         <br />

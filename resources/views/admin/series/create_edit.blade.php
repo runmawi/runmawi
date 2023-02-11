@@ -124,7 +124,7 @@ $settings  = App\Setting::first();?>
 						<div class="panel-body col-sm-8 p-0" style="display: block;"> 
 							<p class="p1">Select the series image ( 9:16 Ratio or 1080X1920px ):</p> 
 
-							<input type="file" multiple="true" class="form-group image" name="image" id="image" />
+							<input type="file" multiple="true" class="form-group image series_image" name="image" id="image" />
 
 							@if(!empty($series->image))
 								<img src="{{ URL::to('/') . '/public/uploads/images/' . $series->image }}" class="series-img" width="200"/>
@@ -726,7 +726,7 @@ $('#submit-new-cat').click(function(){
 
 
 			// Image upload dimention validation
-		$.validator.addMethod('dimention', function(value, element, param) {
+		$.validator.addMethod('Series_Image_dimention', function(value, element, param) {
             if(element.files.length == 0){
                 return true; 
             }
@@ -763,11 +763,11 @@ $('#submit-new-cat').click(function(){
         },'Please upload an image with 1280 x 720 pixels dimension or 16:9 Ratio' );
 
 
-		$('.image').change(function() {
+		$('.series_image').change(function() {
 
-			$('.image').removeData('imageWidth');
-			$('.image').removeData('imageHeight');
-			$('.image').removeData('imageratio');
+			$('.series_image').removeData('imageWidth');
+			$('.series_image').removeData('imageHeight');
+			$('.series_image').removeData('imageratio');
 
 			var file = this.files[0];
 			var tmpImg = new Image();
@@ -777,9 +777,9 @@ $('#submit-new-cat').click(function(){
 				width = tmpImg.naturalWidth,
 				height = tmpImg.naturalHeight;
 				ratio =  Number(width/height).toFixed(2) ;
-				$('.image').data('imageWidth', width);
-				$('.image').data('imageHeight', height);
-				$('.image').data('imageratio', ratio);
+				$('.series_image').data('imageWidth', width);
+				$('.series_image').data('imageHeight', height);
+				$('.series_image').data('imageratio', ratio);
 
 			}
 		});
@@ -831,21 +831,19 @@ $('#submit-new-cat').click(function(){
 			rules: {
 				title: 'required',
 
-				image: {
-					required: '#check_image:blank',
-					dimention:[1080,1920]
-				},
-
 				'language[]': {
 							required: true
+				},
+
+				image: {
+					required: '#check_image:blank',
+					Series_Image_dimention:[1080,1920]
 				},
 				
 				player_image: {
 					required: '#player_check_image:blank',
 					player_dimention:[1280,720]
             	},
-
-				
 			},
 			
 			messages: {
@@ -859,7 +857,6 @@ $('#submit-new-cat').click(function(){
 
 $('form[id="new-cat-form"]').validate({
 	rules: {
-		trailer: 'required',
 		image: {
 				required:true,
 				season_dimention:[1280,720]
