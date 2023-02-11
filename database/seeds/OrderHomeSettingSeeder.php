@@ -153,7 +153,7 @@ class OrderHomeSettingSeeder extends Seeder
                 [   
                     'user_id' => 1, 
                     'order_id' => 15,
-                    'video_name' => 'ChannelPartner' ,
+                    'video_name' => 'ContentPartner' ,
                     'header_name' => 'Content Partner', 
                     'url' => 'Content-list',
                     'created_at' => Carbon::now(),
