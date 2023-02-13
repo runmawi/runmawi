@@ -2,21 +2,44 @@
 
 <html>
     <head>
+
       <link rel="stylesheet" href="https://cdn.plyr.io/3.7.2/plyr.css" />
+       <script src="https://code.jquery.com/jquery-3.6.3.js"></script>
       <script type="text/javascript" src="https://cdn.plyr.io/3.7.2/plyr.js"></script>
       <script type="text/javascript" src="https://cdn.plyr.io/3.7.2/plyr.polyfilled.js"></script>
       <script type="text/javascript" src="https://imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
       <script type="text/javascript" src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
     </head>
+
+
     
     <body>
         <video id="live_player" controls crossorigin playsinline title autoplay >
           <source type="application/x-mpegURL" src="http://localhost/flicknexs/public/uploads/LiveStream/1676228945vi2-livestream-video.m3u8" >
         </video>
-        <a href="JavaScript: location.reload(true);">Refresh page</a>
-        
+
+        <input type="button" value="Refresh Button" onClick="window.location.reload()"> 
+
+        <button id="trigger" onclick="msg()">Auto Click</button>
+
+
         <script>
 
+    var  counnt = localStorage.getItem('count');
+    var  storage = localStorage.setItem('count',0);
+    count = parseInt(storage)
+
+    if(counnt == 0 ){
+      var  storage = localStorage.setItem('count',parseInt(counnt)+1);
+      location.reload(true);
+
+      document.getElementById("trigger").click();
+
+      function msg(){
+        window.location.reload();
+      }
+
+    }
 
         document.addEventListener("DOMContentLoaded", () => {
 

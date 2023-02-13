@@ -1,5 +1,7 @@
 <?php 
 
+if(  plans_ads_enable() == 1 ){
+  
     $live_ads = App\AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
         // ->whereDate('start', '=', Carbon\Carbon::now()->format('Y-m-d'))
         // ->whereTime('start', '<=', $current_time)
@@ -23,4 +25,10 @@
         }
 
         $live_ads = $live_ads->pluck('ads_path')->first();
+  }
+  else
+  {
+        $live_ads = null ;
+  }
+
 ?>

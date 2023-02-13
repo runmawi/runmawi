@@ -1046,6 +1046,5 @@ document.getElementById("demo").innerHTML = "EXPIRED";
 <?php  
     include('m3u_file_live.blade.php');  
     include('livevideo_ads.blade.php');  
-    include('livevideo_player_script.blade.php');  
     include ('footer.blade.php');
 ?>
