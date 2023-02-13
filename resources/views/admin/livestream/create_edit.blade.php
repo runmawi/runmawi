@@ -194,7 +194,6 @@ border-radius: 0px 4px 4px 0px;
 
                     <div class="row mt-3">
                         <div class="col-sm-6">
-
                             <label class="m-0">Live Stream Source</label>
                             <p class="p1">Select the Live Stream Source :</p>
                             <div class="panel-body">
@@ -426,37 +425,24 @@ border-radius: 0px 4px 4px 0px;
                         </div>
                     </div>
 
-                                            {{-- Ads --}}
+                                            {{-- Ads Position --}}
                     <div class="row mt-3">
-                        <div class="col-sm-4" id="pre_ads_div" >
-                            <label class="m-0">Choose Pre-Ad </label>
-                            <select class="form-control" name="pre_ads" id="pre_ads">
-                               <option value=" ">Select Pre-Ad </option>
-                                @foreach($pre_ads as $key => $ads )
-                                    <option value="{{ $ads->id }}" > {{ ucwords($ads->ads_name) }}</option>
-                                @endforeach
+                        <div class="col-sm-6"  >
+                            <label class="m-0">Choose Ads Position</label>
+                            <select class="form-control" name="ads_position" id="ads_position" >
+                               <option value=" ">Select the Ads Position </option>
+                               <option value="pre">  Pre-Ads Position</option>
+                               <option value="mid">  Mid-Ads Position</option>
+                               <option value="post"> Post-Ads Position</option>
                             </select>
                         </div>
- 
-                        <div class="col-sm-4" id="mid_ads_div">
-                            <label class="m-0">Choose Mid-Ad </label>
-                            <select class="form-control" name="mid_ads" id="mid_ads">
-                               <option value=" ">Select Mid-Ad </option>
-                                @foreach($mid_ads as $key => $ads )
-                                    <option value="{{ $ads->id }}" > {{ ucwords($ads->ads_name) }}</option>
-                                @endforeach
+
+                        <div class="col-sm-6"  >
+                            <label class="">Choose Advertisement </label>
+                            <select class="form-control" name="live_ads" id="live_ads" >
+                               <option value=" ">Select the Advertisement </option>
                             </select>
-                        </div>
- 
-                        <div class="col-sm-4" id="post_ads_div">
-                            <label class="m-0">Choose Post-Ad </label>
-                            <select class="form-control" name="post_ads" id="post_ads">
-                               <option value=" ">Select Post-Ad </option>
-                                @foreach($post_ads as $key => $ads )
-                                    <option value="{{ $ads->id }}" > {{ ucwords($ads->ads_name) }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                         </div>
                     </div>
 
                     <div class="row mt-3">
@@ -1332,4 +1318,7 @@ var tagInput1 = new TagsInput({
     tagInput1.addData([])
 
     </script>
+
+@include('admin.livestream.Ads_live'); 
+
 @stop @stop

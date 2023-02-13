@@ -525,9 +525,8 @@ class AdminLiveStreamController extends Controller
         $movie->player_image = $player_PC_image;
         $movie->Tv_live_image = $Tv_live_image;
         $movie->user_id =Auth::User()->id;
-        $movie->pre_ads = $request->pre_ads;
-        $movie->mid_ads = $request->mid_ads;
-        $movie->post_ads = $request->post_ads;
+        $movie->ads_position = $request->ads_position;
+        $movie->live_ads = $request->live_ads;
         $movie->save();
 
         $shortcodes = $request['short_code'];
@@ -1022,9 +1021,8 @@ class AdminLiveStreamController extends Controller
         $video->access = $request->access;
         $video->ios_ppv_price = $request->ios_ppv_price;
         $video->m3u_url = $request->m3u_url;
-        $video->pre_ads = $request->pre_ads;
-        $video->mid_ads = $request->mid_ads;
-        $video->post_ads = $request->post_ads;
+        $video->ads_position = $request->ads_position;
+        $video->live_ads     = $request->live_ads;
         $video->save();
 
         if(!empty($data['video_category_id'])){
@@ -2217,5 +2215,27 @@ class AdminLiveStreamController extends Controller
         catch (\Throwable $th) {
             return response()->json(["message" => "false"]);
         }
+    }
+
+    public function live_ads_position(Request $request)
+    {
+        try {
+
+            $Advertisement = Advertisement::whereNotNull('ads_path')->where('ads_position',$request->ads_position)->where('status',1)->get();
+
+            $response = array(
+                'status'  => true,
+                'message' => 'Successfully Retrieve Pre Advertisement Livestream',
+                'live_ads'    => $Advertisement ,
+            );
+
+        } catch (\Throwable $th) {
+
+            $response = array(
+                'status' => false,
+                'message' =>  $th->getMessage()
+            );
+        }
+        return response()->json($response, 200);
     }
 }
