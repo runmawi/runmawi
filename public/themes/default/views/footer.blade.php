@@ -289,7 +289,17 @@ function myFunction() {
 </script>
 
 <script defer src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
-<?php include('PlayerfooterScript.blade.php');?>
+
+<?php
+  if(Route::currentRouteName() == "LiveStream_play"){
+
+    include('livevideo_player_script.blade.php');
+  }
+  else{
+
+    include('footerPlayerScript.blade.php');
+  }
+?>
 
 <script>
   if ('loading' in HTMLImageElement.prototype) {

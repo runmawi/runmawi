@@ -1,9 +1,7 @@
 <script>
 	var type = $('#video_type').val();
-	// var type = $('#hls_m3u8').val();
 	var request_url = $('#request_url').val();
 	var live = $('live').val();
-	// var live = $('live').val();
 	var video_video = $('#video_video').val();
 	var user_logged_out = $('#user_logged_out').val();
 	var hls = $('#hls').val();
@@ -12,6 +10,7 @@
 	var episode_type = $('#episode_type').val();
 
     // Normal MP4 URL Script
+
 
 	if (type != "" && type != "m3u8_url" && video_video == 'video' && type != 'aws_m3u8') {
 		// alert('video_video')
