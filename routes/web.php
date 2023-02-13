@@ -586,6 +586,9 @@ Route::get('/episode/filedelete/{id}', 'AdminSeriesController@filedelete');
     Route::post('/pre-videos-ads', 'AdminVideosController@pre_videos_ads')->name('pre_videos_ads'); 
     Route::post('/mid-videos-ads', 'AdminVideosController@mid_videos_ads')->name('mid_videos_ads'); 
     Route::post('/post-videos-ads', 'AdminVideosController@post_videos_ads')->name('post_videos_ads'); 
+    
+    // Ads position - Live stream
+    Route::post('/live-ads-position', 'AdminLiveStreamController@live_ads_position')->name('live_ads_position'); 
 
     // slider for live stream in index
     Route::post('/livevideo_slider_update', 'AdminLiveStreamController@livevideo_slider_update');

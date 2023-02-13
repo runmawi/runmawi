@@ -13,8 +13,7 @@
 
             ads:{ 
                   enabled: true, 
-                  publisherId: '', 
-                  tagUrl: null 
+                  tagUrl: live_ads 
             }
         });
     });
@@ -33,12 +32,18 @@
 
 
     document.addEventListener("DOMContentLoaded", () => {
-        const video = document.querySelector("live_player");
+        const video = document.querySelector("#live_player");
         const source = video.getElementsByTagName("source")[0].src;
   
         const defaultOptions = {};
 
         if (!Hls.isSupported()) {
+
+            defaultOptions.ads = {
+                enabled: true, 
+                tagUrl: live_ads
+            }
+
             video.src = source;
             var player = new Plyr(video, defaultOptions);
         } 
@@ -65,7 +70,7 @@
 
             defaultOptions.ads = {
                 enabled: true, 
-                tagUrl: null
+                tagUrl: live_ads
             }
 
             hls.on(Hls.Events.LEVEL_SWITCHED, function (event, data) {

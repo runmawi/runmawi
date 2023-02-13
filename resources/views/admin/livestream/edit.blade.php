@@ -1,4 +1,6 @@
 @extends('admin.master')
+
+
 <style>
     .p1{
         font-size: 15px !important;
@@ -52,6 +54,8 @@ border-radius: 0px 4px 4px 0px;
 <style>
     ''
 </style>
+
+
 @stop
  
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -500,38 +504,30 @@ border-radius: 0px 4px 4px 0px;
                 </div>
             </div>
 
-                                                            {{-- Ads --}}
-            <div class="row mt-3">
-                <div class="col-sm-4" id="pre_ads_div" >
-                    <label class="m-0">Choose Pre-Ad </label>
-                    <select class="form-control" name="pre_ads" id="pre_ads">
-                       <option value=" ">Select Pre-Ad </option>
-                        @foreach($pre_ads as $key => $ads )
-                            <option  @if( $ads->id == $video->pre_ads ) {{ 'selected' }} @endif >{{ ucwords($ads->ads_name) }} </option>
-                        @endforeach
-                    </select>
+                        {{-- Ads --}}
+                <div class="row mt-3">
+                    <div class="col-sm-6"  >
+                        <label class="m-0">Choose Ads Position</label>
+                        <select class="form-control" name="ads_position" id="ads_position" >
+
+                           <option value=" ">Select the Ads Position </option>
+                           <option value="pre"  @if(($video->ads_position != null ) && $video->ads_position == 'pre'){{ 'selected' }}@endif >  Pre-Ads Position</option>
+                           <option value="mid"  @if(($video->ads_position != null ) && $video->ads_position == 'mid'){{ 'selected' }}@endif >  Mid-Ads Position</option>
+                           <option value="post" @if(($video->ads_position != null ) && $video->ads_position == 'post'){{ 'selected' }}@endif > Post-Ads Position</option>
+                        </select>
+                    </div>
+
+                    <div class="col-sm-6"  >
+                        <label class="">Choose Advertisement </label>
+                        <select class="form-control" name="live_ads" id="live_ads" >
+                           <option value=" ">Select the Advertisement </option>
+                            @if( $video->live_ads != null)
+                                @php $ads_name = App\Advertisement::where('id',3)->pluck('ads_name')->first() ;@endphp
+                                <option value="{{ $video->live_ads }}" {{ 'selected' }}> {{ $ads_name }} </option>
+                            @endif
+                        </select>
+                    </div>
                 </div>
- 
-                <div class="col-sm-4" id="mid_ads_div">
-                    <label class="m-0">Choose Mid-Ad </label>
-                    <select class="form-control" name="mid_ads" id="mid_ads">
-                       <option value=" ">Select Mid-Ad </option>
-                        @foreach($mid_ads as $key => $ads )
-                            <option  @if( $ads->id == $video->mid_ads ) {{ 'selected' }} @endif >{{ ucwords($ads->ads_name) }} </option>
-                        @endforeach
-                    </select>
-                </div>
- 
-                <div class="col-sm-4" id="post_ads_div">
-                    <label class="m-0">Choose Post-Ad </label>
-                    <select class="form-control" name="post_ads" id="post_ads">
-                       <option value=" ">Select Post-Ad </option>
-                        @foreach($post_ads as $key => $ads )
-                            <option  @if( $ads->id == $video->post_ads ) {{ 'selected' }} @endif >{{ ucwords($ads->ads_name) }} </option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
             
             <div class="row mt-3">
                 <div class="col-sm-4">
@@ -1504,6 +1500,9 @@ tagInput1.addData([])
                 });
 
         </script>
+
+        @include('admin.livestream.Ads_live'); 
+
 	@stop
 @stop
 
@@ -1543,3 +1542,4 @@ tagInput1.addData([])
         background: black;
     }
 </style>
+
