@@ -1,17 +1,4 @@
-<input type="button" id="Reload_page" value="Reload" onClick="window.location.reload()"> 
-
 <script>
-
-    // $(function() {
-    //     var  counnt = localStorage.getItem('count');
-    //     var  storage = localStorage.setItem('count',0);
-    //     count = parseInt(storage)
-
-    //     if(counnt == 0 ){
-    //     var  storage = localStorage.setItem('count',parseInt(counnt)+1);
-    //     location.reload(true);
-    //     }
-    // });
 
     let live_ads = <?php echo json_encode( $live_ads ); ?> ;
 
