@@ -86,7 +86,7 @@ video {
 }
 
 body{
-    background: linear-gradient(180deg, #040404 0%, #3D3D47 100%);
+    background: #040404 ;/*linear-gradient(180deg, #040404 0%, #3D3D47 100%);*/
 }
 .slick-arrow
 header#main-header { position: relative; left: 0px; right: 0px; text-align: center; z-index: 99; /*background: rgba(20, 20, 20, 0.5) !important; */}

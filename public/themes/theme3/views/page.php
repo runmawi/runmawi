@@ -34,8 +34,9 @@
         <div class="row page-height page-wrapper">
             <div class="col-md-10 page offset-1">
                 <h2 class="vid-title text-center text-black"><?php echo __($pager->title); ?></h2>
-                <div class="border-line"></div>
-
+                <div class="border-line mt-3 mb-3 text-center">
+                    <img src="<?php echo URL::to('/').'/public/uploads/settings/'. @$pager->banner; ?>" class="c-logo" alt="">
+                </div>
                 <div class="page-body text-black mt-3">
                     <?php echo html_entity_decode($pager->body); ?>
                 </div>
