@@ -112,7 +112,7 @@ class ChannelLoginController extends Controller
             }
             else
             {
-                $image = null;
+                $image = "default_image.jpg";
             }
 
             if ($intro_video != '')
