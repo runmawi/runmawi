@@ -1,5 +1,8 @@
 <?php 
    include('header.php');
+   include('episode_ads.blade.php');
+
+   $autoplay = $episode_ads == null ? "autoplay" : "" ;    
    $series= App\series::first();
    $series= App\series::where('id',$episode->series_id)->first();
    $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
@@ -49,7 +52,7 @@
 					<?php  elseif( $episode->type == 'file' || $episode->type == 'upload' ): ?>
 
 						<div id="series_container">
-                     <video id="videoPlayer" autoplay class="video-js vjs-default-skin" poster="<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' width="100%" style="width:100%;" type="video/mp4"  data-authenticated="<?= !Auth::guest() ?>">
+                     <video id="videoPlayer" <?= $autoplay ?> class="video-js vjs-default-skin" poster="<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' width="100%" style="width:100%;" type="video/mp4"  data-authenticated="<?= !Auth::guest() ?>">
                            <source src="<?= $episode->mp4_url; ?>" type='video/mp4' label='auto' >
                            <source src="<?= $episode->webm_url; ?>" type='video/webm' label='auto' >
                            <source src="<?= $episode->ogg_url; ?>" type='video/ogg' label='auto' >
@@ -65,7 +68,7 @@
 
 						<?php  elseif( $episode->type == 'm3u8' ): ?>
 							<div id="series_container">
-								 <video id="video" autoplay controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>"  controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+								 <video id="video" <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>"  controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
                            
                            <source type="application/x-mpegURL" src="<?php echo URL::to('/storage/app/public/').'/'.$episode->path . '.m3u8'; ?>">
                            
@@ -78,7 +81,7 @@
 
                      <?php  elseif( $episode->type == 'aws_m3u8' ): ?>
 							<div id="series_container">
-								 <video id="video" autoplay controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>"  controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+								 <video id="video" <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>"  controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
                            
                            <source type="application/x-mpegURL" src="<?php echo $episode->path; ?>">
                            
@@ -973,4 +976,9 @@
    			}, 3000);
    		}
 </script>
-<?php include('footer.blade.php'); ?>
+
+<?php 
+   include('episode_player_script.blade.php');
+   include('footer.blade.php');
+
+ ?>

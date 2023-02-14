@@ -1,4 +1,5 @@
-<?php $settings = App\Setting::first(); 
+<?php 
+$settings = App\Setting::first(); 
        use Carbon\Carbon;
        $user = App\User::where('id','=',1)->first(); 
        $app_setting = App\AppSetting::where('id','=',1)->where('status','hidden')->first();
@@ -291,9 +292,13 @@ function myFunction() {
 <script defer src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
 
 <?php
-  if(Route::currentRouteName() == "LiveStream_play"){
+  if( Route::currentRouteName() == "LiveStream_play" ){
 
     include('livevideo_player_script.blade.php');
+  }
+  elseif ( Route::currentRouteName() == "play_episode"){
+
+    include('episode_player_script.blade.php');
   }
   else{
 
