@@ -1,5 +1,13 @@
 @php
+<<<<<<< HEAD:public/themes/theme5-nemisatv/views/ChannelList.blade.php
     include(public_path('themes/theme5-nemisatv/views/header.php'));
+=======
+<<<<<<< HEAD
+    include(public_path('themes/theme2/views/header.php'));
+=======
+    include(public_path('themes/theme6-nemisatv/views/header.php'));
+>>>>>>> 88cd696cb403021b77c2fad68c01a1e1ccd1026b
+>>>>>>> 6eb08dc4d1b9491bab2dd85fcca5531e99f56b43:public/themes/theme6-nemisatv/views/ChannelList.blade.php
 @endphp
     
 <section id="iq-favorites">
@@ -45,5 +53,13 @@
 
 
 @php
+<<<<<<< HEAD:public/themes/theme5-nemisatv/views/ChannelList.blade.php
 include(public_path('themes/theme5-nemisatv/views/footer.blade.php'));
+=======
+<<<<<<< HEAD
+include(public_path('themes/theme2/views/footer.blade.php'));
+=======
+include(public_path('themes/theme6-nemisatv/views/footer.blade.php'));
+>>>>>>> 88cd696cb403021b77c2fad68c01a1e1ccd1026b
+>>>>>>> 6eb08dc4d1b9491bab2dd85fcca5531e99f56b43:public/themes/theme6-nemisatv/views/ChannelList.blade.php
 @endphp

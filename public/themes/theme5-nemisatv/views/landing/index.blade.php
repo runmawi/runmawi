@@ -22,11 +22,19 @@ $uppercase =  ucfirst($request_url);
     <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+<<<<<<< HEAD:public/themes/theme5-nemisatv/views/landing/index.blade.php
         <link href="<?php echo URL::to('public/themes/theme5-nemisatv/assets/fonts/font.css') ?>" rel="stylesheet">
      <!-- Bootstrap CSS -->
       <!-- Typography CSS -->
          <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisatv/assets/css/style.css') ?>" />
          <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisatv/assets/css/bootstrap.min.css') ?>" />
+=======
+        <link href="<?php echo URL::to('public/themes/theme6-nemisatv/assets/fonts/font.css') ?>" rel="stylesheet">
+     <!-- Bootstrap CSS -->
+      <!-- Typography CSS -->
+         <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme6-nemisatv/assets/css/style.css') ?>" />
+         <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme6-nemisatv/assets/css/bootstrap.min.css') ?>" />
+>>>>>>> 6eb08dc4d1b9491bab2dd85fcca5531e99f56b43:public/themes/theme6-nemisatv/views/landing/index.blade.php
       <!-- Style -->
       <link rel="stylesheet" href="<?= typography_link(); ?>" />
       <!-- Responsive -->
@@ -1818,6 +1826,10 @@ on your phone, tablet or laptop. No matter which device you use, we are always a
     </script>
 
  @php
+<<<<<<< HEAD:public/themes/theme5-nemisatv/views/landing/index.blade.php
     include(public_path('themes/theme5-nemisatv/views/footer.blade.php'));
+=======
+    include(public_path('themes/theme6-nemisatv/views/footer.blade.php'));
+>>>>>>> 6eb08dc4d1b9491bab2dd85fcca5531e99f56b43:public/themes/theme6-nemisatv/views/landing/index.blade.php
 @endphp
 

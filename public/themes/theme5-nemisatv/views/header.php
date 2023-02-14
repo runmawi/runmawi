@@ -130,10 +130,17 @@ $site_page_url = $http_site_url[1];
     <!-- Typography CSS -->
     <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/variable.css';?>" />
     <!-- Style -->
+<<<<<<< HEAD:public/themes/theme5-nemisatv/views/header.php
       <link href="<?php echo URL::to('public/themes/theme5-nemisatv/assets/css/style.css') ?>" rel="stylesheet">
        <link href="<?php echo URL::to('public/themes/theme5-nemisatv/assets/css/typography.css') ?>" rel="stylesheet">
        <link href="<?php echo URL::to('public/themes/theme5-nemisatv/assets/css/responsive.css') ?>" rel="stylesheet">
               <link href="<?php echo URL::to('public/themes/theme5-nemisatv/assets/fonts/font.css') ?>" rel="stylesheet">
+=======
+      <link href="<?php echo URL::to('public/themes/theme2/assets/css/style.css') ?>" rel="stylesheet">
+       <link href="<?php echo URL::to('public/themes/theme2/assets/css/typography.css') ?>" rel="stylesheet">
+       <link href="<?php echo URL::to('public/themes/theme2/assets/css/responsive.css') ?>" rel="stylesheet">
+              <link href="<?php echo URL::to('public/themes/theme2/assets/fonts/font.css') ?>" rel="stylesheet">
+>>>>>>> 6eb08dc4d1b9491bab2dd85fcca5531e99f56b43:public/themes/theme6-nemisatv/views/header.php
 
      
 
@@ -796,7 +803,16 @@ main .sidebar {
                                           $menus = App\Menu::orderBy('order', 'asc')->where('in_home','!=',0)->orWhere('in_home', '=', null)->get();
                                        }else{
                                           $menus = App\Menu::orderBy('order', 'asc')->get();
+<<<<<<< HEAD:public/themes/theme5-nemisatv/views/header.php
                                        }                                        $languages = App\Language::all();
+=======
+<<<<<<< HEAD
+                                       }                                        $languages = App\Language::all();
+=======
+                                       }
+                                        $languages = App\Language::all();
+>>>>>>> 88cd696cb403021b77c2fad68c01a1e1ccd1026b
+>>>>>>> 6eb08dc4d1b9491bab2dd85fcca5531e99f56b43:public/themes/theme6-nemisatv/views/header.php
                                         foreach ($menus as $menu) { 
                                         if ( $menu->in_menu == "video") { 
                                           $cat = App\VideoCategory::orderBy("order")->where('in_home',1)->get();

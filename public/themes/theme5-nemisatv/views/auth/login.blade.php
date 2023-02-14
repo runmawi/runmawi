@@ -14,6 +14,7 @@ $system_settings = App\SystemSetting::find(1);
       <!-- Favicon -->
       <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
       <!-- Bootstrap CSS -->
+<<<<<<< HEAD:public/themes/theme5-nemisatv/views/auth/login.blade.php
       <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisatv/assets/css/bootstrap.min.css')?>" rel="stylesheet">
       <!-- Typography CSS -->
       <link href="<?php echo URL::to('public/themes/theme5-nemisatv/assets/css/typography.css') ?>" rel="stylesheet">
@@ -21,6 +22,15 @@ $system_settings = App\SystemSetting::find(1);
       <link href="<?php echo URL::to('public/themes/theme5-nemisatv/assets/css/style.css') ?>" rel="stylesheet">
       <link href="<?php echo URL::to('public/themes/theme5-nemisatv/assets/css/responsive.css') ?>" rel="stylesheet">
                   <link href="<?php echo URL::to('public/themes/theme5-nemisatv/assets/fonts/font.css') ?>" rel="stylesheet">
+=======
+      <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme1/assets/css/bootstrap.min.css')?>" rel="stylesheet">
+      <!-- Typography CSS -->
+      <link href="<?php echo URL::to('public/themes/theme2/assets/css/typography.css') ?>" rel="stylesheet">
+      <!-- Style -->
+      <link href="<?php echo URL::to('public/themes/theme2/assets/css/style.css') ?>" rel="stylesheet">
+      <link href="<?php echo URL::to('public/themes/theme2/assets/css/responsive.css') ?>" rel="stylesheet">
+                  <link href="<?php echo URL::to('public/themes/theme2/assets/fonts/font.css') ?>" rel="stylesheet">
+>>>>>>> 6eb08dc4d1b9491bab2dd85fcca5531e99f56b43:public/themes/theme6-nemisatv/views/auth/login.blade.php
 
       <!-- Responsive -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -400,7 +410,11 @@ font-weight: 600;
 
     
 @php
+<<<<<<< HEAD:public/themes/theme5-nemisatv/views/auth/login.blade.php
     include(public_path('themes/theme5-nemisatv/views/footer.blade.php'));
+=======
+    include(public_path('themes/theme2/views/footer.blade.php'));
+>>>>>>> 6eb08dc4d1b9491bab2dd85fcca5531e99f56b43:public/themes/theme6-nemisatv/views/auth/login.blade.php
 @endphp
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
