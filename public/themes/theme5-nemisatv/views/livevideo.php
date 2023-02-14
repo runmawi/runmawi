@@ -1,10 +1,99 @@
-
-<?php include ('header.php'); 
-//    dd($data);
-  ?>
+<?php include ('header.php');  ?>
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <style type="text/css">
+    .close{
+        color: red;
+        text-shadow: none;
+    }
+    .come-from-modal.left .modal-dialog,
+.come-from-modal.right .modal-dialog {
+   
+    margin: auto;
+    width: 400px;
+    background-color: #000!important;
+    height: 100%;
+    -webkit-transform: translate3d(0%, 0, 0);
+    -ms-transform: translate3d(0%, 0, 0);
+    -o-transform: translate3d(0%, 0, 0);
+    transform: translate3d(0%, 0, 0);
+}
+
+.come-from-modal.left .modal-content,
+.come-from-modal.right .modal-content {
+    height: 100%;
+    overflow-y: auto;
+    border-radius: 0px;
+}
+
+.come-from-modal.left .modal-body,
+.come-from-modal.right .modal-body {
+    padding: 15px 15px 80px;
+}
+.come-from-modal.right.fade .modal-dialog {
+    right: 0;
+    -webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
+    -moz-transition: opacity 0.3s linear, right 0.3s ease-out;
+    -o-transition: opacity 0.3s linear, right 0.3s ease-out;
+    transition: opacity 0.3s linear, right 0.3s ease-out;
+}
+
+.come-from-modal.right.fade.in .modal-dialog {
+    right: 0;
+}
+    #sidebar-wrapper {
+  height: calc(100vh - 80px - 75px)!important;
+  /*background-color: #000;*/
+        border-radius: 10px;
+        box-shadow: inset 0 0 10px #000000;
+        color: #fff;
+  transition: margin 0.25s ease-out;
+    }.list-group-item-action:hover {
+        color: #000!important;
+    }
+    .list-group-item-light{
+         background-color:transparent;
+       
+         
+    }
+     .list-group-item-light:hover{
+        background-color: #fff;
+        color: #000!important;
+    }
+    a.list-group-item{
+        border:none;
+      
+    }
+    .list-group-flush::-webkit-scrollbar-thumb {
+    background-color: red;
+    border-radius: 2px;
+    border: 2px solid red;
+      width: 2px;
+  }
+    .list-group-flush{
+        overflow-x: hidden!important;
+        overflow: scroll;
+       height: calc(91vh - 80px - 75px)!important;
+         scroll-behavior: auto;
+     
+      scrollbar-color: rebeccapurple green!important;
+
+    }
+     .list-group-flush::-webkit-scrollbar {
+  width: 8px;
+  }
+    .list-group-flush::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.2);
+      
+  }
+#sidebar-wrapper .sidebar-heading {
+  padding: 10px 10px;
+  font-size: 1.2rem;
+    
+}
+
+
+
 	 .plyr__video-embed{
           position: relative;
       }
@@ -31,7 +120,7 @@ font-size: 35px;
 margin-top: 0px;
 font-weight: 400;
 }
-#videoPlayer {
+#live_player_mp4 {
     width: 100%;
     height: 100%;
     margin: 20px auto;
@@ -46,6 +135,17 @@ font-weight: 400;
     max-width: none;
     width: 100%;
     }  
+    .modal {
+    position: fixed;
+    top: 0;
+        right:auto;
+    bottom: 0;
+    left: 0;
+    z-index: 1050;
+    display: none;
+    overflow: hidden;
+    outline: 0;
+}
 </style>
 
 <style>
@@ -59,30 +159,35 @@ font-weight: 400;
 <input type="hidden" name="video_id" id="video_id" value="<?php echo $video->id; ?>">
 
 <?php
+
+include('livevideo_ads.blade.php');  
+
+$autoplay = $live_ads == null ? "autoplay" : "" ;    
+
 $str = $video->mp4_url;
+
 if(!empty($str)){
-$uri_parts = explode('.', $video->mp4_url);
-$request_url = end($uri_parts);
+    $uri_parts = explode('.', $video->mp4_url);
+    $request_url = end($uri_parts);
 }
 
-
 $rtmp_url = $video->rtmp_url;
+
 
 $Rtmp_url = str_replace ('rtmp', 'http', $rtmp_url);
 
 if(empty($new_date)){
 
 if(!Auth::guest()){
-// dd($ppv_exist);
 if(!empty($password_hash)){
-if ($ppv_exist > 0 || $video_access == "free"  || Auth::user()->subscribed() || Auth::user()->role == "admin" || $video->access == "guest" && $video->ppv_price == null ) { ?>
+if ($ppv_exist > 0 ||  Auth::user()->subscribed() || $video_access == "free"  || Auth::user()->role == "admin" || $video->access == "guest" && $video->ppv_price == null ) { ?>
 <div id="video_bg"> 
         <div class="">
             <div id="video sda" class="fitvid" style="margin: 0 auto;">
 
             <?php if(!empty($video->mp4_url && $request_url != "m3u8"  && $video->url_type == "mp4" )){  ?>
 
-                    <video id="videoPlayer" autoplay class="" poster="<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?=$video->mp4_url; ?>"  type="application/x-mpegURL" data-authenticated="<?=!Auth::guest() ?>">
+                    <video id="live_player_mp4" <?= $autoplay ?> class="" poster="<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?=$video->mp4_url; ?>"  type="application/x-mpegURL" data-authenticated="<?=!Auth::guest() ?>">
                         <source src="<?= $video->mp4_url; ?>" type='application/x-mpegURL' label='Auto' res='auto' />
                         <source src="<?php echo $video->mp4_url; ?>" type='application/x-mpegURL' label='480p' res='480'/>
                         <!-- <source src="<?php echo URL::to('/storage/app/public/') . '/' . $video->path . '_2_1000.m3u8'; ?>" type='application/x-mpegURL' label='720p' res='720'/>  -->
@@ -97,50 +202,96 @@ if ($ppv_exist > 0 || $video_access == "free"  || Auth::user()->subscribed() || 
                         allow="autoplay">
                     </iframe>
                 </div>
-                <?php  }elseif(!empty($request_url == "m3u8")  && $video->url_type == "mp4"){  ?> 
-                    <!-- <div class="plyr__video-embed" id="player"> -->
-                        <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->mp4_url ?>">
-                        <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
-                        <input type="hidden" id="live" name="live" value="live">
-                        <input type="hidden" id="request_url" name="request_url" value="<?php echo $request_url ?>">
+            <?php  }elseif(!empty($request_url == "m3u8")  && $video->url_type == "mp4"){  ?> 
 
-                        <video id="video" autoplay controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
-                            <source  type="application/x-mpegURL"  src="<?php echo $video->mp4_url; ?>" >
-                        </video>
-                    <!-- </div>  -->
+                    <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->mp4_url ?>">
+                    <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
+                    <input type="hidden" id="live" name="live" value="live">
+                    <input type="hidden" id="request_url" name="request_url" value="<?php echo $request_url ?>">
+
+                    <video id="live_player" <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                        <source  type="application/x-mpegURL"  src="<?php echo $video->mp4_url; ?>" >
+                    </video>
+                    
             <?php }elseif(!empty($video->url_type == "Encode_video")){  ?>
 
-                        <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->hls_url ; ?>">
-                        <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
-                        <input type="hidden" id="live" name="live" value="live">
-                        <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
+                    <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->hls_url ; ?>">
+                    <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
+                    <input type="hidden" id="live" name="live" value="live">
+                    <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
 
-                         <video id="video"  autoplay controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
-                            <source  type="application/x-mpegURL"  src="<?php echo $video->hls_url ; ?>" >
-                        </video>
+                    <video id="live_player" <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                        <source  type="application/x-mpegURL"  src="<?php echo $video->hls_url ; ?>" >
+                    </video>
 
-               <?php  }elseif(!empty($video->url_type ) && $video->url_type == "live_stream_video"){  ?>
+            <?php  }elseif(!empty($video->url_type ) && $video->url_type == "live_stream_video"){  ?>
 
                 <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->live_stream_video; ?>">
                 <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
                 <input type="hidden" id="live" name="live" value="live">
                 <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
 
-                 <video id="video"  autoplay controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                 <video id="live_player" <?= $autoplay ?>  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
                     <source  type="application/x-mpegURL"  src="<?php echo $video->live_stream_video ; ?>" >
                 </video>
 
-            <?php  }elseif(!empty($video->url_type ) && $video->url_type == "aws_m3u8"){  ?>
+        <?php  }elseif(!empty($video->url_type ) && $video->url_type == "aws_m3u8"){  ?>
 
-                    <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->live_stream_video; ?>">
-                    <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
-                    <input type="hidden" id="live" name="live" value="live">
-                    <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
+                <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->live_stream_video; ?>">
+                <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
+                <input type="hidden" id="live" name="live" value="live">
+                <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
 
-                    <video id="video" autoplay controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
-                        <source  type="application/x-mpegURL"  src="<?php echo $video->hls_url ; ?>" >
-                    </video>
-    <?php } ?>
+                <video id="live_player" <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                    <source  type="application/x-mpegURL"  src="<?php echo $video->hls_url ; ?>" >
+                </video>
+
+            <?php  }elseif(!empty($video->url_type ) && $video->url_type == "m3u_url"){   ?>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-3 ">
+                            <div class="border-end" id="sidebar-wrapper">
+                                <div class="sidebar-heading border-bottom">Channels</div>
+                                <div class="list-group list-group-flush">
+                                    <?php foreach( $M3U_channels as $M3U_index => $M3U_channel ){ ?>
+                                        <a data-toggle="modal" data-target="#M3U-Modal" data-MU3-category="<?=  $M3U_index ?>"  data-MU3-url ="<?=  $M3U_files ?>"  class="list-group-item list-group-item-action list-group-item-light" onclick="m3u_url(this)" > <?= $M3U_index ?> </a>
+                                    <?php } ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-9">
+
+                            <?php $m3u_url = session('m3u_url_link') ; ?>
+                            
+                            <video controls  <?= $autoplay ?> crossorigin playsinline poster="<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  style="height:100%;">
+                                <source  type="application/x-mpegURL"  src="<?php echo $m3u_url; ?>" >
+                           </video>
+                        </div>
+                    </div>
+                </div>
+	              
+            <?php } ?>
+
+                                        <!-- Modal - M3U Modal  -->
+
+            <div class="modal fade  come-from-modal right" id="M3U-Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content" style="background:#1B1212;">
+
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="myModalLabel"> Channel Category </h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        </div>
+
+                        <div class="modal-body data-plans ">
+                            <div class="list-group list-group-flush"  style="height: calc(100vh - 80px - 75px)!important;">
+                               <p > <?= "Please wait a short while" ?></p>
+                            </div>
+                        </div>
+                    
+                    </div>
+                </div>
+            </div>
 
         <div class="playertextbox hide">
             <p> <?php if (isset($videonext)) { ?>
@@ -165,16 +316,16 @@ if ($ppv_exist > 0 || $video_access == "free"  || Auth::user()->subscribed() || 
                 <div class="col-md-4 col-sm-offset-4">
                     <div class="ppv-block">
                         <h2 class="mb-3">Pay now to watch <?php echo $video->title; ?></h2>
-                        <div class="clear"></div>
-                       
-                        <!-- PPV button -->
-                        <?php $users = Auth::user();  ?>
 
-                        <?php if ( ($ppv_exist == 0 ) && (  $users->role!="admin")  ) { ?>
-                            <button  data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary btn-block rent-video">
-                            <?php echo __('Purchase Now ');?> </button>
-                        <?php } ?>
+                        <h4 class="text-center" style="margin-top:40px;"><a href="<?=URL::to('/') . '/stripe/billings-details' ?>"><p>Click Here To Become Subscriber</p></a></h4>
 
+                           <!-- PPV button -->
+                            <?php $users = Auth::user();  ?>
+
+                            <?php if ( ($ppv_exist == 0 ) && (  $users->role!="admin")  ) { ?>
+                                    <button  data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary btn-block rent-video">
+                                    <?php echo __('Purchase Now ');?> </button>
+                            <?php } ?>
                     </div>
                 </div>
             </div>
@@ -191,14 +342,13 @@ else{
 
     <?php if(!empty($video->mp4_url && $request_url != "m3u8"  && $video->url_type == "mp4" )){  ?>
 
-            <video id="videoPlayer" autoplay onplay="playstart()" onended="autoplay1()" class="video-js vjs-default-skin vjs-big-play-centered" poster="<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?=$video->mp4_url; ?>"  type="application/x-mpegURL" data-authenticated="<?=!Auth::guest() ?>">
+            <video id="live_player_mp4" <?= $autoplay ?> onplay="playstart()" onended="autoplay1()" class="video-js vjs-default-skin vjs-big-play-centered" poster="<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?=$video->mp4_url; ?>"  type="application/x-mpegURL" data-authenticated="<?=!Auth::guest() ?>">
                 <source src="<?= $video->mp4_url; ?>" type='application/x-mpegURL' label='Auto' res='auto' />
                 <source src="<?php echo $video->mp4_url; ?>" type='application/x-mpegURL' label='480p' res='480'/>
-                <!-- <source src="<?php echo URL::to('/storage/app/public/') . '/' . $video->path . '_2_1000.m3u8'; ?>" type='application/x-mpegURL' label='720p' res='720'/>  -->
             </video>
 
     <?php }elseif(!empty($video->embed_url)  && $video->url_type == "embed"){ ?> 
-        <div class="plyr__video-embed" id="player">
+        <div class="plyr__video-embed" id="Embed_player">
             <iframe
                 src="<?php if(!empty($video->embed_url)){ echo $video->embed_url	; }else { } ?>"
                 allowfullscreen
@@ -207,16 +357,16 @@ else{
             </iframe>
         </div>
         <?php  }elseif(!empty($request_url == "m3u8")  && $video->url_type == "mp4"){  ?> 
-            <!-- <div class="plyr__video-embed" id="player"> -->
+
                 <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->mp4_url ?>">
                 <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
                 <input type="hidden" id="live" name="live" value="live">
                 <input type="hidden" id="request_url" name="request_url" value="<?php echo $request_url ?>">
 
-                <video id="video"  autoplay controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                <video id="live_player" <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
                     <source  type="application/x-mpegURL"  src="<?php echo $video->mp4_url; ?>" >
                 </video>
-            <!-- </div>  -->
+
     <?php }elseif(!empty($video->url_type == "Encode_video")){  ?>
 
                 <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->hls_url ; ?>">
@@ -224,7 +374,7 @@ else{
                 <input type="hidden" id="live" name="live" value="live">
                 <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
 
-                 <video id="video" autoplay controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                 <video id="live_player" <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
                     <source  type="application/x-mpegURL"  src="<?php echo $video->hls_url ; ?>" >
                 </video>
 
@@ -234,20 +384,68 @@ else{
         <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
         <input type="hidden" id="live" name="live" value="live">
         <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
-            <video id="video" autoplay controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
-                        <source type="application/x-mpegURL" src="<?php echo $video->live_stream_video ; ?>">
+
+            <video id="live_player" <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                    <source type="application/x-mpegURL" src="<?php echo $video->live_stream_video ; ?>">
             </video>
-            <?php  }elseif(!empty($video->url_type ) && $video->url_type == "aws_m3u8"){  ?>
+            
+        <?php  }elseif(!empty($video->url_type ) && $video->url_type == "aws_m3u8"){  ?>
 
                 <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->live_stream_video; ?>">
                 <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
                 <input type="hidden" id="live" name="live" value="live">
                 <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
 
-                <video id="video" autoplay controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                <video id="live_player" <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
                     <source  type="application/x-mpegURL"  src="<?php echo $video->hls_url ; ?>" >
                 </video>
-    <?php } ?>
+
+        <?php }elseif(!empty($video->url_type ) && $video->url_type == "m3u_url"){   ?>
+
+        <div class="container-fluid">
+            <div class="row ">
+                <div class="col-lg-9">
+
+                    <?php $m3u_url = session('m3u_url_link') ; ?>
+                    
+                    <video  controls  <?= $autoplay ?> crossorigin playsinline poster="<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                        <source  type="application/x-mpegURL"  src="<?php echo $m3u_url; ?>" >
+                    </video>
+                </div>
+
+                <div class="col-lg-3 p-0">
+                    <div class="border-end" id="sidebar-wrapper">
+                        <div class="sidebar-heading border-bottom">Channels</div>
+                        <div class="list-group list-group-flush">
+                            <?php foreach( $M3U_channels as $M3U_index => $M3U_channel ){ ?>
+                                <a data-toggle="modal" data-target="#M3U-url-modal" data-MU3-category="<?=  $M3U_index ?>"  data-MU3-url ="<?=  $M3U_files ?>"  class="list-group-item list-group-item-action list-group-item-light" onclick="m3u_url(this)" > <?= $M3U_index ?> </a>
+                            <?php } ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+                                        <!-- Modal - M3U Modal  -->
+
+        <div class="modal fade  come-from-modal right" id="M3U-url-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content" style="background:#1B1212;">
+
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="myModalLabel"> Channel Category </h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        </div>
+
+                        <div class="modal-body data-plans ">
+                            <div class="list-group list-group-flush"  style="height: calc(100vh - 80px - 75px)!important;">
+                               <p > <?= "Please wait a short while" ?></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+     <?php } ?>
 
     <?php  } else { ?>       
         <div id="subscribers_only"style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.5)), url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
@@ -343,17 +541,10 @@ else{
                         <?php } ?>
                     </li>
 -->
-                    <!-- PPV button -->
-<!--
-                    <li>
-                        <?php if ( ($ppv_exist == 0 ) && ($user->role!="subscriber" && $user->role!="admin")  ) { ?>
-                            <button  data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary rent-video">
-                            <?php echo __('Rent');?> </button>
-                        <?php } ?>
-                    </li>
+                    
                 </ul>
             </div>
--->
+
         </div>
 
         <?php } ?>
@@ -389,7 +580,7 @@ else{
                         <?php if ($video->access != 'guest' ) { ?>
                             <li>
                                 <a data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary rent-video" href="<?php echo URL::to('/login');?>">
-                                    <?php echo __('Purchase Now');?> </a>
+                                    <?php echo __('Rent');?> </a>
                             </li>
                         <?php   }?>
 
@@ -420,7 +611,7 @@ else{
                     </div>
                 </div>
             <?php endif; ?>
-            
+
             <div class="row">
                 <div class=" container-fluid video-list you-may-like overflow-hidden">
                     <h4 class="" style="color:#fffff;"><?php echo __('Related Videos');?></h4>
@@ -431,16 +622,8 @@ else{
             </div>
         </div>
 
-<!-- <div style="text-align:right;padding:5px 0";>
-<span class="view-count" style="margin-right:10px";><i class="fa fa-eye"></i> <?php if (isset($view_increment) && $view_increment == true): ?><?=$video->views + 1 ?><?php
-else: ?><?=$video->views ?><?php
-endif; ?> Views </span>
-<div class="favorite btn btn-default <?php if (isset($favorited->id)): ?>active<?php
-endif; ?>" data-authenticated="<?=!Auth::guest() ?>" data-videoid="<?=$video->id ?>"><i class="fa fa-heart"></i> Favorite</div>
-</div> -->
         
-   <!-- Rent Modal -->
-
+   <!-- Modal -->
    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">
          <div class="modal-content">
@@ -507,20 +690,19 @@ endif; ?>" data-authenticated="<?=!Auth::guest() ?>" data-videoid="<?=$video->id
                         <button class="btn2  btn-outline-primary " onclick="location.href ='<?= URL::to('RazorpayLiveRent/'.$video->id.'/'.$video->ppv_price) ?>' ;" > Continue </button>
                 <?php } ?>
               </div>
-
+                
               <?php if( $video->ppv_price != null &&  $video->ppv_price != " " ) {?>
                 <div class="paystack_button">  <!-- Paystack Button -->
                     <?php if( $Paystack_payment_setting != null && $Paystack_payment_setting->payment_type == "Paystack" ){?>
                             <button class="btn2  btn-outline-primary" onclick="location.href ='<?= route('Paystack_live_Rent', ['live_id' => $video->id , 'amount' => $video->ppv_price] ) ?>' ;" >  Continue </button>
                     <?php } ?>
                 </div>
-               <?php } ?>
+              <?php } ?>
+              
             </div>
           </div>
       </div>
     </div>
-
-
 
         <?php if (isset($videonext)) { ?>
             <div class="next_video" style="display: none;"><?=$videonext->slug; ?></div>
@@ -536,13 +718,6 @@ endif; ?>" data-authenticated="<?=!Auth::guest() ?>" data-videoid="<?=$video->id
             <div class="prev_cat_video" style="display: none;"><?=$videos_category_prev->slug; ?></div>
         <?php } ?>
         <div class="clear"></div>
-<!--
-<div id="tags">Tags: 
-<php foreach($video->tags as $key => $tag): ?>
-<span><a href="/videos/tag/<= $tag->name ?>"><= $tag->name ?></a></span><php if($key+1 != count($video->tags)): ?>,<php endif; ?>
-<php endforeach; ?>
-</div>
--->
 
         <div id="social_share">
         <!--            <php include('partials/social-share.php'); ?>-->
@@ -667,79 +842,58 @@ settings: "unslick" // destroys slick
 <script src="https://checkout.stripe.com/checkout.js"></script>
 
 <script type="text/javascript">
-var livepayment = $('#purchase_url').val();
-var publishable_key = $('#publishable_key').val();
 
+    var livepayment = $('#purchase_url').val();
+    var publishable_key = $('#publishable_key').val();
 
-// alert(livepayment);
+    $(document).ready(function () {  
+        $.ajaxSetup({
+            headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    });
 
-$(document).ready(function () {  
-$.ajaxSetup({
-headers: {
-'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-}
-});
-});
+    function pay(amount) {
+        var video_id = $('#video_id').val();
+        var handler = StripeCheckout.configure({
+        key: publishable_key,
+        locale: 'auto',
+        token: function (token) {
+            console.log('Token Created!!'); // You can access the token ID with `token.id`.
+            console.log(token); // Get the token ID to your server-side code for use.
+            $('#token_response').html(JSON.stringify(token));
 
-function pay(amount) {
-var video_id = $('#video_id').val();
-
-var handler = StripeCheckout.configure({
-
-key: publishable_key,
-locale: 'auto',
-token: function (token) {
-// You can access the token ID with `token.id`.
-// Get the token ID to your server-side code for use.
-console.log('Token Created!!');
-console.log(token);
-$('#token_response').html(JSON.stringify(token));
-$.ajax({
-url: '<?php echo URL::to("purchase-live") ;?>',
-method: 'post',
-data: {"_token": "<?= csrf_token(); ?>",tokenId:token.id, amount: amount , video_id: video_id },
-success: (response) => {
-alert("You have done  Payment !");
-setTimeout(function() {
-location.reload();
-}, 2000);
-
-},
-error: (error) => {
-swal('error');
-//swal("Oops! Something went wrong");
-/* setTimeout(function() {
-location.reload();
-}, 2000);*/
-}
-})
-// $.ajax({
-// url: livepayment,
-// method: 'post',
-// data: {  _token: '<?= csrf_token(); ?>',tokenId: token.id, amount: amount , video_id: video_id },
-// success: (response) => {
-// swal("You have done  Payment !");
-// setTimeout(function() {
-// location.reload();
-// }, 2000);
-
-// },
-// error: (error) => {
-// swal('error');
-// //swal("Oops! Something went wrong");
-// /* setTimeout(function() {
-// location.reload();
-// }, 2000);*/
-// }
-// })
-}
+            $.ajax({
+            url: '<?php echo URL::to("purchase-live") ;?>',
+            method: 'post',
+            data: {"_token": "<?= csrf_token(); ?>",
+                tokenId:token.id, 
+                amount: amount , 
+                video_id: video_id 
+            },
+            success: (response) => {
+            alert("You have done  Payment !");
+            setTimeout(function() {
+            location.reload();
+            }, 2000);
+        },
+        error: (error) => {
+        swal('error');
+        //swal("Oops! Something went wrong");
+        /* setTimeout(function() {
+        location.reload();
+        }, 2000);*/
+        }
+        })
+       
+    }
 });
 
-
-handler.open({
-name: '<?php $settings = App\Setting::first(); echo $settings->website_name;?>',
-description: 'PAY PeR VIEW',
-amount: amount * 100
+    handler.open({
+    name: '<?php $settings = App\Setting::first(); echo $settings->website_name;?>',
+    description: 'PAY PeR VIEW',
+    amount: amount * 100
 });
 }
 </script>
@@ -812,56 +966,54 @@ document.getElementById("demo").innerHTML = "EXPIRED";
 </script>
 
 
-       <!-- PPV Purchase -->
+        <!-- PPV Purchase -->
 
 <script type="text/javascript">
 
-var ppv_exits = <?= $ppv_exists ?>;
+    var ppv_exits = <?= $ppv_exists ?>;
 
-if( ppv_exits == 1 ){
+    if( ppv_exits == 1 ){
 
-    var i = setInterval(function() { PPV_live_PurchaseUpdate(); }, 60 * 1000);
+        var i = setInterval(function() { PPV_live_PurchaseUpdate(); }, 60 * 1000);
 
-    window.onload = unseen_expirydate_checking();
-    
-    function PPV_live_PurchaseUpdate() {
-
-    $.ajax({
-            type:'post',
-            url:'<?= route('PPV_live_PurchaseUpdate') ?>',
-            data: {
-                    "_token"   : "<?= csrf_token(); ?>",
-                    "live_id" : "<?php echo $video->id; ?>", 
-                },
-            success:function(data) {
-                if(data.status == true){
-                    window.location.reload();
-                }
-            }
-            });
-    }
-
-    function unseen_expirydate_checking() {
+        window.onload = unseen_expirydate_checking();
+        
+        function PPV_live_PurchaseUpdate() {
 
         $.ajax({
-            type:'post',
-            url:'<?= route('unseen_expirydate_checking') ?>',
-            data: {
-                    "_token"   : "<?= csrf_token(); ?>",
-                    "live_id" : "<?php echo $video->id; ?>", 
-                },
-            success:function(data) {
-                console.log(data);
-                if(data.status == true){
-                    window.location.reload();
+                type:'post',
+                url:'<?= route('PPV_live_PurchaseUpdate') ?>',
+                data: {
+                        "_token"   : "<?= csrf_token(); ?>",
+                        "live_id" : "<?php echo $video->id; ?>", 
+                    },
+                success:function(data) {
+                    if(data.status == true){
+                        window.location.reload();
+                    }
                 }
-            }
-        });
+                });
+        }
+
+        function unseen_expirydate_checking() {
+
+            $.ajax({
+                type:'post',
+                url:'<?= route('unseen_expirydate_checking') ?>',
+                data: {
+                        "_token"   : "<?= csrf_token(); ?>",
+                        "live_id" : "<?php echo $video->id; ?>", 
+                    },
+                success:function(data) {
+                    console.log(data);
+                    if(data.status == true){
+                        window.location.reload();
+                    }
+                }
+            });
+        }
     }
-}
-
 </script>
-
 
 <script>
   window.onload = function(){ 
@@ -895,4 +1047,7 @@ if( ppv_exits == 1 ){
     });
 </script>
 
-<?php include ('footer.blade.php'); ?>
+<?php  
+    include('m3u_file_live.blade.php');  
+    include ('footer.blade.php');
+?>

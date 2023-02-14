@@ -335,6 +335,30 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                 </div>
 
                 <div class="row mt-3">
+                    <div class="col-sm-6"  >
+                        <label class="m-0">Choose Ads Position</label>
+                        <select class="form-control" name="ads_position" id="ads_position" >
+
+                           <option value=" ">Select the Ads Position </option>
+                           <option value="pre"  @if(($episodes->ads_position != null ) && $episodes->ads_position == 'pre'){{ 'selected' }}@endif >  Pre-Ads Position</option>
+                           <option value="mid"  @if(($episodes->ads_position != null ) && $episodes->ads_position == 'mid'){{ 'selected' }}@endif >  Mid-Ads Position</option>
+                           <option value="post" @if(($episodes->ads_position != null ) && $episodes->ads_position == 'post'){{ 'selected' }}@endif > Post-Ads Position</option>
+                        </select>
+                    </div>
+
+                    <div class="col-sm-6"  >
+                        <label class="">Choose Advertisement </label>
+                        <select class="form-control" name="episode_ads" id="episode_ads" >
+                           <option value=" ">Select the Advertisement </option>
+                            @if( $episodes->episode_ads != null)
+                                @php $ads_name = App\Advertisement::where('id', $episodes->episode_ads )->pluck('ads_name')->first() ;@endphp
+                                <option value="{{ $episodes->episode_ads }}" {{ 'selected' }}> {{ $ads_name }} </option>
+                            @endif
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row mt-3">
                     <div class="col-sm-4">
                         <label class="m-0">Status Settings</label>
                         <div class="panel-body">
@@ -1014,6 +1038,9 @@ tagInput1.addData([])
    // console.log(path);
    }
         </script>
+
+        @include('admin.series.Ads_episode'); 
+
         @stop @stop @stop
     </div>
 </div>
