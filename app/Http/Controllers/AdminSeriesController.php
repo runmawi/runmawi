@@ -55,6 +55,8 @@ use App\InappPurchase;
 use App\Channel as Channel;
 use App\ModeratorsUser as ModeratorsUser;
 use App\StorageSetting as StorageSetting;
+use App\Advertisement;
+
 
 class AdminSeriesController extends Controller
 {
@@ -1680,6 +1682,8 @@ class AdminSeriesController extends Controller
             $episodes->ppv_price =  $ppv_price;
             $episodes->ppv_status =  $data['ppv_status'];
             $episodes->status =  1;
+            $episodes->ads_position =  $request->ads_position;
+            $episodes->episode_ads =  $request->episode_ads;
             $episodes->save();
 
 
@@ -1938,6 +1942,8 @@ class AdminSeriesController extends Controller
         $episode->slug =  $data['slug'];
         $episode->episode_description =  $data['episode_description'];
         $episode->status =  1;
+        $episode->ads_position =  $data['ads_position'];
+        $episode->episode_ads =  $data['episode_ads'];
         $episode->save();
 
         $episode = Episode::findOrFail($id);
@@ -3024,6 +3030,28 @@ class AdminSeriesController extends Controller
             }
 
 
+        }
+
+        public function episode_ads_position(Request $request)
+        {
+            try {
+
+                $Advertisement = Advertisement::whereNotNull('ads_path')->where('ads_position',$request->ads_position)->where('status',1)->get();
+    
+                $response = array(
+                    'status'  => true,
+                    'message' => 'Successfully Retrieve Pre Advertisement Episode',
+                    'episode_ads'    => $Advertisement ,
+                );
+    
+            } catch (\Throwable $th) {
+    
+                $response = array(
+                    'status' => false,
+                    'message' =>  $th->getMessage()
+                );
+            }
+            return response()->json($response, 200);
         }
 
 }
