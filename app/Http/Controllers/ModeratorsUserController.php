@@ -318,7 +318,7 @@ class ModeratorsUserController extends Controller
                 "users" => $users,
             ];
 
-            return View("moderator.userapproval", $data);
+            return view("moderator.userapproval", $data);
         }
     }
     public function CPPModeratorsApproval($id)
@@ -391,12 +391,10 @@ class ModeratorsUserController extends Controller
 
                 Email_notsent_log($user_id,$email_log,$email_template);
 
+                return redirect()->route('CPP_PendingUsers')->with('error',$e->getMessage()  );
             }
 
-            return \Redirect::back()->with(
-                "message",
-                "User Has Been Approved "
-            );
+            return \Redirect::back()->with( "success", "The CPP user has been Approved Sucessfully !!");
         }
     }
 
@@ -460,6 +458,7 @@ class ModeratorsUserController extends Controller
 
                 Email_sent_log($user_id,$email_log,$email_template);
 
+
             }
             catch (\Exception $e) {
 
@@ -469,9 +468,12 @@ class ModeratorsUserController extends Controller
 
                 Email_notsent_log($user_id,$email_log,$email_template);
 
+                return redirect()->route('CPP_PendingUsers')->with('error',$e->getMessage()  );
+
             }
 
-            return \Redirect::back()->with("message", "User Has Been Rejected");
+            return \Redirect::back()->with( "success", "The CPP user has been Approved Sucessfully !!");
+
         }
     }
 

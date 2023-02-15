@@ -1088,7 +1088,7 @@ Route::post('/test/server/videoupload/',  'AdminVideosController@TestServerFileU
 
 });
 
-Route::get('admin/channel/pendingusers',  'ChannelLoginController@PendingUsers');
+Route::get('admin/channel/pendingusers',  'ChannelLoginController@PendingUsers')->name('ChannelPendingUsers');
 Route::get('admin/channel/view-channel-members',  'ChannelLoginController@ViewChannelMembers');
 Route::get('admin/channel/commission', 'ChannelLoginController@Commission');
 Route::post('admin/channel/add/commission', 'ChannelLoginController@AddCommission');
@@ -1096,7 +1096,7 @@ Route::post('admin/channel/add/commission', 'ChannelLoginController@AddCommissio
 Route::get('admin/ChannelUsersApproval/{id}',  'ChannelLoginController@ChannelUsersApproval');
 Route::get('admin/ChannelUsersReject/{id}',  'ChannelLoginController@ChannelUsersReject');
 
-Route::get('admin/cpp/pendingusers',  'ModeratorsUserController@PendingUsers');
+Route::get('admin/cpp/pendingusers',  'ModeratorsUserController@PendingUsers')->name('CPP_PendingUsers');
 
 Route::get('admin/CPPModeratorsApproval/{id}',  'ModeratorsUserController@CPPModeratorsApproval');
 Route::get('admin/CPPModeratorsReject/{id}',  'ModeratorsUserController@CPPModeratorsReject');
