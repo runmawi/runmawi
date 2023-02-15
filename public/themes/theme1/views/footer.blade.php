@@ -373,6 +373,10 @@ function myFunction() {
 
     include('livevideo_player_script.blade.php');
   }
+  elseif ( Route::currentRouteName() == "play_episode"){
+
+      include('episode_player_script.blade.php');
+  }
   else{
 
     include('footerPlayerScript.blade.php');

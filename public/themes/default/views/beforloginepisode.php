@@ -731,6 +731,5 @@
 </script>
 
 <?php
-   include(public_path('themes/default/views/episode_player_script.blade.php'));
    include(public_path('themes/default/views/footer.blade.php'));
 ?>

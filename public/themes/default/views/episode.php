@@ -978,7 +978,5 @@
 </script>
 
 <?php 
-   include('episode_player_script.blade.php');
    include('footer.blade.php');
-
  ?>
