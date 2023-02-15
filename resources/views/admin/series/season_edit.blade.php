@@ -333,6 +333,25 @@
                         </div>
                     </div>
 
+                    <div class="row mt-3">
+                        <div class="col-sm-6"  >
+                            <label class="m-0">Choose Ads Position</label>
+                            <select class="form-control" name="ads_position" id="ads_position" >
+                               <option value=" ">Select the Ads Position </option>
+                               <option value="pre"  >  Pre-Ads Position</option>
+                               <option value="mid"  >  Mid-Ads Position</option>
+                               <option value="post" > Post-Ads Position</option>
+                            </select>
+                        </div>
+    
+                        <div class="col-sm-6"  >
+                            <label class="">Choose Advertisement </label>
+                            <select class="form-control" name="episode_ads" id="episode_ads" >
+                               <option value=" ">Select the Advertisement </option>
+                            </select>
+                        </div>
+                    </div>
+
                     <div class="clear"></div>
 
                     <div class="row align-items-center">
@@ -1097,6 +1116,7 @@ var tagInput1 = new TagsInput({
 	}
 </script>
 
+@include('admin.series.Ads_episode'); 
 
     @stop 
     
