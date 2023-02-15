@@ -514,6 +514,7 @@ border-radius: 0px 4px 4px 0px;
                            <option value="pre"  @if(($video->ads_position != null ) && $video->ads_position == 'pre'){{ 'selected' }}@endif >  Pre-Ads Position</option>
                            <option value="mid"  @if(($video->ads_position != null ) && $video->ads_position == 'mid'){{ 'selected' }}@endif >  Mid-Ads Position</option>
                            <option value="post" @if(($video->ads_position != null ) && $video->ads_position == 'post'){{ 'selected' }}@endif > Post-Ads Position</option>
+                           <option value="all"  @if(($video->ads_position != null ) && $video->ads_position == 'all'){{ 'selected' }}@endif >   All Ads Position</option>
                         </select>
                     </div>
 
@@ -522,7 +523,7 @@ border-radius: 0px 4px 4px 0px;
                         <select class="form-control" name="live_ads" id="live_ads" >
                            <option value=" ">Select the Advertisement </option>
                             @if( $video->live_ads != null)
-                                @php $ads_name = App\Advertisement::where('id',3)->pluck('ads_name')->first() ;@endphp
+                                @php $ads_name = App\Advertisement::where('id',$video->live_ads)->pluck('ads_name')->first() ;@endphp
                                 <option value="{{ $video->live_ads }}" {{ 'selected' }}> {{ $ads_name }} </option>
                             @endif
                         </select>
