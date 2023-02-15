@@ -434,6 +434,7 @@ border-radius: 0px 4px 4px 0px;
                                <option value="pre">  Pre-Ads Position</option>
                                <option value="mid">  Mid-Ads Position</option>
                                <option value="post"> Post-Ads Position</option>
+                               <option value="all" > All Ads Position</option>
                             </select>
                         </div>
 

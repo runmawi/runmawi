@@ -338,11 +338,11 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                     <div class="col-sm-6"  >
                         <label class="m-0">Choose Ads Position</label>
                         <select class="form-control" name="ads_position" id="ads_position" >
-
                            <option value=" ">Select the Ads Position </option>
                            <option value="pre"  @if(($episodes->ads_position != null ) && $episodes->ads_position == 'pre'){{ 'selected' }}@endif >  Pre-Ads Position</option>
                            <option value="mid"  @if(($episodes->ads_position != null ) && $episodes->ads_position == 'mid'){{ 'selected' }}@endif >  Mid-Ads Position</option>
                            <option value="post" @if(($episodes->ads_position != null ) && $episodes->ads_position == 'post'){{ 'selected' }}@endif > Post-Ads Position</option>
+                           <option value="all"  @if(($episodes->ads_position != null ) && $episodes->ads_position == 'all'){{ 'selected' }}@endif >  All Ads Position</option>
                         </select>
                     </div>
 
