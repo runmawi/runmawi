@@ -3,8 +3,8 @@
 @section('css')
 	<link rel="stylesheet" href="{{ URL::to('/assets/admin/css/sweetalert.css') }}">
 @endsection
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-  <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
 @section('content')
 
      <div id="content-page" class="content-page">
@@ -18,9 +18,8 @@
                         </div>
 
                          <div class="iq-card-header-toolbar d-flex align-items-baseline">
-                             <div class="form-group mr-2">
-                    <!-- <input type="text" name="search" id="search" class="form-control" placeholder="Search Data" /> -->
-                    </div>
+                           <div class="form-group mr-2">
+                        </div>
                         </div>
                      </div>
                      <div class="iq-card-body table-responsive p-0">
@@ -147,6 +146,37 @@ $('#cpp_user_videos').change(function(){
 });
 	
 </script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+@if ( $message = Session::get('error'))
+
+   <script>
+
+      var alert_message  =  '<?php echo $message  ?>';
+
+      Swal.fire({
+         icon: 'warning',
+         title: 'Sorry we cannot send you an email now',
+         text: 'Kindly check your email settings'
+      })
+
+    </script>
+@elseif(  $message = Session::get('success') )
+
+   <script>
+
+      var alert_message  =  '<?php echo $message  ?>';
+
+      Swal.fire({
+         icon: 'success',
+         title: 'Channel Approved Successfully!!',
+         text: alert_message 
+      })
+
+   </script> 
+
+@endif
+
 	@stop
 
 @stop

@@ -203,11 +203,12 @@
                                       </div>
                           
                                       <div class="form-group">
-                                          <label> Ads Play:</label>
+                                          <label> Ads Position Play:</label>
                                           <select class="form-control" name="ads_position">
                                               <option value="pre">Pre</option>
                                               <option value="mid">Mid</option>
                                               <option value="post">Post</option>
+                                              <option value="all">All Position (Only for Ads Type - Tag URL)</option>
                                           </select>
                                       </div>
                                       </div>

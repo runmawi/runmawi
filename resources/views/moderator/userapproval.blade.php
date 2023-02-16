@@ -156,6 +156,36 @@ $('#cpp_user_videos').change(function(){
 });
 	
 </script>
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+@if ( $message = Session::get('error'))
+
+   <script>
+
+      Swal.fire({
+         icon: 'warning',
+         title: 'Sorry we cannot send you an email now',
+         text: 'Kindly check your email settings'
+      })
+
+    </script>
+@elseif(  $message = Session::get('success') )
+
+   <script>
+
+      var alert_message  =  '<?php echo $message  ?>';
+
+      Swal.fire({
+         icon: 'success',
+         title: 'Channel Approved Successfully!!',
+         text: alert_message 
+      })
+
+   </script> 
+
+@endif
+
 	@stop
 
 @stop

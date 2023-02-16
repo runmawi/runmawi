@@ -401,7 +401,7 @@ Please recheck the credentials before you try again!');
                 "users" => $users,
             ];
 
-            return View("channel.userapproval", $data);
+            return view("channel.userapproval", $data);
         }
     }
 
@@ -409,17 +409,15 @@ Please recheck the credentials before you try again!');
     {
         $user = User::where("id", 1)->first();
         $duedate = $user->package_ends;
+
         $current_date = date("Y-m-d");
         if ($current_date > $duedate) {
             $client = new Client();
             $url = "https://flicknexs.com/userapi/allplans";
-            $params = [
-                "userid" => 0,
-            ];
+            $params = [ "userid" => 0,];
 
-            $headers = [
-                "api-key" => "k3Hy5qr73QhXrmHLXhpEh6CQ",
-            ];
+            $headers = ["api-key" => "k3Hy5qr73QhXrmHLXhpEh6CQ",];
+
             $response = $client->request("post", $url, [
                 "json" => $params,
                 "headers" => $headers,
@@ -433,25 +431,27 @@ Please recheck the credentials before you try again!');
                 "responseBody" => $responseBody,
             ];
             return View::make("admin.expired_dashboard", $data);
-        } else {
+        }
+        else {
+           
             $users = Channel::findOrFail($id);
-
-            $users->status = 1;
+            $users->status = 1 ;
             $users->save();
-            Mail::send('emails.channel_approved', array(
-                /* 'activation_code', $user->activation_code,*/
-                'users'=> $users, 
-        
-                ),function($message) use ($users) {
 
-                $message->from(AdminMail(),GetWebsiteName());
-                $message->to($users->email)->subject("Approved You're Channel");
+            try {
+
+                Mail::send('emails.channel_approved', array('users'=> $users, ),
+                function($message) use ($users) {
+                    $message->from(AdminMail(),GetWebsiteName());
+                    $message->to($users->email)->subject("Approved You're Channel");
                 });
 
-            return \Redirect::back()->with(
-                "message",
-                "User Has Been Approved "
-            );
+            } catch (\Throwable $th) {
+
+                return redirect()->route('ChannelPendingUsers')->with('error',$th->getMessage()  );
+            }
+          
+            return \Redirect::back()->with( "success", "The channel user has been approved !!");
         }
     }
 
@@ -485,20 +485,22 @@ Please recheck the credentials before you try again!');
             return View::make("admin.expired_dashboard", $data);
         } else {
             $users = Channel::findOrFail($id);
-            $users->status = 2;
+            $users->status = 2 ;
             $users->save();
 
-            Mail::send('emails.channel_rejected', array(
-            /* 'activation_code', $user->activation_code,*/
-            'users'=> $users, 
-    
-            ),function($message) use ($users) {
+            try {
+                    Mail::send('emails.channel_rejected', array('users'=> $users ),function($message) use ($users) {
+                        $message->from(AdminMail(),GetWebsiteName());
+                        $message->to($users->email)->subject("Rejected You're Channel");
+                    });
+                
+            } catch (\Throwable $th) {
 
-            $message->from(AdminMail(),GetWebsiteName());
-            $message->to($users->email)->subject("Rejected You're Channel");
-            });
 
-            return \Redirect::back()->with("message", "User Has Been Rejected");
+                return redirect()->route('ChannelPendingUsers')->with('error',$th->getMessage()  );
+            }
+        
+            return \Redirect::back()->with( "success", "The channel user has been Rejected !!");
         }
     }
 
