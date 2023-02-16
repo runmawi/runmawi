@@ -1,5 +1,5 @@
 <?php 
-    include(public_path('themes/theme2/views/header.php'));
+    include(public_path('themes/theme5-nemisha/views/header.php'));
 ?>
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -719,5 +719,5 @@ $('.mywishlist').click(function(){
 </script>
 <!-- <script src="https://vjs.zencdn.net/7.8.3/video.js"></script> -->
 
-<?php include(public_path('themes/theme2/views/footer.blade.php'));  ?>
+<?php include(public_path('themes/theme5-nemisha/views/footer.blade.php'));  ?>
 

@@ -1,7 +1,5 @@
-
-
 @php
-    include(public_path('themes/theme2/views/header.php'));
+    include(public_path('themes/theme5-nemisha/views/header.php'));
 @endphp
 
 <div class="container mt-4 mb-4" style="background-color: white;border-radius: 10px; padding:20px;box-shadow: 0px 4px 20px rgb(0 0 0 / 5%);">
@@ -167,5 +165,5 @@
 </div>
 
 @php
-    include(public_path('themes/theme2/views/footer.blade.php'));
+    include(public_path('themes/theme5-nemisha/views/footer.blade.php'));
 @endphp

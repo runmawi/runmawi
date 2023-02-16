@@ -1,5 +1,5 @@
 <?php
-    include(public_path('themes/theme2/views/header.php'));
+    include(public_path('themes/theme5-nemisha/views/header.php'));
 ?>
 <style>
     .h-100 { height: 540px !important; }
@@ -46,5 +46,5 @@
  
 
  <?php
-    include(public_path('themes/theme2/views/footer.blade.php'));
+    include(public_path('themes/theme5-nemisha/views/footer.blade.php'));
 ?>

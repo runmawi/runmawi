@@ -183,7 +183,7 @@ i.fa.fa-google-plus {
 </script>
                        {{-- Footer --}}
 @php
-    include(public_path('themes/default/views/footer.blade.php'));
+    include(public_path('themes/theme5-nemisha/views/footer.blade.php'));
 @endphp
 
       <!-- jQuery, Popper JS -->

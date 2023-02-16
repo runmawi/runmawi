@@ -25,13 +25,13 @@ $uppercase =  ucfirst($request_url);
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 
     <!-- Bootstrap CSS -->
-         <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme2/assets/css/bootstrap.min.css') ?>" />
+         <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/bootstrap.min.css') ?>" />
 
     <!-- Typography CSS -->
-         <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme2/assets/css/typography.css') ?>" />
+         <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/typography.css') ?>" />
          
     <!-- Style -->
-         <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme2/assets/css/style.css') ?>" />
+         <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/style.css') ?>" />
   
     <!-- font awesome Icon -->
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
@@ -1031,7 +1031,7 @@ $( "#stripe_plan" ).validate({
 
 
 @php
-    @include(public_path('themes\theme2\views\footer.blade.php'));
+    @include(public_path('themes\theme5-nemisha\views\footer.blade.php'));
 @endphp
 
 @endsection 
