@@ -296,7 +296,7 @@ Route::post('/profile/update_userImage', 'AdminUsersController@update_userImage'
 Route::post('/profile/update_userEmail', 'AdminUsersController@update_userEmail');   
 
 Route::get('upgrade-subscription_plan', 'PaymentController@Upgrade_Plan');
-Route::get('becomesubscriber', 'PaymentController@BecomeSubscriber');
+Route::get('becomesubscriber', 'PaymentController@BecomeSubscriber')->name('payment_becomeSubscriber');
 Route::get('BecomeSubscriber_Plans', 'PaymentController@BecomeSubscriber_Plans')->name('BecomeSubscriber_Plans');
 Route::get('transactiondetails','PaymentController@TransactionDetails');
 
