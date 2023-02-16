@@ -484,6 +484,10 @@ i.fa.fa-google-plus {
       background: #f4f6f7;
       padding: 10px;
     }
+
+    html {
+        scroll-behavior: smooth;
+    }
     </style>
 
 <script>
@@ -569,7 +573,7 @@ i.fa.fa-google-plus {
                             @endphp
 
                             <div style="" class="col-md-6 plan_details p-0"  data-plan-id={{ 'active'.$plan->id  }}  data-plan-price={{ $plan->price }} data-plan_id={{  $plan->plan_id  }} data-payment-type={{ $plan->payment_type }} onclick="plan_details(this)">
-                                <a href="#payment_card_scroll" class="plan_Scroll">
+                                <a href="#payment_card_scroll" >
                                     <div class="row dg align-items-center mb-4" id={{ 'active'.$plan->id  }}>
                                         <div class="col-md-7 p-0">
                                             <h4 class="text-black font-weight-bold"> {{ $plan->plans_name  }} </h4>
@@ -1374,7 +1378,7 @@ function paypalplan_details(ele){
                                 
                                 $.each( response.data.plans_data , function( index, plan_data ) {
 
-                                    html += '<div class="col-md-6 plan_details p-0"  data-plan-id="active'+ plan_data.id +'" data-plan-price="'+ plan_data.price +'"  data-plan_id="'+ plan_data.plan_id +'"  data-payment-type="'+ plan_data.payment_type +'" onclick="plan_details(this)">';
+                                    html += '<a href="#payment_card_scroll" > <div class="col-md-6 plan_details p-0"  data-plan-id="active'+ plan_data.id +'" data-plan-price="'+ plan_data.price +'"  data-plan_id="'+ plan_data.plan_id +'"  data-payment-type="'+ plan_data.payment_type +'" onclick="plan_details(this)">';
                                         html += '<div class="row dg align-items-center mb-4" id="active'+ plan_data.id +'" >';
                                             
                                             html +=   '<div class="col-md-7 p-0">';
@@ -1390,7 +1394,7 @@ function paypalplan_details(ele){
                                             html += '</div>' ;
 
                                         html += '</div>' ;
-                                        html +=' <div class="d-flex justify-content-between align-items-center " > <div class="bgk"></div> </div>' ;
+                                        html +=' <div class="d-flex justify-content-between align-items-center " > <div class="bgk"></div> </div></a>' ;
                                     html += ' </div>' ;
                                 
                                     });
@@ -1488,15 +1492,6 @@ function paypalplan_details(ele){
             amount: subscription_price * 100
         });
     } 
-
-</script>
-
-<script>
-    $('.plan_Scroll').click(function (e) {
-        $('html, body').animate({
-            scrollTop: $($(this).attr('href')).offset().top
-        }, 1000);
-    });
 
 </script>
 
