@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @php
-    include(public_path('themes/default/views/header.php'));
+    include(public_path('themes/theme4/views/header.php'));
 @endphp
 
 @section('content')
@@ -1169,7 +1169,7 @@ i.fa.fa-google-plus {
 </script>
 
 @php
-    include(public_path('themes/default/views/footer.blade.php'));
+    include(public_path('themes/theme4/views/footer.blade.php'));
 @endphp
 
 @endsection 
