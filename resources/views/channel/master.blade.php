@@ -338,9 +338,9 @@ $channel = Session::get('channel');
                          <li class="line-height pt-3">
                             <a href="#" class="search-toggle iq-waves-effect d-flex align-items-center">
                                 <?php if(Auth::guest()): ?>
-                                         <img src="<?php echo URL::to('/').'/public/uploads/avatars/default.png' ?>" class="img-fluid avatar-40 rounded-circle" alt="user">
+                                         <img src="<?php echo $channel->channel_image ?>" class="img-fluid avatar-40 rounded-circle" alt="user">
                                           <?php else: ?>
-                                     <img src="<?php echo URL::to('/').'/public/uploads/avatars/' . Auth::user()->avatar ?>" class="img-fluid avatar-40 rounded-circle" alt="user">
+                                     <img src="<?php echo $channel->channel_image ?>" class="img-fluid avatar-40 rounded-circle" alt="user">
                                           <?php endif; ?>
                             </a>
                             <div class="iq-sub-dropdown iq-user-dropdown">

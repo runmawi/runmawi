@@ -1081,6 +1081,16 @@ Route::get('/CPPSeriesApproval/{id}',  'AdminSeriesController@CPPSeriesApproval'
 Route::get('/CPPSeriesReject/{id}',  'AdminSeriesController@CPPSeriesReject');
 
 
+Route::get('/ChannelAudioIndex',  'AdminAudioController@ChannelAudioIndex');
+Route::get('/ChannelAudioApproval/{id}',  'AdminAudioController@ChannelAudioApproval');
+Route::get('/ChannelAudioReject/{id}',  'AdminAudioController@ChannelAudioReject');
+
+
+Route::get('/CPPAudioIndex',  'AdminAudioController@CPPAudioIndex');
+Route::get('/CPPAudioApproval/{id}',  'AdminAudioController@CPPAudioApproval');
+Route::get('/CPPAudioReject/{id}',  'AdminAudioController@CPPAudioReject');
+
+
 // Test Server Video Upload 
 
 Route::get('/test/videoupload',  'AdminVideosController@TestServerUpload');
@@ -1314,6 +1324,7 @@ Route::post('/audios/audioupdate', array('before' => 'demo', 'uses' => 'CPPAdmin
     Route::get('/logout',  'ChannelLoginController@Logout');
     
     // Route::get('episode/{episode_name}', 'ChannelSeriesController@PlayEpisode');
+    Route::get('/get_processed_percentage/{id}', 'AdminVideosController@get_processed_percentage');
 
 
     Route::get('video-analytics', 'ChannelAnalyticsController@IndexVideoAnalytics');

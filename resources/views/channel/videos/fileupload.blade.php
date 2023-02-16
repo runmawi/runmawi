@@ -821,17 +821,17 @@ data: {
                               <label class="mb-1">Video Thumbnail <span>(9:16 Ratio or 1080X1920px)</span></label><br>
                                  <input type="file" name="image" id="image" >
                                  <span><p id="image_error_msg" style="color:red;" >* Please upload an image with 1080 x 1920 pixels dimension or 9:16 </p></span>
-                                 @if(!empty($video->image))
+                                 <!-- @if(!empty($video->image))
                                  <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" class="video-img" width="200" height="200"/>
-                                 @endif
+                                 @endif -->
                               </div>
                               <div class="col-sm-6 form-group">
                               <label class="mb-1">Player Thumbnail <span>(9:16 Ratio or 1280X720px)</span></label><br>
                               <input type="file" name="player_image" id="player_image" >
                               <span><p id="player_image_error_msg" style="color:red;" >* Please upload an image with 1280 x 720 pixels dimension or 16:9 Ratio </p></span>
-                              @if(!empty($video->player_image))
+                              <!-- @if(!empty($video->player_image))
                               <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->player_image }}" class="video-img" width="200" height="200"/>
-                              @endif
+                              @endif -->
                               </div>
                         </div>
 

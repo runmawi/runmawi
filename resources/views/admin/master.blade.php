@@ -452,6 +452,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
             <ul id="audios" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
               <li><a href="{{ URL::to('admin/audios') }}"><i class="las la-music"></i>Audio List</a></li>
               <li><a href="{{ URL::to('admin/audios/create') }}"><i class="las la-plus"></i>Add New Audio</a></li>
+              <li><a href="{{ URL::to('admin/CPPAudioIndex') }}">Audios For Approval</a></li>
               <li><a href="{{ URL::to('admin/audios/categories') }}"><i class="las la-eye"></i>Manage Audio Categories</a></li>
               <li><a href="{{ URL::to('admin/audios/albums') }}"><i class="las la-eye"></i>Manage Albums</a></li>
             </ul>
@@ -753,6 +754,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
             <ul id="audios" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
               <li><a href="{{ URL::to('admin/audios') }}">Audio List</a></li>
               <li><a href="{{ URL::to('admin/audios/create') }}">Add New Audio</a></li>
+              <li><a href="{{ URL::to('admin/CPPAudioIndex') }}">Audios For Approval</a></li>
               <li><a href="{{ URL::to('admin/audios/categories') }}">Manage Audio Categories</a></li>
               <li><a href="{{ URL::to('admin/audios/albums') }}">Manage Albums</a></li>
             </ul>
@@ -1062,6 +1064,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
             <ul id="audios" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
               <li><a href="{{ URL::to('admin/audios') }}"><i class="las la-music"></i>Audio List</a></li>
               <li><a href="{{ URL::to('admin/audios/create') }}"><i class="las la-plus"></i>Add New Audio</a></li>
+              <li><a href="{{ URL::to('admin/CPPAudioIndex') }}"><i class="las la-eye">Audios For Approval</a></li>
               <li><a href="{{ URL::to('admin/audios/categories') }}"><i class="las la-eye"></i>Manage Audio Categories</a></li>
               <li><a href="{{ URL::to('admin/audios/albums') }}"><i class="las la-eye"></i>Manage Albums</a></li>
             </ul>

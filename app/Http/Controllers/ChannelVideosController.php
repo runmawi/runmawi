@@ -50,6 +50,7 @@ use App\AdsVideo;
 use App\VideoSearchTag;
 use App\RelatedVideo;
 use App\InappPurchase;
+use App\Adscategory;
 
 class ChannelVideosController extends Controller
 {
@@ -961,9 +962,42 @@ class ChannelVideosController extends Controller
             $ads_details = AdsVideo::join('advertisements', 'advertisements.id', 'ads_videos.ads_id')->where('ads_videos.video_id', $id)->pluck('ads_id')
                 ->first();
 
-            $ads_rolls = AdsVideo::join('advertisements', 'advertisements.id', 'ads_videos.ads_id')->where('ads_videos.video_id', $id)->pluck('ad_roll')
-                ->first();
-
+                $ads_details = AdsVideo::join(
+                    "advertisements",
+                    "advertisements.id",
+                    "ads_videos.ads_id"
+                )
+                    ->where("ads_videos.video_id", $id)
+                    ->pluck("ads_id")
+                    ->first();
+        
+                $ads_rolls = AdsVideo::join(
+                    "advertisements",
+                    "advertisements.id",
+                    "ads_videos.ads_id"
+                )
+                    ->where("ads_videos.video_id", $id)
+                    ->pluck("ad_roll")
+                    ->first();
+        
+                $ads_category = Adscategory::get();
+        
+                $Reels_videos = Video::Join(
+                    "reelsvideo",
+                    "reelsvideo.video_id",
+                    "=",
+                    "videos.id"
+                )
+                    ->where("videos.id", $id)
+                    ->get();
+                $related_videos = Video::get();
+        
+                $all_related_videos = RelatedVideo::where("video_id", $id)
+                    ->pluck("related_videos_id")
+                    ->toArray();
+        
+               
+        
             $data = array(
                 'headline' => '<i class="fa fa-edit"></i> Edit Video',
                 'video' => $video,
@@ -988,10 +1022,25 @@ class ChannelVideosController extends Controller
                     ->toArray() ,
                 'languages_id' => LanguageVideo::where('video_id', $id)->pluck('language_id')
                     ->toArray() ,
+                "block_countries" => BlockVideo::where("video_id", $id)
+                ->pluck("country_id")
+                ->toArray(),
                 'ads_paths' => $ads_details ? $ads_details : 0,
                 'ads_rolls' => $ads_rolls ? $ads_rolls : 0,
+                "Reels_videos" => $Reels_videos,
+                "ads_category" => $ads_category,
                 'InappPurchase' => InappPurchase::all() ,
+                "block_countries" => BlockVideo::where("video_id", $id)
+                ->pluck("country_id")
+                ->toArray(),
+                'pre_ads'  => Video::select('advertisements.*')->join('advertisements','advertisements.id','=','videos.pre_ads')
+                ->where('videos.id',$id)->first(),
 
+                'mid_ads'  => Video::select('advertisements.*')->join('advertisements','advertisements.id','=','videos.mid_ads')
+                ->where('videos.id',$id)->first(),
+
+                'post_ads' => Video::select('advertisements.*')->join('advertisements','advertisements.id','=','videos.post_ads')
+                ->where('videos.id',$id)->first(),
             );
 
             return View::make('channel.videos.create_edit', $data);
@@ -1007,6 +1056,12 @@ class ChannelVideosController extends Controller
      * @param  int  $id
      * @return Response
      */
+
+     function get_processed_percentage($id)
+     {
+         return Video::where("id", "=", $id)->first();
+     }
+
     public function Channelupdate(Request $request)
     {
 
@@ -1612,7 +1667,7 @@ class ChannelVideosController extends Controller
             }
 
             /*Advertisement Video update starts*/
-            if ($data['ads_id'] != 0)
+            if (@$data['ads_id'] != 0)
             {
                 $ad_video = AdsVideo::where('video_id', $id)->first();
 

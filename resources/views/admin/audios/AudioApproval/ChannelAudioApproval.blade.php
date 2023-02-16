@@ -22,11 +22,10 @@ border-radius: 0px 4px 4px 0px;
 
      <div id="content-page" class="content-page">
           <div class="d-flex">
-          <a class="black" href="{{ URL::to('admin/series-list') }}"> Series List</a>
-				<a class="black" href="{{ URL::to('admin/series/create') }}"> Add New Series</a>
-				<a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/Series/Genre') }}">Manage Series Genre</a>
-      </div>
-
+                        <a class="black" href="{{ URL::to('admin/livestream') }}">All Live Videos</a>
+                        <a class="black" href="{{ URL::to('admin/livestream/create') }}">Add New Live Video</a>
+                        <a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/CPPLiveVideosIndex') }}">Live Videos For Approval</a>
+                        <a class="black" href="{{ URL::to('admin/livestream/categories') }}">Manage Live Video Categories</a></div>
          <div class="container-fluid p-0">
             <div class="row">
                <div class="col-sm-12">
@@ -34,15 +33,15 @@ border-radius: 0px 4px 4px 0px;
                      <div class="iq-card-header d-flex justify-content-between">
                      <div class="row">
                            <div class="col-md-5">
-                              <a href="{{ URL::to('/admin/CPPSeriesIndex') }}"><button type="button" class="btn btn-default">CPP Uploaded Series Videos</button></a>
+                              <a href="{{ URL::to('/admin/CPPAudioIndex') }}"><button type="button" class="btn btn-default">CPP Uploaded Audios</button></a>
                            </div>
                            <div class="col-md-5">
-                              <a href="{{ URL::to('/admin/ChannelSeriesIndex') }}"><button type="button" class="btn btn-default" >Channel Uploaded Series Videos</button></a>
+                              <a href="{{ URL::to('/admin/ChannelAudioIndex') }}"><button type="button" class="btn btn-default" >Channel Uploaded Audios</button></a>
                            </div>
                         <div>
                            <br>
                         <div class="iq-header-title">
-                           <h4 class="card-title">CPP Series Video Lists</h4>
+                           <h4 class="card-title">Channel Lists</h4>
                         </div>
 
                          <div class="iq-card-header-toolbar d-flex align-items-baseline">
@@ -66,36 +65,36 @@ border-radius: 0px 4px 4px 0px;
                                  </tr>
                               </thead>
                               <tbody>
-                              @foreach($videos as $video)
+                              @foreach($audios as $audio)
                                  <tr>
                                     <td>
                                        <div class="media align-items-center">
                                           <div class="iq-movie">
                                              <a href="javascript:void(0);"><img
-                                                   src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}"
+                                                   src="{{ URL::to('/') . '/public/uploads/images/' . $audio->image }}"
                                                    class="img-border-radius avatar-40 img-fluid" alt=""></a>
                                           </div>
                                           <div class="media-body text-white text-left ml-3">
-                                             <p class="mb-0">{{ $video->title }}</p>
+                                             <p class="mb-0">{{ $audio->title }}</p>
                                           </div>
                                        </div>
                                     </td>
-                                    <td>{{ $video->username }}</td>
-                                    <td>{{ $video->year }}</td>
-                                    <td>{{ $video->access }}</td>
-                                    <?php if($video->active == 0){ ?>
+                                    <td>{{ $audio->username }}</td>
+                                    <td>{{ $audio->year }}</td>
+                                    <td>{{ $audio->access }}</td>
+                                    <?php if($audio->status == 0){ ?>
                                        <td class="bg-warning"> <?php echo "Pending"; ?></td>
-                                    <?php }elseif($video->active == 1){ ?>
+                                    <?php }elseif($audio->status == 1){ ?>
                                        <td class="bg-success"> <?php  echo "Approved"; ?></td>
-                                    <?php }elseif($video->active == 2){ ?>
+                                    <?php }elseif($audio->status == 2){ ?>
                                        <td class="bg-danger"> <?php  echo "Rejected"; ?></td>
                                     <?php }?>                              
                                     <td colspan="2">
                                        <div class="flex align-items-center list-user-action">
                                           <a class="iq-bg-warning" 
-                                          onclick="return confirm('Do you want to approve this Series Stream ?')"  href="{{ URL::to('admin/CPPSeriesApproval') . '/' . $video->id }}">  <i class="fa fa-check-circle" style="font-size:24px;color:green;"></i></a>
+                                          onclick="return confirm('Do you want to approve this Audio Stream ?')"  href="{{ URL::to('admin/ChannelAudioApproval') . '/' . $audio->id }}">  <i class="fa fa-check-circle" style="font-size:24px;color:green;"></i></a>
                                           <a class="iq-bg-success" 
-                                              onclick="return confirm('Do you want to reject this Series Stream  ?')" href="{{ URL::to('admin/CPPSeriesReject') . '/' . $video->id }}"> <i class="fa fa-close" style="font-size:20px;color:white;background:red;border-radius:50%;"></i></a>
+                                              onclick="return confirm('Do you want to reject this Audio Stream  ?')" href="{{ URL::to('admin/ChannelAudioReject') . '/' . $audio->id }}"> <i class="fa fa-close" style="font-size:20px;color:white;background:red;border-radius:50%;"></i></a>
                                        </div>
                                     </td>
                                  </tr>
@@ -154,6 +153,37 @@ $(document).ready(function(){
 		});
 
 	</script>
+
+<script>
+$.ajaxSetup({
+           headers: {
+                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+    });
+
+
+	$(document).ready(function(){
+
+$('#cpp_user_videos').change(function(){
+   var val = $('#cpp_user_videos').val();
+   if(val == "cpp_videos"){
+	$.ajax({
+   url:"{{ URL::to('admin/cppusers_videodata') }}",
+   method:'get',
+   data:{query:val},
+   dataType:'json',
+   success:function(data)
+   {
+    $('tbody').html(data.table_data);
+    $('#total_records').text(data.total_data);
+   }
+    });
+   }
+})
+
+});
+	
+</script>
 	@stop
 
 @stop

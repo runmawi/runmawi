@@ -34,15 +34,15 @@ border-radius: 0px 4px 4px 0px;
                      <div class="iq-card-header d-flex justify-content-between">
                      <div class="row">
                            <div class="col-md-5">
-                              <a href="{{ URL::to('/admin/CPPSeriesIndex') }}"><button type="button" class="btn btn-default">CPP Uploaded Series Videos</button></a>
+                              <a href="{{ URL::to('/admin/CPPAudioIndex') }}"><button type="button" class="btn btn-default">CPP Uploaded Audio </button></a>
                            </div>
                            <div class="col-md-5">
-                              <a href="{{ URL::to('/admin/ChannelSeriesIndex') }}"><button type="button" class="btn btn-default" >Channel Uploaded Series Videos</button></a>
+                              <a href="{{ URL::to('/admin/ChannelAudioIndex') }}"><button type="button" class="btn btn-default" >Channel Uploaded Audio </button></a>
                            </div>
                         <div>
                            <br>
                         <div class="iq-header-title">
-                           <h4 class="card-title">CPP Series Video Lists</h4>
+                           <h4 class="card-title">Channel Audio Lists</h4>
                         </div>
 
                          <div class="iq-card-header-toolbar d-flex align-items-baseline">
@@ -66,36 +66,36 @@ border-radius: 0px 4px 4px 0px;
                                  </tr>
                               </thead>
                               <tbody>
-                              @foreach($videos as $video)
+                              @foreach($audios as $audio)
                                  <tr>
                                     <td>
                                        <div class="media align-items-center">
                                           <div class="iq-movie">
                                              <a href="javascript:void(0);"><img
-                                                   src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}"
+                                                   src="{{ URL::to('/') . '/public/uploads/images/' . $audio->image }}"
                                                    class="img-border-radius avatar-40 img-fluid" alt=""></a>
                                           </div>
                                           <div class="media-body text-white text-left ml-3">
-                                             <p class="mb-0">{{ $video->title }}</p>
+                                             <p class="mb-0">{{ $audio->title }}</p>
                                           </div>
                                        </div>
                                     </td>
-                                    <td>{{ $video->username }}</td>
-                                    <td>{{ $video->year }}</td>
-                                    <td>{{ $video->access }}</td>
-                                    <?php if($video->active == 0){ ?>
+                                    <td>{{ $audio->username }}</td>
+                                    <td>{{ $audio->year }}</td>
+                                    <td>{{ $audio->access }}</td>
+                                    <?php if($audio->active == 0){ ?>
                                        <td class="bg-warning"> <?php echo "Pending"; ?></td>
-                                    <?php }elseif($video->active == 1){ ?>
+                                    <?php }elseif($audio->active == 1){ ?>
                                        <td class="bg-success"> <?php  echo "Approved"; ?></td>
-                                    <?php }elseif($video->active == 2){ ?>
+                                    <?php }elseif($audio->active == 2){ ?>
                                        <td class="bg-danger"> <?php  echo "Rejected"; ?></td>
                                     <?php }?>                              
                                     <td colspan="2">
                                        <div class="flex align-items-center list-user-action">
                                           <a class="iq-bg-warning" 
-                                          onclick="return confirm('Do you want to approve this Series Stream ?')"  href="{{ URL::to('admin/CPPSeriesApproval') . '/' . $video->id }}">  <i class="fa fa-check-circle" style="font-size:24px;color:green;"></i></a>
+                                          onclick="return confirm('Do you want to approve this Audio Stream ?')"  href="{{ URL::to('admin/CPPAudioApproval') . '/' . $audio->id }}">  <i class="fa fa-check-circle" style="font-size:24px;color:green;"></i></a>
                                           <a class="iq-bg-success" 
-                                              onclick="return confirm('Do you want to reject this Series Stream  ?')" href="{{ URL::to('admin/CPPSeriesReject') . '/' . $video->id }}"> <i class="fa fa-close" style="font-size:20px;color:white;background:red;border-radius:50%;"></i></a>
+                                              onclick="return confirm('Do you want to reject this Audio Stream  ?')" href="{{ URL::to('admin/CPPAudioReject') . '/' . $audio->id }}"> <i class="fa fa-close" style="font-size:20px;color:white;background:red;border-radius:50%;"></i></a>
                                        </div>
                                     </td>
                                  </tr>
