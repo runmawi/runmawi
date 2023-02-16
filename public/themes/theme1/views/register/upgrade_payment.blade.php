@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @php
-    include(public_path('themes/default/views/header.php'));
+    include(public_path('themes/theme1/views/header.php'));
 @endphp
 
 @section('content')
@@ -474,15 +474,12 @@ i.fa.fa-google-plus {
         background-color:  {{ button_bg_color() .'!important' }} ;
     }
     
-</style>
-
-<style>
     #card-element {
       height: 50px;
       background: #f4f6f7;
       padding: 10px;
     }
-    </style>
+</style>
 
 <script>
   $( function() {
@@ -555,21 +552,23 @@ i.fa.fa-google-plus {
                                 @endphp
 
                                 <div style="" class="col-md-6 plan_details p-0"  data-plan-id={{ 'active'.$plan->id  }}  data-plan-price={{ $plan->price }} data-plan_id={{  $plan->plan_id  }} data-payment-type={{ $plan->payment_type }} onclick="plan_details(this)">
-                                    <div class="row dg align-items-center mb-4" id={{ 'active'.$plan->id  }}>
-                                        <div class="col-md-7 p-0">
-                                            <h4 class="text-black font-weight-bold"> {{ $plan->plans_name  }} </h4>
-                                            <p>{{ $plan->plans_name  }} Membership</p>
+                                    <a href="#payment_card_scroll" class="plan_Scroll">
+                                        <div class="row dg align-items-center mb-4" id={{ 'active'.$plan->id  }}>
+                                            <div class="col-md-7 p-0">
+                                                <h4 class="text-black font-weight-bold"> {{ $plan->plans_name  }} </h4>
+                                                <p>{{ $plan->plans_name  }} Membership</p>
+                                            </div>
+                                            <div class="vl "></div>
+                                            <div class="col-md-4 p-2" >
+                                                <h4 class="text-black">{{ currency_symbol().$plan->price }}</h4>
+                                                <p>Billed as {{ currency_symbol().$plan->price }}</p>
+                                            </div>
                                         </div>
-                                        <div class="vl "></div>
-                                        <div class="col-md-4 p-2" >
-                                            <h4 class="text-black">{{ currency_symbol().$plan->price }}</h4>
-                                            <p>Billed as {{ currency_symbol().$plan->price }}</p>
-                                        </div>
-                                    </div>
 
-                                    <div class="d-flex justify-content-between align-items-center " > 
-                                        <div class="bgk"></div>
-                                    </div>
+                                        <div class="d-flex justify-content-between align-items-center " >
+                                            <div class="bgk"></div>
+                                        </div>
+                                    </a>
                                 </div>
                             @endforeach
                         </div>
@@ -604,9 +603,9 @@ i.fa.fa-google-plus {
                             @endif
                     </div>
 
-                    <div class="col-md-12 mt-5">
-                        <div class="cont stripe_payment">
-      
+
+                    <div class="col-md-12 mt-5" id="payment_card_scroll">
+                        <div class="cont stripe_payment" >
                          <div class="d-flex justify-content-between align-items-center">
                              <div>
                                  <h3>Payment</h3>
@@ -637,7 +636,7 @@ i.fa.fa-google-plus {
                                         <!-- Add Promotion Code -->
                             <div class="mt-3">
                                 <label for="fname"  style="float: right; " data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"  class="promo"> Add Promotion Code </label>
-                                <div class="collapse" id="collapseExample">
+                               <div class="collapse show" id="collapseExample">
                                     <div class="row p-0">
                                         <div class="col-lg-6 p-0" >
                                             <input id="coupon_code_stripe" type="text" class="form-control" placeholder="Add Promotion Code" >
@@ -1168,8 +1167,18 @@ i.fa.fa-google-plus {
 
 </script>
 
+<script>
+   
+    $('.plan_Scroll').click(function (e) {
+        $('html, body').animate({
+            scrollTop: $($(this).attr('href')).offset().top
+        }, 1000);
+    });
+
+</script>
+
 @php
-    include(public_path('themes/default/views/footer.blade.php'));
+    include(public_path('themes/theme1/views/footer.blade.php'));
 @endphp
 
 @endsection 
