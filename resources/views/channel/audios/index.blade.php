@@ -31,8 +31,9 @@
                                  <tr>
                                     <th><label>Title</label></th>
                                     <th><label>Rating</label></th>
-                                    <th><label>Category</label></th>
+                                    <!-- <th><label>Category</label></th> -->
                                      <th><label>Views</label></th>
+                                     <th><label>Status</label></th>
                                     <th><label>Action</label></th>
                                  </tr>
                               </thead>
@@ -53,11 +54,13 @@
                                        </div>
                                     </td>
                                     <td>{{ $audio->rating }}</td>
-                                    <td>@if(isset($audio->categories->name)) {{ $audio->categories->name }} @endif</td>
+                                    <!-- <td>@if(isset($audio->categories->name)) {{ $audio->categories->name }} @endif</td> -->
                                   
                                     <td>
                                         {{ $audio->views }} <img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>">
                                     </td>
+                                    <td>{{ $audio->rating }}</td>
+
                                     <td>
                                        <div class=" align-items-center list-user-action">
                                           <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title=""

@@ -1279,4 +1279,138 @@ class AdminAudioController extends Controller
         }
     }
 
+    public function ChannelAudioIndex()
+    {
+
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [
+                'userid' => 0,
+            ];
+    
+            $headers = [
+                'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+            ];
+            $response = $client->request('post', $url, [
+                'json' => $params,
+                'headers' => $headers,
+                'verify'  => false,
+            ]);
+    
+            $responseBody = json_decode($response->getBody());
+           $settings = Setting::first();
+           $data = array(
+            'settings' => $settings,
+            'responseBody' => $responseBody,
+                );
+            return View::make('admin.expired_dashboard', $data);
+            }else{
+
+                $audios =    Audio::join('channels', 'channels.id','=','audio.user_id')
+                ->select( 'audio.*','channels.channel_name as username')
+                ->where("audio.uploaded_by", "Channel")
+                ->where('audio.status','=',0)->orWhere('audio.status', '=', null)
+                ->orderBy('audio.created_at', 'DESC')->paginate(9);
+
+                // dd($videos);
+                $data = array(
+                    'audios' => $audios,
+                    );
+
+                return View('admin.audios.AudioApproval.ChannelAudioApproval', $data);
+            }
+        }
+       public function ChannelAudioApproval($id)
+       {
+           $audio = Audio::findOrFail($id);
+           $audio->active = 1;
+           $audio->status = 1;
+           $audio->save();
+           return Redirect::back()->with('message','Your video will be available shortly after we process it');
+
+        }
+
+        public function ChannelAudioReject($id)
+        {
+            $audio = Audio::findOrFail($id);
+            $audio->active = 2;
+            $audio->status = 1;
+            $audio->save();            
+            return Redirect::back()->with('message','Your video will be available shortly after we process it');
+ 
+        }
+
+
+        public function CPPAudioIndex()
+        {
+    
+            $user =  User::where('id',1)->first();
+            $duedate = $user->package_ends;
+            $current_date = date('Y-m-d');
+            if ($current_date > $duedate)
+            {
+                $client = new Client();
+                $url = "https://flicknexs.com/userapi/allplans";
+                $params = [
+                    'userid' => 0,
+                ];
+        
+                $headers = [
+                    'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+                ];
+                $response = $client->request('post', $url, [
+                    'json' => $params,
+                    'headers' => $headers,
+                    'verify'  => false,
+                ]);
+        
+                $responseBody = json_decode($response->getBody());
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,
+                'responseBody' => $responseBody,
+            );
+                return View::make('admin.expired_dashboard', $data);
+            }else{
+            // $videos = LiveStream::orderBy('created_at', 'DESC')->paginate(9);
+    
+        $audios = Audio::join('moderators_users', 'moderators_users.id','=','audio.user_id')
+            ->select('moderators_users.username', 'audio.*')
+            ->where("audio.uploaded_by", "CPP")
+            ->where('audio.status','=',0)->orWhere('audio.status', '=', null)
+            ->orderBy('audio.created_at', 'DESC')->paginate(9);
+                // dd($videos);
+                $data = array(
+                    'audios' => $audios,
+                    // 'channelvideos' => $channelvideos,
+                    );
+    
+            return View('admin.audios.AudioApproval.CppAudioApproval', $data);
+
+            }
+    }
+    public function CPPAudioApproval($id)
+    {
+        $audio = Audio::findOrFail($id);
+        $audio->active = 1;
+        $audio->status = 1;
+        $audio->save();
+        return Redirect::back()->with('message','Your video will be available shortly after we process it');
+
+    }
+
+        public function CPPAudioReject($id)
+        {
+            $audio = Audio::findOrFail($id);
+            $audio->active = 2;
+            $audio->status = 1;
+            $audio->save();            
+            return Redirect::back()->with('message','Your video will be available shortly after we process it');
+
+        }
 }
