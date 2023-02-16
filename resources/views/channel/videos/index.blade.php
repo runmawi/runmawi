@@ -91,18 +91,7 @@
                                              <?php }else{ ?>
                                     <td> <p class = "bg-warning video_active"><?php  echo "Draft"; ?></p></td>
                                              <?php }?>
-                                             
-                                    <?php if($video->active == 0){ ?>
-                                       <td class = "bg-warning"> <?php //echo "Pending"; ?></td>
-                                    <?php }elseif($video->active == 1){ ?>
-                                       <td class = "bg-success"> <?php  //echo "Approved"; ?></td>
-                                    <?php }elseif($video->active == 2){ ?>
-                                       <td class = "bg-danger"> <?php  //echo "Rejected"; ?></td>
-                                    <?php }?>
 
-                                    
-                                    
-                             
                                     <!-- <td> @if(isset($video->languages->name)) {{ $video->languages->name }} @endif</td> -->
                                     <td>
                                        <!--<p> {{ substr($video->description, 0, 50) . '...' }} </p>-->
