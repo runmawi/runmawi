@@ -1,6 +1,6 @@
 
 @php
-   include(public_path('themes/theme2/views/header.php'));
+   include(public_path('themes/theme5-nemisha/views/header.php'));
    $settings = App\Setting::first(); 
 @endphp 
     
@@ -912,7 +912,7 @@ border-radius: 5px;padding:10px;">
 		<?php $settings = App\Setting::first(); ?>
 
    @php
-      include(public_path('themes/theme2/views/footer.blade.php'));
+      include(public_path('themes/theme5-nemisha/views/footer.blade.php'));
     @endphp
           <!-- back-to-top End -->
      <!-- back-to-top End -->

@@ -1,5 +1,5 @@
 <?php
-    include(public_path('themes/default/views/header.php'));
+    include(public_path('themes/theme5-nemisha/views/header.php'));
     $series = App\series::first();
 ?>
 
@@ -819,5 +819,5 @@ function episodewishlist(ele)
 </script>
 	
 <?php
-    include(public_path('themes/default/views/footer.blade.php'));
+    include(public_path('themes/theme5-nemisha/views/footer.blade.php'));
 ?>

@@ -132,7 +132,7 @@ entertainment.</p>
       <script defer src="<?= URL::to('/'). '/assets/js/slick-animation.min.js';?>"></script>
       <!-- Custom JS-->
 
-      <script defer type="text/javascript" src="<?php echo URL::to('public/themes/theme2/assets/js/custom.js'); ?>"></script>
+      <script defer type="text/javascript" src="<?php echo URL::to('public/themes/theme5-nemisha/assets/js/custom.js'); ?>"></script>
       
       <?php 
       $footer_script = App\Script::pluck('footer_script')->toArray();

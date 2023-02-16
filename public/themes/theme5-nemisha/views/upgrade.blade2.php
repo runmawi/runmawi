@@ -3,7 +3,7 @@
 @section('content')
 
 @php
-    include(public_path('themes\theme1\views\header.php'));
+    include(public_path('themes\theme5-nemisha\views\header.php'));
 @endphp
 
 <head>
@@ -708,6 +708,6 @@ body.loading .overlay{
 
 
 @php
-    include(public_path('themes\theme1\views\footer.blade.php'));
+    include(public_path('themes\theme5-nemisha\views\footer.blade.php'));
 @endphp
 @endsection 

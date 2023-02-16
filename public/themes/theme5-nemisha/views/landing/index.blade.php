@@ -22,11 +22,11 @@ $uppercase =  ucfirst($request_url);
     <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
-        <link href="<?php echo URL::to('public/themes/theme2/assets/fonts/font.css') ?>" rel="stylesheet">
+        <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/fonts/font.css') ?>" rel="stylesheet">
      <!-- Bootstrap CSS -->
       <!-- Typography CSS -->
-         <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme2/assets/css/style.css') ?>" />
-         <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme2/assets/css/bootstrap.min.css') ?>" />
+         <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/style.css') ?>" />
+         <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/bootstrap.min.css') ?>" />
       <!-- Style -->
       <link rel="stylesheet" href="<?= typography_link(); ?>" />
       <!-- Responsive -->
@@ -1817,6 +1817,6 @@ on your phone, tablet or laptop. No matter which device you use, we are always a
     </script>
 
  @php
-    include(public_path('themes/theme2/views/footer.blade.php'));
+    include(public_path('themes/theme5-nemisha/views/footer.blade.php'));
 @endphp
 

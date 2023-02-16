@@ -1,5 +1,5 @@
 <?php 
-    include(public_path('themes/theme2/views/header.php'));
+    include(public_path('themes/theme5-nemisha/views/header.php'));
 ?>
 
 <section id="iq-favorites">
@@ -113,6 +113,6 @@
                </div>
             </div>
 
-<?php include(public_path('themes/theme2/views/footer.blade.php'));  ?>
+<?php include(public_path('themes/theme5-nemisha/views/footer.blade.php'));  ?>
 
 

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @php
-   include(public_path('themes\theme1\views\header.php'));
+   include(public_path('themes\theme5-nemisha\views\header.php'));
 @endphp
 <style>
     .form-control{
@@ -366,7 +366,7 @@ $('.is_apply').on('change', function(){
 
 </script>
 @php
-    include(public_path('themes\theme1\views\footer.blade.php'));
+    include(public_path('themes\theme5-nemisha\views\footer.blade.php'));
 @endphp
 
 @endsection

@@ -1,6 +1,6 @@
 <?php 
-   include(public_path('themes/theme2/views/header.php'));
-   include(public_path('themes/theme2/views/Rss-feed/Rss_feed_style.blade.php'));
+   include(public_path('themes/theme5-nemisha/views/header.php'));
+   include(public_path('themes/theme5-nemisha/views/Rss-feed/Rss_feed_style.blade.php'));
 ?>
 
 <section id="iq-favorites">
@@ -53,5 +53,5 @@
 <section>
 
 <?php
-    //  include(public_path('themes/theme2/views/footer.blade.php'));  
+    //  include(public_path('themes/theme5-nemisha/views/footer.blade.php'));  
      ?>

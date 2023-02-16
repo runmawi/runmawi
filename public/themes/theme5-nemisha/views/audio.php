@@ -1,4 +1,4 @@
-<?php include(public_path('themes/theme2/views/header.php'));  
+<?php include(public_path('themes/theme5-nemisha/views/header.php'));  
 
 $audio = $audios ;
 
@@ -895,4 +895,4 @@ window.location = '<?= URL::to('login') ?>';
     }
   }
     </script>
-<?php include(public_path('themes/theme2/views/footer.blade.php')); ?>
+<?php include(public_path('themes/theme5-nemisha/views/footer.blade.php')); ?>
