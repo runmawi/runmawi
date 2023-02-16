@@ -3,6 +3,8 @@
 
 <?php 
 include('header.php');
+include('episode_ads.blade.php');
+
 
 $series=App\series::first();
 
