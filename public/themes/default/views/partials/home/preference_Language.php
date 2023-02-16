@@ -22,7 +22,9 @@
                                     <div class="corner-text-wrapper">
                                     <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 
                                         <div class="corner-text">
-                                            <?php  if(!empty($preference_Languages->ppv_price)){?>
+                                            <?php  if($preference_Languages->access == 'subscriber' ){ ?>
+                                                <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
+                                            <?php }elseif(!empty($preference_Languages->ppv_price)){?>
                                                 <p class="p-tag1"><?php echo $currency->symbol.' '.$preference_Languages->ppv_price; ?></p>
                                             <?php }elseif( !empty($preference_Languages->global_ppv || !empty($preference_Languages->global_ppv) && $preference_Languages->ppv_price == null)){ ?>
                                                 <p class="p-tag1"><?php echo $preference_Languages->global_ppv.' '.$currency->symbol; ?></p>

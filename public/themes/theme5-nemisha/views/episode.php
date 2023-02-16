@@ -3,6 +3,8 @@
 
 <?php 
 include('header.php');
+include('episode_ads.blade.php');
+
 
 $series=App\series::first();
 
@@ -277,6 +279,7 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 							<span id="<?php echo 'episode_add_wishlist_'.$episode->id ; ?>" class="episode_add_wishlist_"  aria-hidden="true" data-list="<?php echo $episode->id ; ?>" data-myval="10"  data-video-id="<?php echo $episode->id ; ?>"  onclick="episodewishlist(this)"> <i class="fa  fa-heart" aria-hidden="true"></i></span>
 						<?php } ?>
 					</li>
+                    <li>
 					<?php if(empty($like_dislike->liked) ||  !empty($like_dislike->liked) &&  $like_dislike->liked == 0){ ?>
 							<span id="<?php echo 'episode_like_'.$episode->id ; ?>" class="episode_like_"  aria-hidden="true" data-list="<?php echo $episode->id ; ?>" data-myval="10" data-video-id="<?php echo $episode->id ; ?>" onclick="episodelike(this)" ><i class="ri-thumb-up-line" aria-hidden="true"></i>   </span>
 						<?php }else{?>

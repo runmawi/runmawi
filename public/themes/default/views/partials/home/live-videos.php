@@ -89,7 +89,9 @@
                      
                         <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  
                         
-                                <?php  if(!empty($video->ppv_price)){?>
+                                <?php if($video->access == 'subscriber' ){ ?>
+                                  <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
+                                <?php }elseif(!empty($video->ppv_price)){?>
                                 <p class="p-tag1"><?php echo $currency->symbol.' '.$video->ppv_price; ?></p>
                                 <?php }elseif($video->ppv_price == null ){ ?>
                                 <p class="p-tag"><?php echo "Free"; ?></p>

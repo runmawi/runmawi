@@ -80,6 +80,7 @@ class ChannelVideosController extends Controller
             $data = array(
                 'videos' => $videos,
                 'user' => $user,
+               'settings' => Setting::first(),
                 // 'admin_user' => Auth::user()
                 
             );

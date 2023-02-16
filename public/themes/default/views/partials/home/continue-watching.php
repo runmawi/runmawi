@@ -18,7 +18,9 @@
                      <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$cont_video->image;  ?>" class="img-fluid lazyload w-100" alt="img">
                      <!-- PPV price -->
                      <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  
-                     <?php  if(!empty($cont_video->ppv_price)){?>
+                     <?php if($cont_video->access == 'subscriber' ){ ?>
+                        <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
+                        <?php }elseif(!empty($cont_video->ppv_price)){?>
                      <p class="p-tag1"><?php echo $currency->symbol.' '.$cont_video->ppv_price; ?></p>
                      <?php }elseif( !empty($cont_video->global_ppv || !empty($cont_video->global_ppv) && $cont_video->ppv_price == null)){ ?>
                      <p class="p-tag1"><?php echo $cont_video->global_ppv.' '.$currency->symbol; ?></p>

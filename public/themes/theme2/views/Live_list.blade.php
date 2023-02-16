@@ -41,7 +41,11 @@
                                                 </a>
                                             
                                                 @if($ThumbnailSetting->free_or_cost_label == 1) 
-                                                    @if(!empty($category_video->ppv_price))  <!-- PPV price -->
+                                                
+                                                    @if( $category_video->access == 'subscriber' )
+                                                        <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
+
+                                                    @elseif(!empty($category_video->ppv_price))  <!-- PPV price -->
                                                         <p class="p-tag1" >
                                                             {{  $currency->symbol.' '.$category_video->ppv_price}}
                                                         </p>

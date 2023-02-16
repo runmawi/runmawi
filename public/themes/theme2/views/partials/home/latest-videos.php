@@ -62,7 +62,9 @@
                         <!-- PPV price -->
                       
                                     <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
-                                    <?php  if(!empty($watchlater_video->ppv_price)){?>
+                                    <?php  if($watchlater_video->access == 'subscriber' ){ ?>
+                                    <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
+                                    <?php }elseif(!empty($watchlater_video->ppv_price)){?>
                                     <p class="p-tag1"><?php echo $currency->symbol.' '.$watchlater_video->ppv_price; ?></p>
                                     <?php }elseif( !empty($watchlater_video->global_ppv || !empty($watchlater_video->global_ppv) && $watchlater_video->ppv_price == null)){ ?>
                                     <p class="p-tag1"><?php echo $watchlater_video->global_ppv.' '.$currency->symbol; ?></p>

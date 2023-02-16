@@ -80,7 +80,9 @@ $currency = App\CurrencySetting::first();
                                 
                                     <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  
                                         <p class="p-tag1">
-                                            <?php if(!empty($category_video->ppv_price)) {
+                                            <?php if($category_video->access == 'subscriber' ){ ?>
+                                         <i class="fas fa-crown" style='color:gold'></i>    
+                                    <?php }elseif(!empty($category_video->ppv_price)) {
                                                    echo $category_video->ppv_price.' '.$currency->symbol ; 
                                                 } elseif(!empty($category_video->global_ppv) && $category_video->ppv_price == null) {
                                                     echo $category_video->global_ppv .' '.$currency->symbol;

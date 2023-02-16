@@ -24,14 +24,14 @@ $uppercase =  ucfirst($request_url);
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
      <!-- Bootstrap CSS -->
       <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
-                         <link href="<?php echo URL::to('public/themes/theme2/assets/fonts/font.css') ?>" rel="stylesheet">
+                         <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/fonts/font.css') ?>" rel="stylesheet">
 
       <!-- Typography CSS -->
-         <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme2/assets/css/style.css') ?>" />
+         <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/style.css') ?>" />
       <!-- Style -->
-      <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme2/assets/css/typography.css') ?>" />
+      <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/typography.css') ?>" />
       <!-- Responsive -->
-      <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme2/assets/css/responsive.css') ?>" />
+      <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/responsive.css') ?>" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
