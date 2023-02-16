@@ -2,31 +2,7 @@
 @php
     include(public_path('themes/default/views/header.php'));
 @endphp
-     <section class="channel-header" style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;height:450px;">
-         
-</section>
- <div class="container-fluid">
-       <div class="position-relative">
-    <div class="channel-img">
-      <img src="<?php echo URL::to('/').'/public/uploads/avatars/' . Auth::user()->avatar ?>" class=" " width="150" alt="user">
-    </div>
-              </div> </div>
-<section class="mt-5 mb-5">
-    <div class="container-fluid">
-        <div class="row justify-content-end">
-            <div class="col-2 col-lg-2">
-                
-              
-                 <a href="#"onclick="Copy();" class="outline-share" ><i class="ri-links-fill"></i></a>
-                <a href="" class="outline-danger">Follow</a>
-             
-
-
-
-            </div>
-        </div>
-    </div>
-</section>
+     
 <section id="iq-favorites">
     <div class="container-fluid">
         <div class="row">
