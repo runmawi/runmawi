@@ -84,14 +84,13 @@
                                     <td>{{ $video->type }}</td>
                                     <td>{{ $video->access }}</td>
                                    
-                                    <?php if($video->active == 0){ ?>
-                                       <td class = "bg-warning"> <?php echo "Pending"; ?></td>
-                                    <?php }elseif($video->active == 1){ ?>
-                                       <td class = "bg-success"> <?php  echo "Approved"; ?></td>
-                                    <?php }elseif($video->active == 2){ ?>
-                                       <td class = "bg-danger"> <?php  echo "Rejected"; ?></td>
-                                    <?php }?>
-
+                                    <?php if($video->draft == null){ ?>
+                                    <td > <p class = "bg-warning video_active"><?php echo "Draft"; ?></p></td>
+                                             <?php }elseif($video->draft == 1 && $video->status == 1 && $video->active == 1){ ?>
+                                    <td > <p class = "bg-success video_active"><?php  echo "Approved"; ?></p></td>
+                                             <?php }else{ ?>
+                                    <td> <p class = "bg-warning video_active"><?php  echo "Draft"; ?></p></td>
+                                             <?php }?>
                                     
                                     
                              
