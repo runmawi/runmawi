@@ -6,6 +6,32 @@
    
    ?>
 
+<section class="channel-header" style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;height:450px;background-color: rgba(0, 0, 0, 0.45);
+    background-blend-mode: multiply;">
+         
+</section>
+ <div class="container-fluid">
+       <div class="position-relative">
+    <div class="channel-img">
+      <img src="<?php echo URL::to('/').'/public/uploads/avatars/' . Auth::user()->avatar ?>" class=" " width="150" alt="user">
+    </div>
+              </div> </div>
+<section class="mt-5 mb-5">
+    <div class="container-fluid">
+        <div class="row justify-content-end">
+            <div class="col-2 col-lg-2">
+                
+              
+                 <a href="#"onclick="Copy();" class="outline-share" ><i class="ri-links-fill"></i></a>
+                <!--<a href="" class="outline-danger">Follow</a>-->
+             
+
+
+
+            </div>
+        </div>
+    </div>
+</section>
 <?php 
 if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 0 || count($audios) > 0){
       if(count($latest_video) > 0 ){
@@ -68,8 +94,9 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
       </div>
    </section>
    <?php } }else{ ?>
-      <div class="col-md-12 text-center mt-4">
-             <img class="w-50" src="<?php echo  URL::to('/assets/img/sub.png')?>">
+      <div class="col-md-12 text-center mt-4 mb-5" style="padding-top:80px;padding-bottom:80px;">
+             <h4 class="main-title mb-4">Sorry! There are no contents under this genre at this moment.</h4>
+               <a href="https://ssflix.tv/" class="outline-danger1">Home</a>
          </div>
 <?php   } ?>
    <?php

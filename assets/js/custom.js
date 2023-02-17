@@ -122,10 +122,14 @@ Index Of Script
 			autoplay: true,
 			speed:500,
 
-
+                appendDots: '.slider-dots',
+      
+		accessibility: true,
+		variableWidth: false,
+		focusOnSelect: false,
             useTransform: true,
             autoplaySpeed:7000,
-            infinite: true,
+            infinite: false,
             cssEase: 'ease-out',
             lazyLoad: 'ondemand',
 			arrows: true,
