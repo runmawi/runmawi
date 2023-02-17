@@ -1,7 +1,13 @@
 <?php
     include(public_path('themes/theme5-nemisha/views/header.php'));
 ?>
-
+<style>
+    #video_container {
+    padding: 20px;
+    background: #202933;
+    border-radius: 20px;
+}
+</style>
 <?php 
 
 $ads_details = App\AdsVideo::join('advertisements','advertisements.id','ads_videos.ads_id') 
@@ -55,8 +61,8 @@ if(!empty($request_url)){
      ) {
     // dd(Auth::guest());
         ?>
-  <div id="video_bg">
-   <div class=" page-height">
+  <div id="video_bg ">
+   <div class="container-fluid page-height mt-3">
      <?php 
 
           //  $paypal_id = Auth::user()->paypal_id;
@@ -268,7 +274,7 @@ if(!empty($request_url)){
             
 
   <input type="hidden" class="videocategoryid" data-videocategoryid="<?= $video->video_category_id ?>" value="<?= $video->video_category_id ?>">
-    <div class="container-fluid video-details" style="width:90%!important;">
+    <div class="container-fluid video-details" >
         <div class="trending-info g-border p-0">
             <div class="row">
                 <div class="col-sm-9 col-md-9 col-xs-12">
@@ -558,7 +564,7 @@ if(!empty($request_url)){
       <?php endif; ?>
       
 
-    <div class="video-list you-may-like">
+    <div class="video-list you-may-like overflow-hidden">
             <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Recomended Videos');?></h4>
                 <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>   
                 <?php include('partials/video-loop.php');?>

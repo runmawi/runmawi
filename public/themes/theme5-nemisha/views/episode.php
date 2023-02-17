@@ -186,10 +186,10 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 <input type="hidden" class="seriescategoryid" data-seriescategoryid="<?= $episode->genre_id ?>" value="<?= $episode->genre_id ?>">
 <br>
 
-	<div class="container series-details">
+	<div class="container-fluid series-details">
 	<div id="series_title">
-		<div class="container">
-            <div class="row align-items-center">
+		<div class="">
+            <div class="row ">
 			<?php if($free_episode > 0 ||  $ppv_exits > 0 || Auth::user()->role == 'admin' ||  Auth::guest()){ 
 			}else{ ?>
 			<div class="col-md-6">
@@ -221,8 +221,7 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 			foreach($Episode as $key=>$Episode_value){  ?>
 			<?php if(!empty($episode) && $episode->id == $Episode_value->id){ echo 'Episode'.' '. ($episode->episode_order)   .' ';} ?>
 			<?php } ?>
-			 <p style=";font-size: 130%;color: white;"><?= $episode->title ?></p>
-			 <p style="color:white !important"><?php echo $series->details;?></p>
+			
 		
 	</div>
                 
@@ -232,36 +231,20 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 		</h3>-->
 		
 			<div class="col-md-2 text-center text-white">
-			<span class="view-count " style="float:right;">
+			<!--<span class="view-count " style="float:right;">
 			<i class="fa fa-eye"></i> 
 			<?php if(isset($view_increment) && $view_increment == true ): ?><?= $episode->views + 1 ?>
 			<?php else: ?><?= $episode->views ?><?php endif; ?> Views 
-			</span>
+			</span>-->
 			</div>
 
 		
-			
-
-			<!-- <div>
-			<?php //if ( $episode->ppv_status != null && Auth::User()!="admin" || $episode->ppv_price != null  && Auth::User()->role!="admin") { ?>
-			<button  data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary rent-episode">
-			<?php // echo __('Purchase for').' '.$currency->symbol.' '.$episode->ppv_price;?> </button>
-			<?php //} ?>
-            <br>
-			</div> -->
-        </div>
-<!-- <div class="clear" style="display:flex;justify-content: space-between;
-    align-items: center;">
-    <div> -->
-
-
-	    <!-- Watchlater & Wishlist -->
-		<?php
+			<?php
 			$media_url = URL::to('/episode/').'/'.$series->title.'/'.$episode->slug;
 			$embed_media_url = URL::to('/episode/embed').'/'.$series->title.'/'.$episode->slug;
 			$url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowfullscreen></iframe>';
 		?>
-			<div class="col-md-5">
+			<div class="col-md-5 text-right">
 		  		<ul class="list-inline p-0 mt-4 share-icons music-play-lists">
 
 				 	 <li>
@@ -312,6 +295,25 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 					
                  </ul>
 			</div>
+            <div class="col-md-12">
+                 <h2 class="trending-text big-title text-uppercase mt-3" ><?= $episode->title ?></h2>
+			 <p style="color:white !important"><?php echo $series->details;?></p>
+            </div>
+			<!-- <div>
+			<?php //if ( $episode->ppv_status != null && Auth::User()!="admin" || $episode->ppv_price != null  && Auth::User()->role!="admin") { ?>
+			<button  data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary rent-episode">
+			<?php // echo __('Purchase for').' '.$currency->symbol.' '.$episode->ppv_price;?> </button>
+			<?php //} ?>
+            <br>
+			</div> -->
+        </div>
+<!-- <div class="clear" style="display:flex;justify-content: space-between;
+    align-items: center;">
+    <div> -->
+
+
+	    <!-- Watchlater & Wishlist -->
+		
 
 
 		<h2 id="tags">Tags: 
@@ -339,7 +341,7 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 
 		<?php if( App\CommentSection::first() != null && App\CommentSection::pluck('livestream')->first() == 1 ): ?>
             <div class="row">
-            	<div class=" container-fluid video-list you-may-like overflow-hidden">
+            	<div class=" container video-list you-may-like overflow-hidden">
                     <h4 class="" style="color:#fffff;"><?php echo __('Comments');?></h4>
                     <?php include('comments/index.blade.php');?>
                 </div>
@@ -349,6 +351,7 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 		<div class="iq-main-header container d-flex align-items-center justify-content-between">
   			<h4 class="main-title">Season</h4>                      
 		</div>
+        
 <div class="favorites-contens">
   <ul class="favorites-slider list-inline  row p-0 mb-0">
     <?php  
@@ -357,14 +360,18 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 		if($episodes->id != $episode->id): ?>
         <li class="slide-item p-2">
 		<a class="block-thumbnail" href="<?= ($settings->enable_https) ? secure_url('episodes') : URL::to('episode').'/'.@$episodes->series_title->title.'/'.$episodes->slug; ?>">
+            <div class="block-images position-relative">
+                                    <div class="img-box">
+                                      <img class="w-100" src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" width="">
+                                    </div></div>
 				<div class="thumbnail-overlay"></div>
 <!--				<img src="<= ImageHandler::getImage($episodes->image, 'medium')  ?>">-->
-				<img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" width="200">
+				
 				<div class="details">
-				<h4><?= $episodes->title; ?> <span><br><?= gmdate("H:i:s", $episodes->duration); ?></span></h4>
+				<h4><?php  echo (strlen($episodes->title) > 15) ? substr($episodes->title,0,15).'...' : $episodes->title; ?> <span><br><?= gmdate("H:i:s", $episodes->duration); ?></span></h4>
 				</div></a>
               <div class="block-contents">
-			  <p class="date" style="color:#fff;"><?= date("F jS, Y", strtotime($episodes->created_at)); ?>
+			  <small class="date" style="color:#fff;"><?= date("F jS, Y", strtotime($episodes->created_at)); ?>
 				<?php if($episodes->access == 'guest'): ?>
 				<span class="label label-info">Free</span>
 				<?php elseif($episodes->access == 'subscriber'): ?>
@@ -372,7 +379,7 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 				<?php elseif($episodes->access == 'registered'): ?>
 				<span class="label label-warning">Registered Users</span>
 				<?php endif; ?>
-				</p>
+				</small>
 				<p class="desc"><?php if(strlen($episodes->description) > 90){ echo substr($episodes->description, 0, 90) . '...'; } else { echo $episodes->description; } ?></p>
                 <!-- <div class="movie-time d-flex align-items-center my-2"> -->
                   <!-- <div class="badge badge-secondary p-1 mr-2">13+</div>
@@ -593,6 +600,12 @@ location.reload();
 		color: #c5bcbc;
 		font-size: 51px !important;
 	}
+  
+.plyr--video{
+    height: calc(100vh - 80px - 75px);
+    max-width: none;
+    width: 100%;
+}
 	.intro_skips,.Recap_skip {
     position: absolute;
     margin-top: -14%;

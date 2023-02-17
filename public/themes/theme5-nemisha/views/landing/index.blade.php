@@ -1611,7 +1611,7 @@ my craft using Technology as a Dj.”</p>
 </video>  -->
               </div>
                <h3 class="mt-3">FREE EDUTAINMENT for the DIGITAL WARRIOR</h3>
-               <P class="text-white">advancing South Africans in enhamncing their digital literacy.</P>
+               <P class="text-white">advancing South Africans in enhancing their digital literacy.</P>
                <p style="color:#F6D55C
 ">WATCH EVERYWHERE, STREAM LIVE, QUALITY VIDEOS</p>
             <div class="all-video col-lg-3">
