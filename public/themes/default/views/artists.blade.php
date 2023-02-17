@@ -27,7 +27,10 @@
                                                       
                                                             @if($ThumbnailSetting->free_or_cost_label == 1) 
                                                                 
-                                                                    @if(!empty($artists_videos->ppv_price))
+                                                                    @if( $artists_videos->access == 'subscriber' )
+                                                                    <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
+                                                                    
+                                                                    @elseif(!empty($artists_videos->ppv_price))
                                                                         <p class="p-tag1">
                                                                             {{  $currency->symbol.' '.$artists_videos->ppv_price }}
                                                                         </p>

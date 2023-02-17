@@ -91,7 +91,9 @@
                                     
                                         <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  
                                             <p class="p-tag1">
-                                                <?php if(!empty($livestream->ppv_price)) {
+                                                <?php if($livestream->access == 'subscriber' ){ ?>
+                                             <i class="fas fa-crown" style='color:gold'></i>    
+                                            <?php }elseif(!empty($livestream->ppv_price)) {
                                                     echo $currency->symbol.' '.$livestream->ppv_price ; 
                                                     } elseif(!empty($livestream->global_ppv) && $livestream->ppv_price == null) {
                                                         echo $currency->symbol .' '.$livestream->global_ppv;

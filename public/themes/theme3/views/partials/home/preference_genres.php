@@ -21,7 +21,9 @@
                         <!-- PPV price -->
                         
                                     <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
-                                    <?php  if(!empty($preference_genre->ppv_price)){?>
+                                    <?php  if($preference_genre->access == 'subscriber' ){ ?>
+                                    <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
+                                    <?php }elseif(!empty($preference_genre->ppv_price)){?>
                                     <p class="p-tag1"><?php echo $currency->symbol.' '.$preference_genre->ppv_price; ?></p>
                                     <?php }elseif( !empty($preference_genre->global_ppv || !empty($preference_genre->global_ppv) && $preference_genre->ppv_price == null)){ ?>
                                     <p class="p-tag1"><?php echo $preference_genre->global_ppv.' '.$currency->symbol; ?></p>
