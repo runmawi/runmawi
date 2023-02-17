@@ -208,9 +208,9 @@ $series = $series_data ;
                                             <p class="p-tag"><?php echo "Free"; ?></p>
                                             <?php } ?>
 
-                                    </div>
+                               </div></div>
                                  
-                                    <div class="block-description" >
+                               <div class="block-description" ></div>
                                     
                                  
                                          <h6><?= $episodes->title; ?></h6>
@@ -219,7 +219,7 @@ $series = $series_data ;
                                             <p class="text-white desc"><?= gmdate("H:i:s", $episodes->duration); ?></p>
                                
                                    
-                                       <div class="hover-buttons">
+                                       <!-- <div class="hover-buttons">
                                             <a href="<?php echo URL::to('episode').'/'.$series->title.'/'.$episodes->slug;?>">
                                           <span class="text-white">
                                           <i class="fa fa-play mr-1" aria-hidden="true"></i>
@@ -227,12 +227,12 @@ $series = $series_data ;
                                           </span>
                                            </a>
                                            <div>
-                                           <!-- <a   href="" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist</a> -->
+                                           <a   href="" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist</a> 
                  
                                  </div>
-                                        </div>
-                                     </div>
-                                  </div>
+                                        </div>-->
+                                    
+                                
                               </a>
                             </li>
                            
