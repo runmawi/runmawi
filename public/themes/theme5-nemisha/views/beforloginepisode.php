@@ -350,11 +350,15 @@ foreach ($season as $key => $seasons):
         <li class="slide-item p-2">
 		<a class="block-thumbnail" href="<?=($settings->enable_https) ? secure_url('episodes') : URL::to('episode') . '/' . @$episodes
                 ->series_title->title . '/' . $episodes->slug; ?>">
+				 <div class="block-images position-relative">
+                                    <div class="img-box">
+                                      <img class="w-100" src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" width="">
+                                    </div></div>
 				<div class="thumbnail-overlay"></div>
 <!--				<img src="<= ImageHandler::getImage($episodes->image, 'medium')  ?>">-->
-				<img src="<?php echo URL::to('/') . '/public/uploads/images/' . $episodes->image; ?>" width="200">
+				
 				<div class="details">
-				<h4><?=$episodes->title; ?> <span><br><?=gmdate("H:i:s", $episodes->duration); ?></span></h4>
+				<h4><?php  echo (strlen($episodes->title) > 15) ? substr($episodes->title,0,15).'...' : $episodes->title; ?> <span><br><?= gmdate("H:i:s", $episodes->duration); ?></span></h4>
 				</div></a>
               <div class="block-contents">
 			  <p class="date" style="color:#fff;"><?=date("F jS, Y", strtotime($episodes->created_at)); ?>
@@ -681,6 +685,11 @@ input.skips,input#Recaps_Skip{
     text-align: center;
     margin: 4px 2px;
     display: none;
+}
+    .plyr--video{
+    height: calc(100vh - 80px - 75px);
+    max-width: none;
+    width: 100%;
 }
 #intro_skip{
 	display: none;
