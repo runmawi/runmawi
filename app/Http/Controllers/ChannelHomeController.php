@@ -111,6 +111,7 @@ class ChannelHomeController extends Controller
                 'audios' => $audios,
                 'livetream' => $livetreams,
                 'ThumbnailSetting' => $ThumbnailSetting,
+                'channel' => $channel,
             );
             
             return Theme::view('ChannelHome', $data);
