@@ -701,6 +701,8 @@ Please recheck the credentials before you try again!');
 
 
       $image = (isset($data['picture'])) ? $data['picture'] : '';
+      $channel_logo = (isset($data['channel_logo'])) ? $data['channel_logo'] : '';
+      $channel_banner = (isset($data['channel_banner'])) ? $data['channel_banner'] : '';
 
       $logopath = URL::to("/public/uploads/channel/");
       $path = public_path() . "/uploads/channel/";
@@ -726,15 +728,77 @@ Please recheck the credentials before you try again!');
 
           $image = URL::to('/') . '/public/uploads/channel/' . $image_ext;
 
+      }elseif(!empty($channel->channel_image)){
+        $image = $channel->channel_image;
       }
       else
       {
           $image = null;
       }
+    //   dd( $image);
+      if ($channel_logo != '')
+      {
+          //code for remove old file
+          if ($channel_logo != '' && $channel_logo != null)
+          {
+              $file_old = $path . $channel_logo;
+              if (file_exists($file_old))
+              {
+                  unlink($file_old);
+              }
+          }
+          //upload new file
+          $randval = Str::random(16);
+          $file = $channel_logo;
+          $channel_logo_ext = $randval . '.' . $request->file('channel_logo')
+              ->extension();
+          $file->move($path, $channel_logo_ext);
+
+          $channel_logo = URL::to('/') . '/public/uploads/channel/' . $channel_logo_ext;
+
+      }elseif(!empty($channel->channel_logo)){
+        $channel_logo = $channel->channel_logo;
+      }
+      else
+      {
+          $channel_logo = null;
+      }
+    //   dd();
+      
+      if ($channel_banner != '')
+      {
+          //code for remove old file
+          if ($channel_banner != '' && $channel_banner != null)
+          {
+              $file_old = $path . $channel_banner;
+              if (file_exists($file_old))
+              {
+                  unlink($file_old);
+              }
+          }
+          //upload new file
+          $randval = Str::random(16);
+          $file = $channel_banner;
+          $channel_banner_ext = $randval . '.' . $request->file('channel_banner')
+              ->extension();
+          $file->move($path, $channel_banner_ext);
+
+          $channel_banner = URL::to('/') . '/public/uploads/channel/' . $channel_banner_ext;
+
+      }elseif(!empty($channel->channel_banner)){
+        $channel_banner = $channel->channel_banner;
+      }
+      else
+      {
+          $channel_banner = null;
+      }
+
       $channel->channel_name = $channel_name;
       $channel->email = $email;
       $channel->mobile_number = $mobile_number;
       $channel->channel_image = $image;
+      $channel->channel_logo = $channel_logo;
+      $channel->channel_banner = $channel_banner;
       $channel->channel_slug = str_replace(' ', '_', $request->channel_name);
       $channel->save();
 

@@ -70,6 +70,22 @@
                                         @endif
                                     </div>
                                 </div>
+                                <div class="row">
+                                <div class="col-md-6 form-group">
+                                        <label> Channel Logo:</label>
+                                        <input type="file" multiple="true" class="form-control" style="padding: 0px;" name="channel_logo" id="channel_logo" />
+                                        @if(!empty($channel->channel_logo))
+                                            <img src="{{ @$channel->channel_logo }}" class="video-img" width="200" height="200"/>
+                                        @endif
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <label> Channel Banner:</label>
+                                        <input type="file" multiple="true" class="form-control" style="padding: 0px;" name="channel_banner" id="channel_banner" />
+                                        @if(!empty($channel->channel_banner))
+                                            <img src="{{ @$channel->channel_banner }}" class="video-img" width="200" height="200"/>
+                                        @endif
+                                    </div>
+                                </div>
                                
 
 								<div class="col-md-6 mt-3">
@@ -127,22 +143,22 @@
         //             }
         //         },
         //     },
-            picture: {
-                required: function (element) {
-                    var  image = "{{ @$channel->picture }}";
-                    if (image == "") {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                },
-            },
+            // picture: {
+            //     required: function (element) {
+            //         var  image = "{{ @$channel->picture }}";
+            //         if (image == "") {
+            //             return true;
+            //         } else {
+            //             return false;
+            //         }
+            //     },
+            // },
         // cancelled_cheque : 'required',
         // picture : 'required',
    	},
    	messages: {
-        upi_mobile_number: 'This field is required',
-        upi_id: 'This field is required',
+        // upi_mobile_number: 'This field is required',
+        // upi_id: 'This field is required',
         // account_number : 'This field is required',
         // IFSC_Code : 'This field is required',
         // cancelled_cheque : 'This field is required',
