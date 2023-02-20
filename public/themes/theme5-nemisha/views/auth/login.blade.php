@@ -88,7 +88,13 @@ font-size: 35px;
 
     }
      .btn-outline-success{
-        border: none;
+        border: 1px solid #ED553B;
+         color: #ED553B;
+    }
+     .btn-outline-success:hover{
+        border: 1px solid #ED553B;
+        background-color: #ED553B!important;
+         color: #000!important;
     }
     	.input-icons i {
 			position: absolute;
@@ -140,7 +146,8 @@ line-height: 55px;
 i.fa.fa-google-plus {
     /* padding: 10px !important;*/}
     .btn-success{
-        background: rgba(1, 220, 130, 1)!important;
+        background: #ED553B!important;
+        border: 1px solid #ED553B;
 
     }
     .demo_cred {
@@ -181,7 +188,7 @@ i.fa.fa-google-plus {
     .signup-desktop{
         background-color: #fff;
         border:1px solid #252525!important;
-        font-family: 'Roboto', sans-serif;
+       
  padding: 7px 8px!important;
 font-style: normal;
 font-weight: 600;
@@ -215,15 +222,18 @@ font-weight: 600;
         background-color: transparent!important;
         color: #fff;
     }
+    .bg-light{
+        background-color: #fff!important;
+    }
 </style>
     </head>
 
 <body>
 <section class="mb-0" style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;">
     
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light p-0">
         <div class="container-fluid">
-  <a class="navbar-brand" href="#"><img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;"></a>
+  <a class="navbar-brand" href="#"><img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style=""></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -391,8 +401,7 @@ font-weight: 600;
                 <h2 class="mb-4">Free edutainment for the digital warrior</h2>
                 <p class="text-white mt-2 mb-3">Advancing South Africans for the future with content that is missioned to deliver tangible digital skills to bridge the digital divide.</p>
                 <p class="text-white mt-2 mb-3">WATCH EVERYWHERE, STREAM LIVE, QUALITY VIDEOS</p>
-                  <a class="btn btn-lg btn-success  my-2 mr-2 my-sm-0 btn-block" style="padding:12px;width:70%;background: transparent!important;color:#62D84E!important;
-" href="{{ route('login') }}" ><span>Get Started</span></a>
+                  <a class="btn btn-lg btn-success  my-2 mr-2 my-sm-0 btn-block" style="padding:12px;width:70%;color:#fff!important;" href="{{ route('login') }}" ><span>Get Started</span></a>
             </div>
            
         </div></div>
