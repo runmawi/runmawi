@@ -296,11 +296,28 @@ font-weight: 600;
     text-align: left;
    
 }
+       .btn-outline-success{
+        border: 1px solid #ED553B;
+         color: #ED553B!important;
+    }
+    .btn-outline-success:hover{
+        border: 1px solid #ED553B;
+        background-color: #ED553B!important;
+         color: #000!important;
+    }
+    .btn-success{
+        background: #ED553B!important;
+        border: 1px solid #ED553B;
+
+    }
      .join{
         color: #FFD109;
     }
     .nemi{
         color: #01DC82;
+    }
+    .bg-light{
+        background-color: #fff!important;
     }
 </style>
 
@@ -310,9 +327,9 @@ $jsondata = json_decode($jsonString, true); ?>
 
 <section class="mb-0" style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;">
     
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light p-0">
         <div class="container-fluid">
-  <a class="navbar-brand" href="#"><img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;"></a>
+  <a class="navbar-brand" href="#"><img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style=""></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -561,8 +578,7 @@ $jsondata = json_decode($jsonString, true); ?>
                 <h2 class="mb-4">Free edutainment for the digital warrior</h2>
                 <p class="text-white mt-2 mb-3">Advancing South Africans for the future with content that is missioned to deliver tangible digital skills to bridge the digital divide.</p>
                 <p class="text-white mt-2 mb-3">WATCH EVERYWHERE, STREAM LIVE, QUALITY VIDEOS</p>
-                  <a class="btn btn-lg btn-success  my-2 mr-2 my-sm-0 btn-block" style="padding:12px;width:70%;background: transparent!important;color:#62D84E!important;
-" href="{{ route('login') }}" ><span>Get Started</span></a>
+                  <a class="btn btn-lg btn-success  my-2 mr-2 my-sm-0 btn-block" style="padding:12px;width:70%;color:#fff!important" href="{{ route('login') }}" ><span>Get Started</span></a>
             </div>
            
         </div></div>

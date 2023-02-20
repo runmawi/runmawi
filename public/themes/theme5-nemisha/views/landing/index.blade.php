@@ -395,7 +395,44 @@ line-height: 32px;
   position: relative;
   z-index: 2;
 }
+    .sec-21 .btn{
+        border-radius: 30px!important;
+        
+    }
+    .sec-21 .btn-success:after{
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+   background: #F6D55C;
+  transition: all .35s;
+    z-index: -1;
+   border-radius: 30px!important;
+}
 
+.sec-21 .btn-success:hover{
+  color: #fff!important;
+   border-color:1px solid  #ED553B!importan;
+    
+}
+
+.sec-21 .btn-success:hover:after{
+  width: 100%;
+}
+   .sec-21 .btn-success:after{
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+   background: #F6D55C;
+  transition: all .35s;
+    z-index: -1;
+     border-radius: 30px!important;
+}
 .btn-success:after{
   position: absolute;
   content: "";
@@ -688,6 +725,7 @@ padding: 0 25px 0 25px!important;
         top: 0;
         height: 60px;
         width: 100%;
+        z-index: 15;
     }
     .navbar-fixed-top.scrolled {
   background-color: #fff !important;
@@ -813,8 +851,8 @@ $jsondata = json_decode($jsonString, true); ?>
 
   <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
     
-<a type="button" class="btn btn-outline-danger bp mr-3" href="https://dev.nemisatv.co.za/cpp">Become a Partner</a>
-      <a class="btn btn-success  my-2 mr-2 my-sm-0 bp" href="{{ route('signup') }}" style="">Join Now</a>
+<a type="button" class="btn btn-outline-danger bp mr-3" href="{{ route('login') }}">Sign In </a>
+      <a class="btn btn-success  my-2 mr-2 my-sm-0 bp" href="{{ route('signup') }}" style="">Sign Up</a>
      
     
   </div>
@@ -824,6 +862,7 @@ $jsondata = json_decode($jsonString, true); ?>
     <div class="row m-0  p-0" style="">
         <div class="col-md-12 col-lg-12 p-0 text-center h-100 banner-top" style="padding: 17% 0 36% 0!important;background-image:url('<?php echo  URL::to('/assets/img/lan/v')?>');background-repeat: no-repeat;background-position: center 350px;
     background-size: 50%;">
+            <div></div>
             <h1 class="mb-3 mt-5 pt-5">Welcome to <span class="">Nemisa Tv</span></h1>
             <h2 class="dig mt-1 mb-5">The home of 4IR and digital knowledge.</h2>
           <!--  <p class="text-white" style="font-size:16px;">South Africa’s first free video sharing social platform where we mix knowledge <br>and entertainment for unique learning experience</p>-->
@@ -838,8 +877,8 @@ $jsondata = json_decode($jsonString, true); ?>
             <div class="row  mt-3 align-items-center">
                 <div class="col-lg-6">
                      <h2 class="  mb-3">Who are we</h2>
-                    <p class="mt-2">Nemisa TV is a free to the public video sharing platform with unlimited video, audio and animation content. Through this platform, we aim to entertain, upkill and prepare for the fourth industrial revolution skills.</p>
-                <p class="mt-4 mb-3">Nemisa TV provides resources that include career openings, learner ships, interships, bursaries, funding, sponsorships, workshops and events.</p>
+                    <p class="mt-2">Nemisa TV is a free to the public video sharing platform with unlimited video, audio and animation content. Through this platform, we aim to entertain, upskill and prepare for the fourth industrial revolution skills.</p>
+                <p class="mt-4 mb-3">Nemisa TV provides resources that include career openings, learnerships, interships, bursaries, funding, sponsorships, workshops and events.</p>
                     
                    <a href="{{ route('login') }}" type="button" class="btn btn-success" style="padding: 8px 35px;">Join Now</a>
 
@@ -878,7 +917,7 @@ $jsondata = json_decode($jsonString, true); ?>
                <video id="player" height="618"  controls autoplay poster=
 "<?php echo  URL::to('/assets/img/lan/vi1.png')?>">
             <source src=
-"<?php echo  URL::to('/assets/img/vq.mp4')?>"
+"<?php echo  URL::to('/assets/img/tv.mp4')?>"
                                                             type="video/mp4">
             <source src=
 ""
@@ -1496,13 +1535,41 @@ $jsondata = json_decode($jsonString, true); ?>
                 <div class="col-lg-6 ">
                     <h2 class="" style="
 ">BENEFITS YOU CANT RESIST</h2>
-                     <p class="text-white mt-3" style="font-size: 22px;
+                    <!-- <p class="text-white mt-3" style="font-size: 22px;
 line-height: 40px;">Use  the information as it is and the icons, please don’t
 forgot to place the fullstops on the sentences. The image
-next to it,  Please remove it and replace with this video.</p>
+next to it,  Please remove it and replace with this video.</p>-->
                         
 
+                   <div class="row">
+                    <div class="col-lg-7 pa">
+                        <div>
+                           
+                        </div>
+                        <div class=" lan" >
+                             <img class="" src="<?php echo  URL::to('/assets/img/lan/v3.png')?>" style=>
+                        <h4 class="">User Feedback and<br> Interaction</h4>
+                        <p style="color:#00DADA;font-weight:500;">Learn by interacting with experts and other users.</p>
+                        </div>
                        
+                    </div>
+                    <div class="col-lg-5 p-0">
+                        <div>
+                       </div>
+                        <div class="lan ">
+                             <img class="" src="<?php echo  URL::to('/assets/img/lan/v4.png')?>" style=>
+                        <h4 class="">Aggregated User generated content</h4>
+                        <p style="color:#00DADA;">Create and contribute your own digital content to empower other users.</p>
+                        </div>
+                         
+                    </div>
+                    <div class="lan col-lg-7 " style="margin-top:20px;">
+                             <img class="" src="<?php echo  URL::to('/assets/img/lan/v5.png')?>" style=>
+                        <h4 class="">Curated multiformat<br> training content</h4>
+                        <p style="color:#00DADA;">Diverse learning content that focuses on the visual, audio, social, solitary, verbal and logical.</p>
+                        </div>
+                </div>
+            </div>    
 
                    
                 </div>
@@ -1576,10 +1643,10 @@ my craft using Technology as a Dj.”</p>
               </div>
               <div class="col-lg-4">
                    <img class="w-100"  src="<?php echo  URL::to('/assets/img/lan/c3.png')?>" style="">
-                   <p class="mt-1 map">“Salute has inspired me to work smarter on
-my craft using Technology as a Dj.”</p>
-                  <h4 class="text-black">MUSA BALOYI</h4>
-                  <p>Sound</p>
+                   <p class="mt-1 map">“A data free content is the next big
+thing. I love NEMISA TV.”</p>
+                  <h4 class="text-black">JOWIE MANKGA</h4>
+                  <p>Web Developer</p>
               </div>
             </div>
            <!-- <div class="">
@@ -1638,7 +1705,7 @@ my craft using Technology as a Dj.”</p>
                         <div class="comp">
                              <img class="" src="<?php echo  URL::to('/assets/img/comp.png')?>" style="">
                         </div>
-                        <h3>WATCH EVERYWHERE</h3>
+                        <h3>Watch Everywhere</h3>
                         <p>Watch videos, podcasts and live events
 on your phone, tablet or laptop. No matter which device you use, we are always a click away!</p>
                     </div>
@@ -1648,7 +1715,7 @@ on your phone, tablet or laptop. No matter which device you use, we are always a
                           <div class="clive">
                              <img class=" " src="<?php echo  URL::to('/assets/img/clive.png')?>" style="">
                         </div>
-                        <h3>STREAM LIVE</h3>
+                        <h3>Stream Live </h3>
                         <p>Watch videos, podcasts and live events
 on your phone, tablet or laptop. No matter which device you use, we are always a click away!</p>
                     </div>
@@ -1658,7 +1725,7 @@ on your phone, tablet or laptop. No matter which device you use, we are always a
                          <div class="set">
                              <img class=" " src="<?php echo  URL::to('/assets/img/set.png')?>" style="">
                         </div>
-                        <h3>QUALITY VIDEOS</h3>
+                        <h3>Quality Videos</h3>
                         <p>Watch videos, podcasts and live events
 on your phone, tablet or laptop. No matter which device you use, we are always a click away!</p>
                     </div>

@@ -158,11 +158,16 @@ Index Of Script
 		jQuery('.favorites-slider').slick({
 			dots: false,
 			arrows: true,
-			infinite: true,
+			infinite: false,
 			speed: 300,
-			autoplay: false,
-			slidesToShow: 7,
-			slidesToScroll: 1,		
+			appendDots: '.slider-dots',
+
+	
+		slidesToScroll: 5,
+		slidesToShow: 7,
+		accessibility: true,
+		variableWidth: false,
+		focusOnSelect: false,		
 			// appendArrows: $('#sm-slick-arrow'),
 			
 			nextArrow: '<a href="#" class="slick-arrow slick-next"><i class= "fa fa-chevron-right"></i></a>',

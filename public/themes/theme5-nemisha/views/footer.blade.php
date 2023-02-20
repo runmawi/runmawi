@@ -8,7 +8,7 @@
 
 <footer class="py-4 mt-auto">
   <div class="container-fluid px-5 mt-5">
-      <p class="text-white text-center mb-4">Chat-box will be sent later.</p>
+     <!-- <p class="text-white text-center mb-4">Chat-box will be sent later.</p>-->
         <h3 class="font-weight-bold mb-2 text-center mb-4">Download App</h3>
       <div class="row  justify-content-center ">
         
@@ -49,7 +49,7 @@ entertainment.</p>
           <div class="col-sm-3. small m-0 text-white text-right">
                <div class="map1">
                     <div class="d-flex p-0 text-white icon align-items-baseline">
-                      <p>Follow US :</p>
+                      <p>Follow us :</p>
                       <?php if(!empty($settings->facebook_page_id)){?>
                       <a href="https://www.facebook.com/<?php echo FacebookId();?>" target="_blank" class="ml-1">
                           <img class="w-100" src="<?php echo  URL::to('/assets/img/ff.png')?>" style="" />
@@ -109,7 +109,7 @@ entertainment.</p>
   </div>
   <div class="container-fluid">
       <p class="mb-0 text-center font-size-14 text-body" style="color: #208585 !important;">
-          <?php echo $settings->website_name ; ?> -
+          Terms and Conditions  <?php echo $settings->website_name ; ?> -
           <?php echo Carbon::now()->year ; ?> All Rights Reserved
       </p>
   </div>
