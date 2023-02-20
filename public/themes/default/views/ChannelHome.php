@@ -13,7 +13,7 @@
  <div class="container-fluid">
        <div class="position-relative">
     <div class="channel-img">
-      <img src="<?php echo @$channel->channel_image ?>" class=" " width="150" alt="user">
+      <img src="<?php echo @$channel->channel_logo ?>" class=" " width="150" alt="user">
     </div>
               </div> </div>
 <section class="mt-5 mb-5">
