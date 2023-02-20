@@ -6,7 +6,7 @@
    
    ?>
 
-<section class="channel-header" style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;height:450px;background-color: rgba(0, 0, 0, 0.45);
+<section class="channel-header" style="background:url('<?php echo  @$channel->channel_banner ; ?>') no-repeat scroll 0 0;;background-size: cover;height:450px;background-color: rgba(0, 0, 0, 0.45);
     background-blend-mode: multiply;">
          
 </section>
@@ -21,10 +21,11 @@
         <div class="row justify-content-end">
             <div class="col-2 col-lg-2">
                 
-              
-                 <a href="#"onclick="Copy();" class="outline-share" ><i class="ri-links-fill"></i></a>
+                 <!-- <a href="#"onclick="Copy();" class="outline-share" ><i class="ri-links-fill"></i></a>/ -->
                 <!--<a href="" class="outline-danger">Follow</a>-->
-             
+                <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
+                        <?php include('partials/channel-social-share.php'); ?>                     
+                 </ul>
 
 
 
