@@ -176,7 +176,7 @@ $uppercase =  ucfirst($request_url);
         font-size: 40px;
     }
     .btn{
-        border-radius: 4px!important;
+        border-radius: 30px!important;
     }
     h3{
         font-weight: 600;
@@ -443,7 +443,7 @@ line-height: 32px;
    background: #F6D55C;
   transition: all .35s;
     z-index: -1;
-     border-radius: 4px!important;
+    border-radius: 30px!important;
 }
 
 .btn-success:hover{
