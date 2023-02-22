@@ -248,7 +248,7 @@ font-weight: 600;
 </div></nav>
 <div class="position-relative pad" style="padding:50px;" >
 <div class="fixe">
-     <h1 class="in mt-3 text-center">Look Into <span class="nemi">Nemisa</span> Tv For Realistic Experience. 
+     <h1 class="in mt-3 text-center">Look Into <span class="nemi">NEMISA</span> Tv For Realistic Experience. 
                                                         <br><span class="join">Join Now!</span></h1>
     <div class="row m-0 p-0 justify-content-center">
         
@@ -341,11 +341,11 @@ font-weight: 600;
                       <p class="text-left agree mb-0">By signing up you agree to Nemisa Tv Terms of Service and Privacy Policy. This page is protected by reCAPTCHA and is subject to Google's Terms of Service and Privacy Policy.</p>
                       
                   </div>
-                                       <div class=" pt-4 mb-2">
+                                     <!--  <div class=" pt-4 mb-2">
                           <hr style="border-color:#fff;" >
                           <p class="bg-white" style="position: relative;top: -23px;left: ;z-index: 1;width: 5%;display: flex;justify-content: center;font-size:12px;">Or</p>
-                      </div>
-                                        <div class="form-group row mb-0 justify-content-center">
+                      </div>-->
+                                        <div class="form-group row mb-0 justify-content-center mt-4">
 						@if ( config('social.google') == 1 )
                            
                             <div class="col-md-3 p-0 ">
