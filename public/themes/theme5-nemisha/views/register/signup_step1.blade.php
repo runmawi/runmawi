@@ -344,7 +344,7 @@ $jsondata = json_decode($jsonString, true); ?>
 </div></nav>
 <div class="position-relative" style="padding:40px 0 40px 0!important;">
 <div class="fixe" >
-      <h1 class="in mt-3 text-center">Look Into <span class="nemi">Nemisa</span> Tv For Realistic Experience. 
+      <h1 class="in mt-3 text-center">Look Into <span class="nemi">NEMISA</span> Tv For Realistic Experience. 
                                                         <br><span class="join">Join Now!</span></h1>
     <div class="row m-0 p-0 justify-content-center" >
       
@@ -522,13 +522,13 @@ $jsondata = json_decode($jsonString, true); ?>
                                   <button type="button" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile" style="display: none;"> Verify Profile</button>
                                   <button class="btn  btn-primary btn-block signup" style="display: block;color:#000;font-size:20px;" type="submit" name="create-account">{{ __('START EXPLORING TODAY') }}</button>
                                  <p class="text-left poli mb-0 mt-2" >By signing up you agree to Nemisa Tv Terms of Service and Privacy Policy. This page is protected by reCAPTCHA and is subject to Google's Terms of Service and Privacy Policy.</p>
-                                  <div class=" pt-4 mb-2">
+                                 <!-- <div class=" pt-4 mb-2">
                           <hr style="border-color:#fff;">
                           <p class="bg-white" style="position: relative;top: -23px;right:50%;z-index: 1;width: 5%;display: flex;justify-content: center;font-size:12px;">Or</p>
-                      </div>
+                      </div>-->
                                 </div>
                            
-                        <div class="form-group row mb-0 p-0 m-0 justify-content-center">
+                        <div class="form-group row mb-0 p-0 m-0 mt-4 justify-content-center">
 						
                             <div class="col-md-8 p-0 d-flex justify-content-center">
                                 @if ( config('social.google') == 1 )
