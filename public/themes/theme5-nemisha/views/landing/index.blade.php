@@ -155,7 +155,7 @@ $uppercase =  ucfirst($request_url);
             text-align: left!important;
         }
         h1{
-            font-size: 30px!important;
+            font-size: 25px!important;
         }
          .position-relative{
             margin-top: 0!important;
@@ -188,7 +188,7 @@ $uppercase =  ucfirst($request_url);
              font-family: 'futurabook';
 
   text-transform: uppercase;
-font-size: 30px;
+font-size: 25px;
 font-weight: 600;
 line-height: 65px;
 letter-spacing: 0em;
@@ -592,8 +592,8 @@ border-radius: 5px;
     .dig{
         font-style: normal;
 font-weight: 400;
-font-size: 20px;
-line-height: 0;
+font-size: 22px;
+
          text-transform: uppercase;
 
     }
@@ -829,7 +829,7 @@ line-height: 52px;
         color: #ED553B!important;
     }
     .btn-outline-danger:hover{
-         color: #000!important;
+         color: #fff!important;
     }
     .all-video{
         margin: 0 auto;
@@ -860,11 +860,11 @@ $jsondata = json_decode($jsonString, true); ?>
 <div class="position-relative" style="background-image:url('<?php echo  URL::to('/assets/img/lan/v.png')?>');background-repeat: no-repeat;background-size: 100% 100%;">
 <div class="fixe">
     <div class="row m-0  p-0" style="">
-        <div class="col-md-12 col-lg-12 p-0 text-center h-100 banner-top" style="padding: 17% 0 36% 0!important;background-image:url('<?php echo  URL::to('/assets/img/lan/v')?>');background-repeat: no-repeat;background-position: center 350px;
+        <div class="col-md-12 col-lg-12 p-0 text-center h-100 banner-top" style="padding: 19% 0 37% 0!important;background-image:url('<?php echo  URL::to('/assets/img/lan/v')?>');background-repeat: no-repeat;background-position: center 350px;
     background-size: 50%;">
             <div></div>
-            <h1 class="mb-3 mt-5 pt-5">Welcome to <span class="">Nemisa Tv</span></h1>
-            <h2 class="dig mt-1 mb-5">The home of 4IR and digital knowledge.</h2>
+            <h1 class=" mt-5 pt-5">Welcome to <span class="">NEMISA TV</span></h1>
+            <h2 class="dig mt-1 mb-5 text-center">HOME OF EDUTAINMENT & ORIGINAL <br>STORY-TELLING</h2>
           <!--  <p class="text-white" style="font-size:16px;">South Africa’s first free video sharing social platform where we mix knowledge <br>and entertainment for unique learning experience</p>-->
         </div>
         
@@ -877,8 +877,8 @@ $jsondata = json_decode($jsonString, true); ?>
             <div class="row  mt-3 align-items-center">
                 <div class="col-lg-6">
                      <h2 class="  mb-3">Who are we</h2>
-                    <p class="mt-2">Nemisa TV is a free to the public video sharing platform with unlimited video, audio and animation content. Through this platform, we aim to entertain, upskill and prepare for the fourth industrial revolution skills.</p>
-                <p class="mt-4 mb-3">Nemisa TV provides resources that include career openings, learnerships, interships, bursaries, funding, sponsorships, workshops and events.</p>
+                    <p class="mt-2">NEMISA TV is a free to the public video sharing platform with unlimited video, audio and animation content. Through this platform, we aim to entertain, upskill and prepare for the fourth industrial revolution skills.</p>
+                <p class="mt-4 mb-3">NEMISA TV provides resources that include career openings, Learnerships, interships, bursaries, funding, sponsorships, workshops and events.</p>
                     
                    <a href="{{ route('login') }}" type="button" class="btn btn-success" style="padding: 8px 35px;">Join Now</a>
 
@@ -932,7 +932,7 @@ $jsondata = json_decode($jsonString, true); ?>
                 </div>
                 <div class="col-lg-6 p-0">
                     <h2 class="" style="
-">Nemisa Tv - Bringing the world of digital technology to you.</h2>
+">NEMISA TV - Bringing the world of digital technology to you.</h2>
                      <ul class="tune mt-3">
                          <li> Be transformed by the entertaining learning opportunities offered.</li>
                          <li>Thousands of videos available.</li>
@@ -951,7 +951,7 @@ $jsondata = json_decode($jsonString, true); ?>
          <div class="sec-3">
         <div class="container-fluid ">
            
-            <h2 class="text-center mt-2 ">Explore More With Nemisa Tv</h2>
+            <h2 class="text-center mt-2 ">Explore More With NEMISA TV</h2>
             <div class="mt-3 ">
                 <ul class="nav nav-pills   m-0 p-0" id="pills-tab" role="tablist">
                   <li class="nav-item">
@@ -1650,7 +1650,7 @@ thing. I love NEMISA TV.”</p>
               </div>
             </div>
            <!-- <div class="">
-                <p class="ital nem"> <img class="w-20" src="<?php echo  URL::to('/assets/img/comma.png')?>" style="margin-top:-35px;">I come to Nemisa tv for the curation and class quality. That's really worth the cost of membership to me.</p>
+                <p class="ital nem"> <img class="w-20" src="<?php echo  URL::to('/assets/img/comma.png')?>" style="margin-top:-35px;">I come to NEMISA TV for the curation and class quality. That's really worth the cost of membership to me.</p>
                 <p class="text-center mt-4">—Jason R, Nemisa Student</p>
             </div>-->
               <div class="text-center mt-5 mb-3">
