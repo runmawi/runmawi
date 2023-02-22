@@ -40,7 +40,7 @@ $uppercase =  ucfirst($request_url);
   </script>
 <style>
     .map{
-        height: 65px;
+       
         font-size: 16px;
         line-height: 23px;
         margin-top: 15px!important;
