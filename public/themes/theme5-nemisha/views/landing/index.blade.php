@@ -40,8 +40,12 @@ $uppercase =  ucfirst($request_url);
   </script>
 <style>
     .map{
-        height: 90px;
-        font-size: 18px;
+        height: 65px;
+        font-size: 16px;
+        line-height: 23px;
+        margin-top: 15px!important;
+        text-align: justify;
+        
     }
     .wat{
         padding: 10px 18px 10px 18px;
@@ -80,6 +84,7 @@ $uppercase =  ucfirst($request_url);
         .sec-21 {
             padding: 10px!important;
         }
+         
         .nav-pills {
     border-radius: 5px;
     padding: 0 0px 0 0px!important;
@@ -557,7 +562,7 @@ border-radius: 5px;
 
     }
     .bg-light {
-      
+      background-color: #fff!important;
     color: #000;
     z-index: 1;
 }
@@ -840,6 +845,33 @@ line-height: 52px;
     .ben{
         letter-spacing: 8px;
     }
+    @media (max-width: 600px) {
+  .img-lan {
+    width: 100%;
+  }
+        .mobk{
+            margin-top: 10px;
+}
+        .navbar-fixed-top{
+            height: 90px;
+        }
+        .ban{
+             background-color: rgba(0, 0, 0, 0.65);
+    background-blend-mode: multiply;
+        }
+        #disp{
+            display: none;
+        }
+        .rated{
+            padding: 0;
+        }
+        .map1{
+            display: flex;
+    justify-content: center;
+    flex-direction: column;
+        }
+}
+
 </style>
 
 <?php $jsonString = file_get_contents(base_path('assets/country_code.json'));   
@@ -863,7 +895,7 @@ $jsondata = json_decode($jsonString, true); ?>
     
   </div>
 </div></nav>
-<div class="position-relative" style="padding: 19% 0 37% 0!important;background-image:url('<?php echo  URL::to('/assets/img/lan/v11.png')?>');background-repeat: no-repeat;background-size: 100% 100%;">
+<div class="position-relative ban" style="padding: 19% 0 37% 0!important;background-image:url('<?php echo  URL::to('/assets/img/lan/v11.png')?>');background-repeat: no-repeat;background-size: 100% 100%;">
 <div class="fixe">
     <div class="row m-0  p-0" style="">
         <div class="col-md-12 col-lg-12 p-0 text-center h-100 banner-top" style="background-image:url('<?php echo  URL::to('/assets/img/lan/v')?>');background-repeat: no-repeat;background-position: center 350px;
@@ -893,7 +925,7 @@ $jsondata = json_decode($jsonString, true); ?>
                 <div class="col-lg-6 imk">
                     
                    
-                   <div class="row p-0 mb-5">
+                   <div class="row p-0 mb-5 mobk">
                        <div class=" col-4 col-md-4 p-0"> <img class="img-lan" src="<?php echo  URL::to('/assets/img/v1.png')?>" style=""></div>
                        <div class=" col-4 col-md-4 position-relative" >   <img class="mt-4 img-lan" src="<?php echo  URL::to('/assets/img/v2.png')?>" style="position: absolute;
     left: -33px;"></div>
@@ -913,7 +945,7 @@ $jsondata = json_decode($jsonString, true); ?>
             <div class=""  style="padding:5% 0 5% 0;">
             <div class="row m-0 p-0 justify-content-around align-items-center">
                 
-                <div class="col-lg-6">
+                <div class="col-lg-6 p-0">
                     
                <video id="player" height="618"  controls autoplay poster=
 "<?php echo  URL::to('/assets/img/lan/vi1.png')?>">
@@ -962,7 +994,7 @@ $jsondata = json_decode($jsonString, true); ?>
                     <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Musical</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Documentry</a>
+                    <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Documentary</a>
                      
                   </li>
                     <li class="nav-item">
@@ -991,7 +1023,7 @@ $jsondata = json_decode($jsonString, true); ?>
                              <a class="nav-link dropdown-item" id="pills-live-tab" data-toggle="pill" href="#pills-live" role="tab" aria-controls="pills-live" aria-selected="false">Live Recording</a>
                              <a class="nav-link dropdown-item" id="pills-2d-tab" data-toggle="pill" href="#pills-2d" role="tab" aria-controls="pills-2d" aria-selected="false">2D & 3D Printing</a>
                              <a class="nav-link dropdown-item" id="pills-edu-tab" data-toggle="pill" href="#pills-edu" role="tab" aria-controls="pills-edu" aria-selected="false">Educational</a>
-                              <a class="nav-link dropdown-item" id="pills-cas-tab" data-toggle="pill" href="#pills-cas" role="tab" aria-controls="pills-cas" aria-selected="false">Padcast</a>
+                              <a class="nav-link dropdown-item" id="pills-cas-tab" data-toggle="pill" href="#pills-cas" role="tab" aria-controls="pills-cas" aria-selected="false">Pod cast</a>
                              <a class="nav-link dropdown-item" id="pills-eve-tab" data-toggle="pill" href="#pills-eve" role="tab" aria-controls="pills-eve" aria-selected="false">Event</a>
                              <a class="nav-link dropdown-item" id="pills-rad-tab" data-toggle="pill" href="#pills-rad" role="tab" aria-controls="pills-rad" aria-selected="false">Radio</a>
   </div>
@@ -1516,7 +1548,7 @@ $jsondata = json_decode($jsonString, true); ?>
                 <div class="row m-0 p-0 justify-content-around align-items-center">
                 
                 <div class="col-lg-6">
-                     <video id="player1" height="618"  controls autoplay poster=
+                     <video id="player1" height="800"  controls autoplay poster=
 "<?php echo  URL::to('/assets/img/lan/vi1.png')?>">
             <source src=
 "<?php echo  URL::to('/assets/img/vq.mp4')?>"
@@ -1535,7 +1567,7 @@ $jsondata = json_decode($jsonString, true); ?>
                 </div>
                 <div class="col-lg-6 ">
                     <h2 class="ben" style="
-">BENEFITS YOU CANT RESIST</h2>
+">BENEFITS YOU CAN'T RESIST</h2>
                     <!-- <p class="text-white mt-3" style="font-size: 22px;
 line-height: 40px;">Use  the information as it is and the icons, please don’t
 forgot to place the fullstops on the sentences. The image
@@ -1543,7 +1575,7 @@ next to it,  Please remove it and replace with this video.</p>-->
                         
 
                    <div class="row">
-                    <div class="col-lg-7 pa">
+                    <div class="col-lg-6 pa">
                         <div>
                            
                         </div>
@@ -1554,7 +1586,7 @@ next to it,  Please remove it and replace with this video.</p>-->
                         </div>
                        
                     </div>
-                    <div class="col-lg-5 p-0">
+                    <div class="col-lg-6 p-0">
                         <div>
                        </div>
                         <div class="lan ">
@@ -1564,7 +1596,7 @@ next to it,  Please remove it and replace with this video.</p>-->
                         </div>
                          
                     </div>
-                    <div class=" col-lg-7 " style="margin-top:20px;">
+                    <div class=" col-lg-6 rated" >
                              <img class="mb-2" src="<?php echo  URL::to('/assets/img/lan/v5.png')?>" style=>
                         <h4 class="">Curated multiformat<br> training content</h4>
                         <p style="color:#fff;">Diverse learning content that focuses on the visual, audio, social, solitary, verbal and logical.</p>
@@ -1630,28 +1662,28 @@ Resist</h2>
             <h2 class="text-center text-black mb-5">Members Endorsement</h2>
           <div class="row mt-4 justify-content-center">
               <div class="col-lg-3">
-                  <div class="text-center">
+                  <div class="">
                        <img class="w-50"  src="<?php echo  URL::to('/assets/img/lan/c1.png')?>" style="">
                   </div>
-                   <p class="mt-1 map">“Salute has inspired me to work smarter on
+                   <p class=" map">“Salute has inspired me to work smarter on
 my craft using Technology as a Dj.”</p>
                  
                   <h4 class="text-black">LIYA NDAMASE</h4>
                   <p>Television</p>
               </div>
               <div class="col-lg-3">
-             <div class="text-center">
+             <div class="">
                        <img class="w-50"  src="<?php echo  URL::to('/assets/img/lan/c2.png')?>" style="">
                   </div>
-                    <p class="mt-1 map">“Through the digital marketing course on NEMISA TV. I was able to create  a successful  online skateboard.”</p>
+                    <p class=" map">“Through the digital marketing course on NEMISA TV. I was able to create  a successful  online skateboard.”</p>
                   <h4 class="text-black">MUSA BALOYI</h4>
                   <p>Sound</p>
               </div>
               <div class="col-lg-3">
-                   <div class="text-center">
+                   <div class="">
                        <img class="w-50"  src="<?php echo  URL::to('/assets/img/lan/c3.png')?>" style="">
                   </div>
-                   <p class="mt-1 map">“A data free content is the next big
+                   <p class=" map">“A data free content is the next big
 thing. I love NEMISA TV.”</p>
                   <h4 class="text-black">JOWIE MANKGA</h4>
                   <p>Web Developer</p>
