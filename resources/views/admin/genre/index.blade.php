@@ -288,3 +288,6 @@ $('form[id="new-cat-form"]').validate({
 </script>
 
 @stop
+
+    
+   
