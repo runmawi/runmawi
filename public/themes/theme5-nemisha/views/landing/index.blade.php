@@ -876,7 +876,7 @@ $jsondata = json_decode($jsonString, true); ?>
            
             <div class="row  mt-3 align-items-center">
                 <div class="col-lg-6">
-                     <h2 class="  mb-3">Who are we</h2>
+                     <h2 class="  mb-3">Who are we ?</h2>
                     <p class="mt-2">NEMISA TV is a free to the public video sharing platform with unlimited video, audio and animation content. Through this platform, we aim to entertain, upskill and prepare for the fourth industrial revolution skills.</p>
                 <p class="mt-4 mb-3">NEMISA TV provides resources that include career openings, Learnerships, interships, bursaries, funding, sponsorships, workshops and events.</p>
                     
