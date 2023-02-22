@@ -520,7 +520,7 @@ $jsondata = json_decode($jsonString, true); ?>
 
                             <div class="sign-up-buttons col-md-12 mt-3 " align="right">
                                   <button type="button" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile" style="display: none;"> Verify Profile</button>
-                                  <button class="btn  btn-primary btn-block signup" style="display: block;color:#000;font-size:20px;" type="submit" name="create-account">{{ __('START EXPLORING TODAY') }}</button>
+                                  <button class="btn  btn-primary btn-block signup" style="display: block;color:#fff;font-size:20px;" type="submit" name="create-account">{{ __('START EXPLORING TODAY') }}</button>
                                  <p class="text-left poli mb-0 mt-2" >By signing up you agree to Nemisa Tv Terms of Service and Privacy Policy. This page is protected by reCAPTCHA and is subject to Google's Terms of Service and Privacy Policy.</p>
                                  <!-- <div class=" pt-4 mb-2">
                           <hr style="border-color:#fff;">
