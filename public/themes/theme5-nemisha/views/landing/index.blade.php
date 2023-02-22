@@ -895,7 +895,7 @@ $jsondata = json_decode($jsonString, true); ?>
     
   </div>
 </div></nav>
-<div class="position-relative ban" style="padding: 19% 0 37% 0!important;background-image:url('<?php echo  URL::to('/assets/img/lan/v11.png')?>');background-repeat: no-repeat;background-size: 100% 100%;">
+<div class="position-relative ban" style="padding: 19.2% 0 37% 0!important;background-image:url('<?php echo  URL::to('/assets/img/lan/v11.png')?>');background-repeat: no-repeat;background-size: 100% 100%;">
 <div class="fixe">
     <div class="row m-0  p-0" style="">
         <div class="col-md-12 col-lg-12 p-0 text-center h-100 banner-top" style="background-image:url('<?php echo  URL::to('/assets/img/lan/v')?>');background-repeat: no-repeat;background-position: center 350px;
@@ -1389,41 +1389,47 @@ $jsondata = json_decode($jsonString, true); ?>
                 <div>    
             <div class="row align-items-center justify-content-center mt-4" >
                 <div class="col-lg-2 position-relative p-0">
+                     <a  href="https://dev.nemisatv.co.za/">
                     <img class="w-100" src="<?php echo  URL::to('/assets/img/lan/r1.png')?>" style=>
-                    <p class="io">Radio</p>
+                    
+                         <p class="io">Radio</p></a>
                 </div>
                 <div class="col-lg-2 p-0">
-                    <div class="position-relative mn"> <img class="w-100" src="<?php echo  URL::to('/assets/img/lan/r2.png')?>" style=>
-                       <p class="io">Education</p></div>
-                    <div class="position-relative mn">  <img class="w-100 mt-3" src="<?php echo  URL::to('/assets/img/lan/r3.png')?>" style=>
-                       <p class="io">Live <br>Streaming</p></div>
+                    <div class="position-relative mn">  <a  href="https://dev.nemisatv.co.za/"> <img class="w-100" src="<?php echo  URL::to('/assets/img/lan/r2.png')?>" style=>
+                        <p class="io">Education</p></a></div>
+                    <div class="position-relative mn">   <a  href="https://dev.nemisatv.co.za/"> <img class="w-100 mt-3" src="<?php echo  URL::to('/assets/img/lan/r3.png')?>" style=>
+                        <p class="io">Live <br>Streaming</p></a></div>
                     
                    
                 </div>
                 <div class="col-lg-2 position-relative p-0">
+                      <a  href="https://dev.nemisatv.co.za/">
                      <img class="w-100" src="<?php echo  URL::to('/assets/img/lan/r4.png')?>" style=>
-                     <p class="io">Podcast</p>
+                          <p class="io">Podcast</p></a>
                     
                 </div>
                 <div class="col-lg-2 p-0">
                     <div class="position-relative mn">
+                          <a  href="https://dev.nemisatv.co.za/">
                         <img class="w-100" src="<?php echo  URL::to('/assets/img/lan/r2.png')?>" style=>
-                      <p class="io">Online <br>Streaming </p>
+                              <p class="io">Online <br>Streaming </p></a>
                     </div>
                     <div class="position-relative mn">
+                          <a  href="https://dev.nemisatv.co.za/">
                         <img class="w-100 mt-3" src="<?php echo  URL::to('/assets/img/lan/r6.png')?>" style=>
-                      <p class="io">Movies</p>
+                              <p class="io">Movies</p></a>
                     </div>
                      
                      
                 </div>
                 <div class="col-lg-2 position-relative p-0">
+                      <a  href="https://dev.nemisatv.co.za/">
                      <img class="w-100" src="<?php echo  URL::to('/assets/img/lan/r7.png')?>" style=>
-                     <p class="io">Animation</p>
+                          <p class="io">Animation</p></a>
                 </div>
             </div></div>
-             <div>    
-            <div class="row align-items-center justify-content-center mt-4" >
+            
+           <!-- <div class="row align-items-center justify-content-center mt-4" >
                 <div class="col-lg-2 position-relative p-0">
                     <img class="w-100" src="<?php echo  URL::to('/assets/img/lan/r1.png')?>" style=>
                     <p class="io">Digitech news update</p>
@@ -1529,10 +1535,10 @@ $jsondata = json_decode($jsonString, true); ?>
                      <img class="w-100" src="<?php echo  URL::to('/assets/img/lan/r7.png')?>" style=>
                      <p class="io">Animation</p>
                 </div>
-            </div></div>
+            </div></div>-->
           
                
-        </div>
+       
             </div>
     </section>
         <section class="sec-2" style="background-image:url('<?php echo  URL::to('/assets/img/lan/bg1.png')?>');background-repeat: no-repeat;background-size:100% 100%;">
