@@ -333,7 +333,7 @@ font-weight: 600;
                         @endif
                         
                            <div class="sign-info mt-1">
-                              <button type="submit" class="btn signup" style="width:100%;color:#252525!important;letter-spacing: 1px;font-size:20px;font-weight: 600;">START EXPLORING TODAY</button>
+                              <button type="submit" class="btn signup" style="width:100%;color:#fff!important;letter-spacing: 1px;font-size:20px;font-weight: 600;">START EXPLORING TODAY</button>
                            </div> 
                                   <div class="mt-3">
                   <div class="d-flex justify-content-center  links">
