@@ -32,7 +32,7 @@ entertainment.</p>
 
           <div class="col-sm-3. small m-0 text-white text-right">
              <div class="map1">
-                 <p class="text-left">Available on Play Store</p>
+                 <p class="text-left">Available on </p>
               <?php if(!empty($app_settings->android_url)){ ?>
               <img class="" height="80" width="140" src="<?php echo  URL::to('/assets/img/apps1.png')?>" style="margin-top: -20px;" />
               <?php } ?>
@@ -109,7 +109,8 @@ entertainment.</p>
   </div>
   <div class="container-fluid">
       <p class="mb-0 text-center font-size-14 text-body" style="color: #208585 !important;">
-          Terms and Conditions  <?php echo $settings->website_name ; ?> -
+          <a href="" target="_blank" class="ml-1">
+              Terms and Conditions </a> <?php echo $settings->website_name ; ?> -
           <?php echo Carbon::now()->year ; ?> All Rights Reserved
       </p>
   </div>
