@@ -1628,7 +1628,7 @@ Resist</h2>
     <section class="sec-4 mt-5">
         <div class="container-fluid">
             <h2 class="text-center text-black mb-5">Members Endorsement</h2>
-          <div class="row mt-4">
+          <div class="row mt-4 justify-content-center">
               <div class="col-lg-3">
                   <div class="text-center">
                        <img class="w-50"  src="<?php echo  URL::to('/assets/img/lan/c1.png')?>" style="">
