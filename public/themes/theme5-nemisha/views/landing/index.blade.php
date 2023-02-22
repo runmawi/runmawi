@@ -84,6 +84,7 @@ $uppercase =  ucfirst($request_url);
         .sec-21 {
             padding: 10px!important;
         }
+         
         .nav-pills {
     border-radius: 5px;
     padding: 0 0px 0 0px!important;
@@ -844,6 +845,33 @@ line-height: 52px;
     .ben{
         letter-spacing: 8px;
     }
+    @media (max-width: 600px) {
+  .img-lan {
+    width: 100%;
+  }
+        .mobk{
+            margin-top: 10px;
+}
+        .navbar-fixed-top{
+            height: 90px;
+        }
+        .ban{
+             background-color: rgba(0, 0, 0, 0.65);
+    background-blend-mode: multiply;
+        }
+        #disp{
+            display: none;
+        }
+        .rated{
+            padding: 0;
+        }
+        .map1{
+            display: flex;
+    justify-content: center;
+    flex-direction: column;
+        }
+}
+
 </style>
 
 <?php $jsonString = file_get_contents(base_path('assets/country_code.json'));   
@@ -867,7 +895,7 @@ $jsondata = json_decode($jsonString, true); ?>
     
   </div>
 </div></nav>
-<div class="position-relative" style="padding: 19% 0 37% 0!important;background-image:url('<?php echo  URL::to('/assets/img/lan/v11.png')?>');background-repeat: no-repeat;background-size: 100% 100%;">
+<div class="position-relative ban" style="padding: 19% 0 37% 0!important;background-image:url('<?php echo  URL::to('/assets/img/lan/v11.png')?>');background-repeat: no-repeat;background-size: 100% 100%;">
 <div class="fixe">
     <div class="row m-0  p-0" style="">
         <div class="col-md-12 col-lg-12 p-0 text-center h-100 banner-top" style="background-image:url('<?php echo  URL::to('/assets/img/lan/v')?>');background-repeat: no-repeat;background-position: center 350px;
@@ -897,7 +925,7 @@ $jsondata = json_decode($jsonString, true); ?>
                 <div class="col-lg-6 imk">
                     
                    
-                   <div class="row p-0 mb-5">
+                   <div class="row p-0 mb-5 mobk">
                        <div class=" col-4 col-md-4 p-0"> <img class="img-lan" src="<?php echo  URL::to('/assets/img/v1.png')?>" style=""></div>
                        <div class=" col-4 col-md-4 position-relative" >   <img class="mt-4 img-lan" src="<?php echo  URL::to('/assets/img/v2.png')?>" style="position: absolute;
     left: -33px;"></div>
@@ -1568,7 +1596,7 @@ next to it,  Please remove it and replace with this video.</p>-->
                         </div>
                          
                     </div>
-                    <div class=" col-lg-6 " >
+                    <div class=" col-lg-6 rated" >
                              <img class="mb-2" src="<?php echo  URL::to('/assets/img/lan/v5.png')?>" style=>
                         <h4 class="">Curated multiformat<br> training content</h4>
                         <p style="color:#fff;">Diverse learning content that focuses on the visual, audio, social, solitary, verbal and logical.</p>
