@@ -155,7 +155,7 @@ $uppercase =  ucfirst($request_url);
             text-align: left!important;
         }
         h1{
-            font-size: 30px!important;
+            font-size: 25px!important;
         }
          .position-relative{
             margin-top: 0!important;
@@ -188,7 +188,7 @@ $uppercase =  ucfirst($request_url);
              font-family: 'futurabook';
 
   text-transform: uppercase;
-font-size: 30px;
+font-size: 25px;
 font-weight: 600;
 line-height: 65px;
 letter-spacing: 0em;
@@ -592,8 +592,8 @@ border-radius: 5px;
     .dig{
         font-style: normal;
 font-weight: 400;
-font-size: 20px;
-line-height: 0;
+font-size: 22px;
+
          text-transform: uppercase;
 
     }
@@ -708,7 +708,7 @@ color: #F6D55C!important;
     .nav-pills{
      
 border-radius: 5px;
-padding: 0 25px 0 25px!important;
+padding: 0 !important;
     }
     .btn-warning{
         padding: 8px 40px!important;
@@ -829,10 +829,16 @@ line-height: 52px;
         color: #ED553B!important;
     }
     .btn-outline-danger:hover{
-         color: #000!important;
+         color: #fff!important;
     }
     .all-video{
         margin: 0 auto;
+    }
+    .who{
+        letter-spacing: 1.5px;
+    }
+    .ben{
+        letter-spacing: 8px;
     }
 </style>
 
@@ -857,14 +863,14 @@ $jsondata = json_decode($jsonString, true); ?>
     
   </div>
 </div></nav>
-<div class="position-relative" style="background-image:url('<?php echo  URL::to('/assets/img/lan/v.png')?>');background-repeat: no-repeat;background-size: 100% 100%;">
+<div class="position-relative" style="padding: 19% 0 37% 0!important;background-image:url('<?php echo  URL::to('/assets/img/lan/v11.png')?>');background-repeat: no-repeat;background-size: 100% 100%;">
 <div class="fixe">
     <div class="row m-0  p-0" style="">
-        <div class="col-md-12 col-lg-12 p-0 text-center h-100 banner-top" style="padding: 17% 0 36% 0!important;background-image:url('<?php echo  URL::to('/assets/img/lan/v')?>');background-repeat: no-repeat;background-position: center 350px;
+        <div class="col-md-12 col-lg-12 p-0 text-center h-100 banner-top" style="background-image:url('<?php echo  URL::to('/assets/img/lan/v')?>');background-repeat: no-repeat;background-position: center 350px;
     background-size: 50%;">
             <div></div>
-            <h1 class="mb-3 mt-5 pt-5">Welcome to <span class="">Nemisa Tv</span></h1>
-            <h2 class="dig mt-1 mb-5">The home of 4IR and digital knowledge.</h2>
+            <h1 class=" mt-5 pt-5">Welcome to <span class="">NEMISA TV</span></h1>
+            <h2 class="dig mt-1 mb-5 text-center">HOME OF EDUTAINMENT & ORIGINAL <br>STORY-TELLING</h2>
           <!--  <p class="text-white" style="font-size:16px;">South Africa’s first free video sharing social platform where we mix knowledge <br>and entertainment for unique learning experience</p>-->
         </div>
         
@@ -876,9 +882,9 @@ $jsondata = json_decode($jsonString, true); ?>
            
             <div class="row  mt-3 align-items-center">
                 <div class="col-lg-6">
-                     <h2 class="  mb-3">Who are we</h2>
-                    <p class="mt-2">Nemisa TV is a free to the public video sharing platform with unlimited video, audio and animation content. Through this platform, we aim to entertain, upskill and prepare for the fourth industrial revolution skills.</p>
-                <p class="mt-4 mb-3">Nemisa TV provides resources that include career openings, learnerships, interships, bursaries, funding, sponsorships, workshops and events.</p>
+                     <h2 class="ben  mb-3">Who are we ?</h2>
+                    <p class="mt-2">NEMISA TV is a free to the public video sharing platform with unlimited video, audio and animation content. Through this platform, we aim to entertain, upskill and prepare for the fourth industrial revolution skills.</p>
+                <p class="mt-4 mb-3">NEMISA TV provides resources that include career openings, Learnerships, interships, bursaries, funding, sponsorships, workshops and events.</p>
                     
                    <a href="{{ route('login') }}" type="button" class="btn btn-success" style="padding: 8px 35px;">Join Now</a>
 
@@ -886,19 +892,14 @@ $jsondata = json_decode($jsonString, true); ?>
                 </div>
                 <div class="col-lg-6 imk">
                     
-                     <img class="img-lan1" src="<?php echo  URL::to('/assets/img/lan/g2.png')?>" style="">
-                     <img class="img-lan1" src="<?php echo  URL::to('/assets/img/lan/g1.png')?>" style="margin-left: 38%;
-    margin-top: -15%;">
-                    <div class="row">
-                        <div class="col-md-6 ">
-                            
-                              
-                        </div>
-                        <div class="col-md-6 position-relative">
-                          
-                        </div>
+                   
+                   <div class="row p-0 mb-5">
+                       <div class=" col-4 col-md-4 p-0"> <img class="img-lan" src="<?php echo  URL::to('/assets/img/v1.png')?>" style=""></div>
+                       <div class=" col-4 col-md-4 position-relative" >   <img class="mt-4 img-lan" src="<?php echo  URL::to('/assets/img/v2.png')?>" style="position: absolute;
+    left: -33px;"></div>
+                       <div class=" col-4 col-md-4 p-0 position-relative"  style="">  <img class="mt-5 img-lan" src="<?php echo  URL::to('/assets/img/v3.png')?>" style="position: absolute;
+    left: -65px"></div>
                     </div>
-                    
                     
                 </div>
                
@@ -931,8 +932,8 @@ $jsondata = json_decode($jsonString, true); ?>
                     </div>color: #1D639B;-->
                 </div>
                 <div class="col-lg-6 p-0">
-                    <h2 class="" style="
-">Nemisa Tv - Bringing the world of digital technology to you.</h2>
+                    <h2 class="ml-3" style="
+">NEMISA TV - Bringing the world of digital technology to you.</h2>
                      <ul class="tune mt-3">
                          <li> Be transformed by the entertaining learning opportunities offered.</li>
                          <li>Thousands of videos available.</li>
@@ -949,9 +950,9 @@ $jsondata = json_decode($jsonString, true); ?>
     </section>
     <section class="">
          <div class="sec-3">
-        <div class="container-fluid ">
+        <div class="container ">
            
-            <h2 class="text-center mt-2 ">Explore More With Nemisa Tv</h2>
+            <h2 class="text-center mt-2 ">Explore More With NEMISA TV</h2>
             <div class="mt-3 ">
                 <ul class="nav nav-pills   m-0 p-0" id="pills-tab" role="tablist">
                   <li class="nav-item">
@@ -1357,7 +1358,7 @@ $jsondata = json_decode($jsonString, true); ?>
     </section>-->
     <section class="sec- mt-5" id="disp">
        
-        <div class="container-fluid mb-5">
+        <div class="container mb-5">
             <h2 class="text-center text-black">Most popular </h2>
             <div id="slide">
                 <div>    
@@ -1509,7 +1510,7 @@ $jsondata = json_decode($jsonString, true); ?>
         </div>
             </div>
     </section>
-        <section class="sec-2" style="background-image:url('<?php echo  URL::to('/assets/img/lan/bg1.png')?>');background-repeat: no-repeat;background-size: cover;">
+        <section class="sec-2" style="background-image:url('<?php echo  URL::to('/assets/img/lan/bg1.png')?>');background-repeat: no-repeat;background-size:100% 100%;">
         <div class="container">
             <div class=""  style="padding:5% 0 5% 0;">
                 <div class="row m-0 p-0 justify-content-around align-items-center">
@@ -1533,7 +1534,7 @@ $jsondata = json_decode($jsonString, true); ?>
                     </div>color: #1D639B;-->
                 </div>
                 <div class="col-lg-6 ">
-                    <h2 class="" style="
+                    <h2 class="ben" style="
 ">BENEFITS YOU CANT RESIST</h2>
                     <!-- <p class="text-white mt-3" style="font-size: 22px;
 line-height: 40px;">Use  the information as it is and the icons, please don’t
@@ -1547,9 +1548,9 @@ next to it,  Please remove it and replace with this video.</p>-->
                            
                         </div>
                         <div class=" lan" >
-                             <img class="" src="<?php echo  URL::to('/assets/img/lan/v3.png')?>" style=>
+                             <img class="mb-2" src="<?php echo  URL::to('/assets/img/lan/v3.png')?>" style=>
                         <h4 class="">User Feedback and<br> Interaction</h4>
-                        <p style="color:#00DADA;font-weight:500;">Learn by interacting with experts and other users.</p>
+                        <p style="color:#fff;font-weight:500;">Learn by interacting with experts and other users.</p>
                         </div>
                        
                     </div>
@@ -1557,16 +1558,16 @@ next to it,  Please remove it and replace with this video.</p>-->
                         <div>
                        </div>
                         <div class="lan ">
-                             <img class="" src="<?php echo  URL::to('/assets/img/lan/v4.png')?>" style=>
+                             <img class="mb-2" src="<?php echo  URL::to('/assets/img/lan/v4.png')?>" style=>
                         <h4 class="">Aggregated User generated content</h4>
-                        <p style="color:#00DADA;">Create and contribute your own digital content to empower other users.</p>
+                        <p style="color:#fff;">Create and contribute your own digital content to empower other users.</p>
                         </div>
                          
                     </div>
-                    <div class="lan col-lg-7 " style="margin-top:20px;">
-                             <img class="" src="<?php echo  URL::to('/assets/img/lan/v5.png')?>" style=>
+                    <div class=" col-lg-7 " style="margin-top:20px;">
+                             <img class="mb-2" src="<?php echo  URL::to('/assets/img/lan/v5.png')?>" style=>
                         <h4 class="">Curated multiformat<br> training content</h4>
-                        <p style="color:#00DADA;">Diverse learning content that focuses on the visual, audio, social, solitary, verbal and logical.</p>
+                        <p style="color:#fff;">Diverse learning content that focuses on the visual, audio, social, solitary, verbal and logical.</p>
                         </div>
                 </div>
             </div>    
@@ -1574,7 +1575,7 @@ next to it,  Please remove it and replace with this video.</p>-->
                    
                 </div>
             </div>
-            </div></div>
+            </div>
        </section>
     <!--<section class="sec-31 p-0" >
          <div class="pt" style="background-image:url('<?php echo  URL::to('/assets/img/lan/ntv.png')?>');background-repeat: no-repeat;
@@ -1628,21 +1629,28 @@ Resist</h2>
         <div class="container-fluid">
             <h2 class="text-center text-black mb-5">Members Endorsement</h2>
           <div class="row mt-4">
-              <div class="col-lg-4">
-                    <img class="w-100"  src="<?php echo  URL::to('/assets/img/lan/c1.png')?>" style="">
-                  <p class="mt-1 map">“Through the digital marketing course on NEMISA TV. I was able to create  a successful  online skateboard.”</p>
+              <div class="col-lg-3">
+                  <div class="text-center">
+                       <img class="w-50"  src="<?php echo  URL::to('/assets/img/lan/c1.png')?>" style="">
+                  </div>
+                   <p class="mt-1 map">“Salute has inspired me to work smarter on
+my craft using Technology as a Dj.”</p>
+                 
                   <h4 class="text-black">LIYA NDAMASE</h4>
                   <p>Television</p>
               </div>
-              <div class="col-lg-4">
-               <img class="w-100"  src="<?php echo  URL::to('/assets/img/lan/c2.png')?>" style="">
-                   <p class="mt-1 map">“Salute has inspired me to work smarter on
-my craft using Technology as a Dj.”</p>
+              <div class="col-lg-3">
+             <div class="text-center">
+                       <img class="w-50"  src="<?php echo  URL::to('/assets/img/lan/c2.png')?>" style="">
+                  </div>
+                    <p class="mt-1 map">“Through the digital marketing course on NEMISA TV. I was able to create  a successful  online skateboard.”</p>
                   <h4 class="text-black">MUSA BALOYI</h4>
                   <p>Sound</p>
               </div>
-              <div class="col-lg-4">
-                   <img class="w-100"  src="<?php echo  URL::to('/assets/img/lan/c3.png')?>" style="">
+              <div class="col-lg-3">
+                   <div class="text-center">
+                       <img class="w-50"  src="<?php echo  URL::to('/assets/img/lan/c3.png')?>" style="">
+                  </div>
                    <p class="mt-1 map">“A data free content is the next big
 thing. I love NEMISA TV.”</p>
                   <h4 class="text-black">JOWIE MANKGA</h4>
@@ -1650,7 +1658,7 @@ thing. I love NEMISA TV.”</p>
               </div>
             </div>
            <!-- <div class="">
-                <p class="ital nem"> <img class="w-20" src="<?php echo  URL::to('/assets/img/comma.png')?>" style="margin-top:-35px;">I come to Nemisa tv for the curation and class quality. That's really worth the cost of membership to me.</p>
+                <p class="ital nem"> <img class="w-20" src="<?php echo  URL::to('/assets/img/comma.png')?>" style="margin-top:-35px;">I come to NEMISA TV for the curation and class quality. That's really worth the cost of membership to me.</p>
                 <p class="text-center mt-4">—Jason R, Nemisa Student</p>
             </div>-->
               <div class="text-center mt-5 mb-3">
