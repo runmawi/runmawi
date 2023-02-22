@@ -1499,6 +1499,23 @@ class ChannelVideosController extends Controller
                 $uploaded_by = 'Channel';
             }
 
+            if (empty($data["active"])) {
+                $active = 0;
+                $status = 0;
+                $draft = 1;
+            } else {
+                $active = 1;
+                $draft = 1;
+                if (
+                    ($video->type == "" && $video->processed_low != 100)  ||
+                    ($video->type == "" && $video->processed_low == null) 
+                ) {
+                    $status = 0;
+                } else {
+                    $status = 1;
+                    $draft = 0;
+                }
+            }
             $user = Session::get('channel');
             $user_id = $user->id;
             $video->user_id = $user_id;
@@ -1511,7 +1528,9 @@ class ChannelVideosController extends Controller
             $video->publish_status = $request['publish_status'];
             $video->publish_type = $data['publish_type'];
             $video->publish_time = $data['publish_time'];
-            $video->active = 1;
+            $video->active = $active;
+            $video->status = $status;
+            $video->status = $status;
             $video->uploaded_by = $uploaded_by;
             $video->player_image = $player_image;
             $video->m3u8_url = $m3u8_url;
