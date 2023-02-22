@@ -40,7 +40,7 @@ $uppercase =  ucfirst($request_url);
   </script>
 <style>
     .map{
-        height: 65px;
+       
         font-size: 16px;
         line-height: 23px;
         margin-top: 15px!important;
@@ -923,15 +923,8 @@ $jsondata = json_decode($jsonString, true); ?>
                 
                 </div>
                 <div class="col-lg-6 imk">
-                    
-                   
-                   <div class="row p-0 mb-5 mobk">
-                       <div class=" col-4 col-md-4 p-0"> <img class="img-lan" src="<?php echo  URL::to('/assets/img/v1.png')?>" style=""></div>
-                       <div class=" col-4 col-md-4 position-relative" >   <img class="mt-4 img-lan" src="<?php echo  URL::to('/assets/img/v2.png')?>" style="position: absolute;
-    left: -33px;"></div>
-                       <div class=" col-4 col-md-4 p-0 position-relative"  style="">  <img class="mt-5 img-lan" src="<?php echo  URL::to('/assets/img/v3.png')?>" style="position: absolute;
-    left: -65px"></div>
-                    </div>
+                    <img class="img-lan w-100" src="<?php echo  URL::to('/assets/img/v1.png')?>" style="">
+                  
                     
                 </div>
                
