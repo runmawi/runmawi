@@ -348,7 +348,7 @@ class TvshowsController extends Controller
                 )
                 ->first();
 
-                if(!Auth::guest() && $user->user_id == Auth::user()->id ){
+                if(!Auth::guest() && $user_id == Auth::user()->id ){
                     $video_access = 'free';
                 }else{ 
                     $video_access = 'pay';
@@ -367,7 +367,7 @@ class TvshowsController extends Controller
                         "users.id as user_id"
                     )
                     ->first();
-                    if(!Auth::guest() &&  $user->user_id == Auth::user()->id ){
+                    if(!Auth::guest() &&  $user_id == Auth::user()->id ){
                         $video_access = 'free';
                     }else{ 
                         $video_access = 'pay';
@@ -513,7 +513,7 @@ class TvshowsController extends Controller
                 "users.id as user_id"
             )
             ->first();
-            if(!Auth::guest() &&  $user->user_id == Auth::user()->id){
+            if(!Auth::guest() &&  $user_id == Auth::user()->id){
                 $video_access = 'free';
             }else{ 
                 $video_access = 'pay';
@@ -532,7 +532,7 @@ class TvshowsController extends Controller
                 "users.id as user_id"
             )
             ->first();
-            if(!Auth::guest() &&  $user->user_id == Auth::user()->id){
+            if(!Auth::guest() &&  $user_id == Auth::user()->id){
                 $video_access = 'free';
             }else{ 
                 $video_access = 'pay';
