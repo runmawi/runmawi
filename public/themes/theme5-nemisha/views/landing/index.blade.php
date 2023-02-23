@@ -1684,7 +1684,7 @@ my craft using Technology as a Dj.”</p>
                   </div>
                    <p class=" map">“A data free content is the next big
 thing. I love NEMISA TV.”</p>
-                  <h4 class="text-black">JOWIE MANKGA</h4>
+                  <h4 class="text-black">JOEY MANKGA</h4>
                   <p>Web Developer</p>
               </div>
             </div>
