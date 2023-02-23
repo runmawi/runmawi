@@ -1086,3 +1086,6 @@ var tagInput1 = new TagsInput({
 	@stop
 
 @stop
+
+        
+  

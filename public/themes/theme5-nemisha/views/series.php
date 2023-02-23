@@ -251,9 +251,9 @@ $series = $series_data ;
                                           <?php }elseif($series->ppv_status == null && $series->ppv_status == 0 ){ ?>
                                             <p class="p-tag"><?php echo "Free"; ?></p>
                                             <?php } ?>
-                                            </div>
+                                     </div></div>
                                  
-                                    <div class="block-description" >
+                                  <div class="block-description" ></div>
                                     
                                          <h6><?= $episodes->title; ?></h6>
 										<p class="desc text-white mt-2 mb-0"><?php if(strlen($series->description) > 90){ echo substr($series->description, 0, 90) . '...'; } else { echo $series->description; } ?></p>
@@ -275,8 +275,7 @@ $series = $series_data ;
                  
                                  </div>
                                         </div>
-                                     </div>
-                                  </div>
+                                    
                               </a>
                            </li>
                            <?php endif;	endforeach; 
