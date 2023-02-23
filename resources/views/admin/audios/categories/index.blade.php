@@ -258,3 +258,50 @@ border-radius: 0px 4px 4px 0px;
 	@stop
 
 @stop
+
+ <div class="container-fluid p-0">
+            <div class="row">
+               <div class="col-sm-12">
+                  <div class="iq-card">
+                     <div class="iq-card-header d-flex justify-content-between mb-4 align-items-baseline">
+                        <div class="iq-header-title">
+                           <h4 class="card-title">Audio Category</h4>
+                        </div>
+					
+                   
+                        <div class="iq-card-header-toolbar d-flex align-items-center">
+                           <Link to="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add Audio category</a>
+                        </div>
+                     </div>
+                     <div class="">
+                        <div class="table-view p-0">
+
+                     	<table class="table-bordered iq-card" id="categorytbl">
+                     		<thead>
+                     			<tr class="text-center r1">
+                     				<th><label>Image</label></th>
+                     				<th><label>Name</label></th>
+                     				<th><label>Action</label></th>
+                     			</tr>
+                     		</thead>
+                     		<tbody>
+                     		
+                     			<tr class="text-center">
+                     				<td><img src="" width="50" /></td>
+                     				<td><label></label></td>
+                     				<td class=" list-user-action"> 
+                     					<Link class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" class="edit" to=""><img class="ply" src="" /></Link>
+
+                     					<Link class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" to=""><img class="ply" src="" /></Link>
+                     				</td>
+                     			</tr>
+                     			
+                     		</tbody>
+                     	</table>
+						
+				</div>
+			</div>
+                     </div>
+                  </div>
+               </div>
+            </div>
