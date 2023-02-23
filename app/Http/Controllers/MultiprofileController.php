@@ -4,13 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Multiprofile;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Intervention\Image\Facades\Image;
+use Illuminate\Http\Request;
+use App\HomeSetting;
 use App\Setting;
 use App\User;
 use Session;
+use Theme;
 use Auth;
-use Illuminate\Support\Facades\Redirect;
 use DB;
 
 class MultiprofileController extends Controller
@@ -28,6 +30,9 @@ class MultiprofileController extends Controller
     {
         $settings = Setting::first();
         $this->videos_per_page = $settings->videos_per_page;
+
+        $this->Theme = HomeSetting::pluck('theme_choosen')->first();
+        Theme::uses($this->Theme);
     }
 
     public function index() 
@@ -36,7 +41,7 @@ class MultiprofileController extends Controller
         $user=User::where('id',$user_id)->first();
         $multiprofile=Multiprofile::where('parent_id',$user_id)->get();
 
-        return view ('multiprofile.index',compact('multiprofile',$multiprofile ,'user',$user));
+        return Theme::view ('multiprofile.index',compact('multiprofile',$multiprofile ,'user',$user));
     }
 
     /**
@@ -46,7 +51,7 @@ class MultiprofileController extends Controller
      */
     public function create()
     {
-        return view ('multiprofile.create');
+        return Theme::view ('multiprofile.create');
     }
 
     /**
@@ -103,7 +108,7 @@ class MultiprofileController extends Controller
     public function edit(Multiprofile $multiprofile,$id)
     {
         $multiprofile = Multiprofile::where('id', '=', $id)->firstOrFail();
-        return view('multiprofile.edit')->with('multiprofile', $multiprofile);
+        return Theme::view ('multiprofile.edit',compact('multiprofile',$multiprofile ));
     }
 
     /**
@@ -151,8 +156,8 @@ class MultiprofileController extends Controller
     public function profileDetails_edit(Request $request,$id)
     {
         $multiprofile = Multiprofile::where('id', '=', $id)->firstOrFail();
-        return view('multiprofile.profileEdit')
-        ->with('multiprofile', $multiprofile);
+        return Theme::view ('multiprofile.profileEdit',compact('multiprofile',$multiprofile ));
+
     }
 
     public function profile_details(Request $request,$id){
@@ -187,7 +192,7 @@ class MultiprofileController extends Controller
 
     public function Multi_Profile_Create( Request $request )
     {
-        return view ('multiprofile.profile_create');
+        return Theme::view ('multiprofile.profile_create');
 
     }
 
