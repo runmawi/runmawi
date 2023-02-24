@@ -1760,13 +1760,16 @@ on your phone, tablet or laptop. No matter which device you use, we are always a
                     </div>
                 </div>
                 <div class="col-lg-4">
-                     <div class="bg-color1">
+                     <div class="bg-color1" style="min-height: 266px;">
                           <div class="clive">
                              <img class=" " src="<?php echo  URL::to('/assets/img/clive.png')?>" style="">
                         </div>
                         <h3>Stream Live </h3>
-                        <p>Watch videos, podcasts and live events
-on your phone, tablet or laptop. No matter which device you use, we are always a click away!</p>
+                        <p>Stream unlimited videos, podcasts
+and live events for free anytime!
+Whenever you are in Mzansi, we
+got you covered!
+</p>
                     </div>
                 </div>
                 <div class="col-lg-4">
@@ -1775,8 +1778,12 @@ on your phone, tablet or laptop. No matter which device you use, we are always a
                              <img class=" " src="<?php echo  URL::to('/assets/img/set.png')?>" style="">
                         </div>
                         <h3>Quality Videos</h3>
-                        <p>Watch videos, podcasts and live events
-on your phone, tablet or laptop. No matter which device you use, we are always a click away!</p>
+                        <p>Explore our edutainment video
+packed with 4IR and digital skills.
+Choose from a variety of documentaries,
+animation, radio, live shows
+and much more...
+</p>
                     </div>
                 </div>
             </div>
