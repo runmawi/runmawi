@@ -15,8 +15,8 @@
                              <!-- block-images -->
             <div class="img-box">
             <img src="<?php echo URL::to('/').'/public/uploads/albums/'.$album->album;?>" class="img-fluid img-zoom w-100" alt="">
-            </div>
-            <div class="block-description" style="top:40px !important;">
+            </div>  </div>
+            <div class="block-description" >  </div>
             <a href="<?= URL::to('album') ?><?= '/' . $album->slug ?>">
                         <i class="ri-play-fill"></i>
                      </a>                         
@@ -29,9 +29,9 @@
                </div>
                </div>
 
-                </div>
+              
 
-         </div>
+       
       </a>
    </li>
 
