@@ -78,7 +78,16 @@ $uppercase =  ucfirst($request_url);
         bottom: -40px!important;
     }
     .mn{
-        margin: 5px 15px;
+        margin: 10px 10px;
+        transition: all .5s ease-in; 
+      
+    }
+    .mn img{
+          border-radius: 5px;
+    }
+    .mn:hover{
+        transform: scale(1.1);
+      
     }
     @media only screen and (max-width : 320px) {
         .sec-21 {
@@ -688,8 +697,9 @@ linear-gradient(0deg, rgba(1, 220, 130, 0.75), rgba(1, 220, 130, 0.75));
         color: #fff!important;
     }
     .io{
-        position: absolute;
-    bottom: 0;
+        /*position: absolute;*/
+        display: none;
+    /*bottom: 0;
     left: 0;
     right: 0;
     display: flex;
@@ -698,7 +708,7 @@ linear-gradient(0deg, rgba(1, 220, 130, 0.75), rgba(1, 220, 130, 0.75));
     width: 100%;
     color: white;
         line-height: 20px;
-        text-align: center;
+        text-align: center;*/
     }
     .suce{
         display: flex;
@@ -1388,43 +1398,43 @@ $jsondata = json_decode($jsonString, true); ?>
             <div id="slide">
                 <div>    
             <div class="row align-items-center justify-content-center mt-4" >
-                <div class="col-lg-2 position-relative p-0">
+                <div class="col-lg-2 position-relative p-0 mn">
                      <a  href="https://dev.nemisatv.co.za/">
-                    <img class="w-100" src="<?php echo  URL::to('/assets/img/lan/r1.png')?>" style=>
+                    <img class="w-100" src="<?php echo  URL::to('/assets/img/lan/radio.jpg')?>" style=>
                     
                          <p class="io">Radio</p></a>
                 </div>
-                <div class="col-lg-2 p-0">
-                    <div class="position-relative mn">  <a  href="https://dev.nemisatv.co.za/"> <img class="w-100" src="<?php echo  URL::to('/assets/img/lan/r2.png')?>" style=>
+                <div class="col-lg-2 p-0 ">
+                    <div class="position-relative mn">  <a  href="https://dev.nemisatv.co.za/category/Education"> <img class="w-100" src="<?php echo  URL::to('/assets/img/lan/education.jpg')?>" style=>
                         <p class="io">Education</p></a></div>
-                    <div class="position-relative mn">   <a  href="https://dev.nemisatv.co.za/"> <img class="w-100 mt-3" src="<?php echo  URL::to('/assets/img/lan/r3.png')?>" style=>
+                    <div class="position-relative mn">   <a  href="https://dev.nemisatv.co.za/"> <img class="w-100 " src="<?php echo  URL::to('/assets/img/lan/live.jpg')?>" style=>
                         <p class="io">Live <br>Streaming</p></a></div>
                     
                    
                 </div>
-                <div class="col-lg-2 position-relative p-0">
+                <div class="col-lg-2 position-relative p-0 mn">
                       <a  href="https://dev.nemisatv.co.za/">
-                     <img class="w-100" src="<?php echo  URL::to('/assets/img/lan/r4.png')?>" style=>
+                     <img class="w-100" src="<?php echo  URL::to('/assets/img/lan/podcast.jpg')?>" style=>
                           <p class="io">Podcast</p></a>
                     
                 </div>
                 <div class="col-lg-2 p-0">
                     <div class="position-relative mn">
                           <a  href="https://dev.nemisatv.co.za/">
-                        <img class="w-100" src="<?php echo  URL::to('/assets/img/lan/r2.png')?>" style=>
+                        <img class="w-100" src="<?php echo  URL::to('/assets/img/lan/online.jpg')?>" style=>
                               <p class="io">Online <br>Streaming </p></a>
                     </div>
                     <div class="position-relative mn">
-                          <a  href="https://dev.nemisatv.co.za/">
-                        <img class="w-100 mt-3" src="<?php echo  URL::to('/assets/img/lan/r6.png')?>" style=>
+                          <a  href="https://dev.nemisatv.co.za/category/Movies">
+                        <img class="w-100 " src="<?php echo  URL::to('/assets/img/lan/movies.jpg')?>" style=>
                               <p class="io">Movies</p></a>
                     </div>
                      
                      
                 </div>
-                <div class="col-lg-2 position-relative p-0">
-                      <a  href="https://dev.nemisatv.co.za/">
-                     <img class="w-100" src="<?php echo  URL::to('/assets/img/lan/r7.png')?>" style=>
+                <div class="col-lg-2 position-relative p-0 mn">
+                      <a  href="https://dev.nemisatv.co.za/category/Animation">
+                     <img class="w-100" src="<?php echo  URL::to('/assets/img/lan/animation.jpg')?>" style=>
                           <p class="io">Animation</p></a>
                 </div>
             </div></div>
@@ -1684,7 +1694,7 @@ my craft using Technology as a Dj.”</p>
                   </div>
                    <p class=" map">“A data free content is the next big
 thing. I love NEMISA TV.”</p>
-                  <h4 class="text-black">JOEY MANKGA</h4>
+                  <h4 class="text-black">JOEY MANGKA</h4>
                   <p>Web Developer</p>
               </div>
             </div>
