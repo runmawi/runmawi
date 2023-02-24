@@ -1079,12 +1079,12 @@
                                 <source src="" type="video/ogg">
                             </video>
 
-                            /* <!-- <div class="row p-0">
+                            <!-- <div class="row p-0">
                                 <div class=" col-4 col-md-4 p-0"> <img class="img-lan" src="<?php echo URL::to('/assets/img/v1.png'); ?>" style=""></div>
                                 <div class=" col-4 col-md-4 p-0" style="">   <img class="mt-4 img-lan" src="<?php echo URL::to('/assets/img/v2.png'); ?>" style=""></div>
                                 <div class=" col-4 col-md-4 p-0"  style="">  <img class="mt-5 img-lan" src="<?php echo URL::to('/assets/img/v3.png'); ?>" style=""></div>
                                 </div>color: #1D639B;
-                            --> */
+                            -->
                         </div>
 
                         <div class="col-lg-6 p-0">
@@ -1573,13 +1573,13 @@
         </section>
 
 
-        /* <!-- <section>
+        <!-- <section>
            <div>
                <img class="w-100" src="<?php echo URL::to('/assets/img/rt.png'); ?>" alt="">
            </div>
-       </section>--> */
+       </section>--> 
 
-        /* <!-- <section class="sec- mt-5">
+        <!-- <section class="sec- mt-5">
             <div class="container">
                 <div class="row">
                     <div class="col-md-4 text-center">
@@ -1599,7 +1599,7 @@
                     </div>
                 </div>
             </div>
-        </section>--> */
+        </section>-->
 
         <section class="sec- mt-5" id="disp">
 
@@ -1611,30 +1611,32 @@
                             <div class="col-lg-2 position-relative p-0 mn">
                                 <a href="https://dev.nemisatv.co.za/">
                                     <img class="w-100" src="<?php echo URL::to('/assets/img/lan/radio.jpg'); ?>" style=>
-
                                     <p class="io">Radio</p>
                                 </a>
                             </div>
+
                             <div class="col-lg-2 p-0 ">
-                                <div class="position-relative mn"> <a
-                                        href="https://dev.nemisatv.co.za/category/Education"> <img class="w-100"
+                                <div class="position-relative mn">
+                                    <a href="https://dev.nemisatv.co.za/category/Education"> <img class="w-100"
                                             src="<?php echo URL::to('/assets/img/lan/education.jpg'); ?>" style=>
                                         <p class="io">Education</p>
-                                    </a></div>
+                                    </a>
+                                </div>
+
                                 <div class="position-relative mn"> <a href="https://dev.nemisatv.co.za/"> <img
                                             class="w-100 " src="<?php echo URL::to('/assets/img/lan/live.jpg'); ?>" style=>
                                         <p class="io">Live <br>Streaming</p>
-                                    </a></div>
-
-
+                                    </a>
+                                </div>
                             </div>
+
                             <div class="col-lg-2 position-relative p-0 mn">
                                 <a href="https://dev.nemisatv.co.za/">
                                     <img class="w-100" src="<?php echo URL::to('/assets/img/lan/podcast.jpg'); ?>" style=>
                                     <p class="io">Podcast</p>
                                 </a>
-
                             </div>
+
                             <div class="col-lg-2 p-0">
                                 <div class="position-relative mn">
                                     <a href="https://dev.nemisatv.co.za/">
@@ -1642,15 +1644,15 @@
                                         <p class="io">Online <br>Streaming </p>
                                     </a>
                                 </div>
+
                                 <div class="position-relative mn">
                                     <a href="https://dev.nemisatv.co.za/category/Movies">
                                         <img class="w-100 " src="<?php echo URL::to('/assets/img/lan/movies.jpg'); ?>" style=>
                                         <p class="io">Movies</p>
                                     </a>
                                 </div>
-
-
                             </div>
+                            
                             <div class="col-lg-2 position-relative p-0 mn">
                                 <a href="https://dev.nemisatv.co.za/category/Animation">
                                     <img class="w-100" src="<?php echo URL::to('/assets/img/lan/animation.jpg'); ?>" style=>
