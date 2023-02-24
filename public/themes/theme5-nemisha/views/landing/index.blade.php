@@ -778,7 +778,7 @@ padding: 0 !important;
     }
     .bg-color{
         border:10px solid #3CAEA3;
-
+min-height: 266px;
         margin: 0 8px auto;
         position: relative;
         padding: 30px 0px 20px 20px;
