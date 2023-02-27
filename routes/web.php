@@ -1988,7 +1988,7 @@ Route::get('categoryfilter', 'ChannelController@categoryfilter')->name('category
 Route::get('pages/{landing_page_slug}', 'LandingpageController@landing_page')->name('landing_page');
 
     // Landing page  category videos
-Route::get('landing_category_videos', 'LandingpageController@landing_category_videos')->name('landing_category_videos');
+Route::get('landing_category_series', 'LandingpageController@landing_category_series')->name('landing_category_series');
 
   // Channel List
 Route::get('channel/{slug}', 'ChannelHomeController@ChannelHome')->name('ChannelHome');

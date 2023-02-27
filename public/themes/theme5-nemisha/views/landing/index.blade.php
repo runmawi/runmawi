@@ -1045,12 +1045,6 @@
         }
     </style>
 
-    <?php
-    
-    $videos_categories = App\VideoCategory::orderBy('order')->get();
-    
-    ?>
-
     <?php $jsonString = file_get_contents(base_path('assets/country_code.json'));
     
     $jsondata = json_decode($jsonString, true); ?>
@@ -1158,7 +1152,7 @@
                             @foreach ($videos_categories as $key => $videos_category)
                                 <li class="nav-item">
                                     <a class="nav-link" id="pills-profile-tab" data-toggle="pill"
-                                        data-category-id={{ $videos_category->id }} onclick="videos_category(this)"
+                                        data-category-id={{ $videos_category->id }} onclick="Series_Category(this)"
                                         role="tab" aria-controls="pills-profile" aria-selected="false">
                                         {{ $videos_category->name }}
                                     </a>
@@ -1191,7 +1185,7 @@
                         aria-labelledby="pills-home-tab">
 
                         <div class="row favorites-sli1 data">
-                            @partial('landing_category_videos')
+                            @partial('landing_category_series')
                         </div>
 
                         <div class="row mt-2"></div>
@@ -1837,13 +1831,13 @@ Resist</h2>
         </script>
 
         <script>
-            function videos_category(ele) {
+            function Series_Category(ele) {
 
                 var category_id = $(ele).attr('data-category-id');
 
                 $.ajax({
                     type: "get",
-                    url: "{{ route('landing_category_videos') }}",
+                    url: "{{ route('landing_category_series') }}",
                     data: {
                         _token: "{{ csrf_token() }}",
                         category_id: category_id,
