@@ -5,15 +5,15 @@
 
 <head>
     <?php
-        $uri_path = $_SERVER['REQUEST_URI'];
-        $uri_parts = explode('/', $uri_path);
-        $request_url = end($uri_parts);
-        $uppercase = ucfirst($request_url);
+    $uri_path = $_SERVER['REQUEST_URI'];
+    $uri_parts = explode('/', $uri_path);
+    $request_url = end($uri_parts);
+    $uppercase = ucfirst($request_url);
     ?>
-    
+
     <!-- Required meta tags -->
     <meta charset="UTF-8">
-    <?php $settings = App\Setting::first();  ?>
+    <?php $settings = App\Setting::first(); ?>
 
     <title><?php echo $uppercase . ' | ' . $settings->website_name; ?></title>
 
@@ -23,7 +23,8 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
         rel="stylesheet">
 
     <!-- Favicon -->
@@ -50,10 +51,12 @@
 
     <style>
         .map {
+
             font-size: 16px;
             line-height: 23px;
             margin-top: 15px !important;
             text-align: justify;
+
         }
 
         .wat {
@@ -93,6 +96,7 @@
         .mn {
             margin: 10px 10px;
             transition: all .5s ease-in;
+
         }
 
         .mn img {
@@ -101,6 +105,7 @@
 
         .mn:hover {
             transform: scale(1.1);
+
         }
 
         @media only screen and (max-width : 320px) {
@@ -210,6 +215,7 @@
             .position-relative {
                 margin-top: 0 !important;
             }
+
         }
 
         .sec-4 h2 {
@@ -253,10 +259,13 @@
 
         h2 {
             font-family: 'futuramedium';
+
+
         }
 
         .sec-2 h2 {
             font-size: 40px;
+            margin: 0 60px auto;
         }
 
         h2 {
@@ -278,8 +287,8 @@
         }
 
         /*.sign-user_card {
-        background: none !important;
-    }*/
+       background: none !important;
+   }*/
         #ck-button {
             margin: 4px;
             /*    background-color:#EFEFEF;*/
@@ -344,8 +353,8 @@
         }
 
         /*.sign-up-buttons{
-        margin-left: 40% !important;
-    }*/
+       margin-left: 40% !important;
+   }*/
         .verify-buttons {
             margin-left: 36%;
         }
@@ -357,19 +366,19 @@
         }
 
         /* .form-control {
-    background-color: var(--iq-body-text) !important;
-    border: 1px solid transparent;
-    height: 46px;
-    position: relative;
-    color: var(--iq-body-bg) !important;
-    font-size: 16px;
-    width: 100%;
-    -webkit-border-radius: 6px;
-    border-radius: 6px;
+   background-color: var(--iq-body-text) !important;
+   border: 1px solid transparent;
+   height: 46px;
+   position: relative;
+   color: var(--iq-body-bg) !important;
+   font-size: 16px;
+   width: 100%;
+   -webkit-border-radius: 6px;
+   border-radius: 6px;
 }
-    a {
-    color: var(--iq-body-text);
-    text-decoration: none;
+   a {
+   color: var(--iq-body-text);
+   text-decoration: none;
 }*/
         .phselect {
 
@@ -405,7 +414,7 @@
         }
 
         /*input[type="file"] {
-    display: none;
+   display: none;
 }*/
         .catag {
             padding-right: 150px !important;
@@ -453,6 +462,8 @@
         }
 
         .get {
+
+
             font-style: normal;
             font-weight: 500;
             font-size: 20px;
@@ -480,6 +491,7 @@
 
         .sec-21 .btn {
             border-radius: 30px !important;
+
         }
 
         .sec-21 .btn-success:after {
@@ -498,6 +510,7 @@
         .sec-21 .btn-success:hover {
             color: #fff !important;
             border-color: 1px solid #ED553B !importan;
+
         }
 
         .sec-21 .btn-success:hover:after {
@@ -590,10 +603,12 @@
             padding: 10px 30px;
             font-family: 'Roboto', sans-serif;
             font-weight: 600;
+
         }
 
         .nav-link {
             font-family: 'futuraheavy';
+
         }
 
         p {
@@ -601,6 +616,7 @@
             font-weight: 400;
             font-size: 20px;
             line-height: 32px;
+
         }
 
         .nav-link.active {
@@ -609,6 +625,9 @@
             padding: 10px 0;
             border: none !important;
             border-bottom: 2px solid #F6D55C !important;
+
+
+
         }
 
         .nav-pills .nav-link {
@@ -646,7 +665,11 @@
             color: #fff !important;
             background: #ED553B !important;
             border: none !important;
+
+
             border-radius: 5px;
+
+
         }
 
         .bg-light {
@@ -683,6 +706,8 @@
 
         .nem {
             color: #1D639B;
+
+
         }
 
         .lan {
@@ -693,7 +718,9 @@
             font-style: normal;
             font-weight: 400;
             font-size: 22px;
+
             text-transform: uppercase;
+
         }
 
         .dropdown-menu {
@@ -711,6 +738,7 @@
         .dropdown-item {
             color: #000 !important;
             padding: 5px;
+
         }
 
         #ikm {
@@ -720,6 +748,7 @@
         }
 
         .pt p {
+
             font-size: 16px;
             line-height: 25px;
         }
@@ -782,10 +811,12 @@
 
         .card img:hover {
             transform: scale(1.1);
+
         }
 
         .card p:hover {
             color: #01DC82 !important;
+
         }
 
         .sec-3 h2 {}
@@ -798,15 +829,15 @@
             /*position: absolute;*/
             display: none;
             /*bottom: 0;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    color: white;
-        line-height: 20px;
-        text-align: center;*/
+   left: 0;
+   right: 0;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   width: 100%;
+   color: white;
+       line-height: 20px;
+       text-align: center;*/
         }
 
         .suce {
@@ -815,11 +846,13 @@
             align-items: center;
             padding: -1px 0 0 0;
             height: 30px;
+
             color: #F6D55C !important;
             border: none;
         }
 
         .nav-pills {
+
             border-radius: 5px;
             padding: 0 !important;
         }
@@ -833,6 +866,7 @@
             background-color: #3CAEA3;
             color: #fff;
             padding: 40px;
+
         }
 
         .navbar-fixed-top {
@@ -849,6 +883,7 @@
         }
 
         .card img {
+
             border-radius: 5px !important;
         }
 
@@ -884,7 +919,7 @@
 
         .bg-color {
             border: 10px solid #3CAEA3;
-
+            min-height: 266px;
             margin: 0 8px auto;
             position: relative;
             padding: 30px 0px 20px 20px;
@@ -899,6 +934,7 @@
 
         .bg-color {
             border: 10px solid #3CAEA3;
+
             margin: 25px 8px auto;
             position: relative;
         }
@@ -912,7 +948,7 @@
         }
 
         .bg-color h3 {
-            color: #F6D55C;
+            color: #Fff;
             font-weight: 600;
             font-size: 30px;
             line-height: 52px;
@@ -920,7 +956,7 @@
         }
 
         .bg-color1 h3 {
-            color: #F6D55C;
+            color: #Fff;
             font-weight: 600;
             font-size: 30px;
             line-height: 52px;
@@ -933,6 +969,7 @@
             padding: 15px;
             top: -36px;
             left: -19px;
+
         }
 
         .clive {
@@ -941,6 +978,7 @@
             padding: 15px;
             top: -36px;
             left: -19px;
+
         }
 
         .set {
@@ -949,9 +987,11 @@
             padding: 15px;
             top: -36px;
             left: -19px;
+
         }
 
         .btn-outline-danger {
+
             color: #ED553B !important;
         }
 
@@ -1005,10 +1045,10 @@
         }
     </style>
 
-    <?php 
-
-        $videos_categories = App\VideoCategory::orderBy('order')->get();
-        
+    <?php
+    
+    $videos_categories = App\VideoCategory::orderBy('order')->get();
+    
     ?>
 
     <?php $jsonString = file_get_contents(base_path('assets/country_code.json'));
@@ -1028,7 +1068,8 @@
 
                 <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
                     <a type="button" class="btn btn-outline-danger bp mr-3" href="{{ route('login') }}">Sign In </a>
-                    <a class="btn btn-success  my-2 mr-2 my-sm-0 bp" href="{{ route('signup') }}" style="">Sign Up</a>
+                    <a class="btn btn-success  my-2 mr-2 my-sm-0 bp" href="{{ route('signup') }}" style="">Sign
+                        Up</a>
                 </div>
             </div>
         </nav>
@@ -1094,7 +1135,8 @@
                         </div>
 
                         <div class="col-lg-6 p-0">
-                            <h2 class="ml-3" style="">NEMISA TV - Bringing the world of digital technology to you.</h2>
+                            <h2 class="ml-3" style="">NEMISA TV - Bringing the world of digital technology to
+                                you.</h2>
                             <ul class="tune mt-3">
                                 <li> Be transformed by the entertaining learning opportunities offered.</li>
                                 <li>Thousands of videos available.</li>
@@ -1113,9 +1155,10 @@
                     <div class="mt-3 ">
                         <ul class="nav nav-pills   m-0 p-0" id="pills-tab" role="tablist">
 
-                            @foreach($videos_categories as $key => $videos_category)
+                            @foreach ($videos_categories as $key => $videos_category)
                                 <li class="nav-item">
-                                    <a class="nav-link" id="pills-profile-tab" data-toggle="pill"  data-category-id={{  $videos_category->id  }} onclick="videos_category(this)"
+                                    <a class="nav-link" id="pills-profile-tab" data-toggle="pill"
+                                        data-category-id={{ $videos_category->id }} onclick="videos_category(this)"
                                         role="tab" aria-controls="pills-profile" aria-selected="false">
                                         {{ $videos_category->name }}
                                     </a>
@@ -1144,10 +1187,11 @@
             <div class="container">
 
                 <div class="tab-content" id="pills-tabContent">
-                    <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-                        
+                    <div class="tab-pane fade show active" id="pills-home" role="tabpanel"
+                        aria-labelledby="pills-home-tab">
+
                         <div class="row favorites-sli1 data">
-                                @partial('landing_category_videos')
+                            @partial('landing_category_videos')
                         </div>
 
                         <div class="row mt-2"></div>
@@ -1168,7 +1212,7 @@
            <div>
                <img class="w-100" src="<?php echo URL::to('/assets/img/rt.png'); ?>" alt="">
            </div>
-       </section>--> 
+       </section>-->
 
         <!-- <section class="sec- mt-5">
             <div class="container">
@@ -1243,7 +1287,7 @@
                                     </a>
                                 </div>
                             </div>
-                            
+
                             <div class="col-lg-2 position-relative p-0 mn">
                                 <a href="https://dev.nemisatv.co.za/category/Animation">
                                     <img class="w-100" src="<?php echo URL::to('/assets/img/lan/animation.jpg'); ?>" style=>
@@ -1368,7 +1412,10 @@
         <section class="sec-2"
             style="background-image:url('<?php echo URL::to('/assets/img/lan/bg1.png'); ?>');background-repeat: no-repeat;background-size:100% 100%;">
             <div class="container">
+
                 <div class="" style="padding:5% 0 5% 0;">
+                    <h2 class="ben   text-right" style="
+">BENEFITS YOU CAN'T RESIST</h2>
                     <div class="row m-0 p-0 justify-content-around align-items-center">
 
                         <div class="col-lg-6">
@@ -1384,40 +1431,39 @@
                        <div class=" col-4 col-md-4 p-0"  style="">  <img class="mt-5 img-lan" src="<?php echo URL::to('/assets/img/v3.png'); ?>" style=""></div>
                     </div>color: #1D639B;-->
                         </div>
-                        <div class="col-lg-6 ">
-                            <h2 class="ben" style="">BENEFITS YOU CAN'T RESIST</h2>
+                        <div class="col-lg-6 p-0">
 
                             <!-- <p class="text-white mt-3" style="font-size: 22px;
-                                        line-height: 40px;">Use  the information as it is and the icons, please don’t
-                                        forgot to place the fullstops on the sentences. The image
-                                        next to it,  Please remove it and replace with this video.
-                            </p>-->
+line-height: 40px;">Use  the information as it is and the icons, please don’t
+forgot to place the fullstops on the sentences. The image
+next to it,  Please remove it and replace with this video.</p>-->
+
 
                             <div class="row">
                                 <div class="col-lg-6 pa">
+                                    <div>
 
-                                    <div></div>
-
+                                    </div>
                                     <div class=" lan">
                                         <img class="mb-2" src="<?php echo URL::to('/assets/img/lan/v3.png'); ?>" style=>
-                                        <h4 class="">User Feedback and<br> Interaction</h4>
+                                        <h4 class="">User Feedback and Interaction</h4>
                                         <p style="color:#fff;font-weight:500;">Learn by interacting with experts and
                                             other users.</p>
                                     </div>
+
                                 </div>
-
                                 <div class="col-lg-6 p-0">
-                                    <div></div>
-
+                                    <div>
+                                    </div>
                                     <div class="lan ">
                                         <img class="mb-2" src="<?php echo URL::to('/assets/img/lan/v4.png'); ?>" style=>
                                         <h4 class="">Aggregated User generated content</h4>
                                         <p style="color:#fff;">Create and contribute your own digital content to
                                             empower other users.</p>
                                     </div>
-                                </div>
 
-                                <div class=" col-lg-6 rated">
+                                </div>
+                                <div class=" col-lg-6 rated mt-3">
                                     <img class="mb-2" src="<?php echo URL::to('/assets/img/lan/v5.png'); ?>" style=>
                                     <h4 class="">Curated multiformat<br> training content</h4>
                                     <p style="color:#fff;">Diverse learning content that focuses on the visual, audio,
@@ -1425,8 +1471,41 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="row">
+                            <div class="col-lg-6 pa">
+
+                                <div></div>
+
+                                <div class=" lan">
+                                    <img class="mb-2" src="<?php echo URL::to('/assets/img/lan/v3.png'); ?>" style=>
+                                    <h4 class="">User Feedback and<br> Interaction</h4>
+                                    <p style="color:#fff;font-weight:500;">Learn by interacting with experts and
+                                        other users.</p>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 p-0">
+                                <div></div>
+
+                                <div class="lan ">
+                                    <img class="mb-2" src="<?php echo URL::to('/assets/img/lan/v4.png'); ?>" style=>
+                                    <h4 class="">Aggregated User generated content</h4>
+                                    <p style="color:#fff;">Create and contribute your own digital content to
+                                        empower other users.</p>
+                                </div>
+                            </div>
+
+                            <div class=" col-lg-6 rated">
+                                <img class="mb-2" src="<?php echo URL::to('/assets/img/lan/v5.png'); ?>" style=>
+                                <h4 class="">Curated multiformat<br> training content</h4>
+                                <p style="color:#fff;">Diverse learning content that focuses on the visual, audio,
+                                    social, solitary, verbal and logical.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
+            </div>
             </div>
         </section>
 
@@ -1628,8 +1707,8 @@ Resist</h2>
             $jsondata = json_decode($jsonString, true); ?>
 
             <?php
-                $ref = Request::get('ref');
-                $coupon = Request::get('coupon');
+            $ref = Request::get('ref');
+            $coupon = Request::get('coupon');
             ?>
 
         </section>
@@ -1679,7 +1758,7 @@ Resist</h2>
 
         <script>
             document.addEventListener('DOMContentLoaded', () => {
-                
+
                 const player = new Plyr('#player2');
 
                 // Expose
@@ -1716,7 +1795,7 @@ Resist</h2>
                 });
             });
         </script>
-        
+
         <script>
             document.addEventListener('DOMContentLoaded', () => {
                 // This is the bare minimum JavaScript. You can opt to pass no arguments to setup.
@@ -1758,23 +1837,22 @@ Resist</h2>
         </script>
 
         <script>
-            function videos_category(ele){
+            function videos_category(ele) {
 
                 var category_id = $(ele).attr('data-category-id');
 
                 $.ajax({
-                type: "get", 
-                url: "{{ route('landing_category_videos') }}",
-                data: {
-                    _token  : "{{ csrf_token() }}" ,
-                    category_id: category_id,
-                },
-                success: function(data) {
+                    type: "get",
+                    url: "{{ route('landing_category_videos') }}",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        category_id: category_id,
+                    },
+                    success: function(data) {
                         $(".data").html(data);
                     },
                 });
             }
-            
         </script>
 
         @php

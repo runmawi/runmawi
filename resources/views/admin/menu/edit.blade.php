@@ -10,10 +10,22 @@
 </div>-->
 
 <div class="modal-body">
-	<form id="update-menu-form" accept-charset="UTF-8" action="{{ URL::to('admin/menu/update') }}" method="post">
+	<form id="update-menu-form" accept-charset="UTF-8"  enctype="multipart/form-data"  action="{{ URL::to('admin/menu/update') }}" method="post">
         <label for="name">Menu Item Name</label>
         <input name="name" id="name" placeholder="Menu Item Name" class="form-control" value="{{ $menu->name }}" /><br />
-		
+		<div class="row container-fluid">
+			<div class="col-sm-6 p-0">
+			<label for="name">Menu Item Image</label>
+			<input type="file" name="image" id="image" />
+			</div>
+			@if(!empty($menu->image))
+				<div class="col-sm-6 p-0">
+					<img src="{{ $menu->image }}" class="" style="height: 50%; width: 50%;" />
+				</div>
+			@endif
+		</div>
+		<br />
+
 		<label for="name">Show In-Home</label>
 			<div class="mt-1 d-flex align-items-center justify-content-around">
 				<div class="mr-2">OFF</div>

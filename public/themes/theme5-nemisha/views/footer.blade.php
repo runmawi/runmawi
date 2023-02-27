@@ -9,7 +9,30 @@
 <footer class="py-4 mt-auto">
   <div class="container-fluid px-5 mt-5">
      <!-- <p class="text-white text-center mb-4">Chat-box will be sent later.</p>-->
-        <h3 class="font-weight-bold mb-2 text-center mb-4">Download App</h3>
+      <div class="row justify-content-center align-items-center">
+          <div class="col-lg-3 p-0">  <h3 class="font-weight-bold mb-0 text-right ">Download App</h3></div>
+          <div class="col-lg-5">
+               <?php $app_settings = App\AppSetting::where('id','=',1)->first(); ?>
+
+          <div class=" small m-0 text-white ">
+             <div class="map1"> 
+              <?php if(!empty($app_settings->android_url)){ ?>
+              <img class="" height="80" width="140" src="<?php echo  URL::to('/assets/img/apps1.png')?>" />
+              <?php } ?>
+              <?php if(!empty($app_settings->ios_url)){ ?>
+              <img class="" height="80" width="140" src="<?php echo  URL::to('/assets/img/apps.png')?>"  />
+              <?php } ?>
+              <?php if(!empty($app_settings->android_tv)){ ?>
+              <img class="" height="100" width="150" src="<?php echo  URL::to('/assets/img/and.png')?>" />
+              <?php } ?>
+              </div>
+              
+            <!--  <p class="p-0 mr-3 mt-3">Questions? Call 000-800-123-123</p>-->
+          </div>
+          </div>
+      </div>
+      
+      
       <div class="row  justify-content-center ">
         
           <!--<div class="col-sm-7 small m-0 text-white exp p-0">
@@ -28,24 +51,7 @@ entertainment.</p>
                  </div>
           </div>-->
 
-          <?php $app_settings = App\AppSetting::where('id','=',1)->first(); ?>
-
-          <div class="col-sm-3. small m-0 text-white text-right">
-             <div class="map1">
-                 <p class="text-left">Available on </p>
-              <?php if(!empty($app_settings->android_url)){ ?>
-              <img class="" height="80" width="140" src="<?php echo  URL::to('/assets/img/apps1.png')?>" style="margin-top: -20px;" />
-              <?php } ?>
-              <?php if(!empty($app_settings->ios_url)){ ?>
-              <img class="" height="80" width="140" src="<?php echo  URL::to('/assets/img/apps.png')?>" style="margin-top: -20px;" />
-              <?php } ?>
-              <?php if(!empty($app_settings->android_tv)){ ?>
-              <img class="" height="100" width="150" src="<?php echo  URL::to('/assets/img/and.png')?>" style="margin-top: -20px;" />
-              <?php } ?>
-              </div>
-              
-            <!--  <p class="p-0 mr-3 mt-3">Questions? Call 000-800-123-123</p>-->
-          </div>
+         
           <div class="col-sm-3. small m-0 text-white text-right">
                <div class="map1">
                     <div class="d-flex p-0 text-white icon align-items-baseline">
@@ -109,8 +115,9 @@ entertainment.</p>
   </div>
   <div class="container-fluid">
       <p class="mb-0 text-center font-size-14 text-body" style="color: #208585 !important;">
-          <a href="" target="_blank" class="ml-1">
-              Terms and Conditions </a> <?php echo $settings->website_name ; ?> -
+          <a href="https://dev.nemisatv.co.za/page/terms-and-conditions" target="_blank" class="ml-1">
+              Terms and Conditions </a>  <a href="https://dev.nemisatv.co.za/page/FAQ" target="_blank" class="ml-1">
+              FAQ </a> <?php echo $settings->website_name ; ?> -
           <?php echo Carbon::now()->year ; ?> All Rights Reserved
       </p>
   </div>

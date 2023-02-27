@@ -1,4 +1,4 @@
-<?php  $settings = App\Setting::first(); ?>
+<?php $settings = App\Setting::first(); ?>
 
 <html>
 
@@ -80,12 +80,14 @@
 <body>
 
 
-    <section class="sign-in-page" style="background:url('<?php echo URL::to('/') . '/public/uploads/settings/' . $settings->login_content; ?>') no-repeat;background-size: cover;">
-        <div class="container  page-height">
+    <section class="sign-in-page"
+        style="background:url('<?php echo URL::to('/') . '/public/uploads/settings/' . $settings->login_content; ?>') no-repeat;background-size: cover;height:650px;padding:10% 0 10% 0;">
+        <div class="container">
             <div class="row justify-content-around">
                 <div class="col-lg-7 col-12 align-self-center">
                     <div class="">
-                        <h1 class="km"><?php echo $settings->login_text; ?></h1>
+                        <h1 class="km">FREE EDUTAINMENT FOR THE DIGITAL WARRIOR
+                        </h1>
                     </div>
                 </div>
 
@@ -93,7 +95,10 @@
                     <div class="sign-user_card ">
                         <div class="sign-in-page-data">
                             <div class="sign-in-from w-100 m-auto" align="center">
-                                <img src="<?php echo URL::to('/') . '/public/uploads/settings/' . $settings->logo; ?>" style="margin-bottom:1rem;">
+
+                                <img class="mb-2" src="<?php echo URL::to('/assets/img/nem.png'); ?>" alt="<?php echo $settings->website_name; ?>" />
+
+
                                 <h2 class="mb-3 text-center h">{{ __('Forgot Password') }}</h2>
 
                                 <div class="">
@@ -105,7 +110,6 @@
 
                                     <form method="POST" action="{{ route('password.email') }}">
                                         @csrf
-
 
                                         <input id="email" type="email"
                                             class="form-control @error('email') is-invalid @enderror" name="email"
@@ -146,8 +150,6 @@
             });
         });
     </script>
-
-    @include('footer')
 
 </body>
 

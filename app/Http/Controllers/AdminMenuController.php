@@ -86,6 +86,29 @@ class AdminMenuController extends Controller
       
         $last_menu_item = Menu::orderBy('order', 'DESC')->first();
         
+        $image = isset($input["image"]) ? $input["image"] : "";
+        
+        $path = public_path() . "/uploads/videos/";
+        $image_path = public_path() . "/uploads/images/";
+        $image_url = URL::to('public/uploads/images');
+        
+        if ($image != "") {
+            //code for remove old file
+            if ($image != "" && $image != null) {
+                $file_old = $image_path . $image;
+                if (file_exists($file_old)) {
+                    unlink($file_old);
+                }
+            }
+            //upload new file
+            $file = $image;
+
+            $imageurl = $image_url.'/'.str_replace(" ","_",$file->getClientOriginalName());
+
+            $file->move($image_path, $imageurl);
+            $input['image'] =   $imageurl;
+        }
+
         if(isset($last_menu_item->order)){
             $new_menu_order = intval($last_menu_item->order) + 1;
         } else {
@@ -145,7 +168,32 @@ class AdminMenuController extends Controller
     }
 
     public function update(Request $request){
+
         $input = $request->all();
+
+        $image = isset($input["image"]) ? $input["image"] : "";
+
+        $path = public_path() . "/uploads/videos/";
+        $image_path = public_path() . "/uploads/images/";
+        $image_url = URL::to('public/uploads/images');
+
+        if ($image != "") {
+            //code for remove old file
+            if ($image != "" && $image != null) {
+                $file_old = $image_path . $image;
+                if (file_exists($file_old)) {
+                    unlink($file_old);
+                }
+            }
+            //upload new file
+            $file = $image;
+            $imageurl = $image_url.'/'.str_replace(" ","_",$file->getClientOriginalName());
+
+            $file->move($image_path, $imageurl);
+            $input['image'] =   $imageurl;
+
+        }
+
         $input['in_home'] = $request->in_home  == "on"  ? 1 : 0 ;
         $menu = Menu::find($input['id'])->update($input);
         if(isset($menu)){
