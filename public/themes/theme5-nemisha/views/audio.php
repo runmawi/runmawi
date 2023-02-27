@@ -27,7 +27,7 @@ $audio = $audios ;
 .btn-action{
   cursor: pointer;
  
-  width: 30px;
+  
 }
 
 .btn-ctn, .infos-ctn{
@@ -224,6 +224,10 @@ text-align: center;
 #circle{
 border-radius: 50%;
 }
+    .btn-outline-success{
+        border-radius: 30px;
+        padding: 5px 15px!important;
+    }
 </style>
 
 <?php if (isset($error)) { ?>
@@ -271,15 +275,17 @@ Your browser does not support the audio element.
 
 <div class="row album-top-30 mt-4 ">
     <div class="col-lg-8">
-         <div class="player-ctn">
-              <div class="row">
-            <div class="col-sm-3 col-md-3 col-xs-3">
-<img src="<?= URL::to('/').'/public/uploads/albums/'. $audio->album ?>"  class="img-responsive" width="200" height="200">
+         <div class="player-ctn" style="background-image:linear-gradient(to left, rgba(0, 0, 0, 0.25)0%, rgba(117, 19, 93, 1)),url('<?= URL::to('/').'/public/uploads/images/'. $audio->player_image ?>');background-size: cover;
+    background-repeat: no-repeat;
+    background-position: right;">
+              <div class="row justify-content-between align-items-center">
+            <div class="col-sm-3 col-md-3 col-xs-3 text-center">
+<img src="<?= URL::to('/').'/public/uploads/albums/'.$audio->image ?>"  class="img-responsive" width="160" >
 
 <!-- -->
 </div>
             
-<div class="col-sm-9 col-md-9 col-xs-9">
+<div class="col-sm-9 col-md-9 col-xs-9 p-0">
     
         
 <div class="album_bg">
@@ -292,7 +298,7 @@ Your browser does not support the audio element.
 <div class="d-flex" style="justify-content: space-between;width: 30%;align-items: center;">
 
 <div onclick="toggleAudio()">
-  <button class=" bd btn-action" id="vidbutton" style="width:80px" ><i class="fa fa-play mr-2" aria-hidden="true"  ></i> Play</button>
+  <button class="  btn btn-outline-success" id="vidbutton"  ><i class="fa fa-play mr-2" aria-hidden="true"  ></i> Play</button>
 </div>
 
 <a aria-hidden="true" class="favorite <?php echo audiofavorite($audio->id);?>" data-authenticated="<?= !Auth::guest() ?>" data-audio_id="<?= $audio->id ?>"><?php if(audiofavorite($audio->id) == "active"): ?><i id="ff" class="fa fa-heart" ></i><?php else: ?><i id="ff" class="fa fa-heart-o" ></i><?php endif; ?></a>
@@ -430,15 +436,15 @@ Your browser does not support the audio element.
 <div class="prev_cat_audio" style="display: none;"><?= $audios_category_prev->id ?></div>
 <?php } ?>
 </div>
-</div>
-</div>
+
+
 <div class="clear"></div>  
 
 <?php } ?>
 
 
                <!-- Comment Section -->
-               
+          <div class="ml-2">     
       <?php if( App\CommentSection::first() != null && App\CommentSection::pluck('livestream')->first() == 1 ): ?>
         <div class="row">
             <div class=" container-fluid video-list you-may-like overflow-hidden">
@@ -447,8 +453,8 @@ Your browser does not support the audio element.
             </div>
         </div>
       <?php endif; ?>
-
-<div class="container-fluid">
+</div>
+<div class="container-fluid overflow-hidden">
 <div class="row album-top-30 mt-3">  
 <div class="col-sm-12">
    
@@ -481,7 +487,7 @@ Your browser does not support the audio element.
         </div>
 </div>
 
-</div>
+    </div></div>
 <?php endif; ?>
 
 <div class="">
