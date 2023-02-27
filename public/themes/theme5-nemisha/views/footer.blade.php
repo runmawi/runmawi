@@ -116,7 +116,8 @@ entertainment.</p>
   <div class="container-fluid">
       <p class="mb-0 text-center font-size-14 text-body" style="color: #208585 !important;">
           <a href="https://dev.nemisatv.co.za/page/terms-and-conditions" target="_blank" class="ml-1">
-              Terms and Conditions </a> <?php echo $settings->website_name ; ?> -
+              Terms and Conditions </a>  <a href="https://dev.nemisatv.co.za/page/FAQ" target="_blank" class="ml-1">
+              FAQ </a> <?php echo $settings->website_name ; ?> -
           <?php echo Carbon::now()->year ; ?> All Rights Reserved
       </p>
   </div>

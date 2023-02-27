@@ -335,9 +335,9 @@ font-weight: 600;
                               <button type="submit" class="btn signup" style="width:100%;color:#fff!important;letter-spacing: 1px;font-size:20px;font-weight: 600;">START EXPLORING TODAY</button>
                            </div> 
                                   <div class="mt-3">
-                  <div class="d-flex justify-content-center  links">
+                  <div class="d-flex   links">
                      
-                      <p class="text-left agree mb-0">By signing up you agree to Nemisa Tv Terms of Service and Privacy Policy. This page is protected by reCAPTCHA and is subject to Google's Terms of Service and Privacy Policy.</p>
+                      <p class="text-left agree mb-0">By signing up you agree to Nemisa Tv   <a style="color:#01DC82!important;" href="https://dev.nemisatv.co.za/page/terms-and-conditions" target="_blank" class="ml-1">Terms of Service and Privacy Policy</a></p>
                       
                   </div>
                                      <!--  <div class=" pt-4 mb-2">
