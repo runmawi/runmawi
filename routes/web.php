@@ -1987,10 +1987,12 @@ Route::get('categoryfilter', 'ChannelController@categoryfilter')->name('category
     // Landing page 
 Route::get('pages/{landing_page_slug}', 'LandingpageController@landing_page')->name('landing_page');
 
+    // Landing page  category videos
+Route::get('landing_category_videos', 'LandingpageController@landing_category_videos')->name('landing_category_videos');
 
   // Channel List
-  Route::get('channel/{slug}', 'ChannelHomeController@ChannelHome')->name('ChannelHome');
-  Route::get('Channel-list', 'ChannelHomeController@ChannelList')->name('ChannelList');
+Route::get('channel/{slug}', 'ChannelHomeController@ChannelHome')->name('ChannelHome');
+Route::get('Channel-list', 'ChannelHomeController@ChannelList')->name('ChannelList');
 
     // Razorpay 
 Route::group(['middleware' => ['RazorpayMiddleware']], function() {

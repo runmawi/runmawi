@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Theme;
 use App\HomeSetting;
 use App\AdminLandingPage;
+use App\VideoCategory;
+use App\Video; 
 
 class LandingpageController extends Controller
 {
@@ -28,8 +30,24 @@ class LandingpageController extends Controller
             'custom_css' => AdminLandingPage::where('status',1)->orderBy('id','desc')->pluck('custom_css')->first(),
             'bootstrap_link'  => AdminLandingPage::where('status',1)->orderBy('id', 'desc')->pluck('bootstrap_link')->first(),
             'script_content'  => AdminLandingPage::where('status',1)->orderBy('id', 'desc')->pluck('script_content')->first(),
+            'categoryVideos' => array(),
         ];
 
-        return Theme::view('landing.index',$data);
+        return Theme::view('landing.index', $data);
+
+   }
+
+   public function landing_category_videos(Request $request)
+   {
+
+        $VideoCategory = VideoCategory::find($request->category_id)->specific_category_videos;
+
+        $data = array(
+            'categoryVideos' => $VideoCategory,
+        );
+
+        $theme = Theme::uses($this->Theme);
+
+        return $theme->load('public/themes/theme5-nemisha/partials/landing_category_videos', $data)->render();
    }
 }

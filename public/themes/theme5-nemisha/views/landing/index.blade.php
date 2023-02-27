@@ -1005,6 +1005,12 @@
         }
     </style>
 
+    <?php 
+
+        $videos_categories = App\VideoCategory::orderBy('order')->get();
+        
+    ?>
+
     <?php $jsonString = file_get_contents(base_path('assets/country_code.json'));
     
     $jsondata = json_decode($jsonString, true); ?>
@@ -1107,51 +1113,15 @@
                     <div class="mt-3 ">
                         <ul class="nav nav-pills   m-0 p-0" id="pills-tab" role="tablist">
 
-                            <li class="nav-item">
-                                <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home"
-                                    role="tab" aria-controls="pills-home" aria-selected="true">All Genres</a>
-                            </li>
+                            @foreach($videos_categories as $key => $videos_category)
+                                <li class="nav-item">
+                                    <a class="nav-link" id="pills-profile-tab" data-toggle="pill"  data-category-id={{  $videos_category->id  }} onclick="videos_category(this)"
+                                        role="tab" aria-controls="pills-profile" aria-selected="false">
+                                        {{ $videos_category->name }}
+                                    </a>
+                                </li>
+                            @endforeach
 
-                            <li class="nav-item">
-                                <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile"
-                                    role="tab" aria-controls="pills-profile" aria-selected="false">Musical</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact"
-                                    role="tab" aria-controls="pills-contact"
-                                    aria-selected="false">Documentary</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" id="pills-conta-tab" data-toggle="pill" href="#pills-conta"
-                                    role="tab" aria-controls="pills-conta" aria-selected="false">Animation</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" id="pills-mul-tab" data-toggle="pill" href="#pills-mul"
-                                    role="tab" aria-controls="pills-mul" aria-selected="false">Multimedia</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" id="pills-cast-tab" data-toggle="pill" href="#pills-cast"
-                                    role="tab" aria-controls="pills-cast" aria-selected="false">Vodcast</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" id="pills-new-tab" data-toggle="pill" href="#pills-new"
-                                    role="tab" aria-controls="pills-new" aria-selected="false">News</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" id="pills-nar-tab" data-toggle="pill" href="#pills-nar"
-                                    role="tab" aria-controls="pills-nar" aria-selected="false">Webinar</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" id="pills-Film-tab" data-toggle="pill" href="#pills-Film"
-                                    role="tab" aria-controls="pills-Film" aria-selected="false">Film & Video</a>
-                            </li>
 
                             <li class="nav-item">
 
@@ -1164,24 +1134,6 @@
                                     <a class="nav-link dropdown-item" id="pills-kids-tab" data-toggle="pill"
                                         href="#pills-kids" role="tab" aria-controls="pills-kids"
                                         aria-selected="false">Comic & Kids</a>
-                                    <a class="nav-link dropdown-item" id="pills-live-tab" data-toggle="pill"
-                                        href="#pills-live" role="tab" aria-controls="pills-live"
-                                        aria-selected="false">Live Recording</a>
-                                    <a class="nav-link dropdown-item" id="pills-2d-tab" data-toggle="pill"
-                                        href="#pills-2d" role="tab" aria-controls="pills-2d"
-                                        aria-selected="false">2D & 3D Printing</a>
-                                    <a class="nav-link dropdown-item" id="pills-edu-tab" data-toggle="pill"
-                                        href="#pills-edu" role="tab" aria-controls="pills-edu"
-                                        aria-selected="false">Educational</a>
-                                    <a class="nav-link dropdown-item" id="pills-cas-tab" data-toggle="pill"
-                                        href="#pills-cas" role="tab" aria-controls="pills-cas"
-                                        aria-selected="false">Pod cast</a>
-                                    <a class="nav-link dropdown-item" id="pills-eve-tab" data-toggle="pill"
-                                        href="#pills-eve" role="tab" aria-controls="pills-eve"
-                                        aria-selected="false">Event</a>
-                                    <a class="nav-link dropdown-item" id="pills-rad-tab" data-toggle="pill"
-                                        href="#pills-rad" role="tab" aria-controls="pills-rad"
-                                        aria-selected="false">Radio</a>
                                 </div>
                     </div>
                 </div>
@@ -1190,376 +1142,15 @@
             </ul>
             </div>
             <div class="container">
+
                 <div class="tab-content" id="pills-tabContent">
-                    <div class="tab-pane fade show active" id="pills-home" role="tabpanel"
-                        aria-labelledby="pills-home-tab">
-                        <div class="row favorites-sli1">
-                            <div class="col-md-3 p-0">
-                                <div class="card">
-                                    <div style="position: relative;">
-                                        <img class="w-100 " src="<?php echo URL::to('/assets/img/r1.png'); ?>" style="">
-
-                                        <p class="small bkm"><i class="fa fa-clock-o" aria-hidden="true"></i> 1H
-                                            15Min</p>
-                                    </div>
-
-
-                                    <div class="card-body">
-                                        <p class="card-text">Some quick example text to build on the card title and
-                                            make up the bulk of the card's content.
-                                        </p>
-
-                                        <div class="d-flex small-t ">
-                                            <a herf="" class="btn btn-success suce mr-3"><i
-                                                class="fa fa-thumbs-up mr-2" aria-hidden="true"></i> 96</a>
-                                            <p><i class="fa fa-eye" aria-hidden="true"></i> 19388</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-3 p-0">
-                                <div class="card" style="">
-                                    <div style="position: relative;">
-                                        <img class="w-100 " src="<?php echo URL::to('/assets/img/r2.png'); ?>" style="">
-                                        <p class="small bkm"> <i class="fa fa-clock-o" aria-hidden="true"></i> 1H
-                                            15Min</p>
-                                    </div>
-
-                                    <div class="card-body">
-                                        <p class="card-text">Some quick example text to build on the card title and
-                                            make up the bulk of the card's content.</p>
-
-                                        <div class="d-flex small-t ">
-                                            <a herf="" class="btn btn-success suce mr-3"><i
-                                                    class="fa fa-thumbs-up mr-2" aria-hidden="true"></i> 96</a>
-                                            <p><i class="fa fa-eye" aria-hidden="true"></i> 19388</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-3 p-0">
-                                <div class="card" style="">
-                                    <div style="position: relative;">
-                                        <img class="w-100 " src="<?php echo URL::to('/assets/img/r3.png'); ?>" style="">
-                                        <p class="small bkm"><i class="fa fa-clock-o" aria-hidden="true"></i> 1H
-                                            15Min</p>
-                                    </div>
-
-                                    <div class="card-body">
-                                        <p class="card-text">Some quick example text to build on the card title and
-                                            make up the bulk of the card's content.</p>
-                                        <div class="d-flex small-t ">
-                                            <a herf="" class="btn btn-success suce mr-3"><i
-                                                    class="fa fa-thumbs-up mr-2" aria-hidden="true"></i> 96</a>
-                                            <p><i class="fa fa-eye" aria-hidden="true"></i> 19388</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-3 p-0">
-                                <div class="card" style="">
-
-                                    <div style="position: relative;">
-                                        <img class="w-100 " src="<?php echo URL::to('/assets/img/r4.png'); ?>" style="">
-                                        <p class="small bkm"><i class="fa fa-clock-o" aria-hidden="true"></i> 1H
-                                            15Min</p>
-                                    </div>
-
-                                    <div class="card-body">
-                                        <p class="card-text">Some quick example text to build on the card title and
-                                            make up the bulk of the card's content.</p>
-                                        <div class="d-flex small-t ">
-                                            <a herf="" class="btn btn-success suce mr-3"><i
-                                                    class="fa fa-thumbs-up mr-2" aria-hidden="true"></i> 96</a>
-                                            <p><i class="fa fa-eye" aria-hidden="true"></i> 19388</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-3 p-0">
-                                <div class="card" style="">
-
-                                    <div style="position: relative;">
-                                        <img class="w-100 " src="<?php echo URL::to('/assets/img/sa1.png'); ?>" style="">
-                                        <p class="small bkm"><i class="fa fa-clock-o" aria-hidden="true"></i> 1H
-                                            15Min</p>
-                                    </div>
-
-                                    <div class="card-body">
-
-                                        <p class="card-text">Some quick example text to build on the card title and
-                                            make up the bulk of the card's content.</p>
-                                        <div class="d-flex small-t ">
-                                            <a herf="" class="btn btn-success suce mr-3"><i
-                                                    class="fa fa-thumbs-up mr-2" aria-hidden="true"></i> 96</a>
-                                            <p><i class="fa fa-eye" aria-hidden="true"></i> 19388</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-3 p-0">
-                                <div class="card" style="">
-
-                                    <div style="position: relative;">
-                                        <img class="w-100 " src="<?php echo URL::to('/assets/img/sa2.png'); ?>" style="">
-
-                                        <p class="small bkm"><i class="fa fa-clock-o" aria-hidden="true"></i> 1H
-                                            15Min</p>
-                                    </div>
-
-                                    <div class="card-body">
-                                        <p class="card-text">Some quick example text to build on the card title and
-                                            make up the bulk of the card's content.</p>
-                                        <div class="d-flex small-t ">
-                                            <a herf="" class="btn btn-success suce mr-3"><i
-                                                    class="fa fa-thumbs-up mr-2" aria-hidden="true"></i> 96</a>
-                                            <p><i class="fa fa-eye" aria-hidden="true"></i> 19388</p>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                            <div class="col-md-3 p-0">
-                                <div class="card" style="">
-                                    <div style="position: relative;">
-                                        <img class="w-100 " src="<?php echo URL::to('/assets/img/sa3.jpg'); ?>" style="">
-                                        <p class="small bkm"><i class="fa fa-clock-o" aria-hidden="true"></i> 1H
-                                            15Min</p>
-                                    </div>
-
-                                    <div class="card-body">
-                                        <p class="card-text">Some quick example text to build on the card title and
-                                            make up the bulk of the card's content.</p>
-                                        <div class="d-flex small-t ">
-                                            <a herf="" class="btn btn-success suce mr-3"><i
-                                                    class="fa fa-thumbs-up mr-2" aria-hidden="true"></i> 96</a>
-                                            <p><i class="fa fa-eye" aria-hidden="true"></i> 19388</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-3 p-0">
-                                <div class="card" style="">
-                                    <div style="position: relative;">
-                                        <img class="w-100 " src="<?php echo URL::to('/assets/img/sa4.png'); ?>" style="">
-                                        <p class="small bkm"><i class="fa fa-clock-o" aria-hidden="true"></i> 1H
-                                            15Min</p>
-                                    </div>
-
-                                    <div class="card-body">
-                                        <p class="card-text">Some quick example text to build on the card title and
-                                            make up the bulk of the card's content.</p>
-                                        <div class="d-flex small-t ">
-                                            <a herf="" class="btn btn-success suce mr-3"><i
-                                                    class="fa fa-thumbs-up mr-2" aria-hidden="true"></i> 96</a>
-                                            <p><i class="fa fa-eye" aria-hidden="true"></i> 19388</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                        
+                        <div class="row favorites-sli1 data">
+                                @partial('landing_category_videos')
                         </div>
 
                         <div class="row mt-2"></div>
-
-                    </div>
-
-                    <div class="tab-pane fade" id="pills-profile" role="tabpanel"
-                        aria-labelledby="pills-profile-tab">
-                        <div class="row">
-                            <div class="col-md-3 p-0">
-                                <div class="card" style="">
-                                    <img class="w-100 " src="<?php echo URL::to('/assets/img/sa11.jpg'); ?>" style="">
-                                    <div class="card-body">
-                                        <p class="card-text">Some quick example text to build on the card title and
-                                            make up the bulk of the card's content.</p>
-
-                                        <div class="d-flex small-t ">
-                                            <a herf="" class="btn btn-success suce mr-3"><i
-                                                    class="fa fa-thumbs-up mr-2" aria-hidden="true"></i> 96</a>
-                                            <p><i class="fa fa-eye" aria-hidden="true"></i> 19388</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-3 p-0">
-                                <div class="card" style="">
-                                    <img class="w-100 " src="<?php echo URL::to('/assets/img/sa12.jpg'); ?>" style="">
-                                    <div class="card-body">
-                                        <p class="card-text">Some quick example text to build on the card title and
-                                            make up the bulk of the card's content.</p>
-                                        <div class="d-flex small-t ">
-                                            <a herf="" class="btn btn-success suce mr-3"><i
-                                                    class="fa fa-thumbs-up mr-2" aria-hidden="true"></i> 96</a>
-                                            <p><i class="fa fa-eye" aria-hidden="true"></i> 19388</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-3 p-0">
-                                <div class="card" style="">
-                                    <img class="w-100 " src="<?php echo URL::to('/assets/img/sa13.jpg'); ?>" style="">
-                                    <div class="card-body">
-
-                                        <p class="card-text">Some quick example text to build on the card title and
-                                            make up the bulk of the card's content.</p>
-                                        <div class="d-flex small-t ">
-                                            <a herf="" class="btn btn-success suce mr-3"><i
-                                                    class="fa fa-thumbs-up mr-2" aria-hidden="true"></i> 96</a>
-                                            <p><i class="fa fa-eye" aria-hidden="true"></i> 19388</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-3 p-0">
-                                <div class="card" style="">
-                                    <img class="w-100 " src="<?php echo URL::to('/assets/img/r1.png'); ?>" style="">
-                                    <div class="card-body">
-                                        <p class="card-text">Some quick example text to build on the card title and
-                                            make up the bulk of the card's content.</p>
-                                        <div class="d-flex small-t ">
-                                            <a herf="" class="btn btn-success suce mr-3"><i
-                                                    class="fa fa-thumbs-up mr-2" aria-hidden="true"></i> 96</a>
-                                            <p><i class="fa fa-eye" aria-hidden="true"></i> 19388</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="tab-pane fade" id="pills-contact" role="tabpanel"
-                        aria-labelledby="pills-contact-tab">
-                        <div class="row">
-                            <div class="col-md-3 p-0">
-                                <div class="card" style="">
-                                    <img class="w-100 " src="<?php echo URL::to('/assets/img/r2.png'); ?>" style="">
-                                    <div class="card-body">
-
-                                        <p class="card-text">Some quick example text to build on the card title and
-                                            make up the bulk of the card's content.</p>
-                                        <div class="d-flex small-t justify-content-between">
-                                            <p class="">Diana and Roma EN</p>
-                                            <p>1H 15Min</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3 p-0">
-                                <div class="card" style="">
-                                    <img class="w-100 " src="<?php echo URL::to('/assets/img/r2.png'); ?>" style="">
-                                    <div class="card-body">
-
-                                        <p class="card-text">Some quick example text to build on the card title and
-                                            make up the bulk of the card's content.</p>
-                                        <div class="d-flex small-t justify-content-between">
-                                            <p class="">Diana and Roma EN</p>
-                                            <p>1H 15Min</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3 p-0">
-                                <div class="card" style="">
-                                    <img class="w-100 " src="<?php echo URL::to('/assets/img/r2.png'); ?>" style="">
-                                    <div class="card-body">
-
-                                        <p class="card-text">Some quick example text to build on the card title and
-                                            make up the bulk of the card's content.</p>
-                                        <div class="d-flex small-t justify-content-between">
-                                            <p class="">Diana and Roma EN</p>
-                                            <p>1H 15Min</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-3 p-0">
-                                <div class="card" style="">
-                                    <img class="w-100 " src="<?php echo URL::to('/assets/img/r1.png'); ?>" style="">
-                                    <div class="card-body">
-
-                                        <p class="card-text">Some quick example text to build on the card title and
-                                            make up the bulk of the card's content.</p>
-                                        <div class="d-flex small-t justify-content-between">
-                                            <p class="">Diana and Roma EN</p>
-                                            <p>1H 15Min</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="tab-pane fade" id="pills-conta" role="tabpanel" aria-labelledby="pills-conta-tab">
-                        <div class="row">
-                            <div class="col-md-3 p-0">
-                                <div class="card" style="">
-                                    <img class="w-100 " src="<?php echo URL::to('/assets/img/r2.png'); ?>" style="">
-                                    <div class="card-body">
-
-                                        <p class="card-text">Some quick example text to build on the card title and
-                                            make up the bulk of the card's content.</p>
-                                        <div class="d-flex small-t justify-content-between">
-                                            <p class="">Diana and Roma EN</p>
-                                            <p>1H 15Min</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3 p-0">
-                                <div class="card" style="">
-                                    <img class="w-100 " src="<?php echo URL::to('/assets/img/r2.png'); ?>" style="">
-                                    <div class="card-body">
-
-                                        <p class="card-text">Some quick example text to build on the card title and
-                                            make up the bulk of the card's content.</p>
-                                        <div class="d-flex small-t justify-content-between">
-                                            <p class="">Diana and Roma EN</p>
-                                            <p>1H 15Min</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3 p-0">
-                                <div class="card" style="">
-                                    <img class="w-100 " src="<?php echo URL::to('/assets/img/r2.png'); ?>" style="">
-                                    <div class="card-body">
-
-                                        <p class="card-text">Some quick example text to build on the card title and
-                                            make up the bulk of the card's content.</p>
-                                        <div class="d-flex small-t justify-content-between">
-                                            <p class="">Diana and Roma EN</p>
-                                            <p>1H 15Min</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-3 p-0">
-                                <div class="card" style="">
-                                    <img class="w-100 " src="<?php echo URL::to('/assets/img/r1.png'); ?>" style="">
-                                    <div class="card-body">
-
-                                        <p class="card-text">Some quick example text to build on the card title and
-                                            make up the bulk of the card's content.</p>
-                                        <div class="d-flex small-t justify-content-between">
-                                            <p class="">Diana and Roma EN</p>
-                                            <p>1H 15Min</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
 
                     <div class="text-center mt-3 mb-5 pb-2 col-lg-3 all-video">
@@ -2164,6 +1755,26 @@ Resist</h2>
                     player.forward();
                 });
             });
+        </script>
+
+        <script>
+            function videos_category(ele){
+
+                var category_id = $(ele).attr('data-category-id');
+
+                $.ajax({
+                type: "get", 
+                url: "{{ route('landing_category_videos') }}",
+                data: {
+                    _token  : "{{ csrf_token() }}" ,
+                    category_id: category_id,
+                },
+                success: function(data) {
+                        $(".data").html(data);
+                    },
+                });
+            }
+            
         </script>
 
         @php
