@@ -68,8 +68,8 @@ $settings = App\Setting::find(1);
 <body>
     
 
-<section class="sign-in-page" style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat;background-size: cover;">
-<div class="container  page-height">
+<section class="sign-in-page" style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat;background-size: cover;height:650px;padding:10% 0 10% 0;">
+<div class="container">
     <div class="row justify-content-around">
         <div class="col-lg-7 col-12 align-self-center">
               <div class="" >
@@ -84,7 +84,10 @@ $settings = App\Setting::find(1);
             <div class="sign-user_card ">                    
                <div class="sign-in-page-data">
                   <div class="sign-in-from w-100 m-auto" align="center">
-                      <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" style="margin-bottom:1rem;">
+                      
+                  <img class="mb-2" src="<?php echo  URL::to('/assets/img/nem.png')?>" alt="<?php echo $settings->website_name ; ?>"/>
+                   
+                 
                       <h2 class="mb-3 text-center h">{{ __('Forgot Password') }}</h2>
 			
                 <div class="">
@@ -134,7 +137,7 @@ $settings = App\Setting::find(1);
     });
 </script>
 
-@include('footer')
+
 
 </body>
 </html>
