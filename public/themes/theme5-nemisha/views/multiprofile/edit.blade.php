@@ -1,22 +1,37 @@
 @extends('layouts.app')
-<?php include(public_path('themes/theme5-nemisha/views/header.php')); ?>
+<!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/bootstrap.min.css';?>" />
+    <!-- Typography CSS -->
+    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/variable.css';?>" />
+    <!-- Style -->
+      <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/style.css') ?>" rel="stylesheet">
+       <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/typography.css') ?>" rel="stylesheet">
+       <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/responsive.css') ?>" rel="stylesheet">
+              <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/fonts/font.css') ?>" rel="stylesheet">
+
+     
+
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 @extends('multiprofile.style')
 
 <style>
     #mySidebar{
         display: none !important;
     }
-    .body{
-        background: #000;
+    body{
+        background: #000!important;
     }
+    .btn-success {
+    background: #ED553B!important;
+    border: 1px solid #ED553B;
+}
 </style>
 
 @section('content')
 <div class="container">
     <div class="row justify-content-center  align-items-center height-self-center">
-        <div class="col-lg-3  col-12">
-        </div>
-        <div class="col-lg-5 col-12 col-md-12 align-self-center">
+       
+        <div class="col-lg-4 col-12 col-md-12 align-self-center">
 
             <div class="sign-user_card ">                    
                 <div class="sign-in-page-data">
@@ -44,7 +59,7 @@
                             <div class="row">
                                 <div class="col-md-9">
                                     <div class="form-group">
-                                         <h5 style="text-align: left"> kid's profile ?</h5>
+                                         <h5 style="text-align: left"> Kid's Profile ?</h5>
                                     </div>
                                 </div>
 
@@ -61,15 +76,15 @@
                         <div class="row">
                             <div class="col-md-9">
                                      <p align="left" class="kid">TV shows and movies for ages 12 and under <br>
-                                         <a class="learn_more" href="">Learn More </a> 
+                                       
                                      </p>
                             </div>
                         </div>   
                     </div>
 
                     <div class="row sumbit_btn">
-                        <button type="cancel" class="btn btn-hover ab" onclick="javascript:window.location='{{ url('Choose-profile')}}'" >Cancel</button>
-                        <button type="submit" class="btn btn-hover ab" >Save Changes</button>
+                        <button type="cancel" class="btn btn-success" onclick="javascript:window.location='{{ url('Choose-profile')}}'" >Cancel</button>
+                        <button type="submit" class="btn btn-success ml-2" >Save Changes</button>
                     </div>
 
                     </form>
