@@ -46,7 +46,7 @@
 				</div>
 				
 				<div class="modal-body">
-					<form id="new-menu-form" accept-charset="UTF-8" action="{{ URL::to('admin/menu/store') }}" method="post">
+					<form id="new-menu-form" accept-charset="UTF-8" enctype="multipart/form-data"  action="{{ URL::to('admin/menu/store') }}" method="post">
 				        <label for="name">Enter the new menu item name below</label>
 				        <input name="name" id="name" placeholder="Menu Item Name" class="form-control" value="" /><br />
 						<div id="image">
