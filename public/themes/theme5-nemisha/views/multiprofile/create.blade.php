@@ -23,7 +23,7 @@
         padding:8px 10px;
     }
     body{
-        background-color: #000!important;
+        background-color:#000!important;
     }
     #main{
         margin-left: 0!important;
@@ -82,7 +82,7 @@
                             <div class="row">
                                 <div class="col-md-9">
                                          <p align="left" class="kid">TV shows and movies for ages 12 and under <br>
-                                             <a class="learn_more" href="">Learn More </a> 
+                                            
                                          </p>
                                 </div>
                             </div>   
