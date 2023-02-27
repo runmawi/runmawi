@@ -337,7 +337,7 @@ font-weight: 600;
                                   <div class="mt-3">
                   <div class="d-flex   links">
                      
-                      <p class="text-left agree mb-0">By signing up you agree to Nemisa Tv   <a style="color:#01DC82!important;" href="https://dev.nemisatv.co.za/page/terms-and-conditions" target="_blank" class="ml-1">Terms of Service and Privacy Policy</a></p>
+                      <p class="text-left agree mb-0">By signing up you agree to Nemisa Tv   <a style="color:#01DC82!important;" href="https://dev.nemisatv.co.za/page/terms-and-conditions" target="_blank" class="ml-1">Terms and Conditions</a></p>
                       
                   </div>
                                      <!--  <div class=" pt-4 mb-2">
