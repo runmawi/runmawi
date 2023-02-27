@@ -12,5 +12,9 @@ class SeriesCategory extends Model
 
     public static $rules = array();
 
-
+    public function specific_category_episode()
+        {
+            return $this->belongsToMany( 'App\Episode','series_categories','category_id','series_id')
+                            ->where('episodes.status',1)->where('episodes.active',1);
+        }
 }

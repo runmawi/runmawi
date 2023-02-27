@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use DB;
+use Video;
 
 class VideoCategory extends Model
 {
@@ -46,4 +47,5 @@ class VideoCategory extends Model
         {
             return $this->belongsTo('App\VideoCategory');
         }
+
 }
