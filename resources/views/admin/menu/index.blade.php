@@ -49,7 +49,13 @@
 					<form id="new-menu-form" accept-charset="UTF-8" action="{{ URL::to('admin/menu/store') }}" method="post">
 				        <label for="name">Enter the new menu item name below</label>
 				        <input name="name" id="name" placeholder="Menu Item Name" class="form-control" value="" /><br />
+						<div id="image">
 				        
+						<label for="name">Menu Item Image</label>
+						<input type="file" name="image" id="image" />
+						</div>
+						
+						<br /><br />
 						<label for="name">Show In-Home</label>
 						<div class="mt-1 d-flex align-items-center justify-content-around">
 							<div class="mr-2">OFF</div>
