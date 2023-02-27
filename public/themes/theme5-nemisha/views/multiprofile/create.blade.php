@@ -28,6 +28,10 @@
     #main{
         margin-left: 0!important;
     }
+    .btn-success {
+    background: #ED553B!important;
+    border: 1px solid #ED553B;
+}
 </style>
 
 @section('content')
@@ -85,8 +89,8 @@
                         </div>
 
                         <div class="row sumbit_btn">
-                            <button type="cancel" class="btn btn-hover ab" onclick="javascript:window.location='{{ url('choose-profile')}}'" >Cancel</button>
-                            <button type="submit" class="btn btn-hover ab" >Save Changes</button>
+                            <button type="cancel" class="btn btn-success" onclick="javascript:window.location='{{ url('choose-profile')}}'" >Cancel</button>
+                            <button type="submit" class="btn btn-success ml-2" >Save Changes</button>
                         </div>
 
                         </form>
