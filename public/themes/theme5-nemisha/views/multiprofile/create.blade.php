@@ -32,9 +32,8 @@
 
 @section('content')
 <div class="container">
-    <div class="row  align-items-center height-self-center">
-        <div class="col-lg-3  col-12">
-        </div>
+    <div class="row  align-items-center height-self-center justify-content-center">
+       
         <div class="col-lg-5 col-12 col-md-12 align-self-center">
 
             <div class="sign-user_card ">                    
