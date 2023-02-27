@@ -22,9 +22,7 @@ class LandingpageController extends Controller
 
    public function landing_page( $landing_page_slug )
    {
-
         $first_videos_categories_id = VideoCategory::orderBy('order')->pluck('id')->first();
-
 
         $data = [
             'title' => AdminLandingPage::where('status',1)->pluck('title')->first(),
@@ -39,23 +37,17 @@ class LandingpageController extends Controller
             'SeriesCategory'    => SeriesCategory::find($first_videos_categories_id) != null ? SeriesCategory::find($first_videos_categories_id)->specific_category_series : array(),
         ];
 
-        // dd($data['SeriesCategory']);
-
         return Theme::view('landing.index', $data);
-
    }
 
-   public function landing_category_videos(Request $request)
+   public function landing_category_series(Request $request)
    {
-
         $SeriesCategory = SeriesCategory::find($request->category_id) != null ? SeriesCategory::find($request->category_id)->specific_category_series : array();
 
-        $data = array(
-            'SeriesCategory' => $SeriesCategory,
-        );
+        $data = array( 'SeriesCategory' => $SeriesCategory );
 
         $theme = Theme::uses($this->Theme);
 
-        return $theme->load('public/themes/theme5-nemisha/partials/landing_category_videos', $data)->render();
+        return $theme->load('public/themes/theme5-nemisha/partials/landing_category_series', $data)->render();
    }
 }
