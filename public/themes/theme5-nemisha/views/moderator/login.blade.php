@@ -19,13 +19,11 @@ $system_settings = App\SystemSetting::find(1);
       <!-- <link rel="stylesheet" href="assets/css/bootstrap.min.css" /> -->
       <!-- Typography CSS -->
       <!-- <link rel="stylesheet" href="assets/css/typography.css" /> -->
-      <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/typography.css'; ?>" />
-      <!-- Style -->
-      <!-- <link rel="stylesheet" href="assets/css/style.css" /> -->
-      <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/style.css'; ?>" />
-      <!-- Responsive -->
-      <!-- <link rel="stylesheet" href="assets/css/responsive.css" /> -->
-      <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/responsive.css'; ?>" />
+      <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/style.css') ?>" rel="stylesheet">
+       <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/typography.css') ?>" rel="stylesheet">
+       <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/responsive.css') ?>" rel="stylesheet">
+              <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/fonts/font.css') ?>" rel="stylesheet">
+
  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
@@ -33,6 +31,12 @@ $system_settings = App\SystemSetting::find(1);
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js">
   </script>
 <style>
+    .sign-user_card {
+    border-radius: 10px;
+    display: block;
+    margin: 0 auto;
+    background-color: rgba(0,0,0,0.6);
+}
     h3 {font-size: 30px!important;}
     .from-control::placeholder{
         color: #7b7b7b!important;
