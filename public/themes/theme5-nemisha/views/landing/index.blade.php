@@ -216,6 +216,7 @@ text-align: center;
     }
     .sec-2 h2{
         font-size: 40px;
+        margin: 0 60px auto;
     }
     h2{
         font-weight: 700;
@@ -802,14 +803,14 @@ min-height: 266px;
         color: #fff;
     }
     .bg-color h3{
-        color: #F6D55C;
+        color: #Fff;
         font-weight: 600;
 font-size: 30px;
 line-height: 52px;
           position: relative;
     }
     .bg-color1 h3{
-        color: #F6D55C;
+        color: #Fff;
         font-weight: 600;
 font-size: 30px;
 line-height: 52px;
@@ -1553,7 +1554,10 @@ $jsondata = json_decode($jsonString, true); ?>
     </section>
         <section class="sec-2" style="background-image:url('<?php echo  URL::to('/assets/img/lan/bg1.png')?>');background-repeat: no-repeat;background-size:100% 100%;">
         <div class="container">
+              
             <div class=""  style="padding:5% 0 5% 0;">
+                 <h2 class="ben   text-right" style="
+">BENEFITS YOU CAN'T RESIST</h2>
                 <div class="row m-0 p-0 justify-content-around align-items-center">
                 
                 <div class="col-lg-6">
@@ -1574,9 +1578,8 @@ $jsondata = json_decode($jsonString, true); ?>
                        <div class=" col-4 col-md-4 p-0"  style="">  <img class="mt-5 img-lan" src="<?php echo  URL::to('/assets/img/v3.png')?>" style=""></div>
                     </div>color: #1D639B;-->
                 </div>
-                <div class="col-lg-6 ">
-                    <h2 class="ben" style="
-">BENEFITS YOU CAN'T RESIST</h2>
+                <div class="col-lg-6 p-0">
+                 
                     <!-- <p class="text-white mt-3" style="font-size: 22px;
 line-height: 40px;">Use  the information as it is and the icons, please don’t
 forgot to place the fullstops on the sentences. The image
@@ -1590,7 +1593,7 @@ next to it,  Please remove it and replace with this video.</p>-->
                         </div>
                         <div class=" lan" >
                              <img class="mb-2" src="<?php echo  URL::to('/assets/img/lan/v3.png')?>" style=>
-                        <h4 class="">User Feedback and<br> Interaction</h4>
+                        <h4 class="">User Feedback and Interaction</h4>
                         <p style="color:#fff;font-weight:500;">Learn by interacting with experts and other users.</p>
                         </div>
                        
@@ -1605,7 +1608,7 @@ next to it,  Please remove it and replace with this video.</p>-->
                         </div>
                          
                     </div>
-                    <div class=" col-lg-6 rated" >
+                    <div class=" col-lg-6 rated mt-3" >
                              <img class="mb-2" src="<?php echo  URL::to('/assets/img/lan/v5.png')?>" style=>
                         <h4 class="">Curated multiformat<br> training content</h4>
                         <p style="color:#fff;">Diverse learning content that focuses on the visual, audio, social, solitary, verbal and logical.</p>
