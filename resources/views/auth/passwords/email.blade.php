@@ -73,7 +73,8 @@ $settings = App\Setting::find(1);
     <div class="row justify-content-around">
         <div class="col-lg-7 col-12 align-self-center">
               <div class="" >
-              <h1 class="km"><?php echo $settings->login_text; ?></h1>
+              <h1 class="km">FREE EDUTAINMENT FOR THE DIGITAL WARRIOR
+</h1>
                   </div>
           </div>
 

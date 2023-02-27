@@ -1,10 +1,32 @@
 @extends('layouts.app')
-<?php include(public_path('themes/theme5-nemisha/views/header.php')); ?>
+ <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/bootstrap.min.css';?>" />
+    <!-- Typography CSS -->
+    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/variable.css';?>" />
+    <!-- Style -->
+      <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/style.css') ?>" rel="stylesheet">
+       <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/typography.css') ?>" rel="stylesheet">
+       <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/responsive.css') ?>" rel="stylesheet">
+              <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/fonts/font.css') ?>" rel="stylesheet">
+
+     
+
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 @extends('multiprofile.style')
 
 <style>
     #mySidebar{
         display: none !important;
+    }
+    .ab{
+        font-size: 18px;
+        padding:8px 10px;
+    }
+    body{
+        background-color: #000!important;
+    }
+    #main{
+        margin-left: 0!important;
     }
 </style>
 
@@ -40,7 +62,7 @@
                             <div class="row">
                                     <div class="col-md-9">
                                         <div class="form-group">
-                                             <h5 style="text-align: left"> kid's profile ?</h5>
+                                             <h5 style="text-align: left"> Kids Profile ?</h5>
                                         </div>
                                     </div>
 
