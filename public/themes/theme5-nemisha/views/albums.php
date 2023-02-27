@@ -228,6 +228,10 @@ border-bottom-right-radius:0;
 .aud-lp{
 border-bottom: 1px solid #141414;
 }
+    .btn-outline-success {
+    border-radius: 30px;
+    padding: 5px 15px!important;
+}
 </style>
 
 <?php if( count($album_audios) == 0 ){ ?>
@@ -253,7 +257,9 @@ border-bottom: 1px solid #141414;
   <source id="source-audio" src="" type="audio/mpeg">
   Your browser does not support the audio element.
 </audio>
-<div class="player-ctn">
+<div class="player-ctn" style="background-image:linear-gradient(to left, rgba(0, 0, 0, 0.25)0%, rgba(117, 19, 93, 1)),url('<?= URL::to('/').'/public/uploads/albums/'. $album->album ?>');background-size: cover;
+    background-repeat: no-repeat;
+    background-position: right;">
     <div class="row align-items-center mb-4">
     <div class="col-sm-3">
 <img src="<?= URL::to('/').'/public/uploads/albums/'. $album->album ?>"  class="img-responsive" width="200" height="200">
@@ -268,7 +274,7 @@ border-bottom: 1px solid #141414;
     <div class="d-flex" style="justify-content: space-between;width: 33%;align-items: center;">
 
     <div onclick="toggleAudio()">
-      <button class="btn bd btn-action" id="vidbutton" style="width:90px" ><i class="fa fa-play mr-2" aria-hidden="true"  ></i> Play</button>
+      <button class="btn btn-outline-success" id="vidbutton"  ><i class="fa fa-play mr-2" aria-hidden="true"  ></i> Play</button>
     </div>
 
         <a aria-hidden="true" class="albumfavorite <?php echo albumfavorite($album->id);?>" data-authenticated="<?= !Auth::guest() ?>" data-album_id="<?= $album->id ?>"><?php if(albumfavorite($album->id) == "active"): ?><i id="ff" class="fa fa-heart" aria-hidden="true"></i><?php else: ?><i id="ff" class="fa fa-heart-o" aria-hidden="true"></i><?php endif; ?></a>
