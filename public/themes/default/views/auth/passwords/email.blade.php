@@ -79,7 +79,6 @@
 
 <body>
 
-
     <section class="sign-in-page" style="background:url('<?php echo URL::to('/') . '/public/uploads/settings/' . $settings->login_content; ?>') no-repeat;background-size: cover;">
         <div class="container  page-height">
             <div class="row justify-content-around">
@@ -147,7 +146,7 @@
         });
     </script>
 
-    @include('footer')
+    @php include(public_path('themes/default/views/footer.blade.php')); @endphp
 
 </body>
 
