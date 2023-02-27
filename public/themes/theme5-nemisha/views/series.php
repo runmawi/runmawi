@@ -8,6 +8,9 @@
     .desc{
         font-size: 14px;
     }
+    body{
+        background: #000!important;
+    }
     h1{
         font-size: 50px!important;
         font-weight: 500;
@@ -24,6 +27,7 @@
         font-size: 14px;
     }
     .pls i{
+        font-size: 25px;
         font-size: 25px;
     }
     
@@ -215,7 +219,7 @@ $series = $series_data ;
                                  
                                          <h6><?= $episodes->title; ?></h6>
                                           <!--  <p class="desc text-white mt-2 mb-0"><?php if(strlen($series->description) > 90){ echo substr($series->description, 0, 90) . '...'; } else { echo $series->description; } ?></p>-->
-                                                                <p class="date desc text-white mb-0"><?= date("F jS, Y", strtotime($episodes->created_at)); ?></p>
+                                                                <!--<p class="date desc text-white mb-0"><?= date("F jS, Y", strtotime($episodes->created_at)); ?></p>-->
                                             <p class="text-white desc"><?= gmdate("H:i:s", $episodes->duration); ?></p>
                                
                                    
@@ -257,7 +261,7 @@ $series = $series_data ;
                                     
                                          <h6><?= $episodes->title; ?></h6>
 										<!--<p class="desc text-white mt-2 mb-0"><?php if(strlen($series->description) > 90){ echo substr($series->description, 0, 90) . '...'; } else { echo $series->description; } ?></p>-->
-                                        <p class="date desc text-white mb-0"><?= date("F jS, Y", strtotime($episodes->created_at)); ?></p>
+                                       <!-- <p class="date desc text-white mb-0"><?= date("F jS, Y", strtotime($episodes->created_at)); ?></p>-->
 										<p class="text-white desc"><?= gmdate("H:i:s", $episodes->duration); ?></p>
                                
 

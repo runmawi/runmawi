@@ -15,11 +15,11 @@
 <div class="container">
       <div class="row justify-content-center align-items-center height-self-center">
          <div class="col-sm-9 col-md-7 col-lg-6 align-self-center">
-            <div class="sign-user_card ">                    
+            <div class="sign-user_card p-3">                    
                <div class="sign-in-page-data">
                   <div class="sign-in-from w-100 m-auto">
                       <div align="center">
-                          <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" style="margin-bottom:1rem;">       <h3 class="mb-3 text-center">CPP Sign Up</h3>
+                          <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" style="margin-bottom:1rem;">       <h3 class="mb-3 text-center">Sign Up and Content Partner</h3>
                       </div>
                       <div class="clear"></div>
                       @if (Session::has('message'))

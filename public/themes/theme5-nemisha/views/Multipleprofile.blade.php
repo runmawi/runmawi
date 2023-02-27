@@ -5,7 +5,7 @@
     <!-- CSS only -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
+ <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/fonts/font.css') ?>" rel="stylesheet">
         <title> {{ $Website_name ? $Website_name->website_name : 'Website Name' }} </title>
     <style>
         li{list-style:none;}
@@ -78,12 +78,14 @@ border-radius: 10px;
      .row1 h1{
          text-align: center;
           color: white;
+         font-family: 'futuramedium';
+
       
      }
      h2{
         text-align: center;
      
-        font-family: cursive;
+       
         color: white;
      }
      .multiuser_img{
@@ -116,7 +118,7 @@ border-radius: 30px;
         padding: 15px;
     }
     .name{
-
+font-family: 'futuralight';
         font-size: larger;
      
         color: white;
@@ -131,7 +133,7 @@ border-radius: 30px;
         background-color: rgb(14 14 14);
         background-repeat: no-repeat;
         background-size: cover;
-        font-family: 'Chivo';
+      
 }
 .fa-plus-circle:before {
     color: white;
@@ -164,7 +166,7 @@ a.fa.fa-edit {
    
      }
      p{
-       
+     font-family: 'futuralight';  
 font-style: normal;
 font-weight: 400;
 font-size: 15px;

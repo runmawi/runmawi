@@ -45,7 +45,9 @@
             border: #f3ece0 !important ;
             background-color:  {{ button_bg_color() .'!important' }} ;
         }
-
+    .btn-hover{
+         background-color:  {{ button_bg_color() .'!important' }} ;
+    }
         button.btn.btn-primary{
             border: #f3ece0 !important ;
             background-color:  {{ button_bg_color() .'!important' }} ;

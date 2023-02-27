@@ -1993,7 +1993,7 @@ background-size: cover;
     font-size: 20px;
 }
 body{
-  background: linear-gradient(180deg, #121C28 -35.59%, rgba(11, 18, 28, 0.36) 173.05%);
+  /*background: linear-gradient(180deg, #121C28 -35.59%, rgba(11, 18, 28, 0.36) 173.05%);*/
     
 }
 .checked {
