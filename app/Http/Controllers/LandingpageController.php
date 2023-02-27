@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Theme;
 use App\HomeSetting;
 use App\AdminLandingPage;
+use App\SeriesCategory;
 use App\VideoCategory;
 use App\Video; 
 
@@ -30,7 +31,7 @@ class LandingpageController extends Controller
             'custom_css' => AdminLandingPage::where('status',1)->orderBy('id','desc')->pluck('custom_css')->first(),
             'bootstrap_link'  => AdminLandingPage::where('status',1)->orderBy('id', 'desc')->pluck('bootstrap_link')->first(),
             'script_content'  => AdminLandingPage::where('status',1)->orderBy('id', 'desc')->pluck('script_content')->first(),
-            'categoryVideos' => array(),
+            'SeriesCategory' => array(),
         ];
 
         return Theme::view('landing.index', $data);
@@ -40,10 +41,10 @@ class LandingpageController extends Controller
    public function landing_category_videos(Request $request)
    {
 
-        $VideoCategory = VideoCategory::find($request->category_id)->specific_category_videos;
+    $SeriesCategory = SeriesCategory::find($request->category_id)->specific_category_episode;
 
         $data = array(
-            'categoryVideos' => $VideoCategory,
+            'SeriesCategory' => $SeriesCategory,
         );
 
         $theme = Theme::uses($this->Theme);

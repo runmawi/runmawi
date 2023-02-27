@@ -48,9 +48,4 @@ class VideoCategory extends Model
             return $this->belongsTo('App\VideoCategory');
         }
 
-        public function specific_category_videos()
-        {
-            return $this->belongsToMany( 'App\Video','categoryvideos','category_id','video_id')
-                         ->where('videos.status',1)->where('videos.draft',1)->where('videos.active',1);
-        }
 }
