@@ -111,7 +111,8 @@ border-radius: 0px 4px 4px 0px;
                </div>
             </div>
          </div>
-      
+       </div>
+          </div>
          <script>
 $(document).ready(function(){
 
@@ -158,3 +159,5 @@ $(document).ready(function(){
 
 @stop
 
+
+              
