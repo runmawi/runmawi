@@ -248,8 +248,7 @@ font-weight: 600;
 </div></nav>
 <div class="position-relative pad" style="padding:50px;" >
 <div class="fixe">
-     <h1 class="in mt-3 text-center">Look Into <span class="nemi">NEMISA</span> Tv For Realistic Experience. 
-                                                        <br><span class="join">Join Now!</span></h1>
+     <h1 class="in mt-3 text-center">SIGN IN TO <span class="nemi">NEMISA TV</span></h1>
     <div class="row m-0 p-0 justify-content-center">
         
       
