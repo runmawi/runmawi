@@ -1045,12 +1045,6 @@
         }
     </style>
 
-    <?php
-    
-    $videos_categories = App\VideoCategory::orderBy('order')->get();
-    
-    ?>
-
     <?php $jsonString = file_get_contents(base_path('assets/country_code.json'));
     
     $jsondata = json_decode($jsonString, true); ?>

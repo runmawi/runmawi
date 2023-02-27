@@ -22,6 +22,10 @@ class LandingpageController extends Controller
 
    public function landing_page( $landing_page_slug )
    {
+
+        $first_videos_categories_id = VideoCategory::orderBy('order')->pluck('id')->first();
+
+
         $data = [
             'title' => AdminLandingPage::where('status',1)->pluck('title')->first(),
             'sections_1' => AdminLandingPage::where('status',1)->where('section',1)->pluck('content'),
@@ -31,8 +35,11 @@ class LandingpageController extends Controller
             'custom_css' => AdminLandingPage::where('status',1)->orderBy('id','desc')->pluck('custom_css')->first(),
             'bootstrap_link'  => AdminLandingPage::where('status',1)->orderBy('id', 'desc')->pluck('bootstrap_link')->first(),
             'script_content'  => AdminLandingPage::where('status',1)->orderBy('id', 'desc')->pluck('script_content')->first(),
-            'SeriesCategory' => array(),
+            'videos_categories' => VideoCategory::orderBy('order')->get(),
+            'SeriesCategory'    => SeriesCategory::find($first_videos_categories_id) != null ? SeriesCategory::find($first_videos_categories_id)->specific_category_series : array(),
         ];
+
+        // dd($data['SeriesCategory']);
 
         return Theme::view('landing.index', $data);
 
@@ -41,7 +48,7 @@ class LandingpageController extends Controller
    public function landing_category_videos(Request $request)
    {
 
-    $SeriesCategory = SeriesCategory::find($request->category_id)->specific_category_episode;
+        $SeriesCategory = SeriesCategory::find($request->category_id) != null ? SeriesCategory::find($request->category_id)->specific_category_series : array();
 
         $data = array(
             'SeriesCategory' => $SeriesCategory,
