@@ -1,10 +1,13 @@
 @forelse($SeriesCategory  as $Series_Category)
 
     @php
-        $season_trailer = App\SeriesSeason::where('series_id',$Series_Category->season_trailer)->pluck('trailer')->first();
+        $season_trailer = App\SeriesSeason::where('series_id',$Series_Category->season_trailer)->pluck('landing_mp4_url')->first();
+
+        $season_trailer_url = $season_trailer != null ? $season_trailer : "null" ;
+
     @endphp
 
-    <div class="col-md-3 p-0"  data-series-id="{{ $Series_Category->id }}" data-trailer-series="{{ $season_trailer }}" onmouseover="season_trailer(this)" >
+    <div class="col-md-3 p-0"  data-series-id="{{ $Series_Category->id }}" data-trailer-series="{{ $season_trailer_url }}" onmouseover="season_trailer(this)" >
         <div class="card" style="">
             <div style="position: relative;">
                 <img class="w-100 " src="<?php echo URL::to('/public/uploads/images/'.$Series_Category->image); ?>" style="">

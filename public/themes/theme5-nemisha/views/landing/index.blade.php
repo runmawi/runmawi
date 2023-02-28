@@ -288,7 +288,7 @@
 
         /*.sign-user_card {
        background: none !important;
-   }*/
+        }*/
         #ck-button {
             margin: 4px;
             /*    background-color:#EFEFEF;*/
@@ -354,7 +354,7 @@
 
         /*.sign-up-buttons{
        margin-left: 40% !important;
-   }*/
+        }*/
         .verify-buttons {
             margin-left: 36%;
         }
@@ -366,20 +366,21 @@
         }
 
         /* .form-control {
-   background-color: var(--iq-body-text) !important;
-   border: 1px solid transparent;
-   height: 46px;
-   position: relative;
-   color: var(--iq-body-bg) !important;
-   font-size: 16px;
-   width: 100%;
-   -webkit-border-radius: 6px;
-   border-radius: 6px;
-}
-   a {
-   color: var(--iq-body-text);
-   text-decoration: none;
-}*/
+            background-color: var(--iq-body-text) !important;
+            border: 1px solid transparent;
+            height: 46px;
+            position: relative;
+            color: var(--iq-body-bg) !important;
+            font-size: 16px;
+            width: 100%;
+            -webkit-border-radius: 6px;
+            border-radius: 6px;
+            }
+            a {
+            color: var(--iq-body-text);
+            text-decoration: none;
+        } */
+
         .phselect {
 
             height: 45px !important;
@@ -413,9 +414,10 @@
             cursor: pointer;
         }
 
-        /*input[type="file"] {
-   display: none;
-}*/
+        /* input[type="file"] {
+            display: none;
+        } */
+
         .catag {
             padding-right: 150px !important;
         }
@@ -826,18 +828,18 @@
         }
 
         .io {
-            /*position: absolute;*/
+            /* position: absolute;*/
             display: none;
             /*bottom: 0;
-   left: 0;
-   right: 0;
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   width: 100%;
-   color: white;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            color: white;
        line-height: 20px;
-       text-align: center;*/
+       text-align: center; */
         }
 
         .suce {
@@ -1150,27 +1152,33 @@
                         <ul class="nav nav-pills   m-0 p-0" id="pills-tab" role="tablist">
 
                             @foreach ($videos_categories as $key => $videos_category)
-                                <li class="nav-item">
-                                    <a class="nav-link" id="pills-profile-tab" data-toggle="pill"
-                                        data-category-id={{ $videos_category->id }} onclick="Series_Category(this)"
-                                        role="tab" aria-controls="pills-profile" aria-selected="false">
-                                        {{ $videos_category->name }}
-                                    </a>
-                                </li>
+                                @if ($key < 8)
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="pills-profile-tab" data-toggle="pill"
+                                            data-category-id={{ $videos_category->id }} onclick="Series_Category(this)"
+                                            role="tab" aria-controls="pills-profile" aria-selected="false">
+                                            {{ $videos_category->name }}
+                                        </a>
+                                    </li>
+                                @endif
                             @endforeach
-
 
                             <li class="nav-item">
 
                                 <a class="nav-link" class="btn btn-secondary btn-sm dropdown-toggle" type="button"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">More <i
-                                        class="fa fa-angle-down" aria-hidden="true"></i>
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">More 
+                                    <i class="fa fa-angle-down" aria-hidden="true"></i>
                                 </a>
 
                                 <div class="dropdown-menu">
-                                    <a class="nav-link dropdown-item" id="pills-kids-tab" data-toggle="pill"
-                                        href="#pills-kids" role="tab" aria-controls="pills-kids"
-                                        aria-selected="false">Comic & Kids</a>
+
+                                    @foreach ($videos_categories as $key => $videos_category)
+                                        @if ($key > 8)
+                                            <a class="nav-link dropdown-item" id="pills-kids-tab" data-toggle="pill" data-category-id={{ $videos_category->id }}
+                                                onclick="Series_Category(this)" href="#pills-kids" role="tab" aria-controls="pills-kids"
+                                                aria-selected="false">{{ $videos_category->name }}</a>
+                                        @endif
+                                    @endforeach
                                 </div>
                     </div>
                 </div>
@@ -1187,6 +1195,11 @@
                         <div class="row favorites-sli1 data">
                             @partial('landing_category_series')
                         </div>
+
+                        <video src="" type="video/mp4" controls
+                            controlsList="nofullscreen nodownload noremoteplayback" class="vid"
+                            style="border: solid; width: 550px;">
+                        </video>
 
                         <div class="row mt-2"></div>
                     </div>
@@ -1833,6 +1846,10 @@ Resist</h2>
         <script>
             function Series_Category(ele) {
 
+                $('.vid').hide();
+                let clip = document.querySelector(".vid")
+                clip.pause();
+
                 var category_id = $(ele).attr('data-category-id');
 
                 $.ajax({
@@ -1847,7 +1864,32 @@ Resist</h2>
                     },
                 });
             }
+
+            // Hover trailer player
+
+            $('.vid').hide();
+
+            function season_trailer(ele) {
+
+                $('.vid').hide();
+                let clip = document.querySelector(".vid")
+                clip.pause();
+
+                var season_trailer = $(ele).attr('data-trailer-series');
+
+                if (season_trailer == "null") {
+
+                    $('.vid').hide();
+
+                } else {
+
+                    $('.vid').show();
+                    $('.vid').attr('src', season_trailer);
+                    clip.play();
+                }
+            }
         </script>
+
 
         @php
             include public_path('themes/theme5-nemisha/views/footer.blade.php');
