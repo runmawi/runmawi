@@ -34,7 +34,7 @@ class LandingpageController extends Controller
             'bootstrap_link'  => AdminLandingPage::where('status',1)->orderBy('id', 'desc')->pluck('bootstrap_link')->first(),
             'script_content'  => AdminLandingPage::where('status',1)->orderBy('id', 'desc')->pluck('script_content')->first(),
             'videos_categories' => VideoCategory::orderBy('order')->get(),
-            'SeriesCategory'    => SeriesCategory::find($first_videos_categories_id) != null ? SeriesCategory::find($first_videos_categories_id)->specific_category_series : array(),
+            'SeriesCategory'    => VideoCategory::find($first_videos_categories_id) != null ? VideoCategory::find($first_videos_categories_id)->specific_category_series : array(),
         ];
 
         return Theme::view('landing.index', $data);
@@ -42,7 +42,7 @@ class LandingpageController extends Controller
 
    public function landing_category_series(Request $request)
    {
-        $SeriesCategory = SeriesCategory::find($request->category_id) != null ? SeriesCategory::find($request->category_id)->specific_category_series : array();
+        $SeriesCategory = VideoCategory::find($request->category_id) != null ? VideoCategory::find($request->category_id)->specific_category_series : array();
 
         $data = array( 'SeriesCategory' => $SeriesCategory );
 
