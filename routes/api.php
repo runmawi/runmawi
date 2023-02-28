@@ -396,5 +396,9 @@ Route::group([
 
     Route::post('rescheduled_video','ApiAuthController@ReScheduled_Videos');
 
+    Route::post('tv_qrcode_login','ApiAuthController@TvQRCodeLogin');
+
+
+    Route::post('tv_qrcode_logout','ApiAuthController@TVQRCodeLogout');
 
 });
