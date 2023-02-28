@@ -1152,27 +1152,33 @@
                         <ul class="nav nav-pills   m-0 p-0" id="pills-tab" role="tablist">
 
                             @foreach ($videos_categories as $key => $videos_category)
-                                <li class="nav-item">
-                                    <a class="nav-link" id="pills-profile-tab" data-toggle="pill"
-                                        data-category-id={{ $videos_category->id }} onclick="Series_Category(this)"
-                                        role="tab" aria-controls="pills-profile" aria-selected="false">
-                                        {{ $videos_category->name }}
-                                    </a>
-                                </li>
+                                @if ($key < 8)
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="pills-profile-tab" data-toggle="pill"
+                                            data-category-id={{ $videos_category->id }} onclick="Series_Category(this)"
+                                            role="tab" aria-controls="pills-profile" aria-selected="false">
+                                            {{ $videos_category->name }}
+                                        </a>
+                                    </li>
+                                @endif
                             @endforeach
-
 
                             <li class="nav-item">
 
                                 <a class="nav-link" class="btn btn-secondary btn-sm dropdown-toggle" type="button"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">More <i
-                                        class="fa fa-angle-down" aria-hidden="true"></i>
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">More 
+                                    <i class="fa fa-angle-down" aria-hidden="true"></i>
                                 </a>
 
                                 <div class="dropdown-menu">
-                                    <a class="nav-link dropdown-item" id="pills-kids-tab" data-toggle="pill"
-                                        href="#pills-kids" role="tab" aria-controls="pills-kids"
-                                        aria-selected="false">Comic & Kids</a>
+
+                                    @foreach ($videos_categories as $key => $videos_category)
+                                        @if ($key > 8)
+                                            <a class="nav-link dropdown-item" id="pills-kids-tab" data-toggle="pill" data-category-id={{ $videos_category->id }}
+                                                onclick="Series_Category(this)" href="#pills-kids" role="tab" aria-controls="pills-kids"
+                                                aria-selected="false">{{ $videos_category->name }}</a>
+                                        @endif
+                                    @endforeach
                                 </div>
                     </div>
                 </div>
@@ -1190,8 +1196,9 @@
                             @partial('landing_category_series')
                         </div>
 
-                        <video src=""
-                                type="video/mp4"  controls  controlsList="nofullscreen nodownload noremoteplayback" class="vid"  style="border: solid; width: 550px;">
+                        <video src="" type="video/mp4" controls
+                            controlsList="nofullscreen nodownload noremoteplayback" class="vid"
+                            style="border: solid; width: 550px;">
                         </video>
 
                         <div class="row mt-2"></div>
@@ -1837,11 +1844,10 @@ Resist</h2>
         </script>
 
         <script>
-
             function Series_Category(ele) {
 
                 $('.vid').hide();
-                let clip = document.querySelector(".vid") 
+                let clip = document.querySelector(".vid")
                 clip.pause();
 
                 var category_id = $(ele).attr('data-category-id');
@@ -1871,12 +1877,12 @@ Resist</h2>
 
                 var season_trailer = $(ele).attr('data-trailer-series');
 
-                if(season_trailer == "null"){
+                if (season_trailer == "null") {
 
                     $('.vid').hide();
 
-                }else{
-                    
+                } else {
+
                     $('.vid').show();
                     $('.vid').attr('src', season_trailer);
                     clip.play();
@@ -1885,6 +1891,6 @@ Resist</h2>
         </script>
 
 
-    @php
-        include public_path('themes/theme5-nemisha/views/footer.blade.php');
-    @endphp
+        @php
+            include public_path('themes/theme5-nemisha/views/footer.blade.php');
+        @endphp
