@@ -46,22 +46,22 @@
 <div class="mt-4 p-0">
         <div class="">
             <form method="get" action="<?= route('comments.store') ?>">
-                <div class="row align-items-end">
+                <div class="row align-items-end align-items-center">
                     <div class="col-lg-6">
                         <div class="form-group">
                     <label for="message" class="text-white">Add a comment:</label>
                     <textarea class="form-control"  name="message" rows="2" required></textarea>
                 </div>
-
+</div>
                     </div>
-                    <div class="col-lg-6" style="margin-bottom: 1rem;">
+                    <div class="col-lg-6 text-right" >
                          
                 <input type="hidden" name="source" value="<?= Route::currentRouteName() ?>">
                 <input type="hidden" name="source_id" value="<?= $source_id ?>">
 
-                <button type="submit" class=" btn btn-light text-uppercase">Submit</button>
+                <button type="submit" class=" btn btn-light text-uppercase" style="margin:10px 0 10px 0;">Submit</button>
                     </div>
-                </div>
+                
                
             </form>
         </div>
