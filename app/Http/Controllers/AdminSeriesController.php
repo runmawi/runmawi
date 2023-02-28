@@ -936,6 +936,7 @@ class AdminSeriesController extends Controller
                         $storepath  = URL::to('public/uploads/season_trailer/');
                         $data['trailer'] = $M3u8_save_path;
                         $data['trailer_type']  = 'm3u8_url';
+                        $data['landing_mp4_url'] = $trailer_path.'/'.$trailer_video_name.'.mp4';
                                     
                 }
                 else{
@@ -958,10 +959,12 @@ class AdminSeriesController extends Controller
                     $file->move($path, $trailer_vid);
                     $data['trailer']  = URL::to('/').'/public/uploads/season_videos/'.$trailer_vid;
                     $data['trailer_type']  = 'mp4_url';
+                    $data['landing_mp4_url']  = URL::to('/').'/public/uploads/season_videos/'.$trailer_vid;
 
                 } else {
                     $data['trailer'] = '';
                     $data['trailer_type']  = '';
+                    $data['landing_mp4_url']  = '';
                 }
 
             }
@@ -987,6 +990,7 @@ class AdminSeriesController extends Controller
         
                     $data['trailer'] = $M3u8_save_path;
                     $data["trailer_type"] = 'm3u8_url';
+                    $data['landing_mp4_url']  = $path.$transcode_path_mp4;
         
                 }else{
                     if($trailer != '') {   
@@ -1001,6 +1005,7 @@ class AdminSeriesController extends Controller
                             $trailer = $path.$filePath;
                             $data["trailer"] = $trailer;
                             $data["trailer_type"] = 'video_mp4';
+                            $data['landing_mp4_url']  = $path.$filePath;
         
                     }
                 }
@@ -1036,6 +1041,7 @@ class AdminSeriesController extends Controller
                 
                 $data['trailer'] = $M3u8_save_path;
                 $data['trailer_type']  = 'm3u8_url';
+                $data['landing_mp4_url']  = $trailer_path.'/'.$trailer_video_name.'.mp4';
                                     
             }
             else{
@@ -1058,10 +1064,14 @@ class AdminSeriesController extends Controller
                 $file->move($path, $trailer_vid);
                 $data['trailer']  = URL::to('/').'/public/uploads/season_videos/'.$trailer_vid;
                 $data['trailer_type']  = 'mp4_url';
+                $data['landing_mp4_url']  = URL::to('/').'/public/uploads/season_videos/'.$trailer_vid;
+
 
             } else {
                 $data['trailer'] = '';
                 $data['trailer_type']  = '';
+                $data['landing_mp4_url']  = '';
+
             }
 
         }
@@ -1113,11 +1123,11 @@ class AdminSeriesController extends Controller
         }else{
             $ios_ppv_price = null;
         }
-        if(!empty($data['landing_mp4_url'])){
-            $landing_mp4_url = $data['landing_mp4_url'];
-        }else{
-            $landing_mp4_url = '';
-        }
+        // if(!empty($data['landing_mp4_url'])){
+        //     $landing_mp4_url = $data['landing_mp4_url'];
+        // }else{
+        //     $landing_mp4_url = '';
+        // }
         // $data['series_id'] = $data['series_id']; 
         // $data['access'] = $access; 
         // $data['ppv_price'] = $ppv_price; 
@@ -1131,7 +1141,7 @@ class AdminSeriesController extends Controller
         $series->ppv_price = $ppv_price;
         $series->ppv_interval = $ppv_interval;
         $series->ios_product_id = $ios_ppv_price;
-        $series->landing_mp4_url = $landing_mp4_url;
+        $series->landing_mp4_url = $data['landing_mp4_url'];
         $series->save();
         
         if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1 && $StorageSetting->aws_storage == 0) {
@@ -1222,6 +1232,7 @@ class AdminSeriesController extends Controller
 
                     $data['trailer'] = $M3u8_save_path;
                     $data['trailer_type']  = 'm3u8_url';
+                    $data['landing_mp4_url'] = $trailer_path.'/'.$trailer_video_name.'.mp4';
 
                 }else{
                     if($trailer != '') {   
@@ -1239,10 +1250,12 @@ class AdminSeriesController extends Controller
                         $file->move($path, $trailer_vid);
                         $data['trailer']  = URL::to('/').'/public/uploads/season_videos/'.$trailer_vid;
                         $data['trailer_type']  = 'mp4_url';
+                        $data['landing_mp4_url'] = URL::to('/').'/public/uploads/season_videos/'.$trailer_vid;
 
                 } else {
                     $data['trailer'] = $series_season->trailer;
                     $data['trailer_type']  = 'mp4_url';
+                    $data['landing_mp4_url'] = $series_season->landing_mp4_url;
 
             }
         }
@@ -1269,6 +1282,7 @@ class AdminSeriesController extends Controller
 
             $data['trailer'] = $M3u8_save_path;
             $data["trailer_type"] = 'm3u8_url';
+            $data['landing_mp4_url'] = $path.$transcode_path_mp4;
 
         }else{
             if($trailer != '') {   
@@ -1283,10 +1297,12 @@ class AdminSeriesController extends Controller
                     $trailer = $path.$filePath;
                     $data["trailer"] = $trailer;
                     $data["trailer_type"] = 'video_mp4';
+                    $data['landing_mp4_url'] = $path.$filePath;
 
             } else {
                 $data['trailer'] = $series_season->trailer;
                 $data['trailer_type']  = 'mp4_url';
+                $data['landing_mp4_url'] = $series_season->landing_mp4_url;
 
             }
         }
@@ -1304,10 +1320,13 @@ class AdminSeriesController extends Controller
             $trailer->move(public_path('uploads/season_trailer/'), $trailer_Video);
             $trailer_video_name = strtok($trailer_Video, '.');
             $M3u8_save_path = $trailer_path.'/'.$trailer_video_name.'.m3u8';
+            $landing_mp4_url_path = $trailer_path.'/'.$trailer_video_name.'.mp4';
+
             $storepath  = URL::to('public/uploads/season_trailer/');
 
             $data['trailer'] = $M3u8_save_path;
             $data['trailer_type']  = 'm3u8_url';
+            $data['landing_mp4_url'] = $landing_mp4_url_path;
 
         }else{
             if($trailer != '') {   
@@ -1325,11 +1344,12 @@ class AdminSeriesController extends Controller
                     $file->move($path, $trailer_vid);
                     $data['trailer']  = URL::to('/').'/public/uploads/season_videos/'.$trailer_vid;
                     $data['trailer_type']  = 'mp4_url';
+                    $data['landing_mp4_url'] = URL::to('/').'/public/uploads/season_videos/'.$trailer_vid;
 
             } else {
                 $data['trailer'] = $series_season->trailer;
                 $data['trailer_type']  = 'mp4_url';
-
+                $data['landing_mp4_url'] = $series_season->landing_mp4_url;
             }
         }
 
@@ -1397,7 +1417,7 @@ class AdminSeriesController extends Controller
         $series_season->ppv_price = $ppv_price;
         $series_season->ppv_interval = $ppv_interval;
         $series_season->ios_product_id = $ios_ppv_price;
-        $series_season->landing_mp4_url = $landing_mp4_url;
+        $series_season->landing_mp4_url = $data['landing_mp4_url'];
         $series_season->save();
 
         if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1  && $StorageSetting->aws_storage == 0) {
