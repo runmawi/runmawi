@@ -4,11 +4,15 @@
   <div id="content-page" class="content-page">
     <div class="container-fluid">
      <div class="row">
-      <div class="col-lg-12">
+      <div class="">
        <div class="iq-card">
         @yield('content')
-        <canvas id="canvas" height="280" width="600"></canvas>
-        <canvas id="canvas1" height="280" width="600"></canvas>
+           <div class="row">
+               <div class="col-lg-6"> <canvas id="canvas" height="450" width="600"></canvas></div>
+               <div class="col-lg-6"> <canvas id="canvas1" height="450" width="600"></canvas></div>
+           </div>
+       
+       
       </div>
     </div>
   </div>
