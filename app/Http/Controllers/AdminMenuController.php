@@ -91,7 +91,7 @@ class AdminMenuController extends Controller
         $path = public_path() . "/uploads/videos/";
         $image_path = public_path() . "/uploads/images/";
         $image_url = URL::to('public/uploads/images');
-
+        
         if ($image != "") {
             //code for remove old file
             if ($image != "" && $image != null) {
