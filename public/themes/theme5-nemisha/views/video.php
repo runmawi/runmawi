@@ -53,7 +53,10 @@ if(!empty($request_url)){
    font-size: 2.4em;
    text-align: center;
    padding-top: 20%; 
-}
+      }textarea.form-control{
+          background-color: #fff!important;
+          height: 100px;
+      }
 .vjs-seek-to-live-control {
            display: none !important;
        }
@@ -1189,8 +1192,8 @@ $artists = [];
 <?php } ?>
 
         <?php if( App\CommentSection::first() != null && App\CommentSection::pluck('videos')->first() == 1 ): ?>
-            <div class="row ml-2">
-                <div class=" container-fluid video-list you-may-like overflow-hidden">
+            <div class=" container-fluid">
+                <div class="  video-list you-may-like overflow-hidden">
                     <h4 class="" style="color:#fffff;"><?php echo __('Comments');?></h4>
                     <?php include('comments/index.blade.php');?>
                 </div>

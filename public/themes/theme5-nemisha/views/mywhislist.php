@@ -16,7 +16,7 @@
      </div>
      <section class="movie-detail ">
         <?php if((count($channelwatchlater) > 0) ||(count($livevideos) > 0) ): ?>
-            <h4 class="main-title">Videos</h4>       
+            <h4 class="main-title">My Videos</h4>       
         <div class="favorites-contens">
                         <ul class="category-page list-inline  row p-0 mb-4">
              <?php if(count($channelwatchlater) > 0):
@@ -60,10 +60,10 @@
             </ul>
          </div>
 
-         <h4 class="main-title">Live Videos</h4>  
+        <!-- <h4 class="main-title">Live Videos</h4>-->
          <div class="favorites-contens">
                         <ul class="category-page list-inline  row p-0 mb-4">
-            <?php if(count($livevideos) > 0): ?>
+            <?php if(count($livevideos) < 0): ?>
 
             <?php
                    foreach($livevideos as $video): ?>
