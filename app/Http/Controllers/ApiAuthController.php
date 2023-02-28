@@ -10351,4 +10351,98 @@ public function ReScheduled_Videos(Request $request)
 
   return response()->json($response, 200);
 }
+
+
+public function TvQRCodeLogin(Request $request)
+{
+
+  $tv_code =  $request['tv_qrcode'];
+  $uniqueId =  $request['uniqueId'];
+  $email =  $request['email'];
+
+  try{
+    
+    $TVLoginCode = TVLoginCode::where('tv_code',$tv_code)->where('status',1)->first();
+
+    if(empty($TVLoginCode)){
+    TVLoginCode::create([
+      'email'    => $request->email,
+      'tv_code'  => $request->tv_qrcode,
+      'uniqueId'  => $request->uniqueId,
+      'status'   => 1,
+   ]);
+  }
+    $TVLoginCode = TVLoginCode::where('tv_code',$tv_code)->where('status',1)->first();
+
+    if(!empty($TVLoginCode)){
+
+    $user = User::where('email',$TVLoginCode->email)->first();
+    if($user->role == 'subscriber'){
+
+      $Subscription = Subscription::where('user_id',$user->id)->orderBy('created_at', 'DESC')->first();
+      $Subscription = Subscription::Join('subscription_plans','subscription_plans.plan_id','=','subscriptions.stripe_plan')
+      ->where('subscriptions.user_id',$user->id)
+      ->orderBy('subscriptions.created_at', 'desc')->first();
+
+      $plans_name = $Subscription->plans_name;
+      $plan_ends_at = $Subscription->ends_at;
+
+    }else{
+      $plans_name = '';
+      $plan_ends_at = '';
+    }
+
+  }
+      $response = array(
+          'status'=> 'true',
+          'message' => 'Logged In Successfully',
+          'user_details'=> $user,
+          'plans_name'=>$plans_name,
+          'plan_ends_at'=>$plan_ends_at,
+          'tv_code'=>$tv_code,
+          'uniqueId'=>$request['uniqueId'],
+          'avatar'=>URL::to('/').'/public/uploads/avatars/'.$user->avatar
+      );
+
+    }
+    catch (\Throwable $th) {
+
+        $response = array(
+          'status'=>'false',
+          'message'=>$th->getMessage(),
+        );
+
+    }
+
+  return response()->json($response, 200);
+}
+
+
+public function TVQRCodeLogout(Request $request)
+{
+
+  try{
+
+    $TVLoginCode = TVLoginCode::where('email',$request->email)->where('status',1)->orderBy('created_at', 'DESC')->first();
+
+    $TVLoginCode=TVLoginCode::where('email',$request->email)->where('status',1)->orderBy('created_at', 'DESC')->delete();
+
+    $response = array(
+        'status'=> 'true',
+        'message' => 'Logged Out Successfully',
+    );
+
+    }
+    catch (\Throwable $th) {
+
+        $response = array(
+          'status'=>'false',
+          'message'=>$th->getMessage(),
+        );
+
+    }
+
+  return response()->json($response, 200);
+}
+
 }

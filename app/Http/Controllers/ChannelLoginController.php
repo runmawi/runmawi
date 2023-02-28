@@ -54,13 +54,27 @@ use Theme;
 class ChannelLoginController extends Controller
 {
 
+    public function __construct()
+    {
+        //$this->middleware('auth');
+        $settings = Setting::first();
+        $this->videos_per_page = $settings->videos_per_page;
+
+        $this->Theme = HomeSetting::pluck('theme_choosen')
+            ->first();
+        Theme::uses($this->Theme);
+    }
+
+    
     public function index(Request $request)
     {
         $settings = Setting::first();
         $data = array(
             'settings' => $settings,
         );
-        return \View::make('channel.login', $data);
+        return Theme::view('channel.login', $data);
+
+        // return \View::make('channel.login', $data);
     }
 
     public function register(Request $request)
@@ -69,7 +83,9 @@ class ChannelLoginController extends Controller
         $data = array(
             'settings' => $settings,
         );
-        return \View::make('channel.register', $data);
+        return Theme::view('channel.register', $data);
+
+        // return \View::make('channel.register', $data);
     }
     public function Store(Request $request)
     {
@@ -353,7 +369,7 @@ Please recheck the credentials before you try again!');
             return redirect('/cpp/login')
                 ->with('message', 'Successfully Logged Out.');
 
-            return view('moderator.login', compact('system_settings', 'user', 'settings'));
+            // return view('moderator.login', compact('system_settings', 'user', 'settings'));
             // return \View::make('auth.login');
             
         }

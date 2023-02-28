@@ -7,6 +7,10 @@
     background: #202933;
     border-radius: 20px;
 }
+    textarea.form-control{
+          background-color: #fff!important;
+          height: 100px;
+      }
 </style>
 <?php 
 
