@@ -1840,6 +1840,10 @@ Resist</h2>
 
             function Series_Category(ele) {
 
+                $('.vid').hide();
+                let clip = document.querySelector(".vid") 
+                clip.pause();
+
                 var category_id = $(ele).attr('data-category-id');
 
                 $.ajax({
