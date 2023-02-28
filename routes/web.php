@@ -1926,16 +1926,20 @@ Route::post('fileAudio', 'ModeratorsUserController@fileAudio');
 
 // Multi Profile
 
-Route::PATCH('/Profile-details/{id}', 'MultiprofileController@profile_details')->name('profile_details');
-Route::get('/profile_delete/{id}', 'MultiprofileController@profile_delete')->name('profile_delete');
-Route::get('/profile-details_edit/{id}', 'MultiprofileController@profileDetails_edit')->name('profile-details_edit');
+Route::group(['middleware' => ['auth']], function() {
 
-Route::resources([
-    'Choose-profile' => MultiprofileController::class,
-]);
+    Route::PATCH('/Profile-details/{id}', 'MultiprofileController@profile_details')->name('profile_details');
+    Route::get('/profile_delete/{id}', 'MultiprofileController@profile_delete')->name('profile_delete');
+    Route::get('/profile-details_edit/{id}', 'MultiprofileController@profileDetails_edit')->name('profile-details_edit');
 
-Route::get('/Multi-profile/create', 'MultiprofileController@Multi_Profile_Create')->name('Multi-profile-create');
-Route::post('/Multi-profile/store', 'MultiprofileController@Multi_Profile_Store')->name('Multi-profile-store');
+    Route::resources([
+        'Choose-profile' => MultiprofileController::class,
+    ]);
+
+    Route::get('/Multi-profile/create', 'MultiprofileController@Multi_Profile_Create')->name('Multi-profile-create');
+    Route::post('/Multi-profile/store', 'MultiprofileController@Multi_Profile_Store')->name('Multi-profile-store');
+
+});
 
 // welcome-screen
 Route::post('/welcome-screen', 'WelcomeScreenController@Screen_store')->name('welcome-screen');
@@ -1983,10 +1987,12 @@ Route::get('categoryfilter', 'ChannelController@categoryfilter')->name('category
     // Landing page 
 Route::get('pages/{landing_page_slug}', 'LandingpageController@landing_page')->name('landing_page');
 
+    // Landing page  category videos
+Route::get('landing_category_videos', 'LandingpageController@landing_category_videos')->name('landing_category_videos');
 
   // Channel List
-  Route::get('channel/{slug}', 'ChannelHomeController@ChannelHome')->name('ChannelHome');
-  Route::get('Channel-list', 'ChannelHomeController@ChannelList')->name('ChannelList');
+Route::get('channel/{slug}', 'ChannelHomeController@ChannelHome')->name('ChannelHome');
+Route::get('Channel-list', 'ChannelHomeController@ChannelList')->name('ChannelList');
 
     // Razorpay 
 Route::group(['middleware' => ['RazorpayMiddleware']], function() {

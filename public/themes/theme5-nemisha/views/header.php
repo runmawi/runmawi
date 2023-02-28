@@ -976,7 +976,7 @@ main .sidebar {
                               <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
                                     <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
                                     <input id="password" type="hidden"  name="password" value="<?=  @$ModeratorsUser->password ?>" autocomplete="current-password" >
-                                    <button type="submit" class="btn btn-hover " style="margin-top: -14%;margin-left: -14%;">Visit CPP Portal </button>                          
+                                    <button type="submit" class="btn btn-primary " style="margin-top: -14%;margin-left: -14%;">Visit CPP Portal </button>                          
                            </form>
                         </div>
                         <?php }if(!Auth::guest() && !empty($Channel)){ ?>
@@ -985,7 +985,7 @@ main .sidebar {
                               <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
                                     <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
                                     <input id="password" type="hidden"  name="password" value="<?=  @$Channel->unhased_password ?>" autocomplete="current-password" >
-                                    <button type="submit" class="btn btn-hover" style="margin-top: -13%;margin-left: -8%;">Channel Visit Portal </button>                          
+                                    <button type="submit" class="btn btn-primary" style="margin-top: -13%;margin-left: -8%;">Channel Visit Portal </button>                          
                            </form>
                         </div>
                        <?php } ?>
@@ -1195,7 +1195,7 @@ main .sidebar {
                                                 </div>
                                              </div>
                                           </a>
-                                            <a href="<?php echo URL::to('purchased-media') ?>" class="iq-sub-card setting-dropdown">
+                                          <!--  <a href="<?php echo URL::to('purchased-media') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                                                  <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -1221,7 +1221,7 @@ main .sidebar {
                                                    <h6 class="mb-0 ">Purchased Medias</h6>
                                                 </div>
                                              </div>
-                                          </a>
+                                          </a>-->
                                           <a href="<?php echo URL::to('logout') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
@@ -1325,7 +1325,7 @@ main .sidebar {
                                                 </div>
                                              </div>
                                           </a>
-                                            <a href="<?php echo URL::to('purchased-media') ?>" class="iq-sub-card setting-dropdown">
+                                           <!-- <a href="<?php echo URL::to('purchased-media') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                                                   <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -1351,9 +1351,9 @@ main .sidebar {
                                                    <h6 class="mb-0 ">Purchased Medias</h6>
                                                 </div>
                                              </div>
-                                          </a>
+                                          </a>-->
                                           <?php if(Auth::User()->role == "admin"){ ?>
-                                          <a href="<?php echo URL::to('admin/subscription-plans') ?>"  class="iq-sub-card setting-dropdown">
+                                         <!-- <a href="<?php echo URL::to('admin/subscription-plans') ?>"  class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
                                                 <div class="right-icon">
                                                  <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -1373,7 +1373,7 @@ main .sidebar {
                                                    <h6 class="mb-0 ">Pricing Plan</h6>
                                                 </div>
                                              </div>
-                                          </a>
+                                          </a>-->
                                          
                                            <a href="<?php echo URL::to('admin') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center">
