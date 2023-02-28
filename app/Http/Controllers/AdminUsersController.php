@@ -844,12 +844,16 @@ class AdminUsersController extends Controller
     {
 
         $user = User::find(Auth::user()->id);
+
+
         $user->username = $request->get('name');
         $user->mobile = $request->get('mobile');
         $user->email = $request->get('email');
         $user->DOB = $request->get('DOB');
         $user->ccode = $request->get('ccode');
         $user->username = $request->get('username');
+        $user->gender = $request->get('gender');
+
 
         if ($request->get('password') != null)
         {
@@ -880,7 +884,10 @@ class AdminUsersController extends Controller
             $file->move($image_path, $user->avatar);
         }
         $user->save();
-        return back();
+
+        Auth::loginUsingId(Auth::user()->id);
+
+        return redirect()->route('myprofile');
     }
 
     public function mobileapp()

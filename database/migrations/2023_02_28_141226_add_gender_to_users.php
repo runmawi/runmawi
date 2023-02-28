@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddProfileCheckoutToSiteThemes extends Migration
+class AddGenderToUsers extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddProfileCheckoutToSiteThemes extends Migration
      */
     public function up()
     {
-        Schema::table('site_themes', function (Blueprint $table) {
-            $table->tinyInteger('profile_checkout')->default('0')->after('signup_theme');
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('gender')->nullable()->after('username');
         });
     }
 
@@ -25,8 +25,8 @@ class AddProfileCheckoutToSiteThemes extends Migration
      */
     public function down()
     {
-        Schema::table('site_themes', function (Blueprint $table) {
-            Schema::dropIfExists('profile_checkout');
+        Schema::table('users', function (Blueprint $table) {
+            Schema::dropIfExists('gender');
         });
     }
 }
