@@ -1113,6 +1113,11 @@ class AdminSeriesController extends Controller
         }else{
             $ios_ppv_price = null;
         }
+        if(!empty($data['landing_mp4_url'])){
+            $landing_mp4_url = $data['landing_mp4_url'];
+        }else{
+            $landing_mp4_url = '';
+        }
         // $data['series_id'] = $data['series_id']; 
         // $data['access'] = $access; 
         // $data['ppv_price'] = $ppv_price; 
@@ -1126,6 +1131,7 @@ class AdminSeriesController extends Controller
         $series->ppv_price = $ppv_price;
         $series->ppv_interval = $ppv_interval;
         $series->ios_product_id = $ios_ppv_price;
+        $series->landing_mp4_url = $landing_mp4_url;
         $series->save();
         
         if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1 && $StorageSetting->aws_storage == 0) {
@@ -1377,6 +1383,12 @@ class AdminSeriesController extends Controller
         }else{
             $ios_ppv_price = $series_season->ios_ppv_price;
         }
+        if(!empty($data['landing_mp4_url'])){
+            $landing_mp4_url = $data['landing_mp4_url'];
+        }else{
+            $landing_mp4_url = $series_season->landing_mp4_url;
+        }
+        // dd($landing_mp4_url);
         $series_season->series_id = $series_season->series_id;
         $series_season->image = $data['image'];
         $series_season->trailer = $data['trailer'];
@@ -1385,6 +1397,7 @@ class AdminSeriesController extends Controller
         $series_season->ppv_price = $ppv_price;
         $series_season->ppv_interval = $ppv_interval;
         $series_season->ios_product_id = $ios_ppv_price;
+        $series_season->landing_mp4_url = $landing_mp4_url;
         $series_season->save();
 
         if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1  && $StorageSetting->aws_storage == 0) {

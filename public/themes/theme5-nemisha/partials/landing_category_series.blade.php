@@ -1,5 +1,10 @@
 @forelse($SeriesCategory  as $Series_Category)
-    <div class="col-md-3 p-0"  data-video-id="{{ $Series_Category->id }}" data-trailer-videos="{{ $Series_Category->trailer }}" onmouseover="video_trailer(this)" >
+
+    @php
+        $season_trailer = App\SeriesSeason::where('series_id',$Series_Category->season_trailer)->pluck('trailer')->first();
+    @endphp
+
+    <div class="col-md-3 p-0"  data-series-id="{{ $Series_Category->id }}" data-trailer-series="{{ $season_trailer }}" onmouseover="season_trailer(this)" >
         <div class="card" style="">
             <div style="position: relative;">
                 <img class="w-100 " src="<?php echo URL::to('/public/uploads/images/'.$Series_Category->image); ?>" style="">
@@ -8,9 +13,9 @@
             </div>
 
             <div class="card-body">
-                <p class="card-text" >{{ strip_tags( $Series_Category->episode_description) }}</p>
+                <p class="card-text" >{{ strip_tags( $Series_Category->description) }}</p>
                 <div class="d-flex small-t ">
-                    <a herf="" class="btn btn-success suce mr-3"><i class="fa fa-thumbs-up mr-2" aria-hidden="true"></i> {{ $Series_Category->id }} </a>
+                    <a herf="" class="btn btn-success suce mr-3"><i class="fa fa-thumbs-up mr-2" aria-hidden="true"></i> {{ $Series_Category->views }} </a>
                     <p><i class="fa fa-eye" aria-hidden="true"></i> {{  $Series_Category->views }} </p>
                 </div>
             </div>
@@ -19,7 +24,7 @@
 @empty
     <div class="col-md-3 p-0"   >
         <div class="card" style="">
-            <h2 class="text-center text-black"> No Episode found </h2>
+            <h2 class="text-center text-black"> No Series found </h2>
         </div>
     </div>
 @endforelse

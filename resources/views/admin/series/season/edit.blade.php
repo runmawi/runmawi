@@ -15,6 +15,10 @@
                         <input type="file" multiple="true" class="form-control" name="image" id="image" />
                     </div>
                     <div class="form-group">
+                        <label>Season Landing Page MP4 URL </label><br>
+                        <input type="text" value ="@if(!empty($season->landing_mp4_url)){{ $season->landing_mp4_url }}@endif" class="form-control" name="landing_mp4_url" id="landing_mp4_url" >
+                    </div>
+                    <div class="form-group">
                         <label class="m-0">Season Trailer :</label>
                         <p class="p1">Drop and drag the video file</p>
                         <div style="position: relative;" class="form_video-upload">
