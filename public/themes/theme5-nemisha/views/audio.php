@@ -462,7 +462,7 @@ Your browser does not support the audio element.
 <div class="row album-top-30 mt-3">  
 <div class="col-sm-12">
    
-<h4  class="album-title">Other Albums </h4>
+<h4  class="album-title text-white">Other Podcasts </h4>
     <div class="favorites-contens">
 <ul class="favorites-slider list-inline  row p-0 mb-0">
     <?php foreach ($other_albums as $other_album) { ?>
