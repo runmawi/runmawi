@@ -11,10 +11,15 @@
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.css" />
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick-theme.css" />
 
-    <link rel="stylesheet" href="<?= URL::to('/assets/css/style.css') ?>" />
-    <link rel="stylesheet" href="<?= URL::to('/assets/css/bootstrap.min.css') ?>" />
-    <link rel="stylesheet" href="<?= URL::to('/assets/css/typography.css') ?>" />
-    <link rel="stylesheet" href="<?= URL::to('/assets/css/responsive.css') ?>" />
+    <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
+      <!-- Bootstrap CSS -->
+      <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/bootstrap.min.css')?>" rel="stylesheet">
+      <!-- Typography CSS -->
+      <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/typography.css') ?>" rel="stylesheet">
+      <!-- Style -->
+      <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/style.css') ?>" rel="stylesheet">
+      <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/responsive.css') ?>" rel="stylesheet">
+                  <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/fonts/font.css') ?>" rel="stylesheet">
     <link rel="stylesheet" href="<?= URL::to('/assets/admin/css/animate.min.css') ?>" />
 
     <link href='//fonts.googleapis.com/css?family=Open+Sans:300,400,700' rel='stylesheet' type='text/css'>
@@ -92,7 +97,7 @@
                 </div>
 
                 <div class="col-lg-4 col-md-12 align-self-center">
-                    <div class="sign-user_card ">
+                    <div class="sign-user_card " style="background: rgba(0,0,0,0.6);border-radius: 10px;">
                         <div class="sign-in-page-data">
                             <div class="sign-in-from w-100 m-auto" align="center">
 
