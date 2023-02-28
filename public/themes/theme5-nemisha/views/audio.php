@@ -161,6 +161,10 @@ background: #2bc5b4!important;}
 .bd:hover{
 
 }
+    textarea.form-control{
+          background-color: #fff!important;
+          height: 100px;
+      }
     th,td {
     padding: 10px;
     color: #fff!important;
@@ -168,7 +172,7 @@ background: #2bc5b4!important;}
     tr{
         border:#141414;
     }
-p{
+.overlay_blur p{
 color: #fff;
 }
     .img-responsive{
