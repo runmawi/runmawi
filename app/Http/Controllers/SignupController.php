@@ -387,6 +387,8 @@ public function createStep2(Request $request)
 
         $signup_checkout = SiteTheme::pluck('signup_theme')->first();
 
+        $profile_checkout = SiteTheme::pluck('profile_checkout')->first();  // Note - for Nemisha
+
 
             if ($request->has('ref')) {
                 session(['referrer' => $request->query('ref')]);
@@ -410,7 +412,15 @@ public function createStep2(Request $request)
             }else{
                 $register = $request->session()->get('register');
 
-                if($signup_checkout == 1){
+                if($profile_checkout == 1 ){                    // Note - for Nemisha
+
+                    $user_id = User::where("email","=",$user_mail)->pluck('id')->first();
+
+                    Auth::loginUsingId($user_id);
+
+                    return redirect()->route('myprofile');
+                }
+                elseif($signup_checkout == 1){
 
                     $intent_stripe = User::where("email","=",$user_mail)->first();
                     $intent_key =  $intent_stripe->createSetupIntent()->client_secret ;
@@ -419,12 +429,11 @@ public function createStep2(Request $request)
                     return Theme::view('register.step2_payment', compact(['register', 'plans_data', 'plans_data_signup_checkout','user_mail']));
 
                 }
+                
                 else{
                     return Theme::view('register.step2', compact(['register', 'plans_data']));
                 }
-
             }
-
     }
 
     // public function PostcardcreateStep2(Request $request)
@@ -545,11 +554,10 @@ public function createStep3(Request $request)
     $upassword = $request->session()->get('password');
     $avatars = $request->session()->get('avatar');
     $ccode = $request->session()->get('ccode');
+
     if ($avatars!=='') {
         $avatar = $request->session()->get('avatar');
-
     } else {
-
         $avatar  = 'default.png'; 
     }
     
@@ -566,8 +574,6 @@ public function createStep3(Request $request)
                         'intent' => $user->createSetupIntent()
                         
                     ]);
-
-
             }
 
 
@@ -582,8 +588,6 @@ public function createStep3(Request $request)
         $plan = $plans->plans_name;
         $error = $request->error;
         $error_message = $error['message'];
-
-        // echo "<pre>";print_r($error['message']);exit();
 
         $template = EmailTemplate::where('id','=',6)->first(); 
         $heading =$template->heading; 
