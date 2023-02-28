@@ -703,7 +703,7 @@ $('#duration').mask('00:00:00');
     Dropzone.autoDiscover = false;
     var myDropzone = new Dropzone(".dropzone",{ 
       //   maxFilesize: 900,  // 3 mb
-        maxFilesize: 500,
+        maxFilesize: 150000000,
         // acceptedFiles: "image/*,audio/*",
         acceptedFiles: ".mp3",
 
