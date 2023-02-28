@@ -122,10 +122,10 @@ class ChannelHomeController extends Controller
     
     public function ChannelList()
     {
-        if (Auth::guest() && !isset($data['user']))
-        {
-            return Theme::view('auth.login');
-        }
+        // if (Auth::guest() && !isset($data['user']))
+        // {
+        //     return Theme::view('auth.login');
+        // }
         $settings = Setting::first();
         $channels = Channel::get(); 
         $currency = CurrencySetting::first();

@@ -1237,14 +1237,14 @@
                                 <label for="username" class="lablecolor"><?= __('Phone Number') ?></label>
                                 <div class="row">
                                     <div class="col-sm-6 col-xs-12">
-                                        <select name="ccode">
+                                        <!-- <select name="ccode">
                                             @foreach ($jsondata as $code)
                                                 <option value="{{ $code['dial_code'] }}" <?php if ($code['dial_code'] == $user->ccode) {
                                                     echo "selected='selected'";
                                                 } ?>>
                                                     {{ $code['name'] . ' (' . $code['dial_code'] . ')' }}</option>
                                             @endforeach
-                                        </select>
+                                        </select> -->
                                     </div>
                                     <div class="col-sm-6 col-xs-12">
                                         <input type="text" class="form-control" name="mobile" id="mobile"
