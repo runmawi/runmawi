@@ -12,5 +12,4 @@ class SeriesCategory extends Model
 
     public static $rules = array();
 
-
 }

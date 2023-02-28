@@ -477,6 +477,10 @@ $settings  = App\Setting::first();?>
 								<p style="font-size: 14px!important;">Drop and drag the video file</p>
 								</div>
 							</div>
+							<!-- <div class="form-group">
+								<label>Season Landing Page MP4 URL </label><br>
+								<input type="text" class="form-control" name="landing_mp4_url" id="landing_mp4_url" >
+							</div> -->
 							<div class="form-group">
 								<label>Season Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br>
 								<input type="file" class="season_image" name="image" id="" >

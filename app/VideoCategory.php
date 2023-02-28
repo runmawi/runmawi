@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use DB;
+use Video;
 
 class VideoCategory extends Model
 {
@@ -45,5 +46,10 @@ class VideoCategory extends Model
         public function VideoCategory()
         {
             return $this->belongsTo('App\VideoCategory');
+        }
+
+        public function specific_category_series()
+        {
+            return $this->belongsToMany(Series::class, 'series_categories','category_id','series_id');
         }
 }
