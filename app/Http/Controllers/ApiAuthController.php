@@ -9784,7 +9784,7 @@ if($LiveCategory_count > 0 || $LiveLanguage_count > 0){
          } else{
 
             $response = array(
-              'status'=> 'true',
+              'status'=> 'false',
               'message' => 'User Count Exited',
               'Count_User' => $TVLoginCodecount,
           );
@@ -10426,7 +10426,7 @@ public function TvQRCodeLogin(Request $request)
     }else{
 
       $response = array(
-        'status'=> 'true',
+        'status'=> 'false',
         'message' => 'User Count Exited',
         'Count_User' => $TVLoginCodecount,
     );
@@ -10458,6 +10458,32 @@ public function TVQRCodeLogout(Request $request)
     $response = array(
         'status'=> 'true',
         'message' => 'Logged Out Successfully',
+    );
+
+    }
+    catch (\Throwable $th) {
+
+        $response = array(
+          'status'=>'false',
+          'message'=>$th->getMessage(),
+        );
+
+    }
+
+  return response()->json($response, 200);
+}
+
+public function TVLoggedDetails(Request $request)
+{
+
+  try{
+
+    $TVLoginDetails = TVLoginCode::where('email',$request->email)->where('status',1)->get();
+
+    $response = array(
+        'status'=> 'true',
+        'message' => 'Logged Out Successfully',
+        'TVLoginDetails' => $TVLoginDetails
     );
 
     }
