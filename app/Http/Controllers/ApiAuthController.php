@@ -10406,7 +10406,9 @@ public function TvQRCodeLogin(Request $request)
           'plan_ends_at'=>$plan_ends_at,
           'tv_code'=>$tv_code,
           'uniqueId'=>$request['uniqueId'],
-          'avatar'=>URL::to('/').'/public/uploads/avatars/'.$user->avatar
+          'avatar'=>URL::to('/').'/public/uploads/avatars/'.$user->avatar,
+          'Count_User' => $TVLoginCodecount,
+
       );
     }else{
 
