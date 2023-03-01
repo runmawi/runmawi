@@ -1145,9 +1145,9 @@
         </section>
         <section class="">
             <div class="sec-3">
-                <div class="container ">
+                <div class="container mt-5">
 
-                    <h2 class="text-center mt-2 ">Explore More With NEMISA TV</h2>
+                    <h2 class="text-center mt-4 ">Explore More With NEMISA TV</h2>
                     <div class="mt-3 ">
                         <ul class="nav nav-pills   m-0 p-0" id="pills-tab" role="tablist">
 
@@ -1425,7 +1425,8 @@
 ">BENEFITS YOU CAN'T RESIST</h2>
                     <div class="row m-0 p-0 justify-content-around align-items-center">
 
-                        <div class="col-lg-6">
+                        <div class="col-lg-6" >
+                            <div class="" style="margin:4px;">
                             <video id="player1" height="800" controls autoplay poster="<?php echo URL::to('/assets/img/lan/vi1.png'); ?>">
                                 <source src="<?php echo URL::to('/assets/img/vq.mp4'); ?>" type="video/mp4">
                                 <source src="" type="video/ogg">
@@ -1436,7 +1437,7 @@
                        <div class=" col-4 col-md-4 p-0"> <img class="img-lan" src="<?php echo URL::to('/assets/img/v1.png'); ?>" style=""></div>
                        <div class=" col-4 col-md-4 p-0" style="">   <img class="mt-4 img-lan" src="<?php echo URL::to('/assets/img/v2.png'); ?>" style=""></div>
                        <div class=" col-4 col-md-4 p-0"  style="">  <img class="mt-5 img-lan" src="<?php echo URL::to('/assets/img/v3.png'); ?>" style=""></div>
-                    </div>color: #1D639B;-->
+</div>color: #1D639B;--></div>
                         </div>
                         <div class="col-lg-6 p-0">
 
@@ -1446,7 +1447,7 @@ forgot to place the fullstops on the sentences. The image
 next to it,  Please remove it and replace with this video.</p>-->
 
 
-                            <div class="row">
+                            <div class="row" >
                                 <div class="col-lg-6 pa">
                                     <div>
 
@@ -1604,18 +1605,7 @@ Resist</h2>
             </div>
 
             <div class="container-fluid mt-5">
-                <!-- <div class="row align-items-center justify-content-between">
-                    <div class="col-lg-6">
-                        <img class="img-lan w-100" src="<?php echo URL::to('/assets/img/m1.png'); ?>" style="">
-                    </div>
-
-                    <div class="col-lg-6 p-0">
-                        <h2>Free edutainment for the digital warrior</h2>
-                        <p class="text-white adv mt-4">Advancing South Africans for the future with content that is missioned to deliver tangible digital skills to bridge the digital divide.</p>
-                        <p class="text-white adv mt-4">WATCH EVERYWHERE, STREAM LIVE, QUALITY VIDEOS</p>
-                        <a class="btn btn-lg btn-success  my-2 mr-2 my-sm-0 btn-block" style="padding:12px;width:70%;" href="{{ route('login') }}" ><span>Get Started</span></a>
-                    </div>
-                </div>-->
+               
 
                 <div class="row mt-5">
                     <div class="col-lg-4">
@@ -1860,7 +1850,21 @@ Resist</h2>
             }
         </script>
 
+<script>
 
+      // Listening to the video element
+      let clip = document.querySelector(".player1")
+
+      /* Adding the event listeners on the video to play/pause the video. */
+      clip.addEventListener("mouseover", function (e) {
+         clip.play();
+      })
+
+      /* Applying the mouse out event to pause the video */
+      clip.addEventListener("mouseout", function (e) {
+         clip.pause();
+      })
+   </script>
         @php
             include public_path('themes/theme5-nemisha/views/footer.blade.php');
         @endphp
