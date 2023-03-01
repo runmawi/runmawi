@@ -4,6 +4,7 @@
 $order_settings = App\OrderHomeSetting::orderBy('order_id', 'asc')->get();  
 $order_settings_list = App\OrderHomeSetting::get();  
 $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first();  
+$slider_choosen = App\HomeSetting::pluck('slider_choosen')->first();  
 
 ?>
 <!-- Header End -->
@@ -12,16 +13,24 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
 <!-- Slider Start -->
 <section id="home" class="iq-main-slider p-0">
     <div id="home-slider" class="slider m-0 p-0">
-        <?php include('partials/home/slider.php'); ?>
+      <?php
+            if($slider_choosen == 2){
+               include('partials/home/slider-2.php'); 
+            }
+            else{
+               include('partials/home/slider-1.php'); 
+            }
+         ?>
     </div>
- <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
-    <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44" width="44px" height="44px" id="circle"
-       fill="none" stroke="currentColor">
-       <circle r="20" cy="22" cx="22" id="test"></circle>
+
+   <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+      <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44" width="44px" height="44px" id="circle"
+         fill="none" stroke="currentColor">
+         <circle r="20" cy="22" cx="22" id="test"></circle>
     </symbol>
-     
- </svg>
+   </svg>
 </section>
+
 <div class="main-content position-relative">
    <?php if( !Auth::guest() && $continue_watching_setting != null &&  $continue_watching_setting == 1 ){ ?>
       <section id="iq-continue" style="margin-top:-140px;">
