@@ -1958,6 +1958,10 @@ Route::post('admin/ThemeIntegration/create', 'ThemeIntegrationController@create'
 Route::get('admin/ThemeIntegration/set_theme', 'ThemeIntegrationController@set_theme')->name('ThemeIntegration/set_theme');
 Route::post('admin/ThemeIntegration/uniquevalidation', 'ThemeIntegrationController@uniquevalidation')->name('ThemeIntegration/uniquevalidation');
 
+    //    Slider 
+Route::get('admin/Slider/index', 'AdminSliderSettingController@index')->name('admin_slider_index');
+Route::get('admin/Slider/set_slider', 'AdminSliderSettingController@set_slider')->name('admin_slider_set');
+
 // Cache clear
 Route::get('admin/clear_cache', 'ClearCacheController@index')->name('clear_cache');
 Route::post('admin/clear_caches', 'ClearCacheController@clear_caches')->name('clear_caches');
