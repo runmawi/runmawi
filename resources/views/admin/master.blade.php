@@ -332,6 +332,8 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                             <li><a href="{{ URL::to('admin/linking_settings/') }}"><i class="las la-eye"></i>Link Settings</a></li>
                             <!-- <li><a href="{{ URL::to('admin/order-home-settings') }}"><i class="las la-eye"></i>Order HomePage Settings</a></li> -->
                             <li><a href="{{ URL::to('admin/theme_settings') }}"><i class="las la-eye"></i>Theme Settings</a></li>
+                            <li><a href="{{ route('admin_slider_index') }}">Slider</a></li>
+
                             <li><a href="{{ URL::to('admin/payment_settings') }}"><i class="las la-eye"></i>Payment Settings</a></li>
                             <li><a href="{{ URL::to('admin/email_settings') }}"><i class="las la-eye"></i>Email Settings</a></li>
                             <li><a href="{{ URL::to('admin/storage_settings') }}"><i class="las la-eye"></i>Storage Settings</a></li>
@@ -598,6 +600,8 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                            <li><a href="{{ URL::to('admin/age/index') }}" class="iq-waves-effect">Manage Age</a></li>
                             <!-- <li><a href="{{ URL::to('admin/order-home-settings') }}"><i class="las la-eye"></i>Order HomePage Settings</a></li> -->
                             <li><a href="{{ URL::to('admin/theme_settings') }}"><i class="las la-eye"></i>Theme Settings</a></li>
+                            <li><a href="{{ route('admin_slider_index') }}">Slider </a></li>
+
                             {{-- <li><a href="{{ URL::to('admin/payment_settings') }}"><i class="las la-eye"></i>Payment Settings</a></li> --}}
                             <li><a href="{{ URL::to('admin/email_settings') }}"><i class="las la-eye"></i>Email Settings</a></li>
                             <li><a href="{{ URL::to('admin/storage_settings') }}"><i class="las la-eye"></i>Storage Settings</a></li>
@@ -904,6 +908,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                             <li><a href="{{ URL::to('admin/linking_settings/') }}">Link Settings</a></li>
                            <li><a href="{{ URL::to('admin/age/index') }}" class="iq-waves-effect">Manage Age</a></li>
                             <li><a href="{{ URL::to('admin/theme_settings') }}">Theme Settings</a></li>
+                            <li><a href="{{ route('admin_slider_index') }}">Slider </a></li>
                             {{-- <li><a href="{{ URL::to('admin/payment_settings') }}">Payment Settings</a></li> --}}
                             <li><a href="{{ URL::to('admin/email_settings') }}">Email Settings</a></li>
                             <li><a href="{{ URL::to('admin/storage_settings') }}">Storage Settings</a></li>
@@ -1207,6 +1212,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                             <li><a href="{{ URL::to('admin/age/index') }}" class="iq-waves-effect">Manage Age</a></li>
                             <!-- <li><a href="{{ URL::to('admin/order-home-settings') }}"><i class="las la-eye"></i>Order HomePage Settings</a></li> -->
                             <li><a href="{{ URL::to('admin/theme_settings') }}"><i class="las la-eye"></i>Theme Settings</a></li>
+                            <li><a href="{{ route('admin_slider_index') }}">Slider </a></li>
                             {{-- <li><a href="{{ URL::to('admin/payment_settings') }}"><i class="las la-eye"></i>Payment Settings</a></li> --}}
                             <li><a href="{{ URL::to('admin/email_settings') }}"><i class="las la-eye"></i>Email Settings</a></li>
                             <li><a href="{{ URL::to('admin/storage_settings') }}"><i class="las la-eye"></i>Storage Settings</a></li>

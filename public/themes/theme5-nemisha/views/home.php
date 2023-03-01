@@ -4,6 +4,7 @@
 $order_settings = App\OrderHomeSetting::orderBy('order_id', 'asc')->get();  
 $order_settings_list = App\OrderHomeSetting::get();  
 $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first();  
+$slider_choosen = App\HomeSetting::pluck('slider_choosen')->first();  
 
 ?>
 <!-- Header End -->
@@ -14,7 +15,14 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
 <section id="home" class="iq-main-slider p-0">
    <div class="overflow-hidden ">
     <div id="home-slider" class="slider m-0 p-0">
-        <?php include('partials/home/slider.php'); ?>
+    <?php
+            if($slider_choosen == 2){
+               include('partials/home/slider-2.php'); 
+            }
+            else{
+               include('partials/home/slider-1.php'); 
+            }
+         ?>
     </div>
  <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
     <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44" width="44px" height="44px" id="circle"
