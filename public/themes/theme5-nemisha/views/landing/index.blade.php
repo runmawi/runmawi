@@ -1198,7 +1198,7 @@
 
                         <video src="" type="video/mp4" controls
                             controlsList="nofullscreen nodownload noremoteplayback" class="vid"
-                            style="border: solid; width: 550px;">
+                            style="border: solid; width: 320px;" height="198">
                         </video>
 
                         <div class="row mt-2"></div>

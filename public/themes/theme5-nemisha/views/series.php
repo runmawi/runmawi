@@ -8,9 +8,7 @@
     .desc{
         font-size: 14px;
     }
-    body{
-        background: #000!important;
-    }
+    
     h1{
         font-size: 50px!important;
         font-weight: 500;
