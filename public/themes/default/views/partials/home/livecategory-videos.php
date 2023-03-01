@@ -44,7 +44,7 @@ $currency = App\CurrencySetting::first();
 <?php  if(count($live_videos) > 0) : ?>
 
 
-<div class="">
+<div class="mb-5">
     <div class="row">
         <div class="col-sm-12 overflow-hidden">
             <div class="iq-main-header d-flex align-items-center justify-content-between">
@@ -66,15 +66,16 @@ $currency = App\CurrencySetting::first();
                         
                         ?>
                     <li class="slide-item">
+                         <a href="<?= URL::to('/') ?><?= '/live'.'/' . $category_video->slug ?>">
                             <div class="block-images position-relative">
                             <!-- block-images -->
-                            <a href="<?= URL::to('/') ?><?= '/live'.'/' . $category_video->slug ?>">
+                           <div class="img-box">
                                     <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"
                                         class="img-fluid w-100" alt="live-c">
                                         <!-- <video  width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"  data-play="hover" >
                                             <source src="<?php echo $category_video->trailer;  ?>" type="video/mp4">
                                             </video> -->
-                                    </a>
+                                  
 
                             <!-- PPV price -->
                                 
@@ -92,7 +93,7 @@ $currency = App\CurrencySetting::first();
                                             ?>
                                         </p>
                                         <?php } ?>
-                                   
+                                    
                                 </div>
                                 <div class="block-description">
 
@@ -185,6 +186,7 @@ $currency = App\CurrencySetting::first();
                                 </div>
                               
                             </div>
+                        </a>
                     </li>
                     <?php           
                           endforeach; 
