@@ -1045,6 +1045,7 @@
                 flex-direction: column;
             }
         }
+
     </style>
 
     <?php $jsonString = file_get_contents(base_path('assets/country_code.json'));
@@ -1085,7 +1086,7 @@
                 </div>
             </div>
         </div>
-        <section class="sec-21">
+       <section class="sec-21" style="background-image:url('<?php echo URL::to('/assets/img/lan/bg1.png'); ?>');background-repeat: no-repeat;background-size:100% 100%;">
             <div class="container">
                 <div class="row  mt-3 align-items-center">
                     <div class="col-lg-6">
@@ -1130,7 +1131,7 @@
                             -->
                         </div>
 
-                        <div class="col-lg-6 p-0">
+                        <div class="col-lg-6">
                             <h2 class="ml-3" style="">NEMISA TV - Bringing the world of digital technology to
                                 you.</h2>
                             <ul class="tune mt-3">
@@ -1196,10 +1197,6 @@
                             @partial('landing_category_series')
                         </div>
 
-                        <video src="" type="video/mp4" controls
-                            controlsList="nofullscreen nodownload noremoteplayback" class="vid"
-                            style="border: solid; width: 550px;">
-                        </video>
 
                         <div class="row mt-2"></div>
                     </div>
@@ -1804,11 +1801,8 @@ Resist</h2>
         </script>
 
         <script>
-            function Series_Category(ele) {
 
-                $('.vid').hide();
-                let clip = document.querySelector(".vid")
-                clip.pause();
+            function Series_Category(ele) {
 
                 var category_id = $(ele).attr('data-category-id');
 
@@ -1825,46 +1819,25 @@ Resist</h2>
                 });
             }
 
-            // Hover trailer player
-
-            $('.vid').hide();
-
             function season_trailer(ele) {
 
-                $('.vid').hide();
-                let clip = document.querySelector(".vid")
-                clip.pause();
+                let video_key_id = $(ele).attr('data-video-key-id');
+                let video_key_ids = "#" + video_key_id;
 
-                var season_trailer = $(ele).attr('data-trailer-series');
+                let clip = document.querySelector(video_key_ids)
 
-                if (season_trailer == "null") {
+                clip.play(); 
 
-                    $('.vid').hide();
-
-                } else {
-
-                    $('.vid').show();
-                    $('.vid').attr('src', season_trailer);
+                clip.addEventListener("mouseover", function (e) {
                     clip.play();
-                }
+                })
+
+                clip.addEventListener("mouseout", function (e) {
+                    clip.pause();
+                })
             }
         </script>
 
-<script>
-
-      // Listening to the video element
-      let clip = document.querySelector(".player1")
-
-      /* Adding the event listeners on the video to play/pause the video. */
-      clip.addEventListener("mouseover", function (e) {
-         clip.play();
-      })
-
-      /* Applying the mouse out event to pause the video */
-      clip.addEventListener("mouseout", function (e) {
-         clip.pause();
-      })
-   </script>
         @php
             include public_path('themes/theme5-nemisha/views/footer.blade.php');
         @endphp
