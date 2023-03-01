@@ -62,6 +62,7 @@ use App\Channel;
 use App\ModeratorsUser;
 use App\StorageSetting;
 use App\LiveStream;
+use App\AudioCategory;
 
 
 class ChannelHomeController extends Controller
@@ -101,7 +102,7 @@ class ChannelHomeController extends Controller
             $latest_videos = Video::where('active', '=', '1')->where('status', '=', '1')->where('user_id', '=', $channel->id)
             ->where('uploaded_by', '=', 'Channel')->where('draft', '=', '1')
                 ->get();
-
+    
             $ThumbnailSetting = ThumbnailSetting::first();
             
             $data = array(
@@ -111,7 +112,11 @@ class ChannelHomeController extends Controller
                 'audios' => $audios,
                 'livetream' => $livetreams,
                 'ThumbnailSetting' => $ThumbnailSetting,
+                'LiveCategory' => LiveCategory::get(),
+                'VideoCategory' => VideoCategory::get(),
+                'AudioCategory' => AudioCategory::get(),
                 'channel' => $channel,
+
             );
             
             return Theme::view('ChannelHome', $data);

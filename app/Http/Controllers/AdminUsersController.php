@@ -2933,6 +2933,7 @@ class AdminUsersController extends Controller
         TVLoginCode::create([
           'email'    => $request->email,
           'tv_code'  => $request->tv_code,
+          'type'  => 'Code',
           'status'   => 0,
        ]);
     
@@ -2965,10 +2966,10 @@ class AdminUsersController extends Controller
       try{
 
     //    TVLoginCode::destroy($id);
-       $TVLoginCode=TVLoginCode::where('id',$id)->where('status',1)->orderBy('created_at', 'DESC')->first();
+       $TVLoginCode=TVLoginCode::where('id',$id)->where('type','Code')->where('status',1)->orderBy('created_at', 'DESC')->first();
        $email = $TVLoginCode->email;
     // dd($email);
-       TVLoginCode::where('email',$email)->where('status',1)->orderBy('created_at', 'DESC')->delete();
+       TVLoginCode::where('email',$email)->where('type','Code')->where('status',1)->orderBy('created_at', 'DESC')->delete();
     
         } 
         catch (\Throwable $th) {

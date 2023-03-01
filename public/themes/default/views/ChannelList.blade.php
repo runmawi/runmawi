@@ -8,7 +8,7 @@
         <div class="row">
             <div class="col-sm-12 page-height">
                 <div class="iq-main-header align-items-center justify-content-between">
-                    <h4 class="main-title">{{ "Channel List" }}</h4>                     
+                    <h4 class="main-title">{{ "All Channel" }}</h4>                     
                 </div>
                 <div class="favorites-contens">
                     <ul class="category-page list-inline row p-0 mb-0">
@@ -23,7 +23,7 @@
                             
                                         <div class="block-description" >
                                                 <a href="{{ URL::to('channel').'/'.$channel->channel_slug   }}">
-                                                    <h6><?php  echo (strlen($channel->channel_name) > 17) ? substr($channel->channel_name,0,18).'...' : $channel->channel_name; ?></h6>
+                                                    <h4><?php  echo (strlen($channel->channel_name) > 17) ? substr($channel->channel_name,0,18).'...' : $channel->channel_name; ?></h4>
                                                 </a>
                                             <div class="hover-buttons"><div>
                                         </div>

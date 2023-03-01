@@ -1130,7 +1130,7 @@
                             -->
                         </div>
 
-                        <div class="col-lg-6 p-0">
+                        <div class="col-lg-6">
                             <h2 class="ml-3" style="">NEMISA TV - Bringing the world of digital technology to
                                 you.</h2>
                             <ul class="tune mt-3">
@@ -1198,7 +1198,7 @@
 
                         <video src="" type="video/mp4" controls
                             controlsList="nofullscreen nodownload noremoteplayback" class="vid"
-                            style="border: solid; width: 550px;">
+                            style="border: solid; width: 320px;" height="198">
                         </video>
 
                         <div class="row mt-2"></div>

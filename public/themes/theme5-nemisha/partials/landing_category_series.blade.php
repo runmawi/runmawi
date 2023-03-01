@@ -10,7 +10,11 @@
     <div class="col-md-3 p-0"  data-series-id="{{ $Series_Category->id }}" data-trailer-series="{{ $season_trailer_url }}" onmouseover="season_trailer(this)" >
         <div class="card" style="">
             <div style="position: relative;">
-                <img class="w-100 " src="<?php echo URL::to('/public/uploads/images/'.$Series_Category->image); ?>" style="">
+                 <video src="" type="video/mp4" controls
+                            controlsList="nofullscreen nodownload noremoteplayback" class="vid"
+                            style="border: solid; width: 320px;height:198px;"  poster="<?php echo URL::to('/public/uploads/images/'.$Series_Category->image); ?>">
+                        </video>
+              <!--  <img class="w-100 " src="<?php echo URL::to('/public/uploads/images/'.$Series_Category->image); ?>" style="">-->
                 <p class="small bkm"><i class="fa fa-clock-o" aria-hidden="true"></i> {{ sprintf('%dh %dm', $Series_Category->duration / 3600, floor($Series_Category->duration / 60) % 60)  }}
                   </p>
             </div>

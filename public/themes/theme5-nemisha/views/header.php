@@ -510,7 +510,7 @@ height: 100%;
   z-index: 1;
   top: 0;
   left: 0;
- background: #ED553B;
+ background: #000;
 
   transition: 0.5s;
   overflow-x: hidden;
@@ -522,7 +522,7 @@ height: 100%;
   padding-left: 8px;
   text-decoration: none;
   font-size: 20px;
-  color: #fff!important;
+  color: #ED553B!important;
   display: block;
     margin-right: 
     
