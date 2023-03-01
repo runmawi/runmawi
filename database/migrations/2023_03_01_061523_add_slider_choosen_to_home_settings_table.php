@@ -14,7 +14,7 @@ class AddSliderChoosenToHomeSettingsTable extends Migration
     public function up()
     {
         Schema::table('home_settings', function (Blueprint $table) {
-            $table->longText('slider_choosen')->default(1)->after('theme_choosen');
+            $table->tinyInteger('slider_choosen')->default(1)->after('theme_choosen');
         });
     }
 
