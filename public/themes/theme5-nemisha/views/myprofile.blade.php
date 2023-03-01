@@ -368,31 +368,31 @@
                                 style="color: #fff!important;"><i class="fa fa-plus-circle"></i> Edit</a></div>
 
                         <div class="text-center">
-                            <p class="account col-lg-12 d-flex justify-content-around">
-                                <span class="">First Name:</span> 
-                                <span class=""><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></span>
+                            <p class="account row justify-content-center">
+                                <span class="col-lg-4 text-left">First Name:</span> 
+                                <span class="col-lg-4 text-left"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></span>
                             </p>
 
-                            <p class="account col-lg-12 d-flex justify-content-around">
-                                <span>User Name:</span>
-                                <span class=""><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></span>
+                            <p class="account row justify-content-center">
+                                <span class="col-lg-4 text-left">User Name:</span>
+                                <span class="col-lg-4 text-left"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></span>
                             </p>
 
-                            <p class="account col-lg-12 d-flex justify-content-around">
-                                <span>Email-id:</span>
-                                <span class=""> <?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?></span>
+                            <p class="account row justify-content-center">
+                                <span class="col-lg-4 text-left">Email-id:</span>
+                                <span class="col-lg-4 text-left"> <?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?></span>
                             </p>
 
-                            <p class="account col-lg-12 d-flex justify-content-around">
-                                <span>Cell Phone:</span>
-                                <span class=""> <?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?></span>
+                            <p class="account row justify-content-center">
+                                <span class="col-lg-4 text-left">Cell Phone:</span>
+                                <span class="col-lg-4 text-left"> <?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?></span>
                             </p>
 
-                            <p class="account col-lg-12 d-flex justify-content-around">
-                                <span>Gender:</span>
-                                <span class=""> 
+                            <p class="account row justify-content-center">
+                                <span class="col-lg-4 text-left">Gender:</span>
+                                <span class="col-lg-5 text-left"> 
                                     <select class="form-control" id="gender" name="gender">
-                                        <option value="null" @if(!empty($user->gender) && $user->gender == "null" ){{ 'selected' }}@endif>  Select the Gender </option>
+                                        <option value="null" @if(!empty($user->gender) && $user->gender == "null" ){{ 'selected' }}@endif>   Gender </option>
                                         <option value="Male" @if(!empty($user->gender) && $user->gender == 'Male'){{ 'selected' }}@endif>  Male </option>
                                         <option value="Female" @if(!empty($user->gender) && $user->gender == 'Female'){{ 'selected' }}@endif> Female </option>
                                         <option value="Others" @if(!empty($user->gender) && $user->gender == 'Others'){{ 'selected' }}@endif > Others </option>
@@ -400,9 +400,9 @@
                                 </span>
                             </p>
 
-                            <p class="account col-lg-12 d-flex justify-content-around">
-                                <span>DOB:</span>
-                                <span class=""> <?php if(!empty($user->DOB)): ?><?= $user->DOB ?><?php endif; ?></span>
+                            <p class="account row justify-content-center">
+                                <span class="col-lg-4 text-left">DOB:</span>
+                                <span class="col-lg-4 text-left"> <?php if(!empty($user->DOB)): ?><?= $user->DOB ?><?php endif; ?></span>
                             </p>
 
                         </div>
@@ -689,27 +689,7 @@
     @php
         include public_path('themes/theme5-nemisha/views/footer.blade.php');
     @endphp
-    <!-- back-to-top End -->
-    <!-- back-to-top End -->
-    <!-- jQuery, Popper JS -->
-    <script src="<?= URL::to('/') . '/assets/js/jquery-3.4.1.min.js' ?>"></script>
-    <script src="<?= URL::to('/') . '/assets/js/popper.min.js' ?>"></script>
-    <!-- Bootstrap JS -->
-    <script src="<?= URL::to('/') . '/assets/js/bootstrap.min.js' ?>"></script>
-    <!-- Slick JS -->
-    <script src="<?= URL::to('/') . '/assets/js/slick.min.js' ?>"></script>
-    <!-- owl carousel Js -->
-    <script src="<?= URL::to('/') . '/assets/js/owl.carousel.min.js' ?>"></script>
-    <!-- select2 Js -->
-    <script src="<?= URL::to('/') . '/assets/js/select2.min.js' ?>"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-    <!-- Magnific Popup-->
-    <script src="<?= URL::to('/') . '/assets/js/jquery.magnific-popup.min.js' ?>"></script>
-    <!-- Slick Animation-->
-    <script src="<?= URL::to('/') . '/assets/js/slick-animation.min.js' ?>"></script>
-    <!-- Custom JS-->
-    <script src="<?= URL::to('/') . '/assets/js/custom.js' ?>"></script>
     <script>
         $(document).ready(function() {
 
