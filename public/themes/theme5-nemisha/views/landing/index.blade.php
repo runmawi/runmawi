@@ -1479,37 +1479,7 @@ next to it,  Please remove it and replace with this video.</p>-->
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="col-lg-6 pa">
-
-                                <div></div>
-
-                                <div class=" lan">
-                                    <img class="mb-2" src="<?php echo URL::to('/assets/img/lan/v3.png'); ?>" style=>
-                                    <h4 class="">User Feedback and<br> Interaction</h4>
-                                    <p style="color:#fff;font-weight:500;">Learn by interacting with experts and
-                                        other users.</p>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-6 p-0">
-                                <div></div>
-
-                                <div class="lan ">
-                                    <img class="mb-2" src="<?php echo URL::to('/assets/img/lan/v4.png'); ?>" style=>
-                                    <h4 class="">Aggregated User generated content</h4>
-                                    <p style="color:#fff;">Create and contribute your own digital content to
-                                        empower other users.</p>
-                                </div>
-                            </div>
-
-                            <div class=" col-lg-6 rated">
-                                <img class="mb-2" src="<?php echo URL::to('/assets/img/lan/v5.png'); ?>" style=>
-                                <h4 class="">Curated multiformat<br> training content</h4>
-                                <p style="color:#fff;">Diverse learning content that focuses on the visual, audio,
-                                    social, solitary, verbal and logical.</p>
-                            </div>
-                        </div>
+                       
                     </div>
                 </div>
             </div>
