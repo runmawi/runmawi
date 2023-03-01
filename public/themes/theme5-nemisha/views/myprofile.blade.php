@@ -368,23 +368,44 @@
                                 style="color: #fff!important;"><i class="fa fa-plus-circle"></i> Edit</a></div>
 
                         <div class="text-center">
-                            <p class="account col-lg-12 d-flex justify-content-around"><span class="">First
-                                    Name:</span> <span
-                                    class=""><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></span>
+                            <p class="account col-lg-12 d-flex justify-content-around">
+                                <span class="">First Name:</span> 
+                                <span class=""><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></span>
                             </p>
-                            <p class="account col-lg-12 d-flex justify-content-around"><span>User Name:</span><span
-                                    class=""><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></span>
+
+                            <p class="account col-lg-12 d-flex justify-content-around">
+                                <span>User Name:</span>
+                                <span class=""><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></span>
                             </p>
-                            <p class="account col-lg-12 d-flex justify-content-around"><span>Moblie.no:</span><span
-                                    class=""> <?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?></span>
+
+                            <p class="account col-lg-12 d-flex justify-content-around">
+                                <span>Email-id:</span>
+                                <span class=""> <?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?></span>
                             </p>
-                            <p class="account col-lg-12 d-flex justify-content-around"><span>Email-id:</span><span
-                                    class=""> <?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?></span>
+
+                            <p class="account col-lg-12 d-flex justify-content-around">
+                                <span>Cell Phone:</span>
+                                <span class=""> <?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?></span>
+                            </p>
+
+                            <p class="account col-lg-12 d-flex justify-content-around">
+                                <span>Gender:</span>
+                                <span class=""> 
+                                    <select class="form-control" id="gender" name="gender">
+                                        <option value="null" @if(!empty($user->gender) && $user->gender == "null" ){{ 'selected' }}@endif>  Select the Gender </option>
+                                        <option value="Male" @if(!empty($user->gender) && $user->gender == 'Male'){{ 'selected' }}@endif>  Male </option>
+                                        <option value="Female" @if(!empty($user->gender) && $user->gender == 'Female'){{ 'selected' }}@endif> Female </option>
+                                        <option value="Others" @if(!empty($user->gender) && $user->gender == 'Others'){{ 'selected' }}@endif > Others </option>
+                                    </select>
+                                </span>
+                            </p>
+
+                            <p class="account col-lg-12 d-flex justify-content-around">
+                                <span>DOB:</span>
+                                <span class=""> <?php if(!empty($user->DOB)): ?><?= $user->DOB ?><?php endif; ?></span>
                             </p>
 
                         </div>
-                        
-
                 </div>
             </div>
             <div class="col-md-8 targetDiv" id="div3">
@@ -532,15 +553,25 @@
 
 
                         <div class="form-group">
-                            <label> Phone:</label>
+                            <label> Cell Phone:</label>
                             <input type="number" id="mobile" name="mobile"
                                 value="<?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?>"
                                 class="form-control" placeholder="Mobile Number">
                         </div>
 
                         <div class="form-group">
+                            <label> Gender:</label>
+                            <select class="form-control" id="gender" name="gender">
+                                <option value="null" @if(!empty($user->gender) && $user->gender == "null" ){{ 'selected' }}@endif>  Select the Gender </option>
+                                <option value="Male" @if(!empty($user->gender) && $user->gender == 'Male'){{ 'selected' }}@endif>  Male </option>
+                                <option value="Female" @if(!empty($user->gender) && $user->gender == 'Female'){{ 'selected' }}@endif> Female </option>
+                                <option value="Others" @if(!empty($user->gender) && $user->gender == 'Others'){{ 'selected' }}@endif > Others </option>
+                            </select>
+                        </div>
+                       
+                        <div class="form-group">
                             <label> DOB:</label>
-                            <input type="date" id="DOB" name="DOB"
+                            <input type="date" id="DOB" name="DOB" class="form-control" max="<?php echo date("Y-m-d"); ?>"
                                 value="<?php if(!empty($user->DOB)): ?><?= $user->DOB ?><?php endif; ?>">
                         </div>
 
