@@ -4,23 +4,36 @@
 $order_settings = App\OrderHomeSetting::orderBy('order_id', 'asc')->get();  
 $order_settings_list = App\OrderHomeSetting::get();  
 $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first();  
+$slider_choosen = App\HomeSetting::pluck('slider_choosen')->first();  
 
 ?>
 <!-- Header End -->
 
 
 <!-- Slider Start -->
-<section id="home" class="iq-main-slider p-0">
-    <div id="home-slider" class="slider m-0 p-0">
-        <?php include('partials/home/slider.php'); ?>
-    </div>
- <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
-    <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44" width="44px" height="44px" id="circle"
-       fill="none" stroke="currentColor">
-       <circle r="20" cy="22" cx="22" id="test"></circle>
-    </symbol>
- </svg>
-</section>
+
+   <section id="home" class="iq-main-slider p-0">
+
+         <div id="home-slider" class="slider m-0 p-0">
+            <?php
+            if($slider_choosen == 1){
+               include('partials/home/slider.php'); 
+            }
+            else{
+               include('partials/home/slider-2.php'); 
+            }
+            
+            ?>
+         </div>
+
+         <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+            <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44" width="44px" height="44px" id="circle"
+               fill="none" stroke="currentColor">
+               <circle r="20" cy="22" cx="22" id="test"></circle>
+            </symbol>
+         </svg>
+
+   </section>
 
 <!-- Slider End -->
 
