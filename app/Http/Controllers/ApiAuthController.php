@@ -9737,7 +9737,11 @@ if($LiveCategory_count > 0 || $LiveLanguage_count > 0){
       $uniqueId =  $request['uniqueId'];
 
       try{
+        $TVLoginCodecount = TVLoginCode::where('email',$request->email)->count();
 
+        if($TVLoginCodecount < 5){
+
+        
         TVLoginCode::where('tv_code',$tv_code)->where('type','Code')->orderBy('created_at', 'DESC')->first()
         ->update([
            'status'  => 1,
@@ -9773,9 +9777,18 @@ if($LiveCategory_count > 0 || $LiveLanguage_count > 0){
               'plan_ends_at'=>$plan_ends_at,
               'tv_code'=>$tv_code,
               'uniqueId'=>$request['uniqueId'],
-              'avatar'=>URL::to('/').'/public/uploads/avatars/'.$user->avatar
-          );
+              'avatar'=>URL::to('/').'/public/uploads/avatars/'.$user->avatar,
+              'Count_User' => $TVLoginCodecount,
 
+          );
+         } else{
+
+            $response = array(
+              'status'=> 'true',
+              'message' => 'User Count Exited',
+              'Count_User' => $TVLoginCodecount,
+          );
+          }
         }
         catch (\Throwable $th) {
 
