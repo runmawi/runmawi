@@ -9738,9 +9738,10 @@ if($LiveCategory_count > 0 || $LiveLanguage_count > 0){
 
       try{
 
-        TVLoginCode::where('tv_code',$tv_code)->orderBy('created_at', 'DESC')->first()
+        TVLoginCode::where('tv_code',$tv_code)->where('type','Code')->orderBy('created_at', 'DESC')->first()
         ->update([
            'status'  => 1,
+           'tv_name'  => $request->tv_name,
             'uniqueId' =>  $request['uniqueId'],
         ]);
         $TVLoginCode = TVLoginCode::where('tv_code',$tv_code)->where('status',1)->first();
@@ -10363,15 +10364,19 @@ public function TvQRCodeLogin(Request $request)
   try{
     
     $TVLoginCode = TVLoginCode::where('tv_code',$tv_code)->where('status',1)->first();
+    $TVLoginCodecount = TVLoginCode::where('email',$email)->where('status',1)->count();
 
-    if(empty($TVLoginCode)){
+    if($TVLoginCodecount < 5){
     TVLoginCode::create([
       'email'    => $request->email,
       'tv_code'  => $request->tv_qrcode,
       'uniqueId'  => $request->uniqueId,
+      'tv_name'  => $request->tv_name,
+      'type'  => 'QRScan',
       'status'   => 1,
    ]);
-  }
+ 
+
     $TVLoginCode = TVLoginCode::where('tv_code',$tv_code)->where('status',1)->first();
 
     if(!empty($TVLoginCode)){
@@ -10403,8 +10408,16 @@ public function TvQRCodeLogin(Request $request)
           'uniqueId'=>$request['uniqueId'],
           'avatar'=>URL::to('/').'/public/uploads/avatars/'.$user->avatar
       );
+    }else{
 
+      $response = array(
+        'status'=> 'true',
+        'message' => 'User Count Exited',
+        'Count_User' => $TVLoginCodecount,
+    );
     }
+  }
+
     catch (\Throwable $th) {
 
         $response = array(
