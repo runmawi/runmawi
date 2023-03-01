@@ -49,7 +49,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
-    {{-- <style>
+    <style>
         .map {
 
             font-size: 16px;
@@ -1045,7 +1045,8 @@
                 flex-direction: column;
             }
         }
-    </style> --}}
+
+    </style>
 
     <?php $jsonString = file_get_contents(base_path('assets/country_code.json'));
     
@@ -1820,17 +1821,20 @@ Resist</h2>
 
             function season_trailer(ele) {
 
-                let clip = document.querySelector(".vid")
+                let video_key_id = $(ele).attr('data-video-key-id');
+                let video_key_ids = "#" + video_key_id;
 
-                    clip.play(); 
+                let clip = document.querySelector(video_key_ids)
 
-                    clip.addEventListener("mouseover", function (e) {
-                        clip.play();
-                    })
+                clip.play(); 
 
-                    clip.addEventListener("mouseout", function (e) {
-                        clip.pause();
-                    })
+                clip.addEventListener("mouseover", function (e) {
+                    clip.play();
+                })
+
+                clip.addEventListener("mouseout", function (e) {
+                    clip.pause();
+                })
             }
         </script>
 
