@@ -1130,7 +1130,7 @@
                             -->
                         </div>
 
-                        <div class="col-lg-6 p-0">
+                        <div class="col-lg-6">
                             <h2 class="ml-3" style="">NEMISA TV - Bringing the world of digital technology to
                                 you.</h2>
                             <ul class="tune mt-3">
