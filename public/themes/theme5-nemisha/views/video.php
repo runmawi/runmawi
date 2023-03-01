@@ -876,9 +876,9 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
              <div class="col-sm-5 col-md-5 col-xs-12 text-right mt-4">
                  <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
                     <li><span class="watchlater <?php if(isset($watchlatered->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if(isset($watchlatered->id)): ?> class="ri-add-circle-fill" <?php else: ?> class="ri-add-circle-line" <?php endif; ?>></i></span></li>
-                     <!-- Wishlist 
+                     <!-- Wishlist  -->
                     <li><span class="mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>"><i <?php if(isset($mywishlisted->id)): ?> class="ri-heart-fill" <?php else: ?> class="ri-heart-line" <?php endif; ?> ></i></span></li>
-                     <!-- Social Share, Like Dislike-->
+                    <!-- Social Share, Like Dislike -->
                       <?php include('partials/social-share.php'); ?>   
                                            
                  </ul>
@@ -890,9 +890,10 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                            <div id="close_trailer" class="btn1 btn-primary btn-lg btn-block  close_trailer"><i class="ri-film-line"></i> Close Trailer</div>
                            <div style=" display: none;" class="skiptrailer btn btn-default skip"> Skip</div>
                        <?php } ?>
-                        <div id="videoplay" class="btn1 btn-secondary btn-lg btn-block watch_trailer mt-3 mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>" style="border-radius:none!important;"><?php if(isset($mywishlisted->id)): ?> <i class="fa fa-minus-circle" aria-hidden="true"></i> Remove Whislist  <?php else: ?> + Add to Wishlist <?php endif; ?>
-                        </div>
-
+                        <!-- <div id="videoplay" class="btn1 btn-secondary btn-lg btn-block watch_trailer mt-3 mywishlist <?php if(isset($mywishlisted->id)): ?>active<?php endif; ?>" data-authenticated="<?= !Auth::guest() ?>" data-videoid="<?= $video->id ?>" style="border-radius:none!important;"><?php if(isset($mywishlisted->id)): ?> <i class="fa fa-minus-circle" aria-hidden="true"></i>   <?php else: ?>  <?php endif; ?> -->
+                        <!-- </div> -->
+                        <!-- Remove Whislist -->
+                        <!-- + Add to Wishlist -->
                         <?php
                            $user = Auth::user(); 
 
@@ -1410,7 +1411,7 @@ location.reload();
          $(this).toggleClass('active');
          $(this).html("");
              if($(this).hasClass('active')){
-              $(this).html('<i class="fa fa-minus-circle" aria-hidden="true" ></i> Remove wishlist');
+              $(this).html('<i class="ri-heart-line" aria-hidden="true" ></i>');
             
               $(".add_data_test").empty();
               $(".add_data_test").append("<div>Remove from Wishlist</div> ");
@@ -1419,7 +1420,8 @@ location.reload();
                 $('.add_watch').slideUp('fast');
                }, 3000);
              }else{
-              $(this).html('+ Add to Whislist');
+              $(this).html('<i class="ri-heart-line" aria-hidden="true" ></i>');
+              // $(this).html('+ Add to Whislist');
               $(".add_data_test").empty();
               //  $(this).html('<i class="ri-heart-line"></i>');
                $(".add_data_test").append("<div>Added to  Wishlist</div> ");
@@ -1454,7 +1456,7 @@ location.reload();
 
              }else{
               //  $(this).html('<i class="ri-add-circle-line"></i>');
-               $(this).html('<i class="ri-heart-line"></i>');
+               $(this).html('<i class="fa fa-minus-circle"></i>');
               $(".add_data_test").empty();
               //  $(this).html('<i class="ri-heart-line"></i>');
                $(".add_data_test").append("<div>Added to Watchlater</div> ");
