@@ -18,7 +18,7 @@
             </div>  </div>
             <div class="block-description" >  </div>
             <a href="<?= URL::to('album') ?><?= '/' . $album->slug ?>">
-                        <i class="ri-play-fill"></i>
+                       
                      </a>                         
                <div class="hover-buttons">
                <a href="<?= URL::to('album') ?><?= '/' . $album->slug ?>">
