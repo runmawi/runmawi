@@ -9741,7 +9741,7 @@ if($LiveCategory_count > 0 || $LiveLanguage_count > 0){
         if($TVLoginCodecount < 5){
 
         
-        TVLoginCode::where('tv_code',$tv_code)->where('type','Code')->orderBy('created_at', 'DESC')->first()
+        TVLoginCode::where('tv_code',$tv_code)->orderBy('created_at', 'DESC')->first()
         ->update([
            'status'  => 1,
            'tv_name'  => $request->tv_name,
