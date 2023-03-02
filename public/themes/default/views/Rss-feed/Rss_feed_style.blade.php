@@ -49,8 +49,9 @@
      * Contenedor
      ============================*/
     .pricing-wrapper {
-        width: 960px;
+        width: 93%;
         margin: 40px auto 0;
+        margin-bottom : 40px ;
     }
     
     .pricing-table {
@@ -80,7 +81,25 @@
         text-transform: uppercase;
         text-shadow: 0 1px 1px rgba(0,0,0,0.4);
     }
-    
+
+    .pricing-title-audios {
+        color: #FFF;
+        background: #46bd86;
+        padding: 20px 0;
+        font-size: 2em;
+        text-transform: uppercase;
+        text-shadow: 0 1px 1px rgba(0,0,0,0.4);
+    }
+
+    .pricing-title-episode {
+        color: #FFF;
+        background: #d6b54e;
+        padding: 20px 0;
+        font-size: 2em;
+        text-transform: uppercase;
+        text-shadow: 0 1px 1px rgba(0,0,0,0.4);
+    }
+
     .pricing-table.recommended .pricing-title {
         background: #2db3cb;
     }
@@ -88,7 +107,15 @@
     .pricing-table.recommended .pricing-action {
         background: #2db3cb;
     }
-    
+
+    .audios  {
+         background: #46bd86 !important;
+    }
+
+    .episode {
+        background: #d6b54e !important;
+    }
+
     .pricing-table .price {
         background: #403e3d;
         font-size: 3.4em;
@@ -187,6 +214,7 @@
     .recommended .table-buy .pricing-action:hover {
         background: #228799;	
     }
+
     
     /** ================
      * Responsive
