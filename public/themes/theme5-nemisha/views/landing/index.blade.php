@@ -265,7 +265,7 @@
 
         .sec-2 h2 {
             font-size: 40px;
-            margin: 0 60px auto;
+           
         }
 
         h2 {
@@ -1418,11 +1418,10 @@
             <div class="container">
 
                 <div class="" style="padding:5% 0 5% 0;">
-                    <h2 class="ben   text-right" style="
-">BENEFITS YOU CAN'T RESIST</h2>
+                   
                     <div class="row m-0 p-0 justify-content-around align-items-center">
 
-                        <div class="col-lg-6" >
+                        <div class="col-lg-6 mt-5" >
                             <div class="" style="margin:4px;">
                             <video id="player1" height="800" controls autoplay poster="<?php echo URL::to('/assets/img/lan/vi1.png'); ?>">
                                 <source src="<?php echo URL::to('/assets/img/vq.mp4'); ?>" type="video/mp4">
@@ -1437,7 +1436,8 @@
 </div>color: #1D639B;--></div>
                         </div>
                         <div class="col-lg-6 p-0">
-
+ <h2 class="ben" style="
+">BENEFITS YOU CAN'T RESIST</h2>
                             <!-- <p class="text-white mt-3" style="font-size: 22px;
 line-height: 40px;">Use  the information as it is and the icons, please don’t
 forgot to place the fullstops on the sentences. The image
