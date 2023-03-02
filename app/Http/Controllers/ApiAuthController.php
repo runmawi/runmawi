@@ -10444,5 +10444,33 @@ public function TVQRCodeLogout(Request $request)
 
   return response()->json($response, 200);
 }
+ 
+  public function site_theme_setting()
+  {
+      try {
 
+          $Site_theme_setting = SiteTheme::get()->map(function ($item) {
+            $item['dark_mode_logo_url'] = URL::to('/public/uploads/settings'.$item->dark_mode_logo);
+            $item['light_mode_logo_url'] = URL::to('/public/uploads/settings'.$item->light_mode_logo);
+            return $item;
+          });;
+
+        $response = array(
+          'status'=> 'true',
+          'message' => 'Retrieved Logo Site theme setting Successfully !!',
+          'Site_theme_setting'=> $Site_theme_setting,
+        );
+
+      } 
+      catch (\Throwable $th) {
+
+        $response = array(
+          'status'=>'false',
+          'message'=>$th->getMessage(),
+        );
+
+      }
+
+      return response()->json($response, 200);
+  }
 }
