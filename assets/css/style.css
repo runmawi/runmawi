@@ -843,9 +843,28 @@ video.trail-vid{
 .tab-pane {
   color: #ffff;
   display: none;
-    padding-top:30px;
+   
     text-align: left;
-  height: 385px;
+  
+}
+.nav-pills .nav-link{
+    padding: 5px 15px;
+    background: #fff;
+    border-radius: 5px!important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #000!important;
+    
+}
+.nav-pills .nav-link:hover{
+      padding: 5px 15px;
+    background:#fffcb0;
+      color: #000!important;
+    border-bottom: none!important;
+}
+.nav-pills li{
+    padding: 10px 10px;
 }
 .iq-favorites{
     margin-top: 20px;
@@ -887,7 +906,7 @@ a.title-dec{
 	text-transform: uppercase;
     color: #ccc !important;
     padding: .5rem 0;
-    font-family: 'Bold';
+   
     letter-spacing: .5px;
     border-bottom: 4px solid transparent;
 }
