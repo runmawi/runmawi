@@ -2800,7 +2800,7 @@ class AdminUsersController extends Controller
             $user_role = Auth::user()->role;
             $alldevices = LoggedDevice::where('user_id', '=', Auth::User()->id)
                 ->get();
-            $UserTVLoginCode = TVLoginCode::where('email',Auth::User()->email)->where('status',1)->first();
+            $UserTVLoginCode = TVLoginCode::where('email',Auth::User()->email)->where('status',0)->first();
             // dd($UserTVLoginCode);
             if ($user_role == 'registered' || $user_role == 'admin')
             {

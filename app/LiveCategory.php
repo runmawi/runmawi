@@ -36,4 +36,9 @@ class LiveCategory extends Model
             return $this->hasMany('App\LiveCategory', 'parent_id');
 
         }
+
+        public function specific_category_live()
+        {
+            return $this->belongsToMany('App\LiveStream', 'livecategories','category_id','live_id');
+        }
 }

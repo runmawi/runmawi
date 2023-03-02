@@ -1999,6 +1999,8 @@ Route::get('channel/{slug}', 'ChannelHomeController@ChannelHome')->name('Channel
 Route::get('Channel-list', 'ChannelHomeController@ChannelList')->name('ChannelList');
 Route::get('channel_category_series', 'ChannelHomeController@channel_category_series')->name('channel_category_series');
 Route::get('channel_category_videos', 'ChannelHomeController@channel_category_videos')->name('channel_category_videos');
+Route::get('channel_category_audios', 'ChannelHomeController@channel_category_audios')->name('channel_category_audios');
+Route::get('channel_category_live', 'ChannelHomeController@channel_category_live')->name('channel_category_live');
 
     // Razorpay 
 Route::group(['middleware' => ['RazorpayMiddleware']], function() {

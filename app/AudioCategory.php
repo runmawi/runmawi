@@ -29,4 +29,10 @@ class AudioCategory extends Model
         return $this->hasMany('App\AudioCategory','parent_id','id') ;
 
     }
+
+    public function specific_category_live()
+    {
+        return $this->belongsToMany('App\Audio', 'category_audios','category_id','audio_id');
+    }
+
 }

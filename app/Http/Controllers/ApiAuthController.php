@@ -9738,7 +9738,6 @@ if($LiveCategory_count > 0 || $LiveLanguage_count > 0){
 
       try{
         $TVLoginCodecount = TVLoginCode::where('email',$request->email)->count();
-
         if($TVLoginCodecount < 5){
 
         
