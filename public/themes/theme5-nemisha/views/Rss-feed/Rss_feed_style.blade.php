@@ -49,8 +49,9 @@
      * Contenedor
      ============================*/
     .pricing-wrapper {
-        width: 960px;
+        width: 93%;
         margin: 40px auto 0;
+        margin-bottom : 40px ;
     }
     
     .pricing-table {
