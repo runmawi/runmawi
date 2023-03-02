@@ -10472,31 +10472,57 @@ public function TVQRCodeLogout(Request $request)
 
   return response()->json($response, 200);
 }
+ 
+  public function site_theme_setting()
+  {
+      try {
 
-public function TVLoggedDetails(Request $request)
-{
+          $Site_theme_setting = SiteTheme::get()->map(function ($item) {
+            $item['dark_mode_logo_url'] = URL::to('/public/uploads/settings'.$item->dark_mode_logo);
+            $item['light_mode_logo_url'] = URL::to('/public/uploads/settings'.$item->light_mode_logo);
+            return $item;
+          });;
 
-  try{
+        $response = array(
+          'status'=> 'true',
+          'message' => 'Retrieved Logo Site theme setting Successfully !!',
+          'Site_theme_setting'=> $Site_theme_setting,
+        );
 
-    $TVLoginDetails = TVLoginCode::where('email',$request->email)->where('status',1)->get();
-
-    $response = array(
-        'status'=> 'true',
-        'message' => 'Existing Users',
-        'TVLoginDetails' => $TVLoginDetails
-    );
-
-    }
-    catch (\Throwable $th) {
+      } 
+      catch (\Throwable $th) {
 
         $response = array(
           'status'=>'false',
           'message'=>$th->getMessage(),
         );
 
-    }
+      }
 
-  return response()->json($response, 200);
-}
+      return response()->json($response, 200);
+  }
 
+  public function TVLoggedDetails(Request $request)
+  {
+    try{
+
+      $TVLoginDetails = TVLoginCode::where('email',$request->email)->where('status',1)->get();
+
+      $response = array(
+          'status'=> 'true',
+          'message' => 'Existing Users',
+          'TVLoginDetails' => $TVLoginDetails
+      );
+
+      }
+      catch (\Throwable $th) {
+
+          $response = array(
+            'status'=>'false',
+            'message'=>$th->getMessage(),
+          );
+
+      }
+    return response()->json($response, 200);
+  }
 }
