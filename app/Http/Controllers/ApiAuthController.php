@@ -9747,7 +9747,7 @@ if($LiveCategory_count > 0 || $LiveLanguage_count > 0){
            'tv_name'  => $request->tv_name,
             'uniqueId' =>  $request['uniqueId'],
         ]);
-        $TVLoginCode = TVLoginCode::where('tv_code',$tv_code)->where('status',1)->first();
+        $TVLoginCode = TVLoginCode::where('tv_code',$tv_code)->where('status',1)->orderBy('created_at', 'DESC')->first();
 
         if(!empty($TVLoginCode)){
 

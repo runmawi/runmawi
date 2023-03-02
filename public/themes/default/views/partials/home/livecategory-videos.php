@@ -49,13 +49,7 @@ $currency = App\CurrencySetting::first();
         <div class="col-sm-12 overflow-hidden">
             <div class="iq-main-header d-flex align-items-center justify-content-between">
                 <!-- <h4 class="main-title"><a href="<?php echo URL::to('home') ?>">Latest Videos</a></h4> -->
-                <?php  if(!empty($data['password_hash'])) { 
-                          $id = Auth::user()->id ; } else { $id = 0 ; } ?>
-                    <?php  if(isset($videos)) :
-                       foreach($live_videos as $category_video):
-                        
-                        ?>
-                <a href="<?= URL::to('/') ?><?= '/live'.'/' . $category_video->slug ?>" class="category-heading"
+                <a href="<?= URL::to('/') ?><?= '/LiveCategory'.'/' . $category->slug ?>" class="category-heading"
                     style="text-decoration:none;color:#fff">
                     <h4 class="movie-title">
                         <?php 
@@ -65,7 +59,12 @@ $currency = App\CurrencySetting::first();
             </div>
             <div class="favorites-contens">
                 <ul class="favorites-slider list-inline  row p-0 mb-0">
-
+                <?php  if(!empty($data['password_hash'])) { 
+                          $id = Auth::user()->id ; } else { $id = 0 ; } ?>
+                    <?php  if(isset($videos)) :
+                       foreach($live_videos as $category_video):
+                        
+                        ?>
                     <li class="slide-item">
                          <a href="<?= URL::to('/') ?><?= '/live'.'/' . $category_video->slug ?>">
                             <div class="block-images position-relative">
@@ -189,12 +188,10 @@ $currency = App\CurrencySetting::first();
                             </div>
                         </a>
                     </li>
-      
-                </ul>
-
-                <?php           
+                    <?php           
                           endforeach; 
                      endif; ?>
+                </ul>
             </div>
         </div>
     </div>
