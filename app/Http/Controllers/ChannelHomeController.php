@@ -83,24 +83,24 @@ class ChannelHomeController extends Controller
     {
         $settings = Setting::first();
         $channel = Channel::where('channel_slug',$slug)->first(); 
-        // dd($channel);
+
         $currency = CurrencySetting::first();
             if(!empty($channel)){
-            $livetreams = LiveStream::where('active', '=', '1')->where('user_id', '=', $channel->id)
-            ->where('uploaded_by', '=', 'Channel')->orderBy('created_at', 'DESC')
-            ->get();
+                $livetreams = LiveStream::where('active', '=', '1')->where('user_id', '=', $channel->id)
+                ->where('uploaded_by', '=', 'Channel')->orderBy('created_at', 'DESC')
+                ->get();
 
-            $audios = Audio::where('active', '=', '1')->where('user_id', '=', $channel->id)
-            ->where('uploaded_by', '=', 'Channel')
-            ->orderBy('created_at', 'DESC')
-            ->get() ;
+                $audios = Audio::where('active', '=', '1')->where('user_id', '=', $channel->id)
+                ->where('uploaded_by', '=', 'Channel')
+                ->orderBy('created_at', 'DESC')
+                ->get() ;
 
-            $latest_series = Series::where('active', '=', '1')->where('user_id', '=', $channel->id)
-            ->where('uploaded_by', '=', 'Channel')->orderBy('created_at', 'DESC')
-            ->get();
+                $latest_series = Series::where('active', '=', '1')->where('user_id', '=', $channel->id)
+                ->where('uploaded_by', '=', 'Channel')->orderBy('created_at', 'DESC')
+                ->get();
 
-            $latest_videos = Video::where('active', '=', '1')->where('status', '=', '1')->where('user_id', '=', $channel->id)
-            ->where('uploaded_by', '=', 'Channel')->where('draft', '=', '1')
+                $latest_videos = Video::where('active', '=', '1')->where('status', '=', '1')->where('user_id', '=', $channel->id)
+                ->where('uploaded_by', '=', 'Channel')->where('draft', '=', '1')
                 ->get();
     
             $ThumbnailSetting = ThumbnailSetting::first();
@@ -149,22 +149,24 @@ class ChannelHomeController extends Controller
     public function channel_category_videos(Request $request)
     {
 
-         $videosCategory = VideoCategory::find($request->category_id) != null ? VideoCategory::find($request->category_id)->specific_category_videos : array();
-         $data = array( 'videosCategory' => $videosCategory );
+        $videosCategory = VideoCategory::find($request->category_id) != null ? VideoCategory::find($request->category_id)->specific_category_videos : array();
+         
+        $data = array( 'videosCategory' => $videosCategory );
  
-         $theme = Theme::uses($this->Theme);
+        $theme = Theme::uses($this->Theme);
 
-         return $theme->load('public/themes/default/views/partials/channel/channel_category_videos', $data)->render();
+        return $theme->load('public/themes/default/views/partials/channel/channel_category_videos', $data)->render();
     }
 
     public function channel_category_series(Request $request)
     {
 
-         $SeriesCategory = VideoCategory::find($request->category_id) != null ? VideoCategory::find($request->category_id)->specific_category_series : array();
-         $data = array( 'SeriesCategory' => $SeriesCategory );
-         $theme = Theme::uses($this->Theme);
+        $SeriesCategory = VideoCategory::find($request->category_id) != null ? VideoCategory::find($request->category_id)->specific_category_series : array();
+        
+        $data = array( 'SeriesCategory' => $SeriesCategory );
 
-         return $theme->load('public/themes/default/views/partials/channel/channel_category_series', $data)->render();
+        $theme = Theme::uses($this->Theme);
+
+        return $theme->load('public/themes/default/views/partials/channel/channel_category_series', $data)->render();
     }
-
 }
