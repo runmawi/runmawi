@@ -401,6 +401,7 @@ Route::group([
 
     Route::post('tv_qrcode_logout','ApiAuthController@TVQRCodeLogout');
 
+    Route::get('site_theme_setting','ApiAuthController@site_theme_setting');
     Route::post('tv_logged_user','ApiAuthController@TVLoggedDetails');
 
 

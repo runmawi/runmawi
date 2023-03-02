@@ -874,7 +874,7 @@
         .navbar-fixed-top {
             position: fixed;
             top: 0;
-            height: 60px;
+            height: 70px;
             width: 100%;
             z-index: 15;
         }
@@ -1023,7 +1023,7 @@
             }
 
             .navbar-fixed-top {
-                height: 90px;
+               
             }
 
             .ban {
@@ -1051,12 +1051,10 @@
     <?php $jsonString = file_get_contents(base_path('assets/country_code.json'));
     
     $jsondata = json_decode($jsonString, true); ?>
-
-    <section class="mb-0">
-
-        <nav class="navbar navbar-expand-lg navbar-light navbar-fixed-top bg-light">
+ <header>
+     <nav class="navbar navbar-expand-lg navbar-light navbar-fixed-top bg-light">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#"><img src="<?php echo URL::to('/') . '/public/uploads/settings/' . $settings->logo; ?>" style=""></a>
+                <a class="navbar-brand" href="#"><img src="<?php echo URL::to('/assets/img/nem-b.png'); ?>" style=""></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse"
                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                     aria-label="Toggle navigation">
@@ -1070,6 +1068,10 @@
                 </div>
             </div>
         </nav>
+    </header>
+    <section class="mt-5 mb-0">
+
+      
 
         <div class="position-relative ban"
             style="padding: 19.2% 0 37% 0!important;background-image:url('<?php echo URL::to('/assets/img/lan/v11.png'); ?>');background-repeat: no-repeat;background-size: 100% 100%;">
