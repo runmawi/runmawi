@@ -146,4 +146,25 @@ class ChannelHomeController extends Controller
         
     }
 
+    public function channel_category_videos(Request $request)
+    {
+
+         $videosCategory = VideoCategory::find($request->category_id) != null ? VideoCategory::find($request->category_id)->specific_category_videos : array();
+         $data = array( 'videosCategory' => $videosCategory );
+ 
+         $theme = Theme::uses($this->Theme);
+
+         return $theme->load('public/themes/default/views/partials/channel/channel_category_videos', $data)->render();
+    }
+
+    public function channel_category_series(Request $request)
+    {
+
+         $SeriesCategory = VideoCategory::find($request->category_id) != null ? VideoCategory::find($request->category_id)->specific_category_series : array();
+         $data = array( 'SeriesCategory' => $SeriesCategory );
+         $theme = Theme::uses($this->Theme);
+
+         return $theme->load('public/themes/default/views/partials/channel/channel_category_series', $data)->render();
+    }
+
 }

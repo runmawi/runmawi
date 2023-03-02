@@ -52,4 +52,9 @@ class VideoCategory extends Model
         {
             return $this->belongsToMany(Series::class, 'series_categories','category_id','series_id');
         }
+
+        public function specific_category_videos()
+        {
+            return $this->belongsToMany('App\Video', 'categoryvideos','category_id','video_id');
+        }
 }
