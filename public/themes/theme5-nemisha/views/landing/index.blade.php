@@ -265,7 +265,7 @@
 
         .sec-2 h2 {
             font-size: 40px;
-            margin: 0 60px auto;
+           
         }
 
         h2 {
@@ -874,7 +874,7 @@
         .navbar-fixed-top {
             position: fixed;
             top: 0;
-            height: 60px;
+            height: 70px;
             width: 100%;
             z-index: 15;
         }
@@ -1023,7 +1023,7 @@
             }
 
             .navbar-fixed-top {
-                height: 90px;
+               
             }
 
             .ban {
@@ -1051,10 +1051,8 @@
     <?php $jsonString = file_get_contents(base_path('assets/country_code.json'));
     
     $jsondata = json_decode($jsonString, true); ?>
-
-    <section class="mb-0">
-
-        <nav class="navbar navbar-expand-lg navbar-light navbar-fixed-top bg-light">
+ <header>
+     <nav class="navbar navbar-expand-lg navbar-light navbar-fixed-top bg-light">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#"><img src="<?php echo URL::to('/') . '/public/uploads/settings/' . $settings->logo; ?>" style=""></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -1070,6 +1068,10 @@
                 </div>
             </div>
         </nav>
+    </header>
+    <section class="mt-5 mb-0">
+
+      
 
         <div class="position-relative ban"
             style="padding: 19.2% 0 37% 0!important;background-image:url('<?php echo URL::to('/assets/img/lan/v11.png'); ?>');background-repeat: no-repeat;background-size: 100% 100%;">
@@ -1086,7 +1088,7 @@
                 </div>
             </div>
         </div>
-        <section class="sec-21">
+       <section class="sec-21" style="background-image:url('<?php echo URL::to('/assets/img/lan/bg1.png'); ?>');background-repeat: no-repeat;background-size:100% 100%;">
             <div class="container">
                 <div class="row  mt-3 align-items-center">
                     <div class="col-lg-6">
@@ -1418,11 +1420,10 @@
             <div class="container">
 
                 <div class="" style="padding:5% 0 5% 0;">
-                    <h2 class="ben   text-right" style="
-">BENEFITS YOU CAN'T RESIST</h2>
+                   
                     <div class="row m-0 p-0 justify-content-around align-items-center">
 
-                        <div class="col-lg-6" >
+                        <div class="col-lg-6 mt-5" >
                             <div class="" style="margin:4px;">
                             <video id="player1" height="800" controls autoplay poster="<?php echo URL::to('/assets/img/lan/vi1.png'); ?>">
                                 <source src="<?php echo URL::to('/assets/img/vq.mp4'); ?>" type="video/mp4">
@@ -1437,7 +1438,8 @@
 </div>color: #1D639B;--></div>
                         </div>
                         <div class="col-lg-6 p-0">
-
+ <h2 class="ben" style="
+">BENEFITS YOU CAN'T RESIST</h2>
                             <!-- <p class="text-white mt-3" style="font-size: 22px;
 line-height: 40px;">Use  the information as it is and the icons, please don’t
 forgot to place the fullstops on the sentences. The image

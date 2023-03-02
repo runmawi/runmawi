@@ -560,7 +560,7 @@ main .sidebar {
 }
         .sidebar img{
             padding-right: 10px;
-            height: 45px;
+            height: 35px;
             width: 45px;
           
         }
