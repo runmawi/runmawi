@@ -10477,8 +10477,8 @@ public function TVQRCodeLogout(Request $request)
       try {
 
           $Site_theme_setting = SiteTheme::get()->map(function ($item) {
-            $item['dark_mode_logo_url'] = URL::to('/public/uploads/settings'.$item->dark_mode_logo);
-            $item['light_mode_logo_url'] = URL::to('/public/uploads/settings'.$item->light_mode_logo);
+            $item['dark_mode_logo_url'] = URL::to('/public/uploads/settings/'.$item->dark_mode_logo);
+            $item['light_mode_logo_url'] = URL::to('/public/uploads/settings/'.$item->light_mode_logo);
             return $item;
           });;
 
