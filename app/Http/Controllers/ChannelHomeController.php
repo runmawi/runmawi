@@ -116,7 +116,6 @@ class ChannelHomeController extends Controller
                 'VideoCategory' => VideoCategory::get(),
                 'AudioCategory' => AudioCategory::get(),
                 'channel' => $channel,
-
             );
             
             return Theme::view('ChannelHome', $data);
@@ -168,5 +167,29 @@ class ChannelHomeController extends Controller
         $theme = Theme::uses($this->Theme);
 
         return $theme->load('public/themes/default/views/partials/channel/channel_category_series', $data)->render();
+    }
+
+    public function channel_category_live(Request $request)
+    {
+
+        $LiveCategory = LiveCategory::find($request->category_id) != null ? LiveCategory::find($request->category_id)->specific_category_live : array();
+        
+        $data = array( 'LiveCategory' => $LiveCategory );
+
+        $theme = Theme::uses($this->Theme);
+
+        return $theme->load('public/themes/default/views/partials/channel/channel_category_live', $data)->render();
+    }
+
+    public function channel_category_audios(Request $request)
+    {
+         
+        $AudioCategory = AudioCategory::find($request->category_id) != null ? AudioCategory::find($request->category_id)->specific_category_series : array();
+        
+        $data = array( 'AudioCategory' => $AudioCategory );
+
+        $theme = Theme::uses($this->Theme);
+
+        return $theme->load('public/themes/default/views/partials/channel/channel_category_audios', $data)->render();
     }
 }

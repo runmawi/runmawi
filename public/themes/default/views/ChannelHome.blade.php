@@ -71,7 +71,7 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
                                     href="#pills-kids" role="tab" aria-controls="pills-kids"
                                     aria-selected="false"><?php echo $videos_category->name; ?></a>
 
-                                @endphp
+                                    @endforeach 
                         </div>
 
                         &nbsp;&nbsp;
@@ -295,6 +295,40 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
             },
         });
     }
+
+    function Audios_Category(ele) {
+
+        var category_id = $(ele).attr('data-category-id');
+
+        $.ajax({
+            type: "get",
+            url: "{{ route('channel_category_audios') }}",
+            data: {
+                _token: "{{ csrf_token() }}",
+                category_id: category_id,
+            },
+            success: function(data) {
+                $(".channel_home").html(data);
+            },
+        });
+        }
+
+        function Live_Category(ele) {
+
+        var category_id = $(ele).attr('data-category-id');
+
+        $.ajax({
+            type: "get",
+            url: "{{ route('channel_category_live') }}",
+            data: {
+                _token: "{{ csrf_token() }}",
+                category_id: category_id,
+            },
+            success: function(data) {
+                $(".channel_home").html(data);
+            },
+        });
+        }
 </script>
 
 <?php
