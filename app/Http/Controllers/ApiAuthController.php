@@ -10482,7 +10482,7 @@ public function TVLoggedDetails(Request $request)
 
     $response = array(
         'status'=> 'true',
-        'message' => 'Logged Out Successfully',
+        'message' => 'Existing Users',
         'TVLoginDetails' => $TVLoginDetails
     );
 
