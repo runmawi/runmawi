@@ -556,7 +556,7 @@ $settings = App\Setting::first();
                               <input type="hidden" name="email" value="{{ $user->email }}" />
                                        <div class="row mt-3">
                                           <div class="col-md-8">
-                                                <input type="text" name="tv_code" id="tv_code" value="@if(!empty($UserTVLoginCode->tv_code)){{ $UserTVLoginCode->tv_code }}@endif" />
+                                                <input type="text" name="tv_code" id="tv_code" value="@if(!empty($UserTVLoginCode->tv_code)){{ $UserTVLoginCode->tv_code.' '.$UserTVLoginCode->uniqueId }}@endif" />
 
                                           </div>
                                        <div class="col-md-4">
