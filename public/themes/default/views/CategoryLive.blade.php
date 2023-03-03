@@ -7,8 +7,7 @@
         <div class="row">
             <div class="col-sm-12 page-height">
                 <div class="iq-main-header align-items-center justify-content-between">
-                    <h3 class="vid-title">{{ "Category Live List" }}</h3>                     
-                </div>
+                <h4 class="main-title">Category Live List</h4></div>
                 <div class="favorites-contens">
                     <ul class="category-page list-inline row p-0 mb-0">
                       @if(isset($category_list)) 
@@ -17,7 +16,7 @@
                                 <a href="{{ URL::to('LiveCategory').'/'.$category_lists->slug   }} ">
                                     <div class="block-images position-relative">
                                         <div class="img-box">
-                                            <img src="<?php echo URL::to('/').'/public/uploads/videocategory/'.$category_lists->image;  ?>" class="img-fluid w-100" alt="">
+                                            <img src="<?php echo URL::to('/').'/public/uploads/livecategory/'.$category_lists->image;  ?>" class="img-fluid w-100" alt="">
                                         </div>
                             
                                         <div class="block-description" >
