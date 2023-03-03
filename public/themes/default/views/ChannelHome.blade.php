@@ -36,9 +36,9 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
         <div class="row justify-content-end">
             <div class="col-2 col-lg-2">
                 <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
-                    <?php
-                    include public_path('themes/default/views/partials/channel-social-share.php    ');
-                    ?>
+                    @php
+                        include(public_path('themes/default/views/partials/channel-social-share.php'));
+                    @endphp
                 </ul>
             </div>
         </div>
