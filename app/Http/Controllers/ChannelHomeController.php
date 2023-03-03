@@ -192,4 +192,50 @@ class ChannelHomeController extends Controller
 
         return $theme->load('public/themes/default/views/partials/channel/channel_category_audios', $data)->render();
     }
+
+    
+    public function all_Channel_videos(Request $request)
+    {
+        $settings = Setting::first();
+        $channel = Channel::where('channel_slug',$request->channel_slug)->first(); 
+
+        $currency = CurrencySetting::first();
+            if(!empty($channel)){
+                $livetreams = LiveStream::where('active', '=', '1')->where('user_id', '=', $channel->id)
+                ->where('uploaded_by', '=', 'Channel')->orderBy('created_at', 'DESC')
+                ->get();
+
+                $audios = Audio::where('active', '=', '1')->where('user_id', '=', $channel->id)
+                ->where('uploaded_by', '=', 'Channel')
+                ->orderBy('created_at', 'DESC')
+                ->get() ;
+
+                $latest_series = Series::where('active', '=', '1')->where('user_id', '=', $channel->id)
+                ->where('uploaded_by', '=', 'Channel')->orderBy('created_at', 'DESC')
+                ->get();
+
+                $latest_videos = Video::where('active', '=', '1')->where('status', '=', '1')->where('user_id', '=', $channel->id)
+                ->where('uploaded_by', '=', 'Channel')->where('draft', '=', '1')
+                ->get();
+    
+            $ThumbnailSetting = ThumbnailSetting::first();
+            
+            $data = array(
+                'currency' => $currency,
+                'latest_video' => $latest_videos,
+                'latest_series' => $latest_series,
+                'audios' => $audios,
+                'livetream' => $livetreams,
+                'ThumbnailSetting' => $ThumbnailSetting,
+                'LiveCategory' => LiveCategory::get(),
+                'VideoCategory' => VideoCategory::get(),
+                'AudioCategory' => AudioCategory::get(),
+                'channel' => $channel,
+            );
+            $theme = Theme::uses($this->Theme);
+            
+            return $theme->load('public/themes/default/views/ChannelHome', $data)->render();
+
+        }
+    }
 }
