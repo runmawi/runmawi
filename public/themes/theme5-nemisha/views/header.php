@@ -510,7 +510,7 @@ height: 100%;
   z-index: 1;
   top: 0;
   left: 0;
- background: #D82226;
+ background: #ED563C ;
 
   transition: 0.5s;
   overflow-x: hidden;
