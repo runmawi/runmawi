@@ -17,7 +17,7 @@
                                 <a href="{{ URL::to('LiveCategory').'/'.$category_lists->slug   }} ">
                                     <div class="block-images position-relative">
                                         <div class="img-box">
-                                            <img src="<?php echo URL::to('/').'/public/uploads/videocategory/'.$category_lists->image;  ?>" class="img-fluid w-100" alt="">
+                                            <img src="<?php echo URL::to('/').'/public/uploads/livecategory/'.$category_lists->image;  ?>" class="img-fluid w-100" alt="">
                                         </div>
                             
                                         <div class="block-description" >
