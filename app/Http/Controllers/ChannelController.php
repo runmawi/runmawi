@@ -4137,5 +4137,17 @@ class ChannelController extends Controller
         // }
 
     }
+
+    public function LiveCategory(Request $request,$slug)
+    {
+        $LiveCategoryData = LiveCategory::where('slug',$slug)->first();
+        $Live_Category = LiveCategory::find($LiveCategoryData->id) != null ? LiveCategory::find($LiveCategoryData->id)->specific_category_live : array();
+        // dd($LiveCategory);
+        
+        $data = array( 'Live_Category' => $Live_Category );
+
+            return Theme::view('partials.home.Category_Live' ,$data);
+
+    }
 }
 
