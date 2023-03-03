@@ -904,3 +904,9 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
+$('.Video_Categorynav').slick({
+  infinite: true,
+  slidesToShow: 7,
+  slidesToScroll: 2
+});
+
