@@ -7,12 +7,6 @@ $order_settings_list = App\OrderHomeSetting::get();
 $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first();
 ?>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link
-    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-    rel="stylesheet">
-
 <!-- Favicon -->
 <link rel="shortcut icon" href="<?= URL::to('/') . '/public/uploads/settings/' . $settings->favicon ?>" />
 
@@ -46,7 +40,7 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
 
 <section class="">
     <div class="sec-3">
-        <div class="container mt-5">
+        <div class="container-fluid mt-5">
             <div class="mt-3 ">
                 <ul class="nav nav-pills   m-0 p-0" id="pills-tab" role="tablist">
 
@@ -64,17 +58,25 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
                         </a>
 
                         <div class="Video_Categorynav">
-                            @foreach ($VideoCategory as $key => $videos_category)
-
-                                <a class="nav-link dropdown-item" id="pills-kids-tab" data-toggle="pill"
+                            <ul>
+                                  @foreach ($VideoCategory as $key => $videos_category)
+                                <li>
+                                    <a class="nav-link dropdown-item" id="pills-kids-tab" data-toggle="pill"
                                     data-category-id=<?php echo $videos_category->id; ?> onclick="Videos_Category(this)"
                                     href="#pills-kids" role="tab" aria-controls="pills-kids"
                                     aria-selected="false"><?php echo $videos_category->name; ?></a>
+                                </li>
+                                 @endforeach 
+                            </ul>
+                          
+                            
+                                
 
-                                    @endforeach 
+                                   
                         </div>
 
                         &nbsp;&nbsp;
+                        
                     <li class="nav-item livenav">
 
                         <a class="nav-link" class="btn btn-secondary btn-sm dropdown-toggle" type="button"
@@ -126,27 +128,15 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
 
                             <?php }  ?>
                         </div>
+                    </li>
+                     </ul>
             </div>
         </div>
     </div>
 
-    </ul>
-    </div>
-    <div class="container">
-
-        <div class="tab-content" id="pills-tabContent">
-            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-                <div class="row favorites-sli1 data">
-                </div>
-
-                <div class="row mt-2"></div>
-            </div>
-
-            <div class="text-center mt-3 mb-5 pb-2 col-lg-3 all-video">
-
-            </div>
-        </div>
-    </div>
+   
+  
+   
 </section>
 
 
