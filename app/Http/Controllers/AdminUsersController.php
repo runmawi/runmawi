@@ -2966,10 +2966,10 @@ class AdminUsersController extends Controller
       try{
 
     //    TVLoginCode::destroy($id);
-       $TVLoginCode=TVLoginCode::where('id',$id)->where('type','Code')->where('status',1)->orderBy('created_at', 'DESC')->first();
+       $TVLoginCode=TVLoginCode::where('id',$id)->orderBy('created_at', 'DESC')->first();
        $email = $TVLoginCode->email;
     // dd($email);
-       TVLoginCode::where('email',$email)->where('type','Code')->where('status',1)->orderBy('created_at', 'DESC')->delete();
+       TVLoginCode::where('email',$email)->orderBy('created_at', 'DESC')->delete();
     
         } 
         catch (\Throwable $th) {

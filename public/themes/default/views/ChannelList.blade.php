@@ -8,7 +8,7 @@
         <div class="row">
             <div class="col-sm-12 page-height">
                 <div class="iq-main-header align-items-center justify-content-between">
-                    <h4 class="main-title">{{ "All Channel" }}</h4>                     
+                    <h4 class="main-title">{{ "All Channels" }}</h4>                     
                 </div>
                 <div class="favorites-contens">
                     <ul class="category-page list-inline row p-0 mb-0">
@@ -21,17 +21,13 @@
                                             <img src="<?php echo $channel->channel_image;  ?>" class="img-fluid w-100" alt="">
                                         </div>
                             
-                                        <div class="block-description" >
+                                        <div class="channel" >
                                                 <a href="{{ URL::to('channel').'/'.$channel->channel_slug   }}">
                                                     <h4><?php  echo (strlen($channel->channel_name) > 17) ? substr($channel->channel_name,0,18).'...' : $channel->channel_name; ?></h4>
                                                 </a>
-                                            <div class="hover-buttons"><div>
-                                        </div>
-                                    </div>
+                                            
                                     <div>
-                                        <button type="button" class="show-details-button" data-toggle="modal" data-target="#myModal<?= $channel->channel_slug;?>">
-                                            <span class="text-center thumbarrow-sec"></span>
-                                        </button>
+                                        
                                     </div> </div> </div>
                                 </a>
                             </li>
