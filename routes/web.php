@@ -2004,6 +2004,7 @@ Route::get('channel_category_series', 'ChannelHomeController@channel_category_se
 Route::get('channel_category_videos', 'ChannelHomeController@channel_category_videos')->name('channel_category_videos');
 Route::get('channel_category_audios', 'ChannelHomeController@channel_category_audios')->name('channel_category_audios');
 Route::get('channel_category_live', 'ChannelHomeController@channel_category_live')->name('channel_category_live');
+Route::get('all_Channel_videos', 'ChannelHomeController@all_Channel_videos')->name('all_Channel_videos');
 
     // Razorpay 
 Route::group(['middleware' => ['RazorpayMiddleware']], function() {

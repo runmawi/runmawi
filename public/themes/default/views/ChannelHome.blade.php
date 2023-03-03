@@ -47,7 +47,7 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
 <section class="channel_nav">
     <div class="container-fluid">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
-  <li class="nav-item">
+  <li class="nav-item Allnav">
     <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">All</a>
   </li>
   <li class="nav-item videonav">
@@ -287,6 +287,21 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
             $('.Live_Categorynav').hide();
             $('.Series_Categorynav').hide();
             $('.Audio_Categorynav').show();
+        });
+
+        $('.Allnav').click(function() {
+        //     $.ajax({
+        //     type: "get",
+        //     url: "<?php echo URL::to('/all_Channel_videos'); ?>",
+        //     data: {
+        //         _token: "{{ csrf_token() }}",
+        //         channel_slug:"{{ @$channel->channel_slug }}",
+        //     },
+        //     success: function(data) {
+        //         $(".channel_home").html(data);
+        //     },
+        // });
+        location.reload();
         });
 
     });
