@@ -316,6 +316,7 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
             data: {
                 _token: "{{ csrf_token() }}",
                 category_id: category_id,
+                user_id:"{{ @$channel->id }}",
             },
             success: function(data) {
                 $(".channel_home").html(data);
@@ -333,6 +334,7 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
             data: {
                 _token: "{{ csrf_token() }}",
                 category_id: category_id,
+                user_id:"{{ @$channel->id }}",
             },
             success: function(data) {
                 $(".channel_home").html(data);
@@ -350,6 +352,7 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
             data: {
                 _token: "{{ csrf_token() }}",
                 category_id: category_id,
+                user_id:"{{ @$channel->id }}",
             },
             success: function(data) {
                 $(".channel_home").html(data);
@@ -367,6 +370,7 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
             data: {
                 _token: "{{ csrf_token() }}",
                 category_id: category_id,
+                user_id:"{{ @$channel->id }}",
             },
             success: function(data) {
                 $(".channel_home").html(data);

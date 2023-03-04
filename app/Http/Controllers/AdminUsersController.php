@@ -2915,6 +2915,8 @@ class AdminUsersController extends Controller
                 'alldevices' => $alldevices,
                 'UserTVLoginCode' => $UserTVLoginCode,
                 'payment_package' => User::where('id',Auth::user()->id)->first() ,
+                'LoggedusersCode' => TVLoginCode::where('email',Auth::User()->email)->orderBy('created_at', 'DESC')->get() ,
+
             );
             
             if(!empty($SiteTheme) && $SiteTheme->my_profile_theme == 0 || $SiteTheme->my_profile_theme ==  null){
@@ -2969,7 +2971,7 @@ class AdminUsersController extends Controller
        $TVLoginCode=TVLoginCode::where('id',$id)->orderBy('created_at', 'DESC')->first();
        $email = $TVLoginCode->email;
     // dd($email);
-       TVLoginCode::where('email',$email)->orderBy('created_at', 'DESC')->delete();
+       TVLoginCode::where('id',$id)->where('email',$email)->orderBy('created_at', 'DESC')->delete();
     
         } 
         catch (\Throwable $th) {

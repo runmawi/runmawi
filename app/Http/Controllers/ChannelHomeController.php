@@ -150,11 +150,14 @@ class ChannelHomeController extends Controller
 
         $videosCategory = VideoCategory::find($request->category_id) != null ? VideoCategory::find($request->category_id)->specific_category_videos : array();
          
-        $data = array( 'videosCategory' => $videosCategory );
- 
-        $theme = Theme::uses($this->Theme);
+        $videos_Category = $videosCategory->where('user_id', $request->user_id)->where('uploaded_by' ,'Channel')->all();
 
-        return $theme->load('public/themes/default/views/partials/channel/channel_category_videos', $data)->render();
+        $data = array( 'videosCategory' => $videos_Category );
+ 
+            return Theme::view('partials.channel.channel_category_videos', $data);
+            $theme = Theme::uses($this->Theme);
+
+            return $theme->load('public/themes/default/views/partials/channel/channel_category_videos', $data)->render();
     }
 
     public function channel_category_series(Request $request)
@@ -162,7 +165,9 @@ class ChannelHomeController extends Controller
 
         $SeriesCategory = VideoCategory::find($request->category_id) != null ? VideoCategory::find($request->category_id)->specific_category_series : array();
         
-        $data = array( 'SeriesCategory' => $SeriesCategory );
+        $Series_Category = $SeriesCategory->where('user_id', $request->user_id)->where('uploaded_by' ,'Channel')->all();
+
+        $data = array( 'SeriesCategory' => $Series_Category );
 
         $theme = Theme::uses($this->Theme);
 
@@ -174,7 +179,9 @@ class ChannelHomeController extends Controller
 
         $LiveCategory = LiveCategory::find($request->category_id) != null ? LiveCategory::find($request->category_id)->specific_category_live : array();
         
-        $data = array( 'LiveCategory' => $LiveCategory );
+        $Live_Category = $LiveCategory->where('user_id', $request->user_id)->where('uploaded_by' ,'Channel')->all();
+
+        $data = array( 'LiveCategory' => $Live_Category );
 
         $theme = Theme::uses($this->Theme);
 
@@ -186,7 +193,9 @@ class ChannelHomeController extends Controller
          
         $AudioCategory = AudioCategory::find($request->category_id) != null ? AudioCategory::find($request->category_id)->specific_category_series : array();
         
-        $data = array( 'AudioCategory' => $AudioCategory );
+        $Audio_Category = $AudioCategory->where('user_id', $request->user_id)->where('uploaded_by' ,'Channel')->all();
+
+        $data = array( 'AudioCategory' => $Audio_Category );
 
         $theme = Theme::uses($this->Theme);
 
