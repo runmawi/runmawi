@@ -16,7 +16,7 @@ $currency = App\CurrencySetting::first();
                <div class="row pageheight">
                   <div class="col-sm-12 overflow-hidden">
                      <div class="iq-main-header align-items-center">
-                        <h2 class=""><?php echo __($parentCategories_name);?></h2>
+                        <h4 class=""><?php echo __($parentCategories_name);?></h4>
                      </div>
                      <div class="favorites-contens">
                         <ul class="category-page list-inline  row p-0 mb-4">
@@ -36,7 +36,7 @@ $currency = App\CurrencySetting::first();
                                                     <p class="p-tag"><?php echo "Free"; ?></p>
                                                     <?php } ?>
                                                
-                                                </div></div>
+                                                </div>
                                              
 
                                             <div class="block-description">

@@ -18,9 +18,9 @@ if(count($latest_video) > 0) : ?>
                              <!-- block-images -->
                              <div class="block-images position-relative">
                                 <div class="img-box">
-                                <a  href="<?php echo URL::to('/LiveCategory/').'/'.$Categories->slug ?>">
+                              
                                    <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/livecategory/'.$Categories->image;  ?>" class="img-fluid loading w-100" alt="l-img">
-                                    </a>  
+                                  
                                 </div>
                                 <div class="block-description">
                                    <a class="text-white d-flex align-items-center" href="<?php echo URL::to('/LiveCategory/').'/'.$Categories->slug ?>" >
