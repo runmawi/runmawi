@@ -13,6 +13,7 @@ $uri_parts = explode('/', $uri_path);
 $request_url = end($uri_parts);
 $uppercase =  ucfirst($request_url);
 $user = Session::get('user'); 
+$user = App\ModeratorsUser::where('id',$user->id)->first();
 $userrolepermissiom = Session::get('userrolepermissiom '); 
 
 
@@ -436,11 +437,8 @@ for($i=0;$i<(count($userrolepermissiom));$i++){
 
                          <li class="line-height pt-3">
                             <a href="#" class="search-toggle iq-waves-effect d-flex align-items-center">
-                                <?php if(Auth::guest()): ?>
-                                         <img src="<?php echo URL::to('/').'/public/uploads/avatars/default.png' ?>" class="img-fluid avatar-40 rounded-circle" alt="user">
-                                          <?php else: ?>
-                                     <img src="<?php echo URL::to('/').'/public/uploads/avatars/' . Auth::user()->avatar ?>" class="img-fluid avatar-40 rounded-circle" alt="user">
-                                          <?php endif; ?>
+                             
+                                     <img src="<?php echo URL::to('/').'/public/uploads/moderator_albums/' . $user->picture ?>" class="img-fluid avatar-40 rounded-circle" alt="user">
                             </a>
                             <div class="iq-sub-dropdown iq-user-dropdown">
                                <div class="iq-card shadow-none m-0">
