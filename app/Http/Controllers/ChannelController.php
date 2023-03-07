@@ -4137,5 +4137,46 @@ class ChannelController extends Controller
         // }
 
     }
+
+    public function LiveCategory(Request $request,$slug)
+    {
+        $LiveCategoryData = LiveCategory::where('slug',$slug)->first();
+        $Live_Category = LiveCategory::find($LiveCategoryData->id) != null ? LiveCategory::find($LiveCategoryData->id)->specific_category_live : array();
+        // dd($LiveCategory);
+        
+        $data = array( 'Live_Category' => $Live_Category );
+
+            return Theme::view('partials.home.Category_Live' ,$data);
+
+    }
+
+
+    
+    public function CategoryLive(Request $request)
+    {
+        try
+        {
+            $settings = Setting::first();
+
+            if($settings->enable_landing_page == 1 && Auth::guest()){
+    
+                $landing_page_slug = AdminLandingPage::where('status',1)->pluck('slug')->first() ? AdminLandingPage::where('status',1)->pluck('slug')->first() : "landing-page" ;
+    
+                return redirect()->route('landing_page', $landing_page_slug );
+            }
+            
+            $data = array(
+                "category_list" => LiveCategory::all() ,
+            );
+            // dd($data); 
+
+            return Theme::view('CategoryLive', $data);
+        }
+        catch(\Throwable $th)
+        {
+            return abort(404);
+        }
+    }
+
 }
 

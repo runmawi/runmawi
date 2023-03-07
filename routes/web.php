@@ -1984,6 +1984,9 @@ Route::get('Live-list', 'ChannelController@liveList')->name('liveList');
 Route::get('Series-list', 'ChannelController@Series_List')->name('SeriesList');
 Route::get('Series/Genre/{id}', 'ChannelController@Series_genre_list')->name('Series_genre_list');
 Route::get('artist-list', 'ChannelController@artist_list')->name('artist_list');
+Route::get('LiveCategory/{slug}', 'ChannelController@LiveCategory')->name('LiveCategory');
+Route::get('CategoryLive/', 'ChannelController@CategoryLive')->name('CategoryLive');
+
 
     // Filter 
 Route::get('categoryfilter', 'ChannelController@categoryfilter')->name('categoryfilter');
@@ -1999,6 +2002,9 @@ Route::get('channel/{slug}', 'ChannelHomeController@ChannelHome')->name('Channel
 Route::get('Channel-list', 'ChannelHomeController@ChannelList')->name('ChannelList');
 Route::get('channel_category_series', 'ChannelHomeController@channel_category_series')->name('channel_category_series');
 Route::get('channel_category_videos', 'ChannelHomeController@channel_category_videos')->name('channel_category_videos');
+Route::get('channel_category_audios', 'ChannelHomeController@channel_category_audios')->name('channel_category_audios');
+Route::get('channel_category_live', 'ChannelHomeController@channel_category_live')->name('channel_category_live');
+Route::get('all_Channel_videos', 'ChannelHomeController@all_Channel_videos')->name('all_Channel_videos');
 
     // Razorpay 
 Route::group(['middleware' => ['RazorpayMiddleware']], function() {

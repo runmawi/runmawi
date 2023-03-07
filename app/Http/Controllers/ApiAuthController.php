@@ -9738,17 +9738,16 @@ if($LiveCategory_count > 0 || $LiveLanguage_count > 0){
 
       try{
         $TVLoginCodecount = TVLoginCode::where('email',$request->email)->count();
-
         if($TVLoginCodecount < 5){
 
         
-        TVLoginCode::where('tv_code',$tv_code)->where('type','Code')->orderBy('created_at', 'DESC')->first()
+        TVLoginCode::where('tv_code',$tv_code)->orderBy('created_at', 'DESC')->first()
         ->update([
            'status'  => 1,
            'tv_name'  => $request->tv_name,
             'uniqueId' =>  $request['uniqueId'],
         ]);
-        $TVLoginCode = TVLoginCode::where('tv_code',$tv_code)->where('status',1)->first();
+        $TVLoginCode = TVLoginCode::where('tv_code',$tv_code)->where('status',1)->orderBy('created_at', 'DESC')->first();
 
         if(!empty($TVLoginCode)){
 
@@ -10525,4 +10524,113 @@ public function TVQRCodeLogout(Request $request)
       }
     return response()->json($response, 200);
   }
+
+
+  
+public function QRCodeMobileLogin(Request $request)
+{
+
+  $tv_code =  $request['tv_code'];
+  $uniqueId =  $request['uniqueId'];
+  $email =  $request['email'];
+
+  try{
+    
+    $TVLoginCodecount = TVLoginCode::where('email',$email)->where('status',1)->count();
+
+    if($TVLoginCodecount < 5){
+
+    TVLoginCode::create([
+      'email'    => $request->email,
+      'tv_code'  => $request->tv_code,
+      'uniqueId'  => $request->uniqueId,
+      'type'  => 'QRScan',
+      'status'   => 1,
+   ]);
+ 
+
+    $TVLoginCode = TVLoginCode::where('tv_code',$request->tv_code)->where('status',1)->orderBy('created_at', 'DESC')->first();
+
+    if(!empty($TVLoginCode)){
+
+    $user = User::where('email',$TVLoginCode->email)->first();
+    if($user->role == 'subscriber'){
+
+      $Subscription = Subscription::where('user_id',$user->id)->orderBy('created_at', 'DESC')->first();
+      $Subscription = Subscription::Join('subscription_plans','subscription_plans.plan_id','=','subscriptions.stripe_plan')
+      ->where('subscriptions.user_id',$user->id)
+      ->orderBy('subscriptions.created_at', 'desc')->first();
+
+      $plans_name = $Subscription->plans_name;
+      $plan_ends_at = $Subscription->ends_at;
+
+    }else{
+      $plans_name = '';
+      $plan_ends_at = '';
+    }
+
+  }
+      $response = array(
+          'status'=> 'true',
+          'message' => 'Logged In Successfully',
+          'user_details'=> $user,
+          'plans_name'=>$plans_name,
+          'plan_ends_at'=>$plan_ends_at,
+          'tv_code'=>$tv_code,
+          'uniqueId'=>$request['uniqueId'],
+          'avatar'=>URL::to('/').'/public/uploads/avatars/'.$user->avatar,
+          'Count_User' => $TVLoginCodecount,
+
+      );
+    }else{
+
+      $response = array(
+        'status'=> 'false',
+        'message' => 'User Count Exited',
+        'Count_User' => $TVLoginCodecount,
+    );
+    }
+  }
+
+    catch (\Throwable $th) {
+
+        $response = array(
+          'status'=>'false',
+          'message'=>$th->getMessage(),
+        );
+
+    }
+
+  return response()->json($response, 200);
+}
+
+
+public function QRCodeMobileLogout(Request $request)
+{
+
+  try{
+
+    $TVLoginCode = TVLoginCode::where('email',$request->email)->where('tv_code',$request->tv_code)->where('status',1)->orderBy('created_at', 'DESC')->first();
+
+    $TVLoginCode=TVLoginCode::where('email',$request->email)->where('tv_code',$request->tv_code)->where('status',1)->orderBy('created_at', 'DESC')->delete();
+
+    $response = array(
+        'status'=> 'true',
+        'message' => 'Logged Out Successfully',
+    );
+
+    }
+    catch (\Throwable $th) {
+
+        $response = array(
+          'status'=>'false',
+          'message'=>$th->getMessage(),
+        );
+
+    }
+
+  return response()->json($response, 200);
+}
+ 
+
 }

@@ -2800,7 +2800,7 @@ class AdminUsersController extends Controller
             $user_role = Auth::user()->role;
             $alldevices = LoggedDevice::where('user_id', '=', Auth::User()->id)
                 ->get();
-            $UserTVLoginCode = TVLoginCode::where('email',Auth::User()->email)->where('status',1)->first();
+            $UserTVLoginCode = TVLoginCode::where('email',Auth::User()->email)->orderBy('created_at', 'DESC')->first();
             // dd($UserTVLoginCode);
             if ($user_role == 'registered' || $user_role == 'admin')
             {
@@ -2915,6 +2915,8 @@ class AdminUsersController extends Controller
                 'alldevices' => $alldevices,
                 'UserTVLoginCode' => $UserTVLoginCode,
                 'payment_package' => User::where('id',Auth::user()->id)->first() ,
+                'LoggedusersCode' => TVLoginCode::where('email',Auth::User()->email)->orderBy('created_at', 'DESC')->get() ,
+
             );
             
             if(!empty($SiteTheme) && $SiteTheme->my_profile_theme == 0 || $SiteTheme->my_profile_theme ==  null){
@@ -2966,10 +2968,10 @@ class AdminUsersController extends Controller
       try{
 
     //    TVLoginCode::destroy($id);
-       $TVLoginCode=TVLoginCode::where('id',$id)->where('type','Code')->where('status',1)->orderBy('created_at', 'DESC')->first();
+       $TVLoginCode=TVLoginCode::where('id',$id)->orderBy('created_at', 'DESC')->first();
        $email = $TVLoginCode->email;
     // dd($email);
-       TVLoginCode::where('email',$email)->where('type','Code')->where('status',1)->orderBy('created_at', 'DESC')->delete();
+       TVLoginCode::where('id',$id)->where('email',$email)->orderBy('created_at', 'DESC')->delete();
     
         } 
         catch (\Throwable $th) {

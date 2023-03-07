@@ -49,7 +49,7 @@ $currency = App\CurrencySetting::first();
         <div class="col-sm-12 overflow-hidden">
             <div class="iq-main-header d-flex align-items-center justify-content-between">
                 <!-- <h4 class="main-title"><a href="<?php echo URL::to('home') ?>">Latest Videos</a></h4> -->
-                <a href="#" class="category-heading"
+                <a href="<?= URL::to('/') ?><?= '/LiveCategory'.'/' . $category->slug ?>" class="category-heading"
                     style="text-decoration:none;color:#fff">
                     <h4 class="movie-title">
                         <?php 

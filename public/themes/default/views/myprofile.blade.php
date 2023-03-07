@@ -203,6 +203,7 @@ $settings = App\Setting::first();
                         <li><a class="showSingle" target="6">Profile</a></li>
                         <li><a class="showSingle" target="7">Recently Viewed Items</a></li>
                         <li><a class="showSingle" target="8">Tv Activation Code</a></li>
+                        <li><a class="showSingle" target="9">Tv Logged User List</a></li>
                     </ul>
                 </div>
             </div>
@@ -556,7 +557,7 @@ $settings = App\Setting::first();
                               <input type="hidden" name="email" value="{{ $user->email }}" />
                                        <div class="row mt-3">
                                           <div class="col-md-8">
-                                                <input type="text" name="tv_code" id="tv_code" value="@if(!empty($UserTVLoginCode->tv_code)){{ $UserTVLoginCode->tv_code }}@endif" />
+                                                <input type="text" name="tv_code" id="tv_code" value="@if(!empty($UserTVLoginCode->tv_code)){{ $UserTVLoginCode->tv_code.' '.$UserTVLoginCode->uniqueId }}@endif" />
 
                                           </div>
                                        <div class="col-md-4">
@@ -569,6 +570,36 @@ $settings = App\Setting::first();
                                        </div>
                            </form>
                   </div>
+                  <div class="targetDiv" id="div9">
+                  
+                  <p class="text-white">Tv Logged User List</p>
+       
+                               <div class="col-md-4">
+
+                               <table class="table  artists-table iq-card text-center p-0">
+                                          <tr class="r1">
+                                             <th><label> S.No </label></th>
+                                             <th><label> Email </label></th>
+                                             <th><label> TV Code </label></th>
+                                             <th><label> Action </label></th>
+                                             
+                                             @foreach($LoggedusersCode as $key=>$Logged_usersCode)
+                                             <tr>
+                                                <td>{{ $key+1 }}</td>
+                                                <td valign="bottom"><p> {{ $Logged_usersCode->email  }} </p></td>
+                                                <td valign="bottom"><p> {{ $Logged_usersCode->tv_code  }} </p></td>
+                                                <td>
+                                                   <p class=" align-items-center list-user-action">
+                                                      <a type="button" href="{{ URL::to('user/tv-code/remove/') }}/{{$Logged_usersCode->id}}" style="z-index:999; position: absolute; background-color:#df1a10!important;" class="btn round tv-code-remove text-red">Remove</a>
+                                                   </p>
+                                                </td>
+                                             </tr>
+                                          @endforeach
+                                    </table>
+
+                                  </div>
+                               </div>
+          </div>
             </div></div>
             
 <style>
