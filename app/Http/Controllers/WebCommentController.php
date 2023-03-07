@@ -126,7 +126,7 @@ class WebCommentController extends Controller
             'user_name' => Auth::user()->username ,
             'commenter_type'   => 'App\User' ,
             'commentable_type' => $request->source ,
-            'source'      => $ $source   ,
+            'source'      =>  $source   ,
             'source_id'   => $request->source_id ,
             'comment'   => $request->message ,
             'child_id'  => $id ,
