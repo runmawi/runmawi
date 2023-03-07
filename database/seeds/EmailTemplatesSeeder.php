@@ -741,6 +741,34 @@ class EmailTemplatesSeeder extends Seeder
                             'updated_at' => null,
                         ],
 
+                        [   'template_type' => 'Approval of the Advertisement', 
+                            'heading' => 'Approval of the Advertisement',
+                            'description' => '<p>Dear {Name},&nbsp;</p>
+
+                                        <p>We are thrilled to have you on board.</p>
+                                        
+                                        <p>Your Test Ads has been Approved.&nbsp;<br/>
+                                        &nbsp;</p>
+                                        
+                                        <p> Log in to the Ad panel to explore more! .</p>
+                                        
+                                        <p>Your Admin Panel: {AdvertiserPortal} &nbsp;</p>
+                                        
+                                        <p>Login email address: {AdvertiserEmail} &nbsp;</p>
+                                        
+                                        <p>Please write to us at {AdminEmail} for queries and suggestions.&nbsp;</p>
+                                        
+                                        <p>&nbsp;</p>
+
+                                        <p>Sincerely,&nbsp;</p>
+                                        
+                                        <p>Team {Website Name}.</p>',
+
+                            'role_type' => 'Advertisement' ,
+                            'created_at' => Carbon::now(),
+                            'updated_at' => null,
+                        ],
+
                     ];
 
                 EmailTemplate::insert($EmailTemplate);
