@@ -1962,7 +1962,9 @@ if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Busi
                 /*Advertisement Video update End*/
                 
     
-            return Redirect::back()->with('message','Your video will be available shortly after we process it');
+            return Redirect::back()
+            ->with('message', 'Content has been Submitted for Approval ');
+            // ->with('message','Your video will be available shortly after we process it');
         }else{
             return Redirect::to('/blocked');
           }

@@ -391,7 +391,8 @@ class CPPAdminLiveStreamController extends Controller
                                                     'title' => $data['title']
                                                 ] );
         }else{
-            return Redirect::to('cpp/livestream')->with(array('message' => 'New PPV Video Successfully Added!', 'note_type' => 'success') );
+            return Redirect::to('cpp/livestream')
+            ->with(array('message' => 'New PPV Video Successfully Added!', 'note_type' => 'success') );
         }
         
         }else{
