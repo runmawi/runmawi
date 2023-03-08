@@ -13,6 +13,7 @@ $request_url = end($uri_parts);
 $uppercase =  ucfirst($request_url);
 
 $channel = Session::get('channel'); 
+$channel = App\Channel::where('id',$channel->id)->first();
 
 // echo "<pre>";
 // print_r($channel);
