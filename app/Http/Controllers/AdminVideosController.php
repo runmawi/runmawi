@@ -169,6 +169,12 @@ class AdminVideosController extends Controller
                 $total_row = $data->count();
                 if ($total_row > 0) {
                     foreach ($data as $row) {
+
+                        if(isset($video->type) && $video->type == "") { $type = 'M3u8 Converted Video' ; }
+                        elseif(isset($video->type) && $video->type == "mp4_url"){ $type = 'MP4 Video' ; }
+                        elseif(isset($video->type) && $video->type == "m3u8_url"){ $type = 'M3u8 URL Video' ; }
+                        elseif(isset($video->type) && $video->type == "embed"){ $type = 'Embed Video'; }
+
                         if ($row->active == 0) {
                             $active = "Pending";
                             $class = "bg-warning";
@@ -185,6 +191,9 @@ class AdminVideosController extends Controller
                         $output .=
                             '
         <tr>
+        <td>' . '<input type="checkbox" id="Sub_chck" class="sub_chk" data-id='.$row->id .'>'
+                 .
+                '</td>
         <td>' .
                             $row->title .
                             '</td>
@@ -195,7 +204,7 @@ class AdminVideosController extends Controller
                             $username .
                             '</td>
         <td>' .
-                            $row->type .
+                            $type .
                             '</td>
         <td>' .
                             $row->access .
@@ -208,6 +217,13 @@ class AdminVideosController extends Controller
          <td>' .
                             $row->views .
                             '</td>
+
+         <td>' .
+                '<label class="switch">'.
+                '<input name="video_status" class="video_status" id='.$row->id .' type="checkbox" if( '.$row->banner .' == "1") checked  @endif data-video-id='.$row->id .'  data-type="video" onchange="update_video_banner(this)" >'.
+                '<span class="slider round"></span>'.
+                '</label>'.
+                    '</td>
          <td> ' .
                             "<a class='iq-bg-warning' data-toggle='tooltip' data-placement='top' title='' data-original-title='View' href=' $slug/$row->slug'><i class='lar la-eye'></i>
         </a>" .
@@ -282,6 +298,13 @@ class AdminVideosController extends Controller
                 $total_row = $data->count();
                 if ($total_row > 0) {
                     foreach ($data as $row) {
+
+                        if(isset($row->type) && $row->type == "") { $type = 'M3u8 Converted Video' ; }
+                        elseif(isset($row->type) && $row->type == "mp4_url"){ $type = 'MP4 Video' ; }
+                        elseif(isset($row->type) && $row->type == "m3u8_url"){ $type = 'M3u8 URL Video' ; }
+                        elseif(isset($row->type) && $row->type == "embed"){ $type = 'Embed Video'; }
+
+
                         if ($row->active == 0) {
                             $active = "Pending";
                             $class = "bg-warning";
@@ -295,35 +318,40 @@ class AdminVideosController extends Controller
                         $output .=
                             '
         <tr>
+        <td>' . '<input type="checkbox" id="Sub_chck" class="sub_chk" data-id='.$row->id .'>'
+        .
+       '</td>
         <td>' .
                             $row->title .
                             '</td>
         <td>' .
                             $row->rating .
                             '</td>
-        <td>' .
-                            $row->categories_name .
-                            '</td>
+
         <td>' .
                             $row->username .
                             '</td>
+            <td>' .
+                $type .
+                    '</td>
+            <td>' .
+                    $row->access .
+                    '</td>
          <td class="' .
                             $class .
                             '" style="font-weight:bold;">' .
                             $active .
                             '</td>
-         <td>' .
-                            $row->type .
-                            '</td>
-         <td>' .
-                            $row->access .
-                            '</td>
-        <td>' .
-                            $row->languages_name .
-                            '</td>
+
          <td>' .
                             $row->views .
                             '</td>
+        <td>' .
+            '<label class="switch">'.
+                '<input name="video_status" class="video_status" id='.$row->id .' type="checkbox" if( '.$row->banner .' == "1") checked  @endif data-video-id='.$row->id .'  data-type="video" onchange="update_video_banner(this)" >'.
+                '<span class="slider round"></span>'.
+            '</label>'.
+                    '</td>
          <td> ' .
                             "<a class='iq-bg-warning' data-toggle='tooltip' data-placement='top' title='' data-original-title='View' href=' $slug/$row->slug'><i class='lar la-eye'></i>
         </a>" .

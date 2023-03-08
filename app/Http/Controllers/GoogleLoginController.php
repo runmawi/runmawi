@@ -19,11 +19,11 @@ public function redirect($provider)
 public function callback(Request $request ,$provider)
 {
            
-    $getInfo = Socialite::driver($provider)->user();
-     
     if (!$request->has('code') || $request->has('denied')) {
         return redirect('/');
     }
+
+    $getInfo = Socialite::driver($provider)->user();
 
     $findUser = User::where('email', $getInfo->email)->first();
 
