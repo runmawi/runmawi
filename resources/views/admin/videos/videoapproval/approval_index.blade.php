@@ -211,3 +211,79 @@ $('#cpp_user_videos').change(function(){
 
 @stop
 
+   <div class="container-fluid p-0">
+            <div class="row">
+               <div class="col-sm-12">
+                  <div class="iq-card">
+                     <div class="iq-card-header d-flex justify-content-between">
+                       
+                        <div class="row">
+                         
+                     <div class="iq-card-body table-responsive p-0">
+                        <div class="table-view">
+                           <table class="table text-center table-striped table-bordered table movie_table iq-card"id="videocpp" style="width:100%">
+                              <thead>
+                                 <tr>
+                                     
+                                    <th>Title</th>
+                                    <th>Video Uploaded By</th>
+                                    <th>Video Type</th>
+                                    <th>Uploaded Date</th>
+                                    <th>Video Duration</th>
+                                    <th>Video Category</th>
+                                    <th>Video Meta</th>
+                                    <th>Status</th>
+                                    <th >Action</th>
+                                 </tr>
+                              </thead>
+                              <tbody>
+                           
+                                 <tr>
+                                    <td>
+                                       <div class="media align-items-center">
+                                          <div class="iq-movie">
+                                             <a href="javascript:void(0);"><img
+                                                   src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}"
+                                                   class="img-border-radius avatar-40 img-fluid" alt=""></a>
+                                          </div>
+                                          <div class="media-body text-white text-left ml-3">
+                                             <p class="mb-0"></p>
+                                          </div>
+                                       </div>
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                   
+                                    
+                                    <td>
+                                   Pending
+                                  
+                                        Approved
+                                    Rejected
+                                   </td>                                
+                                    <td colspan="2">
+                                       <div class="flex align-items-center list-user-action">
+                                          <a class="iq-bg-warning" 
+                                          onclick="return confirm('Are You Approving Video ?')"  href="{{ URL::to('admin/CPPVideosApproval') . '/' . $video->id }}">  <i class="fa fa-check-circle"></i></a>
+                                          <a class="iq-bg-success" 
+                                              onclick="return confirm('Are You Rejecting Video ?')" href="{{ URL::to('admin/CPPVideosReject') . '/' . $video->id }}"> <i class="fa fa-close" ></i></a>
+                                       </div>
+                                    </td>
+                                 </tr>
+                               
+                              </tbody>
+                           </table>
+                           <div class="clear"></div>
+		
+		</div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+</div>

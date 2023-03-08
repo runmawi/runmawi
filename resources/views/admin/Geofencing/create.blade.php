@@ -151,3 +151,6 @@ input:checked + .slide:before {
   border: 2px solid #4CAF50;
 }
     </style>
+    
+    
+    

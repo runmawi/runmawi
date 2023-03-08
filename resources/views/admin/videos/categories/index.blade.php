@@ -327,3 +327,154 @@ $('form[id="new-cat-form"]').validate({
 </script>
 
 @stop
+    
+     <div class="container-fluid p-0">
+	   <div class="admin-section-title">
+            <div class="iq-card">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4><i class="entypo-archive"></i> Video Categories</h4>
+                       
+                           <hr/>
+                      
+                    </div>
+                    
+                    <div class="col-md-6" align="right">
+                        <a href="" data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add New</a>
+                    </div>
+                </div>
+	
+              
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <h4 class="modal-title">New Video Category</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+                            </div>
+
+                            <div class="modal-body">
+                                <form id="new-cat-form" accept-charset="UTF-8" action="" method="post" enctype="multipart/form-data">
+                                    <input type="hidden" name="_token" value="" />
+
+                                    <div class="form-group ">
+
+                                    <label>Name:</label>
+
+                                    <input type="text" id="name" name="name" value="" class="form-control" placeholder="Enter Name">
+                                  
+                                </div>
+
+                                <div class="form-group ">
+
+                                    <label>Slug:</label>
+
+                                    <input type="text" id="slug" name="slug" value="" class="form-control" placeholder="Enter Slug">
+                                   
+
+                                </div>  
+                                <div class="form-group">
+                                    <label>Home Page Genre Name:</label>
+                                    <input type="text" id="home_genre" name="home_genre" value="" class="form-control" placeholder="Enter Home Page Genre Name">
+                                </div>  
+                                <div class="form-group ">
+                                    <label>Display In Home page:</label>
+                                    <input type="radio" checked id="in_home"  id="in_home" name="in_home" value="1">Yes
+                                    <input type="radio" id="in_home" name="in_home" value="0">No
+                                </div>
+                               
+                                <div class="form-group ">
+                                    <label>Display In Menu :</label>
+                                    <input type="radio" checked id="in_menu"  id="in_menu" name="in_menu" value="1">Yes
+                                    <input type="radio" id="in_menu" name="in_menu" value="0">No
+                                </div>
+                                <div class="form-group ">
+                                    <label>Image:</label>
+                                    <input type="file" multiple="true" class="form-control" name="image" id="image" />
+                                </div>
+
+                                <div class="form-group ">
+                                    <label>Banner Image:</label>
+                                    <input type="file" multiple="true" class="form-control" name="banner_image" id="banner_image" />
+                                </div>
+
+                                    <div class="form-group ">
+                                            <label>Geners</label>
+                                            <select id="parent_id" name="parent_id" class="form-control">
+                                                <option value="0">Select</option>
+                                            
+                                                        <option value="{{ $rows->id }}"></option>
+                                             
+                                            </select>
+                                         
+                                    </div>
+
+                                    <div class="form-group ">
+                                        <label>Display In Home Banner:</label>
+                                            <input type="checkbox" id="banner"  id="banner" name="banner" value="1">
+                                    </div>
+                                    
+                                         <div class="modal-footer form-group">
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary" id="submit-new-cat">Save changes</button>
+                                        </div>
+                                </form>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+	           <div class="clear"></div>
+		
+		
+		<div class="panel panel-primary category-panel" data-collapsed="0">
+					
+			<div class="panel-heading">
+				<div class="panel-title">
+					<p>Organize the Categories below: </p>
+				</div>
+				
+				<div class="panel-options">
+					<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+				</div>
+			</div>
+			
+			
+			<div class="panel-body">
+		
+				<div id="nestable" class="nested-list dd with-margins">
+
+                            <table class="table table-bordered iq-card text-center" id="categorytbl">
+                                <tr class="table-header r1">
+                                    <th><label>Category Image</label></th>
+                                    <th><label>Video Category Name</label></th>
+                                    <th><label>Operation</label></th>
+                                </tr>
+                                   
+                                    <tr id="">
+                                    	<td valign="bottom" class=""><img src="" /></td>
+                                        <td valign="bottom"><p>C name</p></td>
+                                        <td>
+                                            <div class=" align-items-center list-user-action">
+                                                <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
+                                                             data-original-title="Edit" href="{{ URL::to('admin/videos/categories/edit/') }}/{{$category->id}}" ><img class="ply" src="" /></a> 
+                                            <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
+											onclick="return confirm('Are you sure?')"  data-original-title="Delete" href="{{ URL::to('admin/videos/categories/delete/') }}/{{$category->id}}" ><img class="ply" src="" /></a></div>
+
+                                        </td>
+                                    </tr>
+                                  
+                            </table>
+				</div>
+			</div>
+		</div>
+    </div>
+</div>
+
+	<input type="hidden" id="_token" name="_token" value="update" />
+
+    </div>
