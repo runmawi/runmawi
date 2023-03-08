@@ -64,3 +64,6 @@
             $('#player_table').DataTable();
          });
 </script>
+
+    
+      
