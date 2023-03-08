@@ -250,7 +250,7 @@ $site_page_url = $http_site_url[1];
       }
         .switch {
   position: relative;
-  display: inline-block;
+ display: flex;
   width: 50px;
   height: 20px;
 }
@@ -1241,11 +1241,15 @@ main .sidebar {
                                     <div class="iq-card shadow-none m-0">
                                        <div class="iq-card-body p-0 pl-3 pr-3">
                                            <a class="p-0">
-                                               <div class=" mt-3 text-right">
-                                               <label class="switch toggle mt-3">
+                                               <div class=" mt-3 d-flex align-items-center justify-content-between col-lg-7 ">
+                                                   
+<i class="fa fa-moon-o" aria-hidden="true"></i>
+
+                                               <label class="switch toggle mt-2">
   <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
   <span class="sliderk round"></span>
 </label>
+         <i class="fa fa-sun-o" aria-hidden="true"></i>                                          
 </div>
                                            </a>
                                           <a href="<?php echo  URL::to('myprofile') ?>" class="iq-sub-card  setting-dropdown">
