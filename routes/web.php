@@ -654,8 +654,8 @@ Route::get('/episode/filedelete/{id}', 'AdminSeriesController@filedelete');
     Route::get('/VideoBulk_delete', 'AdminVideosController@VideoBulk_delete')->name('VideoBulk_delete'); 
 
     // Multi-user Limit
-    Route::get('/MultiUser-limit', 'AdminSettingsController@multiuser_limit')->name('multiuser_limit'); 
-    Route::post('/Multi_limit_store', 'AdminSettingsController@Multi_limit_store')->name('Multi_limit_store'); 
+    Route::get('/MultiUser-limit', 'AdminMultiUserController@multiuser_limit')->name('multiuser_limit'); 
+    Route::post('/Multi_limit_store', 'AdminMultiUserController@Multi_limit_store')->name('Multi_limit_store'); 
 
     // Theme Integration 
     Route::get('ThemeIntegration', 'ThemeIntegrationController@index')->name('ThemeIntegration');
