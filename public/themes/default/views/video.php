@@ -496,6 +496,10 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
      <?php else: ?>
 
        <div id="subscribers_only">
+       <h4 class="text-center"><?php echo $video->title ; ?></h4>
+      <p class="text-center text-white col-lg-8" style="margin:0 auto";><?php echo ($video->description) ; ?></p>
+ 
+
          <h2>Sorry, this video is only available to <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
          <div class="clear"></div>
          <?php if(!Auth::guest() && $video->access == 'subscriber'): ?>
@@ -550,6 +554,10 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
   <div id="subscribers_only">
   <div class="clear"></div>
   <div style="padding-top:10%;">
+  <h4 class="text-center"><?php echo $video->title ; ?></h4>
+  <p class="text-center text-white col-lg-8" style="margin:0 auto";><?php echo ($video->description) ; ?></p>
+ 
+
   <h2 ><p style ="text-center">Sorry, this video is only available to</p> <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
   <?php if(!Auth::guest() && $video->access == 'subscriber' || !Auth::guest() && $video->access == 'ppv'|| !Auth::guest() && $video->access == 'guest' && !empty($video->ppv_price) ){ ?>
     <form class="text-center" method="get" action="<?= route('payment_becomeSubscriber') ?>">
@@ -587,6 +595,9 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
   <div id="subscribers_only">
   <div class="clear"></div>
   <div style="position: absolute;top: 20%;left: 20%;width: 100%;">
+  <h4 class="text-center"><?php echo $video->title ; ?></h4>
+  <p class="text-center text-white col-lg-8" style="margin:0 auto";><?php echo ($video->description) ; ?></p>
+ 
   <h2 ><p style ="margin-left:14%">Sorry, this video is only available to</p> <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
   <?php if(!Auth::guest() && $video->access == 'subscriber' || !Auth::guest() && $video->access == 'ppv'|| !Auth::guest() && $video->access == 'guest' && !empty($video->ppv_price) ){ ?>
     <form method="get" action="<?= route('payment_becomeSubscriber') ?>">
@@ -605,6 +616,8 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 <div id="subscribers_only"style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>);background-position:center; background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
 
  <div id="subscribers_only">
+ <h4 class="text-center"><?php echo $video->title ; ?></h4>
+  <p class="text-center text-white col-lg-8" style="margin:0 auto";><?php echo ($video->description) ; ?></p>
  <h2 style ="margin-left:14%">Sorry, this video is only available to <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
  <div class="clear"></div>
  <?php if(!Auth::guest() && $video->access == 'subscriber'): ?>
@@ -819,6 +832,8 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
   <?php else: ?>
 
     <div id="subscribers_only">
+    <h4 class="text-center"><?php echo $video->title ; ?></h4>
+  <p class="text-center text-white col-lg-8" style="margin:0 auto";><?php echo ($video->description) ; ?></p>
       <h2>Sorry, this video is only available to <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered' ): ?>Registered Users<?php elseif($video->access == 'ppv' ): ?>PPV<?php endif; ?></h2>
       <div class="clear"></div>
       <?php if(!Auth::guest() && $video->access == 'subscriber'): ?>

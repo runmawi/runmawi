@@ -980,6 +980,10 @@ class AdminUsersController extends Controller
 
     public function logout()
     {
+        if (Auth::guest())
+        {
+            return redirect('/login');
+        }
         $data = \Session::all();
         $agent = new Agent();
 
