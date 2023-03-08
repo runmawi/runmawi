@@ -674,8 +674,7 @@ class ChannelController extends Controller
                     $new_date = null;
                 }
                 if(@$categoryVideos->uploaded_by == 'Channel'){
-                        $user_id = $categoryVideos->user_id;
-
+                        $user_id = 2;
                         $user = Channel::where("channels.id", "=", $user_id )
                         ->join(
                             "users",
@@ -687,11 +686,14 @@ class ChannelController extends Controller
                             "users.id as user_id"
                         )
                         ->first();
+
                         if(!Auth::guest() && $user->user_id == Auth::user()->id ){
                             $video_access = 'free';
                         }else{ 
                             $video_access = 'pay';
                          }
+                    // dd($video_access);
+                    
                 }else if(@$categoryVideos->uploaded_by == 'CPP'){
                     $user_id = $categoryVideos->user_id;
 

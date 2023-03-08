@@ -337,7 +337,7 @@ border-radius: 0px 4px 4px 0px;
                                 </div>
                             </div>
 
-                            <!-- <div class="col-sm-4">
+                            <div class="col-sm-4">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
                                 <div><label class="mt-1"> @if (@$order_settings_list[14]->header_name) {{ @$order_settings_list[14]->header_name }} @else {{ ""  }} @endif </label></div>
                                
@@ -351,7 +351,7 @@ border-radius: 0px 4px 4px 0px;
                                     </div>
                                  
                                 </div>
-                            </div> -->
+                            </div>
                                             
                                             {{-- This option moved to Pop-up setting  --}}
                                             
@@ -646,7 +646,7 @@ border-radius: 0px 4px 4px 0px;
                                 </div>
                             </div>
 
-                            <!-- <div class="col-sm-4">
+                            <div class="col-sm-4">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
                                 <div><label class="mt-1"> @if (@$order_settings_list[14]->header_name) {{ @$order_settings_list[14]->header_name }} @else {{ ""  }} @endif </label></div>
                                
@@ -659,7 +659,7 @@ border-radius: 0px 4px 4px 0px;
                                            <div class="ml-2">ON</div>
                                     </div>
                                  
-                                </div> -->
+                                </div>
                             </div>
                         <!-- </div> -->
         </div>
