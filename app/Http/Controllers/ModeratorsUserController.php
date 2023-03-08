@@ -7149,8 +7149,8 @@ class ModeratorsUserController extends Controller
         $logopath = URL::to("/public/uploads/moderator_albums/");
         $path = public_path() . "/uploads/moderator_albums/";
 
-        
         if ($picture != "") {
+
             //code for remove old file
             if ($picture != "" && $picture != null) {
                 $file_old = $path . $picture;
@@ -7161,7 +7161,9 @@ class ModeratorsUserController extends Controller
             //upload new file
             $file = $picture;
             $file_picture = str_replace(' ', '_', $file->getClientOriginalName());
-            $file->move($path, $file);
+            $file->move($path, $file_picture);
+            $file_picture = str_replace(' ', '_', $file->getClientOriginalName());
+
         }else{
             $file_picture = $ModeratorsUser->picture;
         }
@@ -7180,6 +7182,8 @@ class ModeratorsUserController extends Controller
             $cheque = $cancelled_cheque;
             $file_cancelled_cheque = str_replace(' ', '_', $cheque->getClientOriginalName());
             $cheque->move($path, $cheque);
+            $file_cancelled_cheque = $ModeratorsUser->cancelled_cheque;
+
         }else{
             $file_cancelled_cheque = $ModeratorsUser->cancelled_cheque;
         }
@@ -7191,7 +7195,7 @@ class ModeratorsUserController extends Controller
         // $ModeratorsUser->branch_name = $branch_name ;
         // $ModeratorsUser->account_number = $account_number ;
         // $ModeratorsUser->IFSC_Code = $IFSC_Code ;
-        // $ModeratorsUser->picture = $file_picture ;
+        $ModeratorsUser->picture = $file_picture ;
         // $ModeratorsUser->cancelled_cheque = $file_cancelled_cheque ;
         $ModeratorsUser->upi_id = $upi_id ;
         $ModeratorsUser->upi_mobile_number = $upi_mobile_number ;
