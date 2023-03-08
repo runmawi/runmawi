@@ -16,7 +16,7 @@ public function redirect($provider)
     return Socialite::driver($provider)->redirect();
 }
  
-public function callback($provider)
+public function callback(Request $request ,$provider)
 {
            
     $getInfo = Socialite::driver($provider)->user();
@@ -24,7 +24,7 @@ public function callback($provider)
     if (!$request->has('code') || $request->has('denied')) {
         return redirect('/');
     }
-    
+
     $findUser = User::where('email', $getInfo->email)->first();
 
     if($findUser){
