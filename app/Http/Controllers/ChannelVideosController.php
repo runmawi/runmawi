@@ -2333,7 +2333,8 @@ class ChannelVideosController extends Controller
             /*Advertisement Video update End*/
 
             return Redirect::back()
-                ->with('message', 'Your video will be available shortly after we process it');
+                // ->with('message', 'Your video will be available shortly after we process it');
+                ->with('message', 'Content has been Submitted for Approval ');
         }
         else
         {

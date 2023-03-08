@@ -912,7 +912,8 @@ class ChannelAudioController extends Controller
 
                 }
             }
-            return Redirect::back();
+            return Redirect::back()
+            ->with('message', 'Content has been Submitted for Approval ');
         }
         else
         {

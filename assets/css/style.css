@@ -928,8 +928,11 @@ video.trail-vid{
     font-family:'FontAwesome';
 }
 .Video_Categorynav{
-    display: flex;
+    display: block!important;
     
+}
+.Video_Categorynav .nav-link{
+width: 183px!important;
 }
 .Live_Categorynav{
     display: flex;

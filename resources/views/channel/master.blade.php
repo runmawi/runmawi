@@ -6,12 +6,14 @@
      <link rel="shortcut icon" href="<?= getFavicon();?>" type="image/gif" sizes="16x16">
   
 <?php
+use Carbon\Carbon;
 $uri_path = $_SERVER['REQUEST_URI']; 
 $uri_parts = explode('/', $uri_path);
 $request_url = end($uri_parts);
 $uppercase =  ucfirst($request_url);
 
 $channel = Session::get('channel'); 
+$channel = App\Channel::where('id',$channel->id)->first();
 
 // echo "<pre>";
 // print_r($channel);
@@ -434,8 +436,8 @@ $channel = Session::get('channel');
                    </ul>
                 </div>
                 <div class="col-lg-6 text-right">
-                   Copyright 2021 <a href="<?php echo URL::to('home') ?>"><?php $settings = App\Setting::first(); echo $settings->website_name;?></a> All Rights Reserved.
-                </div>
+                <?php echo $settings->website_name ; ?> - <?php echo Carbon::now()->year ; ?> All Rights Reserved
+              </div>
              </div>
           </div>
        </footer>

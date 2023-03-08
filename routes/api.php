@@ -404,5 +404,7 @@ Route::group([
     Route::get('site_theme_setting','ApiAuthController@site_theme_setting');
     Route::post('tv_logged_user','ApiAuthController@TVLoggedDetails');
 
+    Route::post('qrcode_mobile_login','ApiAuthController@QRCodeMobileLogin');
+    Route::post('qrcode_mobile__logout','ApiAuthController@QRCodeMobileLogout');
 
 });
