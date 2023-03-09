@@ -216,7 +216,7 @@ class AdminEmailSettingsController extends Controller
     public function email_logs(Request $request)
     {
         $data =[
-            'email_logs' =>  EmaillogsDetail::all(),
+            'email_logs' =>  EmaillogsDetail::latest()->get(),
         ];
 
         return view('admin.Email.email_logs',$data);

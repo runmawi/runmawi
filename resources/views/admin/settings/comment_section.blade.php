@@ -59,7 +59,7 @@
                                 <label class="col-md-6" for=""> Enable Comment Section for Audios  </label>
                                 <div class="mt-1 col-md-4">
                                     <label class="switch">
-                                        <input name="episode" id="episode" class="" type="checkbox" {{ !empty($comment_section->audios) == "1" ? 'checked' : ''  }}  >
+                                        <input name="audios" id="audios" class="" type="checkbox" {{ !empty($comment_section->audios) == "1" ? 'checked' : ''  }}  >
                                         <span class="slider round"></span>
                                     </label>
                                 </div>

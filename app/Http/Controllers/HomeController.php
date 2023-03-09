@@ -3714,6 +3714,13 @@ class HomeController extends Controller
         if(Auth::user() == null){
             return redirect::to('/login');
         }
+        
+        $enable_choose_profile =  Setting::pluck('enable_choose_profile')->first() ;
+
+        if( $enable_choose_profile == 0 ){
+
+            return redirect::to('/home');
+        }
 
         $Website_name = Setting::first();
         $parent_id = Session::get('login_web_59ba36addc2b2f9401580f014c7f58ea4e30989d');
