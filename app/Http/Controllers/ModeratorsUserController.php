@@ -7146,8 +7146,30 @@ class ModeratorsUserController extends Controller
 
         $cancelled_cheque = (isset($data['cancelled_cheque'])) ? $data['cancelled_cheque'] : '';
 
+        $banner = (isset($data['banner'])) ? $data['banner'] : '';
+
         $logopath = URL::to("/public/uploads/moderator_albums/");
         $path = public_path() . "/uploads/moderator_albums/";
+
+        if ($banner != "") {
+
+            //code for remove old file
+            if ($banner != "" && $banner != null) {
+                $file_old = $path . $banner;
+                if (file_exists($file_old)) {
+                    unemail($file_old);
+                }
+            }
+            //upload new file
+            $file = $banner;
+            $file_banner = str_replace(' ', '_', $file->getClientOriginalName());
+            $file->move($path, $file_banner);
+            $banner = str_replace(' ', '_', $file->getClientOriginalName());
+
+        }else{
+            $banner = $ModeratorsUser->banner;
+        }
+
 
         if ($picture != "") {
 
@@ -7189,6 +7211,7 @@ class ModeratorsUserController extends Controller
         }
 
         $ModeratorsUser->username = $username;
+        $ModeratorsUser->slug = str_replace(" ", "-", $request->username);
         $ModeratorsUser->email = $email;
         $ModeratorsUser->mobile_number = $mobile_number;
         // $ModeratorsUser->bank_name = $bank_name ;
@@ -7196,6 +7219,7 @@ class ModeratorsUserController extends Controller
         // $ModeratorsUser->account_number = $account_number ;
         // $ModeratorsUser->IFSC_Code = $IFSC_Code ;
         $ModeratorsUser->picture = $file_picture ;
+        $ModeratorsUser->banner = $banner ;
         // $ModeratorsUser->cancelled_cheque = $file_cancelled_cheque ;
         $ModeratorsUser->upi_id = $upi_id ;
         $ModeratorsUser->upi_mobile_number = $upi_mobile_number ;
