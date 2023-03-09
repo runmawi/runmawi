@@ -12,7 +12,7 @@
                          <?php  if(isset($audios)) :
                          foreach($audios as $audio): ?>
                        <li class="slide-item">
-                          <a href="<?php echo URL::to('home') ?>">
+                          <a href="<?php echo URL::to('audio') ?><?= '/' . $audio->slug ?>">
                              <!-- block-images -->
                              <div class="block-images position-relative">
                                 <div class="img-box">

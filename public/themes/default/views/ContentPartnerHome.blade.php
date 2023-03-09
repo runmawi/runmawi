@@ -19,14 +19,14 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
 
 
 <section class="ContentPartner-header"
-    style="background:url('<?php echo @$ModeratorsUser->banner; ?>') no-repeat scroll 0 0;;background-size: cover;height:350px;background-color: rgba(0, 0, 0, 0.45);
+    style="background:url('<?php echo URL::to('/') . '/public/uploads/moderator_albums/' . @$ModeratorsUser->banner; ?>') no-repeat scroll 0 0;;background-size: cover;height:350px;background-color: rgba(0, 0, 0, 0.45);
     background-blend-mode: multiply;">
 </section>
 
 <div class="container-fluid">
     <div class="position-relative">
         <div class="ContentPartner-img">
-            <img src="<?php echo @$ModeratorsUser->picture; ?>" class=" " width="150" alt="user">
+            <img src="<?php echo  URL::to('/') . '/public/uploads/moderator_albums/'. @$ModeratorsUser->picture; ?>" class=" " width="150" alt="user">
         </div>
     </div>
 </div>
@@ -37,7 +37,7 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
             <div class="col-2 col-lg-2">
                 <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
                     @php
-                        include(public_path('themes/default/views/partials/channel-social-share.php'));
+                        include(public_path('themes/default/views/partials/content-user-social-share.php'));
                     @endphp
                 </ul>
             </div>
@@ -56,9 +56,9 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
         <li class="nav-item livenav">
     <a class="nav-link" id="live-tab" data-toggle="tab" href="#live" role="tab" aria-controls="profile" aria-selected="false">Live Stream</a>
   </li>
-  <li class="nav-item seriesnav">
+  <!-- <li class="nav-item seriesnav">
     <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Series</a>
-  </li>
+  </li> -->
          <li class="nav-item audionav">
     <a class="nav-link" id="Audios-tab" data-toggle="tab" href="#Audios" role="tab" aria-controls="contact" aria-selected="false">Audios</a>
   </li>
@@ -113,7 +113,7 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
    
 </section>
 
-<div class='channel_home'>
+<div class='Content_home'>
     <?php 
 if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 0 || count($audios) > 0){
       if(count($latest_video) > 0 ){
@@ -232,7 +232,7 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
         //         channel_slug:"{{ @$channel->channel_slug }}",
         //     },
         //     success: function(data) {
-        //         $(".channel_home").html(data);
+        //         $(".Content_home").html(data);
         //     },
         // });
         location.reload();
@@ -246,14 +246,14 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
 
         $.ajax({
             type: "get",
-            url: "<?php echo URL::to('/channel_category_videos'); ?>",
+            url: "<?php echo URL::to('/Content_category_videos'); ?>",
             data: {
                 _token: "{{ csrf_token() }}",
                 category_id: category_id,
-                user_id:"{{ @$channel->id }}",
+                user_id:"{{ @$ModeratorsUser->id }}",
             },
             success: function(data) {
-                $(".channel_home").html(data);
+                $(".Content_home").html(data);
             },
         });
     }
@@ -264,14 +264,14 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
 
         $.ajax({
             type: "get",
-            url: "{{ route('channel_category_series') }}",
+            url: "{{ route('Content_category_series') }}",
             data: {
                 _token: "{{ csrf_token() }}",
                 category_id: category_id,
-                user_id:"{{ @$channel->id }}",
+                user_id:"{{ @$ModeratorsUser->id }}",
             },
             success: function(data) {
-                $(".channel_home").html(data);
+                $(".Content_home").html(data);
             },
         });
     }
@@ -282,14 +282,14 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
 
         $.ajax({
             type: "get",
-            url: "{{ route('channel_category_audios') }}",
+            url: "{{ route('Content_category_audios') }}",
             data: {
                 _token: "{{ csrf_token() }}",
                 category_id: category_id,
-                user_id:"{{ @$channel->id }}",
+                user_id:"{{ @$ModeratorsUser->id }}",
             },
             success: function(data) {
-                $(".channel_home").html(data);
+                $(".Content_home").html(data);
             },
         });
         }
@@ -300,14 +300,14 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
 
         $.ajax({
             type: "get",
-            url: "{{ route('channel_category_live') }}",
+            url: "{{ route('Content_category_live') }}",
             data: {
                 _token: "{{ csrf_token() }}",
                 category_id: category_id,
-                user_id:"{{ @$channel->id }}",
+                user_id:"{{ @$ModeratorsUser->id }}",
             },
             success: function(data) {
-                $(".channel_home").html(data);
+                $(".Content_home").html(data);
             },
         });
         }
