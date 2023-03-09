@@ -81,6 +81,15 @@
                                         <input type="text" class="form-control" name="upi_mobile_number" id="upi_mobile_number" placeholder="UPI Mobile Number"  value="@if(!empty($user->upi_mobile_number)){{ $user->upi_mobile_number }}@endif" />
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col-md-6 form-group">
+                                        <label> Banner :</label>
+                                        <input type="file" multiple="true" class="form-control" style="padding: 0px;" name="banner" id="banner" />
+                                        @if(!empty($user->banner))
+                                            <img src="{{ URL::to('/') . '/public/uploads/moderator_albums/' . @$user->banner }}" class="video-img" width="200" height="200"/>
+                                        @endif
+                                    </div>
+                                </div>
 
                                 <!-- <div class="row">
                                     <div class="col-md-6 form-group">

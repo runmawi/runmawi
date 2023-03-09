@@ -235,6 +235,7 @@ class ModeratorsLoginController extends Controller
             $string = Str::random(60);
             $moderatorsuser = new ModeratorsUser;
             $moderatorsuser->username = $request->username;
+            $moderatorsuser->slug = str_replace(" ", "-", $request->username);
             $moderatorsuser->email = $request->email_id;
             $moderatorsuser->mobile_number = $request->mobile_number;
             $moderatorsuser->password = $request->password;

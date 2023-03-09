@@ -2006,6 +2006,16 @@ Route::get('channel_category_audios', 'ChannelHomeController@channel_category_au
 Route::get('channel_category_live', 'ChannelHomeController@channel_category_live')->name('channel_category_live');
 Route::get('all_Channel_videos', 'ChannelHomeController@all_Channel_videos')->name('all_Channel_videos');
 
+  // Content Partner List
+  Route::get('ContentPartner/{slug}', 'ContentPartnerHomeController@ContentPartnerHome')->name('ContentPartnerHome');
+  Route::get('Content-list', 'ContentPartnerHomeController@ContentList')->name('ContentList');
+  Route::get('Content_category_series', 'ContentPartnerHomeController@Content_category_series')->name('Content_category_series');
+  Route::get('Content_category_videos', 'ContentPartnerHomeController@Content_category_videos')->name('Content_category_videos');
+  Route::get('Content_category_audios', 'ContentPartnerHomeController@Content_category_audios')->name('Content_category_audios');
+  Route::get('Content_category_live', 'ContentPartnerHomeController@Content_category_live')->name('Content_category_live');
+  Route::get('all_Content_videos', 'ContentPartnerHomeController@all_Content_videos')->name('all_Content_videos');
+
+  
     // Razorpay 
 Route::group(['middleware' => ['RazorpayMiddleware']], function() {
 
