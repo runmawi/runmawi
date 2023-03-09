@@ -115,6 +115,7 @@ use App\AdsEvent;
 use App\VideoSchedules as VideoSchedules;
 use App\ScheduleVideos as ScheduleVideos;
 use App\ReSchedule as ReSchedule;
+use App\WebComment;
 
 class ApiAuthController extends Controller
 {
@@ -10631,6 +10632,217 @@ public function QRCodeMobileLogout(Request $request)
 
   return response()->json($response, 200);
 }
- 
 
+  public function comment_index(Request $request)
+  {
+    # code...
+  }
+
+  public function comment_store(Request $request)
+  {
+    try {
+
+        if( $request->source == 'LiveStream_play' ){
+          $source = "App\LiveStream";
+        }
+        elseif( $request->source == 'play_videos' ){
+            $source = "App\Video";
+        }
+        elseif( $request->source == 'play_episode' ){
+            $source = "App\Episode";
+        }
+        elseif( $request->source == 'play_audios' ){
+            $source = "App\Audio";
+        }
+    
+        $inputs = array(
+            'user_id'   => $request->user_id ,
+            'user_role' => User::where('id',$request->user_id)->pluck('role')->first() ,
+            'user_name' => User::where('id',$request->user_id)->pluck('username')->first() ,
+            'first_letter' => User::where('id',$request->user_id)->pluck('username')->first()  != null ? User::where('id',$request->user_id)->pluck('username')->first() : 'No Name',
+            'commenter_type'   => 'App\User' ,
+            'commentable_type' => $request->source ,
+            'source'      => $source ,
+            'source_id'   => $request->source_id ,
+            'comment'  => $request->message ,
+            'approved' => 1 ,
+        );
+        
+        WebComment::create($inputs);
+
+        $response = array(
+          'status'=> 'true',
+          'message'  => 'Comment section stored Successfully !!',
+          'user_id'  => $request->user_id,
+          'source_id'=> $request->source_id, 
+          'source'   => $source,
+        );
+
+    } catch (\Throwable $th) {
+
+        $response = array(
+          'status'=>'false',
+          'message'=>$th->getMessage(),
+        );
+    }
+
+    return response()->json($response, 200);
+  }
+
+  public function comment_edit(Request $request)
+  {
+    try {
+
+        $comment_id = $request->comment_id ;
+
+        WebComment::findorfail($comment_id);
+
+        $response = array(
+          'status'=> 'true',
+          'message' => 'Comment section Edit Retrieved Successfully !!',
+        );
+
+    } catch (\Throwable $th) {
+      
+        $response = array(
+          'status'=>'false',
+          'message'=>$th->getMessage(),
+        );
+    }
+
+    return response()->json($response, 200);
+  }
+
+  public function comment_update(Request $request)
+  {
+    try {
+      
+
+      $comment_id = $request->comment_id ;
+
+      if( $request->source == 'LiveStream_play' ){
+          $source = "App\LiveStream";
+      }
+      elseif( $request->source == 'play_videos' ){
+          $source = "App\Video";
+      }
+      elseif( $request->source == 'play_episode' ){
+          $source = "App\Episode";
+      }
+      elseif( $request->source == 'play_audios' ){
+          $source = "App\Audio";
+      }
+
+      $inputs = array(
+          'user_id'   => $request->user_id ,
+          'user_role' => User::where('id',$request->user_id)->pluck('role')->first() ,
+          'user_name' => User::where('id',$request->user_id)->pluck('username')->first() ,
+          'first_letter' => User::where('id',$request->user_id)->pluck('username')->first()  != null ? User::where('id',$request->user_id)->pluck('username')->first() : 'No Name',
+          'commenter_type'   => 'App\User' ,
+          'commentable_type' => $request->source ,
+          'source'      => $source ,
+          'source_id'   => $request->source_id ,
+          'comment'     => $request->message ,
+          'approved'    => 1 ,
+      );
+
+      WebComment::findorfail($comment_id)->update($inputs);
+
+      $response = array(
+        'status'=> 'true',
+        'message' => 'Comment section Updated Successfully !!',
+        'user_id'  => $request->user_id,
+        'source_id'=> $request->source_id, 
+        'source'   => $source,
+      );
+
+    } catch (\Throwable $th) {
+      
+        $response = array(
+          'status'=>'false',
+          'message'=>$th->getMessage(),
+        );
+    }
+
+    return response()->json($response, 200);
+
+  }
+
+  public function comment_destroy(Request $request)
+  {
+    try {
+
+        $comment_id = $request->comment_id ;
+
+        WebComment::findorfail($comment_id)->delete();
+
+        $response = array(
+          'status'=> 'true',
+          'message' => 'Comment section destroy Successfully !!',
+        );
+
+    } catch (\Throwable $th) {
+
+        $response = array(
+          'status'=>'false',
+          'message'=>$th->getMessage(),
+        );
+    }
+
+    return response()->json($response, 200);
+
+  }
+
+  public function comment_reply(Request $request)
+  {
+    try {
+
+        $comment_id = $request->comment_id ;
+
+        if( $request->source == 'LiveStream_play' ){
+          $source = "App\LiveStream";
+        }
+        elseif( $request->source == 'play_videos' ){
+            $source = "App\Video";
+        }
+        elseif( $request->source == 'play_episode' ){
+            $source = "App\Episode";
+        }
+        elseif( $request->source == 'play_audios' ){
+            $source = "App\Audio";
+        }
+    
+        $inputs = array(
+            'user_id'   => $request->user_id ,
+            'user_role' => User::where('id',$request->user_id)->pluck('role')->first() ,
+            'user_name' => User::where('id',$request->user_id)->pluck('username')->first() ,
+            'first_letter' => User::where('id',$request->user_id)->pluck('username')->first()  != null ? User::where('id',$request->user_id)->pluck('username')->first() : 'No Name',
+            'commenter_type'   => 'App\User' ,
+            'commentable_type' => $request->source ,
+            'source'      =>  $source   ,
+            'source_id'   => $request->source_id ,
+            'comment'   => $request->message ,
+            'child_id'  => $comment_id ,
+            'approved' => 1 ,
+        );
+    
+        WebComment::create($inputs);
+
+        $response = array(
+          'status'=> 'true',
+          'message' => 'Comment section Reply Successfully !!',
+          'user_id'  => $request->user_id,
+          'source_id'=> $request->source_id, 
+          'source'   => $source,
+          'child_id'  => $comment_id 
+        );
+
+    } catch (\Throwable $th) {
+
+        $response = array(
+          'status'=>'false',
+          'message'=>$th->getMessage(),
+        );
+    }
+  }
 }
