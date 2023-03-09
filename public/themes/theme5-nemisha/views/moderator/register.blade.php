@@ -61,7 +61,8 @@
                             <div class="col-sm-4">
                               <select class="phselect" name="ccode" id="ccode" >
                                 @foreach($jsondata as $code)
-                                   <option data-thumbnail="images/icon-chrome.png" value="{{ $code['dial_code'] }}" @if($code['name'] == 'South Africa'){{ 'selected' }}@endif > {{ $code['name'].' ('. $code['dial_code'] . ')' }}</option>
+                                    <option>Select Country</option>
+                                    <option data-thumbnail="images/icon-chrome.png" value="{{ $code['dial_code'] }}" @if($code['name'] == 'South Africa'){{ 'selected' }}@endif > {{ $code['name'].' ('. $code['dial_code'] . ')' }}</option>
                                 @endforeach
                             </select>
                             </div>
