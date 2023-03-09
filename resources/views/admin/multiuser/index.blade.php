@@ -28,6 +28,7 @@
 
                 <form method="POST" action="{{ $post_route }}"  accept-charset="UTF-8" file="1" enctype="multipart/form-data" >
                     @csrf
+                 
                     <div class="panel-body">
                         <div class="row align-items-center p-2">
                             <div class="col-sm-5">
@@ -37,6 +38,22 @@
                                         <input type="text"  class="form-control"  name="multiuser_limit" id="multiuser_limit" value="{{ $Setting }}" required />
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-5">
+                        <div class="input-group color-picker d-flex align-items-center justify-content-between">
+                            <div><label class="mt-1">Enable Choose-Profile Screen: </label></div>
+                            <div class="d-flex justify-content-between">
+                                <div>OFF</div>
+                                <div class="mt-1">
+                                    <label class="switch">
+                                        <input type="checkbox"  name="enable_choose_profile" id="enable_choose_profile" @if($enable_choose_profile == 1 ) value="1" checked @endif />
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div>ON</div>
                             </div>
                         </div>
                     </div>
