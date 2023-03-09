@@ -19,14 +19,14 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
 
 
 <section class="ContentPartner-header"
-    style="background:url('<?php echo URL::to('/') . '/public/uploads/moderator_albums/' . @$ModeratorsUser->banner; ?>') no-repeat scroll 0 0;;background-size: cover;height:350px;background-color: rgba(0, 0, 0, 0.45);
+    style="background:url('<?php echo URL::to('/') . '/public/uploads/moderator_albums/' . @$Content_Partner->banner; ?>') no-repeat scroll 0 0;;background-size: cover;height:350px;background-color: rgba(0, 0, 0, 0.45);
     background-blend-mode: multiply;">
 </section>
 
 <div class="container-fluid">
     <div class="position-relative">
         <div class="ContentPartner-img">
-            <img src="<?php echo  URL::to('/') . '/public/uploads/moderator_albums/'. @$ModeratorsUser->picture; ?>" class=" " width="150" alt="user">
+            <img src="<?php echo  URL::to('/') . '/public/uploads/moderator_albums/'. @$Content_Partner->picture; ?>" class=" " width="150" alt="user">
         </div>
     </div>
 </div>
@@ -241,6 +241,23 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
     });
 
 
+    function Live_Category(ele) {
+
+        var category_id = $(ele).attr('data-category-id');
+        
+        $.ajax({
+            type: "get",
+            url: "{{ route('Content_category_live') }}",
+            data: {
+                _token: "{{ csrf_token() }}",
+                category_id: category_id,
+                user_id:"{{ @$Content_Partner->id }}",
+            },
+            success: function(data) {
+                $(".Content_home").html(data);
+            },
+        });
+    }
     function Videos_Category(ele) {
         var category_id = $(ele).attr('data-category-id');
 
@@ -250,7 +267,7 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
             data: {
                 _token: "{{ csrf_token() }}",
                 category_id: category_id,
-                user_id:"{{ @$ModeratorsUser->id }}",
+                user_id:"{{ @$Content_Partner->id }}",
             },
             success: function(data) {
                 $(".Content_home").html(data);
@@ -268,7 +285,7 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
             data: {
                 _token: "{{ csrf_token() }}",
                 category_id: category_id,
-                user_id:"{{ @$ModeratorsUser->id }}",
+                user_id:"{{ @$Content_Partner->id }}",
             },
             success: function(data) {
                 $(".Content_home").html(data);
@@ -286,7 +303,7 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
             data: {
                 _token: "{{ csrf_token() }}",
                 category_id: category_id,
-                user_id:"{{ @$ModeratorsUser->id }}",
+                user_id:"{{ @$Content_Partner->id }}",
             },
             success: function(data) {
                 $(".Content_home").html(data);
@@ -294,23 +311,6 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
         });
         }
 
-        function Live_Category(ele) {
-
-        var category_id = $(ele).attr('data-category-id');
-
-        $.ajax({
-            type: "get",
-            url: "{{ route('Content_category_live') }}",
-            data: {
-                _token: "{{ csrf_token() }}",
-                category_id: category_id,
-                user_id:"{{ @$ModeratorsUser->id }}",
-            },
-            success: function(data) {
-                $(".Content_home").html(data);
-            },
-        });
-        }
 </script>
 
 

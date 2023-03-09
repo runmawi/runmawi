@@ -10,21 +10,21 @@
                       <?php if(isset($AudioCategory)) {
                         foreach($AudioCategory as $Audio_Category){ ?>
                             <li class="slide-item col-sm-2 col-md-2 col-xs-12">
-                                <a href="<?php echo URL::to('audio/'.$AudioCategory->slug ) ?>">
+                                <a href="<?php echo URL::to('audio/'.$Audio_Category->slug ) ?>">
                                     <div class="block-images position-relative">
                                         <div class="img-box">
-                                            <img src="<?php echo URL::to('/').'/public/uploads/images/'.@$AudioCategory->image;  ?>" class="img-fluid w-100" alt="">
+                                            <img src="<?php echo URL::to('/').'/public/uploads/images/'.@$Audio_Category->image;  ?>" class="img-fluid w-100" alt="">
                                         </div>
                             
                                         <div class="block-description" >
-                                                <a href="<?php echo URL::to('audio').'/'.$AudioCategory->slug  ?>">
-                                                    <h6><?php  echo (strlen(@$AudioCategory->title) > 17) ? substr(@$AudioCategory->title,0,18).'...' : @$AudioCategory->title; ?></h6>
+                                                <a href="<?php echo URL::to('audio').'/'.$Audio_Category->slug  ?>">
+                                                    <h6><?php  echo (strlen(@$Audio_Category->title) > 17) ? substr(@$Audio_Category->title,0,18).'...' : @$Audio_Category->title; ?></h6>
                                                 </a>
                                             <div class="hover-buttons"><div>
                                         </div>
                                     </div>
                                     <div>
-                                        <button type="button" class="show-details-button" data-toggle="modal" data-target="#myModal<?= @$AudioCategory->id;?>">
+                                        <button type="button" class="show-details-button" data-toggle="modal" data-target="#myModal<?= @$Audio_Category->id;?>">
                                             <span class="text-center thumbarrow-sec"></span>
                                         </button>
                                     </div> </div> </div>
