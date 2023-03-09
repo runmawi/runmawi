@@ -4,9 +4,8 @@
    $order_settings_list = App\OrderHomeSetting::get();
    $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first();
    $slider_choosen = App\HomeSetting::pluck('slider_choosen')->first();
-
+   
 ?>
-
 
 <!-- Slider Start -->
 
@@ -138,25 +137,22 @@
             </section>
     <?php } }?>
 
-     <!-- Latest Viewed Videos -->
+         <!-- Latest Viewed Videos -->
      
     <?php
-      //  if($value->video_name == "latest_viewed_Videos"){
-      //    if($home_settings->latest_viewed_Videos == 1){ ?>
+       if( $value->video_name == "latest_viewed_Videos"){
+         if($home_settings->latest_viewed_Videos == 1){  ?>
             <section id="iq-favorites">
                <div class="fluid overflow-hidden">
                      <div class="row">
                         <div class="col-sm-12">
-                           <?php include 'partials/home/latest-videos.php'; ?>
+                           <?php include 'partials/home/latest_viewed_Videos.php'; ?>
                         </div>
                      </div>
                </div>
             </section>
-    <!-- <?php
-   //  } }
-    ?> 
-    -->
-
+    <?php } } ?> 
+   
          <!-- Latest Viewed Livestream -->
      
    <?php
@@ -166,7 +162,7 @@
                <div class="fluid overflow-hidden">
                      <div class="row">
                         <div class="col-sm-12">
-                           <?php include 'partials/home/latest-videos.php'; ?>
+                           <?php include 'partials/home/latest_viewed_Livestream.php'; ?>
                         </div>
                      </div>
                </div>
@@ -182,7 +178,7 @@
                <div class="fluid overflow-hidden">
                      <div class="row">
                         <div class="col-sm-12">
-                           <?php include 'partials/home/latest-videos.php'; ?>
+                           <?php include 'partials/home/latest_viewed_Audios.php'; ?>
                         </div>
                      </div>
                </div>
@@ -197,7 +193,7 @@
                <div class="fluid overflow-hidden">
                      <div class="row">
                         <div class="col-sm-12">
-                           <?php include 'partials/home/latest-videos.php'; ?>
+                           <?php include 'partials/home/latest_viewed_Episode.php'; ?>
                         </div>
                      </div>
                </div>
