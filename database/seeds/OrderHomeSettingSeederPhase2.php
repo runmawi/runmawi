@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Carbon\Carbon;
+use App\OrderHomeSetting;
 
 class OrderHomeSettingSeederPhase2 extends Seeder
 {
