@@ -6,8 +6,13 @@
 
         $latest_view_videos =  App\RecentView::join('videos', 'videos.id', '=', 'recent_views.video_id')
             ->where('recent_views.user_id',Auth::user()->id)
-            ->groupBy('recent_views.video_id')
-            ->get();
+            ->groupBy('recent_views.video_id');
+
+            if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+                $latest_view_videos = $latest_view_videos  ->whereNotIn('videos.id',Block_videos());
+            }
+            
+            $latest_view_videos = $latest_view_videos->get();
    }
    else
    {
@@ -19,7 +24,19 @@
 
 
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-    <h4 class="main-title"><a href="<?php echo URL::to('home'); ?>"> Latest view videos </a></h4>
+    <h4 class="main-title">
+        <a href="<?php if ($order_settings_list[15]->header_name) {
+            echo URL::to('/') . '/' . $order_settings_list[15]->url;
+        } else {
+            echo '';
+        } ?>">
+
+            <?php if ($order_settings_list[15]->header_name) {
+                echo $order_settings_list[15]->header_name;
+            } else {
+                echo '';
+            } ?></a>
+    </h4>
 </div>
 
 <div class="favorites-contens">
@@ -28,23 +45,23 @@
                 foreach($latest_view_videos as $key => $latest_view_video):  ?>
 
         <li class="slide-item">
-            <a href="<?php echo URL::to('category/videos'.$latest_view_video->slug); ?>">
+            <a href="<?php echo URL::to('category/videos' . $latest_view_video->slug); ?>">
                 <div class="block-images position-relative">
 
-                        <!-- block-images -->
+                    <!-- block-images -->
                     <div class="img-box">
                         <img loading="lazy" data-src="<?php echo URL::to('/') . '/public/uploads/images/' . $latest_view_video->image; ?>" class="img-fluid lazyload w-100"
                             alt="">
 
                         <!-- PPV price -->
                         <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
-                            <?php  if(!empty($latest_view_video->ppv_price)){?>
+                        <?php  if(!empty($latest_view_video->ppv_price)){?>
                         <p class="p-tag1"><?php echo $currency->symbol . ' ' . $latest_view_video->ppv_price; ?></p>
-                            <?php }elseif( !empty($latest_view_video->global_ppv || !empty($latest_view_video->global_ppv) && $latest_view_video->ppv_price == null)){ ?>
+                        <?php }elseif( !empty($latest_view_video->global_ppv || !empty($latest_view_video->global_ppv) && $latest_view_video->ppv_price == null)){ ?>
                         <p class="p-tag1"><?php echo $latest_view_video->global_ppv . ' ' . $currency->symbol; ?></p>
-                            <?php }elseif($latest_view_video->global_ppv == null && $latest_view_video->ppv_price == null ){ ?>
+                        <?php }elseif($latest_view_video->global_ppv == null && $latest_view_video->ppv_price == null ){ ?>
                         <p class="p-tag"><?php echo 'Free'; ?></p>
-                            <?php } ?>
+                        <?php } ?>
                         <?php } ?>
                     </div>
                 </div>
@@ -59,11 +76,11 @@
 
                 <div class="mt-2 d-flex justify-content-between p-0">
                     <?php if($ThumbnailSetting->title == 1) { ?>
-                        <h6><?php echo strlen($latest_view_video->title) > 17 ? substr($latest_view_video->title, 0, 18) . '...' : $latest_view_video->title; ?></h6>
+                    <h6><?php echo strlen($latest_view_video->title) > 17 ? substr($latest_view_video->title, 0, 18) . '...' : $latest_view_video->title; ?></h6>
                     <?php } ?>
 
                     <?php if($ThumbnailSetting->age == 1) { ?>
-                        <div class="badge badge-secondary"><?php echo $latest_view_video->age_restrict . ' ' . '+'; ?></div>
+                    <div class="badge badge-secondary"><?php echo $latest_view_video->age_restrict . ' ' . '+'; ?></div>
                     <?php } ?>
                 </div>
 
@@ -71,26 +88,26 @@
 
                     <!-- Duration -->
                     <?php if($ThumbnailSetting->duration == 1) { ?>
-                        <span class="text-white">
-                            <i class="fa fa-clock-o"></i>
-                            <?= gmdate('H:i:s', $latest_view_video->duration) ?>
-                        </span>
+                    <span class="text-white">
+                        <i class="fa fa-clock-o"></i>
+                        <?= gmdate('H:i:s', $latest_view_video->duration) ?>
+                    </span>
                     <?php } ?>
 
                     <!-- Rating -->
 
                     <?php if($ThumbnailSetting->rating == 1 && $latest_view_video->rating != null) { ?>
-                        <span class="text-white">
-                            <i class="fa fa-star-half-o" aria-hidden="true"></i>
-                            <?php echo __($latest_view_video->rating); ?>
-                        </span>
+                    <span class="text-white">
+                        <i class="fa fa-star-half-o" aria-hidden="true"></i>
+                        <?php echo __($latest_view_video->rating); ?>
+                    </span>
                     <?php } ?>
 
                     <?php if($ThumbnailSetting->featured == 1 && $latest_view_video->featured == 1) { ?>
                     <!-- Featured -->
-                        <span class="text-white">
-                            <i class="fa fa-flag" aria-hidden="true"></i>
-                        </span>
+                    <span class="text-white">
+                        <i class="fa fa-flag" aria-hidden="true"></i>
+                    </span>
                     <?php }?>
                 </div>
 
@@ -98,10 +115,10 @@
                     <!-- published_year -->
 
                     <?php  if ( ($ThumbnailSetting->published_year == 1) &&  ( $latest_view_video->year != null ) ) { ?>
-                        <span class="text-white">
-                            <i class="fa fa-calendar" aria-hidden="true"></i>
-                            <?php echo __($latest_view_video->year); ?>
-                        </span>
+                    <span class="text-white">
+                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                        <?php echo __($latest_view_video->year); ?>
+                    </span>
                     <?php } ?>
                 </div>
 
