@@ -83,6 +83,7 @@ class ContentPartnerHomeController extends Controller
     {
         $settings = Setting::first();
         $ModeratorsUser = ModeratorsUser::where('slug',$slug)->first(); 
+// dd($ModeratorsUser );
 
         $currency = CurrencySetting::first();
             if(!empty($ModeratorsUser)){
@@ -106,6 +107,7 @@ class ContentPartnerHomeController extends Controller
             $ThumbnailSetting = ThumbnailSetting::first();
         //    dd($latest_videos); 
             $data = array(
+                'Content_Partner' => ModeratorsUser::where('slug',$slug)->first(),
                 'currency' => $currency,
                 'latest_video' => $latest_videos,
                 'latest_series' => $latest_series,
@@ -115,7 +117,6 @@ class ContentPartnerHomeController extends Controller
                 'LiveCategory' => LiveCategory::get(),
                 'VideoCategory' => VideoCategory::get(),
                 'AudioCategory' => AudioCategory::get(),
-                'ModeratorsUser' => $ModeratorsUser,
             );
             
             return Theme::view('ContentPartnerHome', $data);
@@ -154,7 +155,7 @@ class ContentPartnerHomeController extends Controller
             return Theme::view('partials.channel.channel_category_videos', $data);
             $theme = Theme::uses($this->Theme);
 
-            return $theme->load('public/themes/default/views/partials/channel/channel_category_videos', $data)->render();
+            return $theme->load('public/themes/default/views/partials/cpp/cpp_category_videos', $data)->render();
     }
 
     public function Content_category_series(Request $request)
@@ -168,7 +169,7 @@ class ContentPartnerHomeController extends Controller
 
         $theme = Theme::uses($this->Theme);
 
-        return $theme->load('public/themes/default/views/partials/channel/channel_category_series', $data)->render();
+        return $theme->load('public/themes/default/views/partials/cpp/cpp_category_series', $data)->render();
     }
 
     public function Content_category_live(Request $request)
@@ -177,26 +178,26 @@ class ContentPartnerHomeController extends Controller
         $LiveCategory = LiveCategory::find($request->category_id) != null ? LiveCategory::find($request->category_id)->specific_category_live : array();
         
         $Live_Category = $LiveCategory->where('user_id', $request->user_id)->where('uploaded_by' ,'CPP')->all();
-
         $data = array( 'LiveCategory' => $Live_Category );
 
         $theme = Theme::uses($this->Theme);
 
-        return $theme->load('public/themes/default/views/partials/channel/channel_category_live', $data)->render();
+        return $theme->load('public/themes/default/views/partials/cpp/cpp_category_live', $data)->render();
     }
 
     public function Content_category_audios(Request $request)
     {
-         
-        $AudioCategory = AudioCategory::find($request->category_id) != null ? AudioCategory::find($request->category_id)->specific_category_series : array();
+        $request->category_id = 1;
+        $request->user_id = 4;
+
+        $AudioCategory = AudioCategory::find($request->category_id) != null ? AudioCategory::find($request->category_id)->specific_category_audio : array();
         
         $Audio_Category = $AudioCategory->where('user_id', $request->user_id)->where('uploaded_by' ,'CPP')->all();
 
         $data = array( 'AudioCategory' => $Audio_Category );
-
         $theme = Theme::uses($this->Theme);
 
-        return $theme->load('public/themes/default/views/partials/channel/channel_category_audios', $data)->render();
+        return $theme->load('public/themes/default/views/partials/cpp/cpp_category_audios', $data)->render();
     }
 
 }

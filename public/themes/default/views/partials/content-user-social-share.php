@@ -1,7 +1,7 @@
 <?php
 if(isset($ModeratorsUser)):
     $media_title = $ModeratorsUser->slug;
-    $url = URL::to('/channel/');
+    $url = URL::to('/ContentPartner/');
     $media_url = $url . '/' . $ModeratorsUser->slug;
     $hidden = '<input type="hidden" value="'.$ModeratorsUser->id.'" id="videoid">';
 else:
