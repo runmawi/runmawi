@@ -128,21 +128,21 @@ if (Auth::guest())
 			<?php        else: ?>
 
         <div id="subscribers_only"style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 1.3)) , url(<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 450px; padding-top: 150px;">
-      <h4 class="text-center"><?php echo $episode->title ; ?></h4>
-      <p class="text-center text-white col-lg-8" style="margin:0 auto";><?php echo ($episode->episode_description) ; ?></p>
-         <h2 class="text-center">Subscribe to view more<?php if ($series->access == 'subscriber'): ?><?php
+      <h4 class=""><?php echo $episode->title ; ?></h4>
+      <p class=" text-white col-lg-8" style="margin:0 auto";><?php echo ($episode->episode_description) ; ?></p>
+         <h2 class="">Subscribe to view more<?php if ($series->access == 'subscriber'): ?><?php
             elseif ($series->access == 'registered'): ?>Registered Users<?php
             endif; ?></h2>
          <div class="clear"></div>
          <?php if (!Auth::guest() && $series->access == 'subscriber'): ?>
          <form method="get" action="<?=URL::to('/') ?>/user/<?=Auth::user()->username ?>/upgrade_subscription">
-             <div class="text-center">
+             <div class="">
              <button id="button">Become a subscriber to watch this episode</button></div>
          </form>
          <?php
             else: ?>
          <form method="get" action="<?=URL::to('signup') ?>">
-             <div class="text-center mt-3">
+             <div class=" mt-3">
             <button id="button" class="btn btn-primary">Subscribe to view more <?php if ($series->access == 'subscriber'): ?><?php
                elseif ($series->access == 'registered'): ?>for Free!<?php
                endif; ?></button></div>
