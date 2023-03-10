@@ -16,7 +16,7 @@ foreach( $errors->all() as $message ){ ?>
 <!-- Header End -->
 <section id="home" class="iq-main-slider p-0">
     <div id="home-slider" class="slider m-0 p-0">
-        <?php include('partials/home/slider.php'); ?>
+        <?php include('partials/home/slider-1.php'); ?>
     </div>
  <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
     <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44" width="44px" height="44px" id="circle"
