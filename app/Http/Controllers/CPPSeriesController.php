@@ -56,7 +56,7 @@ use App\Watchlater;
 use App\Wishlist;
 use Session;
 
-class ChannelSeriesController extends Controller
+class CPPSeriesController extends Controller
 {
     /**
      * Display a listing of series
@@ -88,7 +88,7 @@ class ChannelSeriesController extends Controller
         }
         else
         {
-            $user = Session::get('channel');
+            $user = Session::get('user');
             $id = $user->id;
 
             $search_value = $request->get('s');
@@ -97,19 +97,19 @@ class ChannelSeriesController extends Controller
                 $series = Series::where('title', 'LIKE', '%' . $search_value . '%')->orderBy('created_at', 'desc')
                     ->paginate(9);
             else:
-                $series = Series::where('user_id', '=', $id)->where('uploaded_by', 'Channel')
+                $series = Series::where('user_id', '=', $id)->where('uploaded_by', 'CPP')
                     ->orderBy('created_at', 'DESC')
                     ->paginate(9);
             endif;
 
-            $user = Session::get('channel');
+            $user = Session::get('user');
 
             $data = array(
                 'series' => $series,
                 'user' => $user,
             );
 
-            return View::make('channel.series.index', $data);
+            return View::make('moderator.cpp.series.index', $data);
         }
     }
 
@@ -147,9 +147,9 @@ class ChannelSeriesController extends Controller
             $data = array(
                 'settings ' => $settings,
                 'headline' => '<i class="fa fa-plus-circle"></i> New Series',
-                'post_route' => URL::to('channel/series/store') ,
+                'post_route' => URL::to('cpp/series/store') ,
                 'button_text' => 'Add New Series',
-                'user' => \Session::get('channel') ,
+                'user' => \Session::get('user') ,
                 'series_categories' => VideoCategory::all() ,
                 'languages' => Language::all() ,
                 'artists' => Artist::all() ,
@@ -159,7 +159,7 @@ class ChannelSeriesController extends Controller
                 'InappPurchase' => InappPurchase::all() ,
 
             );
-            return View::make('channel.series.create_edit', $data);
+            return View::make('moderator.cpp.series.create_edit', $data);
         }
     }
 
@@ -173,7 +173,7 @@ class ChannelSeriesController extends Controller
         $validatedData = $request->validate(['title' => ['required', 'string'], ]);
 
         /*Slug*/
-        $user = Session::get('channel');
+        $user = Session::get('user');
         $id = $user->id;
 
         $data = $request->all();
@@ -318,7 +318,7 @@ class ChannelSeriesController extends Controller
         $series->ppv_status = $ppv_status;
         $series->player_image = $player_image;
         $series->user_id = $id;
-        $series->uploaded_by = 'Channel';
+        $series->uploaded_by = 'CPP';
         $series->banner = empty($data['banner']) ? 0 : 1;
         $series->search_tag = $data['search_tag'];
         $series->details = strip_tags($data['details']);
@@ -401,7 +401,7 @@ class ChannelSeriesController extends Controller
         $shortcodes = $request->get('short_code');
         $languages = $request->get('language');
 
-        return Redirect::to('channel/series-list')
+        return Redirect::to('cpp/series-list')
             ->with(array(
             'note' => 'New Series Successfully Added!',
             'note_type' => 'success'
@@ -417,15 +417,15 @@ class ChannelSeriesController extends Controller
     public function edit($id)
     {
 
-        $user = Session::get('channel');
+        $user = Session::get('user');
         // $id = $user->id;
-        $series = Series::where('id', '=', $id)->where('uploaded_by', 'Channel')
+        $series = Series::where('id', '=', $id)->where('uploaded_by', 'CPP')
             ->first();
         $results = Episode::all();
         $settings = Setting::first();
 
         //$episode = Episode::all();
-        $seasons = SeriesSeason::where('series_id', '=', $id)->where('uploaded_by', 'Channel')
+        $seasons = SeriesSeason::where('series_id', '=', $id)->where('uploaded_by', 'CPP')
             ->with('episodes')
             ->get();
         // $books = SeriesSeason::with('episodes')->get();
@@ -435,7 +435,7 @@ class ChannelSeriesController extends Controller
             'series' => $series,
             'settings' => $settings,
             'seasons' => $seasons,
-            'post_route' => URL::to('channel/series/update') ,
+            'post_route' => URL::to('cpp/series/update') ,
             'button_text' => 'Update Series',
             'admin_user' => $user,
             'series_categories' => VideoCategory::all() ,
@@ -450,7 +450,7 @@ class ChannelSeriesController extends Controller
             'InappPurchase' => InappPurchase::all() ,
         );
 
-        return View::make('channel.series.create_edit', $data);
+        return View::make('moderator.cpp.series.create_edit', $data);
     }
 
     /**
@@ -461,7 +461,7 @@ class ChannelSeriesController extends Controller
      */
     public function update(Request $request)
     {
-        $user = Session::get('channel');
+        $user = Session::get('user');
         $user_id = $user->id;
         $input = $request->all();
         $id = $input['id'];
@@ -716,7 +716,7 @@ class ChannelSeriesController extends Controller
             }
         }
 
-        return Redirect::to('channel/series/edit' . '/' . $id)->with(array(
+        return Redirect::to('cpp/series/edit' . '/' . $id)->with(array(
             'note' => 'Successfully Updated Series!',
             'note_type' => 'success'
         ));
@@ -739,7 +739,7 @@ class ChannelSeriesController extends Controller
 
         //        SeriesResolution::where('series_id', '=', $id)->delete();
         //        SeriesSubtitle::where('series_id', '=', $id)->delete();
-        return Redirect::to('channel/series-list')
+        return Redirect::to('cpp/series-list')
             ->with(array(
             'note' => 'Successfully Deleted Series',
             'note_type' => 'success'
@@ -1013,7 +1013,7 @@ class ChannelSeriesController extends Controller
             $ios_ppv_price = null;
         }
 
-        $user = Session::get('channel');
+        $user = Session::get('user');
         $user_id = $user->id;
 
         $series = new SeriesSeason;
@@ -1024,7 +1024,7 @@ class ChannelSeriesController extends Controller
         $series->access = $access;
         $series->ppv_price = $ppv_price;
         $series->user_id = $user_id;
-        $series->uploaded_by = 'Channel';
+        $series->uploaded_by = 'CPP';
         $series->ppv_interval = $ppv_interval;
         $series->ios_product_id = $ios_ppv_price;
         $series->save();
@@ -1045,7 +1045,7 @@ class ChannelSeriesController extends Controller
             'InappPurchase' => InappPurchase::all() ,
         );
 
-        return View::make('channel/series/season/edit', $data);
+        return View::make('moderator/cpp/series/season/edit', $data);
     }
     public function Update_season(Request $request)
     {
@@ -1234,7 +1234,7 @@ class ChannelSeriesController extends Controller
 
         SeriesSeason::destroy($id);
 
-        return Redirect::to('channel/series/edit' . '/' . $id)->with(array(
+        return Redirect::to('cpp/series/edit' . '/' . $id)->with(array(
             'note' => 'Successfully Deleted Season',
             'note_type' => 'success'
         ));
@@ -1251,7 +1251,7 @@ class ChannelSeriesController extends Controller
             'episodes' => $episodes,
             'series' => $series,
             'season_id' => $season_id,
-            'post_route' => URL::to('channel/episode/create') ,
+            'post_route' => URL::to('cpp/episode/create') ,
             'button_text' => 'Create Episode',
             'admin_user' => Auth::user() ,
             'age_categories' => AgeCategory::all() ,
@@ -1260,7 +1260,7 @@ class ChannelSeriesController extends Controller
 
         );
 
-        return View::make('channel.series.season_edit', $data);
+        return View::make('moderator.cpp.series.season_edit', $data);
 
     }
 
@@ -1270,7 +1270,7 @@ class ChannelSeriesController extends Controller
         $data = $request->all();
         $settings = Setting::first();
 
-        $user = Session::get('channel');
+        $user = Session::get('user');
         $user_id = $user->id;
 
         if (!empty($data['ppv_price']))
@@ -1471,7 +1471,7 @@ class ChannelSeriesController extends Controller
         $episodes->episode_order = $episode = Episode::where('season_id', $data['season_id'])->max('episode_order') + 1;
         $episodes->save();
 
-        return Redirect::to('channel/season/edit/' . $data['series_id'] . '/' . $data['season_id'])->with(array(
+        return Redirect::to('cpp/season/edit/' . $data['series_id'] . '/' . $data['season_id'])->with(array(
             'note' => 'New Episode Successfully Added!',
             'note_type' => 'success'
         ));
@@ -1484,7 +1484,7 @@ class ChannelSeriesController extends Controller
 
         Episode::destroy($id);
 
-        return Redirect::to('channel/season/edit' . '/' . $series_id . '/' . $season_id)->with(array(
+        return Redirect::to('cpp/season/edit' . '/' . $series_id . '/' . $season_id)->with(array(
             'note' => 'Successfully Deleted Season',
             'note_type' => 'success'
         ));
@@ -1496,7 +1496,7 @@ class ChannelSeriesController extends Controller
         $data = array(
             'headline' => '<i class="fa fa-edit"></i> Edit Episode ' . $episodes->title,
             'episodes' => $episodes,
-            'post_route' => URL::to('channel/episode/update') ,
+            'post_route' => URL::to('cpp/episode/update') ,
             'button_text' => 'Update Episode',
             // 'admin_user' => Auth::user(),
             'age_categories' => AgeCategory::all() ,
@@ -1504,7 +1504,7 @@ class ChannelSeriesController extends Controller
 
         );
 
-        return View::make('channel.series.edit_episode', $data);
+        return View::make('moderator.cpp.series.edit_episode', $data);
     }
 
     public function update_episode(Request $request)
@@ -1736,7 +1736,7 @@ class ChannelSeriesController extends Controller
         $episode->save();
 
         $episode = Episode::findOrFail($id);
-        return Redirect::to('channel/season/edit' . '/' . $episode->series_id . '/' . $episode->season_id)
+        return Redirect::to('cpp/season/edit' . '/' . $episode->series_id . '/' . $episode->season_id)
             ->with(array(
             'note' => 'Successfully Updated Episode!',
             'note_type' => 'success'
@@ -1748,9 +1748,8 @@ class ChannelSeriesController extends Controller
     {
 
         $value = array();
-        $user = Session::get('channel');
+        $user = Session::get('user');
         $user_id = $user->id;
-
         $data = $request->all();
         $series_id = $data['series_id'];
         $season_id = $data['season_id'];
@@ -1800,7 +1799,7 @@ class ChannelSeriesController extends Controller
                 $episode->series_id = $series_id;
                 $episode->season_id = $season_id;
                 $episode->user_id = $user_id;
-                $episode->uploaded_by = 'Channel';
+                $episode->uploaded_by = 'CPP';
                 $episode->image = 'default_image.jpg';
                 $episode->type = 'upload';
                 $episode->status = 0;
@@ -1860,7 +1859,7 @@ class ChannelSeriesController extends Controller
                 $video->series_id = $series_id;
                 $video->season_id = $season_id;
                 $video->user_id = $user_id;
-                $video->uploaded_by = 'Channel';
+                $video->uploaded_by = 'CPP';
                 $video->image = 'default_image.jpg';
                 $video->type = 'm3u8';
                 $video->status = 0;
@@ -1870,6 +1869,7 @@ class ChannelSeriesController extends Controller
                 $video->mp4_url = $storepath;
                 //  $video->user_id = Auth::user()->id;
                 $video->duration = $Video_duration;
+
                 $video->save();
 
                 ConvertEpisodeVideo::dispatch($video, $storepath);
@@ -2196,7 +2196,7 @@ class ChannelSeriesController extends Controller
         $episode->ppv_status = $data['ppv_status'];
         $episode->save();
 
-        return Redirect::to('admin/season/edit/' . $data['series_id'] . '/' . $data['season_id'])->with(array(
+        return Redirect::to('cpp/season/edit/' . $data['series_id'] . '/' . $data['season_id'])->with(array(
             'note' => 'New Episode Successfully Added!',
             'note_type' => 'success'
         ));
@@ -2259,7 +2259,7 @@ class ChannelSeriesController extends Controller
     {
 
          $settings = Setting::first();
-         $user = Session::get('channel');
+         $user = Session::get('user');
 
  
          if($user == null){
@@ -2307,7 +2307,7 @@ class ChannelSeriesController extends Controller
 
                  );
 
-                 return View::make('channel.series.season.player', $data);
+                 return View::make('moderator.cpp.series.season.player', $data);
  
     }
     

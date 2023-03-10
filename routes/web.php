@@ -1258,6 +1258,41 @@ Route::post('/audios/categories/update', array('before' => 'demo', 'uses' => 'CP
 Route::get('/audios/categories/delete/{id}', array('before' => 'demo', 'uses' => 'CPPAdminAudioCategoriesController@CPPdestroy'));
 
 
+
+    //CPP Series  Manage
+
+    Route::get('/series-list', 'CPPSeriesController@index');
+    Route::get('/series_list', 'CPPSeriesController@index');
+    Route::get('/series/create', 'CPPSeriesController@create');
+    Route::get('/series_create', 'CPPSeriesController@create');
+    Route::post('/series/store', 'CPPSeriesController@store');
+    Route::get('/series/edit/{id}', 'CPPSeriesController@edit');
+    Route::post('/series/update', 'CPPSeriesController@update');
+    Route::get('/series/delete/{id}', 'CPPSeriesController@destroy');
+    Route::get('/titlevalidation', 'CPPSeriesController@TitleValidation');
+    Route::post('/episode_order', 'CPPSeriesController@episode_order');
+
+    //CPP Series Season Manage
+    // Route::get('/season/create/{id}', 'CPPSeriesController@create_season');
+    Route::post('/season/create/', 'CPPSeriesController@create_season');
+    Route::get('/season/edit/{series_id}/{season_id}', 'CPPSeriesController@manage_season');
+    Route::get('/season/edit/{season_id}', 'CPPSeriesController@Edit_season');
+    Route::post('/season/update', 'CPPSeriesController@Update_season');
+    Route::get('/season/delete/{id}', 'CPPSeriesController@destroy_season');
+
+    //CPP Series Episode Manage
+
+    Route::post('/episode/create', 'CPPSeriesController@create_episode');
+    Route::get('/episode/delete/{id}', 'CPPSeriesController@destroy_episode');
+    Route::get('/episode/edit/{id}', 'CPPSeriesController@edit_episode');
+    Route::post('/episode/update', 'CPPSeriesController@update_episode');
+    Route::post('/episode_upload',  'CPPSeriesController@EpisodeUpload');
+    Route::post('/uploadepisodeedit',  'CPPSeriesController@EpisodeUploadEdit');
+    Route::get('episode/{series_name}/{episode_name}', 'CPPSeriesController@play_episode');
+
+
+
+
 //Artist Routes
 Route::get('/artists', 'CPPAdminArtistsController@CPPindex');
 Route::get('/artists/create', 'CPPAdminArtistsController@CPPcreate');
@@ -2007,8 +2042,10 @@ Route::get('channel_category_live', 'ChannelHomeController@channel_category_live
 Route::get('all_Channel_videos', 'ChannelHomeController@all_Channel_videos')->name('all_Channel_videos');
 
   // Content Partner List
-  Route::get('ContentPartner/{slug}', 'ContentPartnerHomeController@ContentPartnerHome')->name('ContentPartnerHome');
-  Route::get('Content-list', 'ContentPartnerHomeController@ContentList')->name('ContentList');
+  Route::get('contentpartner/{slug}', 'ContentPartnerHomeController@ContentPartnerHome')->name('ContentPartnerHome');
+//   Route::get('ContentPartner/{slug}', 'ContentPartnerHomeController@ContentPartnerHome')->name('ContentPartnerHome');
+//   Route::get('Content-list', 'ContentPartnerHomeController@ContentList')->name('ContentList');
+  Route::get('content-partners', 'ContentPartnerHomeController@ContentList')->name('ContentList');
   Route::get('Content_category_series', 'ContentPartnerHomeController@Content_category_series')->name('Content_category_series');
   Route::get('Content_category_videos', 'ContentPartnerHomeController@Content_category_videos')->name('Content_category_videos');
   Route::get('Content_category_audios', 'ContentPartnerHomeController@Content_category_audios')->name('Content_category_audios');
