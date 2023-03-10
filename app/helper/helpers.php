@@ -559,6 +559,24 @@ function Block_videos(){
 
 }
 
+function Block_audios()
+{
+     // blocked Audio
+     $block_Audio = App\BlockAudio::where('country',Country_name())->get();
+        
+     if(!$block_Audio->isEmpty()){
+         foreach($block_Audio as $blocked_Audios){
+         $blocked_Audio[]=$blocked_Audios->audio_id;
+         }
+     } 
+     else{
+        $blocked_Audio[]='';
+     }   
+
+   return $blocked_Audio;
+
+}
+
  function compress_image_resolution( )
 {
    $compress_image_resolution = App\CompressImage::pluck('compress_resolution_size')->first() ? App\CompressImage::pluck('compress_resolution_size')->first() : '400' ;

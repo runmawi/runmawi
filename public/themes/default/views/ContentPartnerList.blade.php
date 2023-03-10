@@ -12,8 +12,8 @@
                 </div>
                 <div class="favorites-contens">
                     <ul class="category-page list-inline row p-0 mb-0">
-                      @if(isset($ModeratorsUser)) 
-                        @foreach($ModeratorsUser as $content_user)
+                      @if(isset($Content_Partner)) 
+                        @foreach($Content_Partner as $content_user)
                             <li class="slide-item col-sm-2 col-md-2 col-xs-12">
                                 <a href="{{ URL::to('ContentPartner').'/'.$content_user->slug   }} ">
                                     <div class="block-images position-relative">
