@@ -315,8 +315,20 @@ input:checked + .sliderk:before {
 	      background-color: <?php echo GetLightBg(); ?>;
       }
 
-      body.light-theme h4, body.light-theme p {
+      body.light-theme h4 {
          color: <?php echo GetLightText(); ?>;
+      }
+         body.light-theme label {
+         color: <?php echo GetLightText(); ?>!important;
+      }
+         body.light-theme .bmk p{
+         color: #000!important;
+      }
+         body.light-theme h5 {
+         color: <?php echo GetLightText(); ?>!important;
+      }
+        body.light-theme .pls i{
+         color: #fff!important;
       }
         body.light-theme header#main-header{
            background-color: <?php echo GetLightBg(); ?>!important;  
@@ -380,8 +392,23 @@ input:checked + .sliderk:before {
         body.light-theme h1{
            color: #000!important;
            
+        }  body.light-theme .h3{
+           color: #000!important;
+           
+        }  body.light-theme .series_title h1{
+           color: #fff!important;
+           
+        } body.light-theme .form-control{
+           color: #000!important;
+            background: #fff!important;
+            border:1px solid #000!important;
+           
         } 
         body.light-theme .menu-item span{
+           color: #fff!important;
+           
+        } 
+        body.light-theme .series_title desc{
            color: #fff!important;
            
         }
