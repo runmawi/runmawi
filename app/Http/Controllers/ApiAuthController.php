@@ -10635,9 +10635,10 @@ public function QRCodeMobileLogout(Request $request)
 
   public function comment_index(Request $request)
   {
+
     try {
 
-     $comment = WebComment::where('source_id',$request->source_id)->where('commentable_type',$request->commentable_type)->whereNull('child_id')->get();
+     $comment = WebComment::with('child_comment')->where('source_id',$request->source_id)->where('commentable_type',$request->commentable_type)->whereNull('child_id')->get();
 
       $response = array(
         'status'=> 'true',
