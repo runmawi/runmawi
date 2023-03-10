@@ -164,6 +164,7 @@ $uppercase =  ucfirst($request_url);
 }*/
 .phselect{
     
+    width: 100%;
     height: 45px !important;
     background: transparent !important;
     color: var(--iq-white) !important;
@@ -411,6 +412,7 @@ $jsondata = json_decode($jsonString, true); ?>
                             <div class="col-md-5 col-sm-12">
                               <select class="phselect form-control" name="ccode" id="ccode" >
                                 @foreach($jsondata as $code)
+                                <option>Select Country</option>
                                 <option value="{{  $code['dial_code'] }}" {{ $code['name'] == "United States" ? 'selected' : ''}}>{{ $code['name'].' ('. $code['dial_code'] . ')' }}</option>
                                 @endforeach
                             </select>

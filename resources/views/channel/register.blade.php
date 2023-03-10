@@ -6,6 +6,14 @@
   <?php $jsonString = file_get_contents(base_path('assets/country_code.json'));   
 
     $jsondata = json_decode($jsonString, true); ?>
+    <style>
+        .phselect {
+            width: 100%;
+            height: 45px !important;
+            background: transparent !important;
+            color: var(--iq-white) !important;
+        }
+    </style>
 @extends('moderator.header')
 
 <div class="container">
@@ -57,6 +65,7 @@
                             <div class="col-sm-4">
                               <select class="phselect" name="ccode" id="ccode" >
                                 @foreach($jsondata as $code)
+                                <option>Select Country</option>
                                 <option data-thumbnail="images/icon-chrome.png" value="{{ $code['dial_code'] }}" <?php if($code['dial_code']) ?>> {{ $code['name'].' ('. $code['dial_code'] . ')' }}</option>
                                 @endforeach
                             </select>

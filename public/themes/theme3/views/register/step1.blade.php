@@ -172,7 +172,9 @@ color: #FFFFFF;
     }
 .phselect{
   
-   background: transparent !important;
+    width: 100%;
+    height: 45px !important;
+    background: transparent !important;
     color: var(--iq-white) !important;
     border-bottom:1px solid #fff!important;
     border-radius: 10px;
@@ -439,6 +441,7 @@ i.fa.fa-google-plus {
                                        <div class="">
                               <select class="phselect form-control" name="ccode" id="ccode" >
                                 @foreach($jsondata as $code)
+                                <option>Select Country</option>
                                 <option value="{{  $code['dial_code'] }}" {{ $code['name'] == "United States" ? 'selected' : ''}}>{{ $code['name'].' ('. $code['dial_code'] . ')' }}</option>
                                  <!-- <option data-thumbnail="images/icon-chrome.png" value="{{ $code['dial_code'] }}" <?php if($code['dial_code']) ?>> {{ $code['name'].' ('. $code['dial_code'] . ')' }}</option>  -->
                                 @endforeach
