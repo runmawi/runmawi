@@ -6,8 +6,12 @@
 
         $latest_view_audios =  App\RecentView::join('audio', 'audio.id', '=', 'recent_views.audio_id')
             ->where('recent_views.user_id',Auth::user()->id)
-            ->groupBy('recent_views.audio_id')
-            ->get();
+            ->groupBy('recent_views.audio_id');
+
+            if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+                $latest_view_audios = $latest_view_audios  ->whereNotIn('audio.id',Block_audios());
+            }
+            $latest_view_audios = $latest_view_audios->get();
    }
    else
    {
@@ -18,16 +22,19 @@
 ?>
 
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-
     <h4 class="main-title">
-        <?php if ($order_settings_list[5]->header_name) {
-            echo $order_settings_list[5]->header_name;
+        <a href="<?php if ($order_settings_list[17]->header_name) {
+            echo URL::to('/') . '/' . $order_settings_list[17]->url;
         } else {
             echo '';
-        } ?>
-        </a>
-    </h4>
+        } ?>">
 
+            <?php if ($order_settings_list[17]->header_name) {
+                echo $order_settings_list[17]->header_name;
+            } else {
+                echo '';
+            } ?></a>
+    </h4>
 </div>
 
 <div class="favorites-contens">
