@@ -6,6 +6,14 @@
   <?php $jsonString = file_get_contents(base_path('assets/country_code.json'));   
 
     $jsondata = json_decode($jsonString, true); ?>
+    <style>
+        .phselect {
+            width: 100%;
+            height: 45px !important;
+            background: transparent !important;
+            color: var(--iq-white) !important;
+        }
+    </style>
 @extends('moderator.header')
 
 <div class="container">

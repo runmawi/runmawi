@@ -172,7 +172,9 @@ color: #FFFFFF;
     }
 .phselect{
   
-   background: transparent !important;
+    width: 100%;
+    height: 45px !important;
+    background: transparent !important;
     color: var(--iq-white) !important;
     border-bottom:1px solid #fff!important;
     border-radius: 10px;

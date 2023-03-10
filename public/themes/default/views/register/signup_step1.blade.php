@@ -118,7 +118,7 @@ $uppercase =  ucfirst($request_url);
     text-decoration: none;
 }*/
 .phselect{
-    
+    width: 100%;
     height: 45px !important;
     background: transparent !important;
     color: var(--iq-white) !important;
