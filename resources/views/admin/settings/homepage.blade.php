@@ -337,7 +337,7 @@ border-radius: 0px 4px 4px 0px;
                                 </div>
                             </div>
 
-                            <!-- <div class="col-sm-4">
+                            <div class="col-sm-4">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
                                 <div><label class="mt-1"> @if (@$order_settings_list[14]->header_name) {{ @$order_settings_list[14]->header_name }} @else {{ ""  }} @endif </label></div>
                                
@@ -351,8 +351,75 @@ border-radius: 0px 4px 4px 0px;
                                     </div>
                                  
                                 </div>
-                            </div> -->
-                                            
+                            </div>
+                                      
+                            
+                            <div class="col-sm-4">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                                <div><label class="mt-1"> @if (@$order_settings_list[15]->header_name) {{ @$order_settings_list[15]->header_name }} @else {{ ""  }} @endif </label></div>
+                               
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                         <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                        <input  type="checkbox"  name="latest_viewed_Videos"   @if ($settings->latest_viewed_Videos == 1) {{ "checked='checked'" }} @else {{ "" }} @endif>
+                                        <span class="slider round"></span>
+                                        </label>
+                                           <div class="ml-2">ON</div>
+                                    </div>
+                                 
+                                </div>
+                            </div>
+
+                            
+                            <div class="col-sm-4">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                                <div><label class="mt-1"> @if (@$order_settings_list[16]->header_name) {{ @$order_settings_list[16]->header_name }} @else {{ ""  }} @endif </label></div>
+                               
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                         <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                        <input  type="checkbox"  name="latest_viewed_Livestream"   @if ($settings->latest_viewed_Livestream == 1) {{ "checked='checked'" }} @else {{ "" }} @endif>
+                                        <span class="slider round"></span>
+                                        </label>
+                                           <div class="ml-2">ON</div>
+                                    </div>
+                                 
+                                </div>
+                            </div>
+
+                            
+                            <div class="col-sm-4">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                                <div><label class="mt-1"> @if (@$order_settings_list[17]->header_name) {{ @$order_settings_list[17]->header_name }} @else {{ ""  }} @endif </label></div>
+                               
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                         <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                        <input  type="checkbox"  name="latest_viewed_Audios"   @if ($settings->latest_viewed_Audios == 1) {{ "checked='checked'" }} @else {{ "" }} @endif>
+                                        <span class="slider round"></span>
+                                        </label>
+                                           <div class="ml-2">ON</div>
+                                    </div>
+                                 
+                                </div>
+                            </div>
+
+                            
+                            <div class="col-sm-4">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                                <div><label class="mt-1"> @if (@$order_settings_list[18]->header_name) {{ @$order_settings_list[18]->header_name }} @else {{ ""  }} @endif </label></div>
+                               
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                         <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                        <input  type="checkbox"  name="latest_viewed_Episode"   @if ($settings->latest_viewed_Episode == 1) {{ "checked='checked'" }} @else {{ "" }} @endif>
+                                        <span class="slider round"></span>
+                                        </label>
+                                           <div class="ml-2">ON</div>
+                                    </div>
+                                 
+                                </div>
+                            </div>
                                             {{-- This option moved to Pop-up setting  --}}
                                             
                             {{-- <div class="col-sm-4">
@@ -646,7 +713,7 @@ border-radius: 0px 4px 4px 0px;
                                 </div>
                             </div>
 
-                            <!-- <div class="col-sm-4">
+                            <div class="col-sm-4">
                                 <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
                                 <div><label class="mt-1"> @if (@$order_settings_list[14]->header_name) {{ @$order_settings_list[14]->header_name }} @else {{ ""  }} @endif </label></div>
                                
@@ -659,7 +726,75 @@ border-radius: 0px 4px 4px 0px;
                                            <div class="ml-2">ON</div>
                                     </div>
                                  
-                                </div> -->
+                                </div>
+                            </div>
+
+                                                        
+                            <div class="col-sm-4">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                                <div><label class="mt-1"> @if (@$order_settings_list[15]->header_name) {{ @$order_settings_list[15]->header_name }} @else {{ ""  }} @endif </label></div>
+                               
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                         <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                        <input  type="checkbox"  name="latest_viewed_Videos"   @if ($mobilesettings->latest_viewed_Videos == 1) {{ "checked='checked'" }} @else {{ "" }} @endif>
+                                        <span class="slider round"></span>
+                                        </label>
+                                           <div class="ml-2">ON</div>
+                                    </div>
+                                 
+                                </div>
+                            </div>
+
+                            
+                            <div class="col-sm-4">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                                <div><label class="mt-1"> @if (@$order_settings_list[16]->header_name) {{ @$order_settings_list[16]->header_name }} @else {{ ""  }} @endif </label></div>
+                               
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                         <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                        <input  type="checkbox"  name="latest_viewed_Livestream"   @if ($mobilesettings->latest_viewed_Livestream == 1) {{ "checked='checked'" }} @else {{ "" }} @endif>
+                                        <span class="slider round"></span>
+                                        </label>
+                                           <div class="ml-2">ON</div>
+                                    </div>
+                                 
+                                </div>
+                            </div>
+
+                            
+                            <div class="col-sm-4">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                                <div><label class="mt-1"> @if (@$order_settings_list[17]->header_name) {{ @$order_settings_list[17]->header_name }} @else {{ ""  }} @endif </label></div>
+                               
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                         <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                        <input  type="checkbox"  name="latest_viewed_Audios"   @if ($mobilesettings->latest_viewed_Audios == 1) {{ "checked='checked'" }} @else {{ "" }} @endif>
+                                        <span class="slider round"></span>
+                                        </label>
+                                           <div class="ml-2">ON</div>
+                                    </div>
+                                 
+                                </div>
+                            </div>
+
+                            
+                            <div class="col-sm-4">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                                <div><label class="mt-1"> @if (@$order_settings_list[18]->header_name) {{ @$order_settings_list[18]->header_name }} @else {{ ""  }} @endif </label></div>
+                               
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                         <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                        <input  type="checkbox"  name="latest_viewed_Episode"   @if ($mobilesettings->latest_viewed_Episode == 1) {{ "checked='checked'" }} @else {{ "" }} @endif>
+                                        <span class="slider round"></span>
+                                        </label>
+                                           <div class="ml-2">ON</div>
+                                    </div>
+                                 
+                                </div>
                             </div>
                         <!-- </div> -->
         </div>

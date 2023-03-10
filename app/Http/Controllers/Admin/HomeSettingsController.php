@@ -156,6 +156,11 @@ class HomeSettingsController extends Controller
         $settings->liveCategories = !empty($request->liveCategories) ?  "1" : "0" ;
         $settings->channel_partner = !empty($request->channel_partner) ?  "1" : "0" ;
         $settings->content_partner = !empty($request->content_partner) ?  "1" : "0" ;
+        $settings->latest_viewed_Videos = !empty($request->latest_viewed_Videos) ?  "1" : "0" ;
+        $settings->latest_viewed_Livestream = !empty($request->latest_viewed_Livestream) ?  "1" : "0" ;
+        $settings->latest_viewed_Audios = !empty($request->latest_viewed_Audios) ?  "1" : "0" ;
+        $settings->latest_viewed_Episode = !empty($request->latest_viewed_Episode) ?  "1" : "0" ;
+
 
 
         $settings->save();
@@ -338,6 +343,10 @@ class HomeSettingsController extends Controller
         $settings->liveCategories = !empty($request->liveCategories) ?  "1" : "0" ;
         $settings->channel_partner = !empty($request->channel_partner) ?  "1" : "0" ;
         $settings->content_partner = !empty($request->content_partner) ?  "1" : "0" ;
+        $settings->latest_viewed_Videos = !empty($request->latest_viewed_Videos) ?  "1" : "0" ;
+        $settings->latest_viewed_Livestream = !empty($request->latest_viewed_Livestream) ?  "1" : "0" ;
+        $settings->latest_viewed_Audios = !empty($request->latest_viewed_Audios) ?  "1" : "0" ;
+        $settings->latest_viewed_Episode = !empty($request->latest_viewed_Episode) ?  "1" : "0" ;
         $settings->save();
         return redirect::to('/admin/home-settings');
     }

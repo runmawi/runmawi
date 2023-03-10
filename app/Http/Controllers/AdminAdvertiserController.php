@@ -21,6 +21,10 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Message\Response;
 use Carbon\Carbon;
 use App\AdsTimeSlot;
+use App\EmailTemplate;
+use Auth;
+use Mail;
+use URL;
 
 class AdminAdvertiserController extends Controller
 {
@@ -289,40 +293,54 @@ class AdminAdvertiserController extends Controller
     public function save_ads_status(Request $request)
     {
         $data = $request->all();
-        $id = $data['id'];
+        $id   = $data['id'];
         $status = $data['status'];
+
         $Ads = Advertisement::find($id);
-        $Ads->status = $status;
+        $Ads->status =$status;
         $Ads->save();
 
-        $advertiser_emailid = Advertiser::find($Ads->advertiser_id)->email_id;
-        $customerName = Advertiser::find($Ads->advertiser_id)->company_name;
-        $adminemail = User::where('role', '=', 'admin')->first()->email;
-        $adname = Advertisement::find($id)->ads_name;
+        $advertiser_emailid = Advertiser::find($Ads->advertiser_id)->email_id;        $customerName = Advertiser::find($Ads->advertiser_id)->company_name;
+        $adminemail   = User::where('role', '=', 'admin')->first()->email;
+        $adname       = Advertisement::find($id)->ads_name;
         
         if ($status == 1) {
-            $details = [
-                'title' => 'Dear ' . $customerName,
-                'body' =>
-                    "We are thrilled to have you on board.\n
-        Your " .
-                    $adname .
-                    " has been Approved. \n
-        Log in to the Ad panel to explore more!Your Admin Panel: #PartnerUrl\n
-        Login email address: #PartnerEmail\n
-        Please write to us at " .
-                    $adminemail .
-                    ' for queries and suggestions.',
-            ];
 
             try {
+
+                 //Admin Ads Approval
+                $email_subject = EmailTemplate::where('id', '=', 42)->pluck('heading')->first();
+            
+                $settings = Setting::first();
               
-              \Mail::to($advertiser_emailid)->send(new \App\Mail\MyTestMail($details));
+                Mail::send('emails.admin_ads_approval', array(
+
+                    'Name' => $customerName,
+                    'AdvertiserPortal' => URL::to('/advertiser/login'),
+                    'AdvertiserEmail'  => $advertiser_emailid,
+                    'AdminEmail'   =>  $adminemail,
+                    'website_name' => GetWebsiteName() ,
+    
+                ) , function ($message) use ($request, $customerName, $adminemail ,$advertiser_emailid , $email_subject, $settings)
+                {
+                    $message->from(AdminMail() , GetWebsiteName());
+                    $message->to($advertiser_emailid, $customerName)->subject($email_subject);
+                });
+
+                $email_log      = 'Mail Sent Successfully from Admin Ads Approval E-Mail';
+                $email_template = "42";
+                $user_id = Auth::user()->id;
+    
+                Email_sent_log($user_id, $email_log, $email_template);
 
             } catch (\Throwable $th) {
-              //throw $th;
-            }
 
+                $email_log      = $th->getMessage();
+                $email_template = "42";
+                $user_id =  Auth::user()->id;
+            
+                Email_notsent_log($user_id, $email_log, $email_template);
+            }
         }
         return response()->json(['success' => true]);
     }
