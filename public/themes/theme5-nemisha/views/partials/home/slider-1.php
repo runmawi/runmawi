@@ -90,7 +90,7 @@ style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bo
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;  
   overflow: hidden;">
-<?php echo __($slider_video->description); ?>
+    <p><?php echo __($slider_video->description); ?></p>
 </div>
 <div class="d-flex justify-content-evenly align-items-center r-mb-23" data-animation-in="fadeInUp"
 data-delay-in="1.2">
@@ -160,7 +160,7 @@ endif; ?>
                                 <div data-animation-in="fadeInUp" data-delay-in="1.2"
                                     style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
                                     -webkit-line-clamp: 3; -webkit-box-orient: vertical;  overflow: hidden;">
-                                    <?php echo __($live_event_banner->description); ?>
+                                    <p><?php echo __($live_event_banner->description); ?></p>
                                 </div>
 
                                 <div class="d-flex justify-content-evenly align-items-center r-mb-23" data-animation-in="fadeInUp"
@@ -214,7 +214,7 @@ endif; ?>
                         -webkit-line-clamp: 3;
                         -webkit-box-orient: vertical;  
                         overflow: hidden;">
-                        <?php echo __($videos->description); ?>
+                        <p> <?php echo __($videos->description); ?></p>
                         </div>
                             <div class="row justify r-mb-23  p-0 mb-4 text-center" >
                                 <div class="col-md-3">
@@ -340,7 +340,7 @@ if(Route::current()->getName() == "home"){
                                 <div data-animation-in="fadeInUp" data-delay-in="1.2"
                                         style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
                                             -webkit-line-clamp: 3;   -webkit-box-orient: vertical;  overflow: hidden;">
-                                            <?php echo __($videos->description); ?>
+                                    <p>  <?php echo __($videos->description); ?></p>
                                 </div>
 
                                 <div class="row justify r-mb-23  p-0 mb-4 text-center" data-animation-in="fadeInUp"  data-delay-in="1.2">
@@ -480,7 +480,7 @@ style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bo
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;  
   overflow: hidden;">
-<?php echo __($slider_video->description); ?>
+    <p><?php echo __($slider_video->description); ?></p>
 </div>
    <div class="row justify r-mb-23  p-0 mb-4 text-center" data-animation-in="fadeInUp"
                             data-delay-in="1.2">
@@ -561,7 +561,7 @@ endif; ?>
                             <div 
                                 style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
                                         -webkit-line-clamp: 3;  -webkit-box-orient: vertical; overflow: hidden;">
-                                <?php echo __($series_slider->description); ?>
+                                <p><?php echo __($series_slider->description); ?></p>
                             </div>
 
 
