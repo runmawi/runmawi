@@ -36,6 +36,10 @@ class HomesettingTableSeeder extends Seeder
                     'artist' => '1',
                     'user_id' => null,
                     'theme_choosen' => 'default',
+                    'latest_viewed_Videos' => 0,
+                    'latest_viewed_Livestream' => 0,
+                    'latest_viewed_Audios' => 0,
+                    'latest_viewed_Episode' => 0,
                     'created_at' => Carbon::now(),
                 ],
         ];
