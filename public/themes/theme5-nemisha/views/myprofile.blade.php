@@ -380,7 +380,7 @@
 
                             <p class="account row justify-content-center">
                                 <span class="col-lg-4 text-left">Email-id:</span>
-                                <span class="col-lg-4 text-left"> <?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?></span>
+                                <span class="col-lg-8 text-left"> <?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?></span>
                             </p>
 
                             <p class="account row justify-content-center">
