@@ -137,6 +137,8 @@ class ContentPartnerHomeController extends Controller
                 'currency' => $currency,
                 'ModeratorsUser' => $ModeratorsUser,
                 'ThumbnailSetting' => $ThumbnailSetting,
+                'Content_Partner' => ModeratorsUser::get(),
+
             );
             
             return Theme::view('ContentPartnerList', $data);

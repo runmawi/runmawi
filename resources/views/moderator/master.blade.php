@@ -148,13 +148,14 @@ for($i=0;$i<(count($userrolepermissiom));$i++){
       </ul></li>
 <?php }else{ } ?>
                   <?php if( in_array( "Series & Episodes" ,$role)){ ?>
-   <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-star-half-alt"></i><span>Series & Episodes </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+   <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/tv.svg')?>"><span>Series & Episodes </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
             <ul id="series" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
             <?php if( in_array( "Series List" ,$role)){ ?>
-              <li><a href="{{ URL::to('series_list') }}"><i class="las la-user-plus"></i>Series List</a></li>
+              <li><a href="{{ URL::to('cpp/series_list') }}"><i class="las la-user-plus"></i>Series List</a></li>
+              <li><a href="{{ URL::to('cpp/series/create') }}"><i class="las la-user-plus"></i>Add New Series</a></li>
              <?php }else{ } ?>
-            <?php if( in_array( "Add New Series" ,$role)){ ?>         
-              <li><a href="{{ URL::to('series_create') }}"><i class="las la-eye"></i>Add New Series</a></li>
+            <?php if( in_array( "Manage Series Genre" ,$role)){ ?>         
+              <!-- <li><a href="{{ URL::to('cpp/Series/Genre') }}"><i class="las la-eye"></i>Manage Series Genre</a></li> -->
               <?php }else{ } ?>
             </ul>
           </li>   
