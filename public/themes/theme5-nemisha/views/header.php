@@ -373,6 +373,25 @@ input:checked + .sliderk:before {
         }
         body.light-theme span{
             color: <?php echo GetLightText(); ?>!important;
+        }body.light-theme .slick-bg:before{
+            background-image: linear-gradient(to left, rgb(225 228 233 / 0%)0%, rgb(140 142 147)56%, rgb(205 206 209));
+           
+        }
+        body.light-theme h1{
+           color: #000!important;
+           
+        } 
+        body.light-theme .menu-item span{
+           color: #fff!important;
+           
+        }
+        body.light-theme .navbar-right .iq-sub-dropdown{
+          background-image: linear-gradient(to left, rgb(225 228 233 / 0%)0%, rgb(140 142 147)0%, rgb(205 206 209));
+           
+        } 
+        body.light-theme #home-slider h1.slider-text{
+          color: #000!important;
+           
         }
         .fa-2x {
 font-size: 2em;
