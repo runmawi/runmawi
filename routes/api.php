@@ -404,11 +404,11 @@ Route::group(
 
             // Comment Section
             
-        Route::get('/comment_index', 'ApiAuthController@comment_index');
+        Route::post('/comment_index', 'ApiAuthController@comment_index');
         Route::post('/comment_store', 'ApiAuthController@comment_store');
-        Route::get('/comment_edit', 'ApiAuthController@comment_edit');
+        Route::post('/comment_edit', 'ApiAuthController@comment_edit');
         Route::post('/comment_update', 'ApiAuthController@comment_update');
-        Route::get('/comment_destroy', 'ApiAuthController@comment_destroy');
+        Route::post('/comment_destroy', 'ApiAuthController@comment_destroy');
 
-        Route::post('/comment_reply', 'ApiAuthController@comment_reply')->name('comments.reply');
+        Route::post('/comment_reply', 'ApiAuthController@comment_reply');
     });
