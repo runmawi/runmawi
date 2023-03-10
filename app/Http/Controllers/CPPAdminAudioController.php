@@ -382,6 +382,9 @@ class CPPAdminAudioController extends Controller
 
         $audio->update($data);
         $audio->player_image =  $player_image;
+        $audio->uploaded_by =  'CPP';
+
+        $audio->update($data);
 
 
         if(!empty($data['artists'])){
@@ -758,9 +761,11 @@ class CPPAdminAudioController extends Controller
 
         $audio->update($data);
         $audio->player_image =  $player_image;
+        $audio->uploaded_by =  'CPP';
 
-
+        $audio->update($data);
         $audio = Audio::findOrFail($id);
+
         $users = User::all();
         if($audio['draft'] == 1){
             foreach ($users as $key => $user) {

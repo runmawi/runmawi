@@ -83,6 +83,7 @@ class ContentPartnerHomeController extends Controller
     {
         $settings = Setting::first();
         $ModeratorsUser = ModeratorsUser::where('slug',$slug)->first(); 
+// dd($ModeratorsUser );
 
         $currency = CurrencySetting::first();
             if(!empty($ModeratorsUser)){
@@ -106,6 +107,7 @@ class ContentPartnerHomeController extends Controller
             $ThumbnailSetting = ThumbnailSetting::first();
         //    dd($latest_videos); 
             $data = array(
+                'Content_Partner' => ModeratorsUser::where('slug',$slug)->first(),
                 'currency' => $currency,
                 'latest_video' => $latest_videos,
                 'latest_series' => $latest_series,
@@ -115,7 +117,6 @@ class ContentPartnerHomeController extends Controller
                 'LiveCategory' => LiveCategory::get(),
                 'VideoCategory' => VideoCategory::get(),
                 'AudioCategory' => AudioCategory::get(),
-                'ModeratorsUser' => $ModeratorsUser,
             );
             
             return Theme::view('ContentPartnerHome', $data);
@@ -142,106 +143,61 @@ class ContentPartnerHomeController extends Controller
         
     }
 
-    public function channel_category_videos(Request $request)
+    public function Content_category_videos(Request $request)
     {
 
         $videosCategory = VideoCategory::find($request->category_id) != null ? VideoCategory::find($request->category_id)->specific_category_videos : array();
          
-        $videos_Category = $videosCategory->where('user_id', $request->user_id)->where('uploaded_by' ,'Channel')->all();
+        $videos_Category = $videosCategory->where('user_id', $request->user_id)->where('uploaded_by' ,'CPP')->all();
 
         $data = array( 'videosCategory' => $videos_Category );
  
             return Theme::view('partials.channel.channel_category_videos', $data);
             $theme = Theme::uses($this->Theme);
 
-            return $theme->load('public/themes/default/views/partials/channel/channel_category_videos', $data)->render();
+            return $theme->load('public/themes/default/views/partials/cpp/cpp_category_videos', $data)->render();
     }
 
-    public function channel_category_series(Request $request)
+    public function Content_category_series(Request $request)
     {
 
         $SeriesCategory = VideoCategory::find($request->category_id) != null ? VideoCategory::find($request->category_id)->specific_category_series : array();
         
-        $Series_Category = $SeriesCategory->where('user_id', $request->user_id)->where('uploaded_by' ,'Channel')->all();
+        $Series_Category = $SeriesCategory->where('user_id', $request->user_id)->where('uploaded_by' ,'CPP')->all();
 
         $data = array( 'SeriesCategory' => $Series_Category );
 
         $theme = Theme::uses($this->Theme);
 
-        return $theme->load('public/themes/default/views/partials/channel/channel_category_series', $data)->render();
+        return $theme->load('public/themes/default/views/partials/cpp/cpp_category_series', $data)->render();
     }
 
-    public function channel_category_live(Request $request)
+    public function Content_category_live(Request $request)
     {
 
         $LiveCategory = LiveCategory::find($request->category_id) != null ? LiveCategory::find($request->category_id)->specific_category_live : array();
         
-        $Live_Category = $LiveCategory->where('user_id', $request->user_id)->where('uploaded_by' ,'Channel')->all();
-
+        $Live_Category = $LiveCategory->where('user_id', $request->user_id)->where('uploaded_by' ,'CPP')->all();
         $data = array( 'LiveCategory' => $Live_Category );
 
         $theme = Theme::uses($this->Theme);
 
-        return $theme->load('public/themes/default/views/partials/channel/channel_category_live', $data)->render();
+        return $theme->load('public/themes/default/views/partials/cpp/cpp_category_live', $data)->render();
     }
 
-    public function channel_category_audios(Request $request)
+    public function Content_category_audios(Request $request)
     {
-         
-        $AudioCategory = AudioCategory::find($request->category_id) != null ? AudioCategory::find($request->category_id)->specific_category_series : array();
+        $request->category_id = 1;
+        $request->user_id = 4;
+
+        $AudioCategory = AudioCategory::find($request->category_id) != null ? AudioCategory::find($request->category_id)->specific_category_audio : array();
         
-        $Audio_Category = $AudioCategory->where('user_id', $request->user_id)->where('uploaded_by' ,'Channel')->all();
+        $Audio_Category = $AudioCategory->where('user_id', $request->user_id)->where('uploaded_by' ,'CPP')->all();
 
         $data = array( 'AudioCategory' => $Audio_Category );
-
         $theme = Theme::uses($this->Theme);
 
-        return $theme->load('public/themes/default/views/partials/channel/channel_category_audios', $data)->render();
+        return $theme->load('public/themes/default/views/partials/cpp/cpp_category_audios', $data)->render();
     }
 
-    
-    public function all_Channel_videos(Request $request)
-    {
-        $settings = Setting::first();
-        $channel = Channel::where('channel_slug',$request->channel_slug)->first(); 
-
-        $currency = CurrencySetting::first();
-            if(!empty($channel)){
-                $livetreams = LiveStream::where('active', '=', '1')->where('user_id', '=', $channel->id)
-                ->where('uploaded_by', '=', 'Channel')->orderBy('created_at', 'DESC')
-                ->get();
-
-                $audios = Audio::where('active', '=', '1')->where('user_id', '=', $channel->id)
-                ->where('uploaded_by', '=', 'Channel')
-                ->orderBy('created_at', 'DESC')
-                ->get() ;
-
-                $latest_series = Series::where('active', '=', '1')->where('user_id', '=', $channel->id)
-                ->where('uploaded_by', '=', 'Channel')->orderBy('created_at', 'DESC')
-                ->get();
-
-                $latest_videos = Video::where('active', '=', '1')->where('status', '=', '1')->where('user_id', '=', $channel->id)
-                ->where('uploaded_by', '=', 'Channel')->where('draft', '=', '1')
-                ->get();
-    
-            $ThumbnailSetting = ThumbnailSetting::first();
-            
-            $data = array(
-                'currency' => $currency,
-                'latest_video' => $latest_videos,
-                'latest_series' => $latest_series,
-                'audios' => $audios,
-                'livetream' => $livetreams,
-                'ThumbnailSetting' => $ThumbnailSetting,
-                'LiveCategory' => LiveCategory::get(),
-                'VideoCategory' => VideoCategory::get(),
-                'AudioCategory' => AudioCategory::get(),
-                'channel' => $channel,
-            );
-            $theme = Theme::uses($this->Theme);
-            
-            return $theme->load('public/themes/default/views/ChannelHome', $data)->render();
-
-        }
-    }
 }
