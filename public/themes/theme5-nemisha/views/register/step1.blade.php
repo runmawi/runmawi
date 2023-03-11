@@ -165,10 +165,10 @@ color: #FFFFFF;
         border: none;
     }
 .phselect{
-   width: 140px;
-   background: rgba(40, 40, 40, 1) !important;
+    width: 100%;
+    height: 45px !important;
+    background: transparent !important;
     color: var(--iq-white) !important;
-    border:none;
 }
     
 .form-control {

@@ -260,7 +260,7 @@
     text-decoration: none;
 }*/
 .phselect{
-    width: 125px !important;
+    width: 100%;
     height: 45px !important;
     background: transparent !important;
     color: var(--iq-white) !important;
