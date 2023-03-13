@@ -8867,9 +8867,10 @@ $cpanel->end();
           $latest_videos = [];
         }
 
-        if( $HomeSetting->category_videos == 1 ){
+        if( $HomeSetting->category_videos == 0 ){
 
-          $videocategories = VideoCategory::select('id','image','order')->get()->toArray();
+          $oldvideocategories = VideoCategory::select('id','image','order')->get()->toArray();
+          $videocategories = VideoCategory::join('categoryvideos','video_categories.id', '=' ,'categoryvideos.category_id')->distinct()->select('video_categories.id','video_categories.image','video_categories.order')->get()->toArray();
           $order_video_categories = VideoCategory::select('id','name','order')->get()->toArray();
           $myData = array();
 
@@ -8925,8 +8926,8 @@ $cpanel->end();
         }
         else{
           $myData = [];
-        }
 
+        }
         if( $HomeSetting->live_videos == 1 ){
 
             $live_videos = LiveStream::where('active', '=', '1')->orderBy('id', 'DESC')->get()->map(function ($item) {
@@ -9076,22 +9077,22 @@ $cpanel->end();
       }
         $response = array(
           'status'=>'true',
-          'HomeSetting' => $HomeSetting,
-          'OrderHomeSetting' => $OrderHomeSetting,
-          'featured_videos' => $featured_videos,
-          'latest_videos' => $latest_videos,
+          // 'HomeSetting' => $HomeSetting,
+          // 'OrderHomeSetting' => $OrderHomeSetting,
+          // 'featured_videos' => $featured_videos,
+          // 'latest_videos' => $latest_videos,
           'category_videos' => $myData,
-          'live_videos' => $live_videos,
-          'series' => $series,
-          'audios' => $audios,
-          'albums' => $albums,
-          'movies' => $movies,
-          'LiveCategory' => $LiveCategory,
-          'Alllanguage' => $Alllanguage  ,
-          'VideoLanguage' => $VideoLanguage  ,
-          'languagesSeries' => $languagesSeries  ,
-          'languagesLive' => $languagesLive  ,
-          'LanguagesAudio' => $LanguagesAudio  ,
+          // 'live_videos' => $live_videos,
+          // 'series' => $series,
+          // 'audios' => $audios,
+          // 'albums' => $albums,
+          // 'movies' => $movies,
+          // 'LiveCategory' => $LiveCategory,
+          // 'Alllanguage' => $Alllanguage  ,
+          // 'VideoLanguage' => $VideoLanguage  ,
+          // 'languagesSeries' => $languagesSeries  ,
+          // 'languagesLive' => $languagesLive  ,
+          // 'LanguagesAudio' => $LanguagesAudio  ,
         );
 
 
