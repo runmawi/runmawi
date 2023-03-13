@@ -10,7 +10,7 @@
   <div class="container-fluid px-5 mt-5">
      <!-- <p class="text-white text-center mb-4">Chat-box will be sent later.</p>-->
       <div class="row justify-content-center align-items-center">
-          <div class="col-lg-3 p-0">  <h3 class="font-weight-bold mb-0 text-right ">Download App</h3></div>
+          <div class="col-lg-3 p-0">  <h3 class="font-weight-bold mb-0 text-right h3">Download App</h3></div>
           <div class="col-lg-5">
                <?php $app_settings = App\AppSetting::where('id','=',1)->first(); ?>
 
@@ -54,7 +54,7 @@ entertainment.</p>
          
           <div class="col-sm-3. small m-0 text-white text-right">
                <div class="map1">
-                    <div class="d-flex p-0 text-white icon align-items-baseline">
+                    <div class="d-flex p-0 text-white icon align-items-baseline bmk">
                       <p>Follow us :</p>
                       <?php if(!empty($settings->facebook_page_id)){?>
                       <a href="https://www.facebook.com/<?php echo FacebookId();?>" target="_blank" class="ml-1">
