@@ -3391,13 +3391,42 @@ class AdminVideosController extends Controller
     }
     public function CPPVideosApproval($id)
     {
-        //    echo "<pre>";
-        //    print_r($id);
-        //    exit();
+   
 
         $video = Video::findOrFail($id);
         $video->status = 1;
+        $video->active = 1;
+        $video->draft = 1;
         $video->save();
+
+        $settings = Setting::first();
+        $user_id = $video->user_id;
+        $ModeratorsUser = ModeratorsUser::findOrFail($video->user_id);
+        try {
+            \Mail::send('emails.admin_cpp_approved', array(
+                'website_name' => $settings->website_name,
+                'ModeratorsUser' => $ModeratorsUser
+            ) , function ($message) use ($ModeratorsUser)
+            {
+                $message->from(AdminMail() , GetWebsiteName());
+                $message->to($ModeratorsUser->email, $ModeratorsUser->username)
+                    ->subject('Content has been Submitted for Approved By Admin');
+            });
+            
+            $email_log      = 'Mail Sent Successfully Approved Content';
+            $email_template = "Approved";
+            $user_id = $user_id;
+
+            Email_sent_log($user_id,$email_log,$email_template);
+
+       } catch (\Throwable $th) {
+
+            $email_log      = $th->getMessage();
+            $email_template = "Approved";
+            $user_id = $user_id;
+
+            Email_notsent_log($user_id,$email_log,$email_template);
+       }
 
         return Redirect::back()->with(
             "message",
@@ -3410,6 +3439,35 @@ class AdminVideosController extends Controller
         $video = Video::findOrFail($id);
         $video->active = 2;
         $video->save();
+
+        $settings = Setting::first();
+        $user_id = $video->user_id;
+        $ModeratorsUser = ModeratorsUser::findOrFail($video->user_id);
+        try {
+            \Mail::send('emails.admin_cpp_rejected', array(
+                'website_name' => $settings->website_name,
+                'ModeratorsUser' => $ModeratorsUser
+            ) , function ($message) use ($ModeratorsUser)
+            {
+                $message->from(AdminMail() , GetWebsiteName());
+                $message->to($ModeratorsUser->email, $ModeratorsUser->username)
+                    ->subject('Content has been Submitted for Rejected By Admin');
+            });
+            
+            $email_log      = 'Mail Sent Successfully Rejected Content';
+            $email_template = "Rejected";
+            $user_id = $user_id;
+
+            Email_sent_log($user_id,$email_log,$email_template);
+
+       } catch (\Throwable $th) {
+
+            $email_log      = $th->getMessage();
+            $email_template = "Rejected";
+            $user_id = $user_id;
+
+            Email_notsent_log($user_id,$email_log,$email_template);
+       }
 
         return Redirect::back()->with(
             "message",
@@ -3956,6 +4014,35 @@ class AdminVideosController extends Controller
         $video->draft = 1;
         $video->save();
 
+        $settings = Setting::first();
+        $user_id = $video->user_id;
+        $Channel = Channel::findOrFail($video->user_id);
+        try {
+            \Mail::send('emails.admin_channel_approved', array(
+                'website_name' => $settings->website_name,
+                'Channel' => $Channel
+            ) , function ($message) use ($Channel)
+            {
+                $message->from(AdminMail() , GetWebsiteName());
+                $message->to($Channel->email, $Channel->channel_name)
+                    ->subject('Content has been Submitted for Approved By Admin');
+            });
+            
+            $email_log      = 'Mail Sent Successfully Approved Content';
+            $email_template = "Approved";
+            $user_id = $user_id;
+
+            Email_sent_log($user_id,$email_log,$email_template);
+
+       } catch (\Throwable $th) {
+
+            $email_log      = $th->getMessage();
+            $email_template = "Approved";
+            $user_id = $user_id;
+
+            Email_notsent_log($user_id,$email_log,$email_template);
+       }
+
         return Redirect::back()->with(
             "message",
             "Your video will be available shortly after we process it"
@@ -3967,6 +4054,36 @@ class AdminVideosController extends Controller
         $video = Video::findOrFail($id);
         $video->active = 2;
         $video->save();
+
+        $settings = Setting::first();
+        $user_id = $video->user_id;
+        $Channel = Channel::findOrFail($video->user_id);
+        try {
+            \Mail::send('emails.admin_channel_rejected', array(
+                'website_name' => $settings->website_name,
+                'Channel' => $Channel
+            ) , function ($message) use ($Channel)
+            {
+                $message->from(AdminMail() , GetWebsiteName());
+                $message->to($Channel->email, $Channel->channel_name)
+                    ->subject('Content has been Submitted for Rejected By Admin');
+            });
+            
+            $email_log      = 'Mail Sent Successfully Rejected Content';
+            $email_template = "Rejected";
+            $user_id = $user_id;
+
+            Email_sent_log($user_id,$email_log,$email_template);
+
+       } catch (\Throwable $th) {
+
+            $email_log      = $th->getMessage();
+            $email_template = "Rejected";
+            $user_id = $user_id;
+
+            Email_notsent_log($user_id,$email_log,$email_template);
+       }
+
 
         return Redirect::back()->with(
             "message",
