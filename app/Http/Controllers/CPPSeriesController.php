@@ -401,6 +401,33 @@ class CPPSeriesController extends Controller
         $shortcodes = $request->get('short_code');
         $languages = $request->get('language');
 
+        $settings = Setting::first();
+        $user = Session::get('user'); 
+
+            try {
+                \Mail::send('emails.cpp_approval', array(
+                    'website_name' => $settings->website_name
+                ) , function ($message) use ($request,$user)
+                {
+                    $message->to(AdminMail() , GetWebsiteName())
+                        ->subject('Content has been Submitted for Approval');
+                });
+                
+                $email_log      = 'Mail Sent Successfully from Approval';
+                $email_template = "Approval";
+                $user_id = $user_id;
+    
+                Email_sent_log($user_id,$email_log,$email_template);
+
+           } catch (\Throwable $th) {
+    
+                $email_log      = $th->getMessage();
+                $email_template = "Approval";
+                $user_id = $user_id;
+    
+                Email_notsent_log($user_id,$email_log,$email_template);
+
+           }
         return Redirect::to('cpp/series-list')
             ->with(array(
             'note' => 'New Series Successfully Added!',
