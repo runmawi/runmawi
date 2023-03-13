@@ -10642,29 +10642,6 @@ public function QRCodeMobileLogout(Request $request)
   return response()->json($response, 200);
 }
 
-  public function comment_index(Request $request)
-  {
-
-    try {
-
-     $comment = WebComment::with('child_comment')->where('source_id',$request->source_id)->where('commentable_type',$request->commentable_type)->whereNull('child_id')->get();
-
-      $response = array(
-        'status'=> 'true',
-        'message'  => 'Comment section stored Successfully !!',
-        'comment'   => $comment,
-      );
-
-    } catch (\Throwable $th) {
-
-          $response = array(
-            'status'=>'false',
-            'message'=>$th->getMessage(),
-          );
-    }
-
-    return response()->json($response, 200);
-  }
 
   public function comment_store(Request $request)
   {
@@ -10873,4 +10850,29 @@ public function QRCodeMobileLogout(Request $request)
     }
     return response()->json($response, 200);
   }
+
+  public function comment_message(Request $request)
+  {
+
+    try {
+
+     $comment = WebComment::with('child_comment')->where('source_id',$request->source_id)->where('commentable_type',$request->commentable_type)->whereNull('child_id')->get();
+
+      $response = array(
+        'status'=> 'true',
+        'message'  => 'Comment section Retrieved Successfully !!',
+        'comment'   => $comment,
+      );
+
+    } catch (\Throwable $th) {
+
+          $response = array(
+            'status'=>'false',
+            'message'=>$th->getMessage(),
+          );
+    }
+
+    return response()->json($response, 200);
+  }
+
 }
