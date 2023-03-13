@@ -156,6 +156,66 @@ $slider_choosen = App\HomeSetting::pluck('slider_choosen')->first();
          </section>
    <?php } } ?>
 
+    <!-- Latest Viewed Videos -->
+    <?php
+       if( $value->video_name == "latest_viewed_Videos"){
+         if($home_settings->latest_viewed_Videos == 1){  ?>
+            <section id="iq-favorites">
+               <div class="fluid overflow-hidden">
+                     <div class="row">
+                        <div class="col-sm-12">
+                           <?php include 'partials/home/latest_viewed_Videos.php'; ?>
+                        </div>
+                     </div>
+               </div>
+            </section>
+    <?php } } ?> 
+   
+         <!-- Latest Viewed Livestream -->
+   <?php
+      if($value->video_name == 'latest_viewed_Livestream'){
+         if($home_settings->latest_viewed_Livestream == 1){ ?>
+            <section id="iq-favorites">
+               <div class="fluid overflow-hidden">
+                     <div class="row">
+                        <div class="col-sm-12">
+                           <?php include 'partials/home/latest_viewed_Livestream.php'; ?>
+                        </div>
+                     </div>
+               </div>
+            </section>
+   <?php } }?>
+
+            <!-- Latest Viewed Audios -->
+   <?php
+      if($value->video_name == 'latest_viewed_Audios'){
+         if($home_settings->latest_viewed_Audios == 1){ ?>
+            <section id="iq-favorites">
+               <div class="fluid overflow-hidden">
+                     <div class="row">
+                        <div class="col-sm-12">
+                           <?php include 'partials/home/latest_viewed_Audios.php'; ?>
+                        </div>
+                     </div>
+               </div>
+            </section>
+   <?php } }?>
+
+               <!-- Latest Viewed Episode -->
+   <?php
+      if($value->video_name == "latest_viewed_Episode" ){
+         if($home_settings->latest_viewed_Episode == 1){ ?>
+            <section id="iq-favorites">
+               <div class="fluid overflow-hidden">
+                     <div class="row">
+                        <div class="col-sm-12">
+                           <?php include 'partials/home/latest_viewed_Episode.php'; ?>
+                        </div>
+                     </div>
+               </div>
+            </section>
+   <?php } }?>
+   
 
 <!-- Recently Added Movies -->
     <?php
