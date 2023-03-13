@@ -248,7 +248,7 @@
 
         h1 {
            
-font-family: 'verdanabold';
+font-family: 'verdana';
             text-transform: uppercase;
             font-size: 40px;
             font-weight: 600;
@@ -258,11 +258,12 @@ font-family: 'verdanabold';
 
         }
         p{
-             font-family: 'verdanaregular';
+             font-family: 'verdana';
         }
 
         h2 {
-            font-family: 'verdanaregular';
+            font-family: 'verdana';
+            font-weight: 600;
 
 
         }
@@ -273,7 +274,7 @@ font-family: 'verdanabold';
         }
 
         h2 {
-           font-family: 'verdanabold';
+           font-family: 'verdana';
             font-weight: 40px;
         }
 
@@ -725,7 +726,7 @@ font-family: 'verdanabold';
             font-style: normal;
             font-weight: 400;
             font-size: 22px;
-
+            font-family: 'verdana';
             text-transform: uppercase;
 
         }
@@ -926,7 +927,7 @@ font-family: 'verdanabold';
 
         .bg-color {
             border: 10px solid #3CAEA3;
-            min-height: 266px;
+            min-height: 298px;
             margin: 0 8px auto;
             position: relative;
             padding: 30px 0px 20px 20px;
@@ -1492,7 +1493,7 @@ next to it,  Please remove it and replace with this video.</p>-->
                                     <div class=" lan">
                                         <img class="mb-2" src="<?php echo URL::to('/assets/img/lan/v3.png'); ?>" style=>
                                         <h4 class="">User Feedback and Interaction</h4>
-                                        <p style="color:#fff;font-weight:500;">Learn by interacting with experts and
+                                        <p style="color:#fff;">Learn by interacting with experts and
                                             other users.</p>
                                     </div>
 
@@ -1659,7 +1660,7 @@ Resist</h2>
                     </div>
 
                     <div class="col-lg-4">
-                        <div class="bg-color1" style="min-height: 266px;">
+                        <div class="bg-color1" style="min-height: 298px;">
                             <div class="clive">
                                 <img class=" " src="<?php echo URL::to('/assets/img/clive.png'); ?>" style="">
                             </div>
