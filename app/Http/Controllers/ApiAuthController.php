@@ -835,9 +835,7 @@ class ApiAuthController extends Controller
 
     //$channelid = $request->channelid;
 
-    $oldvideocategories = VideoCategory::select('id','image')->get()->toArray();
-    $videocategories = VideoCategory::join('categoryvideos','video_categories.id', '=' ,'categoryvideos.category_id')->distinct()->select('video_categories.id','video_categories.image','video_categories.order')->get()->toArray();
-
+    $videocategories = VideoCategory::select('id','image')->get()->toArray();
     $myData = array();
     foreach ($videocategories as $key => $videocategory) {
       $videocategoryid = $videocategory['id'];
@@ -8294,7 +8292,10 @@ public function Adstatus_upate(Request $request)
   public function home_categorylist(Request $request)
   {
 
-    $videocategories = VideoCategory::select('id','image')->where('in_home',1)->get()->toArray();
+    // $videocategories = VideoCategory::select('id','image')->where('in_home',1)->get()->toArray();
+    $videocategories = VideoCategory::join('categoryvideos','video_categories.id', '=' ,'categoryvideos.category_id')->distinct()->select('video_categories.id','video_categories.image','video_categories.order')
+    ->where('video_categories.in_home',1)->get()->toArray();
+
     $myData = array();
 
     foreach ($videocategories as $key => $videocategory) {
