@@ -835,7 +835,9 @@ class ApiAuthController extends Controller
 
     //$channelid = $request->channelid;
 
-    $videocategories = VideoCategory::select('id','image')->get()->toArray();
+    $oldvideocategories = VideoCategory::select('id','image')->get()->toArray();
+    $videocategories = VideoCategory::join('categoryvideos','video_categories.id', '=' ,'categoryvideos.category_id')->distinct()->select('video_categories.id','video_categories.image','video_categories.order')->get()->toArray();
+
     $myData = array();
     foreach ($videocategories as $key => $videocategory) {
       $videocategoryid = $videocategory['id'];
