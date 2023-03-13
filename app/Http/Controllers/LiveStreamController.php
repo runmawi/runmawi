@@ -47,6 +47,13 @@ class LiveStreamController extends Controller
       $cityName = $geoip->getcity();
 
       $this->countryName = $countryName;
+
+      $settings = Setting::first();
+      $this->videos_per_page = $settings->videos_per_page;
+
+      $this->Theme = HomeSetting::pluck('theme_choosen')
+          ->first();
+      Theme::uses($this->Theme);
      
   }
 
