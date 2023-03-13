@@ -589,7 +589,7 @@
                               </li>
                               <?php } } ?>
                               <!-- <li class="nav-item dropdown menu-item"> -->
-                              <!-- <a class="dropdown-toggle" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">   -->
+                              <!-- <a class="dropdown-toggle" href="<?php echo URL::to('/').@$menu->url;?>" data-toggle="dropdown">   -->
                               <!-- Movies <i class="fa fa-angle-down"></i> -->
                               <!-- </a> -->
                               <!-- <ul class="dropdown-menu categ-head"> -->
