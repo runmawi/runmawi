@@ -43,22 +43,22 @@
 
    <?php $settings = App\Setting::first();?>
 
-   <?php if (!empty($data["password_hash"])) {
+   <?php //if (!empty($data["password_hash"])) {
       $videos_data = App\Video::where("slug", $request_url)->first();
-      }
+      // }
    ?>
-   <?php if (!empty($data["password_hash"])) {
+   <?php //if (!empty($data["password_hash"])) {
       $series = App\Series::where("title", $request_url)->first();
-      }
+      // }
    ?>
-   <?php if (!empty($data["password_hash"])) {
+   <?php //if (!empty($data["password_hash"])) {
       $episdoe = App\Episode::where("title", $request_url)->first();
-      }
+      // }
    ?>
 
-   <?php if (!empty($data["password_hash"])) {
+   <?php //if (!empty($data["password_hash"])) {
       $livestream = App\LiveStream::where("slug", $request_url)->first();
-      }
+      // }
    ?>
 
 
