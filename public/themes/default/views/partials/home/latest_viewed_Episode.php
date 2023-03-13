@@ -52,13 +52,7 @@ if (Auth::guest() != true) {
 
                                     <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
 
-                                        <?php  if(!empty($latest_view_episode->ppv_status)){?>
-                    <p class="p-tag1"><?php echo $currency->symbol.' '.$settings->ppv_price; ?></p>
-                    <?php }elseif(!empty($latest_view_episode->ppv_status || !empty($latest_view_episode->ppv_status) && $latest_view_episode->ppv_status == null)){ ?>
-                      <p class="p-tag1"><?php echo $currency->symbol.' '.$settings->ppv_status; ?></p>
-                      <?php }elseif($latest_view_episode->ppv_status == null && $latest_view_episode->ppv_price == null ){ ?>
-                      <p class="p-tag"><?php echo "Free"; ?></p>
-                      <?php } ?>
+                                      
                                        
                                     <?php } ?>
                                 </a>

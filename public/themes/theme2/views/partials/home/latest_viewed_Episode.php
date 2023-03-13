@@ -59,7 +59,7 @@ if(count($latest_view_episodes) > 0) :
                 <div class="block-description">
                     <div class="hover-buttons">
                         <a href="<?= URL::to('/episode' . '/' . $latest_view_episode->series_slug . '/' . $latest_view_episode->episode_slug); ?>">
-                         <img
+                        <img
                           class="ply" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>" /> </a>
                         <div class="hover-buttons d-flex">
 
