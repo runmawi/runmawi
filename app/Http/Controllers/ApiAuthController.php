@@ -4619,15 +4619,18 @@ return response()->json($response, 200);
       $seasonid = $request->seasonid;
       $episode_id = $request->episode_id;
 
-      $next_episodeid = Episode::where('id', '>', $episode_id)->where('season_id','=',$seasonid)->where('active','=','1')->where('status','=','1')->min('id');
+      $next_episodeid = Episode::where('episode_order', '>', $episode_id)->where('season_id','=',$seasonid)->where('active','=','1')->where('status','=','1')->orderBy('episode_order')->max('id');
 
       if($next_episodeid){
-        $episode= Episode::where('id','=',$next_episodeid)->where('status','=','1')->where('active','=','1')->get();
+
+        $episode= Episode::where('id','=',$next_episodeid)->where('status','=','1')->where('active','=','1')->get('slug');
+        
         $response = array(
           'status' => true,
           'next_episodeid' => $next_episodeid,
           'episode' => $episode
         );
+
       }else{
         $response = array(
           'status' => false,
@@ -4642,19 +4645,25 @@ return response()->json($response, 200);
     $seasonid = $request->seasonid;
     $episode_id = $request->episode_id;
 
-    $prev_episodeid = Episode::where('id', '<', $episode_id)->where('season_id','=',$seasonid)->where('status','=','1')->where('active','=','1')->orderBy('created_at', 'desc')->max('id');
+    $prev_episodeid = Episode::where('episode_order', '<', $episode_id)->where('season_id','=',$seasonid)->where('status','=','1')->where('active','=','1')->pluck('id')->first();
+
     if($prev_episodeid){
+
         $episode= Episode::where('id','=',$prev_episodeid)->where('status','=','1')->where('active','=','1')->get();
+       
         $response = array(
           'status' => true,
           'prev_episodeid' => $prev_episodeid,
           'episode' => $episode
         );
+
       }else{
+     
         $response = array(
           'status' => false,
           'episode' => 'No Data Found'
         );
+        
       }
       return response()->json($response, 200);
   }
@@ -10635,9 +10644,10 @@ public function QRCodeMobileLogout(Request $request)
 
   public function comment_index(Request $request)
   {
+
     try {
 
-     $comment = WebComment::where('source_id',$request->source_id)->where('commentable_type',$request->commentable_type)->whereNull('child_id')->get();
+     $comment = WebComment::with('child_comment')->where('source_id',$request->source_id)->where('commentable_type',$request->commentable_type)->whereNull('child_id')->get();
 
       $response = array(
         'status'=> 'true',
