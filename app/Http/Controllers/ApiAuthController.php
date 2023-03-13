@@ -4642,19 +4642,25 @@ return response()->json($response, 200);
     $seasonid = $request->seasonid;
     $episode_id = $request->episode_id;
 
-    $prev_episodeid = Episode::where('id', '<', $episode_id)->where('season_id','=',$seasonid)->where('status','=','1')->where('active','=','1')->orderBy('created_at', 'desc')->max('id');
+    $prev_episodeid = Episode::where('episode_order', '<', $episode_id)->where('season_id','=',$seasonid)->where('status','=','1')->where('active','=','1')->pluck('id')->first();
+
     if($prev_episodeid){
+
         $episode= Episode::where('id','=',$prev_episodeid)->where('status','=','1')->where('active','=','1')->get();
+       
         $response = array(
           'status' => true,
           'prev_episodeid' => $prev_episodeid,
           'episode' => $episode
         );
+
       }else{
+     
         $response = array(
           'status' => false,
           'episode' => 'No Data Found'
         );
+        
       }
       return response()->json($response, 200);
   }
