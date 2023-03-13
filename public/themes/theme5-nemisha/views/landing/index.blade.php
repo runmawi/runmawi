@@ -35,10 +35,11 @@
 
     <!-- Typography CSS -->
     <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/style.css'); ?>" />
+    <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/fonts/font.css'); ?>" />
     <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/bootstrap.min.css'); ?>" />
 
     <!-- Style -->
-    <link rel="stylesheet" href="<?= typography_link() ?>" />
+    <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/typography.css'); ?>" />
 
     <!-- Responsive -->
     <link rel="stylesheet" href="assets/css/responsive.css" />
@@ -246,8 +247,8 @@
         a:link {}
 
         h1 {
-            font-family: 'futurabook';
-
+           
+font-family: 'verdanabold';
             text-transform: uppercase;
             font-size: 40px;
             font-weight: 600;
@@ -256,9 +257,12 @@
             text-align: center;
 
         }
+        p{
+             font-family: 'verdanaregular';
+        }
 
         h2 {
-            font-family: 'futuramedium';
+            font-family: 'verdanaregular';
 
 
         }
@@ -269,7 +273,7 @@
         }
 
         h2 {
-            font-weight: 700;
+           font-family: 'verdanabold';
             font-weight: 40px;
         }
 
@@ -280,6 +284,7 @@
 
         body {
             background: #fff;
+            font-family: 'verdanaregular';
         }
 
         input {
@@ -603,18 +608,18 @@
         .signup {
             background: rgba(1, 220, 130, 1) !important;
             padding: 10px 30px;
-            font-family: 'Roboto', sans-serif;
+           
             font-weight: 600;
 
         }
 
         .nav-link {
-            font-family: 'futuraheavy';
+           
 
         }
 
         p {
-            font-family: 'futuralight';
+           
             font-weight: 400;
             font-size: 20px;
             line-height: 32px;
@@ -641,7 +646,7 @@
         }
 
         .poli {
-            font-family: 'Roboto', sans-serif;
+           
             font-size: 11px;
         }
 
@@ -660,7 +665,7 @@
             font-weight: 600;
             color: #000;
             text-align: left;
-            font-family: 'Roboto', sans-serif;
+          
         }
 
         .btn-success {
@@ -964,7 +969,9 @@
             line-height: 52px;
             position: relative;
         }
-
+        .bg-video-wrap video{
+            object-fit: cover;
+        }
         .comp {
             position: absolute;
             background: #183F5F;
