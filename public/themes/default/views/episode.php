@@ -128,19 +128,19 @@
 			   <?php else: ?>
 
                <div id="subscribers_only"style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 1.3)) , url(<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 450px; padding-top: 150px;">
-                  <h4 class="text-center"><?php echo $episode->title ; ?></h4>
-                  <p class="text-center text-white col-lg-8" style="margin:0 auto";><?php echo ($episode->episode_description) ; ?></p>
-                  <h2 class="text-center">Subscribe to view more<?php if ($series->access == 'subscriber'): ?>Subscribers<?php elseif($series->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
+                  <h4 class=""><?php echo $episode->title ; ?></h4>
+                  <p class=" text-white col-lg-8" style="margin:0 auto";><?php echo ($episode->episode_description) ; ?></p>
+                  <h2 class="">Subscribe to view more<?php if ($series->access == 'subscriber'): ?>Subscribers<?php elseif($series->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
                   <div class="clear"></div>
                   
                   <?php if( !Auth::guest() && Auth::user()->role == 'registered'):  ?>
-                     <div class="text-center mt-3">
+                     <div class=" mt-3">
                      <form method="get" action="<?= URL::to('/stripe/billings-details')?>">
                         <button class="btn btn-primary" id="button">Subscribe to view more</button>
                      </form>
                      </div>
                   <?php else: ?>
-                  <div class="text-center mt-3">
+                  <div class=" mt-3">
                      <form method="get" action="<?= URL::to('signup') ?>" class="mt-4">
                         <button id="button" class="btn bd">Signup Now <?php if($series->access == 'subscriber'): ?>to Become a Subscriber<?php elseif($series->access == 'registered'): ?>for Free!<?php endif; ?></button>
                      </form>
