@@ -11,4 +11,9 @@ class WebComment extends Model
     protected $table = 'webcomments';
 
     public static $rules = array();
+
+    public function child_comment() 
+    {
+        return $this->hasMany(WebComment::class,'child_id','id');
+    }
 }
