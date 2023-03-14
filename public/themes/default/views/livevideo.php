@@ -520,7 +520,7 @@ else{
             <div class="col-sm-6 col-md-6 col-xs-12">
                  <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
                       <!-- Social Share, Like Dislike -->
-                         <?php // include('partials/social-share.php'); ?>                     
+                         <?php  include('partials/live-social-share.php'); ?>                     
                   </ul>
             </div>
 
