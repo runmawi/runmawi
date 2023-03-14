@@ -50,6 +50,9 @@ public function callback(Request $request ,$provider)
     // auth()->login($user);
     $user = $user;
     session()->put('user', $user);
+    session()->put('expiresIn', $getInfo->expiresIn);
+    session()->put('providertoken', $getInfo->token);
+
     return redirect('/home');
 
 }
