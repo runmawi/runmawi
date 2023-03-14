@@ -7,6 +7,7 @@ use Validator,Redirect,Response,File;
 use Socialite;
 use App\User;
 use Session;
+use Hash;
 
 class GoogleLoginController extends Controller
 {
@@ -28,7 +29,7 @@ public function callback(Request $request ,$provider)
     // $findUser = User::where('email', $getInfo->email)->first();
 
     $saveUser = User::updateOrCreate([
-        'provider_id' => $getInfo->getId(),
+        'email' => $getInfo->getEmail(),
     ],[
         'name' => $getInfo->getName(),
         'username'     => $getInfo->name,
