@@ -8,6 +8,7 @@ use Socialite;
 use App\User;
 use Session;
 use Hash;
+use Auth;
 
 class GoogleLoginController extends Controller
 {

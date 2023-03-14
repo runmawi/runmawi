@@ -56,6 +56,16 @@
       // }
       ?>
    <meta charset="UTF-8">
+
+   <meta name="image" property="og:image" content="<?php 
+      if(!empty($videos_data)){ echo URL::to('/public/uploads/images').'/'.$videos_data->image  ;
+      }
+      elseif(!empty($episdoe)){ echo URL::to('/public/uploads/images').'/'.$episdoe->image  ;}
+      elseif(!empty($series)){ echo URL::to('/public/uploads/images').'/'.$series->image ;}
+      elseif(!empty($livestream)){ echo URL::to('/public/uploads/images').'/'.$livestream->image ;}
+      else{  echo URL::to('/').'/public/uploads/settings/'. $settings->logo   ;} //echo $settings; ?>">
+
+
    <title><?php
       if(!empty($videos_data)){  echo $videos_data->title .' | '. $settings->website_name ;
        }
