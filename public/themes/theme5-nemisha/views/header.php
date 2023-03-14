@@ -351,7 +351,7 @@ input:checked + .sliderk:before {
             color: <?php echo GetLightText(); ?>;
         }
         body.light-theme .dropdown-item.cont-item{
-             color: <?php echo GetLightText(); ?>!important;
+             color: #fff!important;
         }
         body.light-theme .s-icon{
            background-color: <?php echo GetLightBg(); ?>; 
@@ -575,7 +575,7 @@ height: 100%;
   font-size: 20px;
   color: #fff!important;
   display: block;
-    margin-right: 
+  font-family: 'verdana';
     
 }
 
