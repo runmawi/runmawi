@@ -57,6 +57,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'" framebo
        <div class="d-flex align-items-center"> 
           <a href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" class="share-ico"><i class="ri-facebook-fill"></i></a>
           <a href="https://twitter.com/intent/tweet?text=<?= $media_url ?>" class="share-ico"><i class="ri-twitter-fill"></i></a>
+          <a href="https://www.linkedin.com/shareArticle?mini=true&url=<?= $media_url ?>" class="share-ico"><i class="ri-twitter-fill"></i></a>
           <a href="#"onclick="Copy();" class="share-ico"><i class="ri-links-fill"></i></a>
        </div>
     </div>

@@ -425,6 +425,8 @@ public function createStep2(Request $request)
                     $intent_stripe = User::where("email","=",$user_mail)->first();
                     $intent_key =  $intent_stripe->createSetupIntent()->client_secret ;
                     session()->put('intent_stripe_key',$intent_key);
+                    session()->put('message',"Thanks, Your Account has been Submitted for Approval.");
+
 
                     return Theme::view('register.step2_payment', compact(['register', 'plans_data', 'plans_data_signup_checkout','user_mail']));
 

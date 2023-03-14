@@ -4623,7 +4623,7 @@ return response()->json($response, 200);
 
       if($next_episodeid){
 
-        $episode= Episode::where('id','=',$next_episodeid)->where('status','=','1')->where('active','=','1')->get('slug');
+        $episode= Episode::where('id','=',$next_episodeid)->where('status','=','1')->where('active','=','1')->get();
         
         $response = array(
           'status' => true,
