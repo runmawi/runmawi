@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -29,6 +29,10 @@ class GoogleLoginController extends Controller
      */
     public function callback(Request $request ,$provider)
     {
+        if (!$request->has('code') || $request->has('denied')) {
+            return redirect('/');
+        }
+        
         try {
             $user = Socialite::driver($provider)->user();
         } catch (\Exception $e) {
