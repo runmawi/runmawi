@@ -404,7 +404,7 @@ Route::group(
 
             // Comment Section
             
-        Route::post('/comment_index', 'ApiAuthController@comment_index');
+        Route::post('/comment_message', 'ApiAuthController@comment_message');
         Route::post('/comment_store', 'ApiAuthController@comment_store');
         Route::post('/comment_edit', 'ApiAuthController@comment_edit');
         Route::post('/comment_update', 'ApiAuthController@comment_update');
