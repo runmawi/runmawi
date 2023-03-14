@@ -39,21 +39,21 @@
       ?>
    <!-- Required meta tags -->
    <?php $settings = App\Setting::first();?>
-   <?php if (!empty($data["password_hash"])) {
+   <?php //if (!empty($data["password_hash"])) {
       $videos_data = App\Video::where("slug", $request_url)->first();
-      }
+      // }
       ?>
-   <?php if (!empty($data["password_hash"])) {
+   <?php //if (!empty($data["password_hash"])) {
       $series = App\Series::where("title", $request_url)->first();
-      }
+      // }
       ?>
-   <?php if (!empty($data["password_hash"])) {
+   <?php //if (!empty($data["password_hash"])) {
       $episdoe = App\Episode::where("title", $request_url)->first();
-      }
+      // }
       ?>
-   <?php if (!empty($data["password_hash"])) {
+   <?php //if (!empty($data["password_hash"])) {
       $livestream = App\LiveStream::where("slug", $request_url)->first();
-      }
+      // }
       ?>
    <meta charset="UTF-8">
    <title><?php
@@ -104,6 +104,36 @@
       }
       // dd($site_page_url);
        ?>
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image:alt" content="<?php
+      if(!empty($videos_data)){  echo $videos_data->title .' | '. $settings->website_name ;
+       }
+      elseif(!empty($series)){ echo $series->title .' | '. $settings->website_name ; }
+      elseif(!empty($episdoe)){ echo $episdoe->title .' | '. $settings->website_name ; }
+      elseif(!empty($livestream)){ echo $livestream->title .' | '. $settings->website_name ; }
+      else{ echo $uppercase .' | ' . $settings->website_name ;} ?>">
+<meta name="twitter:title" content="<?php
+      if(!empty($videos_data)){  echo $videos_data->title .' | '. $settings->website_name ;
+       }
+      elseif(!empty($series)){ echo $series->title .' | '. $settings->website_name ; }
+      elseif(!empty($episdoe)){ echo $episdoe->title .' | '. $settings->website_name ; }
+      elseif(!empty($livestream)){ echo $livestream->title .' | '. $settings->website_name ; }
+      else{ echo $uppercase .' | ' . $settings->website_name ;} ?>">
+<meta name="twitter:description" content="<?php 
+      if(!empty($videos_data)){ echo $videos_data->description  ;
+      }
+      elseif(!empty($episdoe)){ echo $episdoe->description  ;}
+      elseif(!empty($series)){ echo $series->description ;}
+      elseif(!empty($livestream)){ echo $livestream->description  ;}
+      else{ echo $settings->website_description   ;} //echo $settings; ?>">
+<meta name="twitter:image:src" content="<?php 
+      if(!empty($videos_data)){ echo URL::to('/public/uploads/images').'/'.$videos_data->image  ;
+      }
+      elseif(!empty($episdoe)){ echo URL::to('/public/uploads/images').'/'.$episdoe->image  ;}
+      elseif(!empty($series)){ echo URL::to('/public/uploads/images').'/'.$series->image ;}
+      elseif(!empty($livestream)){ echo URL::to('/public/uploads/images').'/'.$livestream->image ;}
+      else{  echo URL::to('/').'/public/uploads/settings/'. $settings->logo   ;} //echo $settings; ?>">
+
    <?php if(!empty($Linking_Setting->ios_app_store_id)){ ?>
    <meta property="al:ios:app_store_id" content="<?php  echo $Linking_Setting->ios_app_store_id; ?>" />
    <?php } ?>
@@ -589,7 +619,7 @@
                               </li>
                               <?php } } ?>
                               <!-- <li class="nav-item dropdown menu-item"> -->
-                              <!-- <a class="dropdown-toggle" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">   -->
+                              <!-- <a class="dropdown-toggle" href="<?php echo URL::to('/').@$menu->url;?>" data-toggle="dropdown">   -->
                               <!-- Movies <i class="fa fa-angle-down"></i> -->
                               <!-- </a> -->
                               <!-- <ul class="dropdown-menu categ-head"> -->

@@ -35,10 +35,11 @@
 
     <!-- Typography CSS -->
     <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/style.css'); ?>" />
+    <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/fonts/font.css'); ?>" />
     <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/bootstrap.min.css'); ?>" />
 
     <!-- Style -->
-    <link rel="stylesheet" href="<?= typography_link() ?>" />
+    <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/typography.css'); ?>" />
 
     <!-- Responsive -->
     <link rel="stylesheet" href="assets/css/responsive.css" />
@@ -246,19 +247,23 @@
         a:link {}
 
         h1 {
-            font-family: 'futurabook';
-
+           
+font-family: 'verdana';
             text-transform: uppercase;
-            font-size: 25px;
+            font-size: 40px;
             font-weight: 600;
             line-height: 65px;
             letter-spacing: 0em;
             text-align: center;
 
         }
+        p{
+             font-family: 'verdana';
+        }
 
         h2 {
-            font-family: 'futuramedium';
+            font-family: 'verdana';
+            font-weight: 600;
 
 
         }
@@ -269,7 +274,7 @@
         }
 
         h2 {
-            font-weight: 700;
+           font-family: 'verdana';
             font-weight: 40px;
         }
 
@@ -280,6 +285,7 @@
 
         body {
             background: #fff;
+            font-family: 'verdanaregular';
         }
 
         input {
@@ -489,6 +495,7 @@
         .btn-success span {
             position: relative;
             z-index: 2;
+            font-family: 'verdana';
         }
 
         .sec-21 .btn {
@@ -603,18 +610,18 @@
         .signup {
             background: rgba(1, 220, 130, 1) !important;
             padding: 10px 30px;
-            font-family: 'Roboto', sans-serif;
+           
             font-weight: 600;
 
         }
 
         .nav-link {
-            font-family: 'futuraheavy';
+           
 
         }
 
         p {
-            font-family: 'futuralight';
+           
             font-weight: 400;
             font-size: 20px;
             line-height: 32px;
@@ -635,13 +642,15 @@
         .nav-pills .nav-link {
             border-radius: 0 !important;
         }
-
+        .tune li{
+            font-family: 'verdana';
+        }
         .btn {
             font-weight: 500;
         }
 
         .poli {
-            font-family: 'Roboto', sans-serif;
+           
             font-size: 11px;
         }
 
@@ -660,7 +669,7 @@
             font-weight: 600;
             color: #000;
             text-align: left;
-            font-family: 'Roboto', sans-serif;
+          
         }
 
         .btn-success {
@@ -720,7 +729,7 @@
             font-style: normal;
             font-weight: 400;
             font-size: 22px;
-
+            font-family: 'verdana';
             text-transform: uppercase;
 
         }
@@ -921,7 +930,7 @@
 
         .bg-color {
             border: 10px solid #3CAEA3;
-            min-height: 266px;
+            min-height: 298px;
             margin: 0 8px auto;
             position: relative;
             padding: 30px 0px 20px 20px;
@@ -964,7 +973,9 @@
             line-height: 52px;
             position: relative;
         }
-
+        .bg-video-wrap video{
+            object-fit: cover;
+        }
         .comp {
             position: absolute;
             background: #183F5F;
@@ -1045,7 +1056,28 @@
                 flex-direction: column;
             }
         }
-
+        .bg-video-wrap {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 100vh;
+}
+.overlay {
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-image: linear-gradient(rgba(0,0,0,.5) 50%, rgba(0,0,0,.5) 50%);
+    z-index: 2;
+}
+        .nemis{
+            position: absolute;
+    left: 0;
+    right: 0;
+    top: 30%;
+}
+        }
     </style>
 
     <?php $jsonString = file_get_contents(base_path('assets/country_code.json'));
@@ -1070,10 +1102,21 @@
         </nav>
     </header>
     <section class="mt-5 mb-0">
+<div class="bg-video-wrap">
+        <video src="<?php echo URL::to('/assets/img/tv.mp4'); ?>" loop muted autoplay>
+        </video>
+        <div class="overlay">
+            <div class="nemis">
+           <h1 class=" mt-5 pt-5">Welcome to <span class="">NEMISA TV</span></h1>
+                        <h2 class="dig mt-1 mb-5 text-center">HOME OF EDUTAINMENT & ORIGINAL <br>STORY-TELLING</h2>
+            </div>
+        </div>
+       
 
+    </div>
       
 
-        <div class="position-relative ban"
+       <!-- <div class="position-relative ban"
             style="padding: 19.2% 0 37% 0!important;background-image:url('<?php echo URL::to('/assets/img/lan/v11.png'); ?>');background-repeat: no-repeat;background-size: 100% 100%;">
             <div class="fixe">
                 <div class="row m-0  p-0" style="">
@@ -1081,13 +1124,12 @@
                         style="background-image:url('<?php echo URL::to('/assets/img/lan/v'); ?>');background-repeat: no-repeat;background-position: center 350px;
     background-size: 50%;">
                         <div></div>
-                        <h1 class=" mt-5 pt-5">Welcome to <span class="">NEMISA TV</span></h1>
-                        <h2 class="dig mt-1 mb-5 text-center">HOME OF EDUTAINMENT & ORIGINAL <br>STORY-TELLING</h2>
-                        <!--  <p class="text-white" style="font-size:16px;">South Africa’s first free video sharing social platform where we mix knowledge <br>and entertainment for unique learning experience</p>-->
+                       
+                     <p class="text-white" style="font-size:16px;">South Africa’s first free video sharing social platform where we mix knowledge <br>and entertainment for unique learning experience</p>
                     </div>
                 </div>
             </div>
-        </div>
+        </div>--></section>
        <section class="sec-21" style="background-image:url('<?php echo URL::to('/assets/img/lan/bg1.png'); ?>');background-repeat: no-repeat;background-size:100% 100%;">
             <div class="container">
                 <div class="row  mt-3 align-items-center">
@@ -1204,7 +1246,7 @@
                     </div>
 
                     <div class="text-center mt-3 mb-5 pb-2 col-lg-3 all-video">
-                        <a class="btn btn-success my-2 my-sm-0 w-100" style="font-weight:600;font-size: 20px;"
+                        <a class="btn btn-success my-2 my-sm-0 w-100" style="font-size: 20px;"
                             herf="#"><span>All Videos <i class="fa fa-angle-right"
                                     aria-hidden="true"></i></span>
                         </a>
@@ -1454,7 +1496,7 @@ next to it,  Please remove it and replace with this video.</p>-->
                                     <div class=" lan">
                                         <img class="mb-2" src="<?php echo URL::to('/assets/img/lan/v3.png'); ?>" style=>
                                         <h4 class="">User Feedback and Interaction</h4>
-                                        <p style="color:#fff;font-weight:500;">Learn by interacting with experts and
+                                        <p style="color:#fff;">Learn by interacting with experts and
                                             other users.</p>
                                     </div>
 
@@ -1621,7 +1663,7 @@ Resist</h2>
                     </div>
 
                     <div class="col-lg-4">
-                        <div class="bg-color1" style="min-height: 266px;">
+                        <div class="bg-color1" style="min-height: 298px;">
                             <div class="clive">
                                 <img class=" " src="<?php echo URL::to('/assets/img/clive.png'); ?>" style="">
                             </div>

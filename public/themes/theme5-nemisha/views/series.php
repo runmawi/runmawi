@@ -73,7 +73,7 @@ $series = $series_data ;
 		<div class="col-md-7">
 			<div id="series_title">
 				<div class="container">
-					 <h1><?= $series->title ?></h1>
+					 <h2><?= $series->title ?></h2>
                   
 					<!--<div class="col-md-6 p-0">
 						<select class="form-control" id="season_id" name="season_id">

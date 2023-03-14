@@ -863,7 +863,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                     
                 </div>
 
-              <div class="col-sm-12 mt-4 p-0" style="margin-top: 2%;">
+              <div class="col-sm-12 mt-4 p-0 bmk" style="margin-top: 2%;">
                  <?php if(!empty($video->description) ) { ?>
 
                     <h5>Description:</h5>

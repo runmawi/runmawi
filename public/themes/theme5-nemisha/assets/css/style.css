@@ -251,7 +251,7 @@ li.slide-item .block-description .parallax-ratting span { font-size: 14px; }
   background: rgba(255, 255, 255, 1);
 font-weight: 400;
 text-transform: uppercase;
-     font-family: 'futuramedium';
+     font-family: 'verdana';
 
 border-radius: 10px;
 
@@ -759,7 +759,7 @@ a.title-dec{
     padding: 5px 20px;
       border: 1px solid #fff !important;
    font-size: 20px;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'verdana';
 font-weight: 500;
 }
 .nav-link.active {
@@ -2502,9 +2502,9 @@ font-family: 'Roboto', sans-serif;
 .tune li{
     list-style: disc;
     padding: 5px 10px;
-    font-weight: 600;
+    font-weight: 400;
    line-height: 52px;
-    font-family: 'futuralight';
+    font-family: 'verdana';
 
 color: #252525;
 font-size: 30px;
@@ -2512,7 +2512,8 @@ font-size: 30px;
 
 }
 .btn{
-     font-family: 'futuramedium';
+     font-family: 'verdana'!important;
+    font-weight: 400;
 }
 .sec-3{
  /* background: /*linear-gradient(180deg, #0D8282 0%, #003C3C 100%);*/
@@ -2538,7 +2539,7 @@ text-align: center;
 color: #01DC82;
 }
 p{
-     font-family: 'futuralight';
+    
 }
 .tn-bg p{
     font-weight: 600;
@@ -2551,7 +2552,7 @@ line-height: 52px;
     padding: 40px;
 }
 .ital{
-   font-family: 'futurabold_italic';
+   font-family: 'verdana';
     margin: 0 auto;
     width: 60%;
     font-weight: 600;
@@ -2560,7 +2561,7 @@ line-height: 52px;
     line-height: 52px;
 }
 .get{
-   font-family: 'Roboto', sans-serif;
+   font-family: 'verdana';
 font-style: normal;
 font-weight: 500;
 font-size: 20px;

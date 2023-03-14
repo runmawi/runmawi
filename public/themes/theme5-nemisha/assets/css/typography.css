@@ -59,7 +59,7 @@ General
 *::-moz-selection { background: var(--iq-primary); color: var(--iq-white); text-shadow: none; }
 ::-moz-selection { background: var(--iq-primary); color: var(--iq-white); text-shadow: none; }
 ::selection { background: var(--iq-primary); color: var(--iq-white); text-shadow: none; }
-body {  font-family: 'futuramedium';
+body {  font-family: 'verdanaregular';
 font-weight: 400; font-style: normal; font-size: 16px; line-height: 1.5; padding: 0; margin: 0; color: var(--iq-body-text); /*background: var(--iq-body-bg);*/ background: #222831;
 }
 a, .btn { -webkit-transition: all 0.5s ease-out 0s; -moz-transition: all 0.5s ease-out 0s; -ms-transition: all 0.5s ease-out 0s; -o-transition: all 0.5s ease-out 0s; transition: all 0.5s ease-out 0s; }
@@ -70,21 +70,22 @@ a.text-primary:focus, a.text-primary:hover { color: var(--iq-primary) !important
 hr { border-color: var(--iq-border-light); }
 h1, h2, h3, h4, h5, h6 { font-weight: 500; margin: 0px; line-height: 1.2; color: var(--iq-white);    
  }
-h1 a, h2 a, h3 a, h4 a, h5 a, h6 a { color: inherit; font-family: 'futurabook';
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a { color: inherit;  font-family: 'verdana';
  }
-label { font-weight: normal; font-family: 'futurabook';
+label { font-weight: normal;  font-family: 'verdana';
 font-weight: 400; }
-h1, .h1 { font-size: 2.50em;  font-family: 'futurabook';
+h1, .h1 { font-size: 2.50em;   font-family: 'verdana';
  }
-h2, .h2 { font-size: 2.300em;   font-family: 'futurabook';
+h2, .h2 { font-size: 2.300em;    font-family: 'verdana';
 }
-h3, .h3 { font-size: 1.953em;  font-family: 'futurabook';
+h3, .h3 { font-size: 1.953em;   font-family: 'verdana';
  }
-h4, .h4 { font-size: 1.400em;       font-family: 'futurabook';
+h4, .h4 { font-size: 1.400em;        font-family: 'verdana';
+    font-weight: 500;
 
 }
-h5, .h5 { font-size: 1.200em;  font-family: 'futuraheavy';}
-h6, .h6 { font-size: 1.0em;  font-family: 'futuraheavy';}
+h5, .h5 { font-size: 1.200em;   font-family: 'verdanabold';}
+h6, .h6 { font-size: 1.0em;   font-family: 'verdanabold';}
 .container-fluid { padding: 0 50px; }
 .fluid{padding: 5px 20px;   min-width: 100%;overflow: visible;position: relative;
     top: 0;
@@ -263,7 +264,7 @@ Select 2
 .select2-container--bootstrap4.select2-container--focus .select2-selection { box-shadow: none; }
 .select2-search--dropdown .select2-search__field { border-radius: 0; border: none; background: rgba(85, 85, 85, 0.65); color: var(--iq-white); }
 .select2-container--bootstrap4 .select2-selection--single .select2-selection__arrow b { border: none; }
-.select2-container--bootstrap4 .select2-selection--single .select2-selection__arrow b:before { content: '\ea41'; position: absolute; font-family: 'Proxima Nova'; top: 50%; transform: translateY(-50%); right: 1px; color: var(--iq-white); font-size: 16px; z-index: 99; transition: all 0.4s ease; }
+.select2-container--bootstrap4 .select2-selection--single .select2-selection__arrow b:before { content: '\ea41'; position: absolute; font-family: 'verdana'; top: 50%; transform: translateY(-50%); right: 1px; color: var(--iq-white); font-size: 16px; z-index: 99; transition: all 0.4s ease; }
 .select2-container--bootstrap4.select2-container--open .select2-selection__arrow b:before { transform: translateY(-50%) rotate(180deg); }
 .select2-container--bootstrap4 .select2-selection--single .select2-selection__arrow b { margin-top: 0; }
 .select2-container--bootstrap4 .select2-selection--single .select2-selection__arrow { width: auto; }
