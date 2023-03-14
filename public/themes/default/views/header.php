@@ -126,7 +126,7 @@
       elseif(!empty($series)){ echo $series->description ;}
       elseif(!empty($livestream)){ echo $livestream->description  ;}
       else{ echo $settings->website_description   ;} //echo $settings; ?>">
-<meta name="twitter:image" content="<?php 
+<meta name="twitter:image:src" content="<?php 
       if(!empty($videos_data)){ echo URL::to('/public/uploads/images').'/'.$videos_data->image  ;
       }
       elseif(!empty($episdoe)){ echo URL::to('/public/uploads/images').'/'.$episdoe->image  ;}
