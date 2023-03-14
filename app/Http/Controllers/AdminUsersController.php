@@ -978,7 +978,7 @@ class AdminUsersController extends Controller
         
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
         if (Auth::guest())
         {
