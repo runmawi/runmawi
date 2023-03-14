@@ -296,6 +296,277 @@
         color: #f7dc59;
     }
 
+<<<<<<< HEAD
+        }
+        body.light-theme .copyright{
+             background-color: <?php echo GetLightBg(); ?>;
+            color: <?php echo GetLightText(); ?>;
+        }
+        body.light-theme .dropdown-item.cont-item{
+             color: #fff!important;
+        }
+        body.light-theme .s-icon{
+           background-color: <?php echo GetLightBg(); ?>; 
+             box-shadow: 0 0 50px #ccc;
+        }
+        body.light-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover{
+            color: cornflowerblue!important;
+        }
+    body.light-theme .dropdown-menu.categ-head{
+             background-color: <?php echo GetLightBg(); ?>!important;  
+            color: <?php echo GetLightText(); ?>!important;
+        }
+         body.light-theme .navbar-right .iq-sub-dropdown{
+           background-color: <?php echo GetLightBg(); ?>;  
+        }
+        body.light-theme .media-body h6{
+             color: <?php echo GetLightText(); ?>;
+        }
+        body.light-theme  header .navbar ul li{
+            font-weight: 400;
+        }
+        body.light-theme .slick-nav i{
+             color: <?php echo GetLightText(); ?>!important;
+        }
+         body.light-theme  .block-description h6{
+             color: <?php echo GetLightText(); ?>!important;
+        }
+        body.light-theme footer ul li{
+            color: <?php echo GetLightText(); ?>!important;
+        }
+        body.light-theme h6{
+             color: <?php echo GetLightText(); ?>!important;
+        }
+        body.light-theme .movie-time i{
+            color: <?php echo GetLightText(); ?>!important;
+        }
+        body.light-theme span{
+            color: <?php echo GetLightText(); ?>!important;
+        }body.light-theme .slick-bg:before{
+            background-image: linear-gradient(to left, rgb(225 228 233 / 0%)0%, rgb(140 142 147)56%, rgb(205 206 209));
+           
+        }
+        body.light-theme h1{
+           color: #000!important;
+           
+        }  body.light-theme .h3{
+           color: #000!important;
+           
+        }  body.light-theme .series_title h1{
+           color: #fff!important;
+           
+        } body.light-theme .form-control{
+           color: #000!important;
+            background: #fff!important;
+            border:1px solid #000!important;
+           
+        } 
+        body.light-theme .menu-item span{
+           color: #fff!important;
+           
+        } 
+        body.light-theme .series_title desc{
+           color: #fff!important;
+           
+        }
+        body.light-theme .navbar-right .iq-sub-dropdown{
+          background-image: linear-gradient(to left, rgb(225 228 233 / 0%)0%, rgb(140 142 147)0%, rgb(205 206 209));
+           
+        } 
+        body.light-theme #home-slider h1.slider-text{
+          color: #000!important;
+           
+        }
+        .fa-2x {
+font-size: 2em;
+}
+.fa {
+position: relative;
+
+font-size:20px;
+}
+
+
+.main-menu:hover,nav.main-menu.expanded {
+width:250px;
+overflow:visible;
+}
+        .main-menu i{
+            font-size: 25px;
+            padding: 5px 10px;
+        }
+.main-menu {
+background:#212121;
+
+position:absolute;
+top:0;
+bottom:0;
+height:100%;
+left:0;
+width:110px;
+overflow:hidden;
+-webkit-transition:width .05s linear;
+transition:width .05s linear;
+-webkit-transform:translateZ(0) scale(1,1);
+z-index:1000;
+}
+
+.main-menu>ul {
+margin:7px 0;
+}
+
+.main-menu li {
+position:relative;
+display:block;
+width:250px;
+    padding: 10px 20px;
+}
+
+.main-menu li>a {
+position:relative;
+display:table;
+border-collapse:collapse;
+border-spacing:0;
+color:#999;
+ font-family: arial;
+font-size: 14px;
+text-decoration:none;
+-webkit-transform:translateZ(0) scale(1,1);
+-webkit-transition:all .1s linear;
+transition:all .1s linear;
+  
+}
+
+.main-menu .nav-icon {
+position:relative;
+display:table-cell;
+width:60px;
+height:36px;
+text-align:center;
+vertical-align:middle;
+font-size:18px;
+}
+
+.main-menu .nav-text {
+position:relative;
+display:table-cell;
+vertical-align:middle;
+
+  
+}
+        .main-menu li{
+            color: #fff;
+            font-size: 25px;
+        }
+.main-menu>ul.logout {
+position:absolute;
+left:0;
+bottom:0;
+}
+
+.no-touch .scrollable.hover {
+overflow-y:hidden;
+}
+
+.no-touch .scrollable.hover:hover {
+overflow-y:auto;
+overflow:visible;
+}
+
+a:hover,a:focus {
+text-decoration:none;
+}
+
+nav {
+-webkit-user-select:none;
+-moz-user-select:none;
+-ms-user-select:none;
+-o-user-select:none;
+user-select:none;
+}
+
+nav ul,nav li {
+outline:0;
+margin:0;
+padding:0;
+}
+.main-menu li:hover>a,nav.main-menu li.active>a,.dropdown-menu>li>a:hover,.dropdown-menu>li>a:focus,.dropdown-menu>.active>a,.dropdown-menu>.active>a:hover,.dropdown-menu>.active>a:focus,.no-touch .dashboard-page nav.dashboard-menu ul li:hover a,.dashboard-page nav.dashboard-menu ul li.active a {
+color:#fff;
+background-color:#000000;
+}
+.area {
+float: left;
+background: #e2e2e2;
+width: 100%;
+height: 100%;
+}
+@font-face {
+  font-family: 'Titillium Web';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Titillium WebLight'), local('TitilliumWeb-Light'), url(http://themes.googleusercontent.com/static/fonts/titilliumweb/v2/anMUvcNT0H1YN4FII8wpr24bNCNEoFTpS2BTjF6FB5E.woff) format('woff');
+}
+        .sidebar {
+  height: 100%;
+  width: 50px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+ background: #ED563C ;
+
+  transition: 0.5s;
+  overflow-x: hidden;
+  padding-top: 70px;
+  white-space: nowrap;
+}
+
+.sidebar a {
+  padding-left: 8px;
+  text-decoration: none;
+  font-size: 20px;
+  color: #fff!important;
+  display: block;
+  font-family: 'verdana';
+    
+}
+
+.sidebar a:hover {
+  color: #f1f1f1;
+}
+
+main .sidebar {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+.material-icons,
+.icon-text {
+  vertical-align: middle;
+}
+
+.material-icons {
+  padding-bottom: 3px;
+  margin-right: 30px;
+}
+        .akm{
+            display: flex!important;
+            
+        }
+#main {
+
+  margin-left: 50px;
+  transition: margin-left 0.5s;
+}
+        .sidebar img{
+            padding-right: 10px;
+            height: 35px;
+            width: 45px;
+          
+=======
     span.family {
         color: #f7dc59;
     }
@@ -742,6 +1013,7 @@
     @media screen and (max-height: 450px) {
         .sidebar {
             padding-top: 15px;
+>>>>>>> af9c765452013ac57c77a34de51a319b06d64f1e
         }
 
         .sidebar a {
