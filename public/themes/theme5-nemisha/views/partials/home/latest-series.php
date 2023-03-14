@@ -28,7 +28,7 @@
                
                 <div class="hover-buttons d-flex">
                   <a class="text-white " href="<?php echo URL::to('/play_series'.'/'.$latest_serie->slug) ?> " >
-                    <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.svg';  ?>"> 
+                    <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"> 
                   
                   </a>
                 </div>

@@ -121,9 +121,10 @@ Index Of Script
           $(window).on('load',function(){
 		$('#home-slider').slick({
 			autoplay: true,
+            appendDots: '.slider-dots',
 			speed: 800,
 			lazyLoad: 'progressive',
-			arrows: false,
+			arrows: true,
 			dots: true,
 			prevArrow: '<div class="slick-nav prev-arrow"><i></i><svg><use xlink:href="#circle"></svg></div>',
 			nextArrow: '<div class="slick-nav next-arrow"><i></i><svg><use xlink:href="#circle"></svg></div>',

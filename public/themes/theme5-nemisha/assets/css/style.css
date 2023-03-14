@@ -251,7 +251,7 @@ li.slide-item .block-description .parallax-ratting span { font-size: 14px; }
   background: rgba(255, 255, 255, 1);
 font-weight: 400;
 text-transform: uppercase;
-     font-family: 'verdana';
+     font-family: 'futuramedium';
 
 border-radius: 10px;
 
@@ -759,7 +759,7 @@ a.title-dec{
     padding: 5px 20px;
       border: 1px solid #fff !important;
    font-size: 20px;
-    font-family: 'verdana';
+    font-family: 'Roboto', sans-serif;
 font-weight: 500;
 }
 .nav-link.active {
@@ -794,7 +794,10 @@ font-weight: 500;
     color: #fff !important;
     text-align: center;
     list-style: none;
-    background: linear-gradient(180deg, #121C28 -35.59%, rgba(11, 18, 28, 0.36) 173.05%);
+    /*background: linear-gradient(180deg, #121C28 -35.59%, rgba(11, 18, 28, 0.36) 173.05%);*/
+    background: transparent;
+    border:none!important;
+    border-top: 1px solid #fff;
    
 }
 /*header .navbar ul li.menu-item a {
@@ -2502,9 +2505,9 @@ font-family: 'Roboto', sans-serif;
 .tune li{
     list-style: disc;
     padding: 5px 10px;
-    font-weight: 400;
+    font-weight: 600;
    line-height: 52px;
-    font-family: 'verdana';
+    font-family: 'futuralight';
 
 color: #252525;
 font-size: 30px;
@@ -2512,8 +2515,7 @@ font-size: 30px;
 
 }
 .btn{
-     font-family: 'verdana'!important;
-    font-weight: 400;
+     font-family: 'futuramedium';
 }
 .sec-3{
  /* background: /*linear-gradient(180deg, #0D8282 0%, #003C3C 100%);*/
@@ -2539,7 +2541,7 @@ text-align: center;
 color: #01DC82;
 }
 p{
-    
+     font-family: 'futuralight';
 }
 .tn-bg p{
     font-weight: 600;
@@ -2552,7 +2554,7 @@ line-height: 52px;
     padding: 40px;
 }
 .ital{
-   font-family: 'verdana';
+   font-family: 'futurabold_italic';
     margin: 0 auto;
     width: 60%;
     font-weight: 600;
@@ -2561,7 +2563,7 @@ line-height: 52px;
     line-height: 52px;
 }
 .get{
-   font-family: 'verdana';
+   font-family: 'Roboto', sans-serif;
 font-style: normal;
 font-weight: 500;
 font-size: 20px;
