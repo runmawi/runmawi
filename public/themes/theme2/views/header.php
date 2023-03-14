@@ -47,7 +47,12 @@ $data = Session::all();
     <?php if(!empty($data['password_hash'])){ $series = App\Series::where('title',$request_url)->first(); } //echo $settings->website_name; ?>
     <?php if(!empty($data['password_hash'])){ $episdoe = App\Episode::where('title',$request_url)->first(); } //echo $settings->website_name; ?>
     <?php if(!empty($data['password_hash'])){ $livestream = App\LiveStream::where('slug',$request_url)->first(); } //echo $settings->website_name; ?>
-
+    <?php
+      $videos_data = App\Video::where('slug',$request_url)->first();
+      $series = App\Series::where('title',$request_url)->first();
+      $episdoe = App\Episode::where('title',$request_url)->first();
+      $livestream = App\LiveStream::where('slug',$request_url)->first();
+    ?>
 
     <meta charset="UTF-8">
     <title><?php

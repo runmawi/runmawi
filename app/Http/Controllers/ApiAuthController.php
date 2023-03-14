@@ -8292,7 +8292,10 @@ public function Adstatus_upate(Request $request)
   public function home_categorylist(Request $request)
   {
 
-    $videocategories = VideoCategory::select('id','image')->where('in_home',1)->get()->toArray();
+    // $videocategories = VideoCategory::select('id','image')->where('in_home',1)->get()->toArray();
+    $videocategories = VideoCategory::join('categoryvideos','video_categories.id', '=' ,'categoryvideos.category_id')->distinct()->select('video_categories.id','video_categories.image','video_categories.order')
+    ->where('video_categories.in_home',1)->get()->toArray();
+
     $myData = array();
 
     foreach ($videocategories as $key => $videocategory) {
@@ -8869,7 +8872,8 @@ $cpanel->end();
 
         if( $HomeSetting->category_videos == 1 ){
 
-          $videocategories = VideoCategory::select('id','image','order')->get()->toArray();
+          $oldvideocategories = VideoCategory::select('id','image','order')->get()->toArray();
+          $videocategories = VideoCategory::join('categoryvideos','video_categories.id', '=' ,'categoryvideos.category_id')->distinct()->select('video_categories.id','video_categories.image','video_categories.order')->get()->toArray();
           $order_video_categories = VideoCategory::select('id','name','order')->get()->toArray();
           $myData = array();
 
@@ -8925,8 +8929,8 @@ $cpanel->end();
         }
         else{
           $myData = [];
-        }
 
+        }
         if( $HomeSetting->live_videos == 1 ){
 
             $live_videos = LiveStream::where('active', '=', '1')->orderBy('id', 'DESC')->get()->map(function ($item) {

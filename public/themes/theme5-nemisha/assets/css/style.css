@@ -759,7 +759,7 @@ a.title-dec{
     padding: 5px 20px;
       border: 1px solid #fff !important;
    font-size: 20px;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'verdana';
 font-weight: 500;
 }
 .nav-link.active {
@@ -2502,9 +2502,9 @@ font-family: 'Roboto', sans-serif;
 .tune li{
     list-style: disc;
     padding: 5px 10px;
-    font-weight: 600;
+    font-weight: 400;
    line-height: 52px;
-    font-family: 'futuralight';
+    font-family: 'verdana';
 
 color: #252525;
 font-size: 30px;
@@ -2512,7 +2512,8 @@ font-size: 30px;
 
 }
 .btn{
-     font-family: 'futuramedium';
+     font-family: 'verdana'!important;
+    font-weight: 400;
 }
 .sec-3{
  /* background: /*linear-gradient(180deg, #0D8282 0%, #003C3C 100%);*/
