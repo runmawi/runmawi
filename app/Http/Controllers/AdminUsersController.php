@@ -1031,8 +1031,12 @@ class AdminUsersController extends Controller
             unset($data['providertoken']);
             unset($data['user']);
         }
+        Auth::logout();
 
-
+        $request->session()->invalidate();
+    
+        $request->session()->regenerateToken();
+    
         \Session::flush();
 
         return Redirect::to('/')->with(array(
