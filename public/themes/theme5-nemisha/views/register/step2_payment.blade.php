@@ -497,6 +497,18 @@ i.fa.fa-google-plus {
   });
     
 </script>
+@if (Session::has('message'))
+        <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
+    @endif
+
+    @if(count($errors) > 0)
+        @foreach( $errors->all() as $message )
+            <div class="alert alert-danger display-hide" id="successMessage" >
+                <button id="successMessage" class="close" data-close="alert"></button>
+                <span>{{ $message }}</span>
+            </div>
+        @endforeach
+    @endif
 
 @php
     $SubscriptionPlan = App\SubscriptionPlan::first();
@@ -1494,7 +1506,16 @@ function paypalplan_details(ele){
     } 
 
 </script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script>
+    $(document).ready(function(){
+        setTimeout(function() {
+            $('#successMessage').fadeOut('fast');
+        }, 3000);
+    })
+    
 
+    </script>
 @php
     include(public_path('themes/theme5-nemisha/views/footer.blade.php'));
 @endphp

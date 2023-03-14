@@ -131,11 +131,19 @@
    
 ?>
     <div class="row justify-content-center" id="signup-form">
-            @if(session()->has('message'))
-                <div class="alert alert-success">
-                    {{ session()->get('message') }}
-                </div>
-            @endif
+    @if (Session::has('message'))
+        <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
+    @endif
+
+    @if(count($errors) > 0)
+        @foreach( $errors->all() as $message )
+            <div class="alert alert-danger display-hide" id="successMessage" >
+                <button id="successMessage" class="close" data-close="alert"></button>
+                <span>{{ $message }}</span>
+            </div>
+        @endforeach
+    @endif
+
         <div class="col-md-10 col-sm-offset-1">
 			<div class="login-block">
                 <div class="panel-heading"><h1>Choose Your Plan</h1></div>
@@ -501,7 +509,16 @@ document.getElementById("defaultOpen").click();
                 });
             });
         </script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script>
+    $(document).ready(function(){
+        setTimeout(function() {
+            $('#successMessage').fadeOut('fast');
+        }, 3000);
+    })
+    
 
+    </script>
 
 
 @include('footer')
