@@ -38,35 +38,79 @@
 </div>
 
 <div class="favorites-contens">
-    <ul class="favorites-slider list-inline  row p-0 mb-0">
+    <ul class="favorites-slider list-inline row p-0 mb-0">
         <?php  if(isset($latest_view_audios)) :
-                foreach($latest_view_audios as $key => $latest_view_audio): ?>
-        <li class="slide-item">
-            <a href="<?php echo URL::to('home'); ?>">
+                foreach($latest_view_audios as $key => $latest_view_audio):  ?>
 
-                <!-- block-images -->
+        <li class="slide-item">
+            <a href="<?= URL::to('audio/' . $latest_view_audio->slug); ?>">
                 <div class="block-images position-relative">
+
+                    <!-- block-images -->
                     <div class="img-box">
-                        <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $latest_view_audio->image; ?>" class="img-fluid img-zoom w-100" alt="">
+                        <img loading="lazy" data-src="<?php echo URL::to('/') . '/public/uploads/images/' . $latest_view_audio->image; ?>" class="img-fluid lazyload w-100"
+                            alt="">
                     </div>
-                    <div class="block-description" style="top:40px !important;">
-                        <a href="<?= URL::to('audio/' . $latest_view_audio->slug) ?>">
-                            <i class="ri-play-fill"></i>
-                        </a>
-                        <div class="hover-buttons">
-                            <a href="<?= URL::to('audio/' . $latest_view_audio->slug) ?>">
-                                <h6 class="epi-name text-white mb-0"><?php echo $latest_view_audio->title; ?></h6>
-                            </a>
-                            <div class="d-flex align-items-center justify-content-between">
-                                <span class="text-white"><small><?php echo get_audio_artist($latest_view_audio->id); ?></small></span>
-                                <span class="text-primary"><small><?php echo gmdate('H:i:s', $latest_view_audio->duration); ?>m</small></span>
-                            </div>
-                        </div>
+                </div>
+
+                <div class="block-description">
+                    <div class="hover-buttons text-white">
+                        <a href="<?= URL::to('audio/' . $latest_view_audio->slug); ?>">
+                        <img
+                                class="ply" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>" /> </a>
+                        <div></div>
                     </div>
+                </div>
+
+                <div class="mt-2 d-flex justify-content-between p-0">
+                    <?php if($ThumbnailSetting->title == 1) { ?>
+                        <h6><?php echo strlen($latest_view_audio->title) > 17 ? substr($latest_view_audio->title, 0, 18) . '...' : $latest_view_audio->title; ?></h6>
+                    <?php } ?>
+                </div>
+
+                <div class="movie-time my-2">
+
+                    <!-- Duration -->
+                    <?php if($ThumbnailSetting->duration == 1) { ?>
+                        <span class="text-white">
+                            <i class="fa fa-clock-o"></i>
+                            <?= gmdate('H:i:s', $latest_view_audio->duration) ?>
+                        </span>
+                    <?php } ?>
+
+                    <!-- Rating -->
+
+                    <?php if($ThumbnailSetting->rating == 1 && $latest_view_audio->rating != null) { ?>
+                        <span class="text-white">
+                            <i class="fa fa-star-half-o" aria-hidden="true"></i>
+                            <?php echo __($latest_view_audio->rating); ?>
+                        </span>
+                    <?php } ?>
+
+                    <?php if($ThumbnailSetting->featured == 1 && $latest_view_audio->featured == 1) { ?>
+                    <!-- Featured -->
+                        <span class="text-white">
+                            <i class="fa fa-flag" aria-hidden="true"></i>
+                        </span>
+                    <?php }?>
+                </div>
+
+                <div class="movie-time my-2">
+                    <!-- published_year -->
+
+                    <?php  if ( ($ThumbnailSetting->published_year == 1) &&  ( $latest_view_audio->year != null ) ) { ?>
+                    <span class="text-white">
+                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                            <?php echo __($latest_view_audio->year); ?>
+                    </span>
+                    <?php } ?>
                 </div>
             </a>
         </li>
-        <?php endforeach; endif; ?>
+        <?php                     
+            endforeach; 
+            endif; 
+        ?>
     </ul>
 </div>
 
