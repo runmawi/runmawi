@@ -2263,6 +2263,7 @@ class HomeController extends Controller
 
     public function VerifyRequest(Request $request)
     {
+        session()->put('message',"Thanks, Your Account has been Submitted for Approval.");
 
         return Theme::view('emails.verify_request');
 

@@ -985,6 +985,7 @@ class AdminUsersController extends Controller
             return redirect('/login');
         }
         $data = \Session::all();
+        // dd( $data);
         $agent = new Agent();
 
         $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
@@ -1024,7 +1025,18 @@ class AdminUsersController extends Controller
         }
         Auth::logout();
         unset($data['password_hash']);
+        
+        if(!empty($data['user'])){
+            unset($data['expiresIn']);
+            unset($data['providertoken']);
+            unset($data['user']);
+        }
+        Auth::logout();
 
+        $request->session()->invalidate();
+    
+        $request->session()->regenerateToken();
+    
         \Session::flush();
 
         return Redirect::to('/')->with(array(
