@@ -1025,7 +1025,12 @@ class AdminUsersController extends Controller
         }
         Auth::logout();
         unset($data['password_hash']);
-        unset($data['user']);
+        
+        if(!empty($data['user'])){
+            unset($data['expiresIn']);
+            unset($data['providertoken']);
+            unset($data['user']);
+        }
 
 
         \Session::flush();
