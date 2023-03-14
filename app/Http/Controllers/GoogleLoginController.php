@@ -25,30 +25,46 @@ public function callback(Request $request ,$provider)
 
     $getInfo = Socialite::driver($provider)->user();
 
-    $findUser = User::where('email', $getInfo->email)->first();
+    // $findUser = User::where('email', $getInfo->email)->first();
 
-    if($findUser){
-        // Auth::login($findUser);
-        auth()->login($findUser);
-       $user = $findUser;
-    }else{
-         $user = User::create([
-            'name'     => $getInfo->name,
-            'username'     => $getInfo->name,
-            'active'    =>'1',
-            'role'    =>'registered',
-            'email'    => $getInfo->email,
-            'provider' => $provider,
-            'provider_id' => $getInfo->id
-        ]);
-        auth()->login($user);
-    }
+    $saveUser = User::updateOrCreate([
+        'provider_id' => $getInfo->getId(),
+    ],[
+        'name' => $getInfo->getName(),
+        'username'     => $getInfo->name,
+        'email' => $getInfo->getEmail(),
+        'password' => Hash::make($getInfo->getName().'@'.$getInfo->getId()),
+        'provider' => $provider,
+        'role'    =>'registered',
+        'active'    =>'1',
+        'provider_id' => $getInfo->id
+         ]);
+
+    Auth::loginUsingId($saveUser->id);
+
+
+    // if($findUser){
+    //     // Auth::login($findUser);
+    //     auth()->login($findUser);
+    //    $user = $findUser;
+    // }else{
+    //      $user = User::updateOrcreate([
+    //         'name'     => $getInfo->name,
+    //         'username'     => $getInfo->name,
+    //         'active'    =>'1',
+    //         'role'    =>'registered',
+    //         'email'    => $getInfo->email,
+    //         'provider' => $provider,
+    //         'provider_id' => $getInfo->id
+    //     ]);
+    //     auth()->login($user);
+    // }
 
 
     // $user = $this->createUser($getInfo,$provider);
  
     // auth()->login($user);
-    $user = $user;
+    $user = $saveUser;
     session()->put('user', $user);
     session()->put('expiresIn', $getInfo->expiresIn);
     session()->put('providertoken', $getInfo->token);
