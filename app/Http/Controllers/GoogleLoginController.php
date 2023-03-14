@@ -29,6 +29,10 @@ class GoogleLoginController extends Controller
      */
     public function callback(Request $request ,$provider)
     {
+        if (!$request->has('code') || $request->has('denied')) {
+            return redirect('/');
+        }
+        
         try {
             $user = Socialite::driver($provider)->user();
         } catch (\Exception $e) {
