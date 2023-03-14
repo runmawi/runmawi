@@ -495,6 +495,7 @@ font-family: 'verdana';
         .btn-success span {
             position: relative;
             z-index: 2;
+            font-family: 'verdana';
         }
 
         .sec-21 .btn {
@@ -641,7 +642,9 @@ font-family: 'verdana';
         .nav-pills .nav-link {
             border-radius: 0 !important;
         }
-
+        .tune li{
+            font-family: 'verdana';
+        }
         .btn {
             font-weight: 500;
         }
@@ -1243,7 +1246,7 @@ font-family: 'verdana';
                     </div>
 
                     <div class="text-center mt-3 mb-5 pb-2 col-lg-3 all-video">
-                        <a class="btn btn-success my-2 my-sm-0 w-100" style="font-weight:600;font-size: 20px;"
+                        <a class="btn btn-success my-2 my-sm-0 w-100" style="font-size: 20px;"
                             herf="#"><span>All Videos <i class="fa fa-angle-right"
                                     aria-hidden="true"></i></span>
                         </a>
