@@ -104,7 +104,14 @@
       }
       // dd($site_page_url);
        ?>
-
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image:alt" content="<?php
+      if(!empty($videos_data)){  echo $videos_data->title .' | '. $settings->website_name ;
+       }
+      elseif(!empty($series)){ echo $series->title .' | '. $settings->website_name ; }
+      elseif(!empty($episdoe)){ echo $episdoe->title .' | '. $settings->website_name ; }
+      elseif(!empty($livestream)){ echo $livestream->title .' | '. $settings->website_name ; }
+      else{ echo $uppercase .' | ' . $settings->website_name ;} ?>">
 <meta name="twitter:title" content="<?php
       if(!empty($videos_data)){  echo $videos_data->title .' | '. $settings->website_name ;
        }

@@ -264,7 +264,7 @@ Select 2
 .select2-container--bootstrap4.select2-container--focus .select2-selection { box-shadow: none; }
 .select2-search--dropdown .select2-search__field { border-radius: 0; border: none; background: rgba(85, 85, 85, 0.65); color: var(--iq-white); }
 .select2-container--bootstrap4 .select2-selection--single .select2-selection__arrow b { border: none; }
-.select2-container--bootstrap4 .select2-selection--single .select2-selection__arrow b:before { content: '\ea41'; position: absolute; font-family: 'Proxima Nova'; top: 50%; transform: translateY(-50%); right: 1px; color: var(--iq-white); font-size: 16px; z-index: 99; transition: all 0.4s ease; }
+.select2-container--bootstrap4 .select2-selection--single .select2-selection__arrow b:before { content: '\ea41'; position: absolute; font-family: 'verdana'; top: 50%; transform: translateY(-50%); right: 1px; color: var(--iq-white); font-size: 16px; z-index: 99; transition: all 0.4s ease; }
 .select2-container--bootstrap4.select2-container--open .select2-selection__arrow b:before { transform: translateY(-50%) rotate(180deg); }
 .select2-container--bootstrap4 .select2-selection--single .select2-selection__arrow b { margin-top: 0; }
 .select2-container--bootstrap4 .select2-selection--single .select2-selection__arrow { width: auto; }
