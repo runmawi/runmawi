@@ -4619,8 +4619,9 @@ return response()->json($response, 200);
       $seasonid = $request->seasonid;
       $episode_id = $request->episode_id;
 
-      $next_episodeid = Episode::where('episode_order', '>', $episode_id)->where('season_id','=',$seasonid)->where('active','=','1')->where('status','=','1')->orderBy('episode_order')->max('id');
-
+      $next_episodeid = Episode::where('id','>',$episode_id)->where('season_id','=',$seasonid)
+      ->where('active','=','1')->where('status','=','1')->orderBy('episode_order')->min('id');
+      
       if($next_episodeid){
 
         $episode= Episode::where('id','=',$next_episodeid)->where('status','=','1')->where('active','=','1')->get();
