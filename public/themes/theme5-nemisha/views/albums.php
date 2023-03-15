@@ -134,7 +134,7 @@ width: 2px;
    padding-bottom: 20px;
     overflow: scroll;
     scroll-behavior: auto;
-    min-height:335px;
+    max-height:335px;
     scrollbar-color: rebeccapurple green!important;
     overflow-x: hidden;
 }
@@ -254,7 +254,7 @@ border-bottom: 1px solid #141414;
 <input type="hidden" value="<?php echo URL('/');?>" id="base_url">
 <div id="audio_bg" >
 <div class="container-fluid">
-<div class="row album-top-30 mt-4 align-items-center">
+<div class="row album-top-30 mt-4 ">
    <div class="col-lg-8">
  <audio id="myAudio" ontimeupdate="onTimeUpdate()">
   <!-- <source src="audio.ogg" type="audio/ogg"> -->

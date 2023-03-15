@@ -203,7 +203,7 @@ li.slide-item:hover .block-images{z-index: 99;transform: scale(1.1); transform-o
     left: 0;
     width: 100%;
    
-    top: 35%;
+    top: 26%;
    display: flex;
     align-items: center;
     justify-content: center;
@@ -212,6 +212,9 @@ li.slide-item:hover .block-images{z-index: 99;transform: scale(1.1); transform-o
     font-size: 12px;
     color: var(--TEXT_COLOR_L0);
   }
+.b1{
+    padding: 0 20px;
+}
 .block-description > h6{font-size: 1.5em;}
 li.slide-item .block-images::before {border-radius:10px; }
 li.slide-item:hover .block-images::before { opacity: 1; z-index: 9; }
