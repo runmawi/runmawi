@@ -1031,13 +1031,14 @@ class AdminUsersController extends Controller
             unset($data['providertoken']);
             unset($data['user']);
         }
-        Auth::logout();
 
+        $request->session()->flush();
+        $request->session()->regenerate();
         $request->session()->invalidate();
-    
         $request->session()->regenerateToken();
-    
         \Session::flush();
+
+        Auth::logout();
 
         return Redirect::to('/')->with(array(
             'message' => 'You are logged out done',
