@@ -769,13 +769,11 @@ class EmailTemplatesSeeder extends Seeder
                             'updated_at' => null,
                         ],
 
-                        [   'template_type' => 'Partner Content Video is Pending Admin Approval !', 
+                        [   'template_type' => 'Partner Content Video is Pending & waiting for Admin Approval !', 
                             'heading' => 'Partner Content Video {video_title} is Uploaded Successfully & Pending Admin Approval.',
                             'description' => '<p>Dear {Name},</p>
 
-                                                <p>Congratulations!&nbsp;</p>
-                                                                    
-                                                <p>Partner Content {contentName} has been uploaded videos and and is awaiting review.&nbsp;</p>
+                                                <p>Partner Content {contentName} has been uploaded videos {video_title} and and is awaiting review. .&nbsp;</p>
 
                                                 <p>Verify this video, then decide whether to accept it or not.&nbsp;</p>
 
@@ -823,7 +821,7 @@ class EmailTemplatesSeeder extends Seeder
                                                 
                                                 <p>Your {video_title} video has been published successfully.&nbsp;</p>
                                                 
-                                                <p>Please check your content by clicking on the following link.&nbsp;</p>
+                                                <p>Please check your video by clicking on the following link.&nbsp;</p>
                                                 
                                                 <p>Link: {video_link}</p>
                                                 
@@ -838,8 +836,8 @@ class EmailTemplatesSeeder extends Seeder
                         ],
 
                         [   
-                        'template_type' => 'Partner Content Video Approval Congratulations! {video_title} is published Successfully.', 
-                        'heading' => 'Congratulations! {video_title} is published Successfully.',
+                        'template_type' => "Partner Content Video Rejected! {video_title} is couldn't be published.", 
+                        'heading' => "Sorry! {video_title} is couldn't be published.",
                         'description' => "<p>Dear {Name},</p>
 
                                             <p>Congratulations!&nbsp;</p>
