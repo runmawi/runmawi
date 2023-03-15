@@ -1030,14 +1030,16 @@ class AdminUsersController extends Controller
             unset($data['expiresIn']);
             unset($data['providertoken']);
             unset($data['user']);
+            Cache::flush();
         }
-        Auth::logout();
 
+        $request->session()->flush();
+        $request->session()->regenerate();
         $request->session()->invalidate();
-    
         $request->session()->regenerateToken();
-    
         \Session::flush();
+
+        Auth::logout();
 
         return Redirect::to('/')->with(array(
             'message' => 'You are logged out done',
