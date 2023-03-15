@@ -249,7 +249,7 @@
             font-family: 'futurabook';
 
             text-transform: uppercase;
-            font-size: 25px;
+            font-size: 40px;
             font-weight: 600;
             line-height: 65px;
             letter-spacing: 0em;
@@ -1045,7 +1045,31 @@
                 flex-direction: column;
             }
         }
-
+ .bg-video-wrap {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 100vh;
+}
+        .bg-video-wrap video{
+            object-fit: cover;
+        }
+.overlay {
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-image: linear-gradient(rgba(0,0,0,.1) 70%, rgba(0,0,0,.5) 50%);
+    z-index: 2;
+}
+        .nemis{
+            position: absolute;
+    left: 0;
+    right: 0;
+    top: 56%;
+}
+        }
     </style>
 
     <?php $jsonString = file_get_contents(base_path('assets/country_code.json'));
@@ -1072,8 +1096,22 @@
     <section class="mt-5 mb-0">
 
       
+  <section class="mt-5 mb-0">
+<div class="bg-video-wrap">
+        <video src="<?php echo URL::to('/assets/img/tv.mp4'); ?>" loop muted autoplay>
+        </video>
+        <div class="overlay">
+            <div class="nemis">
+           <h1 class=" mt-5 pt-5">Welcome to <span class="">NEMISA TV</span></h1>
+                        <h2 class="dig mt-1 mb-5 text-center">HOME OF EDUTAINMENT & ORIGINAL <br>STORY-TELLING</h2>
+            </div>
+        </div>
+       
 
-        <div class="position-relative ban"
+    </div>
+      
+
+       <!-- <div class="position-relative ban"
             style="padding: 19.2% 0 37% 0!important;background-image:url('<?php echo URL::to('/assets/img/lan/v11.png'); ?>');background-repeat: no-repeat;background-size: 100% 100%;">
             <div class="fixe">
                 <div class="row m-0  p-0" style="">
@@ -1081,13 +1119,12 @@
                         style="background-image:url('<?php echo URL::to('/assets/img/lan/v'); ?>');background-repeat: no-repeat;background-position: center 350px;
     background-size: 50%;">
                         <div></div>
-                        <h1 class=" mt-5 pt-5">Welcome to <span class="">NEMISA TV</span></h1>
-                        <h2 class="dig mt-1 mb-5 text-center">HOME OF EDUTAINMENT & ORIGINAL <br>STORY-TELLING</h2>
-                        <!--  <p class="text-white" style="font-size:16px;">South Africa’s first free video sharing social platform where we mix knowledge <br>and entertainment for unique learning experience</p>-->
+                       
+                     <p class="text-white" style="font-size:16px;">South Africaâ€™s first free video sharing social platform where we mix knowledge <br>and entertainment for unique learning experience</p>
                     </div>
                 </div>
             </div>
-        </div>
+        </div>--></section>
        <section class="sec-21" style="background-image:url('<?php echo URL::to('/assets/img/lan/bg1.png'); ?>');background-repeat: no-repeat;background-size:100% 100%;">
             <div class="container">
                 <div class="row  mt-3 align-items-center">

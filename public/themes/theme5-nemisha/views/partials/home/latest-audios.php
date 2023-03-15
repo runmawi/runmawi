@@ -11,29 +11,27 @@
                          <?php  if(isset($audios)) :
                          foreach($audios as $audio): ?>
                        <li class="slide-item">
-                          <a href="<?php echo URL::to('home') ?>">
+                          <a href="<?= URL::to('audio') ?><?= '/' . $audio->slug ?>">
                              <!-- block-images -->
                              <div class="block-images position-relative">
                                 <div class="img-box">
                                 <img src="<?php echo URL::to('/').'/public/uploads/images/'.$audio->image;?>" class="img-fluid img-zoom w-100" alt="">
-                                </div>
-                                <div class="block-description" style="top:40px !important;">
-                                <a href="<?= URL::to('audio') ?><?= '/' . $audio->slug ?>">
-                        <i class="ri-play-fill"></i>
-                     </a>                     
+                                </div> </div>
+                                <div class="block-description" > </div>
+                                           
                                    <div class="hover-buttons">
                                    <a href="<?= URL::to('audio') ?><?= '/' . $audio->slug ?>">
                   <h6 class="epi-name text-white mb-0"><?php echo $audio->title; ?></h6>
                </a>
-                <div class="d-flex align-items-center justify-content-between">
+               <!-- <div class="d-flex align-items-center justify-content-between">
                     <span class="text-white"><small><?php echo get_audio_artist($audio->id); ?></small></span>
                     <span class="text-primary"><small><?php echo gmdate('H:i:s', $audio->duration); ?>m</small></span>
-               </div>
+               </div>-->
                                    </div>
                                 
-                                    </div>
+                                   
                               
-                             </div>
+                            
                           </a>
                        </li>
 
