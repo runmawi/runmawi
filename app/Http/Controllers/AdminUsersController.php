@@ -1030,6 +1030,7 @@ class AdminUsersController extends Controller
             unset($data['expiresIn']);
             unset($data['providertoken']);
             unset($data['user']);
+            Cache::flush();
         }
 
         $request->session()->flush();
