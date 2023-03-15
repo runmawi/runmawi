@@ -273,9 +273,9 @@ border-bottom: 1px solid #141414;
 <div class="album_container">
 <div class="blur"></div>
 <div class="overlay_blur">
- <h4 class="hero-title album mb-2"> <?= $album->albumname; ?></h4>
+ <h6 class="hero-title album mb-2 mt-3"> <?= $album->albumname; ?></h6>
      <p class="mt-2">Music by    <br>A. R. Rahman</p>
-    <div class="d-flex" style="justify-content: space-between;width: 33%;align-items: center;">
+    <div class="d-flex" style="justify-content: space-between;width: 40%;align-items: center;">
 
     <div onclick="toggleAudio()">
       <button class="btn btn-outline-success" id="vidbutton"  ><i class="fa fa-play mr-2" aria-hidden="true"  ></i> Play</button>
@@ -375,22 +375,22 @@ border-bottom: 1px solid #141414;
                                 <img loading="lazy" data-src="<?= URL::to('/').'/public/uploads/albums/' . $other_album->album ?>" alt="" class="img-fluid loading w-100">
 
                                        
-                                 </div>
+                                 </div>   </div>
                              
 
-                                <div class="block-description">
+                                <div class="block-description"> </div>
                                  
                                 
                                   <div class="hover-buttons text-white">
-                                           <a class="d-flex" href="<?php echo URL('/').'/album/'.$other_album->slug;?>">
+                                           <a class="d-flex pt-1 desc" href="<?php echo URL('/').'/album/'.$other_album->slug;?>">
                                                 <i class="fa fa-play mr-1" aria-hidden="true"></i> 
-                                               <p><?php echo ucfirst($other_album->albumname);?></p>
+                                               <h6><?php echo ucfirst($other_album->albumname);?></h6>
                                            
                                         </a>
                                  
                                     </div>
-                                </div>
-                              </div>
+                               
+                           
                           </a>
                        </li>
                        <?php } ?>
