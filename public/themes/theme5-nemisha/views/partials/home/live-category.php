@@ -104,9 +104,9 @@
                                         <?php if($ThumbnailSetting->published_on == 1) { ?>                                            
                                             <p class="published_on1"><?php echo $publish_day; ?> <span><?php echo $publish_time; ?></span></p>
                                         <?php  } ?>
-                                    </div>
+                                    </div></div>
 
-                                    <div class="block-description">
+                                    <div class="block-description">  </div>
                                         <a href="<?php echo URL::to('/') ?><?= '/live'.'/' . $livestream->slug ?>">
                                             <?php if($ThumbnailSetting->title == 1) { ?>            <!-- Title -->
                                                     <h6>
@@ -181,17 +181,17 @@
                                         <div class="hover-buttons">
                                             <a type="button" class="text-white d-flex align-items-center"
                                                 href="<?php echo URL::to('/') ?><?= '/live'.'/' . $livestream->slug ?>">
-                                                <img class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
+                                               
                                             </a>
                                         </div>
                                     </a>
-                                    </div>
-                                </div>
+                                 
+                              
                             </a>
                         </li>
                     <?php   endforeach;  endif; ?>
 
-
+                </ul>
             </div>
         </div>
     </div>

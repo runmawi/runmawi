@@ -171,7 +171,7 @@ $site_page_url = $http_site_url[1];
 	height: 100vh;
 	width: 100vw;
 	overflow: hidden;
-	background: linear-gradient(180deg, #121C28 -35.59%, rgba(11, 18, 28, 1) 173.05%);
+	background: #222831;
 	z-index: 9999;
 	opacity: 1;
 	transition: opacity .5s;
@@ -191,7 +191,7 @@ $site_page_url = $http_site_url[1];
 			animation: shine 2.5s infinite cubic-bezier(0.42, 0, 0.58, 1);
 						
 			// opaque white slide
-			background: rgba(255,255,255,.8);
+			background:#222831;
 			// gradient shine scroll
 			background: -moz-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 100%); /* FF3.6-15 */
 			background: -webkit-linear-gradient(left, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 50%,rgba(255,255,255,0) 100%); /* Chrome10-25,Safari5.1-6 */
@@ -322,6 +322,16 @@ input:checked + .sliderk:before {
 
       body.light-theme h4 {
          color: <?php echo GetLightText(); ?>;
+      }   
+        body.light-theme .hero-title {
+         color: #fff!important;
+      }  
+        body.light-theme .play-border {
+         border:1px solid #000;
+            box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
+      }  
+        body.light-theme .desc {
+         color: <?php echo GetLightText(); ?>!important;
       }
          body.light-theme label {
          color: <?php echo GetLightText(); ?>!important;
