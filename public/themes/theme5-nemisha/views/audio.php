@@ -296,10 +296,10 @@ Your browser does not support the audio element.
 <div class="album_container">
 <div class="blur"></div>
 <div class="overlay_blur">
-<h2 class="hero-title album"> <?php echo ucfirst($audio->title); ?></h2>
+<h6 class="hero-title album mt-3"> <?php echo ucfirst($audio->title); ?></h6>
 <p class="mt-2">Music by <?php echo get_audio_artist($audio->id); ?></p>
 <p class="mt-2">Album <a href="<?php echo URL::to('/').'/album/'.$album_slug;?>"><?php echo ucfirst($album_name); ?></a></p>
-<div class="d-flex" style="justify-content: space-between;width: 30%;align-items: center;">
+<div class="d-flex" style="justify-content: space-between;width: 40%;align-items: center;">
 
 <div onclick="toggleAudio()">
   <button class="  btn btn-outline-success" id="vidbutton"  ><i class="fa fa-play mr-2" aria-hidden="true"  ></i> Play</button>
