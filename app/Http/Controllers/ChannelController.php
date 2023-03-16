@@ -3786,8 +3786,7 @@ class ChannelController extends Controller
     public function liveList()
     {
 
-        $parentCategories = LiveCategory::orderBy('order')->where('in_menu', 1)
-            ->get();
+        $parentCategories = LiveCategory::orderBy('order')->where('in_menu', 1)->get();
 
         $data = array(
             'ThumbnailSetting' => ThumbnailSetting::first(),
@@ -3796,7 +3795,6 @@ class ChannelController extends Controller
         );
 
         return Theme::view('Live_list', $data);
-
     }
 
     public function Series_List(Request $request)
