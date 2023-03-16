@@ -116,6 +116,7 @@ use App\VideoSchedules as VideoSchedules;
 use App\ScheduleVideos as ScheduleVideos;
 use App\ReSchedule as ReSchedule;
 use App\WebComment;
+use App\Channel;
 
 class ApiAuthController extends Controller
 {
@@ -10880,4 +10881,55 @@ public function QRCodeMobileLogout(Request $request)
     return response()->json($response, 200);
   }
 
+  
+  public function HomeChannelPartner(Request $request)
+  {
+
+    try {
+
+      $response = array(
+        'status'=> 'true',
+        'message'  => 'Comment section Retrieved Successfully !!',
+        'message'  => 'Channel Partner section Retrieved Successfully !!',
+        'ChannelPartner' => Channel::get(), 
+        'order_settings' => OrderHomeSetting::orderBy('order_id', 'asc')->get(), 
+        'order_settings_list' => OrderHomeSetting::get(), 
+      );
+
+    } catch (\Throwable $th) {
+
+          $response = array(
+            'status'=>'false',
+            'message'=>$th->getMessage(),
+          );
+    }
+
+    return response()->json($response, 200);
+  }
+
+  
+  public function HomeContentPartner(Request $request)
+  {
+
+    try {
+
+      $response = array(
+        'status'=> 'true',
+        'message'  => 'Content Partner section Retrieved Successfully !!',
+        'ContentPartner' => ModeratorsUser::get(), 
+        'order_settings' => OrderHomeSetting::orderBy('order_id', 'asc')->get(), 
+        'order_settings_list' => OrderHomeSetting::get(), 
+  
+      );
+
+    } catch (\Throwable $th) {
+
+          $response = array(
+            'status'=>'false',
+            'message'=>$th->getMessage(),
+          );
+    }
+
+    return response()->json($response, 200);
+  }
 }
