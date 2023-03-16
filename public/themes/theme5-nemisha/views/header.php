@@ -361,8 +361,15 @@
         body.light-theme .sea{
            color: #fff!important;
            
-        }  body.light-theme .h3{
+        }   body.light-theme .h3{
            color: #000!important;
+           
+        }body.light-theme .main-title{
+           color: #fff!important;
+           
+        } 
+    body.light-theme .account span{
+           color: #fff!important;
            
         }
     body.light-theme .fa-clock-o{
