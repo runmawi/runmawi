@@ -1125,7 +1125,7 @@
                 </div>
             </div>
         </div>--></section>
-       <section class="sec-21" style="background-image:url('<?php echo URL::to('/assets/img/lan/bg1.png'); ?>');background-repeat: no-repeat;background-size:100% 100%;">
+       <section class="sec-21" style="background-image:url('<?php echo URL::to('/assets/img/lan/bg1.png'); ?>');background-repeat: no-repeat;background-size:750px 500px;background-position: right;">
             <div class="container">
                 <div class="row  mt-3 align-items-center">
                     <div class="col-lg-6">
@@ -1143,7 +1143,7 @@
 
                     </div>
 
-                    <div class="col-lg-6 imk">
+                    <div class="col-lg-6 imk" >
                         <img class="img-lan w-100" src="<?php echo URL::to('/assets/img/v1.png'); ?>" style="">
                     </div>
                 </div>
@@ -1194,11 +1194,12 @@
                             @foreach ($videos_categories as $key => $videos_category)
                                 @if ($key < 8)
                                     <li class="nav-item">
-                                        <a class="nav-link" id="pills-profile-tab" data-toggle="pill"
+                            <a class="nav-link" id="pills-profile-tab" data-toggle="pill"
                                             data-category-id={{ $videos_category->id }} onclick="Series_Category(this)"
-                                            role="tab" aria-controls="pills-profile" aria-selected="false">
+                                            role="tab" aria-controls="pills-profile" aria-selected="false" >
                                             {{ $videos_category->name }}
                                         </a>
+                                        
                                     </li>
                                 @endif
                             @endforeach
@@ -1211,15 +1212,21 @@
                                 </a>
 
                                 <div class="dropdown-menu">
-
+ <ul class="nav nav-pills   m-0 p-0" id="pills-tab" role="tablist"  style="display: flex;
+    justify-content: start;
+    flex-direction: column;">
                                     @foreach ($videos_categories as $key => $videos_category)
                                         @if ($key > 8)
-                                            <a class="nav-link dropdown-item" id="pills-kids-tab" data-toggle="pill" data-category-id={{ $videos_category->id }}
+     <li class="nav-item">
+                                            <a class="nav-link " id="pills-kids-tab" data-toggle="pill" data-category-id={{ $videos_category->id }}
                                                 onclick="Series_Category(this)" href="#pills-kids" role="tab" aria-controls="pills-kids"
                                                 aria-selected="false">{{ $videos_category->name }}</a>
                                         @endif
                                     @endforeach
+     </li>
+     </ul>
                                 </div>
+                        </li>
                     </div>
                 </div>
             </div>
