@@ -223,13 +223,16 @@ class ModeratorsLoginController extends Controller
 
     public function Store(Request $request)
     {
-
         $input = $request->all();
-        $request->validate(['email_id' => 'required|email|unique:moderators_users,email', 'password' => 'min:6', ]);
-        // $request->validate(['email_id' => 'required|email|unique:users,email' ]);
-        // dd($input);
+
+        $request->validate([
+                    'email_id' => 'required|email|unique:moderators_users,email',
+                    'password' => 'min:6',
+                ]);
+        
         $user_package = User::where('id', 1)->first();
         $package = $user_package->package;
+
         if (!empty($package) && $package == "Pro" || !empty($package) && $package == "Business")
         {
             $string = Str::random(60);
@@ -268,7 +271,6 @@ class ModeratorsLoginController extends Controller
                 $file = $picture;
                 $moderatorsuser->picture = $logopath . '/' . $file->getClientOriginalName();
                 $file->move($path, $moderatorsuser->picture);
-
             }
 
             $logopath = URL::to('/public/uploads/moderator/');
@@ -288,126 +290,98 @@ class ModeratorsLoginController extends Controller
                 //upload new file
                 $randval = Str::random(16);
                 $file = $intro_video;
-                $intro_video_ext = $randval . '.' . $request->file('intro_video')
-                    ->extension();
+                $intro_video_ext = $randval . '.' . $request->file('intro_video')->extension();
                 $file->move($path, $intro_video_ext);
 
                 $moderatorsuser->intro_video = URL::to('/') . '/public/uploads/moderator/' . $intro_video_ext;
-
             }
             else
             {
                 $moderatorsuser->intro_video = null;
             }
 
-            if ($request->picture == "")
-            {
-                $moderatorsuser->picture = "Default.png";
-            }
-            else
-            {
-
-                $moderatorsuser->picture = $file->getClientOriginalName();
-            }
+            $moderatorsuser->picture = $request->picture == "" ? "Default.png" : $file->getClientOriginalName() ;
             $moderatorsuser->save();
 
             $user_data = User::where('email', $request->email_id)->first();
 
             if(empty($user_data)){
-            $user = new User();
-            $user->package = 'Channel';
-            $user->unhashed_password = $request->password;
-            $user->name = $request->channel_name;
-            $user->role = 'registered';
-            $user->username = $request->channel_name;
-            $user->email = $request->email_id;
-            $user->password = Hash::make($request->password);
-            $user->active = 1;
-            $user->save();
+                $user = new User();
+                $user->package = 'CPP';
+                $user->unhashed_password = $request->password;
+                $user->name = $request->username;
+                $user->role = 'registered';
+                $user->username =  $request->username;
+                $user->email = $request->email_id;
+                $user->password = Hash::make($request->password);
+                $user->active = 1;
+                $user->save();
             }else{
 
             }
+            
             $user_id = $moderatorsuser->id;
             $str = "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16";
             $userrolepermissiom = explode(",", $str);
             foreach ($userrolepermissiom as $key => $value)
             {
-
                 $userrolepermissiom = new UserAccess;
                 $userrolepermissiom->user_id = $user_id;
                 // $userrolepermissiom->role_id = $request->user_role;
                 $userrolepermissiom->permissions_id = $value;
                 $userrolepermissiom->save();
-
             }
 
             // Mail for Content Partner Welcome Email
             try
             {
-
                 $data = array(
-                    'email_subject' => EmailTemplate::where('id', 11)->pluck('heading')
-                        ->first() ,
+                    'email_subject' => EmailTemplate::where('id', 11)->pluck('heading')->first() ,
                 );
 
-                Mail::send('emails.partner_welcome', array(
-                    'username' => $request->username,
-                    'website_name' => GetWebsiteName() ,
-                ) , function ($message) use ($data, $request)
-                {
-                    $message->from(AdminMail() , GetWebsiteName());
-                    $message->to($request->email_id, $request->username)
-                        ->subject($data['email_subject']);
-                });
+                Mail::send('emails.partner_welcome', array('username' => $request->username,'website_name' => GetWebsiteName() ,) ,
+                    function ($message) use ($data, $request){
+                        $message->from(AdminMail() , GetWebsiteName());
+                        $message->to($request->email_id, $request->username)->subject($data['email_subject']);
+                    });
 
                 $email_log = 'Mail Sent Successfully from Welcome on Partner’s Registration';
                 $email_template = "11";
                 $user_id = $moderatorsuser->id;
 
                 Email_sent_log($user_id, $email_log, $email_template);
-
             }
             catch(\Exception $e)
             {
-
                 $email_log = $e->getMessage();
                 $email_template = "11";
                 $user_id = $moderatorsuser->id;
 
                 Email_notsent_log($user_id, $email_log, $email_template);
-
             }
 
-            $template = EmailTemplate::where('id', '=', 13)->first();
-            $heading = $template->heading;
-            $settings = Setting::first();
+                // Note : using Reject Template for verify , so comment this line  
 
-            Mail::send('emails.cpp_verify', array(
-                /* 'activation_code', $user->activation_code,*/
-                'activation_code' => $string,
-                'website_name' => $settings->website_name,
+            // $template = EmailTemplate::where('id', '=', 13)->first();
+            // $heading  = $template->heading;
+            // $settings = Setting::first();
 
-            ) , function ($message) use ($request, $template, $heading)
-            {
-                $message->from(AdminMail() , GetWebsiteName());
-                $message->to($request->email_id, $request->username)
-                    ->subject($heading . $request->username);
-            });
+            // Mail::send('emails.cpp_verify', array(
+            //     /* 'activation_code', $user->activation_code,*/
+            //     'activation_code' => $string,
+            //     'website_name' => $settings->website_name,
+            // ), 
+            // function ($message) use ($request, $template, $heading){
+            //     $message->from(AdminMail() , GetWebsiteName());
+            //     $message->to($request->email_id, $request->username)->subject($heading . $request->username);
+            // });
+
             // \Mail::send('emails.verify', array('activation_code' => $string, 'website_name' => $settings->website_name),
             //  function($message)  use ($request) {
             //       $message->to($request->email_id, $request->username)->subject('Verify your email address');
             //    });
+
             return redirect('/cpp/verify-request')
-                ->with('message', 'Successfully Users saved!.');
-
-            // $template = EmailTemplate::where('id','=',13)->first();
-            // $heading =$template->heading;
-            //   echo "<pre>";
-            // print_r($heading);
-            // exit();
-            
-
-            return back()
                 ->with('message', 'Successfully Users saved!.');
         }
         else
