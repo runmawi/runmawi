@@ -363,6 +363,10 @@ input:checked + .sliderk:before {
              background-color: <?php echo GetLightBg(); ?>;
             color: <?php echo GetLightText(); ?>;
         }
+        body.light-theme span i{
+            
+            color: #fff!important;
+        }
         body.light-theme .dropdown-item.cont-item{
              color: #fff!important;
         }
@@ -589,7 +593,7 @@ height: 100%;
 .sidebar a {
   padding-left: 8px;
   text-decoration: none;
-  font-size: 20px;
+  font-size: 18px;
   color: #fff!important;
   display: block;
    font-family: 'futurabook';
