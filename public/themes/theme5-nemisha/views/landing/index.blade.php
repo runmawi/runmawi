@@ -35,10 +35,11 @@
 
     <!-- Typography CSS -->
     <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/style.css'); ?>" />
+    <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/typography.css'); ?>" />
     <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/bootstrap.min.css'); ?>" />
 
     <!-- Style -->
-    <link rel="stylesheet" href="<?= typography_link() ?>" />
+   
 
     <!-- Responsive -->
     <link rel="stylesheet" href="assets/css/responsive.css" />
@@ -50,6 +51,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
     <style>
+        h1,h2,h3,h4,h5{
+            color: #fff!important;
+        }
         .map {
 
             font-size: 16px;
@@ -257,8 +261,8 @@
 
         }
 
-        h2 {
-            font-family: 'futuramedium';
+        h2, h4, h3 {
+            font-family: 'futurabook';
 
 
         }
