@@ -2,12 +2,12 @@
     include(public_path('themes/theme5-nemisha/views/header.php'));
 @endphp
     
-<section id="iq-favorites">
+<section id="iq-favorites mt-4 mb-4">
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12 page-height">
                 <div class="iq-main-header align-items-center justify-content-between">
-                    <h3 class="vid-title">{{ "Channel List" }}</h3>                     
+                    <h4 class="vid-title">{{ "Partner Contents" }}</h4>                     
                 </div>
                 <div class="favorites-contens">
                     <ul class="category-page list-inline row p-0 mb-0">

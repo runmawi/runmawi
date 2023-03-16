@@ -271,10 +271,13 @@
             font-size: 40px;
            
         }
+        most{
+            font-size: 40px!important;
+        }
 
         h2 {
             font-weight: 700;
-            font-weight: 40px;
+            font-weight: 40px!important;
         }
 
         main.py-4 {
@@ -1302,7 +1305,7 @@
         <section class="sec- mt-5" id="disp">
 
             <div class="container mb-5">
-                <h2 class="text-center text-black">Most popular </h2>
+                <h2 class="text-center text-black most">Most popular </h2>
                 <div id="slide">
                     <div>
                         <div class="row align-items-center justify-content-center mt-4">
