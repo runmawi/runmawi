@@ -1,22 +1,18 @@
 <?php 
-            // Partner Content Video is Pending & waiting for Admin Approval 
+            // Partner Content Reject Tempalte
             
-    $template = App\EmailTemplate::where('id','=',43)->first(); 
+    $template = App\EmailTemplate::where('id','=',45)->first(); 
     $template_description = $template->description ;
 
     $template_change = array( 
-        "{Name}", 
-        "{ContentName}",
-        "{video_title}",
-        "{Admin video approval link}",
+        "{Partner Name}", 
+        "{Partner Account Name}",
         "{Website Name}", 
     );
 
     $template_content= array( 
-        $username,
-        $Content_Name,
-        $video_title,
-        $Admin_video_approval_link,
+        $partner_name,
+        $partner_account_name,
         $website_name ,
     ) ;
 
@@ -36,3 +32,5 @@
 
         </div>
     </div>
+    
+

@@ -1162,6 +1162,7 @@ class AdminVideosController extends Controller
      */
     public function update(Request $request)
     {
+
         if (!Auth::user()->role == "admin") {
             return redirect("/home");
         }
@@ -3338,56 +3339,11 @@ class AdminVideosController extends Controller
             ];
             return View::make("admin.expired_dashboard", $data);
         } else {
-            $videos = Video::where("active", "=", 1)
-                ->orderBy("created_at", "DESC")
-                ->paginate(9);
+            
+            $videos = Video::where("active", 1)->where('status',0)->where('uploaded_by','CPP')->latest()->get();
 
-            $videocategories = VideoCategory::select("id", "image")
-                ->get()
-                ->toArray();
-            $myData = [];
-            foreach ($videocategories as $key => $videocategory) {
-                $videocategoryid = $videocategory["id"];
-                $videos = Video::where("videos.status", "=", 0)
-                    ->join(
-                        "moderators_users",
-                        "videos.user_id",
-                        "=",
-                        "moderators_users.id"
-                    )
-                    ->join(
-                        "categoryvideos",
-                        "categoryvideos.video_id",
-                        "=",
-                        "videos.id"
-                    )
-                    ->join(
-                        "video_categories",
-                        "video_categories.id",
-                        "=",
-                        "categoryvideos.category_id"
-                    )
-                    ->select(
-                        "moderators_users.username",
-                        "videos.*",
-                        "video_categories.name"
-                    )
-                    ->groupby("videos.id")
-                    ->where("videos.uploaded_by", "CPP")
-                    ->orderBy("videos.created_at", "DESC")
-                    ->paginate(9);
-            }
-            // $videos = Video::join("moderators_users", "videos.user_id", "=", "moderators_users.id")
-            // ->select("moderators_users.username", "videos.*")
-            // // ->groupby("videos.id")
-            // ->where("videos.status",0)
-            // ->where("videos.uploaded_by", "CPP")
-            // ->orderBy("videos.created_at", "DESC")
-            // ->paginate(9);
-            $data = [
-                "videos" => $videos,
-            ];
-            // dd($videos);
+            $data = [ "videos" => $videos, ];
+
             return View("admin.videos.videoapproval.approval_index", $data);
         }
     }
@@ -3405,27 +3361,27 @@ class AdminVideosController extends Controller
 
         try {
 
-            $email_template_subject =  EmailTemplate::where('id',45)->pluck('heading')->first() ;
-            $email_subject  = str_replace("{video_title}", "$video->title", $email_template_subject);
+            $email_template_subject =  EmailTemplate::where('id',12)->pluck('heading')->first() ;
+            $email_subject  = str_replace("{ContentName}", "$video->title", $email_template_subject);
 
             $data = array(
                 'email_subject' => $email_subject,
             );
 
-            Mail::send('emails.cpp_video_approval', array(
-                'username'     => $ModeratorsUser->username,
-                'website_name' =>  GetWebsiteName(),
-                'ContentName'  =>  $ModeratorsUser->username,
-                'video_title'  =>  $video->title,
-                'video_link'   =>  URL::to('/cpp/category/videos/'.$video->slug),
+            // 
+            Mail::send('emails.CPP_Partner_Content_Approval', array(
+                'Name'         => $ModeratorsUser->username,
+                'ContentName'  =>  $video->title,
+                'ContentPermalink' =>  URL::to('/category/videos/'.$video->slug),
+                'website_name'     =>  GetWebsiteName(),
             ), 
             function($message) use ($data,$ModeratorsUser) {
                 $message->from(AdminMail(),GetWebsiteName());
                 $message->to($ModeratorsUser->email, $ModeratorsUser->username)->subject($data['email_subject']);
             });
 
-            $email_log      = 'Mail Sent Successfully from Partner Content Video Approval Congratulations! {video_title} is published Successfully.!';
-            $email_template = "45";
+            $email_log      = 'Mail Sent Successfully from Partner Content Approval Congratulations! {ContentName} is published Successfully!';
+            $email_template = "12";
             $user_id = $id;
 
             Email_sent_log($user_id,$email_log,$email_template);
@@ -3433,7 +3389,7 @@ class AdminVideosController extends Controller
         } catch (\Throwable $th) {
 
             $email_log = $th->getMessage();
-            $email_template = "45";
+            $email_template = "12";
             $user_id = $user_id;
 
             Email_notsent_log($user_id, $email_log, $email_template);
@@ -3454,26 +3410,25 @@ class AdminVideosController extends Controller
 
         try {
 
-            $email_template_subject =  EmailTemplate::where('id',46)->pluck('heading')->first() ;
-            $email_subject  = str_replace("{video_title}", "$video->title", $email_template_subject);
+            $email_template_subject =  EmailTemplate::where('id',13)->pluck('heading')->first() ;
+            $email_subject  = str_replace("{ContentName}", "$video->title", $email_template_subject);
 
             $data = array(
                 'email_subject' => $email_subject,
             );
 
-            Mail::send('emails.cpp_video_reject', array(
-                'username'     => $ModeratorsUser->username,
+            Mail::send('emails.CPP_Partner_Content_Reject', array(
+                'Name'     => $ModeratorsUser->username,
+                'ContentName'  =>  $video->title,
                 'website_name' =>  GetWebsiteName(),
-                'ContentName'  =>  $ModeratorsUser->username,
-                'video_title'  =>  $video->title,
             ), 
             function($message) use ($data,$ModeratorsUser) {
                 $message->from(AdminMail(),GetWebsiteName());
                 $message->to($ModeratorsUser->email, $ModeratorsUser->username)->subject($data['email_subject']);
             });
 
-            $email_log      = 'Mail Sent Successfully from Partner Content Video Rejected! {video_title} is couldnot be published.!';
-            $email_template = "46";
+            $email_log      = 'Mail Sent Successfully from Partner content Reject!';
+            $email_template = "13";
             $user_id = $id;
 
             Email_sent_log($user_id,$email_log,$email_template);
@@ -3481,7 +3436,7 @@ class AdminVideosController extends Controller
         } catch (\Throwable $th) {
 
             $email_log = $th->getMessage();
-            $email_template = "45";
+            $email_template = "13";
             $user_id = $user_id;
 
             Email_notsent_log($user_id, $email_log, $email_template);

@@ -333,21 +333,21 @@ class ModeratorsLoginController extends Controller
                 $userrolepermissiom->save();
             }
 
-            // Mail for Content Partner Welcome Email
+                    // Note: While CPP Signup Email - Template for CPP registered user and Admin
             try
             {
                 $data = array(
-                    'email_subject' => EmailTemplate::where('id', 11)->pluck('heading')->first() ,
+                    'email_subject' => EmailTemplate::where('id', 43)->pluck('heading')->first() ,
                 );
 
-                Mail::send('emails.partner_welcome', array('username' => $request->username,'website_name' => GetWebsiteName() ,) ,
+                Mail::send('emails.partner_welcome', array('Partner_Name' => $request->username,'website_name' => GetWebsiteName() ,) ,
                     function ($message) use ($data, $request){
                         $message->from(AdminMail() , GetWebsiteName());
                         $message->to($request->email_id, $request->username)->subject($data['email_subject']);
                     });
 
                 $email_log = 'Mail Sent Successfully from Welcome on Partner’s Registration';
-                $email_template = "11";
+                $email_template = "43";
                 $user_id = $moderatorsuser->id;
 
                 Email_sent_log($user_id, $email_log, $email_template);
@@ -355,7 +355,36 @@ class ModeratorsLoginController extends Controller
             catch(\Exception $e)
             {
                 $email_log = $e->getMessage();
-                $email_template = "11";
+                $email_template = "43";
+                $user_id = $moderatorsuser->id;
+
+                Email_notsent_log($user_id, $email_log, $email_template);
+            }
+
+
+                    // Note: While CPP Signup Email - Template for CPP registered user and Admin
+            try
+            {
+                $data = array(
+                    'email_subject' => EmailTemplate::where('id', 43)->pluck('heading')->first() ,
+                );
+
+                Mail::send('emails.partner_welcome', array('Partner_Name' => $request->username,'website_name' => GetWebsiteName() ,) ,
+                    function ($message) use ($data, $request){
+                        $message->from(AdminMail() , GetWebsiteName());
+                        $message->to(AdminMail())->subject($data['email_subject']);
+                    });
+
+                $email_log = 'Mail Sent Successfully from Welcome on Partner’s Registration';
+                $email_template = "43";
+                $user_id = $moderatorsuser->id;
+
+                Email_sent_log($user_id, $email_log, $email_template);
+            }
+            catch(\Exception $e)
+            {
+                $email_log = $e->getMessage();
+                $email_template = "43";
                 $user_id = $moderatorsuser->id;
 
                 Email_notsent_log($user_id, $email_log, $email_template);
@@ -433,12 +462,12 @@ class ModeratorsLoginController extends Controller
         if (!empty($package) && $package == "Pro" || !empty($package) && $package == "Business")
         {
             $user = Session::get('user');
-            // dd($user);
             $id = $user->id;
 
             $userrolepermissiom = DB::table('user_accesses')->select('user_accesses.permissions_id', 'moderators_permissions.name', 'moderators_permissions.url')
                 ->join('moderators_permissions', 'moderators_permissions.id', '=', 'user_accesses.permissions_id')
                 ->where(['user_id' => $id])->get();
+
             $settings = Setting::first();
 
             $ppv_price = $settings->ppv_price;
@@ -462,9 +491,11 @@ class ModeratorsLoginController extends Controller
             $total_recent_subscription = Subscription::orderBy('created_at', 'DESC')->whereDate('created_at', '>', \Carbon\Carbon::now()
                 ->today())
                 ->count();
+
             $top_rated_videos = Video::where("rating", ">", 7)->get();
             $recent_views = RecentView::limit(10)->orderBy('id', 'DESC')
                 ->get();
+
             $recent_view = $recent_views->unique('video_id');
             $page = 'admin-dashboard';
             $data = array(
@@ -508,14 +539,11 @@ class ModeratorsLoginController extends Controller
                 ->with('message', 'Successfully Logged Out.');
 
             return view('moderator.login', compact('system_settings', 'user', 'settings'));
-            // return \View::make('auth.login');
-            
         }
         else
         {
             return Redirect::to('/blocked');
         }
-
     }
 
     public function PasswordReset()
@@ -546,7 +574,6 @@ class ModeratorsLoginController extends Controller
             $user = User::where('id', '=', 1)->first();
 
             $decrypt_email = \Crypt::decryptString($email);
-            // dd($decrypt_email);
 
             return Theme::view('moderator.verify_reset_password', compact('settings', 'user','decrypt_email','token'));
         }
@@ -582,7 +609,7 @@ class ModeratorsLoginController extends Controller
                     Mail::send('emails.resetpassword', array('website_name' => GetWebsiteName() ,'verification_code' => $verification_code,) ,
                         function ($message) use ($data, $request){
                             $message->from(AdminMail() , GetWebsiteName());
-                            $message->to($request->email,)->subject($data['email_subject']);
+                            $message->to($request->email)->subject($data['email_subject']);
                         });
 
                     $email_log = 'Mail Sent Successfully For Reset Password';
