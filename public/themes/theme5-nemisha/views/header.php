@@ -589,7 +589,7 @@ height: 100%;
   font-size: 20px;
   color: #fff!important;
   display: block;
-  font-family: 'verdana';
+   font-family: 'futurabook';
     
 }
 
@@ -643,6 +643,7 @@ main .sidebar {
 }
         #down{
             height: 45px;
+           
         }
 
     </style>
@@ -652,7 +653,7 @@ main .sidebar {
       <?php if( get_image_loader() == 1) { ?>
          <div class="fullpage-loader">
             <div class="fullpage-loader__logo">
-                  <img class="c-logo" src="<?php echo  URL::to('/assets/img/nemsatv.png')?>" alt="<?php echo $settings->website_name ; ?>"/>
+                  <img class="c-logo  fully" height="200" style=" margin: 0 auto;" src="<?php echo  URL::to('/assets/img/nemsatv.png')?>" alt="<?php echo $settings->website_name ; ?>"/>
              
             </div>
          </div>
