@@ -773,7 +773,7 @@ class EmailTemplatesSeeder extends Seeder
                             'heading' => 'Partner Content Video {video_title} is Uploaded Successfully & Pending Admin Approval.',
                             'description' => '<p>Dear {Name},</p>
 
-                                                <p>Partner Content {contentName} has been uploaded videos {video_title} and and is awaiting review. .&nbsp;</p>
+                                                <p>Partner Content {ContentName} has been uploaded "{video_title}" video and and is awaiting review .&nbsp;</p>
 
                                                 <p>Verify this video, then decide whether to accept it or not.&nbsp;</p>
 
@@ -840,8 +840,6 @@ class EmailTemplatesSeeder extends Seeder
                         'heading' => "Sorry! {video_title} is couldn't be published.",
                         'description' => "<p>Dear {Name},</p>
 
-                                            <p>Congratulations!&nbsp;</p>
-                                            
                                             <p>Sorry, your {video_title} couldn't be published successfully&nbsp;</p>
                                             
                                             <p>For further information, kindly check with the admin.&nbsp;</p>
