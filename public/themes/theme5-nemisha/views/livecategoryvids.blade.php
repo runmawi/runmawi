@@ -17,7 +17,7 @@ $currency = App\CurrencySetting::first();
                <div class="row pageheight">
                   <div class="col-sm-12 overflow-hidden">
                      <div class="iq-main-header align-items-center">
-                        <h2 class=""><?php echo __($parentCategories_name);?></h2>
+                        <h4 class=""><?php echo __($parentCategories_name);?></h4>
                      </div>
                      <div class="favorites-contens">
                         <ul class="category-page list-inline  row p-0 mb-4">
@@ -38,9 +38,9 @@ $currency = App\CurrencySetting::first();
                                                     <?php } ?>
                                                
                                         </div>
-                                                <!-- </div> -->
+                                                </div>
 
-                                            <div class="block-description">
+                                            <div class="block-description"></div>
                                                     
                                                 <?php if($ThumbnailSetting->title == 1) { ?>            <!-- Title -->
                                                     <a  href="<?= URL::to('/') ?><?= '/live'.'/' . $category_video->slug ?>">
@@ -116,24 +116,17 @@ $currency = App\CurrencySetting::first();
                                                     </div>
                                                     
 
-                                                    <div class="hover-buttons">
-                                                        <a  class="text-white"  href="<?= URL::to('/') ?><?= '/live'.'/' . $category_video->slug ?>">
-                                                            <span class=""><i class="fa fa-play mr-1" aria-hidden="true"></i>Watch Now</span>
-                                                        </a>
-                   
-    
-                                        </div>
+                                                    
 
-                                                </div>
+                                              
 
-                                            </div>
                                         </a>
                                     </li>
                             
  <?php } } else { ?>
                                    
                                     <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:cover;height: 500px!important;">
-                               <p ><h2 style="position: absolute;top: 50%;left: 50%;color: white;">No video Available</h2>
+                               <p ><h2 style="position: absolute;top: 50%;left: 50%;color: white;">No Contents Available</h2>
                             </div>
       <?php } ?>
                     
