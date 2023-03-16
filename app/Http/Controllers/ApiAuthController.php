@@ -10683,7 +10683,7 @@ public function QRCodeMobileLogout(Request $request)
 
         $response = array(
           'status'=> 'true',
-          'message'  => 'Comment section stored Successfully !!',
+          'message'  => ucwords('Comment added Successfully !!'),
           'user_id'  => $request->user_id,
           'source_id'=> $request->source_id, 
           'source'   => $source,
@@ -10706,11 +10706,11 @@ public function QRCodeMobileLogout(Request $request)
 
         $comment_id = $request->comment_id ;
 
-        $comment = WebComment::findorfail($comment_id);
+        $comment = WebComment::where($comment_id)->get();
 
         $response = array(
           'status'=> 'true',
-          'message' => 'Comment section Edit Retrieved Successfully !!',
+          'message' => ucwords('Comment Message Retrieved Successfully !!'),
           'comment' => $comment ,
         );
 
@@ -10760,7 +10760,7 @@ public function QRCodeMobileLogout(Request $request)
 
       $response = array(
         'status'=> 'true',
-        'message' => 'Comment section Updated Successfully !!',
+        'message' => ucwords('Comment Message Updated Successfully !!'),
         'user_id'  => $request->user_id,
         'source_id'=> $request->source_id, 
         'source'   => $source,
@@ -10788,7 +10788,7 @@ public function QRCodeMobileLogout(Request $request)
 
         $response = array(
           'status'=> 'true',
-          'message' => 'Comment section destroy Successfully !!',
+          'message' => ucwords('comment essage destroy successfully !!'),
         );
 
     } catch (\Throwable $th) {
@@ -10840,7 +10840,7 @@ public function QRCodeMobileLogout(Request $request)
 
         $response = array(
           'status'=> 'true',
-          'message' => 'Comment section Reply Successfully !!',
+          'message' => ucwords('Comment Reply Message added Successfully !!'),
           'user_id'  => $request->user_id,
           'source_id'=> $request->source_id, 
           'source'   => $source,
@@ -10866,7 +10866,7 @@ public function QRCodeMobileLogout(Request $request)
 
       $response = array(
         'status'=> 'true',
-        'message'  => 'Comment section Retrieved Successfully !!',
+        'message'  => ucwords('Comment Section Message Retrieved Successfully !!'),
         'comment'   => $comment,
       );
 
@@ -10881,31 +10881,33 @@ public function QRCodeMobileLogout(Request $request)
     return response()->json($response, 200);
   }
 
-  
-  public function HomeChannelPartner(Request $request)
-  {
+  public function channel_partner(Request $request)
+    {
+        try {
 
-    try {
+            $channel_partner = Channel::select('id','channel_name','status','channel_image','channel_slug')
+                    ->where('status',1)->latest()->limit(30)->get()->map(function ($item) {
+                    $item['image_url'] = URL::to('/public/uploads/albums/'.$item->channel_image);
+                    return $item;
+                });
 
-      $response = array(
-        'status'=> 'true',
-        'message'  => 'Comment section Retrieved Successfully !!',
-        'message'  => 'Channel Partner section Retrieved Successfully !!',
-        'ChannelPartner' => Channel::get(), 
-        'order_settings' => OrderHomeSetting::orderBy('order_id', 'asc')->get(), 
-        'order_settings_list' => OrderHomeSetting::get(), 
-      );
+            $data = [
+                "status" => true,
+                "message" => 'Retrieved Channel Partner Section data Successfully' ,
+                "channel_partner_count" => count($channel_partner),
+                "channel_partner" => $channel_partner,
+            ];
 
-    } catch (\Throwable $th) {
+        } catch (\Throwable $th) {
+            
+            $data = array(
+                'status' => false,
+                'message' => $th->getMessage() ,
+            );
+        }
 
-          $response = array(
-            'status'=>'false',
-            'message'=>$th->getMessage(),
-          );
+        return response()->json($data, 200);
     }
-
-    return response()->json($response, 200);
-  }
 
   
   public function HomeContentPartner(Request $request)

@@ -292,9 +292,8 @@ class ModeratorsUserController extends Controller
                 "userid" => 0,
             ];
 
-            $headers = [
-                "api-key" => "k3Hy5qr73QhXrmHLXhpEh6CQ",
-            ];
+            $headers = ["api-key" => "k3Hy5qr73QhXrmHLXhpEh6CQ",];
+
             $response = $client->request("post", $url, [
                 "json" => $params,
                 "headers" => $headers,
@@ -307,17 +306,12 @@ class ModeratorsUserController extends Controller
                 "settings" => $settings,
                 "responseBody" => $responseBody,
             ];
-            return View::make("admin.expired_dashboard", $data);
-        } else {
-            // $videos = LiveStream::orderBy('created_at', 'DESC')->paginate(9);
-            $users = ModeratorsUser::where("status", "=", 0)
-                ->orderBy("created_at", "DESC")
-                ->paginate(9);
-            // dd($videos);
-            $data = [
-                "users" => $users,
-            ];
 
+            return View::make("admin.expired_dashboard", $data);
+
+        } else {
+            $users = ModeratorsUser::where("status", "=", 0)->orderBy("created_at", "DESC")->paginate(9);
+            $data = [ "users" => $users,];
             return view("moderator.userapproval", $data);
         }
     }
@@ -361,9 +355,7 @@ class ModeratorsUserController extends Controller
                 $email_template_subject =  EmailTemplate::where('id',12)->pluck('heading')->first() ;
                 $email_subject  = str_replace("{ContentName}", "$users->username", $email_template_subject);
 
-                $data = array(
-                   'email_subject' => $email_subject,
-                );
+                $data = array( 'email_subject' => $email_subject,);
 
                 Mail::send('emails.cpp_approved', array(
                     'username' => $users->username,
@@ -457,8 +449,6 @@ class ModeratorsUserController extends Controller
                 $user_id = $users->id;
 
                 Email_sent_log($user_id,$email_log,$email_template);
-
-
             }
             catch (\Exception $e) {
 
@@ -471,9 +461,7 @@ class ModeratorsUserController extends Controller
                 return redirect()->route('CPP_PendingUsers')->with('error',$e->getMessage()  );
 
             }
-
             return \Redirect::back()->with( "success", "The CPP user has been Approved Sucessfully !!");
-
         }
     }
 
@@ -541,12 +529,8 @@ class ModeratorsUserController extends Controller
     public function RolesPermissionStore(Request $request)
     {
         $input = $request->all();
-        // echo "<pre>";
-        // print_r($input);
-        // exit();
-        $request
-            ->session()
-            ->flash("notification", "Successfully Registered Role");
+      
+        $request->session()->flash("notification", "Successfully Registered Role");
 
         $user_permission = $request->user_permission;
         if (!empty($user_permission)) {
@@ -554,9 +538,7 @@ class ModeratorsUserController extends Controller
         } else {
             $permission = "";
         }
-        // echo "<pre>";
-        // print_r($user_permission);
-        // exit();
+        
         $data = Session::all();
         if (!empty($data["password_hash"])) {
             $package_id = auth()->user()->id;
@@ -586,8 +568,6 @@ class ModeratorsUserController extends Controller
                     ->back()
                     ->with("message", "Successfully Roles saved!.");
 
-                // return redirect()->back()->with('message', 'Registered Successfully');
-                //  return view('moderator.moderators_roles',$data);
             } elseif ($package == "Basic") {
                 return view("blocked");
             }
@@ -743,25 +723,17 @@ class ModeratorsUserController extends Controller
 
     public function update(Request $request)
     {
-
         $data = Session::all();
-        if (!empty($data["password_hash"])) {
+        
+        if (!empty($data["password_hash"])) 
+        {
             $package_id = auth()->user()->id;
-            $user_package = DB::table("users")
-                ->where("id", $package_id)
-                ->first();
+            $user_package = DB::table("users")->where("id", $package_id)->first();
             $package = $user_package->package;
-            if (
-                $package == "Pro" ||
-                $package == "Business" ||
-                ($package == "" && Auth::User()->role == "admin")
-            ) {
+
+            if ($package == "Pro" ||$package == "Business" ||($package == "" && Auth::User()->role == "admin")) {
                 $data = $request->all();
-                $role = ModeratorsRole::where(
-                    "id",
-                    "=",
-                    $request->user_role
-                )->get();
+                $role = ModeratorsRole::where("id", "=",$request->user_role)->get();
                 $permission = $role[0]->user_permission;
                 $userrolepermissioms = explode(",", $permission);
                 // $data_delete = UserAccess::destroy('user_id', '=', $id);
@@ -807,11 +779,7 @@ class ModeratorsUserController extends Controller
                 $moderatorsuser->save();
                 $user_id = $moderatorsuser->id;
 
-                $userrolepermissiom = UserAccess::where(
-                    "user_id",
-                    "=",
-                    $id
-                )->get();
+                $userrolepermissiom = UserAccess::where("user_id","=",$id)->get();
                 $data_delete = UserAccess::where("user_id", "=", $id)->delete();
 
                 foreach ($userrolepermissioms as $key => $value) {
@@ -821,7 +789,6 @@ class ModeratorsUserController extends Controller
                     $userrolepermissiom->permissions_id = $value;
                     $userrolepermissiom->save();
                 }
-
 
                      // Partner Content Update - admin
                 try {

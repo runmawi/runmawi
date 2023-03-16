@@ -72,6 +72,8 @@ use Aws\Common\Exception\MultipartUploadException;
 use Aws\S3\MultipartUploader;
 use Aws\S3\S3Client;
 use Aws\S3\S3MultiRegionClient;
+use App\EmailTemplate;
+use Mail;
 
 class AdminVideosController extends Controller
 {
@@ -3391,8 +3393,6 @@ class AdminVideosController extends Controller
     }
     public function CPPVideosApproval($id)
     {
-   
-
         $video = Video::findOrFail($id);
         $video->status = 1;
         $video->active = 1;
@@ -3402,36 +3402,44 @@ class AdminVideosController extends Controller
         $settings = Setting::first();
         $user_id = $video->user_id;
         $ModeratorsUser = ModeratorsUser::findOrFail($video->user_id);
+
         try {
-            \Mail::send('emails.admin_cpp_approved', array(
-                'website_name' => $settings->website_name,
-                'ModeratorsUser' => $ModeratorsUser
-            ) , function ($message) use ($ModeratorsUser)
-            {
-                $message->from(AdminMail() , GetWebsiteName());
-                $message->to($ModeratorsUser->email, $ModeratorsUser->username)
-                    ->subject('Content has been Submitted for Approved By Admin');
+
+            $email_template_subject =  EmailTemplate::where('id',45)->pluck('heading')->first() ;
+            $email_subject  = str_replace("{video_title}", "$video->title", $email_template_subject);
+
+            $data = array(
+                'email_subject' => $email_subject,
+            );
+
+            Mail::send('emails.cpp_video_approval', array(
+                'username'     => $ModeratorsUser->username,
+                'website_name' =>  GetWebsiteName(),
+                'ContentName'  =>  $ModeratorsUser->username,
+                'video_title'  =>  $video->title,
+                'video_link'   =>  URL::to('/cpp/category/videos/'.$video->slug),
+            ), 
+            function($message) use ($data,$ModeratorsUser) {
+                $message->from(AdminMail(),GetWebsiteName());
+                $message->to($ModeratorsUser->email, $ModeratorsUser->username)->subject($data['email_subject']);
             });
-            
-            $email_log      = 'Mail Sent Successfully Approved Content';
-            $email_template = "Approved";
-            $user_id = $user_id;
+
+            $email_log      = 'Mail Sent Successfully from Partner Content Video Approval Congratulations! {video_title} is published Successfully.!';
+            $email_template = "45";
+            $user_id = $id;
 
             Email_sent_log($user_id,$email_log,$email_template);
 
-       } catch (\Throwable $th) {
+        } catch (\Throwable $th) {
 
-            $email_log      = $th->getMessage();
-            $email_template = "Approved";
+            $email_log = $th->getMessage();
+            $email_template = "45";
             $user_id = $user_id;
 
-            Email_notsent_log($user_id,$email_log,$email_template);
-       }
+            Email_notsent_log($user_id, $email_log, $email_template);
+        }
 
-        return Redirect::back()->with(
-            "message",
-            "Your video will be available shortly after we process it"
-        );
+        return Redirect::back()->with("message","Your video will be available shortly after we process it");
     }
 
     public function CPPVideosReject($id)
@@ -3443,36 +3451,43 @@ class AdminVideosController extends Controller
         $settings = Setting::first();
         $user_id = $video->user_id;
         $ModeratorsUser = ModeratorsUser::findOrFail($video->user_id);
+
         try {
-            \Mail::send('emails.admin_cpp_rejected', array(
-                'website_name' => $settings->website_name,
-                'ModeratorsUser' => $ModeratorsUser
-            ) , function ($message) use ($ModeratorsUser)
-            {
-                $message->from(AdminMail() , GetWebsiteName());
-                $message->to($ModeratorsUser->email, $ModeratorsUser->username)
-                    ->subject('Content has been Submitted for Rejected By Admin');
+
+            $email_template_subject =  EmailTemplate::where('id',46)->pluck('heading')->first() ;
+            $email_subject  = str_replace("{video_title}", "$video->title", $email_template_subject);
+
+            $data = array(
+                'email_subject' => $email_subject,
+            );
+
+            Mail::send('emails.cpp_video_reject', array(
+                'username'     => $ModeratorsUser->username,
+                'website_name' =>  GetWebsiteName(),
+                'ContentName'  =>  $ModeratorsUser->username,
+                'video_title'  =>  $video->title,
+            ), 
+            function($message) use ($data,$ModeratorsUser) {
+                $message->from(AdminMail(),GetWebsiteName());
+                $message->to($ModeratorsUser->email, $ModeratorsUser->username)->subject($data['email_subject']);
             });
-            
-            $email_log      = 'Mail Sent Successfully Rejected Content';
-            $email_template = "Rejected";
-            $user_id = $user_id;
+
+            $email_log      = 'Mail Sent Successfully from Partner Content Video Rejected! {video_title} is couldnot be published.!';
+            $email_template = "46";
+            $user_id = $id;
 
             Email_sent_log($user_id,$email_log,$email_template);
 
-       } catch (\Throwable $th) {
+        } catch (\Throwable $th) {
 
-            $email_log      = $th->getMessage();
-            $email_template = "Rejected";
+            $email_log = $th->getMessage();
+            $email_template = "45";
             $user_id = $user_id;
 
-            Email_notsent_log($user_id,$email_log,$email_template);
-       }
+            Email_notsent_log($user_id, $email_log, $email_template);
+        }
 
-        return Redirect::back()->with(
-            "message",
-            "Your video will be available shortly after we process it"
-        );
+        return Redirect::back()->with("message","Your video will be available shortly after we process it");
     }
     function get_processed_percentage($id)
     {
