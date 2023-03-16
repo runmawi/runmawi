@@ -51,6 +51,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
     <style>
+        h1,h2,h3,h4,h5{
+            color: #fff!important;
+        }
         .map {
 
             font-size: 16px;
