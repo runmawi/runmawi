@@ -6,7 +6,8 @@
     <div class="container-fluid">
 
         <?php
-                
+            if(count($parentCategories)>0):  
+            
             foreach($parentCategories as $category) {
             
                 $videos = App\LiveStream::join('livecategories', 'livecategories.live_id', '=', 'live_streams.id')
@@ -21,7 +22,7 @@
                 <div class="row">
                     <div class="col-sm-12 overflow-hidden">
                             <div class="iq-main-header d-flex align-items-center justify-content-between">
-                                <a href="<?php echo URL::to('/category/').'/'.$category->slug;?>" class="category-heading" style="text-decoration: none; color: #fff;">
+                                <a href="<?php echo URL::to('/Live-list');?>" class="category-heading" style="text-decoration: none; color: #fff;">
                                     <h4 class="movie-title"> {{ $category->name }} </h4>
                                 </a>
                             </div>
@@ -36,7 +37,7 @@
                                         <li class="slide-item">
                                             <div class="block-images position-relative">
                                                 <!-- block-images -->
-                                                <a href="<?php echo URL::to('live') ?><?= '/' . $category_video->slug ?>">
+                                                <a href="<?php echo URL::to('live/'.$category_video->slug) ?>">
                                                     <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>" class="img-fluid" alt=""> 
                                                 </a>
                                             
@@ -106,9 +107,9 @@
 
                                             <div class="movie-time my-2"> <!-- Category Thumbnail  setting -->
                                                 <?php
-                                                $CategoryThumbnail_setting =  App\CategoryVideo::join('video_categories','video_categories.id','=','categoryvideos.category_id')
-                                                            ->where('categoryvideos.video_id',$category_video->video_id)
-                                                            ->pluck('video_categories.name');   
+                                                $CategoryThumbnail_setting =  App\CategoryLive::join('live_categories','live_categories.id','=','livecategories.category_id')
+                                                         ->where('livecategories.live_id',$category_video->id)
+                                                         ->pluck('live_categories.name');  
                                                 ?>
                                                 @if ( ($ThumbnailSetting->category == 1 ) &&  ( count($CategoryThumbnail_setting) > 0 ) ) 
                                                     <span class="text-white">
@@ -134,13 +135,15 @@
                     </div>
                 </div>
             </div>
-            @else
+            @endif
+        <?php } else:?>
+
             <div class="col-md-12 text-center mt-4">
                 <h1 class="text-white text-center med">Coming Soon......</h1>
                 <img class=" text-center w-100" src="<?php echo  URL::to('/assets/img/watch.png')?>" >
             </div>
-            @endif
-        <?php }?>
+
+        <?php endif; ?>
     </div>
 </section>
 

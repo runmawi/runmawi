@@ -4,8 +4,7 @@ use Illuminate\Database\Seeder;
 use App\AdsTimeSlot;
 use Carbon\Carbon;
 
-
-class AdsTimeSlotSeeding extends Seeder
+class AdminAdsTimeSlotSeeding extends Seeder
 {
     /**
      * Run the database seeds.
