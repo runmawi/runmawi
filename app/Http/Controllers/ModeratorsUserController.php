@@ -268,8 +268,6 @@ class ModeratorsUserController extends Controller
 
                 return back()->with("message", "Successfully Users saved!.");
 
-                // return view('moderator.view',$data);
-                // return redirect('/moderator')->with('success', 'Users saved!');
             } elseif ($package == "Basic") {
                 return view("blocked");
             }
@@ -323,13 +321,10 @@ class ModeratorsUserController extends Controller
         if ($current_date > $duedate) {
             $client = new Client();
             $url = "https://flicknexs.com/userapi/allplans";
-            $params = [
-                "userid" => 0,
-            ];
+            $params = ["userid" => 0, ];
 
-            $headers = [
-                "api-key" => "k3Hy5qr73QhXrmHLXhpEh6CQ",
-            ];
+            $headers = ["api-key" => "k3Hy5qr73QhXrmHLXhpEh6CQ",];
+
             $response = $client->request("post", $url, [
                 "json" => $params,
                 "headers" => $headers,
@@ -352,24 +347,24 @@ class ModeratorsUserController extends Controller
 
             try {
 
-                $email_template_subject =  EmailTemplate::where('id',12)->pluck('heading')->first() ;
-                $email_subject  = str_replace("{ContentName}", "$users->username", $email_template_subject);
+                $email_template_subject =  EmailTemplate::where('id',44)->pluck('heading')->first() ;
+                $email_subject  =  $email_template_subject;
 
                 $data = array( 'email_subject' => $email_subject,);
 
-                Mail::send('emails.cpp_approved', array(
-                    'username' => $users->username,
+                Mail::send('emails.cpp_user_approved', array(
+                    'partner_name' => $users->username,
+                    'partner_account_name' => $users->username,
+                    'login_link' => URL::to("/cpp/login"),
                     'website_name' => GetWebsiteName(),
-                    'ContentPermalink' => URL::to('/cpp') ,
-                    'ContentName'  =>  $users->username,
                 ), 
                 function($message) use ($data,$users) {
                     $message->from(AdminMail(),GetWebsiteName());
                     $message->to($users->email, $users->username)->subject($data['email_subject']);
                 });
 
-                $email_log      = 'Mail Sent Successfully from Partner Content Approval Congratulations! {ContentName} is published Successfully.';
-                $email_template = "12";
+                $email_log      = "Mail Sent Successfully from Congratulations! Your Partner's request has been Approved.";
+                $email_template = "44";
                 $user_id = $users->id;
 
                 Email_sent_log($user_id,$email_log,$email_template);
@@ -378,7 +373,7 @@ class ModeratorsUserController extends Controller
             catch (\Exception $e) {
 
                 $email_log      = $e->getMessage();
-                $email_template = "12";
+                $email_template = "44";
                 $user_id = $users->id;
 
                 Email_notsent_log($user_id,$email_log,$email_template);
@@ -398,13 +393,10 @@ class ModeratorsUserController extends Controller
         if ($current_date > $duedate) {
             $client = new Client();
             $url = "https://flicknexs.com/userapi/allplans";
-            $params = [
-                "userid" => 0,
-            ];
+            $params = [ "userid" => 0,];
 
-            $headers = [
-                "api-key" => "k3Hy5qr73QhXrmHLXhpEh6CQ",
-            ];
+            $headers = ["api-key" => "k3Hy5qr73QhXrmHLXhpEh6CQ",];
+
             $response = $client->request("post", $url, [
                 "json" => $params,
                 "headers" => $headers,
@@ -417,35 +409,35 @@ class ModeratorsUserController extends Controller
                 "settings" => $settings,
                 "responseBody" => $responseBody,
             ];
+
             return View::make("admin.expired_dashboard", $data);
         } 
         else {
-
             $users = ModeratorsUser::findOrFail($id);
             $users->status = 2;
             $users->save();
 
             try {
 
-                $email_template_subject =  EmailTemplate::where('id',13)->pluck('heading')->first() ;
-                $email_subject  = str_replace("{ContentName}", "$users->username", $email_template_subject);
+                $email_template_subject =  EmailTemplate::where('id',45)->pluck('heading')->first() ;
+                $email_subject  =  $email_template_subject;
 
                 $data = array(
                    'email_subject' => $email_subject,
                 );
 
-                Mail::send('emails.cpp_reject', array(
-                    'username' => $users->username,
+                Mail::send('emails.cpp_user_reject', array(
+                    'partner_name' => $users->username,
+                    'partner_account_name' => $users->username,
                     'website_name' => GetWebsiteName(),
-                    'ContentName'  =>  $users->username,
                 ), 
                 function($message) use ($data,$users) {
                     $message->from(AdminMail(),GetWebsiteName());
                     $message->to($users->email, $users->username)->subject($data['email_subject']);
                 });
 
-                $email_log      = 'Mail Sent Successfully from Partner Content Reject ';
-                $email_template = "13";
+                $email_log      = "Mail Sent Successfully from Partner's request has been Reject";
+                $email_template = "45";
                 $user_id = $users->id;
 
                 Email_sent_log($user_id,$email_log,$email_template);
@@ -453,7 +445,7 @@ class ModeratorsUserController extends Controller
             catch (\Exception $e) {
 
                 $email_log      = $e->getMessage();
-                $email_template = "13";
+                $email_template = "45";
                 $user_id = $users->id;
 
                 Email_notsent_log($user_id,$email_log,$email_template);

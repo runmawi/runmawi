@@ -1926,19 +1926,18 @@ class CPPAdminVideosController extends Controller
 
                     // Admin Mail
             try {
-                    $email_template_subject =  EmailTemplate::where('id',43)->pluck('heading')->first() ;
-                    $email_subject  = str_replace("{video_title}", "$ModeratorsUser->username", $email_template_subject);
+                    $email_template_subject =  EmailTemplate::where('id',11)->pluck('heading')->first() ;
+                    $email_subject  = str_replace("{ContentName}", "$ModeratorsUser->username", $email_template_subject);
 
                     $data = array(
                         'email_subject' => $email_subject,
                     );
 
-                    Mail::send('emails.cpp_admin_video_pending', array(
-                        'username' => $ModeratorsUser->username,
+                    Mail::send('emails.CPP_Partner_Content_Pending', array(
+                        'Name'         => "Admin",
+                        'ContentName'  =>  $video->title,
+                        'AdminApprovalLink' => "Link - " . URL::to('/admin/CPPVideosIndex'),
                         'website_name' => GetWebsiteName(),
-                        'Content_Name'  =>  $ModeratorsUser->username,
-                        'video_title'  =>  $video->title,
-                        'Admin_video_approval_link' =>  URL::to('/admin/CPPVideosIndex') ,
                     ), 
                     function($message) use ($data,$ModeratorsUser) {
                         $message->from(AdminMail(),GetWebsiteName());
@@ -1946,7 +1945,7 @@ class CPPAdminVideosController extends Controller
                     });
 
                     $email_log      = 'Mail Sent Successfully from Partner Content Video Is Pending Admin Approval.';
-                    $email_template = "43";
+                    $email_template = "11";
                     $user_id = $id;
 
                     Email_sent_log($user_id,$email_log,$email_template);
@@ -1954,7 +1953,7 @@ class CPPAdminVideosController extends Controller
             } catch (\Throwable $th) {
 
                 $email_log = $th->getMessage();
-                $email_template = '43';
+                $email_template = '11';
                 $user_id = $user_id;
 
                 Email_notsent_log($user_id, $email_log, $email_template);
@@ -1962,19 +1961,18 @@ class CPPAdminVideosController extends Controller
 
             try {
 
-                    $email_template_subject =  EmailTemplate::where('id',44)->pluck('heading')->first() ;
-                    $email_subject  = str_replace("{video_title}", "$video->title", $email_template_subject);
+                    $email_template_subject =  EmailTemplate::where('id',11)->pluck('heading')->first() ;
+                    $email_subject  = str_replace("{ContentName}", "$video->title", $email_template_subject);
 
                     $data = array(
                         'email_subject' => $email_subject,
                     );
 
-                    Mail::send('emails.cpp_video_pending', array(
-                        'username' => $ModeratorsUser->username,
-                        'website_name' =>  GetWebsiteName(),
-                        'ContentName'  =>  $ModeratorsUser->username,
-                        'video_title'  =>  $video->title,
-                        'video_link'   =>  URL::to('/cpp/category/videos/'.$video->slug),
+                    Mail::send('emails.CPP_Partner_Content_Pending', array(
+                        'Name'         => $ModeratorsUser->username,
+                        'ContentName'  =>  $video->title,
+                        'AdminApprovalLink' => "",
+                        'website_name' => GetWebsiteName(),
                     ), 
                     function($message) use ($data,$ModeratorsUser) {
                         $message->from(AdminMail(),GetWebsiteName());

@@ -1,18 +1,20 @@
 <?php 
-            // Partner Content Reject Tempalte
+            // Partner Content Approval Template
             
-    $template = App\EmailTemplate::where('id','=',13)->first(); 
+    $template = App\EmailTemplate::where('id','=',44)->first(); 
     $template_description = $template->description ;
 
     $template_change = array( 
-        "{Name}", 
-        "{ContentName}",
+        "{Partner Name}", 
+        "{Partner Account Name}",
+        "{Login link}",
         "{Website Name}", 
     );
 
     $template_content= array( 
-        $username,
-        $ContentName,
+        $partner_name,
+        $partner_account_name,
+        $login_link,
         $website_name ,
     ) ;
 

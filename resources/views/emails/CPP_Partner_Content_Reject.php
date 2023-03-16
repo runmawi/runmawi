@@ -1,20 +1,18 @@
 <?php 
-            // Partner Content Video Approval Congratulations! {video_title} is published Successfully.
+            // Partner Content Video Rejected! {video_title} is couldn't be published.
             
-    $template = App\EmailTemplate::where('id','=',45)->first(); 
+    $template = App\EmailTemplate::where('id','=',13)->first(); 
     $template_description = $template->description ;
 
     $template_change = array( 
         "{Name}", 
-        "{video_title}",
-        "{video_link}",
+        "{ContentName}",
         "{Website Name}", 
     );
 
     $template_content= array( 
-        $username,
-        $video_title,
-        $video_link,
+        $Name,
+        $ContentName,
         $website_name ,
     ) ;
 
