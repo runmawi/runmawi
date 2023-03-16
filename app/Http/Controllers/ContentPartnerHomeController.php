@@ -189,8 +189,8 @@ class ContentPartnerHomeController extends Controller
 
     public function Content_category_audios(Request $request)
     {
-        $request->category_id = 1;
-        $request->user_id = 4;
+        // $request->category_id = 1;
+        // $request->user_id = 4;
 
         $AudioCategory = AudioCategory::find($request->category_id) != null ? AudioCategory::find($request->category_id)->specific_category_audio : array();
         
