@@ -182,7 +182,7 @@ header .navbar ul li:last-child { margin-right: 0; }
 .block-space { padding: 40px 0; }
 .s-margin { margin-top: 15px; }
 .iq-main-header { margin-bottom: 0px; }
-.main-title a:hover, .main-title a:focus {color:var(--iq-primary) !important;}
+.main-title a:hover, .main-title a:focus {color:#ED563C !important;}
 :focus{outline: none !important;}
 /*--------------------------*/
 .favorites-slider .slick-list, #top-ten-slider-nav .slick-list { overflow: visible; padding-bottom:  !important; }
@@ -1924,7 +1924,7 @@ padding: 15px;
     
 }
 .cont-item:hover{
-    color: #578cea!important;
+    color: #!important;
 }
 #signup-form{
     background: #fff;
