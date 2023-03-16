@@ -442,11 +442,18 @@ input:checked + .sliderk:before {
            color: #000!important;
            
         }
+        body.light-theme .series_title h2{
+           color: #000!important;
+           
+        }
         body.light-theme .navbar-right .iq-sub-dropdown{
           background-image: linear-gradient(to left, rgb(225 228 233 / 0%)0%, rgb(140 142 147)0%, rgb(205 206 209));
            
         } 
         body.light-theme #home-slider h1.slider-text{
+          color: #000!important;
+           
+        }  body.light-theme .desc p{
           color: #000!important;
            
         }
