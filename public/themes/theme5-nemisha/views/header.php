@@ -437,6 +437,10 @@ input:checked + .sliderk:before {
         body.light-theme .series_title desc{
            color: #fff!important;
            
+        } 
+        body.light-theme  h2{
+           color: #000!important;
+           
         }
         body.light-theme .navbar-right .iq-sub-dropdown{
           background-image: linear-gradient(to left, rgb(225 228 233 / 0%)0%, rgb(140 142 147)0%, rgb(205 206 209));
