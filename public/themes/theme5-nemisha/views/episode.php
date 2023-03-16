@@ -356,7 +356,7 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
         <?php endif; ?>
 
 		<div class="iq-main-header container d-flex align-items-center justify-content-between">
-  			<h4 class="main-title">Season</h4>                      
+  			<h4 class="main-title">Episode</h4>                      
 		</div>
         
 <div class="favorites-contens">

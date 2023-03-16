@@ -364,6 +364,10 @@
         }  body.light-theme .h3{
            color: #000!important;
            
+        }
+    body.light-theme .fa-clock-o{
+           color: #000!important;
+           
         }  body.light-theme .series_title h1{
            color: #fff!important;
            
