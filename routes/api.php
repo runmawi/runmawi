@@ -411,4 +411,11 @@ Route::group(
         Route::post('/comment_destroy', 'ApiAuthController@comment_destroy');
 
         Route::post('/comment_reply', 'ApiAuthController@comment_reply');
+
+        // Channel Partner
+        Route::get('/home_channel_partner', 'ApiAuthController@HomeChannelPartner');
+
+        // Content Partner
+        Route::get('/home_content_partner', 'ApiAuthController@HomeContentPartner');
+
     });

@@ -8,6 +8,13 @@ $uri_parts = explode('/', $uri_path);
 $request_url = end($uri_parts);
 $uppercase =  ucfirst($request_url);
 // dd(Auth::User()->id);
+$data = Session::all(); 
+
+if(isset($data['user'])){
+$id = $data['user']->id ;
+$user = App\User::where('id',$id)->first();
+
+}
 
  ?>
       <!-- Required meta tags -->
@@ -1001,8 +1008,11 @@ cursor: pointer;
 
              
                     <div class="col-sm-12 mt-4 text-center targetDiv" id="div2">
+                     <?php $data = Session::all(); if($user->provider != 'facebook' || $user->provider != 'google'){ ?> 
                         <div class="d-flex justify-content-center">  <img class="rounded-circle img-fluid d-block  mb-3" height="100" width="100" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg"/></div>
-                        
+                        <?php }else{ ?> 
+                        <div class="d-flex justify-content-center">  <img class="rounded-circle img-fluid d-block  mb-3" height="100" width="100" src="<?= $user->provider_avatar; ?>"  alt="profile-bg"/></div>
+                           <?php } ?>
                         <h4 class="mb-3"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></h4>
                           <h4 class="mb-3"><?php if(!empty($user->role)): ?><?= $user->role ?><?php endif; ?> as on <?php if(!empty($user->created_at)): ?><?= $user->created_at ?><?php endif; ?></h4>
                           <h4 class="mb-3"></h4>

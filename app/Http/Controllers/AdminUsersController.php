@@ -1023,21 +1023,22 @@ class AdminUsersController extends Controller
                     ->where('device_name', '=', $device_name)->delete();
             }
         }
-        Auth::logout();
         unset($data['password_hash']);
         
         if(!empty($data['user'])){
             unset($data['expiresIn']);
             unset($data['providertoken']);
             unset($data['user']);
+            Cache::flush();
         }
-        Auth::logout();
 
+        $request->session()->flush();
+        $request->session()->regenerate();
         $request->session()->invalidate();
-    
         $request->session()->regenerateToken();
-    
         \Session::flush();
+
+        Auth::logout();
 
         return Redirect::to('/')->with(array(
             'message' => 'You are logged out done',
