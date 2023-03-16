@@ -35,10 +35,11 @@
 
     <!-- Typography CSS -->
     <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/style.css'); ?>" />
+    <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/typography.css'); ?>" />
     <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/bootstrap.min.css'); ?>" />
 
     <!-- Style -->
-    <link rel="stylesheet" href="<?= typography_link() ?>" />
+   
 
     <!-- Responsive -->
     <link rel="stylesheet" href="assets/css/responsive.css" />
@@ -257,8 +258,8 @@
 
         }
 
-        h2 {
-            font-family: 'futuramedium';
+        h2, h4, h3 {
+            font-family: 'futurabook';
 
 
         }
