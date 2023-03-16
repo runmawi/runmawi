@@ -78,7 +78,7 @@ $series = $series_data ;
 		<div class="col-md-7">
 			<div id="series_title">
 				<div class="container">
-					 <h2><?= $series->title ?></h2>
+					 <h3><?= $series->title ?></h3>
                   
 					<!--<div class="col-md-6 p-0">
 						<select class="form-control" id="season_id" name="season_id">
@@ -90,8 +90,8 @@ $series = $series_data ;
 					<div class="row p-2 text-white">
                         <div class="col-md-7">
                         Season  <span class="sea"> 1 </span> - U/A English
-                            <p class="desc" style="color:#fff!important;"><?php echo $series->details;?></p>
-						<b><p class="desc" style="color:#fff;"><?php echo $series->description;?></p></b>
+                            <p  style="color:#fff!important;"><?php echo $series->details;?></p>
+						<b><p  style="color:#fff;"><?php echo $series->description;?></p></b>
                             <div class="row p-0 mt-3 align-items-center">
                                 <div class="col-md-2">  <a data-video="<?php echo $series->trailer;  ?>" data-toggle="modal" data-target="#videoModal">	
                                           <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> </a></div>
@@ -200,7 +200,7 @@ $series = $series_data ;
 							 ?>
                            
                   <li class="slide-item col-sm-2 col-md-2 col-xs-12 episodes_div season_<?= $seasons->id;?>">
-                      <a href="<?php echo URL::to('episode').'/'.$series->title.'/'.$episodes->slug;?>">
+                      <a href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?>">
                            <div class="block-images position-relative episodes_div season_<?= $seasons->id;?>">
                                     <div class="img-box">
                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class="img-fluid w-100" >
@@ -245,7 +245,7 @@ $series = $series_data ;
                            
                            	<?php else : ?>
                              <li class="slide-item col-sm-2 col-md-2 col-xs-12 episodes_div season_<?= $seasons->id;?>">
-                              <a href="<?php echo URL::to('episode').'/'.$series->title.'/'.$episodes->slug;?>">
+                              <a href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?>">
                                  <div class="block-images position-relative" >
                                     <div class="img-box">
                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class=" img-fluid w-100" >
@@ -270,13 +270,13 @@ $series = $series_data ;
 
                                    
                                        <div class="hover-buttons">
-                                                                        <a href="<?php echo URL::to('episode').'/'.$series->title.'/'.$episodes->slug;?>">
+                                                                       <!-- <a href="<?php echo URL::to('episode').'/'.$series->title.'/'.$episodes->slug;?>">
 
                                           <span class="text-white">
                                           <i class="fa fa-play mr-1" aria-hidden="true"></i>
                                           Watch Now
                                           </span>
-                                           </a>
+                                           </a>-->
                                            <div>
                                            <!-- <a   href="" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist</a> -->
                  
