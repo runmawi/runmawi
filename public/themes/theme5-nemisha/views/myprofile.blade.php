@@ -19,7 +19,7 @@
     .form-control {
         height: 45px;
         line-height: 29px !important;
-        background: #33333391;
+        background: #fff;
         border: 1px solid var(--iq-body-text);
         font-size: 14px;
         color: var(--iq-secondary);
@@ -588,7 +588,7 @@
         </div>
         <style>
             .form-control {
-                background-color: #F2F5FA;
+                background-color: #fff;
                 border: 1px solid transparent;
                 height: 45px;
                 position: relative;
@@ -598,6 +598,10 @@
                 -webkit-border-radius: 6px;
                 height: 45px;
                 border-radius: 4px;
+                font-family: 'futuraheavy';
+            }
+            .sign-in-page .form-control:focus, .m-profile .form-control:focus{
+                background: #fff!important;
             }
         </style>
 
