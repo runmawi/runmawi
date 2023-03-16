@@ -1008,7 +1008,7 @@ cursor: pointer;
 
              
                     <div class="col-sm-12 mt-4 text-center targetDiv" id="div2">
-                     <?php $data = Session::all(); if($user->provider == null || empty($user->provider)){ ?> 
+                     <?php $data = Session::all(); if($user->provider != 'facebook' || $user->provider != 'google'){ ?> 
                         <div class="d-flex justify-content-center">  <img class="rounded-circle img-fluid d-block  mb-3" height="100" width="100" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg"/></div>
                         <?php }else{ ?> 
                         <div class="d-flex justify-content-center">  <img class="rounded-circle img-fluid d-block  mb-3" height="100" width="100" src="<?= $user->provider_avatar; ?>"  alt="profile-bg"/></div>

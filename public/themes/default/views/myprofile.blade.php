@@ -213,7 +213,7 @@ $settings = App\Setting::first();
             <div class="col-lg-8 mb-3">
                 <div class="targetDiv" id="div1">
                 <div class=" d-flex justify-content-between mb-3">
-                <?php $data = Session::all(); if(!isset($data['user'])){ ?> 
+                <?php $data = Session::all(); if($user->provider != 'facebook' || $user->provider != 'google'){ ?> 
                     <img class="rounded-circle img-fluid d-block  mb-3" height="100" width="100" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg"/>
                     <?php }else{ ?> 
                     <img class="rounded-circle img-fluid d-block  mb-3" height="100" width="100" src="<?=  $user->provider_avatar; ?>"  alt="profile-bg"/>
@@ -363,7 +363,7 @@ $settings = App\Setting::first();
 
          
                 <div class="col-sm-12 text-center targetDiv" id="div2">
-                <?php $data = Session::all(); if(!isset($data['user'])){ ?> 
+                <?php $data = Session::all(); if($user->provider != 'facebook' || $user->provider != 'google'){ ?> 
                         <div class="d-flex justify-content-center">  <img class="rounded-circle img-fluid d-block  mb-3" height="100" width="100" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg"/></div>
                         <?php }else{ ?> 
                         <div class="d-flex justify-content-center">  <img class="rounded-circle img-fluid d-block  mb-3" height="100" width="100" src="<?= $user->provider_avatar; ?>"  alt="profile-bg"/></div>
