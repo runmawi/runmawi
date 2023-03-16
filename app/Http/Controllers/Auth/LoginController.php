@@ -84,7 +84,7 @@ class LoginController extends Controller
                 $user = User::where('email',$data['email'])->first('provider');
                 $system_settings = SystemSetting::first();
 
-                if($user->provider == 'facebook' || $user->provider == 'google'){
+                if(!empty($user) && $user->provider == 'facebook' || !empty($user) &&   $user->provider == 'google'){
 
                                 return Redirect::to('/')->with(array(
                         'message' => 'Your account is connected with '.ucfirst($user->provider).'. Please sign in with '.ucfirst($user->provider).' given below.',
