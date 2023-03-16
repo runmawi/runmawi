@@ -100,7 +100,7 @@ i.fa.fa-google-plus {
                       <?php } else  { ?>
                       <?php } ?>
                        @if (Session::has('message'))
-                       <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
+                       <div id="successMessage" class="alert alert-danger">{{ Session::get('message') }}</div>
                         @endif
                         @if(count($errors) > 0)
                         @foreach( $errors->all() as $message )
