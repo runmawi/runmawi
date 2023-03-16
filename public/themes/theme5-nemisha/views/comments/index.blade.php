@@ -7,7 +7,7 @@
     <div class="media-body">
         <div class="d-flex align-items-center"><img class="mr-3" src="https://www.gravatar.com/avatar.jpg" width="50px" alt="{{ $comment->user_name }} Avatar" style="border-radius: 30px;"> <h5 class="mt-0 mb-1"><?= $comment->user_name ?><br> <small class="text-muted"> <?= $comment->created_at->diffForHumans() ?></small></h5></div>
        
-        <div style="white-space: pre-wrap;" class="mt-2 mb-2 text-white"><?= ( $comment->comment ) ?></div>
+        <div style="white-space: pre-wrap;" class="mt-2 mb-2 text-white desc"><?= ( $comment->comment ) ?></div>
 
             <div>
                 <?php if( Auth::user() != null && Auth::user()->id != $comment->user_id  && Auth::user()->role != 'register' ):?>
