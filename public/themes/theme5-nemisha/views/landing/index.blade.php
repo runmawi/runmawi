@@ -26,7 +26,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
         rel="stylesheet">
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Favicon -->
     <link rel="shortcut icon" href="<?= URL::to('/') . '/public/uploads/settings/' . $settings->favicon ?>" />
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
@@ -35,10 +35,11 @@
 
     <!-- Typography CSS -->
     <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/style.css'); ?>" />
+    <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/typography.css'); ?>" />
     <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/bootstrap.min.css'); ?>" />
 
     <!-- Style -->
-    <link rel="stylesheet" href="<?= typography_link() ?>" />
+   
 
     <!-- Responsive -->
     <link rel="stylesheet" href="assets/css/responsive.css" />
@@ -50,6 +51,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
     <style>
+        h1,h2,h3,h4,h5{
+            color: #fff!important;
+        }
         .map {
 
             font-size: 16px;
@@ -257,8 +261,8 @@
 
         }
 
-        h2 {
-            font-family: 'futuramedium';
+        h2, h4, h3 {
+            font-family: 'futurabook';
 
 
         }
@@ -380,7 +384,9 @@
             color: var(--iq-body-text);
             text-decoration: none;
         } */
-
+        .nav-pills .nav-link.active, .nav-pills .show>.nav-link{
+            background: transparent!important;
+        }
         .phselect {
 
             height: 45px !important;
@@ -1010,7 +1016,8 @@
         }
 
         .ben {
-            letter-spacing: 8px;
+            letter-spacing: 4px;
+            font-size: 40px;
         }
 
         @media (max-width: 600px) {
@@ -1044,6 +1051,12 @@
                 justify-content: center;
                 flex-direction: column;
             }
+        }
+        .lan h4{
+            font-weight: 700;
+        }
+        .rated h4{
+             font-weight: 700;
         }
  .bg-video-wrap {
     position: relative;
@@ -1125,7 +1138,7 @@
                 </div>
             </div>
         </div>--></section>
-       <section class="sec-21" style="background-image:url('<?php echo URL::to('/assets/img/lan/bg1.png'); ?>');background-repeat: no-repeat;background-size:100% 100%;">
+       <section class="sec-21" style="background-image:url('<?php echo URL::to('/assets/img/lan/bg1.png'); ?>');background-repeat: no-repeat;background-size:750px 500px;background-position: right;">
             <div class="container">
                 <div class="row  mt-3 align-items-center">
                     <div class="col-lg-6">
@@ -1143,7 +1156,7 @@
 
                     </div>
 
-                    <div class="col-lg-6 imk">
+                    <div class="col-lg-6 imk" >
                         <img class="img-lan w-100" src="<?php echo URL::to('/assets/img/v1.png'); ?>" style="">
                     </div>
                 </div>
@@ -1194,11 +1207,12 @@
                             @foreach ($videos_categories as $key => $videos_category)
                                 @if ($key < 8)
                                     <li class="nav-item">
-                                        <a class="nav-link" id="pills-profile-tab" data-toggle="pill"
+                            <a class="nav-link" id="pills-profile-tab" data-toggle="pill"
                                             data-category-id={{ $videos_category->id }} onclick="Series_Category(this)"
-                                            role="tab" aria-controls="pills-profile" aria-selected="false">
+                                            role="tab" aria-controls="pills-profile" aria-selected="false" >
                                             {{ $videos_category->name }}
                                         </a>
+                                        
                                     </li>
                                 @endif
                             @endforeach
@@ -1207,19 +1221,25 @@
 
                                 <a class="nav-link" class="btn btn-secondary btn-sm dropdown-toggle" type="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">More 
-                                    <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                  <i class="fa fa-angle-down" aria-hidden="true"></i>
                                 </a>
 
                                 <div class="dropdown-menu">
-
+ <ul class="nav nav-pills   m-0 p-0" id="pills-tab" role="tablist"  style="display: flex;
+    justify-content: start;
+    flex-direction: column;">
                                     @foreach ($videos_categories as $key => $videos_category)
                                         @if ($key > 8)
-                                            <a class="nav-link dropdown-item" id="pills-kids-tab" data-toggle="pill" data-category-id={{ $videos_category->id }}
+     <li class="nav-item">
+                                            <a class="nav-link " id="pills-kids-tab" data-toggle="pill" data-category-id={{ $videos_category->id }}
                                                 onclick="Series_Category(this)" href="#pills-kids" role="tab" aria-controls="pills-kids"
                                                 aria-selected="false">{{ $videos_category->name }}</a>
                                         @endif
                                     @endforeach
+     </li>
+     </ul>
                                 </div>
+                        </li>
                     </div>
                 </div>
             </div>
@@ -1242,11 +1262,11 @@
 
                     <div class="text-center mt-3 mb-5 pb-2 col-lg-3 all-video">
                         <a class="btn btn-success my-2 my-sm-0 w-100" style="font-weight:600;font-size: 20px;"
-                            herf="#"><span>All Videos <i class="fa fa-angle-right"
+                            href="https://dev.nemisatv.co.za/tv-shows"><span>All Videos <i class="fa fa-angle-right"
                                     aria-hidden="true"></i></span>
                         </a>
                     </div>
-                </div>
+                </div> 
             </div>
         </section>
 

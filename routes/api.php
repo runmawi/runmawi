@@ -409,7 +409,6 @@ Route::group(
         Route::post('/comment_edit', 'ApiAuthController@comment_edit');
         Route::post('/comment_update', 'ApiAuthController@comment_update');
         Route::post('/comment_destroy', 'ApiAuthController@comment_destroy');
-
         Route::post('/comment_reply', 'ApiAuthController@comment_reply');
 
         // Channel Partner
