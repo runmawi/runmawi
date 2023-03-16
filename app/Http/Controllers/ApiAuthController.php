@@ -10909,4 +10909,29 @@ public function QRCodeMobileLogout(Request $request)
         return response()->json($data, 200);
     }
 
+  
+  public function HomeContentPartner(Request $request)
+  {
+
+    try {
+
+      $response = array(
+        'status'=> 'true',
+        'message'  => 'Content Partner section Retrieved Successfully !!',
+        'ContentPartner' => ModeratorsUser::get(), 
+        'order_settings' => OrderHomeSetting::orderBy('order_id', 'asc')->get(), 
+        'order_settings_list' => OrderHomeSetting::get(), 
+  
+      );
+
+    } catch (\Throwable $th) {
+
+          $response = array(
+            'status'=>'false',
+            'message'=>$th->getMessage(),
+          );
+    }
+
+    return response()->json($response, 200);
+  }
 }

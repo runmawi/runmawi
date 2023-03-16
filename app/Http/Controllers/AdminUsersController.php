@@ -1023,7 +1023,6 @@ class AdminUsersController extends Controller
                     ->where('device_name', '=', $device_name)->delete();
             }
         }
-        Auth::logout();
         unset($data['password_hash']);
         
         if(!empty($data['user'])){
