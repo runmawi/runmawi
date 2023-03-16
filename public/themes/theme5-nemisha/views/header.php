@@ -377,6 +377,18 @@
            color: #fff!important;
            
         } 
+    body.light-theme #home-slider p{
+           color: #000!important;
+           
+        } 
+    body.light-theme .fa-play{
+           color: #000!important;
+           
+        } 
+    body.light-theme .hover-buttons i{
+           color: #000!important;
+           
+        } 
         body.light-theme .series_title desc{
            color: #fff!important;
            
