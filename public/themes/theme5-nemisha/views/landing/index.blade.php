@@ -26,7 +26,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
         rel="stylesheet">
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Favicon -->
     <link rel="shortcut icon" href="<?= URL::to('/') . '/public/uploads/settings/' . $settings->favicon ?>" />
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
@@ -384,7 +384,9 @@
             color: var(--iq-body-text);
             text-decoration: none;
         } */
-
+        .nav-pills .nav-link.active, .nav-pills .show>.nav-link{
+            background: transparent!important;
+        }
         .phselect {
 
             height: 45px !important;
@@ -1014,7 +1016,8 @@
         }
 
         .ben {
-            letter-spacing: 8px;
+            letter-spacing: 4px;
+            font-size: 40px;
         }
 
         @media (max-width: 600px) {
@@ -1048,6 +1051,12 @@
                 justify-content: center;
                 flex-direction: column;
             }
+        }
+        .lan h4{
+            font-weight: 700;
+        }
+        .rated h4{
+             font-weight: 700;
         }
  .bg-video-wrap {
     position: relative;
@@ -1212,7 +1221,7 @@
 
                                 <a class="nav-link" class="btn btn-secondary btn-sm dropdown-toggle" type="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">More 
-                                    <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                  <i class="fa fa-angle-down" aria-hidden="true"></i>
                                 </a>
 
                                 <div class="dropdown-menu">
@@ -1253,11 +1262,11 @@
 
                     <div class="text-center mt-3 mb-5 pb-2 col-lg-3 all-video">
                         <a class="btn btn-success my-2 my-sm-0 w-100" style="font-weight:600;font-size: 20px;"
-                            herf="#"><span>All Videos <i class="fa fa-angle-right"
+                            href="https://dev.nemisatv.co.za/tv-shows"><span>All Videos <i class="fa fa-angle-right"
                                     aria-hidden="true"></i></span>
                         </a>
                     </div>
-                </div>
+                </div> 
             </div>
         </section>
 

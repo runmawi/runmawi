@@ -289,6 +289,9 @@ $site_page_url = $http_site_url[1];
   -webkit-transition: .4s;
   transition: .4s;
 }
+        .categ-head{
+            padding-left: 40px;
+        }
 
 input:checked + .sliderk {
   background-color: #2196F3;
@@ -371,7 +374,7 @@ input:checked + .sliderk:before {
             color: cornflowerblue!important;
         }
     body.light-theme .dropdown-menu.categ-head{
-             background-color: <?php echo GetLightBg(); ?>!important;  
+             /*background-color: <?php echo GetLightBg(); ?>!important;  */
             color: <?php echo GetLightText(); ?>!important;
         }
          body.light-theme .navbar-right .iq-sub-dropdown{
