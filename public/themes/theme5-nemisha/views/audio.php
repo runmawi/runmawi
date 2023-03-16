@@ -60,9 +60,8 @@ padding-top: 20px;
 }
 
 .title{
-  margin-left: 10px;
   
-  text-align: center;
+  text-align: left;
 }
 
 .player-ctn{
@@ -296,7 +295,7 @@ Your browser does not support the audio element.
 <div class="album_container">
 <div class="blur"></div>
 <div class="overlay_blur">
-<h6 class="hero-title album mt-3"> <?php echo ucfirst($audio->title); ?></h6>
+<h6 class="hero-title album mt-3"><div class="title"></div> </h6>
 <p class="mt-2">Music by <?php echo get_audio_artist($audio->id); ?></p>
 <p class="mt-2">Album <a href="<?php echo URL::to('/').'/album/'.$album_slug;?>"><?php echo ucfirst($album_name); ?></a></p>
 <div class="d-flex" style="justify-content: space-between;width: 40%;align-items: center;">
@@ -473,15 +472,15 @@ Your browser does not support the audio element.
                     <div class="block-images position-relative">
                           <div class="img-box">
                              <img src="<?= URL::to('/').'/public/uploads/albums/' . $other_album->album ?>"  class="img-responsive w-100" />   
-                        </div>
-                        <div class="block-description">
+                        </div> </div>  
+                        <div class="block-description"> </div>
                             <div class="hover-buttons text-white">
                                 <p class="mt-2"><?php echo ucfirst($other_album->albumname);?> </p>
                 </div>
                            
             <?php  } ?> 
-                        </div>
-                    </div>      
+                       
+                       
             </a>
            
           

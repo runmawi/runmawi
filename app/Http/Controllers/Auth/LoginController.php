@@ -10,6 +10,8 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Redirect;
+use App\SystemSetting; 
 
 class LoginController extends Controller
 {
@@ -74,8 +76,25 @@ class LoginController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Request $request)
     {
-        $this->middleware('guest')->except('logout');
+        $data = $request->all();
+            if(!empty($data)){
+
+                $user = User::where('email',$data['email'])->first('provider');
+                $system_settings = SystemSetting::first();
+
+                if($user->provider == 'facebook' || $user->provider == 'google'){
+
+                                return Redirect::to('/')->with(array(
+                        'message' => 'Your account is connected with '.ucfirst($user->provider).'. Please sign in with '.ucfirst($user->provider).' given below.',
+                    ));
+
+                }
+                if(!isset($data)){
+                    $this->middleware('guest')->except('logout');
+                    // return Redirect::to('/');
+                }
+            }
     }
 }
