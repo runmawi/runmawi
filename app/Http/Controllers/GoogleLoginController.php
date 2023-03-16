@@ -57,7 +57,8 @@ public function callback(Request $request ,$provider)
     //         'role'    =>'registered',
     //         'email'    => $getInfo->email,
     //         'provider' => $provider,
-    //         'provider_id' => $getInfo->id
+    //         'provider_id' => $getInfo->id,
+    //         'provider_avatar' => $getInfo->avatar,
     //     ]);
     //     auth()->login($user);
     // }
@@ -88,7 +89,9 @@ function createUser($getInfo,$provider){
         'role'    =>'registered',
         'email'    => $getInfo->email,
         'provider' => $provider,
-        'provider_id' => $getInfo->id
+        'provider_id' => $getInfo->id,
+        'provider_avatar' => $getInfo->avatar,
+
     ]);
 
     return $user;
@@ -99,6 +102,7 @@ function createUser($getInfo,$provider){
     $user_exits->active = 1;
     $user_exits->provider_id = $getInfo->id;
     $user_exits->provider =  $provider;
+    $user_exits->provider_avatar =  $getInfo->avatar;
     $user_exits->active = 1;
     $user_exits->save();
 
@@ -106,7 +110,8 @@ function createUser($getInfo,$provider){
         'name'     => $getInfo->name,
         'email'    => $getInfo->email,
         'provider' => $provider,
-        'provider_id' => $getInfo->id
+        'provider_id' => $getInfo->id,
+        'provider_avatar' => $getInfo->avatar,
     );
 
     return $user;
@@ -114,6 +119,3 @@ function createUser($getInfo,$provider){
   }
 }
 }
-
-
-
