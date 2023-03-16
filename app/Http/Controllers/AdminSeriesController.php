@@ -375,12 +375,13 @@ class AdminSeriesController extends Controller
 
             $slug = Series::where('slug',$request->title)->first();
 
-            $series_slug = $slug == null ?  str_replace(' ', '_', $request->title) : str_replace(' ', '_', $request->title.'-'.$series->id) ;
+            $series_slug  = $slug == null ?  preg_replace("![^a-z0-9]+!i", "-",  $request->title )  : preg_replace("![^a-z0-9]+!i", "-",  $request->title.'-'.$series->id ) ;
+
         }else{
 
             $slug = Series::where('slug',$request->slug)->first();
 
-            $series_slug = $slug == null ?  str_replace(' ', '_', $request->slug) : str_replace(' ', '_', $request->slug.'-'.$series->id) ;
+            $series_slug  = $slug == null ?  preg_replace("![^a-z0-9]+!i", "-",  $request->slug )  : preg_replace("![^a-z0-9]+!i", "-",  $request->slug.'-'.$series->id ) ;
         }
 
         $series = Series::find($series->id);
@@ -403,7 +404,6 @@ class AdminSeriesController extends Controller
                 $artist->artist_id = $value;
                 $artist->save();
             }
-            
         }
 
             /*save artist*/
@@ -415,7 +415,6 @@ class AdminSeriesController extends Controller
                     $category->category_id = $value;
                     $category->save();
                 }
-
             }
         
 
@@ -428,7 +427,6 @@ class AdminSeriesController extends Controller
                     $serieslanguage->language_id = $value;
                     $serieslanguage->save();
                 }
-
             }
         
        // $this->addUpdateSeriesTags($series, $tags);
@@ -531,12 +529,12 @@ class AdminSeriesController extends Controller
 
             $slug = Series::whereNotIn('id',[$id])->where('slug',$data['title'])->first();
 
-            $data['slug']  = $slug == null ?  str_replace(' ', '_', $data['title']) : str_replace(' ', '_', $data['title'].'-'.$id) ;
+            $data['slug']  = $slug == null ?  preg_replace("![^a-z0-9]+!i", "-",  $data['title'] )  : preg_replace("![^a-z0-9]+!i", "-",  $data['title'].'-'.$id ) ;
         }else{
 
             $slug = Series::whereNotIn('id',[$id])->where('slug',$data['slug'])->first();
 
-            $data['slug'] = $slug == null ?  str_replace(' ', '_', $data['slug']) : str_replace(' ', '_', $data['slug'].'-'.$id) ;
+            $data['slug']  = $slug == null ?  preg_replace("![^a-z0-9]+!i", "-",  $data['slug'] )  : preg_replace("![^a-z0-9]+!i", "-",  $data['slug'].'-'.$id ) ;
         }
 
         $path = public_path().'/uploads/videos/';
@@ -1455,19 +1453,17 @@ class AdminSeriesController extends Controller
         }
 
         $data = array(
-            'headline' => '<i class="fa fa-edit"></i> Manage episodes of Season '.$season_id.' : '.$series->title,
-            'episodes' => $episodes,
-            'series' => $series,
-            'season_id' => $season_id,
-            'post_route' => URL::to('admin/episode/create'),
-            'button_text' => 'Create Episode',
-            'admin_user' => Auth::user(),
-            'age_categories' => AgeCategory::all(),
-            'settings' => Setting::first(),
-            'InappPurchase' => InappPurchase::all(),
-            'post_dropzone_url' => $dropzone_url,
-
-
+                'headline' => '<i class="fa fa-edit"></i> Manage episodes of Season '.$season_id.' : '.$series->title,
+                'episodes' => $episodes,
+                'series' => $series,
+                'season_id' => $season_id,
+                'post_route' => URL::to('admin/episode/create'),
+                'button_text' => 'Create Episode',
+                'admin_user' => Auth::user(),
+                'age_categories' => AgeCategory::all(),
+                'settings' => Setting::first(),
+                'InappPurchase' => InappPurchase::all(),
+                'post_dropzone_url' => $dropzone_url,
             );
 
         return View::make('admin.series.season_edit', $data);
@@ -1494,7 +1490,9 @@ class AdminSeriesController extends Controller
 
         if($episodes->type == 'm3u8'){
             $type = 'm3u8';
-        } if($episodes->type == 'aws_m3u8'){
+        } 
+        
+        if($episodes->type == 'aws_m3u8'){
             $type = 'aws_m3u8';
         }else{
             $type = 'file';
@@ -1520,12 +1518,12 @@ class AdminSeriesController extends Controller
                 if(compress_image_enable() == 1){
             
                     $episode_filename  = time().'.'.compress_image_format();
-                    $episode_image     =  'episode_'.$episode_filename ;
+                    $episode_image     =  'episode-'.$episode_filename ;
                     Image::make($file)->save(base_path().'/public/uploads/images/'.$episode_image,compress_image_resolution() );
                 }else{
 
                     $episode_filename  = time().'.'.$image->getClientOriginalExtension();
-                    $episode_image     =  'episode_'.$episode_filename ;
+                    $episode_image     =  'episode-'.$episode_filename ;
                     Image::make($file)->save(base_path().'/public/uploads/images/'.$episode_image );
                 }  
 
@@ -1553,12 +1551,12 @@ class AdminSeriesController extends Controller
            if(compress_image_enable() == 1){
                 
                 $episode_player_filename  = time().'.'.compress_image_format();
-                $episode_player_image     =  'episode_player_'.$episode_player_filename ;
+                $episode_player_image     =  'episode-player-'.$episode_player_filename ;
                 Image::make($file)->save(base_path().'/public/uploads/images/'.$episode_player_image,compress_image_resolution() );
             }else{
 
                 $episode_player_filename  = time().'.'.$image->getClientOriginalExtension();
-                $episode_player_image     =  'episode_player_'.$episode_player_filename ;
+                $episode_player_image     =  'episode-player-'.$episode_player_filename ;
                 Image::make($file)->save(base_path().'/public/uploads/images/'.$episode_player_image );
             }  
 
@@ -1682,13 +1680,13 @@ class AdminSeriesController extends Controller
                 if( $request->slug == ''){
 
                     $slug = Episode::where('slug',$data['title'])->first();
-        
-                    $episode_slug = $slug == null ?  str_replace(' ', '_', $data['title']) : str_replace(' ', '_', $data['title'].'-'.$id) ;
+
+                    $episode_slug = $slug == null ?  preg_replace("![^a-z0-9]+!i", "-",  $data['title'])  :  preg_replace("![^a-z0-9]+!i", "-",  $data['title'].'-'.$id )  ;
                 }else{
         
                     $slug = Episode::where('slug',$request->slug)->first();
         
-                    $episode_slug = $slug == null ?  str_replace(' ', '_', $data['slug']) : str_replace(' ', '_', $data['slug'].'-'.$id) ;
+                    $episode_slug = $slug == null ?  preg_replace("![^a-z0-9]+!i", "-",  $data['slug'])  :  preg_replace("![^a-z0-9]+!i", "-",  $data['slug'].'-'.$id )  ;
                 }
 
             $episodes->rating =  $data['rating'];
@@ -1737,15 +1735,13 @@ class AdminSeriesController extends Controller
     {
         $episodes = Episode::find($id);
         $data = array(
-            'headline' => '<i class="fa fa-edit"></i> Edit Episode '.$episodes->title,
-            'episodes' => $episodes,
-            'post_route' => URL::to('admin/episode/update'),
-            'button_text' => 'Update Episode',
-            'admin_user' => Auth::user(),
-            'age_categories' => AgeCategory::all(),
-            'settings' => Setting::first(),
-
-
+                'headline' => '<i class="fa fa-edit"></i> Edit Episode '.$episodes->title,
+                'episodes' => $episodes,
+                'post_route' => URL::to('admin/episode/update'),
+                'button_text' => 'Update Episode',
+                'admin_user' => Auth::user(),
+                'age_categories' => AgeCategory::all(),
+                'settings' => Setting::first(),
             );
 
         return View::make('admin.series.edit_episode', $data);
@@ -1756,14 +1752,10 @@ class AdminSeriesController extends Controller
 
         $input = $request->all();
         $id = $input['id'];
-        $episode = Episode::findOrFail($id);
+        $episode  = Episode::findOrFail($id);
+        $settings = Setting::first();
 
-
-        if(!empty($input['searchtags'])){
-            $searchtags = $input['searchtags'];
-        }else{
-            $searchtags = $episode->searchtags;
-        }
+        $searchtags = !empty($input['searchtags']) ? $input['searchtags'] :  $episode->searchtags ;
 
         if(empty($input['image']) && !empty($episode->image)){
             $image = $episode->image ;
@@ -1778,7 +1770,6 @@ class AdminSeriesController extends Controller
             $player_image = (isset($input['player_image'])) ? $input['player_image'] : '';
         }
        
-        $settings =Setting::first();
         if(!empty($input['ppv_price'])){
             $ppv_price = $input['ppv_price'];
         }elseif(!empty($input['ppv_price']) || $settings->ppv_status == 1){
@@ -1786,6 +1777,7 @@ class AdminSeriesController extends Controller
         }else{
             $ppv_price = null;
         }
+
         $data = $request->all();
           
         $path = public_path().'/uploads/episodes/';
@@ -1813,8 +1805,6 @@ class AdminSeriesController extends Controller
             $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
             $data['free_content_duration'] = $time_seconds;
         }
-
-        
         
              if($request->hasFile('image')){
 
@@ -1831,12 +1821,12 @@ class AdminSeriesController extends Controller
                 if(compress_image_enable() == 1){
         
                     $episode_filename  = time().'.'.compress_image_format();
-                    $episode_image     =  'episode_'.$episode_filename ;
+                    $episode_image     =  'episode-'.$episode_filename ;
                     Image::make($file)->save(base_path().'/public/uploads/images/'.$episode_image,compress_image_resolution() );
                 }else{
 
                     $episode_filename  = time().'.'.$image->getClientOriginalExtension();
-                    $episode_image     =  'episode_'.$episode_filename ;
+                    $episode_image     =  'episode-'.$episode_filename ;
                     Image::make($file)->save(base_path().'/public/uploads/images/'.$episode_image );
                 }  
 
@@ -1861,12 +1851,12 @@ class AdminSeriesController extends Controller
                 if(compress_image_enable() == 1){
             
                     $episode_player_filename  = time().'.'.compress_image_format();
-                    $episode_player_image     =  'episode_player_'.$episode_player_filename ;
+                    $episode_player_image     =  'episode-player-'.$episode_player_filename ;
                     Image::make($player_image)->save(base_path().'/public/uploads/images/'.$episode_player_image,compress_image_resolution() );
                 }else{
 
                     $episode_player_filename  = time().'.'.$image->getClientOriginalExtension();
-                    $episode_player_image     =  'episode_player_'.$episode_player_filename ;
+                    $episode_player_image     =  'episode-player-'.$episode_player_filename ;
                     Image::make($player_image)->save(base_path().'/public/uploads/images/'.$episode_player_image );
                 }  
 
@@ -1907,12 +1897,12 @@ class AdminSeriesController extends Controller
 
             $slug = Episode::whereNotIn('id',[$id])->where('slug',$request->title)->first();
 
-            $data['slug']  = $slug == null ?  str_replace(' ', '_', $request->title ) : str_replace(' ', '_', $request->title .'-'.$id) ;
+            $data['slug']  = $slug == null ?  preg_replace("![^a-z0-9]+!i", "-",  $request->title )  : preg_replace("![^a-z0-9]+!i", "-",  $request->title.'-'.$id ) ;
         }else{
 
             $slug = Episode::whereNotIn('id',[$id])->where('slug',$request->slug)->first();
 
-            $data['slug'] = $slug == null ?  str_replace(' ', '_', $request->slug) : str_replace(' ', '_', $request->slug.'-'.$id) ;
+            $data['slug']  = $slug == null ?  preg_replace("![^a-z0-9]+!i", "-",  $request->slug )  : preg_replace("![^a-z0-9]+!i", "-",  $request->slug.'-'.$id ) ;
         }
 
         if(empty($data['featured'])){
@@ -1935,10 +1925,7 @@ class AdminSeriesController extends Controller
 
             $ffprobe = \FFMpeg\FFProbe::create();
             $disk = 'public';
-            $data['duration'] = $ffprobe->streams($request->episode_upload)
-            ->videos()
-            ->first()                  
-            ->get('duration'); 
+            $data['duration'] = $ffprobe->streams($request->episode_upload)->videos() ->first()->get('duration'); 
 
             $rand = Str::random(16);
             $path = $rand . '.' . $request->episode_upload->getClientOriginalExtension();
@@ -1984,8 +1971,8 @@ class AdminSeriesController extends Controller
     
     }
 
-    public function EpisodeUpload(Request $request){
-
+    public function EpisodeUpload(Request $request)
+    {
         $value = array();
         $data = $request->all();
         $series_id = $data['series_id'];
@@ -1993,11 +1980,10 @@ class AdminSeriesController extends Controller
 
         $validator = Validator::make($request->all(), [
            'file' => 'required|mimes:video/mp4,video/x-m4v,video/*'
-           
         ]);
+
         $file = (isset($data['file'])) ? $data['file'] : '';
 
-        // https://webnexs.org/flicknexs/content/uploads/episodes/6.mp4
         $package = User::where('id',1)->first();
         $pack = $package->package;
         $mp4_url = $data['file'];
@@ -2005,124 +1991,118 @@ class AdminSeriesController extends Controller
 
         if($pack != "Business" || $pack == "Business" && $settings->transcoding_access  == 0){
 
-        if($file != '') {        
-        $rand = Str::random(16);
-        $path = $rand . '.' . $file->getClientOriginalExtension();
-        $request->file->storeAs('public', $path);
-        $storepath  = URL::to('/storage/app/public/'.$path);
-        $file = $request->file->getClientOriginalName();
+            if($file != '') {        
 
-             //  Episode duration 
-             $getID3 = new getID3;
-             $Video_storepath  = storage_path('app/public/'.$path);       
-             $VideoInfo = $getID3->analyze($Video_storepath);
-             $Video_duration = $VideoInfo['playtime_seconds'];
+                $rand = Str::random(16);
+                $path = $rand . '.' . $file->getClientOriginalExtension();
+                $request->file->storeAs('public', $path);
+                $storepath  = URL::to('/storage/app/public/'.$path);
+                $file = $request->file->getClientOriginalName();
 
-        $newfile = explode(".mp4",$file);
-        $file_folder_name = $newfile[0];       
-         $original_name = ($request->file->getClientOriginalName()) ? $request->file->getClientOriginalName() : '';
-         $episode = new Episode();
-         $episode->title = $file_folder_name;
-         $episode->mp4_url = $storepath;
-         $episode->series_id = $series_id;
-         $episode->season_id = $season_id;
-         $episode->image = 'default_image.jpg';
-         $episode->type = 'upload';
-         $episode->status = 0;
-        $episode->duration = $Video_duration;
-        $episode->episode_order = Episode::where('season_id',$season_id)->max('episode_order') + 1 ;
+                //  Episode duration 
+                $getID3 = new getID3;
+                $Video_storepath  = storage_path('app/public/'.$path);       
+                $VideoInfo = $getID3->analyze($Video_storepath);
+                $Video_duration = $VideoInfo['playtime_seconds'];
 
-         $episode->save(); 
-         $episode_id = $episode->id;
-        $episode_title = Episode::find($episode_id);
-        $title =$episode_title->title; 
-        
-        $value['success'] = 1;
-        $value['message'] = 'Uploaded Successfully!';
-        $value['episode_id'] = $episode_id;
-        $value['episode_title'] = $title;
-        $value['episode_duration'] = gmdate('H:i:s', $episode_title->duration);
-        return $value;
-        }else {
-            $value['success'] = 2;
-            $value['message'] = 'File not uploaded.'; 
-           return response()->json($value);
-           }
-        
-    }elseif($pack == "Business" && $settings->transcoding_access  == 1){
-        if($file != '') {     
-        $rand = Str::random(16);
-        $path = $rand . '.' . $file->getClientOriginalExtension();
-        $request->file->storeAs('public', $path);
-        $file = $request->file->getClientOriginalName();
-        $newfile = explode(".mp4",$file);
-        $file_folder_name = $newfile[0];
-        $storepath  = URL::to('/storage/app/public/'.$path);
+                $newfile = explode(".mp4",$file);
+                $file_folder_name = $newfile[0];       
+                $original_name = ($request->file->getClientOriginalName()) ? $request->file->getClientOriginalName() : '';
+                $episode = new Episode();
+                $episode->title = $file_folder_name;
+                $episode->mp4_url = $storepath;
+                $episode->series_id = $series_id;
+                $episode->season_id = $season_id;
+                $episode->image = 'default_image.jpg';
+                $episode->type = 'upload';
+                $episode->status = 0;
+                $episode->duration = $Video_duration;
+                $episode->episode_order = Episode::where('season_id',$season_id)->max('episode_order') + 1 ;
+                $episode->save(); 
 
-        $original_name = ($request->file->getClientOriginalName()) ? $request->file->getClientOriginalName() : '';
-         
-        $storepath  = URL::to('/storage/app/public/'.$path);
+                $episode_id = $episode->id;
+                $episode_title = Episode::find($episode_id);
+                $title =$episode_title->title; 
+            
+                $value['success'] = 1;
+                $value['message'] = 'Uploaded Successfully!';
+                $value['episode_id'] = $episode_id;
+                $value['episode_title'] = $title;
+                $value['episode_duration'] = gmdate('H:i:s', $episode_title->duration);
+                return $value;
+            }
+            else 
+            {
+                $value['success'] = 2;
+                $value['message'] = 'File not uploaded.'; 
+                return response()->json($value);
+            }
+            
+        }elseif($pack == "Business" && $settings->transcoding_access  == 1){
 
-          //  Episode duration 
-          $getID3 = new getID3;
-          $Video_storepath  = storage_path('app/public/'.$path);       
-          $VideoInfo = $getID3->analyze($Video_storepath);
-          $Video_duration = $VideoInfo['playtime_seconds'];
+            if($file != '') {     
 
-         $video = new Episode();
-         $video->title = $file_folder_name;
-         $video->mp4_url = $path;
-         $video->series_id = $series_id;
-         $video->season_id = $season_id;
-         $video->image = 'default_image.jpg';
-         $video->type = 'm3u8';
-         $video->status = 0;
-         $video->disk = 'public';
-         $video->status = 0;
-         $video->path = $path;
-         $video->mp4_url = $storepath;
-        //  $video->user_id = Auth::user()->id;
-        $video->episode_order = Episode::where('season_id',$season_id)->max('episode_order') + 1 ;
-        $video->duration = $Video_duration;
-         $video->save();
+                $rand = Str::random(16);
+                $path = $rand . '.' . $file->getClientOriginalExtension();
+                $request->file->storeAs('public', $path);
+                $file = $request->file->getClientOriginalName();
+                $newfile = explode(".mp4",$file);
+                $file_folder_name = $newfile[0];
 
-         ConvertEpisodeVideo::dispatch($video,$storepath);
+                $storepath  = URL::to('/storage/app/public/'.$path);
+                $original_name = ($request->file->getClientOriginalName()) ? $request->file->getClientOriginalName() : '';
+                $storepath  = URL::to('/storage/app/public/'.$path);
 
-         $episode_id = $video->id;
-        $episode_title = Episode::find($episode_id);
-        $title =$episode_title->title; 
-        $value['success'] = 1;
-        $value['message'] = 'Uploaded Successfully!';
-        $value['episode_id'] = $episode_id;
-        $value['episode_title'] = $title;
-        $value['episode_duration'] = gmdate('H:i:s', $episode_title->duration);
+                //  Episode duration 
+                $getID3 = new getID3;
+                $Video_storepath  = storage_path('app/public/'.$path);       
+                $VideoInfo = $getID3->analyze($Video_storepath);
+                $Video_duration = $VideoInfo['playtime_seconds'];
 
-        return $value;
-         
-          
+                $video = new Episode();
+                $video->title = $file_folder_name;
+                $video->mp4_url = $path;
+                $video->series_id = $series_id;
+                $video->season_id = $season_id;
+                $video->image = 'default_image.jpg';
+                $video->type = 'm3u8';
+                $video->status = 0;
+                $video->disk = 'public';
+                $video->status = 0;
+                $video->path = $path;
+                $video->mp4_url = $storepath;
+                //  $video->user_id = Auth::user()->id;
+                $video->episode_order = Episode::where('season_id',$season_id)->max('episode_order') + 1 ;
+                $video->duration = $Video_duration;
+                $video->save();
 
-        }else {
-            $value['success'] = 2;
-            $value['message'] = 'File not uploaded.'; 
-           return response()->json($value);
-           }
+                ConvertEpisodeVideo::dispatch($video,$storepath);
 
-        }else {
-            $value['success'] = 2;
-            $value['message'] = 'File not uploaded.'; 
-           return response()->json($value);
-           }
-
-
+                $episode_id = $video->id;
+                $episode_title = Episode::find($episode_id);
+                $title =$episode_title->title; 
+                $value['success'] = 1;
+                $value['message'] = 'Uploaded Successfully!';
+                $value['episode_id'] = $episode_id;
+                $value['episode_title'] = $title;
+                $value['episode_duration'] = gmdate('H:i:s', $episode_title->duration);
+                return $value;
+            }
+            else {
+                $value['success'] = 2;
+                $value['message'] = 'File not uploaded.'; 
+                return response()->json($value);
+            }
         }
-
-
-
-
+        else {
+            $value['success'] = 2;
+            $value['message'] = 'File not uploaded.'; 
+            return response()->json($value);
+        }
+    }
 
     public function createSlug($title, $id = 0)
     {
-        // Normalize the title
         $slug = Str::slug($title);
 
         // Get any that could possibly be related.
