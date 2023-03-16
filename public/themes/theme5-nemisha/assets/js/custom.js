@@ -120,7 +120,7 @@ Index Of Script
 		----------------------------------------------------------------------- */
           $(window).on('load',function(){
 		$('#home-slider').slick({
-			autoplay: true,
+			autoplay: false,
             appendDots: '.slider-dots',
 			speed: 800,
 			lazyLoad: 'progressive',
