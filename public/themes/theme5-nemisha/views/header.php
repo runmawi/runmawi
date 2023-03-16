@@ -1294,15 +1294,7 @@
                                             </div>
                                         </li>
                                         <li class="nav-item nav-icon">
-                                            <!--<a href="#" class="search-toggle" data-toggle="search-toggle">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22"
-                                       class="noti-svg">
-                                       <path fill="none" d="M0 0h24v24H0z" />
-                                       <path
-                                          d="M18 10a6 6 0 1 0-12 0v8h12v-8zm2 8.667l.4.533a.5.5 0 0 1-.4.8H4a.5.5 0 0 1-.4-.8l.4-.533V10a8 8 0 1 1 16 0v8.667zM9.5 21h5a2.5 2.5 0 1 1-5 0z" />
-                                    </svg>
-                                    <span class="bg-danger dots"></span>
-                                 </a>-->
+                                         
                                             <div class="iq-sub-dropdown">
                                                 <div class="iq-card shadow-none m-0">
                                                     <div class="iq-card-body">
@@ -1416,8 +1408,7 @@
                                                             <div class=" mt-3 d-flex align-items-center justify-content-between col-lg-7 ">
                                                                 <i class="fa fa-moon-o" aria-hidden="true"></i>
                                                                 <label class="switch toggle mt-2">
-                                                                    <input type="checkbox" id="toggle"
-                                                                        value=<?php echo $theme_mode; ?>
+                                                                    <input type="checkbox" id="toggle" value=<?php echo $theme_mode; ?>
                                                                         <?php if ($theme_mode == 'light') {
                                                                             echo 'checked';
                                                                         } ?> />
@@ -1557,7 +1548,7 @@
                                                                 </div>
                                                             </div>
                                                         </a>
-                                                    
+                                              
                                                         <a href="<?php echo URL::to('logout'); ?>"
                                                             class="iq-sub-card setting-dropdown">
                                                             <div class="media align-items-center">
@@ -1590,8 +1581,7 @@
                                                             <div class=" mt-3 d-flex align-items-center justify-content-between col-lg-7 ">
                                                                 <i class="fa fa-moon-o" aria-hidden="true"></i>
                                                                 <label class="switch toggle mt-2">
-                                                                    <input type="checkbox" id="toggle"
-                                                                        value=<?php echo $theme_mode; ?>
+                                                                    <input type="checkbox" id="toggle" value=<?php echo $theme_mode; ?>
                                                                         <?php if ($theme_mode == 'light') {
                                                                             echo 'checked';
                                                                         } ?> />
