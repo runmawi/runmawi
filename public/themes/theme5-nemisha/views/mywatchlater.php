@@ -11,15 +11,16 @@
 <!-- MainContent -->
  <div class="main-content" style="background: linear-gradient(135.05deg, rgba(136, 136, 136, 0.48) 1.85%, rgba(64, 32, 32, 0.13) 38.53%, rgba(81, 57, 57, 0.12) 97.89%);
     padding: 0px 60px 40px;!important;">
-     <div class="container-fluid">
+     <div class="">
           <div class="row justify-content-center">
-     <div class="col-sm-12 overflow-hidden">
+     <div class="col-sm-12 overflow-hidden mt-4">
         <div class="iq-main-header d-flex align-items-center justify-content-between">
-           <!-- <h4 class="Continue Watching">Media in My Watchlater</h4>-->
+           <h4 class="Continue Watching">Media in My Watchlater</h4>
         </div>
-     </div>
+              </div></div>
      <section class="movie-detail ">
-         <div class="row">
+         <div class="favorites-contens">
+                        <ul class="category-page list-inline  row p-0 mb-4">
             <?php if(count($channelwatchlater) > 0): 
             foreach($channelwatchlater as $video): ?>
             <div class="col-1-5 col-md-6 iq-mb-30 wishlist-block">
@@ -46,17 +47,17 @@
                             </p>
                         </div>
                     </div>
--->
-                        <div class="block-description">
-                            <h3><?php echo __($video->title); ?></h3>
+--></div>
+                    <div class="block-description"></div>
+                            <h6><?php echo __($video->title); ?></h6>
                             <div class="movie-time d-flex align-items-center my-2">
                                 <div class="badge badge-secondary p-1 mr-2"><?php echo $video->age_restrict ?></div>
                                 <span class="text-white"><i class="fa fa-clock-o"></i>
                                     <?= gmdate('H:i:s', $video->duration); ?>
                                 </span>
                             </div>
-                            <div class="hover-buttons">
-                                <a type="button" class="text-white"
+                           <!-- <div class="hover-buttons">
+                                <a type="button" class=""
                                 href="<?php echo URL::to('category') ?><?= '/videos/' . $video->slug ?>">
                                     <i class="fa fa-play mr-1" aria-hidden="true"></i>
                                 Watch Now
@@ -70,12 +71,12 @@
                                     </div> 
                                     </a>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
+                            </div>-->
+                      
+                   
                 </li>
                 </a>
-            </div>
+                            </div></ul></div>
     <?php endforeach; 
         else: ?>
           <!--  <h2>No Media in My Watchlater</h2>-->

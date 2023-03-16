@@ -241,8 +241,8 @@
                             <div class="iq-navbar-logo d-flex justify-content-between">
                                 <a href="<?php echo URL::to('home'); ?>" class="header-logo">
                                     <div class="logo-title">
-                                        <span class="text-primary text-uppercase"><?php $settings = App\Setting::first();
-                                        echo $settings->website_name; ?></span>
+                                        <p class="text-primary text-uppercase"><?php $settings = App\Setting::first();
+                                        echo $settings->website_name; ?></p>
                                     </div>
                                 </a>
                             </div>
@@ -368,27 +368,27 @@
                                 style="color: #fff!important;"><i class="fa fa-plus-circle"></i> Edit</a></div>
 
                         <div class="text-center">
-                            <p class="account row justify-content-center">
+                            <p class="account row ">
                                 <span class="col-lg-4 text-left">First Name:</span> 
                                 <span class="col-lg-4 text-left"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></span>
                             </p>
 
-                            <p class="account row justify-content-center">
+                            <p class="account row ">
                                 <span class="col-lg-4 text-left">User Name:</span>
                                 <span class="col-lg-4 text-left"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></span>
                             </p>
 
-                            <p class="account row justify-content-center">
+                            <p class="account row ">
                                 <span class="col-lg-4 text-left">Email-id:</span>
                                 <span class="col-lg-8 text-left"> <?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?></span>
                             </p>
 
-                            <p class="account row justify-content-center">
+                            <p class="account row ">
                                 <span class="col-lg-4 text-left">Cell Phone:</span>
                                 <span class="col-lg-4 text-left"> <?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?></span>
                             </p>
 
-                            <p class="account row justify-content-center">
+                            <p class="account row ">
                                 <span class="col-lg-4 text-left">Gender:</span>
                                 <span class="col-lg-5 text-left"> 
                                     <select class="form-control" id="gender" name="gender">
@@ -400,7 +400,7 @@
                                 </span>
                             </p>
 
-                            <p class="account row justify-content-center">
+                            <p class="account row ">
                                 <span class="col-lg-4 text-left">DOB:</span>
                                 <span class="col-lg-4 text-left"> <?php if(!empty($user->DOB)): ?><?= $user->DOB ?><?php endif; ?></span>
                             </p>
