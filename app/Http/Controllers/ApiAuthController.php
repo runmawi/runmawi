@@ -117,6 +117,7 @@ use App\ScheduleVideos as ScheduleVideos;
 use App\ReSchedule as ReSchedule;
 use App\WebComment;
 use App\Channel;
+use App\ThumbnailSetting;
 
 class ApiAuthController extends Controller
 {
@@ -10907,7 +10908,170 @@ public function QRCodeMobileLogout(Request $request)
     return response()->json($response, 200);
   }
 
+
   
+  public function ChannelHome($slug)
+  {
+    try{
+
+      $settings = Setting::first();
+      $channel = Channel::where('channel_slug',$slug)->first(); 
+      $currency = CurrencySetting::first();
+          
+              $livetreams = LiveStream::where('active', '=', '1')->where('user_id', '=', $channel->id)
+              ->where('uploaded_by', '=', 'Channel')->orderBy('created_at', 'DESC')
+              ->get();
+
+              $audios = Audio::where('active', '=', '1')->where('user_id', '=', $channel->id)
+              ->where('uploaded_by', '=', 'Channel')
+              ->orderBy('created_at', 'DESC')
+              ->get() ;
+
+              $latest_series = Series::where('active', '=', '1')->where('user_id', '=', $channel->id)
+              ->where('uploaded_by', '=', 'Channel')->orderBy('created_at', 'DESC')
+              ->get();
+
+              $latest_videos = Video::where('active', '=', '1')->where('status', '=', '1')->where('user_id', '=', $channel->id)
+              ->where('uploaded_by', '=', 'Channel')->where('draft', '=', '1')
+              ->get();
+  
+          $ThumbnailSetting = ThumbnailSetting::first();
+          
+          $response = array(
+              'latest_video' => $latest_videos,
+              'latest_series' => $latest_series,
+              'audios' => $audios,
+              'livetream' => $livetreams,
+              'currency' => $currency,
+              'ThumbnailSetting' => $ThumbnailSetting,
+              'LiveCategory' => LiveCategory::get(),
+              'VideoCategory' => VideoCategory::get(),
+              'AudioCategory' => AudioCategory::get(),
+              'channel' => $channel,
+          );
+          
+              } catch (\Throwable $th) {
+
+                $response = array(
+                  'status'=>'false',
+                  'message'=>$th->getMessage(),
+                );
+          }
+
+          return response()->json($response, 200);
+      }
+
+
+      public function ChannelList()
+      {
+        try{
+
+          $settings = Setting::first();
+          $channels = Channel::get(); 
+          $currency = CurrencySetting::first();
+          $ThumbnailSetting = ThumbnailSetting::first();
+            
+              $response = array(
+                  'currency' => $currency,
+                  'channels' => $channels,
+                  'ThumbnailSetting' => $ThumbnailSetting,
+              );
+              
+            } catch (\Throwable $th) {
+
+              $response = array(
+                'status'=>'false',
+                'message'=>$th->getMessage(),
+              );
+        }
+
+        return response()->json($response, 200);
+          
+      }
+  
+
+      
+    public function channel_category_videos(Request $request)
+    {
+      try{
+
+        $videosCategory = VideoCategory::find($request->category_id) != null ? VideoCategory::find($request->category_id)->specific_category_videos : array();
+         
+        $videos_Category = $videosCategory->where('user_id', $request->user_id)->where('uploaded_by' ,'Channel')->all();
+
+        $response = array( 'videosCategory' => $videos_Category );
+ 
+      } catch (\Throwable $th) {
+
+        $response = array(
+          'status'=>'false',
+          'message'=>$th->getMessage(),
+        );
+    }
+
+    return response()->json($response, 200);
+    }
+
+    public function channel_category_series(Request $request)
+    {
+      try{
+        $SeriesCategory = VideoCategory::find($request->category_id) != null ? VideoCategory::find($request->category_id)->specific_category_series : array();
+        
+        $Series_Category = $SeriesCategory->where('user_id', $request->user_id)->where('uploaded_by' ,'Channel')->all();
+
+        $response = array( 'SeriesCategory' => $Series_Category );
+      } catch (\Throwable $th) {
+
+        $response = array(
+          'status'=>'false',
+          'message'=>$th->getMessage(),
+        );
+    }
+
+    return response()->json($response, 200);
+    }
+
+    public function channel_category_live(Request $request)
+    {
+      try{
+        $LiveCategory = LiveCategory::find($request->category_id) != null ? LiveCategory::find($request->category_id)->specific_category_live : array();
+        
+        $Live_Category = $LiveCategory->where('user_id', $request->user_id)->where('uploaded_by' ,'Channel')->all();
+
+        $response = array( 'LiveCategory' => $Live_Category );
+
+      } catch (\Throwable $th) {
+
+        $response = array(
+          'status'=>'false',
+          'message'=>$th->getMessage(),
+        );
+    }
+
+    return response()->json($response, 200);
+    }
+
+    public function channel_category_audios(Request $request)
+    {
+      try{
+        $AudioCategory = AudioCategory::find($request->category_id) != null ? AudioCategory::find($request->category_id)->specific_category_audio : array();
+
+        $Audio_Category = $AudioCategory->where('user_id', $request->user_id)->where('uploaded_by' ,'Channel')->all();
+
+        $response = array( 'AudioCategory' => $Audio_Category );
+
+        } catch (\Throwable $th) {
+
+          $response = array(
+            'status'=>'false',
+            'message'=>$th->getMessage(),
+          );
+      }
+
+      return response()->json($response, 200);
+    }
+
+    
   public function HomeContentPartner(Request $request)
   {
 
@@ -10932,4 +11096,171 @@ public function QRCodeMobileLogout(Request $request)
 
     return response()->json($response, 200);
   }
+
+
+  public function ContentPartnerHome($slug)
+  {
+    try{
+      $settings = Setting::first();
+      $ModeratorsUser = ModeratorsUser::where('slug',$slug)->first(); 
+
+      $currency = CurrencySetting::first();
+
+              $livetreams = LiveStream::where('active', '=', '1')->where('user_id', '=', $ModeratorsUser->id)
+              ->where('uploaded_by', '=', 'CPP')->orderBy('created_at', 'DESC')
+              ->get();
+
+              $audios = Audio::where('active', '=', '1')->where('user_id', '=', $ModeratorsUser->id)
+              ->where('uploaded_by', '=', 'CPP')
+              ->orderBy('created_at', 'DESC')
+              ->get() ;
+
+              $latest_series = Series::where('active', '=', '1')->where('user_id', '=', $ModeratorsUser->id)
+              ->where('uploaded_by', '=', 'CPP')->orderBy('created_at', 'DESC')
+              ->get();
+
+              $latest_videos = Video::where('active', '=', '1')->where('status', '=', '1')->where('user_id', '=', $ModeratorsUser->id)
+              ->where('uploaded_by', '=', 'CPP')->where('draft', '=', '1')
+              ->get();
+  
+          $ThumbnailSetting = ThumbnailSetting::first();
+
+          $response = array(
+              'Content_Partner' => ModeratorsUser::where('slug',$slug)->first(),
+              'currency' => $currency,
+              'latest_video' => $latest_videos,
+              'latest_series' => $latest_series,
+              'audios' => $audios,
+              'livetream' => $livetreams,
+              'ThumbnailSetting' => $ThumbnailSetting,
+              'LiveCategory' => LiveCategory::get(),
+              'VideoCategory' => VideoCategory::get(),
+              'AudioCategory' => AudioCategory::get(),
+          );
+          
+          } catch (\Throwable $th) {
+
+            $response = array(
+              'status'=>'false',
+              'message'=>$th->getMessage(),
+            );
+      }
+
+      return response()->json($response, 200);
+      
+  }
+
+
+  
+  public function ContentList()
+  {
+
+    try{ 
+      $settings = Setting::first();
+      $ModeratorsUser = ModeratorsUser::get(); 
+      $currency = CurrencySetting::first();
+      $ThumbnailSetting = ThumbnailSetting::first();
+        
+          $response = array(
+              'currency' => $currency,
+              'ModeratorsUser' => $ModeratorsUser,
+              'ThumbnailSetting' => $ThumbnailSetting,
+              'Content_Partner' => ModeratorsUser::get(),
+
+          );
+          
+        } catch (\Throwable $th) {
+
+          $response = array(
+            'status'=>'false',
+            'message'=>$th->getMessage(),
+          );
+    }
+
+    return response()->json($response, 200);
+      
+  }
+
+  public function Content_category_videos(Request $request)
+  {
+    try{
+      $videosCategory = VideoCategory::find($request->category_id) != null ? VideoCategory::find($request->category_id)->specific_category_videos : array();
+       
+      $videos_Category = $videosCategory->where('user_id', $request->user_id)->where('uploaded_by' ,'CPP')->all();
+
+      $response = array( 'videosCategory' => $videos_Category );
+
+    } catch (\Throwable $th) {
+
+            $response = array(
+              'status'=>'false',
+              'message'=>$th->getMessage(),
+            );
+      }
+
+      return response()->json($response, 200);
+  }
+
+  public function Content_category_series(Request $request)
+  {
+    try{
+      $SeriesCategory = VideoCategory::find($request->category_id) != null ? VideoCategory::find($request->category_id)->specific_category_series : array();
+      
+      $Series_Category = $SeriesCategory->where('user_id', $request->user_id)->where('uploaded_by' ,'CPP')->all();
+
+      $response = array( 'SeriesCategory' => $Series_Category );
+
+
+        } catch (\Throwable $th) {
+
+          $response = array(
+            'status'=>'false',
+            'message'=>$th->getMessage(),
+          );
+    }
+
+    return response()->json($response, 200);
+  }
+
+  public function Content_category_live(Request $request)
+  {
+    try{
+      $LiveCategory = LiveCategory::find($request->category_id) != null ? LiveCategory::find($request->category_id)->specific_category_live : array();
+      
+      $Live_Category = $LiveCategory->where('user_id', $request->user_id)->where('uploaded_by' ,'CPP')->all();
+      $response = array( 'LiveCategory' => $Live_Category );
+
+
+    } catch (\Throwable $th) {
+
+          $response = array(
+            'status'=>'false',
+            'message'=>$th->getMessage(),
+          );
+    }
+
+    return response()->json($response, 200);
+  }
+
+  public function Content_category_audios(Request $request)
+  {
+    try{
+
+      $AudioCategory = AudioCategory::find($request->category_id) != null ? AudioCategory::find($request->category_id)->specific_category_audio : array();
+      
+      $Audio_Category = $AudioCategory->where('user_id', $request->user_id)->where('uploaded_by' ,'CPP')->all();
+
+      $response = array( 'AudioCategory' => $Audio_Category );
+
+        } catch (\Throwable $th) {
+
+          $response = array(
+            'status'=>'false',
+            'message'=>$th->getMessage(),
+          );
+    }
+
+    return response()->json($response, 200);
+  }
+
 }

@@ -191,7 +191,7 @@ class ChannelHomeController extends Controller
     public function channel_category_audios(Request $request)
     {
          
-        $AudioCategory = AudioCategory::find($request->category_id) != null ? AudioCategory::find($request->category_id)->specific_category_series : array();
+        $AudioCategory = AudioCategory::find($request->category_id) != null ? AudioCategory::find($request->category_id)->specific_category_audio : array();
         
         $Audio_Category = $AudioCategory->where('user_id', $request->user_id)->where('uploaded_by' ,'Channel')->all();
 
