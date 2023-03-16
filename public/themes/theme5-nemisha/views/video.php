@@ -56,6 +56,8 @@ if(!empty($request_url)){
       }textarea.form-control{
           background-color: #fff!important;
           height: 100px;
+          font-size: 18px;
+         font-family: 'futurabook';
       }
 .vjs-seek-to-live-control {
            display: none !important;
