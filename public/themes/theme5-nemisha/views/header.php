@@ -407,6 +407,10 @@ input:checked + .sliderk:before {
         body.light-theme h1{
            color: #000!important;
            
+        } 
+        body.light-theme .sea{
+           color: #fff!important;
+           
         }  body.light-theme .h3{
            color: #000!important;
            
