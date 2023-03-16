@@ -10,8 +10,8 @@ $series=App\series::first();
 
  ?>
  <style>
-	p {
-		color: white !important;
+	.desc p {
+		color: #fff!important;
 	}
 </style>
 <!-- free content - hide & show -->
@@ -218,7 +218,7 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 	<br>
                 <div class="col-md-5">
 			<span class="text-white" style="font-size: 129%;font-weight: 700;">You're watching:</span>
-			<p style=";font-size: 130%;color: white;">
+			<p style=";font-size: 130%;color: white;" class="desc">
 			<?php 
 			$seasons = App\SeriesSeason::where('series_id','=',$SeriesSeason->series_id)->with('episodes')->get();
 			foreach($seasons as $key=>$seasons_value){ ?>
@@ -302,9 +302,9 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 					
                  </ul>
 			</div>
-            <div class="col-md-12">
+            <div class="col-md-12 desc">
                  <h2 class="trending-text big-title text-uppercase mt-3" ><?= $episode->title ?></h2>
-			 <p style="color:white !important"><?php echo $series->details;?></p>
+			 <p class="desc" ></p><?php echo $series->details;?>
             </div>
 			<!-- <div>
 			<?php //if ( $episode->ppv_status != null && Auth::User()!="admin" || $episode->ppv_price != null  && Auth::User()->role!="admin") { ?>
