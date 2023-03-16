@@ -15,12 +15,11 @@
     $uri_parts = explode('/', $uri_path);
     $request_url = end($uri_parts);
     $uppercase = ucfirst($request_url);
-    
     if ((!empty($data['password_hash']) && empty($uppercase)) || (empty($data['password_hash']) && empty($uppercase))) {
+        // dd($uppercase);
         $uppercase = 'Home';
     } else {
     }
-    
     if (!empty(Auth::User()->id)) {
         $id = Auth::User()->id;
         $users = App\User::find($id);
@@ -35,11 +34,13 @@
         $DOB = null;
     }
     
+    // exit();UA-42534483-14
     $data = Session::all();
+    
     ?>
-
     <!-- Required meta tags -->
     <?php $settings = App\Setting::first(); //echo $settings->website_name; ?>
+
 
     <?php if (!empty($data['password_hash'])) {
         $videos_data = App\Video::where('slug', $request_url)->first();
@@ -60,23 +61,20 @@
     $episdoe = App\Episode::where('title', $request_url)->first();
     $livestream = App\LiveStream::where('slug', $request_url)->first();
     ?>
-
     <meta charset="UTF-8">
-    <title>
-        <?php
-        if (!empty($videos_data)) {
-            echo $videos_data->title . ' | ' . $settings->website_name;
-        } elseif (!empty($series)) {
-            echo $series->title . ' | ' . $settings->website_name;
-        } elseif (!empty($episdoe)) {
-            echo $episdoe->title . ' | ' . $settings->website_name;
-        } elseif (!empty($livestream)) {
-            echo $livestream->title . ' | ' . $settings->website_name;
-        } else {
-            echo $uppercase . ' | ' . $settings->website_name;
-        }
-        ?>
-    </title>
+    <title><?php
+    //  dd($data['password_hash']);
+    if (!empty($videos_data)) {
+        echo $videos_data->title . ' | ' . $settings->website_name;
+    } elseif (!empty($series)) {
+        echo $series->title . ' | ' . $settings->website_name;
+    } elseif (!empty($episdoe)) {
+        echo $episdoe->title . ' | ' . $settings->website_name;
+    } elseif (!empty($livestream)) {
+        echo $livestream->title . ' | ' . $settings->website_name;
+    } else {
+        echo $uppercase . ' | ' . $settings->website_name;
+    } ?></title>
     <meta name="description" content="<?php
     if (!empty($videos_data)) {
         echo $videos_data->description;
@@ -104,6 +102,8 @@
         echo $uppercase . ' | ' . $settings->website_name;
     } ?>" />
 
+
+
     <meta property="og:description" content="<?php
     if (!empty($videos_data)) {
         echo $videos_data->description;
@@ -116,6 +116,8 @@
     } else {
         echo $settings->website_description;
     } //echo $settings; ?>" />
+
+
 
     <meta property="og:image" content="<?php
     if (!empty($videos_data)) {
@@ -143,7 +145,6 @@
         $site_page_url = '';
     }
     ?>
-
     <?php if(!empty($Linking_Setting->ios_app_store_id)){ ?>
     <meta property="al:ios:app_store_id" content="<?php echo $Linking_Setting->ios_app_store_id; ?>" /><?php } ?>
     <meta property="al:ios:url" content="<?php echo $site_page_url; ?>" />
@@ -161,6 +162,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <input type="hidden" value="<?php echo $settings->google_tracking_id; ?>" name="tracking_id" id="tracking_id">
 
+
+
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
         integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
 
@@ -174,8 +177,12 @@
     <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/responsive.css'); ?>" rel="stylesheet">
     <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/fonts/font.css'); ?>" rel="stylesheet">
 
+
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="stylesheet">
+
+
 
     <!-- Responsive -->
     <link rel="stylesheet" href="<?= URL::to('/') . '/assets/css/responsive.css' ?>" />
@@ -341,6 +348,10 @@
         transition: .4s;
     }
 
+    .categ-head {
+        padding-left: 40px;
+    }
+
     input:checked+.sliderk {
         background-color: #2196F3;
     }
@@ -424,6 +435,11 @@
         color: <?php echo GetLightText(); ?>;
     }
 
+    body.light-theme span i {
+
+        color: #fff !important;
+    }
+
     body.light-theme .dropdown-item.cont-item {
         color: #fff !important;
     }
@@ -439,7 +455,7 @@
     }
 
     body.light-theme .dropdown-menu.categ-head {
-        background-color: <?php echo GetLightBg(); ?> !important;
+        /*background-color: <?php echo GetLightBg(); ?>!important;  */
         color: <?php echo GetLightText(); ?> !important;
     }
 
@@ -518,6 +534,11 @@
 
     body.light-theme .series_title desc {
         color: #fff !important;
+
+    }
+
+    body.light-theme h2 {
+        color: #000 !important;
 
     }
 
@@ -698,7 +719,7 @@
     .sidebar a {
         padding-left: 8px;
         text-decoration: none;
-        font-size: 20px;
+        font-size: 18px;
         color: #fff !important;
         display: block;
         font-family: 'futurabook';
@@ -778,6 +799,12 @@
     </div>
     <?php } ?>
 
+    <!-- loader Start -->
+    <!-- <div id="loading">
+         <div id="loading-center">
+         </div>
+      </div>-->
+    <!-- loader END -->
     <!-- Header -->
     <div id="mySidebar" class="sidebar" onmouseover="toggleSidebar()" onmouseout="toggleSidebar()">
         <ul id="" class="nav navbar-nav <?php if (Session::get('locale') == 'arabic') {
@@ -1208,8 +1235,7 @@
                         if(!Auth::guest() && !empty($ModeratorsUser)){ ?>
                                 <div class="iq-search-bar ml-auto">
                                     <form method="POST" action="<?php echo URL::to('cpp/home'); ?>" class="mt-4">
-                                        <input type="hidden" name="_token" id="token"
-                                            value="<?= csrf_token() ?>">
+                                        <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
                                         <input id="email" type="hidden" name="email"
                                             value="<?= Auth::user()->email ?>" autocomplete="email" autofocus>
                                         <input id="password" type="hidden" name="password"
@@ -1221,8 +1247,7 @@
                                 <?php }if(!Auth::guest() && !empty($Channel)){ ?>
                                 <div class="iq-search-bar ml-auto">
                                     <form method="POST" action="<?php echo URL::to('channel/home'); ?>" class="mt-4">
-                                        <input type="hidden" name="_token" id="token"
-                                            value="<?= csrf_token() ?>">
+                                        <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
                                         <input id="email" type="hidden" name="email"
                                             value="<?= Auth::user()->email ?>" autocomplete="email" autofocus>
                                         <input id="password" type="hidden" name="password"
@@ -1269,7 +1294,15 @@
                                             </div>
                                         </li>
                                         <li class="nav-item nav-icon">
-                                        
+                                            <!--<a href="#" class="search-toggle" data-toggle="search-toggle">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22"
+                                       class="noti-svg">
+                                       <path fill="none" d="M0 0h24v24H0z" />
+                                       <path
+                                          d="M18 10a6 6 0 1 0-12 0v8h12v-8zm2 8.667l.4.533a.5.5 0 0 1-.4.8H4a.5.5 0 0 1-.4-.8l.4-.533V10a8 8 0 1 1 16 0v8.667zM9.5 21h5a2.5 2.5 0 1 1-5 0z" />
+                                    </svg>
+                                    <span class="bg-danger dots"></span>
+                                 </a>-->
                                             <div class="iq-sub-dropdown">
                                                 <div class="iq-card shadow-none m-0">
                                                     <div class="iq-card-body">
@@ -1378,6 +1411,22 @@
                                             <div class="iq-sub-dropdown iq-user-dropdown">
                                                 <div class="iq-card shadow-none m-0">
                                                     <div class="iq-card-body p-0 pl-3 pr-3">
+
+                                                        <a class="p-0">
+                                                            <div class=" mt-3 d-flex align-items-center justify-content-between col-lg-7 ">
+                                                                <i class="fa fa-moon-o" aria-hidden="true"></i>
+                                                                <label class="switch toggle mt-2">
+                                                                    <input type="checkbox" id="toggle"
+                                                                        value=<?php echo $theme_mode; ?>
+                                                                        <?php if ($theme_mode == 'light') {
+                                                                            echo 'checked';
+                                                                        } ?> />
+                                                                    <span class="sliderk round"></span>
+                                                                </label>
+                                                                <i class="fa fa-sun-o" aria-hidden="true"></i>
+                                                            </div>
+                                                        </a>
+
                                                         <a href="<?php echo URL::to('myprofile'); ?>"
                                                             class="iq-sub-card setting-dropdown">
                                                             <div class="media align-items-center">
@@ -1508,7 +1557,7 @@
                                                                 </div>
                                                             </div>
                                                         </a>
-                                            
+                                                    
                                                         <a href="<?php echo URL::to('logout'); ?>"
                                                             class="iq-sub-card setting-dropdown">
                                                             <div class="media align-items-center">
@@ -1538,11 +1587,8 @@
                                                 <div class="iq-card shadow-none m-0">
                                                     <div class="iq-card-body p-0 pl-3 pr-3">
                                                         <a class="p-0">
-                                                            <div
-                                                                class=" mt-3 d-flex align-items-center justify-content-between col-lg-7 ">
-
+                                                            <div class=" mt-3 d-flex align-items-center justify-content-between col-lg-7 ">
                                                                 <i class="fa fa-moon-o" aria-hidden="true"></i>
-
                                                                 <label class="switch toggle mt-2">
                                                                     <input type="checkbox" id="toggle"
                                                                         value=<?php echo $theme_mode; ?>
@@ -1683,8 +1729,55 @@
                                                                 </div>
                                                             </div>
                                                         </a>
-                                                      
+                                                        <!-- <a href="<?php echo URL::to('purchased-media'); ?>" class="iq-sub-card setting-dropdown">
+                                             <div class="media align-items-center">
+                                                <div class="right-icon">
+                                                  <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+ viewBox="0 0 70 70" style="enable-background:new 0 0 70 70;" xml:space="preserve">
+<style type="text/css">
+ .st0{stroke-width:0.5;stroke-miterlimit:10;}
+</style>
+<g>
+ <path class="st0" d="M45.8,28.7c-0.5,0-0.9-0.4-0.9-0.9V17.5c0-2.4-1.9-4.3-4.3-4.3H30.2c-2.4,0-4.3,1.9-4.3,4.3v10.4
+		c0,0.5-0.4,0.9-0.9,0.9s-0.9-0.4-0.9-0.9V17.5c0-3.3,2.7-6,6-6h10.4c3.3,0,6,2.7,6,6v10.4C46.6,28.4,46.2,28.7,45.8,28.7z"/>
+ <path class="st0" d="M42.3,23.6H28.5c-0.5,0-0.9-0.4-0.9-0.9s0.4-0.9,0.9-0.9h13.8c0.5,0,0.9,0.4,0.9,0.9
+		C43.2,23.2,42.8,23.6,42.3,23.6L42.3,23.6z"/>
+ <path class="st0" d="M54.4,52.9h-37c-1,0-1.9-0.8-1.9-1.9V23.7c0-1,0.8-1.9,1.9-1.9h4.2c0.5,0,0.9,0.4,0.9,0.9s-0.4,0.9-0.9,0.9
+		h-3.3c-0.6,0-1,0.5-1,1v25.6c0,0.6,0.5,1,1,1h34.2c0.6,0,1-0.5,1-1V24.6c0-0.6-0.5-1-1-1h-3.3c-0.5,0-0.9-0.4-0.9-0.9
+		s0.4-0.9,0.9-0.9h4.2c1,0,1.9,0.8,1.9,1.9V52C55.3,52.5,54.9,52.9,54.4,52.9L54.4,52.9z"/>
+ <path class="st0" d="M30.2,46c-0.2,0-0.5,0-0.4-0.1c-0.5-0.2-0.4-0.4-0.4-0.7V31.3c0-0.5,0.2-0.6,0.4-0.7c0.5-0.2,0.6-0.2,0.9,0
+		l12.1,6.9c0.5,0.2,0.4,0.4,0.4,0.7s-0.2,0.6-0.4,0.7l-12.1,6.9C30.5,46,30.4,46,30.2,46L30.2,46z M31.1,32.8v10.8l9.5-5.4
+		L31.1,32.8z"/>
+</g>
+</svg>
+                                                </div>
+                                                <div class="media-body ml-3">
+                                                   <h6 class="mb-0 ">Purchased Medias</h6>
+                                                </div>
+                                             </div>
+                                          </a>-->
                                                         <?php if(Auth::User()->role == "admin"){ ?>
+                                                        <!-- <a href="<?php echo URL::to('admin/subscription-plans'); ?>"  class="iq-sub-card setting-dropdown">
+                                             <div class="media align-items-center">
+                                                <div class="right-icon">
+                                                 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+ viewBox="0 0 70 70" style="enable-background:new 0 0 70 70;" xml:space="preserve">
+<style type="text/css">
+ .st0{}
+</style>
+<path class="st0" d="M11.2,22.1v23.2c0,1.4,0.5,2.7,1.5,3.6c1,1,2.3,1.5,3.6,1.5h37.7c1.4,0,2.7-0.5,3.6-1.5c1-1,1.5-2.3,1.5-3.6
+	V22.1c0-1.4-0.5-2.7-1.5-3.6c-1-1-2.3-1.5-3.6-1.5H16.4c-1.4,0-2.7,0.5-3.6,1.5C11.8,19.5,11.2,20.8,11.2,22.1L11.2,22.1z
+	 M16.8,32.3v-3c1.9,0.2,3.7-0.4,5.1-1.7c1.3-1.3,2-3.2,1.7-5.1h23.3c0,0.2,0,0.5,0,0.7c0,1.8,0.7,3.4,2.1,4.6
+	c1.3,1.2,3.1,1.7,4.8,1.5v8.8c-1.9-0.2-3.7,0.4-5.1,1.7c-1.3,1.3-2,3.2-1.7,5.1H23.6c0.2-1.9-0.4-3.7-1.7-5.1
+	c-1.3-1.3-3.2-2-5.1-1.7L16.8,32.3z M28.4,33.7c0-1.8,0.7-3.5,2-4.8c1.3-1.3,3-2,4.8-2s3.5,0.7,4.8,2c1.3,1.3,2,3,2,4.8
+	c0,1.8-0.7,3.5-2,4.8c-1.3,1.3-3,2-4.8,2s-3.5-0.7-4.8-2C29.1,37.3,28.4,35.5,28.4,33.7z"/>
+</svg>
+                                                </div>
+                                                <div class="media-body ml-3">
+                                                   <h6 class="mb-0 ">Pricing Plan</h6>
+                                                </div>
+                                             </div>
+                                          </a>-->
 
                                                         <a href="<?php echo URL::to('admin'); ?>"
                                                             class="iq-sub-card setting-dropdown">
@@ -1815,11 +1908,13 @@
                     var filldate = "<?= $filldate ?>";
                     var DOB = "<?= $DOB ?>";
 
+                    // console.log(DOB);
+                    // console.log(currentdate);
 
                     if (filldate == currentdate && DOB != null && !empty(DOB) && currentdate != null && filldate != null) {
                         $("body").append(
                             '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Add Your DOB for Amazing video experience</div>'
-                        );
+                            );
                         setTimeout(function() {
                             $('.add_watch').slideUp('fast');
                         }, 3000);
@@ -1886,6 +1981,8 @@
             </script>
 
         </header>
+
+
 
         <!-- Header End -->
 
