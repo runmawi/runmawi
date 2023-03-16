@@ -6,6 +6,7 @@ use App\ModeratorsRole;
 use App\ModeratorsUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Crypt;
 use URL;
 use App\UserAccess;
 use Hash;
@@ -517,7 +518,7 @@ class ModeratorsLoginController extends Controller
 
     }
 
-    public function PasswordRset()
+    public function PasswordReset()
     {
         $user_package = User::where('id', 1)->first();
         $package = $user_package->package;
@@ -535,15 +536,85 @@ class ModeratorsLoginController extends Controller
     }
 
     
+    public function VerifyPasswordReset($email,$token)
+    {
+        $user_package = User::where('id', 1)->first();
+        $package = $user_package->package;
+        if (!empty($package) && $package == "Pro" || !empty($package) && $package == "Business")
+        {
+            $settings = Setting::first();
+            $user = User::where('id', '=', 1)->first();
+
+            $decrypt_email = \Crypt::decryptString($email);
+            // dd($decrypt_email);
+
+            return Theme::view('moderator.verify_reset_password', compact('settings', 'user','decrypt_email','token'));
+        }
+        else
+        {
+            return Redirect::to('/blocked');
+        }
+    }
+
+    
+    public function VerifyResetPassword(Request $request)
+    {
+
+      $data = $request->all();
+      $encrypted = \Crypt::encryptString($request->email);
+      $decrypt= \Crypt::decryptString($encrypted);
+
+      $ModeratorsUser = ModeratorsUser::where('email', $request->email)->first();
+
+    if(!empty($ModeratorsUser)){
+      $token = Str::random(60);
+      $ModeratorsUser = ModeratorsUser::where('email', $request->email)
+      ->update(['token' => $token]);
+
+      $verification_code = URL::to('cpp/password/reset').'/'.$encrypted.'/'.$token;
+
+                try
+                {
+                    $data = array(
+                        'email_subject' => EmailTemplate::where('id', 41)->pluck('heading')->first() ,
+                    );
+
+                    Mail::send('emails.resetpassword', array('website_name' => GetWebsiteName() ,'verification_code' => $verification_code,) ,
+                        function ($message) use ($data, $request){
+                            $message->from(AdminMail() , GetWebsiteName());
+                            $message->to($request->email,)->subject($data['email_subject']);
+                        });
+
+                    $email_log = 'Mail Sent Successfully For Reset Password';
+                    $email_template = "11";
+                    $user_id = $ModeratorsUser->id;
+
+                    Email_sent_log($user_id, $email_log, $email_template);
+                }
+                catch(\Exception $e)
+                {
+                    $ModeratorsUser = ModeratorsUser::where('email', $request->email)->first();
+
+                    $email_log = $e->getMessage();
+                    $email_template = "11";
+                    $user_id = $ModeratorsUser->id;
+
+                    Email_notsent_log($user_id, $email_log, $email_template);
+                }
+
+            return Redirect::back()->with('message', 'We have emailed your password reset link!');
+        }else{
+            return Redirect::back()->with('message', 'Please Enter Valid Email Address');
+
+        }
+
+  }
+
     public function ResetPassword(Request $request)
     {
       $data = $request->all();
-      // dd($data);
-      $user = ModeratorsUser::where('email', $data['email'])->first();
+      $user = ModeratorsUser::where('email', $data['email'])->where('token',$request->verify_token)->first();
 
-
-      // dd($data);
-// 
       if(!empty($user)){
 
         $user->password = $data['password'];
@@ -551,7 +622,6 @@ class ModeratorsLoginController extends Controller
         $user->save();
 
         $adminuser = User::where('email', $data['email'])->first();
-    //   dd($adminuser);
         
         if(!empty($adminuser)){
             $adminuser->password = Hash::make($data['password']);
@@ -565,7 +635,7 @@ class ModeratorsLoginController extends Controller
 
       }else{
 
-        return Redirect::back()->with('message', 'Please Enter Valid Email');
+        return Redirect::back()->with('message', 'Please Enter Valid Token to Verify');
 
       }
 

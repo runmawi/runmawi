@@ -1166,8 +1166,10 @@ Route::get('admin/payment_test', 'AdminPaymentManagementController@PaymentIndex'
 
 Route::post('cpp/home',  'ModeratorsLoginController@Login')->name('CPPLogin');
 
-Route::get('cpp/password/reset',  'ModeratorsLoginController@PasswordRset')->name('CPPPasswordRset');
+Route::get('cpp/password/reset',  'ModeratorsLoginController@PasswordReset')->name('CPPPasswordRset');
+Route::get('cpp/password/reset/{email}/{token}',  'ModeratorsLoginController@VerifyPasswordReset')->name('CPPPasswordRset');
 Route::post('cpp/resetpassword',  'ModeratorsLoginController@ResetPassword')->name('CPPResetPassword');
+Route::post('cpp/Verify_Reset_Password',  'ModeratorsLoginController@VerifyResetPassword')->name('VerifyResetPassword');
 
 
 
@@ -1353,6 +1355,9 @@ Route::post('/audios/audioupdate', array('before' => 'demo', 'uses' => 'CPPAdmin
     Route::post('/channel/home',  'ChannelLoginController@Login');
     Route::get('channel/password/reset',  'ChannelLoginController@PasswordRset')->name('channelPasswordRset');
     Route::post('channel/resetpassword',  'ChannelLoginController@ResetPassword')->name('channelResetPassword');
+    Route::get('channel/password/reset/{email}/{token}',  'ChannelLoginController@VerifyPasswordReset')->name('CPPPasswordRset');
+    Route::post('channel/Verify_Reset_Password',  'ChannelLoginController@VerifyResetPassword')->name('VerifyResetPassword');
+
 
     Route::group(['prefix' => 'channel','middleware' => ['channel']], function() {        
         
