@@ -91,7 +91,7 @@ $series = $series_data ;
                         <div class="col-md-7">
                         Season  <span class="sea"> 1 </span> - U/A English
                             <p  style="color:#fff!important;"><?php echo $series->details;?></p>
-					<!--	<b><p  style="color:#fff;"><?php echo $series->description;?></p></b>-->
+						<b><p  style="color:#fff;"><?php echo $series->description;?></p></b>
                             <div class="row p-0 mt-3 align-items-center">
                                 <div class="col-md-2">  <a data-video="<?php echo $series->trailer;  ?>" data-toggle="modal" data-target="#videoModal">	
                                           <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> </a></div>
@@ -270,7 +270,7 @@ $series = $series_data ;
 
                                    
                                        <div class="hover-buttons">
-                                                                      <!---  <a href="<?php echo URL::to('episode').'/'.$series->title.'/'.$episodes->slug;?>">
+                                                                       <!-- <a href="<?php echo URL::to('episode').'/'.$series->title.'/'.$episodes->slug;?>">
 
                                           <span class="text-white">
                                           <i class="fa fa-play mr-1" aria-hidden="true"></i>
