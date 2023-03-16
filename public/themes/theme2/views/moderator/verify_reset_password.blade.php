@@ -4,7 +4,7 @@ $system_settings = App\SystemSetting::find(1);
 ?>
 <html>
 <head>
-    <?php //dd(URL::to('/'). '/assets/css/responsive.css');?>
+    <?php //dd($token);?>
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -108,17 +108,18 @@ i.fa.fa-google-plus {
                         @endif
                                               
                   </div>
-                     <form method="POST" action="{{  URL::to('cpp/Verify_Reset_Password') }}" class="mt-4">
+                     <form method="POST" action="{{  URL::to('cpp/resetpassword') }}" class="mt-4">
                      <!-- <meta name="csrf-token" content="{{ csrf_token() }}"> -->
 
                          @csrf
 						   <input type="hidden" name="previous" value="{{ url()->previous() }}">
+						   <input type="hidden" name="verify_token" value="{{ @$token }}">
 
                         <div class="form-group">  
                           <!-- <input type="email" class="form-control mb-0" id="exampleInputEmail1" placeholder="Enter email" autocomplete="off" required>-->
-                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" placeholder="{{ __('E-Mail or Phone number') }}" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                            <input id="email" type="email" readonly class="form-control @error('email') is-invalid @enderror" name="email" value="{{ @$decrypt_email }}" readonly>
                         </div>
-                        <!-- <div class="form-group" style="  margin-top: 30px;">                                 
+                        <div class="form-group" style="  margin-top: 30px;">                                 
                             <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" placeholder="{{ __('Password') }}" name="password" required autocomplete="current-password" >
                         </div>
                         <div >
@@ -128,12 +129,10 @@ i.fa.fa-google-plus {
                             <span class="input-group-btn" id="eyeShow" style="display: none;">
                                 <button class="btn btn-default reveal" onclick="visibility1()" type="button" style=" background: transparent !important; color:#ff0000!important ;"><i class="fa fa-eye" aria-hidden="true"></i></button>
                             </span>
-                        </div>                         -->
-                        <p class="reset-help text-center">We will send you an email with instructions on
-                                            how to reset your password.</p>
+                        </div>                        
                            <div class="sign-info">
-                              <button type="submit" class="btn  ab" style="width:100%;color:#fff!important;background:#8a0303!important">{{ __('Send Password Reset Link') }}</button>
-                                                                                         
+                              <button type="submit" class="btn  ab" style="width:100%;color:#fff!important;background:#8a0303!important">{{ __('Password Reset') }}</button>
+                                                            
                            </div> 
                            <div class="clear"></div>                       
                            </div>
