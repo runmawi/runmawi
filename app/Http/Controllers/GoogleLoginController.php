@@ -35,11 +35,11 @@ public function callback(Request $request ,$provider)
         'name' => $getInfo->getName(),
         'username'     => $getInfo->name,
         'email' => $getInfo->getEmail(),
-        'password' => Hash::make($getInfo->getName().'@'.$getInfo->getId()),
         'provider' => $provider,
         'role'    =>'registered',
         'active'    =>'1',
-        'provider_id' => $getInfo->id
+        'provider_id' => $getInfo->id,
+        'provider_avatar' => $getInfo->avatar,
          ]);
 
     Auth::loginUsingId($saveUser->id);

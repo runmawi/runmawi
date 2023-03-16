@@ -74,6 +74,9 @@ $settings = App\Setting::first();
 @php
   $jsonString = file_get_contents(base_path('assets/country_code.json'));   
   $jsondata = json_decode($jsonString, true); 
+
+  $data = Session::all(); 
+  
 @endphp
 
 
@@ -210,7 +213,11 @@ $settings = App\Setting::first();
             <div class="col-lg-8 mb-3">
                 <div class="targetDiv" id="div1">
                 <div class=" d-flex justify-content-between mb-3">
+                <?php $data = Session::all(); if(!isset($data['user'])){ ?> 
                     <img class="rounded-circle img-fluid d-block  mb-3" height="100" width="100" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg"/>
+                    <?php }else{ ?> 
+                    <img class="rounded-circle img-fluid d-block  mb-3" height="100" width="100" src="<?=  $user->provider_avatar; ?>"  alt="profile-bg"/>
+                     <?php } ?>
                     <h4 class="mb-3"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></h4>
                     <a href="#updatepic" class="edit-icon text-primary">Edit</a></div>
                      <div class=""> <!--style="margin-left: 66%;margin-right: 13%;padding-left: 1%;padding-bottom: 0%;"-->
@@ -356,8 +363,11 @@ $settings = App\Setting::first();
 
          
                 <div class="col-sm-12 text-center targetDiv" id="div2">
-                    <div class="d-flex justify-content-center">  <img class="rounded-circle img-fluid d-block  mb-3" height="100" width="100" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg"/></div>
-                    
+                <?php $data = Session::all(); if(!isset($data['user'])){ ?> 
+                        <div class="d-flex justify-content-center">  <img class="rounded-circle img-fluid d-block  mb-3" height="100" width="100" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg"/></div>
+                        <?php }else{ ?> 
+                        <div class="d-flex justify-content-center">  <img class="rounded-circle img-fluid d-block  mb-3" height="100" width="100" src="<?= $user->provider_avatar; ?>"  alt="profile-bg"/></div>
+                           <?php } ?>
                     <h4 class="mb-3"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></h4>
                       <h4 class="mb-3"><?php if(!empty($user->role)): ?><?= $user->role ?><?php endif; ?> as on <?php if(!empty($user->created_at)): ?><?= $user->created_at ?><?php endif; ?></h4>
                       <h4 class="mb-3"></h4>
