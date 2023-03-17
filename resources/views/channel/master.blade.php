@@ -155,6 +155,7 @@ $channel = App\Channel::where('id',$channel->id)->first();
                      <li><a href="{{ URL::to('/channel/livestream') }}"><i class="las la-user-plus"></i>All Live Videos</a></li>
                      <li><a href="{{ URL::to('/channel/livestream/create') }}"><i class="las la-eye"></i>Add New Live Video</a></li>
                      <li><a href="{{ URL::to('/channel/livestream/categories') }}"><i class="las la-eye"></i>Manage Live Video Categories</a></li>
+                     <li><a href="{{ URL::to('/channel/live-event-artist') }}"><i class="las la-eye"></i>Manage Live Event Create</a></li>
                   </ul>
                   </li>
 

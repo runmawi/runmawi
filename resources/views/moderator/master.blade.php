@@ -209,6 +209,7 @@ for($i=0;$i<(count($userrolepermissiom));$i++){
        <?php if( in_array( "Manage Live Video Categories" ,$role)){ ?>   
                      <li><a href="{{ URL::to('/cpp/livestream/categories') }}"><i class="las la-eye"></i>Manage Live Video Categories</a></li>
                      <?php }else{ } ?>
+                     <li><a href="{{ URL::to('/cpp/live-event-artist') }}"><i class="las la-eye"></i>Manage Live Event Create</a></li>
                   </ul>
                   </li>
            <?php }else{ } ?>             
