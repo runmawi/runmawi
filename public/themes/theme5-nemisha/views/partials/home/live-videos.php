@@ -94,11 +94,13 @@
                                 <?php }elseif($video->ppv_price == null ){ ?>
                                 <p class="p-tag"><?php echo "Free"; ?></p>
                                 <?php } ?>
-                            </div>
+                        
                          <?php } ?>   
                          <?php if($ThumbnailSetting->published_on == 1) { ?>                                            
                           <p class="published_on1"><?php echo $publish_day; ?> <span><?php echo $publish_time; ?></span></p>
                         <?php  } ?>
+                            </div>
+                        
                 </div>
                 <div class="block-description"> </div>
                <!--<div class="hover-buttons">

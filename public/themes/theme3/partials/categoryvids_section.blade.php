@@ -124,7 +124,7 @@
             @foreach($categoryVideos['Episode_videos']  as $Episode) 
                 <li class="slide-item col-sm-2 col-md-2 col-xs-12 margin-bottom-30">
 
-                    <a href="<?php echo URL::to('episode') ?><?= '/'.$Episode->series_name .'/'. $Episode->slug ?>">
+                    <a href="<?php echo URL::to('episode') ?><?= '/'.$Episode->series_title->slug .'/'. $Episode->slug ?>">
                         <div class="block-images position-relative">
                             <div class="img-box">
                                 <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$Episode->image;  ?>" class="img-fluid" alt="" width="">
@@ -133,7 +133,7 @@
 
                         <div class="block-description" >
                             <div class="hover-buttons">
-                                <a  class="text-white btn-cl"  href="<?php echo URL::to('episode') ?><?= '/'.$Episode->series_name .'/'. $Episode->slug ?>">
+                                <a  class="text-white btn-cl"  href="<?php echo URL::to('episode') ?><?= '/'.$Episode->series_title->slug .'/'. $Episode->slug ?>">
                                     <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.png';  ?>">                                      
                                 </a>
                             </div>

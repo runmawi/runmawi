@@ -1175,7 +1175,7 @@ Route::post('cpp/Verify_Reset_Password',  'ModeratorsLoginController@VerifyReset
 
 
 /**       CPP Middlware       */
-Route::group(['prefix' => 'cpp','middleware' => ['cpp']], function() {
+Route::group(['prefix' => 'cpp','middleware' => ['cpp','auth']], function() {
 // Route::middleware(['prefix' => 'cpp' ,cpp::class])->group(function(){
 // Route::get('/Homeone',  'ModeratorsLoginController@Home');
 
@@ -1340,6 +1340,15 @@ Route::post('/audios/audioupdate', array('before' => 'demo', 'uses' => 'CPPAdmin
     Route::post('/livestream/categories/update','CPPAdminLiveCategoriesController@CPPupdate');
     Route::get('/livestream/categories/delete/{id}', array('before' => 'demo', 'uses' => 'CPPAdminLiveCategoriesController@CPPdestroy'));
 
+
+    // CPP Live Event for artist
+        Route::get('/live-event-artist', 'CPPLiveEventArtist@index')->name('cpp_live_event_artist');
+        Route::get('/live-event-create', 'CPPLiveEventArtist@create')->name('cpp_live_event_create');
+        Route::post('/live-event-store', 'CPPLiveEventArtist@store')->name('cpp_live_event_store');
+        Route::get('/live-event-edit/{id}', 'CPPLiveEventArtist@edit')->name('cpp_live_event_edit');
+        Route::post('/live-event-update/{id}', 'CPPLiveEventArtist@update')->name('cpp_live_event_update');
+        Route::get('/live-event-destroy/{id}', 'CPPLiveEventArtist@destroy')->name('cpp_live_event_destroy');
+    
 });
 
 
@@ -1365,6 +1374,15 @@ Route::post('/audios/audioupdate', array('before' => 'demo', 'uses' => 'CPPAdmin
     
     // Route::get('episode/{episode_name}', 'ChannelSeriesController@PlayEpisode');
     Route::get('/get_processed_percentage/{id}', 'AdminVideosController@get_processed_percentage');
+
+    // Channel Live Event for artist
+        Route::get('/live-event-artist', 'ChannelLiveEventArtist@index')->name('channel_live_event_artist');
+        Route::get('/live-event-create', 'ChannelLiveEventArtist@create')->name('channel_live_event_create');
+        Route::post('/live-event-store', 'ChannelLiveEventArtist@store')->name('channel_live_event_store');
+        Route::get('/live-event-edit/{id}', 'ChannelLiveEventArtist@edit')->name('channel_live_event_edit');
+        Route::post('/live-event-update/{id}', 'ChannelLiveEventArtist@update')->name('channel_live_event_update');
+        Route::get('/live-event-destroy/{id}', 'ChannelLiveEventArtist@destroy')->name('channel_live_event_destroy');
+
 
 
     Route::get('video-analytics', 'ChannelAnalyticsController@IndexVideoAnalytics');
