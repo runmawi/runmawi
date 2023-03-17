@@ -443,6 +443,10 @@
 
         color: #fff !important;
     }
+    body.light-theme .desc p {
+
+        color: #000 !important;
+    }
 
     body.light-theme .dropdown-item.cont-item {
         color: #fff !important;
