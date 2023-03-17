@@ -497,7 +497,7 @@
 
     
     body.light-theme h1 {
-        color: #000 !important;
+        color: #fff !important;
 
     }
 
