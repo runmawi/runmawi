@@ -544,7 +544,7 @@
     }
 
     body.light-theme #home-slider h1.slider-text {
-        color: #000 !important;
+        color: #fff !important;
 
     }
 
