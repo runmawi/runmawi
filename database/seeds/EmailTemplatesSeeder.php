@@ -190,19 +190,22 @@ class EmailTemplatesSeeder extends Seeder
                             'updated_at' => null,
                         ],
 
-                        [   'template_type' => "Welcome on Partner’s Registration", 
-                            'heading' => 'Welcome on Partner’s Registration',
-                            'description' => '<p>Dear {Name},&nbsp;</p>
+                        [   'template_type' => "Partner Content Video is Pending & waiting for Admin Approval !", 
+                            'heading' => 'Partner Content {ContentName} is Uploaded Successfully & Pending Admin Approval',
+                            'description' => '<p>Dear {Name},</p>
 
-                                                <p>Thank you for registering as a Partner at {Website Name}.&nbsp;</p>
-                                                
-                                                <p>If you have any questions, please reply to this email and one of our team members will reply to you ASAP.&nbsp;</p>
-                                                
-                                                <p>Sincerely,&nbsp;</p>
-                                                
-                                                <p>Team {Website Name}.</p>
-                                                
-                                                <p>&nbsp;</p>',
+                                            <p>Congratulations!&nbsp;</p>
+                                            
+                                            <p>Partner Content with the name {ContentName} has been submitted and is Pending Approval.&nbsp;</p>
+                                            
+                                            <p>{AdminApprovalLink}&nbsp;</p>
+
+                                            <p>Regards,&nbsp;</p>
+                                            
+                                            <p>Team {Website Name}.</p>
+                                            
+                                            <p>&nbsp;</p>',
+
                             'role_type' => 'GeneralEmailTriggers' ,
                             'created_at' => Carbon::now(),
                             'updated_at' => null,
@@ -769,90 +772,69 @@ class EmailTemplatesSeeder extends Seeder
                             'updated_at' => null,
                         ],
 
-                        [   'template_type' => 'Partner Content Video is Pending & waiting for Admin Approval !', 
-                            'heading' => 'Partner Content Video {video_title} is Uploaded Successfully & Pending Admin Approval.',
-                            'description' => '<p>Dear {Name},</p>
+                        // Note: While CPP Signup Email - Template for CPP registered user and Admin
 
-                                                <p>Partner Content {ContentName} has been uploaded "{video_title}" video and and is awaiting review .&nbsp;</p>
+                        [   
+                            'template_type' => "Welcome on Partner’s Registration", 
+                            'heading' => "Welcome on Partner’s Registration",
+                            'description' => "<p>Dear {Partner Name}, </p>
 
-                                                <p>Verify this video, then decide whether to accept it or not.&nbsp;</p>
+                                                <p>Thank you for registering as a Partner at {Website Name}.   &nbsp;</p>
 
-                                                <p>Please check your content by clicking on the following link.&nbsp;</p>
-                                                
-                                                <p>Link: {Admin video approval link}</p>
-                                                
-                                                <p>&nbsp;Regards,&nbsp;</p>
+                                                <p>If you have any questions, please reply to this email and one of our team members will reply to you ASAP.  &nbsp;</p>
+
+                                                <p>&nbsp;Sincerely,&nbsp;</p>
                                                 
                                                 <p>Team {Website Name}.</p>
                                                 
-                                                <p>&nbsp;</p>',
-                            'role_type' => 'GeneralEmailTriggers' ,
-                            'created_at' => Carbon::now(),
-                            'updated_at' => null,
-                        ],
+                                                <p>&nbsp;</p>",
 
-
-                        [   'template_type' => 'Partner Content Video Successfully Uploaded & Awaiting Approval !', 
-                            'heading' => 'Congratulations! Partner Content Video {video_title} is Uploaded Successfully & Awaiting Approval.',
-                            'description' => '<p>Dear {Name},</p>
-
-                                                <p>Congratulations!&nbsp;</p>
-                                                
-                                                <p> Your {video_title} video has been upload successfully .&nbsp;</p>
-                                                
-                                                <p>Once your video has been approved by admin, you will receive a confirmation email.&nbsp;</p>
-                                                
-                                                <p>&nbsp;Regards,&nbsp;</p>
-                                                
-                                                <p>Team {Website Name}.</p>
-                                                
-                                                <p>&nbsp;</p>',
-                            'role_type' => 'GeneralEmailTriggers' ,
-                            'created_at' => Carbon::now(),
-                            'updated_at' => null,
-                        ],
-
-
-                        [   'template_type' => 'Partner Content Video Approval Congratulations! {video_title} is published Successfully.', 
-                            'heading' => 'Congratulations! {video_title} is published Successfully.',
-                            'description' => '<p>Dear {Name},</p>
-
-                                                <p>Congratulations!&nbsp;</p>
-                                                
-                                                <p>Your {video_title} video has been published successfully.&nbsp;</p>
-                                                
-                                                <p>Please check your video by clicking on the following link.&nbsp;</p>
-                                                
-                                                <p>Link: {video_link}</p>
-                                                
-                                                <p>&nbsp;Regards,&nbsp;</p>
-                                                
-                                                <p>Team {Website Name}.</p>
-                                                
-                                                <p>&nbsp;</p>',
                             'role_type' => 'GeneralEmailTriggers' ,
                             'created_at' => Carbon::now(),
                             'updated_at' => null,
                         ],
 
                         [   
-                        'template_type' => "Partner Content Video Rejected! {video_title} is couldn't be published.", 
-                        'heading' => "Sorry! {video_title} is couldn't be published.",
-                        'description' => "<p>Dear {Name},</p>
+                            'template_type' => "Partner's request has been Approved.", 
+                            'heading' => "Congratulations! Your Partner's request has been Approved.",
+                            'description' => "<p>Dear {Partner Name}, </p>
 
-                                            <p>Sorry, your {video_title} couldn't be published successfully&nbsp;</p>
-                                            
-                                            <p>For further information, kindly check with the admin.&nbsp;</p>
-                                            
-                                            <p>&nbsp;Regards,&nbsp;</p>
-                                            
-                                            <p>Team {Website Name}.</p>
-                                            
-                                            <p>&nbsp;</p>",
-                        'role_type' => 'GeneralEmailTriggers' ,
-                        'created_at' => Carbon::now(),
-                        'updated_at' => null,
-                    ],
+                                                <p>Congratulations!  &nbsp;</p>
+
+                                                <p>You Account - {Partner Account Name} have been approved successfully as a partner in {Website Name}. &nbsp;</p>
+
+                                                <p>Please login by clicking on the following link. &nbsp;</p>
+
+                                                <p>Link: {Login link}&nbsp;</p>
+
+                                                <p>&nbsp;Regards,&nbsp;</p>
+                                                
+                                                <p>Team {Website Name}.</p>
+                                                
+                                                <p>&nbsp;</p>",
+                            'role_type' => 'GeneralEmailTriggers' ,
+                            'created_at' => Carbon::now(),
+                            'updated_at' => null,
+                        ],
+
+
+                        [   'template_type' => "Partner's request has been Reject", 
+                            'heading' => "Sorry ! Your Partner's request has been denied.",
+                            'description' => "<p>Dear {Partner Name},</p>
+
+                                                <p>Sorry, your Partner request for {Partner Account Name} couldn't be approved.&nbsp;</p>
+
+                                                <p> Please, Inquire with the administration for further information. &nbsp; </p>
+
+                                                <p>&nbsp;Regards,&nbsp;</p>
+                                                
+                                                <p>Team {Website Name}.</p>
+                                                
+                                                <p>&nbsp;</p>",
+                            'role_type' => 'GeneralEmailTriggers' ,
+                            'created_at' => Carbon::now(),
+                            'updated_at' => null,
+                        ],
 
                     ];
 

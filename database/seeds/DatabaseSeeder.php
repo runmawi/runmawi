@@ -59,7 +59,7 @@ class DatabaseSeeder extends Seeder
             StorageSettingSeeder::class,
             TimeFormatSeeder::class,
             LifeTimeSubscriptionSeeder::class,
-            AdminAdsTimeSlotSeeding::class,
+            // AdminAdsTimeSlotSeeding::class,
         ]);
     
     }
