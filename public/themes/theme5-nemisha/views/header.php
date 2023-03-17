@@ -351,7 +351,7 @@
         body.light-theme span{
             color: <?php echo GetLightText(); ?>!important;
         }body.light-theme .slick-bg:before{
-            background-image: linear-gradient(to left, rgb(225 228 233 / 0%)0%, rgb(140 142 147)56%, rgb(205 206 209));
+            background-image: linear-gradient(to left, rgb(225 228 233 / 0%)50%, rgb(140 142 147)65%, rgb(205 206 209));
            
         }
         body.light-theme h1{
@@ -748,11 +748,7 @@ height: 100%;
         color: <?php echo GetLightText(); ?> !important;
     }
 
-    body.light-theme .slick-bg:before {
-        background-image: linear-gradient(to left, rgb(225 228 233 / 0%)0%, rgb(140 142 147)56%, rgb(205 206 209));
-
-    }
-
+    
     body.light-theme h1 {
         color: #000 !important;
 
@@ -1139,7 +1135,7 @@ height: 100%;
                 <ul class="dropdown-menu categ-head">
                     <?php foreach ( $LiveCategory as $category){ ?>
                     <li>
-                        <a class="dropdown-item cont-item" href="<?php echo URL::to('/live/category') . '/' . $category->name; ?>">
+                        <a class="dropdown-item cont-item" href="<?php echo URL::to('/live/category') . '/' . $category->slug; ?>">
                             <?php echo $category->name; ?>
                         </a>
                     </li>
