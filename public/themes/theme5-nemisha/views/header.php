@@ -441,7 +441,7 @@
 
     body.light-theme span i {
 
-        color: #ed553b !important;
+        color: #fff !important;
     }
 
     body.light-theme .dropdown-item.cont-item {
