@@ -1821,9 +1821,31 @@ location.reload();
     }else{
       $video_type_id = "video";
     }
+
+    $ContinueWatching = App\ContinueWatching::where('user_id', '=', Auth::User()->id)->where('videoid', '=', $video->id)->orderby('created_at', 'desc')->first();
+      if(!empty($ContinueWatching)){
+        $Currenttime = ($ContinueWatching['currentTime']);
+      }else{
+        $Currenttime =  0 ;
+      }
+
 ?>
 
 <script>
+
+
+  // Continue Watching Video start's at watched time
+
+  var video_type_Ids = <?php echo json_encode($video_type_id); ?>;
+  var Currenttime = <?php echo json_encode($Currenttime); ?>;
+  var video = document.getElementById(video_type_Ids);
+  if(Currenttime > 0){
+    var watch_percentage = Currenttime ;
+    this.video.currentTime = Currenttime;
+    this.video.play();
+  }
+// Continue Watching End
+
 
           // Strat video end card
 var videotype_Ids = <?php echo json_encode($video_type_id); ?>;
