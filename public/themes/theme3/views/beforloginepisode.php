@@ -354,7 +354,7 @@ foreach ($season as $key => $seasons):
         if ($episodes->id != $episode->id): ?>
         <li class="slide-item p-2">
 		<a class="block-thumbnail" href="<?=($settings->enable_https) ? secure_url('episodes') : URL::to('episode') . '/' . @$episodes
-                ->series_title->title . '/' . $episodes->slug; ?>">
+                ->series_title->slug . '/' . $episodes->slug; ?>">
 				<div class="thumbnail-overlay"></div>
 <!--				<img src="<= ImageHandler::getImage($episodes->image, 'medium')  ?>">-->
 				<img src="<?php echo URL::to('/') . '/public/uploads/images/' . $episodes->image; ?>" width="200">

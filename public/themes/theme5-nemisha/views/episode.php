@@ -366,7 +366,7 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
       foreach($seasons->episodes as $key => $episodes):
 		if($episodes->id != $episode->id): ?>
         <li class="slide-item p-2">
-		<a class="block-thumbnail" href="<?= ($settings->enable_https) ? secure_url('episodes') : URL::to('episode').'/'.@$episodes->series_title->title.'/'.$episodes->slug; ?>">
+		<a class="block-thumbnail" href="<?= ($settings->enable_https) ? secure_url('episodes') : URL::to('episode').'/'.@$episodes->series_title->slug.'/'.$episodes->slug; ?>">
             <div class="block-images position-relative">
                                     <div class="img-box">
                                       <img class="w-100" src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" width="">

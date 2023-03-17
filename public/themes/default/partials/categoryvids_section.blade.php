@@ -114,7 +114,7 @@
             @foreach($categoryVideos['Episode_videos'] as $key => $Episode) 
 
             <li class="slide-item col-sm-2 col-md-2 col-xs-12 margin-bottom-30">
-                <a href="<?php echo URL::to('episode') ?><?= '/'.$Episode->series_name .'/'. $Episode->slug ?>">
+                <a href="<?php echo URL::to('episode') ?><?= '/'.$Episode->series_title->series_name .'/'. $Episode->slug ?>">
 
                     <div class="block-images position-relative">
                     <div class="img-box">
@@ -123,7 +123,7 @@
 
                     <div class="block-description">
                         <?php if($categoryVideos['ThumbnailSetting']->title == 1) { ?>            <!-- Title -->
-                            <a  href="<?php echo URL::to('episode') ?><?= '/'.$Episode->series_name .'/'. $Episode->slug ?>">
+                            <a  href="<?php echo URL::to('episode') ?><?= '/'.$Episode->series_title->series_name .'/'. $Episode->slug ?>">
                                      <h6><?php  echo (strlen($Episode->title) > 17) ? substr($Episode->title,0,18).'...' : $Episode->title; ?></h6>
                             </a>
                         <?php } ?>  

@@ -193,7 +193,7 @@ $series = $series_data ;
 							 ?>
                            
                   <li class="slide-item col-sm-2 col-md-2 col-xs-12 episodes_div season_<?= $seasons->id;?>">
-                      <a href="<?php echo URL::to('episode').'/'.$series->title.'/'.$episodes->slug;?>">
+                      <a href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?>">
                            <div class="block-images position-relative episodes_div season_<?= $seasons->id;?>">
                                     <div class="img-box">
                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class="img-fluid w-100" >
@@ -220,7 +220,7 @@ $series = $series_data ;
                                
                                    
                                        <div class="hover-buttons">
-                                            <a href="<?php echo URL::to('episode').'/'.$series->title.'/'.$episodes->slug;?>">
+                                            <a href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?>">
                                           <span class="text-white">
                                           <i class="fa fa-play mr-1" aria-hidden="true"></i>
                                           Watch Now
@@ -238,7 +238,7 @@ $series = $series_data ;
                            
                            	<?php else : ?>
                              <li class="slide-item col-sm-2 col-md-2 col-xs-12 episodes_div season_<?= $seasons->id;?>">
-                              <a href="<?php echo URL::to('episode').'/'.$series->title.'/'.$episodes->slug;?>">
+                              <a href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?>">
                                  <div class="block-images position-relative" >
                                     <div class="img-box">
                                       <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class=" img-fluid w-100" >
@@ -263,7 +263,7 @@ $series = $series_data ;
 
                                    
                                        <div class="hover-buttons">
-                                                                        <a href="<?php echo URL::to('episode').'/'.$series->title.'/'.$episodes->slug;?>">
+                                                                        <a href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?>">
 
                                           <span class="text-white">
                                           <i class="fa fa-play mr-1" aria-hidden="true"></i>

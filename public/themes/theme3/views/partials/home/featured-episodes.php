@@ -12,7 +12,7 @@
         // foreach($latest_series as $latest_serie) { 
 ?>
         <li class="slide-item">
-          <a href="<?php if($latest_episode->series_id == @$latest_episode->series_title->id){ echo URL::to('/episode'.'/'.@$latest_episode->series_title->title.'/'.$latest_episode->slug) ; }?> ">
+          <a href="<?php if($latest_episode->series_id == @$latest_episode->series_title->id){ echo URL::to('/episode'.'/'.@$latest_episode->series_title->slug.'/'.$latest_episode->slug) ; }?> ">
                              <!-- block-images -->
             <div class="block-images position-relative">
               <div class="img-box">
@@ -22,14 +22,14 @@
               <div class="block-description">
             
                 <div class="hover-buttons d-flex">
-                <a class="text-white" href="<?php if($latest_episode->series_id == @$latest_episode->series_title->id){ echo URL::to('/episode'.'/'.@$latest_episode->series_title->title.'/'.$latest_episode->slug) ; }?> ">
+                <a class="text-white" href="<?php if($latest_episode->series_id == @$latest_episode->series_title->id){ echo URL::to('/episode'.'/'.@$latest_episode->series_title->slug.'/'.$latest_episode->slug) ; }?> ">
                     <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.svg';  ?>"> 
                    
                   </a>
                 </div>
               </div>
               <div class="mt-2">
-                    <a href="<?php if($latest_episode->series_id == @$latest_episode->series_title->id){ echo URL::to('/episode'.'/'.@$latest_episode->series_title->title.'/'.$latest_episode->slug) ; }?> ">
+                    <a href="<?php if($latest_episode->series_id == @$latest_episode->series_title->id){ echo URL::to('/episode'.'/'.@$latest_episode->series_title->slug.'/'.$latest_episode->slug) ; }?> ">
                   <h6><?php echo __($latest_episode->title); ?></h6>
                 </a>
                 <div class="movie-time d-flex align-items-center my-2">
