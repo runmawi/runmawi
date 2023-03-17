@@ -337,7 +337,7 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 
 		
 		<div class="series-details-container"><?= $episode->details ?></div>
-        <p class="desc"><?php if(strlen($episodes->description) > 90){ echo substr($episodes->description, 0, 90) . '...'; } else { echo $episodes->description; } ?></p>
+        <p class="desc"><?php if(strlen($episode->description) > 90){ echo substr($episode->description, 0, 90) . '...'; } else { echo $episode->description; } ?></p>
 
 		<?php if(isset($episodenext)){ ?>
 		<div class="next_episode" style="display: none;"><?= $episodenext->id ?></div>
