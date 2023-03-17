@@ -2146,3 +2146,10 @@ Route::get('/comment_update/{id}', 'WebCommentController@comment_update')->name(
 Route::get('/comment_destroy/{id}', 'WebCommentController@comment_destroy')->name('comments.destroy');
 
 Route::get('/comment_reply/{id}', 'WebCommentController@comment_reply')->name('comments.reply');
+
+// Reset Password 
+
+Route::get('/Reset-Password', 'PasswordForgetController@Reset_Password')->name('Reset_Password');
+Route::post('/Send-Reset-Password-link', 'PasswordForgetController@Send_Reset_Password_link')->name('Send_Reset_Password_link');
+Route::get('/confirm-Reset-password/{crypt_email}/{reset_token}', 'PasswordForgetController@confirm_reset_password')->name('confirm_reset_password');
+Route::post('/forget-password-update', 'PasswordForgetController@forget_password_update')->name('forget_password_update');

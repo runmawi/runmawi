@@ -100,8 +100,10 @@ i.fa.fa-google-plus {
                       <?php } else  { ?>
                       <?php } ?>
                        @if (Session::has('message'))
-                       <div id="successMessage" class="alert alert-danger">{{ Session::get('message') }}</div>
+                            <div id="successMessage" class="alert alert-success">{{ Session::get('message') }}</div>
                         @endif
+                        
+
                         @if(count($errors) > 0)
                         @foreach( $errors->all() as $message )
                         <div class="alert alert-danger display-hide" id="successMessage" >
@@ -135,9 +137,7 @@ i.fa.fa-google-plus {
 
                         
                          <div class="d-flex justify-content-end links">
-                            @if (Route::has('password.request'))
-                                    <a href="{{ route('password.request') }}" class="f-link">Forgot your password?</a>
-                            @endif
+                                    <a href="{{ route('Reset_Password') }}" class="f-link">Forgot your password?</a>
                         </div>
                         
                                          {{-- reCAPTCHA  --}}
@@ -226,7 +226,7 @@ i.fa.fa-google-plus {
         // $('#message').fadeOut(120);
         setTimeout(function() {
             $('#successMessage').fadeOut('fast');
-        }, 3000);
+        }, 5000);
     })
 
     var onloadCallback = function(){
