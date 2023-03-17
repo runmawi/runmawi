@@ -348,7 +348,7 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 
 		<?php if( App\CommentSection::first() != null && App\CommentSection::pluck('livestream')->first() == 1 ): ?>
             <div class="row">
-            	<div class=" container video-list you-may-like overflow-hidden">
+            	<div class=" container-fluid video-list you-may-like overflow-hidden">
                     <h4 class="" style="color:#fffff;"><?php echo __('Comments');?></h4>
                     <?php include('comments/index.blade.php');?>
                 </div>
