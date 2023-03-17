@@ -211,7 +211,7 @@
                        foreach($Episode_videos as $Episode): ?>
                         <li class="slide-item">
                             <div class="block-images position-relative">  <!-- block-images -->
-                                <a href="<?php echo URL::to('episode') ?><?= '/'.$Episode->series_name .'/'. $Episode->slug ?>">
+                                <a href="<?php echo URL::to('episode') ?><?= '/'.$Episode->series_title->slug .'/'. $Episode->slug ?>">
                                     <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$Episode->image;  ?>"
                                             class="img-fluid" alt=""> 
                                 </a>
@@ -219,7 +219,7 @@
 
                             <div class="block-description">
                                 <div class="hover-buttons">
-                                    <a type="button" class="text-white btn-cl" href="<?php echo URL::to('episode') ?><?= '/'.$Episode->series_name .'/'. $Episode->slug ?>">
+                                    <a type="button" class="text-white btn-cl" href="<?php echo URL::to('episode') ?><?= '/'.$Episode->series_title->slug .'/'. $Episode->slug ?>">
                                         <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" />
                                     </a>
                                 </div>

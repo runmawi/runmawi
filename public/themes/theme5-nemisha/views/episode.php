@@ -348,14 +348,14 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 
 		<?php if( App\CommentSection::first() != null && App\CommentSection::pluck('livestream')->first() == 1 ): ?>
             <div class="row">
-            	<div class=" container video-list you-may-like overflow-hidden">
+            	<div class=" container-fluid video-list you-may-like overflow-hidden">
                     <h4 class="" style="color:#fffff;"><?php echo __('Comments');?></h4>
                     <?php include('comments/index.blade.php');?>
                 </div>
             </div>
         <?php endif; ?>
 
-		<div class="iq-main-header container d-flex align-items-center justify-content-between">
+		<div class="iq-main-header container-fluid d-flex align-items-center justify-content-between">
   			<h4 class="mb-3">Episode</h4>                      
 		</div>
         
@@ -366,7 +366,7 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
       foreach($seasons->episodes as $key => $episodes):
 		if($episodes->id != $episode->id): ?>
         <li class="slide-item p-2">
-		<a class="block-thumbnail" href="<?= ($settings->enable_https) ? secure_url('episodes') : URL::to('episode').'/'.@$episodes->series_title->title.'/'.$episodes->slug; ?>">
+		<a class="block-thumbnail" href="<?= ($settings->enable_https) ? secure_url('episodes') : URL::to('episode').'/'.@$episodes->series_title->slug.'/'.$episodes->slug; ?>">
             <div class="block-images position-relative">
                                     <div class="img-box">
                                       <img class="w-100" src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" width="">

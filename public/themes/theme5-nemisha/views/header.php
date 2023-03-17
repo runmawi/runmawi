@@ -433,6 +433,10 @@
     body.light-theme .copyright {
         background-color: <?php echo GetLightBg(); ?>;
         color: <?php echo GetLightText(); ?>;
+    } 
+    body.light-theme .music-play-lists li {
+        background-color: #ED563C!important;
+        color: #fff!important;
     }
 
     body.light-theme span i {

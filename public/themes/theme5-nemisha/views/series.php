@@ -227,7 +227,7 @@ $series = $series_data ;
                                
                                    
                                        <!-- <div class="hover-buttons">
-                                            <a href="<?php echo URL::to('episode').'/'.$series->title.'/'.$episodes->slug;?>">
+                                            <a href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?>">
                                           <span class="text-white">
                                           <i class="fa fa-play mr-1" aria-hidden="true"></i>
                                           Watch Now
@@ -270,7 +270,7 @@ $series = $series_data ;
 
                                    
                                        <div class="hover-buttons">
-                                                                       <!-- <a href="<?php echo URL::to('episode').'/'.$series->title.'/'.$episodes->slug;?>">
+                                                                       <!-- <a href="<?php echo URL::to('episode').'/'.$series->slug.'/'.$episodes->slug;?>">
 
                                           <span class="text-white">
                                           <i class="fa fa-play mr-1" aria-hidden="true"></i>

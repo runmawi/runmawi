@@ -398,7 +398,7 @@
                      foreach($seasons->episodes as $key => $episodes):
                   	   if($episodes->id != $episode->id): ?>
                            <li class="slide-item">
-                              <a href="<?= ($settings->enable_https) ? secure_url('episodes') : URL::to('episode').'/'.@$episodes->series_title->title.'/'.$episodes->slug; ?>">
+                              <a href="<?= ($settings->enable_https) ? secure_url('episodes') : URL::to('episode').'/'.@$episodes->series_title->slug.'/'.$episodes->slug; ?>">
                                  <div class="block-images position-relative">
                                     <div class="img-box">
                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class="w-100">
@@ -416,7 +416,7 @@
                                        </p>
 
                                        <div class="hover-buttons">
-                                          <a  href="<?= ($settings->enable_https) ? secure_url('episodes') : URL::to('episode').'/'.@$episodes->series_title->title.'/'.$episodes->slug; ?>">	
+                                          <a  href="<?= ($settings->enable_https) ? secure_url('episodes') : URL::to('episode').'/'.@$episodes->series_title->slug.'/'.$episodes->slug; ?>">	
                                                 <span class="text-white"> <i class="fa fa-play mr-1" aria-hidden="true"></i> Play Now </span>
                                           </a>
                                        </div>
