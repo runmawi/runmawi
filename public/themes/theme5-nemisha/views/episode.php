@@ -337,6 +337,7 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 
 		
 		<div class="series-details-container"><?= $episode->details ?></div>
+        <p class="desc"><?php if(strlen($episodes->description) > 90){ echo substr($episodes->description, 0, 90) . '...'; } else { echo $episodes->description; } ?></p>
 
 		<?php if(isset($episodenext)){ ?>
 		<div class="next_episode" style="display: none;"><?= $episodenext->id ?></div>
@@ -348,15 +349,15 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 
 		<?php if( App\CommentSection::first() != null && App\CommentSection::pluck('livestream')->first() == 1 ): ?>
             <div class="row">
-            	<div class=" container-fluid video-list you-may-like overflow-hidden">
+            	<div class=" container-fluid video-list you-may-like overflow-hidden" style="padding:0px 15px;">
                     <h4 class="" style="color:#fffff;"><?php echo __('Comments');?></h4>
                     <?php include('comments/index.blade.php');?>
                 </div>
             </div>
         <?php endif; ?>
 
-		<div class="iq-main-header container-fluid d-flex align-items-center justify-content-between">
-  			<h4 class="mb-3">Episode</h4>                      
+		<div class="iq-main-header  d-flex align-items-center justify-content-between">
+  			<h4 class="mb-3">Episodes</h4>                      
 		</div>
         
 <div class="favorites-contens">
