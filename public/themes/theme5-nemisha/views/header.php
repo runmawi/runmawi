@@ -437,7 +437,7 @@
 
     body.light-theme span i {
 
-        color: #fff !important;
+        color: #ed553b !important;
     }
 
     body.light-theme .dropdown-item.cont-item {
@@ -497,7 +497,7 @@
 
     
     body.light-theme h1 {
-        color: #000 !important;
+        color: #fff !important;
 
     }
 
@@ -544,7 +544,7 @@
     }
 
     body.light-theme #home-slider h1.slider-text {
-        color: #000 !important;
+        color: #fff !important;
 
     }
 
