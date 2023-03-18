@@ -528,15 +528,15 @@ if(Route::current()->getName() == "home" || Route::current()->getName() == null 
                     </div>
                     <div class="d-flex justify-content-evenly align-items-center r-mb-23" data-animation-in="fadeInUp"
                     data-delay-in="1.2">
-                    <a href="<?php echo URL::to('episode') ?><?= '/'.@$slider_video->series_title->title.'/' . $slider_video->title ?>"
+                    <a href="<?php echo URL::to('episode') ?><?= '/'.@$slider_video->series_title->slug.'/' . $slider_video->title ?>"
                         class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play</a>
                         <!-- <a class=" btn black" href="https://flicknexui.webnexs.org/" ><i class="fa fa-plus" aria-hidden="true"></i> Watchlater</a>-->
-                        <a class="btn bd ml-2" href="<?php echo URL::to('episode') ?><?= '/'.@$slider_video->series_title->title.'/' . $slider_video->title ?>"><i class="fa fa-info" aria-hidden="true"></i> More details</a>
+                        <a class="btn bd ml-2" href="<?php echo URL::to('episode') ?><?= '/'.@$slider_video->series_title->slug.'/' . $slider_video->title ?>"><i class="fa fa-info" aria-hidden="true"></i> More details</a>
                     </div>
                     </div>
                     </div>
                     <div class="trailor-video">
-                        <a href="<?php echo URL::to('episode') ?><?= '/'.@$slider_video->series_title->title.'/' . $slider_video->title ?>"
+                        <a href="<?php echo URL::to('episode') ?><?= '/'.@$slider_video->series_title->slug.'/' . $slider_video->title ?>"
                             class="video-open playbtn">
                             <svg class="gt" version="1.1" xmlns="http://www.w3.org/2000/svg"
                             xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px"
