@@ -442,8 +442,16 @@
     body.light-theme span i {
 
         color: #fff !important;
+    } 
+    body.light-theme .movie-time i {
+
+        color: #000 !important;
     }
     body.light-theme .desc p {
+
+        color: #000 !important;
+    }
+    body.light-theme .fa-star {
 
         color: #000 !important;
     }

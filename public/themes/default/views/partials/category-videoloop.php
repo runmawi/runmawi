@@ -203,7 +203,7 @@
                   foreach($Episode_videos as $key => $Episode_video): ?>
                     <li class="slide-item">
                         <a
-                            href="<?php echo URL::to('episode'); ?><?= '/' . $Episode_video->series_slug . '/' . $Episode_video->slug ?>">
+                            href="<?php echo URL::to('episode/play_series'); ?><?=  $Episode_video->series_slug . '/' . $Episode_video->slug ?>">
                             <div class="block-images position-relative">
                                 <div class="img-box">
                                     <!-- block-images -->
@@ -224,7 +224,7 @@
                                 </div>
                                 <div class="block-description">
                                     <a
-                                        href="<?php echo URL::to('episode'); ?><?= '/' . $Episode_video->series_slug . '/' . $Episode_video->slug ?>">
+                                        href="<?php echo URL::to('episode/play_series'); ?><?=  $Episode_video->series_slug . '/' . $Episode_video->slug ?>">
                                         <?php if($ThumbnailSetting->title == 1) { ?>
                                         <!-- Title -->
                                         <h6>
@@ -267,7 +267,7 @@
                                         <?php } ?>
                                         <div class="hover-buttons">
                                             <a type="button" class="text-white d-flex align-items-center"
-                                                href="<?php echo URL::to('episode'); ?><?= '/' . $Episode_video->series_slug . '/' . $Episode_video->slug ?>">
+                                                href="<?php echo URL::to('episode/play_series'); ?><?= $Episode_video->series_slug . '/' . $Episode_video->slug ?>">
                                                 <img class="ply mr-1" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>" width="10%"
                                                     height="10%" /> Watch Now
                                             </a>
