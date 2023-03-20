@@ -30,6 +30,8 @@ use GuzzleHttp\Message\Response;
 use App\InappPurchase;
 use Intervention\Image\Facades\Image;
 use Intervention\Image\Filters\DemoFilter;
+use App\Channel;
+use App\ModeratorsUser;
 
 
 class AdminLiveEventArtist extends Controller
@@ -831,4 +833,252 @@ class AdminLiveEventArtist extends Controller
         return Redirect::back()->with(array('message' => 'Live Event Artist Deleted Sucessfully!', 'note_type' => 'success') );; 
     }
     
+    public function CPPLiveEventIndex()
+    {
+       
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [
+                'userid' => 0,
+            ];
+    
+            $headers = [
+                'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+            ];
+            $response = $client->request('post', $url, [
+                'json' => $params,
+                'headers' => $headers,
+                'verify'  => false,
+            ]);
+    
+            $responseBody = json_decode($response->getBody());
+           $settings = Setting::first();
+           $data = array(
+            'settings' => $settings,
+            'responseBody' => $responseBody,
+        );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
+
+            $videos =    LiveEventArtist::where('live_event_artists.status', '=',0)
+            ->join('moderators_users', 'moderators_users.id','=','live_event_artists.user_id')
+            ->select('moderators_users.username', 'live_event_artists.*')
+            ->where("live_event_artists.uploaded_by", "CPP")
+            ->orderBy('live_event_artists.created_at', 'DESC')->paginate(9);
+
+            $data = array(
+                'videos' => $videos,
+                );
+
+            return View('admin.live_event_artist.Approval.CPPLiveEventApproval', $data);
+        }
+    }
+
+    public function CPPLiveEventApproval($id)
+    {
+        $video = LiveEventArtist::findOrFail($id);
+        $video->active = 1;
+        $video->status = 1;
+        $video->save();
+        $settings = Setting::first();
+        $user_id = $video->user_id;
+        $ModeratorsUser = ModeratorsUser::findOrFail($video->user_id);
+        try {
+            \Mail::send('emails.admin_cpp_approved', array(
+                'website_name' => $settings->website_name,
+                'ModeratorsUser' => $ModeratorsUser
+            ) , function ($message) use ($ModeratorsUser)
+            {
+                $message->from(AdminMail() , GetWebsiteName());
+                $message->to($ModeratorsUser->email, $ModeratorsUser->username)
+                    ->subject('Content has been Submitted for Approved By Admin');
+            });
+            
+            $email_log      = 'Mail Sent Successfully Approved Content';
+            $email_template = "Approved";
+            $user_id = $user_id;
+
+            Email_sent_log($user_id,$email_log,$email_template);
+
+        } catch (\Throwable $th) {
+
+            $email_log      = $th->getMessage();
+            $email_template = "Approved";
+            $user_id = $user_id;
+
+            Email_notsent_log($user_id,$email_log,$email_template);
+        }
+        return Redirect::back()->with('message','Your video will be available shortly after we process it');
+
+       }
+
+       public function CPPLiveEventReject($id)
+       {
+         $video = LiveEventArtist::findOrFail($id);
+         $video->active = 2;
+         $video->status = 2;
+         $video->save();           
+         
+         
+        $settings = Setting::first();
+        $user_id = $video->user_id;
+        $ModeratorsUser = ModeratorsUser::findOrFail($video->user_id);
+        try {
+            \Mail::send('emails.admin_cpp_rejected', array(
+                'website_name' => $settings->website_name,
+                'ModeratorsUser' => $ModeratorsUser
+            ) , function ($message) use ($ModeratorsUser)
+            {
+                $message->from(AdminMail() , GetWebsiteName());
+                $message->to($ModeratorsUser->email, $ModeratorsUser->username)
+                    ->subject('Content has been Submitted for Rejected By Admin');
+            });
+            
+            $email_log      = 'Mail Sent Successfully Rejected Content';
+            $email_template = "Rejected";
+            $user_id = $user_id;
+
+            Email_sent_log($user_id,$email_log,$email_template);
+
+        } catch (\Throwable $th) {
+
+            $email_log      = $th->getMessage();
+            $email_template = "Rejected";
+            $user_id = $user_id;
+
+            Email_notsent_log($user_id,$email_log,$email_template);
+        }
+
+         return Redirect::back()->with('message','Your video will be available shortly after we process it');
+
+          }
+
+    public function ChannelLiveEventIndex()
+    {
+
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [
+                'userid' => 0,
+            ];
+    
+            $headers = [
+                'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+            ];
+            $response = $client->request('post', $url, [
+                'json' => $params,
+                'headers' => $headers,
+                'verify'  => false,
+            ]);
+    
+            $responseBody = json_decode($response->getBody());
+            $settings = Setting::first();
+            $data = array(
+            'settings' => $settings,
+            'responseBody' => $responseBody,
+    );
+            return View::make('admin.expired_dashboard', $data);
+        }else{
+
+            $videos =    LiveEventArtist::where('live_event_artists.status', '=',0)
+            ->join('channels', 'channels.id','=','live_event_artists.user_id')
+            ->select( 'live_event_artists.*','channels.channel_name as username')
+            ->where("live_event_artists.uploaded_by", "Channel")
+            ->orderBy('live_event_artists.created_at', 'DESC')->paginate(9);
+
+            // dd($videos);
+            $data = array(
+                'videos' => $videos,
+                );
+
+                return View('admin.live_event_artist.Approval.ChannelLiveEventApproval', $data);
+            }
+        }
+    public function ChannelLiveEventtApproval($id)
+    {
+        $video = LiveEventArtist::findOrFail($id);
+        $video->active = 1;
+        $video->status = 1;
+        $video->save();
+        $settings = Setting::first();
+        $user_id = $video->user_id;
+        $Channel = Channel::findOrFail($video->user_id);
+        try {
+            \Mail::send('emails.admin_channel_approved', array(
+                'website_name' => $settings->website_name,
+                'Channel' => $Channel
+            ) , function ($message) use ($Channel)
+            {
+                $message->from(AdminMail() , GetWebsiteName());
+                $message->to($Channel->email, $Channel->channel_name)
+                    ->subject('Content has been Submitted for Approved By Admin');
+            });
+            
+            $email_log      = 'Mail Sent Successfully Approved Content';
+            $email_template = "Approved";
+            $user_id = $user_id;
+
+            Email_sent_log($user_id,$email_log,$email_template);
+
+    } catch (\Throwable $th) {
+
+            $email_log      = $th->getMessage();
+            $email_template = "Approved";
+            $user_id = $user_id;
+
+            Email_notsent_log($user_id,$email_log,$email_template);
+    }
+
+        return Redirect::back()->with('message','Your video will be available shortly after we process it');
+
+    }
+      
+    public function ChannelLiveEventReject($id)
+    {
+        $video = LiveEventArtist::findOrFail($id);
+        $video->active = 2;
+        $video->status = 2;
+        $video->save();      
+        
+        $settings = Setting::first();
+        $user_id = $video->user_id;
+        $Channel = Channel::findOrFail($video->user_id);
+        try {
+            \Mail::send('emails.admin_channel_approved', array(
+                'website_name' => $settings->website_name,
+                'Channel' => $Channel
+            ) , function ($message) use ($Channel)
+            {
+                $message->from(AdminMail() , GetWebsiteName());
+                $message->to($Channel->email, $Channel->channel_name)
+                    ->subject('Content has been Submitted for Approved By Admin');
+            });
+            
+            $email_log      = 'Mail Sent Successfully Approved Content';
+            $email_template = "Approved";
+            $user_id = $user_id;
+
+            Email_sent_log($user_id,$email_log,$email_template);
+
+        } catch (\Throwable $th) {
+
+            $email_log      = $th->getMessage();
+            $email_template = "Approved";
+            $user_id = $user_id;
+
+            Email_notsent_log($user_id,$email_log,$email_template);
+        }
+        return Redirect::back()->with('message','Your video will be available shortly after we process it');
+
+        }
 }
