@@ -1039,16 +1039,61 @@ class AdminVideosController extends Controller
 
     public function destroy($id)
     {
+
         $video = Video::find($id);
 
+        try {
+            if($video->uploaded_by != null && $video->uploaded_by == "CPP"){
+
+                $Moderators_user_email = ModeratorsUser::where('id',$video->user_id)->pluck('email')->first();
+    
+                try {
+    
+                    $email_template_subject =  EmailTemplate::where('id',15)->pluck('heading')->first() ;
+                    $email_subject  = str_replace("{ContentName}", "$video->title", $email_template_subject);
+        
+                    $data = array(
+                        'email_subject' => $email_subject,
+                    );
+        
+                    Mail::send('emails.CPP_Partner_Content_delete', array(
+                        'Name'         => Auth::user() != null && Auth::user()->name ? Auth::user()->name : Auth::user()->username ,
+                        'ContentName'  =>  $video->title,
+                        'website_name' =>  GetWebsiteName(),
+                    ), 
+                    function($message) use ($data,$Moderators_user_email) {
+                        $message->from(AdminMail(),GetWebsiteName());
+                        $message->to($Moderators_user_email)->subject($data['email_subject']);
+                    });
+        
+                    $email_log      = 'Mail Sent Successfully from Partner Content Delete';
+                    $email_template = "15";
+                    $user_id = $id;
+        
+                    Email_sent_log($user_id,$email_log,$email_template);
+        
+                } catch (\Throwable $th) {
+        
+                    $email_log = $th->getMessage();
+                    $email_template = "15";
+                    $user_id = $user_id;
+        
+                    Email_notsent_log($user_id, $email_log, $email_template);
+                }
+            }
+        } catch (\Throwable $th) {
+            
+        }
+
         \LogActivity::addVideodeleteLog("Deleted Video.", $id);
-        // dd('log insert successfully.');
 
         Video::destroy($id);
+      
         PlayerAnalytic::where("videoid", $id)->delete();
         //        VideoResolution::where('video_id', '=', $id)->delete();
         //        VideoSubtitle::where('video_id', '=', $id)->delete();
         Videoartist::where("video_id", $id)->delete();
+
         return Redirect::to("admin/videos")->with([
             "message" => "Successfully Deleted Video",
             "note_type" => "success",
@@ -1058,7 +1103,6 @@ class AdminVideosController extends Controller
     public function edit($id)
     {
        
-
         if (!Auth::user()->role == "admin") {
             return redirect("/home");
         }
