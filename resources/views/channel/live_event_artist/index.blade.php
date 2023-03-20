@@ -94,9 +94,9 @@ border-radius: 0px 4px 4px 0px;
 						<?php }?>  
 						<td>{{ $video->access }}</td>
 
-						<?php if($video->active == 0){ ?>
+						<?php if($video->active == 0 || $video->active == 1 && $video->status == 0){ ?>
                         	<td> <p class = "bg-warning video_active"><?php echo "Pending"; ?></p></td>
-						<?php }elseif($video->active == 1){ ?>
+						<?php }elseif($video->active == 1 && $video->status == 1){ ?>
                         	<td> <p class = "bg-primary video_active"> <?php  echo "Approved"; ?></p></td>
 						<?php }elseif($video->active == 2){ ?>
                         	<td>  <p class = "bg-danger video_active"><?php  echo "Rejected"; ?></p></td>

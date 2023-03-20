@@ -442,9 +442,9 @@ class ChannelLiveEventArtist extends Controller
         $movie->publish_time =$data['publish_time'];
         $movie->image = $PC_image;
         $movie->mp4_url =$mp4_url;
-        $movie->status =$status;
+        $movie->status = 0;
         $movie->year =$data['year'];
-        $movie->active = $active ;
+        $movie->active = 0 ;
         $movie->search_tags = $searchtags;
         $movie->player_image = $player_PC_image;
         $movie->user_id = $user->id;

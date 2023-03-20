@@ -612,7 +612,7 @@ border-radius: 0px 4px 4px 0px;
 			<!-- row -->
 
 			@if(!isset($video->user_id))
-				<input type="hidden" name="user_id" id="user_id" value="{{ Auth::user()->id }}" />
+				<input type="hidden" name="user_id" id="user_id" value="{{ $admin_user->id }}" />
 			@endif
 
 			@if(isset($video->id))
