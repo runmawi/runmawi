@@ -268,10 +268,10 @@ border-radius: 10px;
 .bd:hover{
      
     font-weight: 700;
-    border:1px solid #fff;
+    border:1px solid #ed553b;
     color:#fff!important;
-    background: #2A2A2C;
-mix-blend-mode: overlay;
+    background: #ed553b;
+
 border-radius: 10px!important;
 }
 .slick-bg{
