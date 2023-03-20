@@ -74,6 +74,7 @@ use Aws\S3\S3Client;
 use Aws\S3\S3MultiRegionClient;
 use App\EmailTemplate;
 use Mail;
+use App\PlayerAnalytic;
 
 class AdminVideosController extends Controller
 {
@@ -1044,6 +1045,7 @@ class AdminVideosController extends Controller
         // dd('log insert successfully.');
 
         Video::destroy($id);
+        PlayerAnalytic::where("videoid", $id)->delete();
         //        VideoResolution::where('video_id', '=', $id)->delete();
         //        VideoSubtitle::where('video_id', '=', $id)->delete();
         Videoartist::where("video_id", $id)->delete();
@@ -3749,6 +3751,7 @@ class AdminVideosController extends Controller
         try {
             $video_id = $request->video_id;
             Video::whereIn("id", explode(",", $video_id))->delete();
+            PlayerAnalytic::whereIn("videoid", explode(",", $video_id))->delete();
 
             return response()->json(["message" => "true"]);
         } catch (\Throwable $th) {

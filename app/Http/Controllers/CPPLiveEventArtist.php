@@ -79,14 +79,23 @@ class CPPLiveEventArtist extends Controller
         $title = Session::get('title');
         $hls_url = Session::get('hls_url');
        
-        if(!empty($search_value)):
-            $videos = LiveEventArtist::where('title', 'LIKE', '%'.$search_value.'%')->orderBy('created_at', 'desc')->paginate(9);
-        else:
-            $videos = LiveEventArtist::orderBy('created_at', 'DESC')->paginate(9);
-        endif;
-    
         $user = Session::get('user'); 
         $id = $user->id;
+
+        if(!empty($search_value)):
+            $videos = LiveEventArtist::where('title', 'LIKE', '%' . $search_value . '%')
+            ->where('user_id', '=', $id)
+            ->where('uploaded_by', 'CPP')
+            ->orderBy('created_at', 'desc')
+            ->paginate(9);
+        else:
+            $videos = LiveEventArtist::where('user_id', '=', $id)
+            ->where('uploaded_by', 'CPP')
+            ->orderBy('created_at', 'desc')
+            ->paginate(9);
+        endif;
+    
+
         
         $data = array(
             'videos' => $videos,
@@ -441,9 +450,9 @@ class CPPLiveEventArtist extends Controller
         $movie->publish_time =$data['publish_time'];
         $movie->image = $PC_image;
         $movie->mp4_url =$mp4_url;
-        $movie->status =$status;
+        $movie->status =0;
         $movie->year =$data['year'];
-        $movie->active = $active ;
+        $movie->active = 0 ;
         $movie->search_tags = $searchtags;
         $movie->player_image = $player_PC_image;
         $movie->user_id = $user->id;
@@ -476,7 +485,32 @@ class CPPLiveEventArtist extends Controller
                     $serieslanguage->save();
                 }
             }
+            $user = Session::get('user'); 
+            $id = $user->id;
+            try {
+                \Mail::send('emails.cpp_approval', array(
+                    'website_name' => $settings->website_name
+                ) , function ($message) use ($request,$user)
+                {
+                    $message->to(AdminMail() , GetWebsiteName())
+                        ->subject('Content has been Submitted for Approval');
+                });
+                
+                $email_log      = 'Mail Sent Successfully from Approval';
+                $email_template = "Approval";
+                $user_id = $user_id;
+    
+                Email_sent_log($user_id,$email_log,$email_template);
 
+           } catch (\Throwable $th) {
+    
+                $email_log      = $th->getMessage();
+                $email_template = "Approval";
+                $user_id = $user_id;
+    
+                Email_notsent_log($user_id,$email_log,$email_template);
+
+           }    
             if( $data['url_type'] == "Encode_video" ){
                 return Redirect::to('cpp/live-event-artist')->with([
                                                             'Stream_key' => $Stream_key,
