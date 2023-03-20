@@ -128,11 +128,12 @@
 			   <?php else: ?>
 
                <div id="subscribers_only"style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 1.3)) , url(<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 450px; padding-top: 150px;">
+                   <div class="container-fluid">
                   <h4 class=""><?php echo $episode->title ; ?></h4>
                   <p class=" text-white col-lg-8" style="margin:0 auto";><?php echo ($episode->episode_description) ; ?></p>
-                  <h2 class="">Subscribe to view more<?php if ($series->access == 'subscriber'): ?>Subscribers<?php elseif($series->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
+                  <h4 class="">Subscribe to view more<?php if ($series->access == 'subscriber'): ?>Subscribers<?php elseif($series->access == 'registered'): ?>Registered Users<?php endif; ?></h4>
                   <div class="clear"></div>
-                  
+                  </div>
                   <?php if( !Auth::guest() && Auth::user()->role == 'registered'):  ?>
                      <div class=" mt-3">
                      <form method="get" action="<?= URL::to('/stripe/billings-details')?>">
