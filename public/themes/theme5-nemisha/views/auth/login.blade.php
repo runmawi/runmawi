@@ -315,13 +315,10 @@ font-weight: 600;
                            
                             								<input id="password" type="password" class="input-field  form-control @error('password') is-invalid @enderror" placeholder="{{ __('PASSWORD') }}" name="password" required autocomplete="current-password" >
                         </div> </div>
-                         <div class="links text-right">
-                      @if (Route::has('password.request'))
-                     <a href="{{ route('password.request') }}" class="f-link mb-3">Can't Login?</a>
-                      @endif
-							
-                  </div>
 
+                         <div class="links text-right">
+                             <a href="{{ route('Reset_Password') }}" class="f-link mb-3">Can't Login?</a>
+                        </div>
                   
                                     {{-- reCAPTCHA  --}}
                         @if( get_enable_captcha()  == 1)   
