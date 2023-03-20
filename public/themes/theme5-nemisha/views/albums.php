@@ -264,9 +264,9 @@ border-bottom: 1px solid #141414;
 <div class="player-ctn" style="background-image:linear-gradient(to left, rgba(0, 0, 0, 0.25)0%, rgba(117, 19, 93, 1)),url('<?= URL::to('/').'/public/uploads/albums/'. $album->album ?>');background-size: cover;
     background-repeat: no-repeat;
     background-position: right;">
-    <div class="row  mb-4">
+    <div class="row  mb-4 align-items-center">
     <div class="col-sm-3">
-<img src="<?= URL::to('/').'/public/uploads/albums/'. $album->album ?>"  class="img-responsive" width="200" height="200">
+<img src="<?= URL::to('/').'/public/uploads/albums/'. $album->album ?>"  class="img-responsive w-100" >
 </div>
 <div class="col-sm-8 col-md-8 col-xs-8">
 <div class="album_bg">
