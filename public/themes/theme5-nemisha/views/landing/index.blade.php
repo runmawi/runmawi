@@ -1033,14 +1033,24 @@
             }
 
             .navbar-fixed-top {
-               
+               height: auto;
             }
-
+            h1{
+                font-size: 20px;
+            }
+            .dig{
+                font-size: 18px;
+            }
+            .pa{
+                padding: 0;
+            }
             .ban {
                 background-color: rgba(0, 0, 0, 0.65);
                 background-blend-mode: multiply;
             }
-
+            .imk{
+                margin-top: 15px;
+            }
             #disp {
                 display: none;
             }
