@@ -283,7 +283,7 @@ Your browser does not support the audio element.
     background-position: right;">
               <div class="row justify-content-between align-items-center">
             <div class="col-sm-3 col-md-3 col-xs-3 text-center">
-<img src="<?= URL::to('/').'/public/uploads/albums/'.$audio->image ?>"  class="img-responsive" width="160" >
+<img src="<?= URL::to('/').'/public/uploads/albums/'.$audio->image ?>"  class="img-responsive w-100"  >
 
 <!-- -->
 </div>
