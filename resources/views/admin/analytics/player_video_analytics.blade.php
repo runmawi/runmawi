@@ -67,7 +67,7 @@
                                             <!-- <th>User Name</th> -->
                                             <th>Video Name</th>
                                             <th>Viewed Count</th>
-                                            <th>Watch Percentage (Minutes)</th>
+                                            <th>Watch Hours  (H:M:S)</th>
                                             <th>Seek Time (Seconds)</th>
                                             <th>Buffered Time (Seconds)</th>
 
@@ -79,7 +79,8 @@
                                         <td>{{ $key+1  }}</td>   
                                         <!-- <td>{{ $playervideo->username  }}</td>    -->
                                         <td>{{ $playervideo->title  }}</td>   
-                                        <td>{{ $playervideo->count  }}</td>   
+                                        <td>{{ $playervideo->count  }}</td> 
+                                        <td><?= gmdate("H:i:s", @$playervideo->watchpercentage) ?></td> 
                                         <td>{{ $playervideo->watchpercentage  }}</td>   
                                         <td>{{ $playervideo->seekTime  }}</td>   
                                         <td>@if(!empty($playervideo->bufferedTime)){{ $playervideo->bufferedTime  }} @else {{ 'No Buffer' }} @endif</td>   
