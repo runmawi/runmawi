@@ -27,7 +27,7 @@
     <?php  if(isset($ModeratorsUsers)) :
       foreach($ModeratorsUsers as $content_user): ?>
         <li class="slide-item">
-          <a href="<?php echo URL::to('/ContentPartner'.'/'.$content_user->slug) ?>">
+          <a href="<?php echo URL::to('/contentpartner'.'/'.$content_user->slug) ?>">
                              <!-- block-images -->
             <div class="block-images position-relative">
               <div class="img-box">
@@ -35,12 +35,12 @@
               </div>
 
               <div class="block-description">
-                <a href="<?php echo URL::to('/ContentPartner'.'/'.$content_user->slug) ?> ">
+                <a href="<?php echo URL::to('/contentpartner'.'/'.$content_user->slug) ?> ">
 
               <h6><?php echo __($content_user->username); ?></h6>
                                <!-- </div> -->
                 <div class="hover-buttons d-flex">
-                  <a class="text-white" href="<?php echo URL::to('/ContentPartner'.'/'.$content_user->slug) ?> " >
+                  <a class="text-white" href="<?php echo URL::to('/contentpartner'.'/'.$content_user->slug) ?> " >
                     <i class="fa fa-play mr-1" aria-hidden="true"></i>
                    Visit Content Partner
                   </a>
