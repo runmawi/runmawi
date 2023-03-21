@@ -6272,10 +6272,13 @@ public function LocationCheck(Request $request){
 
         $parent_id =  $request->user_id ;
 
-        $subcriber_user = User::where('id',$parent_id)->first();
+        $subcriber_user= User::where('id', $parent_id)->get()->map(function ($item, $key)  {
+          $item['image_url'] = $item['avatar'] != ' ' ? URL::to('public/uploads/avatars/'.$item->avatar) : URL::to('public/multiprofile/multi-user-default-image-'.('1').'.png') ;
+          return $item;
+        });
 
         $muti_users= Multiprofile::where('parent_id', $parent_id)->get()->map(function ($item, $key)  {
-          $item['image_url'] = $item['Profile_Image'] != 'chooseimage.jpg' ? URL::to('public/multiprofile/'.$item->Profile_Image) : URL::to('public/multiprofile/multi-user-default-image-'.($key+1).'.png') ;
+          $item['image_url'] = $item['Profile_Image'] != 'chooseimage.jpg' ? URL::to('public/multiprofile/'.$item->Profile_Image) : URL::to('public/multiprofile/multi-user-default-image-'.($key+2).'.png') ;
           return $item;
         });
 
