@@ -591,6 +591,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
        <!-- </div> -->
  <?php } } 
  else { ?>
+ <?php if($video->access == 'subscriber' && Auth::user()->role == 'registered'){  ?>
  <div id="subscribers_only"style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>);background-position:center; background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
   <div id="subscribers_only">
   <div class="clear"></div>
@@ -608,6 +609,40 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
       <button id="button" style="margin-top: 0%;">Signup Now <?php if($video->access == 'subscriber'): ?>to Purchase this video <?php elseif($video->access == 'registered'): ?>for Free!<?php endif; ?></button>
     </form>
   <?php } ?>
+ <?php }else if($video->access == 'subscriber' && $video->global_ppv == 1 && Auth::user()->role == 'subscriber'){   ?>
+ <div id="subscribers_only"style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>);background-position:center; background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
+ <div id="subscribers_only">
+ <div class="clear"></div>
+ <div style="margin-left: -20%;position: absolute;top: 20%;left: 20%;width: 100%;">
+ <h4 class="text-center"><?php echo $video->title ; ?></h4>
+ <p class="text-center text-white col-lg-8" style="margin:0 auto";><?php echo ($video->description) ; ?></p>
+
+ <h2 ><p style ="margin-left:14%">Purchase to watch this PPV video</p> </h2>
+ <?php if(!Auth::guest() && $video->access == 'subscriber' || !Auth::guest() && $video->access == 'ppv'|| !Auth::guest() && $video->access == 'guest' && !empty($video->ppv_price) ){ ?>
+  <button  style="margin-left: 46%;margin-top: 0%;" data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
+                           <?php echo __('Purchase Now');?> </button>
+ <?php }else{ ?>
+   <form method="get" action="<?= URL::to('signup') ?>">
+     <button id="button" style="margin-top: 0%;">Signup Now <?php if($video->access == 'subscriber'): ?>to Purchase this video <?php elseif($video->access == 'registered'): ?>for Free!<?php endif; ?></button>
+   </form>
+ <?php } }else{ ?>
+  <div id="subscribers_only"style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>);background-position:center; background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
+  <div id="subscribers_only">
+  <div class="clear"></div>
+  <div style="position: absolute;top: 20%;left: 20%;width: 100%;">
+  <h4 class="text-center"><?php echo $video->title ; ?></h4>
+  <p class="text-center text-white col-lg-8" style="margin:0 auto";><?php echo ($video->description) ; ?></p>
+ 
+  <h2 ><p style ="margin-left:14%">Sorry, this video is only available to</p> <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
+  <?php if(!Auth::guest() && $video->access == 'subscriber' || !Auth::guest() && $video->access == 'ppv'|| !Auth::guest() && $video->access == 'guest' && !empty($video->ppv_price) ){ ?>
+    <form method="get" action="<?= route('payment_becomeSubscriber') ?>">
+      <button style="margin-left: 27%;margin-top: 0%;" class="btn btn-primary"id="button">Purchase to watch this video</button>
+    </form>
+  <?php }else{ ?>
+    <form method="get" action="<?= URL::to('signup') ?>">
+      <button id="button" style="margin-top: 0%;">Signup Now <?php if($video->access == 'subscriber'): ?>to Purchase this video <?php elseif($video->access == 'registered'): ?>for Free!<?php endif; ?></button>
+    </form>
+  <?php } } ?>
   </div>
 </div>
 </div>
