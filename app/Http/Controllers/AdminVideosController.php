@@ -166,7 +166,8 @@ class AdminVideosController extends Controller
                 //  ->where('videos.title', 'like', '%'.$query.'%')
                 //  ->paginate(9);
             } else {
-                $data = [];
+                $data = Video::orderBy("created_at", "desc")
+                ->paginate(9);
             }
             if (count($data) > 0) {
                 $total_row = $data->count();
@@ -177,7 +178,7 @@ class AdminVideosController extends Controller
                         elseif(isset($video->type) && $video->type == "mp4_url"){ $type = 'MP4 Video' ; }
                         elseif(isset($video->type) && $video->type == "m3u8_url"){ $type = 'M3u8 URL Video' ; }
                         elseif(isset($video->type) && $video->type == "embed"){ $type = 'Embed Video'; }
-
+                        else{ $type = ''; }
                         if ($row->active == 0) {
                             $active = "Pending";
                             $class = "bg-warning";
