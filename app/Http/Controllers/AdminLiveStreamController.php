@@ -408,8 +408,8 @@ class AdminLiveStreamController extends Controller
             $namem3u8 = $newfile[0].'.m3u8';   
             $namem3u8 = null ? str_replace(' ', '_',$namem3u8) : str_replace(' ', '_',$namem3u8) ;        
 
-            $transcode_path = @$StorageSetting->aws_transcode_path.'/'. $namem3u8;
-            $transcode_path_mp4 = @$StorageSetting->aws_live_path.'/'. $name_mp4;
+            $transcode_path = $StorageSetting->aws_transcode_path.'/'. $namem3u8;
+            $transcode_path_mp4 = $StorageSetting->aws_live_path.'/'. $name_mp4;
             
             Storage::disk('s3')->put($transcode_path_mp4, file_get_contents($file));
             $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
@@ -527,6 +527,8 @@ class AdminLiveStreamController extends Controller
         $movie->user_id =Auth::User()->id;
         $movie->ads_position = $request->ads_position;
         $movie->live_ads = $request->live_ads;
+        $movie->acc_audio_file = $request->acc_audio_file;
+        $movie->acc_audio_url  = $request->acc_audio_url;
         $movie->save();
 
         $shortcodes = $request['short_code'];
@@ -632,8 +634,6 @@ class AdminLiveStreamController extends Controller
             'pre_ads' => Advertisement::where('ads_position','pre')->where('status',1)->get(),
             'mid_ads' => Advertisement::where('ads_position','mid')->where('status',1)->get(),
             'post_ads' => Advertisement::where('ads_position','post')->where('status',1)->get(),
-
-            
 
             );
 
@@ -1023,6 +1023,8 @@ class AdminLiveStreamController extends Controller
         $video->m3u_url = $request->m3u_url;
         $video->ads_position = $request->ads_position;
         $video->live_ads     = $request->live_ads;
+        $video->acc_audio_file = $request->acc_audio_file;
+        $video->acc_audio_url  = $request->acc_audio_url;
         $video->save();
 
         if(!empty($data['video_category_id'])){
