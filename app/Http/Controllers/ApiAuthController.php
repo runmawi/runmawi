@@ -10903,11 +10903,12 @@ public function QRCodeMobileLogout(Request $request)
     }
 
   
-  public function ChannelHome($slug)
+  public function ChannelHome(Request $request)
   {
     try{
 
       $settings = Setting::first();
+      $slug = $request->slug;
       $channel = Channel::where('channel_slug',$slug)->first(); 
       $currency = CurrencySetting::first();
           
@@ -11091,10 +11092,11 @@ public function QRCodeMobileLogout(Request $request)
   }
 
 
-  public function ContentPartnerHome($slug)
+  public function ContentPartnerHome(Request $request)
   {
     try{
       $settings = Setting::first();
+      $slug = $request->slug;
       $ModeratorsUser = ModeratorsUser::where('slug',$slug)->first(); 
 
       $currency = CurrencySetting::first();
