@@ -143,14 +143,20 @@ if ($ppv_exist > 0 ||  Auth::user()->subscribed() || $video_access == "free"  ||
                     <source  type="application/x-mpegURL"  src="<?php echo $video->live_stream_video ; ?>" >
                 </video>
 
-        <?php  }elseif(!empty($video->url_type ) && $video->url_type == "aws_m3u8"){  ?>
+            <?php  }elseif(!empty($video->url_type ) && $video->url_type == "acc_audio_url"){  ?>
+
+                <video id="acc_audio" <?= $autoplay ?>  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                        <source src="<?php echo $video->acc_audio_url ; ?>" >
+                </video>
+
+            <?php  }elseif(!empty($video->url_type ) && $video->url_type == "aws_m3u8"){  ?>
 
                 <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->live_stream_video; ?>">
                 <input type="hidden" id="type" name="type" value="<?php echo $video->type ?>">
                 <input type="hidden" id="live" name="live" value="live">
                 <input type="hidden" id="request_url" name="request_url" value="<?php echo "m3u8" ?>">
 
-                <video id="live_player" <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                <video id="live_player" <?= $autoplay ?>  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
                     <source  type="application/x-mpegURL"  src="<?php echo $video->hls_url ; ?>" >
                 </video>
 
@@ -295,6 +301,12 @@ else{
 
             <video id="live_player" <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
                     <source type="application/x-mpegURL" src="<?php echo $video->live_stream_video ; ?>">
+            </video>
+
+        <?php  }elseif(!empty($video->url_type ) && $video->url_type == "acc_audio_url"){  ?>
+
+            <video id="acc_audio"  <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                    <source  src="<?php echo $video->acc_audio_url ; ?>" >
             </video>
             
         <?php  }elseif(!empty($video->url_type ) && $video->url_type == "aws_m3u8"){  ?>
