@@ -11070,11 +11070,15 @@ public function QRCodeMobileLogout(Request $request)
   {
 
     try {
-
+      $ContentPartner = ModeratorsUser::where('status',1)->get()->map(function ($item) {
+      $item['banner'] = URL::to('/public/uploads/moderator_albums/'.$item->banner);
+      $item['picture'] = URL::to('/public/uploads/moderator_albums/'.$item->picture);
+      return $item;
+  });
       $response = array(
         'status'=> 'true',
         'message'  => 'Content Partner section Retrieved Successfully !!',
-        'ContentPartner' => ModeratorsUser::get(), 
+        'ContentPartner' => $ContentPartner, 
         'order_settings' => OrderHomeSetting::orderBy('order_id', 'asc')->get(), 
         'order_settings_list' => OrderHomeSetting::get(), 
   
@@ -11097,24 +11101,30 @@ public function QRCodeMobileLogout(Request $request)
     try{
       $settings = Setting::first();
       $slug = $request->slug;
-      $ModeratorsUser = ModeratorsUser::where('slug',$slug)->first(); 
+      $ModeratorsUserid = ModeratorsUser::where('slug',$slug)->first(); 
+
+      $ModeratorsUser = ModeratorsUser::where('status',1)->get()->map(function ($item) {
+        $item['banner'] = URL::to('/public/uploads/moderator_albums/'.$item->banner);
+        $item['picture'] = URL::to('/public/uploads/moderator_albums/'.$item->picture);
+        return $item;
+    });
 
       $currency = CurrencySetting::first();
 
-              $livetreams = LiveStream::where('active', '=', '1')->where('user_id', '=', $ModeratorsUser->id)
+              $livetreams = LiveStream::where('active', '=', '1')->where('user_id', '=', $ModeratorsUserid->id)
               ->where('uploaded_by', '=', 'CPP')->orderBy('created_at', 'DESC')
               ->get();
 
-              $audios = Audio::where('active', '=', '1')->where('user_id', '=', $ModeratorsUser->id)
+              $audios = Audio::where('active', '=', '1')->where('user_id', '=', $ModeratorsUserid->id)
               ->where('uploaded_by', '=', 'CPP')
               ->orderBy('created_at', 'DESC')
               ->get() ;
 
-              $latest_series = Series::where('active', '=', '1')->where('user_id', '=', $ModeratorsUser->id)
+              $latest_series = Series::where('active', '=', '1')->where('user_id', '=', $ModeratorsUserid->id)
               ->where('uploaded_by', '=', 'CPP')->orderBy('created_at', 'DESC')
               ->get();
 
-              $latest_videos = Video::where('active', '=', '1')->where('status', '=', '1')->where('user_id', '=', $ModeratorsUser->id)
+              $latest_videos = Video::where('active', '=', '1')->where('status', '=', '1')->where('user_id', '=', $ModeratorsUserid->id)
               ->where('uploaded_by', '=', 'CPP')->where('draft', '=', '1')
               ->get();
   
