@@ -74,6 +74,7 @@ use Aws\S3\S3Client;
 use Aws\S3\S3MultiRegionClient;
 use App\EmailTemplate;
 use Mail;
+use App\PlayerAnalytic;
 
 class AdminVideosController extends Controller
 {
@@ -165,7 +166,8 @@ class AdminVideosController extends Controller
                 //  ->where('videos.title', 'like', '%'.$query.'%')
                 //  ->paginate(9);
             } else {
-                $data = [];
+                $data = Video::orderBy("created_at", "desc")
+                ->paginate(9);
             }
             if (count($data) > 0) {
                 $total_row = $data->count();
@@ -176,7 +178,7 @@ class AdminVideosController extends Controller
                         elseif(isset($video->type) && $video->type == "mp4_url"){ $type = 'MP4 Video' ; }
                         elseif(isset($video->type) && $video->type == "m3u8_url"){ $type = 'M3u8 URL Video' ; }
                         elseif(isset($video->type) && $video->type == "embed"){ $type = 'Embed Video'; }
-
+                        else{ $type = ''; }
                         if ($row->active == 0) {
                             $active = "Pending";
                             $class = "bg-warning";
@@ -1038,15 +1040,61 @@ class AdminVideosController extends Controller
 
     public function destroy($id)
     {
+
         $video = Video::find($id);
 
+        try {
+            if($video->uploaded_by != null && $video->uploaded_by == "CPP"){
+
+                $Moderators_user_email = ModeratorsUser::where('id',$video->user_id)->pluck('email')->first();
+    
+                try {
+    
+                    $email_template_subject =  EmailTemplate::where('id',15)->pluck('heading')->first() ;
+                    $email_subject  = str_replace("{ContentName}", "$video->title", $email_template_subject);
+        
+                    $data = array(
+                        'email_subject' => $email_subject,
+                    );
+        
+                    Mail::send('emails.CPP_Partner_Content_delete', array(
+                        'Name'         => Auth::user() != null && Auth::user()->name ? Auth::user()->name : Auth::user()->username ,
+                        'ContentName'  =>  $video->title,
+                        'website_name' =>  GetWebsiteName(),
+                    ), 
+                    function($message) use ($data,$Moderators_user_email) {
+                        $message->from(AdminMail(),GetWebsiteName());
+                        $message->to($Moderators_user_email)->subject($data['email_subject']);
+                    });
+        
+                    $email_log      = 'Mail Sent Successfully from Partner Content Delete';
+                    $email_template = "15";
+                    $user_id = $id;
+        
+                    Email_sent_log($user_id,$email_log,$email_template);
+        
+                } catch (\Throwable $th) {
+        
+                    $email_log = $th->getMessage();
+                    $email_template = "15";
+                    $user_id = $user_id;
+        
+                    Email_notsent_log($user_id, $email_log, $email_template);
+                }
+            }
+        } catch (\Throwable $th) {
+            
+        }
+
         \LogActivity::addVideodeleteLog("Deleted Video.", $id);
-        // dd('log insert successfully.');
 
         Video::destroy($id);
+      
+        PlayerAnalytic::where("videoid", $id)->delete();
         //        VideoResolution::where('video_id', '=', $id)->delete();
         //        VideoSubtitle::where('video_id', '=', $id)->delete();
         Videoartist::where("video_id", $id)->delete();
+
         return Redirect::to("admin/videos")->with([
             "message" => "Successfully Deleted Video",
             "note_type" => "success",
@@ -1056,7 +1104,6 @@ class AdminVideosController extends Controller
     public function edit($id)
     {
        
-
         if (!Auth::user()->role == "admin") {
             return redirect("/home");
         }
@@ -3749,6 +3796,7 @@ class AdminVideosController extends Controller
         try {
             $video_id = $request->video_id;
             Video::whereIn("id", explode(",", $video_id))->delete();
+            PlayerAnalytic::whereIn("videoid", explode(",", $video_id))->delete();
 
             return response()->json(["message" => "true"]);
         } catch (\Throwable $th) {

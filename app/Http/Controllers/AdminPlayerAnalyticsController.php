@@ -114,7 +114,7 @@ class AdminPlayerAnalyticsController extends Controller
          DB::raw('sum(player_analytics.watch_percentage) as watch_percentage') ,
          \DB::raw("MONTHNAME(player_analytics.created_at) as month_name") ,
          \DB::raw("COUNT(player_analytics.videoid) as count"),
-         \DB::raw("(player_analytics.watch_percentage) as watchpercentage"),
+         \DB::raw("sum(player_analytics.watch_percentage) as watchpercentage"),
         //  floor($player_videos[1]->duration / 60)
         ]);
 

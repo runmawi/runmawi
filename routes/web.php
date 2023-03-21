@@ -1090,6 +1090,14 @@ Route::get('/CPPAudioIndex',  'AdminAudioController@CPPAudioIndex');
 Route::get('/CPPAudioApproval/{id}',  'AdminAudioController@CPPAudioApproval');
 Route::get('/CPPAudioReject/{id}',  'AdminAudioController@CPPAudioReject');
 
+Route::get('/approval-live-event-artist', 'AdminLiveEventArtist@CPPLiveEventIndex')->name('approval_live_event_artist');
+Route::get('/live-event-artist-cpp-Approval/{id}', 'AdminLiveEventArtist@CPPLiveEventApproval')->name('CPP_Approval_live_event_artist');
+Route::get('/live-event-artist-cpp-Reject/{id}', 'AdminLiveEventArtist@CPPLiveEventReject')->name('CPP_Reject_live_event_artist');
+
+Route::get('/channel-approval-live-event-artist', 'AdminLiveEventArtist@ChannelLiveEventIndex')->name('channelapproval_live_event_artist');
+Route::get('/live-event-artist-channel-Approval/{id}', 'AdminLiveEventArtist@ChannelLiveEventtApproval')->name('Channel_Approval_live_event_artist');
+Route::get('/live-event-artist-channel-Reject/{id}', 'AdminLiveEventArtist@ChannelLiveEventReject')->name('CPP_Reject_live_event_artist');
+
 
 // Test Server Video Upload 
 
@@ -1175,9 +1183,20 @@ Route::post('cpp/Verify_Reset_Password',  'ModeratorsLoginController@VerifyReset
 
 
 /**       CPP Middlware       */
-Route::group(['prefix' => 'cpp','middleware' => ['cpp','auth']], function() {
+Route::group(['prefix' => 'cpp','middleware' => ['cpp']], function() {
 // Route::middleware(['prefix' => 'cpp' ,cpp::class])->group(function(){
 // Route::get('/Homeone',  'ModeratorsLoginController@Home');
+
+    // CPP Live Event for artist
+    Route::get('/live-event-artist', 'CPPLiveEventArtist@CPPindex')->name('cpp_live_event_artist');
+
+    Route::get('/live-event-artist', 'CPPLiveEventArtist@index')->name('cpp_live_event_artist');
+    Route::get('/live-event-create', 'CPPLiveEventArtist@create')->name('cpp_live_event_create');
+    Route::post('/live-event-store', 'CPPLiveEventArtist@store')->name('cpp_live_event_store');
+    Route::get('/live-event-edit/{id}', 'CPPLiveEventArtist@edit')->name('cpp_live_event_edit');
+    Route::post('/live-event-update/{id}', 'CPPLiveEventArtist@update')->name('cpp_live_event_update');
+    Route::get('/live-event-destroy/{id}', 'CPPLiveEventArtist@destroy')->name('cpp_live_event_destroy');
+
 
 Route::get('payouts', 'CPPAnalyticsController@UserPayouts');
 Route::post('payouts_startdate_analytics', 'CPPAnalyticsController@PayoutsStartDateAnalytics');
@@ -1341,14 +1360,7 @@ Route::post('/audios/audioupdate', array('before' => 'demo', 'uses' => 'CPPAdmin
     Route::get('/livestream/categories/delete/{id}', array('before' => 'demo', 'uses' => 'CPPAdminLiveCategoriesController@CPPdestroy'));
 
 
-    // CPP Live Event for artist
-        Route::get('/live-event-artist', 'CPPLiveEventArtist@index')->name('cpp_live_event_artist');
-        Route::get('/live-event-create', 'CPPLiveEventArtist@create')->name('cpp_live_event_create');
-        Route::post('/live-event-store', 'CPPLiveEventArtist@store')->name('cpp_live_event_store');
-        Route::get('/live-event-edit/{id}', 'CPPLiveEventArtist@edit')->name('cpp_live_event_edit');
-        Route::post('/live-event-update/{id}', 'CPPLiveEventArtist@update')->name('cpp_live_event_update');
-        Route::get('/live-event-destroy/{id}', 'CPPLiveEventArtist@destroy')->name('cpp_live_event_destroy');
-    
+
 });
 
 

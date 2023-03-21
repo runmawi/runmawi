@@ -6274,25 +6274,17 @@ public function LocationCheck(Request $request){
 
         $subcriber_user = User::where('id',$parent_id)->first();
 
-        $users= Multiprofile::where('parent_id', $parent_id)->get()->map(function ($item) {
-          $item['image_url'] = URL::to('/').'/public/multiprofile/'.$item->Profile_Image;
+        $muti_users= Multiprofile::where('parent_id', $parent_id)->get()->map(function ($item, $key)  {
+          $item['image_url'] = $item['Profile_Image'] != 'chooseimage.jpg' ? URL::to('public/multiprofile/'.$item->Profile_Image) : URL::to('public/multiprofile/multi-user-default-image-'.($key+1).'.png') ;
           return $item;
         });
-
-        $multi_users = Multiprofile::join('users', 'sub_users.parent_id', '=', 'users.id')
-        ->where('sub_users.parent_id', $parent_id)->where('users.id', $parent_id)
-        ->get()->map(function ($item) {
-          $item['image_url'] = URL::to('/').'/public/multiprofile/'.$item->Profile_Image;
-          return $item;
-        });
-
 
         $response = array(
           'status'  => 'true',
           'message' => 'Multiprofile Retrieved  successfully' ,
           'user'    => $subcriber_user,
-          'sub_users'=> $users,
-          'multi_users'=> $multi_users
+          'sub_users'=> $muti_users,
+          'multi_users'=> $muti_users
         );
 
       } catch (\Throwable $th) {
@@ -10911,11 +10903,12 @@ public function QRCodeMobileLogout(Request $request)
     }
 
   
-  public function ChannelHome($slug)
+  public function ChannelHome(Request $request)
   {
     try{
 
       $settings = Setting::first();
+      $slug = $request->slug;
       $channel = Channel::where('channel_slug',$slug)->first(); 
       $currency = CurrencySetting::first();
           
@@ -11099,10 +11092,11 @@ public function QRCodeMobileLogout(Request $request)
   }
 
 
-  public function ContentPartnerHome($slug)
+  public function ContentPartnerHome(Request $request)
   {
     try{
       $settings = Setting::first();
+      $slug = $request->slug;
       $ModeratorsUser = ModeratorsUser::where('slug',$slug)->first(); 
 
       $currency = CurrencySetting::first();
