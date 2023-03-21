@@ -6272,10 +6272,13 @@ public function LocationCheck(Request $request){
 
         $parent_id =  $request->user_id ;
 
-        $subcriber_user = User::where('id',$parent_id)->first();
+        $subcriber_user= User::where('id', $parent_id)->get()->map(function ($item, $key)  {
+          $item['image_url'] = $item['avatar'] != ' ' ? URL::to('public/uploads/avatars/'.$item->avatar) : URL::to('public/multiprofile/multi-user-default-image-'.('1').'.png') ;
+          return $item;
+        });
 
         $muti_users= Multiprofile::where('parent_id', $parent_id)->get()->map(function ($item, $key)  {
-          $item['image_url'] = $item['Profile_Image'] != 'chooseimage.jpg' ? URL::to('public/multiprofile/'.$item->Profile_Image) : URL::to('public/multiprofile/multi-user-default-image-'.($key+1).'.png') ;
+          $item['image_url'] = $item['Profile_Image'] != 'chooseimage.jpg' ? URL::to('public/multiprofile/'.$item->Profile_Image) : URL::to('public/multiprofile/multi-user-default-image-'.($key+2).'.png') ;
           return $item;
         });
 
@@ -11070,11 +11073,15 @@ public function QRCodeMobileLogout(Request $request)
   {
 
     try {
-
+      $ContentPartner = ModeratorsUser::where('status',1)->get()->map(function ($item) {
+      $item['banner'] = URL::to('/public/uploads/moderator_albums/'.$item->banner);
+      $item['picture'] = URL::to('/public/uploads/moderator_albums/'.$item->picture);
+      return $item;
+  });
       $response = array(
         'status'=> 'true',
         'message'  => 'Content Partner section Retrieved Successfully !!',
-        'ContentPartner' => ModeratorsUser::get(), 
+        'ContentPartner' => $ContentPartner, 
         'order_settings' => OrderHomeSetting::orderBy('order_id', 'asc')->get(), 
         'order_settings_list' => OrderHomeSetting::get(), 
   
@@ -11097,24 +11104,30 @@ public function QRCodeMobileLogout(Request $request)
     try{
       $settings = Setting::first();
       $slug = $request->slug;
-      $ModeratorsUser = ModeratorsUser::where('slug',$slug)->first(); 
+      $ModeratorsUserid = ModeratorsUser::where('slug',$slug)->first(); 
+
+      $ModeratorsUser = ModeratorsUser::where('status',1)->get()->map(function ($item) {
+        $item['banner'] = URL::to('/public/uploads/moderator_albums/'.$item->banner);
+        $item['picture'] = URL::to('/public/uploads/moderator_albums/'.$item->picture);
+        return $item;
+    });
 
       $currency = CurrencySetting::first();
 
-              $livetreams = LiveStream::where('active', '=', '1')->where('user_id', '=', $ModeratorsUser->id)
+              $livetreams = LiveStream::where('active', '=', '1')->where('user_id', '=', $ModeratorsUserid->id)
               ->where('uploaded_by', '=', 'CPP')->orderBy('created_at', 'DESC')
               ->get();
 
-              $audios = Audio::where('active', '=', '1')->where('user_id', '=', $ModeratorsUser->id)
+              $audios = Audio::where('active', '=', '1')->where('user_id', '=', $ModeratorsUserid->id)
               ->where('uploaded_by', '=', 'CPP')
               ->orderBy('created_at', 'DESC')
               ->get() ;
 
-              $latest_series = Series::where('active', '=', '1')->where('user_id', '=', $ModeratorsUser->id)
+              $latest_series = Series::where('active', '=', '1')->where('user_id', '=', $ModeratorsUserid->id)
               ->where('uploaded_by', '=', 'CPP')->orderBy('created_at', 'DESC')
               ->get();
 
-              $latest_videos = Video::where('active', '=', '1')->where('status', '=', '1')->where('user_id', '=', $ModeratorsUser->id)
+              $latest_videos = Video::where('active', '=', '1')->where('status', '=', '1')->where('user_id', '=', $ModeratorsUserid->id)
               ->where('uploaded_by', '=', 'CPP')->where('draft', '=', '1')
               ->get();
   
