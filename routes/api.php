@@ -413,7 +413,7 @@ Route::group(
 
         // Channel Partner
         Route::get('/home_channel_partner', 'ApiAuthController@HomeChannelPartner');
-        Route::get('channel_partner/{slug}', 'ApiAuthController@ChannelHome')->name('ChannelHome');
+        Route::post('channel_partner', 'ApiAuthController@ChannelHome')->name('ChannelHome');
         Route::get('channel_partner_list', 'ApiAuthController@ChannelList')->name('ChannelList');
         Route::post('channel_partner_category_series', 'ApiAuthController@channel_category_series')->name('channel_category_series');
         Route::post('channel_partner_category_videos', 'ApiAuthController@channel_category_videos')->name('channel_category_videos');
@@ -422,7 +422,7 @@ Route::group(
         
         // Content Partner
         Route::get('/home_content_partner', 'ApiAuthController@HomeContentPartner');
-        Route::get('contentpartner/{slug}', 'ApiAuthController@ContentPartnerHome')->name('ContentPartnerHome');
+        Route::post('contentpartner', 'ApiAuthController@ContentPartnerHome')->name('ContentPartnerHome');
           Route::get('Content_list', 'ApiAuthController@ContentList')->name('ContentList');
           Route::get('content_partners', 'ApiAuthController@ContentList')->name('ContentList');
           Route::post('Content_category_series', 'ApiAuthController@Content_category_series')->name('Content_category_series');
