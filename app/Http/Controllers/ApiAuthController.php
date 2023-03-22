@@ -1554,6 +1554,22 @@ public function verifyandupdatepassword(Request $request)
           $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
           $item['live_description'] = $item->description ? $item->description : "" ;
           $item['trailer'] = null ;
+
+          if(plans_ads_enable() == 1){
+
+            $item['live_ads_url'] =  AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
+                                      // ->whereDate('start', '=', Carbon\Carbon::now()->format('Y-m-d'))
+                                      // ->whereTime('start', '<=', $current_time)
+                                      // ->whereTime('end', '>=', $current_time)
+                                      ->where('ads_events.status',1)
+                                      ->where('advertisements.status',1)
+                                      ->where('advertisements.id',$item->live_ads)
+                                      ->pluck('ads_path')->first();
+                            
+          }else{
+            $item['live_ads_url'] = " ";
+          }
+         
           return $item;
         });
 
