@@ -478,6 +478,8 @@ public function RentPaypal(Request $request)
 
     }
     else{
+    $video = Video::where('id','=',$video_id)->first();
+
       $total_amount = $video->ppv_price;
       $title =  $video->title;
       $commssion = VideoCommission::first();
