@@ -6309,7 +6309,7 @@ public function LocationCheck(Request $request){
         $response = array(
           'status'  => 'true',
           'message' => 'Multiprofile Retrieved  successfully' ,
-          'user'    => $subcriber_user,
+          'user'    => $subcriber_user->first(),
           'sub_users'=> $muti_users,
           'multi_users'=> $muti_users
         );
