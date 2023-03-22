@@ -707,7 +707,7 @@
                            <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
                            <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
                            <input id="password" type="hidden"  name="password" value="<?=  @$ModeratorsUser->password ?>" autocomplete="current-password" >
-                           <button type="submit" class="btn btn-primary " style="margin-top: -18%;margin-left: -14%;">CPP Portal </button>                          
+                           <button type="submit" class="btn bd " style="margin-top: -18%;margin-left: -14%;">CPP Portal </button>                          
                         </form>
                      </div>
                      <?php }if(!Auth::guest() && !empty($Channel)){ ?>
@@ -716,7 +716,7 @@
                            <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
                            <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
                            <input id="password" type="hidden"  name="password" value="<?=  @$Channel->unhased_password ?>" autocomplete="current-password" >
-                           <button type="submit" class="btn btn-primary" style="margin-top: -13%;margin-left: -8%;">Channel Visit Portal </button>                          
+                           <button type="submit" class="btn bd" style="margin-top: -13%;margin-left: -8%;">Channel Visit Portal </button>                          
                         </form>
                      </div>
                      <?php } ?></div>
