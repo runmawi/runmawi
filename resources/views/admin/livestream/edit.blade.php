@@ -132,7 +132,7 @@ border-radius: 0px 4px 4px 0px;
             <div class="row mt-3">
                 <div class="col-sm-6">
                     <label class="m-0">Title</label>
-                    <p class="p1">Add the video title in the textbox below:</p>
+                    <p class="p1">Add the Live Stream title in the textbox below:</p>
 
                     <div class="panel-body">
                         <input type="text" class="form-control" name="title" id="title" placeholder="Video Title" value="@if(!empty($video->title)){{ $video->title }}@endif" />
@@ -142,7 +142,7 @@ border-radius: 0px 4px 4px 0px;
                 @if(!empty($video->created_at))
                 <div class="col-sm-6">
                     <label class="m-0">Published Date</label>
-                    <p class="p1">Video Published on Date/Time Below</p>
+                    <p class="p1">Live Stream Published on Date/Time Below</p>
                     <div class="panel-body">
                         <input type="text" class="form-control" name="created_at" id="created_at" placeholder="" value="@if(!empty($video->created_at)){{ $video->created_at }}@endif" />
                     </div>
@@ -151,7 +151,7 @@ border-radius: 0px 4px 4px 0px;
 
                 <div class="col-sm-6">
                     <label class="m-0">Slug</label>
-                    <p class="p1">Add the video slug in the textbox below:</p>
+                    <p class="p1">Add the Live Stream slug in the textbox below:</p>
                     <div class="panel-body">
                         <input type="text" class="form-control" name="slug" id="slug" placeholder="Video Slug" value="@if(!empty($video->slug)){{ $video->slug }}@endif" />
                     </div>
@@ -161,11 +161,11 @@ border-radius: 0px 4px 4px 0px;
                 <div class="col-md-6">
                 <div class="mt-3">
                             <div class="">
-                                <label class="m-0">Video Image Cover</label>
-                                <p class="p1">Select the video image (9:16 Ratio or 1080 X 1920px):</p>
+                                <label class="m-0">Live Stream Image Cover</label>
+                                <p class="p1">Select the Live Stream image (9:16 Ratio or 1080 X 1920px):</p>
 
                                 <div class="panel-body">
-                                <input type="file" multiple="true" class="form-control" name="image" id="image" />
+                                <input type="file" multiple="true" class="form-control" name="image" id="image" accept="image/*"/>
                                 </div>
                             </div>
 
@@ -182,10 +182,10 @@ border-radius: 0px 4px 4px 0px;
                 <div class="row mt-3">
                             <div class="">
                                 <label class="m-0">Player Image Cover</label>
-                                <p class="p1">Select the video image (1280x720 px or 16:9 ratio):</p>
+                                <p class="p1">Select the Live Stream image (1280x720 px or 16:9 ratio):</p>
 
                                 <div class="panel-body">
-                                <input type="file" multiple="true" class="form-control" name="player_image" id="player_image" />
+                                <input type="file" multiple="true" class="form-control" name="player_image" id="player_image" accept="image/*" />
                                 </div>
                             </div>
 
@@ -207,7 +207,7 @@ border-radius: 0px 4px 4px 0px;
                         <label class="m-0">TV Image Cover</label>
                         <p class="p1"> Select the Live Stream image (1920 X 1080  Or 16:9 Ratio)  :</p>
                         <div class="panel-body">
-                            <input type="file" multiple="true" class="form-group" name="live_stream_tv_image" id=live_stream_tv_image  />
+                            <input type="file" multiple="true" class="form-group" name="live_stream_tv_image" id=live_stream_tv_image accept="image/*" />
                         </div>
                     </div>
 
@@ -230,7 +230,7 @@ border-radius: 0px 4px 4px 0px;
 
             <div class="row mt-3">
                 <div class="col-sm-6">
-                    <label class="m-0">Video Source</label>
+                    <label class="m-0">Live Stream Source</label>
 
                     <div class="panel-body">
                         <select class="form-control url_type" id="url_type" name="url_type">
@@ -274,17 +274,24 @@ border-radius: 0px 4px 4px 0px;
 
                             <div class="new-video-upload mt-2" id="live_stream_video">
                                 <label for="live_stream_video"><label>Live Stream Video</label></label>
-                                <input type="file" multiple="true" class="form-group" name="live_stream_video" id="" />                        
+                                <input type="file" multiple="true" accept="video/mp4,video/x-m4v,video/*" class="form-group" name="live_stream_video" id="" />                        
                             </div>
 
                             <div class="new-video-upload mt-2" id="acc_audio_file">
                                 <label for=""><label>ACC Audio File</label></label>
-                                <input type="file" multiple="true" class="form-group" name="acc_audio_file"  />
+                                <input type="file" multiple="true" accept=".mp3,audio/*" class="form-group" name="acc_audio_file"  />
                             </div>
 
                             <div class="new-video-upload mt-2 acc_audio_url" id="acc_audio_url">
                                 <label><label class="mb-1"> ACC Audio URL</label></label>
                                 <input type="text" name="acc_audio_url" class="form-control" value="@if(!empty($video->acc_audio_url) ) {{ $video->acc_audio_url}}  @endif" />
+                            </div>
+
+                                            {{-- Audio Upload  --}}
+                            <div class="new-video-upload mt-2 uplaod_audio_file" id="uplaod_audio_file">
+                                <audio controls controlsList="nodownload">
+                                    <source src="@if(!empty($video->acc_audio_file) ) {{ $video->acc_audio_file}}  @endif">
+                                  </audio>
                             </div>
                     </div>
                 </div>
@@ -440,7 +447,7 @@ border-radius: 0px 4px 4px 0px;
 
             <div class="row mt-3">
                 <div class="col-sm-12">
-                    <label class="m-0">Video Details, Links, and Info</label>
+                    <label class="m-0">Live Stream Details, Links, and Info</label>
 
                     <div class="panel-body">
                         <textarea class="form-control" name="details" id="details">@if(!empty($video->details)){{ htmlspecialchars($video->details) }}@endif</textarea>
@@ -453,7 +460,7 @@ border-radius: 0px 4px 4px 0px;
             <div class="row mt-3">
                 <div class="col-sm-6">
                     <label class="m-0">Category</label>
-                    <p class="p1">Select a Video Category Below:</p>
+                    <p class="p1">Select a Live Stream Category Below:</p>
 
                     <div class="panel-body">
                         <select name="video_category_id[]" id="video_category_id" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
@@ -469,7 +476,7 @@ border-radius: 0px 4px 4px 0px;
                 </div>
                 <div class="col-sm-6">
                     <label class="m-0">Language</label>
-                    <p class="p1">Select a Video Language Below:</p>
+                    <p class="p1">Select a Live Stream Language Below:</p>
 
                     <div class="panel-body">
                         <select class="form-control js-example-basic-multiple" id="language" name="language[]" style="width: 100%;" multiple="multiple">
@@ -486,7 +493,7 @@ border-radius: 0px 4px 4px 0px;
             </div>
             <div class="row mt-3">
                 <div class="col-sm-6">
-                    <label class="m-0">Video Ratings</label>
+                    <label class="m-0">Live Stream Ratings</label>
                     <p class="p1">Livestream Ratings 10 out of 10</p>
 
                     <div class="panel-body">
@@ -506,8 +513,8 @@ border-radius: 0px 4px 4px 0px;
                 </div>
 
                 <div class="col-sm-6">
-                    <label class="m-0">Video Year</label>
-                    <p class="p1">Video Released Year</p>
+                    <label class="m-0">Live Stream Year</label>
+                    <p class="p1">Live Stream Released Year</p>
 
                     <div class="panel-body">
 					   <input class="form-control" name="year" id="year" value="@if(!empty($video->year)){{ $video->year }}@endif">
@@ -544,14 +551,14 @@ border-radius: 0px 4px 4px 0px;
             <div class="row mt-3">
                 <div class="col-sm-4">
                     <label class="m-0">Duration</label>
-                    <p class="p1">Enter the video duration in (HH : MM : SS)</p>
+                    <p class="p1">Enter the Live Stream duration in (HH : MM : SS)</p>
                     <div class="panel-body">
                         <input class="form-control" name="duration" id="duration" value="@if(!empty($video->duration)){{ gmdate('H:i:s', $video->duration) }}@endif" />
                     </div>
                 </div>
                 <div class="col-sm-4">
                     <label class="m-0">User Access</label>
-                    <p class="p1">Who is allowed to view this video?</p>
+                    <p class="p1">Who is allowed to view this Live Stream?</p>
                     <div class="panel-body">
                         <select class="form-control" id="access" name="access">
                             <option value="guest" @if(!empty($video->access) && $video->access == 'guest'){{ 'selected' }}@endif>Guest (everyone)</option>
@@ -609,17 +616,17 @@ border-radius: 0px 4px 4px 0px;
                     <label class="m-0">Status Settings</label>
                     <div class="panel-body">
                         <div>
-                            <label for="featured" >Is this video Featured:</label>
+                            <label for="featured" >Is this Live Stream Featured:</label>
                             <input type="checkbox" @if(!empty($video->featured) && $video->featured == 1){{ 'checked="checked"' }}@endif name="featured" value="1" id="featured" />
                         </div>
                         <div class="clear"></div>
                         <div>
-                            <label for="active" >Is this video Active:</label>
+                            <label for="active" >Is this Live Stream Active:</label>
                             <input type="checkbox" @if(!empty($video->active) && $video->active == 1){{ 'checked="checked"' }}@elseif(!isset($video->active)){{ 'checked="checked"' }}@endif name="active" value="1" id="active" />
                         </div>
                         <div class="clear"></div>
                         <div>
-                            <label for="banner" >Is this video display in Banner:</label>
+                            <label for="banner" >Is this Live Stream display in Banner:</label>
                             <input type="checkbox" @if(!empty($video->banner) && $video->banner == 1){{ 'checked="checked"' }}@endif name="banner" value="1" id="banner" />
                         </div>
                         <div>
@@ -1067,39 +1074,39 @@ $(document).ready(function(){
     if($("#url_type").val() == 'mp4')
     {
         $('#mp4_code').show();
-        $('#embed_code,#live_stream_video,#url_rtmp,#m3u_urls,#acc_audio_file,#acc_audio_url').hide();
+        $('#embed_code,#live_stream_video,#url_rtmp,#m3u_urls,#acc_audio_file,#acc_audio_url,#uplaod_audio_file').hide();
     }
     else if($("#url_type").val() == 'embed')
     {
         $('#embed_code').show();
-        $('#mp4_code,#live_stream_video,#url_rtmp,#m3u_urls,#acc_audio_file,#acc_audio_url').hide();
+        $('#mp4_code,#live_stream_video,#url_rtmp,#m3u_urls,#acc_audio_file,#acc_audio_url,#uplaod_audio_file').hide();
     }
     else if ($("#url_type").val() == "Encode_video") 
     {
-        $('#embed_code,#mp4_code,#live_stream_video,#m3u_urls,#acc_audio_file,#acc_audio_url,#url_rtmp').hide();
+        $('#embed_code,#mp4_code,#live_stream_video,#m3u_urls,#acc_audio_file,#acc_audio_url,#url_rtmp,#uplaod_audio_file').hide();
     }
     else if ($("#url_type").val() == "m3u_url") 
     {
         $("#m3u_urls").show();
-        $('#embed_code','#mp4_code','#live_stream_video','#url_rtmp','#acc_audio_file','#acc_audio_url').hide();
+        $('#embed_code','#mp4_code','#live_stream_video','#url_rtmp','#acc_audio_file','#acc_audio_url,#uplaod_audio_file').hide();
     }
     else if ($("#url_type").val() == "live_stream_video") 
     {
-        $('#embed_code,#mp4_code,#url_rtmp,#acc_audio_file,#acc_audio_url,#m3u_urls,#live_stream_video').hide();
+        $('#embed_code,#mp4_code,#url_rtmp,#acc_audio_file,#acc_audio_url,#m3u_urls,#live_stream_video,#uplaod_audio_file').hide();
     }
     else if ($("#url_type").val() == "acc_audio_file") 
     {
-        $("#acc_audio_file").show();
+        $("#acc_audio_file,#uplaod_audio_file").show();
         $('#embed_code,#mp4_code,#url_rtmp,#acc_audio_url,#m3u_urls,#live_stream_video,#acc_audio_file').hide();
     }
     else if ($("#url_type").val() == "acc_audio_url") 
     {
-        $('#embed_code,#mp4_code,#url_rtmp,#acc_audio_file,#m3u_urls,#live_stream_video').hide();
+        $('#embed_code,#mp4_code,#url_rtmp,#acc_audio_file,#m3u_urls,#live_stream_video,#uplaod_audio_file').hide();
         $("#acc_audio_url").show();
     }
     else if ($("#url_type").val() == " ") 
     {
-        $('#embed_code','#mp4_code','#live_stream_video','#url_rtmp','#acc_audio_file','#acc_audio_url','#m3u_urls').hide();
+        $('#embed_code','#mp4_code','#live_stream_video','#url_rtmp','#acc_audio_file','#acc_audio_url','#m3u_urls,#uplaod_audio_file').hide();
     }
 
     $("#url_type").change(function(){
@@ -1110,6 +1117,8 @@ $(document).ready(function(){
         $("#m3u_urls").hide();
         $("#acc_audio_file").hide();
         $(".acc_audio_url").hide();
+        $(".uplaod_audio_file").hide();
+
 
         if($("#url_type").val() == 'mp4'){
             $('#mp4_code').show();
