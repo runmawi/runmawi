@@ -23,9 +23,9 @@
                     <div class="thumbnail-overlay"></div>
 
                     <div class="details">
-                        <h4>
+                        <h6>
                             <?php echo strlen($series_list->title) > 15 ? substr($series_list->title, 0, 15) . '...' : $series_list->title; ?>
-                        </h4>
+                        </h6>
 
                         <div class="badge badge-secondary p-1 mr-2">
                             <?php
