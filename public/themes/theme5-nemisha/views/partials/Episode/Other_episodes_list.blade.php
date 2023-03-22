@@ -27,9 +27,9 @@
                     <div class="thumbnail-overlay"></div>
 
                     <div class="details">
-                        <h4><?php echo strlen($episodes->title) > 15 ? substr($episodes->title, 0, 15) . '...' : $episodes->title; ?>
+                        <h6><?php echo strlen($episodes->title) > 15 ? substr($episodes->title, 0, 15) . '...' : $episodes->title; ?>
                             <span><br><?= gmdate('H:i:s', $episodes->duration) ?></span>
-                        </h4>
+                        </h6>
                     </div>
                 </a>
 
