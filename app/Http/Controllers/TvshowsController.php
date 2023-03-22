@@ -216,6 +216,7 @@ class TvshowsController extends Controller
     public function play_episode($series_name, $episode_name)
     {
         //
+
         $Theme = HomeSetting::pluck('theme_choosen')->first();
         Theme::uses($Theme);
         $settings = Setting::first();
@@ -417,6 +418,16 @@ class TvshowsController extends Controller
                 }
             }
 
+            $series_categories = Series::join('series_categories', 'series.id', '=', 'series_categories.series_id')
+                                    ->where('series.id',$series->id)->pluck('series_categories.category_id');
+
+            $series_lists = Series::join('series_categories', 'series.id', '=', 'series_categories.series_id')
+                ->whereIn('series_categories.category_id',$series_categories)
+                ->where('series.id','!=',$series->id)
+                ->where('series.active',1)
+                ->groupBy('series.id')->get();
+
+
             if ((!Auth::guest() && Auth::user()->role == 'admin') || $series_ppv_status != 1 || $ppv_exits > 0 || $free_episode > 0) {
                 $data = [
                     'currency' => $currency,
@@ -443,7 +454,7 @@ class TvshowsController extends Controller
                     'like_dislike' => $like_dislike,
                     'source_id' => $source_id,
                     'commentable_type' => 'play_episode',
-                    'series_lists' =>   Series::all() ,
+                    'series_lists' =>   $series_lists ,
                 ];
 
                 if (Auth::guest() && $settings->access_free == 1) {
@@ -477,7 +488,7 @@ class TvshowsController extends Controller
                     'like_dislike' => $like_dislike,
                     'source_id' => $source_id,
                     'commentable_type' => 'play_episode',
-                    'series_lists' =>  Series::all() ,
+                    'series_lists' =>  $series_lists ,
                 ];
 
                 if (Auth::guest() && $settings->access_free == 1) {
