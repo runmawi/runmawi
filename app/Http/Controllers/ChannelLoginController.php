@@ -73,7 +73,7 @@ class ChannelLoginController extends Controller
         $data = array(
             'settings' => $settings,
         );
-        return Theme::view('channel.login', $data);
+        return Theme::view('Channel.login', $data);
 
         // return \View::make('channel.login', $data);
     }
@@ -84,7 +84,7 @@ class ChannelLoginController extends Controller
         $data = array(
             'settings' => $settings,
         );
-        return Theme::view('channel.register', $data);
+        return Theme::view('Channel.register', $data);
 
         // return \View::make('channel.register', $data);
     }
@@ -636,7 +636,7 @@ Please recheck the credentials before you try again!');
             $settings = Setting::first();
             $user = User::where('id', '=', 1)->first();
 
-            return Theme::view('channel.reset_password', compact('settings', 'user'));
+            return Theme::view('Channel.reset_password', compact('settings', 'user'));
         }
         else
         {
@@ -836,7 +836,7 @@ Please recheck the credentials before you try again!');
           $decrypt_email = \Crypt::decryptString($email);
           // dd($decrypt_email);
 
-          return Theme::view('channel.verify_reset_password', compact('settings', 'user','decrypt_email','token'));
+          return Theme::view('Channel.verify_reset_password', compact('settings', 'user','decrypt_email','token'));
       }
       else
       {
@@ -870,7 +870,7 @@ Please recheck the credentials before you try again!');
                   Mail::send('emails.resetpassword', array('website_name' => GetWebsiteName() ,'verification_code' => $verification_code,) ,
                       function ($message) use ($data, $request){
                           $message->from(AdminMail() , GetWebsiteName());
-                          $message->to($request->email,)->subject($data['email_subject']);
+                          $message->to($request->email)->subject($data['email_subject']);
                       });
 
                   $email_log = 'Mail Sent Successfully For Reset Password';
