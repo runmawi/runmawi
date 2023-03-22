@@ -1549,7 +1549,7 @@ public function verifyandupdatepassword(Request $request)
           $dislike = 'false';
         }
 
-        $livestream_details = LiveStream::where('active',1)->where('status',1)->where('id',$request->liveid)->get()->map(function ($item) {
+        $livestream_details = LiveStream::findorfail($request->liveid)->where('id',$request->liveid)->where('active',1)->where('status',1)->get()->map(function ($item) {
           $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
           $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
           $item['live_description'] = $item->description ? $item->description : "" ;
