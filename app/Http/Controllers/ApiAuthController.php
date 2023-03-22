@@ -1240,6 +1240,7 @@ public function verifyandupdatepassword(Request $request)
         $item['video_tv_image'] = URL::to('/').'/public/uploads/images/'.$item->video_tv_image;
         $item['transcoded_url'] = URL::to('/storage/app/public/').'/'.$item->path . '.m3u8';
         $item['description']    = strip_tags(html_entity_decode($item->description));
+        $item['movie_duration']    = gmdate('H:i:s', $item->duration);
         $ads_videos = AdsVideo::where('ads_videos.video_id',$item->id)
             ->join('advertisements', 'ads_videos.ads_id', '=', 'advertisements.id')
             ->first();
@@ -6309,7 +6310,7 @@ public function LocationCheck(Request $request){
         $response = array(
           'status'  => 'true',
           'message' => 'Multiprofile Retrieved  successfully' ,
-          'user'    => $subcriber_user,
+          'user'    => $subcriber_user->first(),
           'sub_users'=> $muti_users,
           'multi_users'=> $muti_users
         );

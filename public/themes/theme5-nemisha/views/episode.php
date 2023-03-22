@@ -401,7 +401,7 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
                   </a>
                 </div> -->
 				<!-- </div> -->
-          <!-- </a> -->  </div>
+          <!-- </a> -->
         </li>
 		<?php endif; endforeach; ?>
       <?php endforeach; 
