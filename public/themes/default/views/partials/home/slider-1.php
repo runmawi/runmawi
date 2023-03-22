@@ -10,7 +10,7 @@
                 <div class="slider-inner h-100">
                     <div class="row align-items-center bl h-100">
                         <div class="col-xl-6 col-lg-12 col-md-12">
-                        <h1 class="text-white mb-3" >
+                        <h1 class="text-white" >
                         <?php echo (strlen($slider_video->title) > 15) ? substr($slider_video->title,0,80).'...' : $slider_video->title; ?>
                     </h1>
                     <div class="d-flex justify-content-evenly align-items-center r-mb-23" >
@@ -43,7 +43,7 @@ endif; ?>
                         <img src="<?php echo URL::to('/').'/assets/img/logo.png'?>" class="c-logo" alt="Flicknexs">
                         </div>
                         </a>-->
-                        <h1 class="text-white mb-3" >
+                        <h1 class="text-white" >
                         <?php 
                         //  $title = $slider_video->title;
                         //  $slidertitle = substr($title, 0, 80);                        
@@ -116,7 +116,7 @@ endif; ?>
                     <div class="slider-inner h-100">
                         <div class="row align-items-center bl h-100">
                             <div class="col-xl-6 col-lg-12 col-md-12">
-                                <h1 class="text-white mb-3" >
+                                <h1 class="text-white" >
                                     <?php  echo (strlen($live_event_banner->title) > 15) ? substr($live_event_banner->title,0,80).'...' : $live_event_banner->title; ?>
                                 </h1>
 
@@ -166,7 +166,7 @@ endif; ?>
                                     </a>
                                                         <!-- Video Title  -->
                                 <?php }else{ ?>
-                                    <h1 class="text-white mb-3" >
+                                    <h1 class="text-white" >
                                         <?php echo (strlen($videos->title) > 15) ? substr($videos->title,0,80).'...' : $videos->title; ?>
                                     </h1>
                                 <?php } ?>
@@ -312,7 +312,7 @@ if(Route::current()->getName() == "home" || Route::current()->getName() == null 
                                         </a>
                                                             <!-- Video Title  -->
                                     <?php }else{ ?>
-                                        <h1 class="text-white mb-3" data-animation-in="fadeInLeft"   data-delay-in="0.6">
+                                        <h1 class="text-white" data-animation-in="fadeInLeft"   data-delay-in="0.6">
                                             <?php echo (strlen($videos_categorys->title) > 15) ? substr($videos_categorys->title,0,80).'...' : $videos_categorys->title; ?>
                                         </h1>
                                     <?php } ?>
@@ -582,7 +582,7 @@ if(Route::current()->getName() == "home" || Route::current()->getName() == null 
                         <div class="row align-items-center bl h-100">
                             <div class="col-xl-6 col-lg-12 col-md-12">
                         
-                                <h1 class="text-white mb-3"    >
+                                <h1 class="text-white "    >
                                     <?php  echo (strlen($series_slider->title) > 15) ? substr($series_slider->title,0,80).'...' : $series_slider->title;    ?>
                                 </h1>
 

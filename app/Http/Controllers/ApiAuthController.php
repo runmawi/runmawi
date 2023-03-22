@@ -1494,80 +1494,104 @@ public function verifyandupdatepassword(Request $request)
 
   public function livestreamdetail(Request $request)
   {
-    $liveid = $request->liveid;
-    $user_id = $request->user_id;
-    $livedetail = LiveStream::where('id',$liveid)->orderBy('created_at', 'desc')->get()->map(function ($item) {
-        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-        $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
-        $item['live_description'] = $item->description ? $item->description : "" ;
-        $item['trailer'] = null ;
-        return $item;
-      });
+    try {
+        $liveid = $request->liveid;
+        $user_id = $request->user_id;
 
-      $languages = LiveLanguage::Join('languages','languages.id','=','live_languages.language_id')
-          ->where('live_languages.live_id',$liveid)->get('name');
+      // Live Language
 
-      foreach($languages as $value){
-        $language[] = $value['name'];
-      }
-      if(!empty($language)){
-        $languages = implode(",",$language);
-      }else{
-        $languages = "";
-      }
+        $languages = LiveLanguage::Join('languages','languages.id','=','live_languages.language_id')->where('live_languages.live_id',$liveid)->get('name');
 
-      $categorys = CategoryLive::join('live_categories','live_categories.id','=','livecategories.category_id')
-      ->where('live_id',$liveid)->get('name');
+        foreach($languages as $value){
+          $language[] = $value['name'];
+        }
 
-      foreach($categorys as $value){
-        $category[] = $value['name'];
-      }
+        $languages = !empty($language) ? implode(",",$language) : " ";
+        
+      // Category Live
 
-      $categories = !empty($category) ? implode(",",$category) : ' ' ;
+        $categorys = CategoryLive::join('live_categories','live_categories.id','=','livecategories.category_id')->where('live_id',$liveid)->get('name');
 
-      $current_date = date('Y-m-d h:i:s a', time());
-      // $ppv_exist = LivePurchase::where('video_id',$videoid)->where('user_id',$user_id)->where('to_time','>',$current_date)->count();
-      $ppv_exist = LivePurchase::where('video_id',$liveid)->where('user_id',$user_id)->count();
-        // dd($ppv_exist);
-      if ($ppv_exist > 0) {
+        foreach($categorys as $value){
+          $category[] = $value['name'];
+        }
 
-            $ppv_time_expire = LivePurchase::where('user_id','=',$user_id)->where('video_id','=',$liveid)->pluck('to_time')->first();
+        $categories = !empty($category) ? implode(",",$category) : ' ' ;
 
-            if ( $ppv_time_expire > $current_date ) {
+      // PPV 
 
-                $ppv_video_status = "can_view";
-              // $ppv_video_status = "pay_now";
+        $current_date = date('Y-m-d h:i:s a', time());
 
-            } else {
-                  $ppv_video_status = "expired";
-            }
+        $ppv_exist = LivePurchase::where('video_id',$liveid)->where('user_id',$user_id)->count();
 
-      } else {
-            $ppv_video_status = "pay_now";
-            // $ppv_video_status = "can_view";
-      }
-      if($request->user_id != ''){
-        $like_data = LikeDisLike::where("live_id","=",$liveid)->where("user_id","=",$user_id)->where("liked","=",1)->count();
-        $dislike_data = LikeDisLike::where("live_id","=",$liveid)->where("user_id","=",$user_id)->where("disliked","=",1)->count();
-        $like = ($like_data == 1) ? "true" : "false";
-        $dislike = ($dislike_data == 1) ? "true" : "false";
-      }else{
-        $like = 'false';
-        $dislike = 'false';
-        // $userrole = '';
-      }
+        if ($ppv_exist > 0) {
 
-    $response = array(
-      'status' => 'true',
-      'shareurl' => URL::to('live').'/'.$liveid,
-      'livedetail' => $livedetail,
-      'like' => $like,
-      'dislike' => $dislike,
-      'ppv_video_status' => $ppv_video_status,
-      'languages' => $languages,
-      'categories' => $categories,
-    );
+              $ppv_time_expire = LivePurchase::where('user_id','=',$user_id)->where('video_id','=',$liveid)->pluck('to_time')->first();
 
+              $ppv_video_status = $ppv_time_expire > $current_date ? "can_view" :  "expired" ;
+
+        } else {
+              $ppv_video_status = "pay_now";
+        }
+
+        //  Like & Dislike
+
+        if($request->user_id != ''){
+
+          $like_data = LikeDisLike::where("live_id","=",$liveid)->where("user_id","=",$user_id)->where("liked","=",1)->count();
+          $dislike_data = LikeDisLike::where("live_id","=",$liveid)->where("user_id","=",$user_id)->where("disliked","=",1)->count();
+          $like = ($like_data == 1) ? "true" : "false";
+          $dislike = ($dislike_data == 1) ? "true" : "false";
+        }
+        else{
+
+          $like = 'false';
+          $dislike = 'false';
+        }
+
+        $livestream_details = LiveStream::findorfail($request->liveid)->where('id',$request->liveid)->where('active',1)->where('status',1)->get()->map(function ($item) {
+          $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+          $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+          $item['live_description'] = $item->description ? $item->description : "" ;
+          $item['trailer'] = null ;
+
+          if(plans_ads_enable() == 1){
+
+            $item['live_ads_url'] =  AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
+                                      // ->whereDate('start', '=', Carbon\Carbon::now()->format('Y-m-d'))
+                                      // ->whereTime('start', '<=', $current_time)
+                                      // ->whereTime('end', '>=', $current_time)
+                                      ->where('ads_events.status',1)
+                                      ->where('advertisements.status',1)
+                                      ->where('advertisements.id',$item->live_ads)
+                                      ->pluck('ads_path')->first();
+                            
+          }else{
+            $item['live_ads_url'] = " ";
+          }
+         
+          return $item;
+        });
+
+      $response = array(
+        'status' => 'true',
+        'shareurl' => URL::to('live').'/'.$liveid,
+        'livedetail' => $livestream_details,
+        'like' => $like,
+        'dislike' => $dislike,
+        'ppv_video_status' => $ppv_video_status,
+        'languages' => $languages,
+        'categories' => $categories,
+      );
+
+      
+    } catch (\Throwable $th) {
+
+        $response = array(
+          'status' => 'false',
+          'message' => $th->getMessage() ,
+        );
+    }
     return response()->json($response, 200);
   }
 

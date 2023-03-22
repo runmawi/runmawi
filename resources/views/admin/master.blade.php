@@ -1689,7 +1689,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
 <?php if($request_url != "filemanager") { ?>
 
   <!-- Imported styles on this page -->
-  <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/jquery.min.js';?>"></script>
+  <script src="<? //URL::to('/'). '/assets/admin/dashassets/js/jquery.min.js';?>"></script>
   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/jquery1.min.js';?>"></script>
    <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/popper.min.js';?>"></script>
    <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/jquery.dataTables.min.js';?>"></script>
