@@ -162,9 +162,8 @@
    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
    <link rel="shortcut icon" type="image/png" href="<?= URL::to('/'). '/public/uploads/settings/'. $settings->favicon; ?>" />
    <!-- Bootstrap CSS -->
-     <link rel="preload" href="<?= URL::to('/'). '/assets/css/bootstrap.min.css';?>" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/bootstrap.min.css';?>"></noscript>
-   <!-- Typography CSS -->
+     <link rel="stylesheet" href="<?= URL::to('/') . '/assets/css/bootstrap.min.css' ?>" />
+   <!-- Typography CSS  -->
    <link rel="stylesheet" href="<?= typography_link();?>" />
    <!-- Style -->
    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/style.css';?>" />
@@ -348,6 +347,7 @@
    }
    body.light-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover {
    color: rgb(0, 82, 204)!important;
+       font-weight: 500;
    }
    body.light-theme .navbar-right .iq-sub-dropdown{
    background-color: <?php echo GetLightBg(); ?>;  
