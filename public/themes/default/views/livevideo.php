@@ -237,6 +237,12 @@ if ($ppv_exist > 0 ||  Auth::user()->subscribed() || $video_access == "free"  ||
                         <source  type="application/x-mpegURL"  src="<?php echo $video->live_stream_video ; ?>" >
                     </video>
 
+            <?php  }elseif(!empty($video->url_type ) && $video->url_type == "acc_audio_url"){  ?>
+
+                    <video id="acc_audio"  <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                        <source  src="<?php echo $video->acc_audio_url ; ?>" >
+                    </video>
+
             <?php  }elseif(!empty($video->url_type ) && $video->url_type == "aws_m3u8"){  ?>
 
                     <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo $video->live_stream_video; ?>">
@@ -390,6 +396,12 @@ else{
             <video id="live_player" <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
                     <source type="application/x-mpegURL" src="<?php echo $video->live_stream_video ; ?>">
             </video>
+
+        <?php  }elseif(!empty($video->url_type ) && $video->url_type == "acc_audio_url"){  ?>
+
+                <video id="acc_audio" <?= $autoplay ?>  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                    <source  src="<?php echo $video->acc_audio_url ; ?>" >
+                </video>
             
         <?php  }elseif(!empty($video->url_type ) && $video->url_type == "aws_m3u8"){  ?>
 
@@ -458,9 +470,9 @@ else{
                         <h2 class="mb-3">Pay now to watch <?php echo $video->title; ?></h2>
                         <div class="clear"></div>
                         <?php if(Auth::guest()){ ?>
-                        <a href="<?php echo URL::to('/login');?>"><button class="btn btn-primary btn-block" >Purchase For Pay <?php echo $currency->symbol.' '.$video->ppv_price; ?></button></a>
+                            <a href="<?php echo URL::to('/login');?>"><button class="btn btn-primary btn-block" >Purchase For Pay <?php echo $currency->symbol.' '.$video->ppv_price; ?></button></a>
                         <?php }else{ ?>
-                        <button class="btn btn-primary btn-block" onclick="pay(<?php echo $video->ppv_price; ?>)">Purchase For Pay <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
+                            <button class="btn btn-primary btn-block" onclick="pay(<?php echo $video->ppv_price; ?>)">Purchase For Pay <?php echo $currency->symbol.' '.$video->ppv_price; ?></button>
                         <?php } ?>
                     </div>
                 </div>
@@ -499,19 +511,19 @@ else{
         </div>
         <!-- Year, Running time, Age -->
        <?php 
-       if(!empty($video->publish_time)){
-        $originalDate = $video->publish_time;
-        $publishdate = date('d F Y', strtotime($originalDate));
-       }else{
-        $originalDate = $video->created_at;
-        $publishdate = date('d F Y', strtotime($originalDate));
-       }
-     ?>
+            if(!empty($video->publish_time)){
+                    $originalDate = $video->publish_time;
+                    $publishdate = date('d F Y', strtotime($originalDate));
+            }else{
+                    $originalDate = $video->created_at;
+                    $publishdate = date('d F Y', strtotime($originalDate));
+            }
+        ?>
         <div class=" align-items-center text-white text-detail p-0">
         <span class="badge badge-secondary p-2"><?php echo __(@$video->languages->name);?></span>
-        <span class="badge badge-secondary p-2"><?php echo __(@$video->categories->name);?></span>
+        <span class="badge badge-secondary p-2"><?php echo (@$video->categories->name);?></span>
         <span class="badge badge-secondary p-2">Published On : <?php  echo $publishdate;?></span>
-        <span class="badge badge-secondary p-2"><?php echo __($video->age_restrict);?></span>
+        <span class="badge badge-secondary p-2"><?php echo (@$video->age_restrict);?></span>
      
           </div>
         
@@ -524,26 +536,6 @@ else{
                   </ul>
             </div>
 
-<!--                    <div class="col-sm-6 col-md-6 col-xs-12">-->
-<!--
-                  <div class="d-flex align-items-center series mb-4">
-                     <a href="javascript:void();"><img src="images/trending/trending-label.png" class="img-fluid"
-                           alt=""></a>
-                     <span class="text-gold ml-3">#2 in Series Today</span>
-                  </div>
--->                 
-<!--                        <ul class="list-inline p-0 mt-4 rental-lists">-->
-                <!-- Subscribe -->
-<!--
-                    <li>
-                        <?php     
-                            $user = Auth::user(); 
-                            if (  ($user->role!="subscriber" && $user->role!="admin") ) { ?>
-                                <a href="<?php echo URL::to('/becomesubscriber');?>"><span class="view-count btn btn-primary subsc-video"><?php echo __('Subscribe');?> </span></a>
-                        <?php } ?>
-                    </li>
--->
-                    
                 </ul>
             </div>
 
@@ -560,8 +552,6 @@ else{
                   </ul>
             </div>
 
-
-                  
                     <div class="col-sm-6 col-md-6 col-xs-12">
     <!--
                           <div class="d-flex align-items-center series mb-4">
@@ -590,7 +580,8 @@ else{
                     </div>
                 </div>
                 <?php   }?>
-    <div class="container-fluid">
+
+            <div class="container-fluid">
                 <div class="text-white col-md-6 p-0">
                     <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->description); ?></p>
                 </div>
@@ -605,6 +596,8 @@ else{
                     </div>
                 </div>
             </div>
+
+                            <!-- CommentSection -->
 
             <?php if( App\CommentSection::first() != null && App\CommentSection::pluck('livestream')->first() == 1 ): ?>
                 <div class="row">

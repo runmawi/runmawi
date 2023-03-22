@@ -21,6 +21,22 @@
 
     document.addEventListener('DOMContentLoaded', () => { 
 
+    const player = new Plyr('#acc_audio',{
+
+        controls: [   'play-large','restart','rewind','play','fast-forward','progress',
+                        'current-time','mute','volume','captions','settings','pip','airplay',
+                        'fullscreen'
+                    ],
+
+            ads:{ 
+                enabled: true, 
+                tagUrl: live_ads 
+            }
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', () => { 
+
     const player = new Plyr('#Embed_player',{
 
           controls: [   'play-large','restart','rewind','play','fast-forward','progress',
