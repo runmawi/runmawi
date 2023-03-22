@@ -156,7 +156,7 @@ border-radius: 0px 4px 4px 0px;
                                             <p class="p1">Select the Live stream  image ( 9:16 Ratio or 1080X1920px ):</p>
 
                                             <div class="panel-body">
-                                                <input type="file" multiple="true" class="form-group" name="image" id="image" />
+                                                <input type="file" multiple="true" class="form-group" name="image" id="image" accept="image/*"/>
                                             </div>
                                         </div>
 
@@ -176,7 +176,7 @@ border-radius: 0px 4px 4px 0px;
                                             <p class="p1">Select the Live stream  image( 16:9 Ratio or 1280X720px ):</p>
 
                                             <div class="panel-body">
-                                                <input type="file" multiple="true" class="form-group" name="player_image" id="player_image" />
+                                                <input type="file" multiple="true" class="form-group" name="player_image" id="player_image" accept="image/*"/>
                                             </div>
                                         </div>
 
@@ -232,7 +232,7 @@ border-radius: 0px 4px 4px 0px;
 
                                 <div class="new-video-upload mt-2" id="acc_audio_file">
                                     <label for=""><label>ACC Audio File</label></label>
-                                    <input type="file" multiple="true" class="form-group" name="acc_audio_file"  />
+                                    <input type="file" multiple="true"  accept=".mp3,audio/*" class="form-group" name="acc_audio_file"  />
                                 </div>
 
                                 <div class="new-video-upload mt-2" id="acc_audio_url">
@@ -242,7 +242,7 @@ border-radius: 0px 4px 4px 0px;
 
                                 <div class="new-video-upload mt-2" id="live_stream_video">
                                     <label for=""><label>Live Stream Video</label></label>
-                                    <input type="file" multiple="true" class="form-group" name="live_stream_video"  />
+                                    <input type="file" multiple="true" accept="video/mp4,video/x-m4v,video/*" class="form-group" name="live_stream_video"  />
                                 </div>
                             </div>
                         </div>
@@ -252,7 +252,7 @@ border-radius: 0px 4px 4px 0px;
                             <div class="panel-body">
                                 <div class="new-video-upload mt-2" id="">
                                     <p class="p1">Select The Live Stream TV Image  (1920 X 1080  Or 16:9 Ratio) :</p>
-                                    <input type="file" multiple="true" class="form-group" name="live_stream_tv_image" id=live_stream_tv_image  />
+                                    <input type="file" multiple="true" class="form-group" name="live_stream_tv_image" id=live_stream_tv_image  accept="image/*" />
                                 </div>
                             </div>
                         </div>
