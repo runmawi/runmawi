@@ -7,11 +7,11 @@
 <div class="favorites-contens">
     <ul class="favorites-slider list-inline  row p-0 mb-0">
         <?php  
-        foreach($season as $key => $seasons):
-        foreach($seasons->episodes as $key => $episodes):
-            if($episodes->id != $episode->id): ?>
+     foreach($season as $key => $seasons):
+                foreach($seasons->episodes as $key => $episodes):
+                    if($episodes->id != $episode->id): ?>
         <li class="slide-item">
-            <a href="<?php echo URL::to('episode') . '/' . @$episodes->series_title->slug . '/' . $episodes->slug; ?>">
+            <a href="<?php echo URL::to('episode') . '/' . @$episodes->series_title->slug . '/' . $episodes->slug ; ?>">
 
                 <div class="block-images position-relative">
                     <div class="img-box">
@@ -22,18 +22,18 @@
                 <div class="block-description">
 
                     <div class="hover-buttons d-flex">
-                        <a class="text-white " href="<?php echo URL::to('episode') . '/' . @$episodes->series_title->slug . '/' . $episodes->slug; ?>">
+                        <a class="text-white " href="<?php echo URL::to('episode') . '/' . @$episodes->series_title->slug . '/' . $episodes->slug ; ?> ">
                             <img class="ply" src="<?php echo URL::to('/') . '/assets/img/play.svg'; ?>">
                         </a>
                     </div>
                 </div>
                 <div class="mt-2">
 
-                    <div class="movie-time d-flex align-items-center justify-content-between my-2">
-                        <a href="<?php echo URL::to('episode') . '/' . @$episodes->series_title->slug . '/' . $episodes->slug; ?> ">
-                            <h6><?php echo strlen($episodes->title) > 15 ? substr($episodes->title, 0, 15) . '...' : $episodes->title; ?></h6>
+                    <div class="movie-time d-flex align-items-center  my-2">
+                        <a href="<?php echo URL::to('episode') . '/' . @$episodes->series_title->slug . '/' . $episodes->slug ; ?> ">
+
+                            <h6 class="mr-1"><?php echo __($episodes->title); ?> ,</h6>
                         </a>
-                        <div class="badge badge-secondary p-1 mr-2"><?php echo $episodes->age_restrict . ' ' . '+'; ?></div>
                     </div>
                     <span class="text-white"><i class="fa fa-clock-o"></i>
                         <?= gmdate('H:i:s', $episodes->duration) ?></span>
@@ -46,7 +46,6 @@
             </a>
         </li>
         <?php endif; endforeach; ?>
-        <?php endforeach;
-  ?>
+        <?php endforeach; ?>
     </ul>
 </div>

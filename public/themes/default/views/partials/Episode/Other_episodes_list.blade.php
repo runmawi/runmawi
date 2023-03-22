@@ -10,6 +10,7 @@
          foreach($seasons->episodes as $key => $episodes):
              if($episodes->id != $episode->id): ?>
             <li class="slide-item">
+                
                 <a
                     href="<?= $settings->enable_https ? secure_url('episodes') : URL::to('episode') . '/' . @$episodes->series_title->slug . '/' . $episodes->slug ?>">
                     <div class="block-images position-relative">
@@ -17,7 +18,8 @@
                             <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $episodes->image; ?>" class="w-100">
                         </div>
                         <div class="block-description">
-                            <h6><?= $episodes->title ?> </h6>
+                            <h6><?php echo strlen($episodes->title) > 15 ? substr($episodes->title, 0, 15) . '...' : $episodes->title; ?></h6>
+
                             <p class="date" style="color:#fff;font-size:14px;">
                                 <?= date('F jS, Y', strtotime($episodes->created_at)) ?>
                                 <?php if($episodes->access == 'guest'): ?>

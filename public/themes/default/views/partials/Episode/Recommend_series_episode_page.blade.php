@@ -15,7 +15,7 @@
                             <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $series_list->image; ?>" class="w-100">
                         </div>
                         <div class="block-description">
-                            <h6><?= $series_list->title ?> </h6>
+                            <h6><?php echo strlen($series_list->title) > 15 ? substr($series_list->title, 0, 15) . '...' : $series_list->title; ?></h6>
 
                             <p class="date" style="color:#fff;font-size:14px;">
                                 <?= date('F jS, Y', strtotime($series_list->created_at)) ?>
