@@ -359,7 +359,7 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 		<div class="iq-main-header  d-flex align-items-center justify-content-between">
   			<h4 class="mb-3">Episodes</h4>                      
 		</div>
-        
+          <div class=" overflow-hidden">
 <div class="favorites-contens">
   <ul class="favorites-slider list-inline  row p-0 mb-0">
     <?php  
@@ -371,6 +371,13 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
             <div class="block-images position-relative">
                                     <div class="img-box">
                                       <img class="w-100" src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" width="">
+                                        <?php if($episodes->access == 'guest'): ?>
+				<span class="label label-info p-tag1">Free</span>
+				<?php elseif($episodes->access == 'subscriber'): ?>
+				<span class="label label-success ">Subscribers Only</span>
+				<?php elseif($episodes->access == 'registered'): ?>
+				<span class="label label-warning">Registered Users</span>
+				<?php endif; ?>
                                     </div></div>
 				<div class="thumbnail-overlay"></div>
 <!--				<img src="<= ImageHandler::getImage($episodes->image, 'medium')  ?>">-->
@@ -380,13 +387,7 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
 				</div></a>
               <div class="block-contents">
 			  <small class="date" style="color:#fff;"><?= date("F jS, Y", strtotime($episodes->created_at)); ?>
-				<?php if($episodes->access == 'guest'): ?>
-				<span class="label label-info">Free</span>
-				<?php elseif($episodes->access == 'subscriber'): ?>
-				<span class="label label-success">Subscribers Only</span>
-				<?php elseif($episodes->access == 'registered'): ?>
-				<span class="label label-warning">Registered Users</span>
-				<?php endif; ?>
+				
 				</small>
 				<p class="desc"><?php if(strlen($episodes->description) > 90){ echo substr($episodes->description, 0, 90) . '...'; } else { echo $episodes->description; } ?></p>
                 <!-- <div class="movie-time d-flex align-items-center my-2"> -->
@@ -400,13 +401,13 @@ $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
                   </a>
                 </div> -->
 				<!-- </div> -->
-          <!-- </a> -->
+          <!-- </a> -->  </div>
         </li>
 		<?php endif; endforeach; ?>
       <?php endforeach; 
      ?>
   </ul>
-</div>
+            </div>
 </div>
  </div>
 		<div class="clear">
