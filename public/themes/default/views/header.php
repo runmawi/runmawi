@@ -162,9 +162,8 @@
    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
    <link rel="shortcut icon" type="image/png" href="<?= URL::to('/'). '/public/uploads/settings/'. $settings->favicon; ?>" />
    <!-- Bootstrap CSS -->
-     <link rel="preload" href="<?= URL::to('/'). '/assets/css/bootstrap.min.css';?>" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/bootstrap.min.css';?>"></noscript>
-   <!-- Typography CSS -->
+     <link rel="stylesheet" href="<?= URL::to('/') . '/assets/css/bootstrap.min.css' ?>" />
+   <!-- Typography CSS  -->
    <link rel="stylesheet" href="<?= typography_link();?>" />
    <!-- Style -->
    <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/style.css';?>" />
@@ -348,6 +347,7 @@
    }
    body.light-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover {
    color: rgb(0, 82, 204)!important;
+       font-weight: 500;
    }
    body.light-theme .navbar-right .iq-sub-dropdown{
    background-color: <?php echo GetLightBg(); ?>;  
@@ -378,6 +378,10 @@
    body.light-theme .block-description a{
    color: <?php echo GetLightText(); ?>!important;
    font-weight: 400;
+   } 
+    body.light-theme .block-description{
+  background-image: linear-gradient(to bottom, rgb(243 244 247 / 30%), rgb(247 243 243 / 90%), rgb(247 244 244 / 90%), rgb(235 227 227 / 90%));
+    backdrop-filter: blur(2px);
    }
    body.light-theme  header .navbar ul li{
    font-weight: 400;
@@ -675,7 +679,7 @@
                            <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
                            <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
                            <input id="password" type="hidden"  name="password" value="<?=  @$ModeratorsUser->password ?>" autocomplete="current-password" >
-                           <button type="submit" class="btn btn-hover " style="margin-top: -14%;margin-left: -14%;">CPP Portal </button>                          
+                           <button type="submit" class="btn btn-primary " style="margin-top: -18%;margin-left: -14%;">CPP Portal </button>                          
                         </form>
                      </div>
                      <?php }if(!Auth::guest() && !empty($Channel)){ ?>
@@ -684,7 +688,7 @@
                            <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
                            <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
                            <input id="password" type="hidden"  name="password" value="<?=  @$Channel->unhased_password ?>" autocomplete="current-password" >
-                           <button type="submit" class="btn btn-hover" style="margin-top: -13%;margin-left: -8%;">Channel Visit Portal </button>                          
+                           <button type="submit" class="btn btn-primary" style="margin-top: -13%;margin-left: -8%;">Channel Visit Portal </button>                          
                         </form>
                      </div>
                      <?php } ?>
@@ -815,7 +819,7 @@
                                  <div class="iq-card shadow-none m-0">
                                     <div class="iq-card-body p-0 pl-3 pr-3">
                                        <!-- dark mode -->
-                                       <div class="toggle mt-3 ">
+                                       <div class="toggle mt-2 ">
                                           <i class="fas fa-moon"></i>      
                                           <label class="switch toggle mt-3">
                                           <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
@@ -955,7 +959,7 @@
                                              <input type="checkbox" id="toggle" />
                                              <label for="toggle"></label>
                                              </div> -->                                                  <!-- dark mode -->
-                                          <div class="toggle mt-3 text-left">
+                                          <div class="toggle mt-2 text-left">
                                              <i class="fas fa-moon"></i>
                                              <label class="switch toggle mt-3">
                                              <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?> 
