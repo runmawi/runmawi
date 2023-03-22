@@ -471,6 +471,7 @@
                               </li>
                               </ul>-->
                            <ul id="top-menu" class=" mt-2 nav navbar-nav <?php if ( Session::get('locale') == 'arabic') { echo "navbar-right"; } else { echo "navbar-left";}?>">
+                               
                               <?php if(Auth::guest()){ ?>
                               <li class="menu-item dk" style="display:none;">
                                  <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
@@ -514,6 +515,7 @@
                                  </a>
                               </li>
                               <?php } ?>
+                               
                               <?php
                                  $stripe_plan = SubscriptionPlan();
                                  //  $menus = App\Menu::all();
@@ -639,6 +641,31 @@
                                  <!-- </li> -->
                                  <!-- signup Mobile view -->
                                  <!-- signup End  -->
+                                  <div class="mob-w">
+                                    <?php 
+                        if(!Auth::guest()){                                                              
+                        $ModeratorsUser = App\ModeratorsUser::where('email', Auth::User()->email)->first();
+                        $Channel = App\Channel::where('email', Auth::User()->email)->first();
+                        }
+                        if(!Auth::guest() && !empty($ModeratorsUser)){ ?>
+                     <div class="iq-search-bar ml-auto">
+                        <form method="POST" action="<?php echo URL::to('cpp/home') ?>" class="mt-4">
+                           <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
+                           <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
+                           <input id="password" type="hidden"  name="password" value="<?=  @$ModeratorsUser->password ?>" autocomplete="current-password" >
+                           <button type="submit" class="btn btn-primary " style="margin-top: 0%;margin-left: 5%;">CPP Portal </button>                          
+                        </form>
+                     </div>
+                     <?php }if(!Auth::guest() && !empty($Channel)){ ?>
+                     <div class="iq-search-bar ml-auto">
+                        <form method="POST" action="<?php echo URL::to('channel/home') ?>" class="mt-4">
+                           <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
+                           <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
+                           <input id="password" type="hidden"  name="password" value="<?=  @$Channel->unhased_password ?>" autocomplete="current-password" >
+                           <button type="submit" class="btn btn-primary" style="margin-top: 0%;margin-left: 5%;">Channel Visit Portal </button>                          
+                        </form>
+                     </div>
+                     <?php } ?></div>
                            </ul>
                         </div>
                      </div>
@@ -668,6 +695,7 @@
                            </div>
                         </div>
                      </div>
+                      <div id="desk-top">
                      <?php 
                         if(!Auth::guest()){                                                              
                         $ModeratorsUser = App\ModeratorsUser::where('email', Auth::User()->email)->first();
@@ -691,7 +719,7 @@
                            <button type="submit" class="btn btn-primary" style="margin-top: -13%;margin-left: -8%;">Channel Visit Portal </button>                          
                         </form>
                      </div>
-                     <?php } ?>
+                     <?php } ?></div>
                      <div class="navbar-right menu-right pt-2">
                         <ul class="d-flex align-items-center list-inline m-0">
                            <li class="nav-item nav-icon" style="margin-right:1px;">
