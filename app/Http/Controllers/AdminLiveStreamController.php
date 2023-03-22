@@ -356,118 +356,139 @@ class AdminLiveStreamController extends Controller
         $settings = Setting::first();
 
     // live stream video
-    if($StorageSetting->site_storage == 1){
-        if(!empty($data['live_stream_video'])){
+        if($StorageSetting->site_storage == 1){
 
-            $live_stream_video = $data['live_stream_video'];
-            $live_stream_videopath  = URL::to('public/uploads/LiveStream/');
-            $LiveStream_Video =  time().$randomString.'-livestream-video';  
-            $live_stream_video->move(public_path('uploads/LiveStream/'), $LiveStream_Video);
-            $live_video_name = strtok($LiveStream_Video, '.');
-            $M3u8_save_path = $live_stream_videopath.'/'.$live_video_name.'.m3u8';
+            if(!empty($data['live_stream_video'])){
 
-            $ffmpeg = \Streaming\FFMpeg::create();
-            $videos = $ffmpeg->open('public/uploads/LiveStream'.'/'.$LiveStream_Video);
+                $live_stream_video = $data['live_stream_video'];
+                $live_stream_videopath  = URL::to('public/uploads/LiveStream/');
+                $LiveStream_Video =  time().$randomString.'-livestream-video';  
+                $live_stream_video->move(public_path('uploads/LiveStream/'), $LiveStream_Video);
+                $live_video_name = strtok($LiveStream_Video, '.');
+                $M3u8_save_path = $live_stream_videopath.'/'.$live_video_name.'.m3u8';
 
-            $r_144p  = (new Representation)->setKiloBitrate(95)->setResize(256, 144);
-            $r_240p  = (new Representation)->setKiloBitrate(150)->setResize(426, 240);
-            $r_360p  = (new Representation)->setKiloBitrate(276)->setResize(640, 360);
-            $r_480p  = (new Representation)->setKiloBitrate(750)->setResize(854, 480);
-            $r_720p  = (new Representation)->setKiloBitrate(2048)->setResize(1280, 720);
-            $r_1080p = (new Representation)->setKiloBitrate(4096)->setResize(1920, 1080);
+                $ffmpeg = \Streaming\FFMpeg::create();
+                $videos = $ffmpeg->open('public/uploads/LiveStream'.'/'.$LiveStream_Video);
 
-            $videos->hls()
-                    ->x264()
-                    ->addRepresentations([$r_144p,$r_360p,$r_720p])
-                    ->save('public/uploads/LiveStream'.'/'.$live_video_name.'.m3u8');
+                $r_144p  = (new Representation)->setKiloBitrate(95)->setResize(256, 144);
+                $r_240p  = (new Representation)->setKiloBitrate(150)->setResize(426, 240);
+                $r_360p  = (new Representation)->setKiloBitrate(276)->setResize(640, 360);
+                $r_480p  = (new Representation)->setKiloBitrate(750)->setResize(854, 480);
+                $r_720p  = (new Representation)->setKiloBitrate(2048)->setResize(1280, 720);
+                $r_1080p = (new Representation)->setKiloBitrate(4096)->setResize(1920, 1080);
 
-            $movie->live_stream_video = $M3u8_save_path;
-        }
-    }elseif($StorageSetting->aws_storage == 1 && !empty($data['live_stream_video'])){
+                $videos->hls()
+                        ->x264()
+                        ->addRepresentations([$r_144p,$r_360p,$r_720p])
+                        ->save('public/uploads/LiveStream'.'/'.$live_video_name.'.m3u8');
 
-        if($settings->transcoding_access  == 0 ) {
-
-            $file = $data['live_stream_video'];
-            $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
-
-            $filePath = $StorageSetting->aws_live_path.'/'. $name;
-            
-            Storage::disk('s3')    ->put($filePath, file_get_contents($file));
-            $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
-            $filePath = $path.$filePath;
-            
-            $movie->live_stream_video = $filePath ; 
-        }elseif($settings->transcoding_access  == 1 ) {
-
-            $file = $data['live_stream_video'];
-            $file_folder_name =  $file->getClientOriginalName();
-            $name_mp4 =  $file->getClientOriginalName();
-            $name_mp4 = null ? str_replace(' ', '_', 'S3'.$name_mp4) : str_replace(' ', '_', 'S3'.$name_mp4) ;        
-
-            $newfile = explode(".mp4",$name_mp4);
-            $namem3u8 = $newfile[0].'.m3u8';   
-            $namem3u8 = null ? str_replace(' ', '_',$namem3u8) : str_replace(' ', '_',$namem3u8) ;        
-
-            $transcode_path = $StorageSetting->aws_transcode_path.'/'. $namem3u8;
-            $transcode_path_mp4 = $StorageSetting->aws_live_path.'/'. $name_mp4;
-            
-            Storage::disk('s3')->put($transcode_path_mp4, file_get_contents($file));
-            $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
-            $filePath = $path.$transcode_path_mp4;
-            $transcode_path = $path.$transcode_path;
-
-            
-            if($data['url_type'] == 'live_stream_video' ){
-            $movie->live_stream_video = $filePath ; 
-            $movie->hls_url = $transcode_path ; 
-            $url_type = 'aws_m3u8' ; 
+                $movie->live_stream_video = $M3u8_save_path;
             }
         }
-        else{
-            $file = $data['live_stream_video'];
-            $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
-            $filePath = $StorageSetting->aws_live_path.'/'. $name;
-            
-            Storage::disk('s3')->put($filePath, file_get_contents($file));
-            $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
-            $filePath = $path.$filePath;
-            
-            $movie->live_stream_video = $filePath ; 
+        elseif($StorageSetting->aws_storage == 1 && !empty($data['live_stream_video'])){
+
+            if($settings->transcoding_access  == 0 ) {
+
+                $file = $data['live_stream_video'];
+                $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
+
+                $filePath = $StorageSetting->aws_live_path.'/'. $name;
+                
+                Storage::disk('s3')    ->put($filePath, file_get_contents($file));
+                $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+                $filePath = $path.$filePath;
+                
+                $movie->live_stream_video = $filePath ; 
+            }
+            elseif($settings->transcoding_access  == 1 ) 
+            {
+
+                $file = $data['live_stream_video'];
+                $file_folder_name =  $file->getClientOriginalName();
+                $name_mp4 =  $file->getClientOriginalName();
+                $name_mp4 = null ? str_replace(' ', '_', 'S3'.$name_mp4) : str_replace(' ', '_', 'S3'.$name_mp4) ;        
+
+                $newfile = explode(".mp4",$name_mp4);
+                $namem3u8 = $newfile[0].'.m3u8';   
+                $namem3u8 = null ? str_replace(' ', '_',$namem3u8) : str_replace(' ', '_',$namem3u8) ;        
+
+                $transcode_path = $StorageSetting->aws_transcode_path.'/'. $namem3u8;
+                $transcode_path_mp4 = $StorageSetting->aws_live_path.'/'. $name_mp4;
+                
+                Storage::disk('s3')->put($transcode_path_mp4, file_get_contents($file));
+                $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+                $filePath = $path.$transcode_path_mp4;
+                $transcode_path = $path.$transcode_path;
+
+                
+                if($data['url_type'] == 'live_stream_video' ){
+                    $movie->live_stream_video = $filePath ; 
+                    $movie->hls_url = $transcode_path ; 
+                    $url_type = 'aws_m3u8' ; 
+                }
+            }
+            else
+            {
+                $file = $data['live_stream_video'];
+                $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
+                $filePath = $StorageSetting->aws_live_path.'/'. $name;
+                
+                Storage::disk('s3')->put($filePath, file_get_contents($file));
+                $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+                $filePath = $path.$filePath;
+                
+                $movie->live_stream_video = $filePath ; 
+            }
         }
-    }else{ 
-        if(!empty($data['live_stream_video'])){
+        else
+        { 
+            if(!empty($data['live_stream_video'])){
 
-            $live_stream_video = $data['live_stream_video'];
-            $live_stream_videopath  = URL::to('public/uploads/LiveStream/');
-            $LiveStream_Video =  time().'_'.$live_stream_video->getClientOriginalName();  
-            $live_stream_video->move(public_path('uploads/LiveStream/'), $LiveStream_Video);
-            $live_video_name = strtok($LiveStream_Video, '.');
-            $M3u8_save_path = $live_stream_videopath.'/'.$live_video_name.'.m3u8';
+                $live_stream_video = $data['live_stream_video'];
+                $live_stream_videopath  = URL::to('public/uploads/LiveStream/');
+                $LiveStream_Video =  time().'_'.$live_stream_video->getClientOriginalName();  
+                $live_stream_video->move(public_path('uploads/LiveStream/'), $LiveStream_Video);
+                $live_video_name = strtok($LiveStream_Video, '.');
+                $M3u8_save_path = $live_stream_videopath.'/'.$live_video_name.'.m3u8';
 
-            $ffmpeg = \Streaming\FFMpeg::create();
-            $videos = $ffmpeg->open('public/uploads/LiveStream'.'/'.$LiveStream_Video);
+                $ffmpeg = \Streaming\FFMpeg::create();
+                $videos = $ffmpeg->open('public/uploads/LiveStream'.'/'.$LiveStream_Video);
 
-            $r_144p  = (new Representation)->setKiloBitrate(95)->setResize(256, 144);
-            $r_240p  = (new Representation)->setKiloBitrate(150)->setResize(426, 240);
-            $r_360p  = (new Representation)->setKiloBitrate(276)->setResize(640, 360);
-            $r_480p  = (new Representation)->setKiloBitrate(750)->setResize(854, 480);
-            $r_720p  = (new Representation)->setKiloBitrate(2048)->setResize(1280, 720);
-            $r_1080p = (new Representation)->setKiloBitrate(4096)->setResize(1920, 1080);
+                $r_144p  = (new Representation)->setKiloBitrate(95)->setResize(256, 144);
+                $r_240p  = (new Representation)->setKiloBitrate(150)->setResize(426, 240);
+                $r_360p  = (new Representation)->setKiloBitrate(276)->setResize(640, 360);
+                $r_480p  = (new Representation)->setKiloBitrate(750)->setResize(854, 480);
+                $r_720p  = (new Representation)->setKiloBitrate(2048)->setResize(1280, 720);
+                $r_1080p = (new Representation)->setKiloBitrate(4096)->setResize(1920, 1080);
 
-            $videos->hls()
-                    ->x264()
-                    ->addRepresentations([$r_144p,$r_360p,$r_720p])
-                    ->save('public/uploads/LiveStream'.'/'.$live_video_name.'.m3u8');
+                $videos->hls()
+                        ->x264()
+                        ->addRepresentations([$r_144p,$r_360p,$r_720p])
+                        ->save('public/uploads/LiveStream'.'/'.$live_video_name.'.m3u8');
 
-            $movie->live_stream_video = $M3u8_save_path;
+                $movie->live_stream_video = $M3u8_save_path;
+            }
         }
-    }
+
+                // Encode - RTMP
+
             if(!empty($data['url_type']) && $data['url_type'] == "Encode_video" ){
-            $Stream_key = random_int(1000000000, 9999999999);
-            $movie->Stream_key = $Stream_key;
-            $movie->Rtmp_url = $data['Rtmp_url'];
-            $movie->hls_url = str_replace( "streamkey",$Stream_key,$data['hls_url']);
-        }
+                $Stream_key = random_int(1000000000, 9999999999);
+                $movie->Stream_key = $Stream_key;
+                $movie->Rtmp_url = $data['Rtmp_url'];
+                $movie->hls_url = str_replace( "streamkey",$Stream_key,$data['hls_url']);
+            }
+
+                            // Audio upload
+
+            if($request->hasFile('acc_audio_file')){
+
+                $audio_file =    time().'-live-stream-audio.'.$request->file('acc_audio_file')->getClientOriginalExtension();
+                $request->file('acc_audio_file')->move(public_path('uploads/LiveStream'), $audio_file);
+
+                $movie->acc_audio_file = URL::to('public/uploads/LiveStream/'.$audio_file) ;
+
+            }
 
              
         if(empty($data['active'])){
@@ -527,7 +548,6 @@ class AdminLiveStreamController extends Controller
         $movie->user_id =Auth::User()->id;
         $movie->ads_position = $request->ads_position;
         $movie->live_ads = $request->live_ads;
-        $movie->acc_audio_file = $request->acc_audio_file;
         $movie->acc_audio_url  = $request->acc_audio_url;
         $movie->save();
 
@@ -805,6 +825,22 @@ class AdminLiveStreamController extends Controller
 
             }
 
+                            // Audio upload
+
+            if($request->hasFile('acc_audio_file')){
+
+                if (File::exists(base_path('public/uploads/LiveStream/'.$video['acc_audio_file']))) 
+                {
+                    File::delete(base_path('public/uploads/LiveStream/'.$video['acc_audio_file']));
+                }
+
+                $audio_file =    time().'-live-stream-audio.'.$request->file('acc_audio_file')->getClientOriginalExtension();
+                $request->file('acc_audio_file')->move(public_path('uploads/LiveStream'), $audio_file);
+
+                $video->acc_audio_file = URL::to('public/uploads/LiveStream/'.$audio_file) ;
+
+            }
+
            $image = ($request->file('image')) ? $request->file('image') : '';
            $mp4_url = (isset($data['mp4_url'])) ? $data['mp4_url'] : '';
        
@@ -1023,7 +1059,6 @@ class AdminLiveStreamController extends Controller
         $video->m3u_url = $request->m3u_url;
         $video->ads_position = $request->ads_position;
         $video->live_ads     = $request->live_ads;
-        $video->acc_audio_file = $request->acc_audio_file;
         $video->acc_audio_url  = $request->acc_audio_url;
         $video->save();
 
