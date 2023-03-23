@@ -59,7 +59,20 @@
         opacity: 0.3;
         stroke: {{ button_bg_color() . '!important' }};
     }
-
+    .header .navbar ul li.menu-item a:hover{
+        
+    }
+    .main-title a:hover, .main-title a:focus{
+        color: {{ button_bg_color() . '!important' }}; 
+    }
+   header .navbar ul li.menu-item a:hover {
+   color: {{ button_bg_color() . '!important' }}; 
+      
+       font-weight: 500;
+   }
+    .menu-item:hover{
+        border-bottom: 2px solid  {{ button_bg_color() . '!important' }};
+    }
     .playbtn:hover .triangle {
         stroke-dashoffset: 0;
         opacity: 1;
@@ -70,7 +83,9 @@
     i.ri-settings-4-line.text-primary {
         color: {{ button_bg_color() . '!important' }};
     }
-
+    .f-link li a:hover{
+         color: {{ button_bg_color() . '!important' }};
+    }
     i.ri-logout-circle-line.text-primary {
         color: {{ button_bg_color() . '!important' }};
     }
