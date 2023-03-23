@@ -22,21 +22,21 @@
 
                     <?php  if(isset($live_streams)) :
                        foreach($live_streams as $livestream): 
-                        if (!empty($video->publish_time))
+                        if (!empty($livestream->publish_time))
                         {
                           $currentdate = date("M d , y H:i:s");
                           date_default_timezone_set('Asia/Kolkata');
                           $current_date = Date("M d , y H:i:s");
                           $date = date_create($current_date);
                           $currentdate = date_format($date, "D h:i");
-                          $publish_time = date("D h:i", strtotime($video->publish_time));
+                          $publish_time = date("D h:i", strtotime($livestream->publish_time));
                           if ($livestream->publish_type == 'publish_later')
                           {
                               if ($currentdate < $publish_time)
                               {
                                 $publish_time = date("D h:i", strtotime($livestream->publish_time));
-                                $publish_time  = \Carbon\Carbon::create($video->created_at, 'Asia/Kolkata')->format('h:i');
-                                $publish_day  = \Carbon\Carbon::create($video->created_at, 'Asia/Kolkata')->format('l');
+                                $publish_time  = \Carbon\Carbon::create($livestream->created_at, 'Asia/Kolkata')->format('h:i');
+                                $publish_day  = \Carbon\Carbon::create($livestream->created_at, 'Asia/Kolkata')->format('l');
                               }else{
                                 $publish_time = 'Published';
                                 $publish_day = '';
@@ -51,8 +51,8 @@
                               if ($currentdate == $publish_time)
                               {
                                 $publish_time = date("D h:i", strtotime($livestream->created_at));
-                                $publish_time  = \Carbon\Carbon::create($video->created_at, 'Asia/Kolkata')->format('h:i');
-                                $publish_day  = \Carbon\Carbon::create($video->created_at, 'Asia/Kolkata')->format('l');
+                                $publish_time  = \Carbon\Carbon::create($livestream->created_at, 'Asia/Kolkata')->format('h:i');
+                                $publish_day  = \Carbon\Carbon::create($livestream->created_at, 'Asia/Kolkata')->format('l');
                               }else{
                                 $publish_time = 'Published';
                                 $publish_day = '';
@@ -74,8 +74,8 @@
                               if ($currentdate == $publish_time)
                               {
                                 $publish_time = date("D h:i", strtotime($livestream->created_at));
-                                $publish_time  = \Carbon\Carbon::create($video->created_at, 'Asia/Kolkata')->format('h:i');
-                                $publish_day  = \Carbon\Carbon::create($video->created_at, 'Asia/Kolkata')->format('l');
+                                $publish_time  = \Carbon\Carbon::create($livestream->created_at, 'Asia/Kolkata')->format('h:i');
+                                $publish_day  = \Carbon\Carbon::create($livestream->created_at, 'Asia/Kolkata')->format('l');
                               }else{
                                 $publish_time = 'Published';
                                 $publish_day = '';
@@ -83,7 +83,7 @@
                           }
                           ?>
                         <li class="slide-item">
-                            <a href="<?php echo URL::to('category') ?><?= '/videos/' . $livestream->slug ?>">
+                            <a href="<?php echo URL::to('live') ?><?= '/' . $livestream->slug ?>">
                                 <div class="block-images position-relative">
                                                                 
                                     <div class="img-box">    <!-- block-images -->
