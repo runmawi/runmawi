@@ -60,7 +60,7 @@
         stroke: {{ button_bg_color() . '!important' }};
     }
     .header .navbar ul li.menu-item a:hover{
-        
+       
     }
     .main-title a:hover, .main-title a:focus{
         color: {{ button_bg_color() . '!important' }}; 
