@@ -11,6 +11,10 @@ Route::group(['prefix' => '/admin/filemanager', 'middleware' => ['web', 'auth']]
     \UniSharp\LaravelFilemanager\Lfm::routes();
 });
     
+
+Route::get('/cinet_pay/billings-details', 'PaymentController@cinet_pay');
+
+
 Route::get('/moderator', 'ModeratorsUserController@index');
 Route::post('/moderatoruser/create', 'ModeratorsUserController@store');
 Route::post('/Dashboard_Revenue', 'ModeratorsUserController@Dashboard_Revenue');
