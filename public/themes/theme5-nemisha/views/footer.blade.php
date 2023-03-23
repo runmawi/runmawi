@@ -56,9 +56,20 @@ entertainment.</p>
                <div class="map1">
                     <div class="d-flex p-0 text-white icon align-items-baseline bmk">
                       <p>Follow us :</p>
+                           <?php if(!empty($settings->instagram_page_id)){?>
+                      <a href="https://www.instagram.com/<?php echo InstagramId();?>" target="_blank" class="ml-1">
+                          <img class="" width="40" height="40" src="<?php echo  URL::to('/assets/img/lan/i.png')?>" style="" />
+                      </a>
+                      <?php } ?>
+                         <?php if(!empty($settings->twitter_page_id)){?>
+                      <a href="https://twitter.com/<?php echo TwiterId();?>" target="_blank" class="ml-1">
+                          <img class="" width="40" height="40" src="<?php echo  URL::to('/assets/img/lan/t.png')?>" style="" />
+                      </a>
+                      <?php } ?>
                       <?php if(!empty($settings->facebook_page_id)){?>
                       <a href="https://www.facebook.com/<?php echo FacebookId();?>" target="_blank" class="ml-1">
-                          <img class="w-100" src="<?php echo  URL::to('/assets/img/ff.png')?>" style="" />
+                          <img class="" width="40" height="40"
+                               src="<?php echo  URL::to('/assets/img/lan/f.png')?>" style="" />
                       </a>
                       <?php } ?>
 
@@ -68,17 +79,9 @@ entertainment.</p>
                       </a>
                       <?php } ?>
 
-                      <?php if(!empty($settings->twitter_page_id)){?>
-                      <a href="https://twitter.com/<?php echo TwiterId();?>" target="_blank" class="ml-1">
-                          <img class="w-100" src="<?php echo  URL::to('/assets/img/tw.png')?>" style="" />
-                      </a>
-                      <?php } ?>
+                     
 
-                      <?php if(!empty($settings->instagram_page_id)){?>
-                      <a href="https://www.instagram.com/<?php echo InstagramId();?>" target="_blank" class="ml-1">
-                          <img class="w-100" src="<?php echo  URL::to('/assets/img/insta.png')?>" style="" />
-                      </a>
-                      <?php } ?>
+                   
 
                       <?php if(!empty($settings->linkedin_page_id)){?>
                       <a href="https://www.linkedin.com/<?php echo linkedinId();?>" target="_blank" class="ml-1">
@@ -94,7 +97,7 @@ entertainment.</p>
 
                       <?php if(!empty($settings->youtube_page_id)){?>
                       <a href="https://www.youtube.com/<?php echo YoutubeId();?>" target="_blank" class="ml-1">
-                          <img class="w-100" src="<?php echo  URL::to('/assets/img/yout.png')?>" style="" />
+                          <img class="" width="40" height="40" src="<?php echo  URL::to('/assets/img/lan/y.png')?>" style="" />
                       </a>
                       <?php } ?>
 

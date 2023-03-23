@@ -1681,7 +1681,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
 
 
 
-<?php if($request_url != "filemanager") { ?>
+<?php if($request_url != "filemanager"  && $request_url != 'videos') { ?>
 
   <!-- Imported styles on this page -->
   <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/jquery.min.js';?>"></script>
