@@ -10956,9 +10956,12 @@ public function QRCodeMobileLogout(Request $request)
               $latest_videos = Video::where('active', '=', '1')->where('status', '=', '1')->where('user_id', '=', $channel->id)
               ->where('uploaded_by', '=', 'Channel')->where('draft', '=', '1')
               ->get();
-  
           $ThumbnailSetting = ThumbnailSetting::first();
-          
+
+          $media_url = URL::to('/channel') . '/' . $slug;
+          $facebook_url = 'https://www.facebook.com/sharer/sharer.php?u=' . $media_url;
+          $twitter_url = 'https://twitter.com/intent/tweet?text=' . $media_url;
+
           $response = array(
               'latest_video' => $latest_videos,
               'latest_series' => $latest_series,
@@ -10970,6 +10973,10 @@ public function QRCodeMobileLogout(Request $request)
               'VideoCategory' => VideoCategory::get(),
               'AudioCategory' => AudioCategory::get(),
               'channel' => $channel,
+              'media_url' => $media_url,
+              'facebook_url' => $facebook_url,
+              'twitter_url' => $twitter_url,
+
           );
           
               } catch (\Throwable $th) {
@@ -11158,6 +11165,10 @@ public function QRCodeMobileLogout(Request $request)
   
           $ThumbnailSetting = ThumbnailSetting::first();
 
+          $media_url = URL::to('/contentpartner') . '/' . $slug;
+          $facebook_url = 'https://www.facebook.com/sharer/sharer.php?u=' . $media_url;
+          $twitter_url = 'https://twitter.com/intent/tweet?text=' . $media_url;
+
           $response = array(
               'Content_Partner' => ModeratorsUser::where('slug',$slug)->first(),
               'currency' => $currency,
@@ -11169,6 +11180,9 @@ public function QRCodeMobileLogout(Request $request)
               'LiveCategory' => LiveCategory::get(),
               'VideoCategory' => VideoCategory::get(),
               'AudioCategory' => AudioCategory::get(),
+              'media_url' => $media_url,
+              'facebook_url' => $facebook_url,
+              'twitter_url' => $twitter_url,
           );
           
           } catch (\Throwable $th) {
