@@ -11,12 +11,12 @@
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
 var options = {
-    "key": "{{$respond['razorpaykeyId']}}", // Enter the Key ID generated from the Dashboard
+    "key"    : "{{$respond['razorpaykeyId']}}", // Enter the Key ID generated from the Dashboard
     "subscription_id": "{{$respond['subscriptionId']}}",
     "currency": "INR",
     "name": "{{$respond['name']}}",
     "description": "{{$respond['description']}}",
-    "image": "https://example.com/your_logo",
+    "image"    : "{{ GetDarkLogourl() }}",
     "handler": function (response){
 
         document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;

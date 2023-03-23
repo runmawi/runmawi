@@ -17,7 +17,7 @@ var options = {
     "name"         : "{{$response['name']}}",
     "description"  : "{{$response['description']}}",
     "order_id"     : "{{$response['orderId']}}", 
-    "image"        : "https://example.com/your_logo",
+    "image"        : "{{ GetDarkLogourl() }}",
     "handler"      : function (response){
         document.getElementById('rzp_paymentid').value = response.razorpay_payment_id;
         document.getElementById('rzp_orderid').value = response.razorpay_order_id;

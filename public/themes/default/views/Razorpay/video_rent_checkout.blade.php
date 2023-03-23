@@ -3,6 +3,15 @@
 <button id="rzp-button1" hidden>Pay</button>  
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
+<div class="col-lg-12  h-100">
+    <div class="d-flex justify-content-center">
+        <img src="{{ URL::to('/public/Thumbnai_images/checkout-processing.gif')}}" alt="" srcset="" class="w-100">
+    </div>
+</div><div class="col-lg-12  h-100">
+    <div class="d-flex justify-content-center">
+        <img src="{{ URL::to('/public/Thumbnai_images/checkout-processing.gif')}}" alt="" srcset="" class="w-100">
+    </div>
+</div>
 
 <script>
 var options = {
@@ -12,7 +21,7 @@ var options = {
     "name"         : "{{$response['name']}}",
     "description"  : "{{$response['description']}}",
     "order_id"     : "{{$response['orderId']}}", 
-    "image"        : "https://example.com/your_logo",
+    "image"        : "{{ GetDarkLogourl() }}",
     "handler"      : function (response){
         document.getElementById('rzp_paymentid').value = response.razorpay_payment_id;
         document.getElementById('rzp_orderid').value = response.razorpay_order_id;
