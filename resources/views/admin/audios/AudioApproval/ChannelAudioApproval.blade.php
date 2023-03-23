@@ -22,10 +22,10 @@ border-radius: 0px 4px 4px 0px;
 
      <div id="content-page" class="content-page">
           <div class="d-flex">
-                        <a class="black" href="{{ URL::to('admin/livestream') }}">All Live Videos</a>
-                        <a class="black" href="{{ URL::to('admin/livestream/create') }}">Add New Live Video</a>
-                        <a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/CPPLiveVideosIndex') }}">Live Videos For Approval</a>
-                        <a class="black" href="{{ URL::to('admin/livestream/categories') }}">Manage Live Video Categories</a></div>
+          <a class="black" href="{{ URL::to('admin/audios') }}">Audio List</a>
+        	<a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/audios/create') }}">Add New Audio</a>
+        	<a class="black" href="{{ URL::to('admin/audios/categories') }}">Manage Audio Categories</a>
+            <a class="black" href="{{ URL::to('admin/audios/albums') }}">Manage Albums</a></div>
          <div class="container-fluid p-0">
             <div class="row">
                <div class="col-sm-12">
