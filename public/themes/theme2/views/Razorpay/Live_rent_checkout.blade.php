@@ -1,4 +1,4 @@
-@include('header')
+@php  include(public_path('themes/theme2/views/header.php')); @endphp
 
 <button id="rzp-button1" hidden>Pay</button>  
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
@@ -65,3 +65,7 @@ document.getElementById('rzp-button1').onclick = function(e){
 
     <button type="submit" id="rzp-paymentresponse" class="btn btn-primary">Submit</button>
 </form>
+
+@php
+    include(public_path('themes/theme2/views/footer.blade.php'));
+@endphp

@@ -1,5 +1,4 @@
-@include('header')
-
+@php  include(public_path('themes/theme4/views/header.php')); @endphp
 
 <button id="rzp-button1" hidden>Pay</button>
 
@@ -68,4 +67,6 @@ document.getElementById('rzp-button1').onclick = function(e){
     <button type="submit" id="razorpay_respond">Pay</button>
 </form>
 
-@include('footer')
+@php
+    include(public_path('themes/theme4/views/footer.blade.php'));
+@endphp
