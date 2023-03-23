@@ -8506,158 +8506,138 @@ $cpanel->end();
 
     $episodeid = $request->episodeid;
 
-
-
     $episode = Episode::where('id',$episodeid)->orderBy('episode_order')->get()->map(function ($item) {
        $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
        $item['series_name'] = Series::where('id',$item->series_id)->pluck('title')->first();
-       return $item;
+
+       if(plans_ads_enable() == 1){
+
+        $item['episode_ads_url'] =  AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
+                                  // ->whereDate('start', '=', Carbon\Carbon::now()->format('Y-m-d'))
+                                  // ->whereTime('start', '<=', $current_time)
+                                  // ->whereTime('end', '>=', $current_time)
+                                  ->where('ads_events.status',1)
+                                  ->where('advertisements.status',1)
+                                  ->where('advertisements.id',$item->episode_ads)
+                                  ->pluck('ads_path')->first();
+                        
+      }else{
+        $item['episode_ads_url'] = " ";
+      }
+      return $item;
+      
      });
-
-    //  if(count($episode) > 0){
-    //  $series_id =  $episode[0]->series_id;
-    //  $season_id = $episode[0]->season_id;
-
-    //  $Season = SeriesSeason::where('series_id',$series_id)->where('id',$season_id)->first();
-
-    //  $AllSeason = SeriesSeason::where('series_id',$series_id)->get();
-    //           if(count($AllSeason) > 0){
-
-
-    //               foreach($AllSeason as $key => $Season){
-
-    //                   if($season_id ==  $Season->id){
-
-    //                     $name = $key+1;
-    //                     $Season_Name = 'Season '. $name;
-    //                   }
-    //               }
-
-    //             }else{
-    //               $Season_Name = '';
-
-    //             }
-
-    //  }else{
-    //   $Season = '';
-    //  }
-    //  print_r($Season->id);exit;
 
 
     if($request->user_id != ''){
       $user_id = $request->user_id;
       $cnt = Wishlist::select('episode_id')->where('user_id','=',$user_id)->where('episode_id','=',$request->episodeid)->count();
       $wishliststatus =  ($cnt == 1) ? "true" : "false";
-      // $userrole = User::find($user_id)->pluck('role');
     }else{
       $wishliststatus = 'false';
-      // $userrole = '';
     }
+
     if(!empty($request->user_id) && $request->user_id != '' ){
       $user_id = $request->user_id;
       $cnt = Watchlater::select('episode_id')->where('user_id','=',$user_id)->where('episode_id','=',$request->episodeid)->count();
       $watchlaterstatus =  ($cnt == 1) ? "true" : "false";
-      // $userrole = User::find($user_id)->pluck('role');
     }else{
       $watchlaterstatus = 'false';
-      // $userrole = '';
     }
 
-
     if($request->user_id != ''){
-    $like_data = LikeDisLike::where("episode_id","=",$episodeid)->where("user_id","=",$user_id)->where("liked","=",1)->count();
-    $dislike_data = LikeDisLike::where("episode_id","=",$episodeid)->where("user_id","=",$user_id)->where("disliked","=",1)->count();
-    $favoritestatus = Favorite::where("episode_id","=",$episodeid)->where("user_id","=",$user_id)->count();
-    $like = ($like_data == 1) ? "true" : "false";
-    $dislike = ($dislike_data == 1) ? "true" : "false";
-    $favorite = ($favoritestatus > 0) ? "true" : "false";
-    // $userrole = User::find($user_id)->pluck('role');
+      $like_data = LikeDisLike::where("episode_id","=",$episodeid)->where("user_id","=",$user_id)->where("liked","=",1)->count();
+      $dislike_data = LikeDisLike::where("episode_id","=",$episodeid)->where("user_id","=",$user_id)->where("disliked","=",1)->count();
+      $favoritestatus = Favorite::where("episode_id","=",$episodeid)->where("user_id","=",$user_id)->count();
+      $like = ($like_data == 1) ? "true" : "false";
+      $dislike = ($dislike_data == 1) ? "true" : "false";
+      $favorite = ($favoritestatus > 0) ? "true" : "false";
+    }
+    else{
+      $like = 'false';
+      $dislike = 'false';
+      $favorite = 'false';
+    }
 
-  }else{
-    $like = 'false';
-    $dislike = 'false';
-    $favorite = 'false';
-    // $userrole = '';
-  }
-  if(!empty($request->user_id)){
-    $user_id = $request->user_id;
-    $users = User::where('id','=',$user_id)->first();
-    $userrole = $users->role;
-  }else{
-    $userrole = '';
-  }
+    if(!empty($request->user_id)){
+      $user_id = $request->user_id;
+      $users = User::where('id','=',$user_id)->first();
+      $userrole = $users->role;
+    }
+    else{
+      $userrole = '';
+    }
 
-  $series_id = Episode::where('id','=',$episodeid)->pluck('series_id');
+    $series_id = Episode::where('id','=',$episodeid)->pluck('series_id');
 
-  $season_id = Episode::where('id','=',$episodeid)->pluck('season_id');
+    $season_id = Episode::where('id','=',$episodeid)->pluck('season_id');
 
+    if(!empty($series_id) && count($series_id) > 0){
+        $series_id = $series_id[0];
 
+    $main_genre = SeriesCategory::Join('genres','genres.id','=','series_categories.category_id')
+        ->where('series_categories.series_id',$series_id)->get('name');
 
-  if(!empty($series_id) && count($series_id) > 0){
-    $series_id = $series_id[0];
+    $languages = SeriesLanguage::Join('languages','languages.id','=','series_languages.language_id')
+        ->where('series_languages.series_id',$series_id)->get('name');
+    }
 
-  $main_genre = SeriesCategory::Join('genres','genres.id','=','series_categories.category_id')
-  ->where('series_categories.series_id',$series_id)->get('name');
+    if(!empty($series_id) && !empty($main_genre)){
+      foreach($main_genre as $value){
+        $category[] = $value['name'];
+      }
+    }else{
+      $category = [];
+    }
+    
+    if(!empty($category)){
+       $main_genre = implode(",",$category);
+    }else{
+      $main_genre = "";
+    }
 
-  $languages = SeriesLanguage::Join('languages','languages.id','=','series_languages.language_id')
-  ->where('series_languages.series_id',$series_id)->get('name');
-  }
+    if(!empty($series_id) && !empty($languages)){
+      foreach($languages as $value){
+        $language[] = $value['name'];
+      }
+    }else{
+      $language = "";
+    }
 
-  if(!empty($series_id) && !empty($main_genre)){
-  foreach($main_genre as $value){
-    $category[] = $value['name'];
-  }
-}else{
-  $category = [];
-}
-  if(!empty($category)){
-  $main_genre = implode(",",$category);
-  }else{
-    $main_genre = "";
-  }
+    if(!empty($language)){
+      $languages = implode(",",$language);
+    }else{
+      $languages = "";
+    }
 
-  if(!empty($series_id) && !empty($languages)){
-  foreach($languages as $value){
-    $language[] = $value['name'];
-  }
-}else{
-  $language = "";
-}
-
-  if(!empty($language)){
-  $languages = implode(",",$language);
-  }else{
-    $languages = "";
-  }
     if (!empty($episode) && count($episode) > 0) {
         $season = SeriesSeason::where('id',$episode[0]->season_id)->first();
         $ppv_exist = PpvPurchase::where('user_id',$user_id)
         ->where('series_id',$episode[0]->series_id)
         ->count();
-  } else {
-      $ppv_exist = 0;
-  }
-  if ($ppv_exist > 0) {
+    } else {
+        $ppv_exist = 0;
+    }
+
+    if ($ppv_exist > 0) {
 
         $ppv_video_status = "can_view";
 
     } else if (!empty($season) && $season->access != "ppv" || $season->access == "free") {
-      $ppv_video_status = "can_view";
+        $ppv_video_status = "can_view";
     }
     else {
-          $ppv_video_status = "pay_now";
-    }
+            $ppv_video_status = "pay_now";
+      }
 
     if(!empty($season_id) ){
       $Season = SeriesSeason::where('series_id',$series_id)->where('id',$season_id)->get();
     }
 
-
     $response = array(
       'status'=>'true',
       'message'=>'success',
       'episode' => $episode,
-      // 'Season_Name' => $Season_Name,
       'season' => $Season,
       'ppv_video_status' => $ppv_video_status,
       'wishlist' => $wishliststatus,
