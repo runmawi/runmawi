@@ -3,6 +3,11 @@
 <button id="rzp-button1" hidden>Pay</button>  
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
+<div class="col-lg-12  h-100">
+    <div class="d-flex justify-content-center">
+        <img src="{{ URL::to('/public/Thumbnai_images/checkout-processing.gif')}}" alt="" srcset="" class="w-100">
+    </div>
+</div>
 
 <script>
 var options = {
