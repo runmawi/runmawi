@@ -5,7 +5,7 @@
 <div class=" overflow-hidden">
     <div class="favorites-contens">
         <ul class="favorites-slider list-inline  row p-0 mb-0">
-            <?php    $series_lists = App\Series::all(); foreach($series_lists as $key => $series_list): ?>
+            <?php   foreach($series_lists as $key => $series_list): ?>
             <li class="slide-item p-2">
                 <a class="block-thumbnail" href="<?= URL::to('play_series/' . $series_list->slug) ?>">
                     <div class="block-images position-relative">
