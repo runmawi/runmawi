@@ -1146,6 +1146,7 @@ li.list-group-item {width: 375px;}
     width: 100%;
     font-weight: 500;
     margin-bottom:10px;
+    display: none;
 
 line-height: 20px;
 }
