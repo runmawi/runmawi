@@ -221,29 +221,29 @@
                                 </div>
 
                                 <div class="col-md-6 mt-3">
-                                    <label>Razorpay Test Secret Key:</label> 
-                                    <input type="text" class="form-control" name="Razorpay_test_secret_key" id="Razorpay_test_secret_key" placeholder="Razorpay Test Secret Key" value="@if(!empty($Razorpay_payment_setting->test_secret_key) && Auth::user()->role != 'demo'){{ $Razorpay_payment_setting->test_secret_key }}@endif" />
+                                    <label>Razorpay Label:</label> 
+                                    <input type="text" class="form-control" name="Razorpay_lable" id="Razorpay_label" placeholder="Razorpay Label" value="@if(!empty($Razorpay_payment_setting->Razorpay_lable) && Auth::user()->role != 'demo'){{ $Razorpay_payment_setting->Razorpay_lable }}@endif" />
                                 </div>
 
                                 <div class="col-md-6 mt-3">
                                     <label>Razorpay Test Publishable Key:</label> 
                                     <input type="text" class="form-control" name="Razorpay_test_publishable_key" id="Razorpay_test_publishable_key" placeholder="Razorpay Test Publishable Key" value="@if(!empty($Razorpay_payment_setting->test_publishable_key) && Auth::user()->role != 'demo'){{ $Razorpay_payment_setting->test_publishable_key }}@endif" />
                                 </div>
-                    
+
                                 <div class="col-md-6 mt-3">
-                                    <label>Razorpay Live Secret Key:</label> 
-                                    <input type="text" class="form-control" name="Razorpay_live_secret_key" id="Razorpay_live_secret_key" placeholder="Razorpay Live Secret Key" value="@if(!empty($Razorpay_payment_setting->live_secret_key) && Auth::user()->role != 'demo'){{ $Razorpay_payment_setting->live_secret_key }}@endif" />
+                                    <label>Razorpay Test Secret Key:</label> 
+                                    <input type="text" class="form-control" name="Razorpay_test_secret_key" id="Razorpay_test_secret_key" placeholder="Razorpay Test Secret Key" value="@if(!empty($Razorpay_payment_setting->test_secret_key) && Auth::user()->role != 'demo'){{ $Razorpay_payment_setting->test_secret_key }}@endif" />
                                 </div>
-                                
+                    
                                 <div class="col-md-6 mt-3">
                                     <label>Razorpay Live Publishable Key:</label> 
                                     <input type="text" class="form-control" name="Razorpay_live_publishable_key" id="Razorpay_live_publishable_key" placeholder="Razorpay Live Publishable Key" value="@if(!empty($Razorpay_payment_setting->live_publishable_key) && Auth::user()->role != 'demo'){{ $Razorpay_payment_setting->live_publishable_key }}@endif" />
                                 </div>
                     
-                                {{-- <div class="col-md-6 mt-3">
-                                    <label>Razorpay Label:</label> 
-                                    <input type="text" class="form-control" name="Razorpay_label" id="Razorpay_label" placeholder="Razorpay Label" value="@if(!empty($payment_settings->stripe_lable) && Auth::user()->role != 'demo'){{ $payment_settings->stripe_lable }}@endif" />
-                                </div> --}}
+                                <div class="col-md-6 mt-3">
+                                    <label>Razorpay Live Secret Key:</label> 
+                                    <input type="text" class="form-control" name="Razorpay_live_secret_key" id="Razorpay_live_secret_key" placeholder="Razorpay Live Secret Key" value="@if(!empty($Razorpay_payment_setting->live_secret_key) && Auth::user()->role != 'demo'){{ $Razorpay_payment_setting->live_secret_key }}@endif" />
+                                </div>
                     
                             </div> <br><br>
                         @endif
@@ -300,6 +300,11 @@
                             </div>
 
                             <div class="col-md-6 mt-3">
+                                <label>PayPal Label:</label> 
+                                <input type="text" class="form-control" name="paypal_lable" id="paypal_lable" placeholder="PayPal Label" value="@if(!empty($paypal_payment_settings->paypal_lable) && Auth::user()->role != 'demo'){{ $paypal_payment_settings->paypal_lable }}@endif" />
+                            </div>
+
+                            <div class="col-md-6 mt-3">
                                 <label>Test PayPal Password:</label> 
                                 <input type="text" class="form-control" name="test_paypal_password" id="test_paypal_password" placeholder="Test PayPal Password" value="@if(!empty($paypal_payment_settings->test_paypal_password) && Auth::user()->role != 'demo'){{ $paypal_payment_settings->test_paypal_password }}@endif" />
                             </div>    
@@ -324,10 +329,7 @@
                                 <input type="text" class="form-control" name="live_paypal_signature" id="live_paypal_signature" placeholder="Live PayPal Signature" value="@if(!empty($paypal_payment_settings->live_paypal_signature) && Auth::user()->role != 'demo'){{ $paypal_payment_settings->live_paypal_signature }}@endif" />
                             </div>
 
-                            <div class="col-md-6 mt-3">
-                                <label>PayPal Label:</label> 
-                                <input type="text" class="form-control" name="paypal_lable" id="paypal_lable" placeholder="PayPal Label" value="@if(!empty($paypal_payment_settings->paypal_lable) && Auth::user()->role != 'demo'){{ $paypal_payment_settings->paypal_lable }}@endif" />
-                            </div>
+                           
                             </div>
                         @endif
 
@@ -381,15 +383,14 @@
                                 </div>
 
                                 <div class="col-md-6 mt-3">
-                                    <label> Paystack Callback URL: </label> 
-                                    <input type="text" class="form-control" name="paystack_callback_url"  placeholder="Paystack Callback URL" value="@if( !empty($paystack_payment_setting->paystack_callback_url ) && Auth::user()->role != 'demo'){{ $paystack_payment_setting->paystack_callback_url }}@endif" readonly />
+                                    <label> Paystack Label: </label> 
+                                    <input type="text" class="form-control" name="paystack_lable"  placeholder="Paystack Label" value="@if( !empty($paystack_payment_setting->paystack_lable ) && Auth::user()->role != 'demo'){{ $paystack_payment_setting->paystack_lable }}@endif" />
                                 </div>
-
+                             
                                 <div class="col-md-6 mt-3">
                                     <label> Paystack Test Publishable Key: </label> 
                                     <input type="text" class="form-control" name="paystack_test_publishable_key"  placeholder="Paystack Test Publishable Key" value="@if(!empty($paystack_payment_setting->paystack_test_publishable_key) && Auth::user()->role != 'demo'){{ $paystack_payment_setting->paystack_test_publishable_key }}@endif" />
                                 </div>
-
 
                                 <div class="col-md-6 mt-3">
                                     <label> Paystack Test Secret Key: </label> 
@@ -405,13 +406,12 @@
                                     <label> Paystack Live Secret Key: </label> 
                                     <input type="text" class="form-control" name="paystack_live_secret_key" placeholder="Paystack Live Secret Key" value="@if(!empty($paystack_payment_setting->paystack_live_secret_key) && Auth::user()->role != 'demo'){{ $paystack_payment_setting->paystack_live_secret_key }}@endif" />
                                 </div>
-                                
+
                                 <div class="col-md-6 mt-3">
-                                    <label> Paystack Label: </label> 
-                                    <input type="text" class="form-control" name="paystack_lable"  placeholder="paystack Label" value="@if( !empty($paystack_payment_setting->paystack_lable ) && Auth::user()->role != 'demo'){{ $paystack_payment_setting->paystack_lable }}@endif" />
+                                    <label> Paystack Callback URL: </label> 
+                                    <input type="text" class="form-control" name="paystack_callback_url"  placeholder="Paystack Callback URL" value="@if( !empty($paystack_payment_setting->paystack_callback_url ) && Auth::user()->role != 'demo'){{ $paystack_payment_setting->paystack_callback_url }}@endif" readonly />
                                 </div>
 
-                             
                     
                             </div> <br><br>
                         @endif

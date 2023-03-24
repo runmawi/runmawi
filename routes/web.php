@@ -2096,6 +2096,7 @@ Route::get('all_Channel_videos', 'ChannelHomeController@all_Channel_videos')->na
 Route::group(['middleware' => ['RazorpayMiddleware']], function() {
 
     Route::get('Razorpay', 'RazorpayController@Razorpay');
+    Route::post('Razorpay_authorization_url', 'RazorpayController@Razorpay_authorization_url')->name('Razorpay_authorization_url');
     Route::get('/RazorpayIntegration/{PlanId}', 'RazorpayController@RazorpayIntegration')->name('RazorpayIntegration');
     Route::post('/RazorpayCompleted', 'RazorpayController@RazorpayCompleted')->name('RazorpayCompleted');
     Route::get('/RazorpayUpgrade', 'RazorpayController@RazorpayUpgrade')->name('RazorpayUpgrade');

@@ -208,6 +208,7 @@ class AdminPaymentSettingsController extends Controller
 			$Razorpay_status = 1;
 		}
 
+
 		$Razorpay_payment_setting->live_mode         =    $Razorpay_live_mode;
 		$Razorpay_payment_setting->status            =    $Razorpay_status;
 		$Razorpay_payment_setting->test_secret_key   =    $request['Razorpay_test_secret_key'] ?  $request['Razorpay_test_secret_key'] : null;
@@ -216,6 +217,7 @@ class AdminPaymentSettingsController extends Controller
 		$Razorpay_payment_setting->live_publishable_key = $request['Razorpay_live_publishable_key'] ?  $request['Razorpay_live_publishable_key'] :null;
 		$Razorpay_payment_setting->plan_name 			= $request['Razorpay_plan_name'] ?  $request['Razorpay_plan_name'] : null;
 		$Razorpay_payment_setting->payment_type 		= "Razorpay";
+		$Razorpay_payment_setting->Razorpay_lable 		= $request['Razorpay_lable'] ;
         $Razorpay_payment_setting->save();
 	}
 
