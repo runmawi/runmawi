@@ -32,8 +32,7 @@ use AmrShawky\LaravelCurrency\Facade\Currency as PaymentCurreny;
 use App\ModeratorPayout;
 use App\ChannelPayout;
 use App\Channel;
-
-
+use App\HomeSetting;
 
 
 class RazorpayController extends Controller
@@ -56,11 +55,39 @@ class RazorpayController extends Controller
             $url = URL::to('/home');
             echo "<script type='text/javascript'>alert('$Error_msg'); window.location.href = '$url' </script>";
         }
+
+        $this->Theme = HomeSetting::pluck('theme_choosen')->first();
+        Theme::uses($this->Theme);
     }
 
     public function Razorpay(Request $request)
     {
-        return view('Razorpay.create');
+        return Theme::view('Razorpay.create');
+    }
+
+    public function Razorpay_authorization_url(Request $request){
+
+        try{
+
+            $Crypt_Razorpay_plan_id = Crypt::encryptString($request->Razorpay_plan_id);
+            $authorization_url =  URL::to('RazorpayIntegration/'.$Crypt_Razorpay_plan_id);
+
+            $response = array(
+                    'status'           => true ,
+                    'message'          => "Authorization url Successfully Created !" , 
+                    'Razorpay_plan_id' => $request->Razorpay_plan_id ,
+                    'authorization_url' => $authorization_url,
+                );
+        } 
+        catch (\Throwable $th) {
+
+            $response = array(
+                    "status"  => false ,
+                    "message" => $th->getMessage() , 
+                );
+        }
+        
+        return response()->json($response, 200);
     }
 
     public function RazorpayIntegration(Request $request,$Plan_Id)
@@ -109,7 +136,7 @@ class RazorpayController extends Controller
             'PaymentGateway' =>  'razorpay',
         );
 
-        return view('Razorpay.checkout',compact('respond'),$respond);
+        return Theme::view('Razorpay.checkout',compact('respond'),$respond);
     }
 
     public function RazorpayCompleted(Request $request)
@@ -257,7 +284,7 @@ dd($carbon);
             return Redirect::route('home');
         }
         else{
-            return view('Razorpay.UPI'); 
+            return Theme::view('Razorpay.UPI'); 
         }
     }
 
@@ -312,7 +339,7 @@ dd($carbon);
             'Video_slug'     => $Video_slug ,
         );
 
-        return view('Razorpay.video_rent_checkout',compact('response'),$response);
+        return Theme::view('Razorpay.video_rent_checkout',compact('response'),$response);
     }
 
     public function RazorpayVideoRent_Payment(Request $request)
@@ -390,7 +417,7 @@ dd($carbon);
                 'status'  => 'false',
             );
 
-            return view('Razorpay.Rent_message',compact('respond'),$respond); 
+            return Theme::view('Razorpay.Rent_message',compact('respond'),$respond); 
         }
     }
 
@@ -424,7 +451,7 @@ dd($carbon);
             'live_slug'      =>  $live_slug,
         );
 
-        return view('Razorpay.Live_rent_checkout',compact('response'),$response);
+        return Theme::view('Razorpay.Live_rent_checkout',compact('response'),$response);
     }
 
     public function RazorpayLiveRent_Payment(Request $request)
@@ -504,7 +531,7 @@ dd($carbon);
                 'status'  => 'true',
             );
         
-            return view('Razorpay.Rent_message',compact('respond'),$respond);
+            return Theme::view('Razorpay.Rent_message',compact('respond'),$respond);
 
         } catch (\Exception $e) {
 
@@ -512,7 +539,7 @@ dd($carbon);
                 'status'  => 'false',
             );
 
-            return view('Razorpay.Rent_message',compact('respond'),$respond); 
+            return Theme::view('Razorpay.Rent_message',compact('respond'),$respond); 
         }
     }
 
@@ -556,7 +583,7 @@ dd($carbon);
 
         );
 
-        return view('Razorpay.moderator_payouts',compact('response'),$response);
+        return Theme::view('Razorpay.moderator_payouts',compact('response'),$response);
 
     }
 
@@ -621,7 +648,7 @@ dd($carbon);
             $ModeratorPayout->payment_type = $data["payment_type"];
             $ModeratorPayout->save();
 
-            return view('Razorpay.Payout_message',compact('respond'),$respond);
+            return Theme::view('Razorpay.Payout_message',compact('respond'),$respond);
 
         } catch (\Exception $e) {
 
@@ -629,7 +656,7 @@ dd($carbon);
                 'status'  => 'false',
             );
 
-            return view('Razorpay.Payout_message',compact('respond'),$respond);
+            return Theme::view('Razorpay.Payout_message',compact('respond'),$respond);
         }
     }
 

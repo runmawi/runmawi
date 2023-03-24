@@ -34,7 +34,7 @@ class UserSeeder extends Seeder
                 $trail_start = null;
                 $trail_end   = null;
                 $trial_in    = 0;
-                $package_ends = Carbon::now()->addDays(7)->toDateString();
+                $package_ends = Carbon::now()->addDays(40)->toDateString();
             }
 
         $User = [

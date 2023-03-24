@@ -1410,14 +1410,15 @@ $artists = [];
                                 <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
                                   <input type="radio" class="payment_btn" id="important" name="payment_method" value="<?= $payment->payment_type ?>"  data-value="paypal" >
                                   <?php if(!empty($payment->paypal_lable)){ echo $payment->paypal_lable ; }else{ echo $payment->payment_type ; } ?>
-                                </label> <?php  }
+                                </label> <?php  } ?>
                             
-                              if( $payment->payment_type == "Razorpay"  ){ ?> <!-- Razorpay -->
-
-                                <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
-                                    <input type="radio" class="payment_btn" id="important" name="payment_method" value="<?= $payment->payment_type ?>"  data-value="Razorpay" >
-                                    <?php  echo $payment->payment_type ;  ?>
-                                </label>  <?php }
+                                                      <!-- Razorpay -->
+                                <?php if( $Razorpay_payment_settings != null && $Razorpay_payment_settings->payment_type == "Razorpay" && $Razorpay_payment_settings->status == 1){?>
+                                    <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
+                                        <input type="radio" class="payment_btn" id="important" name="payment_method" value="<?= $Razorpay_payment_settings->payment_type ?>"  data-value="Razorpay" >
+                                        <?php  echo $Razorpay_payment_settings->payment_type ;  ?>
+                                    </label>
+                                <?php } 
                                                                               // <!-- Paystack -->
                               if ( $Paystack_payment_settings != null && $Paystack_payment_settings->payment_type == 'Paystack'  && $Paystack_payment_settings->status == 1 ){  ?>
 

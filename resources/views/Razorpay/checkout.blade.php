@@ -1,6 +1,14 @@
 @include('header')
 
+
 <button id="rzp-button1" hidden>Pay</button>
+
+<div class="col-lg-12  h-100">
+    <div class="d-flex justify-content-center">
+        <img src="{{ URL::to('/public/Thumbnai_images/checkout-processing.gif')}}" alt="" srcset="" class="w-100">
+    </div>
+</div>
+
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
 var options = {
@@ -61,5 +69,3 @@ document.getElementById('rzp-button1').onclick = function(e){
 </form>
 
 @include('footer')
-
-
