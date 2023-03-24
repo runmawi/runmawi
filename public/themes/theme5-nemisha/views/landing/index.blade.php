@@ -62,7 +62,11 @@
             text-align: justify;
 
         }
-
+        vida{
+            
+        }
+       .vida:hover{
+transition: all .2s ease-in-out;  transform: scale(1.1);}
         .wat {
             padding: 10px 18px 10px 18px;
         }
@@ -905,7 +909,7 @@
         .bkm {
             position: absolute;
             bottom: -5px;
-            left: 18px;
+            left: 30px;
             width: 80px;
             height: 28px;
             padding-left: 5px;
