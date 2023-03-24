@@ -590,12 +590,14 @@ class ChannelController extends Controller
                     $new_date = null;
                 }
                 if (@$categoryVideos->uploaded_by == 'Channel') {
+                    $user_id = $categoryVideos->user_id;
+
                     $user = Channel::where('channels.id', '=', $user_id)
                         ->join('users', 'channels.email', '=', 'users.email')
                         ->select('users.id as user_id')
                         ->first();
 
-                    if (!Auth::guest() && $user->id == Auth::user()->id) {
+                    if (!Auth::guest() && @$user_id == Auth::user()->id) {
                         $video_access = 'free';
                     } else {
                         $video_access = 'pay';
@@ -608,7 +610,7 @@ class ChannelController extends Controller
                         ->join('users', 'moderators_users.email', '=', 'users.email')
                         ->select('users.id as user_id')
                         ->first();
-                    if (!Auth::guest() && $user->id == Auth::user()->id) {
+                    if (!Auth::guest() && @$user_id == Auth::user()->id) {
                         $video_access = 'free';
                     } else {
                         $video_access = 'pay';
@@ -901,7 +903,7 @@ class ChannelController extends Controller
                         ->join('users', 'channels.email', '=', 'users.email')
                         ->select('users.id as user_id')
                         ->first();
-                    if (!Auth::guest() && $user->id == Auth::user()->id) {
+                    if (!Auth::guest() && @$user_id == Auth::user()->id) {
                         $video_access = 'free';
                     } else {
                         $video_access = 'pay';
@@ -913,7 +915,7 @@ class ChannelController extends Controller
                         ->join('users', 'moderators_users.email', '=', 'users.email')
                         ->select('users.id as user_id')
                         ->first();
-                    if (!Auth::guest() && $user->id == Auth::user()->id) {
+                    if (!Auth::guest() && @$user_id == Auth::user()->id) {
                         $video_access = 'free';
                     } else {
                         $video_access = 'pay';
@@ -1105,7 +1107,7 @@ class ChannelController extends Controller
                         ->join('users', 'channels.email', '=', 'users.email')
                         ->select('users.id as user_id')
                         ->first();
-                    if (!Auth::guest() && $user->id == Auth::user()->id) {
+                    if (!Auth::guest() && @$user_id == Auth::user()->id) {
                         $video_access = 'free';
                     } else {
                         $video_access = 'pay';
@@ -1117,7 +1119,7 @@ class ChannelController extends Controller
                         ->join('users', 'moderators_users.email', '=', 'users.email')
                         ->select('users.id as user_id')
                         ->first();
-                    if (!Auth::guest() && $user->id == Auth::user()->id) {
+                    if (!Auth::guest() && @$user_id == Auth::user()->id) {
                         $video_access = 'free';
                     } else {
                         $video_access = 'pay';
@@ -1389,7 +1391,7 @@ class ChannelController extends Controller
                         ->join('users', 'channels.email', '=', 'users.email')
                         ->select('users.id as user_id')
                         ->first();
-                    if (!Auth::guest() && $user->id == Auth::user()->id) {
+                    if (!Auth::guest() && @$user_id == Auth::user()->id) {
                         $video_access = 'free';
                     } else {
                         $video_access = 'pay';
@@ -1401,7 +1403,7 @@ class ChannelController extends Controller
                         ->join('users', 'moderators_users.email', '=', 'users.email')
                         ->select('users.id as user_id')
                         ->first();
-                    if (!Auth::guest() && $user->id == Auth::user()->id) {
+                    if (!Auth::guest() && @$user_id == Auth::user()->id) {
                         $video_access = 'free';
                     } else {
                         $video_access = 'pay';
