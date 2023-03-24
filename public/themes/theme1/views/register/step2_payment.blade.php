@@ -509,7 +509,6 @@ i.fa.fa-google-plus {
             </div>
         @endforeach
     @endif
-
 @php
     $SubscriptionPlan = App\SubscriptionPlan::first();
     $AdminLifeTimeSubscription = App\AdminLifeTimeSubscription::first();
@@ -521,11 +520,14 @@ i.fa.fa-google-plus {
     $PayPal_payment_settings = App\PaymentSetting::where('payment_type','PayPal')->first();
     $Paystack_payment_settings = App\PaymentSetting::where('payment_type','Paystack')->first();
     $Razorpay_payment_settings = App\PaymentSetting::where('payment_type','Razorpay')->first();
+    
 
                 // lable
     $stripe_lable = App\PaymentSetting::where('payment_type','Stripe')->pluck('stripe_lable')->first() ? App\PaymentSetting::where('payment_type','Stripe')->pluck('stripe_lable')->first()  : "Stripe";
     $paypal_lable = App\PaymentSetting::where('payment_type','PayPal')->pluck('paypal_lable')->first() ? App\PaymentSetting::where('payment_type','PayPal')->pluck('paypal_lable')->first() : "PayPal";
     $paystack_lable = App\PaymentSetting::where('payment_type','Paystack')->pluck('paystack_lable')->first() ? App\PaymentSetting::where('payment_type','Paystack')->pluck('paystack_lable')->first() : "paystack";
+    $Razorpay_lable = App\PaymentSetting::where('payment_type','Razorpay_lable')->pluck('Razorpay_lable')->first() ? App\PaymentSetting::where('payment_type','Razorpay')->pluck('Razorpay_lable')->first() : "Razorpay";
+
 @endphp
 
 <section class="flick">
@@ -537,28 +539,21 @@ i.fa.fa-google-plus {
             <div class="col-lg-7 col-md-6">
                 <div class="flick1">
                  <div class="small-heading text-white">Step 2 of  <span class="ml-2">2</span></div>
-                     <p class="text-white">Hello, {{ $user_mail }}</p>
-                     <div class="medium-heading text-white"> {{  $signup_step2_title }} </div>
-                     {{-- <p class="text-white">You will not be charged until the end of your free trial. Cancel anytime.</p> --}}
+                    <p class="text-white">Hello, {{ $user_mail }}</p>
+                    <div class="medium-heading text-white"> {{  $signup_step2_title }} </div>
                     <div class="col-md-12 p-0 mt-2">
 
-                        <!-- <h5> Payment Method</h5> -->
+                                                <!-- <h5> Payment Method</h5> -->
 
-
-
-                            {{-- @if(!empty($PayPal_payment_settings) && $PayPal_payment_settings->paypal_status == 1)
-                                <input type="checkbox" id="Paypal_lable" name="payment_lable" value="Paypal_lable" >
-                                <label class=" ml-2 " for="" ><p> {{ $paypal_lable }} </p></label><br />&nbsp;&nbsp;
-                            @endif --}}
-
-
+                                                <!-- Stripe -->
                             @if(!empty($Stripe_payment_settings) && $Stripe_payment_settings->stripe_status == 1)
                                 <div class=" align-items-center">
                                     <input type="radio" id="stripe_radio_button" class="payment_gateway" name="payment_gateway" value="stripe" >
                                     <label class=" ml-2"> <p>{{ $stripe_lable }} </p></label> 
                                 </div>
                             @endif
-
+                           
+                                                <!-- Paystack -->
                             @if( !empty($Paystack_payment_settings) && $Paystack_payment_settings->status == 1 )
                                 <div class="align-items-center">
                                     <input type="radio" id="paystack_radio_button" class="payment_gateway" name="payment_gateway" value="paystack">
@@ -566,15 +561,22 @@ i.fa.fa-google-plus {
                                 </div>
                             @endif
 
+                                                <!-- Razorpay -->
+                            @if( !empty($Razorpay_payment_settings) && $Razorpay_payment_settings->status == 1 )
+                                <div class="align-items-center">
+                                    <input type="radio" id="Razorpay_radio_button" class="payment_gateway" name="payment_gateway" value="Razorpay">
+                                    <label class="ml-2" ><p> {{ $Razorpay_lable }} </p></label> 
+                                </div>
+                            @endif
+
+                                                <!-- PayPal -->
                             @if( !empty($PayPal_payment_settings) && $PayPal_payment_settings->paypal_status == 1 )
                                 <div class=" align-items-center">
                                     <input type="radio" id="paystack_radio_button" class="payment_gateway" name="payment_gateway" value="paypal">
                                     <label class="mt-2 ml-2" > <p>{{ $paypal_lable }} </p></label>
                                 </div>
                             @endif
-                            
-
-          </div>      
+                    </div>      
 
             <div class="row">
                 <div class="col-md-12">
@@ -730,14 +732,23 @@ i.fa.fa-google-plus {
                  </p>
              <!-- </div> -->
 
+                                            {{-- Stripe --}}
                     <div class="col-md-12 stripe_payment">
                         <button id="card-button" class="btn1  btn-lg btn-block font-weight-bold text-white mt-3 processing_alert"   data-secret="{{ session()->get('intent_stripe_key')  }}">
                             Pay Now
                         </button>
                     </div>
                   
+                                            {{-- Paystack --}}
                     <div class="col-md-12 paystack_payment">
                         <button  type="submit" class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 paystack_button processing_alert" >
+                            Pay Now
+                        </button>
+                    </div>
+
+                                             {{-- Razorpay --}}
+                    <div class="col-md-12 Razorpay_payment">
+                        <button  type="submit" class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 Razorpay_button processing_alert" >
                             Pay Now
                         </button>
                     </div>
@@ -1253,16 +1264,13 @@ function paypalplan_details(ele){
 
 
 }    
-
 </script>	
 
 <script>
 
         $('.PaypalPayment').hide();
-        $('.paypal_plan_details').hide();
-
-        
-        // Razorpay_lable
+        $('.paypal_plan_details').hide();  
+       
         $(document).ready(function(){
             $('#Stripe_lable').click(function() {
                 if ($('#Stripe_lable').val($(this).is(':checked'))) {
@@ -1293,9 +1301,14 @@ function paypalplan_details(ele){
         
         $("#stripe_radio_button").attr('checked', true);
         $('.paystack_payment').hide();
+        $('.Razorpay_payment').hide();
 
         if( $('input[name="payment_gateway"]:checked').val() == "paystack" ){
             $('.stripe_payment').hide();
+        }
+
+        if( $('input[name="payment_gateway"]:checked').val() == "Razorpay" ){
+            $('.Razorpay_payment').hide();
         }
     };
 
@@ -1303,7 +1316,7 @@ function paypalplan_details(ele){
 
         $(".payment_gateway").click(function(){
 
-            $('.paystack_payment,.stripe_payment').hide();
+            $('.paystack_payment,.stripe_payment,.Razorpay_payment').hide();
 
             let payment_gateway =  $('input[name="payment_gateway"]:checked').val();
 
@@ -1314,6 +1327,11 @@ function paypalplan_details(ele){
                 }else if( payment_gateway == "paystack" ){
 
                     $('.paystack_payment').show();
+
+                }else if(  payment_gateway == "Razorpay" ){
+
+                    $('.Razorpay_payment').show();
+
                 }
         });
     });
@@ -1355,6 +1373,47 @@ function paypalplan_details(ele){
             });
         });
 
+</script>
+
+
+                {{-- Razorpay Payment --}}
+<script>
+
+    $(".Razorpay_button").click(function(){
+
+        var Razorpay_plan_id = $("#plan_name").val();
+
+        $.ajax({
+            url:  "{{ route('Razorpay_authorization_url') }}",
+            type: "post",
+            data: {
+                    _token: '{{ csrf_token() }}',
+                    Razorpay_plan_id : Razorpay_plan_id ,
+                    async: false,
+                },       
+                
+                success: function( data ,textStatus ){
+
+                if( data.status == true ){
+                    window.location.href = data.authorization_url ;
+                }
+
+                else if( data.status == false ){
+                    swal({
+                        title: "Payment Failed!",
+                        text: data.message,
+                        icon: "warning",
+                        }).then(function() {
+                            window.location = base_url+'/login';
+                        })
+                    }
+                } 
+            });
+        });
+
+</script>
+
+<script>
         $(".payment_gateway").click(function(){
 
             let payment_gateway =  $('input[name="payment_gateway"]:checked').val();
