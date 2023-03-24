@@ -569,7 +569,7 @@ $jsondata = json_decode($jsonString, true); ?>
     </div>
     </div></div>
    
-    <section class="sec-3" style="padding:80px 30px 80px 30px;">
+    <!--<section class="sec-3" style="padding:80px 30px 80px 30px;">
         <div class="container">
             <div class="row align-items-center">
                  <div class="col-lg-6">
