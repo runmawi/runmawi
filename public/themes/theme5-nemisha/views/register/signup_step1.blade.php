@@ -625,7 +625,7 @@ $jsondata = json_decode($jsonString, true); ?>
             <?php
                 $terms_page = App\Page::where('slug','terms-and-conditions')->pluck('body');
              ?>
-            <p><?php echo $terms_page[0];?></p>
+            <p style='color: white;'><?php echo $terms_page[0];?></p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo __('Close');?></button>
