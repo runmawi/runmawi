@@ -203,9 +203,8 @@ border-radius: 0px 4px 4px 0px;
                                     <option value="embed"> Embed URL</option>
                                     <option value="live_stream_video"> Live Stream Video</option>
                                     <option value="m3u_url"> M3U URL </option>
-                                    <option value="acc_audio_file"> ACC Audio File </option>
-                                    <option value="acc_audio_url"> ACC Audio URL </option>
-
+                                    <option value="acc_audio_file"> Mp3/AAC Audio File </option>
+                                    <option value="acc_audio_url"> Mp3/AAC Audio URL </option>
                                     @foreach($Rtmp_urls as $key => $urls)
                                         <option class="Encode_stream_video" value={{ "Encode_video" }} data-name="{{ $urls->rtmp_url }}" data-hls-url="{{ $urls->hls_url  }}" >{{ "RTMP Streaming"." ". ($key+1) }} </option>
                                     @endforeach 
