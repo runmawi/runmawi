@@ -23,8 +23,8 @@
                     <div onmouseover="season_trailer(this)" data-video-key-id = "{{ 'trailer-'. $video_key_id }}" >
                         <a href="{{ URL::to('play_series/'.  $Series_Category->slug )}}" class="voda">
                             <div class="vida">
-                            <video playsinline controls class="vid" id="{{ 'trailer-'. $video_key_id }}" src="{{ $season_trailer_url }}"   poster="{{ URL::to('/public/uploads/images/' . $Series_Category->image) }}" 
-                                type="video/mp4" muted=false  controlsList="nodownload nofullscreen noremoteplayback" style="border: solid; width: 350px;height:200px;">
+                            <video playsinline  class="vid" id="{{ 'trailer-'. $video_key_id }}" src="{{ $season_trailer_url }}"   poster="{{ URL::to('/public/uploads/images/' . $Series_Category->image) }}" 
+                                type="video/mp4" muted=false  controlsList="nodownload nofullscreen noremoteplayback" style="border: 1px solid ddd; width: 350px;height:200px;">
                             </video></div>
                         </a>
                     </div>
