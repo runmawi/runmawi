@@ -31,6 +31,7 @@ class AdminPaymentSettingsController extends Controller
 			'paypal_payment_settings' => PaymentSetting::where('payment_type','=','PayPal')->first(),
 			'Razorpay_payment_setting' =>  PaymentSetting::where('payment_type','=','Razorpay')->first(),
 			'paystack_payment_setting' =>  PaymentSetting::where('payment_type','=','Paystack')->first(),
+			'Cinet_payment_setting' =>  PaymentSetting::where('payment_type','=','CinetPay')->first(),
 			);
 
 		return View::make('admin.paymentsettings.index', $data);
@@ -250,6 +251,27 @@ class AdminPaymentSettingsController extends Controller
 		$paystack_payment_setting->payment_type 				 =    "Paystack";
 		$paystack_payment_setting->paystack_callback_url 	     =    URL::to('/paystack-verify-request');
         $paystack_payment_setting->save();
+	}
+
+
+	
+	// CinetPay
+
+	$CinetPay_payment_setting =  PaymentSetting::where('payment_type','=','CinetPay')->first();
+
+	$Env_path = realpath(('.env'));
+
+	if($CinetPay_payment_setting != null){
+
+		$CinetPay_payment_setting->status                        	=     !empty($request->CinetPay_Status) ? 1 : 0;
+		$CinetPay_payment_setting->CinetPay_Status               	=     !empty($request->CinetPay_Status) ? 1 : 0;
+		$CinetPay_payment_setting->CinetPay_Lable      				=     $request['CinetPay_Lable'] ?  $request['CinetPay_Lable'] : null;
+		$CinetPay_payment_setting->CinetPay_APIKEY 					= 	  $request['CinetPay_APIKEY'] ?  $request['CinetPay_APIKEY'] : null;
+		$CinetPay_payment_setting->CinetPay_SecretKey      			= 	  $request['CinetPay_SecretKey'] ?  $request['CinetPay_SecretKey'] : null;
+		$CinetPay_payment_setting->CinetPay_SITE_ID 				= 	  $request['CinetPay_SITE_ID'] ?  $request['CinetPay_SITE_ID'] :null;
+		$CinetPay_payment_setting->paystack_lable 			 	 	= 	  $request['paystack_lable'] ?  $request['paystack_lable'] : null;
+		$CinetPay_payment_setting->payment_type 				 	=    "CinetPay";
+        $CinetPay_payment_setting->save();
 	}
 
         return Redirect::to('admin/payment_settings')->with(array('note' => 'Successfully Updated Payment Settings!', 'note_type' => 'success') );
