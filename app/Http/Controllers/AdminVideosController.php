@@ -167,8 +167,8 @@ class AdminVideosController extends Controller
                 //  ->where('videos.title', 'like', '%'.$query.'%')
                 //  ->paginate(9);
             } else {
-                $data = Video::orderBy("created_at", "desc")
-                ->paginate(9);
+                // $data = Video::orderBy("created_at", "desc")
+                // ->paginate(9);
             }
             if (count($data) > 0) {
                 $total_row = $data->count();
