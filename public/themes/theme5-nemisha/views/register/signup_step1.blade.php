@@ -522,7 +522,7 @@ $jsondata = json_decode($jsonString, true); ?>
                             <div class="sign-up-buttons col-md-12 mt-3 " align="right">
                                   <button type="button" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile" style="display: none;"> Verify Profile</button>
                                   <button class="btn  btn-primary btn-block signup" style="display: block;color:#fff;font-size:20px;" type="submit" name="create-account">{{ __('START EXPLORING TODAY') }}</button>
-                                 <p class="text-left poli mb-0 mt-2" >By signing up you agree to Nemisa Tv Terms of Service and Privacy Policy. </p>
+                                 <p class="text-left poli mb-0 mt-2" >By signing up you agree to NEMISA TV Terms of Service and Privacy Policy. </p>
                                  <!-- <div class=" pt-4 mb-2">
                           <hr style="border-color:#fff;">
                           <p class="bg-white" style="position: relative;top: -23px;right:50%;z-index: 1;width: 5%;display: flex;justify-content: center;font-size:12px;">Or</p>
