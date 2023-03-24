@@ -66,15 +66,16 @@ $currency = App\CurrencySetting::first();
                         
                         ?>
                     <li class="slide-item">
+                          <a href="<?= URL::to('/') ?><?= '/live'.'/' . $category_video->slug ?>">
                             <div class="block-images position-relative">
                             <!-- block-images -->
-                            <a href="<?= URL::to('/') ?><?= '/live'.'/' . $category_video->slug ?>">
+                          
                                     <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"
                                         class="img-fluid" alt="">
                                         <!-- <video  width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"  data-play="hover" >
                                             <source src="<?php echo $category_video->trailer;  ?>" type="video/mp4">
                                             </video> -->
-                                    </a>
+                                  
 
                             <!-- PPV price -->
                                 
@@ -92,7 +93,7 @@ $currency = App\CurrencySetting::first();
                                         <?php } ?>
                                    
                                 </div>
-                                <div class="block-description">
+                        <div class="block-description"></div>
 
                                     <?php if($ThumbnailSetting->title == 1) { ?>            <!-- Title -->
                                         <a href="<?= URL::to('/') ?><?= '/live'.'/' . $category_video->slug ?>">
@@ -171,18 +172,9 @@ $currency = App\CurrencySetting::first();
                                       <?php } ?>
                                   </div>
 
-                                    <div class="hover-buttons">
-                                        <a type="button" class="text-white d-flex align-items-center"
-                                            href="<?= URL::to('/') ?><?= '/live'.'/' . $category_video->slug ?>">
-                                            <img class="ply mr-1" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"  width="10%" height="10%"/> Watch Now
-                                        </a>
-                                        <div class="d-flex">
-                    </div>
-
-            
-                                </div>
+                                  
                               
-                            </div>
+                             </a>
                     </li>
                     <?php           
                           endforeach; 
