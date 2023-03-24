@@ -350,6 +350,12 @@ function GetLightBg()
      return $settings->light_bg_color;  
 }
 
+function GetDarkLogourl()
+{
+     $settings = App\SiteTheme::first();
+     return URL::to('public/uploads/settings/'.$settings->dark_mode_logo);  
+}
+
 function GetDarkLogo()
 {
      $settings = App\SiteTheme::first();

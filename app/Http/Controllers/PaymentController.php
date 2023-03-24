@@ -39,6 +39,7 @@ use Theme;
 use Laravel\Cashier\Cashier;
 use App\SiteTheme;
 use App\Channel;
+use CinetPay\CinetPay;
 
 
 class PaymentController extends Controller
@@ -1778,6 +1779,28 @@ public function UpgadeSubscription(Request $request){
           return response()->json(['data' => $response]);
 
           // return redirect()->route('home');
+
+        } catch (\Throwable $th) {
+
+          $response = array(
+            'status'=> false,
+            'message'=> $th->getMessage(),
+          );
+  
+          return response()->json(['data' => $response]); 
+        }
+        
+      }
+
+
+      
+      public function cinet_pay( Request $request)
+      {
+
+        try {
+
+
+            return view('cinetpay');
 
         } catch (\Throwable $th) {
 

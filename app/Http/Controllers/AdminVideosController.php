@@ -153,6 +153,7 @@ class AdminVideosController extends Controller
 
             $slug = URL::to("/category/videos");
             $edit = URL::to("admin/videos/edit");
+            $editvideo = URL::to("admin/videos/editvideo");
             $delete = URL::to("admin/videos/delete");
             if ($query != "") {
                 $data = Video::where("title", "LIKE", "%" . $query . "%")
@@ -166,8 +167,8 @@ class AdminVideosController extends Controller
                 //  ->where('videos.title', 'like', '%'.$query.'%')
                 //  ->paginate(9);
             } else {
-                $data = Video::orderBy("created_at", "desc")
-                ->paginate(9);
+                // $data = Video::orderBy("created_at", "desc")
+                // ->paginate(9);
             }
             if (count($data) > 0) {
                 $total_row = $data->count();
@@ -234,6 +235,10 @@ class AdminVideosController extends Controller
                             '
         ' .
                             "<a class='iq-bg-success' data-toggle='tooltip' data-placement='top' title='' data-original-title='Edit' href=' $edit/$row->id'><i class='ri-pencil-line'></i>
+        </a>" .
+                            '
+                            ' .
+                            "<a class='iq-bg-success' data-toggle='tooltip' data-placement='top' title='' data-original-title='Edit' href=' $editvideo/$row->id'><i class='ri-pencil-line'></i>
         </a>" .
                             '
         ' .

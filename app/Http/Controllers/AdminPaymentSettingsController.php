@@ -31,6 +31,7 @@ class AdminPaymentSettingsController extends Controller
 			'paypal_payment_settings' => PaymentSetting::where('payment_type','=','PayPal')->first(),
 			'Razorpay_payment_setting' =>  PaymentSetting::where('payment_type','=','Razorpay')->first(),
 			'paystack_payment_setting' =>  PaymentSetting::where('payment_type','=','Paystack')->first(),
+			'Cinet_payment_setting' =>  PaymentSetting::where('payment_type','=','CinetPay')->first(),
 			);
 
 		return View::make('admin.paymentsettings.index', $data);
@@ -207,6 +208,7 @@ class AdminPaymentSettingsController extends Controller
 			$Razorpay_status = 1;
 		}
 
+
 		$Razorpay_payment_setting->live_mode         =    $Razorpay_live_mode;
 		$Razorpay_payment_setting->status            =    $Razorpay_status;
 		$Razorpay_payment_setting->test_secret_key   =    $request['Razorpay_test_secret_key'] ?  $request['Razorpay_test_secret_key'] : null;
@@ -215,6 +217,7 @@ class AdminPaymentSettingsController extends Controller
 		$Razorpay_payment_setting->live_publishable_key = $request['Razorpay_live_publishable_key'] ?  $request['Razorpay_live_publishable_key'] :null;
 		$Razorpay_payment_setting->plan_name 			= $request['Razorpay_plan_name'] ?  $request['Razorpay_plan_name'] : null;
 		$Razorpay_payment_setting->payment_type 		= "Razorpay";
+		$Razorpay_payment_setting->Razorpay_lable 		= $request['Razorpay_lable'] ;
         $Razorpay_payment_setting->save();
 	}
 
@@ -250,6 +253,27 @@ class AdminPaymentSettingsController extends Controller
 		$paystack_payment_setting->payment_type 				 =    "Paystack";
 		$paystack_payment_setting->paystack_callback_url 	     =    URL::to('/paystack-verify-request');
         $paystack_payment_setting->save();
+	}
+
+
+	
+	// CinetPay
+
+	$CinetPay_payment_setting =  PaymentSetting::where('payment_type','=','CinetPay')->first();
+
+	$Env_path = realpath(('.env'));
+
+	if($CinetPay_payment_setting != null){
+
+		$CinetPay_payment_setting->status                        	=     !empty($request->CinetPay_Status) ? 1 : 0;
+		$CinetPay_payment_setting->CinetPay_Status               	=     !empty($request->CinetPay_Status) ? 1 : 0;
+		$CinetPay_payment_setting->CinetPay_Lable      				=     $request['CinetPay_Lable'] ?  $request['CinetPay_Lable'] : null;
+		$CinetPay_payment_setting->CinetPay_APIKEY 					= 	  $request['CinetPay_APIKEY'] ?  $request['CinetPay_APIKEY'] : null;
+		$CinetPay_payment_setting->CinetPay_SecretKey      			= 	  $request['CinetPay_SecretKey'] ?  $request['CinetPay_SecretKey'] : null;
+		$CinetPay_payment_setting->CinetPay_SITE_ID 				= 	  $request['CinetPay_SITE_ID'] ?  $request['CinetPay_SITE_ID'] :null;
+		$CinetPay_payment_setting->paystack_lable 			 	 	= 	  $request['paystack_lable'] ?  $request['paystack_lable'] : null;
+		$CinetPay_payment_setting->payment_type 				 	=    "CinetPay";
+        $CinetPay_payment_setting->save();
 	}
 
         return Redirect::to('admin/payment_settings')->with(array('note' => 'Successfully Updated Payment Settings!', 'note_type' => 'success') );

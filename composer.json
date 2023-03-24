@@ -16,6 +16,7 @@
         "anhskohbo/no-captcha": "^3.4",
         "aws/aws-sdk-php-laravel": "^3.7",
         "cartalyst/stripe-laravel": "^12.0",
+        "cinetpay/cinetpay-php": "^1.9",
         "facuz/laravel-themes": "^3.2",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^1.0",
