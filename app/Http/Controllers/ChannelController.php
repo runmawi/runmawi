@@ -662,6 +662,7 @@ class ChannelController extends Controller
                     'commentable_type' => 'play_videos',
                     'Paystack_payment_settings' => PaymentSetting::where('payment_type', 'Paystack')->first(),
                     'Razorpay_payment_settings' => PaymentSetting::where('payment_type', 'Razorpay')->first(),
+                    'CinetPay_payment_settings' => PaymentSetting::where('payment_type', 'CinetPay')->first(),
                 ];
             } else {
                 $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
@@ -949,6 +950,7 @@ class ChannelController extends Controller
                     'commentable_type' => 'play_videos',
                     'Paystack_payment_settings' => PaymentSetting::where('payment_type', 'Paystack')->first(),
                     'Razorpay_payment_settings' => PaymentSetting::where('payment_type', 'Razorpay')->first(),
+                    'CinetPay_payment_settings' => PaymentSetting::where('payment_type', 'CinetPay')->first(),
                 ];
             }
 
@@ -1157,6 +1159,7 @@ class ChannelController extends Controller
                     'commentable_type' => 'play_videos',
                     'Paystack_payment_settings' => PaymentSetting::where('payment_type', 'Paystack')->first(),
                     'Razorpay_payment_settings' => PaymentSetting::where('payment_type', 'Razorpay')->first(),
+                    'CinetPay_payment_settings' => PaymentSetting::where('payment_type', 'CinetPay')->first(),
                 ];
             } else {
                 $categoryVideos = \App\Video::where('id', $vid)->first();
@@ -1435,6 +1438,7 @@ class ChannelController extends Controller
                     'commentable_type' => 'play_videos',
                     'Paystack_payment_settings' => PaymentSetting::where('payment_type', 'Paystack')->first(),
                     'Razorpay_payment_settings' => PaymentSetting::where('payment_type', 'Razorpay')->first(),
+                    'CinetPay_payment_settings' => PaymentSetting::where('payment_type', 'CinetPay')->first(),
                 ];
             }
             return Theme::view('video_before_login', $data);

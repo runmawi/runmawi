@@ -14,46 +14,40 @@
             transform: translate(-50%, -50%);
         }
     </style>
-    <?php
-$marchand = array(
-    "apikey" => "17747086006413350a27b974.55294931", // Enrer votre apikey
-    "site_id" => "751850", //Entrer votre site_ID
-    "secret_key" => "32949670764133fbd6e2ec4.97601606" //Entrer votre clé secret
-);
-?>
     <script>
         function checkout() {
             CinetPay.setConfig({
                 apikey: '17747086006413350a27b974.55294931',//   YOUR APIKEY
-                site_id: '751850',//YOUR_SITE_ID
-                notify_url: 'http://mondomaine.com/notify/',
-                mode: 'SANDBOX'
+                site_id: 751850,//YOUR_SITE_ID
+                notify_url: 'https://alorevod.com/category/videos/',
+                return_url: 'https://alorevod.com/category/videos/',
+                mode: 'PRODUCTION'
             });
             CinetPay.getCheckout({
-                transaction_id: Math.floor(Math.random() * 100000000).toString(), // YOUR TRANSACTION ID
-                amount: 100,
-                currency: 'XOF',
-                channels: 'ALL',
-                description: 'Test de paiement',   
-                 //Fournir ces variables pour le paiements par carte bancaire
-                customer_name:"Joe",//Le nom du client
-                customer_surname:"Down",//Le prenom du client
-                customer_email: "down@test.com",//l'email du client
-                customer_phone_number: "088767611",//l'email du client
-                customer_address : "BP 0024",//addresse du client
-                customer_city: "Antananarivo",// La ville du client
-                customer_country : "CM",// le code ISO du pays
-                customer_state : "CM",// le code ISO l'état
-                customer_zip_code : "06510", // code postal
+               transaction_id: Math.floor(Math.random() * 100000000).toString(), // YOUR TRANSACTION ID
+               amount: 100,
+               currency: 'XOF',
+               channels: 'ALL',
+               description: 'Test paiement',
+               //Provide these variables for credit card payments
+               customer_name:"Joe",//Customer name
+               customer_surname:"Down",//The customer's first name
+               customer_email: "down@test.com",//the customer's email
+               customer_phone_number: "088767611",//the customer's email
+               customer_address: "BP 0024",//customer address
+               customer_city: "Antananarivo",// The customer's city
+               customer_country: "CM",// the ISO code of the country
+               customer_state: "CM",// the ISO state code
+               customer_zip_code: "06510", // postcode
 
             });
             CinetPay.waitResponse(function(data) {
                 if (data.status == "REFUSED") {
-                    if (alert("Votre paiement a échoué")) {
+                    if (alert("Your payment failed")) {
                         window.location.reload();
                     }
                 } else if (data.status == "ACCEPTED") {
-                    if (alert("Votre paiement a été effectué avec succès")) {
+                    if (alert("Your payment has been made successfully")) {
                         window.location.reload();
                     }
                 }
@@ -65,7 +59,6 @@ $marchand = array(
     </script>
 </head>
 <body>
-    </head>
     <body>
         <div class="sdk">
             <h1>SDK SEAMLESS</h1>
