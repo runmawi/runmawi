@@ -1224,214 +1224,225 @@ public function verifyandupdatepassword(Request $request)
 
   public function videodetail(Request $request)
   {
-    $videoid = $request->videoid;
 
-    $current_date = date('Y-m-d h:i:s a', time());
-    $videodetail = Video::where('id',$videoid)->orderBy('created_at', 'desc')->get()->map(function ($item) {
-        $item['details'] = strip_tags($item->details);
-        $item['description'] = strip_tags($item->description);
-        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-        $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
-        $item['video_url'] = URL::to('/').'/storage/app/public/';
-        $item['reelvideo_url'] = URL::to('/').'/public/uploads/reelsVideos/'.$item->reelvideo;
-        $item['pdf_files_url'] = URL::to('/').'/public/uploads/videoPdf/'.$item->pdf_files;
-        $item['mobile_image_url'] = URL::to('/').'/public/uploads/images/'.$item->mobile_image;
-        $item['tablet_image_url'] = URL::to('/').'/public/uploads/images/'.$item->tablet_image;
-        $item['video_tv_image'] = URL::to('/').'/public/uploads/images/'.$item->video_tv_image;
-        $item['transcoded_url'] = URL::to('/storage/app/public/').'/'.$item->path . '.m3u8';
-        $item['description']    = strip_tags(html_entity_decode($item->description));
-        $item['movie_duration']    = gmdate('H:i:s', $item->duration);
-        $ads_videos = AdsVideo::where('ads_videos.video_id',$item->id)
-            ->join('advertisements', 'ads_videos.ads_id', '=', 'advertisements.id')
-            ->first();
+    try {
+      $videoid = $request->videoid;
 
-        $ads_mid_time  =  gmdate("H:i:s", $item->duration/2) ;
-        $ads_Post_time  = "00:00:00" ;
-        $ads_pre_time   =  gmdate("H:i:s", $item->duration - 1) ;
-
-        $item['ads_url'] = $ads_videos ? URL::to('/').'/public/uploads/AdsVideos/'.$ads_videos->ads_video :  " " ;
-        $item['ads_position'] = $ads_videos ? $ads_videos->ads_position : " ";
-
-        $item['pre_position_time'] = $ads_videos != null && $ads_videos->ads_position == 'pre' ? $ads_pre_time  : "0";
-        $item['mid_position_time'] = $ads_videos != null  && $ads_videos->ads_position == 'mid'  ? $ads_mid_time  : "0";
-        $item['post_position_time'] =$ads_videos != null  && $ads_videos->ads_position == 'post' ? $ads_Post_time  : "0";
-        $item['ads_seen_status'] = $item->ads_status;
-        return $item;
-      });
-      // $skip_time = ContinueWatching::where('user_id',$request->user_id)->where('videoid','=',$videoid)->pluck('skip_time')->max();
-      $skip_time = ContinueWatching::orderBy('created_at', 'DESC')->where('user_id',$request->user_id)->where('videoid','=',$videoid)->first();
-      if(!empty($skip_time)){
-        $skip_time = $skip_time->skip_time;
-
+      $current_date = date('Y-m-d h:i:s a', time());
+  
+      $videodetail = Video::where('id',$videoid)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+          $item['details'] = strip_tags($item->details);
+          $item['description'] = strip_tags($item->description);
+          $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+          $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+          $item['video_url'] = URL::to('/').'/storage/app/public/';
+          $item['reelvideo_url'] = URL::to('/').'/public/uploads/reelsVideos/'.$item->reelvideo;
+          $item['pdf_files_url'] = URL::to('/').'/public/uploads/videoPdf/'.$item->pdf_files;
+          $item['mobile_image_url'] = URL::to('/').'/public/uploads/images/'.$item->mobile_image;
+          $item['tablet_image_url'] = URL::to('/').'/public/uploads/images/'.$item->tablet_image;
+          $item['video_tv_image'] = URL::to('/').'/public/uploads/images/'.$item->video_tv_image;
+          $item['transcoded_url'] = URL::to('/storage/app/public/').'/'.$item->path . '.m3u8';
+          $item['description']    = strip_tags(html_entity_decode($item->description));
+          $item['movie_duration']    = gmdate('H:i:s', $item->duration);
+          $ads_videos = AdsVideo::where('ads_videos.video_id',$item->id)
+              ->join('advertisements', 'ads_videos.ads_id', '=', 'advertisements.id')
+              ->first();
+  
+          $ads_mid_time  =  gmdate("H:i:s", $item->duration/2) ;
+          $ads_Post_time  = "00:00:00" ;
+          $ads_pre_time   =  gmdate("H:i:s", $item->duration - 1) ;
+  
+          $item['ads_url'] = $ads_videos ? URL::to('/').'/public/uploads/AdsVideos/'.$ads_videos->ads_video :  " " ;
+          $item['ads_position'] = $ads_videos ? $ads_videos->ads_position : " ";
+  
+          $item['pre_position_time'] = $ads_videos != null && $ads_videos->ads_position == 'pre' ? $ads_pre_time  : "0";
+          $item['mid_position_time'] = $ads_videos != null  && $ads_videos->ads_position == 'mid'  ? $ads_mid_time  : "0";
+          $item['post_position_time'] =$ads_videos != null  && $ads_videos->ads_position == 'post' ? $ads_Post_time  : "0";
+          $item['ads_seen_status'] = $item->ads_status;
+          return $item;
+        });
+  
+        $skip_time = ContinueWatching::orderBy('created_at', 'DESC')->where('user_id',$request->user_id)->where('videoid','=',$videoid)->first();
+        
+        if(!empty($skip_time)){
+          $skip_time = $skip_time->skip_time;
+  
+        }else{
+          $skip_time = 0;
+        }
+  
+        if ( isset($request->user_id) && $request->user_id != '' ) {
+              $user_id = $request->user_id;
+              $ppv_exist = PpvPurchase::where('video_id',$videoid)->where('user_id',$user_id)->where('to_time','>',$current_date)->count();
+        
+              //Wishlilst
+        $cnt = Wishlist::select('video_id')->where('user_id','=',$user_id)->where('video_id','=',$videoid)->count();
+        $wishliststatus =  ($cnt == 1) ? "true" : "false";
+        //Watchlater
+        $cnt1 = Watchlater::select('video_id')->where('user_id','=',$user_id)->where('video_id','=',$videoid)->count();
+        $watchlaterstatus =  ($cnt1 == 1) ? "true" : "false";
+  
+         //Favorite
+        $cnt2 = Favorite::select('video_id')->where('user_id','=',$user_id)->where('video_id','=',$videoid)->count();
+        $favoritestatus =  ($cnt2 == 1) ? "true" : "false";
+  
+        //Continue Watchings
+        $cnt4 = ContinueWatching::select('currentTime')->where('user_id','=',$user_id)->where('videoid','=',$videoid)->count();
+        if($cnt4 == 1){
+        $get_time = ContinueWatching::select('currentTime')->where('user_id','=',$user_id)->where('videoid','=',$videoid)->get();
+        $curr_time = $get_time[0]->currentTime;
       }else{
-        $skip_time = 0;
+          $curr_time = '00';
       }
-      // }
-      if ( isset($request->user_id) && $request->user_id != '' ) {
-            $user_id = $request->user_id;
-            $ppv_exist = PpvPurchase::where('video_id',$videoid)->where('user_id',$user_id)->where('to_time','>',$current_date)->count();
-      //Wishlilst
-      $cnt = Wishlist::select('video_id')->where('user_id','=',$user_id)->where('video_id','=',$videoid)->count();
-      $wishliststatus =  ($cnt == 1) ? "true" : "false";
-      //Watchlater
-      $cnt1 = Watchlater::select('video_id')->where('user_id','=',$user_id)->where('video_id','=',$videoid)->count();
-      $watchlaterstatus =  ($cnt1 == 1) ? "true" : "false";
-
-       //Favorite
-      $cnt2 = Favorite::select('video_id')->where('user_id','=',$user_id)->where('video_id','=',$videoid)->count();
-      $favoritestatus =  ($cnt2 == 1) ? "true" : "false";
-
-      //Continue Watchings
-      $cnt4 = ContinueWatching::select('currentTime')->where('user_id','=',$user_id)->where('videoid','=',$videoid)->count();
-      if($cnt4 == 1){
-      $get_time = ContinueWatching::select('currentTime')->where('user_id','=',$user_id)->where('videoid','=',$videoid)->get();
-      $curr_time = $get_time[0]->currentTime;
-    }else{
+  
+        $userrole = User::where('id','=',$user_id)->first()->role;
+        $status = 'true';
+  
+        $like_data = LikeDisLike::where("video_id","=",$videoid)->where("user_id","=",$user_id)->where("liked","=",1)->count();
+        $dislike_data = LikeDisLike::where("video_id","=",$videoid)->where("user_id","=",$user_id)->where("disliked","=",1)->count();
+        $favoritestatus = Favorite::where("video_id","=",$videoid)->where("user_id","=",$user_id)->count();
+        $like = ($like_data == 1) ? "true" : "false";
+        $dislike = ($dislike_data == 1) ? "true" : "false";
+        $favorite = ($favoritestatus > 0) ? "true" : "false";
+      } else{
+        $wishliststatus = 'false';
+        $watchlaterstatus = 'false';
+        $favorite = 'false';
+        $ppv_exist = 0;
         $curr_time = '00';
+        $userrole = '';
+        $status = 'true';
+        $like = "false";
+        $dislike = "false";
+      }
+  
+      if ($ppv_exist > 0) {
+  
+            $ppv_time_expire = PpvPurchase::where('user_id','=',$user_id)->where('video_id','=',$videoid)->pluck('to_time');
+  
+            if ( $ppv_time_expire > $current_date ) {
+  
+                $ppv_video_status = "can_view";
+  
+            } else {
+                  $ppv_video_status = "expired";
+            }
+  
+      } else {
+            $ppv_video_status = "pay_now";
+      }
+  
+  
+           $videos_cat_id = Video::where('id','=',$videoid)->pluck('video_category_id');
+           $moviesubtitles = MoviesSubtitles::where('movie_id',$videoid)->get();
+          $main_genre = CategoryVideo::Join('video_categories','video_categories.id','=','categoryvideos.category_id')
+            ->where('video_id',$videoid)->get('name');
+            foreach($main_genre as $value){
+              $category[] = $value['name'];
+            }
+            if(!empty($category)){
+            $main_genre = implode(",",$category);
+            }else{
+              $main_genre = "";
+            }
+          // $main_genre = CategoryVideo::Join('video_categories','video_categories.id','=','categoryvideos.category_id')
+            $languages = LanguageVideo::Join('languages','languages.id','=','languagevideos.language_id')
+            ->where('languagevideos.video_id',$videoid)->get('name');
+  
+            foreach($languages as $value){
+              $language[] = $value['name'];
+            }
+            if(!empty($language)){
+            $languages = implode(",",$language);
+            }else{
+              $languages = "";
+            }
+  
+  
+      if(\App\AdsVideo::where('video_id',$videoid)->exists()){
+          $ads_id = \App\AdsVideo::where('video_id',$videoid)->first()->ads_id;
+          $videoads = \App\Advertisement::find($ads_id)->ads_path;
+      }else{
+          $videoads = '';
+      }
+  
+      $video = Video::find( $request->videoid);
+  
+      $AdsVideosPre = AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
+              ->Join('videos','advertisements.ads_category','=','videos.pre_ads_category')
+              ->where('ads_events.status',1)
+              ->where('advertisements.status',1)
+              ->where('advertisements.ads_category',$video->pre_ads_category)
+              ->where('ads_position','pre')
+              ->where('advertisements.id',$video->pre_ads)
+              ->groupBy('advertisements.id')
+              ->get()->map->only('ads_path','ads_video')->map(function ($item) {
+                  $item['ads_type'] = $item['ads_video'] == null ? "Google_tag" : "upload_ads";
+                  $item['ads_videos_url'] = URL::to('public/uploads/AdsVideos/'.$item['ads_video']);
+                  return $item;
+              });
+  
+  
+      $AdsVideosMid = AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
+              ->Join('videos','advertisements.ads_category','=','videos.mid_ads_category')
+              ->where('ads_events.status',1)
+              ->where('advertisements.status',1)
+              ->where('advertisements.ads_category',$video->mid_ads_category)
+              ->where('videos.id',$video->id)
+              ->where('ads_position','mid')
+              ->where('advertisements.id',$video->mid_ads)
+              ->groupBy('advertisements.id')
+              ->get()->map->only('ads_path','ads_video')->map(function ($item) {
+                  $item['ads_type'] = $item['ads_video'] == null ? "Google_tag" : "upload_ads";
+                  $item['ads_videos_url'] = URL::to('public/uploads/AdsVideos/'.$item['ads_video']);
+                  return $item;
+              });
+  
+  
+      $AdsVideosPost = AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
+              ->Join('videos','advertisements.ads_category','=','videos.post_ads_category')
+              ->where('ads_events.status',1)->where('advertisements.status',1)
+              ->where('advertisements.ads_category',$video->post_ads_category)
+              ->where('videos.id',$video->id)
+              ->where('ads_position','post')
+              ->where('advertisements.id',$video->post_ads)
+              ->groupBy('advertisements.id')
+              ->get()->map->only('ads_path','ads_video')->map(function ($item) {
+                  $item['ads_type'] = $item['ads_video'] == null ? "Google_tag" : "upload_ads";
+                  $item['ads_videos_url'] = URL::to('public/uploads/AdsVideos/'.$item['ads_video']);
+                  return $item;
+              });
+  
+  
+      $response = array(
+        'status' => $status,
+        'wishlist' => $wishliststatus,
+        'curr_time' => $curr_time,
+        'ppv_video_status' => $ppv_video_status,
+        'watchlater' => $watchlaterstatus,
+        'favorite' => $favorite                                 ,
+        'ppv_exist' => $ppv_exist,
+        'userrole' => $userrole,
+        'like' => $like,
+        'dislike' => $dislike,
+        'skiptime' => $skip_time,
+        'shareurl' => URL::to('category/videos').'/'.$videodetail[0]->slug,
+        'videodetail' => $videodetail,
+        'videossubtitles' => $moviesubtitles,
+        'main_genre' => $main_genre,
+        'languages' => $languages,
+        'videoads' => $videoads,
+        'Ads_videos_Pre' => $AdsVideosPre,
+        'Ads_videos_Mid' => $AdsVideosMid,
+        'Ads_videos_post' => $AdsVideosPost,
+      );
+    } catch (\Throwable $th) {
+        $response = array(
+          'status'=>'false',
+          'message'=>$th->getMessage(),
+        );
     }
-
-      $userrole = User::where('id','=',$user_id)->first()->role;
-      $status = 'true';
-
-      $like_data = LikeDisLike::where("video_id","=",$videoid)->where("user_id","=",$user_id)->where("liked","=",1)->count();
-      $dislike_data = LikeDisLike::where("video_id","=",$videoid)->where("user_id","=",$user_id)->where("disliked","=",1)->count();
-      $favoritestatus = Favorite::where("video_id","=",$videoid)->where("user_id","=",$user_id)->count();
-      $like = ($like_data == 1) ? "true" : "false";
-      $dislike = ($dislike_data == 1) ? "true" : "false";
-      $favorite = ($favoritestatus > 0) ? "true" : "false";
-    } else{
-      $wishliststatus = 'false';
-      $watchlaterstatus = 'false';
-      $favorite = 'false';
-      $ppv_exist = 0;
-      $curr_time = '00';
-      $userrole = '';
-      $status = 'true';
-      $like = "false";
-      $dislike = "false";
-    }
-
-    if ($ppv_exist > 0) {
-
-          $ppv_time_expire = PpvPurchase::where('user_id','=',$user_id)->where('video_id','=',$videoid)->pluck('to_time');
-
-          if ( $ppv_time_expire > $current_date ) {
-
-              $ppv_video_status = "can_view";
-
-          } else {
-                $ppv_video_status = "expired";
-          }
-
-    } else {
-          $ppv_video_status = "pay_now";
-    }
-
-
-         $videos_cat_id = Video::where('id','=',$videoid)->pluck('video_category_id');
-         $moviesubtitles = MoviesSubtitles::where('movie_id',$videoid)->get();
-        $main_genre = CategoryVideo::Join('video_categories','video_categories.id','=','categoryvideos.category_id')
-          ->where('video_id',$videoid)->get('name');
-          foreach($main_genre as $value){
-            $category[] = $value['name'];
-          }
-          if(!empty($category)){
-          $main_genre = implode(",",$category);
-          }else{
-            $main_genre = "";
-          }
-        // $main_genre = CategoryVideo::Join('video_categories','video_categories.id','=','categoryvideos.category_id')
-          $languages = LanguageVideo::Join('languages','languages.id','=','languagevideos.language_id')
-          ->where('languagevideos.video_id',$videoid)->get('name');
-
-          foreach($languages as $value){
-            $language[] = $value['name'];
-          }
-          if(!empty($language)){
-          $languages = implode(",",$language);
-          }else{
-            $languages = "";
-          }
-
-
-    if(\App\AdsVideo::where('video_id',$videoid)->exists()){
-        $ads_id = \App\AdsVideo::where('video_id',$videoid)->first()->ads_id;
-        $videoads = \App\Advertisement::find($ads_id)->ads_path;
-    }else{
-        $videoads = '';
-    }
-
-    $video = Video::find( $request->videoid);
-
-    $AdsVideosPre = AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
-            ->Join('videos','advertisements.ads_category','=','videos.pre_ads_category')
-            ->where('ads_events.status',1)
-            ->where('advertisements.status',1)
-            ->where('advertisements.ads_category',$video->pre_ads_category)
-            ->where('ads_position','pre')
-            ->where('advertisements.id',$video->pre_ads)
-            ->groupBy('advertisements.id')
-            ->get()->map->only('ads_path','ads_video')->map(function ($item) {
-                $item['ads_type'] = $item['ads_video'] == null ? "Google_tag" : "upload_ads";
-                $item['ads_videos_url'] = URL::to('public/uploads/AdsVideos/'.$item['ads_video']);
-                return $item;
-            });
-
-
-    $AdsVideosMid = AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
-            ->Join('videos','advertisements.ads_category','=','videos.mid_ads_category')
-            ->where('ads_events.status',1)
-            ->where('advertisements.status',1)
-            ->where('advertisements.ads_category',$video->mid_ads_category)
-            ->where('videos.id',$video->id)
-            ->where('ads_position','mid')
-            ->where('advertisements.id',$video->mid_ads)
-            ->groupBy('advertisements.id')
-            ->get()->map->only('ads_path','ads_video')->map(function ($item) {
-                $item['ads_type'] = $item['ads_video'] == null ? "Google_tag" : "upload_ads";
-                $item['ads_videos_url'] = URL::to('public/uploads/AdsVideos/'.$item['ads_video']);
-                return $item;
-            });
-
-
-    $AdsVideosPost = AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
-            ->Join('videos','advertisements.ads_category','=','videos.post_ads_category')
-            ->where('ads_events.status',1)->where('advertisements.status',1)
-            ->where('advertisements.ads_category',$video->post_ads_category)
-            ->where('videos.id',$video->id)
-            ->where('ads_position','post')
-            ->where('advertisements.id',$video->post_ads)
-            ->groupBy('advertisements.id')
-            ->get()->map->only('ads_path','ads_video')->map(function ($item) {
-                $item['ads_type'] = $item['ads_video'] == null ? "Google_tag" : "upload_ads";
-                $item['ads_videos_url'] = URL::to('public/uploads/AdsVideos/'.$item['ads_video']);
-                return $item;
-            });
-
-
-    $response = array(
-      'status' => $status,
-      'wishlist' => $wishliststatus,
-      'curr_time' => $curr_time,
-      'ppv_video_status' => $ppv_video_status,
-      'watchlater' => $watchlaterstatus,
-      'favorite' => $favorite                                 ,
-      'ppv_exist' => $ppv_exist,
-      'userrole' => $userrole,
-      'like' => $like,
-      'dislike' => $dislike,
-      'skiptime' => $skip_time,
-      'shareurl' => URL::to('category/videos').'/'.$videodetail[0]->slug,
-      'videodetail' => $videodetail,
-      'videossubtitles' => $moviesubtitles,
-      'main_genre' => $main_genre,
-      'languages' => $languages,
-      'videoads' => $videoads,
-      'Ads_videos_Pre' => $AdsVideosPre,
-      'Ads_videos_Mid' => $AdsVideosMid,
-      'Ads_videos_post' => $AdsVideosPost,
-    );
-
+   
     return response()->json($response, 200);
   }
 
