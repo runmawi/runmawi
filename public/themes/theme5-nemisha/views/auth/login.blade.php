@@ -384,7 +384,7 @@ font-weight: 600;
          </div>
           
       </div>
-   </div>-->
+   </div>
 </section>
     
     <section class="sec-3" style="padding:80px 30px 80px 30px;">
@@ -401,7 +401,7 @@ font-weight: 600;
             </div>
            
         </div></div>
-    </section>
+    </section>-->
 
     
 @php
