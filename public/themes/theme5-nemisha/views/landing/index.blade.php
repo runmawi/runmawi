@@ -905,8 +905,11 @@ transition: all .2s ease-in-out;  transform: scale(1.1);}
         .slick-dots li {
             margin: -2px;
         }
-
+        .small-t{
+            display: none;
+        }
         .bkm {
+            display: none;
             position: absolute;
             bottom: -5px;
             left: 30px;
@@ -1905,6 +1908,7 @@ Resist</h2>
                 clip.play(); 
 
                 clip.addEventListener("mouseover", function (e) {
+                    
                     clip.play();
                 })
 
