@@ -2120,7 +2120,10 @@ Route::group(['middleware' => ['RazorpayMiddleware']], function() {
 });
 
 
-
+// CinetPay-Video Rent
+Route::get('/cinet-purchase-video/{video_id}/{amount}', 'CinetPayController@CinetPay_Video_Rent')->name('CinetPay_Video_Rent');
+Route::post('/CinetPay-video-rent', 'CinetPayController@CinetPay_Video_Rent_Payment')->name('CinetPay_Video_Rent_Payment');
+                    
 // Content Partner - Home Page
 
 Route::get('channel-partner', 'ChannelPartnerController@channelparnter')->name('channelparnter_index');
