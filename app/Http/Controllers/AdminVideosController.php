@@ -156,9 +156,9 @@ class AdminVideosController extends Controller
             $editvideo = URL::to("admin/videos/editvideo");
             $delete = URL::to("admin/videos/delete");
             if ($query != "") {
-                // $data = Video::where("title", "LIKE", "%" . $query . "%")
-                //     ->orderBy("created_at", "desc")
-                //     ->paginate(9);
+                $data = Video::where("title", "LIKE", "%" . $query . "%")
+                    ->orderBy("created_at", "desc")
+                    ->paginate(9);
 
                 //  $data = Video::select('videos.*','moderators_users.id','video_languages.name as languages_name','video_categories.name as categories_name')
                 //  ->leftJoin('moderators_users', 'moderators_users.id', '=', 'videos.user_id')
@@ -167,8 +167,8 @@ class AdminVideosController extends Controller
                 //  ->where('videos.title', 'like', '%'.$query.'%')
                 //  ->paginate(9);
             } else {
-                $data = Video::orderBy("created_at", "desc")
-                ->paginate(9);
+                // $data = Video::orderBy("created_at", "desc")
+                // ->paginate(9);
             }
             if (count($data) > 0) {
                 $total_row = $data->count();
