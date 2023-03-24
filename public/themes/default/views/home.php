@@ -1152,7 +1152,7 @@
                  }
                   $videos = $videos->latest('videos.created_at')->get();
                   
-                  $Episode_videos =  App\Series::select('episodes.*','series.title as series_name')
+                  $Episode_videos =  App\Series::select('episodes.*','series.title as series_name','series.slug as series_slug')
                                  ->join('series_categories', 'series_categories.series_id', '=', 'series.id')
                                  ->join('episodes', 'episodes.series_id', '=', 'series.id')
                                  ->where('series_categories.category_id','=',$category->id)
@@ -1180,7 +1180,7 @@
            }
           $videos = $videos->latest('videos.created_at')->get();
          
-          $Episode_videos =  App\Series::select('episodes.*','series.title as series_name')
+          $Episode_videos =  App\Series::select('episodes.*','series.title as series_name','series.slug as series_slug')
                         ->join('series_categories', 'series_categories.series_id', '=', 'series.id')
                         ->join('episodes', 'episodes.series_id', '=', 'series.id')
                         ->where('series_categories.category_id','=',$category->id)
@@ -1210,7 +1210,7 @@
          $videos = $videos->latest('videos.created_at')->get();
          
          
-         $Episode_videos =  App\Series::select('episodes.*','series.title as series_name')
+         $Episode_videos =  App\Series::select('episodes.*','series.title as series_name','series.slug as series_slug')
                   ->join('series_categories', 'series_categories.series_id', '=', 'series.id')
                   ->join('episodes', 'episodes.series_id', '=', 'series.id')
                   ->where('series_categories.category_id','=',$category->id)
