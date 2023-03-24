@@ -35,7 +35,7 @@ border-radius: 0px 4px 4px 0px;
          <div class="container-fluid p-0">
             <div class="row">
                <div class="col-sm-12">
-                  <div class="iq-card">
+                  <div class="iq-card">   <h4>Channel Uploaded Videos</h4>
                      <div class="iq-card-header d-flex justify-content-between">
                        
                      <div class="col-md-12">
@@ -48,7 +48,7 @@ border-radius: 0px 4px 4px 0px;
                      </div>
                   </div>
                </div>
-                        <h4>Channel Uploaded Videos</h4>
+                     
                          <div class="iq-card-header-toolbar d-flex align-items-baseline">
                              <div class="form-group mr-2">
                     <!-- <input type="text" name="search" id="search" class="form-control" placeholder="Search Data" /> -->
