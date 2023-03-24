@@ -1435,6 +1435,14 @@ class HomeController extends Controller
                 $devices_check = LoggedDevice::where('user_id', '=', Auth::User()->id)
                     ->where('device_name', '=', $device_name)->first();
                 // device  on(22022022 )
+                $already_logged = LoggedDevice::where('user_id', '=', Auth::User()->id)
+                ->where('user_ip', '=', $userIp)
+                ->where('device_name', '=', $device_name)->count();
+                if($already_logged > 0){
+                    $already_logged = LoggedDevice::where('user_id', '=', Auth::User()->id)
+                    ->where('user_ip', '=', $userIp)
+                    ->where('device_name', '=', $device_name)->delete();
+                }
                 $username = Auth::User()->username;
                 $email = Auth::User()->email;
                 $mail_check = ApprovalMailDevice::where('user_ip', '=', $userIp)->where('device_name', '=', $device_name)->first();
