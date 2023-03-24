@@ -572,6 +572,8 @@ class TvshowsController extends Controller
                 $video_access = 'free';
             }
         }
+        $series = Series::where('slug', '=', $name)->first();
+
         // dd($video_access);
         $id = $series->id;
 
