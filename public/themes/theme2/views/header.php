@@ -565,7 +565,7 @@
                                             </ul>
                                         </li>
                                         <?php } elseif ( $menu->in_menu == "movies") { 
-                                        $cat = App\VideoCategory::all();
+                                        $cat = App\VideoCategory::orderBy('order', 'asc')->get();
                                         ?>
                                         <li class="dropdown menu-item">
                                             <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/') . $menu->url; ?>"
@@ -587,7 +587,7 @@
                                         </li>
                                         <?php }elseif ( $menu->in_menu == "live") { 
                                        //  $LiveCategory = App\LiveCategory::all();
-                                       $LiveCategory = App\LiveCategory::get();
+                                       $LiveCategory = App\LiveCategory::orderBy('order', 'asc')->get();
                                         ?>
                                         <li class="dropdown menu-item">
                                             <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/') . $menu->url; ?>"
@@ -609,7 +609,7 @@
                                         </li>
                                         <!-- Audios dropdown -->
                                         <?php }elseif ( $menu->in_menu == "audios") { 
-                                 $AudioCategory = App\AudioCategory::get();
+                                 $AudioCategory = App\AudioCategory::orderBy('order', 'asc')->get();
                                  ?>
                                         <li class="dropdown menu-item">
                                             <a class="dropdown-toggle" id="dn" href="<?php echo URL::to('/') . $menu->url; ?>"

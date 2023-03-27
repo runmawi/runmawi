@@ -499,6 +499,7 @@ Route::get('/episode/filedelete/{id}', 'AdminSeriesController@filedelete');
     Route::get('/livestream/categories/edit/{id}', 'AdminLiveCategoriesController@edit');
     Route::post('/livestream/categories/update','AdminLiveCategoriesController@update');
     Route::get('/livestream/categories/delete/{id}', array('before' => 'demo', 'uses' => 'AdminLiveCategoriesController@destroy'));
+    Route::post('/live_category_order', 'AdminLiveCategoriesController@live_category_order');
 
 
     Route::get('/plans', 'AdminPlansController@index');
@@ -727,6 +728,7 @@ Route::get('/episode/filedelete/{id}', 'AdminSeriesController@filedelete');
     Route::get('/audios/categories/edit/{id}', 'AdminAudioCategoriesController@edit');
     Route::post('/audios/categories/update', array('before' => 'demo', 'uses' => 'AdminAudioCategoriesController@update'));
     Route::get('/audios/categories/delete/{id}', array('before' => 'demo', 'uses' => 'AdminAudioCategoriesController@destroy'));
+    Route::post('/audio_category_order', 'AdminAudioCategoriesController@audio_category_order');
 
 //Artist Routes
     Route::get('/artists', 'AdminArtistsController@index');
