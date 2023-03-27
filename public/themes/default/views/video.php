@@ -1048,7 +1048,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                    <li>
                        <?php     
                            $user = Auth::user(); 
-                           if (  ($user->role!="subscriber" && $user->role!="admin") ) { ?>
+                           if (  ($user->role!="subscriber" && $user->role!="registered" && $user->role!="admin") ) { ?>
                                <a href="<?php echo URL::to('/becomesubscriber');?>"><span class="view-count btn1 btn-outline-danger subsc-video"><?php echo __('Subscribe');?> </span></a>
                        <?php } ?>
                    </li>
