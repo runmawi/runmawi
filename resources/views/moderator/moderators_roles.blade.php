@@ -81,3 +81,52 @@
     })
 </script>
 @stop
+<div id="content-page" class="content-page">
+         <div class="container-fluid">
+              <div class="iq-card">
+
+<div id="user_roles-container">
+	<div class="user_roles-section-title">
+		<h4><i class="entypo-globe"></i> Roles & Permission</h4> 
+               
+           
+        <form method="POST" action="" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
+                       
+                        <input type="hidden" name="_token" value="{{csrf_token()}}">
+
+                        <div class="col-md-12" >
+
+                        <div class="form-group row">
+                            <label for="name" class=" col-form-label text-md-right">Role Name</label>
+
+                                <input id="role_name" type="text" class="form-control" name="role_name"  autocomplete="role_name" autofocus />
+                            </div>
+                        </div>
+            
+                        <div >
+                               
+                               <label for="user_permission" class=" col-form-label text-md-right">{{ __('User Permission') }}</label>
+                               </div>
+                          
+                               
+                               <div  class="col-md-4" >
+                                          
+                                          <label> permissions name</label>
+                                           <label class="switch">
+                                                     <input type="checkbox"  name="user_permission[]"  value="{{$permissions->id}}">
+                                               <span class="slider round"></span>
+                                           </label>
+                               </div>
+                               
+                           
+                               
+                               </div>
+                               
+
+                    <div class="form-group row mb-0"><div class="col-md-12 d-flex justify-content-end">
+                        <button type="submit" class="btn btn-primary">Register</button>
+                    </div></div>
+                </form>
+	        </div>
+	    </div>
+	</div>

@@ -9,7 +9,7 @@
 
             {{-- Videos --}}
         @if( count($all_videos) > 0 )
-            <div class="row">
+            <div class="row p-2">
                 <div class="col-sm-12 page-height">
 
                     <div class="iq-main-header align-items-center justify-content-between"> 

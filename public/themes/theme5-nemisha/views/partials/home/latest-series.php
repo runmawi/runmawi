@@ -35,7 +35,7 @@
               </div>
               <div class="mt-2">
                   
-                <div class="movie-time d-flex align-items-center justify-content-between my-2">
+                <div class="movie-time align-items-center justify-content-between my-2">
                      <a href="<?php echo URL::to('/play_series'.'/'.$latest_serie->slug) ?> ">
 
               <h6><?php echo __($latest_serie->title); ?></h6>
