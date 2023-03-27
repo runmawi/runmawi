@@ -115,6 +115,8 @@ Route::post('/admin/cpp_analytics_barchart', 'ModeratorsUserController@CPPAnalyt
 
 Route::post('/schedule/videos', 'ChannelController@ScheduledVideos');
 Route::get('/schedule/videos/embed/{name}','ChannelController@EmbedScheduledVideos');
+Route::get('/videos/category/{cid}', 'ChannelController@channelVideos');
+Route::get('/movies/category/{cid}', 'ChannelController@channelVideos');
 
 Route::post('/register1', 'HomeController@PostcreateStep1');
 Route::get('/verify-request', 'HomeController@VerifyRequest');
