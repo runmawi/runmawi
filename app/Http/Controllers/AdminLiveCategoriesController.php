@@ -57,9 +57,9 @@ class AdminLiveCategoriesController extends Controller
             return view('admin.expired_dashboard');
         }else{
         if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin" ){
-        $categories = LiveCategory::where('parent_id', '=', 0)->get();
+        $categories = LiveCategory::where('parent_id', '=', 0)->orderBy('order')->get();
 
-        $allCategories = LiveCategory::all();
+        $allCategories = LiveCategory::orderBy('order')->get();
           
           
           
@@ -152,7 +152,7 @@ class AdminLiveCategoriesController extends Controller
           
           $LiveCategory->name = $input['name'];
           $LiveCategory->user_id = Auth::User()->id;
-          $LiveCategory->order = $order;
+          $LiveCategory->order = LiveCategory::max('order') + 1;
           $LiveCategory->slug = $input['slug'];
           $LiveCategory->parent_id = $input['parent_id'];
           $LiveCategory->image = $input['image'];
@@ -301,6 +301,22 @@ class AdminLiveCategoriesController extends Controller
       }
       }
     
+      public function live_category_order (Request $request){
+
+        $post_categories = LiveCategory::all();
+
+
+        foreach ($post_categories as $post) {
+            foreach ($request->order as $order) {
+                if ($order['id'] == $post->id) {
+                    $post->update(['order' => $order['position']]);
+                }
+            }
+        }
+        
+        return 1;
+    }    
+       
     
     
 }

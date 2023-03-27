@@ -60,9 +60,9 @@ class AdminAudioCategoriesController extends Controller
             return View::make('admin.expired_dashboard', $data);
         }else{
         if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
-        $categories = AudioCategory::where('parent_id', '=', 0)->get();
+        $categories = AudioCategory::where('parent_id', '=', 0)->orderBy('order')->get();
 
-        $allCategories = AudioCategory::all();
+        $allCategories = AudioCategory::orderBy('order')->get();
           
           
           
@@ -146,6 +146,8 @@ class AdminAudioCategoriesController extends Controller
             else {
                $input['image']  = 'default.jpg';
             }
+
+            $input['order']  =  AudioCategory::max('order') + 1;
 
             AudioCategory::create($input);
 
@@ -657,5 +659,21 @@ class AdminAudioCategoriesController extends Controller
                 ->get();
         }
     
+        public function audio_category_order (Request $request){
+
+            $post_categories = AudioCategory::all();
+
+
+            foreach ($post_categories as $post) {
+                foreach ($request->order as $order) {
+                    if ($order['id'] == $post->id) {
+                        $post->update(['order' => $order['position']]);
+                    }
+                }
+            }
+            
+            return 1;
+        }    
+              
 
 }
