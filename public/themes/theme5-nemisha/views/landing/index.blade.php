@@ -26,7 +26,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
         rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Favicon -->
     <link rel="shortcut icon" href="<?= URL::to('/') . '/public/uploads/settings/' . $settings->favicon ?>" />
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
@@ -39,7 +39,7 @@
     <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/bootstrap.min.css'); ?>" />
 
     <!-- Style -->
-   
+
 
     <!-- Responsive -->
     <link rel="stylesheet" href="assets/css/responsive.css" />
@@ -51,9 +51,14 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
     <style>
-        h1,h2,h3,h4,h5{
-            color: #fff!important;
+        h1,
+        h2,
+        h3,
+        h4,
+        h5 {
+            color: #fff !important;
         }
+
         .map {
 
             font-size: 16px;
@@ -62,11 +67,14 @@
             text-align: justify;
 
         }
-        vida{
-            
+
+        vida {}
+
+        .vida:hover {
+            transition: all .2s ease-in-out;
+            transform: scale(1.1);
         }
-       .vida:hover{
-transition: all .2s ease-in-out;  transform: scale(1.1);}
+
         .wat {
             padding: 10px 18px 10px 18px;
         }
@@ -113,7 +121,6 @@ transition: all .2s ease-in-out;  transform: scale(1.1);}
 
         .mn:hover {
             transform: scale(1.1);
-
         }
 
         @media only screen and (max-width : 320px) {
@@ -265,23 +272,24 @@ transition: all .2s ease-in-out;  transform: scale(1.1);}
 
         }
 
-        h2, h4, h3 {
+        h2,
+        h4,
+        h3 {
             font-family: 'futurabook';
-
-
         }
 
         .sec-2 h2 {
             font-size: 40px;
-           
+
         }
-        most{
-            font-size: 40px!important;
+
+        most {
+            font-size: 40px !important;
         }
 
         h2 {
             font-weight: 700;
-            font-weight: 40px!important;
+            font-weight: 40px !important;
         }
 
         main.py-4 {
@@ -391,9 +399,11 @@ transition: all .2s ease-in-out;  transform: scale(1.1);}
             color: var(--iq-body-text);
             text-decoration: none;
         } */
-        .nav-pills .nav-link.active, .nav-pills .show>.nav-link{
-            background: transparent!important;
+        .nav-pills .nav-link.active,
+        .nav-pills .show>.nav-link {
+            background: transparent !important;
         }
+
         .phselect {
 
             height: 45px !important;
@@ -462,8 +472,6 @@ transition: all .2s ease-in-out;  transform: scale(1.1);}
 
         .error {
             color: brown;
-
-
         }
 
         .agree {
@@ -477,8 +485,6 @@ transition: all .2s ease-in-out;  transform: scale(1.1);}
         }
 
         .get {
-
-
             font-style: normal;
             font-weight: 500;
             font-size: 20px;
@@ -561,7 +567,6 @@ transition: all .2s ease-in-out;  transform: scale(1.1);}
         .btn-success:hover {
             color: #fff !important;
             border-color: 1px solid #ED553B !importan;
-
         }
 
         .btn-success:hover:after {
@@ -583,9 +588,7 @@ transition: all .2s ease-in-out;  transform: scale(1.1);}
             background-color: #fff;
             border-radius: 5px !important;
             border: none !important;
-
             padding: 5px 10px !important;
-
             font-style: normal;
             font-weight: 600;
 
@@ -618,7 +621,6 @@ transition: all .2s ease-in-out;  transform: scale(1.1);}
             padding: 10px 30px;
             font-family: 'Roboto', sans-serif;
             font-weight: 600;
-
         }
 
         .nav-link {
@@ -640,9 +642,6 @@ transition: all .2s ease-in-out;  transform: scale(1.1);}
             padding: 10px 0;
             border: none !important;
             border-bottom: 2px solid #F6D55C !important;
-
-
-
         }
 
         .nav-pills .nav-link {
@@ -753,7 +752,6 @@ transition: all .2s ease-in-out;  transform: scale(1.1);}
         .dropdown-item {
             color: #000 !important;
             padding: 5px;
-
         }
 
         #ikm {
@@ -905,9 +903,11 @@ transition: all .2s ease-in-out;  transform: scale(1.1);}
         .slick-dots li {
             margin: -2px;
         }
-        .small-t{
+
+        .small-t {
             display: none;
         }
+
         .bkm {
             display: none;
             position: absolute;
@@ -996,7 +996,6 @@ transition: all .2s ease-in-out;  transform: scale(1.1);}
             padding: 15px;
             top: -36px;
             left: -19px;
-
         }
 
         .set {
@@ -1005,7 +1004,6 @@ transition: all .2s ease-in-out;  transform: scale(1.1);}
             padding: 15px;
             top: -36px;
             left: -19px;
-
         }
 
         .btn-outline-danger {
@@ -1040,24 +1038,30 @@ transition: all .2s ease-in-out;  transform: scale(1.1);}
             }
 
             .navbar-fixed-top {
-               height: auto;
+                height: auto;
             }
-            h1{
+
+            h1 {
                 font-size: 20px;
             }
-            .dig{
+
+            .dig {
                 font-size: 18px;
             }
-            .pa{
+
+            .pa {
                 padding: 0;
             }
+
             .ban {
                 background-color: rgba(0, 0, 0, 0.65);
                 background-blend-mode: multiply;
             }
-            .imk{
+
+            .imk {
                 margin-top: 15px;
             }
+
             #disp {
                 display: none;
             }
@@ -1069,47 +1073,54 @@ transition: all .2s ease-in-out;  transform: scale(1.1);}
             .map1 {
                 display: flex;
                 justify-content: center;
-               
+
             }
         }
-        .lan h4{
+
+        .lan h4 {
             font-weight: 700;
         }
-        .rated h4{
-             font-weight: 700;
+
+        .rated h4 {
+            font-weight: 700;
         }
- .bg-video-wrap {
-    position: relative;
-    overflow: hidden;
-    width: 100%;
-    height: 100vh;
-}
-        .bg-video-wrap video{
+
+        .bg-video-wrap {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            height: 100vh;
+        }
+
+        .bg-video-wrap video {
             object-fit: cover;
         }
-.overlay {
-    width: 100%;
-    height: 100vh;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-image: linear-gradient(rgba(0,0,0,.1) 70%, rgba(0,0,0,.5) 50%);
-    z-index: 2;
-}
-        .nemis{
+
+        .overlay {
+            width: 100%;
+            height: 100vh;
             position: absolute;
-    left: 0;
-    right: 0;
-    top: 56%;
-}
+            top: 0;
+            left: 0;
+            background-image: linear-gradient(rgba(0, 0, 0, .1) 70%, rgba(0, 0, 0, .5) 50%);
+            z-index: 2;
+            display: none;
+        }
+
+        .nemis {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 56%;
+        }
         }
     </style>
 
     <?php $jsonString = file_get_contents(base_path('assets/country_code.json'));
     
     $jsondata = json_decode($jsonString, true); ?>
- <header>
-     <nav class="navbar navbar-expand-lg navbar-light navbar-fixed-top bg-light">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light navbar-fixed-top bg-light">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#"><img src="<?php echo URL::to('/assets/img/nem-b.png'); ?>" style=""></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -1126,39 +1137,38 @@ transition: all .2s ease-in-out;  transform: scale(1.1);}
             </div>
         </nav>
     </header>
+    
     <section class="mt-5 mb-0">
-
-      
-  <section class="mt-5 mb-0">
-<div class="bg-video-wrap">
-        <video src="<?php echo URL::to('/assets/img/tv.mp4'); ?>" loop muted autoplay>
-        </video>
-        <div class="overlay">
-            <div class="nemis">
-           <h1 class=" mt-5 pt-5">Welcome to <span class="">NEMISA TV</span></h1>
+        <section class="mt-5 mb-0">
+            <div class="bg-video-wrap">
+                <video src="<?php echo URL::to('/assets/img/tv.mp4'); ?>" loop muted autoplay>
+                </video>
+                <div class="overlay">
+                    <div class="nemis">
+                        <h1 class=" mt-5 pt-5">Welcome to <span class="">NEMISA TV</span></h1>
                         <h2 class="dig mt-1 mb-5 text-center">HOME OF EDUTAINMENT & ORIGINAL <br>STORY-TELLING</h2>
+                    </div>
+                </div>
             </div>
-        </div>
-       
 
-    </div>
-      
-
-       <!-- <div class="position-relative ban"
+            <!-- <div class="position-relative ban"
             style="padding: 19.2% 0 37% 0!important;background-image:url('<?php echo URL::to('/assets/img/lan/v11.png'); ?>');background-repeat: no-repeat;background-size: 100% 100%;">
             <div class="fixe">
                 <div class="row m-0  p-0" style="">
                     <div class="col-md-12 col-lg-12 p-0 text-center h-100 banner-top"
                         style="background-image:url('<?php echo URL::to('/assets/img/lan/v'); ?>');background-repeat: no-repeat;background-position: center 350px;
-    background-size: 50%;">
-                        <div></div>
+                            background-size: 50%;">
+                    <div>
+                </div>
                        
                      <p class="text-white" style="font-size:16px;">South Africaâ€™s first free video sharing social platform where we mix knowledge <br>and entertainment for unique learning experience</p>
                     </div>
                 </div>
             </div>
-        </div>--></section>
-       <section class="sec-21" style="background-image:url('<?php echo URL::to('/assets/img/lan/bg1.png'); ?>');background-repeat: no-repeat;background-size:750px 500px;background-position: right;">
+        </div>-->
+        </section>
+        <section class="sec-21"
+            style="background-image:url('<?php echo URL::to('/assets/img/lan/bg1.png'); ?>');background-repeat: no-repeat;background-size:750px 500px;background-position: right;">
             <div class="container">
                 <div class="row  mt-3 align-items-center">
                     <div class="col-lg-6">
@@ -1176,7 +1186,7 @@ transition: all .2s ease-in-out;  transform: scale(1.1);}
 
                     </div>
 
-                    <div class="col-lg-6 imk" >
+                    <div class="col-lg-6 imk">
                         <img class="img-lan w-100" src="<?php echo URL::to('/assets/img/v1.png'); ?>" style="">
                     </div>
                 </div>
@@ -1227,12 +1237,10 @@ transition: all .2s ease-in-out;  transform: scale(1.1);}
                             @foreach ($videos_categories as $key => $videos_category)
                                 @if ($key < 8)
                                     <li class="nav-item">
-                            <a class="nav-link" id="pills-profile-tab" data-toggle="pill"
-                                            data-category-id={{ $videos_category->id }} onclick="Series_Category(this)"
-                                            role="tab" aria-controls="pills-profile" aria-selected="false" >
+                                        <a class="{{"nav-link"." "."series-category-key-id-".($key+1) }}" id="pills-profile-tab" data-toggle="pill"
+                                            data-category-id={{ $videos_category->id }} onclick="Series_Category(this)" role="tab" aria-controls="pills-profile" aria-selected="false">
                                             {{ $videos_category->name }}
                                         </a>
-                                        
                                     </li>
                                 @endif
                             @endforeach
@@ -1240,28 +1248,29 @@ transition: all .2s ease-in-out;  transform: scale(1.1);}
                             <li class="nav-item">
 
                                 <a class="nav-link" class="btn btn-secondary btn-sm dropdown-toggle" type="button"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">More 
-                                  <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">More
+                                    <i class="fa fa-angle-down" aria-hidden="true"></i>
                                 </a>
 
                                 <div class="dropdown-menu">
- <ul class="nav nav-pills   m-0 p-0" id="pills-tab" role="tablist"  style="display: flex;
-    justify-content: start;
-    flex-direction: column;">
-                                    @foreach ($videos_categories as $key => $videos_category)
-                                        @if ($key > 8)
-     <li class="nav-item">
-                                            <a class="nav-link " id="pills-kids-tab" data-toggle="pill" data-category-id={{ $videos_category->id }}
-                                                onclick="Series_Category(this)" href="#pills-kids" role="tab" aria-controls="pills-kids"
-                                                aria-selected="false">{{ $videos_category->name }}</a>
-                                        @endif
-                                    @endforeach
-     </li>
-     </ul>
+                                    <ul class="nav nav-pills   m-0 p-0" id="pills-tab" role="tablist"
+                                        style="display: flex; justify-content: start; flex-direction: column;">
+                                        @foreach ($videos_categories as $key => $videos_category)
+                                            @if ($key > 8)
+                                                <li class="nav-item">
+                                                    <a class="nav-link " id="pills-kids-tab" data-toggle="pill"
+                                                        data-category-id={{ $videos_category->id }}
+                                                        onclick="Series_Category(this)" href="#pills-kids"
+                                                        role="tab" aria-controls="pills-kids"
+                                                        aria-selected="false">{{ $videos_category->name }}</a>
+                                            @endif
+                                        @endforeach
+                                                </li>
+                                    </ul>
                                 </div>
-                        </li>
-                    </div>
+                            </li>
                 </div>
+            </div>
             </div>
 
             </ul>
@@ -1276,7 +1285,6 @@ transition: all .2s ease-in-out;  transform: scale(1.1);}
                             @partial('landing_category_series')
                         </div>
 
-
                         <div class="row mt-2"></div>
                     </div>
 
@@ -1286,7 +1294,7 @@ transition: all .2s ease-in-out;  transform: scale(1.1);}
                                     aria-hidden="true"></i></span>
                         </a>
                     </div>
-                </div> 
+                </div>
             </div>
         </section>
 
@@ -1497,56 +1505,54 @@ transition: all .2s ease-in-out;  transform: scale(1.1);}
             <div class="container">
 
                 <div class="" style="padding:5% 0 5% 0;">
-                   
+
                     <div class="row m-0 p-0 justify-content-around align-items-center">
 
-                        <div class="col-lg-6 mt-5" >
+                        <div class="col-lg-6 mt-5">
                             <div class="" style="margin:4px;">
-                            <video id="player1" height="800" controls autoplay poster="<?php echo URL::to('/assets/img/lan/vi1.png'); ?>">
-                                <source src="<?php echo URL::to('/assets/img/vq.mp4'); ?>" type="video/mp4">
-                                <source src="" type="video/ogg">
-                            </video>
+                                <video id="player1" height="800" controls autoplay poster="<?php echo URL::to('/assets/img/lan/vi1.png'); ?>">
+                                    <source src="<?php echo URL::to('/assets/img/vq.mp4'); ?>" type="video/mp4">
+                                    <source src="" type="video/ogg">
+                                </video>
 
 
-                            <!-- <div class="row p-0">
-                       <div class=" col-4 col-md-4 p-0"> <img class="img-lan" src="<?php echo URL::to('/assets/img/v1.png'); ?>" style=""></div>
-                       <div class=" col-4 col-md-4 p-0" style="">   <img class="mt-4 img-lan" src="<?php echo URL::to('/assets/img/v2.png'); ?>" style=""></div>
-                       <div class=" col-4 col-md-4 p-0"  style="">  <img class="mt-5 img-lan" src="<?php echo URL::to('/assets/img/v3.png'); ?>" style=""></div>
-</div>color: #1D639B;--></div>
+                                <!-- <div class="row p-0">
+                                    <div class=" col-4 col-md-4 p-0"> <img class="img-lan" src="<?php echo URL::to('/assets/img/v1.png'); ?>" style=""></div>
+                                    <div class=" col-4 col-md-4 p-0" style="">   <img class="mt-4 img-lan" src="<?php echo URL::to('/assets/img/v2.png'); ?>" style=""></div>
+                                    <div class=" col-4 col-md-4 p-0"  style="">  <img class="mt-5 img-lan" src="<?php echo URL::to('/assets/img/v3.png'); ?>" style=""></div>
+                                </div>color: #1D639B;-->
+                            </div>
                         </div>
+
                         <div class="col-lg-6 p-0">
- <h2 class="ben" style="
-">BENEFITS YOU CAN'T RESIST</h2>
+                            <h2 class="ben" style="">BENEFITS YOU CAN'T RESIST</h2>
                             <!-- <p class="text-white mt-3" style="font-size: 22px;
-line-height: 40px;">Use  the information as it is and the icons, please don’t
-forgot to place the fullstops on the sentences. The image
-next to it,  Please remove it and replace with this video.</p>-->
+                                        line-height: 40px;">Use  the information as it is and the icons, please don’t
+                                        forgot to place the fullstops on the sentences. The image
+                                        next to it,  Please remove it and replace with this video.</p>-->
 
 
-                            <div class="row" >
+                            <div class="row">
                                 <div class="col-lg-6 pa">
-                                    <div>
-
-                                    </div>
+                                    <div></div>
                                     <div class=" lan">
                                         <img class="mb-2" src="<?php echo URL::to('/assets/img/lan/v3.png'); ?>" style=>
                                         <h4 class="">User Feedback and Interaction</h4>
                                         <p style="color:#fff;font-weight:500;">Learn by interacting with experts and
                                             other users.</p>
                                     </div>
-
                                 </div>
+
                                 <div class="col-lg-6 p-0">
-                                    <div>
-                                    </div>
+                                    <div></div>
                                     <div class="lan ">
                                         <img class="mb-2" src="<?php echo URL::to('/assets/img/lan/v4.png'); ?>" style=>
                                         <h4 class="">Aggregated User generated content</h4>
                                         <p style="color:#fff;">Create and contribute your own digital content to
                                             empower other users.</p>
                                     </div>
-
                                 </div>
+
                                 <div class=" col-lg-6 rated mt-3">
                                     <img class="mb-2" src="<?php echo URL::to('/assets/img/lan/v5.png'); ?>" style=>
                                     <h4 class="">Curated multiformat<br> training content</h4>
@@ -1555,8 +1561,6 @@ next to it,  Please remove it and replace with this video.</p>-->
                                 </div>
                             </div>
                         </div>
-
-                       
                     </div>
                 </div>
             </div>
@@ -1565,12 +1569,11 @@ next to it,  Please remove it and replace with this video.</p>-->
 
         <!--<section class="sec-31 p-0" >
          <div class="pt" style="background-image:url('<?php echo URL::to('/assets/img/lan/ntv.png'); ?>');background-repeat: no-repeat;
-    background-position: right bottom;
-   padding:30px;">
+                    background-position: right bottom;
+                    padding:30px;">
        
         <div class="container" style="margin-top: 30px;">
-             <h2 class="mb-4">Benefits you Can’t <br>
-Resist</h2>
+             <h2 class="mb-4">Benefits you Can’t <br> Resist</h2>
         <div class="row">
             <div class="col-lg-6">
                 <div class="row mt-5 ">
@@ -1681,7 +1684,7 @@ Resist</h2>
             </div>
 
             <div class="container-fluid mt-5">
-               
+
 
                 <div class="row mt-5">
                     <div class="col-lg-4">
@@ -1689,7 +1692,6 @@ Resist</h2>
                             <div class="comp">
                                 <img class="" src="<?php echo URL::to('/assets/img/comp.png'); ?>" style="">
                             </div>
-
                             <h3>Watch Everywhere</h3>
                             <p>Watch videos, podcasts and live events
                                 on your phone, tablet or laptop. No matter which device you use, we are always a click
@@ -1702,7 +1704,6 @@ Resist</h2>
                             <div class="clive">
                                 <img class=" " src="<?php echo URL::to('/assets/img/clive.png'); ?>" style="">
                             </div>
-
                             <h3>Stream Live </h3>
                             <p>Stream unlimited videos, podcasts
                                 and live events for free anytime!
@@ -1711,12 +1712,12 @@ Resist</h2>
                             </p>
                         </div>
                     </div>
+
                     <div class="col-lg-4">
                         <div class="bg-color">
                             <div class="set">
                                 <img class=" " src="<?php echo URL::to('/assets/img/set.png'); ?>" style="">
                             </div>
-
                             <h3>Quality Videos</h3>
                             <p>Explore our edutainment video
                                 packed with 4IR and digital skills.
@@ -1880,7 +1881,6 @@ Resist</h2>
         </script>
 
         <script>
-
             function Series_Category(ele) {
 
                 var category_id = $(ele).attr('data-category-id');
@@ -1898,6 +1898,8 @@ Resist</h2>
                 });
             }
 
+                        // On-hover Playing Series season trailer
+                        
             function season_trailer(ele) {
 
                 let video_key_id = $(ele).attr('data-video-key-id');
@@ -1905,17 +1907,23 @@ Resist</h2>
 
                 let clip = document.querySelector(video_key_ids)
 
-                clip.play(); 
+                clip.play();
 
-                clip.addEventListener("mouseover", function (e) {
-                    
+                clip.addEventListener("mouseover", function(e) {
+
                     clip.play();
                 })
 
-                clip.addEventListener("mouseout", function (e) {
+                clip.addEventListener("mouseout", function(e) {
                     clip.pause();
                 })
             }
+
+                                // Onload - Active First Series category 
+            $( window ).load(function() {
+                $(".series-category-key-id-1").addClass("active show").attr("aria-selected","true");
+            });
+
         </script>
 
         @php
