@@ -26,6 +26,8 @@ border-radius: 0px 4px 4px 0px;
     }
 </style>
 @section('content')
+<meta name="csrf-token" content="{{ csrf_token() }}">
+
 <div id="content-page" class="content-page">
      <div class="d-flex">
                         <a class="black" href="{{ URL::to('admin/livestream') }}">All Live Stream</a>
@@ -164,8 +166,9 @@ border-radius: 0px 4px 4px 0px;
                 <tr class="table-header r1">
                     <th><label>Video Category Name</label></th>
                     <th><label>Operation</label></th>
+					<tbody id="tablecontents">
                     @foreach($allCategories as $category)
-                    <tr>
+    	            <tr class="row1" data-id="{{ $category->id }}">
                         <td valign="bottom"><p>{{ $category->name }}</p></td>
                         <td>
                             <div class="align-items-center list-user-action"><a href="{{ URL::to('admin/livestream/categories/edit/') }}/{{$category->id}}" class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
@@ -175,6 +178,7 @@ border-radius: 0px 4px 4px 0px;
                         </td>
                     </tr>
                     @endforeach
+					</tbody>                  
             </table>
                     
 				
@@ -190,6 +194,55 @@ border-radius: 0px 4px 4px 0px;
 
     </div>
 	@section('javascript')
+	<input type="hidden" id="_token" name="_token" value="<?= csrf_token() ?>" />
+
+
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.js"></script>
+    
+	<script type="text/javascript">
+
+      $(function () {
+        $( "#tablecontents" ).sortable({
+          items: "tr",
+          cursor: 'move',
+          opacity: 0.6,
+          update: function() {
+              sendOrderToServer();
+          }
+        });
+
+        function sendOrderToServer() {
+          var order = [];
+          var token = $('meta[name="csrf-token"]').attr('content');
+          $('tr.row1').each(function(index,element) {
+            order.push({
+              id: $(this).attr('data-id'),
+              position: index+1
+            });
+          });
+
+          $.ajax({
+            type: "POST", 
+            dataType: "json", 
+            url: "{{ url('admin/live_category_order') }}",
+                data: {
+              order: order,
+              _token: token
+            },
+            success: function(response) {
+                if (response == 1) {
+					alert('Position changed successfully.');
+						location.reload();
+                } else {
+                  console.log(response);
+                }
+            }
+          });
+        }
+      });
+    </script>
 
 		<script src="<?= URL::to('/assets/admin/js/jquery.nestable.js');?>"></script>
 

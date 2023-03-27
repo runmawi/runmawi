@@ -150,7 +150,7 @@ class CPPSeriesController extends Controller
                 'post_route' => URL::to('cpp/series/store') ,
                 'button_text' => 'Add New Series',
                 'user' => \Session::get('user') ,
-                'series_categories' => VideoCategory::all() ,
+                'series_categories' => SeriesGenre::all() ,
                 'languages' => Language::all() ,
                 'artists' => Artist::all() ,
                 'series_artist' => [],
@@ -465,7 +465,7 @@ class CPPSeriesController extends Controller
             'post_route' => URL::to('cpp/series/update') ,
             'button_text' => 'Update Series',
             'admin_user' => $user,
-            'series_categories' => VideoCategory::all() ,
+            'series_categories' => SeriesGenre::all() ,
             'languages' => Language::all() ,
             'artists' => Artist::all() ,
             'series_artist' => Seriesartist::where('series_id', $id)->pluck('artist_id')

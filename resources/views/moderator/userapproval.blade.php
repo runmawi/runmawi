@@ -189,4 +189,3 @@ $('#cpp_user_videos').change(function(){
 	@stop
 
 @stop
-

@@ -1,5 +1,14 @@
 @extends('admin.master')
-<style>
+<style type="text/css">
+	.has-switch .switch-on label {
+		background-color: #FFF;color: #000;
+	}
+	.make-switch{
+		z-index:2;
+	}
+    .iq-card{
+        padding: 15px;
+    }
     .black{
         color: #000;
         background: #f2f5fa;
@@ -13,76 +22,35 @@ border-radius: 0px 4px 4px 0px;
 
     }
 </style>
-@section('css')
-	<link rel="stylesheet" href="{{ URL::to('/assets/admin/css/sweetalert.css') }}">
-@endsection
-
+<meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
 @section('content')
 
-     <div id="content-page" class="content-page">
-         <div class="d-flex">
+<div id="content-page" class="content-page">
+<div class="d-flex">
          <a class="black" href="{{ URL::to('admin/audios') }}">Audio List</a>
         <a class="black" href="{{ URL::to('admin/audios/create') }}">Add New Audio</a>
         <a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/audios/categories') }}">Manage Audio Categories</a>
              <a class="black" href="{{ URL::to('admin/audios/albums') }}">Manage Albums</a></div>
-         <div class="container-fluid p-0">
-            <div class="row">
-               <div class="col-sm-12">
-                  <div class="iq-card">
-                     <div class="iq-card-header d-flex justify-content-between mb-4 align-items-baseline">
-                        <div class="iq-header-title">
-                           <h4 class="card-title">Audio Category</h4>
-                        </div>
-						@if (Session::has('message'))
-                       <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
-                        @endif
-                        @if(count($errors) > 0)
-                        @foreach( $errors->all() as $message )
-                        <div class="alert alert-danger display-hide" id="successMessage" >
-                        <button id="successMessage" class="close" data-close="alert"></button>
-                        <span>{{ $message }}</span>
-                        </div>
-                        @endforeach
-                        @endif
-                        <div class="iq-card-header-toolbar d-flex align-items-center">
-                           <a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add Audio category</a>
-                        </div>
-                     </div>
-                     <div class="">
-                        <div class="table-view p-0">
-
-                     	<table class="table-bordered iq-card" id="categorytbl" style="width:100%">
-                     		<thead>
-                     			<tr class="text-center r1">
-                     				<th><label>Image</label></th>
-                     				<th><label>Name</label></th>
-                     				<th><label>Action</label></th>
-                     			</tr>
-                     		</thead>
-                     		<tbody>
-                     			@foreach($allCategories as $category)
-                     			<tr class="text-center">
-                     				<td><?php if($category->image != '') { ?><img src="{{ URL::to('/public/uploads/audios/') . '/'.$category->image }}" width="50"><?php }else{} ?></td>
-                     				<td><label>{{ ucfirst($category->name) }}</label></td>
-                     				<td class=" list-user-action"> 
-                     					<a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" class="edit" href="{{ URL::to('admin/audios/categories/edit/') }}/{{$category->id}}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
-
-                     					<a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" href="{{ URL::to('admin/audios/categories/delete/') }}/{{$category->id}}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
-                     				</td>
-                     			</tr>
-                     			@endforeach
-                     		</tbody>
-                     	</table>
-						
-				</div>
+         <div class="container-fluid mt-4">
+	<div class="admin-section-title">
+        <div class="iq-card">
+		<div class="row justify-content-start">
+			<div class="col-md-12 d-flex justify-content-between">
+				<h4><i class="entypo-list"></i></h4>
+               	<div>
+				   <a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="btn btn-primary float-right"><i class="fa fa-plus-circle"></i> Add Audio category</a>
+			   	</div>
 			</div>
-                     </div>
-                  </div>
-               </div>
+            <div class="col-md-8" align="right">
+                
             </div>
-         </div>
-         <!-- Add New Modal -->
-	<div class="modal fade" id="add-new">
+            
+		</div>
+	         <!-- Add New Modal -->
+			 <div class="modal fade" id="add-new">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				
@@ -171,12 +139,107 @@ border-radius: 0px 4px 4px 0px;
 	</div>
 
 	<div class="clear"></div>
+		
+		<div class="col-md-12 p-0">
+		<div class="panel panel-primary menu-panel" data-collapsed="0">
+					
+			<div class="panel-heading">
+				<div class="panel-title">
+					<h4 class="card-title">Audio Category</h4>
+				</div>
+				
+				<div class="panel-options">
+					<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+				</div>
+			</div>
+			
+			
+			<div class="">
+		
+            <table id="table " class="table table-bordered iq-card text-center" >
+              <thead>
+                <tr class="r1 ">
+                  <th width="30px">#</th>
+				  <th><label>Image</label></th>
+				  <th><label>Name</label></th>
+				  <th><label>Action</label></th>
+                </tr>
+              </thead>
+              <tbody id="tablecontents">
+                @foreach($allCategories as $key => $category)
+    	            <tr class="row1" data-id="{{ $category->id }}">
+					<td class="pl-3"><i class="fa fa-sort"></i>{{ $key+1  }}</td>
+
+					  <td><?php if($category->image != '') { ?><img src="{{ URL::to('/public/uploads/audios/') . '/'.$category->image }}" width="50"><?php }else{} ?></td>
+    	              <td>{{ ucfirst($category->name) }}</td>
+                      <td>
+					<a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" class="edit" href="{{ URL::to('admin/audios/categories/edit/') }}/{{$category->id}}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
+					<a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" href="{{ URL::to('admin/audios/categories/delete/') }}/{{$category->id}}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
+					</td>
+    	            </tr>
+                @endforeach
+              </tbody>                  
+            </table>
+						
+				</div>
+		
+			</div>
+		
+            </div></div></div></div></div>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
 	<input type="hidden" id="_token" name="_token" value="<?= csrf_token() ?>" />
+
 
 
 	@section('javascript')
 
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.js"></script>
+    
+	<script type="text/javascript">
 
+      $(function () {
+        $( "#tablecontents" ).sortable({
+          items: "tr",
+          cursor: 'move',
+          opacity: 0.6,
+          update: function() {
+              sendOrderToServer();
+          }
+        });
+
+        function sendOrderToServer() {
+          var order = [];
+          var token = $('meta[name="csrf-token"]').attr('content');
+          $('tr.row1').each(function(index,element) {
+            order.push({
+              id: $(this).attr('data-id'),
+              position: index+1
+            });
+          });
+
+          $.ajax({
+            type: "POST", 
+            dataType: "json", 
+            url: "{{ url('admin/audio_category_order') }}",
+                data: {
+              order: order,
+              _token: token
+            },
+            success: function(response) {
+                if (response == 1) {
+					alert('Position changed successfully.');
+						location.reload();
+                } else {
+                  console.log(response);
+                }
+            }
+          });
+        }
+      });
+    </script>
+	
 	{{-- validate --}}
 
 	<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
@@ -247,15 +310,9 @@ border-radius: 0px 4px 4px 0px;
 
 		});
 		</script>
-<script>
-    $(document).ready(function(){
-        // $('#message').fadeOut(120);
-        setTimeout(function() {
-            $('#successMessage').fadeOut('fast');
-        }, 3000);
-    })
-</script>
+
+
+
 	@stop
 
 @stop
-

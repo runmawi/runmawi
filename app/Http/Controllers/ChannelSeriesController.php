@@ -150,7 +150,7 @@ class ChannelSeriesController extends Controller
                 'post_route' => URL::to('channel/series/store') ,
                 'button_text' => 'Add New Series',
                 'user' => \Session::get('channel') ,
-                'series_categories' => VideoCategory::all() ,
+                'series_categories' => SeriesGenre::all() ,
                 'languages' => Language::all() ,
                 'artists' => Artist::all() ,
                 'series_artist' => [],
@@ -463,7 +463,7 @@ class ChannelSeriesController extends Controller
             'post_route' => URL::to('channel/series/update') ,
             'button_text' => 'Update Series',
             'admin_user' => $user,
-            'series_categories' => VideoCategory::all() ,
+            'series_categories' => SeriesGenre::all() ,
             'languages' => Language::all() ,
             'artists' => Artist::all() ,
             'series_artist' => Seriesartist::where('series_id', $id)->pluck('artist_id')

@@ -74,6 +74,7 @@ use GuzzleHttp\Message\Response;
 use App\Region;
 use App\RegionView;
 use App\ModeratorPayout;
+use App\SeriesGenre;
 
 class ModeratorsUserController extends Controller
 {
@@ -3214,7 +3215,7 @@ class ModeratorsUserController extends Controller
         $series = Series::find($id);
         $results = Episode::all();
         //$episode = Episode::all();
-        $series_categories = Genre::all();
+        $series_categories = SeriesGenre::all();
         $seasons = SeriesSeason::where("series_id", "=", $id)
             ->with("episodes")
             ->get();
