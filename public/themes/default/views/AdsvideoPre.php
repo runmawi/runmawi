@@ -5,11 +5,17 @@
   $current_time = Carbon\Carbon::now()->format('H:i:s');
 
   $AdsVideos = App\AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
-    ->Join('videos','advertisements.ads_category','=','videos.pre_ads_category')
+    ->Join('videos','advertisements.ads_category','=','videos.pre_ads_category');
     // ->whereDate('start', '=', Carbon\Carbon::now()->format('Y-m-d'))
     // ->whereTime('start', '<=', $current_time)
     // ->whereTime('end', '>=', $current_time)
-    ->where('ads_events.status',1)->where('advertisements.status',1)
+
+    if(adveristment_plays_24hrs() == 1){
+      $AdsVideos =  $AdsVideos->whereTime('start', '<=', $current_time)->whereTime('end', '>=', $current_time);
+    }
+    $AdsVideos  = $AdsVideos->where('ads_events.status',1)
+
+    ->where('advertisements.status',1)
     ->where('advertisements.ads_category',$video->pre_ads_category)
     ->where('videos.id',$video->id)
     ->where('ads_position','pre')

@@ -1,5 +1,5 @@
 
-<?php 
+<?php
 
 $current_time = Carbon\Carbon::now()->format('H:i:s');
 
@@ -10,14 +10,21 @@ $post_tym = $post_tyming - 5 ;
 
 
 $AdsVideosPost = App\AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
-  ->Join('videos','advertisements.ads_category','=','videos.post_ads_category')
+  ->Join('videos','advertisements.ads_category','=','videos.post_ads_category');
   // ->whereDate('start', '=', Carbon\Carbon::now()->format('Y-m-d'))
   // ->whereTime('start', '<=', $current_time)
   // ->whereTime('end', '>=', $current_time)
-  ->where('ads_events.status',1)->where('advertisements.status',1)
+  if(adveristment_plays_24hrs() == 1){
+    $AdsVideosPost =  $AdsVideosPost->whereTime('start', '<=', $current_time)->whereTime('end', '>=', $current_time);
+  }
+  $AdsVideosPost  = $AdsVideosPost->where('ads_events.status',1)
+  
+  ->where('advertisements.status',1)
   ->where('advertisements.ads_category',$video->post_ads_category)
-  ->where('videos.id',$video->id)->where('ads_position','post')
-  ->where('advertisements.id',$video->post_ads)->get();
+  ->where('videos.id',$video->id)
+  ->where('ads_position','post')
+  ->where('advertisements.id',$video->post_ads)
+  ->get();
 
 
   if( count($AdsVideosPost) >= 1){
@@ -28,17 +35,17 @@ $AdsVideosPost = App\AdsEvent::Join('advertisements','advertisements.id','=','ad
     if($AdsVideossPost->ads_video != null ){
 
       $getID3               = new getID3;
-      $Ads_store_path_Post   = public_path('/uploads/AdsVideos/'.$AdsVideossPost->ads_video);       
+      $Ads_store_path_Post   = public_path('/uploads/AdsVideos/'.$AdsVideossPost->ads_video);
       $Ads_duration_Post     = $getID3->analyze($Ads_store_path_Post);
       $Ads_duration_Sec_Post = $Ads_duration_Post['playtime_seconds'];
       $ads_path_tag          = null ;
-      
+
     }else{
       $Ads_duration_Sec_Post = null;
       $ads_path_tag     = $AdsVideossPost->ads_path ;
     }
-    
-    $advertiser_id_Post    =  $AdsVideossPost->advertiser_id ; 
+
+    $advertiser_id_Post    =  $AdsVideossPost->advertiser_id ;
     $ads_id_Post           =  $AdsVideossPost->ads_id ;
     $ads_position_Post     =  $AdsVideossPost->ads_position ;
     $ads_path_tag         =  $AdsVideossPost->ads_path;
@@ -47,8 +54,8 @@ $AdsVideosPost = App\AdsEvent::Join('advertisements','advertisements.id','=','ad
 
     $AdsvideoFilePost        = null ;
     $Ads_duration_Sec_Post  = null ;
-    $advertiser_id_Post   =  null ; 
-    $ads_id_Post          =  null ; 
+    $advertiser_id_Post   =  null ;
+    $ads_id_Post          =  null ;
     $ads_position_Post    =  null ;
     $ads_path_tag        =  null ;
     $ads_type_Post         =  null ;
@@ -70,7 +77,7 @@ $normalvideoFilePost =  URL::to('storage/app/public/'.$video->path);
 
 <input type="hidden" id="ads_start_tym_Post" class="ads_start_tym_Post"  value='<?php  echo $ads_start_tym_Post  ; ?>'>
 <input type="hidden" id="" class="ads_show_status_Post"  value='1'>
-<input type="hidden" id="Ads_vies_count_Post" onclick="Ads_vies_count()"> 
+<input type="hidden" id="Ads_vies_count_Post" onclick="Ads_vies_count()">
 
 <script>
 
@@ -94,7 +101,7 @@ this.videoads_tym_Post.addEventListener('timeupdate', (e) => {
         if (ads_start_tym_Post <= e.target.currentTime) {
 
         if(ads_show_status_Post == 1){
-          
+
               $('.adstime_url').attr('src', Ads_videos_Post);
 
                 document.getElementById(ads_post_videoplayer_id).addEventListener('loadedmetadata', function() {
@@ -105,7 +112,7 @@ this.videoads_tym_Post.addEventListener('timeupdate', (e) => {
                 $('#ads_start_tym_Post').replaceWith('<input type="hidden" id="ads_start_tym_Post" class="ads_start_tym_Post" value="'+ ads_end_tym_Post+'">');
                 $('.ads_show_status_Post').replaceWith('<input type="hidden" id="" class="ads_show_status_Post"  value="0">');
                 document.getElementById("Ads_vies_count_Post").click();
-              
+
                 $(".plyr__controls__item ").css("display", "none");
                 $(".plyr__time ").css("display", "block");
           }
@@ -132,17 +139,17 @@ this.videoads_tym_Post.addEventListener('timeupdate', (e) => {
     $.ajax({
     url: '<?php echo URL::to("admin/ads_viewcount_Post") ;?>',
     method: 'post',
-    data: 
+    data:
         {
           "_token"      :  "<?php echo csrf_token(); ?>",
-          advertiser_id :  <?php echo $advertiser_id_Post ; ?> , 
+          advertiser_id :  <?php echo $advertiser_id_Post ; ?> ,
           ads_id        :  <?php echo $ads_id_Post ; ?> ,
           video_id      :  <?php echo $video->id ; ?> ,
         },
         success: (response) => {
           console.log(response);
         },
-    })  
+    })
   }
 
 </script>
