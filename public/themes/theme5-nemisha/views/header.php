@@ -446,6 +446,10 @@
     body.light-theme .movie-time i {
 
         color: #000 !important;
+    } 
+    body.light-theme .vid-title{
+
+        color: #000 !important;
     }
     body.light-theme .desc p {
 
