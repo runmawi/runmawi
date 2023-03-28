@@ -1465,9 +1465,8 @@ $artists = [];
                 </div>
               <?php }?>
 
-              <?php if( $video->ppv_price !=null &&  $video->ppv_price != " " || $video->ppv_price !=null ){ ?>
+              <?php if( $video->ppv_price !=null &&  $video->ppv_price != " " || $video->ppv_price !=null  || $video->global_ppv == 1){ ?>
                 <div class="cinetpay_button">  <!-- CinetPay Button -->
-                  <!-- <button onclick="location.href ='<? //route('CinetPay_Video_Rent', ['video_id' => $video->id , 'amount' => $video->ppv_price] ) ?>' ;" id="" class="btn2  btn-outline-primary" > Continue</button> -->
                   <button onclick="cinetpay_checkout()" id="" class="btn2  btn-outline-primary">Continue</button>
                 </div>
               <?php }?>
