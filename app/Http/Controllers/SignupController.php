@@ -428,7 +428,7 @@ public function createStep2(Request $request)
                     session()->put('message',"Thanks, Your Account has been Submitted for Approval.");
 
 
-                    return Theme::view('register.step2_payment', compact(['register', 'plans_data', 'plans_data_signup_checkout','user_mail']));
+                    return Theme::view('register.step2_payment', compact(['register', 'plans_data', 'plans_data_signup_checkout','user_mail','intent_stripe']));
 
                 }
                 

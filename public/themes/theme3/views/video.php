@@ -1359,7 +1359,11 @@ $artists = [];
                   <button onclick="location.href ='<?= route('Paystack_Video_Rent', ['video_id' => $video->id , 'amount' => $video->ppv_price] ) ?>' ;" id="" class="btn2  btn-outline-primary" > Continue</button>
                 </div>
               <?php } ?>
-              
+              <?php if( $video->ppv_price !=null &&  $video->ppv_price != " " || $video->ppv_price !=null  || $video->global_ppv == 1){ ?>
+                <div class="cinetpay_button">  <!-- CinetPay Button -->
+                  <button onclick="cinetpay_checkout()" id="" class="btn2  btn-outline-primary">Continue</button>
+                </div>
+              <?php }?>
             </div>
           </div>
       </div>
@@ -1983,26 +1987,30 @@ location.reload();
 
       $(".payment_btn").click(function(){
 
-        $('.Razorpay_button,.Stripe_button,.paystack_button').hide();
+        $('.Razorpay_button,.Stripe_button,.paystack_button,.cinetpay_button').hide();
 
         let payment_gateway =  $('input[name="payment_method"]:checked').val();
 
             if( payment_gateway  == "Stripe" ){
 
                 $('.Stripe_button').show();
-                $('.Razorpay_button,.paystack_button').hide();
+                $('.Razorpay_button,.paystack_button,.cinetpay_button').hide();
 
             }else if( payment_gateway == "Razorpay" ){
 
-                $('.paystack_button,.Stripe_button').hide();
+                $('.paystack_button,.Stripe_button,.cinetpay_button').hide();
                 $('.Razorpay_button').show();
 
             }else if( payment_gateway == "Paystack" ){
 
-                $('.Stripe_button,.Razorpay_button').hide();
+                $('.Stripe_button,.Razorpay_button,.cinetpay_button').hide();
                 $('.paystack_button').show();
-            }
-      });
+              }else if( payment_gateway == "CinetPay" ){
+
+                $('.Stripe_button,.Razorpay_button,.paystack_button').hide();
+                $('.cinetpay_button').show();
+            }      
+          });
     });
 </script>
 
@@ -2101,3 +2109,85 @@ location.reload();
 </script>
 
 
+
+ <!-- Cinet Pay CheckOut -->
+
+ <script src="https://cdn.cinetpay.com/seamless/main.js"></script>
+
+  <script>
+            var ppv_price =  '<?= @$video->ppv_price ?>';
+            var user_name =  '<?php if(!Auth::guest()){ Auth::User()->username ;}else{ } ?>';
+            var email     =  '<?php if(!Auth::guest()){ Auth::User()->email ;}else{ } ?>';
+            var mobile    =  '<?php if(!Auth::guest()){ Auth::User()->mobile ;}else{ } ?>';
+            var CinetPay_APIKEY    =  '<?= @$CinetPay_payment_settings->CinetPay_APIKEY ?>';
+            var CinetPay_SecretKey    =  '<?= @$CinetPay_payment_settings->CinetPay_SecretKey ?>';
+            var CinetPay_SITE_ID    =  '<?= @$CinetPay_payment_settings->CinetPay_SITE_ID ?>';
+            var video_id = $('#video_id').val();
+
+            // var url       = window.location.href;
+          // alert(window.location.href);
+
+        function cinetpay_checkout() {
+            CinetPay.setConfig({
+                apikey: CinetPay_APIKEY,//   YOUR APIKEY
+                site_id: CinetPay_SITE_ID,//YOUR_SITE_ID
+                notify_url: window.location.href,
+                return_url: window.location.href,
+                // mode: 'PRODUCTION'
+
+            });
+            CinetPay.getCheckout({
+               transaction_id: Math.floor(Math.random() * 100000000).toString(), // YOUR TRANSACTION ID
+               amount: ppv_price,
+               currency: 'XOF',
+               channels: 'ALL',
+               description: 'Test paiement',
+               //Provide these variables for credit card payments
+               customer_name: user_name,//Customer name
+               customer_surname: user_name,//The customer's first name
+               customer_email: email,//the customer's email
+               customer_phone_number: "088767611",//the customer's email
+               customer_address: "BP 0024",//customer address
+               customer_city: "Antananarivo",// The customer's city
+               customer_country: "CM",// the ISO code of the country
+               customer_state: "CM",// the ISO state code
+               customer_zip_code: "06510", // postcode
+
+            });
+            CinetPay.waitResponse(function(data) {
+                if (data.status == "REFUSED") {
+                
+                    if (alert("Your payment failed")) {
+                        window.location.reload();
+                    }
+                } else if (data.status == "ACCEPTED") {
+                  $.ajax({
+                url: '<?php echo URL::to("CinetPay-video-rent") ;?>',
+                type: "post",
+                    data: {
+                        _token: '<?php echo csrf_token(); ?>',
+                        amount: ppv_price,
+                        video_id: video_id,
+
+                    },      
+                    success: function(value){       
+                      alert("You have done  Payment !");
+                            setTimeout(function() {
+                              location.reload();
+                            }, 2000);
+
+                          },
+                          error: (error) => {
+                            swal('error');
+                          }
+                });
+                    // if (alert("Your payment has been made successfully")) {
+                    //     window.location.reload();
+                    // }
+                }
+            });
+            CinetPay.onError(function(data) {
+                console.log(data);
+            });
+        }
+    </script>
