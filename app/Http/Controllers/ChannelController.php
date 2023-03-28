@@ -127,7 +127,7 @@ class ChannelController extends Controller
             }
             $currency = CurrencySetting::first();
 
-            $Episode_videos = Series::select('episodes.*', 'series.title as series_name')
+            $Episode_videos = Series::select('episodes.*', 'series.title as series_name','series.slug as series_slug')
                 ->join('series_categories', 'series_categories.series_id', '=', 'series.id')
                 ->join('episodes', 'episodes.series_id', '=', 'series.id')
                 ->where('series_categories.category_id', '=', $category_id)
