@@ -25,6 +25,8 @@ use App\Setting;
 use Auth;
 use Paystack;
 use URL;
+use App\SubscriptionPlan;
+use App\EmailTemplate;
 
 class CinetPayController extends Controller
 {
@@ -111,4 +113,96 @@ class CinetPayController extends Controller
 
     
     
+    public function CinetPaySubscription(Request $request)
+    {
+        $data = $request->all();
+        $email = User::where('id',$request->email)->pluck('email')->first();
+
+        $plandetail = SubscriptionPlan::where('plan_id',$request->plan_name)->first();
+        $current_date = date('Y-m-d h:i:s');    
+        $next_date = $plandetail->days;
+        $ends_at = Carbon::now()->addDays($plandetail->days);
+        try{
+
+            
+            Subscription::create([
+                'user_id'        =>  $request->user_id,
+                'name'           =>  $request->user_name,
+                'price'          =>  $request->amount ,   // Amount Paise to Rupees
+                'stripe_id'      =>  $request->plan_name ,
+                'stripe_status'  =>  'active' ,
+                'stripe_plan'    =>  $request->plan_name,
+                'quantity'       =>  null,
+                'countryname'    =>  Country_name(),
+                'regionname'     =>  Region_name(),
+                'cityname'       =>  city_name(),
+                'PaymentGateway' =>  'CinetPay',
+                'trial_ends_at'  =>  $ends_at,
+                'ends_at'        =>  $ends_at,
+            ]);
+
+            User::where('id',$request->user_id)->update([
+                'role'                 =>  'subscriber',
+                'stripe_id'            =>  $request->transaction_id ,
+                'subscription_start'   =>  Carbon::now(),
+                'subscription_ends_at' =>  $ends_at,
+                'payment_gateway'      =>  'CinetPay',
+            ]);
+
+            // Success 
+            $response = array(
+                "status"  => true ,
+                "message" => "Payment done! Successfully", 
+            );
+       
+    
+
+    } catch (\Exception $e) {
+
+        $response = array(
+            "status"  => false , 
+            "message" => $e->getMessage(), 
+       );
+    }
+        try {
+            $user = User::where('id',$request->user_id)->first();
+            $email_subject = EmailTemplate::where('id',23)->pluck('heading')->first() ;
+
+            \Mail::send('emails.subscriptionmail', array(
+                'name' => ucwords($user->username),
+                'uname' => $user->username,
+                'paymentMethod' => 'CinetPay',
+                'plan' => ucfirst($plandetail->plans_name),
+                'price' => $plandetail->price,
+                'plan_id' => $plandetail->plan_id,
+                'billing_interval' => $plandetail->billing_interval,
+                'next_billing' => $ends_at,
+                'subscription_type' => 'One Time',
+
+            ), function($message) use ($request,$user,$email_subject){
+                $message->from(AdminMail(),GetWebsiteName());
+                $message->to($user->email, $user->username)->subject($email_subject);
+            });
+
+            $email_log      = 'Mail Sent Successfully from Register Subscription';
+            $email_template = "23";
+            $user_id = $user->id;
+
+            Email_sent_log($user_id,$email_log,$email_template);
+
+        } catch (\Throwable $th) {
+
+            $user = User::where('id',$request->user_id)->first();
+
+            $email_log      = $th->getMessage();
+            $email_template = "23";
+            $user_id = $user->id;
+
+            Email_notsent_log($user_id,$email_log,$email_template);
+        }
+    
+    return response()->json($response, 200);
+
+    }
+
 }
