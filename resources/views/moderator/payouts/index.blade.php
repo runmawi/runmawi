@@ -90,3 +90,4 @@
         $('#cpp_payouts_table').DataTable();
     });
 </script>
+ 
