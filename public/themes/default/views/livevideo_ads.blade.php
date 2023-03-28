@@ -1,6 +1,7 @@
 <?php 
 
 $current_time = Carbon\Carbon::now()->format('H:i:s');
+$adveristment_plays_24hrs = App\Setting::pluck('ads_play_unlimited_period')->first();
 
 if(  plans_ads_enable() == 1 ){
   
@@ -8,7 +9,7 @@ if(  plans_ads_enable() == 1 ){
         // ->whereDate('start', '=', Carbon\Carbon::now()->format('Y-m-d'))
         // ->whereTime('start', '<=', $current_time)
         // ->whereTime('end', '>=', $current_time)
-        if(adveristment_plays_24hrs() == 0){
+        if($adveristment_plays_24hrs == 0){
             $live_ads =  $live_ads->whereTime('start', '<=', $current_time)->whereTime('end', '>=', $current_time);
         }
 
