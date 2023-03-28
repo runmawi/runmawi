@@ -1,6 +1,8 @@
 
 <?php
 
+  $adveristment_plays_24hrs = App\Setting::pluck('ads_play_unlimited_period')->first();
+
   $Mid_tyming =App\PlayerAnalytic::where('videoid',$video->id)->groupBy('videoid')
                 ->orderBy('created_at', 'desc')->pluck('duration')->first();
 
@@ -8,22 +10,30 @@
 
   $current_time = Carbon\Carbon::now()->format('H:i:s');
 
-  $AdsVideosMid = App\AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
-  ->Join('videos','advertisements.ads_category','=','videos.mid_ads_category');
-  // ->whereDate('start', '=', Carbon\Carbon::now()->format('Y-m-d'))
-  // ->whereTime('start', '<=', $current_time)
-  // ->whereTime('end', '>=', $current_time)
-  
-  if(adveristment_plays_24hrs() == 0){
-    $AdsVideosMid =  $AdsVideosMid->whereTime('start', '<=', $current_time)->whereTime('end', '>=', $current_time);
-  }
-  $AdsVideosMid  = $AdsVideosMid->where('ads_events.status',1)
-  ->where('advertisements.status',1)
-  ->where('videos.id',$video->id)
-  ->where('ads_position','mid')
-  ->where('advertisements.id',$video->mid_ads)
-  ->get();
+    if (plans_ads_enable() == 1) {
 
+      $AdsVideosMid = App\AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
+      ->Join('videos','advertisements.ads_category','=','videos.mid_ads_category');
+      // ->whereDate('start', '=', Carbon\Carbon::now()->format('Y-m-d'))
+      // ->whereTime('start', '<=', $current_time)
+      // ->whereTime('end', '>=', $current_time)
+      
+      if($adveristment_plays_24hrs == 0){
+        $AdsVideosMid =  $AdsVideosMid->whereTime('start', '<=', $current_time)->whereTime('end', '>=', $current_time);
+      }
+      $AdsVideosMid  = $AdsVideosMid->where('ads_events.status',1)
+      ->where('advertisements.status',1)
+      ->where('videos.id',$video->id)
+      ->where('ads_position','mid')
+      ->where('advertisements.id',$video->mid_ads)
+      ->get();
+
+    }
+    else{
+
+      $AdsVideosMid = array();
+
+    }
 
     if( count($AdsVideosMid) >= 1){
       $AdsVideossMid = $AdsVideosMid->random();

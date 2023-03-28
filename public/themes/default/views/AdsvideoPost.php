@@ -1,6 +1,8 @@
 
 <?php
 
+$adveristment_plays_24hrs = App\Setting::pluck('ads_play_unlimited_period')->first();
+
 $current_time = Carbon\Carbon::now()->format('H:i:s');
 
 $post_tyming =App\PlayerAnalytic::where('videoid',$video->id)->groupBy('videoid')
@@ -9,22 +11,29 @@ $post_tyming =App\PlayerAnalytic::where('videoid',$video->id)->groupBy('videoid'
 $post_tym = $post_tyming - 5 ;
 
 
-$AdsVideosPost = App\AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
-  ->Join('videos','advertisements.ads_category','=','videos.post_ads_category');
-  // ->whereDate('start', '=', Carbon\Carbon::now()->format('Y-m-d'))
-  // ->whereTime('start', '<=', $current_time)
-  // ->whereTime('end', '>=', $current_time)
-  if(adveristment_plays_24hrs() == 0){
-    $AdsVideosPost =  $AdsVideosPost->whereTime('start', '<=', $current_time)->whereTime('end', '>=', $current_time);
+  if (plans_ads_enable() == 1) {
+
+  $AdsVideosPost = App\AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
+    ->Join('videos','advertisements.ads_category','=','videos.post_ads_category');
+    // ->whereDate('start', '=', Carbon\Carbon::now()->format('Y-m-d'))
+    // ->whereTime('start', '<=', $current_time)
+    // ->whereTime('end', '>=', $current_time)
+    if($adveristment_plays_24hrs == 0){
+      $AdsVideosPost =  $AdsVideosPost->whereTime('start', '<=', $current_time)->whereTime('end', '>=', $current_time);
+    }
+    $AdsVideosPost  = $AdsVideosPost->where('ads_events.status',1)
+    
+    ->where('advertisements.status',1)
+    ->where('advertisements.ads_category',$video->post_ads_category)
+    ->where('videos.id',$video->id)
+    ->where('ads_position','post')
+    ->where('advertisements.id',$video->post_ads)
+    ->get();
   }
-  $AdsVideosPost  = $AdsVideosPost->where('ads_events.status',1)
-  
-  ->where('advertisements.status',1)
-  ->where('advertisements.ads_category',$video->post_ads_category)
-  ->where('videos.id',$video->id)
-  ->where('ads_position','post')
-  ->where('advertisements.id',$video->post_ads)
-  ->get();
+  else{
+
+    $AdsVideosPost = array();
+  }
 
 
   if( count($AdsVideosPost) >= 1){
