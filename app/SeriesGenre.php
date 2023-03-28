@@ -11,4 +11,9 @@ class SeriesGenre extends Model
     protected $table = 'series_genre';
 
     public static $rules = array();
+
+    public function specific_category_series()
+    {
+        return $this->belongsToMany(Series::class, 'series_categories','category_id','series_id');
+    }
 }
