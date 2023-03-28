@@ -80,6 +80,9 @@ class ModeratorsUserController extends Controller
 {
     public function index()
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
         $data = Session::all();
         if (!empty($data["password_hash"])) {
             $package_id = auth()->user()->id;
@@ -281,6 +284,9 @@ class ModeratorsUserController extends Controller
 
     public function PendingUsers()
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
         $user = User::where("id", 1)->first();
         $duedate = $user->package_ends;
         $current_date = date("Y-m-d");
@@ -316,6 +322,9 @@ class ModeratorsUserController extends Controller
     }
     public function CPPModeratorsApproval($id)
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
         $user = User::where("id", 1)->first();
         $duedate = $user->package_ends;
         $current_date = date("Y-m-d");
@@ -388,6 +397,9 @@ class ModeratorsUserController extends Controller
 
     public function CPPModeratorsReject($id)
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
         $user = User::where("id", 1)->first();
         $duedate = $user->package_ends;
         $current_date = date("Y-m-d");
@@ -460,6 +472,9 @@ class ModeratorsUserController extends Controller
 
     public function RolesPermission(Request $request)
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
         $data = Session::all();
         if (!empty($data["password_hash"])) {
             $package_id = auth()->user()->id;
@@ -572,6 +587,9 @@ class ModeratorsUserController extends Controller
     }
     public function edit($id)
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
         $data = Session::all();
         if (!empty($data["password_hash"])) {
             $package_id = auth()->user()->id;
@@ -641,6 +659,9 @@ class ModeratorsUserController extends Controller
 
     public function RoleEdit($id)
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
         $data = Session::all();
         if (!empty($data["password_hash"])) {
             $package_id = auth()->user()->id;
@@ -966,6 +987,9 @@ class ModeratorsUserController extends Controller
     }
     public function view()
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
         $data = Session::all();
         if (!empty($data["password_hash"])) {
             $package_id = auth()->user()->id;
@@ -1027,6 +1051,9 @@ class ModeratorsUserController extends Controller
 
     public function AllRoleView()
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
         $data = Session::all();
         if (!empty($data["password_hash"])) {
             $package_id = auth()->user()->id;
@@ -4779,6 +4806,9 @@ class ModeratorsUserController extends Controller
 
     public function Commission(Request $request)
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
         $user = User::where("id", 1)->first();
         $duedate = $user->package_ends;
         $current_date = date("Y-m-d");
@@ -4874,6 +4904,9 @@ class ModeratorsUserController extends Controller
 
     public function Revenue()
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
         $user = User::where("id", 1)->first();
         $duedate = $user->package_ends;
         $current_date = date("Y-m-d");
@@ -5460,6 +5493,9 @@ class ModeratorsUserController extends Controller
 
     public function Analytics()
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
         $user = User::where("id", 1)->first();
         $duedate = $user->package_ends;
         $current_date = date("Y-m-d");
@@ -5948,6 +5984,9 @@ class ModeratorsUserController extends Controller
 
     public function VideoAnalytics()
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
         $user = User::where("id", 1)->first();
         $duedate = $user->package_ends;
         $current_date = date("Y-m-d");
@@ -6501,6 +6540,9 @@ class ModeratorsUserController extends Controller
 
     public function CPPViewsRegion()
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
         // dd('cpp/view_by_region');
         $user = User::where("id", 1)->first();
         $duedate = $user->package_ends;
@@ -6687,6 +6729,9 @@ class ModeratorsUserController extends Controller
 
     public function Payouts(Request $request)
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
         $user = User::where("id", 1)->first();
         $duedate = $user->package_ends;
         $current_date = date("Y-m-d");
@@ -6778,6 +6823,9 @@ class ModeratorsUserController extends Controller
 
     public function EditPayouts($id)
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
         $user = User::where("id", 1)->first();
         $duedate = $user->package_ends;
         $current_date = date("Y-m-d");
@@ -6856,6 +6904,9 @@ class ModeratorsUserController extends Controller
     }
     public function UpdatePayouts(Request $request)
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
         $user = User::where("id", 1)->first();
         $duedate = $user->package_ends;
         $current_date = date("Y-m-d");
@@ -6952,6 +7003,9 @@ class ModeratorsUserController extends Controller
 
     public function ViewPayouts($id)
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
         $user = User::where("id", 1)->first();
         $duedate = $user->package_ends;
         $current_date = date("Y-m-d");

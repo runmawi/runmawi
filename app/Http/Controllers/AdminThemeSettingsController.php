@@ -30,6 +30,10 @@ class AdminThemeSettingsController extends Controller
 {
     
 	public function theme_settings(){
+
+    if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+      return redirect('/admin/restrict');
+  }
     $user =  User::where('id',1)->first();
     $duedate = $user->package_ends;
     $current_date = date('Y-m-d');
@@ -236,6 +240,10 @@ class AdminThemeSettingsController extends Controller
  
     
       public function SliderEdit($id){
+
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+          return redirect('/admin/restrict');
+      }
         $user =  User::where('id',1)->first();
         $duedate = $user->package_ends;
         $current_date = date('Y-m-d');
@@ -399,6 +407,9 @@ class AdminThemeSettingsController extends Controller
     
  public function SliderIndex(){
           
+  if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+    return redirect('/admin/restrict');
+}
         //$categories = VideoCategory::where('parent_id', '=', 0)->get();
         $user =  User::where('id',1)->first();
         $duedate = $user->package_ends;
@@ -437,6 +448,9 @@ class AdminThemeSettingsController extends Controller
       } 
     public function LanguageIndex(){
 
+      if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+        return redirect('/admin/restrict');
+    }
       $data = Session::all();
 
       if (!Auth::guest()) {
@@ -509,6 +523,10 @@ class AdminThemeSettingsController extends Controller
     
     public function LanguageTransIndex(){
       
+      if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+        return redirect('/admin/restrict');
+    }
+
       $data = Session::all();
       if (!Auth::guest()) {
       $package_id = auth()->user()->id;
@@ -813,6 +831,10 @@ class AdminThemeSettingsController extends Controller
     
        public function LanguageTransEdit($id){
 
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+          return redirect('/admin/restrict');
+      }
+
         $data = Session::all();
         if (!Auth::guest()) {
         $package_id = auth()->user()->id;
@@ -865,6 +887,10 @@ class AdminThemeSettingsController extends Controller
       } 
     
         public function LanguageEdit ( $id ){
+
+          if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
 
           $data = Session::all();
 

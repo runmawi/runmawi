@@ -62,6 +62,11 @@ class AdminAudioController extends Controller
      */
     public function index(Request $request)
     {
+
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
+        
         $data = Session::all();
         if (!Auth::guest()) {
         $package_id = auth()->user()->id;
@@ -135,6 +140,11 @@ class AdminAudioController extends Controller
      */
     public function create()
     {
+
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
+
         $data = Session::all();
         if (!Auth::guest()) {
         $package_id = auth()->user()->id;
@@ -361,6 +371,10 @@ class AdminAudioController extends Controller
      */
      public function edit($id)
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
+
         $data = Session::all();
         $countries=CountryCode::all();
 
@@ -1281,7 +1295,9 @@ class AdminAudioController extends Controller
 
     public function ChannelAudioIndex()
     {
-
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
         $user =  User::where('id',1)->first();
         $duedate = $user->package_ends;
         $current_date = date('Y-m-d');
@@ -1407,7 +1423,10 @@ class AdminAudioController extends Controller
 
         public function CPPAudioIndex()
         {
-    
+
+            if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+                return redirect('/admin/restrict');
+            }
             $user =  User::where('id',1)->first();
             $duedate = $user->package_ends;
             $current_date = date('Y-m-d');

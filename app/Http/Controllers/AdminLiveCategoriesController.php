@@ -22,6 +22,11 @@ use App\Setting ;
 class AdminLiveCategoriesController extends Controller
 {
       public function index(){
+        
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+          return redirect('/admin/restrict');
+      }
+
         $data = Session::all();
         if (!Auth::guest()) {
         $package_id = auth()->user()->id;
