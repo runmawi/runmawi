@@ -311,7 +311,7 @@ class ModeratorsLoginController extends Controller
                 $user->package = 'CPP';
                 $user->unhashed_password = $request->password;
                 $user->name = $request->username;
-                $user->role = 'registered';
+                $user->role = 'admin';
                 $user->username =  $request->username;
                 $user->email = $request->email_id;
                 $user->password = Hash::make($request->password);

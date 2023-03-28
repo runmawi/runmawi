@@ -183,7 +183,7 @@ class ChannelLoginController extends Controller
                 $user->package = 'Channel';
                 $user->unhashed_password = $request->password;
                 $user->name = $request->channel_name;
-                $user->role = 'registered';
+                $user->role = 'admin';
                 $user->username = $request->channel_name;
                 $user->email = $request->email_id;
                 $user->password = Hash::make($request->password);
@@ -382,6 +382,9 @@ Please recheck the credentials before you try again!');
 
     public function PendingUsers()
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
         $user = User::where("id", 1)->first();
         $duedate = $user->package_ends;
         $current_date = date("Y-m-d");
@@ -424,6 +427,9 @@ Please recheck the credentials before you try again!');
 
     public function ChannelUsersApproval($id)
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
         $user = User::where("id", 1)->first();
         $duedate = $user->package_ends;
 
@@ -474,6 +480,9 @@ Please recheck the credentials before you try again!');
 
     public function ChannelUsersReject($id)
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
         $user = User::where("id", 1)->first();
         $duedate = $user->package_ends;
         $current_date = date("Y-m-d");
@@ -523,6 +532,9 @@ Please recheck the credentials before you try again!');
 
     public function ViewChannelMembers()
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
         $user = User::where("id", 1)->first();
         $duedate = $user->package_ends;
         $current_date = date("Y-m-d");
@@ -563,6 +575,9 @@ Please recheck the credentials before you try again!');
 
     public function Commission(Request $request)
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
         $user = User::where("id", 1)->first();
         $duedate = $user->package_ends;
         $current_date = date("Y-m-d");

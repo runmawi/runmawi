@@ -379,13 +379,13 @@ class AuthController extends Controller
 
 // Events
 
-        $mondays   = new DatePeriod(Carbon::now()->startOfWeek(Carbon::MONDAY) ,CarbonInterval::week(), Carbon::now(Carbon::MONDAY)->addMonths(1));
-        $tuesday   = new DatePeriod(Carbon::now()->startOfWeek(Carbon::TUESDAY) ,CarbonInterval::week(), Carbon::now(Carbon::TUESDAY)->addMonths(1));
-        $wednesday = new DatePeriod(Carbon::now()->startOfWeek(Carbon::WEDNESDAY) ,CarbonInterval::week(), Carbon::now(Carbon::WEDNESDAY)->addMonths(1));
-        $thursday  = new DatePeriod(Carbon::now()->startOfWeek(Carbon::THURSDAY) ,CarbonInterval::week(), Carbon::now(Carbon::THURSDAY)->addMonths(1));
-        $friday    = new DatePeriod(Carbon::now()->startOfWeek(Carbon::FRIDAY) ,CarbonInterval::week(), Carbon::now(Carbon::FRIDAY)->addMonths(1));
-        $saturday  = new DatePeriod(Carbon::now()->startOfWeek(Carbon::SATURDAY) ,CarbonInterval::week(), Carbon::now(Carbon::SATURDAY)->addMonths(1));
-        $sunday    = new DatePeriod(Carbon::now()->startOfWeek(Carbon::SUNDAY) ,CarbonInterval::week(), Carbon::now(Carbon::SUNDAY)->addMonths(1));
+        $mondays   = new DatePeriod(Carbon::now()->startOfWeek(Carbon::MONDAY) ,CarbonInterval::week(), Carbon::now(Carbon::MONDAY)->addMonths(6));
+        $tuesday   = new DatePeriod(Carbon::now()->startOfWeek(Carbon::TUESDAY) ,CarbonInterval::week(), Carbon::now(Carbon::TUESDAY)->addMonths(6));
+        $wednesday = new DatePeriod(Carbon::now()->startOfWeek(Carbon::WEDNESDAY) ,CarbonInterval::week(), Carbon::now(Carbon::WEDNESDAY)->addMonths(6));
+        $thursday  = new DatePeriod(Carbon::now()->startOfWeek(Carbon::THURSDAY) ,CarbonInterval::week(), Carbon::now(Carbon::THURSDAY)->addMonths(6));
+        $friday    = new DatePeriod(Carbon::now()->startOfWeek(Carbon::FRIDAY) ,CarbonInterval::week(), Carbon::now(Carbon::FRIDAY)->addMonths(6));
+        $saturday  = new DatePeriod(Carbon::now()->startOfWeek(Carbon::SATURDAY) ,CarbonInterval::week(), Carbon::now(Carbon::SATURDAY)->addMonths(6));
+        $sunday    = new DatePeriod(Carbon::now()->startOfWeek(Carbon::SUNDAY) ,CarbonInterval::week(), Carbon::now(Carbon::SUNDAY)->addMonths(6));
 
 
         if($request->Monday_Start_time  != null && $request->Monday_end_time != null ){

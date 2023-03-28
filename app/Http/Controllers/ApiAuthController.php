@@ -1329,7 +1329,7 @@ public function verifyandupdatepassword(Request $request)
             }
   
       } else {
-            $ppv_video_status = "pay_now";
+            $ppv_video_status = "can_view";
       }
   
   
@@ -11071,7 +11071,7 @@ public function QRCodeMobileLogout(Request $request)
     public function channel_category_series(Request $request)
     {
       try{
-        $SeriesCategory = VideoCategory::find($request->category_id) != null ? VideoCategory::find($request->category_id)->specific_category_series : array();
+        $SeriesCategory = SeriesGenre::find($request->category_id) != null ? SeriesGenre::find($request->category_id)->specific_category_series : array();
         
         $Series_Category = $SeriesCategory->where('user_id', $request->user_id)->where('uploaded_by' ,'Channel')->all();
 
@@ -11278,7 +11278,7 @@ public function QRCodeMobileLogout(Request $request)
   public function Content_category_series(Request $request)
   {
     try{
-      $SeriesCategory = VideoCategory::find($request->category_id) != null ? VideoCategory::find($request->category_id)->specific_category_series : array();
+      $SeriesCategory = SeriesGenre::find($request->category_id) != null ? SeriesGenre::find($request->category_id)->specific_category_series : array();
       
       $Series_Category = $SeriesCategory->where('user_id', $request->user_id)->where('uploaded_by' ,'CPP')->all();
 

@@ -26,6 +26,10 @@ use Intervention\Image\Filters\DemoFilter;
 class AdminAudioCategoriesController extends Controller
 {
       public function index(){
+
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+    }
         $data = Session::all();
         if (!Auth::guest()) {
         $package_id = auth()->user()->id;
@@ -166,6 +170,11 @@ class AdminAudioCategoriesController extends Controller
        }
     
     public function edit($id){
+
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+    }
+
         $data = Session::all();
         if (!Auth::guest()) {
         $package_id = auth()->user()->id;
@@ -336,6 +345,9 @@ class AdminAudioCategoriesController extends Controller
 
         $data = Session::all();
 
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+    }
         if (!Auth::guest()) {
             $package_id = auth()->user()->id;
             $user_package =    User::where('id', $package_id)->first();
@@ -569,6 +581,10 @@ class AdminAudioCategoriesController extends Controller
 }
 
     public function editAlbum($id){
+
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+    }
         $data = Session::all();
         if (!Auth::guest()) {
         $package_id = auth()->user()->id;
