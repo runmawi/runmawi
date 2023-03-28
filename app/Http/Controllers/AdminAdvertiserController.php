@@ -30,6 +30,9 @@ class AdminAdvertiserController extends Controller
 {
     public function advertisers()
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+    }
         $user = User::where('id', 1)->first();
         $duedate = $user->package_ends;
         $current_date = date('Y-m-d');
@@ -72,6 +75,9 @@ class AdminAdvertiserController extends Controller
 
     public function advertisersEdit($id)
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+    }
         $user = User::where('id', 1)->first();
         $duedate = $user->package_ends;
         $current_date = date('Y-m-d');
@@ -145,6 +151,9 @@ class AdminAdvertiserController extends Controller
 
     public function ads_categories()
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+    }
         $user = User::where('id', 1)->first();
         $duedate = $user->package_ends;
         $current_date = date('Y-m-d');
@@ -186,6 +195,9 @@ class AdminAdvertiserController extends Controller
 
     public function ads_list()
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+    }
         $user = User::where('id', 1)->first();
         $duedate = $user->package_ends;
         $current_date = date('Y-m-d');
@@ -227,6 +239,9 @@ class AdminAdvertiserController extends Controller
 
     public function ads_Edit($id)
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+    }
         $user = User::where('id', 1)->first();
         $duedate = $user->package_ends;
         $current_date = date('Y-m-d');
@@ -347,6 +362,9 @@ class AdminAdvertiserController extends Controller
 
     public function ads_plans()
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+    }
         $user = User::where('id', 1)->first();
         $duedate = $user->package_ends;
         $current_date = date('Y-m-d');
@@ -465,6 +483,9 @@ class AdminAdvertiserController extends Controller
 
     public function ads_revenue()
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+    }
         $user = User::where('id', 1)->first();
         $duedate = $user->package_ends;
         $current_date = date('Y-m-d');

@@ -1279,7 +1279,8 @@
                                                             </div>
                                                         </div>
                                                     </a>
-                                                    <?php if(Auth::User()->role == "admin"){ ?>
+                                                    <?php if(Auth::User()->role == "admin"){ 
+                                                        if(Auth::user()->package != 'Channel' && Auth::user()->package != 'CPP'){ ?>
                                                     <a href="<?php echo URL::to('admin/subscription-plans'); ?>"
                                                         class="iq-sub-card setting-dropdown">
                                                         <div class="media align-items-center">
@@ -1341,7 +1342,7 @@
                                                     </a>
                                                     <!-- Multiuser Profile -->
                                                     <?php
-                                          }
+                                          } }
                                           if(Auth::user()->role == "subscriber"){
 
                                           ?>

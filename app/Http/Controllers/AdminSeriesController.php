@@ -67,6 +67,9 @@ class AdminSeriesController extends Controller
      */
     public function index(Request $request)
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
          if (!Auth::user()->role == 'admin')
             {
                 return redirect('/home');
@@ -129,6 +132,10 @@ class AdminSeriesController extends Controller
      */
     public function create()
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
+
         $settings  = Setting::first();
 
         $user =  User::where('id',1)->first();
@@ -2414,7 +2421,9 @@ class AdminSeriesController extends Controller
 
     public function ChannelSeriesIndex()
     {
-
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
         $user =  User::where('id',1)->first();
         $duedate = $user->package_ends;
         $current_date = date('Y-m-d');
@@ -2542,7 +2551,9 @@ class AdminSeriesController extends Controller
 
         public function CPPSeriesIndex()
         {
-    
+            if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+                return redirect('/admin/restrict');
+            }
             $user =  User::where('id',1)->first();
             $duedate = $user->package_ends;
             $current_date = date('Y-m-d');
