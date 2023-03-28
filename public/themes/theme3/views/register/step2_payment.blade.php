@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @php
-    include(public_path('themes/default/views/header.php'));
+    include(public_path('themes/theme3/views/header.php'));
 @endphp
 
 @section('content')
@@ -520,6 +520,7 @@ i.fa.fa-google-plus {
     $PayPal_payment_settings = App\PaymentSetting::where('payment_type','PayPal')->first();
     $Paystack_payment_settings = App\PaymentSetting::where('payment_type','Paystack')->first();
     $Razorpay_payment_settings = App\PaymentSetting::where('payment_type','Razorpay')->first();
+    $CinetPay_payment_settings = App\PaymentSetting::where('payment_type','CinetPay')->first();
     
 
                 // lable
@@ -527,6 +528,7 @@ i.fa.fa-google-plus {
     $paypal_lable = App\PaymentSetting::where('payment_type','PayPal')->pluck('paypal_lable')->first() ? App\PaymentSetting::where('payment_type','PayPal')->pluck('paypal_lable')->first() : "PayPal";
     $paystack_lable = App\PaymentSetting::where('payment_type','Paystack')->pluck('paystack_lable')->first() ? App\PaymentSetting::where('payment_type','Paystack')->pluck('paystack_lable')->first() : "paystack";
     $Razorpay_lable = App\PaymentSetting::where('payment_type','Razorpay_lable')->pluck('Razorpay_lable')->first() ? App\PaymentSetting::where('payment_type','Razorpay')->pluck('Razorpay_lable')->first() : "Razorpay";
+    $CinetPay_lable = App\PaymentSetting::where('payment_type','CinetPay')->pluck('CinetPay_Lable')->first() ? App\PaymentSetting::where('payment_type','CinetPay')->pluck('CinetPay_Lable')->first() : "CinetPay";
 
 @endphp
 
@@ -576,6 +578,15 @@ i.fa.fa-google-plus {
                                     <label class="mt-2 ml-2" > <p>{{ $paypal_lable }} </p></label>
                                 </div>
                             @endif
+
+                                            <!-- CinetPay -->
+                            @if(!empty($CinetPay_payment_settings) && $CinetPay_payment_settings->CinetPay_Status == 1)
+                                <div class=" align-items-center">
+                                    <input type="radio" id="cinetpay_radio_button" class="payment_gateway" name="payment_gateway" value="CinetPay" >
+                                    <label class=" ml-2"> <p>{{ $CinetPay_lable }} </p></label> 
+                                </div>
+                            @endif
+                           
                     </div>      
 
             <div class="row">
@@ -749,6 +760,14 @@ i.fa.fa-google-plus {
                                              {{-- Razorpay --}}
                     <div class="col-md-12 Razorpay_payment">
                         <button  type="submit" class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 Razorpay_button processing_alert" >
+                            Pay Now
+                        </button>
+                    </div>
+
+                                {{-- CinetPay --}}
+                    
+                    <div class="col-md-12 cinetpay_payment">
+                        <button  onclick="cinetpay_checkout()" data-subscription-price='100' type="submit" class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 cinetpay_button" >
                             Pay Now
                         </button>
                     </div>
@@ -963,6 +982,11 @@ for (var i = 0; i < btns.length; i++) {
         </script>
 
 
+{{-- cinetpay  Payment Price --}}
+
+    <input type="hidden"   id="Cinetpay_Price" name="Cinetpay_Price" value=" " >
+
+
 {{-- Stripe Payment --}}
     <input type="hidden"   id="plan_name"    name="plan_name" value = {{  $SubscriptionPlan ? $SubscriptionPlan->plan_id : " " }}  >
     <input type="hidden"   id="payment_type" name="payment_type" value={{ $SubscriptionPlan ? $SubscriptionPlan->payment_type : " " }} >
@@ -983,12 +1007,12 @@ for (var i = 0; i < btns.length; i++) {
             var plan_id_class = $(ele).attr('data-plan-id');
             let currency_symbols  =  document.getElementById("currency_symbol").value ;
 
-            // alert(plans_id);
             $('#payment_type').replaceWith('<input type="hidden" name="payment_type" id="payment_type" value="'+ plan_payment_type+'">');
             $('#plan_name').replaceWith('<input type="hidden" name="plan_name" id="plan_name" value="'+ plans_id +'">');
+            $('#Cinetpay_Price').replaceWith('<input type="hidden" name="Cinetpay_Price" id="Cinetpay_Price" value="'+ plan_price +'">');
             $('.plan_price').empty(plan_price);
             $('.plan_price').append(currency_symbols+plan_price);
-
+            
             $('#coupon_amt_deduction').empty(plan_price);
             $('#coupon_amt_deduction').append( currency_symbols+plan_price );
 
@@ -1302,6 +1326,7 @@ function paypalplan_details(ele){
         $("#stripe_radio_button").attr('checked', true);
         $('.paystack_payment').hide();
         $('.Razorpay_payment').hide();
+        $('.cinetpay_button').hide();
 
         if( $('input[name="payment_gateway"]:checked').val() == "paystack" ){
             $('.stripe_payment').hide();
@@ -1310,13 +1335,17 @@ function paypalplan_details(ele){
         if( $('input[name="payment_gateway"]:checked').val() == "Razorpay" ){
             $('.Razorpay_payment').hide();
         }
+
+        if( $('input[name="payment_gateway"]:checked').val() == "CinetPay" ){
+            $('.cinetpay_button').hide();
+        }
     };
 
     $(document).ready(function(){
 
         $(".payment_gateway").click(function(){
 
-            $('.paystack_payment,.stripe_payment,.Razorpay_payment').hide();
+            $('.paystack_payment,.stripe_payment,.Razorpay_payment,.cinetpay_button').hide();
 
             let payment_gateway =  $('input[name="payment_gateway"]:checked').val();
 
@@ -1332,7 +1361,11 @@ function paypalplan_details(ele){
 
                     $('.Razorpay_payment').show();
 
-                }
+                }else if(  payment_gateway == "CinetPay" ){
+
+                    $('.cinetpay_button').show();
+
+                    }
         });
     });
 
@@ -1565,6 +1598,93 @@ function paypalplan_details(ele){
     } 
 
 </script>
+
+<!-- Cinetpay Payment -->
+
+<script src="https://cdn.cinetpay.com/seamless/main.js"></script>
+
+<script>
+
+
+      function cinetpay_checkout() {    
+
+        
+        let Cinetpay_Price          =   $('#Cinetpay_Price').val();
+        let plan_name               =   $("#plan_name").val();
+        var user_name               =  '{{ @$intent_stripe->username }}';
+        var email                   =  '{{ @$user_mail }}';
+        var mobile                  =  '{{ @$intent_stripe->mobile }}';
+        var CinetPay_APIKEY         =  '{{ @$CinetPay_payment_settings->CinetPay_APIKEY }}';
+        var CinetPay_SecretKey      =  '{{ @$CinetPay_payment_settings->CinetPay_SecretKey }}';
+        var CinetPay_SITE_ID        =  '{{ @$CinetPay_payment_settings->CinetPay_SITE_ID }}';
+        var user_id                 =  '{{ @$intent_stripe->id }}';
+        var transaction_id          = Math.floor(Math.random() * 100000000).toString();
+
+
+          CinetPay.setConfig({
+              apikey: CinetPay_APIKEY,//   YOUR APIKEY
+              site_id: CinetPay_SITE_ID,//YOUR_SITE_ID
+              notify_url: window.location.href,
+              return_url: window.location.href,
+              // mode: 'PRODUCTION'
+
+          });
+          CinetPay.getCheckout({
+             transaction_id: transaction_id, // YOUR TRANSACTION ID
+             amount: Cinetpay_Price,
+             currency: 'XOF',
+             channels: 'ALL',
+             description: 'paiement',
+             //Provide these variables for credit card payments
+             customer_name: user_name,//Customer name
+             customer_surname: user_name,//The customer's first name
+             customer_email: email,//the customer's email
+             customer_phone_number: mobile,//the customer's email
+             customer_address: "BP 0024",//customer address
+             customer_city: "Antananarivo",// The customer's city
+             customer_country: "CM",// the ISO code of the country
+             customer_state: "CM",// the ISO state code
+             customer_zip_code: "06510", // postcode
+
+          });
+          CinetPay.waitResponse(function(data) {
+              if (data.status == "REFUSED") {
+              
+                  if (alert("Your payment failed")) {
+                      window.location.reload();
+                  }
+              } else if (data.status == "ACCEPTED") {
+
+                $.ajax({
+                    url: '{{ route("CinetPay_Subscription") }}',
+                    type: "post",
+                        data: {
+                            _token: '{{ csrf_token() }}  ',
+                            amount: Cinetpay_Price,
+                            plan_name: plan_name,
+                            email: email,
+                            user_name: user_name,
+                            user_id: user_id,
+                            transaction_id: transaction_id,
+                        },      
+                        success: function(value){       
+                            alert("You have done  Payment !");
+                                setTimeout(function() {
+                                    window.location = base_url+'/login';
+                                }, 2000);
+
+                                },
+                                error: (error) => {
+                                swal('error');
+                                }
+                    });
+              }
+          });
+          CinetPay.onError(function(data) {
+              console.log(data);
+          });
+      }
+  </script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
     <script>
     $(document).ready(function(){

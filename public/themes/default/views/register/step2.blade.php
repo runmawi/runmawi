@@ -148,7 +148,6 @@
                         </div>
                     @endforeach
                 @endif
-            @php
         <div class="col-md-10 col-sm-offset-1">
 			<div class="login-block">
                 <div class="panel-heading"><h1>Choose Your Plan</h1></div>
