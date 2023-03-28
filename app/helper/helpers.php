@@ -787,4 +787,11 @@ function plans_ads_enable()
         return 1 ;
     }
 
+    function adveristment_plays_24hrs()
+    {
+        $ads_play_unlimited_period = App\Setting::pluck('ads_play_unlimited_period')->first();
+
+        return $adveristment_plays_24hrs ;
+    }
+
 }

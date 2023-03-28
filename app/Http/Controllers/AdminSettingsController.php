@@ -160,6 +160,7 @@ class AdminSettingsController extends Controller
 		$settings->ppv_price = $request['ppv_price'];
 		$settings->website_description = $request['website_description'];
 		$settings->website_name = $request['website_name'];
+		$settings->ads_play_unlimited_period = $request['ads_play_unlimited_period'];
 		$settings->login_text = $request['login_text'];
 		$settings->signature = $request['signature'];
 		$settings->system_email = $request['system_email'];
