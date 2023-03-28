@@ -1,18 +1,26 @@
 <!-- Ads -->
 
-<?php 
+<?php
 
   $current_time = Carbon\Carbon::now()->format('H:i:s');
 
   $AdsVideos = App\AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
-    ->Join('videos','advertisements.ads_category','=','videos.pre_ads_category')
+    ->Join('videos','advertisements.ads_category','=','videos.pre_ads_category');
     // ->whereDate('start', '=', Carbon\Carbon::now()->format('Y-m-d'))
     // ->whereTime('start', '<=', $current_time)
     // ->whereTime('end', '>=', $current_time)
-    ->where('ads_events.status',1)->where('advertisements.status',1)
+
+    if(adveristment_plays_24hrs() == 0){
+      $AdsVideos =  $AdsVideos->whereTime('start', '<=', $current_time)->whereTime('end', '>=', $current_time);
+    }
+    $AdsVideos  = $AdsVideos->where('ads_events.status',1)
+
+    ->where('advertisements.status',1)
     ->where('advertisements.ads_category',$video->pre_ads_category)
-    ->where('videos.id',$video->id)->where('ads_position','pre')
-    ->where('advertisements.id',$video->pre_ads)->get();
+    ->where('videos.id',$video->id)
+    ->where('ads_position','pre')
+    ->where('advertisements.id',$video->pre_ads)
+    ->get();
 
 
     if( count($AdsVideos) >= 1){
@@ -24,7 +32,7 @@
       if($AdsVideoss->ads_video != null ){
 
         $getID3           = new getID3;
-        $Ads_store_path   = public_path('/uploads/AdsVideos/'.$AdsVideoss->ads_video);       
+        $Ads_store_path   = public_path('/uploads/AdsVideos/'.$AdsVideoss->ads_video);
         $Ads_duration     = $getID3->analyze($Ads_store_path);
         $Ads_duration_Sec = $Ads_duration['playtime_seconds'];
         $ads_path_tag     = null ;
@@ -34,7 +42,7 @@
         $ads_path_tag     = $AdsVideoss->ads_path ;
       }
 
-      $advertiser_id    =  $AdsVideoss->advertiser_id ; 
+      $advertiser_id    =  $AdsVideoss->advertiser_id ;
       $ads_id           =  $AdsVideoss->ads_id ;
       $ads_position     =  $AdsVideoss->ads_position ;
       $ads_path_tag     =  $AdsVideoss->ads_path;
@@ -44,8 +52,8 @@
 
       $AdsvideoFile     =  null ;
       $Ads_duration_Sec =  null ;
-      $advertiser_id    =  null ; 
-      $ads_id           =  null ; 
+      $advertiser_id    =  null ;
+      $ads_id           =  null ;
       $ads_position     =  null ;
       $ads_path_tag     =  null ;
       $ads_type         =  null ;
@@ -67,7 +75,7 @@
   <input type="hidden" name="ads_path_tag" id="ads_path_tag" value="<?php echo  $ads_path_tag;?>">
   <input type="hidden" id="ads_start_tym" class="ads_start_tym"  value='<?php  echo $ads_start_tym  ; ?>'>
   <input type="hidden" id="" class="ads_show_status"  value='1'>
-  <input type="hidden" id="Ads_vies_count" onclick="Ads_vies_count()"> 
+  <input type="hidden" id="Ads_vies_count" onclick="Ads_vies_count()">
 
 <script>
 
@@ -89,17 +97,17 @@
           if (ads_start_tym <= e.target.currentTime) {
 
           if(ads_show_status == 1){
-            
+
                 $('.adstime_url').attr('src', Ads_videos);
 
                 document.getElementById(ads_videoplayer_id).addEventListener('loadedmetadata', function() {
                     this.currentTime = 0;
                 }, true);
-                
+
                 videoId.play();
                   $('#ads_start_tym').replaceWith('<input type="hidden" id="ads_start_tym" class="ads_start_tym" value="'+ ads_end_tym+'">');
                   $('.ads_show_status').replaceWith('<input type="hidden" id="" class="ads_show_status"  value="0">');
-                
+
                   $(".plyr__controls__item ").css("display", "none");
                   $(".plyr__time ").css("display", "block");
 
@@ -111,7 +119,7 @@
 
                   $(".plyr__controls__item").css("display", "block");
                   $(".plyr__volume").removeAttr("style");
-                  
+
 
                   document.getElementById(ads_videoplayer_id).addEventListener('loadedmetadata', function() {
                       this.currentTime = 0;
@@ -128,17 +136,17 @@
       $.ajax({
       url: '<?php echo URL::to("admin/ads_viewcount") ;?>',
       method: 'post',
-      data: 
+      data:
           {
             "_token"      :  "<?php echo csrf_token(); ?>",
-            advertiser_id :  <?php echo $advertiser_id ; ?> , 
+            advertiser_id :  <?php echo $advertiser_id ; ?> ,
             ads_id        :  <?php echo $ads_id ; ?> ,
             video_id      :  <?php echo $video->id ; ?> ,
           },
           success: (response) => {
             console.log(response);
           },
-      })  
+      })
 		}
 
 </script>
