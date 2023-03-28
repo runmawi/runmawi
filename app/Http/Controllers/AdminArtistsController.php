@@ -24,6 +24,9 @@ class AdminArtistsController extends Controller
 {
     public function index(Request $request)
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+    }
         $data = Session::all();
         if (!Auth::guest()) {
         $package_id = auth()->user()->id;
@@ -92,6 +95,9 @@ class AdminArtistsController extends Controller
 
     public function create()
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+    }
         $data = Session::all();
         if (!Auth::guest()) {
         $package_id = auth()->user()->id;
@@ -225,6 +231,9 @@ class AdminArtistsController extends Controller
 
     public function edit($id)
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+    }
         $data = Session::all();
         if (!Auth::guest()) {
         $package_id = auth()->user()->id;

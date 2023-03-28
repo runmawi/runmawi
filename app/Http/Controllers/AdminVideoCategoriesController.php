@@ -21,6 +21,10 @@ class AdminVideoCategoriesController extends Controller
       
       public function index(){
 
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+          return redirect('/admin/restrict');
+      }
+      
         $user =  User::where('id',1)->first();
         $duedate = $user->package_ends;
         $current_date = date('Y-m-d');

@@ -83,6 +83,9 @@ class AdminVideosController extends Controller
         if (!Auth::user()->role == "admin") {
             return redirect("/home");
         }
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
         $user = User::where("id", 1)->first();
         $duedate = $user->package_ends;
         $current_date = date("Y-m-d");
@@ -660,6 +663,9 @@ class AdminVideosController extends Controller
     {
         if (!Auth::user()->role == "admin") {
             return redirect("/home");
+        }
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
         }
         $settings = Setting::first();
         $user = User::where("id", 1)->first();
@@ -3364,6 +3370,10 @@ class AdminVideosController extends Controller
 
     public function CPPVideosIndex()
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
+
         $user = User::where("id", 1)->first();
         $duedate = $user->package_ends;
         $current_date = date("Y-m-d");
@@ -3970,6 +3980,9 @@ class AdminVideosController extends Controller
 
     public function ChannelVideosIndex()
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
         $user = User::where("id", 1)->first();
         $duedate = $user->package_ends;
         $current_date = date("Y-m-d");

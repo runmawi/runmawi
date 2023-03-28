@@ -67,6 +67,9 @@ class AdminSeriesController extends Controller
      */
     public function index(Request $request)
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
          if (!Auth::user()->role == 'admin')
             {
                 return redirect('/home');
@@ -129,6 +132,10 @@ class AdminSeriesController extends Controller
      */
     public function create()
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
+
         $settings  = Setting::first();
 
         $user =  User::where('id',1)->first();
@@ -165,7 +172,8 @@ class AdminSeriesController extends Controller
             'post_route' => URL::to('admin/series/store'),
             'button_text' => 'Add New Series',
             'admin_user' => Auth::user(),
-            'series_categories' => VideoCategory::all(),
+            'series_categories' => SeriesGenre::all(),
+            'video_categories' => VideoCategory::all(),
             'languages' => Language::all(),
             'artists' => Artist::all(),
             'series_artist' => [],
@@ -491,7 +499,8 @@ class AdminSeriesController extends Controller
             'post_route' => URL::to('admin/series/update'),
             'button_text' => 'Update Series',
             'admin_user' => Auth::user(),
-            'series_categories' => VideoCategory::all(),
+            'series_categories' => SeriesGenre::all(),
+            'videos_categories' => VideoCategory::all(),
             'languages' => Language::all(),
             'artists' => Artist::all(),
             'series_artist' => Seriesartist::where('series_id', $id)->pluck('artist_id')->toArray(),
@@ -2412,7 +2421,9 @@ class AdminSeriesController extends Controller
 
     public function ChannelSeriesIndex()
     {
-
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
         $user =  User::where('id',1)->first();
         $duedate = $user->package_ends;
         $current_date = date('Y-m-d');
@@ -2540,7 +2551,9 @@ class AdminSeriesController extends Controller
 
         public function CPPSeriesIndex()
         {
-    
+            if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+                return redirect('/admin/restrict');
+            }
             $user =  User::where('id',1)->first();
             $duedate = $user->package_ends;
             $current_date = date('Y-m-d');

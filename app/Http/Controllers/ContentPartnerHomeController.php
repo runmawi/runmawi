@@ -163,7 +163,7 @@ class ContentPartnerHomeController extends Controller
     public function Content_category_series(Request $request)
     {
 
-        $SeriesCategory = VideoCategory::find($request->category_id) != null ? VideoCategory::find($request->category_id)->specific_category_series : array();
+        $SeriesCategory = SeriesGenre::find($request->category_id) != null ? SeriesGenre::find($request->category_id)->specific_category_series : array();
         
         $Series_Category = $SeriesCategory->where('user_id', $request->user_id)->where('uploaded_by' ,'CPP')->all();
 

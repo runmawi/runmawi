@@ -66,6 +66,9 @@ class AdminUsersController extends Controller
 
     public function index(Request $request)
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
         $user =  User::where('id',1)->first();
         $duedate = $user->package_ends;
         $current_date = date('Y-m-d');
@@ -228,6 +231,9 @@ class AdminUsersController extends Controller
 
     public function create()
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
         $user =  User::where('id',1)->first();
         $duedate = $user->package_ends;
         $current_date = date('Y-m-d');
@@ -463,35 +469,17 @@ class AdminUsersController extends Controller
     public function update(Request $request)
     {
 
-        $input = $request->all();
-
-        $validatedData = $request->validate(['email' => 'required|max:255', 'id' => 'required|max:255', 'username' => 'required|max:255', ]);
+        $validatedData = $request->validate([
+                    'email' => 'required|max:255',
+                    'id' => 'required|max:255', 
+                    'username' => 'required|max:255', 
+                ]);
 
         $id = $request['id'];
         $user = User::find($id);
         $input = $request->all();
 
-        $path = public_path() . '/uploads/avatars/';
         $input['email'] = $request['email'];
-        $logo = $request['avatar'];
-
-        if ($logo != '')
-        {
-            //code for remove old file
-            if ($logo != '' && $logo != null)
-            {
-                $file_old = $path . $logo;
-                if (file_exists($file_old))
-                {
-                    unlink($file_old);
-                }
-            }
-            //upload new file
-            $file = $logo;
-            $input['avatar'] = $file->getClientOriginalName();
-            $file->move($path, $input['avatar']);
-
-        }
 
         if ($input['role'] == 'subadmin')
         {
@@ -506,10 +494,7 @@ class AdminUsersController extends Controller
 
         if (empty($request['email']))
         {
-            return Redirect::to('admin/user/create')->with(array(
-                'note' => 'Successfully Created New User',
-                'note_type' => 'failed'
-            ));
+            return Redirect::to('admin/user/create')->with(array( 'note' => 'Successfully Created New User','note_type' => 'failed'));
         }
         else
         {
@@ -518,58 +503,48 @@ class AdminUsersController extends Controller
 
         $input['terms'] = 1;
         $input['stripe_active'] = 0;
+        $input['passwords'] = empty($request['passwords']) ? $user->password : Hash::make($request['passwords']) ;
+        $active_status = empty($request['active']) ? "0" : "1" ;
 
-        if (empty($request['passwords']))
-        {
-            $input['passwords'] = $user->password;
-        }
-        else
-        {
-            // $input['passwords'] = $request['passwords'];
-            $input['passwords'] = Hash::make($request['passwords']);
-        }
+        if($request->hasFile('avatar')){
 
-        if (empty($input['active']))
-        {
-            $active_status = '0';
-        }
-        else
-        {
-            $active_status = '1';
-        }
+            $file = $request->avatar;
 
-        if (empty($input['avatar']))
-        {
-            $avatar_image = null;
-        }
-        else
-        {
-            $avatar_image = $input['avatar'];;
-        }
+            if (File::exists(base_path('public/uploads/avatars/'.$user->avatar))) {
+                File::delete(base_path('public/uploads/avatars/'.$user->avatar));
+            }
 
-            DB::table('users')->where('id', $id)->update(
-                [
-                    'username' => $input['username'],
-                    'email' => $input['email'],
-                    'ccode' => $input['ccode'],
-                    'mobile' => $input['mobile'],
-                    'password' => $input['passwords'],
-                    'role' => $input['role'],
-                    'active' => $active_status,
-                    'terms' => $input['terms'],
-                    'avatar' => $avatar_image,
-                    'stripe_active' => $input['stripe_active'],
-                ]);
+            $filename   = 'user-avatar-'.time().'.'.$file->getClientOriginalExtension();
+            Image::make($file)->save(base_path().'/public/uploads/avatars/'.$filename );
 
-        return Redirect::to('admin/users')
-            ->with(array(
-            'message' => 'Successfully Created New User',
-            'note_type' => 'success'
-        ));
+            $avatar_image =  $filename ;
+        }
+        else{
+            $avatar_image =  $user->avatar ;
+        }
+        
+        DB::table('users')->where('id', $id)->update(
+            [
+                'username'  => $input['username'],
+                'email'     => $input['email'],
+                'ccode'     => $input['ccode'],
+                'mobile'    => $input['mobile'],
+                'password'  => $input['passwords'],
+                'role'      => $input['role'],
+                'active'    => $active_status,
+                'terms'     => $input['terms'],
+                'avatar'    => $avatar_image,
+                'stripe_active' => $input['stripe_active'],
+            ]);
+
+        return Redirect::to('admin/users')->with(array('message' => 'Successfully Created New User','note_type' => 'success'));
     }
 
     public function edit($id)
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
         $user =  User::where('id',1)->first();
         $duedate = $user->package_ends;
         $current_date = date('Y-m-d');
@@ -892,6 +867,9 @@ class AdminUsersController extends Controller
 
     public function mobileapp()
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
         $user =  User::where('id',1)->first();
         $duedate = $user->package_ends;
         $current_date = date('Y-m-d');
@@ -1647,6 +1625,9 @@ class AdminUsersController extends Controller
 
     public function AnalyticsRevenue()
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
         $user =  User::where('id',1)->first();
         $duedate = $user->package_ends;
         $current_date = date('Y-m-d');
@@ -2237,6 +2218,9 @@ class AdminUsersController extends Controller
 
     public function ViewsRegion()
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
         $user =  User::where('id',1)->first();
         $duedate = $user->package_ends;
         $current_date = date('Y-m-d');
@@ -2276,6 +2260,9 @@ class AdminUsersController extends Controller
 
     public function RevenueRegion()
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
         $user =  User::where('id',1)->first();
         $duedate = $user->package_ends;
         $current_date = date('Y-m-d');
@@ -3094,6 +3081,9 @@ class AdminUsersController extends Controller
 
     public function UserRevenue()
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
         $user =  User::where('id',1)->first();
         $duedate = $user->package_ends;
         $current_date = date('Y-m-d');
@@ -3185,6 +3175,10 @@ class AdminUsersController extends Controller
 
     public function PayPerviewRevenue()
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
+
         $user =  User::where('id',1)->first();
         $duedate = $user->package_ends;
         $current_date = date('Y-m-d');

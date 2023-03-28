@@ -49,6 +49,7 @@ use App\HomeSetting;
 use Theme;
 use App\Channel;
 use App\ModeratorsUser;
+use App\SeriesGenre;
 
 class TvshowsController extends Controller
 {
@@ -447,7 +448,7 @@ class TvshowsController extends Controller
                     'settings' => $settings,
                     'menu' => Menu::orderBy('order', 'ASC')->get(),
                     'view_increment' => $view_increment,
-                    'series_categories' => Genre::all(),
+                    'series_categories' => SeriesGenre::all(),
                     'pages' => Page::where('active', '=', 1)->get(),
                     'episode_watchlater' => $episode_watchlater,
                     'episode_Wishlist' => $episode_Wishlist,
@@ -481,7 +482,7 @@ class TvshowsController extends Controller
                     'settings' => $settings,
                     'menu' => Menu::orderBy('order', 'ASC')->get(),
                     'view_increment' => $view_increment,
-                    'series_categories' => Genre::all(),
+                    'series_categories' => SeriesGenre::all(),
                     'pages' => Page::where('active', '=', 1)->get(),
                     'episode_watchlater' => $episode_watchlater,
                     'episode_Wishlist' => $episode_Wishlist,
@@ -630,7 +631,7 @@ class TvshowsController extends Controller
                 'url' => 'episodes',
                 'menu' => Menu::orderBy('order', 'ASC')->get(),
                 'view_increment' => $view_increment,
-                'series_categories' => Genre::all(),
+                'series_categories' => SeriesGenre::all(),
                 'pages' => Page::where('active', '=', 1)->get(),
             ];
 
@@ -649,7 +650,7 @@ class TvshowsController extends Controller
                 'url' => 'episodes',
                 'menu' => Menu::orderBy('order', 'ASC')->get(),
                 'view_increment' => $view_increment,
-                'series_categories' => Genre::all(),
+                'series_categories' => SeriesGenre::all(),
                 'pages' => Page::where('active', '=', 1)->get(),
             ];
             return Redirect::to('series')->with(['note' => 'Sorry, this series is no longer active.', 'note_type' => 'error']);
@@ -721,7 +722,7 @@ class TvshowsController extends Controller
                     'settings' => $settings,
                     'menu' => Menu::orderBy('order', 'ASC')->get(),
                     'view_increment' => $view_increment,
-                    'series_categories' => Genre::all(),
+                    'series_categories' => SeriesGenre::all(),
                     'pages' => Page::where('active', '=', 1)->get(),
                 ];
                 if (Auth::guest() && $settings->access_free == 1) {

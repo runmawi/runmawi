@@ -29,6 +29,10 @@ class AdminPaymentManagementController extends Controller
 {
     public function index()
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
+        
         $user =  User::where('id',1)->first();
         $duedate = $user->package_ends;
         $current_date = date('Y-m-d');
@@ -101,6 +105,10 @@ class AdminPaymentManagementController extends Controller
     
     public function SubscriptionIndex()
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
+
         $user =  User::where('id',1)->first();
         $duedate = $user->package_ends;
         $current_date = date('Y-m-d');
@@ -146,6 +154,10 @@ class AdminPaymentManagementController extends Controller
 
     public function SubscriptionView($id)
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
+
         $user =  User::where('id',1)->first();
         $duedate = $user->package_ends;
         $current_date = date('Y-m-d');
@@ -190,6 +202,10 @@ class AdminPaymentManagementController extends Controller
 
     public function PayPerViewIndex()
     {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
+
         $user =  User::where('id',1)->first();
         $duedate = $user->package_ends;
         $current_date = date('Y-m-d');
@@ -243,6 +259,10 @@ class AdminPaymentManagementController extends Controller
     public function PayPerView($id)
     {
         // dd($id);
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
+
         $user =  User::where('id',1)->first();
         $duedate = $user->package_ends;
         $current_date = date('Y-m-d');

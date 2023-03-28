@@ -1785,7 +1785,8 @@
                                              </div>
                                           </a>-->
 
-                                                        <a href="<?php echo URL::to('admin'); ?>"
+                                                        <a href="<?php echo URL::to('admin');
+                                                        if(Auth::user()->package != 'Channel' && Auth::user()->package != 'CPP'){  ?>"
                                                             class="iq-sub-card setting-dropdown">
                                                             <div class="media align-items-center">
                                                                 <div class="right-icon">
@@ -1819,7 +1820,7 @@
                                                         </a>
                                                         <!-- Multiuser Profile -->
                                                         <?php
-                                          }
+                                          } }
                                           if(Auth::user()->role == "subscriber"){
 
                                           ?>
