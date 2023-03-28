@@ -5,8 +5,8 @@
     foreach($sliders as $key => $slider_video): ?>
 
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
-            <div class="slide slick-bg s-bg-1 lazy"
-            style="background: url('<?php echo URL::to('/').'/public/uploads/videocategory/' .$slider_video->slider;?>') no-repeat;background-size:cover;background-position:right; ">
+            <div onclick="window.location.href='<?php echo $slider_video->link; ?>';" class="slide slick-bg s-bg-1 lazy"
+            style="background: url('<?php echo URL::to('/').'/public/uploads/videocategory/' .$slider_video->slider;?>') no-repeat;background-size:cover;background-position:right;cursor: pointer; ">
             <div class="container-fluid position-relative h-100">
                 <div class="slider-inner h-100">
 
@@ -55,8 +55,8 @@ endif; ?>
     foreach($live_banner as $key => $slider_video): ?>
 
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
-            <div class="slide slick-bg s-bg-1 lazy"
-            style="background: url('<?php echo URL::to('/').'/public/uploads/images/' .$slider_video->player_image;?>') no-repeat;background-size:cover;background-position:right;  ">
+            <div onclick="window.location.href='<?= URL::to('/') ?><?= '/live'.'/'. $slider_video->slug ?>';" class="slide slick-bg s-bg-1 lazy"
+            style="background: url('<?php echo URL::to('/').'/public/uploads/images/' .$slider_video->player_image;?>') no-repeat;background-size:cover;background-position:right;cursor: pointer;  ">
             <div class="container-fluid position-relative h-100">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center bl h-100">
@@ -132,8 +132,8 @@ endif; ?>
 <?php if(isset($live_event_banners)) :
     foreach($live_event_banners as $key => $live_event_banner): ?>
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
-            <div class="slide slick-bg s-bg-1 lazy"
-                style="background: url('<?php echo URL::to('/').'/public/uploads/images/' .$live_event_banner->player_image;?>') no-repeat;background-size:cover;background-position:right;   ">
+            <div onclick="window.location.href='<?= route('live_event_play',$live_event_banner->slug)  ?>';" class="slide slick-bg s-bg-1 lazy"
+                style="background: url('<?php echo URL::to('/').'/public/uploads/images/' .$live_event_banner->player_image;?>') no-repeat;background-size:cover;background-position:right;cursor: pointer;   ">
                 <div class="container-fluid position-relative h-100">
                     <div class="slider-inner h-100">
                         <div class="row align-items-center bl h-100">
@@ -183,8 +183,8 @@ endif; ?>
     foreach($video_banners as $key => $videos): ?>
 
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
-            <div class="slide slick-bg s-bg-1 lazy"
-            style="background: url('<?php echo URL::to('/').'/public/uploads/images/' .$videos->player_image;?>'); background-repeat:no-repeat;background-size:cover;background-position: right;">
+            <div onclick="window.location.href='<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>';" class="slide slick-bg s-bg-1 lazy"
+            style="background: url('<?php echo URL::to('/').'/public/uploads/images/' .$videos->player_image;?>'); background-repeat:no-repeat;background-size:cover;background-position: right;cursor: pointer;">
             <div class="container-fluid position-relative h-100">
                 <div class="slider-inner ">
 
@@ -310,8 +310,8 @@ if(Route::current()->getName() == "home"){
     foreach($videos_category as $key => $videos): ?>
 
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
-            <div class="slide slick-bg s-bg-1 lazy"
-                 style="background:url('<?php echo URL::to('/').'/public/uploads/images/' .$videos->player_image;?>'); background-repeat:no-repeat;background-size:cover;background-position:right; ">
+            <div onclick="window.location.href='<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>';" class="slide slick-bg s-bg-1 lazy"
+                 style="background:url('<?php echo URL::to('/').'/public/uploads/images/' .$videos->player_image;?>'); background-repeat:no-repeat;background-size:cover;background-position:right; cursor: pointer;">
                 <div class="container-fluid position-relative h-100">
                     <div class="slider-inner h-100">
 
@@ -444,8 +444,8 @@ if(Route::current()->getName() == "home"){
             ?>
 
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
-            <div class="slide slick-bg s-bg-1 lazy"
-            style="background: url('<?php echo URL::to('/').'/public/uploads/images/' .$slider_video->player_image;?>') no-repeat;background-size:cover;background-position:right;  ">
+            <div onclick="window.location.href='<?php echo URL::to('episode') ?><?= '/'.@$slider_video->series_title->slug.'/' . $slider_video->title ?>';" class="slide slick-bg s-bg-1 lazy"
+            style="background: url('<?php echo URL::to('/').'/public/uploads/images/' .$slider_video->player_image;?>') no-repeat;background-size:cover;background-position:right; cursor: pointer; ">
             <div class="container-fluid position-relative h-100">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center bl h-100">
@@ -539,8 +539,8 @@ endif; ?>
     foreach($series_sliders as $key => $series_slider): ?>
 
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
-            <div class="slide slick-bg s-bg-1 lazy"
-                    style="background:url('<?php echo URL::to('/').'/public/uploads/images/' .$series_slider->player_image;?>'); background-repeat:no-repeat;background-size:cover;background-position:right; ">
+            <div onclick="window.location.href='<?php echo URL::to('/') ?><?= '/play_series'.'/'. $series_slider->slug ?>';" class="slide slick-bg s-bg-1 lazy"
+                    style="background:url('<?php echo URL::to('/').'/public/uploads/images/' .$series_slider->player_image;?>'); background-repeat:no-repeat;background-size:cover;background-position:right;cursor: pointer; ">
             <div class="container-fluid position-relative h-100">
                 <div class="slider-inner h-100">
 
