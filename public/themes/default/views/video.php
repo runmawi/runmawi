@@ -1382,7 +1382,7 @@ $artists = [];
                   
                       <?php  foreach($payment_type as $payment){
 
-                          if( $payment->payment_type == "Razorpay"  || $payment->stripe_status == 1 || $payment->paypal_status == 1 || $payment->payment_type == "Paystack" ){ 
+                          if( $payment->payment_type == "Razorpay"  || $payment->stripe_status == 1 || $payment->paypal_status == 1 || $payment->payment_type == "CinetPay" || $payment->payment_type == "Paystack" ){ 
 
                               if($payment->live_mode == 1 && $payment->stripe_status == 1){ ?>  <!-- Stripe -Live Mode -->
 
