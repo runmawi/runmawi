@@ -8,7 +8,7 @@ if(  plans_ads_enable() == 1 ){
         // ->whereDate('start', '=', Carbon\Carbon::now()->format('Y-m-d'))
         // ->whereTime('start', '<=', $current_time)
         // ->whereTime('end', '>=', $current_time)
-        if(adveristment_plays_24hrs() == 1){
+        if(adveristment_plays_24hrs() == 0){
             $live_ads =  $live_ads->whereTime('start', '<=', $current_time)->whereTime('end', '>=', $current_time);
         }
 

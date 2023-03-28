@@ -14,7 +14,7 @@ $AdsVideosPost = App\AdsEvent::Join('advertisements','advertisements.id','=','ad
   // ->whereDate('start', '=', Carbon\Carbon::now()->format('Y-m-d'))
   // ->whereTime('start', '<=', $current_time)
   // ->whereTime('end', '>=', $current_time)
-  if(adveristment_plays_24hrs() == 1){
+  if(adveristment_plays_24hrs() == 0){
     $AdsVideosPost =  $AdsVideosPost->whereTime('start', '<=', $current_time)->whereTime('end', '>=', $current_time);
   }
   $AdsVideosPost  = $AdsVideosPost->where('ads_events.status',1)

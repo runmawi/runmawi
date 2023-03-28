@@ -14,7 +14,7 @@
   // ->whereTime('start', '<=', $current_time)
   // ->whereTime('end', '>=', $current_time)
   
-  if(adveristment_plays_24hrs() == 1){
+  if(adveristment_plays_24hrs() == 0){
     $AdsVideosMid =  $AdsVideosMid->whereTime('start', '<=', $current_time)->whereTime('end', '>=', $current_time);
   }
   $AdsVideosMid  = $AdsVideosMid->where('ads_events.status',1)

@@ -7,7 +7,7 @@ $pre_ads_url = App\AdsEvent::Join('advertisements','advertisements.id','=','ads_
     // ->whereTime('start', '<=', $current_time)
     // ->whereTime('end', '>=', $current_time)
 
-    if(adveristment_plays_24hrs() == 1){
+    if(adveristment_plays_24hrs() == 0){
         $pre_ads_url =  $pre_ads_url->whereTime('start', '<=', $current_time)->whereTime('end', '>=', $current_time);
     }
     $pre_ads_url =  $pre_ads_url->where('ads_events.status',1)

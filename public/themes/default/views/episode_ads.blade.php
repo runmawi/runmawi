@@ -9,7 +9,7 @@ if(  plans_ads_enable() == 1 ){
         // ->whereTime('start', '<=', $current_time)
         // ->whereTime('end', '>=', $current_time)
 
-      if(adveristment_plays_24hrs() == 1){
+      if(adveristment_plays_24hrs() == 0){
             $episode_ads =  $episode_ads->whereTime('start', '<=', $current_time)->whereTime('end', '>=', $current_time);
       }
 

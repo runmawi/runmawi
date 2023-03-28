@@ -791,8 +791,6 @@ function plans_ads_enable()
     {
         $ads_play_unlimited_period = App\Setting::pluck('ads_play_unlimited_period')->first();
 
-        $adveristment_plays_24hrs = $ads_play_unlimited_period == 1 ? 0 : 1 ;
-
         return $adveristment_plays_24hrs ;
     }
 
