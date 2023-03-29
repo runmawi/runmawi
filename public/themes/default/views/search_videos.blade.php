@@ -9,6 +9,10 @@
         @if( count($all_videos) > 0 )
             <div class="row">
 
+                <div class="iq-main-header align-items-center justify-content-between">
+                    <h3 class="vid-title"> Showing Videos for "{{  $search_value }}"</h3>                     
+                </div>
+
                 <div class="col-sm-12 page-height">
                     <div class="favorites-contens">
                         <ul class="category-page list-inline row p-0 mb-0">

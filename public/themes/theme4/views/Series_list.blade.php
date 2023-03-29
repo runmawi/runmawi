@@ -1,5 +1,5 @@
 @php
-    include(public_path('themes/theme2/views/header.php'));
+    include(public_path('themes/theme4/views/header.php'));
 @endphp
     
 <section id="iq-tvthrillers" class="s-margin">
@@ -104,5 +104,5 @@
 </section>
 
 @php
-    include(public_path('themes/theme2/views/footer.blade.php'));
+    include(public_path('themes/theme4/views/footer.blade.php'));
 @endphp
