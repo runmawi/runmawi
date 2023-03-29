@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Redirect;
 use App\AdminHomePopup;
+use Auth;
 
 class AdminHomePopupController extends Controller
 {

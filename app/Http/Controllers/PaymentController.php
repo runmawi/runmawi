@@ -893,7 +893,7 @@ public function RentPaypal(Request $request)
             $intent_key =  $intent_stripe->createSetupIntent()->client_secret ;
             session()->put('intent_stripe_key',$intent_key);
 
-            return Theme::view('register.upgrade_payment', compact(['plans_data_signup_checkout']));
+            return Theme::view('register.upgrade_payment', compact(['plans_data_signup_checkout','intent_stripe']));
 
           }else{
                 return Theme::view('register.upgrade', [
