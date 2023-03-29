@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Setting;
 use URL;
+use Auth;
 
 class AdminMultiUserController extends Controller
 {

@@ -9,6 +9,7 @@ use App\AdminLifeTimeSubscription;
 use App\CurrencySetting;
 use App\User;
 use App\Devices;
+use Auth;
 
 class AdminLifeTimeSubscriptionController extends Controller
 {
