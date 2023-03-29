@@ -188,7 +188,8 @@ public function PaypalIndex()
             return View::make('admin.expired_dashboard', $data);
         }else{
         // $edit_plan = SubscriptionPlan::find($id);
-        $edit_plan =  SubscriptionPlan::where('plans_name',$id)->get();
+        $edit_plan =  SubscriptionPlan::where('id',$id)->get();
+        // dd($edit_plan);
         $payment_settings = PaymentSetting::all();
         if(!empty($edit_plan[0]->devices)){
             $permission = $edit_plan[0]['devices'];
