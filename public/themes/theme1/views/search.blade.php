@@ -13,7 +13,10 @@
                 <div class="col-sm-12 page-height">
 
                     <div class="iq-main-header align-items-center justify-content-between"> 
-                        <h3 class="vid-title"> Showing  videos for "{{  $search_value }}"</h3>              
+                        <div class="d-flex justify-content-between">
+                            <h3 class="vid-title"> Showing videos for "{{ $search_value }}"</h3>
+                            <h3 class="vid-title"> <a href="{{ route('searchResult_videos', $search_value) }}"> view all </a></h3>
+                        </div>            
                     </div>
                         <div class="favorites-contens">
                             <ul class="category-page list-inline row p-0 mb-0">
@@ -122,7 +125,10 @@
                 <div class="col-sm-12 page-height">
 
                     <div class="iq-main-header align-items-center justify-content-between"> 
-                        <h3 class="vid-title"> Showing  Episode for "{{  $search_value }}"</h3>              
+                        <div class="d-flex justify-content-between">
+                            <h3 class="vid-title"> Showing Episode for "{{  $search_value }}"</h3>
+                            <h3 class="vid-title"> <a href="{{ route('searchResult_episode', $search_value) }}"> view all </a></h3>
+                        </div>              
                     </div>
                         <div class="favorites-contens">
                             <ul class="category-page list-inline row p-0 mb-0">
@@ -209,7 +215,10 @@
                 <div class="col-sm-12 page-height">
 
                     <div class="iq-main-header align-items-center justify-content-between"> 
-                        <h3 class="vid-title"> Showing  Series for "{{  $search_value }}"</h3>              
+                        <div class="d-flex justify-content-between">
+                            <h3 class="vid-title"> Showing Series for "{{  $search_value }}"</h3>
+                            <h3 class="vid-title"> <a href="{{ route('searchResult_series', $search_value) }}"> view all </a></h3>
+                        </div>              
                     </div>
                         <div class="favorites-contens">
                             <ul class="category-page list-inline row p-0 mb-0">
@@ -286,7 +295,10 @@
                 <div class="col-sm-12 page-height">
 
                     <div class="iq-main-header align-items-center justify-content-between"> 
-                        <h3 class="vid-title"> Showing  Live Stream for "{{  $search_value }}"</h3>              
+                        <div class="d-flex justify-content-between">
+                            <h3 class="vid-title"> Showing Live Stream for "{{  $search_value }}"</h3>
+                            <h3 class="vid-title"> <a href="{{ route('searchResult_livestream', $search_value) }}"> view all </a></h3>
+                        </div>              
                     </div>
                         <div class="favorites-contens">
                             <ul class="category-page list-inline row p-0 mb-0">
@@ -365,7 +377,10 @@
                 <div class="col-sm-12 page-height">
 
                     <div class="iq-main-header align-items-center justify-content-between"> 
-                        <h3 class="vid-title"> Showing  Audios for "{{  $search_value }}"</h3>              
+                        <div class="d-flex justify-content-between">
+                            <h3 class="vid-title"> Showing Audios for "{{  $search_value }}"</h3>
+                            <h3 class="vid-title"> <a href="{{ route('searchResult_audios', $search_value) }}"> view all </a></h3>
+                        </div>             
                     </div>
                         <div class="favorites-contens">
                             <ul class="category-page list-inline row p-0 mb-0">

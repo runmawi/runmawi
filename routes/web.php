@@ -230,8 +230,16 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
     Route::get('/data', 'SignupController@index');
     Route::get('stripe1', 'PaymentController@stripe');
     Route::post('stripe', 'PaymentController@stripePost')->name('stripe.post');
-    Route::post('searchResult', 'HomeController@searchResult')->name('searchResult');;
+
+                    // search
     Route::get('search','HomeController@search');
+    Route::post('searchResult', 'HomeController@searchResult')->name('searchResult');
+    Route::get('search-videos/{videos_search_value}', 'HomeController@searchResult_videos')->name('searchResult_videos');
+    Route::get('search-livestream/{livestreams_search_value}', 'HomeController@searchResult_livestream')->name('searchResult_livestream');
+    Route::get('search-series/{series_search_value}', 'HomeController@searchResult_series')->name('searchResult_series');
+    Route::get('search-episode/{Episode_search_value}', 'HomeController@searchResult_episode')->name('searchResult_episode');
+    Route::get('search-audios/{Audios_search_value}', 'HomeController@searchResult_audios')->name('searchResult_audios');
+
     Route::get('showPayperview', 'WatchLaterController@showPayperview');
     Route::post('watchlater', 'WatchLaterController@watchlater');
     Route::get('purchased-media', 'WatchLaterController@showPayperview');
