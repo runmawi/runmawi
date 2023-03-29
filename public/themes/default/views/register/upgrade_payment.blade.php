@@ -11,7 +11,7 @@
         .round{
             background-color: #8a0303!important;
             color: #fff!important;
-            padding: 14px 20px;
+           
         }
         #coupon_code_stripe{
             background-color: #ddd;
@@ -99,7 +99,11 @@
     .tab button:hover {
       background-color: #111;
     }
-
+        .toggle{
+            display: flex;
+            justify-content: space-between;
+    width: 43%;
+        }
     /* Create an active/current tablink class */
     .tab button.active {
       border-bottom: 2px solid #c3ab06;
@@ -1289,8 +1293,9 @@ i.fa.fa-google-plus {
         var CinetPay_SecretKey      =  '{{ @$CinetPay_payment_settings->CinetPay_SecretKey }}';
         var CinetPay_SITE_ID        =  '{{ @$CinetPay_payment_settings->CinetPay_SITE_ID }}';
         var user_id                 =  '{{ @$intent_stripe->id }}';
-        var transaction_id          = Math.floor(Math.random() * 100000000).toString();
-
+        var transaction_id          =   Math.floor(Math.random() * 100000000).toString();
+        var currency                =  '{{ currency_symbol() }}'
+        
           CinetPay.setConfig({
               apikey: CinetPay_APIKEY,//   YOUR APIKEY
               site_id: CinetPay_SITE_ID,//YOUR_SITE_ID
@@ -1302,7 +1307,7 @@ i.fa.fa-google-plus {
           CinetPay.getCheckout({
              transaction_id: transaction_id, // YOUR TRANSACTION ID
              amount: Cinetpay_Price,
-             currency: 'XOF',
+             currency: currency,
              channels: 'ALL',
              description: 'paiement',
              //Provide these variables for credit card payments
