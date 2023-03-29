@@ -189,7 +189,9 @@ public function PaypalIndex()
         }else{
         // $edit_plan = SubscriptionPlan::find($id);
         $edit_plan =  SubscriptionPlan::where('id',$id)->get();
-        // dd($edit_plan);
+        if(!empty($edit_plan[0]->plans_name)){
+            $edit_plan =  SubscriptionPlan::where('plans_name',$edit_plan[0]->plans_name)->get();
+        }
         $payment_settings = PaymentSetting::all();
         if(!empty($edit_plan[0]->devices)){
             $permission = $edit_plan[0]['devices'];
