@@ -1619,7 +1619,7 @@ function paypalplan_details(ele){
         var CinetPay_SITE_ID        =  '{{ @$CinetPay_payment_settings->CinetPay_SITE_ID }}';
         var user_id                 =  '{{ @$intent_stripe->id }}';
         var transaction_id          = Math.floor(Math.random() * 100000000).toString();
-
+        var currency                =  '{{ currency_symbol() }}'
 
           CinetPay.setConfig({
               apikey: CinetPay_APIKEY,//   YOUR APIKEY
@@ -1632,7 +1632,7 @@ function paypalplan_details(ele){
           CinetPay.getCheckout({
              transaction_id: transaction_id, // YOUR TRANSACTION ID
              amount: Cinetpay_Price,
-             currency: 'XOF',
+             currency: currency,
              channels: 'ALL',
              description: 'paiement',
              //Provide these variables for credit card payments
