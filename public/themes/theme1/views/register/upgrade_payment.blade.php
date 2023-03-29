@@ -6,7 +6,6 @@
 
 @section('content')
 
-
 <script src="https://www.paypal.com/sdk/js?client-id=Aclkx_Wa7Ld0cli53FhSdeDt1293Vss8nSH6HcSDQGHIBCBo42XyfhPFF380DjS8N0qXO_JnR6Gza5p2&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
     <style>
         .round{
@@ -504,12 +503,14 @@ i.fa.fa-google-plus {
     $PayPal_payment_settings  = App\PaymentSetting::where('payment_type','PayPal')->first();
     $Paystack_payment_settings = App\PaymentSetting::where('payment_type','Paystack')->first();
     $Razorpay_payment_settings = App\PaymentSetting::where('payment_type','Razorpay')->first();
+    $CinetPay_payment_settings = App\PaymentSetting::where('payment_type','CinetPay')->first();
 
                 // label
     $stripe_label = App\PaymentSetting::where('payment_type','Stripe')->pluck('stripe_lable')->first() ? App\PaymentSetting::where('payment_type','Stripe')->pluck('stripe_lable')->first()  : "Stripe";
     $paypal_label = App\PaymentSetting::where('payment_type','PayPal')->pluck('paypal_lable')->first() ? App\PaymentSetting::where('payment_type','PayPal')->pluck('paypal_lable')->first() : "PayPal";
     $paystack_label = App\PaymentSetting::where('payment_type','Paystack')->pluck('paystack_lable')->first() ? App\PaymentSetting::where('payment_type','Paystack')->pluck('paystack_lable')->first() : "paystack";
     $Razorpay_label = App\PaymentSetting::where('payment_type','Razorpay')->pluck('Razorpay_lable')->first() ? App\PaymentSetting::where('payment_type','Razorpay')->pluck('Razorpay_lable')->first() : "Razorpay";
+    $CinetPay_lable = App\PaymentSetting::where('payment_type','CinetPay')->pluck('CinetPay_Lable')->first() ? App\PaymentSetting::where('payment_type','CinetPay')->pluck('CinetPay_Lable')->first() : "CinetPay";
 
 @endphp
 
@@ -555,6 +556,14 @@ i.fa.fa-google-plus {
                                 <div class="align-items-center">
                                     <input type="radio" id="paypaul_radio_button" class="payment_gateway" name="payment_gateway" value="paypal"> 
                                     <label class="mt-2 ml-2" > <p>{{ $paypal_label }} </p></label> <br />
+                                </div>
+                            @endif
+
+                                                <!-- CinetPay -->
+                            @if(!empty($CinetPay_payment_settings) && $CinetPay_payment_settings->CinetPay_Status == 1)
+                                <div class=" align-items-center">
+                                    <input type="radio" id="cinetpay_radio_button" class="payment_gateway" name="payment_gateway" value="CinetPay" >
+                                    <label class=" ml-2"> <p>{{ $CinetPay_lable }} </p></label> 
                                 </div>
                             @endif
                     </div>      
@@ -722,6 +731,15 @@ i.fa.fa-google-plus {
                         </button>
                     </div>
                     
+                    
+                    {{-- CinetPay --}}
+                    
+                    <div class="col-md-12 cinetpay_payment">
+                        <button  onclick="cinetpay_checkout()" data-subscription-price='100' type="submit" class="btn1 btn-lg btn-block font-weight-bold text-white mt-3 cinetpay_button" >
+                            Pay Now
+                        </button>
+                    </div>
+
                     {{-- <button type="button" class="btn1  btn-lg btn-block font-weight-bold text-white mt-3">Start Your Free Trial</button> --}}
                     <input type="hidden" id="payment_image" value="<?php echo URL::to('/').'/public/Thumbnai_images';?>">
                     <input type="hidden" id="currency_symbol" value="{{ currency_symbol() }}">
@@ -750,6 +768,11 @@ i.fa.fa-google-plus {
     });
 </script>
 
+{{-- cinetpay  Payment Price --}}
+
+    <input type="hidden"   id="Cinetpay_Price" name="Cinetpay_Price" value=" " >
+
+
 {{-- Stripe Payment --}}
     <input type="hidden"   id="plan_name"    name="plan_name" value = {{  $SubscriptionPlan ? $SubscriptionPlan->plan_id : " " }}  >
     <input type="hidden"   id="payment_type" name="payment_type" value={{ $SubscriptionPlan ? $SubscriptionPlan->payment_type : " " }} >
@@ -772,6 +795,7 @@ i.fa.fa-google-plus {
 
         $('#payment_type').replaceWith('<input type="hidden" name="payment_type" id="payment_type" value="'+ plan_payment_type+'">');
         $('#plan_name').replaceWith('<input type="hidden" name="plan_name" id="plan_name" value="'+ plans_id +'">');
+        $('#Cinetpay_Price').replaceWith('<input type="hidden" name="Cinetpay_Price" id="Cinetpay_Price" value="'+ plan_price +'">');
         $('.plan_price').empty(plan_price);
         $('.plan_price').append( currency_symbols+plan_price );
 
@@ -1244,6 +1268,94 @@ i.fa.fa-google-plus {
         } 
 
 </script>
+
+
+<!-- Cinetpay Payment -->
+
+<script src="https://cdn.cinetpay.com/seamless/main.js"></script>
+
+<script>
+
+
+      function cinetpay_checkout() {    
+
+        
+        let Cinetpay_Price          =   $('#Cinetpay_Price').val();
+        let plan_name               =   $("#plan_name").val();
+        var user_name               =  '{{ @$intent_stripe->username }}';
+        var email                   =  '{{ @$intent_stripe->email }}';
+        var mobile                  =  '{{ @$intent_stripe->mobile }}';
+        var CinetPay_APIKEY         =  '{{ @$CinetPay_payment_settings->CinetPay_APIKEY }}';
+        var CinetPay_SecretKey      =  '{{ @$CinetPay_payment_settings->CinetPay_SecretKey }}';
+        var CinetPay_SITE_ID        =  '{{ @$CinetPay_payment_settings->CinetPay_SITE_ID }}';
+        var user_id                 =  '{{ @$intent_stripe->id }}';
+        var transaction_id          =   Math.floor(Math.random() * 100000000).toString();
+        var currency                =  '{{ currency_symbol() }}'
+        
+          CinetPay.setConfig({
+              apikey: CinetPay_APIKEY,//   YOUR APIKEY
+              site_id: CinetPay_SITE_ID,//YOUR_SITE_ID
+              notify_url: window.location.href,
+              return_url: window.location.href,
+              // mode: 'PRODUCTION'
+
+          });
+          CinetPay.getCheckout({
+             transaction_id: transaction_id, // YOUR TRANSACTION ID
+             amount: Cinetpay_Price,
+             currency: currency,
+             channels: 'ALL',
+             description: 'paiement',
+             //Provide these variables for credit card payments
+             customer_name: user_name,//Customer name
+             customer_surname: user_name,//The customer's first name
+             customer_email: email,//the customer's email
+             customer_phone_number: mobile,//the customer's email
+             customer_address: "BP 0024",//customer address
+             customer_city: "Antananarivo",// The customer's city
+             customer_country: "CM",// the ISO code of the country
+             customer_state: "CM",// the ISO state code
+             customer_zip_code: "06510", // postcode
+
+          });
+          CinetPay.waitResponse(function(data) {
+              if (data.status == "REFUSED") {
+              
+                  if (alert("Your payment failed")) {
+                      window.location.reload();
+                  }
+              } else if (data.status == "ACCEPTED") {
+
+                $.ajax({
+                    url: '{{ route("CinetPay_Subscription") }}',
+                    type: "post",
+                        data: {
+                            _token: '{{ csrf_token() }}  ',
+                            amount: Cinetpay_Price,
+                            plan_name: plan_name,
+                            email: email,
+                            user_name: user_name,
+                            user_id: user_id,
+                            transaction_id: transaction_id,
+                        },      
+                        success: function(value){       
+                            alert("You have done  Payment !");
+                                setTimeout(function() {
+                                    window.location = base_url+'/login';
+                                }, 2000);
+
+                                },
+                                error: (error) => {
+                                swal('error');
+                                }
+                    });
+              }
+          });
+          CinetPay.onError(function(data) {
+              console.log(data);
+          });
+      }
+  </script>
 
 @php
     include(public_path('themes/theme1/views/footer.blade.php'));

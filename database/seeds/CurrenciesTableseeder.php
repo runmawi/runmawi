@@ -151,6 +151,7 @@ class CurrenciesTableseeder extends Seeder
         array('id' =>131, 'country' => "Zimbabwe",'currencies' =>  "Zimbabwe Dollars",'code' =>  "ZWD",'symbol' =>  "Z$"),
         array('id' =>132, 'country' => "India",'currencies' =>  "Rupees",'code' =>  "INR",'symbol' =>  '₹'),
         array('id' =>133, 'country' => "Tanzanian Shilling",'currencies' =>  "TZS",'code' =>  "TZS",'symbol' =>  'Sh'),
+        array('id' =>134, 'country' => "West African CFA franc",'currencies' =>  "XOF",'code' =>  "XOF",'symbol' =>  'XOF'),
     );
     Currency::insert($Currency);
     }
