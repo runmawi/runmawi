@@ -11,7 +11,7 @@
         .round{
             background-color: #8a0303!important;
             color: #fff!important;
-            padding: 14px 20px;
+           
         }
         #coupon_code_stripe{
             background-color: #ddd;
@@ -99,7 +99,11 @@
     .tab button:hover {
       background-color: #111;
     }
-
+        .toggle{
+            display: flex;
+            justify-content: space-between;
+    width: 43%;
+        }
     /* Create an active/current tablink class */
     .tab button.active {
       border-bottom: 2px solid #c3ab06;
