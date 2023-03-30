@@ -2,6 +2,11 @@
 
 <style>
     /*Button Bg color  */
+
+    .text-primary{
+        background-color: {{ button_bg_color() . '!important' }};
+    }
+    
     button.btn.signup {
         border: #f3ece0 !important;
         background-color: {{ button_bg_color() . '!important' }};
