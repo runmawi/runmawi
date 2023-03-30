@@ -1,6 +1,11 @@
 @content()
 
 <style>
+
+    .text-primary {
+        color: {{ button_bg_color() . '!important' }};
+    }
+
     /*Button Bg color  */
     button.btn.signup {
         border: #f3ece0 !important;
@@ -74,6 +79,8 @@
         stroke-linejoin: round;
         stroke: {{ button_bg_color() . '!important' }}
     }
+
+    
 </style>
 
 {{-- Toggle - Dark-Mode & Light-Mode --}}
