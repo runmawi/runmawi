@@ -1327,8 +1327,10 @@ i.fa.fa-google-plus {
              customer_phone_number: mobile,//the customer's email
              customer_address: "BP 0024",//customer address
              customer_city: "Antananarivo",// The customer's city
-             customer_country: "CM",// the ISO code of the country
-             customer_state: "CM",// the ISO state code
+            //  customer_country: "CM",// the ISO code of the country
+            //  customer_state: "CM",// the ISO state code
+             customer_country: "CI, BF, US, CA, FR",// the ISO code of the country
+             customer_state: "CM,CA,US",// the ISO state code
              customer_zip_code: "06510", // postcode
 
           });
