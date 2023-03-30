@@ -631,20 +631,28 @@
                                         <?php }elseif ( $menu->in_menu == "tv_show") { 
                                              $tv_shows_series = App\Series::get();
                                           ?>
+
                                         <li class="dropdown menu-item">
                                             <a class="" id="" href="<?php echo URL::to('/') . $menu->url; ?>">
                                                 <?php echo __($menu->name); ?> <i class="fa fa-angle-down"></i>
                                             </a>
+
                                             <?php if(count($tv_shows_series) > 0 ){ ?>
-                                            <ul class="dropdown-menu categ-head">
-                                                <?php foreach ( $tv_shows_series as $tvshows_series){ ?>
-                                                <li>
-                                                    <a class="dropdown-item cont-item" href="<?php echo URL::to('/play_series') . '/' . $tvshows_series->slug; ?>">
-                                                        <?php echo $tvshows_series->title; ?>
-                                                    </a>
-                                                </li>
-                                                <?php } ?>
-                                            </ul>
+                                                <ul class="dropdown-menu categ-head">
+                                                    <?php foreach ( $tv_shows_series->take(6) as $key => $tvshows_series){ ?>
+                                                        <li>
+                                                            <?php if($key < 5): ?>
+                                                                <a class="dropdown-item cont-item" href="<?php echo URL::to('/play_series') . '/' . $tvshows_series->slug; ?>">
+                                                                    <?php echo $tvshows_series->title; ?>
+                                                                </a>
+                                                            <?php else: ?>
+                                                                <a class="dropdown-item cont-item text-primary" href="<?php echo URL::to('/tv-shows');?>"> 
+                                                                    <?php echo 'More...';?> 
+                                                                </a>
+                                                            <?php endif; ?>
+                                                        </li>
+                                                    <?php } ?>
+                                                </ul>
                                             <?php } ?>
                                         </li>
 
