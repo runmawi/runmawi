@@ -662,6 +662,13 @@ function drop(video_id) {
                     allowOutsideClick:false,
 
                     });
+                    }else if(value.schedule_time == 'Video End Time Exceeded today Please Change the Calendar Date to Add Schedule'){
+                        swal.fire({
+                    // title: 'Oops', 
+                    text: 'Video End Time Exceeded today Please Change the Calendar Slot to Add Schedule!', 
+                    allowOutsideClick:false,
+
+                    });
                     }else{
                         $('tbody').html(value.table_data);
                     }

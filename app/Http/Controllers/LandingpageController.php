@@ -23,7 +23,7 @@ class LandingpageController extends Controller
 
    public function landing_page( $landing_page_slug )
    {
-        $first_videos_categories_id = VideoCategory::orderBy('order')->pluck('id')->first();
+        $first_videos_categories_id = SeriesGenre::orderBy('order')->pluck('id')->first();
 
         $data = [
             'title' => AdminLandingPage::where('status',1)->pluck('title')->first(),
@@ -34,7 +34,7 @@ class LandingpageController extends Controller
             'custom_css' => AdminLandingPage::where('status',1)->orderBy('id','desc')->pluck('custom_css')->first(),
             'bootstrap_link'  => AdminLandingPage::where('status',1)->orderBy('id', 'desc')->pluck('bootstrap_link')->first(),
             'script_content'  => AdminLandingPage::where('status',1)->orderBy('id', 'desc')->pluck('script_content')->first(),
-            'videos_categories' => VideoCategory::orderBy('order')->get(),
+            'videos_categories' => SeriesGenre::orderBy('order')->get(),
             'SeriesCategory'    => SeriesGenre::find($first_videos_categories_id) != null ? SeriesGenre::find($first_videos_categories_id)->specific_category_series : array(),
         ];
 
