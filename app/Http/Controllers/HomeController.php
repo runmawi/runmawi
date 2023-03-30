@@ -3621,6 +3621,11 @@ class HomeController extends Controller
     public function searchResult(Request $request)
     {
         try {
+
+            if($request->search != null  || $request->search != " " ){
+
+                return redirect()->back()->withErrors("Please! Enter the valid search data")->withInput();
+            }
             
             $search_value = $request['search'];
 
