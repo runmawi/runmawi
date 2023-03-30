@@ -410,6 +410,10 @@
    }body.light-theme .trending-dec{
    color: <?php echo GetLightText(); ?>!important;
    }
+
+   .Search_error_class {
+      color: red;
+   }
 </style>
 <body>
    <!-- loader Start -->
@@ -688,7 +692,7 @@
                               <ul class="d-flex align-items-center justify-content-end list-inline m-0">
                                  <li class="hidden-xs">
                                     <div id="navbar-search-form">
-                                       <form role="search" action="<?php echo URL::to('/').'/searchResult';?>" method="POST">
+                                       <form id="" role="search" action="<?php echo URL::to('searchResult');?>" method="POST">
                                           <input name="_token" type="hidden" value="<?php echo csrf_token(); ?>">
                                           <div>
                                              <i class="fa fa-search">
@@ -732,11 +736,12 @@
                      <div class="navbar-right menu-right pt-2">
                         <ul class="d-flex align-items-center list-inline m-0">
                            <li class="nav-item nav-icon" style="margin-right:1px;">
-                              <a href="<?php echo URL::to('/').'/searchResult';?>" aria-label="search" class="search-toggle device-search">
-                              <i class="ri-search-line"></i>
+                              <a href="<?php echo URL::to('searchResult');?>" aria-label="search" class="search-toggle device-search">
+                                 <i class="ri-search-line"></i>
                               </a>
+
                               <div class="search-box iq-search-bar d-search">
-                                 <form action="<?php echo URL::to("/") ."/searchResult"; ?>" method="post" class="searchbox">
+                                 <form id="searchResult" action="<?php echo URL::to("searchResult") ; ?>" method="post" class="searchbox">
                                     <input name="_token" type="hidden" value="<?php echo csrf_token(); ?>" />
                                     <div class="form-group position-relative">
                                        <input type="text" name="search" class="text search-input font-size-12 searches" placeholder="Type here to Search Videos" />
@@ -745,6 +750,7 @@
                                     </div>
                                  </form>
                               </div>
+
                               <div class="iq-sub-dropdown search_content overflow-auto" id="sidebar-scrollbar" >
                                  <div class="iq-card-body">
                                     <div id="search_list" class="search_list search-toggle device-search" >
@@ -1252,6 +1258,7 @@
          
       </script>
       <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/google_analytics_tracking_id.js';?>"></script>
+      
       <script>
          $("#toggle").click(function(){
          
@@ -1272,6 +1279,7 @@
          });
          
       </script>
+
       <!-- Dark Mode & Light Mode  -->
       <script>
          let theme_modes = $("#toggle").val();
@@ -1285,14 +1293,35 @@
             }
          });
       </script>
+
       <script>
          $('ul.nav li.dropdown').hover(function() {
          $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(700);
          }, function() {
          $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(700);
          });
-               
       </script>
+                  <!-- search validation -->
+      <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
+      <script>
+         $( "#searchResult" ).validate({
+            errorClass: 'Search_error_class',
+            rules: {
+                     search: {
+                        required: true,
+                     },
+                  },
+
+            messages: {
+               search: {
+                  required: "This Search field is required",
+               }
+            }
+          });
+      </script>
+
    </header>
    <!-- Header End -->
    <!-- MainContent End-->
+

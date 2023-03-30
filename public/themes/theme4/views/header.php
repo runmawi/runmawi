@@ -415,6 +415,10 @@ input:checked + .sliderk:before {
           
             color: <?php echo GetLightText(); ?>!important;
         }
+
+        .Search_error_class {
+            color: red;
+         }
     </style>
      
    <body>
@@ -733,12 +737,12 @@ input:checked + .sliderk:before {
                         <div class="navbar-right menu-right pt-2">
                            <ul class="d-flex align-items-center list-inline m-0">
                               <li class="nav-item nav-icon" style="margin-right:1px;">
-                                 <a href="<?php echo URL::to('/').'/searchResult';?>" class="search-toggle device-search">
+                                 <a href="<?php echo URL::to('searchResult');?>" class="search-toggle device-search">
                                     <i class="ri-search-line"></i>
                                  </a>
 
                                  <div class="search-box iq-search-bar d-search">
-                                    <form action="<?php echo URL::to("/") ."/searchResult"; ?>" method="post" class="searchbox">
+                                    <form id="searchResult" action="<?php echo URL::to("searchResult") ; ?>" method="post" class="searchbox">
                                         <input name="_token" type="hidden" value="<?php echo csrf_token(); ?>" />
                                         <div class="form-group position-relative">
                                             <input type="text" name="search" class="text search-input font-size-12 searches" placeholder="Type here to Search Videos" />
@@ -1298,6 +1302,26 @@ $("#toggle").click(function(){
   $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(700);
 });
           </script>
+
+                     <!-- search validation -->
+        <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
+        <script>
+            $( "#searchResult" ).validate({
+                errorClass: 'Search_error_class',
+                rules: {
+                        search: {
+                            required: true,
+                        },
+                    },
+
+                messages: {
+                search: {
+                    required: "This Search field is required",
+                }
+                }
+            });
+        </script>
 </header>
       <!-- Header End -->
      
