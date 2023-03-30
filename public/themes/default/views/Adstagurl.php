@@ -16,9 +16,7 @@
         }
         $pre_ads_url = $pre_ads_url
             ->where('ads_events.status', 1)
-
             ->where('advertisements.status', 1)
-            ->where('advertisements.ads_position', 'pre')
             ->where('videos.ads_category', $video->ads_category)
             ->pluck('ads_path');
         if (count($pre_ads_url) > 0) {

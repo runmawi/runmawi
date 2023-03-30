@@ -2205,6 +2205,10 @@ Route::get('/confirm-Reset-password/{crypt_email}/{reset_token}', 'PasswordForge
 Route::post('/forget-password-update', 'PasswordForgetController@forget_password_update')->name('forget_password_update');
 
 Route::get('Current_time',function(){
-    $response= Carbon::now()->format('H:i:s');
+    $response= array(
+         "AM-PM format" => carbon::now()->format('g:i A'),
+         "now"   => carbon::now(),
+         "H:i:s format"  => Carbon::now()->format('H:i:s')
+        );
     return response()->json($response,200);
 });
