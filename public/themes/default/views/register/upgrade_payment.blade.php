@@ -1005,6 +1005,7 @@ i.fa.fa-google-plus {
         $("#stripe_radio_button").attr('checked', true);
         $('.paystack_payment').hide();
         $('.Razorpay_payment').hide();
+        $('.cinetpay_button').hide();
 
         if( $('input[name="payment_gateway"]:checked').val() == "paystack" ){
             $('.stripe_payment').hide();
@@ -1013,13 +1014,18 @@ i.fa.fa-google-plus {
         if( $('input[name="payment_gateway"]:checked').val() == "Razorpay" ){
             $('.Razorpay_payment').hide();
         }
+
+        if( $('input[name="payment_gateway"]:checked').val() == "CinetPay" ){
+            $('.cinetpay_button').hide();
+        }
+
     };
 
     $(document).ready(function(){
 
         $(".payment_gateway").click(function(){
 
-            $('.paystack_payment,.stripe_payment,.Razorpay_payment').hide();
+            $('.paystack_payment,.stripe_payment,.Razorpay_payment,.cinetpay_button').hide();
 
             let payment_gateway =  $('input[name="payment_gateway"]:checked').val();
 
@@ -1035,7 +1041,11 @@ i.fa.fa-google-plus {
 
                     $('.Razorpay_payment').show();
 
-                }
+                }else if(  payment_gateway == "CinetPay" ){
+
+                    $('.cinetpay_button').show();
+
+                    }
         });
     });
 
