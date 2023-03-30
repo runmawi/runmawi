@@ -2203,3 +2203,8 @@ Route::get('/Reset-Password', 'PasswordForgetController@Reset_Password')->name('
 Route::post('/Send-Reset-Password-link', 'PasswordForgetController@Send_Reset_Password_link')->name('Send_Reset_Password_link');
 Route::get('/confirm-Reset-password/{crypt_email}/{reset_token}', 'PasswordForgetController@confirm_reset_password')->name('confirm_reset_password');
 Route::post('/forget-password-update', 'PasswordForgetController@forget_password_update')->name('forget_password_update');
+
+Route::get('Current_time',function(){
+    $response= Carbon::now()->format('H:i:s');
+    return response()->json($response,200);
+});
