@@ -75,6 +75,7 @@ use Aws\S3\S3MultiRegionClient;
 use App\EmailTemplate;
 use Mail;
 use App\PlayerAnalytic;
+use Carbon\Carbon;
 
 class AdminVideosController extends Controller
 {
@@ -6997,7 +6998,6 @@ class AdminVideosController extends Controller
     // Video Data and Video Duration
 
     $Video_data = Video::where("id", $video_id)->first();
-
     if(!empty($Video_data) && $Video_data->type == "mp4_url" && empty($Video_data->duration)){
         $ffprobe = \FFMpeg\FFProbe::create();
         $duration = $ffprobe->format($Video_data->mp4_url)->get('duration');
@@ -7020,7 +7020,7 @@ class AdminVideosController extends Controller
     $date = date_create($choosed_date);
     $date_choose = date_format($date, "Y/m");
     $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
-// print_r($date_choosed);exit;
+// print_r($date_choosed);
 
 
     // schedule time Choosed By user
@@ -7171,9 +7171,6 @@ class AdminVideosController extends Controller
 
             $starttime = $last_sheduled_endtime;
             $sheduled_starttime = $last_shedule_endtime;
-            // print_r($last_shedule_endtime);
-            // print_r($hours);
-
 
             $TimeFormat = TimeFormat::where('hours',$hours)->where('format','PM')->first();
             $TimeFormatformat = TimeFormat::where('hours_format',$hours)->where('format','PM')->first();
@@ -7213,6 +7210,34 @@ class AdminVideosController extends Controller
                 $sheduled_starttime = date("h:i A", strtotime($store_current_time));
 
             }
+    
+            $startTime = Carbon::createFromFormat('H:i a', '12:00 PM');
+            $endTime = Carbon::createFromFormat('H:i a', '12:59 PM');
+            $checkshedule_endtime = Carbon::createFromFormat('H:i a', $shedule_endtime);
+
+            $check = $checkshedule_endtime->between($startTime, $endTime);
+            // echo'<pre>'; print_r($check);    exit;
+            if(empty($check) && $check == null){
+
+            }elseif(!empty($check) && $check == 1){
+            // echo'<pre>'; print_r($shedule_endtime);    exit;
+
+                $value["schedule_time"] = 'Video End Time Exceeded today Please Change the Calendar Date to Add Schedule';
+                return $value;    
+            }
+            // echo'<pre>'; print_r('$check');    exit;
+
+
+            
+        //     if($shedule_endtime->between($start, $end) ){
+
+        //     echo'<pre>'; print_r($shedule_endtime);    
+        // }else{
+        //     echo'<pre>'; print_r('$shedule_endtime');    
+        //     echo'<pre>'; print_r($shedule_endtime);    
+
+        // }
+        //     exit; 
          }else{
             // echo'<pre>'; print_r('testone');exit;     
             $last_shedule_endtime = @$ScheduleVideos->shedule_endtime;  // AM or PM

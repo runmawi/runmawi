@@ -1005,6 +1005,7 @@ i.fa.fa-google-plus {
         $("#stripe_radio_button").attr('checked', true);
         $('.paystack_payment').hide();
         $('.Razorpay_payment').hide();
+        $('.cinetpay_button').hide();
 
         if( $('input[name="payment_gateway"]:checked').val() == "paystack" ){
             $('.stripe_payment').hide();
@@ -1013,13 +1014,18 @@ i.fa.fa-google-plus {
         if( $('input[name="payment_gateway"]:checked').val() == "Razorpay" ){
             $('.Razorpay_payment').hide();
         }
+
+        if( $('input[name="payment_gateway"]:checked').val() == "CinetPay" ){
+            $('.cinetpay_button').hide();
+        }
+
     };
 
     $(document).ready(function(){
 
         $(".payment_gateway").click(function(){
 
-            $('.paystack_payment,.stripe_payment,.Razorpay_payment').hide();
+            $('.paystack_payment,.stripe_payment,.Razorpay_payment,.cinetpay_button').hide();
 
             let payment_gateway =  $('input[name="payment_gateway"]:checked').val();
 
@@ -1035,7 +1041,11 @@ i.fa.fa-google-plus {
 
                     $('.Razorpay_payment').show();
 
-                }
+                }else if(  payment_gateway == "CinetPay" ){
+
+                    $('.cinetpay_button').show();
+
+                    }
         });
     });
 
@@ -1317,8 +1327,10 @@ i.fa.fa-google-plus {
              customer_phone_number: mobile,//the customer's email
              customer_address: "BP 0024",//customer address
              customer_city: "Antananarivo",// The customer's city
-             customer_country: "CM",// the ISO code of the country
-             customer_state: "CM",// the ISO state code
+            //  customer_country: "CM",// the ISO code of the country
+            //  customer_state: "CM",// the ISO state code
+             customer_country: "CI, BF, US, CA, FR",// the ISO code of the country
+             customer_state: "CM,CA,US",// the ISO state code
              customer_zip_code: "06510", // postcode
 
           });

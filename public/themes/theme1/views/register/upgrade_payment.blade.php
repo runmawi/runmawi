@@ -11,7 +11,7 @@
         .round{
             background-color: #8a0303!important;
             color: #fff!important;
-            padding: 14px 20px;
+           
         }
         #coupon_code_stripe{
             background-color: #ddd;
@@ -99,7 +99,11 @@
     .tab button:hover {
       background-color: #111;
     }
-
+        .toggle{
+            display: flex;
+            justify-content: space-between;
+    width: 43%;
+        }
     /* Create an active/current tablink class */
     .tab button.active {
       border-bottom: 2px solid #c3ab06;
@@ -1001,6 +1005,7 @@ i.fa.fa-google-plus {
         $("#stripe_radio_button").attr('checked', true);
         $('.paystack_payment').hide();
         $('.Razorpay_payment').hide();
+        $('.cinetpay_button').hide();
 
         if( $('input[name="payment_gateway"]:checked').val() == "paystack" ){
             $('.stripe_payment').hide();
@@ -1009,13 +1014,18 @@ i.fa.fa-google-plus {
         if( $('input[name="payment_gateway"]:checked').val() == "Razorpay" ){
             $('.Razorpay_payment').hide();
         }
+
+        if( $('input[name="payment_gateway"]:checked').val() == "CinetPay" ){
+            $('.cinetpay_button').hide();
+        }
+
     };
 
     $(document).ready(function(){
 
         $(".payment_gateway").click(function(){
 
-            $('.paystack_payment,.stripe_payment,.Razorpay_payment').hide();
+            $('.paystack_payment,.stripe_payment,.Razorpay_payment,.cinetpay_button').hide();
 
             let payment_gateway =  $('input[name="payment_gateway"]:checked').val();
 
@@ -1031,7 +1041,11 @@ i.fa.fa-google-plus {
 
                     $('.Razorpay_payment').show();
 
-                }
+                }else if(  payment_gateway == "CinetPay" ){
+
+                    $('.cinetpay_button').show();
+
+                    }
         });
     });
 
