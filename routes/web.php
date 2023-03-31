@@ -2205,12 +2205,4 @@ Route::post('/Send-Reset-Password-link', 'PasswordForgetController@Send_Reset_Pa
 Route::get('/confirm-Reset-password/{crypt_email}/{reset_token}', 'PasswordForgetController@confirm_reset_password')->name('confirm_reset_password');
 Route::post('/forget-password-update', 'PasswordForgetController@forget_password_update')->name('forget_password_update');
 
-Route::get('Current_time',function(){
-    $response= array(
-         "AM-PM format" => carbon::now()->format('g:i A'),
-         "now"   => carbon::now(),
-         "H:i:s format"  => Carbon::now()->format('H:i:s'),
-         'dayOfTheWeek'  =>Carbon::now()->englishDayOfWeek,
-        );
-    return response()->json($response,200);
-});
+Route::get('/current-time', 'CurrentTimeController@current_time')->name('CurrentTimeController.current_time');
