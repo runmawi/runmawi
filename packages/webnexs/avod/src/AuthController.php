@@ -344,6 +344,7 @@ class AuthController extends Controller
         $Ads->ads_category = $request->ads_category;
         $Ads->ads_position = $request->ads_position;
         $Ads->ads_path = $request->ads_path;
+        $Ads->ads_upload_type = $request->ads_upload_type;
         // $Ads->age = $request->age;
         // $Ads->gender = $request->gender;
         $Ads->household_income = $request->household_income;
@@ -797,6 +798,7 @@ class AuthController extends Controller
                     $Ads->featured = 1;
                     $Ads->ads_position = $request->ads_position;
                     $Ads->ads_path = $request->ads_path;
+                    $Ads->ads_upload_type = $request->ads_upload_type;
                     $Ads->age = json_encode($request->age);
                     $Ads->gender = json_encode($request->gender);
                     $Ads->household_income = $request->household_income;
@@ -950,6 +952,7 @@ class AuthController extends Controller
                 $Ads->featured = 1;
                 $Ads->ads_position = $request->ads_position;
                 $Ads->ads_path = $request->ads_path;
+                $Ads->ads_upload_type = $request->ads_upload_type;
                 // $Ads->age = $request->age;
                 // $Ads->gender = $request->gender;
                 $Ads->household_income = $request->household_income;

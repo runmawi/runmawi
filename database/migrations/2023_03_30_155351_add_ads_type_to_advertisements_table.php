@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddAdsPlayUnlimitedPeriodToSettingsTable extends Migration
+class AddAdsTypeToAdvertisementsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddAdsPlayUnlimitedPeriodToSettingsTable extends Migration
      */
     public function up()
     {
-        Schema::table('settings', function (Blueprint $table) {
-            $table->tinyInteger('ads_play_unlimited_period')->default(0)->after('cpv_admin');
+        Schema::table('advertisements', function (Blueprint $table) {
+            $table->string('ads_upload_type')->nullable()->after('ads_name');
         });
     }
 
@@ -25,8 +25,8 @@ class AddAdsPlayUnlimitedPeriodToSettingsTable extends Migration
      */
     public function down()
     {
-        Schema::table('settings', function (Blueprint $table) {
-            Schema::dropIfExists('ads_play_unlimited_period');
+        Schema::table('advertisements', function (Blueprint $table) {
+            Schema::dropIfExists('ads_upload_type');
         });
     }
 }

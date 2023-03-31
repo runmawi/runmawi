@@ -601,7 +601,8 @@ Route::get('/episode/filedelete/{id}', 'AdminSeriesController@filedelete');
     Route::post('/pre-videos-ads', 'AdminVideosController@pre_videos_ads')->name('pre_videos_ads'); 
     Route::post('/mid-videos-ads', 'AdminVideosController@mid_videos_ads')->name('mid_videos_ads'); 
     Route::post('/post-videos-ads', 'AdminVideosController@post_videos_ads')->name('post_videos_ads'); 
-    
+    Route::post('/tag-url-ads', 'AdminVideosController@tag_url_ads')->name('tag_url_ads'); 
+
     // Ads position - Live stream
     Route::post('/live-ads-position', 'AdminLiveStreamController@live_ads_position')->name('live_ads_position'); 
     
@@ -2205,6 +2206,11 @@ Route::get('/confirm-Reset-password/{crypt_email}/{reset_token}', 'PasswordForge
 Route::post('/forget-password-update', 'PasswordForgetController@forget_password_update')->name('forget_password_update');
 
 Route::get('Current_time',function(){
-    $response= Carbon::now()->format('H:i:s');
+    $response= array(
+         "AM-PM format" => carbon::now()->format('g:i A'),
+         "now"   => carbon::now(),
+         "H:i:s format"  => Carbon::now()->format('H:i:s'),
+         'dayOfTheWeek'  =>Carbon::now()->englishDayOfWeek,
+        );
     return response()->json($response,200);
 });
