@@ -1107,6 +1107,7 @@ class AdminVideosController extends Controller
         //        VideoResolution::where('video_id', '=', $id)->delete();
         //        VideoSubtitle::where('video_id', '=', $id)->delete();
         Videoartist::where("video_id", $id)->delete();
+        CategoryVideo::where("video_id", $video->id)->delete();
 
         return Redirect::to("admin/videos")->with([
             "message" => "Successfully Deleted Video",
@@ -3849,6 +3850,7 @@ class AdminVideosController extends Controller
             $video_id = $request->video_id;
             Video::whereIn("id", explode(",", $video_id))->delete();
             PlayerAnalytic::whereIn("videoid", explode(",", $video_id))->delete();
+            CategoryVideo::where("video_id", $video->id)->delete();
 
             return response()->json(["message" => "true"]);
         } catch (\Throwable $th) {
