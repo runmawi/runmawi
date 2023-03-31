@@ -1054,15 +1054,15 @@ border-radius: 0px 4px 4px 0px;
 
                        <div class="col-md-6">
                             <div class="d-flex align-items-baseline">
-                            {{-- <p class="p1">Enable Advertisement on Videos:</p> --}}
+                            <p class="p1">Enable Advertisement on Videos:</p>
 
-                            {{-- <div class="form-group">
+                            <div class="form-group">
                                 <div class="make-switch" data-on="success" data-off="warning">
                                     <input type="checkbox" @if(!isset($settings->ads_on_videos) ||
                                     (isset($settings->ads_on_videos) && $settings->ads_on_videos))checked="checked"
                                     value="1"@else value="0"@endif name="ads_on_videos" id="ads_on_videos" />
                                 </div>
-                            </div> --}}
+                            </div>
                         </div>
                         
                               {{-- default URL --}}
