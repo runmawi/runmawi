@@ -20,7 +20,13 @@ if($default_ads_url !=null && $default_ads_status == 1){
       $ads_path = $ads_details; 
     }else{ 
       $ads_path = $default_ads ;
-}  ?>
+} 
+
+include('Adstagurl.php'); 
+
+$autoplay = $video_tag_url == null ? "autoplay" : "" ; 
+ 
+ ?>
 
 <?php
 
@@ -75,7 +81,7 @@ if(!empty($request_url)){
               src="<?php if(!empty($video->embed_code)){ echo $video->embed_code; }else { echo $video->trailer;} ?>"
               allowfullscreen
               allowtransparency
-              allow="autoplay"
+              allow="<?= $autoplay ?>"
             ></iframe>
           </div>
              <?php } ?>
@@ -86,7 +92,7 @@ if(!empty($request_url)){
              
            <div id="video_container" class="fitvid" atyle="z-index: 9999;">
          <!-- Current time: <div id="current_time"></div> -->
-         <video id="videoPlayer" autoplay class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
+         <video id="videoPlayer" <?= $autoplay ?> class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
             <!-- <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >-->
             <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default />
              <source src="<?php if(!empty($video->mp4_url)){   echo $video->mp4_url; }else {  echo $video->trailer; } ?>"  type='video/mp4' label='auto' > 
@@ -109,7 +115,7 @@ if(!empty($request_url)){
        
      <div id="video_container" class="fitvid" atyle="z-index: 9999;">
    <!-- Current time: <div id="current_time"></div> -->
-   <video  autoplay id="video"  allow="autoplay" class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
+   <video  <?= $autoplay ?> id="video"  allow="<?= $autoplay ?>" class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
           <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>"  type='application/x-mpegURL' label='auto' > 
  
               <!-- <video id="video"  class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   > -->
@@ -135,7 +141,7 @@ if(!empty($request_url)){
              
                  <div id="video_container" class="fitvid" atyle="z-index: 9999;">
                <!-- Current time: <div id="current_time"></div> -->
-               <video id="videoPlayer" autoplay  class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
+               <video id="videoPlayer" <?= $autoplay ?>  class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4" >
                   <!-- <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >-->
                   <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default />
                    <source src="<?php if(!empty($video->mp4_url)){   echo $video->mp4_url; }else {  echo $video->trailer; } ?>"  type='video/mp4' label='auto' > 
@@ -170,7 +176,7 @@ if(!empty($request_url)){
 
            <?php  elseif($video->type == 'm3u8_url'):  ?>
         
-        <video  autoplay id="video"  allow="autoplay" class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
+        <video  <?= $autoplay ?> id="video"  allow="<?= $autoplay ?>" class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
                 <source src="<?php if(!empty($video->m3u8_url)){ echo $video->m3u8_url; }else { echo $video->trailer;} ?>"  type='application/x-mpegURL' label='auto' > 
 
                 <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
@@ -188,7 +194,7 @@ if(!empty($request_url)){
    <?php  else: ?>
                <div id="video_container" class="fitvid" atyle="z-index: 9999;">
                <!-- Current time: <div id="current_time"></div> -->
-               <video  id="videoPlayer" autoplay class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
+               <video  id="videoPlayer" <?= $autoplay ?> class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
 <!--                <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >-->
                    <source src="<?php if(!empty($video->m3u8_url)){ echo $video->m3u8_url; }else { echo $video->trailer;} ?>"  type='application/x-mpegURL' label='auto' > 
 
@@ -228,7 +234,7 @@ if(!empty($request_url)){
   <?php }elseif( Auth::guest() && $video->access == "guest" && empty($video->ppv_price ) && !empty($video->path) || Auth::guest() && $video->access == "guest" && $video->path != "public" && empty($video->ppv_price )){  ?>
           <div id="video_container" class="fitvid" atyle="z-index: 9999;">
                <!-- Current time: <div id="current_time"></div> -->
-               <video  autoplay id="video"  allow="autoplay" class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
+               <video  <?= $autoplay ?> id="video"  allow="<?= $autoplay ?>" class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
           <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>"  type='application/x-mpegURL' label='auto' > 
  
                <!-- <video id="video"  class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   > -->
@@ -251,7 +257,7 @@ if(!empty($request_url)){
   <input type="hidden" id="hls" name="hls" value="<?php echo $hls; ?>">
     <div id="video" class="fitvid" style="margin: 0 auto;">
         
-        <video id="videoPlayer" autoplay class="video-js vjs-default-skin vjs-big-play-centered" 
+        <video id="videoPlayer" <?= $autoplay ?> class="video-js vjs-default-skin vjs-big-play-centered" 
         poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" 
         controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'
          src="<?php echo $video->trailer; ?>"  type="video/mp4" >
@@ -451,7 +457,7 @@ if(!empty($request_url)){
 
                        <div class="videoPlayer1" id="">
                          <iframe src="<?php echo $video->trailer ?>" allowfullscreen allowtransparency
-                           allow="autoplay">
+                           allow="<?= $autoplay ?>">
                          </iframe>
                        </div>
 
@@ -735,11 +741,10 @@ $(document).ready(function(){
 
 <?php
 
-  // include('AdsvideoPre.php'); 
-  // include('AdsvideoMid.php');
-  // include('AdsvideoPost.php');
+  include('AdsvideoPre.php'); 
+  include('AdsvideoMid.php');
+  include('AdsvideoPost.php');
 
-  // include('Adstagurl.php'); 
 
 ?>
 
