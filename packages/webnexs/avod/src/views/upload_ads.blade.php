@@ -172,7 +172,7 @@
                                                                     <p class="error-message ml-1"
                                                                         style="color: red;font-size:10px;">(This filed is required)</p>
                                                                 </div>
-                                                                <select class="form-control ads_type" name="">
+                                                                <select class="form-control ads_type" name="ads_upload_type">
                                                                     <option value="null">select Ads Type </option>
                                                                     <option value="tag_url">Ad Tag Url </option>
                                                                     <option value="ads_video_upload">Ads Video Upload
