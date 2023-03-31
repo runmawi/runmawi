@@ -11,6 +11,7 @@ use App\Setting as Setting;
 use View;
 use GuzzleHttp\Client;
 use GuzzleHttp\Message\Response;
+use Auth;
 
 class SystemSettingController extends Controller
 {
