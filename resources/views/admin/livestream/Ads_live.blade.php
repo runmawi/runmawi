@@ -5,7 +5,7 @@
       let ads_position = $("#ads_position").val();
 
       $('#live_ads').empty();
-      $('#live_ads').append( $('<option value=" "> Select the Advertisement </option>')) ;
+      $('#live_ads').append( $('<option value=" "> Searching...</option>')) ;
 
       $.ajax({
          type: "POST", 
@@ -26,6 +26,8 @@
                   }
 
                   $.each(data.live_ads , function (i, live_ads) {
+                     $('#live_ads').empty();
+                     $('#live_ads').append( $('<option value=" "> Select the Advertisement </option>')) ;
                      $('#live_ads').append( $('<option></option>').val(live_ads.id).html( live_ads.ads_name) )}
                   );
                }
