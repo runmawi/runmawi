@@ -19,6 +19,6 @@ class CurrentTimeController extends Controller
             'Get_Day' => substr(strtoupper(Carbon::now()->format('l')), 0, 3) ,
         );
 
-        return view ('admin.current_time.index',compact('data',$data));
+        return view ('admin.current_time.index',compact('data'));
     }
 }
