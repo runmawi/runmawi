@@ -1896,6 +1896,8 @@ $(document).ready(function(){
 
   }
 
+  include('Adstagurl.php'); 
+
 ?>
 
 <!-- End Ads -->

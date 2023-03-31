@@ -1761,9 +1761,9 @@ $(document).ready(function(){
     include('AdsvideoPre.php'); 
     include('AdsvideoPost.php');
     include('AdsvideoMid.php');
-
-    include('Adstagurl.php'); 
   }
+
+  include('Adstagurl.php'); 
 
 ?>
 

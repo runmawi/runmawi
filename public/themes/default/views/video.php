@@ -2105,9 +2105,9 @@ $(document).ready(function(){
     include('AdsvideoPre.php'); 
     include('AdsvideoMid.php');
     include('AdsvideoPost.php');
-
-    include('Adstagurl.php'); 
   }
+  
+  include('Adstagurl.php'); 
 
 ?>
 
