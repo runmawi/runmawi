@@ -1033,18 +1033,38 @@ border-radius: 0px 4px 4px 0px;
     </div>
           
                 <div class="row">
+
+                    <div class="col-md-12">
+                        <label for="">Ads Play 24/7 :</label>
+                        <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                            
+                            <div style="color:red;">Disable</div>
+
+                            <div class="mt-1">
+                                <label class="switch">
+                                    <input type="checkbox"  @if ($settings->ads_play_unlimited_period == 1) {{ "checked='checked'" }} @else {{ " " }} @endif name="ads_play_unlimited_period" id="ads_play_unlimited_period">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+
+                            <div style="color:green;">Enable</div>
+                        </div>
+                        <div class="make-switch" data-on="success" data-off="warning"></div>
+                    </div>
+
                        <div class="col-md-6">
                             <div class="d-flex align-items-baseline">
-                            <p class="p1">Enable Advertisement on Videos:</p>
+                            {{-- <p class="p1">Enable Advertisement on Videos:</p> --}}
 
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 <div class="make-switch" data-on="success" data-off="warning">
                                     <input type="checkbox" @if(!isset($settings->ads_on_videos) ||
                                     (isset($settings->ads_on_videos) && $settings->ads_on_videos))checked="checked"
                                     value="1"@else value="0"@endif name="ads_on_videos" id="ads_on_videos" />
                                 </div>
-                            </div>
-</div>
+                            </div> --}}
+                        </div>
+                        
                               {{-- default URL --}}
                             <div class="form-group ">
                                 <label>Default Ads url</label>
