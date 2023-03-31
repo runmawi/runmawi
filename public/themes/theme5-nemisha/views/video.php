@@ -1778,7 +1778,8 @@ $(document).ready(function(){
     include('AdsvideoMid.php');
     
   }
-  
+
+  include('Adstagurl.php'); 
 ?>
 
 <!-- End Ads -->
