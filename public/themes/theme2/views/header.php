@@ -459,6 +459,10 @@
     body.light-theme span {
         color: <?php echo GetLightText(); ?> !important;
     }
+
+    .Search_error_class {
+      color: red;
+   }
 </style>
 
 <body>
@@ -707,7 +711,7 @@
 
                                             <li class="hidden-xs">
                                                 <div id="navbar-search-form">
-                                                    <form role="search" action="<?php echo URL::to('/') . '/searchResult'; ?>"
+                                                    <form role="search" action="<?php echo URL::to('searchResult'); ?>"
                                                         method="POST">
                                                         <input name="_token" type="hidden"
                                                             value="<?php echo csrf_token(); ?>">
@@ -763,7 +767,7 @@
                                     <li class="nav-item nav-icon">
 
                                         <div class="search-box iq-search-bar d-search">
-                                            <form action="<?php echo URL::to('/') . '/searchResult'; ?>" method="post" class="searchbox">
+                                            <form id="searchResult" action="<?php echo URL::to('searchResult'); ?>" method="post" class="searchbox">
                                                 <input name="_token" type="hidden" value="<?php echo csrf_token(); ?>" />
                                                 <div class="form-group position-relative">
                                                     <input type="text" name="search"
@@ -1497,6 +1501,27 @@
                 $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(700);
             });
         </script>
+
+                  <!-- search validation -->
+        <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
+        <script>
+            $( "#searchResult" ).validate({
+                errorClass: 'Search_error_class',
+                rules: {
+                        search: {
+                            required: true,
+                        },
+                    },
+
+                messages: {
+                search: {
+                    required: "This Search field is required",
+                }
+                }
+            });
+        </script>
+
 
     </header>
     <!-- Header End -->

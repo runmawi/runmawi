@@ -601,7 +601,8 @@ Route::get('/episode/filedelete/{id}', 'AdminSeriesController@filedelete');
     Route::post('/pre-videos-ads', 'AdminVideosController@pre_videos_ads')->name('pre_videos_ads'); 
     Route::post('/mid-videos-ads', 'AdminVideosController@mid_videos_ads')->name('mid_videos_ads'); 
     Route::post('/post-videos-ads', 'AdminVideosController@post_videos_ads')->name('post_videos_ads'); 
-    
+    Route::post('/tag-url-ads', 'AdminVideosController@tag_url_ads')->name('tag_url_ads'); 
+
     // Ads position - Live stream
     Route::post('/live-ads-position', 'AdminLiveStreamController@live_ads_position')->name('live_ads_position'); 
     
@@ -2203,3 +2204,5 @@ Route::get('/Reset-Password', 'PasswordForgetController@Reset_Password')->name('
 Route::post('/Send-Reset-Password-link', 'PasswordForgetController@Send_Reset_Password_link')->name('Send_Reset_Password_link');
 Route::get('/confirm-Reset-password/{crypt_email}/{reset_token}', 'PasswordForgetController@confirm_reset_password')->name('confirm_reset_password');
 Route::post('/forget-password-update', 'PasswordForgetController@forget_password_update')->name('forget_password_update');
+
+Route::get('/current-time', 'CurrentTimeController@current_time')->name('CurrentTimeController.current_time');

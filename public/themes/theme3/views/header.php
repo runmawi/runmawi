@@ -616,6 +616,10 @@
     #menuToggle input:checked~ul {
         transform: none;
     }
+    
+    .Search_error_class {
+      color: red;
+    }
 </style>
 
 <body>
@@ -822,7 +826,7 @@
                                 </ul>
                             </div>
                             <div class="search-box iq-search-bar d-search">
-                                <form action="<?php echo URL::to('/') . '/searchResult'; ?>" method="post" class="searchbox">
+                                <form id="searchResult" action="<?php echo URL::to('searchResult'); ?>" method="post" class="searchbox">
                                     <input name="_token" type="hidden" value="<?php echo csrf_token(); ?>" />
                                     <div class="form-group position-relative col-lg-4">
                                         <input type="text" name="search"
@@ -1834,3 +1838,23 @@
             </div>
         </div>
     </div>
+
+                           <!-- search validation -->
+        <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
+        <script>
+            $( "#searchResult" ).validate({
+                errorClass: 'Search_error_class',
+                rules: {
+                        search: {
+                            required: true,
+                        },
+                    },
+
+                messages: {
+                search: {
+                    required: "This Search field is required",
+                }
+                }
+            });
+        </script>

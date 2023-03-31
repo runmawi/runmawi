@@ -21,6 +21,12 @@ if($ads_details != null){
 }else{ 
   $ads_path = $default_ads; 
   } 
+
+  
+  include('Adstagurl.php'); 
+
+  $autoplay = $video_tag_url == null ? "autoplay" : "" ;    
+  
    
 ?>
 
@@ -241,7 +247,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
               src="<?php if(!empty($video->embed_code)){ echo $video->embed_code; }else { echo $video->trailer;} ?>"
               allowfullscreen
               allowtransparency
-              allow="autoplay"
+              allow="<?= $autoplay ?>"
             ></iframe>
           </div>
              <?php } ?>
@@ -250,7 +256,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
           <div id="video_container" class="fitvid" atyle="z-index: 9999;">
 
 
-          <video  autoplay id="video"  allow="autoplay" class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
+          <video  <?= $autoplay ?> id="video"  allow="<?= $autoplay ?>" class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
           <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>"  type='application/x-mpegURL' label='auto' > 
                <!-- <video id="video"  class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   > -->
   <!-- Captions are optional -->
@@ -287,7 +293,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
            <?php  elseif($video->type == 'aws_m3u8'):  ?>
           <div id="video_container" class="fitvid" atyle="z-index: 9999;">
 
-          <video  autoplay id="video"  allow="autoplay" class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
+          <video  <?= $autoplay ?> id="video"  allow="<?= $autoplay ?>" class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
           <source src="<?php echo $video->m3u8_url; ?>"  type='application/x-mpegURL' label='auto' > 
           <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
                   <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
@@ -339,7 +345,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
            </div>
            <?php  elseif($video->type == 'm3u8_url'):    ?>
         
-        <video  autoplay id="video" autoplay class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
+        <video  <?= $autoplay ?> id="video" <?= $autoplay ?> class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
                 <source src="<?php if(!empty($video->m3u8_url)){ echo $video->m3u8_url; }else { echo $video->trailer;} ?>"  type='application/x-mpegURL' label='auto' > 
 
                 <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
@@ -676,7 +682,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
         <?php  elseif($video->type == 'aws_m3u8'):  ?>
           <div id="video_container" class="fitvid" atyle="z-index: 9999;">
 
-          <video  autoplay id="video"  allow="autoplay" class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
+          <video  <?= $autoplay ?> id="video"  allow="<?= $autoplay ?>" class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
           <source src="<?php echo $video->m3u8_url; ?>"  type='application/x-mpegURL' label='auto' > 
           <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
                   <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
@@ -719,7 +725,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
         </div>
         <?php  elseif($video->type == 'm3u8_url'):  ?>
         
-        <video autoplay id="video" autoplay class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
+        <video <?= $autoplay ?> id="video" <?= $autoplay ?> class="adstime_url" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   type="video/mp4" >
                 <source src="<?php if(!empty($video->m3u8_url)){ echo $video->m3u8_url; }else { echo $video->trailer;} ?>"  type='application/x-mpegURL' label='auto' > 
 
                 <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
@@ -1283,7 +1289,7 @@ $artists = [];
 
    <div class="container-fluid video-list you-may-like  overflow-hidden">
        <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Recomended Videos');?></h4>
-           <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>   
+           <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "<?= $autoplay ?>": false}'>   
                <?php include('partials/video-loop.php');?>
            </div>
    </div>
@@ -1349,7 +1355,7 @@ $artists = [];
     });
            /*Watch trailer*/
           //  $(".watch_trailer").click(function() {
-          //    var videohtml = '<video id="videoPlayer" controls autoplay><source src="<?php echo $video->trailer;?>"></video>';
+          //    var videohtml = '<video id="videoPlayer" controls <?= $autoplay ?>><source src="<?php echo $video->trailer;?>"></video>';
           //    $("#video_container").empty();
           //    $(".skip").css('display','inline-block');
           //    $("#video_container").html(videohtml);
@@ -1761,9 +1767,8 @@ $(document).ready(function(){
     include('AdsvideoPre.php'); 
     include('AdsvideoPost.php');
     include('AdsvideoMid.php');
-
-    include('Adstagurl.php'); 
   }
+
 
 ?>
 

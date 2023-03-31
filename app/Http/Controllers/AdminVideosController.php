@@ -75,6 +75,7 @@ use Aws\S3\S3MultiRegionClient;
 use App\EmailTemplate;
 use Mail;
 use App\PlayerAnalytic;
+use Carbon\Carbon;
 
 class AdminVideosController extends Controller
 {
@@ -726,6 +727,7 @@ class AdminVideosController extends Controller
                 "ads_category" => Adscategory::all(),
                 "InappPurchase" => InappPurchase::all(),
                 "post_dropzone_url" => $dropzone_url,
+                "ads_tag_urls" => Advertisement::where('ads_upload_type','tag_url')->where('status',1)->get(),
             ];
 
             return View::make("admin.videos.fileupload", $data);
@@ -1105,6 +1107,7 @@ class AdminVideosController extends Controller
         //        VideoResolution::where('video_id', '=', $id)->delete();
         //        VideoSubtitle::where('video_id', '=', $id)->delete();
         Videoartist::where("video_id", $id)->delete();
+        CategoryVideo::where("video_id", $video->id)->delete();
 
         return Redirect::to("admin/videos")->with([
             "message" => "Successfully Deleted Video",
@@ -1157,7 +1160,6 @@ class AdminVideosController extends Controller
             ->pluck("related_videos_id")
             ->toArray();
 
-       
 
         $data = [
             "headline" => '<i class="fa fa-edit"></i> Edit Video',
@@ -1198,16 +1200,23 @@ class AdminVideosController extends Controller
             "block_countries" => BlockVideo::where("video_id", $id)
                 ->pluck("country_id")
                 ->toArray(),
+
             "InappPurchase" => InappPurchase::all(),
 
             'pre_ads'  => Video::select('advertisements.*')->join('advertisements','advertisements.id','=','videos.pre_ads')
+                            ->where('ads_upload_type','ads_video_upload')->where('advertisements.status',1)
                             ->where('videos.id',$id)->first(),
 
             'mid_ads'  => Video::select('advertisements.*')->join('advertisements','advertisements.id','=','videos.mid_ads')
+                            ->where('ads_upload_type','ads_video_upload')->where('advertisements.status',1)
                             ->where('videos.id',$id)->first(),
 
             'post_ads' => Video::select('advertisements.*')->join('advertisements','advertisements.id','=','videos.post_ads')
+                            ->where('ads_upload_type','ads_video_upload')->where('advertisements.status',1)
                             ->where('videos.id',$id)->first(),
+
+            "ads_tag_urls" => Advertisement::where('status',1)->where('ads_upload_type','tag_url')->where('id',$video->ads_tag_url_id)->first(),
+
         ];
 
         return View::make("admin.videos.create_edit", $data);
@@ -1944,15 +1953,29 @@ class AdminVideosController extends Controller
             $video->video_title_image = $video_title_image_filename;
         }
 
-
                 // Ads videos
-        $video->pre_ads_category = $data["pre_ads_category"];
-        $video->mid_ads_category = $data["mid_ads_category"];
-        $video->post_ads_category = $data["post_ads_category"];
-        $video->pre_ads = $data["pre_ads"];
-        $video->mid_ads = $data["mid_ads"];
-        $video->post_ads = $data["post_ads"];
-
+        if($data["ads_tag_url_id"] == null ){
+            $video->ads_tag_url_id = null;
+            $video->tag_url_ads_position = null;
+            $video->pre_ads_category = $data["pre_ads_category"];
+            $video->mid_ads_category = $data["mid_ads_category"];
+            $video->post_ads_category = $data["post_ads_category"];
+            $video->pre_ads = $data["pre_ads"];
+            $video->mid_ads = $data["mid_ads"];
+            $video->post_ads = $data["post_ads"];
+        }
+        
+        if($data["ads_tag_url_id"] != null){
+            $video->ads_tag_url_id = $data["ads_tag_url_id"];
+            $video->tag_url_ads_position = $data["tag_url_ads_position"];
+            $video->pre_ads_category = null;
+            $video->mid_ads_category = null;
+            $video->post_ads_category = null;
+            $video->pre_ads = null;
+            $video->mid_ads = null;
+            $video->post_ads = null;
+        }
+        
         $shortcodes = $request["short_code"];
         $languages = $request["sub_language"];
         $video->mp4_url = $data["mp4_url"];
@@ -2971,13 +2994,28 @@ class AdminVideosController extends Controller
         $video->search_tags = $searchtags;
         $video->ios_ppv_price = $data["ios_ppv_price"];
 
-            // Ads videos
-        $video->pre_ads_category = $data["pre_ads_category"];
-        $video->mid_ads_category = $data["mid_ads_category"];
-        $video->post_ads_category = $data["post_ads_category"];
-        $video->pre_ads = $data["pre_ads"];
-        $video->mid_ads = $data["mid_ads"];
-        $video->post_ads = $data["post_ads"];
+                  // Ads videos
+        if($data["ads_tag_url_id"] == null ){
+            $video->ads_tag_url_id = null;
+            $video->tag_url_ads_position = null;
+            $video->pre_ads_category = $data["pre_ads_category"];
+            $video->mid_ads_category = $data["mid_ads_category"];
+            $video->post_ads_category = $data["post_ads_category"];
+            $video->pre_ads = $data["pre_ads"];
+            $video->mid_ads = $data["mid_ads"];
+            $video->post_ads = $data["post_ads"];
+        }
+        
+        if($data["ads_tag_url_id"] != null){
+            $video->ads_tag_url_id = $data["ads_tag_url_id"];
+            $video->tag_url_ads_position = $data["tag_url_ads_position"];
+            $video->pre_ads_category = null;
+            $video->mid_ads_category = null;
+            $video->post_ads_category = null;
+            $video->pre_ads = null;
+            $video->mid_ads = null;
+            $video->post_ads = null;
+        }
 
         if (!empty($data["default_ads"])) {
             $video->default_ads = $data["default_ads"];
@@ -3812,6 +3850,7 @@ class AdminVideosController extends Controller
             $video_id = $request->video_id;
             Video::whereIn("id", explode(",", $video_id))->delete();
             PlayerAnalytic::whereIn("videoid", explode(",", $video_id))->delete();
+            CategoryVideo::where("video_id", $video->id)->delete();
 
             return response()->json(["message" => "true"]);
         } catch (\Throwable $th) {
@@ -6961,7 +7000,6 @@ class AdminVideosController extends Controller
     // Video Data and Video Duration
 
     $Video_data = Video::where("id", $video_id)->first();
-
     if(!empty($Video_data) && $Video_data->type == "mp4_url" && empty($Video_data->duration)){
         $ffprobe = \FFMpeg\FFProbe::create();
         $duration = $ffprobe->format($Video_data->mp4_url)->get('duration');
@@ -6984,7 +7022,7 @@ class AdminVideosController extends Controller
     $date = date_create($choosed_date);
     $date_choose = date_format($date, "Y/m");
     $date_choosed = $date_choose . "/" . str_pad($data["date"], 2, '0', STR_PAD_LEFT);
-// print_r($date_choosed);exit;
+// print_r($date_choosed);
 
 
     // schedule time Choosed By user
@@ -7135,9 +7173,6 @@ class AdminVideosController extends Controller
 
             $starttime = $last_sheduled_endtime;
             $sheduled_starttime = $last_shedule_endtime;
-            // print_r($last_shedule_endtime);
-            // print_r($hours);
-
 
             $TimeFormat = TimeFormat::where('hours',$hours)->where('format','PM')->first();
             $TimeFormatformat = TimeFormat::where('hours_format',$hours)->where('format','PM')->first();
@@ -7177,6 +7212,34 @@ class AdminVideosController extends Controller
                 $sheduled_starttime = date("h:i A", strtotime($store_current_time));
 
             }
+    
+            $startTime = Carbon::createFromFormat('H:i a', '12:00 PM');
+            $endTime = Carbon::createFromFormat('H:i a', '12:59 PM');
+            $checkshedule_endtime = Carbon::createFromFormat('H:i a', $shedule_endtime);
+
+            $check = $checkshedule_endtime->between($startTime, $endTime);
+            // echo'<pre>'; print_r($check);    exit;
+            if(empty($check) && $check == null){
+
+            }elseif(!empty($check) && $check == 1){
+            // echo'<pre>'; print_r($shedule_endtime);    exit;
+
+                $value["schedule_time"] = 'Video End Time Exceeded today Please Change the Calendar Date to Add Schedule';
+                return $value;    
+            }
+            // echo'<pre>'; print_r('$check');    exit;
+
+
+            
+        //     if($shedule_endtime->between($start, $end) ){
+
+        //     echo'<pre>'; print_r($shedule_endtime);    
+        // }else{
+        //     echo'<pre>'; print_r('$shedule_endtime');    
+        //     echo'<pre>'; print_r($shedule_endtime);    
+
+        // }
+        //     exit; 
          }else{
             // echo'<pre>'; print_r('testone');exit;     
             $last_shedule_endtime = @$ScheduleVideos->shedule_endtime;  // AM or PM
@@ -8407,7 +8470,9 @@ class AdminVideosController extends Controller
     {
         try {
 
-            $Advertisement = Advertisement::where('ads_category',$request->ads_category_id)->where('ads_position','pre')->where('status',1)->get();
+            $Advertisement = Advertisement::where('ads_category',$request->ads_category_id)
+                            ->where('ads_upload_type','ads_video_upload')->where('ads_position','pre')
+                            ->where('status',1)->get();
 
             $response = array(
                 'status'  => true,
@@ -8429,7 +8494,10 @@ class AdminVideosController extends Controller
     {
         try {
 
-            $Advertisement = Advertisement::where('ads_category',$request->ads_category_id)->where('ads_position','mid')->where('status',1)->get();
+            $Advertisement = Advertisement::where('ads_category',$request->ads_category_id)
+                                    ->where('ads_upload_type','ads_video_upload')
+                                    ->where('ads_position','mid')->where('status',1)
+                                    ->get();
 
             $response = array(
                 'status'  => true,
@@ -8452,7 +8520,9 @@ class AdminVideosController extends Controller
         try {
 
             $Advertisement = Advertisement::where('ads_category',$request->ads_category_id)
-                            ->where('ads_position','post')->where('status',1)->get();
+                                        ->where('ads_upload_type','ads_video_upload')
+                                        ->where('ads_position','post')->where('status',1)
+                                        ->get();
 
             $response = array(
                 'status'  => true,
@@ -8470,7 +8540,29 @@ class AdminVideosController extends Controller
         return response()->json($response, 200);
     }
 
+    public function tag_url_ads(Request $request)
+    {
+        try {
 
+            $Advertisement = Advertisement::where('ads_upload_type','tag_url')->where('status',1)
+                                        ->where('ads_position',$request->position)
+                                        ->get();
+
+            $response = array(
+                'status'  => true,
+                'message' => 'Successfully Retrieve Post Advertisement videos',
+                'ads_videos'    => $Advertisement ,
+            );
+
+        } catch (\Throwable $th) {
+
+            $response = array(
+                'status' => false,
+                'message' =>  $th->getMessage()
+            );
+        }
+        return response()->json($response, 200);
+    }
 
     public function AWSUploadFileNEw(Request $request)
     {
