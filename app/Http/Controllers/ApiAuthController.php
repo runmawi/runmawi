@@ -10990,6 +10990,7 @@ public function QRCodeMobileLogout(Request $request)
           $twitter_url = 'https://twitter.com/intent/tweet?text=' . $media_url;
 
           $response = array(
+              'status'=> 'true',
               'latest_video' => $latest_videos,
               'latest_series' => $latest_series,
               'audios' => $audios,
@@ -11028,6 +11029,7 @@ public function QRCodeMobileLogout(Request $request)
           $ThumbnailSetting = ThumbnailSetting::first();
             
               $response = array(
+                  'status'=> 'true',
                   'currency' => $currency,
                   'channels' => $channels,
                   'ThumbnailSetting' => $ThumbnailSetting,
@@ -11055,7 +11057,7 @@ public function QRCodeMobileLogout(Request $request)
          
         $videos_Category = $videosCategory->where('user_id', $request->user_id)->where('uploaded_by' ,'Channel')->all();
 
-        $response = array( 'videosCategory' => $videos_Category );
+        $response = array( 'status'=> 'true','videosCategory' => $videos_Category );
  
       } catch (\Throwable $th) {
 
@@ -11075,7 +11077,7 @@ public function QRCodeMobileLogout(Request $request)
         
         $Series_Category = $SeriesCategory->where('user_id', $request->user_id)->where('uploaded_by' ,'Channel')->all();
 
-        $response = array( 'SeriesCategory' => $Series_Category );
+        $response = array( 'status'=> 'true','SeriesCategory' => $Series_Category );
       } catch (\Throwable $th) {
 
         $response = array(
@@ -11094,7 +11096,7 @@ public function QRCodeMobileLogout(Request $request)
         
         $Live_Category = $LiveCategory->where('user_id', $request->user_id)->where('uploaded_by' ,'Channel')->all();
 
-        $response = array( 'LiveCategory' => $Live_Category );
+        $response = array( 'status'=> 'true','LiveCategory' => $Live_Category );
 
       } catch (\Throwable $th) {
 
@@ -11114,7 +11116,7 @@ public function QRCodeMobileLogout(Request $request)
 
         $Audio_Category = $AudioCategory->where('user_id', $request->user_id)->where('uploaded_by' ,'Channel')->all();
 
-        $response = array( 'AudioCategory' => $Audio_Category );
+        $response = array('status'=> 'true', 'AudioCategory' => $Audio_Category );
 
         } catch (\Throwable $th) {
 
@@ -11197,6 +11199,7 @@ public function QRCodeMobileLogout(Request $request)
           $twitter_url = 'https://twitter.com/intent/tweet?text=' . $media_url;
 
           $response = array(
+              'status'=> 'true',
               'Content_Partner' => ModeratorsUser::where('slug',$slug)->first(),
               'currency' => $currency,
               'latest_video' => $latest_videos,
@@ -11236,6 +11239,7 @@ public function QRCodeMobileLogout(Request $request)
       $ThumbnailSetting = ThumbnailSetting::first();
         
           $response = array(
+              'status'=> 'true',
               'currency' => $currency,
               'ModeratorsUser' => $ModeratorsUser,
               'ThumbnailSetting' => $ThumbnailSetting,
@@ -11262,7 +11266,7 @@ public function QRCodeMobileLogout(Request $request)
        
       $videos_Category = $videosCategory->where('user_id', $request->user_id)->where('uploaded_by' ,'CPP')->all();
 
-      $response = array( 'videosCategory' => $videos_Category );
+      $response = array( 'status'=> 'true','videosCategory' => $videos_Category );
 
     } catch (\Throwable $th) {
 
@@ -11282,7 +11286,7 @@ public function QRCodeMobileLogout(Request $request)
       
       $Series_Category = $SeriesCategory->where('user_id', $request->user_id)->where('uploaded_by' ,'CPP')->all();
 
-      $response = array( 'SeriesCategory' => $Series_Category );
+      $response = array( 'status'=> 'true','SeriesCategory' => $Series_Category );
 
 
         } catch (\Throwable $th) {
@@ -11302,7 +11306,7 @@ public function QRCodeMobileLogout(Request $request)
       $LiveCategory = LiveCategory::find($request->category_id) != null ? LiveCategory::find($request->category_id)->specific_category_live : array();
       
       $Live_Category = $LiveCategory->where('user_id', $request->user_id)->where('uploaded_by' ,'CPP')->all();
-      $response = array( 'LiveCategory' => $Live_Category );
+      $response = array('status'=> 'true', 'LiveCategory' => $Live_Category );
 
 
     } catch (\Throwable $th) {
@@ -11324,7 +11328,7 @@ public function QRCodeMobileLogout(Request $request)
       
       $Audio_Category = $AudioCategory->where('user_id', $request->user_id)->where('uploaded_by' ,'CPP')->all();
 
-      $response = array( 'AudioCategory' => $Audio_Category );
+      $response = array( 'status'=> 'true','AudioCategory' => $Audio_Category );
 
         } catch (\Throwable $th) {
 
