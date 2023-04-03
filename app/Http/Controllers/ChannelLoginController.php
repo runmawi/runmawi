@@ -913,5 +913,15 @@ Please recheck the credentials before you try again!');
 
 }
 
+public function destroy($id)
+{
+    $Channel = Channel::find($id);
+
+    Channel::destroy($id);
+    return Redirect::back()->with('message', 'Deleted Channel Partner');
+  
+}
+
+
 }
 
