@@ -1,6 +1,6 @@
 <!-- Header Start -->
 <?php
-include public_path('themes/theme4/views/header.php');
+include public_path('themes/theme1/views/header.php');
 
 $order_settings = App\OrderHomeSetting::orderBy('order_id', 'asc')->get();
 $order_settings_list = App\OrderHomeSetting::get();
@@ -16,21 +16,21 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
 </style>
 <!-- Favicon -->
 <link rel="shortcut icon" href="<?= URL::to('/') . '/public/uploads/settings/' . $settings->favicon ?>" />
-
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <script  src="<?= URL::to('/'). '/assets/js/plyr.polyfilled.js';?>"></script>
 <script  src="<?= URL::to('/'). '/assets/js/hls.js';?>"></script>
 
-<section class="ContentPartner-header"
-    style="background:url('<?php echo URL::to('/') . '/public/uploads/moderator_albums/' . @$Content_Partner->banner; ?>') no-repeat scroll 0 0;;background-size: cover;height:350px;background-color: rgba(0, 0, 0, 0.45);
+<section class="channel-header"
+    style="background:url('<?php echo @$channel->channel_banner; ?>') no-repeat scroll 0 0;;background-size: cover;height:350px;background-color: rgba(0, 0, 0, 0.45);
     background-blend-mode: multiply;">
 </section>
 
 <div class="container-fluid">
     <div class="position-relative">
-        <div class="ContentPartner-img">
-            <img src="<?php echo  URL::to('/') . '/public/uploads/moderator_albums/'. @$Content_Partner->picture; ?>" class=" " width="150" alt="user">
+        <div class="channel-img">
+            <img src="<?php echo @$channel->channel_logo; ?>" class=" " width="150" alt="user">
         </div>
     </div>
 </div>
@@ -41,15 +41,15 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
             <div class="col-2 col-lg-2">
                 <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
                     @php
-                        include(public_path('themes/default/views/partials/content-user-social-share.php'));
+                        include(public_path('themes/default/views/partials/channel-social-share.php'));
                     @endphp
                 </ul>
             </div>
-            @if(!empty(@$Content_Partner) && $Content_Partner->intro_video != null):
+            @if(!empty(@$channel) && $channel->intro_video != null):
             <div class="col-2 col-lg-2">
-            <a data-video="{{ @$Content_Partner->intro_video }}" data-toggle="modal" data-target="#videoModal" data-backdrop="static" data-keyboard="false" >	
+            <a data-video="{{ @$channel->intro_video }}" data-toggle="modal" data-target="#videoModal" data-backdrop="static" data-keyboard="false" >	
                 <span class="text-white">
-                <i class="fa fa-play mr-1" aria-hidden="true"></i> About Content Partner
+                <i class="fa fa-play mr-1" aria-hidden="true"></i> About Channel Partner
                 </span>
             </a>
 
@@ -61,7 +61,7 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
                     <div class="modal-body">
                         <video id="videoPlayer1" 
                             controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
-                            type="video/mp4" src="{{ @$Content_Partner->intro_video }}">
+                            type="video/mp4" src="{{ @$channel->intro_video }}">
                         </video>
                     </div>
                 </div>
@@ -70,6 +70,7 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
       
         </div>
         @endif
+            </div>
         </div>
     </div>
 </section>
@@ -85,9 +86,9 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
         <li class="nav-item livenav">
     <a class="nav-link" id="live-tab" data-toggle="tab" href="#live" role="tab" aria-controls="profile" aria-selected="false">Live Stream</a>
   </li>
-  <!-- <li class="nav-item seriesnav">
+  <li class="nav-item seriesnav">
     <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Series</a>
-  </li> -->
+  </li>
          <li class="nav-item audionav">
     <a class="nav-link" id="Audios-tab" data-toggle="tab" href="#Audios" role="tab" aria-controls="contact" aria-selected="false">Audios</a>
   </li>
@@ -141,8 +142,74 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
 </div>
    
 </section>
+<!--<section class="">
+    <div class="sec-3">
+        <div class="container-fluid mt-5">
+            <div class="mt-3 ">
+                <ul class="nav nav-pills   m-0 p-0" id="pills-tab" role="tablist">
 
-<div class='Content_home'>
+                    <li class="nav-item">
+                        <a class="nav-link " id="pills-profile-tab" data-toggle="pill" role="tab"
+                            aria-controls="pills-profile" aria-selected="false">
+                            All
+                        </a>
+                    </li>
+
+                    <li class="nav-item videonav">
+                        <a class="nav-link" class="btn btn-secondary btn-sm dropdown-toggle" type="button"
+                            data-id-type='video' data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">Videos
+                        </a>
+<div class="position-relative">
+                       
+</div>
+                    </li>
+                        
+                    <li class="nav-item ">
+
+                        <a class="nav-link" class="btn btn-secondary btn-sm dropdown-toggle" type="button"
+                            data-id-type='live' data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Live
+                            Stream
+                        </a>
+
+                       
+
+                    <li class="nav-item ">
+
+                      
+                       
+
+                        &nbsp;&nbsp;
+                    <li class="nav-item ">
+
+                        <a class="nav-link" class="btn btn-secondary btn-sm dropdown-toggle" type="button"
+                            data-id-type='audio' data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">Audios
+                        </a>
+
+                        <div class="Audio_Categorynav">
+                            <?php foreach ($AudioCategory as $key => $audios_category) { ?>
+
+                            <a class="nav-link dropdown-item" id="pills-kids-tab" data-toggle="pill"
+                                data-category-id=<?php echo $audios_category->id; ?> onclick="Audios_Category(this)"
+                                href="#pills-kids" role="tab" aria-controls="pills-kids"
+                                aria-selected="false"><?php echo $audios_category->name; ?></a>
+
+                            <?php }  ?>
+                        </div>
+                    </li>
+                     </ul>
+            </div>
+        </div>
+    </div>
+
+   
+  
+   
+</section>-->
+
+
+<div class='channel_home'>
     <?php 
 if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 0 || count($audios) > 0){
       if(count($latest_video) > 0 ){
@@ -229,7 +296,6 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
         });
     });
 </script>
-
 <script>
     $(document).ready(function() {
         $('.Video_Categorynav').hide();
@@ -271,7 +337,7 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
         //         channel_slug:"{{ @$channel->channel_slug }}",
         //     },
         //     success: function(data) {
-        //         $(".Content_home").html(data);
+        //         $(".channel_home").html(data);
         //     },
         // });
         location.reload();
@@ -280,36 +346,19 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
     });
 
 
-    function Live_Category(ele) {
-
-        var category_id = $(ele).attr('data-category-id');
-        
-        $.ajax({
-            type: "get",
-            url: "{{ route('Content_category_live') }}",
-            data: {
-                _token: "{{ csrf_token() }}",
-                category_id: category_id,
-                user_id:"{{ @$Content_Partner->id }}",
-            },
-            success: function(data) {
-                $(".Content_home").html(data);
-            },
-        });
-    }
     function Videos_Category(ele) {
         var category_id = $(ele).attr('data-category-id');
 
         $.ajax({
             type: "get",
-            url: "<?php echo URL::to('/Content_category_videos'); ?>",
+            url: "<?php echo URL::to('/channel_category_videos'); ?>",
             data: {
                 _token: "{{ csrf_token() }}",
                 category_id: category_id,
-                user_id:"{{ @$Content_Partner->id }}",
+                user_id:"{{ @$channel->id }}",
             },
             success: function(data) {
-                $(".Content_home").html(data);
+                $(".channel_home").html(data);
             },
         });
     }
@@ -320,14 +369,14 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
 
         $.ajax({
             type: "get",
-            url: "{{ route('Content_category_series') }}",
+            url: "{{ route('channel_category_series') }}",
             data: {
                 _token: "{{ csrf_token() }}",
                 category_id: category_id,
-                user_id:"{{ @$Content_Partner->id }}",
+                user_id:"{{ @$channel->id }}",
             },
             success: function(data) {
-                $(".Content_home").html(data);
+                $(".channel_home").html(data);
             },
         });
     }
@@ -338,22 +387,39 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
 
         $.ajax({
             type: "get",
-            url: "{{ route('Content_category_audios') }}",
+            url: "{{ route('channel_category_audios') }}",
             data: {
                 _token: "{{ csrf_token() }}",
                 category_id: category_id,
-                user_id:"{{ @$Content_Partner->id }}",
+                user_id:"{{ @$channel->id }}",
             },
             success: function(data) {
-                $(".Content_home").html(data);
+                $(".channel_home").html(data);
             },
         });
         }
 
+        function Live_Category(ele) {
+
+        var category_id = $(ele).attr('data-category-id');
+
+        $.ajax({
+            type: "get",
+            url: "{{ route('channel_category_live') }}",
+            data: {
+                _token: "{{ csrf_token() }}",
+                category_id: category_id,
+                user_id:"{{ @$channel->id }}",
+            },
+            success: function(data) {
+                $(".channel_home").html(data);
+            },
+        });
+        }
 </script>
 
 
 
 <?php
-    include public_path('themes/theme4/views/footer.blade.php');
+    include public_path('themes/theme1/views/footer.blade.php');
 ?>

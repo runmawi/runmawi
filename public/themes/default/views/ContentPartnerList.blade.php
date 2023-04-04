@@ -15,14 +15,14 @@
                       @if(isset($Content_Partner)) 
                         @foreach($Content_Partner as $content_user)
                             <li class="slide-item col-sm-2 col-md-2 col-xs-12">
-                                <a href="{{ URL::to('ContentPartner').'/'.$content_user->slug   }} ">
+                                <a href="{{ URL::to('contentpartner').'/'.$content_user->slug   }} ">
                                     <div class="block-images position-relative">
                                         <div class="img-box">
                                             <img src="<?php echo  URL::to('/') . '/public/uploads/moderator_albums/'.$content_user->picture;  ?>" class="img-fluid w-100" alt="">
                                         </div>
                             
                                         <div class="content_user" >
-                                                <a href="{{ URL::to('ContentPartner').'/'.$content_user->slug   }}">
+                                                <a href="{{ URL::to('contentpartner').'/'.$content_user->slug   }}">
                                                     <h4><?php  echo (strlen($content_user->username) > 17) ? substr($content_user->username,0,18).'...' : $content_user->username; ?></h4>
                                                 </a>
                                             

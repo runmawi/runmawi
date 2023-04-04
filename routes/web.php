@@ -1127,6 +1127,8 @@ Route::get('admin/channel/pendingusers',  'ChannelLoginController@PendingUsers')
 Route::get('admin/channel/view-channel-members',  'ChannelLoginController@ViewChannelMembers');
 Route::get('admin/channel/commission', 'ChannelLoginController@Commission');
 Route::post('admin/channel/add/commission', 'ChannelLoginController@AddCommission');
+Route::get('admin/channel/user/delete/{id}', 'ChannelLoginController@destroy');
+
 
 Route::get('admin/ChannelUsersApproval/{id}',  'ChannelLoginController@ChannelUsersApproval');
 Route::get('admin/ChannelUsersReject/{id}',  'ChannelLoginController@ChannelUsersReject');

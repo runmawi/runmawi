@@ -38,7 +38,7 @@
                                     <th>Mobile</th>
                                     <th>Status</th>
                                     <th >Intro Video</th>
-                                    <!-- <th >Action</th> -->
+                                    <th >Action</th>
                                  </tr>
                               </thead>
                               <tbody>
@@ -56,11 +56,16 @@
                                     <?php }elseif($user->status == 2){ ?>
                                        <td class="bg-danger"> <?php  echo "Rejected"; ?></td>
                                     <?php }?>                              
-                                    <td colspan="2">
+                                    <td >
+                                    <div class=" align-items-center list-user-action">
                                         <video  width="100" height="100" id="videoPlayer" class="" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' 
                                         src="{{ $user->intro_video }}"  type="video/mp4" >
-                                       <div class=" align-items-center list-user-action">
-                                    
+                                        </td>
+                                    <td colspan="2">
+
+                                       <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
+                                             data-original-title="Delete" onclick="return confirm('Are you sure?')" 
+                                             href="{{ URL::to('/admin/channel/user/delete') . '/' . $user->id }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
                                        </div>
                                     </td>
                                  </tr>
