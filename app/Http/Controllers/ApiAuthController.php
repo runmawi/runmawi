@@ -11347,8 +11347,8 @@ public function QRCodeMobileLogout(Request $request)
   {
     try {
       
-      $Homesetting = Homesetting::first();
-      $check_Kidmode = 0 ;
+        $Homesetting = Homesetting::first();
+        $check_Kidmode = 0 ;
 
         // Latest videos
       if( $Homesetting->latest_videos == null || $Homesetting->latest_videos == 0 ):
@@ -11412,24 +11412,24 @@ public function QRCodeMobileLogout(Request $request)
     // Live videos
       $live_stream_videos_status = Homesetting::pluck('live_videos')->first();
 
-      if( $live_stream_videos_status == null || $live_stream_videos_status == 0 ):   
+          if( $live_stream_videos_status == null || $live_stream_videos_status == 0 ):   
 
-          $live_stream_videos = array();      // Note - if the home-setting (live_videos) is turned off in the admin panel
+              $live_stream_videos = array();      // Note - if the home-setting (live_videos) is turned off in the admin panel
 
-      else:
+          else:
 
-        $live_stream_videos = LiveStream::select('id','title','slug','year','rating','access','ppv_price','publish_type','publish_status','publish_time','duration','rating','image','featured')
-                              ->where('active',1)->where('status', 1)->latest()->limit(30)->get()
-                              ->map(function ($item) {
-                                  $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
-                                  $item['redirect_url'] = URL::to('live/'.$item->slug);
-                                  return $item;
-                              });
-      endif;
+            $live_stream_videos = LiveStream::select('id','title','slug','year','rating','access','ppv_price','publish_type','publish_status','publish_time','duration','rating','image','featured')
+                                  ->where('active',1)->where('status', 1)->latest()->limit(30)->get()
+                                  ->map(function ($item) {
+                                      $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
+                                      $item['redirect_url'] = URL::to('live/'.$item->slug);
+                                      return $item;
+                                  });
+          endif;
 
-      //  Audios
+          //  Audios
 
-      $audios_status = Homesetting::pluck('audios')->first();
+        $audios_status = Homesetting::pluck('audios')->first();
 
             if( $audios_status == null || $audios_status == 0 ):    
 
@@ -11442,16 +11442,68 @@ public function QRCodeMobileLogout(Request $request)
 
                   if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
                   {
-                      $audios = $audios->whereNotIn('audios.id',Block_audios());
+                      $audios = $audios->whereNotIn('audio.id',Block_audios());
                   }
 
               $audios = $audios->limit(30)->get()->map(function ($item) {
                               $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
+                              $item['redirect_url'] = URL::to('album/'.$item->slug);
                               return $item;
               }); 
 
             endif;
-                             
+
+          // Albums 
+        $albums_status = Homesetting::pluck('albums')->first();
+
+            if(  $albums_status == null || $albums_status == 0 ):    
+
+                $audio_albums = array();      // Note - if the home-setting (albums) is turned off in the admin panel
+
+            else:
+
+                $audio_albums = AudioAlbums::latest()->limit(30)->get()->map(function ($item) {
+                    $item['image_url'] = URL::to('/public/uploads/albums/'.$item->image);
+                    $item['redirect_url'] = URL::to('audio/'.$item->slug);
+                    return $item;
+                });
+
+            endif;
+
+            // Artist
+
+        $artist_status = Homesetting::pluck('artist')->first();
+
+            if( $artist_status == null ||  $artist_status == 0 ):  
+
+                $artist = array();      // Note - if the home-setting (artist) is turned off in the admin panel
+
+            else:
+
+              $artist = Artist::latest()->limit(30)->get()->map(function ($item) {
+                  $item['image_url'] = URL::to('/public/uploads/albums/'.$item->image);
+                  $item['redirect_url'] = URL::to('artist/'.$item->slug);
+                  return $item;
+              });
+            endif;
+
+            $channel_partner_status = Homesetting::pluck('channel_partner')->first();
+
+            if( $channel_partner_status == null || $channel_partner_status == 0 ):   
+
+                $channel_partner = array();      // Note - if the home-setting (channel_partner) is turned off in the admin panel
+            
+            else:
+
+              $channel_partner = Channel::select('id','channel_name','status','channel_image','channel_slug')
+                      ->where('status',1)->latest()->limit(30)->get()->map(function ($item) {
+                        $item['image_url'] = URL::to('/public/uploads/channel/'.$item->channel_image);
+                        $item['redirect_url'] = URL::to('channel/'.$item->channel_slug);
+                      return $item;
+                  });
+
+            endif;
+
 
       $data = [
           "status" => 'true',
@@ -11464,6 +11516,12 @@ public function QRCodeMobileLogout(Request $request)
           "live_stream_videos" => $live_stream_videos,
           "audios_count" => count($audios),
           "audios" => $audios,
+          "audio_albums_count" => count($audio_albums),
+          "audio_albums" => $audio_albums,
+          "artist_count" => count($artist),
+          "artist" => $artist,
+          "channel_partner_count" => count($channel_partner),
+          "channel_partner" => $channel_partner,
       ];
 
 
