@@ -22,6 +22,8 @@ Route::group(
         'prefix' => 'auth',
     ],
     function () {
+        Route::get('ddd', 'ApiAuthController@ddd');
+
         Route::get('Home-page', 'ApiAuthController@Homepage');
         Route::get('home_page', 'ApiAuthController@PageHome');
         Route::post('login', 'ApiAuthController@login');
