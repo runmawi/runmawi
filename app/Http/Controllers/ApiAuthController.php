@@ -11486,8 +11486,9 @@ public function QRCodeMobileLogout(Request $request)
 
   public function All_Homepage()
   {
+      $All_Homepage_homesetting =  $this->All_Homepage_homesetting();
 
-      $OrderHomeSettings =  OrderHomeSetting::whereIn('video_name', ['latest_videos'])->orderBy('order_id')->get()->toArray();
+      $OrderHomeSettings =  OrderHomeSetting::whereIn('video_name', $All_Homepage_homesetting )->orderBy('order_id')->get()->toArray();
 
       $result = array();
 
@@ -11615,7 +11616,6 @@ public function QRCodeMobileLogout(Request $request)
 
         }
 
-                
           $result[] = array(
             "source"      => $source,
             "header_name" => $header_name,
@@ -11629,6 +11629,96 @@ public function QRCodeMobileLogout(Request $request)
       );
   
       return response()->json($response, 200);
+  }
+
+  private static function All_Homepage_homesetting(){
+
+     $Homesetting = Homesetting::first();
+
+     $input = array();
+
+     if($Homesetting->featured_videos == 1){
+        array_push($input,'featured_videos');
+     }
+
+     if($Homesetting->latest_videos == 1){
+       array_push($input,'latest_videos');
+    }
+
+     if($Homesetting->category_videos == 1){
+        array_push($input,'category_videos');
+     }
+
+     if($Homesetting->live_category == 1){
+        array_push($input,'live_category');
+     }
+
+    if($Homesetting->videoCategories == 1){
+        array_push($input,'videoCategories');
+    }
+
+    if($Homesetting->liveCategories == 1){
+      array_push($input,'liveCategories');
+    }
+
+    if($Homesetting->live_videos == 1){
+      array_push($input,'live_videos');
+    }
+
+    if($Homesetting->series == 1){
+      array_push($input,'series');
+    }
+
+    if($Homesetting->audios == 1){
+      array_push($input,'audios');
+    }
+
+    if($Homesetting->albums == 1){
+      array_push($input,'albums');
+    }
+
+    if($Homesetting->Recommendation == 1){
+      array_push($input,'Recommendation');
+    }
+
+    if($Homesetting->video_schedule == 1){
+      array_push($input,'video_schedule');
+    }
+
+    if($Homesetting->channel_partner == 1){
+      array_push($input,'channel_partner');
+    }
+
+    if($Homesetting->content_partner == 1){
+      array_push($input,'content_partner');
+    }
+
+    if($Homesetting->continue_watching == 1){
+      array_push($input,'continue_watching');
+    }
+
+    if($Homesetting->latest_viewed_Videos == 1){
+      array_push($input,'latest_viewed_Videos');
+    }
+
+    if($Homesetting->latest_viewed_Livestream == 1){
+      array_push($input,'latest_viewed_Livestream');
+    }
+
+    if($Homesetting->latest_viewed_Audios == 1){
+      array_push($input,'latest_viewed_Audios');
+    }
+
+    if($Homesetting->latest_viewed_Episode == 1){
+      array_push($input,'latest_viewed_Episode');
+    }
+
+    if($Homesetting->artist == 1){
+      array_push($input,'artist');
+    }
+
+    return $input;
+
   }
 
   private static function All_Homepage_latestvideos(){
