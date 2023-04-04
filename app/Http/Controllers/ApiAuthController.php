@@ -11616,6 +11616,14 @@ public function QRCodeMobileLogout(Request $request)
 
         }
 
+        if( $OrderHomeSetting['video_name'] == "category_videos" ){          // Recommendation
+          
+          $data = $this->All_Homepage_category_videos();
+          $source = $OrderHomeSetting['video_name'] ;
+          $header_name = $OrderHomeSetting['header_name'] ;
+
+        }
+
           $result[] = array(
             "source"      => $source,
             "header_name" => $header_name,
@@ -12070,6 +12078,53 @@ public function QRCodeMobileLogout(Request $request)
       $data = array();  
 
     endif;
+
+  return $data;
+
+  }
+
+  private static function All_Homepage_category_videos(){
+
+
+    $category_videos_status = Homesetting::pluck('category_videos')->first();
+
+    if( $category_videos_status == null || $category_videos_status == 0 ): 
+
+        $data = array();      // Note - if the home-setting (category_videos_status) is turned off in the admin panel
+    else:
+
+      $data = VideoCategory::query()->with(['category_videos' => function ($videos) {
+
+        $check_Kidmode = 0 ;
+                  
+        $videos->select('videos.id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price','duration','rating','image','featured','age_restrict')
+                ->where('videos.active',1)->where('videos.status', 1)->where('videos.draft',1);
+  
+            if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
+            {
+                $videos = $videos->whereNotIn('videos.id',Block_videos());
+            }
+  
+            if( $check_Kidmode == 1 )
+            {
+                $videos = $videos->whereBetween('videos.age_restrict', [ 0, 12 ]);
+            }
+  
+            $videos = $videos->latest('videos.created_at')->limit(30)->get()->map(function ($item) {
+                $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
+                return $item;
+            });
+  
+        }])
+        ->select('video_categories.id','video_categories.name', 'video_categories.slug', 'video_categories.in_home','video_categories.order')
+        ->where('video_categories.in_home',1)
+        ->orderBy('video_categories.order')
+        ->get();
+
+    endif;
+
+    
+    
 
   return $data;
 
