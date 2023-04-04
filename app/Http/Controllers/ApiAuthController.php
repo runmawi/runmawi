@@ -11530,4 +11530,150 @@ public function QRCodeMobileLogout(Request $request)
 
     return response()->json($data, 200);
   }
+
+  public function ddd()
+  {
+
+       $myData = array();
+
+        $variable =  array(
+          ['value' => 'latest_videos',    'name' => 'latest_videos'] ,
+          ['value' => 'featured_videos',  'name' => 'featured_videos'] ,
+          ['value' => 'pre',  'name' => 'catgory_videos'] ,
+
+      );
+
+      
+      $featured_videos_status = Homesetting::pluck('featured_videos')->first();
+      $Homesetting = Homesetting::first();
+      $check_Kidmode = 0 ;
+      
+
+        foreach ($variable as $key => $value) {
+
+
+          if ( $value['name'] == "latest_videos"):
+
+              if( $Homesetting->latest_videos == null || $Homesetting->latest_videos == 0 ):
+
+                $videos = array();       // Note - if the home-setting (latest_videos) is turned off in the admin panel
+        
+              else:
+        
+                $videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price','duration','rating','image','featured','age_restrict')
+                  ->where('active',1)->where('status', 1)->where('draft',1);
+        
+                    if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
+                    {
+                      $videos = $videos->whereNotIn('videos.id',Block_videos());
+                    }
+        
+                    if( $check_Kidmode == 1 )
+                    {
+                      $videos = $videos->whereBetween('age_restrict', [ 0, 12 ]);
+                    }
+        
+                $videos = $videos->latest()->limit(30)->get()->map(function ($item) {
+                  $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
+                  $item['redirect_url'] = URL::to('category/videos/'.$item->slug);
+                  return $item;
+                });
+        
+              endif;
+
+              $source = 'livestream';
+          endif;
+
+
+          if ( $value['name'] == "featured_videos"):
+
+            if( $featured_videos_status == null || $featured_videos_status == 0 ):
+
+              $videos = array();        // Note - if the home-setting (videos) is turned off in the admin panel
+          
+          else:
+    
+            $videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price','duration','rating','image','featured','age_restrict')
+              ->where('active',1)->where('status', 1)->where('draft',1)->where('featured',1);
+    
+                if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
+                {
+                    $videos = $videos->whereNotIn('videos.id',Block_videos());
+                }
+    
+                if( $check_Kidmode == 1 )
+                {
+                    $videos = $videos->whereBetween('age_restrict', [ 0, 12 ]);
+                }
+            
+            $videos = $videos->latest()->limit(30)->get()->map(function ($item) {
+                $item['image_url'] = URL::to('public/uploads/images/'.$item->image);
+                $item['redirect_url'] = URL::to('category/videos/'.$item->slug);
+                return $item;
+            });
+    
+          endif;
+    
+
+            $source = 'featured_videos';
+        endif;
+
+          if ( $value['name'] == "catgory_videos"):
+
+
+
+
+            $videos = VideoCategory::query()->with(['category_videos' => function ($videos) {
+
+                $videos->where('videos.active',1)->where('videos.status', 1)->where('videos.draft',1);
+    
+    
+                    $videos = $videos->latest('videos.created_at')->limit(30)->get()->map(function ($item) {
+                        $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
+                        return $item;
+                    });
+
+  
+          }])
+          ->select('video_categories.id','video_categories.name', 'video_categories.slug', 'video_categories.in_home','video_categories.order')
+          ->where('video_categories.in_home',1)
+          ->orderBy('video_categories.order')
+          ->get();
+
+
+
+          // foreach ($catgory_videos as $key => $value) {
+          //   $videos[] = $value['category_videos'] ;
+
+          // }
+
+          $source = 'cat';
+
+
+          endif;
+      
+          $myData[] = array(
+            'source' => $source,
+            "videos" => $videos,
+          );
+
+        }
+
+        
+ 
+
+    // }
+
+    
+
+    $response = array(
+      'status' => 'true',
+      'movies' => $myData,
+
+    );
+
+    return response()->json($response, 200);
+
+  }
+
 }
