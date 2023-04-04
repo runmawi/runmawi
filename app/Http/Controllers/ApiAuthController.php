@@ -11336,5 +11336,115 @@ public function QRCodeMobileLogout(Request $request)
 
     return response()->json($response, 200);
   }
+  
+  // Home page 
 
+  public function Homepage(Request $request)
+  {
+    try {
+      
+      $Homesetting = Homesetting::first();
+      $check_Kidmode = 0 ;
+
+        // Latest videos
+      if( $Homesetting->latest_videos == null || $Homesetting->latest_videos == 0 ){
+
+        $latest_videos = array();       // Note - if the home-setting (latest_videos) is turned off in the admin panel
+
+      }
+
+      $latest_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price','duration','rating','image','featured','age_restrict')
+        ->where('active',1)->where('status', 1)->where('draft',1);
+
+          if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
+          {
+            $latest_videos = $latest_videos->whereNotIn('videos.id',Block_videos());
+          }
+
+          if( $check_Kidmode == 1 )
+          {
+            $latest_videos = $latest_videos->whereBetween('age_restrict', [ 0, 12 ]);
+          }
+
+      $latest_videos = $latest_videos->latest()->limit(30)->get()->map(function ($item) {
+        $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
+        return $item;
+      });
+
+        // featured videos
+      $featured_videos_status = Homesetting::pluck('featured_videos')->first();
+
+      if( $featured_videos_status == null || $featured_videos_status == 0 ){
+
+          $featured_videos = array();        // Note - if the home-setting (featured_videos) is turned off in the admin panel
+      }
+
+      $featured_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price','duration','rating','image','featured','age_restrict')
+        ->where('active',1)->where('status', 1)->where('draft',1)->where('featured',1);
+
+          if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
+          {
+              $featured_videos = $featured_videos->whereNotIn('videos.id',Block_videos());
+          }
+
+          if( $check_Kidmode == 1 )
+          {
+              $featured_videos = $featured_videos->whereBetween('age_restrict', [ 0, 12 ]);
+          }
+      
+      $featured_videos = $featured_videos->latest()->limit(30)->get()->map(function ($item) {
+          $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
+          return $item;
+      });
+
+
+    // Live videos
+      $live_stream_videos_status = Homesetting::pluck('live_videos')->first();
+
+      if( $live_stream_videos_status == null || $live_stream_videos_status == 0 ){    
+
+          $live_stream_videos = array();      // Note - if the home-setting (live_videos) is turned off in the admin panel
+
+      }
+
+      $live_stream_videos = LiveStream::select('id','title','slug','year','rating','access','ppv_price','publish_type','publish_status','publish_time','duration','rating','image','featured')
+                            ->where('active',1)->where('status', 1)->latest();
+
+            if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
+            {
+                $live_stream_videos = $live_stream_videos->whereNotIn('live_streams.id',Block_livestream());
+            }
+                
+            if( $check_Kidmode == 1 )
+            {
+                $live_stream_videos = $live_stream_videos->whereBetween('age_restrict', [ 0, 12 ]);
+            }
+
+      $live_stream_videos = $live_stream_videos->limit(30)->get()->map(function ($item) {
+                      $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
+                      return $item;
+      });
+
+    
+      $data = [
+          "status" => 'true',
+          "message" => 'Retrieved Homepage Section data Successfully' ,
+          "latest_videos_count" => count($latest_videos),
+          "latest_videos" => $latest_videos,
+          "featured_videos_count" => count($featured_videos),
+          "featured_videos" => $featured_videos,
+          "live_stream_videos_count" => count($live_stream_videos),
+          "live_stream_videos" => $live_stream_videos,
+      ];
+
+
+    } catch (\Throwable $th) {
+        $data = array(
+          'status' => 'false',
+          'message' => $th->getMessage() ,
+        );
+    }
+
+    return response()->json($data, 200);
+  }
 }
