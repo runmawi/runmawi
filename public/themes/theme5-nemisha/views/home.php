@@ -135,6 +135,33 @@
                      </div>
                </div>
             </section>
+            
+            <!-- Data Free  Category Videos  -->
+
+            <section id="iq-favorites">
+               <div class="fluid overflow-hidden">
+               <?php
+                  $DataFreeCategories = App\VideoCategory::where('slug','datafree')->where('in_home','=',1)->first();
+                  $countDataFreeCategories = App\VideoCategory::where('slug','datafree')->where('in_home','=',1)->count();
+                  if ($countDataFreeCategories > 0 ) {   
+
+                        $videos = App\Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
+                                    ->where('category_id','=',@$DataFreeCategories->id)->where('active', '=', '1')
+                                    ->where('status', '=', '1')->where('draft', '=', '1');
+                        $videos = $videos->latest('videos.created_at')->get();
+                  
+                  }else{
+                     $videos = [];
+                  }
+               ?>
+                  <div class="row">
+                     <div class="col-sm-12">
+                        <?php if (count($videos) > 0 ) {  include 'partials/home/datafree-videos.php'; } ?>
+                     </div>
+                  </div>
+               </div>
+            </section>
+
     <?php } }?>
 
          <!-- Latest Viewed Videos -->
