@@ -24,6 +24,8 @@ Route::group(
     function () {
         Route::get('ddd', 'ApiAuthController@ddd');
 
+        Route::get('All_Homepage', 'ApiAuthController@All_Homepage');
+        
         Route::get('Home-page', 'ApiAuthController@Homepage');
         Route::get('home_page', 'ApiAuthController@PageHome');
         Route::post('login', 'ApiAuthController@login');
