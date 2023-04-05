@@ -251,7 +251,7 @@
         }
 
         .btn {
-            border-radius: 30px !important;
+           
         }
 
         h3 {
@@ -563,13 +563,36 @@
             z-index: -1;
             border-radius: 30px !important;
         }
-
+        .btn-outline-danger:hover {
+            
+        }
         .btn-success:hover {
             color: #fff !important;
             border-color: 1px solid #ED553B !importan;
         }
 
         .btn-success:hover:after {
+            width: 100%;
+        }
+.btn-success1:after {
+            position: absolute;
+            content: "";
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: #F6D55C;
+            transition: all .35s;
+            z-index: -1;
+           
+        }
+
+        .btn-success1:hover {
+            color: #fff !important;
+            border-color: 1px solid #ED553B !importan;
+        }
+
+        .btn-success1:hover:after {
             width: 100%;
         }
 
@@ -676,6 +699,16 @@
         }
 
         .btn-success {
+            color: #fff !important;
+            background: #ED553B !important;
+            border: none !important;
+
+
+            border-radius: 5px;
+
+
+        } 
+        .btn-success1 {
             color: #fff !important;
             background: #ED553B !important;
             border: none !important;
@@ -1131,7 +1164,7 @@
 
                 <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
                     <a type="button" class="btn btn-outline-danger bp mr-3" href="{{ route('login') }}">Sign In </a>
-                    <a class="btn btn-success  my-2 mr-2 my-sm-0 bp" href="{{ route('signup') }}" style="">Sign
+                    <a class="btn btn-success1  my-2 mr-2 my-sm-0 bp" href="{{ route('signup') }}" style="">Sign
                         Up</a>
                 </div>
             </div>

@@ -53,9 +53,10 @@ border-radius: 0px 4px 4px 0px;
       <a class="black"  href="{{ URL::to('admin/home-settings') }}">HomePage</a>
       <a class="black" href="{{ URL::to('admin/theme_settings') }}">Theme Settings</a>
       <a class="black" href="{{ URL::to('admin/payment_settings') }}">Payment Settings</a>
-      <a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/email_settings') }}">Email Settings</a>
+      <a class="black"  href="{{ URL::to('admin/email_settings') }}">Email Settings</a>
       <a class="black" href="{{ URL::to('admin/mobileapp') }}">Mobile App Settings</a>
       <a class="black" href="{{ URL::to('admin/settings') }}">RTMP URL Settings</a>
+      <!-- <a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/storage_settings') }}">Storage Settings</a> -->
    </div>
    
    <div class="d-flex">
@@ -121,7 +122,7 @@ border-radius: 0px 4px 4px 0px;
                         </div>
 
                         <div class="col-sm-6">
-                            <label class="">AWS SCRETE KEY  </label>
+                            <label class="">AWS SECRET KEY  </label>
                             <div class="panel-body" style="display: block;">
                               <input type="text" class="form-control" name="aws_secret_key" id="aws_secret_key" value="@if(!empty($storage_settings->aws_secret_key)){{ $storage_settings->aws_secret_key }}  @endif" />
                            </div>
