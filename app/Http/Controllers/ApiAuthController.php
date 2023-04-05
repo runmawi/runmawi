@@ -12093,33 +12093,36 @@ public function QRCodeMobileLogout(Request $request)
         $data = array();      // Note - if the home-setting (category_videos_status) is turned off in the admin panel
     else:
 
-      $data = VideoCategory::query()->with(['category_videos' => function ($videos) {
+      $data = array();      // Note - if the home-setting (category_videos_status) is turned off in the admin panel
 
-        $check_Kidmode = 0 ;
+
+      // $data = VideoCategory::query()->with(['category_videos' => function ($videos) {
+
+      //   $check_Kidmode = 0 ;
                   
-        $videos->select('videos.id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price','duration','rating','image','featured','age_restrict')
-                ->where('videos.active',1)->where('videos.status', 1)->where('videos.draft',1);
+      //   $videos->select('videos.id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price','duration','rating','image','featured','age_restrict')
+      //           ->where('videos.active',1)->where('videos.status', 1)->where('videos.draft',1);
   
-            if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
-            {
-                $videos = $videos->whereNotIn('videos.id',Block_videos());
-            }
+      //       if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
+      //       {
+      //           $videos = $videos->whereNotIn('videos.id',Block_videos());
+      //       }
   
-            if( $check_Kidmode == 1 )
-            {
-                $videos = $videos->whereBetween('videos.age_restrict', [ 0, 12 ]);
-            }
+      //       if( $check_Kidmode == 1 )
+      //       {
+      //           $videos = $videos->whereBetween('videos.age_restrict', [ 0, 12 ]);
+      //       }
   
-            $videos = $videos->latest('videos.created_at')->limit(30)->get()->map(function ($item) {
-                $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
-                return $item;
-            });
+      //       $videos = $videos->latest('videos.created_at')->limit(30)->get()->map(function ($item) {
+      //           $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
+      //           return $item;
+      //       });
   
-        }])
-        ->select('video_categories.id','video_categories.name', 'video_categories.slug', 'video_categories.in_home','video_categories.order')
-        ->where('video_categories.in_home',1)
-        ->orderBy('video_categories.order')
-        ->get();
+      //   }])
+      //   ->select('video_categories.id','video_categories.name', 'video_categories.slug', 'video_categories.in_home','video_categories.order')
+      //   ->where('video_categories.in_home',1)
+      //   ->orderBy('video_categories.order')
+      //   ->get();
 
     endif;
 
