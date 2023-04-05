@@ -11337,155 +11337,12 @@ public function QRCodeMobileLogout(Request $request)
     return response()->json($response, 200);
   }
   
-  // Home page 
+  //  All Homepage
 
-  public function ddd()
+  public function All_Homepage(Request $request)
   {
+      $user_id = $request->user_id;
 
-       $myData = array();
-
-        $variable =  array(
-          ['value' => 'latest_videos',    'name' => 'latest_videos'] ,
-          ['value' => 'featured_videos',  'name' => 'featured_videos'] ,
-          ['value' => 'pre',  'name' => 'catgory_videos'] ,
-
-      );
-
-      
-      $featured_videos_status = Homesetting::pluck('featured_videos')->first();
-      $Homesetting = Homesetting::first();
-      $check_Kidmode = 0 ;
-      
-
-        foreach ($variable as $key => $value) {
-
-
-          if ( $value['name'] == "latest_videos"):
-
-              if( $Homesetting->latest_videos == null || $Homesetting->latest_videos == 0 ):
-
-                $videos = array();       // Note - if the home-setting (latest_videos) is turned off in the admin panel
-        
-              else:
-        
-                $videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price','duration','rating','image','featured','age_restrict')
-                  ->where('active',1)->where('status', 1)->where('draft',1);
-        
-                    if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
-                    {
-                      $videos = $videos->whereNotIn('videos.id',Block_videos());
-                    }
-        
-                    if( $check_Kidmode == 1 )
-                    {
-                      $videos = $videos->whereBetween('age_restrict', [ 0, 12 ]);
-                    }
-        
-                $videos = $videos->latest()->limit(30)->get()->map(function ($item) {
-                  $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
-                  $item['redirect_url'] = URL::to('category/videos/'.$item->slug);
-                  return $item;
-                });
-        
-              endif;
-
-              $source = 'livestream';
-          endif;
-
-
-          if ( $value['name'] == "featured_videos"):
-
-            if( $featured_videos_status == null || $featured_videos_status == 0 ):
-
-              $videos = array();        // Note - if the home-setting (videos) is turned off in the admin panel
-          
-          else:
-    
-            $videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price','duration','rating','image','featured','age_restrict')
-              ->where('active',1)->where('status', 1)->where('draft',1)->where('featured',1);
-    
-                if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
-                {
-                    $videos = $videos->whereNotIn('videos.id',Block_videos());
-                }
-    
-                if( $check_Kidmode == 1 )
-                {
-                    $videos = $videos->whereBetween('age_restrict', [ 0, 12 ]);
-                }
-            
-            $videos = $videos->latest()->limit(30)->get()->map(function ($item) {
-                $item['image_url'] = URL::to('public/uploads/images/'.$item->image);
-                $item['redirect_url'] = URL::to('category/videos/'.$item->slug);
-                return $item;
-            });
-    
-          endif;
-    
-
-            $source = 'featured_videos';
-        endif;
-
-          if ( $value['name'] == "catgory_videos"):
-
-
-
-
-            $videos = VideoCategory::query()->with(['category_videos' => function ($videos) {
-
-                $videos->where('videos.active',1)->where('videos.status', 1)->where('videos.draft',1);
-    
-    
-                    $videos = $videos->latest('videos.created_at')->limit(30)->get()->map(function ($item) {
-                        $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
-                        return $item;
-                    });
-
-  
-          }])
-          ->select('video_categories.id','video_categories.name', 'video_categories.slug', 'video_categories.in_home','video_categories.order')
-          ->where('video_categories.in_home',1)
-          ->orderBy('video_categories.order')
-          ->get();
-
-
-
-          // foreach ($catgory_videos as $key => $value) {
-          //   $videos[] = $value['category_videos'] ;
-
-          // }
-
-          $source = 'cat';
-
-
-          endif;
-      
-          $myData[] = array(
-            'source' => $source,
-            "videos" => $videos,
-          );
-
-        }
-
-        
- 
-
-    // }
-
-    
-
-    $response = array(
-      'status' => 'true',
-      'movies' => $myData,
-
-    );
-
-    return response()->json($response, 200);
-
-  }
-
-  public function All_Homepage()
-  {
       $All_Homepage_homesetting =  $this->All_Homepage_homesetting();
 
       $OrderHomeSettings =  OrderHomeSetting::whereIn('video_name', $All_Homepage_homesetting )->orderBy('order_id')->get()->toArray();
@@ -11578,7 +11435,7 @@ public function QRCodeMobileLogout(Request $request)
         
         if( $OrderHomeSetting['video_name'] == "latest_viewed_Videos" ){    // Latest viewed videos
           
-          $data = $this->All_Homepage_ContentPartner();
+          $data = $this->All_Homepage_latest_viewed_Videos( $user_id );
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = $OrderHomeSetting['header_name'] ;
 
@@ -11586,7 +11443,7 @@ public function QRCodeMobileLogout(Request $request)
 
         if( $OrderHomeSetting['video_name'] == "latest_viewed_Livestream" ){    // Latest viewed Livestream
           
-          $data = $this->All_Homepage_latest_viewed_Livestream();
+          $data = $this->All_Homepage_latest_viewed_Livestream( $user_id );
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = $OrderHomeSetting['header_name'] ;
 
@@ -11594,7 +11451,7 @@ public function QRCodeMobileLogout(Request $request)
 
         if( $OrderHomeSetting['video_name'] == "latest_viewed_Audios" ){    // Latest viewed Audios
           
-          $data = $this->All_Homepage_latest_viewed_Audios();
+          $data = $this->All_Homepage_latest_viewed_Audios( $user_id );
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = $OrderHomeSetting['header_name'] ;
 
@@ -11602,7 +11459,7 @@ public function QRCodeMobileLogout(Request $request)
 
         if( $OrderHomeSetting['video_name'] == "latest_viewed_Episode" ){    // Latest viewed Episode
           
-          $data = $this->All_Homepage_latest_viewed_Episode();
+          $data = $this->All_Homepage_latest_viewed_Episode( $user_id );
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = $OrderHomeSetting['header_name'] ;
 
@@ -11974,7 +11831,7 @@ public function QRCodeMobileLogout(Request $request)
     return $data;
   }
 
-  private static function All_Homepage_latest_viewed_Videos(){
+  private static function All_Homepage_latest_viewed_Videos( $user_id ){
 
     $latest_viewed_Videos_status = Homesetting::pluck('latest_viewed_Videos')->first();
 
@@ -11984,7 +11841,7 @@ public function QRCodeMobileLogout(Request $request)
       else:
 
         $data = RecentView::join('videos', 'videos.id', '=', 'recent_views.video_id')
-              ->where('recent_views.user_id',Auth::user()->id)
+              ->where('recent_views.user_id',$user_id)
               ->groupBy('recent_views.video_id');
 
               if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
@@ -11998,7 +11855,7 @@ public function QRCodeMobileLogout(Request $request)
 
   }
 
-  private static function All_Homepage_latest_viewed_Livestream(){
+  private static function All_Homepage_latest_viewed_Livestream( $user_id ){
 
     $latest_viewed_Livestream_status = Homesetting::pluck('latest_viewed_Livestream')->first();
 
@@ -12007,8 +11864,8 @@ public function QRCodeMobileLogout(Request $request)
           $data = array();      // Note - if the home-setting (latest_viewed_Livestream_status) is turned off in the admin panel
       else:
 
-          $data =  App\RecentView::join('live_streams', 'live_streams.id', '=', 'recent_views.live_id')
-                  ->where('recent_views.user_id',Auth::user()->id)
+          $data = RecentView::join('live_streams', 'live_streams.id', '=', 'recent_views.live_id')
+                  ->where('recent_views.user_id',$user_id)
                   ->groupBy('recent_views.live_id')
                   ->get();
               
@@ -12018,7 +11875,7 @@ public function QRCodeMobileLogout(Request $request)
 
   }
 
-  private static function All_Homepage_latest_viewed_Episode(){
+  private static function All_Homepage_latest_viewed_Episode( $user_id ){
 
     $latest_viewed_Episode_status = Homesetting::pluck('latest_viewed_Episode')->first();
 
@@ -12027,10 +11884,10 @@ public function QRCodeMobileLogout(Request $request)
           $data = array();      // Note - if the home-setting (latest_viewed_Episode_status) is turned off in the admin panel
       else:
 
-          $data =   App\RecentView::Select('episodes.*', 'episodes.slug as episode_slug', 'series.id', 'series.slug as series_slug', 'recent_views.episode_id', 'recent_views.user_id')
+          $data = RecentView::Select('episodes.*', 'episodes.slug as episode_slug', 'series.id', 'series.slug as series_slug', 'recent_views.episode_id', 'recent_views.user_id')
                     ->join('episodes', 'episodes.id', '=', 'recent_views.episode_id')
                     ->join('series', 'series.id', '=', 'episodes.series_id')
-                    ->where('recent_views.user_id', Auth::user()->id)
+                    ->where('recent_views.user_id', $user_id)
                     ->groupBy('recent_views.episode_id')
                     ->get();
 
@@ -12041,7 +11898,7 @@ public function QRCodeMobileLogout(Request $request)
   }
 
 
-  private static function All_Homepage_latest_viewed_Audios(){
+  private static function All_Homepage_latest_viewed_Audios($user_id){
 
     $latest_viewed_Audios_status = Homesetting::pluck('latest_viewed_Audios')->first();
 
@@ -12050,8 +11907,8 @@ public function QRCodeMobileLogout(Request $request)
           $data = array();      // Note - if the home-setting (latest_viewed_Audios_status) is turned off in the admin panel
       else:
 
-          $data =  App\RecentView::join('audio', 'audio.id', '=', 'recent_views.audio_id')
-            ->where('recent_views.user_id',Auth::user()->id)
+          $data =  RecentView::join('audio', 'audio.id', '=', 'recent_views.audio_id')
+            ->where('recent_views.user_id',$user_id)
             ->groupBy('recent_views.audio_id');
 
             if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
