@@ -916,7 +916,7 @@
                                     <input id="password" type="hidden" name="password"
                                         value="<?= @$Channel->unhased_password ?>" autocomplete="current-password">
                                     <button type="submit" class="btn btn-hover"
-                                        style="margin-top: -13%;margin-left: -8%;">Channel Visit Portal </button>
+                                        style="margin-top: -13%;margin-left: -8%;">Visit Channel Portal </button>
                                 </form>
                             </div>
                             <?php } ?>

@@ -386,13 +386,13 @@ i.fa.fa-google-plus {
       <div class="modal-content" >
         <div class="modal-header" style="border:none;">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title" style="color:#000;"><?php echo __('Terms and Conditions');?></h4>
+          <h4 class="modal-title" style="color: white;"><?php echo __('Terms and Conditions');?></h4>
         </div>
-        <div class="modal-body" >
+        <div class="modal-body" style='color: white;' >
             <?php
                 $terms_page = App\Page::where('slug','terms-and-conditions')->pluck('body');
              ?>
-            <p style='color: white;'><?php echo $terms_page[0];?></p>
+            <p ><?php echo $terms_page[0];?></p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo __('Close');?></button>
