@@ -6478,6 +6478,7 @@ public function LocationCheck(Request $request){
 
     }
 
+
     public function MostwatchedVideos(){
 
         $Recommendation = HomeSetting::pluck('Recommendation')->first();
@@ -11465,21 +11466,40 @@ public function QRCodeMobileLogout(Request $request)
 
         }
 
-        if( $OrderHomeSetting['video_name'] == "Recommendation" ){          // Recommendation
-          
-          $data = $this->All_Homepage_Recommendation();
-          $source = $OrderHomeSetting['video_name'] ;
-          $header_name = $OrderHomeSetting['header_name'] ;
 
-        }
-
-        if( $OrderHomeSetting['video_name'] == "category_videos" ){          // Recommendation
+        if( $OrderHomeSetting['video_name'] == "category_videos" ){          // category videos
           
           $data = $this->All_Homepage_category_videos();
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = $OrderHomeSetting['header_name'] ;
 
         }
+
+        if( $OrderHomeSetting['video_name'] == "Recommendation" ){          // Recommendation
+          
+          $data = $this->All_Homepage_MostwatchedVideos();
+          $source = $OrderHomeSetting['video_name'] ;
+          $header_name = "Most watched Videos" ;
+
+        }
+
+        if( $OrderHomeSetting['video_name'] == "Recommendation" ){          // Recommendation
+          
+          $data = $this->All_Homepage_MostwatchedVideosUser($user_id);
+          
+          $source = $OrderHomeSetting['video_name'] ;
+          $header_name = "Mostwatched Videos User" ;
+
+        }
+
+        if( $OrderHomeSetting['video_name'] == "Recommendation" ){          // Recommendation
+         
+          $data = $this->All_Homepage_Country_MostwatchedVideos();
+          $source = $OrderHomeSetting['video_name'] ;
+          $header_name = "Country Most watched Videos" ;
+
+        }
+
 
           $result[] = array(
             "source"      => $source,
@@ -11983,12 +12003,77 @@ public function QRCodeMobileLogout(Request $request)
 
     endif;
 
-    
-    
-
   return $data;
 
   }
 
+  private static function All_Homepage_MostwatchedVideos(){
 
+    $Recommendation_status = Homesetting::pluck('Recommendation')->first();
+
+      if( $Recommendation_status == null || $Recommendation_status == 0 ): 
+
+          $data = array();      // Note - if the home-setting (Recommendation_status) is turned off in the admin panel
+      else:
+
+        $data = RecentView::select('video_id','videos.*',DB::raw('COUNT(video_id) AS count'))
+              ->join('videos', 'videos.id', '=', 'recent_views.video_id');
+
+            if(Geofencing() !=null && Geofencing()->geofencing == 'ON')
+            {
+              $data = $data->whereNotIn('videos.id',Block_videos());
+            }
+
+            $data = $data->groupBy('video_id')
+                  ->orderByRaw('count DESC' )->limit(20)->get()->map(function ($item) {
+                    $item['Thumbnail'] = URL::to('/').'/public/uploads/images/'.$item->image ;
+                    $item['Player_thumbnail'] = URL::to('/').'/public/uploads/images/'.$item->player_image ;
+                    $item['TV_Thumbnail'] = URL::to('/').'/public/uploads/images/'.$item->video_tv_image ;
+                    $item['Video_Title_Thumbnail'] = URL::to('/').'/public/uploads/images/'.$item->video_title_image ;
+                    return $item;
+            });
+
+      endif;
+   
+     return $data;
+  }
+
+  private static function All_Homepage_MostwatchedVideosUser($user_id)
+  {
+
+    $Recommendation_status = Homesetting::pluck('Recommendation')->first();
+
+      if( $Recommendation_status == null || $Recommendation_status == 0 ): 
+
+          $data = array();      // Note - if the home-setting (Recommendation_status) is turned off in the admin panel
+      else:
+
+        $data = RecentView::select('video_id','videos.*',DB::raw('COUNT(video_id) AS count'))
+                  ->join('videos', 'videos.id', '=', 'recent_views.video_id')
+                  ->groupBy('video_id')->where('recent_views.sub_user',$user_id)
+                  ->orderByRaw('count DESC' )->limit(20)->get();
+      endif;
+   
+     return $data;
+  }
+
+  private static function All_Homepage_Country_MostwatchedVideos()
+  {
+
+    $Recommendation_status = Homesetting::pluck('Recommendation')->first();
+
+    if( $Recommendation_status == null || $Recommendation_status == 0 ): 
+
+        $data = array();      // Note - if the home-setting (Recommendation_status) is turned off in the admin panel
+    else:
+
+      $data =RecentView::select('video_id','videos.*',DB::raw('COUNT(video_id) AS count'))
+                ->join('videos', 'videos.id', '=', 'recent_views.video_id')->groupBy('video_id')->orderByRaw('count DESC' )
+                ->where('country', Country_name())->limit(20)->get();
+    endif;
+ 
+   return $data;
+
+  }
+  
 }
