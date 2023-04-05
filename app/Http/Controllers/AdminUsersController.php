@@ -3216,6 +3216,7 @@ class AdminUsersController extends Controller
          DB::raw('sum(ppv_purchases.total_amount) as count') ,
          \DB::raw("MONTHNAME(ppv_purchases.created_at) as month_name") ,
         ]);
+        if(count($ppv_Revenue) > 0){
         foreach($ppv_Revenue as $d) {
             if($d->count != null){
             $ppv_Revenues[$d->month_name] = $d->count;
@@ -3223,6 +3224,9 @@ class AdminUsersController extends Controller
             $ppv_Revenues[$d->month_name] =  0;
             }
         }
+    }else{
+        $ppv_Revenues =  [];
+    }
         $user_Revenue = User::join('ppv_purchases', 'users.id', '=', 'ppv_purchases.user_id')
         ->leftjoin('videos', 'videos.id', '=', 'ppv_purchases.video_id')
         ->leftjoin('audio', 'audio.id', '=', 'ppv_purchases.audio_id')

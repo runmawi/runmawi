@@ -729,7 +729,7 @@ input:checked + .sliderk:before {
                               <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
                                     <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
                                     <input id="password" type="hidden"  name="password" value="<?=  @$Channel->unhased_password ?>" autocomplete="current-password" >
-                                    <button type="submit" class="btn btn-hover" style="margin-top: -13%;margin-left: -8%;">Channel Visit Portal </button>                          
+                                    <button type="submit" class="btn btn-hover" style="margin-top: -13%;margin-left: -8%;">Visit Channel Portal </button>                          
                            </form>
                         </div>
                        <?php } ?>
