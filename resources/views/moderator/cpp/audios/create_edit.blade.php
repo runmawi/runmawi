@@ -692,8 +692,9 @@ $('#duration').mask('00:00:00');
   <script type="text/javascript">
 
 
-  var CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+var CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
 
+var Token = "<?= csrf_token() ?>";
   $('#Next').hide();
   $('#video_details').hide();
 
@@ -709,7 +710,7 @@ $('#duration').mask('00:00:00');
 
     });
     myDropzone.on("sending", function(file, xhr, formData) {
-       formData.append("_token", CSRF_TOKEN);
+       formData.append("_token", Token);
     //   console.log(value)
       this.on("success", function(file, value) {
             console.log(value.title);
