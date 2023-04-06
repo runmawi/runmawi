@@ -470,42 +470,131 @@ border-radius: 0px 4px 4px 0px;
                                 {{-- End Set Expiry time --}}
     </div>
                                 <!-- video setting -->
-
-
-            <!-- <div class="container-fluid" id="video" style=""> -->
+           
         <div  class="container-fluid  mt-3" id="videos_settings" style="">
-            <div class="row">
-            <div class="col-sm-6">
-                <div class="panel panel-primary" data-collapsed="0">
-                    <div class="panel-heading">
-                        <div class="panel-title"><label>Videos Per Page</label></div>
-                        <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+
+            <div class="panel panel-primary mt-3" data-collapsed="0">
+
+                <div class="panel-heading">
+                    <h5 class="panel-title mb-4">Videos Setting</h5>
+                    <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="panel panel-primary" data-collapsed="0">
+                            <div class="panel-heading">
+                                <div class="panel-title"><label>Videos Per Page</label></div>
+                                <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <p class="p1">Default number of videos to show per page:</p>
+                                <input type="text" class="form-control" name="videos_per_page" id="videos_per_page"
+                                    placeholder="# of Videos Per Page"
+                                    value="@if(!empty($settings->videos_per_page)){{ $settings->videos_per_page }}@endif" />
+                            </div>
                         </div>
                     </div>
-                    <div class="panel-body">
-                        <p class="p1">Default number of videos to show per page:</p>
-                        <input type="text" class="form-control" name="videos_per_page" id="videos_per_page"
-                            placeholder="# of Videos Per Page"
-                            value="@if(!empty($settings->videos_per_page)){{ $settings->videos_per_page }}@endif" />
+                </div>
+
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                                <div><label class="mt-1"> Enable Show Description </label></div>
+                                <div class="d-flex justify-content-between">
+                                    <div>OFF</div>
+                                        <div class="mt-1">
+                                            <label class="switch">
+                                                <input type="checkbox" @if(!isset($settings->free_registration) || (isset($settings->show_description) &&
+                                                $settings->show_description))checked="checked" value="1"@else value="0"@endif
+                                                name="show_description" id="" />
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                    <div>ON</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                                <div><label class="mt-1"> Show Links & details </label></div>
+                                <div class="d-flex justify-content-between">
+                                    <div>OFF</div>
+                                        <div class="mt-1">
+                                            <label class="switch">
+                                                <input type="checkbox" @if(!isset($settings->show_Links_and_details) || (isset($settings->show_Links_and_details) &&
+                                                $settings->show_Links_and_details))checked="checked" value="1"@else value="0"@endif
+                                                name="free_registration" id="" />
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                    <div>ON</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                                <div><label class="mt-1"> Show Genre </label></div>
+                                <div class="d-flex justify-content-between">
+                                    <div>OFF</div>
+                                        <div class="mt-1">
+                                            <label class="switch">
+                                                <input type="checkbox" @if(!isset($settings->show_genre) || (isset($settings->show_genre) &&
+                                                $settings->show_genre))checked="checked" value="1"@else value="0"@endif
+                                                name="show_genre" id="" />
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                    <div>ON</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                                <div><label class="mt-1"> Show Languages </label></div>
+                                <div class="d-flex justify-content-between">
+                                    <div>OFF</div>
+                                        <div class="mt-1">
+                                            <label class="switch">
+                                                <input type="checkbox" @if(!isset($settings->show_languages) || (isset($settings->show_languages) &&
+                                                $settings->show_languages))checked="checked" value="1"@else value="0"@endif
+                                                name="show_languages" id="" />
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                    <div>ON</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                                <div><label class="mt-1"> Show Recommended Videos </label></div>
+                                <div class="d-flex justify-content-between">
+                                    <div>OFF</div>
+                                        <div class="mt-1">
+                                            <label class="switch">
+                                                <input type="checkbox" @if(!isset($settings->show_recommended_videos) || (isset($settings->show_recommended_videos) &&
+                                                $settings->show_recommended_videos))checked="checked" value="1"@else value="0"@endif
+                                                name="show_recommended_videos" id="" />
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                    <div>ON</div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
-            <div class="col-sm-6">
-                <div class="panel panel-primary" data-collapsed="0">
-                    <div class="panel-heading">
-                        <div class="panel-title"><label>Posts Per Page</label></div>
-                        <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
-                        </div>
-                    </div>
-                    <div class="panel-body">
-                        <p class="p1">Default number of posts to show per page:</p>
-                        <input type="text" class="form-control" name="posts_per_page" id="posts_per_page"
-                            placeholder="# of Posts Per Page"
-                            value="@if(!empty($settings->posts_per_page)){{ $settings->posts_per_page }}@endif" />
-                    </div>
-                </div>
-            </div>
-        </div></div>
+        </div>
+
     <!-- </div> -->
     <!-- Registration -->
 
