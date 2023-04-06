@@ -1287,6 +1287,7 @@ Route::post('/audios/store', array('before' => 'demo', 'uses' => 'CPPAdminAudioC
 Route::post('/uploadAudio',  'CPPAdminAudioController@CPPuploadAudio');
 Route::post('/Audiofile',  'CPPAdminAudioController@CPPAudiofile');
 Route::post('/audios/audioupdate', array('before' => 'demo', 'uses' => 'CPPAdminAudioController@CPPaudioupdate'));
+Route::get('audio/{slug}', 'CPPAdminAudioController@play_audios')->name('play_audios');
 
 
 //CPP Audio Categories
