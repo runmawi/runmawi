@@ -15,11 +15,11 @@ class AddPaidToSettingsTable extends Migration
     {
         Schema::table('settings', function (Blueprint $table) {
             //
-            $table->tinyInteger('show_description');
-            $table->tinyInteger('show_Links_and_details');
-            $table->tinyInteger('show_genre');
-            $table->tinyInteger('show_languages');
-            $table->tinyInteger('show_recommended_videos');
+            $table->tinyInteger('show_description')->default(1);
+            $table->tinyInteger('show_Links_and_details')->default(1);
+            $table->tinyInteger('show_genre')->default(1);
+            $table->tinyInteger('show_languages')->default(1);
+            $table->tinyInteger('show_recommended_videos')->default(1);
         });
     }
 
