@@ -662,6 +662,7 @@
                            </li>
                            <?php else: ?>
                            <li class="nav-item nav-icon">
+                            <a href="<?php echo  URL::to('/cpp/dashboard') ?>" class="btn btn-primary ">Visit Portal</a>
                               <?php if(Auth::user()->role == 'registered'): ?>
                               <div class="iq-sub-dropdown iq-user-dropdown">
                                  <div class="iq-card shadow-none m-0">
