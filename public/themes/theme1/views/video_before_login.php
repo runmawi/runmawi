@@ -462,9 +462,43 @@ if(!empty($request_url)){
                <?php  } ?>
              </div>
 
-        <div class="text-white">
-            <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->description); ?></p>
-        </div>
+             <div class="col-sm-12 mt-4 p-0" style="margin-top: 2%;">
+                <?php if(!empty($video->description) && $settings->show_description == 1 ) { ?>
+                    <h5>Description:</h5>
+                    <div class="text-white">
+                        <p class="trending-dec w-100 mb-0 text-white mt-3"><?php echo __($video->description); ?></p>
+                    </div>
+                <?php  }?>
+
+                <?php if(!empty($subtitles_name) && $settings->show_subtitle == 1 ) { ?>
+                    <h5>Subtitles:</h5>
+                    <div class="text-white">
+                        <p class="trending-dec w-100 mb-0 text-white mt-3"><?php echo __( $subtitles_name); ?></p>
+                    </div>
+                <?php  }?>
+
+                <?php if(!empty($video->details)  && $settings->show_Links_and_details == 1) { ?>
+                  <div class="col-sm-6 p-0">
+                    
+                    <div class="text-white">
+                       
+                    </div>
+                </div>
+              <?php  }?>
+
+                
+                <?php if(!empty($subtitles_name) && $settings->show_subtitle == 1 ) { ?>
+                  <h4>Links & details</h4>
+                    <div class="text-white">
+                    <?php    $details = html_entity_decode($video->details) ; 
+                                            $detail = strip_tags($details); ?>
+                        <p class="trending-dec w-100 mb-0 text-white"><?php echo __($detail); ?></p>                    </div>
+                <?php  }?>
+
+             </div>
+
+             
+
    <!-- Button trigger modal -->
 
     <!-- Modal -->
@@ -513,7 +547,7 @@ if(!empty($request_url)){
 
     
     <?php 
- if(count($artists) > 0 ) { ?>
+ if((count($artists) > 0) && $settings->show_artist == 1 ) { ?>
  <h4 >Cast & Crew</h4>
           <div class="row">
                 <div class="favorites-contens">
@@ -549,6 +583,9 @@ if(!empty($request_url)){
     <php endforeach; ?>
     </div>
 -->
+
+
+
 <?php if(count($Reels_videos) > 0 && $ThumbnailSetting->reels_videos == 1 ){ ?>
     <div class="video-list you-may-like">
            <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>   
@@ -568,13 +605,16 @@ if(!empty($request_url)){
        </div>
       <?php endif; ?>
         
-    <div class="video-list you-may-like overflow-hidden">
-            <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Recomended Videos');?></h4>
-                <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>   
-                <?php include('partials/video-loop.php');?>
-                </div>
-    
-    </div></div>
+        <?php if( $settings->show_recommended_videos == 1 ): ?>
+          <div class="video-list you-may-like overflow-hidden">
+                  <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Recomended Videos');?></h4>
+                      <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>   
+                      <?php include('partials/video-loop.php');?>
+                      </div>
+          </div>
+        <?php endif; ?>
+
+  </div>
     <script type="text/javascript"> 
         // videojs('videoPlayer').videoJsResolutionSwitcher(); 
     </script>
@@ -734,6 +774,32 @@ $(document).ready(function(){
 });
 </script>
 
+   <!-- INTRO SKIP  -->
+
+   <?php
+    $Auto_skip = App\HomeSetting::first();
+    $SkipIntroPermission = App\Playerui::pluck('skip_intro')->first();
+    $Intro_skip = App\Video::where('id',$video->id)->first();
+    $start_time = $Intro_skip->intro_start_time;
+    $end_time = $Intro_skip->intro_end_time;
+
+    $StartParse = date_parse($start_time);
+    $startSec = $StartParse['hour']  * 60 *  60  + $StartParse['minute']  * 60  + $StartParse['second'];
+
+    $EndParse = date_parse($end_time);
+    $EndSec = $EndParse['hour'] * 60 * 60 + $EndParse['minute'] * 60 + $EndParse['second'];
+
+    $SkipIntroParse = date_parse($Intro_skip['skip_intro']);
+    $skipIntroTime =  $SkipIntroParse['hour'] * 60 * 60 + $SkipIntroParse['minute'] * 60 + $SkipIntroParse['second'];
+
+    if($Intro_skip['type'] == "mp4_url" || $Intro_skip['type'] == "m3u8_url"){
+      $video_type_id = "videoPlayer";
+    }else{
+      $video_type_id = "video";
+    }
+
+?>
+
 <!-- Ads Start -->
 
 <?php
@@ -744,6 +810,9 @@ $(document).ready(function(){
 
 
 ?>
+
+ 
+
 
 <?php
   $player_ui = App\Playerui::pluck('show_logo')->first();

@@ -209,6 +209,13 @@ class AdminSettingsController extends Controller
 		$settings->expiry_day_notstarted = $request['expiry_day_notstarted'];
 		$settings->expiry_hours_notstarted = $request['expiry_hours_notstarted'];
 		$settings->expiry_min_notstarted = $request['expiry_min_notstarted'];
+    $settings->show_description = $request['show_description'];
+		$settings->show_Links_and_details = $request['show_Links_and_details'];
+		$settings->show_genre = $request['show_genre'];
+		$settings->show_languages = $request['show_languages'];
+		$settings->show_recommended_videos = $request['show_recommended_videos'];
+		$settings->show_artist = $request['show_artist'];
+		$settings->show_subtitle = $request['show_subtitle'];
 
 
         $settings->ppv_status = $request['ppv_status'];

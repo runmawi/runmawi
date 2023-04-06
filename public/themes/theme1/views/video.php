@@ -910,6 +910,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 
 
             <!-- Trailer Description -->
+
               <?php if(!empty($video->trailer_description) ) { ?>
                 <div class="col-sm-12 mt-4 p-0 trailer_description">
                   <h5>Trailer Description:</h5>
@@ -924,16 +925,22 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                 </div>
 
               <div class="col-sm-12 mt-4 p-0" style="margin-top: 2%;">
-                <?php if(!empty($video->description) ) { ?>
+                <?php if(!empty($video->description) && $settings->show_description == 1 ) { ?>
                     <h5>Description:</h5>
                     <div class="text-white">
                         <p class="trending-dec w-100 mb-0 text-white mt-3"><?php echo __($video->description); ?></p>
                     </div>
                 <?php  }?>
+
+                <?php if(!empty($subtitles_name) && $settings->show_subtitle == 1 ) { ?>
+                    <h5>Subtitles:</h5>
+                    <div class="text-white">
+                        <p class="trending-dec w-100 mb-0 text-white mt-3"><?php echo __( $subtitles_name); ?></p>
+                    </div>
+                <?php  }?>
              </div>
           </div>
 
- 
 
              <div class="col-sm-1 col-md-1 col-xs-12">
                  <div class="btn btn-default views text-white">
@@ -1058,7 +1065,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 <?php  }?>
 <br>-->
 
-<?php if(!empty($video->details) ) { ?>
+<?php if(!empty($video->details)  && $settings->show_Links_and_details == 1) { ?>
 <div class="col-sm-6 p-0">
 <h4>Links & details</h4>
 <div class="text-white">
@@ -1084,7 +1091,7 @@ $artists = [];
 }else{
 
 }
- if(count($artists) > 0 ) { ?>
+ if((count($artists) > 0) && $settings->show_artist ) { ?>
  <h4>Cast & crew</h4>
          <div class="row">
                 <div class="favorites-contens">
@@ -1287,12 +1294,14 @@ $artists = [];
         <?php endif; ?>
 
 
-   <div class="container-fluid video-list you-may-like  overflow-hidden">
-       <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Recomended Videos');?></h4>
-           <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "<?= $autoplay ?>": false}'>   
-               <?php include('partials/video-loop.php');?>
-           </div>
-   </div>
+  <?php if( $settings->show_recommended_videos == 1 ): ?>
+    <div class="container-fluid video-list you-may-like  overflow-hidden">
+        <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Recomended Videos');?></h4>
+            <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "<?= $autoplay ?>": false}'>   
+                <?php include('partials/video-loop.php');?>
+            </div>
+    </div>
+  <?php endif; ?>
 
 
   <?php  if(Auth::guest()){ ?>
