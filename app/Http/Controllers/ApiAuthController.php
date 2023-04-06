@@ -168,6 +168,9 @@ class ApiAuthController extends Controller
               "message" => "Paystack Key Missing",
             );
         }
+
+      //Adveristment plays 24hrs 
+        $this->adveristment_plays_24hrs = Setting::pluck('ads_play_unlimited_period')->first();
   }
 
   public function signup(Request $request)
@@ -1222,6 +1225,38 @@ public function verifyandupdatepassword(Request $request)
     return response()->json($response, 200);
   }
 
+  private static function plans_ads_enable($user_id){
+
+      $user_role = User::where('id',$user_id)->pluck('role')->first();
+
+      if( $user_role == " " ){
+        return 0 ;
+      }
+
+      if( $user_role == "registered" ){
+          return 1 ;
+      }
+
+      if( $user_role == "admin" ){
+          return 0 ;
+      }
+
+      $Subscription_ads_status = App\Subscription::Join('subscription_plans','subscription_plans.plan_id','=','subscriptions.stripe_plan')
+                      ->where('subscriptions.user_id',$user_id)
+                      ->latest('subscriptions.created_at')
+                      ->pluck('ads_status')
+                      ->first();
+
+      if( $Subscription_ads_status != null && $Subscription_ads_status == 1 ){
+          return $Subscription_ads_status ;
+      }
+      elseif(  $Subscription_ads_status == null ){
+          return 1 ;
+      }else{
+          return 1 ;
+      }
+  }
+
   public function videodetail(Request $request)
   {
 
@@ -1365,9 +1400,9 @@ public function verifyandupdatepassword(Request $request)
       }else{
           $videoads = '';
       }
-  
+
       $video = Video::find( $request->videoid);
-  
+
       $AdsVideosPre = AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
               ->Join('videos','advertisements.ads_category','=','videos.pre_ads_category')
               ->where('ads_events.status',1)
@@ -1412,9 +1447,37 @@ public function verifyandupdatepassword(Request $request)
                   $item['ads_videos_url'] = URL::to('public/uploads/AdsVideos/'.$item['ads_video']);
                   return $item;
               });
-  
-  
-      $response = array(
+
+        $plans_ads_enable = $this->plans_ads_enable($request->user_id);
+       
+
+        if($plans_ads_enable == 1){
+
+          $current_time = Carbon::now()->format('H:i:s');
+
+          $video_ads_tag_url = AdsEvent::select('videos.ads_tag_url_id','videos.id as video_id','advertisements.*','ads_events.ads_id','ads_events.status','ads_events.end','ads_events.start')
+              ->Join('advertisements','advertisements.id','=','ads_events.ads_id')
+              ->Join('videos', 'advertisements.id', '=', 'videos.ads_tag_url_id');
+              // ->whereDate('start', '=', Carbon\Carbon::now()->format('Y-m-d'))
+
+              if($this->adveristment_plays_24hrs == 0){
+                  $video_ads_tag_url =  $video_ads_tag_url->whereTime('ads_events.start', '<=', $current_time)->whereTime('ads_events.end', '>=', $current_time);
+              }
+
+              $video_ads_tag_url =  $video_ads_tag_url->where('ads_events.status',1)
+                    ->where('advertisements.status',1)
+                    ->where('advertisements.ads_upload_type','tag_url')
+                    ->where('advertisements.id',$video->ads_tag_url_id)
+                    ->where('videos.id', $video->id)
+                    ->groupBy('advertisements.id')
+                    ->pluck('ads_path')
+                    ->first();
+
+        }else{
+            $video_ads_tag_url = null ;
+        }
+
+        $response = array(
         'status' => $status,
         'wishlist' => $wishliststatus,
         'curr_time' => $curr_time,
@@ -1435,7 +1498,7 @@ public function verifyandupdatepassword(Request $request)
         'Ads_videos_Pre' => $AdsVideosPre,
         'Ads_videos_Mid' => $AdsVideosMid,
         'Ads_videos_post' => $AdsVideosPost,
-        'Ads_tag_url'     => Advertisement::where('id',$video->ads_tag_url_id)->first(),
+        'video_ads_tag_url' => $video_ads_tag_url ,
       );
     } catch (\Throwable $th) {
         $response = array(
@@ -1562,13 +1625,16 @@ public function verifyandupdatepassword(Request $request)
           $dislike = 'false';
         }
 
-        $livestream_details = LiveStream::findorfail($request->liveid)->where('id',$request->liveid)->where('active',1)->where('status',1)->get()->map(function ($item) {
-          $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-          $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
-          $item['live_description'] = $item->description ? $item->description : "" ;
-          $item['trailer'] = null ;
+        $livestream_details = LiveStream::findorfail($request->liveid)->where('id',$request->liveid)->where('active',1)
+                      ->where('status',1)->get()->map(function ($item) use ($user_id) {
+                          $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+                          $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+                          $item['live_description'] = $item->description ? $item->description : "" ;
+                          $item['trailer'] = null ;
 
-          if(plans_ads_enable() == 1){
+          $plans_ads_enable = $this->plans_ads_enable($user_id);
+
+          if( $plans_ads_enable == 1){
 
             $item['live_ads_url'] =  AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
                                       // ->whereDate('start', '=', Carbon\Carbon::now()->format('Y-m-d'))
@@ -1580,7 +1646,7 @@ public function verifyandupdatepassword(Request $request)
                                       ->pluck('ads_path')->first();
                             
           }else{
-            $item['live_ads_url'] = " ";
+            $item['live_ads_url'] = null;
           }
          
           return $item;
@@ -8520,12 +8586,13 @@ $cpanel->end();
     $episodeid = $request->episodeid;
 
 
-
-    $episode = Episode::where('id',$episodeid)->orderBy('episode_order')->get()->map(function ($item) {
+    $episode = Episode::where('id',$episodeid)->orderBy('episode_order')->get()->map(function ($item) use ($request){
        $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
        $item['series_name'] = Series::where('id',$item->series_id)->pluck('title')->first();
 
-       if(plans_ads_enable() == 1){
+       $plans_ads_enable = $this->plans_ads_enable($request->user_id);
+
+       if($plans_ads_enable == 1){
 
         $item['episode_ads_url'] =  AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
                                   // ->whereDate('start', '=', Carbon\Carbon::now()->format('Y-m-d'))
