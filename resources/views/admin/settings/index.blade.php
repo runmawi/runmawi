@@ -574,6 +574,43 @@ border-radius: 0px 4px 4px 0px;
 
                         <div class="col-sm-6">
                             <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                                <div><label class="mt-1"> {{ucwords('show subtitle')}} </label></div>
+                                <div class="d-flex justify-content-between">
+                                    <div>OFF</div>
+                                        <div class="mt-1">
+                                            <label class="switch">
+                                                <input type="checkbox" @if(!isset($settings->show_subtitle) || (isset($settings->show_subtitle) &&
+                                                $settings->show_subtitle))checked="checked" value="1"@else value="0"@endif
+                                                name="show_languages" id="" />
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                    <div>ON</div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-sm-6">
+                            <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                                <div><label class="mt-1">  Show Artist </label></div>
+                                <div class="d-flex justify-content-between">
+                                    <div>OFF</div>
+                                        <div class="mt-1">
+                                            <label class="switch">
+                                                <input type="checkbox" @if(!isset($settings->show_artist) || (isset($settings->show_artist) &&
+                                                $settings->show_artist))checked="checked" value="1"@else value="0"@endif
+                                                name="show_artist" id="" />
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                    <div>ON</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
                                 <div><label class="mt-1"> Show Recommended Videos </label></div>
                                 <div class="d-flex justify-content-between">
                                     <div>OFF</div>

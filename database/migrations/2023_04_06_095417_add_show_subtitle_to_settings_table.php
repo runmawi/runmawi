@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddPaidToSettingsTable extends Migration
+class AddShowSubtitleToSettingsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,12 +14,8 @@ class AddPaidToSettingsTable extends Migration
     public function up()
     {
         Schema::table('settings', function (Blueprint $table) {
-            //
-            $table->tinyInteger('show_description')->default(0);
-            $table->tinyInteger('show_Links_and_details')->default(0);
-            $table->tinyInteger('show_genre')->default(0);
-            $table->tinyInteger('show_languages')->default(0);
-            $table->tinyInteger('show_recommended_videos')->default(0);
+            $table->tinyInteger('show_artist')->default(0);
+            $table->tinyInteger('show_subtitle')->default(0);
         });
     }
 
@@ -31,12 +27,8 @@ class AddPaidToSettingsTable extends Migration
     public function down()
     {
         Schema::table('settings', function (Blueprint $table) {
-            //
             Schema::dropIfExists('show_description');
             Schema::dropIfExists('show_Links_and_details');
-            Schema::dropIfExists('show_genre');
-            Schema::dropIfExists('show_languages');
-            Schema::dropIfExists('show_recommended_videos');
         });
     }
 }
