@@ -14,8 +14,8 @@ class AddShowSubtitleToSettingsTable extends Migration
     public function up()
     {
         Schema::table('settings', function (Blueprint $table) {
-            $table->tinyInteger('show_artist')->default(0);
-            $table->tinyInteger('show_subtitle')->default(0);
+            $table->tinyInteger('show_artist')->default(1);
+            $table->tinyInteger('show_subtitle')->default(1);
         });
     }
 
@@ -27,8 +27,8 @@ class AddShowSubtitleToSettingsTable extends Migration
     public function down()
     {
         Schema::table('settings', function (Blueprint $table) {
-            Schema::dropIfExists('show_description');
-            Schema::dropIfExists('show_Links_and_details');
+            Schema::dropIfExists('show_artist');
+            Schema::dropIfExists('show_subtitle');
         });
     }
 }

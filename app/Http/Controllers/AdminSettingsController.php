@@ -89,6 +89,7 @@ class AdminSettingsController extends Controller
     public function save_settings(Request $request){
 
         $input = $request->all();
+
         // transcoding_resolution
         if(!empty($request['transcoding_resolution'])){
          $transcoding_resolution = implode(",",$request['transcoding_resolution']);
@@ -209,6 +210,7 @@ class AdminSettingsController extends Controller
 		$settings->expiry_day_notstarted = $request['expiry_day_notstarted'];
 		$settings->expiry_hours_notstarted = $request['expiry_hours_notstarted'];
 		$settings->expiry_min_notstarted = $request['expiry_min_notstarted'];
+
     $settings->show_description = $request['show_description'];
 		$settings->show_Links_and_details = $request['show_Links_and_details'];
 		$settings->show_genre = $request['show_genre'];
