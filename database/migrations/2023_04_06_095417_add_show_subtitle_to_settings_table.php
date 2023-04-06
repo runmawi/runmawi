@@ -27,8 +27,8 @@ class AddShowSubtitleToSettingsTable extends Migration
     public function down()
     {
         Schema::table('settings', function (Blueprint $table) {
-            Schema::dropIfExists('show_description');
-            Schema::dropIfExists('show_Links_and_details');
+            Schema::dropIfExists('show_artist');
+            Schema::dropIfExists('show_subtitle');
         });
     }
 }

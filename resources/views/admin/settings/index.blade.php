@@ -502,12 +502,12 @@ border-radius: 0px 4px 4px 0px;
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
-                                <div><label class="mt-1"> Enable Show Description </label></div>
+                                <div><label class="mt-1">  Show Description </label></div>
                                 <div class="d-flex justify-content-between">
                                     <div>OFF</div>
                                         <div class="mt-1">
                                             <label class="switch">
-                                                <input type="checkbox" @if(!isset($settings->free_registration) || (isset($settings->show_description) &&
+                                                <input type="checkbox" @if(!isset($settings->show_description) || (isset($settings->show_description) &&
                                                 $settings->show_description))checked="checked" value="1"@else value="0"@endif
                                                 name="show_description" id="" />
                                                 <span class="slider round"></span>
@@ -520,14 +520,14 @@ border-radius: 0px 4px 4px 0px;
 
                         <div class="col-sm-6">
                             <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
-                                <div><label class="mt-1"> Show Links & details </label></div>
+                                <div><label class="mt-1">  Show Links & details </label></div>
                                 <div class="d-flex justify-content-between">
                                     <div>OFF</div>
                                         <div class="mt-1">
                                             <label class="switch">
                                                 <input type="checkbox" @if(!isset($settings->show_Links_and_details) || (isset($settings->show_Links_and_details) &&
                                                 $settings->show_Links_and_details))checked="checked" value="1"@else value="0"@endif
-                                                name="free_registration" id="" />
+                                                name="show_Links_and_details" id="" />
                                                 <span class="slider round"></span>
                                             </label>
                                         </div>
@@ -538,7 +538,7 @@ border-radius: 0px 4px 4px 0px;
 
                         <div class="col-sm-6">
                             <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
-                                <div><label class="mt-1"> Show Genre </label></div>
+                                <div><label class="mt-1"> Enable Show Genre </label></div>
                                 <div class="d-flex justify-content-between">
                                     <div>OFF</div>
                                         <div class="mt-1">
@@ -556,7 +556,7 @@ border-radius: 0px 4px 4px 0px;
 
                         <div class="col-sm-6">
                             <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
-                                <div><label class="mt-1"> Show Languages </label></div>
+                                <div><label class="mt-1">  Show Languages </label></div>
                                 <div class="d-flex justify-content-between">
                                     <div>OFF</div>
                                         <div class="mt-1">
@@ -574,14 +574,14 @@ border-radius: 0px 4px 4px 0px;
 
                         <div class="col-sm-6">
                             <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
-                                <div><label class="mt-1"> {{ucwords('show subtitle')}} </label></div>
+                                <div><label class="mt-1"> {{ ucwords('Enable show subtitle') }} </label></div>
                                 <div class="d-flex justify-content-between">
                                     <div>OFF</div>
                                         <div class="mt-1">
                                             <label class="switch">
                                                 <input type="checkbox" @if(!isset($settings->show_subtitle) || (isset($settings->show_subtitle) &&
                                                 $settings->show_subtitle))checked="checked" value="1"@else value="0"@endif
-                                                name="show_languages" id="" />
+                                                name="show_subtitle" id="" />
                                                 <span class="slider round"></span>
                                             </label>
                                         </div>
@@ -611,7 +611,7 @@ border-radius: 0px 4px 4px 0px;
 
                         <div class="col-sm-6">
                             <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
-                                <div><label class="mt-1"> Show Recommended Videos </label></div>
+                                <div><label class="mt-1">  Show Recommended Videos </label></div>
                                 <div class="d-flex justify-content-between">
                                     <div>OFF</div>
                                         <div class="mt-1">
