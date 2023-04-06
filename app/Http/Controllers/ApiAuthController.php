@@ -1435,6 +1435,7 @@ public function verifyandupdatepassword(Request $request)
         'Ads_videos_Pre' => $AdsVideosPre,
         'Ads_videos_Mid' => $AdsVideosMid,
         'Ads_videos_post' => $AdsVideosPost,
+        'Ads_tag_url'     => Advertisement::where('id',$video->ads_tag_url_id)->first(),
       );
     } catch (\Throwable $th) {
         $response = array(
@@ -11774,6 +11775,8 @@ public function QRCodeMobileLogout(Request $request)
         }); 
 
       endif;
+
+      return $data;
   }
 
   private static function All_Homepage_albums(){
