@@ -482,7 +482,12 @@ i.fa.fa-google-plus {
       background: #f4f6f7;
       padding: 10px;
     }
-
+        .blk li{
+            font-size: 14px;
+        }
+         .blk p{
+            font-size: 14px;
+        }
     html {
         scroll-behavior: smooth;
     }
@@ -492,7 +497,7 @@ i.fa.fa-google-plus {
    
     .blk{
         height: 200px;
-        padding: 15px;
+        padding: 10px;
     }
 .ambk{
 background-color: #000;padding: 10px!important;}
@@ -532,7 +537,7 @@ background-color: #000;padding: 10px!important;}
     <div class="container">
         <div align="center"></div>
         <div class="row justify-content-center">
-            <div class="col-lg-7 col-md-6 p-0">
+            <div class="col-lg-8 col-md-6 p-0">
                 <div class="flick1">
                  <div class="small-heading text-white">Step 2 of<span class="ml-2">2</span></div>
                      <p class="text-white" style="font-size: 16px;">Welcome {{ Auth::user()->username ? Auth::user()->username  : " "  }}, </p>
@@ -540,10 +545,10 @@ background-color: #000;padding: 10px!important;}
 
                     <div class="col-md-12 p-0">
                         <p class="meth"> Payment Method</p>
-
+<div class="d-flex">
                                                 <!-- Stripe -->
                             @if(!empty($Stripe_payment_settings) && $Stripe_payment_settings->stripe_status == 1)
-                                <div class="align-items-center">
+                                <div class="align-items-center ">
                                     <input type="radio" id="stripe_radio_button" class="payment_gateway" name="payment_gateway" value="stripe" > 
                                     <label class="ml-2"><p> {{ $stripe_label }} </p></label> <br />
                                 </div>
@@ -551,7 +556,7 @@ background-color: #000;padding: 10px!important;}
 
                                                 <!-- Paystack -->
                             @if( !empty($Paystack_payment_settings) && $Paystack_payment_settings->status == 1 )
-                                <div class=" align-items-center">
+                                <div class=" align-items-center ml-2">
                                     <input type="radio" id="paystack_radio_button" class="payment_gateway" name="payment_gateway" value="paystack"> 
                                     <label class="mt-2 ml-2" > <p>{{ $paystack_label }} </p></label> <br />
                                 </div>
@@ -559,7 +564,7 @@ background-color: #000;padding: 10px!important;}
 
                                                 <!-- Razorpay -->
                             @if( !empty($Razorpay_payment_settings) && $Razorpay_payment_settings->status == 1 )
-                                <div class="align-items-center">
+                                <div class="align-items-center  ml-2">
                                     <input type="radio" id="Razorpay_radio_button" class="payment_gateway" name="payment_gateway" value="Razorpay">
                                     <label class="ml-2" ><p> {{ $Razorpay_label }} </p></label> 
                                 </div>
@@ -567,7 +572,7 @@ background-color: #000;padding: 10px!important;}
 
                                                 <!-- PayPal -->
                             @if( !empty($PayPal_payment_settings) && $PayPal_payment_settings->paypal_status == 1 )
-                                <div class="align-items-center">
+                                <div class="align-items-center  ml-2">
                                     <input type="radio" id="paypaul_radio_button" class="payment_gateway" name="payment_gateway" value="paypal"> 
                                     <label class="mt-2 ml-2" > <p>{{ $paypal_label }} </p></label> <br />
                                 </div>
@@ -575,13 +580,13 @@ background-color: #000;padding: 10px!important;}
 
                                                 <!-- CinetPay -->
                             @if(!empty($CinetPay_payment_settings) && $CinetPay_payment_settings->CinetPay_Status == 1)
-                                <div class=" align-items-center">
+                                <div class=" align-items-center ml-2">
                                     <input type="radio" id="cinetpay_radio_button" class="payment_gateway" name="payment_gateway" value="CinetPay" >
                                     <label class=" ml-2"> <p>{{ $CinetPay_lable }} </p></label> 
                                 </div>
                             @endif
                     </div>      
-
+</div>
                     
                 <div class="row">
                     <div class="col-md-12">
@@ -591,7 +596,7 @@ background-color: #000;padding: 10px!important;}
                                     $plan_name = $plan->plans_name;
                                 @endphp
 
-                                <div style="" class="col-md-6 plan_details p-0"  data-plan-id={{ 'active'.$plan->id  }}  data-plan-price={{ $plan->price }} data-plan_id={{  $plan->plan_id  }} data-payment-type={{ $plan->payment_type }} onclick="plan_details(this)">
+                                <div style="" class="col-md-4 plan_details p-0"  data-plan-id={{ 'active'.$plan->id  }}  data-plan-price={{ $plan->price }} data-plan_id={{  $plan->plan_id  }} data-payment-type={{ $plan->payment_type }} onclick="plan_details(this)">
                                     
                                     <a href="#payment_card_scroll">
                                         
@@ -681,11 +686,11 @@ background-color: #000;padding: 10px!important;}
                                 <label for="fname"  style="float: right; " data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"  class="promo"> Add Promotion Code </label>
                                <div class="collapse show" id="collapseExample">
                                     <div class="row p-0">
-                                        <div class="col-lg-6 p-0" >
-                                            <input id="coupon_code_stripe" type="text" class="form-control" placeholder="Add Promotion Code" >
+                                        <div class="col-lg-6 p-0">
+                                            <input id="coupon_code_stripe" type="text" class="form-control" placeholder="Add Promotion Code"  style="height:41px;">
                                             <input id="final_coupon_code_stripe" name="final_coupon_code_stripe" type="hidden" >
                                             </div>
-                                        <div class="col-lg-6 p-0"><a type="button" id="couple_apply" class="btn round">Apply</a></div>
+                                        <div class="col-lg-6 p-0"><a type="button" id="couple_apply" class="btn round btn-lg">Apply</a></div>
                                         <span id="coupon_message"></span>
 
                                                     {{-- Coupon Code from backend(admin) --}}
