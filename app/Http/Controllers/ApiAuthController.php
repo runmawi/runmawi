@@ -1241,7 +1241,7 @@ public function verifyandupdatepassword(Request $request)
           return 0 ;
       }
 
-      $Subscription_ads_status = App\Subscription::Join('subscription_plans','subscription_plans.plan_id','=','subscriptions.stripe_plan')
+      $Subscription_ads_status = Subscription::Join('subscription_plans','subscription_plans.plan_id','=','subscriptions.stripe_plan')
                       ->where('subscriptions.user_id',$user_id)
                       ->latest('subscriptions.created_at')
                       ->pluck('ads_status')
