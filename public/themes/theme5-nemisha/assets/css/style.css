@@ -2478,7 +2478,9 @@ font-family: 'Roboto', sans-serif;
 .slick-frame.slick-initialized {
     visibility: visible;
 }
-
+.see{
+    color: #fff!important;
+}
 #home-slider{
     display: none;
 }
