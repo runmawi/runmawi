@@ -824,7 +824,10 @@ public function RentPaypal(Request $request)
     {
       try {
 
-        $plans_data = SubscriptionPlan::where('type',$request->payment_gateway)->groupBy('plans_name')->get() ;
+        $plans_data = SubscriptionPlan::where('type',$request->payment_gateway)->groupBy('plans_name')->get()->map(function ($item) {
+          $item['plan_content'] = $item->plan_content != null ? $item->plan_content : "Plan Description";
+          return $item;
+        });
 
         $response = array(
           'status'     => true ,

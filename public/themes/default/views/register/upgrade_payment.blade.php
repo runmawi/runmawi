@@ -448,11 +448,11 @@ i.fa.fa-google-plus {
   background: rgba(124, 20, 20, 0.8)!important;
 }
     .dg{
-        padding: 10px;
+       
         color: #000!important;
         background-color: #fff;
         margin: 5px;
-        height: 110px;
+
        border: 5px solid #ddd;
        
     }
@@ -463,7 +463,7 @@ i.fa.fa-google-plus {
     }
    
         .dg:hover{
-            padding: 10px;
+           
             color: #000!important;
             border:  {{ '5px solid'.button_bg_color() .'!important' }} ;
             transition: 0.5s;
@@ -482,10 +482,25 @@ i.fa.fa-google-plus {
       background: #f4f6f7;
       padding: 10px;
     }
-
+        .blk li{
+            font-size: 14px;
+        }
+         .blk p{
+            font-size: 14px;
+        }
     html {
         scroll-behavior: smooth;
     }
+    .plan_details{
+        min-height: 300px;
+    }
+   
+    .blk{
+        height: 200px;
+        padding: 10px;
+    }
+.ambk{
+background-color: #000;padding: 10px!important;}
 </style>
 
 <script>
@@ -522,7 +537,7 @@ i.fa.fa-google-plus {
     <div class="container">
         <div align="center"></div>
         <div class="row justify-content-center">
-            <div class="col-lg-7 col-md-6 p-0">
+            <div class="col-lg-8 col-md-6 p-0">
                 <div class="flick1">
                  <div class="small-heading text-white">Step 2 of<span class="ml-2">2</span></div>
                      <p class="text-white" style="font-size: 16px;">Welcome {{ Auth::user()->username ? Auth::user()->username  : " "  }}, </p>
@@ -530,10 +545,10 @@ i.fa.fa-google-plus {
 
                     <div class="col-md-12 p-0">
                         <p class="meth"> Payment Method</p>
-
+<div class="d-flex">
                                                 <!-- Stripe -->
                             @if(!empty($Stripe_payment_settings) && $Stripe_payment_settings->stripe_status == 1)
-                                <div class="align-items-center">
+                                <div class="align-items-center ">
                                     <input type="radio" id="stripe_radio_button" class="payment_gateway" name="payment_gateway" value="stripe" > 
                                     <label class="ml-2"><p> {{ $stripe_label }} </p></label> <br />
                                 </div>
@@ -541,7 +556,7 @@ i.fa.fa-google-plus {
 
                                                 <!-- Paystack -->
                             @if( !empty($Paystack_payment_settings) && $Paystack_payment_settings->status == 1 )
-                                <div class=" align-items-center">
+                                <div class=" align-items-center ml-2">
                                     <input type="radio" id="paystack_radio_button" class="payment_gateway" name="payment_gateway" value="paystack"> 
                                     <label class="mt-2 ml-2" > <p>{{ $paystack_label }} </p></label> <br />
                                 </div>
@@ -549,7 +564,7 @@ i.fa.fa-google-plus {
 
                                                 <!-- Razorpay -->
                             @if( !empty($Razorpay_payment_settings) && $Razorpay_payment_settings->status == 1 )
-                                <div class="align-items-center">
+                                <div class="align-items-center  ml-2">
                                     <input type="radio" id="Razorpay_radio_button" class="payment_gateway" name="payment_gateway" value="Razorpay">
                                     <label class="ml-2" ><p> {{ $Razorpay_label }} </p></label> 
                                 </div>
@@ -557,7 +572,7 @@ i.fa.fa-google-plus {
 
                                                 <!-- PayPal -->
                             @if( !empty($PayPal_payment_settings) && $PayPal_payment_settings->paypal_status == 1 )
-                                <div class="align-items-center">
+                                <div class="align-items-center  ml-2">
                                     <input type="radio" id="paypaul_radio_button" class="payment_gateway" name="payment_gateway" value="paypal"> 
                                     <label class="mt-2 ml-2" > <p>{{ $paypal_label }} </p></label> <br />
                                 </div>
@@ -565,13 +580,14 @@ i.fa.fa-google-plus {
 
                                                 <!-- CinetPay -->
                             @if(!empty($CinetPay_payment_settings) && $CinetPay_payment_settings->CinetPay_Status == 1)
-                                <div class=" align-items-center">
+                                <div class=" align-items-center ml-2">
                                     <input type="radio" id="cinetpay_radio_button" class="payment_gateway" name="payment_gateway" value="CinetPay" >
                                     <label class=" ml-2"> <p>{{ $CinetPay_lable }} </p></label> 
                                 </div>
                             @endif
                     </div>      
-
+</div>
+                    
                 <div class="row">
                     <div class="col-md-12">
                         <div class="data-plans row align-items-center m-0 p-0">
@@ -580,17 +596,20 @@ i.fa.fa-google-plus {
                                     $plan_name = $plan->plans_name;
                                 @endphp
 
-                                <div style="" class="col-md-6 plan_details p-0"  data-plan-id={{ 'active'.$plan->id  }}  data-plan-price={{ $plan->price }} data-plan_id={{  $plan->plan_id  }} data-payment-type={{ $plan->payment_type }} onclick="plan_details(this)">
+                                <div style="" class="col-md-4 plan_details p-0"  data-plan-id={{ 'active'.$plan->id  }}  data-plan-price={{ $plan->price }} data-plan_id={{  $plan->plan_id  }} data-payment-type={{ $plan->payment_type }} onclick="plan_details(this)">
+                                    
                                     <a href="#payment_card_scroll">
-                                        <div class="row dg align-items-center mb-4" id={{ 'active'.$plan->id  }}>
-                                            <div class="col-md-7 p-0">
-                                                <h4 class="text-black font-weight-bold"> {{ $plan->plans_name  }} </h4>
-                                                <p>{{ $plan->plans_name  }} Membership</p>
+                                        
+                                        <div  class="row dg align-items-center mb-4" id={{ 'active'.$plan->id  }}>
+                                            <div class="col-md-12 ambk p-0 text-center">
+                                                <div>
+                                                    <h6 class=" font-weight-bold"> {{ $plan->plans_name  }} </h6>
+                                                    <p class="text-white mb-0"> {{ currency_symbol().$plan->price }} Membership</p>
+                                                </div>
                                             </div>
-                                            <div class="vl "></div>
-                                            <div class="col-md-4 p-2" >
-                                                <h4 class="text-black">{{ currency_symbol().$plan->price }}</h4>
-                                                <p>Billed as {{ currency_symbol().$plan->price }}</p>
+                                            
+                                            <div class="col-md-12 blk" >
+                                                 <p>@php echo ($plan->plan_content) @endphp</p>
                                             </div>
                                         </div>
 
@@ -667,11 +686,11 @@ i.fa.fa-google-plus {
                                 <label for="fname"  style="float: right; " data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"  class="promo"> Add Promotion Code </label>
                                <div class="collapse show" id="collapseExample">
                                     <div class="row p-0">
-                                        <div class="col-lg-6 p-0" >
-                                            <input id="coupon_code_stripe" type="text" class="form-control" placeholder="Add Promotion Code" >
+                                        <div class="col-lg-6 p-0">
+                                            <input id="coupon_code_stripe" type="text" class="form-control" placeholder="Add Promotion Code"  style="height:41px;">
                                             <input id="final_coupon_code_stripe" name="final_coupon_code_stripe" type="hidden" >
                                             </div>
-                                        <div class="col-lg-6 p-0"><a type="button" id="couple_apply" class="btn round">Apply</a></div>
+                                        <div class="col-lg-6 p-0"><a type="button" id="couple_apply" class="btn round btn-lg">Apply</a></div>
                                         <span id="coupon_message"></span>
 
                                                     {{-- Coupon Code from backend(admin) --}}
@@ -1163,20 +1182,17 @@ i.fa.fa-google-plus {
                             html += '<div class="row align-items-center m-0 p-0 data-plans">';
                                 
                                 $.each( response.data.plans_data , function( index, plan_data ) {
-
+                                    
                                     html += '<div class="col-md-6 plan_details p-0"  data-plan-id="active'+ plan_data.id +'" data-plan-price="'+ plan_data.price +'"  data-plan_id="'+ plan_data.plan_id +'"  data-payment-type="'+ plan_data.payment_type +'" onclick="plan_details(this)">';
                                         html += '<a href="#payment_card_scroll"> <div class="row dg align-items-center mb-4" id="active'+ plan_data.id +'" >';
                                             
-                                            html +=   '<div class="col-md-7 p-0">';
-                                                html +=   '<h4 class="text-black font-weight-bold">  '+ plan_data.plans_name +'   </h4>';
-                                                html +=   '<p>' + plan_data.plans_name + ' Membership </p>';
+                                            html +=   '<div class="col-md-12 ambk p-0 text-center">';
+                                                html +=   '<h6 class="font-weight-bold">  '+ plan_data.plans_name +'   </h6>';
+                                                html +=   '<p class="text-white mb-0">' + currency_symbol + plan_data.price + ' Membership </p>';
                                             html += '</div>' ;
 
-                                            html += '<div class="vl "></div>' ;
-
-                                            html += '<div class="col-md-4 p-2" >' ;
-                                                html +=    '<h4 class="text-black"> '+ currency_symbol + plan_data.price +' </h4>'  ;
-                                                html +=    '<p>Billed as '+ currency_symbol + plan_data.price +' </p>' ;
+                                            html += '<div class="col-md-12 blk" >' ;
+                                                html +=    '<h4 class="text-black"> '+  plan_data.plan_content +' </h4>'  ;
                                             html += '</div>' ;
 
                                         html += '</div>' ;
@@ -1327,10 +1343,10 @@ i.fa.fa-google-plus {
              customer_phone_number: mobile,//the customer's email
              customer_address: "BP 0024",//customer address
              customer_city: "Antananarivo",// The customer's city
-            //  customer_country: "CM",// the ISO code of the country
-            //  customer_state: "CM",// the ISO state code
-             customer_country: "CI, BF, US, CA, FR",// the ISO code of the country
-             customer_state: "CM,CA,US",// the ISO state code
+             customer_country: "CM",// the ISO code of the country
+             customer_state: "CM",// the ISO state code
+            //  customer_country: "CI, BF, US, CA, FR",// the ISO code of the country
+            //  customer_state: "CM,CA,US",// the ISO state code
              customer_zip_code: "06510", // postcode
 
           });

@@ -1241,7 +1241,7 @@ public function verifyandupdatepassword(Request $request)
           return 0 ;
       }
 
-      $Subscription_ads_status = App\Subscription::Join('subscription_plans','subscription_plans.plan_id','=','subscriptions.stripe_plan')
+      $Subscription_ads_status = Subscription::Join('subscription_plans','subscription_plans.plan_id','=','subscriptions.stripe_plan')
                       ->where('subscriptions.user_id',$user_id)
                       ->latest('subscriptions.created_at')
                       ->pluck('ads_status')
@@ -12177,36 +12177,36 @@ public function QRCodeMobileLogout(Request $request)
         $data = array();      // Note - if the home-setting (category_videos_status) is turned off in the admin panel
     else:
 
-       $data = array();      // Note - if the home-setting (category_videos_status) is turned off in the admin panel
+      //  $data = array();      
 
 
-      // $data = VideoCategory::query()->with(['category_videos' => function ($videos) {
+      $data = VideoCategory::query()->with(['category_videos' => function ($videos) {
 
-      //   $check_Kidmode = 0 ;
+        $check_Kidmode = 0 ;
                   
-      //   $videos->select('videos.id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price','duration','rating','image','featured','age_restrict')
-      //           ->where('videos.active',1)->where('videos.status', 1)->where('videos.draft',1);
+        $videos->select('videos.id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price','duration','rating','image','featured','age_restrict')
+                ->where('videos.active',1)->where('videos.status', 1)->where('videos.draft',1);
   
-      //       if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
-      //       {
-      //           $videos = $videos->whereNotIn('videos.id',Block_videos());
-      //       }
+            if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
+            {
+                $videos = $videos->whereNotIn('videos.id',Block_videos());
+            }
   
-      //       if( $check_Kidmode == 1 )
-      //       {
-      //           $videos = $videos->whereBetween('videos.age_restrict', [ 0, 12 ]);
-      //       }
+            if( $check_Kidmode == 1 )
+            {
+                $videos = $videos->whereBetween('videos.age_restrict', [ 0, 12 ]);
+            }
   
-      //       $videos = $videos->latest('videos.created_at')->limit(30)->get()->map(function ($item) {
-      //           $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
-      //           return $item;
-      //       });
+            $videos = $videos->latest('videos.created_at')->limit(30)->get()->map(function ($item) {
+                $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
+                return $item;
+            });
   
-      //   }])
-      //   ->select('video_categories.id','video_categories.name', 'video_categories.slug', 'video_categories.in_home','video_categories.order')
-      //   ->where('video_categories.in_home',1)
-      //   ->orderBy('video_categories.order')
-      //   ->get();
+        }])
+        ->select('video_categories.id','video_categories.name', 'video_categories.slug', 'video_categories.in_home','video_categories.order')
+        ->where('video_categories.in_home',1)
+        ->orderBy('video_categories.order')
+        ->get();
 
     endif;
 
@@ -12222,21 +12222,21 @@ public function QRCodeMobileLogout(Request $request)
           $data = array();      // Note - if the home-setting (Live category status) is turned off in the admin panel
       else:
 
-          $data = array(); 
+          // $data = array(); 
 
-        //   $data = LiveCategory::query()->with(['category_livestream' => function ($live_stream_videos) {
+          $data = LiveCategory::query()->with(['category_livestream' => function ($live_stream_videos) {
 
-        //     $live_stream_videos->select('live_streams.id','live_streams.title','live_streams.slug','live_streams.year','live_streams.rating','live_streams.access','live_streams.ppv_price','live_streams.publish_type','live_streams.publish_status','live_streams.publish_time','live_streams.duration','live_streams.rating','live_streams.image','live_streams.featured')
-        //                       ->where('live_streams.active',1)->where('live_streams.status', 1)
-        //                       ->latest('live_streams.created_at')->limit(30)->get()->map(function ($item) {
-        //                           $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
-        //                           return $item;
-        //                       });
+            $live_stream_videos->select('live_streams.id','live_streams.title','live_streams.slug','live_streams.year','live_streams.rating','live_streams.access','live_streams.ppv_price','live_streams.publish_type','live_streams.publish_status','live_streams.publish_time','live_streams.duration','live_streams.rating','live_streams.image','live_streams.featured')
+                              ->where('live_streams.active',1)->where('live_streams.status', 1)
+                              ->latest('live_streams.created_at')->limit(30)->get()->map(function ($item) {
+                                  $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
+                                  return $item;
+                              });
 
-        // }])
-        // ->select('live_categories.id','live_categories.name', 'live_categories.slug', 'live_categories.order')
-        // ->orderBy('live_categories.order')
-        // ->get();
+        }])
+        ->select('live_categories.id','live_categories.name', 'live_categories.slug', 'live_categories.order')
+        ->orderBy('live_categories.order')
+        ->get();
 
       endif;
 
