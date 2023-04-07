@@ -434,6 +434,10 @@
         background-color: <?php echo GetLightBg(); ?>;
         color: <?php echo GetLightText(); ?>;
     } 
+    body.light-theme .see {
+       
+        color: <?php echo GetLightText(); ?>!important;
+    } 
     body.light-theme .music-play-lists li {
         background-color: #ED563C!important;
         color: #fff!important;
@@ -1280,7 +1284,7 @@
                                             value="<?= @$Channel->unhased_password ?>"
                                             autocomplete="current-password">
                                         <button type="submit" class="btn btn-primary"
-                                            style="margin-top: -13%;margin-left: -8%;">Channel Visit Portal </button>
+                                            style="margin-top: -13%;margin-left: -8%;">Visit Channel Portal </button>
                                     </form>
                                 </div>
                                 <?php } ?>

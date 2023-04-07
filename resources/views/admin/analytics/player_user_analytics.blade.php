@@ -24,7 +24,7 @@
         <div class="col-md-12">
             <div class="iq-card-header  justify-content-between">
                 <div class="iq-header-title">
-                    <h4 class="card-title">Player Video Analytics :</h4>
+                    <h4 class="card-title">Player User Analytics :</h4>
                 </div>
             </div>
              
@@ -71,6 +71,7 @@
                                             <th>#</th>
                                             <!-- <th>User Name</th> -->
                                             <th>User Name</th>
+                                            <th>Video Name</th>
                                             <th>Viewed Count</th>
                                             <th>Watch Percentage (Minutes)</th>
                                             <th>Seek Time (Seconds)</th>
@@ -83,7 +84,7 @@
                                     @foreach($player_videos as $key => $playervideo)
                                         <td>{{ $key+1  }}</td>   
                                         <td>{{ $playervideo->username  }}</td>   
-                                        <!-- <td>{{ $playervideo->title  }}</td>    -->
+                                        <td>{{ $playervideo->title  }}</td>   
                                         <td>{{ $playervideo->count  }}</td>   
                                         <td>{{ $playervideo->watchpercentage  }}</td>   
                                         <td>{{ $playervideo->seekTime  }}</td>   

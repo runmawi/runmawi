@@ -62,7 +62,7 @@
                 <input type="hidden" name="source" value="<?= Route::currentRouteName() ?>">
                 <input type="hidden" name="source_id" value="<?= $source_id ?>">
 
-                <button type="submit" class=" btn-sm btn-outline-success text-uppercase">Submit</button>
+                <button type="submit" class=" btn btn-primary text-uppercase">Submit</button>
                     </div>
                 </div>
                

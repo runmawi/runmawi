@@ -76,6 +76,7 @@ use App\EmailTemplate;
 use Mail;
 use App\PlayerAnalytic;
 use Carbon\Carbon;
+use ProtoneMedia\LaravelFFMpeg\Filters\WatermarkFactory;
 
 class AdminVideosController extends Controller
 {
@@ -594,6 +595,48 @@ class AdminVideosController extends Controller
                 : "";
 
             $storepath = URL::to("/storage/app/public/" . $path);
+            $logo = URL::to('/').'/public/uploads/settings/'. $settings->logo;
+            $watermark = 'https://dev-flick.webnexs.org/public/uploads/settings/webnexs-250.png';
+
+            $ffmpeg = \FFMpeg\FFMpeg::create([
+                'ffmpeg.binaries'  => 'H:/ffmpeg/bin/ffmpeg.exe', // the path to the FFMpeg binary
+                'ffprobe.binaries' => 'H:/ffmpeg/bin/ffprobe.exe', // the path to the FFProbe binary
+                'timeout'          => 0, // the timeout for the underlying process
+                'ffmpeg.threads'   => 1,   // the number of threads that FFMpeg should use
+            ]);
+
+   
+
+
+            $video = $ffmpeg->open($storepath);
+        
+            $watermark = 'https://dev-flick.webnexs.org/public/uploads/settings/webnexs-250.png';
+            if (!empty($watermark))
+            {
+                $video  ->filters()
+                        ->watermark("public/uploads/settings" . "/" . $settings->logo, array(
+                            'position' => 'relative',
+                            'top' => 25,
+                            'right' => 50,
+                        ));
+            }
+        
+         
+            // $video->save($storepath);
+        
+    
+            // $videos = $ffmpeg->open(
+            //     "storage/app/public" . "/" . $path
+            // );
+            // // print_r( $videos);exit;
+            // $videos  ->filters()
+            // ->watermark("public/uploads/settings" . "/" . $settings->logo);
+     
+            // $videos->save(
+            //     "public/uploads/reelsVideos" . "/" . $path
+            // );
+
+
 
             //  Video duration
             $getID3 = new getID3();
@@ -1354,7 +1397,6 @@ class AdminVideosController extends Controller
                 } elseif ($data["trailer_type"] == "m3u8_url") {
                     $video->trailer = $data["m3u8_trailer"];
                     $data["trailer"] = $data["m3u8_trailer"];
-                    // http://localhost/flicknexs/storage/app/public/4XGJiKONAQfCe4eV.mp4
                 } elseif ($data["trailer_type"] == "mp4_url") {
                     $video->trailer = $data["mp4_trailer"];
                     $data["trailer"] = $data["mp4_trailer"];
@@ -1486,7 +1528,6 @@ class AdminVideosController extends Controller
                 } elseif ($data["trailer_type"] == "m3u8_url") {
                     $video->trailer = $data["m3u8_trailer"];
                     $data["trailer"] = $data["m3u8_trailer"];
-                    // http://localhost/flicknexs/storage/app/public/4XGJiKONAQfCe4eV.mp4
                 } elseif ($data["trailer_type"] == "mp4_url") {
                     $video->trailer = $data["mp4_trailer"];
                     $data["trailer"] = $data["mp4_trailer"];
@@ -2168,10 +2209,10 @@ class AdminVideosController extends Controller
             }
         }
 
+
         // Block country
         if (!empty($data["country"])) {
             $country = $data["country"];
-            unset($data["country"]);
 
             if (!empty($country)) {
                 BlockVideo::where("video_id", $video->id)->delete();
@@ -2183,6 +2224,8 @@ class AdminVideosController extends Controller
                     $country->save();
                 }
             }
+        }else{
+            BlockVideo::where("video_id", $video->id)->delete();
         }
 
         if (!empty($files != "" && $files != null)) {

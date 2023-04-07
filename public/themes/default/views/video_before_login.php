@@ -533,67 +533,90 @@
    </div>
    <?php } ?>
    <!-- Trailer End  -->
-   <?php if(!empty($video->description) ) { ?>
+
    <div class="col-md-7 p-0" style="margin-top: 2%;">
-      <h4>Description</h4>
+
+      <?php if(!empty($video->description) && $settings->show_description == 1 ) : ?>
+         <h4>Description</h4>
+      <?php endif; ?>
+
       <div class="text-white">
-         <p class="trending-dec w-100 mb-0 text-white mt-2 text-justify"><?php echo __($video->description); ?></p>
-         <?php  if(count($artists) > 0 ) { ?> 
-         <p class="trending-dec w-100 mb-0 text-white mt-2">Starring :
-            <?php 
-               $numartists = count($artists);
-               $k = 0;
-               foreach($artists as $key => $artist){  ?>
-            <a  href="<?php echo __(URL::to('/artist') .'/'. $artist->artist_slug); ?>"  >
-            <span class="sta">
-            <?php echo $artist->artist_slug ;
-               if(++$k === $numartists) { echo '' ;} else{ echo ',';}
-               ?>
-            </span>
-            </a>
-            <?php } ?>
-         </p>
+
+                        <!-- Description -->
+         <?php if(!empty($video->description) && $settings->show_description == 1 ) : ?>
+            <p class="trending-dec w-100 mb-0 text-white mt-2 text-justify"><?php echo __($video->description); ?></p>
+         <?php endif; ?>
+         
+                         <!-- Artists -->
+         <?php  if( $settings->show_artist == 1  && count($artists) > 0 ) { ?> 
+            <p class="trending-dec w-100 mb-0 text-white mt-2">Starring :
+               <?php 
+                  $numartists = count($artists);
+                  $k = 0;
+                  foreach($artists as $key => $artist){  ?>
+                     <a  href="<?php echo __(URL::to('/artist') .'/'. $artist->artist_slug); ?>"  >
+                        <span class="sta">
+                           <?php echo $artist->artist_slug ;
+                              if(++$k === $numartists) { echo '' ;} else{ echo ',';}
+                              ?>
+                        </span>
+                     </a>
+               <?php } ?>
+            </p>
          <?php } ?>
-         <p class="trending-dec w-100 mb-0 text-white mt-2">Genres : 
-            <?php 
-               $numItems = count($category_name);
-               $i = 0;
-               foreach($category_name as $key => $cat_name){ ?>
-            <a href="<?php echo URL::to('/category'.'/'.$cat_name->categories_slug);?>">
-            <span class="sta">
-            <?php echo $cat_name->categories_name;
-               if(++$i === $numItems) { echo '' ;} else{ echo ',';}?>
-            </span>
-            </a>
-            <?php } ?>
-         </p>
-         <p class="trending-dec w-100 mb-0 text-white mt-2">This Movie is :
-            <?php 
-               $numItems = count($Movie_name);
-               $i = 0;
-               foreach($Movie_name as $key => $Movie){ ?>
-            <a href="<?php echo URL::to('/language'.'/'.$Movie->id.'/'.$Movie->movie_name);?>">
-            <span class="sta">
-            <?php echo $Movie->movie_name;
-               if(++$i === $numItems) { echo '' ;} else{ echo ',';}?>
-            </span>
-            </a>
-            <?php } ?>
-         </p>
-         <p class="trending-dec w-100 mb-0 text-white mt-2">Subtitles : <?php echo $subtitles_name; ?></p>
-         <p class="trending-dec w-100 mb-0 text-white mt-2">Audio Languages : <?php echo $lang_name; ?></p>
+
+         <?php if( $settings->show_genre == 1 ) : ?>
+            <p class="trending-dec w-100 mb-0 text-white mt-2">Genres : 
+               <?php 
+                  $numItems = count($category_name);
+                  $i = 0;
+                  foreach($category_name as $key => $cat_name){ ?>
+                  <a href="<?php echo URL::to('/category'.'/'.$cat_name->categories_slug);?>">
+                     <span class="sta">
+                        <?php echo $cat_name->categories_name;
+                           if(++$i === $numItems) { echo '' ;} else{ echo ',';}
+                        ?>
+                     </span>
+                  </a>
+               <?php } ?>
+            </p>
+         <?php endif; ?>
+
+                    <!-- Languages -->
+         <?php if( $settings->show_languages == 1 ) : ?>
+            <p class="trending-dec w-100 mb-0 text-white mt-2">This Movie is :
+               <?php 
+                  $numItems = count($Movie_name);
+                  $i = 0;
+                  foreach($Movie_name as $key => $Movie){ ?>
+               <a href="<?php echo URL::to('/language'.'/'.$Movie->id.'/'.$Movie->movie_name);?>">
+               <span class="sta">
+               <?php echo $Movie->movie_name;
+                  if(++$i === $numItems) { echo '' ;} else{ echo ',';}?>
+               </span>
+               </a>
+               <?php } ?>
+            </p>
+         <?php endif; ?>
+
+         <?php if($settings->show_subtitle == 1 ): ?>
+            <p class="trending-dec w-100 mb-0 text-white mt-2">Subtitles : <?php echo $subtitles_name; ?></p>
+         <?php endif; ?>
+
       </div>
    </div>
-   <?php  }?>
+
    <br>
-   <?php if(!empty($video->details) ) { ?>
-   <h4>Links & details</h4>
-   <div class="col-md-7 text-white p-0" style="font-size:18px;width:80%;">
-      <?php    $details = html_entity_decode($video->details) ; 
-         $detail = strip_tags($details); ?>
-      <p class="trending-dec w-100 mb-0  mt-2" ><?php echo __($video->details); ?></p>
-   </div>
+
+   <?php if(!empty($video->details) && $settings->show_Links_and_details == 1 ) { ?>
+      <h4>Links & details</h4>
+         <div class="col-md-7 text-white p-0" style="font-size:18px;width:80%;">
+            <?php    $details = html_entity_decode($video->details) ; 
+               $detail = strip_tags($details); ?>
+            <p class="trending-dec w-100 mb-0  mt-2" ><?php echo __($video->details); ?></p>
+         </div>
    <?php  }?>
+
    <?php if(!empty($video->pdf_files) ) { ?>
    <h4>E-Paper:</h4>
    <p class="p1">Download the E-Paper</p>

@@ -22,9 +22,10 @@ Route::group(
         'prefix' => 'auth',
     ],
     function () {
-        Route::get('ddd', 'ApiAuthController@ddd');
+     
 
-        Route::get('Home-page', 'ApiAuthController@Homepage');
+        Route::post('All_Homepage', 'ApiAuthController@All_Homepage');
+        
         Route::get('home_page', 'ApiAuthController@PageHome');
         Route::post('login', 'ApiAuthController@login');
         Route::post('search', 'ApiAuthController@search');

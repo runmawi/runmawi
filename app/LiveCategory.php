@@ -44,6 +44,6 @@ class LiveCategory extends Model
 
         public function category_livestream()
         {
-            return $this->belongsToMany( LiveStream::class,'livecategories','category_id','live_id');
+            return $this->belongsToMany('App\LiveStream','livecategories','category_id','live_id');
         }
 }

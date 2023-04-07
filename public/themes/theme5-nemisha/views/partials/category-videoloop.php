@@ -41,6 +41,7 @@
                           ?>
                     </h4>
                 </a>
+                <a href="<?php echo URL::to('/category/').'/'.$category->slug;?>" class="see" >See All</a>
             </div>
             <div class="favorites-contens">
                 <ul class="favorites-slider list-inline row p-0 mb-0">

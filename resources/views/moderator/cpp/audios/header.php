@@ -522,163 +522,9 @@
                                
                               <?php
                                  $stripe_plan = SubscriptionPlan();
-                                 //  $menus = App\Menu::all();
-                                 if(!Auth::guest() && Auth::User()->role != 'admin' || Auth::guest()){
-                                    $menus = App\Menu::orderBy('order', 'asc')->where('in_home','!=',0)->orWhere('in_home', '=', null)->get();
-                                 }else{
-                                    $menus = App\Menu::orderBy('order', 'asc')->get();
-                                 }
-                                 // dd($menus);
-                                 $languages = App\Language::all();
-                                 $LiveCategory = App\LiveCategory::orderBy('order', 'asc')->get();
-                                 foreach ($menus as $menu) { 
-                                 if ( $menu->in_menu == "video") { 
-                                 $cat = App\VideoCategory::orderBy('order', 'asc')->get();
-                                 ?>
-                              <li class="dropdown menu-item">
-                                 <a class="dropdown-toggle" id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
-                                 <?php echo __($menu->name);?> <i class="fa fa-angle-down"></i>
-                                 </a>
-                                 <ul class="dropdown-menu categ-head">
-                                    <?php foreach ( $cat as $category) { ?>
-                                    <li>
-                                       <a class="dropdown-item cont-item" href="<?php echo URL::to('/').'/category/'.$category->slug;?>"> 
-                                       <?php echo $category->name;?> 
-                                       </a>
-                                    </li>
-                                    <?php } ?>
-                                 </ul>
-                              </li>
-                              <?php } elseif ( $menu->in_menu == "movies") { 
-                                 $cat = App\VideoCategory::orderBy('order', 'asc')->get();
-                                 ?>
-                              <li class="dropdown menu-item">
-                                 <a class="dropdown-toggle" id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
-                                 <?php echo __($menu->name);?> <i class="fa fa-angle-down"></i>
-                                 </a>
-                                 <ul class="dropdown-menu categ-head">
-                                    <?php foreach ( $languages as $language){ ?>
-                                    <li>
-                                       <a class="dropdown-item cont-item" href="<?php echo URL::to('/').'/language/'.$language->id.'/'.$language->name;?>"> 
-                                       <?php echo $language->name;?> 
-                                       </a>
-                                    </li>
-                                    <?php } ?>
-                                 </ul>
-                              </li>
-                              <?php }elseif ( $menu->in_menu == "live") { 
-                                 $LiveCategory = App\LiveCategory::orderBy('order', 'asc')->get();
-                                 ?>
-                              <li class="dropdown menu-item">
-                                 <a class="dropdown-toggle" id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
-                                 <?php echo __($menu->name);?> <i class="fa fa-angle-down"></i>
-                                 </a>
-                                 <ul class="dropdown-menu categ-head">
-                                    <?php foreach ( $LiveCategory as $category){ ?>
-                                    <li>
-                                       <a class="dropdown-item cont-item" href="<?php echo URL::to('/live/category').'/'.$category->name;?>"> 
-                                       <?php echo $category->name;?> 
-                                       </a>
-                                    </li>
-                                    <?php } ?>
-                                 </ul>
-                              </li>
-                              <!-- Audios dropdown -->
-                              <?php }elseif ( $menu->in_menu == "audios") { 
-                                 $AudioCategory = App\AudioCategory::orderBy('order', 'asc')->get();
-                                 ?>
-                              <li class="dropdown menu-item">
-                                 <a class="dropdown-toggle" id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
-                                 <?php echo __($menu->name);?> <i class="fa fa-angle-down"></i>
-                                 </a>
-                                 <ul class="dropdown-menu categ-head">
-                                    <?php foreach ( $AudioCategory as $category){ ?>
-                                    <li>
-                                       <a class="dropdown-item cont-item" href="<?php echo URL::to('audio/').'/'.$category->name;?>"> 
-                                       <?php echo $category->name;?> 
-                                       </a>
-                                    </li>
-                                    <?php } ?>
-                                 </ul>
-                              </li>
-                              <!-- Tv show dropdown -->
-
-                              <?php }elseif ( $menu->in_menu == "tv_show") { 
-                                 $tv_shows_series = App\Series::get();
-                                 ?>
-                              <li class="dropdown menu-item">
-                                 <a class="" id="" href="<?php echo URL::to('/').$menu->url;?>" >  
-                                    <?php echo __($menu->name);?> <i class="fa fa-angle-down"></i>
-                                 </a>
-
-                                 <?php if(count($tv_shows_series) > 0 ){ ?>
-                                    <ul class="dropdown-menu categ-head">
-                                       <?php foreach ( $tv_shows_series->take(6) as $key => $tvshows_series){ ?>
-                                          <li>
-                                             <?php if($key < 5): ?>
-                                                <a class="dropdown-item cont-item" href="<?php echo URL::to('/play_series').'/'.$tvshows_series->slug;?>"> 
-                                                   <?php echo $tvshows_series->title;?> 
-                                                </a>
-                                             <?php else: ?>
-                                                <a class="dropdown-item cont-item text-primary" href="<?php echo URL::to('/tv-shows');?>"> 
-                                                   <?php echo 'More...';?> 
-                                                </a>
-                                             <?php endif; ?>
-
-                                          </li>
-                                       <?php } ?>
-                                    </ul>
-                                 <?php } ?>
-                              </li>
-                              <?php } else { ?>
-                                 <li class="menu-item">
-                                       <a href="<?php if($menu->select_url == "add_Site_url"){ echo URL::to('/').$menu->url; }elseif($menu->select_url == "add_Custom_url"){ echo $menu->custom_url;  }?>">
-                                          <?php echo __($menu->name);?>
-                                       </a>
-                                 </li>
-                              <?php } } ?>
-
-                              <!-- <li class="nav-item dropdown menu-item"> -->
-                              <!-- <a class="dropdown-toggle" href="<?php echo URL::to('/').@$menu->url;?>" data-toggle="dropdown">   -->
-                              <!-- Movies <i class="fa fa-angle-down"></i> -->
-                              <!-- </a> -->
-                              <!-- <ul class="dropdown-menu categ-head"> -->
-                              <?php //foreach ( $languages as $language) { ?>
-                              <li>
-                                 <!-- <a class="dropdown-item cont-item" href="<?php //echo URL::to('/').'/language/'.$language->id.'/'.$language->name;?>">  -->
-                                 <?php //echo $language->name;?> 
-                                 <!-- </a> -->
-                                 <!-- </li> -->
-                                 <?php //} ?>
-                                 <!-- </ul> -->
-                                 <!-- </li> -->
-                                 <!-- signup Mobile view -->
-                                 <!-- signup End  -->
+                                 ?><!-- signup End  -->
                                   <div class="mob-w">
-                                    <?php 
-                        if(!Auth::guest()){                                                              
-                        $ModeratorsUser = App\ModeratorsUser::where('email', Auth::User()->email)->first();
-                        $Channel = App\Channel::where('email', Auth::User()->email)->first();
-                        }
-                        if(!Auth::guest() && !empty($ModeratorsUser)){ ?>
-                     <div class="iq-search-bar ml-auto">
-                        <form method="POST" action="<?php echo URL::to('cpp/home') ?>" class="mt-4">
-                           <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
-                           <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
-                           <input id="password" type="hidden"  name="password" value="<?=  @$ModeratorsUser->password ?>" autocomplete="current-password" >
-                           <button type="submit" class="btn btn-primary " style="margin-top: 0%;margin-left: 5%;">CPP Portal </button>                          
-                        </form>
-                     </div>
-                     <?php }if(!Auth::guest() && !empty($Channel)){ ?>
-                     <div class="iq-search-bar ml-auto">
-                        <form method="POST" action="<?php echo URL::to('channel/home') ?>" class="mt-4">
-                           <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
-                           <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
-                           <input id="password" type="hidden"  name="password" value="<?=  @$Channel->unhased_password ?>" autocomplete="current-password" >
-                           <button type="submit" class="btn btn-primary" style="margin-top: 0%;margin-left: 5%;">Visit Channel Portal </button>                          
-                        </form>
-                     </div>
-                     <?php } ?></div>
+                      </div>
                            </ul>
                         </div>
                      </div>
@@ -709,43 +555,20 @@
                         </div>
                      </div>
                       <div id="desk-top">
-                     <?php 
-                        if(!Auth::guest()){                                                              
-                        $ModeratorsUser = App\ModeratorsUser::where('email', Auth::User()->email)->first();
-                        $Channel = App\Channel::where('email', Auth::User()->email)->first();
-                        }
-                        if(!Auth::guest() && !empty($ModeratorsUser)){ ?>
-                     <div class="iq-search-bar ml-auto">
-                        <form method="POST" action="<?php echo URL::to('cpp/home') ?>" class="mt-4">
-                           <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
-                           <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
-                           <input id="password" type="hidden"  name="password" value="<?=  @$ModeratorsUser->password ?>" autocomplete="current-password" >
-                           <button type="submit" class="btn bd " style="margin-top: -18%;margin-left: -14%;">Visit CPP Portal </button>                          
-                        </form>
-                     </div>
-                     <?php }if(!Auth::guest() && !empty($Channel)){ ?>
-                     <div class="iq-search-bar ml-auto">
-                        <form method="POST" action="<?php echo URL::to('channel/home') ?>" class="mt-4">
-                           <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
-                           <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
-                           <input id="password" type="hidden"  name="password" value="<?=  @$Channel->unhased_password ?>" autocomplete="current-password" >
-                           <button type="submit" class="btn bd" style="margin-top: -13%;margin-left: -8%;">Visit Channel Portal </button>                          
-                        </form>
-                     </div>
-                     <?php } ?></div>
+                    </div>
                      <div class="navbar-right menu-right pt-2">
                         <ul class="d-flex align-items-center list-inline m-0">
-                           <li class="nav-item nav-icon" style="margin-right:1px;">
-                              <a href="<?php echo URL::to('searchResult');?>" aria-label="search" class="search-toggle device-search">
+                           <!-- <li class="nav-item nav-icon" style="margin-right:1px;">
+                              <a href="<?php //echo URL::to('searchResult');?>" aria-label="search" class="search-toggle device-search">
                                  <i class="ri-search-line"></i>
-                              </a>
+                              </a> -->
 
                               <div class="search-box iq-search-bar d-search">
                                  <form id="searchResult" action="<?php echo URL::to("searchResult") ; ?>" method="post" class="searchbox">
                                     <input name="_token" type="hidden" value="<?php echo csrf_token(); ?>" />
                                     <div class="form-group position-relative">
                                        <input type="text" name="search" class="text search-input font-size-12 searches" placeholder="Type here to Search Videos" />
-                                       <i class="search-link ri-search-line"></i>
+                                       <!-- <i class="search-link ri-search-line"></i> -->
                                        <?php  include 'public/themes/default/partials/Search_content.php'; ?>
                                     </div>
                                  </form>
@@ -839,24 +662,7 @@
                            </li>
                            <?php else: ?>
                            <li class="nav-item nav-icon">
-                              <a href="#" class="iq-user-dropdown  search-toggle p-0 d-flex align-items-center"
-                                 data-toggle="search-toggle">
-                                <!-- <img src="<?php echo URL::to('/').'/public/uploads/avatars/' . Auth::user()->avatar ?>" class="img-fluid avatar-40 rounded-circle" alt="user">-->
-                                 <p class="mt-3" style="font-size: 14px;">
-                                    <?php 
-                                       $subuser=Session::get('subuser_id');
-                                       if($subuser != ''){
-                                          $subuser=App\Multiprofile::where('id',$subuser)->first();
-                                         echo  $subuser->user_name  ;
-                                       }
-                                       else{
-                                         echo Auth::user()->username.' '  ;
-                                       }
-                                       
-                                       ?> 
-                                    <i class="ri-arrow-down-s-line"></i>
-                                 </p>
-                              </a>
+                            <a href="<?php echo  URL::to('/cpp/dashboard') ?>" class="btn btn-primary ">Visit Portal</a>
                               <?php if(Auth::user()->role == 'registered'): ?>
                               <div class="iq-sub-dropdown iq-user-dropdown">
                                  <div class="iq-card shadow-none m-0">

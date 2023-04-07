@@ -168,6 +168,9 @@ class ApiAuthController extends Controller
               "message" => "Paystack Key Missing",
             );
         }
+
+      //Adveristment plays 24hrs 
+        $this->adveristment_plays_24hrs = Setting::pluck('ads_play_unlimited_period')->first();
   }
 
   public function signup(Request $request)
@@ -1222,6 +1225,38 @@ public function verifyandupdatepassword(Request $request)
     return response()->json($response, 200);
   }
 
+  private static function plans_ads_enable($user_id){
+
+      $user_role = User::where('id',$user_id)->pluck('role')->first();
+
+      if( $user_role == " " ){
+        return 0 ;
+      }
+
+      if( $user_role == "registered" ){
+          return 1 ;
+      }
+
+      if( $user_role == "admin" ){
+          return 0 ;
+      }
+
+      $Subscription_ads_status = Subscription::Join('subscription_plans','subscription_plans.plan_id','=','subscriptions.stripe_plan')
+                      ->where('subscriptions.user_id',$user_id)
+                      ->latest('subscriptions.created_at')
+                      ->pluck('ads_status')
+                      ->first();
+
+      if( $Subscription_ads_status != null && $Subscription_ads_status == 1 ){
+          return $Subscription_ads_status ;
+      }
+      elseif(  $Subscription_ads_status == null ){
+          return 1 ;
+      }else{
+          return 1 ;
+      }
+  }
+
   public function videodetail(Request $request)
   {
 
@@ -1365,9 +1400,9 @@ public function verifyandupdatepassword(Request $request)
       }else{
           $videoads = '';
       }
-  
+
       $video = Video::find( $request->videoid);
-  
+
       $AdsVideosPre = AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
               ->Join('videos','advertisements.ads_category','=','videos.pre_ads_category')
               ->where('ads_events.status',1)
@@ -1412,9 +1447,37 @@ public function verifyandupdatepassword(Request $request)
                   $item['ads_videos_url'] = URL::to('public/uploads/AdsVideos/'.$item['ads_video']);
                   return $item;
               });
-  
-  
-      $response = array(
+
+        $plans_ads_enable = $this->plans_ads_enable($request->user_id);
+       
+
+        if($plans_ads_enable == 1){
+
+          $current_time = Carbon::now()->format('H:i:s');
+
+          $video_ads_tag_url = AdsEvent::select('videos.ads_tag_url_id','videos.id as video_id','advertisements.*','ads_events.ads_id','ads_events.status','ads_events.end','ads_events.start')
+              ->Join('advertisements','advertisements.id','=','ads_events.ads_id')
+              ->Join('videos', 'advertisements.id', '=', 'videos.ads_tag_url_id');
+              // ->whereDate('start', '=', Carbon\Carbon::now()->format('Y-m-d'))
+
+              if($this->adveristment_plays_24hrs == 0){
+                  $video_ads_tag_url =  $video_ads_tag_url->whereTime('ads_events.start', '<=', $current_time)->whereTime('ads_events.end', '>=', $current_time);
+              }
+
+              $video_ads_tag_url =  $video_ads_tag_url->where('ads_events.status',1)
+                    ->where('advertisements.status',1)
+                    ->where('advertisements.ads_upload_type','tag_url')
+                    ->where('advertisements.id',$video->ads_tag_url_id)
+                    ->where('videos.id', $video->id)
+                    ->groupBy('advertisements.id')
+                    ->pluck('ads_path')
+                    ->first();
+
+        }else{
+            $video_ads_tag_url = null ;
+        }
+
+        $response = array(
         'status' => $status,
         'wishlist' => $wishliststatus,
         'curr_time' => $curr_time,
@@ -1435,6 +1498,7 @@ public function verifyandupdatepassword(Request $request)
         'Ads_videos_Pre' => $AdsVideosPre,
         'Ads_videos_Mid' => $AdsVideosMid,
         'Ads_videos_post' => $AdsVideosPost,
+        'video_ads_tag_url' => $video_ads_tag_url ,
       );
     } catch (\Throwable $th) {
         $response = array(
@@ -1561,13 +1625,16 @@ public function verifyandupdatepassword(Request $request)
           $dislike = 'false';
         }
 
-        $livestream_details = LiveStream::findorfail($request->liveid)->where('id',$request->liveid)->where('active',1)->where('status',1)->get()->map(function ($item) {
-          $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-          $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
-          $item['live_description'] = $item->description ? $item->description : "" ;
-          $item['trailer'] = null ;
+        $livestream_details = LiveStream::findorfail($request->liveid)->where('id',$request->liveid)->where('active',1)
+                      ->where('status',1)->get()->map(function ($item) use ($user_id) {
+                          $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+                          $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+                          $item['live_description'] = $item->description ? $item->description : "" ;
+                          $item['trailer'] = null ;
 
-          if(plans_ads_enable() == 1){
+          $plans_ads_enable = $this->plans_ads_enable($user_id);
+
+          if( $plans_ads_enable == 1){
 
             $item['live_ads_url'] =  AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
                                       // ->whereDate('start', '=', Carbon\Carbon::now()->format('Y-m-d'))
@@ -1579,7 +1646,7 @@ public function verifyandupdatepassword(Request $request)
                                       ->pluck('ads_path')->first();
                             
           }else{
-            $item['live_ads_url'] = " ";
+            $item['live_ads_url'] = null;
           }
          
           return $item;
@@ -6478,6 +6545,7 @@ public function LocationCheck(Request $request){
 
     }
 
+
     public function MostwatchedVideos(){
 
         $Recommendation = HomeSetting::pluck('Recommendation')->first();
@@ -8518,12 +8586,13 @@ $cpanel->end();
     $episodeid = $request->episodeid;
 
 
-
-    $episode = Episode::where('id',$episodeid)->orderBy('episode_order')->get()->map(function ($item) {
+    $episode = Episode::where('id',$episodeid)->orderBy('episode_order')->get()->map(function ($item) use ($request){
        $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
        $item['series_name'] = Series::where('id',$item->series_id)->pluck('title')->first();
 
-       if(plans_ads_enable() == 1){
+       $plans_ads_enable = $this->plans_ads_enable($request->user_id);
+
+       if($plans_ads_enable == 1){
 
         $item['episode_ads_url'] =  AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
                                   // ->whereDate('start', '=', Carbon\Carbon::now()->format('Y-m-d'))
@@ -11341,343 +11410,841 @@ public function QRCodeMobileLogout(Request $request)
     return response()->json($response, 200);
   }
   
-  // Home page 
+  //  All Homepage
 
-  public function Homepage(Request $request)
+  public function All_Homepage(Request $request)
   {
-    try {
-      
-        $Homesetting = Homesetting::first();
-        $check_Kidmode = 0 ;
+      $user_id = $request->user_id;
 
-        // Latest videos
-      if( $Homesetting->latest_videos == null || $Homesetting->latest_videos == 0 ):
+      $All_Homepage_homesetting =  $this->All_Homepage_homesetting();
 
-        $latest_videos = array();       // Note - if the home-setting (latest_videos) is turned off in the admin panel
+      $OrderHomeSettings =  OrderHomeSetting::whereIn('video_name', $All_Homepage_homesetting )->orderBy('order_id')->get()->toArray();
 
-      else:
+      $result = array();
 
-        $latest_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price','duration','rating','image','featured','age_restrict')
-          ->where('active',1)->where('status', 1)->where('draft',1);
+      foreach ($OrderHomeSettings as $key => $OrderHomeSetting) {
+                 
+        if($OrderHomeSetting['video_name'] == "latest_videos"){      // Latest Videos
+          
+          $data = $this->All_Homepage_latestvideos();
+          $source = $OrderHomeSetting['video_name'] ;
+          $header_name = $OrderHomeSetting['header_name'] ;
+          $source_type = "videos" ;
 
-            if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
-            {
-              $latest_videos = $latest_videos->whereNotIn('videos.id',Block_videos());
-            }
+        }
 
-            if( $check_Kidmode == 1 )
-            {
-              $latest_videos = $latest_videos->whereBetween('age_restrict', [ 0, 12 ]);
-            }
+        if( $OrderHomeSetting['video_name'] == "featured_videos" ){     // Featured videos
+          
+          $data = $this->All_Homepage_featured_videos();
+          $source = $OrderHomeSetting['video_name'] ;
+          $header_name = $OrderHomeSetting['header_name'] ;
+          $source_type = "videos" ;
 
-        $latest_videos = $latest_videos->latest()->limit(30)->get()->map(function ($item) {
-          $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
-          $item['redirect_url'] = URL::to('category/videos/'.$item->slug);
-          return $item;
-        });
+        }
 
-      endif;
+        if( $OrderHomeSetting['video_name'] == "live_videos" ){       // Live videos
+          
+          $data = $this->All_Homepage_live_videos();
+          $source = $OrderHomeSetting['video_name'] ;
+          $header_name = $OrderHomeSetting['header_name'] ;
+          $source_type = "livestream" ;
 
-        // featured videos
-      $featured_videos_status = Homesetting::pluck('featured_videos')->first();
+        }
+
+        if( $OrderHomeSetting['video_name'] == "series" ){          // Series
+          
+          $data = $this->All_Homepage_series_videos();
+          $source = $OrderHomeSetting['video_name'] ;
+          $header_name = $OrderHomeSetting['header_name'] ;
+          $source_type = "series" ;
+
+        }
+
+        if( $OrderHomeSetting['video_name'] == "audios" ){          // Audios
+          
+          $data = $this->All_Homepage_audios();
+          $source = $OrderHomeSetting['video_name'] ;
+          $header_name = $OrderHomeSetting['header_name'] ;
+          $source_type = "audios" ;
+
+        }
+
+        if( $OrderHomeSetting['video_name'] == "albums" ){          // Albums
+          
+          $data = $this->All_Homepage_albums();
+          $source = $OrderHomeSetting['video_name'] ;
+          $header_name = $OrderHomeSetting['header_name'] ;
+          $source_type = "audios_albums" ;
+
+        }
+
+
+        // if( $OrderHomeSetting['video_name'] == "artist" ){          // Artist
+          
+        //   $data = $this->All_Homepage_artist();
+        //   $source = $OrderHomeSetting['video_name'] ;
+        //   $header_name = $OrderHomeSetting['header_name'] ;
+        // $source_type = "artist" ;
+
+        // }
+
+        if( $OrderHomeSetting['video_name'] == "video_schedule" ){    // video_schedule
+          
+          $data = $this->All_Homepage_video_schedule();
+          $source = $OrderHomeSetting['video_name'] ;
+          $header_name = $OrderHomeSetting['header_name'] ;
+          $source_type = "videos" ;
+
+        }
+
+        if( $OrderHomeSetting['video_name'] == "ChannelPartner" ){    // ChannelPartner
+          
+          $data = $this->All_Homepage_ChannelPartner();
+          $source = $OrderHomeSetting['video_name'] ;
+          $header_name = $OrderHomeSetting['header_name'] ;
+          $source_type = "ChannelPartner" ;
+
+        }
+
+        if( $OrderHomeSetting['video_name'] == "ContentPartner" ){    // ContentPartner
+          
+          $data = $this->All_Homepage_ContentPartner();
+          $source = $OrderHomeSetting['video_name'] ;
+          $header_name = $OrderHomeSetting['header_name'] ;
+          $source_type = "ContentPartner" ;
+
+        }
+
+        
+        if( $OrderHomeSetting['video_name'] == "latest_viewed_Videos" ){    // Latest viewed videos
+          
+          $data = $this->All_Homepage_latest_viewed_Videos( $user_id );
+          $source = $OrderHomeSetting['video_name'] ;
+          $header_name = $OrderHomeSetting['header_name'] ;
+          $source_type = "videos" ;
+
+        }
+
+        if( $OrderHomeSetting['video_name'] == "latest_viewed_Livestream" ){    // Latest viewed Livestream
+          
+          $data = $this->All_Homepage_latest_viewed_Livestream( $user_id );
+          $source = $OrderHomeSetting['video_name'] ;
+          $header_name = $OrderHomeSetting['header_name'] ;
+          $source_type = "livestream" ;
+
+        }
+
+        if( $OrderHomeSetting['video_name'] == "latest_viewed_Audios" ){    // Latest viewed Audios
+          
+          $data = $this->All_Homepage_latest_viewed_Audios( $user_id );
+          $source = $OrderHomeSetting['video_name'] ;
+          $header_name = $OrderHomeSetting['header_name'] ;
+          $source_type = "audios" ;
+
+        }
+
+        if( $OrderHomeSetting['video_name'] == "latest_viewed_Episode" ){    // Latest viewed Episode
+          
+          $data = $this->All_Homepage_latest_viewed_Episode( $user_id );
+          $source = $OrderHomeSetting['video_name'] ;
+          $header_name = $OrderHomeSetting['header_name'] ;
+          $source_type = "episode" ;
+
+        }
+
+
+        if( $OrderHomeSetting['video_name'] == "category_videos" ){          // category videos
+          
+          $data = $this->All_Homepage_category_videos();
+          $source = $OrderHomeSetting['video_name'] ;
+          $header_name = $OrderHomeSetting['header_name'] ;
+          $source_type = "category_videos" ;
+
+        }
+
+        if( $OrderHomeSetting['video_name'] == "live_category" ){          // category livestream
+          
+          $data = $this->All_Homepage_category_livestream();
+          $source = $OrderHomeSetting['video_name'] ;
+          $header_name = $OrderHomeSetting['header_name'] ;
+          $source_type = "live_category" ;
+
+        }
+
+        if( $OrderHomeSetting['video_name'] == "Recommendation" ){          // Recommendation
+          
+          $data = $this->All_Homepage_MostwatchedVideos();
+          $source = $OrderHomeSetting['video_name'] ;
+          $header_name = "Most watched Videos" ;
+          $source_type = "videos" ;
+
+        }
+
+        if( $OrderHomeSetting['video_name'] == "Recommendation" ){          // Recommendation
+          
+          $data = $this->All_Homepage_MostwatchedVideosUser($user_id);
+          $source = $OrderHomeSetting['video_name'] ;
+          $header_name = "Mostwatched Videos User" ;
+          $source_type = "videos" ;
+
+        }
+
+        if( $OrderHomeSetting['video_name'] == "Recommendation" ){          // Recommendation
+         
+          $data = $this->All_Homepage_Country_MostwatchedVideos();
+          $source = $OrderHomeSetting['video_name'] ;
+          $header_name = "Country Most watched Videos" ;
+          $source_type = "videos" ;
+
+        }
+
+        if( $OrderHomeSetting['video_name'] == "liveCategories" ){          // liveCategories
+         
+          $data = $this->All_Homepage_liveCategories();
+          $source = $OrderHomeSetting['video_name'] ;
+          $header_name = $OrderHomeSetting['header_name'] ;
+          $source_type = "livestreams" ;
+
+        }
+
+        if( $OrderHomeSetting['video_name'] == "videoCategories" ){          // videoCategories
+         
+          $data = $this->All_Homepage_videoCategories();
+          $source = $OrderHomeSetting['video_name'] ;
+          $header_name = $OrderHomeSetting['header_name'] ;
+          $source_type = "videos" ;
+
+        }
+
+        $result[] = array(
+          "source"      => $source,
+          "header_name" => $header_name,
+          "data"        => $data,
+        );
+
+      }
+
+      $response = array(
+        'status' => 'true',
+        'Home_page' => $result,
+      );
+  
+      return response()->json($response, 200);
+  }
+
+  private static function All_Homepage_homesetting(){
+
+     $Homesetting = MobileHomeSetting::first();
+
+     $input = array();
+
+     if($Homesetting->featured_videos == 1){
+        array_push($input,'featured_videos');
+     }
+
+     if($Homesetting->latest_videos == 1){
+       array_push($input,'latest_videos');
+    }
+
+     if($Homesetting->category_videos == 1){
+        array_push($input,'category_videos');
+     }
+
+     if($Homesetting->live_category == 1){
+        array_push($input,'live_category');
+     }
+
+    if($Homesetting->videoCategories == 1){
+        array_push($input,'videoCategories');
+    }
+
+    if($Homesetting->liveCategories == 1){
+      array_push($input,'liveCategories');
+    }
+
+    if($Homesetting->live_videos == 1){
+      array_push($input,'live_videos');
+    }
+
+    if($Homesetting->series == 1){
+      array_push($input,'series');
+    }
+
+    if($Homesetting->audios == 1){
+      array_push($input,'audios');
+    }
+
+    if($Homesetting->albums == 1){
+      array_push($input,'albums');
+    }
+
+    if($Homesetting->Recommendation == 1){
+      array_push($input,'Recommendation');
+    }
+
+    if($Homesetting->video_schedule == 1){
+      array_push($input,'video_schedule');
+    }
+
+    if($Homesetting->channel_partner == 1){
+      array_push($input,'channel_partner');
+    }
+
+    if($Homesetting->content_partner == 1){
+      array_push($input,'content_partner');
+    }
+
+    if($Homesetting->continue_watching == 1){
+      array_push($input,'continue_watching');
+    }
+
+    if($Homesetting->latest_viewed_Videos == 1){
+      array_push($input,'latest_viewed_Videos');
+    }
+
+    if($Homesetting->latest_viewed_Livestream == 1){
+      array_push($input,'latest_viewed_Livestream');
+    }
+
+    if($Homesetting->latest_viewed_Audios == 1){
+      array_push($input,'latest_viewed_Audios');
+    }
+
+    if($Homesetting->latest_viewed_Episode == 1){
+      array_push($input,'latest_viewed_Episode');
+    }
+
+    // if($Homesetting->artist == 1){
+    //   array_push($input,'artist');
+    // }
+
+    return $input;
+
+  }
+
+  private static function All_Homepage_latestvideos(){
+
+    $latest_videos_status = MobileHomeSetting::pluck('latest_videos')->first();
+    $check_Kidmode        = 0 ;
+
+    if( $latest_videos_status == null || $latest_videos_status == 0 ):
+
+      $data = array();       // Note - if the home-setting (latest_videos) is turned off in the admin panel
+
+    else:
+
+      $data = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price','duration','rating','image','featured','age_restrict')
+        ->where('active',1)->where('status', 1)->where('draft',1);
+
+          if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
+          {
+            $data = $data->whereNotIn('videos.id',Block_videos());
+          }
+
+          if( $check_Kidmode == 1 )
+          {
+            $data = $data->whereBetween('age_restrict', [ 0, 12 ]);
+          }
+
+      $data = $data->latest()->limit(30)->get()->map(function ($item) {
+        $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
+        return $item;
+      });
+
+    endif;
+
+    return $data ;
+
+  }
+
+  private static function All_Homepage_featured_videos(){
+
+    $featured_videos_status = MobileHomeSetting::pluck('featured_videos')->first();
+
+    $check_Kidmode        = 0 ;
 
       if( $featured_videos_status == null || $featured_videos_status == 0 ):
 
-          $featured_videos = array();        // Note - if the home-setting (featured_videos) is turned off in the admin panel
+          $data = array();        // Note - if the home-setting (featured_videos) is turned off in the admin panel
       
       else:
 
-        $featured_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price','duration','rating','image','featured','age_restrict')
+        $data = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price','duration','rating','image','featured','age_restrict')
           ->where('active',1)->where('status', 1)->where('draft',1)->where('featured',1);
 
             if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
             {
-                $featured_videos = $featured_videos->whereNotIn('videos.id',Block_videos());
+                $data = $data->whereNotIn('videos.id',Block_videos());
             }
 
             if( $check_Kidmode == 1 )
             {
-                $featured_videos = $featured_videos->whereBetween('age_restrict', [ 0, 12 ]);
+                $data = $data->whereBetween('age_restrict', [ 0, 12 ]);
             }
         
-        $featured_videos = $featured_videos->latest()->limit(30)->get()->map(function ($item) {
+        $data = $data->latest()->limit(30)->get()->map(function ($item) {
             $item['image_url'] = URL::to('public/uploads/images/'.$item->image);
-            $item['redirect_url'] = URL::to('category/videos/'.$item->slug);
             return $item;
         });
 
       endif;
 
+    return $data ;
 
-    // Live videos
-      $live_stream_videos_status = Homesetting::pluck('live_videos')->first();
-
-          if( $live_stream_videos_status == null || $live_stream_videos_status == 0 ):   
-
-              $live_stream_videos = array();      // Note - if the home-setting (live_videos) is turned off in the admin panel
-
-          else:
-
-            $live_stream_videos = LiveStream::select('id','title','slug','year','rating','access','ppv_price','publish_type','publish_status','publish_time','duration','rating','image','featured')
-                                  ->where('active',1)->where('status', 1)->latest()->limit(30)->get()
-                                  ->map(function ($item) {
-                                      $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
-                                      $item['redirect_url'] = URL::to('live/'.$item->slug);
-                                      return $item;
-                                  });
-          endif;
-
-          //  Audios
-
-        $audios_status = Homesetting::pluck('audios')->first();
-
-            if( $audios_status == null || $audios_status == 0 ):    
-
-                $audios = array();      // Note - if the home-setting (audios) is turned off in the admin panel
-
-            else:
-
-              $audios = Audio::select('id','title','slug','year','rating','access','ppv_price','duration','rating','image','featured')
-                          ->where('active',1)->where('status', 1)->where('draft',1)->latest();
-
-                  if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
-                  {
-                      $audios = $audios->whereNotIn('audio.id',Block_audios());
-                  }
-
-              $audios = $audios->limit(30)->get()->map(function ($item) {
-                              $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
-                              $item['redirect_url'] = URL::to('album/'.$item->slug);
-                              return $item;
-              }); 
-
-            endif;
-
-          // Albums 
-        $albums_status = Homesetting::pluck('albums')->first();
-
-            if(  $albums_status == null || $albums_status == 0 ):    
-
-                $audio_albums = array();      // Note - if the home-setting (albums) is turned off in the admin panel
-
-            else:
-
-                $audio_albums = AudioAlbums::latest()->limit(30)->get()->map(function ($item) {
-                    $item['image_url'] = URL::to('/public/uploads/albums/'.$item->image);
-                    $item['redirect_url'] = URL::to('audio/'.$item->slug);
-                    return $item;
-                });
-
-            endif;
-
-            // Artist
-
-        $artist_status = Homesetting::pluck('artist')->first();
-
-            if( $artist_status == null ||  $artist_status == 0 ):  
-
-                $artist = array();      // Note - if the home-setting (artist) is turned off in the admin panel
-
-            else:
-
-              $artist = Artist::latest()->limit(30)->get()->map(function ($item) {
-                  $item['image_url'] = URL::to('/public/uploads/albums/'.$item->image);
-                  $item['redirect_url'] = URL::to('artist/'.$item->slug);
-                  return $item;
-              });
-            endif;
-
-            $channel_partner_status = Homesetting::pluck('channel_partner')->first();
-
-            if( $channel_partner_status == null || $channel_partner_status == 0 ):   
-
-                $channel_partner = array();      // Note - if the home-setting (channel_partner) is turned off in the admin panel
-            
-            else:
-
-              $channel_partner = Channel::select('id','channel_name','status','channel_image','channel_slug')
-                      ->where('status',1)->latest()->limit(30)->get()->map(function ($item) {
-                        $item['image_url'] = URL::to('/public/uploads/channel/'.$item->channel_image);
-                        $item['redirect_url'] = URL::to('channel/'.$item->channel_slug);
-                      return $item;
-                  });
-
-            endif;
-
-
-      $data = [
-          "status" => 'true',
-          "message" => 'Retrieved Homepage Section data Successfully' ,
-          "latest_videos_count" => count($latest_videos),
-          "latest_videos" => $latest_videos,
-          "featured_videos_count" => count($featured_videos),
-          "featured_videos" => $featured_videos,
-          "live_stream_videos_count" => count($live_stream_videos),
-          "live_stream_videos" => $live_stream_videos,
-          "audios_count" => count($audios),
-          "audios" => $audios,
-          "audio_albums_count" => count($audio_albums),
-          "audio_albums" => $audio_albums,
-          "artist_count" => count($artist),
-          "artist" => $artist,
-          "channel_partner_count" => count($channel_partner),
-          "channel_partner" => $channel_partner,
-      ];
-
-
-    } catch (\Throwable $th) {
-        $data = array(
-          'status' => 'false',
-          'message' => $th->getMessage() ,
-        );
-    }
-
-    return response()->json($data, 200);
   }
 
-  public function ddd()
-  {
+  private static function All_Homepage_live_videos(){
+  
+      $live_stream_videos_status = MobileHomeSetting::pluck('live_videos')->first();
 
-       $myData = array();
+      if( $live_stream_videos_status == null || $live_stream_videos_status == 0 ):   
 
-        $variable =  array(
-          ['value' => 'latest_videos',    'name' => 'latest_videos'] ,
-          ['value' => 'featured_videos',  'name' => 'featured_videos'] ,
-          ['value' => 'pre',  'name' => 'catgory_videos'] ,
+          $data = array();      // Note - if the home-setting (live_videos) is turned off in the admin panel
 
-      );
+      else:
 
+        $data = LiveStream::select('id','title','slug','year','rating','access','ppv_price','publish_type','publish_status','publish_time','duration','rating','image','featured')
+                              ->where('active',1)->where('status', 1)->latest()->limit(30)->get()
+                              ->map(function ($item) {
+                                  $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
+                                  return $item;
+                              });
+      endif;
+
+      return $data ;
+  }
+
+  private static function All_Homepage_series_videos(){
+
+    $series_status = MobileHomeSetting::pluck('series')->first();
+
+      if( $series_status != null && $series_status == 0 ):
+
+          $data = array();        // Note - if the home-setting (series) is turned off in the admin panel
       
-      $featured_videos_status = Homesetting::pluck('featured_videos')->first();
-      $Homesetting = Homesetting::first();
-      $check_Kidmode = 0 ;
-      
+      else:
 
-        foreach ($variable as $key => $value) {
-
-
-          if ( $value['name'] == "latest_videos"):
-
-              if( $Homesetting->latest_videos == null || $Homesetting->latest_videos == 0 ):
-
-                $videos = array();       // Note - if the home-setting (latest_videos) is turned off in the admin panel
-        
-              else:
-        
-                $videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price','duration','rating','image','featured','age_restrict')
-                  ->where('active',1)->where('status', 1)->where('draft',1);
-        
-                    if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
-                    {
-                      $videos = $videos->whereNotIn('videos.id',Block_videos());
-                    }
-        
-                    if( $check_Kidmode == 1 )
-                    {
-                      $videos = $videos->whereBetween('age_restrict', [ 0, 12 ]);
-                    }
-        
-                $videos = $videos->latest()->limit(30)->get()->map(function ($item) {
-                  $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
-                  $item['redirect_url'] = URL::to('category/videos/'.$item->slug);
-                  return $item;
-                });
-        
-              endif;
-
-              $source = 'livestream';
-          endif;
-
-
-          if ( $value['name'] == "featured_videos"):
-
-            if( $featured_videos_status == null || $featured_videos_status == 0 ):
-
-              $videos = array();        // Note - if the home-setting (videos) is turned off in the admin panel
-          
-          else:
-    
-            $videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price','duration','rating','image','featured','age_restrict')
-              ->where('active',1)->where('status', 1)->where('draft',1)->where('featured',1);
-    
-                if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
-                {
-                    $videos = $videos->whereNotIn('videos.id',Block_videos());
-                }
-    
-                if( $check_Kidmode == 1 )
-                {
-                    $videos = $videos->whereBetween('age_restrict', [ 0, 12 ]);
-                }
-            
-            $videos = $videos->latest()->limit(30)->get()->map(function ($item) {
-                $item['image_url'] = URL::to('public/uploads/images/'.$item->image);
-                $item['redirect_url'] = URL::to('category/videos/'.$item->slug);
+        $data = Series::select('id','title','slug','access','active','ppv_status','featured','duration','image','embed_code','mp4_url','webm_url','ogg_url','url')
+            ->where('active', '=', '1')->get()->map(function ($item) {
+                $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
+                $item['season_count'] = SeriesSeason::where('series_id',$item->id)->count();
+                $item['episode_count'] = Episode::where('series_id',$item->id)->count();
                 return $item;
-            });
-    
-          endif;
-    
+        });
+      
+      endif;
 
-            $source = 'featured_videos';
-        endif;
+      return $data ;
+  }
 
-          if ( $value['name'] == "catgory_videos"):
+  private static function All_Homepage_audios(){
 
+    $audios_status = MobileHomeSetting::pluck('audios')->first();
 
+      if( $audios_status == null || $audios_status == 0 ):    
 
+          $data = array();      // Note - if the home-setting (audios) is turned off in the admin panel
 
-            $videos = VideoCategory::query()->with(['category_videos' => function ($videos) {
+      else:
 
-                $videos->where('videos.active',1)->where('videos.status', 1)->where('videos.draft',1);
-    
-    
-                    $videos = $videos->latest('videos.created_at')->limit(30)->get()->map(function ($item) {
-                        $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
+        $data = Audio::select('id','title','slug','year','rating','access','ppv_price','duration','rating','image','featured')
+          ->where('active',1)->where('status', 1)->where('draft',1)->latest();
+
+            if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
+            {
+              $data = $data->whereNotIn('audio.id',Block_audios());
+            }
+
+        $data = $data->limit(30)->get()->map(function ($item) {
+            $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
+            $item['redirect_url'] = URL::to('album/'.$item->slug);
+            return $item;
+        }); 
+
+      endif;
+
+      return $data;
+  }
+
+  private static function All_Homepage_albums(){
+
+    $albums_status = MobileHomeSetting::pluck('albums')->first();
+
+      if(  $albums_status == null || $albums_status == 0 ):    
+
+          $data = array();      // Note - if the home-setting (albums) is turned off in the admin panel
+
+      else:
+
+          $data = AudioAlbums::latest()->limit(30)->get()->map(function ($item) {
+              $item['image_url'] = URL::to('/public/uploads/albums/'.$item->image);
+              $item['redirect_url'] = URL::to('audio/'.$item->slug);
+              return $item;
+          });
+
+      endif;
+
+    return $data ;
+  }
+
+  // private static function All_Homepage_artist(){
+
+  //   $artist_status = MobileHomeSetting::pluck('artist')->first();
+
+  //     if( $artist_status == null ||  $artist_status == 0 ):  
+
+  //         $data = array();      // Note - if the home-setting (artist) is turned off in the admin panel
+
+  //     else:
+
+  //       $data = Artist::latest()->limit(30)->get()->map(function ($item) {
+  //           $item['image_url'] = URL::to('/public/uploads/albums/'.$item->image);
+  //           $item['redirect_url'] = URL::to('artist/'.$item->slug);
+  //           return $item;
+  //       });
+
+  //     endif;
+
+  //   return $data ;
+  // }
+
+  private static function All_Homepage_video_schedule(){
+
+    $video_schedule_status = MobileHomeSetting::pluck('video_schedule')->first();
+
+      if( $video_schedule_status == null || $video_schedule_status == 0 ):    
+
+          $data = array();      // Note - if the home-setting (video_schedule) is turned off in the admin panel
+
+      else:
+
+        $data = VideoSchedules::where('in_home',1)->latest()->limit(30)->get()->map(function ($item) {
+            $item['image_url'] = $item->image;
+            return $item;
+        });
+      
+      endif;
+
+    return $data ;
+  }
+
+  private static function All_Homepage_ChannelPartner(){
+
+    $channel_partner_status = MobileHomeSetting::pluck('channel_partner')->first();
+
+       if( $channel_partner_status == null || $channel_partner_status == 0 ):   
+
+           $data = array();      // Note - if the home-setting (channel_partner) is turned off in the admin panel
+      
+       else:
+
+         $data = Channel::select('id','channel_name','status','channel_image','channel_slug')
+                ->where('status',1)->latest()->limit(30)->get()->map(function ($item) {
+                    $item['image_url'] = URL::to('/public/uploads/channel/'.$item->channel_image);
+                    $item['redirect_url'] = URL::to('channel/'.$item->channel_slug);
                         return $item;
                     });
+       endif;
+   
+    return $data;
+  }
 
-  
-          }])
-          ->select('video_categories.id','video_categories.name', 'video_categories.slug', 'video_categories.in_home','video_categories.order')
-          ->where('video_categories.in_home',1)
-          ->orderBy('video_categories.order')
-          ->get();
+  private static function All_Homepage_ContentPartner(){
+
+    $content_partner_status = MobileHomeSetting::pluck('content_partner')->first();
+
+      if( $content_partner_status == null || $content_partner_status == 0 ): 
+
+          $data = array();      // Note - if the home-setting (content_partner) is turned off in the admin panel
+      else:
+
+          $data = ModeratorsUser::select('id','username','status','picture','slug')
+                  ->where('status',1)->latest()->limit(30)->get()->map(function ($item) {
+                  return $item;
+              });
+
+          $data = array();
+      endif;
+
+    return $data;
+  }
+
+  private static function All_Homepage_latest_viewed_Videos( $user_id ){
+
+    $latest_viewed_Videos_status = MobileHomeSetting::pluck('latest_viewed_Videos')->first();
+
+      if( $latest_viewed_Videos_status == null || $latest_viewed_Videos_status == 0 ): 
+
+          $data = array();      // Note - if the home-setting (latest_viewed_Videos_status) is turned off in the admin panel
+      else:
+
+        $data = RecentView::join('videos', 'videos.id', '=', 'recent_views.video_id')
+              ->where('recent_views.user_id',$user_id)
+              ->groupBy('recent_views.video_id');
+
+              if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+                  $data = $data  ->whereNotIn('videos.id',Block_videos());
+              }
+              
+        $data = $data->get();
+      endif;
+
+    return $data;
+
+  }
+
+  private static function All_Homepage_latest_viewed_Livestream( $user_id ){
+
+    $latest_viewed_Livestream_status = MobileHomeSetting::pluck('latest_viewed_Livestream')->first();
+
+      if( $latest_viewed_Livestream_status == null || $latest_viewed_Livestream_status == 0 ): 
+
+          $data = array();      // Note - if the home-setting (latest_viewed_Livestream_status) is turned off in the admin panel
+      else:
+
+          $data = RecentView::join('live_streams', 'live_streams.id', '=', 'recent_views.live_id')
+                  ->where('recent_views.user_id',$user_id)
+                  ->groupBy('recent_views.live_id')
+                  ->get();
+              
+      endif;
+
+    return $data;
+
+  }
+
+  private static function All_Homepage_latest_viewed_Episode( $user_id ){
+
+    $latest_viewed_Episode_status = MobileHomeSetting::pluck('latest_viewed_Episode')->first();
+
+      if( $latest_viewed_Episode_status == null || $latest_viewed_Episode_status == 0 ): 
+
+          $data = array();      // Note - if the home-setting (latest_viewed_Episode_status) is turned off in the admin panel
+      else:
+
+          $data = RecentView::Select('episodes.*', 'episodes.slug as episode_slug', 'series.id', 'series.slug as series_slug', 'recent_views.episode_id', 'recent_views.user_id')
+                    ->join('episodes', 'episodes.id', '=', 'recent_views.episode_id')
+                    ->join('series', 'series.id', '=', 'episodes.series_id')
+                    ->where('recent_views.user_id', $user_id)
+                    ->groupBy('recent_views.episode_id')
+                    ->get();
+
+      endif;
+
+    return $data;
+
+  }
 
 
+  private static function All_Homepage_latest_viewed_Audios($user_id){
 
-          // foreach ($catgory_videos as $key => $value) {
-          //   $videos[] = $value['category_videos'] ;
+    $latest_viewed_Audios_status = MobileHomeSetting::pluck('latest_viewed_Audios')->first();
 
-          // }
+      if( $latest_viewed_Audios_status == null || $latest_viewed_Audios_status == 0 ): 
 
-          $source = 'cat';
+          $data = array();      // Note - if the home-setting (latest_viewed_Audios_status) is turned off in the admin panel
+      else:
+
+          $data =  RecentView::join('audio', 'audio.id', '=', 'recent_views.audio_id')
+            ->where('recent_views.user_id',$user_id)
+            ->groupBy('recent_views.audio_id');
+
+            if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+                $data = $data  ->whereNotIn('audio.id',Block_audios());
+            }
+
+            $data = $data->get();
+              
+      endif;
+
+    return $data;
+
+  }
 
 
-          endif;
-      
-          $myData[] = array(
-            'source' => $source,
-            "videos" => $videos,
-          );
+  private static function All_Homepage_liveCategories(){
 
-        }
+    $livestreamcategory_status = MobileHomeSetting::pluck('liveCategories')->first();
 
-        
+      if( $livestreamcategory_status == null || $livestreamcategory_status == 0 ): 
+
+          $data = array();      // Note - if the home-setting (Livestream category status) is turned off in the admin panel
+      else:
+
+        $data =  LiveCategory::where('in_menu',1)->limit(30)->orderBy('order')->get()->map(function ($item) {
+                              $item['image_url'] = URL::to('public/uploads/videocategory/'.$item->image);
+                              return $item;
+                            });
+      endif;
+   
+    return $data;
+  }
+
+  private static function All_Homepage_videoCategories(){
+
+    $videoCategories_status = MobileHomeSetting::pluck('videoCategories')->first();
+
+      if( $videoCategories_status == null || $videoCategories_status == 0 ): 
+
+          $data = array();      // Note - if the home-setting (video Categories status) is turned off in the admin panel
+      else:
+
+          $data =  VideoCategory::where('in_home',1)->limit(30)->orderBy('order')->get()->map(function ($item) {
+                          $item['image_url'] = URL::to('public/uploads/videocategory/'.$item->image);
+                          return $item;
+                        });
+
+      endif;
+   
+    return $data;
+  }
+
+  private static function All_Homepage_MostwatchedVideos(){
+
+    $Recommendation_status = MobileHomeSetting::pluck('Recommendation')->first();
+
+      if( $Recommendation_status == null || $Recommendation_status == 0 ): 
+
+          $data = array();      // Note - if the home-setting (Recommendation_status) is turned off in the admin panel
+      else:
+
+        $data = RecentView::select('video_id','videos.*',DB::raw('COUNT(video_id) AS count'))
+              ->join('videos', 'videos.id', '=', 'recent_views.video_id');
+
+            if(Geofencing() !=null && Geofencing()->geofencing == 'ON')
+            {
+              $data = $data->whereNotIn('videos.id',Block_videos());
+            }
+
+            $data = $data->groupBy('video_id')
+                  ->orderByRaw('count DESC' )->limit(30)->get()->map(function ($item) {
+                    $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image ;
+                    return $item;
+            });
+
+      endif;
+   
+    return $data;
+
+  }
+
+  private static function All_Homepage_MostwatchedVideosUser($user_id)
+  {
+
+    $Recommendation_status = MobileHomeSetting::pluck('Recommendation')->first();
+
+      if( $Recommendation_status == null || $Recommendation_status == 0 ): 
+
+          $data = array();      // Note - if the home-setting (Recommendation_status) is turned off in the admin panel
+      else:
+
+        $data = RecentView::select('video_id','videos.*',DB::raw('COUNT(video_id) AS count'))
+                  ->join('videos', 'videos.id', '=', 'recent_views.video_id')
+                  ->groupBy('video_id')->where('recent_views.sub_user',$user_id)
+                  ->orderByRaw('count DESC' )->limit(30)->get()->map(function ($item) {
+                    $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image ;
+                    return $item;
+            });
+      endif;
+   
+     return $data;
+  }
+
+  private static function All_Homepage_Country_MostwatchedVideos()
+  {
+
+    $Recommendation_status = MobileHomeSetting::pluck('Recommendation')->first();
+
+    if( $Recommendation_status == null || $Recommendation_status == 0 ): 
+
+        $data = array();      // Note - if the home-setting (Recommendation_status) is turned off in the admin panel
+    else:
+
+        $data = RecentView::select('video_id','videos.*',DB::raw('COUNT(video_id) AS count'))
+                  ->join('videos', 'videos.id', '=', 'recent_views.video_id')->groupBy('video_id')->orderByRaw('count DESC' )
+                  ->where('country', Country_name())->limit(30)->get()->map(function ($item) {
+                    $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image ;
+                    return $item;
+            });
+    endif;
  
+   return $data;
 
-    // }
+  }
 
-    
+  private static function All_Homepage_category_videos(){
 
-    $response = array(
-      'status' => 'true',
-      'movies' => $myData,
+    $category_videos_status = MobileHomeSetting::pluck('category_videos')->first();
 
-    );
+    if( $category_videos_status == null || $category_videos_status == 0 ): 
 
-    return response()->json($response, 200);
+        $data = array();      // Note - if the home-setting (category_videos_status) is turned off in the admin panel
+    else:
 
+      //  $data = array();      
+
+
+      $data = VideoCategory::query()->with(['category_videos' => function ($videos) {
+
+        $check_Kidmode = 0 ;
+                  
+        $videos->select('videos.id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price','duration','rating','image','featured','age_restrict')
+                ->where('videos.active',1)->where('videos.status', 1)->where('videos.draft',1);
+  
+            if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
+            {
+                $videos = $videos->whereNotIn('videos.id',Block_videos());
+            }
+  
+            if( $check_Kidmode == 1 )
+            {
+                $videos = $videos->whereBetween('videos.age_restrict', [ 0, 12 ]);
+            }
+  
+            $videos = $videos->latest('videos.created_at')->limit(30)->get()->map(function ($item) {
+                $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
+                return $item;
+            });
+  
+        }])
+        ->select('video_categories.id','video_categories.name', 'video_categories.slug', 'video_categories.in_home','video_categories.order')
+        ->where('video_categories.in_home',1)
+        ->orderBy('video_categories.order')
+        ->get();
+
+    endif;
+
+    return $data;
+  }
+
+  private static function All_Homepage_category_livestream(){
+
+    $live_category_status = MobileHomeSetting::pluck('live_category')->first();
+
+      if( $live_category_status == null || $live_category_status == 0 ): 
+
+          $data = array();      // Note - if the home-setting (Live category status) is turned off in the admin panel
+      else:
+
+          // $data = array(); 
+
+          $data = LiveCategory::query()->with(['category_livestream' => function ($live_stream_videos) {
+
+            $live_stream_videos->select('live_streams.id','live_streams.title','live_streams.slug','live_streams.year','live_streams.rating','live_streams.access','live_streams.ppv_price','live_streams.publish_type','live_streams.publish_status','live_streams.publish_time','live_streams.duration','live_streams.rating','live_streams.image','live_streams.featured')
+                              ->where('live_streams.active',1)->where('live_streams.status', 1)
+                              ->latest('live_streams.created_at')->limit(30)->get()->map(function ($item) {
+                                  $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
+                                  return $item;
+                              });
+
+        }])
+        ->select('live_categories.id','live_categories.name', 'live_categories.slug', 'live_categories.order')
+        ->orderBy('live_categories.order')
+        ->get();
+
+      endif;
+
+    return $data;
   }
 
 }
