@@ -11429,6 +11429,7 @@ public function QRCodeMobileLogout(Request $request)
           $data = $this->All_Homepage_latestvideos();
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = $OrderHomeSetting['header_name'] ;
+          $source_type = "videos" ;
 
         }
 
@@ -11437,6 +11438,7 @@ public function QRCodeMobileLogout(Request $request)
           $data = $this->All_Homepage_featured_videos();
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = $OrderHomeSetting['header_name'] ;
+          $source_type = "videos" ;
 
         }
 
@@ -11445,6 +11447,7 @@ public function QRCodeMobileLogout(Request $request)
           $data = $this->All_Homepage_live_videos();
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = $OrderHomeSetting['header_name'] ;
+          $source_type = "livestream" ;
 
         }
 
@@ -11453,6 +11456,7 @@ public function QRCodeMobileLogout(Request $request)
           $data = $this->All_Homepage_series_videos();
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = $OrderHomeSetting['header_name'] ;
+          $source_type = "series" ;
 
         }
 
@@ -11461,6 +11465,7 @@ public function QRCodeMobileLogout(Request $request)
           $data = $this->All_Homepage_audios();
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = $OrderHomeSetting['header_name'] ;
+          $source_type = "audios" ;
 
         }
 
@@ -11469,23 +11474,26 @@ public function QRCodeMobileLogout(Request $request)
           $data = $this->All_Homepage_albums();
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = $OrderHomeSetting['header_name'] ;
+          $source_type = "audios_albums" ;
 
         }
 
 
-        if( $OrderHomeSetting['video_name'] == "artist" ){          // Artist
+        // if( $OrderHomeSetting['video_name'] == "artist" ){          // Artist
           
-          $data = $this->All_Homepage_artist();
-          $source = $OrderHomeSetting['video_name'] ;
-          $header_name = $OrderHomeSetting['header_name'] ;
+        //   $data = $this->All_Homepage_artist();
+        //   $source = $OrderHomeSetting['video_name'] ;
+        //   $header_name = $OrderHomeSetting['header_name'] ;
+        // $source_type = "artist" ;
 
-        }
+        // }
 
         if( $OrderHomeSetting['video_name'] == "video_schedule" ){    // video_schedule
           
           $data = $this->All_Homepage_video_schedule();
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = $OrderHomeSetting['header_name'] ;
+          $source_type = "videos" ;
 
         }
 
@@ -11494,6 +11502,7 @@ public function QRCodeMobileLogout(Request $request)
           $data = $this->All_Homepage_ChannelPartner();
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = $OrderHomeSetting['header_name'] ;
+          $source_type = "ChannelPartner" ;
 
         }
 
@@ -11502,6 +11511,7 @@ public function QRCodeMobileLogout(Request $request)
           $data = $this->All_Homepage_ContentPartner();
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = $OrderHomeSetting['header_name'] ;
+          $source_type = "ContentPartner" ;
 
         }
 
@@ -11511,6 +11521,7 @@ public function QRCodeMobileLogout(Request $request)
           $data = $this->All_Homepage_latest_viewed_Videos( $user_id );
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = $OrderHomeSetting['header_name'] ;
+          $source_type = "videos" ;
 
         }
 
@@ -11519,6 +11530,7 @@ public function QRCodeMobileLogout(Request $request)
           $data = $this->All_Homepage_latest_viewed_Livestream( $user_id );
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = $OrderHomeSetting['header_name'] ;
+          $source_type = "livestream" ;
 
         }
 
@@ -11527,6 +11539,7 @@ public function QRCodeMobileLogout(Request $request)
           $data = $this->All_Homepage_latest_viewed_Audios( $user_id );
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = $OrderHomeSetting['header_name'] ;
+          $source_type = "audios" ;
 
         }
 
@@ -11535,6 +11548,7 @@ public function QRCodeMobileLogout(Request $request)
           $data = $this->All_Homepage_latest_viewed_Episode( $user_id );
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = $OrderHomeSetting['header_name'] ;
+          $source_type = "episode" ;
 
         }
 
@@ -11544,6 +11558,7 @@ public function QRCodeMobileLogout(Request $request)
           $data = $this->All_Homepage_category_videos();
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = $OrderHomeSetting['header_name'] ;
+          $source_type = "category_videos" ;
 
         }
 
@@ -11552,6 +11567,7 @@ public function QRCodeMobileLogout(Request $request)
           $data = $this->All_Homepage_category_livestream();
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = $OrderHomeSetting['header_name'] ;
+          $source_type = "live_category" ;
 
         }
 
@@ -11560,15 +11576,16 @@ public function QRCodeMobileLogout(Request $request)
           $data = $this->All_Homepage_MostwatchedVideos();
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = "Most watched Videos" ;
+          $source_type = "videos" ;
 
         }
 
         if( $OrderHomeSetting['video_name'] == "Recommendation" ){          // Recommendation
           
           $data = $this->All_Homepage_MostwatchedVideosUser($user_id);
-          
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = "Mostwatched Videos User" ;
+          $source_type = "videos" ;
 
         }
 
@@ -11577,6 +11594,7 @@ public function QRCodeMobileLogout(Request $request)
           $data = $this->All_Homepage_Country_MostwatchedVideos();
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = "Country Most watched Videos" ;
+          $source_type = "videos" ;
 
         }
 
@@ -11585,6 +11603,7 @@ public function QRCodeMobileLogout(Request $request)
           $data = $this->All_Homepage_liveCategories();
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = $OrderHomeSetting['header_name'] ;
+          $source_type = "livestreams" ;
 
         }
 
@@ -11593,6 +11612,7 @@ public function QRCodeMobileLogout(Request $request)
           $data = $this->All_Homepage_videoCategories();
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = $OrderHomeSetting['header_name'] ;
+          $source_type = "videos" ;
 
         }
 
@@ -11614,7 +11634,7 @@ public function QRCodeMobileLogout(Request $request)
 
   private static function All_Homepage_homesetting(){
 
-     $Homesetting = Homesetting::first();
+     $Homesetting = MobileHomeSetting::first();
 
      $input = array();
 
@@ -11694,9 +11714,9 @@ public function QRCodeMobileLogout(Request $request)
       array_push($input,'latest_viewed_Episode');
     }
 
-    if($Homesetting->artist == 1){
-      array_push($input,'artist');
-    }
+    // if($Homesetting->artist == 1){
+    //   array_push($input,'artist');
+    // }
 
     return $input;
 
@@ -11704,7 +11724,7 @@ public function QRCodeMobileLogout(Request $request)
 
   private static function All_Homepage_latestvideos(){
 
-    $latest_videos_status = Homesetting::pluck('latest_videos')->first();
+    $latest_videos_status = MobileHomeSetting::pluck('latest_videos')->first();
     $check_Kidmode        = 0 ;
 
     if( $latest_videos_status == null || $latest_videos_status == 0 ):
@@ -11739,7 +11759,7 @@ public function QRCodeMobileLogout(Request $request)
 
   private static function All_Homepage_featured_videos(){
 
-    $featured_videos_status = Homesetting::pluck('featured_videos')->first();
+    $featured_videos_status = MobileHomeSetting::pluck('featured_videos')->first();
 
     $check_Kidmode        = 0 ;
 
@@ -11775,7 +11795,7 @@ public function QRCodeMobileLogout(Request $request)
 
   private static function All_Homepage_live_videos(){
   
-      $live_stream_videos_status = Homesetting::pluck('live_videos')->first();
+      $live_stream_videos_status = MobileHomeSetting::pluck('live_videos')->first();
 
       if( $live_stream_videos_status == null || $live_stream_videos_status == 0 ):   
 
@@ -11796,7 +11816,7 @@ public function QRCodeMobileLogout(Request $request)
 
   private static function All_Homepage_series_videos(){
 
-    $series_status = Homesetting::pluck('series')->first();
+    $series_status = MobileHomeSetting::pluck('series')->first();
 
       if( $series_status != null && $series_status == 0 ):
 
@@ -11819,7 +11839,7 @@ public function QRCodeMobileLogout(Request $request)
 
   private static function All_Homepage_audios(){
 
-    $audios_status = Homesetting::pluck('audios')->first();
+    $audios_status = MobileHomeSetting::pluck('audios')->first();
 
       if( $audios_status == null || $audios_status == 0 ):    
 
@@ -11848,7 +11868,7 @@ public function QRCodeMobileLogout(Request $request)
 
   private static function All_Homepage_albums(){
 
-    $albums_status = Homesetting::pluck('albums')->first();
+    $albums_status = MobileHomeSetting::pluck('albums')->first();
 
       if(  $albums_status == null || $albums_status == 0 ):    
 
@@ -11867,30 +11887,30 @@ public function QRCodeMobileLogout(Request $request)
     return $data ;
   }
 
-  private static function All_Homepage_artist(){
+  // private static function All_Homepage_artist(){
 
-    $artist_status = Homesetting::pluck('artist')->first();
+  //   $artist_status = MobileHomeSetting::pluck('artist')->first();
 
-      if( $artist_status == null ||  $artist_status == 0 ):  
+  //     if( $artist_status == null ||  $artist_status == 0 ):  
 
-          $data = array();      // Note - if the home-setting (artist) is turned off in the admin panel
+  //         $data = array();      // Note - if the home-setting (artist) is turned off in the admin panel
 
-      else:
+  //     else:
 
-        $data = Artist::latest()->limit(30)->get()->map(function ($item) {
-            $item['image_url'] = URL::to('/public/uploads/albums/'.$item->image);
-            $item['redirect_url'] = URL::to('artist/'.$item->slug);
-            return $item;
-        });
+  //       $data = Artist::latest()->limit(30)->get()->map(function ($item) {
+  //           $item['image_url'] = URL::to('/public/uploads/albums/'.$item->image);
+  //           $item['redirect_url'] = URL::to('artist/'.$item->slug);
+  //           return $item;
+  //       });
 
-      endif;
+  //     endif;
 
-    return $data ;
-  }
+  //   return $data ;
+  // }
 
   private static function All_Homepage_video_schedule(){
 
-    $video_schedule_status = Homesetting::pluck('video_schedule')->first();
+    $video_schedule_status = MobileHomeSetting::pluck('video_schedule')->first();
 
       if( $video_schedule_status == null || $video_schedule_status == 0 ):    
 
@@ -11910,7 +11930,7 @@ public function QRCodeMobileLogout(Request $request)
 
   private static function All_Homepage_ChannelPartner(){
 
-    $channel_partner_status = Homesetting::pluck('channel_partner')->first();
+    $channel_partner_status = MobileHomeSetting::pluck('channel_partner')->first();
 
        if( $channel_partner_status == null || $channel_partner_status == 0 ):   
 
@@ -11931,17 +11951,17 @@ public function QRCodeMobileLogout(Request $request)
 
   private static function All_Homepage_ContentPartner(){
 
-    $content_partner_status = Homesetting::pluck('content_partner')->first();
+    $content_partner_status = MobileHomeSetting::pluck('content_partner')->first();
 
       if( $content_partner_status == null || $content_partner_status == 0 ): 
 
           $data = array();      // Note - if the home-setting (content_partner) is turned off in the admin panel
       else:
 
-          // $data = ContentPartner::select('id','username','status','picture','slug')
-          //         ->where('status',1)->latest()->limit(30)->get()->map(function ($item) {
-          //         return $item;
-          //     });
+          $data = ModeratorsUser::select('id','username','status','picture','slug')
+                  ->where('status',1)->latest()->limit(30)->get()->map(function ($item) {
+                  return $item;
+              });
 
           $data = array();
       endif;
@@ -11951,7 +11971,7 @@ public function QRCodeMobileLogout(Request $request)
 
   private static function All_Homepage_latest_viewed_Videos( $user_id ){
 
-    $latest_viewed_Videos_status = Homesetting::pluck('latest_viewed_Videos')->first();
+    $latest_viewed_Videos_status = MobileHomeSetting::pluck('latest_viewed_Videos')->first();
 
       if( $latest_viewed_Videos_status == null || $latest_viewed_Videos_status == 0 ): 
 
@@ -11975,7 +11995,7 @@ public function QRCodeMobileLogout(Request $request)
 
   private static function All_Homepage_latest_viewed_Livestream( $user_id ){
 
-    $latest_viewed_Livestream_status = Homesetting::pluck('latest_viewed_Livestream')->first();
+    $latest_viewed_Livestream_status = MobileHomeSetting::pluck('latest_viewed_Livestream')->first();
 
       if( $latest_viewed_Livestream_status == null || $latest_viewed_Livestream_status == 0 ): 
 
@@ -11995,7 +12015,7 @@ public function QRCodeMobileLogout(Request $request)
 
   private static function All_Homepage_latest_viewed_Episode( $user_id ){
 
-    $latest_viewed_Episode_status = Homesetting::pluck('latest_viewed_Episode')->first();
+    $latest_viewed_Episode_status = MobileHomeSetting::pluck('latest_viewed_Episode')->first();
 
       if( $latest_viewed_Episode_status == null || $latest_viewed_Episode_status == 0 ): 
 
@@ -12018,7 +12038,7 @@ public function QRCodeMobileLogout(Request $request)
 
   private static function All_Homepage_latest_viewed_Audios($user_id){
 
-    $latest_viewed_Audios_status = Homesetting::pluck('latest_viewed_Audios')->first();
+    $latest_viewed_Audios_status = MobileHomeSetting::pluck('latest_viewed_Audios')->first();
 
       if( $latest_viewed_Audios_status == null || $latest_viewed_Audios_status == 0 ): 
 
@@ -12041,26 +12061,10 @@ public function QRCodeMobileLogout(Request $request)
 
   }
 
-  private static function All_Homepage_Recommendation(){
-
-    $Recommendation_status = Homesetting::pluck('Recommendation')->first();
-
-    if( $Recommendation_status == null || $Recommendation_status == 0 ): 
-
-        $data = array();      // Note - if the home-setting (Recommendation_status) is turned off in the admin panel
-    else:
-
-      $data = array();  
-
-    endif;
-
-  return $data;
-
-  }
 
   private static function All_Homepage_liveCategories(){
 
-    $livestreamcategory_status = Homesetting::pluck('liveCategories')->first();
+    $livestreamcategory_status = MobileHomeSetting::pluck('liveCategories')->first();
 
       if( $livestreamcategory_status == null || $livestreamcategory_status == 0 ): 
 
@@ -12078,7 +12082,7 @@ public function QRCodeMobileLogout(Request $request)
 
   private static function All_Homepage_videoCategories(){
 
-    $videoCategories_status = Homesetting::pluck('videoCategories')->first();
+    $videoCategories_status = MobileHomeSetting::pluck('videoCategories')->first();
 
       if( $videoCategories_status == null || $videoCategories_status == 0 ): 
 
@@ -12097,7 +12101,7 @@ public function QRCodeMobileLogout(Request $request)
 
   private static function All_Homepage_MostwatchedVideos(){
 
-    $Recommendation_status = Homesetting::pluck('Recommendation')->first();
+    $Recommendation_status = MobileHomeSetting::pluck('Recommendation')->first();
 
       if( $Recommendation_status == null || $Recommendation_status == 0 ): 
 
@@ -12127,7 +12131,7 @@ public function QRCodeMobileLogout(Request $request)
   private static function All_Homepage_MostwatchedVideosUser($user_id)
   {
 
-    $Recommendation_status = Homesetting::pluck('Recommendation')->first();
+    $Recommendation_status = MobileHomeSetting::pluck('Recommendation')->first();
 
       if( $Recommendation_status == null || $Recommendation_status == 0 ): 
 
@@ -12149,7 +12153,7 @@ public function QRCodeMobileLogout(Request $request)
   private static function All_Homepage_Country_MostwatchedVideos()
   {
 
-    $Recommendation_status = Homesetting::pluck('Recommendation')->first();
+    $Recommendation_status = MobileHomeSetting::pluck('Recommendation')->first();
 
     if( $Recommendation_status == null || $Recommendation_status == 0 ): 
 
@@ -12170,7 +12174,7 @@ public function QRCodeMobileLogout(Request $request)
 
   private static function All_Homepage_category_videos(){
 
-    $category_videos_status = Homesetting::pluck('category_videos')->first();
+    $category_videos_status = MobileHomeSetting::pluck('category_videos')->first();
 
     if( $category_videos_status == null || $category_videos_status == 0 ): 
 
@@ -12215,7 +12219,7 @@ public function QRCodeMobileLogout(Request $request)
 
   private static function All_Homepage_category_livestream(){
 
-    $live_category_status = Homesetting::pluck('live_category')->first();
+    $live_category_status = MobileHomeSetting::pluck('live_category')->first();
 
       if( $live_category_status == null || $live_category_status == 0 ): 
 
