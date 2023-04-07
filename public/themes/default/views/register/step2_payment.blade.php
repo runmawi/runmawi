@@ -475,7 +475,12 @@ i.fa.fa-google-plus {
     #card-button{
         background-color:  {{ button_bg_color() .'!important' }} ;
     }
-    
+    .blk li{
+            font-size: 14px;
+        }
+         .blk p{
+            font-size: 14px;
+        }
 </style>
 
 <style>
@@ -546,7 +551,7 @@ background-color: #000;padding: 10px!important;}
                        
                </div>
         <div class="row justify-content-center">
-            <div class="col-lg-7 col-md-7">
+            <div class="col-lg-8 col-md-7">
                 <div class="flick1">
                  <div class="small-heading text-white">Step 2 of  <span class="ml-2">2</span></div>
                     <p class="text-white">Hello, {{ $user_mail }}</p>
@@ -554,10 +559,10 @@ background-color: #000;padding: 10px!important;}
                     <div class="col-md-12 p-0 mt-2">
 
                                                 <!-- <h5> Payment Method</h5> -->
-
+<div class="d-flex">
                                                 <!-- Stripe -->
                             @if(!empty($Stripe_payment_settings) && $Stripe_payment_settings->stripe_status == 1)
-                                <div class=" align-items-center">
+                                <div class=" align-items-center ml-2">
                                     <input type="radio" id="stripe_radio_button" class="payment_gateway" name="payment_gateway" value="stripe" >
                                     <label class=" ml-2"> <p>{{ $stripe_lable }} </p></label> 
                                 </div>
@@ -565,7 +570,7 @@ background-color: #000;padding: 10px!important;}
                            
                                                 <!-- Paystack -->
                             @if( !empty($Paystack_payment_settings) && $Paystack_payment_settings->status == 1 )
-                                <div class="align-items-center">
+                                <div class="align-items-center ml-2">
                                     <input type="radio" id="paystack_radio_button" class="payment_gateway" name="payment_gateway" value="paystack">
                                     <label class="ml-2" ><p> {{ $paystack_lable }} </p></label> 
                                 </div>
@@ -573,7 +578,7 @@ background-color: #000;padding: 10px!important;}
 
                                                 <!-- Razorpay -->
                             @if( !empty($Razorpay_payment_settings) && $Razorpay_payment_settings->status == 1 )
-                                <div class="align-items-center">
+                                <div class="align-items-center ml-2">
                                     <input type="radio" id="Razorpay_radio_button" class="payment_gateway" name="payment_gateway" value="Razorpay">
                                     <label class="ml-2" ><p> {{ $Razorpay_lable }} </p></label> 
                                 </div>
@@ -581,7 +586,7 @@ background-color: #000;padding: 10px!important;}
 
                                                 <!-- PayPal -->
                             @if( !empty($PayPal_payment_settings) && $PayPal_payment_settings->paypal_status == 1 )
-                                <div class=" align-items-center">
+                                <div class=" align-items-center ml-2">
                                     <input type="radio" id="paystack_radio_button" class="payment_gateway" name="payment_gateway" value="paypal">
                                     <label class="mt-2 ml-2" > <p>{{ $paypal_lable }} </p></label>
                                 </div>
@@ -589,14 +594,14 @@ background-color: #000;padding: 10px!important;}
 
                                             <!-- CinetPay -->
                             @if(!empty($CinetPay_payment_settings) && $CinetPay_payment_settings->CinetPay_Status == 1)
-                                <div class=" align-items-center">
+                                <div class=" align-items-center ml-2">
                                     <input type="radio" id="cinetpay_radio_button" class="payment_gateway" name="payment_gateway" value="CinetPay" >
                                     <label class=" ml-2"> <p>{{ $CinetPay_lable }} </p></label> 
                                 </div>
                             @endif
                            
                     </div>      
-
+</div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="data-plans row align-items-center m-0 p-0">
