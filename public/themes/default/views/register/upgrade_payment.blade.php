@@ -448,11 +448,11 @@ i.fa.fa-google-plus {
   background: rgba(124, 20, 20, 0.8)!important;
 }
     .dg{
-        padding: 10px;
+       
         color: #000!important;
         background-color: #fff;
         margin: 5px;
-        height: 110px;
+
        border: 5px solid #ddd;
        
     }
@@ -463,7 +463,7 @@ i.fa.fa-google-plus {
     }
    
         .dg:hover{
-            padding: 10px;
+           
             color: #000!important;
             border:  {{ '5px solid'.button_bg_color() .'!important' }} ;
             transition: 0.5s;
@@ -486,6 +486,16 @@ i.fa.fa-google-plus {
     html {
         scroll-behavior: smooth;
     }
+    .plan_details{
+        min-height: 300px;
+    }
+   
+    .blk{
+        height: 200px;
+        padding: 15px;
+    }
+.ambk{
+background-color: #000;padding: 10px!important;}
 </style>
 
 <script>
@@ -572,6 +582,7 @@ i.fa.fa-google-plus {
                             @endif
                     </div>      
 
+                    
                 <div class="row">
                     <div class="col-md-12">
                         <div class="data-plans row align-items-center m-0 p-0">
@@ -581,16 +592,19 @@ i.fa.fa-google-plus {
                                 @endphp
 
                                 <div style="" class="col-md-6 plan_details p-0"  data-plan-id={{ 'active'.$plan->id  }}  data-plan-price={{ $plan->price }} data-plan_id={{  $plan->plan_id  }} data-payment-type={{ $plan->payment_type }} onclick="plan_details(this)">
+                                    
                                     <a href="#payment_card_scroll">
-                                        <div class="row dg align-items-center mb-4" id={{ 'active'.$plan->id  }}>
-                                            <div class="col-md-7 p-0">
-                                                <h4 class="text-black font-weight-bold"> {{ $plan->plans_name  }} </h4>
-                                                <p>{{ $plan->plans_name  }} Membership</p>
+                                        
+                                        <div  class="row dg align-items-center mb-4" id={{ 'active'.$plan->id  }}>
+                                            <div class="col-md-12 ambk p-0 text-center">
+                                                <div>
+                                                    <h6 class=" font-weight-bold"> {{ $plan->plans_name  }} </h6>
+                                                    <p class="text-white mb-0"> {{ currency_symbol().$plan->price }} Membership</p>
+                                                </div>
                                             </div>
-                                            <div class="vl "></div>
-                                            <div class="col-md-4 p-2" >
-                                                <h4 class="text-black">{{ currency_symbol().$plan->price }}</h4>
-                                                <p>Billed as {{ currency_symbol().$plan->price }}</p>
+                                            
+                                            <div class="col-md-12 blk" >
+                                                 <p>@php echo ($plan->plan_content) @endphp</p>
                                             </div>
                                         </div>
 
@@ -1163,20 +1177,17 @@ i.fa.fa-google-plus {
                             html += '<div class="row align-items-center m-0 p-0 data-plans">';
                                 
                                 $.each( response.data.plans_data , function( index, plan_data ) {
-
+                                    
                                     html += '<div class="col-md-6 plan_details p-0"  data-plan-id="active'+ plan_data.id +'" data-plan-price="'+ plan_data.price +'"  data-plan_id="'+ plan_data.plan_id +'"  data-payment-type="'+ plan_data.payment_type +'" onclick="plan_details(this)">';
                                         html += '<a href="#payment_card_scroll"> <div class="row dg align-items-center mb-4" id="active'+ plan_data.id +'" >';
                                             
-                                            html +=   '<div class="col-md-7 p-0">';
-                                                html +=   '<h4 class="text-black font-weight-bold">  '+ plan_data.plans_name +'   </h4>';
-                                                html +=   '<p>' + plan_data.plans_name + ' Membership </p>';
+                                            html +=   '<div class="col-md-12 ambk p-0 text-center">';
+                                                html +=   '<h6 class="font-weight-bold">  '+ plan_data.plans_name +'   </h6>';
+                                                html +=   '<p class="text-white mb-0">' + currency_symbol + plan_data.price + ' Membership </p>';
                                             html += '</div>' ;
 
-                                            html += '<div class="vl "></div>' ;
-
-                                            html += '<div class="col-md-4 p-2" >' ;
-                                                html +=    '<h4 class="text-black"> '+ currency_symbol + plan_data.price +' </h4>'  ;
-                                                html +=    '<p>Billed as '+ currency_symbol + plan_data.price +' </p>' ;
+                                            html += '<div class="col-md-12 blk" >' ;
+                                                html +=    '<h4 class="text-black"> '+  plan_data.plan_content +' </h4>'  ;
                                             html += '</div>' ;
 
                                         html += '</div>' ;
@@ -1327,10 +1338,10 @@ i.fa.fa-google-plus {
              customer_phone_number: mobile,//the customer's email
              customer_address: "BP 0024",//customer address
              customer_city: "Antananarivo",// The customer's city
-            //  customer_country: "CM",// the ISO code of the country
-            //  customer_state: "CM",// the ISO state code
-             customer_country: "CI, BF, US, CA, FR",// the ISO code of the country
-             customer_state: "CM,CA,US",// the ISO state code
+             customer_country: "CM",// the ISO code of the country
+             customer_state: "CM",// the ISO state code
+            //  customer_country: "CI, BF, US, CA, FR",// the ISO code of the country
+            //  customer_state: "CM,CA,US",// the ISO state code
              customer_zip_code: "06510", // postcode
 
           });
