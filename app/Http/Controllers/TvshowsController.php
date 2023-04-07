@@ -182,9 +182,10 @@ class TvshowsController extends Controller
 
         $free_Contents = Episode::where('active', '=', '1')
             ->where('status', '=', '1')
+            ->where('access', '=', 'guest')
             ->orderBy('created_at', 'DESC')
             ->get();
-
+        
         $pages = Page::all();
         $data = [
             'episodes' => Episode::where('active', '=', '1')
@@ -356,7 +357,55 @@ class TvshowsController extends Controller
                     // ->where('season_id', '=', $season_id)
                     ->where('series_id', '=', $episode->series_id)
                     ->count();
+                    $checkseasonppv = SeriesSeason::where('series_id', '=', $episode->series_id)
+                    ->first();
+            
+                    if ($checkseasonppv->access == "ppv" ) {
+            
+                        if($checkseasonppv->ppv_interval > 0 ){
+            
+                            $ppvepisode = Episode::where('id', '=', $id)
+                            ->where('series_id', '=', $episode->series_id)
+                            ->where('episode_order', '>', $checkseasonppv->ppv_interval)
+                            ->count();
+                                if($ppvepisode > 0){
+                                    $checkseasonppv_exits = 1;
+                                }else{
+                                    $checkseasonppv_exits = 0;
+                                }            
+                        }else{
+                            
+                            $checkseasonppv_exits = 1;
+                        }
+            
+                    } else {
+                        $ppv_exits = 0;
+                    }
             } else {
+                $checkseasonppv = SeriesSeason::where('series_id', '=', $episode->series_id)
+                ->first();
+        
+                if ($checkseasonppv->access == "ppv" ) {
+        
+                    if($checkseasonppv->ppv_interval > 0 ){
+        
+                        $ppvepisode = Episode::where('id', '=', $id)
+                        ->where('series_id', '=', $episode->series_id)
+                        ->where('episode_order', '>', $checkseasonppv->ppv_interval)
+                        ->count();
+                            if($ppvepisode > 0){
+                                $checkseasonppv_exits = 1;
+                            }else{
+                                $checkseasonppv_exits = 0;
+                            }            
+                    }else{
+                        
+                        $checkseasonppv_exits = 1;
+                    }
+        
+                } else {
+                    $checkseasonppv_exits = 0;
+                }
                 $ppv_exits = 0;
             }
 
@@ -435,6 +484,7 @@ class TvshowsController extends Controller
                     'video_access' => $video_access,
                     'free_episode' => $free_episode,
                     'ppv_exits' => $ppv_exits,
+                    'checkseasonppv_exits' => $checkseasonppv_exits,
                     'publishable_key' => $publishable_key,
                     'episode' => $episode,
                     'season' => $season,

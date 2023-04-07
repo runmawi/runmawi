@@ -446,6 +446,8 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin','restrictIp']
 
 Route::get('/episode/filedelete/{id}', 'AdminSeriesController@filedelete'); 
 
+Route::get('/Testwatermark', 'Testwatermark@index');
+
 // Admin Video Functionality
     Route::post('/category_order', 'AdminVideoCategoriesController@category_order');
     Route::get('/videos', 'AdminVideosController@index');

@@ -40,7 +40,8 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
     <div class="">
         <?php 
 			   if(!Auth::guest()){
-			      if($free_episode > 0 ||  $ppv_exits > 0 || Auth::user()->role == 'admin' ||  Auth::guest()){ 
+			      if($free_episode > 0 && $checkseasonppv_exits == 0 ||  $ppv_exits > 0 && $checkseasonppv_exits == 0
+                   || Auth::user()->role == 'admin'  || Auth::user()->role == 'subscriber' ||  Auth::guest() && $checkseasonppv_exits == 0){ 
 
                   if($episode->access == 'guest' || $video_access == 'free' || ( ($episode->access == 'subscriber' || 
                      $episode->access == 'registered') && !Auth::guest() && Auth::user()->subscribed()) || (!Auth::guest() && 
@@ -175,7 +176,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
         </div>
 
         <?php endif; 
-			}else{  ?>
+			}else if($checkseasonppv_exits == 0){  ?>
 
         <div id="series_container">
             <video id="videoPlayer" autoplay class="video-js vjs-default-skin" controls preload="auto"
@@ -221,13 +222,15 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
     <div class="container-fluid series-details">
         <div id="series_title">
             <div class="">
-                <div class="row align-items-center justify-content-between">
-                    <?php if($free_episode > 0 ||  $ppv_exits > 0 || Auth::user()->role == 'admin' ||  Auth::guest()){ } else{ ?>
-                    <div class="col-md-6 p-0">
+                <div class="row align-items-center justify-content-between"  style="background: url(<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
+                    <?php if($free_episode > 0 || $checkseasonppv_exits > 0 ||  $ppv_exits > 0 || Auth::user()->role == 'admin' ||  Auth::guest()){
+
+                   ?>
+                    <div class="col-md-12 p-0">
                         <span class="text-white" style="font-size: 129%;font-weight: 700;">Purchase to Watch the
                             Series:</span>
                         <?php 
-                  if($series->access == 'subscriber'): ?> Subscribers <?php elseif($series->access == 'registered'): ?> Registered Users <?php endif; ?>
+                  if($series->access == 'subscriber'): ?>  <?php elseif($series->access == 'registered'): ?>   <?php endif; ?>
                         </p>
                     </div>
 
@@ -239,7 +242,8 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                     </div>
                     <?php	} } ?>
 
-                    <div class="col-md-6">
+                    </div>
+                    <div class="col-md-12">
                         <span class="text-white" style="font-size: 120%;font-weight: 700;">You're watching:</span>
                         <p class="mb-0" style=";font-size: 80%;color: white;">
                             <?php 
