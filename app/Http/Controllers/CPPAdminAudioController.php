@@ -42,6 +42,14 @@ use Session;
 use App\CategoryAudio;
 use App\AudioLanguage;
 use App\InappPurchase;
+use App\Geofencing;
+use App\RecentView;
+use App\BlockAudio;
+use App\Favorite;
+use App\Wishlist;
+use App\Watchlater;
+use App\PpvPurchase;
+use Carbon\Carbon;
 
 class CPPAdminAudioController extends Controller
 {
@@ -865,4 +873,231 @@ class CPPAdminAudioController extends Controller
       }
 
     }
+
+    public function play_audios($slug,$name = '')
+      {
+
+        $user_package =    User::where('id', 1)->first();
+        $package = $user_package->package;
+        if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
+        $user = Session::get('user'); 
+        $user_id = $user->id;
+        
+        //$audio = Audio::findOrFail($albumID);
+        $getfeching= Geofencing::first();
+        $getfeching= Geofencing::first();
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+        $userIp = $geoip->getip();    
+        $countryName = $geoip->getCountry();
+
+        $source_id = Audio::where('slug',$slug)->pluck('id')->first();
+
+        if (!empty($name)) {
+          
+             $audio = Audio::select('id')->where('slug','=',$name)->where('status','=',1)->first();
+             $audio = $audio->id;
+             $albumID = Audio::select('album_id')->where('slug','=',$name)->where('status','=',1)->first();
+        
+             $check_audio_details = Audio::where('slug','=',$name)->where('status','=',1)->first();
+            
+            
+              if (!empty($check_audio_details)) {
+                  $audio_details = Audio::where('slug','=',$name)->where('status','=',1)->first();
+                } else {
+                     $audio_details = Audio::where('id','=',$albumID)->where('status','=',1)->first();
+                }
+            
+                $audio_cat_id  = Audio::select('audio_category_id')->where('album_id','=',$albumID)->where('status','=',1)->first();
+        
+
+                $audionext = Audio::select('slug')->where('id', '>', $audio)->where('album_id', '=', $albumID)->where('status','=',1)->first();
+
+                $audioprev = Audio::where('id', '<', $audio)->where('album_id', '=', $albumID)->where('status','=',1)->first();
+
+
+                  // blocked Audio
+                  $block_Audio=BlockAudio::where('country',$countryName)->get();
+                  if(!$block_Audio->isEmpty()){
+                     foreach($block_Audio as $blocked_Audios){
+                        $blocked_Audio[]=$blocked_Audios->audio_id;
+                     }
+                  }    
+                  $blocked_Audio[]='';
+                
+                  $related_audio  = Audio::where('album_id','=',$albumID)->where('id','!=',$audio)->where('status','=',1);
+                    if($getfeching !=null && $getfeching->geofencing == 'ON'){
+                         $related_audio = $related_audio  ->whereNotIn('id',$blocked_Audio);
+                  }
+                   $related_audio = $related_audio ->get();
+
+            
+                $favorited = false;
+                if(!empty($user_id)):
+                    $favorited = Favorite::where('user_id', '=', $user_id)->where('audio_id', '=', $audio)->first();
+                endif;
+                $wishlisted = false;
+                if(!empty($user_id)):
+                    $wishlisted = Wishlist::where('user_id', '=', $user_id)->where('audio_id', '=', $audio)->first();
+                endif;
+                $watchlater = false;
+                if(!empty($user_id)):
+                    $watchlater = Watchlater::where('user_id', '=', $user_id)->where('audio_id', '=', $audio)->first();
+                endif;
+            
+            
+        } else {
+           
+            $audio = Audio::where('slug','=',$slug)->where('status','=',1)->first();
+            if(!empty($audio)){
+            $audio = $audio->id;
+            }else{
+            $audio = "";
+            }
+
+            $view = new RecentView;
+            $view->audio_id = $audio;
+            $view->user_id = $user_id;
+            $view->visited_at = date('Y-m-d');
+            $view->save();
+             if (!empty($audio)) {
+              $check_audio_details = Audio::where('id','=',$audio)->where('status','=',1)->first();
+              $albumID = $check_audio_details->album_id;
+                
+              if (!empty($check_audio_details) && empty($name)) {
+            //   echo "<pre>";dd($albumID);exit();
+
+                  $audio_details = Audio::where('slug','=',$slug)->where('status','=',1)->first();
+                   
+                } else {
+                     $audio_details = Audio::where('album_id','=',$albumID)->where('status','=',1)->first();
+        
+                }
+                $audio_cat_id  = Audio::select('audio_category_id')->where('album_id','=',$albumID)->where('status','=',1)->first();
+        
+                $audiocurrent = Audio::select('id')->where('album_id', '=', $albumID)->where('status','=',1)->first();
+
+                $audionext = Audio::select('slug')->where('id', '>', $audiocurrent)->where('album_id', '=', $albumID)->where('status','=',1)->first();
+
+                $audioprev = Audio::where('id', '<', $audiocurrent)->where('album_id', '=', $albumID)->where('status','=',1)->first();
+
+                   // blocked Audio
+                   $block_Audio=BlockAudio::where('country',$countryName)->get();
+                   if(!$block_Audio->isEmpty()){
+                      foreach($block_Audio as $blocked_Audios){
+                         $blocked_Audio[]=$blocked_Audios->audio_id;
+                      }
+                   }    
+                   $blocked_Audio[]='';
+                 
+                   $related_audio  = Audio::where('album_id','=',$albumID)->where('id','!=',$audio)->where('status','=',1);
+                     if($getfeching !=null && $getfeching->geofencing == 'ON'){
+                          $related_audio = $related_audio  ->whereNotIn('id',$blocked_Audio);
+                   }
+                    $related_audio = $related_audio ->get();
+ 
+                 
+                $favorited = false;
+                if(!empty($user_id)):
+                    $favorited = Favorite::where('user_id', '=', $user_id)->where('audio_id', '=', $audio)->first();
+                endif;
+                $wishlisted = false;
+                if(!empty($user_id)):
+                    $wishlisted = Wishlist::where('user_id', '=', $user_id)->where('audio_id', '=', $audio)->first();
+                endif;
+                $watchlater = false;
+                if(!empty($user_id)):
+                    $watchlater = Watchlater::where('user_id', '=', $user_id)->where('audio_id', '=', $audio)->first();
+                endif;
+                 
+             } else {
+                  $data = array(
+                'message' => 'No Audio Found',
+                'error' =>'error',
+                'json_list' => null ,
+                'audios'  => null ,
+                'ablum_audios' =>  null,
+                'source_id'   => $source_id,  
+                'user_id'   => $user_id,    
+                'commentable_type' => "play_audios" ,
+                );
+
+                return View::make('moderator.cpp.audios.play_audio', $data);
+            }
+            
+            
+        }
+      
+            if (!empty($audio_details)) {
+                $ppv_status = PpvPurchase::with('audio')->where('audio_id','=',$audio)->where('user_id','=',Auth::user()->id)->where('to_time', '>', Carbon::now())->count();
+                $view_increment = $this->handleViewCount($audio); 
+
+                $current_audio   = Audio::where('album_id',$albumID)->where('id',$audio)->get();
+                $all_album_audios = Audio::where('album_id',$albumID)->get();
+
+                $merged_audios = $current_audio->merge($all_album_audios)->all();
+
+
+            $json = array('title' => $audio_details->title,'mp3'=>$audio_details->mp3_url);  
+            $data = array(
+                'audios' => Audio::findOrFail($audio),
+                'json_list' => json_encode($json),
+                'album_name' => AudioAlbums::findOrFail($albumID)->albumname,
+                'album_slug' => AudioAlbums::findOrFail($albumID)->slug,
+                'other_albums' => AudioAlbums::where('id','!=', $albumID)->get(),
+                'audio_details' => $audio_details,
+                'related_audio' => $related_audio,
+                'audionext' => $audionext,
+                'audioprev' => $audioprev,
+                'current_slug' =>$slug,
+                'url' => 'audio',
+                'ppv_status' => $ppv_status,
+                'view_increment' => $view_increment,
+                'menu' => Menu::orderBy('order', 'ASC')->get(),
+                'favorited' => $favorited,
+                'media_url' => URL::to('/').'/audio/'.$slug,
+                'mywishlisted' => $wishlisted,
+                'watchlatered' => $watchlater,
+                'audio_categories' => AudioCategory::all(),
+                'pages' => Page::where('active', '=', 1)->get(),
+                'ablum_audios' =>  $merged_audios,
+                'source_id'   => $source_id,
+                'user_id'   => $user_id,    
+                'commentable_type' => "play_audios" ,
+                );
+            } else {
+                $data = array(
+                'messge' => 'No Audio Found'
+                );
+                
+            }
+
+            return View::make('moderator.cpp.audios.play_audio', $data);
+        }else{
+            return Redirect::to('/blocked');
+        }
+    }
+
+    public function handleViewCount($id){
+        
+ 
+        // check if this key already exists in the view_media session
+        $blank_array = array();
+        if (! array_key_exists($id, Session::get('viewed_audio', $blank_array) ) ) {
+            
+            try{
+                // increment view
+                $audio = Audio::find($id);
+                $audio->views = $audio->views + 1;
+                $audio->save();
+                // Add key to the view_media session
+                Session::put('viewed_audio.'.$id, time());
+                return true;
+            } catch (Exception $e){
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
 }

@@ -841,10 +841,10 @@ class AdminPlayerAnalyticsController extends Controller
     public function PlayerUserAnalytics()
     {
         $player_videos_count = PlayerAnalytic::get([ \DB::raw("COUNT(videoid) as count")]); 
-
         $player_videos = PlayerAnalytic::join('users', 'users.id', '=', 'player_analytics.user_id')
         ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')
         ->groupBy('player_analytics.user_id')
+        ->groupBy('player_analytics.videoid')
         ->orderBy('player_analytics.created_at')
         ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title',
         DB::raw('sum(player_analytics.duration) as duration') ,

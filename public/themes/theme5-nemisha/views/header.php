@@ -1280,7 +1280,7 @@
                                             value="<?= @$Channel->unhased_password ?>"
                                             autocomplete="current-password">
                                         <button type="submit" class="btn btn-primary"
-                                            style="margin-top: -13%;margin-left: -8%;">Channel Visit Portal </button>
+                                            style="margin-top: -13%;margin-left: -8%;">Visit Channel Portal </button>
                                     </form>
                                 </div>
                                 <?php } ?>

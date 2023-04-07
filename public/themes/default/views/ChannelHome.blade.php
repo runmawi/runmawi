@@ -16,7 +16,11 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
 </style>
 <!-- Favicon -->
 <link rel="shortcut icon" href="<?= URL::to('/') . '/public/uploads/settings/' . $settings->favicon ?>" />
-
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script  src="<?= URL::to('/'). '/assets/js/plyr.polyfilled.js';?>"></script>
+<script  src="<?= URL::to('/'). '/assets/js/hls.js';?>"></script>
 
 <section class="channel-header"
     style="background:url('<?php echo @$channel->channel_banner; ?>') no-repeat scroll 0 0;;background-size: cover;height:350px;background-color: rgba(0, 0, 0, 0.45);
@@ -40,6 +44,32 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
                         include(public_path('themes/default/views/partials/channel-social-share.php'));
                     @endphp
                 </ul>
+            </div>
+            @if(!empty(@$channel) && $channel->intro_video != null):
+            <div class="col-2 col-lg-2">
+            <a data-video="{{ @$channel->intro_video }}" data-toggle="modal" data-target="#videoModal" data-backdrop="static" data-keyboard="false" >	
+                <span class="text-white">
+                <i class="fa fa-play mr-1" aria-hidden="true"></i> About Channel Partner
+                </span>
+            </a>
+
+
+            <div class="modal fade modal-xl" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog"  style='max-width: 800px;'>
+                    <div class="modal-content" style="background-color: transparent;border:none;">
+                    <button type="button" class="close" style='color:red;' data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <div class="modal-body">
+                        <video id="videoPlayer1" 
+                            controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
+                            type="video/mp4" src="{{ @$channel->intro_video }}">
+                        </video>
+                    </div>
+                </div>
+                </div>
+            </div>
+      
+        </div>
+        @endif
             </div>
         </div>
     </div>
@@ -257,6 +287,15 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
 
 <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
 
+<script>
+  const player = new Plyr('#videoPlayer1'); 
+
+      $(document).ready(function(){
+        $(".close").click(function(){
+            $('#videoPlayer1')[0].pause();
+        });
+    });
+</script>
 <script>
     $(document).ready(function() {
         $('.Video_Categorynav').hide();
