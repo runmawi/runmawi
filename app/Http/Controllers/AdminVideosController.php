@@ -1397,7 +1397,6 @@ class AdminVideosController extends Controller
                 } elseif ($data["trailer_type"] == "m3u8_url") {
                     $video->trailer = $data["m3u8_trailer"];
                     $data["trailer"] = $data["m3u8_trailer"];
-                    // http://localhost/flicknexs/storage/app/public/4XGJiKONAQfCe4eV.mp4
                 } elseif ($data["trailer_type"] == "mp4_url") {
                     $video->trailer = $data["mp4_trailer"];
                     $data["trailer"] = $data["mp4_trailer"];
@@ -1529,7 +1528,6 @@ class AdminVideosController extends Controller
                 } elseif ($data["trailer_type"] == "m3u8_url") {
                     $video->trailer = $data["m3u8_trailer"];
                     $data["trailer"] = $data["m3u8_trailer"];
-                    // http://localhost/flicknexs/storage/app/public/4XGJiKONAQfCe4eV.mp4
                 } elseif ($data["trailer_type"] == "mp4_url") {
                     $video->trailer = $data["mp4_trailer"];
                     $data["trailer"] = $data["mp4_trailer"];
@@ -2211,10 +2209,10 @@ class AdminVideosController extends Controller
             }
         }
 
+
         // Block country
         if (!empty($data["country"])) {
             $country = $data["country"];
-            unset($data["country"]);
 
             if (!empty($country)) {
                 BlockVideo::where("video_id", $video->id)->delete();
@@ -2226,6 +2224,8 @@ class AdminVideosController extends Controller
                     $country->save();
                 }
             }
+        }else{
+            BlockVideo::where("video_id", $video->id)->delete();
         }
 
         if (!empty($files != "" && $files != null)) {
