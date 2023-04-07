@@ -616,7 +616,7 @@ background-color: #000;padding: 10px!important;}
                                             </div>
                                         </div>
                                         <div class="col-md-12 blk" >
-                                             <p>{{ strip_tags($plan->plan_content)  }}</p>
+                                             <p>@php echo html_entity_decode($plan->plan_content) @endphp</p>
                                         </div>
                                     </div>
 
