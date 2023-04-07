@@ -632,7 +632,7 @@ class AdminVideosController extends Controller
             // $videos  ->filters()
             // ->watermark("public/uploads/settings" . "/" . $settings->logo);
      
-            // $videos->save(
+            // $video->save(
             //     "public/uploads/reelsVideos" . "/" . $path
             // );
 

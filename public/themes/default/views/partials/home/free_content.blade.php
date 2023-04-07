@@ -20,7 +20,7 @@
                     <p class="p-tag1"><?php echo $currency->symbol.' '.$free_Content->ppv_price; ?></p>
                     <?php }elseif( !empty($free_Content->ppv_status || !empty($free_Content->ppv_status) && $free_Content->ppv_price == 1)){ ?>
                       <p class="p-tag1"><?php echo $free_Content->ppv_status.' '.$currency->symbol; ?></p>
-                      <?php }elseif($free_Content->ppv_status == null && $free_Content->ppv_price == null ){ ?>
+                      <?php }elseif($free_Content->ppv_status == null ){ ?>
                       <p class="p-tag"><?php echo "Free"; ?></p>
                       <?php } ?>
                  
