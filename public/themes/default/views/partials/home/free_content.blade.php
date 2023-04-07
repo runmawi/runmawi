@@ -1,7 +1,9 @@
+<?php if(count($free_Contents) > 0) : ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
   <h4 class="main-title">Free Content Videos</h4>                      
 </div>
 <?php
+endif;
 ?>
 <div class="favorites-contens">
   <ul class="favorites-slider list-inline  row p-0 mb-0">
