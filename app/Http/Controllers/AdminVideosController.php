@@ -9537,73 +9537,73 @@ class AdminVideosController extends Controller
     }
 
 
-    public function combineM3U8toHLS() {
+    // public function combineM3U8toHLS() {
 
-        $playlistUrls = Video::where('type','=','')->orWhere('type', '=', null)->where('active',1)->where('status',1)->pluck('path');
-        $playlistUrls= Video::where('type','=','')->orWhere('type', '=', null)->where('active',1)->where('status',1)->get()->map(function ($item) {       
-               $item['path'] = URL::to('/storage/app/public/') . '/' . $item->path . '.m3u8';
-          return $item;
-        });
+    //     $playlistUrls = Video::where('type','=','')->orWhere('type', '=', null)->where('active',1)->where('status',1)->pluck('path');
+    //     $playlistUrls= Video::where('type','=','')->orWhere('type', '=', null)->where('active',1)->where('status',1)->get()->map(function ($item) {       
+    //            $item['path'] = URL::to('/storage/app/public/') . '/' . $item->path . '.m3u8';
+    //       return $item;
+    //     });
 
 
-        // Array to store all the video URLs
-        $videoUrls = [];
+    //     // Array to store all the video URLs
+    //     $videoUrls = [];
         
-        // Loop through all the playlist URLs
-        foreach ($playlistUrls as $playlistUrl) {
+    //     // Loop through all the playlist URLs
+    //     foreach ($playlistUrls as $playlistUrl) {
 
 
-            $response = Http::get($playlistUrl->path);
-            $playlist = \ParseM3U8::fromString($response->body());
-            $videoUrls = $playlist->getMediaUrls();
+    //         // $response = Http::get($playlistUrl->path);
+    //         // $playlist = \ParseM3U8::fromString($response->body());
+    //         // $videoUrls = $playlist->getMediaUrls();
 
-            // Fetch the M3U8 playlist
-            // $response = Http::get($playlistUrl->path);
+    //         // Fetch the M3U8 playlist
+    //         // $response = Http::get($playlistUrl->path);
             
-            // // Parse the M3U8 playlist to get the video URLs
-            // $videoUrls = array_merge($videoUrls, parseM3U8($response->body()));
-        dd($response);
+    //         // // Parse the M3U8 playlist to get the video URLs
+    //         // $videoUrls = array_merge($videoUrls, parseM3U8($response->body()));
+    //     // dd($response);
 
-        }
+    //     }
         
-        // Create a new M3U8 playlist and add all the video URLs to it
-        $newPlaylist = "#EXTM3U\n";
-        foreach ($videoUrls as $videoUrl) {
-            $newPlaylist .= "#EXTINF:-1,$videoUrl\n";
-            $newPlaylist .= "$videoUrl\n";
-        }
+    //     // Create a new M3U8 playlist and add all the video URLs to it
+    //     // $newPlaylist = "#EXTM3U\n";
+    //     // foreach ($playlistUrls as $videoUrl) {
+    //     //     $newPlaylist .= "#EXTINF:-1,$videoUrl\n";
+    //     //     $newPlaylist .= "$videoUrl\n";
+    //     // }
         
-        // Serve the new M3U8 playlist as a single URL
-        return response($newPlaylist, 200, [
-            'Content-Type' => 'application/vnd.apple.mpegurl',
-        ]);
+    //     // // Serve the new M3U8 playlist as a single URL
+    //     // return response($newPlaylist, 200, [
+    //     //     'Content-Type' => 'application/vnd.apple.mpegurl',
+    //     // ]);
 
-        dd($combinedM3U8);
+    //     // dd($combinedM3U8);
         
-        $combinedM3U8 = "";
-        foreach($videos as $url) {
+    //     $combinedM3U8 = "";
+    //     foreach($videos as $url) {
 
-            $m3u8 = file_get_contents($url->path);
-            $combinedM3U8 .= $m3u8;
-        }
-            $hlsOutput = URL::to('/storage/app/public/output.m3u8');
+    //         $m3u8 = file_get_contents($url->path);
+    //         $combinedM3U8 .= $m3u8;
+    //     }
+    //         $hlsOutput = URL::to('/storage/app/public/output.m3u8');
         
-    //    touch(public_path() . "/uploads/videos/outputone.m3u8");
-       touch(storage_path('app/public/output.m3u8'));
-            //open file abc.txt
-            // $myfile = fopen("output.m3u8", "w");
-            $myfile =  fopen(storage_path('app/public/output.m3u8'), "w");
+    // //    touch(public_path() . "/uploads/videos/outputone.m3u8");
+    //    touch(storage_path('app/public/output.m3u8'));
+    //         //open file abc.txt
+    //         // $myfile = fopen("output.m3u8", "w");
+    //         $myfile =  fopen(storage_path('app/public/output.m3u8'), "w");
 
-            fwrite($myfile, $combinedM3U8);;
+    //         fwrite($myfile, $combinedM3U8);;
 
-            fclose($myfile);
+    //         fclose($myfile);
 
 
-        $file = $hlsOutput;
+    //     $file = $hlsOutput;
 
-        return $hlsOutput;
+    //     return $hlsOutput;
 
-    }
+    // }
 
     public function combineM3U8(Request $request)
     {
