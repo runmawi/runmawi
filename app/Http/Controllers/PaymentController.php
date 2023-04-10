@@ -422,6 +422,43 @@ public function RentPaypal(Request $request)
   }
 
 
+  public function CinetPay_series_season_Rent_Payment(Request $request)
+  {
+    // dd($request->all());
+    $data = $request->all();
+    $season_id = $data['season_id'];
+    $Season = SeriesSeason::where('id',$data['season_id'])->first();
+    $setting = Setting::first();  
+    $ppv_hours = $setting->ppv_hours;
+    // $to_time =  Carbon::now()->addHour($ppv_hours);
+    $d = new \DateTime('now');
+    $d->setTimezone(new \DateTimeZone('Asia/Kolkata'));
+    $now = $d->format('Y-m-d h:i:s a');
+    // dd($now);
+    $time = date('h:i:s', strtotime($now));
+    $to_time = date('Y-m-d h:i:s a',strtotime('+'.$ppv_hours.' hour',strtotime($now)));                        
+    $user_id = Auth::user()->id;
+    $username = Auth::user()->username;
+    $email = Auth::user()->email;
+
+    $purchase = new PpvPurchase;
+    $purchase->user_id = $user_id;
+    $purchase->season_id = $season_id;
+    $purchase->series_id = @$Season->series_id;
+    $purchase->total_amount = $data['amount'];
+    $purchase->status = 'active';
+    $purchase->to_time = $to_time;
+
+    $purchase->save();
+
+    $template = EmailTemplate::where('id','=',11)->first();
+    $heading =$template->heading; 
+
+
+    return 1;
+  }
+
+
   public function purchaseVideo(Request $request)
   {
     // dd($request->all());

@@ -78,7 +78,6 @@ use Mail;
 use App\PlayerAnalytic;
 use Carbon\Carbon;
 use ProtoneMedia\LaravelFFMpeg\Filters\WatermarkFactory;
-use Hl7v2\ParseM3U8;
 
 class AdminVideosController extends Controller
 {
@@ -9565,7 +9564,7 @@ class AdminVideosController extends Controller
 
 
             $response = Http::get($playlistUrl->path);
-            $playlist = ParseM3U8::fromString($response->body());
+            $playlist = \ParseM3U8::fromString($response->body());
             $videoUrls = $playlist->getMediaUrls();
 
             // Fetch the M3U8 playlist

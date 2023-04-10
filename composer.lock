@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2085831cb10eeb81072b6333a73d9343",
+    "content-hash": "c3657381ea5298b6c8f74388fde68050",
     "packages": [
         {
             "name": "acaronlex/laravel-calendar",
@@ -459,6 +459,55 @@
                 "source": "https://github.com/anhskohbo/no-captcha/tree/3.5.0"
             },
             "time": "2023-02-15T16:07:08+00:00"
+        },
+        {
+            "name": "aranyasen/hl7",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/senaranya/HL7.git",
+                "reference": "5e4ba330152a3c8f3e1a8bdfb0aa915b451770c0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/senaranya/HL7/zipball/5e4ba330152a3c8f3e1a8bdfb0aa915b451770c0",
+                "reference": "5e4ba330152a3c8f3e1a8bdfb0aa915b451770c0",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.4"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Aranyasen\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Aranya Sen",
+                    "email": "sen.aranya@gmail.com",
+                    "role": "Owner"
+                }
+            ],
+            "description": "HL7 parser, generator and sender.",
+            "support": {
+                "issues": "https://github.com/senaranya/HL7/issues",
+                "source": "https://github.com/senaranya/HL7/tree/1.0.0"
+            },
+            "time": "2017-11-16T17:39:58+00:00"
         },
         {
             "name": "asm89/stack-cors",

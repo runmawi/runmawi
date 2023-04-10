@@ -237,8 +237,25 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                     <?php if (!empty($season)) {   ;?>
                     <div class="col-md-6">
                         <input type="hidden" id="season_id" name="season_id" value="<?php echo $season[0]->id; ?>">
+                        <?php if (@$Stripepayment->stripe_status == 1 ) {  ?>
                         <button class="btn btn-primary" onclick="pay(<?php echo $season[0]->ppv_price; ?>)">
                             Purchase For <?php echo $currency->symbol . ' ' . $season[0]->ppv_price; ?></button>
+                        <?php } else if(@$PayPalpayment->paypal_status == 1){  ?> 
+
+                            <?php }else if(@$Razorpay_payment_settings->status == 1){ ?> 
+
+                            <?php } else if(@$Paystack_payment_settings->status == 1){ ?> 
+
+                            <?php } else if(@$CinetPay_payment_settings->status == 1){ ?> 
+                        <input type="hidden" id="ppv_price" name="ppv_price" value="<?php echo $season[0]->ppv_price; ?>">
+
+                                <button onclick="cinetpay_checkout()" id=""
+                                                        class="btn2  btn-outline-primary">Purchase For <?php echo $currency->symbol . ' ' . $season[0]->ppv_price; ?></button>
+                                                </div>
+                            <?php }  else{ ?> 
+                        <button class="btn btn-primary" id ="enable_any_payment">
+                            Purchase For <?php echo $currency->symbol . ' ' . $season[0]->ppv_price; ?></button>
+                            <?php } ?>
                     </div>
                     <?php	} } ?>
 
@@ -594,6 +611,9 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
+        });
+        $("#enable_any_payment").click(function(){
+            alert('Please Enable Any Payment Mode');
         });
 
         function pay(amount) {
@@ -1085,6 +1105,102 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
             }, 3000);
         }
     </script>
+
+
+                <!-- Cinet Pay CheckOut -->
+
+                <script src="https://cdn.cinetpay.com/seamless/main.js"></script>
+
+                <script>
+                    var user_name = '<?php if (!Auth::guest()) {
+                        Auth::User()->username;
+                    } else {
+                    } ?>';
+                    var email = '<?php if (!Auth::guest()) {
+                        Auth::User()->email;
+                    } else {
+                    } ?>';
+                    var mobile = '<?php if (!Auth::guest()) {
+                        Auth::User()->mobile;
+                    } else {
+                    } ?>';
+                    var CinetPay_APIKEY = '<?= @$CinetPay_payment_settings->CinetPay_APIKEY ?>';
+                    var CinetPay_SecretKey = '<?= @$CinetPay_payment_settings->CinetPay_SecretKey ?>';
+                    var CinetPay_SITE_ID = '<?= @$CinetPay_payment_settings->CinetPay_SITE_ID ?>';
+                    var season_id = $('#season_id').val();
+                    var ppv_price = $('#ppv_price').val();
+
+
+                    // var url       = window.location.href;
+                    // alert(window.location.href);
+
+                    function cinetpay_checkout() {
+                        CinetPay.setConfig({
+                            apikey: CinetPay_APIKEY, //   YOUR APIKEY
+                            site_id: CinetPay_SITE_ID, //YOUR_SITE_ID
+                            notify_url: window.location.href,
+                            return_url: window.location.href,
+                            // mode: 'PRODUCTION'
+
+                        });
+
+
+                                
+                        CinetPay.getCheckout({
+                            transaction_id: Math.floor(Math.random() * 100000000).toString(), // YOUR TRANSACTION ID
+                            amount: ppv_price,
+                            currency: 'XOF',
+                            channels: 'ALL',
+                            description: 'Test paiement',
+                            //Provide these variables for credit card payments
+                            customer_name: user_name, //Customer name
+                            customer_surname: user_name, //The customer's first name
+                            customer_email: email, //the customer's email
+                            customer_phone_number: "088767611", //the customer's email
+                            customer_address: "BP 0024", //customer address
+                            customer_city: "Antananarivo", // The customer's city
+                            customer_country: "CM", // the ISO code of the country
+                            customer_state: "CM", // the ISO state code
+                            customer_zip_code: "06510", // postcode
+
+                        });
+                        CinetPay.waitResponse(function(data) {
+                            if (data.status == "REFUSED") {
+
+                                if (alert("Your payment failed")) {
+                                    window.location.reload();
+                                }
+                            } else if (data.status == "ACCEPTED") {
+                                $.ajax({
+                                    url: '<?php echo URL::to('CinetPay-series_season-rent'); ?>',
+                                    type: "post",
+                                    data: {
+                                        _token: '<?php echo csrf_token(); ?>',
+                                        amount: ppv_price,
+                                        season_id: season_id,
+
+                                    },
+                                    success: function(value) {
+                                        alert("You have done  Payment !");
+                                        setTimeout(function() {
+                                            location.reload();
+                                        }, 2000);
+
+                                    },
+                                    error: (error) => {
+                                        swal('error');
+                                    }
+                                });
+                                // if (alert("Your payment has been made successfully")) {
+                                //     window.location.reload();
+                                // }
+                            }
+                        });
+                        CinetPay.onError(function(data) {
+                            console.log(data);
+                        });
+                    }
+                </script>
 
     <?php
     include 'footer.blade.php';

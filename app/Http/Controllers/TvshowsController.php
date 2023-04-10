@@ -357,6 +357,11 @@ class TvshowsController extends Controller
                     // ->where('season_id', '=', $season_id)
                     ->where('series_id', '=', $episode->series_id)
                     ->count();
+
+                    $PpvPurchase = PpvPurchase::where('series_id', '=', $episode->series_id)
+                    ->where('season_id', '=', $episode->season_id)
+                    ->count();
+                    // dd($PpvPurchase);
                     $checkseasonppv = SeriesSeason::where('series_id', '=', $episode->series_id)
                     ->first();
             
@@ -368,7 +373,7 @@ class TvshowsController extends Controller
                             ->where('series_id', '=', $episode->series_id)
                             ->where('episode_order', '>', $checkseasonppv->ppv_interval)
                             ->count();
-                                if($ppvepisode > 0){
+                                if($ppvepisode > 0 && $PpvPurchase == 0){
                                     $checkseasonppv_exits = 1;
                                 }else{
                                     $checkseasonppv_exits = 0;
@@ -384,6 +389,10 @@ class TvshowsController extends Controller
             } else {
                 $checkseasonppv = SeriesSeason::where('series_id', '=', $episode->series_id)
                 ->first();
+
+                $PpvPurchase = PpvPurchase::where('series_id', '=', $episode->series_id)
+                ->where('season_id', '=', $episode->season_id)
+                ->count();
         
                 if ($checkseasonppv->access == "ppv" ) {
         
@@ -393,7 +402,7 @@ class TvshowsController extends Controller
                         ->where('series_id', '=', $episode->series_id)
                         ->where('episode_order', '>', $checkseasonppv->ppv_interval)
                         ->count();
-                            if($ppvepisode > 0){
+                            if($ppvepisode > 0 && $PpvPurchase == 0){
                                 $checkseasonppv_exits = 1;
                             }else{
                                 $checkseasonppv_exits = 0;
@@ -506,8 +515,13 @@ class TvshowsController extends Controller
                     'source_id' => $source_id,
                     'commentable_type' => 'play_episode',
                     'series_lists' =>   $series_lists ,
+                    'Stripepayment' => PaymentSetting::where('payment_type', 'Stripe')->first(),
+                    'PayPalpayment' => PaymentSetting::where('payment_type', 'PayPal')->first(),
+                    'Paystack_payment_settings' => PaymentSetting::where('payment_type', 'Paystack')->first(),
+                    'Razorpay_payment_settings' => PaymentSetting::where('payment_type', 'Razorpay')->first(),
+                    'CinetPay_payment_settings' => PaymentSetting::where('payment_type', 'CinetPay')->first(),
                 ];
-
+                
                 if (Auth::guest() && $settings->access_free == 1) {
                     return Theme::view('beforloginepisode', $data);
                 } else {
