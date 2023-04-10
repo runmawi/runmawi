@@ -126,7 +126,7 @@
   .shows-img .movie-time { display: none !important; }
   .genres-box { top: 10px; }
   .shows-content { bottom: 14px; }
-  .main-content { padding-top: 25px; }
+  .main-content { /*padding-top: 25px;*/ }
   #home-slider p { width: 100%; }
   .slick-bg:before { background: linear-gradient(-360deg, rgba(0, 0, 0, 1) 0%, rgba(20, 20, 20, 1) 40%, rgba(83, 100, 141, 0) 100%);}
   .m-profile { padding-top: 40px; padding-bottom: 50px; }
@@ -266,6 +266,12 @@
     .favorites-slider .slick-next, #trending-slider-nav .slick-next{right: 16px;}
     .foot{
         flex-wrap: wrap!important;
+    }
+    .sign-in-page {
+        padding: 10px;
+    }
+    #mob a{
+        font-size: 12px;
     }
     
     footer{

@@ -2933,8 +2933,12 @@ public function verifyandupdatepassword(Request $request)
         // $plans = Plan::where("payment_type","=","recurring")->get();
         // $plans = SubscriptionPlan::where("payment_type","=","recurring")->where('type','=','Stripe')->get();
 
-      $plans = SubscriptionPlan::where("payment_type","=","recurring")->groupby('plans_name') ->orderBy('id', 'asc')->get();
-
+      $plans = SubscriptionPlan::where("payment_type","=","recurring")->groupby('plans_name')->orderBy('id', 'asc')->get()->map(function ($item) {
+        $plan_content = str_replace(array("\r", "\n", "\t"), '', $item['plan_content']);
+        $item['plan_content'] =  htmlentities(strip_tags($plan_content));
+        return $item;
+      });
+      
       $response = array(
         'status'=>'true',
         'Currency_Symbol'=> CurrencySetting::pluck('symbol')->first() ,
