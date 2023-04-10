@@ -1716,7 +1716,7 @@ $('#error_video_Category').hide();
    		$.getJSON('<?php echo URL::to("/admin/get_processed_percentage/");?>'+'/'+$("#id").val(), function(data) {
    			$('.low_bar').width(data.processed_low+'%');
             if(data.processed_low == null){
-   			$('.low_percent').html('Transcoding is Queued. Waiting for Server Respond');
+   			$('.low_percent').html('Transcoding is Queued. Waiting for Server to Respond');
             }else{
    			$('.low_percent').html(data.processed_low+'%');
             }
