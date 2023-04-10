@@ -173,7 +173,7 @@ border-radius: 0px 4px 4px 0px;
                     <div class="row mt-3">
                                         <div class="">
                                             <label class="m-0">Player Image Cover</label>
-                                            <p class="p1">Select the Live stream  image( 16:9 Ratio or 1280X720px ):</p>
+                                            <p class="p1">Select the Live stream  image( 16:9 Ratio or 1920X1080px ):</p>
 
                                             <div class="panel-body">
                                                 <input type="file" multiple="true" class="form-group" name="player_image" id="player_image" accept="image/*"/>
