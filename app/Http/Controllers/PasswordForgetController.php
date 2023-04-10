@@ -114,7 +114,7 @@ class PasswordForgetController extends Controller
                 'reset_token'     => $reset_token
             );
 
-            return Theme::view('Forget_Password.forget_password', compact('data', $data));
+            return Theme::view('Forget_Password.forget_password', ['data' => $data]);
 
         } catch (\Throwable $th) {
 
