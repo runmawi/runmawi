@@ -589,7 +589,7 @@ class ChannelController extends Controller
                 } else {
                     $new_date = null;
                 }
-                if (@$categoryVideos->uploaded_by == 'Channel') {
+                if (@$categoryVideos->uploaded_by == 'Channel' && @$categoryVideos->access != 'guest') {
                     $user_id = $categoryVideos->user_id;
 
                     $user = Channel::where('channels.id', '=', $user_id)
@@ -603,7 +603,7 @@ class ChannelController extends Controller
                         $video_access = 'pay';
                     }
                     // dd($video_access);
-                } elseif (@$categoryVideos->uploaded_by == 'CPP') {
+                } elseif (@$categoryVideos->uploaded_by == 'CPP' && @$categoryVideos->access != 'guest') {
                     $user_id = $categoryVideos->user_id;
 
                     $user = ModeratorsUser::where('moderators_users.id', '=', $user_id)
@@ -896,7 +896,7 @@ class ChannelController extends Controller
                 $Reels_videos = Video::where('id', $vid)
                     ->whereNotNull('reelvideo')
                     ->get();
-                if (@$categoryVideos->uploaded_by == 'Channel') {
+                if (@$categoryVideos->uploaded_by == 'Channel' && @$categoryVideos->access != 'guest') {
                     $user_id = $categoryVideos->user_id;
 
                     $user = Channel::where('channels.id', '=', $user_id)
@@ -908,7 +908,7 @@ class ChannelController extends Controller
                     } else {
                         $video_access = 'pay';
                     }
-                } elseif (@$categoryVideos->uploaded_by == 'CPP') {
+                } elseif (@$categoryVideos->uploaded_by == 'CPP' && @$categoryVideos->access != 'guest') {
                     $user_id = $categoryVideos->user_id;
 
                     $user = ModeratorsUser::where('moderators_users.id', '=', $user_id)
@@ -1100,7 +1100,7 @@ class ChannelController extends Controller
                 } else {
                     $subtitles = 'No Subtitles Added';
                 }
-                if (@$categoryVideos->uploaded_by == 'Channel') {
+                if (@$categoryVideos->uploaded_by == 'Channel' && @$categoryVideos->access != 'guest') {
                     $user_id = $categoryVideos->user_id;
 
                     $user = Channel::where('channels.id', '=', $user_id)
@@ -1112,7 +1112,7 @@ class ChannelController extends Controller
                     } else {
                         $video_access = 'pay';
                     }
-                } elseif (@$categoryVideos->uploaded_by == 'CPP') {
+                } elseif (@$categoryVideos->uploaded_by == 'CPP' && @$categoryVideos->access != 'guest') {
                     $user_id = $categoryVideos->user_id;
 
                     $user = ModeratorsUser::where('moderators_users.id', '=', $user_id)
@@ -1384,7 +1384,7 @@ class ChannelController extends Controller
                 $Reels_videos = Video::Join('reelsvideo', 'reelsvideo.video_id', '=', 'videos.id')
                     ->where('videos.id', $vid)
                     ->get();
-                if (@$categoryVideos->uploaded_by == 'Channel') {
+                if (@$categoryVideos->uploaded_by == 'Channel' && @$categoryVideos->access != 'guest') {
                     $user_id = $categoryVideos->user_id;
 
                     $user = Channel::where('channels.id', '=', $user_id)
@@ -1396,7 +1396,7 @@ class ChannelController extends Controller
                     } else {
                         $video_access = 'pay';
                     }
-                } elseif (@$categoryVideos->uploaded_by == 'CPP') {
+                } elseif (@$categoryVideos->uploaded_by == 'CPP' && @$categoryVideos->access != 'guest') {
                     $user_id = $categoryVideos->user_id;
 
                     $user = ModeratorsUser::where('moderators_users.id', '=', $user_id)
