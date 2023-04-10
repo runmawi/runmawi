@@ -5,6 +5,7 @@ use App\User as User;
 use \Redirect as Redirect;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Http;
 use URL;
 use File;
 use App\Test as Test;
@@ -77,6 +78,7 @@ use Mail;
 use App\PlayerAnalytic;
 use Carbon\Carbon;
 use ProtoneMedia\LaravelFFMpeg\Filters\WatermarkFactory;
+use Hl7v2\ParseM3U8;
 
 class AdminVideosController extends Controller
 {
@@ -9533,6 +9535,87 @@ class AdminVideosController extends Controller
             return response()->json(["message" => "false"]);
         }
     }
+
+
+    public function combineM3U8toHLS() {
+
+        $playlistUrls = Video::where('type','=','')->orWhere('type', '=', null)->where('active',1)->where('status',1)->pluck('path');
+        $playlistUrls= Video::where('type','=','')->orWhere('type', '=', null)->where('active',1)->where('status',1)->get()->map(function ($item) {       
+               $item['path'] = URL::to('/storage/app/public/') . '/' . $item->path . '.m3u8';
+          return $item;
+        });
+
+        // $playlistUrls = [
+        //     'http://example.com/playlist1.m3u8',
+        //     'http://example.com/playlist2.m3u8',
+        //     'http://example.com/playlist3.m3u8',
+        // ];
+   
+             // $playlistUrls = "";
+        // foreach($videos as $url) {
+
+        //     $m3u8 = file_get_contents($url->path);
+        //     $playlistUrls .= $m3u8;
+        // }
+        // Array to store all the video URLs
+        $videoUrls = [];
+        
+        // Loop through all the playlist URLs
+        foreach ($playlistUrls as $playlistUrl) {
+
+
+            $response = Http::get($playlistUrl->path);
+            $playlist = ParseM3U8::fromString($response->body());
+            $videoUrls = $playlist->getMediaUrls();
+
+            // Fetch the M3U8 playlist
+            // $response = Http::get($playlistUrl->path);
+            
+            // // Parse the M3U8 playlist to get the video URLs
+            // $videoUrls = array_merge($videoUrls, parseM3U8($response->body()));
+        dd($response);
+
+        }
+        
+        // Create a new M3U8 playlist and add all the video URLs to it
+        $newPlaylist = "#EXTM3U\n";
+        foreach ($videoUrls as $videoUrl) {
+            $newPlaylist .= "#EXTINF:-1,$videoUrl\n";
+            $newPlaylist .= "$videoUrl\n";
+        }
+        
+        // Serve the new M3U8 playlist as a single URL
+        return response($newPlaylist, 200, [
+            'Content-Type' => 'application/vnd.apple.mpegurl',
+        ]);
+
+        dd($combinedM3U8);
+        
+        $combinedM3U8 = "";
+        foreach($videos as $url) {
+
+            $m3u8 = file_get_contents($url->path);
+            $combinedM3U8 .= $m3u8;
+        }
+            $hlsOutput = URL::to('/storage/app/public/output.m3u8');
+        
+    //    touch(public_path() . "/uploads/videos/outputone.m3u8");
+       touch(storage_path('app/public/output.m3u8'));
+            //open file abc.txt
+            // $myfile = fopen("output.m3u8", "w");
+            $myfile =  fopen(storage_path('app/public/output.m3u8'), "w");
+
+            fwrite($myfile, $combinedM3U8);;
+
+            fclose($myfile);
+
+
+        $file = $hlsOutput;
+
+        return $hlsOutput;
+
+    }
+
 
 }
     
