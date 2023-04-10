@@ -36,7 +36,7 @@ Route::get('/scheduled-videos', 'HomeController@ScheduledVideo');
 Route::post('/user/tv-code', 'AdminUsersController@TVCode');
 Route::get('/user/tv-code/remove/{id}', 'AdminUsersController@RemoveTVCode');
 
-Route::get('admin/combineM3U8toHLS/', 'AdminVideosController@combineM3U8toHLS');
+Route::get('admin/combineM3U8toHLS/', 'AdminVideosController@combineM3U8');
 
 
 // Route::get('/admin/filemanager', 'FileManagerController@index');
@@ -2143,6 +2143,9 @@ Route::group(['middleware' => ['RazorpayMiddleware']], function() {
 // CinetPay-Video Rent
 Route::post('/CinetPaySubscription', 'CinetPayController@CinetPaySubscription')->name('CinetPay_Subscription');
 Route::post('/CinetPay-video-rent', 'CinetPayController@CinetPay_Video_Rent_Payment')->name('CinetPay_Video_Rent_Payment');
+    
+// CinetPay- Series/Season Rent
+Route::post('/CinetPay-series_season-rent', 'PaymentController@CinetPay_series_season_Rent_Payment')->name('CinetPay_series_season_Rent_Payment');
                     
 // Content Partner - Home Page
 
