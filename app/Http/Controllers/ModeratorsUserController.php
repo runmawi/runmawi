@@ -6540,9 +6540,7 @@ class ModeratorsUserController extends Controller
 
     public function CPPViewsRegion()
     {
-        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
-            return redirect('/admin/restrict');
-        }
+
         // dd('cpp/view_by_region');
         $user = User::where("id", 1)->first();
         $duedate = $user->package_ends;
