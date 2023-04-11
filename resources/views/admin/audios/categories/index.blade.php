@@ -174,7 +174,7 @@ border-radius: 0px 4px 4px 0px;
     	              <td>{{ ucfirst($category->name) }}</td>
                       <td>
 					<a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" class="edit" href="{{ URL::to('admin/audios/categories/edit/') }}/{{$category->id}}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
-					<a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" href="{{ URL::to('admin/audios/categories/delete/') }}/{{$category->id}}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
+					<a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" href="{{ URL::to('admin/audios/categories/delete/') }}/{{$category->id}}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"  onclick="return confirm('Are you sure?')" ></a>
 					</td>
     	            </tr>
                 @endforeach
