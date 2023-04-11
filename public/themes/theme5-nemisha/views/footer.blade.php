@@ -10,20 +10,21 @@
   <div class="container-fluid px-5 mt-5">
      <!-- <p class="text-white text-center mb-4">Chat-box will be sent later.</p>-->
       <div class="row justify-content-center align-items-center">
-          <div class="col-lg-3 p-0">  <h3 class="font-weight-bold mb-0 text-right h3">Download App</h3></div>
-          <div class="col-lg-5">
+         
+          <div class="col-lg-6 d-flex align-items-center justify-content-center">
+              <h5 class="font-weight-bold mb-0  ">Download App</h5>
                <?php $app_settings = App\AppSetting::where('id','=',1)->first(); ?>
 
           <div class=" small m-0 text-white ">
              <div class="map1"> 
               <?php if(!empty($app_settings->android_url)){ ?>
-              <img class="" height="80" width="140" src="<?php echo  URL::to('/assets/img/apps1.png')?>" />
+              <img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/apps1.png')?>" />
               <?php } ?>
               <?php if(!empty($app_settings->ios_url)){ ?>
-              <img class="" height="80" width="140" src="<?php echo  URL::to('/assets/img/apps.png')?>"  />
+              <img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/apps.png')?>"  />
               <?php } ?>
               <?php if(!empty($app_settings->android_tv)){ ?>
-              <img class="" height="100" width="150" src="<?php echo  URL::to('/assets/img/and.png')?>" />
+              <img class="" height="60" width="100" src="<?php echo  URL::to('/assets/img/and.png')?>" />
               <?php } ?>
               </div>
               
