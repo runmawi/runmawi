@@ -416,7 +416,7 @@ a:not([href]):not([tabindex]):focus, a:not([href]):not([tabindex]):hover {
     
 }
 .media .right-icon{
-    margin-right: 15px;
+    margin-right: 2px;
 }
 /*---------------------*/
 #trending-slider .tranding-block, .banner-wrapper { background-size: cover; background-position: top right; position: relative; }
@@ -2271,7 +2271,7 @@ box-shadow: -1px 6px 13px 0px rgba(0,0,0,0.44);
     .sign-in-page-data h3 {
     color: #cdcece;
     font-size: 30px;
-    font-family: 'Chivo';
+   
 }
     .btn-primary{
         background-color: #45c5e1 !important;

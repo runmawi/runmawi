@@ -73,7 +73,7 @@
 
             <div class="flw">
                 <!-- <i class="fa fa-share-square-o" aria-hidden="true" style="color:#fff!important;"></i> -->
-                <?php $media_url = URL::to('/').'/artist/'.$artist->artist_name; ?>
+                <?php $media_url = URL::to('/').'/artist/'.$artist->artist_slug; ?>
                 <input type="hidden" value="<?= $media_url ?>" id="media_url">
                 <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
                 <li class="share">

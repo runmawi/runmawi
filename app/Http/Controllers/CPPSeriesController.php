@@ -403,8 +403,12 @@ class CPPSeriesController extends Controller
 
         $settings = Setting::first();
         $user = Session::get('user'); 
-
-            try {
+            if(!empty($user)){
+                $user_id = $user->id ;
+            }else{
+                $user_id = 0 ;
+            }
+        try {
                 \Mail::send('emails.cpp_approval', array(
                     'website_name' => $settings->website_name
                 ) , function ($message) use ($request,$user)

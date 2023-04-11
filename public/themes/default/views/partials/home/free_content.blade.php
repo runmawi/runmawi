@@ -1,7 +1,9 @@
+<?php if(count($free_Contents) > 0) : ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
   <h4 class="main-title">Free Content Videos</h4>                      
 </div>
 <?php
+endif;
 ?>
 <div class="favorites-contens">
   <ul class="favorites-slider list-inline  row p-0 mb-0">
@@ -20,7 +22,7 @@
                     <p class="p-tag1"><?php echo $currency->symbol.' '.$free_Content->ppv_price; ?></p>
                     <?php }elseif( !empty($free_Content->ppv_status || !empty($free_Content->ppv_status) && $free_Content->ppv_price == 1)){ ?>
                       <p class="p-tag1"><?php echo $free_Content->ppv_status.' '.$currency->symbol; ?></p>
-                      <?php }elseif($free_Content->ppv_status == null && $free_Content->ppv_price == null ){ ?>
+                      <?php }elseif($free_Content->ppv_status == null ){ ?>
                       <p class="p-tag"><?php echo "Free"; ?></p>
                       <?php } ?>
                  

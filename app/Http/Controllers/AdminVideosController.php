@@ -5,6 +5,7 @@ use App\User as User;
 use \Redirect as Redirect;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Http;
 use URL;
 use File;
 use App\Test as Test;
@@ -77,6 +78,7 @@ use Mail;
 use App\PlayerAnalytic;
 use Carbon\Carbon;
 use ProtoneMedia\LaravelFFMpeg\Filters\WatermarkFactory;
+use ParseM3U8;
 
 class AdminVideosController extends Controller
 {
@@ -632,7 +634,7 @@ class AdminVideosController extends Controller
             // $videos  ->filters()
             // ->watermark("public/uploads/settings" . "/" . $settings->logo);
      
-            // $videos->save(
+            // $video->save(
             //     "public/uploads/reelsVideos" . "/" . $path
             // );
 
@@ -9534,5 +9536,156 @@ class AdminVideosController extends Controller
         }
     }
 
+
+    // public function combineM3U8toHLS() {
+
+    //     $playlistUrls = Video::where('type','=','')->orWhere('type', '=', null)->where('active',1)->where('status',1)->pluck('path');
+    //     $playlistUrls= Video::where('type','=','')->orWhere('type', '=', null)->where('active',1)->where('status',1)->get()->map(function ($item) {       
+    //            $item['path'] = URL::to('/storage/app/public/') . '/' . $item->path . '.m3u8';
+    //       return $item;
+    //     });
+
+
+    //     // Array to store all the video URLs
+    //     $videoUrls = [];
+        
+    //     // Loop through all the playlist URLs
+    //     foreach ($playlistUrls as $playlistUrl) {
+
+
+    //         // $response = Http::get($playlistUrl->path);
+    //         // $playlist = \ParseM3U8::fromString($response->body());
+    //         // $videoUrls = $playlist->getMediaUrls();
+
+    //         // Fetch the M3U8 playlist
+    //         // $response = Http::get($playlistUrl->path);
+            
+    //         // // Parse the M3U8 playlist to get the video URLs
+    //         // $videoUrls = array_merge($videoUrls, parseM3U8($response->body()));
+    //     // dd($response);
+
+    //     }
+        
+    //     // Create a new M3U8 playlist and add all the video URLs to it
+    //     // $newPlaylist = "#EXTM3U\n";
+    //     // foreach ($playlistUrls as $videoUrl) {
+    //     //     $newPlaylist .= "#EXTINF:-1,$videoUrl\n";
+    //     //     $newPlaylist .= "$videoUrl\n";
+    //     // }
+        
+    //     // // Serve the new M3U8 playlist as a single URL
+    //     // return response($newPlaylist, 200, [
+    //     //     'Content-Type' => 'application/vnd.apple.mpegurl',
+    //     // ]);
+
+    //     // dd($combinedM3U8);
+        
+    //     $combinedM3U8 = "";
+    //     foreach($videos as $url) {
+
+    //         $m3u8 = file_get_contents($url->path);
+    //         $combinedM3U8 .= $m3u8;
+    //     }
+    //         $hlsOutput = URL::to('/storage/app/public/output.m3u8');
+        
+    // //    touch(public_path() . "/uploads/videos/outputone.m3u8");
+    //    touch(storage_path('app/public/output.m3u8'));
+    //         //open file abc.txt
+    //         // $myfile = fopen("output.m3u8", "w");
+    //         $myfile =  fopen(storage_path('app/public/output.m3u8'), "w");
+
+    //         fwrite($myfile, $combinedM3U8);;
+
+    //         fclose($myfile);
+
+
+    //     $file = $hlsOutput;
+
+    //     return $hlsOutput;
+
+    // }
+
+    public function combineM3U8(Request $request)
+    {
+        // Get the list of M3U8 URLs from the request
+        $m3u8Urls = $request->input('m3u8_urls');
+
+        $playlistUrls= Video::where('type','=','')->orWhere('type', '=', null)->where('active',1)->where('status',1)->get()->map(function ($item) {       
+            $item['path'] = URL::to('/storage/app/public/') . '/' . $item->path . '.m3u8';
+       return $item;
+     });
+
+        // Create a new Guzzle HTTP client
+        $client = new Client();
+
+        // Initialize an empty array to store the contents of the M3U8 files
+        $m3u8Files = [];
+
+        foreach ($playlistUrls as $url) {
+            $response = $client->get($url->path);
+        // dd($response->getBody()->getContents());
+
+            $m3u8Files[] = $response->getBody()->getContents();
+        }
+
+        // Combine the contents of the M3U8 files into a single string
+        $combinedM3U8 = implode("\n", $m3u8Files);
+
+
+        touch(storage_path('app/public/M3U8Test.m3u8'));
+
+        $myfile =  fopen(storage_path('app/public/M3U8Test.m3u8'), "w");
+
+        fwrite($myfile, $combinedM3U8);;
+
+        fclose($myfile);
+
+
+        // Return the combined M3U8 file as a response
+        return response($combinedM3U8, 200, [
+            'Content-Type' => 'application/vnd.apple.mpegurl',
+        ]);
+
+        
+    }
+
+    public function combineM3U8new(Request $request)
+    {
+        $playlistUrls= Video::where('type','=','')->orWhere('type', '=', null)->where('active',1)->where('status',1)->get()->map(function ($item) {       
+            $item['path'] = URL::to('/storage/app/public/') . '/' . $item->path . '.m3u8';
+       return $item;
+     });
+            
+            // Define the output file name
+            $outputFile = 'mergedPlaylist.m3u8';
+            
+            // Create a new FFmpeg instance
+            $ffmpeg = \FFMpeg\FFMpeg::create([
+                'ffmpeg.binaries'  => 'H:/ffmpegtest/bin/ffmpeg.exe', // the path to the FFMpeg binary
+                'ffprobe.binaries' => 'H:/ffmpegtest/bin/ffprobe.exe', // the path to the FFProbe binary
+                'timeout'          => 0, // the timeout for the underlying process
+                'ffmpeg.threads'   => 1,   // the number of threads that FFMpeg should use
+            ]);
+            // Loop through the URLs and load each M3U8 file into FFmpeg
+            $inputFiles = [];
+            foreach ($playlistUrls as $url) {
+                // Download the M3U8 file from the URL and save it to a temporary file
+                $tempFile = tempnam(storage_path('app/public/'), 'm3u8');
+                file_put_contents($tempFile, file_get_contents($url->path));
+            
+                // Load the M3U8 file into FFmpeg and add it to the input files array
+                $inputFiles[] = $ffmpeg->formatFrom($tempFile)->fromFile($tempFile);
+            }
+            
+            // Merge the input files into a single output file
+            $concat = $ffmpeg->getFFMpegDriver()->newConcat();
+            foreach ($inputFiles as $inputFile) {
+                $concat->addFile($inputFile->getPath());
+            }
+            $mergedFile = $concat->saveToFile($outputFile);
+            
+            // Output the contents of the merged M3U8 file
+            echo file_get_contents($outputFile);
+        }
 }
     
