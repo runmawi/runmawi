@@ -246,7 +246,7 @@ class ModeratorsLoginController extends Controller
             $password = Hash::make($request->password);
             $moderatorsuser->hashedpassword = $password;
             $moderatorsuser->user_role = 3;
-            $moderatorsuser->user_permission = "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16";
+            $moderatorsuser->user_permission = "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19";
             $moderatorsuser->confirm_password = $request->password;
             $moderatorsuser->ccode = $request->ccode;
             $moderatorsuser->description = $request->description;
@@ -322,7 +322,7 @@ class ModeratorsLoginController extends Controller
             }
             
             $user_id = $moderatorsuser->id;
-            $str = "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16";
+            $str = "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19";
             $userrolepermissiom = explode(",", $str);
             foreach ($userrolepermissiom as $key => $value)
             {
