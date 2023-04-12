@@ -94,7 +94,7 @@ class AllVideosListController extends Controller
     
                     // All Education Catogery videos - only for Nemisha
              
-                $Episode_videos = Series::select('episodes.*', 'series.title as series_name','series.slug as series_slug')
+                $Episode_videos = Series::select('episodes.*', 'series.title as series_name','series.slug as series_slug','series.year')
                     ->join('series_categories', 'series_categories.series_id', '=', 'series.id')
                     ->join('episodes', 'episodes.series_id', '=', 'series.id')
                     ->where('series_categories.category_id', '=', 19)
@@ -103,7 +103,6 @@ class AllVideosListController extends Controller
                     ->groupBy('episodes.id')
                     ->latest('episodes.created_at')
                     ->Paginate($this->settings->videos_per_page);
-
            
             $respond_data = array(
                 'videos'    => $Episode_videos,
