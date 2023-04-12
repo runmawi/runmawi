@@ -545,7 +545,7 @@ $settings  = App\Setting::first();?>
 					<p>
 						<a href="{{ URL::to('admin/season/edit') . '/' . $series->id. '/' . $seasons_value->id }}" class="btn btn-xs btn-black"><span class="fa fa-edit"></span> Manage Episodes</a>
 						<a href="{{ URL::to('admin/season/edit') . '/' . $seasons_value->id }}" class="btn btn-xs btn-black"><span class="fa fa-edit"></span> Edit Season</a>
-						<a href="{{ URL::to('admin/season/delete') . '/' . $seasons_value->id }}" class="btn btn-xs btn-white delete"><span class="fa fa-trash"></span> Delete</a>
+						<a href="{{ URL::to('admin/season/delete') . '/' . $seasons_value->id }}" class="btn btn-xs btn-white delete" onclick="return confirm('Are you sure?')" ><span class="fa fa-trash"></span> Delete</a>
 					</p>
 				</td>
 			</tr>

@@ -143,7 +143,7 @@
     	              <td>{{ $menu_item->name }}</td>
                       <td><a href="{{ URL::to('/admin/menu/edit/') }}/{{ $menu_item->id }}"  class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
                     data-original-title="Edit"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a> <a href="{{ URL::to('/admin/menu/delete/') }}/{{ $menu_item->id }}"  class="iq-bg-danger ml-2" data-toggle="tooltip" data-placement="top" title=""
-                    data-original-title="Delete"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a></td>
+                    data-original-title="Delete"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>" onclick="return confirm('Are you sure?')" ></a></td>
 <!-- </div> -->
     	            </tr>
                 @endforeach

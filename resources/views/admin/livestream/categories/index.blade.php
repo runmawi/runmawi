@@ -173,7 +173,7 @@ border-radius: 0px 4px 4px 0px;
                         <td>
                             <div class="align-items-center list-user-action"><a href="{{ URL::to('admin/livestream/categories/edit/') }}/{{$category->id}}" class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
                                              data-original-title="Edit"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a> <a href="{{ URL::to('admin/livestream/categories/delete/') }}/{{$category->id}}" class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Delete"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a></div>
+                                             data-original-title="Delete"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>" onclick="return confirm('Are you sure?')" ></a></div>
                            
                         </td>
                     </tr>
