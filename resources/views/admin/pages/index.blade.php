@@ -62,7 +62,7 @@
 						<a href="{{ URL::to('admin/pages/edit') . '/' . $page->id }}" class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
                                              data-original-title="Edit"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
 						<a href="{{ URL::to('admin/pages/delete') . '/' . $page->id }}" class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Delete"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
+                                             data-original-title="Delete"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"  onclick="return confirm('Are you sure?')" ></a>
 					</div>
 				</td>
 			</tr>
