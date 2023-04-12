@@ -158,7 +158,10 @@ border-radius: 0px 4px 4px 0px;
 										<td valign="bottom"><p>{{ $category->name }}</p></td>
 										<td>
 											<div class=" align-items-center list-user-action">
-												<a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
+											<a class="iq-bg-warning mt-2" data-toggle="tooltip" data-placement="top" title=""
+                                             data-original-title="View" href="{{ URL::to('/series/category') . '/' . $category->slug }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>"></a>
+                                     
+											<a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
 																	data-original-title="Edit" href="{{ URL::to('admin/Series_genre/edit/') }}/{{$category->id}}" ><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a> 
 												<a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
 													onclick="return confirm('Are you sure?')"  data-original-title="Delete" href="{{ URL::to('admin/Series_genre/delete/') }}/{{$category->id}}" ><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a></div>
