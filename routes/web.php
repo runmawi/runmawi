@@ -2216,3 +2216,10 @@ Route::get('/confirm-Reset-password/{crypt_email}/{reset_token}', 'PasswordForge
 Route::post('/forget-password-update', 'PasswordForgetController@forget_password_update')->name('forget_password_update');
 
 Route::get('/current-time', 'CurrentTimeController@current_time')->name('CurrentTimeController.current_time');
+
+// Learn Page
+Route::get('/Learn', 'AllVideosListController@learn')->name('learn');
+
+//All Video
+Route::get('/All-videos', 'AllVideosListController@all_videos')->name('all_videos');
+Route::get('/All-Livestream', 'AllVideosListController@all_livestream')->name('all_livestream');
