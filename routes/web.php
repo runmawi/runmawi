@@ -2224,8 +2224,10 @@ Route::post('/forget-password-update', 'PasswordForgetController@forget_password
 Route::get('/current-time', 'CurrentTimeController@current_time')->name('CurrentTimeController.current_time');
 
 // Learn Page
-Route::get('/Learn', 'AllVideosListController@learn')->name('learn');
+Route::get('/learn', 'AllVideosListController@learn')->name('learn');
 
 //All Video
-Route::get('/All-videos', 'AllVideosListController@all_videos')->name('all_videos');
-Route::get('/All-Livestream', 'AllVideosListController@all_livestream')->name('all_livestream');
+Route::get('/library', 'AllVideosListController@all_videos')->name('all_videos');
+Route::get('/Most-watched-videos', 'AllVideosListController@All_User_MostwatchedVideos')->name('All_User_MostwatchedVideos');
+Route::get('/Most-watched-videos-country', 'AllVideosListController@All_Country_MostwatchedVideos')->name('All_Country_MostwatchedVideos');
+Route::get('/Most-watched-videos-site', 'AllVideosListController@All_MostwatchedVideos')->name('All_MostwatchedVideos');

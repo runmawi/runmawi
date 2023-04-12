@@ -10,6 +10,8 @@
 
                          echo __('Most watched videos from '.$category->name.' Genre');?>
                 </h4>
+
+                <a class="see" href="<?php echo route('All_Country_MostwatchedVideos') ?>">See All</a>
             </a>
         </div>
         <div class="favorites-contens">
