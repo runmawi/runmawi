@@ -17,6 +17,7 @@
      .p1{
         font-size: 12px!important;
     }
+
 </style>
 @section('css')
 	<link rel="stylesheet" href="{{ URL::to('/assets/admin/css/sweetalert.css') }}">
@@ -157,7 +158,7 @@
 								<label> Devices :</label>
 							</div>
 						
-                            @foreach($devices as $val)
+                            @forelse($devices as $val)
 							   <div class="col-md-5 " style="width:35%; float:left;" >
 									<div class="d-flex align-items-center justify-content-around">
 										<div>
@@ -165,14 +166,16 @@
 											</div>
 										<div>
 
-										<label class="switch">
+										<label class="switch cod-md-6">
 											<input type="checkbox"  name="devices[]"  value="{{ $val->id }}">
 											<span class="slider round"></span>
 										</label>
 									</div>
 								</div>
                                </div>
-                            @endForeach
+                            @empty
+								<input type="text"  name="devices_valid"  id="devices_valid" value="" readonly>
+							@endforelse
 				    </form>
 				</div>
 				
@@ -241,6 +244,11 @@
 					'video_quality' : 'required',
 					'resolution' : 'required',
 					'plan_id[]' : 'required',
+					'devices_valid' : 'required',
+					'devices[]': {
+						required: true,
+						maxlength: 2
+					}
 				},
 				messages: {
 					'plans_name' : "Please Enter the Plan Name",
@@ -251,6 +259,9 @@
 					'video_quality' : "Please Enter the Video Quality",
 					'resolution' : "Please Enter the Resolution",
 					'plan_id[]' : "Please Enter the Plan-Id",
+					'devices[]' : "Please Enable one of the device toggles.",
+					'devices_valid' : "Please Add devices."
+
         		},
 
 			submitHandler: function(form) {
