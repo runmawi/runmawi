@@ -10,17 +10,23 @@ use App\ThumbnailSetting;
 use App\VideoCategory;
 use App\HomeSetting;
 use App\Multiprofile;
+use App\RecentView;
 use App\Setting;
 use App\Video;
 use App\User;
 use Session;
 use Theme;
 use Auth;
+use DB;
 
 class AllVideosListController extends Controller
 {
     public function __construct()
     {
+
+        $PPV_settings = Setting::where('ppv_status', '=', 1)->first();
+        $this->ppv_gobal_price = !empty($PPV_settings) ? $PPV_settings->ppv_price : null;
+
         $this->settings = Setting::first();
 
         $this->videos_per_page = $this->settings->videos_per_page;
@@ -43,12 +49,6 @@ class AllVideosListController extends Controller
             }
     
             // All videos 
-
-            $multiuser = Session::get('subuser_id');
-         
-            $Mode = $multiuser != null ?  Multiprofile::where('id', $multiuser)->first() : User::where('id', Auth::User()->id)->first();
-           
-            $check_Kidmode = $Mode['user_type'] != null && $Mode['user_type'] == "Kids" ? 1 : 0 ;
     
             $videos = Video::where('active', '=', '1')->where('status', '=', '1')->where('draft', '=', '1');
     
@@ -57,19 +57,16 @@ class AllVideosListController extends Controller
                     $videos = $videos->whereNotIn('videos.id', Block_videos());
                 }
 
-                if( $check_Kidmode == 1 )
+                if( check_Kidmode() == 1 )
                 {
                     $videos = $videos->whereBetween('videos.age_restrict', [ 0, 12 ]);
                 }
                     
-                $videos = $videos->latest('videos.created_at')->paginate($this->settings->videos_per_page);
+            $videos = $videos->latest('videos.created_at')->Paginate($this->settings->videos_per_page);
     
-                $PPV_settings = Setting::where('ppv_status', '=', 1)->first();
-                $ppv_gobal_price = !empty($PPV_settings) ? $PPV_settings->ppv_price : null;
-           
             $respond_data = array(
                 'videos'    => $videos,
-                'ppv_gobal_price'  => $ppv_gobal_price,
+                'ppv_gobal_price'  => $this->ppv_gobal_price,
                 'currency'         => CurrencySetting::first(),
                 'ThumbnailSetting' => ThumbnailSetting::first(),
             );
@@ -94,13 +91,6 @@ class AllVideosListController extends Controller
                 return redirect()->route('landing_page', $landing_page_slug );
             }
     
-            
-            $multiuser = Session::get('subuser_id');
-             
-            $Mode = $multiuser != null ?  Multiprofile::where('id', $multiuser)->first() : User::where('id', Auth::User()->id)->first();
-           
-            $check_Kidmode = $Mode['user_type'] != null && $Mode['user_type'] == "Kids" ? 1 : 0 ;
-    
 
                     // All Education Catogery videos - only for Nemisha
              
@@ -114,7 +104,7 @@ class AllVideosListController extends Controller
                         $videos = $videos->whereNotIn('videos.id',Block_videos());
                     }
           
-                    if( $check_Kidmode == 1 )
+                    if( check_Kidmode() == 1 )
                     {
                         $videos = $videos->whereBetween('videos.age_restrict', [ 0, 12 ]);
                     }
@@ -125,14 +115,12 @@ class AllVideosListController extends Controller
                 ->where('video_categories.in_home',1)
                 ->where('video_categories.id',19)
                 ->orderBy('video_categories.order')
-                ->paginate($this->settings->videos_per_page);
-    
-                $PPV_settings = Setting::where('ppv_status', '=', 1)->first();
-                $ppv_gobal_price = !empty($PPV_settings) ? $PPV_settings->ppv_price : null;
+                ->Paginate($this->settings->videos_per_page);
+
            
             $respond_data = array(
                 'videos'    => $data,
-                'ppv_gobal_price'  => $ppv_gobal_price,
+                'ppv_gobal_price'  => $this->ppv_gobal_price,
                 'currency'         => CurrencySetting::first(),
                 'ThumbnailSetting' => ThumbnailSetting::first(),
             );
@@ -145,9 +133,119 @@ class AllVideosListController extends Controller
         }
     }
 
-    public function all_livestream()
+    public function All_User_MostwatchedVideos()
     {
-        $livetreams = LiveStream::where('active', '=', '1')->orderBy('created_at', 'DESC')
-        ->get();
+        try {
+            
+            $multiuser = Session::get('subuser_id');
+            
+            $videos = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))
+                                ->join('videos', 'videos.id', '=', 'recent_views.video_id')
+                                ->where('active', '=', '1')->where('status', '=', '1')
+                                ->where('draft', '=', '1')
+                                ->groupBy('video_id');
+
+            $videos = $multiuser != null ?  $videos->where('recent_views.sub_user', $multiuser) : $videos->where('recent_views.user_id', Auth::user()->id) ;
+
+                    if (check_Kidmode() == 1)
+                    {
+                        $videos = $videos->whereBetween('videos.age_restrict', [ 0, 12 ]);
+                    }
+
+                    if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
+                    {
+                        $videos = $videos->whereNotIn('videos.id',Block_videos());
+                    }
+
+            $videos = $videos->orderByRaw('count DESC')->Paginate($this->settings->videos_per_page);
+
+
+            $respond_data = array(
+                'videos'    => $videos,
+                'ppv_gobal_price'  => $this->ppv_gobal_price,
+                'currency'         => CurrencySetting::first(),
+                'ThumbnailSetting' => ThumbnailSetting::first(),
+            );
+
+            return Theme::view('All-Videos.All_User_MostwatchedVideos',['respond_data' => $respond_data]);
+
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+            return abort(404);
+        }
+
+    }
+
+    public function All_Country_MostwatchedVideos(Request $request)
+    {
+        try {
+
+            $videos = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))
+                ->join('videos', 'videos.id', '=', 'recent_views.video_id')
+                ->where('active', '=', '1')->where('status', '=', '1')->where('draft', '=', '1')
+                ->groupBy('video_id')
+                ->orderByRaw('count DESC');
+
+                if (check_Kidmode() == 1)
+                {
+                    $videos = $videos->whereBetween('videos.age_restrict', [ 0, 12 ]);
+                }
+
+                if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
+                {
+                    $videos = $videos->whereNotIn('videos.id',Block_videos());
+                }
+
+            $videos = $videos->where('country', Country_name())->Paginate($this->settings->videos_per_page);
+
+            $respond_data = array(
+                'videos'    => $videos,
+                'ppv_gobal_price'  => $this->ppv_gobal_price,
+                'currency'         => CurrencySetting::first(),
+                'ThumbnailSetting' => ThumbnailSetting::first(),
+            );
+
+            return Theme::view('All-Videos.All_Country_MostwatchedVideos',['respond_data' => $respond_data]);
+
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+            return abort(404);
+        }
+    }
+
+    public function All_MostwatchedVideos(Request $request)
+    {
+        try {
+           
+            $videos = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))
+                            ->join('videos', 'videos.id', '=', 'recent_views.video_id')
+                            ->where('active', '=', '1')->where('status', '=', '1')->where('draft', '=', '1')
+                            ->groupBy('video_id');
+                            
+                if (check_Kidmode() == 1)
+                {
+                    $videos = $videos->whereBetween('videos.age_restrict', [ 0, 12 ]);
+                }
+            
+                if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
+                {
+                    $videos = $videos->whereNotIn('videos.id',Block_videos());
+                }
+
+            $videos = $videos->orderByRaw('count DESC')->Paginate($this->settings->videos_per_page);
+        
+            $respond_data = array(
+                'videos'    => $videos,
+                'ppv_gobal_price'  => $this->ppv_gobal_price,
+                'currency'         => CurrencySetting::first(),
+                'ThumbnailSetting' => ThumbnailSetting::first(),
+            );
+
+            return Theme::view('All-Videos.All_MostwatchedVideos',['respond_data' => $respond_data]);
+
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+            return abort(404);
+        }
     }
 }

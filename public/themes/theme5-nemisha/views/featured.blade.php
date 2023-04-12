@@ -101,6 +101,11 @@
                                        </a>
                                     </li>
                                  @endforeach
+
+                                 <div class="col-md-12 pagination justify-content-end" >
+                                    {!! $featured_videos->links() !!}
+                                 </div>
+                                 
                               @endif
                            @else
                               <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:cover;height: 500px!important;">
