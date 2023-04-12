@@ -109,6 +109,11 @@
                         </div>
                      @endforelse
                </ul>
+
+               <div class="col-md-12 pagination justify-content-end" >
+                  {!! $latestvideo['latest_videos']->links() !!}
+               </div>
+
             </div>
          @else
             <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
