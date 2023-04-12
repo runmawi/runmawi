@@ -17,6 +17,9 @@
      .p1{
         font-size: 12px!important;
     }
+	#devices_valid{
+		border: transparent;
+	}
 
 </style>
 @section('css')

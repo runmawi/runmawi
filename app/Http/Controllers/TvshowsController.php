@@ -988,4 +988,48 @@ class TvshowsController extends Controller
         ];
         return Theme::view('iframeembedepisode', $data);
     }
+
+    public function SeriesCategory($slug){
+
+        $CategorySeries =  SeriesGenre::where('slug',$slug)->first();
+        $SeriesGenre = $CategorySeries != null ? $CategorySeries->specific_category_series : array();
+        // dd($SeriesGenre);
+        
+        $Series_Genre = $SeriesGenre->all();
+
+        $data = array( 'SeriesGenre' => $Series_Genre , 'CategorySeries' => $CategorySeries);
+
+
+        return Theme::view('partials.home.SeriesCategory',$data);
+
+    }
+
+    
+    public function SeriescategoryList(Request $request)
+    {
+        // try {
+            $settings = Setting::first();
+
+            if ($settings->enable_landing_page == 1 && Auth::guest()) {
+                $landing_page_slug = AdminLandingPage::where('status', 1)
+                    ->pluck('slug')
+                    ->first()
+                    ? AdminLandingPage::where('status', 1)
+                        ->pluck('slug')
+                        ->first()
+                    : 'landing-page';
+
+                return redirect()->route('landing_page', $landing_page_slug);
+            }
+
+            $data = [
+                'category_list' => SeriesGenre::all(),
+            ];
+
+            return Theme::view('SeriescategoryList', $data);
+        // } catch (\Throwable $th) {
+        //     return abort(404);
+        // }
+    }
+
 }

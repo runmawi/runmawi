@@ -125,6 +125,57 @@
    </section>
    <?php } } ?>
 
+   <!-- Audio Genre -->
+   <?php
+       if( $value->video_name == "Audio_Genre"){
+         if($home_settings->AudioGenre == 1){  ?>
+            <section id="iq-favorites">
+               <div class="fluid overflow-hidden">
+                     <div class="row">
+                        <div class="col-sm-12">
+                           <?php include 'partials/home/AudioGenre.php'; ?>
+                        </div>
+                     </div>
+               </div>
+            </section>
+    <?php } } ?> 
+
+   <!-- Audio Genre based videos -->
+   <?php 
+      if($value->video_name == 'Audio_Genre_audios'){
+         
+      if($home_settings->AudioGenre_audios == 1){ ?>
+   <section id="iq-favorites">
+      <div class="container-fluid overflow-hidden">
+         <div class="row">
+            
+         <?php
+               $parentCategories = App\AudioCategory::all();
+               foreach($parentCategories as $category) {
+
+               $audios = App\Audio::join('category_audios', 'category_audios.audio_id', '=', 'audio.id')
+                                 ->where('category_id','=',$category->id)->where('active', '=', '1')
+                                 ->where('active', '=', '1');
+                $audios = $audios->latest('audio.created_at')->get();
+               //  dd($audios);
+            ?>
+
+            <div class="col-sm-12 ">
+            <?php 
+               if (count($audios) > 0) { 
+                  include('partials/home/audiocategoryloop.php');
+               } 
+               else { 
+            ?>
+               <p class="no_audio"></p>
+            <?php } }?>
+            </div>
+         </div>
+      </div>
+   </section>
+   <?php } } ?>
+
+
          <!-- Latest Viewed Videos -->
          <?php
        if( $value->video_name == "latest_viewed_Videos"){
@@ -1221,6 +1272,7 @@
                   ->get();
          
          }
+         $Episode_videos = [];
          ?>
       <?php if (count($videos) > 0 || count($Episode_videos) > 0) { 
          include('partials/category-videoloop.php');

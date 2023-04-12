@@ -38,6 +38,11 @@ class MobileHomePageTableSeeder extends Seeder
                     'latest_viewed_Livestream' => 0,
                     'latest_viewed_Audios' => 0,
                     'latest_viewed_Episode' => 0,
+                    'SeriesGenre' => 0,
+                    'SeriesGenre_videos' => 0,
+                    'AudioGenre' => 0,
+                    'AudioGenre_audios' => 0,
+                    'AudioAlbums' => 0,
                     'created_at' => Carbon::now(),
                 ],
         ];
