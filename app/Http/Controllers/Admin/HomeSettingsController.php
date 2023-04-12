@@ -164,6 +164,12 @@ class HomeSettingsController extends Controller
         $settings->latest_viewed_Audios = !empty($request->latest_viewed_Audios) ?  "1" : "0" ;
         $settings->latest_viewed_Episode = !empty($request->latest_viewed_Episode) ?  "1" : "0" ;
 
+        $settings->SeriesGenre = !empty($request->SeriesGenre) ?  "1" : "0" ;
+        $settings->SeriesGenre_videos = !empty($request->SeriesGenre_videos) ?  "1" : "0" ;
+        $settings->AudioGenre = !empty($request->AudioGenre) ?  "1" : "0" ;
+        $settings->AudioGenre_audios = !empty($request->AudioGenre_audios) ?  "1" : "0" ;
+        $settings->AudioAlbums = !empty($request->AudioAlbums) ?  "1" : "0" ;
+
 
 
         $settings->save();
@@ -358,6 +364,11 @@ class HomeSettingsController extends Controller
         $settings->latest_viewed_Livestream = !empty($request->latest_viewed_Livestream) ?  "1" : "0" ;
         $settings->latest_viewed_Audios = !empty($request->latest_viewed_Audios) ?  "1" : "0" ;
         $settings->latest_viewed_Episode = !empty($request->latest_viewed_Episode) ?  "1" : "0" ;
+        $settings->SeriesGenre = !empty($request->SeriesGenre) ?  "1" : "0" ;
+        $settings->SeriesGenre_videos = !empty($request->SeriesGenre_videos) ?  "1" : "0" ;
+        $settings->AudioGenre = !empty($request->AudioGenre) ?  "1" : "0" ;
+        $settings->AudioGenre_audios = !empty($request->AudioGenre_audios) ?  "1" : "0" ;
+        $settings->AudioAlbums = !empty($request->AudioAlbums) ?  "1" : "0" ;
         $settings->save();
         return redirect::to('/admin/home-settings');
     }
