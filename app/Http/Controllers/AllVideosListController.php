@@ -14,6 +14,7 @@ use App\RecentView;
 use App\Setting;
 use App\Video;
 use App\User;
+use App\Series;
 use Session;
 use Theme;
 use Auth;
@@ -93,41 +94,28 @@ class AllVideosListController extends Controller
     
                     // All Education Catogery videos - only for Nemisha
              
-            $data = VideoCategory::query()->with(['category_videos' => function ($videos)   {
-    
-                $videos->select('videos.id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price','duration','rating','image','featured','age_restrict')
-                        ->where('videos.active',1)->where('videos.status', 1)->where('videos.draft',1);
-          
-                    if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
-                    {
-                        $videos = $videos->whereNotIn('videos.id',Block_videos());
-                    }
-          
-                    if( check_Kidmode() == 1 )
-                    {
-                        $videos = $videos->whereBetween('videos.age_restrict', [ 0, 12 ]);
-                    }
-          
-                    $videos = $videos->latest('videos.created_at')->get();
-                }])
-                ->select('video_categories.id','video_categories.name', 'video_categories.slug', 'video_categories.in_home','video_categories.order')
-                ->where('video_categories.in_home',1)
-                ->where('video_categories.id',19)
-                ->orderBy('video_categories.order')
-                ->Paginate($this->settings->videos_per_page);
+                $Episode_videos = Series::select('episodes.*', 'series.title as series_name','series.slug as series_slug')
+                    ->join('series_categories', 'series_categories.series_id', '=', 'series.id')
+                    ->join('episodes', 'episodes.series_id', '=', 'series.id')
+                    ->where('series_categories.category_id', '=', 19)
+                    ->where('episodes.active', '=', '1')
+                    ->where('series.active', '=', '1')
+                    ->groupBy('episodes.id')
+                    ->latest('episodes.created_at')
+                    ->Paginate($this->settings->videos_per_page);
 
            
             $respond_data = array(
-                'videos'    => $data,
+                'videos'    => $Episode_videos,
                 'ppv_gobal_price'  => $this->ppv_gobal_price,
                 'currency'         => CurrencySetting::first(),
                 'ThumbnailSetting' => ThumbnailSetting::first(),
             );
     
-            return Theme::view('All-Videos.All_videos',['respond_data' => $respond_data]);
+            return Theme::view('All-Videos.learn',['respond_data' => $respond_data]);
 
         } catch (\Throwable $th) {
-            //  return $th->getMessage();
+             return $th->getMessage();
             return abort(404);
         }
     }
