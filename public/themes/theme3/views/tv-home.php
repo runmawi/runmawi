@@ -6,6 +6,10 @@
 <?php }
 
 $slider_choosen = App\HomeSetting::pluck('slider_choosen')->first();  
+$order_settings = App\OrderHomeSetting::orderBy('order_id', 'asc')->get();  
+$order_settings_list = App\OrderHomeSetting::get();  
+$home_settings = App\HomeSetting::first() ;
+$ThumbnailSetting =  App\ThumbnailSetting::first();
 
 if(count($errors) > 0){
 foreach( $errors->all() as $message ){ ?>
@@ -82,6 +86,65 @@ foreach( $errors->all() as $message ){ ?>
             </div>
         </div>
     </section>
+
+    <?php foreach($order_settings as $key => $value){  
+    
+
+    if($value->video_name == 'Series_Genre'){
+    
+    if($home_settings->SeriesGenre == 1){ ?>
+            <section id="iq-favorites">
+                    <div class="container-fluid overflow-hidden">
+                        <div class="row">
+                            <div class="col-sm-12 ">
+                                <?php include 'partials/home/SeriesGenre.php'; ?>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            <?php } } ?>
+            <?php
+            if($value->video_name == 'Series_Genre_videos'){
+
+            if($home_settings->SeriesGenre_videos == 1){ ?>
+                <section id="iq-tvthrillers" class="s-margin">
+        <div class="container-fluid overflow-hidden">
+
+            <?php
+               $parentCategories = App\SeriesGenre::all();
+               foreach($parentCategories as $category) {
+
+                $Episode_videos =  App\Series::select('episodes.*','series.title as series_name','series.slug as series_slug')
+                ->join('series_categories', 'series_categories.series_id', '=', 'series.id')
+                ->join('episodes', 'episodes.series_id', '=', 'series.id')
+                ->where('series_categories.category_id','=',$category->id)
+                ->where('episodes.active', '=', '1')
+                ->where('series.active', '=', '1')
+                ->groupBy('episodes.id')
+                ->latest('episodes.created_at')
+                ->get();
+                
+               $series = App\Series::join('series_categories', 'series_categories.series_id', '=', 'series.id')
+                                 ->where('category_id','=',$category->id)->where('active', '=', '1')
+                                 ->where('active', '=', '1');
+                $series = $series->latest('series.created_at')->get();
+                // dd($series);
+            ?>
+
+            <?php 
+               if (count($series) > 0) { 
+                  include('partials/home/seriescategoryloop.php');
+               } 
+               else { 
+            ?>
+               <p class="no_video"></p>
+            <?php } }?>
+        </div>
+    </section>
+            <?php } } ?>
+
+        <?php } ?>
+
     <section id="iq-tvthrillers" class="s-margin">
         <div class="fluid">
             <?php

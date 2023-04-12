@@ -280,7 +280,7 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
 
 
 Route::get('serieslist', array('uses' => 'ChannelController@series', 'as' => 'series') );
-Route::get('series/category/{id}', 'ChannelController@series_genre' );
+// Route::get('series/category/{id}', 'ChannelController@series_genre' );
 Route::get('watchlater', 'WatchLaterController@show_watchlaters');
 Route::get('myprofile', 'AdminUsersController@myprofile')->name('myprofile');
 Route::get('refferal', 'AdminUsersController@refferal');
@@ -2082,6 +2082,11 @@ Route::get('artist-list', 'ChannelController@artist_list')->name('artist_list');
 Route::get('LiveCategory/{slug}', 'ChannelController@LiveCategory')->name('LiveCategory');
 Route::get('CategoryLive/', 'ChannelController@CategoryLive')->name('CategoryLive');
 
+Route::get('audios/category/{slug}', 'HomePageAudioController@AudioCategory')->name('AudioCategory');
+Route::get('AudiocategoryList', 'HomePageAudioController@AudiocategoryList')->name('AudiocategoryList');
+
+Route::get('series/category/{slug}', 'TvshowsController@SeriesCategory')->name('SeriesCategory');
+Route::get('SeriescategoryList', 'TvshowsController@SeriescategoryList')->name('SeriescategoryList');
 
     // Filter 
 Route::get('categoryfilter', 'ChannelController@categoryfilter')->name('categoryfilter');
