@@ -75,13 +75,12 @@ public function PaypalIndex()
         $user =  User::where('id',1)->first();
         $duedate = $user->package_ends;
         $current_date = date('Y-m-d');
+
         if ($current_date > $duedate)
         {
             $client = new Client();
             $url = "https://flicknexs.com/userapi/allplans";
-            $params = [
-                'userid' => 0,
-            ];
+            $params = [    'userid' => 0, ];
     
             $headers = [
                 'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
@@ -93,13 +92,17 @@ public function PaypalIndex()
             ]);
     
             $responseBody = json_decode($response->getBody());
-           $settings = Setting::first();
-           $data = array(
-            'settings' => $settings,
-            'responseBody' => $responseBody,
-    );
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+                'responseBody' => $responseBody,
+            );
+
             return View::make('admin.expired_dashboard', $data);
-        }else{
+        }
+        else{
+            
         $slug = Str::slug('Laravel 5 Framework', '-');
         
         $plans_data = SubscriptionPlan::all();
@@ -112,17 +115,20 @@ public function PaypalIndex()
                         ->where('status',1)->where('paystack_status',1)->first();
 
         $devices = Devices::all();
-         $data = array(
-        	'plans' => $plans,
-             'allplans'=> $plans,
-             'devices'=> $devices,        	
-             'payment_settings'=> $payment_settings,    
-             'allCurrency'=> $allCurrency,   
-             'paystack_status'   => $paystack_status     	
-        	);
+
+            $data = array(
+                'plans' => $plans,
+                'allplans'=> $plans,
+                'devices'=> $devices,        	
+                'payment_settings'=> $payment_settings,    
+                'allCurrency'=> $allCurrency,   
+                'paystack_status'   => $paystack_status     	
+            );
+
          return view('admin.subscription_plans.index', $data);
         }
     }
+    
      public function edit($id) {
          
     	 $edit_plan =  Plan::find($id);
