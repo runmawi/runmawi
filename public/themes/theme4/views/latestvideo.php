@@ -126,6 +126,11 @@
                             <?php endforeach; 
 		                          endif; ?>
                         </ul>
+
+                        <div class="col-md-12 pagination justify-content-end" >
+                              <?php echo $latestvideo['latest_videos']->links() ?>
+                        </div>
+                        
                      </div>
                   </div>
                </div>

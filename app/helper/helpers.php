@@ -788,3 +788,14 @@ function plans_ads_enable()
     }
 
 }
+
+function check_Kidmode()
+{
+    $multiuser = Session::get('subuser_id');
+         
+    $Mode = $multiuser != null ?  App\Multiprofile::where('id', $multiuser)->first() : App\User::where('id', Auth::User()->id)->first();
+        
+    $check_Kidmode = $Mode['user_type'] != null && $Mode['user_type'] == "Kids" ? 1 : 0 ;
+
+    return $check_Kidmode ;
+}

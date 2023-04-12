@@ -5,6 +5,7 @@
             <?php echo $countryName;?>
         </a>
     </h4>
+    <a class="see" href="<?php echo route('All_Country_MostwatchedVideos') ?>">See All</a>
 </div>
 <div class="favorites-contens">
     <ul class="favorites-slider list-inline row p-0 mb-0">
