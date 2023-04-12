@@ -2001,6 +2001,8 @@ class ChannelVideosController extends Controller
             //            if(empty($data['path'])){
             //                $data['path'] = 0;
             //            }
+            $settings = Setting::first();
+
             if ($package != "Business")
             {
                 $data['status'] = 1;
