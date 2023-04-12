@@ -370,6 +370,7 @@ class HomeSettingsController extends Controller
         $settings->AudioGenre_audios = !empty($request->AudioGenre_audios) ?  "1" : "0" ;
         $settings->AudioAlbums = !empty($request->AudioAlbums) ?  "1" : "0" ;
         $settings->save();
+
         return redirect::to('/admin/home-settings');
     }
 
