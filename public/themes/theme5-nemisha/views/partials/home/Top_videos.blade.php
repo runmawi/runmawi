@@ -1,5 +1,7 @@
 <div class="iq-main-header d-flex align-items-center justify-content-between">
     <h4 class="main-title"><a href=""> Top Most Watching Videos</a></h4>
+    <a class="see" href="<?php echo route('All_MostwatchedVideos') ?>">See All</a>
+
 </div>
 <div class="favorites-contens">
     <ul class="favorites-slider list-inline row p-0 mb-0">
