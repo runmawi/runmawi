@@ -91,10 +91,9 @@ class AllVideosListController extends Controller
                 return redirect()->route('landing_page', $landing_page_slug );
             }
     
-
                     // All Education Catogery videos - only for Nemisha
              
-            $data = VideoCategory::query()->with(['category_videos' => function ($videos) use ($check_Kidmode)  {
+            $data = VideoCategory::query()->with(['category_videos' => function ($videos)   {
     
                 $videos->select('videos.id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price','duration','rating','image','featured','age_restrict')
                         ->where('videos.active',1)->where('videos.status', 1)->where('videos.draft',1);
@@ -128,7 +127,7 @@ class AllVideosListController extends Controller
             return Theme::view('All-Videos.All_videos',['respond_data' => $respond_data]);
 
         } catch (\Throwable $th) {
-            // return $th->getMessage();
+            //  return $th->getMessage();
             return abort(404);
         }
     }
@@ -137,6 +136,25 @@ class AllVideosListController extends Controller
     {
         try {
             
+            if($this->settings->enable_landing_page == 1 && Auth::guest()){
+
+                $landing_page_slug = AdminLandingPage::where('status',1)->pluck('slug')->first() ? AdminLandingPage::where('status',1)->pluck('slug')->first() : "landing-page" ;
+    
+                return redirect()->route('landing_page', $landing_page_slug );
+            }
+
+            if( Auth::guest())
+            {
+                $respond_data = array(
+                    'videos'    => [],
+                    'ppv_gobal_price'  => $this->ppv_gobal_price,
+                    'currency'         => CurrencySetting::first(),
+                    'ThumbnailSetting' => ThumbnailSetting::first(),
+                );
+    
+                return Theme::view('All-Videos.All_User_MostwatchedVideos',['respond_data' => $respond_data]);
+            }
+
             $multiuser = Session::get('subuser_id');
             
             $videos = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))
@@ -170,7 +188,7 @@ class AllVideosListController extends Controller
             return Theme::view('All-Videos.All_User_MostwatchedVideos',['respond_data' => $respond_data]);
 
         } catch (\Throwable $th) {
-            return $th->getMessage();
+            // return $th->getMessage();
             return abort(404);
         }
 
@@ -179,6 +197,13 @@ class AllVideosListController extends Controller
     public function All_Country_MostwatchedVideos(Request $request)
     {
         try {
+
+            if($this->settings->enable_landing_page == 1 && Auth::guest()){
+
+                $landing_page_slug = AdminLandingPage::where('status',1)->pluck('slug')->first() ? AdminLandingPage::where('status',1)->pluck('slug')->first() : "landing-page" ;
+    
+                return redirect()->route('landing_page', $landing_page_slug );
+            }
 
             $videos = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))
                 ->join('videos', 'videos.id', '=', 'recent_views.video_id')
@@ -208,7 +233,7 @@ class AllVideosListController extends Controller
             return Theme::view('All-Videos.All_Country_MostwatchedVideos',['respond_data' => $respond_data]);
 
         } catch (\Throwable $th) {
-            return $th->getMessage();
+            // return $th->getMessage();
             return abort(404);
         }
     }
@@ -216,6 +241,13 @@ class AllVideosListController extends Controller
     public function All_MostwatchedVideos(Request $request)
     {
         try {
+
+            if($this->settings->enable_landing_page == 1 && Auth::guest()){
+
+                $landing_page_slug = AdminLandingPage::where('status',1)->pluck('slug')->first() ? AdminLandingPage::where('status',1)->pluck('slug')->first() : "landing-page" ;
+    
+                return redirect()->route('landing_page', $landing_page_slug );
+            }
            
             $videos = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))
                             ->join('videos', 'videos.id', '=', 'recent_views.video_id')
@@ -244,7 +276,7 @@ class AllVideosListController extends Controller
             return Theme::view('All-Videos.All_MostwatchedVideos',['respond_data' => $respond_data]);
 
         } catch (\Throwable $th) {
-            return $th->getMessage();
+            // return $th->getMessage();
             return abort(404);
         }
     }
