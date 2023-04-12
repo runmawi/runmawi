@@ -49,13 +49,7 @@
                         style="color:#fff;"><?= date('F jS, Y', strtotime($series_list->created_at)) ?>
                     </small>
 
-                    <p class="desc">
-                        <?php if (strlen($series_list->description) > 90) {
-                            echo substr($series_list->description, 0, 90) . '...';
-                        } else {
-                            echo $series_list->description;
-                        } ?>
-                    </p>
+                    
             </li>
             <?php ?>
             <?php endforeach; ?>

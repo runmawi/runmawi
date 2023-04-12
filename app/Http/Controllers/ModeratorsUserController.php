@@ -6540,10 +6540,8 @@ class ModeratorsUserController extends Controller
 
     public function CPPViewsRegion()
     {
-        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
-            return redirect('/admin/restrict');
-        }
-        // dd('cpp/view_by_region');
+
+        // dd($user);
         $user = User::where("id", 1)->first();
         $duedate = $user->package_ends;
         $current_date = date("Y-m-d");
@@ -6571,10 +6569,14 @@ class ModeratorsUserController extends Controller
             ];
             return View::make("admin.expired_dashboard", $data);
         } else {
+
+        $user = Session::get('user'); 
+
             $Country = Region::get();
 
             $data = [
                 "Country" => $Country,
+                "user_id" => $user->id,
             ];
             return \View::make(
                 "moderator.cpp.analytics.views_by_region",
@@ -6671,6 +6673,7 @@ class ModeratorsUserController extends Controller
                     "videos.id"
                 )
                     ->where("uploaded_by", "CPP")
+                    ->where("region_views.user_id", $request->user_id)
                     ->get();
                 $data = $region_views->groupBy("countryname");
 
@@ -6682,6 +6685,7 @@ class ModeratorsUserController extends Controller
                         "videos.id"
                     )
                     ->orderBy("created_at", "desc")
+                    ->where("region_views.user_id", $request->user_id)
                     ->where("uploaded_by", "CPP")
                     ->paginate(9);
             } else {

@@ -1188,7 +1188,7 @@ class AdminVideosController extends Controller
             ->where("ads_videos.video_id", $id)
             ->pluck("ad_roll")
             ->first();
-
+        $MoviesSubtitles = MoviesSubtitles::where('movie_id',$id)->get();
         $ads_category = Adscategory::get();
 
         $Reels_videos = Video::Join(
@@ -1204,7 +1204,17 @@ class AdminVideosController extends Controller
         $all_related_videos = RelatedVideo::where("video_id", $id)
             ->pluck("related_videos_id")
             ->toArray();
-
+            $subtitlescount = Subtitle::
+            join('movies_subtitles', 'movies_subtitles.sub_language', '=', 'subtitles.language')
+            ->where(['movie_id' => $id])->count();
+            if($subtitlescount > 0){
+                $subtitles = Subtitle::
+                join('movies_subtitles', 'movies_subtitles.sub_language', '=', 'subtitles.language')
+                ->where(['movie_id' => $id])->get(["subtitles.*","movies_subtitles.url","movies_subtitles.id as movies_subtitles_id"]);
+            }else{
+                $subtitles = Subtitle::all();
+            }
+            // dd($subtitles);
 
         $data = [
             "headline" => '<i class="fa fa-edit"></i> Edit Video',
@@ -1261,10 +1271,25 @@ class AdminVideosController extends Controller
                             ->where('videos.id',$id)->first(),
 
             "ads_tag_urls" => Advertisement::where('status',1)->where('ads_upload_type','tag_url')->where('id',$video->ads_tag_url_id)->first(),
+            "MoviesSubtitles" => $MoviesSubtitles ,
+            "subtitlescount" => $subtitlescount,
+
 
         ];
 
         return View::make("admin.videos.create_edit", $data);
+    }
+
+    
+    public function subtitledestroy($id)
+    {
+        MoviesSubtitles::destroy($id);
+
+        return Redirect::back()->with([
+            "message" => "Successfully Updated Video!",
+            "note_type" => "success",
+        ]);
+
     }
     /**
      * Update the specified resource in storage.

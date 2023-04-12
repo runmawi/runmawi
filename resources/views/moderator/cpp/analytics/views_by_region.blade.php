@@ -133,6 +133,7 @@ $.ajaxSetup({
 	$(document).ready(function(){
     $('#chart_data').hide();
     var url = $('#url').val();
+    var user_id = "{{ $user_id }}";
     $('#country').change(function(){
    var country = $('#country').val();
    if(country == "allcountry"){
@@ -141,7 +142,7 @@ $.ajaxSetup({
 	$.ajax({
    url:url,
    method:'get',
-   data:{query:country},
+   data:{query:country,user_id:user_id},
    dataType:'json',
    success:function(data)
    {
@@ -193,7 +194,7 @@ $.ajaxSetup({
     $.ajax({
    url:"{{ URL::to('cpp/regionvideos') }}",
    method:'get',
-   data:{query:country},
+   data:{query:country,user_id:user_id},
    dataType:'json',
    success:function(data)
    {

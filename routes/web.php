@@ -468,6 +468,7 @@ Route::get('/Testwatermark', 'Testwatermark@index');
     Route::post('/videos/categories/update','AdminVideoCategoriesController@update');
     Route::get('/videos/categories/delete/{id}', array('before' => 'demo', 'uses' => 'AdminVideoCategoriesController@destroy'));
     Route::get('/videos/aws_editvideo/{id}', 'AdminVideosController@AWSEditvideo'); 
+    Route::get('/subtitle/delete/{id}', array('before' => 'demo', 'uses' => 'AdminVideosController@subtitledestroy'));
 
 // Admin PPV Functionality
     Route::get('/ppv', 'AdminPpvController@index');
