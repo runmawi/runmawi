@@ -22,12 +22,8 @@
                                             <?php echo __($learn_series_sliders->title); ?>
                                         </h1>
 
-                                        <div class="mb-3">
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star"></span>
-                                            <span class="fa fa-star"></span>
+                                        <div class="">
+                                        <img class="" src="<?php echo  URL::to('/assets/img/star.png')?>" />
                                         </div>
 
                                         <div 
