@@ -164,6 +164,9 @@ header .navbar ul li:last-child { margin-right: 0; }
 270deg
 , rgba(11, 1, 2, 0) 0%, rgb(55 214 255 / 27%) 100%);*/ padding: 10px 10px 10px 15px; width: 255px; position: relative; overflow: hidden; }
 .circle { stroke: var(--iq-primary); stroke-dasharray: 650; stroke-dashoffset: 650; -webkit-transition: all 0.5s ease-in-out; opacity: 0.3; }
+.s-bg-2:before{
+    background-image: linear-gradient(to left, rgba(4,8,15,0)44%, rgba(11, 18, 28, 1)69%, var(--iq-body-bg1))!important;
+}
 .playbtn { display: inline-block; -webkit-transition: all 0.5s ease; }
 .playbtn .triangle { -webkit-transition: all 0.7s ease-in-out; stroke-dasharray: 240; stroke-dashoffset: 480; stroke: var(--iq-white); transform: translateY(0); }
 .playbtn:hover .triangle { stroke-dashoffset: 0; opacity: 1; stroke: var(--iq-primary); animation: trailorPlay 0.7s ease-in-out; }
