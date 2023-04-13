@@ -21,8 +21,9 @@ include public_path('themes/theme5-nemisha/views/header.php');
                             @if (isset($respond_data['videos']))
 
                                 @foreach ($respond_data['videos'] as $key => $video)
+                             
                                     <li class="slide-item col-sm-2 col-md-2 col-xs-12">
-                                        <a href="<?php echo URL::to('home'); ?>">
+                                        <a href="{{  URL::to('episode/'.$video->series_slug.'/'.$video->slug ) }}">
                                             <div class="block-images position-relative">
                                                 <div class="img-box">
                                                     <img loading="lazy"
@@ -32,7 +33,7 @@ include public_path('themes/theme5-nemisha/views/header.php');
 
                                                 <div class="block-description">
                                                     <div class="hover-buttons">
-                                                        <a href="{{ URL::to('category/videos/' . $video->slug) }}">
+                                                        <a href="{{  URL::to('episode/'.$video->series_slug.'/'.$video->slug ) }}">
                                                             <img class="ply"
                                                                 src="{{ URL::to('assets/img/play.svg') }} ">
                                                         </a>
@@ -88,33 +89,10 @@ include public_path('themes/theme5-nemisha/views/header.php');
 
                                                 <div class="movie-time my-2">
                                                     <!-- published_year -->
-
                                                     @if ($respond_data['ThumbnailSetting']->published_year == 1 && $video->year != null)
                                                         <span class="text-white">
                                                             <i class="fa fa-calendar" aria-hidden="true"></i>
                                                             <?php echo __($video->year); ?>
-                                                        </span>
-                                                    @endif
-                                                </div>
-
-                                                <div class="movie-time my-2">
-                                                    <!-- Category Thumbnail  setting -->
-                                                    <?php
-                                                    $CategoryThumbnail_setting = App\CategoryVideo::join('video_categories', 'video_categories.id', '=', 'categoryvideos.category_id')
-                                                        ->where('categoryvideos.video_id', $video->id)
-                                                        ->pluck('video_categories.name');
-                                                    ?>
-
-                                                    @if ($respond_data['ThumbnailSetting']->category == 1 && count($CategoryThumbnail_setting) > 0)
-                                                        <span class="text-white">
-                                                            <i class="fa fa-list-alt" aria-hidden="true"></i>
-                                                            <?php
-                                                            $Category_Thumbnail = [];
-                                                            foreach ($CategoryThumbnail_setting as $key => $CategoryThumbnail) {
-                                                                $Category_Thumbnail[] = $CategoryThumbnail;
-                                                            }
-                                                            echo implode(',' . ' ', $Category_Thumbnail);
-                                                            ?>
                                                         </span>
                                                     @endif
                                                 </div>
