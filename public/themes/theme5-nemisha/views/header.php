@@ -490,6 +490,9 @@
     body.light-theme .media-body h6 {
         color: <?php echo GetLightText(); ?>;
     }
+    body.light-theme .big-title h1 {
+        color: <?php echo GetLightText(); ?>!important;
+    }
 
     body.light-theme header .navbar ul li {
         font-weight: 400;
