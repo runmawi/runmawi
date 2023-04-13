@@ -316,8 +316,11 @@ function GetCouponPurchase($user_id){
 }
 function MailSignature()
 {
-     $MailSignature = URL::to('/');
-     return "Website URL : " .$MailSignature;  
+    $settings = App\Setting::first();
+    
+    $MailSignature = $settings->signature != null ? $settings->signature :  URL::to('/');
+
+    return "Website URL : " .$MailSignature;  
 }
 function AdminMail()
 {
@@ -803,4 +806,13 @@ function check_Kidmode()
     else{
         return 0 ;
     }
+}
+
+function Mail_Image()
+{
+    $settings = App\Setting::first();
+
+    $Mail_Image = $settings != null && $settings->email_image != null ? $settings->email_image : $settings->logo ;
+
+    return public_path('uploads/settings/'. $Mail_Image) ;
 }
