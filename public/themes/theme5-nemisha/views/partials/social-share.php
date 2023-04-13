@@ -68,7 +68,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'" framebo
     <span><i <?php if( isset($like_dislike[0]) && $like_dislike[0]->disliked == 1 ) {}?> class="ri-thumb-down-line <?php if( isset($like_dislike[0]) && $like_dislike[0]->disliked == 1 ) { echo 'active';}?>" aria-hidden="true" style="cursor:pointer;" data-like-val="1" dislike="1"  id="dislike" data-authenticated="<?= !Auth::guest() ?>"></i></span>
 </li>
 <?php if($video->access != 'ppv') { ?>
-<li>
+<li >
     <span><a href="#"onclick="EmbedCopy();" class="share-ico"><i class="ri-links-fill"></i></a></span>
 </li>
 <?php } ?>
