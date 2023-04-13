@@ -526,7 +526,7 @@
                                  $stripe_plan = SubscriptionPlan();
                                  //  $menus = App\Menu::all();
                                  if(!Auth::guest() && Auth::User()->role != 'admin' || Auth::guest()){
-                                    $menus = App\Menu::orderBy('order', 'asc')->where('in_home','=',1)->where('in_menu','=',1)->get();
+                                    $menus = App\Menu::orderBy('order', 'asc')->where('in_home','!=',0)->orWhere('in_home', '=', null)->get();
                                  }else{
                                     $menus = App\Menu::orderBy('order', 'asc')->get();
                                  }
@@ -534,8 +534,18 @@
                                  $languages = App\Language::all();
                                  $LiveCategory = App\LiveCategory::orderBy('order', 'asc')->get();
                                  foreach ($menus as $menu) { 
-                                 if ( $menu->in_menu == "video") { 
-                                 $cat = App\VideoCategory::orderBy('order', 'asc')->get();
+                                 if ( $menu->in_menu == "video" ) { 
+                                    if(!Auth::guest()){
+                                          $Authusers = App\User::where('email',Auth::User()->email)->pluck('role')->first();
+                                    }else{
+                                       $Authusers = '';
+                                    }
+                                    if(!empty($Authusers) && $Authusers == 'admin' ){ 
+                                       $cat = App\VideoCategory::orderBy('order', 'asc')->get();
+                                    }else{
+                                       $cat = App\VideoCategory::orderBy('order', 'asc')->where('in_home','=',1)->get();
+                                    }
+                                 // $cat = App\VideoCategory::orderBy('order', 'asc')->get();
                                  ?>
                               <li class="dropdown menu-item">
                                  <a class="dropdown-toggle" id="dn" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
