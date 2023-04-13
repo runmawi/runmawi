@@ -79,7 +79,7 @@ class AdminEmailSettingsController extends Controller
     );
             return View::make('admin.expired_dashboard', $data);
         }else{
-        $email_settings = EmailSetting::first();
+        $email_settings = EmailSetting::find(1);
         $email_template = EmailTemplate::get();
 
         $data = array(
@@ -220,7 +220,7 @@ class AdminEmailSettingsController extends Controller
     public function email_logs(Request $request)
     {
         $data =[
-            'email_logs' =>  EmaillogsDetail::latest()->get(),
+            'email_logs' =>  EmaillogsDetail::latest()->paginate(10),
         ];
 
         return view('admin.Email.email_logs',$data);
