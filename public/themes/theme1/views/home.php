@@ -320,7 +320,6 @@ if ( GetTrendingVideoStatus() == 1 ) { ?>
          
       if($home_settings->AudioGenre_audios == 1){ ?>
    <section id="iq-favorites">
-      <div class="container-fluid overflow-hidden">
          <div class="row">
             
          <?php
@@ -343,7 +342,6 @@ if ( GetTrendingVideoStatus() == 1 ) { ?>
             ?>
                <p class="no_audio"></p>
             <?php } }?>
-            </div>
          </div>
       </div>
    </section>
