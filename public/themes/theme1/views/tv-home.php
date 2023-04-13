@@ -105,7 +105,6 @@ foreach( $errors->all() as $message ){ ?>
 
             if($home_settings->SeriesGenre_videos == 1){ ?>
                 <section id="iq-tvthrillers" class="s-margin">
-        <div class="container-fluid overflow-hidden">
 
             <?php
                $parentCategories = App\SeriesGenre::all();
@@ -136,7 +135,6 @@ foreach( $errors->all() as $message ){ ?>
             ?>
                <p class="no_video"></p>
             <?php } }?>
-        </div>
     </section>
             <?php } } ?>
 

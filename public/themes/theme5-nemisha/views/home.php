@@ -162,7 +162,93 @@
                </div>
             </section>
 
+
+             <!-- Data Free  Category Series  -->
+
+             <section id="iq-favorites">
+               <div class="fluid overflow-hidden">
+               <?php
+                  $DataFreeseriesCategories = App\SeriesGenre::where('slug','datafree')->where('in_menu','=',1)->first();
+                  $countDataFreeseriesCategories = App\SeriesGenre::where('slug','datafree')->where('in_menu','=',1)->count();
+                  if ($countDataFreeseriesCategories > 0 ) {   
+
+                        $series = App\Series::join('series_categories', 'series_categories.series_id', '=', 'series.id')
+                                    ->where('category_id','=',@$DataFreeseriesCategories->id)->where('active', '=', '1')
+                                    ->where('active', '=', '1');
+                        $series = $series->latest('series.created_at')->get();
+                  
+                  }else{
+                     $series = [];
+                  }
+               ?>
+                  <div class="row">
+                     <div class="col-sm-12">
+                        <?php if (count($series) > 0 ) {  include 'partials/home/datafree-series.php'; } ?>
+                     </div>
+                  </div>
+               </div>
+            </section>
+
+
+
+             <!-- Data Free  Category Live  -->
+
+             <section id="iq-favorites">
+               <div class="fluid overflow-hidden">
+               <?php
+                  $DataFreeliveCategories = App\LiveCategory::where('slug','datafree')->first();
+                  $countDataFreeliveCategories = App\LiveCategory::where('slug','datafree')->count();
+                  if ($countDataFreeliveCategories > 0 ) {   
+
+                        $live_streams = App\LiveStream::join('livecategories', 'livecategories.live_id', '=', 'live_streams.id')
+                                    ->where('category_id','=',@$DataFreeliveCategories->id)->where('active', '=', '1')
+                                    ->where('status', '=', '1');
+                        $live_streams = $live_streams->latest('live_streams.created_at')->get();
+                  
+                  }else{
+                     $live_streams = [];
+                  } 
+               ?>
+                  <div class="row">
+                     <div class="col-sm-12">
+                        <?php if (count($live_streams) > 0 ) {  include 'partials/home/datafree-liveVideos.php'; } ?>
+                     </div>
+                  </div>
+               </div>
+            </section>
+
+
+
+             <!-- Data Free  Category Audios  -->
+
+             <section id="iq-favorites">
+               <div class="fluid overflow-hidden">
+               <?php
+                  $DataFreeAudioCategories = App\AudioCategory::where('slug','datafree')->first();
+                  $countDataFreeAudioCategories = App\AudioCategory::where('slug','datafree')->count();
+                  if ($countDataFreeAudioCategories > 0 ) {   
+
+                        $audio = App\Audio::join('category_audios', 'category_audios.audio_id', '=', 'audio.id')
+                                    ->where('category_id','=',@$DataFreeAudioCategories->id)->where('active', '=', '1')
+                                    ->where('status', '=', '1');
+                        $audio = $audio->latest('audio.created_at')->get();
+                  
+                  }else{
+                     $audio = [];
+                  } 
+               ?>
+                  <div class="row">
+                     <div class="col-sm-12">
+                        <?php if (count($audio) > 0 ) {  include 'partials/home/datafree-audios.php'; } ?>
+                     </div>
+                  </div>
+               </div>
+            </section>
+
     <?php } }?>
+
+
+    
     
    <!-- Audio Genre -->
    <?php
@@ -185,7 +271,6 @@
          
       if($home_settings->AudioGenre_audios == 1){ ?>
    <section id="iq-favorites">
-      <div class="container-fluid overflow-hidden">
          <div class="row">
             
          <?php
@@ -209,7 +294,6 @@
                <p class="no_audio"></p>
             <?php } }?>
             </div>
-         </div>
       </div>
    </section>
    <?php } } ?>
