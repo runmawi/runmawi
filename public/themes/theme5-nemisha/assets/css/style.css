@@ -255,13 +255,13 @@ li.slide-item .block-description .parallax-ratting span { font-size: 14px; }
     
   padding: 10px 20px;
     border:1px solid #ed553b;
-    color:#000!important;
+    color:#fff!important;
   background: #ed553b;
 font-weight: 400;
 text-transform: uppercase;
      font-family: 'futuramedium';
 
-border-radius: 10px;
+border-radius: 30px!important;
 
 }
 .sp{
@@ -273,13 +273,17 @@ border-radius: 10px;
      
     font-weight: 700;
     border:1px solid #fff;
-    color:#fff!important;
+    color:#000!important;
     background: #fff;
 
-border-radius: 10px!important;
+border-radius: 30px!important;
 }
 .slick-bg{
     
+}
+button.btn.btn-primary {
+   
+    border-radius: 30px!important;
 }
 /*---------------------*/
 #trending-slider .tranding-block, .banner-wrapper { background-size: cover; background-position: top right; position: relative; }
