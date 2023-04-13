@@ -67,11 +67,12 @@ class ContactController extends Controller
         try {
             
             $email_template_subject =  EmailTemplate::where('id',6)->pluck('heading')->first() ;
-            $email_subject  = str_replace("{Name}", "$request->fullname", $email_template_subject);
+            $email_subject  = str_replace("{Name }", "$request->fullname", $email_template_subject);
 
             $datas = array(
                 'email_subject' => $email_subject,
                 'system_email'  => Setting::pluck('system_email')->first(), 
+                'admin_contact_us_subject' => 'New Mail Notification from '. $data['fullname']  ,
             );
 
             \Mail::send('emails.contact_us', array(
@@ -82,8 +83,8 @@ class ContactController extends Controller
             ), 
             
             function($message) use ($data,$datas,$screenshot_url) {
-                $message->from(AdminMail(),GetWebsiteName());
-                $message->to($datas['system_email'])->subject($datas['email_subject']);
+                $message->from($datas['system_email'],GetWebsiteName());
+                $message->to($data['email'])->subject($datas['email_subject']);
 
                 if (!empty($data['screenshot'])) {
                     $message->attach($screenshot_url);
@@ -98,6 +99,25 @@ class ContactController extends Controller
 
             $message      = 'Your contact request was successfully sent';
             $note_type    = 'Success'; 
+
+            //Admin Contact us 
+
+            \Mail::send('emails.contact_us_admin', array(
+                'username' => $data['fullname'],
+                'website_name' => GetWebsiteName(),
+                'originalMessage' => $data['message'],
+                'screenshot_url' => $screenshot_url,
+            ), 
+            
+            function($message) use ($data,$datas,$screenshot_url) {
+                $message->from($data['email'],GetWebsiteName());
+                $message->to( AdminMail() )->subject($datas['admin_contact_us_subject']);
+
+                if (!empty($data['screenshot'])) {
+                    $message->attach($screenshot_url);
+                }
+            });
+            
         }
         catch (\Exception $e) {
 

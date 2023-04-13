@@ -17,7 +17,7 @@
             ?>">Click here</a> to reset your password: <?php //echo URL::to('/').'/password/reset/'.$token ;
             ?> -->
             <br>
-            <p>&nbsp;&nbsp;&nbsp; <?php echo MailSignature(); ?>&nbsp;&nbsp;&nbsp; </p>
+            <p>&nbsp;&nbsp;&nbsp; <?php echo html_entity_decode (MailSignature()) ; ?>&nbsp;&nbsp;&nbsp; </p>
 
         </div>
     </div>

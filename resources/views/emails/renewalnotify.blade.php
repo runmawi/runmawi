@@ -16,4 +16,4 @@
 </div>
 <br>
 <br>
-<?php echo MailSignature();?>
+<p> {!! html_entity_decode (MailSignature()) !!}</p>

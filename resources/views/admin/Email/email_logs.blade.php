@@ -61,6 +61,11 @@
                                     @empty
                                     @endforelse
                                 </table>
+
+                                <div class="col-md-12 pagination justify-content-end" >
+                                    {{ $email_logs->links() }}
+                              </div>
+
                             </div>
                         </div>
                     </div>
@@ -74,9 +79,9 @@
         <script>
             $(document).ready(function() {
 
-                $('#template').DataTable({
+                // $('#template').DataTable({
                    
-                });
+                // });
             });
         </script>
 

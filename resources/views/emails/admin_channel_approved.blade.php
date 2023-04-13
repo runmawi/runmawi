@@ -13,7 +13,7 @@
             <p> &nbsp;&nbsp;&nbsp;Sincerely,&nbsp;&nbsp;&nbsp;&nbsp;</p>
             <p>&nbsp;&nbsp;&nbsp;Team <?php echo $settings->website_name; ?>&nbsp;&nbsp;&nbsp;&nbsp;</p>
 
-            <p> &nbsp;&nbsp;&nbsp;<?php echo MailSignature(); ?> &nbsp;&nbsp;&nbsp;&nbsp;</p>
+            <p> &nbsp;&nbsp;&nbsp;<?php echo html_entity_decode (MailSignature()) ; ?> &nbsp;&nbsp;&nbsp;&nbsp;</p>
 
 
         </div>
