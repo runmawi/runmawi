@@ -9,6 +9,17 @@ $series = App\series::first();
     .desc p {
         color: #fff !important;
     }
+    textarea.form-control {
+    border: none!important;
+    border-bottom: 1px solid #fff!important;
+    line-height: 25px;
+}
+textarea.form-control {
+    background-color: #fff!important;
+    height: 100px;
+    font-size: 18px;
+    font-family: 'futurabook';
+}
 </style>
 <!-- free content - hide & show -->
 <!-- <div class="row free_content">
