@@ -1076,7 +1076,7 @@ border-radius: 0px 4px 4px 0px;
                         </div>
                     </div>
                     <div class="panel-body" style="display: block;">
-                        <p>Login Page Content:</p>
+                        {{-- <p>Login Page Content:</p> --}}
                         <div class="form-group add-profile-pic">
                             @if(!empty($settings->login_content))
                             <img src="{{ URL::to('/') . '/public/uploads/settings/' . $settings->login_content }}"
@@ -1094,6 +1094,27 @@ border-radius: 0px 4px 4px 0px;
                         </div>
                     </div>
                 </div>
+
+                <div class="panel panel-primary" data-collapsed="0">
+                    <div class="panel-heading">
+                        <div class="panel-title"><label>Email Image:</label></div>
+                        <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                        </div>
+                    </div>
+                    <div class="panel-body" style="display: block;">
+                        {{-- <p>Email Image:</p> --}}
+                        <div class="form-group add-profile-pic">
+                            @if(!empty($settings->email_image))
+                            <img src="{{ URL::to('public/uploads/settings/'.$settings->email_image) }}"
+                                style="max-height:100px" />
+                            @endif
+                            
+                            <input id="f02" type="file" name="email_image" placeholder="Upload Image" />
+                            <p class="padding-top-20 p1">Must be JPEG, PNG, or GIF and cannot exceed 10MB.</p>
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="panel panel-primary" data-collapsed="0">
                     <div class="panel-heading">
                         <div class="panel-title"><label>Email Signature </label></div>
@@ -1102,7 +1123,7 @@ border-radius: 0px 4px 4px 0px;
                     </div>
                     <div class="panel-body" style="display: block;">
                         <div class="form-group add-profile-pic">
-                            <p class="p1">Email Signature:</p>
+                            {{-- <p class="p1">Email Signature:</p> --}}
                             <textarea id="summary-ckeditor" name="signature" class="form-control"
                                 placeholder="Email signature"
                                 value="@if(!empty($settings->signature)){{ $settings->signature }}@endif"><?php echo $settings->signature; ?></textarea>

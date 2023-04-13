@@ -20,6 +20,10 @@
 	#devices_valid{
 		border: transparent;
 	}
+	label#devices\[\]-error{
+		width: 370px;
+    	margin-top: 18px;
+	}
 
 </style>
 @section('css')
