@@ -204,11 +204,7 @@ endif; ?>
                             <?php } ?>
 
                             <div class="mb-3">
-                                <span class="fa fa-star checked"></span>
-                                <span class="fa fa-star checked"></span>
-                                <span class="fa fa-star checked"></span>
-                                <span class="fa fa-star"></span>
-                                <span class="fa fa-star"></span>
+                            <img class="" src="<?php echo  URL::to('/assets/img/star.png')?>" />
                             </div>
                     <div  style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
                         -webkit-line-clamp: 3;
