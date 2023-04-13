@@ -527,6 +527,10 @@
         color: #000 !important;
 
     }
+    body.light-theme .view-count i {
+        color: #000 !important;
+
+    }
 
     body.light-theme .sea {
         color: #fff !important;
