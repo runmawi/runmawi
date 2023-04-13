@@ -254,8 +254,9 @@ li.slide-item .block-description .parallax-ratting span { font-size: 14px; }
    
     
   padding: 10px 20px;
+    border:1px solid #ed553b;
     color:#000!important;
-  background: rgba(255, 255, 255, 1);
+  background: #ed553b;
 font-weight: 400;
 text-transform: uppercase;
      font-family: 'futuramedium';
@@ -271,9 +272,9 @@ border-radius: 10px;
 .bd:hover{
      
     font-weight: 700;
-    border:1px solid #ed553b;
+    border:1px solid #fff;
     color:#fff!important;
-    background: #ed553b;
+    background: #fff;
 
 border-radius: 10px!important;
 }
