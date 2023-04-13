@@ -363,7 +363,7 @@
 
                         <img class="rounded-circle img-fluid text-center mb-3 mt-4"
                             src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar ?>" alt="profile-bg"/
-                            style="" width="150">
+                            style="" width="150" height="150">
                         <div> <a href="javascript:;" onclick="jQuery('#add-new').modal('show');" class="Text-white"
                                 style="color: #fff!important;"><i class="fa fa-plus-circle"></i> Edit</a></div>
 
@@ -402,7 +402,7 @@
 
                             <p class="account row ">
                                 <span class="col-lg-4 text-left">DOB:</span>
-                                <span class="col-lg-4 text-left"> <?php if(!empty($user->DOB)): ?><?= $user->DOB ?><?php endif; ?></span>
+                                <span class="col-lg-6 text-left"> <?php if(!empty($user->DOB)): ?><?= $user->DOB ?><?php endif; ?></span>
                             </p>
 
                         </div>
