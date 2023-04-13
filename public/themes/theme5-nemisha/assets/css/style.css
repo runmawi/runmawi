@@ -164,6 +164,9 @@ header .navbar ul li:last-child { margin-right: 0; }
 270deg
 , rgba(11, 1, 2, 0) 0%, rgb(55 214 255 / 27%) 100%);*/ padding: 10px 10px 10px 15px; width: 255px; position: relative; overflow: hidden; }
 .circle { stroke: var(--iq-primary); stroke-dasharray: 650; stroke-dashoffset: 650; -webkit-transition: all 0.5s ease-in-out; opacity: 0.3; }
+.s-bg-2:before{
+    background-image: linear-gradient(to left, rgba(4,8,15,0)44%, rgba(11, 18, 28, 1)69%, var(--iq-body-bg1))!important;
+}
 .playbtn { display: inline-block; -webkit-transition: all 0.5s ease; }
 .playbtn .triangle { -webkit-transition: all 0.7s ease-in-out; stroke-dasharray: 240; stroke-dashoffset: 480; stroke: var(--iq-white); transform: translateY(0); }
 .playbtn:hover .triangle { stroke-dashoffset: 0; opacity: 1; stroke: var(--iq-primary); animation: trailorPlay 0.7s ease-in-out; }
@@ -251,13 +254,14 @@ li.slide-item .block-description .parallax-ratting span { font-size: 14px; }
    
     
   padding: 10px 20px;
-    color:#000!important;
-  background: rgba(255, 255, 255, 1);
+    border:1px solid #ed553b;
+    color:#fff!important;
+  background: #ed553b;
 font-weight: 400;
 text-transform: uppercase;
      font-family: 'futuramedium';
 
-border-radius: 10px;
+border-radius: 30px!important;
 
 }
 .sp{
@@ -268,14 +272,18 @@ border-radius: 10px;
 .bd:hover{
      
     font-weight: 700;
-    border:1px solid #ed553b;
-    color:#fff!important;
-    background: #ed553b;
+    border:1px solid #fff;
+    color:#000!important;
+    background: #fff;
 
-border-radius: 10px!important;
+border-radius: 30px!important;
 }
 .slick-bg{
     
+}
+button.btn.btn-primary {
+   
+    border-radius: 30px!important;
 }
 /*---------------------*/
 #trending-slider .tranding-block, .banner-wrapper { background-size: cover; background-position: top right; position: relative; }

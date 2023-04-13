@@ -79,7 +79,7 @@ class AdminEmailSettingsController extends Controller
     );
             return View::make('admin.expired_dashboard', $data);
         }else{
-        $email_settings = EmailSetting::find(1);
+        $email_settings = EmailSetting::first();
         $email_template = EmailTemplate::get();
 
         $data = array(

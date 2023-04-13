@@ -39,13 +39,11 @@
 
 <div style=" background: #edf2f7;">
     <div class="content" style="background: #fff;margin: 5%;border: 34px solid #edf2f7;">
-            <a class="navbar-brand" href="<?php echo URL::to('/');?>">
-                <?php $settings = App\Setting::find(1); ?>
-                <img src="{{ $message->embed(public_path().'/uploads/settings/'.$settings->logo) }}" width="80" height="80">
-            </a>
+        <a style="margin-left: 39%;" class="navbar-brand" href="<?php echo URL::to('/') ?>"> <img src="{{ $message->embed( Mail_Image() ) }}" class="c-logo" > </a>
 
         <div style="margin:2% !important">
             <p> <?php echo html_entity_decode($Template_description) ?> </p>
+            <p> {{ MailSignature() }}</p>
         </div>
 
 </div>
