@@ -74,7 +74,7 @@
 
                 <div class="col-sm-12 page-height">
                     <div class="iq-main-header align-items-center justify-content-between">
-                    <h4 class="main-title mt-1">                  
+                    <h4 class="main-title mt-3">                  
                    Learn  
                   </h4>
                     </div>
