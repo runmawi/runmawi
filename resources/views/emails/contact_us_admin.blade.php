@@ -20,7 +20,7 @@
   
                 </p>
 
-                <p> &nbsp;&nbsp;&nbsp;&nbsp; {{ MailSignature() }} &nbsp;&nbsp;&nbsp;&nbsp; </p>
+                <p> &nbsp;&nbsp;&nbsp;&nbsp;  {!! html_entity_decode (MailSignature()) !!}  &nbsp;&nbsp;&nbsp;&nbsp; </p>
             </div>
 
         </div>

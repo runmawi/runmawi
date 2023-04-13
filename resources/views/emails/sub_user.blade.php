@@ -34,8 +34,8 @@
 
             <div style="margin:2% !important">
                 <p> <?php echo html_entity_decode($Template_description) ?> </p>
-                <p> {{ MailSignature() }}</p>
-            </div>
+                <p> {!! html_entity_decode (MailSignature()) !!}</p>
+             </div>
 
         </div>
     </div>

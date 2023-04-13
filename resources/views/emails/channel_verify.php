@@ -12,6 +12,7 @@
             <?= URL::to('channel/verify/'. $activation_code) ?>.<br/>
 
         </div>
-        <?php echo MailSignature();?>
+        <?php echo html_entity_decode(MailSignature());?>
     </body>
 </html>
+
