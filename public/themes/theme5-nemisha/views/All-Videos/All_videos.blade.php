@@ -14,14 +14,15 @@ include public_path('themes/theme5-nemisha/views/header.php');
 
                 <div class="col-sm-12 page-height">
                     <div class="iq-main-header align-items-center justify-content-between">
-
-                    </div>
+                    <h4 class="main-title mt-3">                  
+                    Library Videos
+                  </h4>                    </div>
                     <div class="favorites-contens">
                         <ul class="category-page list-inline row p-0 mb-0">
                             @if (isset($respond_data['videos']))
 
                                 @foreach ($respond_data['videos'] as $key => $video)
-                                    <li class="slide-item col-sm-2 col-md-2 col-xs-12">
+                                    <li class="slide-item col-sm-3 col-md-3 col-xs-12">
                                         <a href="{{ URL::to('category/videos/' . $video->slug) }}">
                                             <div class="block-images position-relative">
                                                 <div class="img-box">
