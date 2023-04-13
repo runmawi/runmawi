@@ -193,7 +193,7 @@ class AdminPlayerAnalyticsController extends Controller
                <td>' . $i++ . '</td>
                <td>' . $row->title . '</td>
                <td>' . $row->count . '</td>    
-               <td>' . $row->watchpercentage . '</td>  
+               <td>' . gmdate("H:i:s", @$row->currentTime) . '</td>  
                <td>' . $row->seekTime . '</td>    
                <td>' . $bufferedTime . '</td>    
               </tr>
@@ -269,7 +269,7 @@ class AdminPlayerAnalyticsController extends Controller
               <td>' . $i++ . '</td>
               <td>' . $row->title . '</td>
               <td>' . $row->count . '</td>    
-              <td>' . $row->watchpercentage . '</td>  
+              <td>' . gmdate("H:i:s", @$row->currentTime) . '</td>  
               <td>' . $row->seekTime . '</td>    
               <td>' . $bufferedTime . '</td>     
               </tr>
@@ -353,7 +353,7 @@ class AdminPlayerAnalyticsController extends Controller
                 ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title',
                 DB::raw('sum(player_analytics.duration) as duration') ,
                  DB::raw('sum(player_analytics.currentTime) as currentTime') ,
-                 DB::raw('(player_analytics.seekTime) as seekTime') ,
+                 DB::raw('sum(player_analytics.seekTime) as seekTime') ,
                  DB::raw('(player_analytics.bufferedTime) as bufferedTime') ,
                  DB::raw('sum(player_analytics.watch_percentage) as watch_percentage') ,
                  \DB::raw("MONTHNAME(player_analytics.created_at) as month_name") ,
@@ -381,7 +381,6 @@ class AdminPlayerAnalyticsController extends Controller
                 "Video Name",
                 "Viewed Count",
                 "Watch Percentage (Minutes)",
-                "Commission Pending",
                 "Seek Time (Seconds)",
                 "Buffered Time (Seconds)",
             ]);
@@ -390,7 +389,7 @@ class AdminPlayerAnalyticsController extends Controller
                     fputcsv($handle, [
                         $each_user->title,
                         $each_user->count,
-                        $each_user->watchpercentage,
+                        gmdate("H:i:s", @$each_user->currentTime),
                         $each_user->seekTime,
                         $each_user->bufferedTime,
                     ]);
