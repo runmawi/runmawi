@@ -11,7 +11,7 @@
                 @foreach($respond_data['learn_series_sliders'] as  $key => $learn_series_sliders)
 
                     <div class="item <?php if($key == 0){echo 'active';}?> header-image">
-                        <div onclick="window.location.href='<?php echo URL::to('/') ?><?= '/play_series'.'/'. $learn_series_sliders->slug ?>';" class="slide slick-bg s-bg-1 lazy"
+                        <div onclick="window.location.href='<?php echo URL::to('/') ?><?= '/play_series'.'/'. $learn_series_sliders->slug ?>';" class="slide slick-bg s-bg-2 lazy"
                                 style="background:url('<?php echo URL::to('/').'/public/uploads/images/' .$learn_series_sliders->player_image;?>'); background-repeat:no-repeat;background-size:cover;background-position:right;cursor: pointer; ">
                         <div class="container-fluid position-relative h-100">
                             <div class="slider-inner h-100">
