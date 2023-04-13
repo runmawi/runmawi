@@ -1271,7 +1271,7 @@
                                         <input id="password" type="hidden" name="password"
                                             value="<?= @$ModeratorsUser->password ?>" autocomplete="current-password">
                                         <button type="submit" class="btn btn-primary "
-                                            style="margin-top: -14%;margin-left: -14%;">Visit CPP Portal </button>
+                                            style="margin-top: -14%;margin-left: -14%;font-size: 14px;">Visit CPP Portal </button>
                                     </form>
                                 </div>
                                 <?php }if(!Auth::guest() && !empty($Channel)){ ?>
@@ -1284,7 +1284,7 @@
                                             value="<?= @$Channel->unhased_password ?>"
                                             autocomplete="current-password">
                                         <button type="submit" class="btn btn-primary"
-                                            style="margin-top: -11%;margin-left: -8%;">Visit Channel Portal </button>
+                                            style="margin-top: -11%;margin-left: -8%;font-size: 14px;">Visit Channel Portal </button>
                                     </form>
                                 </div>
                                 <?php } ?>
