@@ -427,11 +427,16 @@ Route::group(
         // Content Partner
         Route::get('/home_content_partner', 'ApiAuthController@HomeContentPartner');
         Route::post('contentpartner', 'ApiAuthController@ContentPartnerHome')->name('ContentPartnerHome');
-          Route::get('Content_list', 'ApiAuthController@ContentList')->name('ContentList');
-          Route::get('content_partners', 'ApiAuthController@ContentList')->name('ContentList');
-          Route::post('Content_category_series', 'ApiAuthController@Content_category_series')->name('Content_category_series');
-          Route::post('Content_category_videos', 'ApiAuthController@Content_category_videos')->name('Content_category_videos');
-          Route::post('Content_category_audios', 'ApiAuthController@Content_category_audios')->name('Content_category_audios');
-          Route::post('Content_category_live', 'ApiAuthController@Content_category_live')->name('Content_category_live');
-        
+        Route::get('Content_list', 'ApiAuthController@ContentList')->name('ContentList');
+        Route::get('content_partners', 'ApiAuthController@ContentList')->name('ContentList');
+        Route::post('Content_category_series', 'ApiAuthController@Content_category_series')->name('Content_category_series');
+        Route::post('Content_category_videos', 'ApiAuthController@Content_category_videos')->name('Content_category_videos');
+        Route::post('Content_category_audios', 'ApiAuthController@Content_category_audios')->name('Content_category_audios');
+        Route::post('Content_category_live', 'ApiAuthController@Content_category_live')->name('Content_category_live');
+
+        // learn - Only for Nemisha
+        Route::get('learn', 'ApiAuthController@learn');
+
+        // library - All videos
+        Route::get('library', 'ApiAuthController@all_videos');
     });
