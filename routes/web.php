@@ -478,9 +478,28 @@ Route::get('/Testwatermark', 'Testwatermark@index');
     Route::get('/ppv/create', 'AdminPpvController@create');
     Route::post('/ppv/store', array('before' => 'demo', 'uses' => 'AdminPpvController@store'));
 
+// Admin Choose Profile Screen
+    Route::get('/ChooseProfileScreen', 'WelcomeScreenController@ChooseProfileScreen')->name('ChooseProfileScreen');
+    Route::post('/ChooseProfileScreen_store', 'WelcomeScreenController@ChooseProfileScreen_store')->name('ChooseProfileScreen_store');
 
-    
-// Admin PPV Functionality
+//    Slider 
+    Route::get('/Slider/index', 'AdminSliderSettingController@index')->name('admin_slider_index');
+    Route::get('/Slider/set_slider', 'AdminSliderSettingController@set_slider')->name('admin_slider_set');
+
+// Cache clear
+    Route::get('/clear_cache', 'ClearCacheController@index')->name('clear_cache');
+    Route::post('/clear_caches', 'ClearCacheController@clear_caches')->name('clear_caches');
+    Route::post('/clear_view_cache', 'ClearCacheController@clear_view_cache')->name('clear_view_cache');
+
+// ENV APP DEBUG
+    Route::get('/debug', 'ClearCacheController@Env_index')->name('env_index'); 
+    Route::Post('/Env_AppDebug', 'ClearCacheController@Env_AppDebug')->name('env_appdebug');
+
+//  Bulk Delete
+    Route::get('admin/Livestream_bulk_delete', 'AdminLiveStreamController@Livestream_bulk_delete')->name('Livestream_bulk_delete'); 
+    Route::get('admin/Audios_bulk_delete', 'AdminAudioController@Audios_bulk_delete')->name('Audios_bulk_delete'); 
+
+    // Admin PPV Functionality
     Route::get('/livestream', 'AdminLiveStreamController@index');
     Route::get('/livestream/edit/{id}', 'AdminLiveStreamController@edit');
     Route::post('/livestream/update','AdminLiveStreamController@update');
@@ -2042,9 +2061,6 @@ Route::get('/welcome-screen/destroy/{id}', 'WelcomeScreenController@destroy')->n
 Route::get('/welcome-screen/edit/{id}', 'WelcomeScreenController@edit')->name('welcomescreen_edit');
 Route::post('/welcome-screen/update/{id}', 'WelcomeScreenController@update')->name('welcomescreen_update');
 
-// Choose Profile Screen
-Route::get('admin/ChooseProfileScreen', 'WelcomeScreenController@ChooseProfileScreen')->name('ChooseProfileScreen');
-Route::post('admin/ChooseProfileScreen_store', 'WelcomeScreenController@ChooseProfileScreen_store')->name('ChooseProfileScreen_store');
 
 Route::get('Movie-Description', 'HomeController@Movie_description');
 
@@ -2052,19 +2068,7 @@ Route::get('Movie-Description', 'HomeController@Movie_description');
 Route::post('admin/ThemeIntegration/create', 'ThemeIntegrationController@create')->name('ThemeIntegration/create');
 Route::get('admin/ThemeIntegration/set_theme', 'ThemeIntegrationController@set_theme')->name('ThemeIntegration/set_theme');
 Route::post('admin/ThemeIntegration/uniquevalidation', 'ThemeIntegrationController@uniquevalidation')->name('ThemeIntegration/uniquevalidation');
-
-    //    Slider 
-Route::get('admin/Slider/index', 'AdminSliderSettingController@index')->name('admin_slider_index');
-Route::get('admin/Slider/set_slider', 'AdminSliderSettingController@set_slider')->name('admin_slider_set');
-
-// Cache clear
-Route::get('admin/clear_cache', 'ClearCacheController@index')->name('clear_cache');
-Route::post('admin/clear_caches', 'ClearCacheController@clear_caches')->name('clear_caches');
-Route::post('admin/clear_view_cache', 'ClearCacheController@clear_view_cache')->name('clear_view_cache');
-
-// ENV APP DEBUG
-  Route::get('admin/debug', 'ClearCacheController@Env_index')->name('env_index'); 
-  Route::Post('admin/Env_AppDebug', 'ClearCacheController@Env_AppDebug')->name('env_appdebug'); 
+ 
 
     // Reels
 Route::get('/Reals_videos/videos/{slug}', 'ChannelController@Reals_videos');
@@ -2168,9 +2172,7 @@ Route::post('/purchase-live-artist-event', 'LiveEventArtistStream@rent_live_arti
 
 Route::get('/liveStream', 'AdminLiveStreamController@liveStream')->name('liveStream');
 
-Route::get('admin/Livestream_bulk_delete', 'AdminLiveStreamController@Livestream_bulk_delete')->name('Livestream_bulk_delete'); 
 
-Route::get('admin/Audios_bulk_delete', 'AdminAudioController@Audios_bulk_delete')->name('Audios_bulk_delete'); 
 
 // PPV_live_PurchaseUpdate
 
