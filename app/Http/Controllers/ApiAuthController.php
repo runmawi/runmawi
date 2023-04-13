@@ -171,6 +171,10 @@ class ApiAuthController extends Controller
 
       //Adveristment plays 24hrs 
         $this->adveristment_plays_24hrs = Setting::pluck('ads_play_unlimited_period')->first();
+
+      // pagination
+        $this->settings = Setting::first();
+        $this->settings->videos_per_page;
   }
 
   public function signup(Request $request)
@@ -12249,6 +12253,75 @@ public function QRCodeMobileLogout(Request $request)
       endif;
 
     return $data;
+  }
+
+  public function learn()
+  {
+    try {
+          $Episode_videos = Series::select('episodes.*', 'series.title as series_name','series.slug as series_slug','series.year')
+                    ->join('series_categories', 'series_categories.series_id', '=', 'series.id')
+                    ->join('episodes', 'episodes.series_id', '=', 'series.id')
+                    ->where('series_categories.category_id', '=', 19)
+                    ->where('episodes.active', '=', '1')
+                    ->where('series.active', '=', '1')
+                    ->groupBy('episodes.id')
+                    ->latest('episodes.created_at')
+                    ->Paginate($this->settings->videos_per_page);
+
+
+          $learn_series_sliders = Series::join('series_categories', 'series_categories.series_id', '=', 'series.id')
+                                  ->where('series_categories.category_id',19)
+                                  ->where('series.active', 1 )
+                                  ->where('banner',1)
+                                  ->get();
+
+
+            return response()->json([
+                 'status'  => 'true',
+                 'Message' => 'All videos Retrieved  Successfully',
+                 'Episode_videos' => $Episode_videos ,
+                 'learn_series_sliders' => $learn_series_sliders
+              ], 200);
+
+    } catch (\Throwable $th) {
+
+            return response()->json([
+              'status'  => 'false',
+              'Message' => $th->getMessage(),
+          ], 200);
+
+    }
+  }
+
+  public function all_videos()
+  {
+    try {
+          $videos = Video::where('active', '=', '1')->where('status', '=', '1')->where('draft', '=', '1');
+    
+                if (Geofencing() != null && Geofencing()->geofencing == 'ON')
+                {
+                    $videos = $videos->whereNotIn('videos.id', Block_videos());
+                }
+
+                if( check_Kidmode() == 1 )
+                {
+                    $videos = $videos->whereBetween('videos.age_restrict', [ 0, 12 ]);
+                }
+                    
+            $videos = $videos->latest('videos.created_at')->Paginate($this->settings->videos_per_page);
+
+            return response()->json([
+              'status'  => 'true',
+              'Message' => 'All videos Retrieved  Successfully',
+              'videos' => $videos ,
+           ], 200);
+
+    } catch (\Throwable $th) {
+        return response()->json([
+                'status'  => 'false',
+                'Message' => $th->getMessage(),
+            ], 200);
+    }
   }
 
 }
