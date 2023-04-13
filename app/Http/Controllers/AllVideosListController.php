@@ -103,15 +103,23 @@ class AllVideosListController extends Controller
                     ->groupBy('episodes.id')
                     ->latest('episodes.created_at')
                     ->Paginate($this->settings->videos_per_page);
-           
-            $respond_data = array(
-                'videos'    => $Episode_videos,
-                'ppv_gobal_price'  => $this->ppv_gobal_price,
-                'currency'         => CurrencySetting::first(),
-                'ThumbnailSetting' => ThumbnailSetting::first(),
-            );
+
+
+                $learn_series_sliders = Series::join('series_categories', 'series_categories.series_id', '=', 'series.id')
+                                                ->where('series_categories.category_id',19)
+                                                ->where('series.active', 1 )
+                                                ->where('banner',1)
+                                                ->get();
+
+                $respond_data = array(
+                    'videos'    => $Episode_videos,
+                    'learn_series_sliders' => $learn_series_sliders,
+                    'ppv_gobal_price'  => $this->ppv_gobal_price,
+                    'currency'         => CurrencySetting::first(),
+                    'ThumbnailSetting' => ThumbnailSetting::first(),
+                );
     
-            return Theme::view('All-Videos.learn',['respond_data' => $respond_data]);
+                return Theme::view('All-Videos.learn',['respond_data' => $respond_data]);
 
         } catch (\Throwable $th) {
              return $th->getMessage();
