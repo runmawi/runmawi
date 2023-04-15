@@ -12275,11 +12275,12 @@ public function QRCodeMobileLogout(Request $request)
                                   ->where('banner',1)
                                   ->get();
 
+            $Episode_videos_data[] = $Episode_videos ;
 
             return response()->json([
                  'status'  => 'true',
                  'Message' => 'All videos Retrieved  Successfully',
-                 'Episode_videos' => $Episode_videos ,
+                 'Episode_videos' => $Episode_videos_data ,
                  'learn_series_sliders' => $learn_series_sliders
               ], 200);
 
@@ -12310,10 +12311,12 @@ public function QRCodeMobileLogout(Request $request)
                     
             $videos = $videos->latest('videos.created_at')->Paginate($this->settings->videos_per_page);
 
+            $videos_data[] = $videos ;
+
             return response()->json([
               'status'  => 'true',
               'Message' => 'All videos Retrieved  Successfully',
-              'videos' => $videos ,
+              'videos' => $videos_data ,
            ], 200);
 
     } catch (\Throwable $th) {
