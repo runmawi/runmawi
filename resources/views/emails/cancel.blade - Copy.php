@@ -13,6 +13,6 @@
         <p style="color:#718096;"> We hope to see you again soon.</p>
         <br>
         <br>
-        <?php echo MailSignature(); ?>
+        <?php echo html_entity_decode (MailSignature()) ; ?>
     </div>
 </div>

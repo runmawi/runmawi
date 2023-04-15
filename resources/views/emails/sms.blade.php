@@ -7,6 +7,6 @@
         <br>
 
         <br>
-        <?php echo MailSignature(); ?>
+        <?php echo html_entity_decode (MailSignature())  ; ?>
     </div>
 </div>
