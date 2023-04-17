@@ -2157,6 +2157,7 @@ Route::group(['middleware' => ['RazorpayMiddleware']], function() {
 Route::post('/CinetPaySubscription', 'CinetPayController@CinetPaySubscription')->name('CinetPay_Subscription');
 Route::post('/CinetPay-video-rent', 'CinetPayController@CinetPay_Video_Rent_Payment')->name('CinetPay_Video_Rent_Payment');
 Route::post('/CinetPay-audio-rent', 'CinetPayController@CinetPay_audio_Rent_Payment')->name('CinetPay_audio_Rent_Payment');
+Route::post('/CinetPay-live-rent', 'CinetPayController@CinetPay_live_Rent')->name('CinetPay_live_Rent');
     
 // CinetPay- Series/Season Rent
 Route::post('/CinetPay-series_season-rent', 'PaymentController@CinetPay_series_season_Rent_Payment')->name('CinetPay_series_season_Rent_Payment');
