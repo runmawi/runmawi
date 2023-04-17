@@ -23,14 +23,14 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
 <script  src="<?= URL::to('/'). '/assets/js/hls.js';?>"></script>
 
 <section class="channel-header"
-    style="background:url('<?php echo @$channel->channel_banner; ?>') no-repeat scroll 0 0;;background-size: cover;height:350px;background-color: rgba(0, 0, 0, 0.45);
+    style="background:url('<?php echo @$channel_partner->channel_banner; ?>') no-repeat scroll 0 0;;background-size: cover;height:350px;background-color: rgba(0, 0, 0, 0.45);
     background-blend-mode: multiply;">
 </section>
 
 <div class="container-fluid">
     <div class="position-relative">
         <div class="channel-img">
-            <img src="<?php echo @$channel->channel_logo; ?>" class=" " width="150" alt="user">
+            <img src="<?php echo @$channel_partner->channel_logo; ?>" class=" " width="150" alt="user">
         </div>
     </div>
 </div>
@@ -45,9 +45,9 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
                     @endphp
                 </ul>
             </div>
-            @if(!empty(@$channel) && $channel->intro_video != null):
+            @if(!empty(@$channel_partner) && $channel_partner->intro_video != null):
             <div class="col-2 col-lg-2">
-            <a data-video="{{ @$channel->intro_video }}" data-toggle="modal" data-target="#videoModal" data-backdrop="static" data-keyboard="false" >	
+            <a data-video="{{ @$channel_partner->intro_video }}" data-toggle="modal" data-target="#videoModal" data-backdrop="static" data-keyboard="false" >	
                 <span class="text-white">
                 <i class="fa fa-play mr-1" aria-hidden="true"></i> About Channel Partner
                 </span>
@@ -61,7 +61,7 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
                     <div class="modal-body">
                         <video id="videoPlayer1" 
                             controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  
-                            type="video/mp4" src="{{ @$channel->intro_video }}">
+                            type="video/mp4" src="{{ @$channel_partner->intro_video }}">
                         </video>
                     </div>
                 </div>
@@ -334,7 +334,7 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
         //     url: "<?php echo URL::to('/all_Channel_videos'); ?>",
         //     data: {
         //         _token: "{{ csrf_token() }}",
-        //         channel_slug:"{{ @$channel->channel_slug }}",
+        //         channel_slug:"{{ @$channel_partner->channel_slug }}",
         //     },
         //     success: function(data) {
         //         $(".channel_home").html(data);
@@ -355,7 +355,7 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
             data: {
                 _token: "{{ csrf_token() }}",
                 category_id: category_id,
-                user_id:"{{ @$channel->id }}",
+                user_id:"{{ @$channel_partner->id }}",
             },
             success: function(data) {
                 $(".channel_home").html(data);
@@ -373,7 +373,7 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
             data: {
                 _token: "{{ csrf_token() }}",
                 category_id: category_id,
-                user_id:"{{ @$channel->id }}",
+                user_id:"{{ @$channel_partner->id }}",
             },
             success: function(data) {
                 $(".channel_home").html(data);
@@ -391,7 +391,7 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
             data: {
                 _token: "{{ csrf_token() }}",
                 category_id: category_id,
-                user_id:"{{ @$channel->id }}",
+                user_id:"{{ @$channel_partner->id }}",
             },
             success: function(data) {
                 $(".channel_home").html(data);
@@ -409,7 +409,7 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
             data: {
                 _token: "{{ csrf_token() }}",
                 category_id: category_id,
-                user_id:"{{ @$channel->id }}",
+                user_id:"{{ @$channel_partner->id }}",
             },
             success: function(data) {
                 $(".channel_home").html(data);

@@ -256,7 +256,20 @@
           <audio id="myAudio" ontimeupdate="onTimeUpdate()">
             <source id="source-audio" src="" type="audio/mpeg"> Your browser does not support the audio element.
           </audio>
+              <div class="cinetpay_button">
+                  <!-- CinetPay Button -->
+                  <button onclick="cinetpay_checkout()" id="enable_button" style="display:none;margin-left: 72%;position: absolute;margin-top: 20px;"
+                      class="btn2  btn-outline-primary">Purchase to Play Audio</button>
 
+                                     <!-- Subscriber Button -->
+                         
+                                      <a href="<?php echo URL::to('/becomesubscriber'); ?>"  ><button  id="Subscriber_button" style="display:none;margin-left: 72%;position: absolute;margin-top: 20px;"
+                      class="btn2  btn-outline-primary">Become Subscriber</button> 
+                      </a>
+
+
+            
+              </div>
            <div class="player-ctn" style="background-image:linear-gradient(to left, rgba(0, 0, 0, 0.25)0%, rgba(117, 19, 93, 1)),url('<?= URL::to('/').'/public/uploads/albums/'. $album->album ?>');background-size: cover;
     background-repeat: no-repeat;
     background-position: right;">
@@ -510,17 +523,111 @@ window.location = '<?= URL::to('login') ?>';
 
   function loadNewTrack(index){
 
-    var player = document.querySelector('#source-audio')
+    var access = listAudio[index].access
 
-    player.src = listAudio[index].mp3_url
+    var audioppv_id  = listAudio[index].id
+            
 
-    document.querySelector('.title').innerHTML = listAudio[index].title
 
-    this.currentAudio = document.getElementById("myAudio");
-    this.currentAudio.load()
-    this.toggleAudio()
-    this.updateStylePlaylist(this.indexAudio,index)
-    this.indexAudio = index;
+      if(access == 'guest'){
+        // alert(access);
+      var player = document.querySelector('#source-audio')
+
+      player.src = listAudio[index].mp3_url
+
+      document.querySelector('.title').innerHTML = listAudio[index].title
+
+      this.currentAudio = document.getElementById("myAudio");
+      this.currentAudio.load()
+      this.toggleAudio()
+      this.updateStylePlaylist(this.indexAudio,index)
+      this.indexAudio = index;
+    }else if(access == 'ppv'){ 
+
+      var audioppv = <?php echo json_encode($audioppv) ?>;
+      
+      var countaudioppv = [];    
+
+      // audioppv.forEach(element => console.log(element));
+      audioppv.forEach(element => {
+            if(element.audio_id == audioppv_id) {
+              // alert(audioppv_id);
+              countaudioppv.push(1) 
+            }       
+          });
+
+        if(countaudioppv.length > 0 ){
+            var player = document.querySelector('#source-audio')
+
+            player.src = listAudio[index].mp3_url
+
+            document.querySelector('.title').innerHTML = listAudio[index].title
+
+            this.currentAudio = document.getElementById("myAudio");
+            this.currentAudio.load()
+            this.toggleAudio()
+            this.updateStylePlaylist(this.indexAudio,index)
+            this.indexAudio = index;
+        }else{
+            var player = document.querySelector('#source-audio')
+
+            player.src = ''
+
+            document.querySelector('.title').innerHTML = listAudio[index].title
+
+            this.currentAudio = document.getElementById("myAudio");
+            this.currentAudio.load()
+            this.toggleAudio()
+            this.updateStylePlaylist(this.indexAudio,index)
+            this.indexAudio = index;
+
+            document.getElementById("enable_button").setAttribute("data-price", listAudio[index].ppv_price);
+            document.getElementById("enable_button").setAttribute("audio-id", listAudio[index].id);
+
+            document.querySelector('#enable_button').style.display = 'block';
+            alert("Purchase Audio");   
+
+
+        }
+    }else if(access == 'subscriber'){ 
+
+
+      var role = <?php echo json_encode($role) ?>;
+      // alert(role);
+
+      if(role == 'subscriber'){
+            var player = document.querySelector('#source-audio')
+
+            player.src = listAudio[index].mp3_url
+
+            document.querySelector('.title').innerHTML = listAudio[index].title
+
+            this.currentAudio = document.getElementById("myAudio");
+            this.currentAudio.load()
+            this.toggleAudio()
+            this.updateStylePlaylist(this.indexAudio,index)
+            this.indexAudio = index;
+        }else{
+            var player = document.querySelector('#source-audio')
+
+            player.src = ''
+
+            document.querySelector('.title').innerHTML = listAudio[index].title
+
+            this.currentAudio = document.getElementById("myAudio");
+            this.currentAudio.load()
+            this.toggleAudio()
+            this.updateStylePlaylist(this.indexAudio,index)
+            this.indexAudio = index;
+
+            document.querySelector('#Subscriber_button').style.display = 'block';
+            alert("Become Subscriber to Listen this Audio");   
+
+
+        }
+
+    }
+
   }
 
   var playListItems = document.querySelectorAll(".playlist-track-ctn");
@@ -692,4 +799,99 @@ window.location = '<?= URL::to('login') ?>';
   }
 </script>
 
+
+<!-- Cinet Pay CheckOut -->
+
+<script src="https://cdn.cinetpay.com/seamless/main.js"></script>
+
+<script>
+
+ 
+    var user_name = '<?php if (!Auth::guest()) {
+        Auth::User()->username;
+    } else {
+    } ?>';
+    var email = '<?php if (!Auth::guest()) {
+        Auth::User()->email;
+    } else {
+    } ?>';
+    var mobile = '<?php if (!Auth::guest()) {
+        Auth::User()->mobile;
+    } else {
+    } ?>';
+    var CinetPay_APIKEY = '<?= @$CinetPay_payment_settings->CinetPay_APIKEY ?>';
+    var CinetPay_SecretKey = '<?= @$CinetPay_payment_settings->CinetPay_SecretKey ?>';
+    var CinetPay_SITE_ID = '<?= @$CinetPay_payment_settings->CinetPay_SITE_ID ?>';
+    var video_id = $('#video_id').val();
+
+    // var url       = window.location.href;
+    // alert(window.location.href);
+
+    function cinetpay_checkout() {
+
+      var ppv_price = document.getElementById("enable_button").getAttribute("data-price");
+      var audio_id = document.getElementById("enable_button").getAttribute("audio-id");
+
+  
+        CinetPay.setConfig({
+            apikey: CinetPay_APIKEY, //   YOUR APIKEY
+            site_id: CinetPay_SITE_ID, //YOUR_SITE_ID
+            notify_url: window.location.href,
+            return_url: window.location.href,
+            // mode: 'PRODUCTION'
+
+        });
+        CinetPay.getCheckout({
+            transaction_id: Math.floor(Math.random() * 100000000).toString(), // YOUR TRANSACTION ID
+            amount: ppv_price,
+            currency: 'XOF',
+            channels: 'ALL',
+            description: 'Test paiement',
+            //Provide these variables for credit card payments
+            customer_name: user_name, //Customer name
+            customer_surname: user_name, //The customer's first name
+            customer_email: email, //the customer's email
+            customer_phone_number: "088767611", //the customer's email
+            customer_address: "BP 0024", //customer address
+            customer_city: "Antananarivo", // The customer's city
+            customer_country: "CM", // the ISO code of the country
+            customer_state: "CM", // the ISO state code
+            customer_zip_code: "06510", // postcode
+
+        });
+        CinetPay.waitResponse(function(data) {
+            if (data.status == "REFUSED") {
+
+                if (alert("Your payment failed")) {
+                    window.location.reload();
+                }
+            } else if (data.status == "ACCEPTED") {
+              $.ajax({
+                    url: '<?php echo URL::to('CinetPay-audio-rent'); ?>',
+                    type: "post",
+                    data: {
+                        _token: '<?php echo csrf_token(); ?>',
+                        amount: ppv_price,
+                        audio_id: audio_id,
+
+                    },
+                    success: function(value) {
+                        alert("You have done  Payment !");
+                        setTimeout(function() {
+                            location.reload();
+                        }, 2000);
+
+                    },
+                    error: (error) => {
+                        swal('error');
+                    }
+                });
+
+            }
+        });
+        CinetPay.onError(function(data) {
+            console.log(data);
+        });
+    }
+</script>
 <?php include('footer.blade.php'); ?>

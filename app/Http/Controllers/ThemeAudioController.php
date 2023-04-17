@@ -52,6 +52,7 @@ use Theme;
 Use App\HomeSetting;
 use App\ThumbnailSetting;
 use App\AdminLandingPage;
+use App\PaymentSetting;
 
 class ThemeAudioController extends Controller{
 
@@ -466,6 +467,10 @@ class ThemeAudioController extends Controller{
             return Redirect::to('/login');
         endif;
 
+          $audioppv = PpvPurchase::where('user_id',Auth::user()->id)->where('status','active')
+            ->groupby("audio_id")
+            ->orderBy('created_at', 'desc')->get();
+        // dd($countaudioppv);
         $getfeching= Geofencing::first();
         $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
         $userIp = $geoip->getip();    
@@ -501,6 +506,7 @@ class ThemeAudioController extends Controller{
             }
 
             $data = array(
+                'audioppv' => $audioppv,
                 'album' => $album,
                 'json_list' => json_encode($json),
                 'media_url' => URL::to('/').'/album/'.$album_slug,
@@ -508,6 +514,10 @@ class ThemeAudioController extends Controller{
                 'other_albums' => $other_albums,
                 'first_album_mp3_url' => $album_audios->first() ? $album_audios->first()->mp3_url : null ,
                 'first_album_title' => $album_audios->first() ? $album_audios->first()->title : null ,
+                'Paystack_payment_settings' => PaymentSetting::where('payment_type', 'Paystack')->first(),
+                'Razorpay_payment_settings' => PaymentSetting::where('payment_type', 'Razorpay')->first(),
+                'CinetPay_payment_settings' => PaymentSetting::where('payment_type', 'CinetPay')->first(),
+                'role' =>  (!Auth::guest()) ?  Auth::User()->role : null ,
             );
             
             
@@ -711,4 +721,18 @@ class ThemeAudioController extends Controller{
         
         return Theme::view('albums_list', $data);
     }
+
+    public function album_audio_ppv(Request $request)
+    {
+
+        if(!Auth::guest()){  
+            $countaudioppv = App\PpvPurchase::where('audio_id',$request->id)->where('user_id',Auth::user()->id)->count();
+
+            return $countaudioppv;
+          }else {
+            return 0;
+          }     
+        
+    }
+
 }
