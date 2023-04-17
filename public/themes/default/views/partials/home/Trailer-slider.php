@@ -32,7 +32,7 @@
 <?php  }elseif( $videos->trailer != null && $videos->trailer_type == "embed_url" ){ ?>
 
     <div class="trailor-video">
-        <a href="#Embed_url-trailer" class="video-open playbtn btn bd ml-2" data-trailer-url="<?= $videos->trailer ?>"
+        <a href="#Embed_videos-trailer" class="video-open playbtn btn bd ml-2" data-trailer-url="<?= $videos->trailer ?>"
             data-trailer-type="<?= $videos->trailer_type ?>" onclick="trailer_slider_videos(this)">
             <i class="fa fa-info" aria-hidden="true"></i> Watch Trailer
         </a>
@@ -71,13 +71,9 @@
 
 
     <div class="col-md-6">
-            <div id="Embed_url-trailer" class="mfp-hide plyr__video-embed">
-                <iframe id="Embed_url-videos"
-                    src="<?php echo $videos->trailer; ?>"
-                    allowfullscreen
-                    allowtransparency >
-                </iframe>
-            </div>
+        <div id="Embed_videos-trailer" class="mfp-hide">
+            <div id="Embed_url-videos"></div>
+        </div>
     </div>
 
 
