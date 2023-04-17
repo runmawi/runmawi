@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "036e27edf6b6c3f06bffe86a32931d6d",
+    "content-hash": "dc56adc575ada07c694777a2e7bf3b47",
     "packages": [
         {
             "name": "acaronlex/laravel-calendar",
