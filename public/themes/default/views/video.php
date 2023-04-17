@@ -2531,11 +2531,11 @@ $artists = [];
                     <style>
                         .logo_player {
                             position: absolute;
-                            top: 50%;
+                            top: 70%;
                             left: 80%;
                             z-index: 2;
                             content: '';
-                            height: 200px;
+                            height: 50px;
                             width: 10%;
                             background: url(<?php echo URL::to($logo_url); ?>) no-repeat;
                             background-size: 100px auto, auto;
