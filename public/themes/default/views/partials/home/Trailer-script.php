@@ -1,4 +1,4 @@
-<!-- M3U8 - Player  -->
+<!-- Trailer(videos)M3U8 - Player  -->
 
 <script src="https://cdn.plyr.io/3.5.10/plyr.js"></script>
 <script src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
@@ -39,10 +39,10 @@
 
                 function updateQuality(newQuality) {
                     window.hls.levels.forEach((level, levelIndex) => {
-                    if (level.height === newQuality) {
-                        console.log("Found quality match with " + newQuality);
-                        window.hls.currentLevel = levelIndex;
-                    }
+                        if (level.height === newQuality) {
+                            console.log("Found quality match with " + newQuality);
+                            window.hls.currentLevel = levelIndex;
+                        }
                     });
                 }
 
@@ -57,6 +57,18 @@
                 });
 
                 $('#MP4_Trailer-videos').attr('src', trailer_url);
+
+            }else if(trailer_type == "embed_url"  ){
+
+                const player = new Plyr('#Embed_url-trailer',{
+                    controls: [
+                        'play-large','restart','rewind','play','fast-forward','progress',
+                        'current-time','mute','volume','captions','settings',
+                        'pip','airplay','fullscreen'
+                    ],
+                });
+
+                $('#Embed_url-trailer').attr('src', trailer_url);
 
             }else if( trailer_type == "m3u8_url"){
 
@@ -86,10 +98,10 @@
 
                 function updateQuality(newQuality) {
                     window.hls.levels.forEach((level, levelIndex) => {
-                    if (level.height === newQuality) {
-                        console.log("Found quality match with " + newQuality);
-                        window.hls.currentLevel = levelIndex;
-                    }
+                        if (level.height === newQuality) {
+                            console.log("Found quality match with " + newQuality);
+                            window.hls.currentLevel = levelIndex;
+                        }
                     });
             }
         }
@@ -130,10 +142,10 @@
 
                 function updateQuality(newQuality) {
                     window.hls.levels.forEach((level, levelIndex) => {
-                    if (level.height === newQuality) {
-                        console.log("Found quality match with " + newQuality);
-                        window.hls.currentLevel = levelIndex;
-                    }
+                        if (level.height === newQuality) {
+                            console.log("Found quality match with " + newQuality);
+                            window.hls.currentLevel = levelIndex;
+                        }
                     });
                 }
 
