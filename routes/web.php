@@ -15,6 +15,7 @@ Route::group(['prefix' => '/admin/filemanager', 'middleware' => ['web', 'auth']]
 Route::get('/cinet_pay/billings-details', 'PaymentController@cinet_pay');
 Route::get('/admin/transcode-index', 'TranscodeController@index');
 Route::post('/admin/transcode-upload', 'TranscodeController@upload');
+Route::post('/audio_ppv', 'CinetPayController@audio_ppv')->name('audio_ppv');
 
 
 Route::get('/moderator', 'ModeratorsUserController@index');
@@ -2155,6 +2156,7 @@ Route::group(['middleware' => ['RazorpayMiddleware']], function() {
 // CinetPay-Video Rent
 Route::post('/CinetPaySubscription', 'CinetPayController@CinetPaySubscription')->name('CinetPay_Subscription');
 Route::post('/CinetPay-video-rent', 'CinetPayController@CinetPay_Video_Rent_Payment')->name('CinetPay_Video_Rent_Payment');
+Route::post('/CinetPay-audio-rent', 'CinetPayController@CinetPay_audio_Rent_Payment')->name('CinetPay_audio_Rent_Payment');
     
 // CinetPay- Series/Season Rent
 Route::post('/CinetPay-series_season-rent', 'PaymentController@CinetPay_series_season_Rent_Payment')->name('CinetPay_series_season_Rent_Payment');
