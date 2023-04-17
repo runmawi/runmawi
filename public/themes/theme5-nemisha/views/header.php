@@ -524,7 +524,11 @@
 
     
     body.light-theme h1 {
-        color: #fff !important;
+        color: #000 !important;
+
+    }
+    body.light-theme .view-count i {
+        color: #000 !important;
 
     }
 
