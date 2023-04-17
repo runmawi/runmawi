@@ -2568,6 +2568,7 @@ class HomeController extends Controller
                            ->where('status', '=', '1')
                            ->where('draft', '=', '1')
                            ->orderBy('created_at', 'desc')
+                           ->groupBy('videos.id')
                            ->limit('10');
 
                            if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
