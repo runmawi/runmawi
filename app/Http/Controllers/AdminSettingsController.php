@@ -416,39 +416,47 @@ class AdminSettingsController extends Controller
             $settings->enable_landing_page = 0;
         }
 
-        if (!empty($input['default_video_image'])) {
-            $defaultImage_setting = Setting::pluck('default_video_image')->first();
-            $files = $input['default_video_image'];
-            $format = $files->getClientOriginalExtension();
+        if ($request->hasFile('default_video_image')) {
 
-            $filename = 'default_image' . '.' . 'jpg';
-            if (file_exists(public_path() . '/uploads/images/' . $defaultImage_setting)) {
-                unlink(public_path() . '/uploads/images/' . $defaultImage_setting); // Remove Image
+            $default_image_file = $request->default_video_image;
+
+            if (File::exists(base_path('public/uploads/images/' . $settings->default_video_image))) {
+                File::delete(base_path('public/uploads/images/' . $settings->default_video_image));
             }
 
-            Image::make($files)
-                ->save(base_path() . '/public/uploads/images/' . $filename)
-                ->encode('jpg', 80);
-            $settings->default_video_image = $filename;
-        }
-
-        if (!empty($input['default_horizontal_image'])) {
-            $defaultImage_setting = Setting::pluck('default_horizontal_image')->first();
-            $files = $input['default_horizontal_image'];
-            $format = $files->getClientOriginalExtension();
-            $filename = 'default_horizontal_image' . '.' . 'jpg';
-
-            if (file_exists(public_path() . '/uploads/images/' . $defaultImage_setting)) {
-                if (!empty($defaultImage_setting)) {
-                    unlink(public_path() . '/uploads/images/' . $defaultImage_setting); // Remove Image
-                }
+            if (compress_image_enable() == 1) {
+                $default_image_filename = 'default_image.' . compress_image_format();
+                Image::make($default_image_file)->save(base_path() . '/public/uploads/images/' . $default_image_filename, compress_image_resolution());
+            } else {
+                $default_image_filename = 'default_image.' . $default_image_file->getClientOriginalExtension();
+                Image::make($default_image_file)->save(base_path() . '/public/uploads/images/' . $default_image_filename);
             }
 
-            Image::make($files)
-                ->save(base_path() . '/public/uploads/images/' . $filename)
-                ->encode('jpg', 80);
-            $settings->default_horizontal_image = $filename;
+            $settings->default_video_image = $default_image_filename;
         }
+
+        if ($request->hasFile('default_horizontal_image')) {
+
+            $default_horizontal_image = $request->default_horizontal_image;
+
+            if (File::exists(base_path('public/uploads/images/' . $settings->default_horizontal_image))) {
+                File::delete(base_path('public/uploads/images/' . $settings->default_horizontal_image));
+            }
+
+            if (compress_image_enable() == 1) {
+
+                $default_horizontal_image_filename = 'default_horizontal_image.' . compress_image_format();
+                Image::make($default_horizontal_image)->save(base_path() . '/public/uploads/images/' . $default_horizontal_image_filename, compress_image_resolution());
+            } 
+            else {
+                $default_horizontal_image_filename = 'default_horizontal_image.' . $default_horizontal_image->getClientOriginalExtension();
+                Image::make($default_horizontal_image)->save(base_path() . '/public/uploads/images/' . $default_horizontal_image_filename);
+            }
+
+            $settings->default_horizontal_image = $default_horizontal_image_filename;
+
+        }
+
 
         $settings->default_ads_url = $request['default_ads_url'];
 
