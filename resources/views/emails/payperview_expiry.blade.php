@@ -22,6 +22,6 @@
             <p>&nbsp;&nbsp;&nbsp; Team <?php echo $settings->website_name; ?>&nbsp;&nbsp;&nbsp;</p>
 
         </div>
-        <p>&nbsp;&nbsp;&nbsp; <?php echo MailSignature(); ?>&nbsp;&nbsp;&nbsp;</p>
+        <p>&nbsp;&nbsp;&nbsp; <?php echo html_entity_decode (MailSignature()) ; ?>&nbsp;&nbsp;&nbsp;</p>
     </div>
 </div>

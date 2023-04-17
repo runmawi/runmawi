@@ -743,6 +743,21 @@ $(document).ready(function(){
 
 <!-- Ads Start -->
 
+<?php 
+      $Intro_skip = App\Video::where('id',$video->id)->first();
+      
+      if($Intro_skip['type'] == "mp4_url" || $Intro_skip['type'] == "m3u8_url"){
+        $video_type_id = "videoPlayer";
+      }else{
+        $video_type_id = "video";
+      }
+      
+      ?>
+   <script>
+      var videotypeId = <?php echo json_encode($video_type_id); ?>;
+      var videoId = document.getElementById(videotypeId);
+   </script>
+   
 <?php
 
   include('AdsvideoPre.php'); 
