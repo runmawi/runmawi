@@ -13,6 +13,8 @@ Route::group(['prefix' => '/admin/filemanager', 'middleware' => ['web', 'auth']]
     
 
 Route::get('/cinet_pay/billings-details', 'PaymentController@cinet_pay');
+Route::get('/admin/transcode-index', 'TranscodeController@index');
+Route::post('/admin/transcode-upload', 'TranscodeController@upload');
 
 
 Route::get('/moderator', 'ModeratorsUserController@index');

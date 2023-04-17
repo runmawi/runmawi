@@ -1625,9 +1625,9 @@ class AdminUsersController extends Controller
 
     public function AnalyticsRevenue()
     {
-        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
-            return redirect('/admin/restrict');
-        }
+        // if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+        //     return redirect('/admin/restrict');
+        // }
         $user =  User::where('id',1)->first();
         $duedate = $user->package_ends;
         $current_date = date('Y-m-d');
@@ -1663,7 +1663,7 @@ class AdminUsersController extends Controller
 
         $data['total_user'] = User::select(\DB::raw("COUNT(*) as count") , \DB::raw("MONTHNAME(created_at) as month_name") , \DB::raw('max(created_at) as createdAt'))->whereYear('created_at', date('Y'))
             ->groupBy('month_name')
-            ->orderBy('createdAt')
+            ->orderBy('createdAt', "DESC")
             ->get();
         // $total_user = User::where('role', '!=', 'admin')->get();
         $total_user = User::where('role', '!=', 'admin')->paginate(10);
@@ -3081,9 +3081,9 @@ class AdminUsersController extends Controller
 
     public function UserRevenue()
     {
-        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
-            return redirect('/admin/restrict');
-        }
+        // if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+        //     return redirect('/admin/restrict');
+        // }
         $user =  User::where('id',1)->first();
         $duedate = $user->package_ends;
         $current_date = date('Y-m-d');
