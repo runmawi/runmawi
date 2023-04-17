@@ -1106,28 +1106,6 @@ document.getElementById("demo").innerHTML = "EXPIRED";
             // alert(window.location.href);
 
             function cinetpay_checkout() {
-
-                        $.ajax({
-                            url: '<?php echo URL::to('CinetPay-live-rent'); ?>',
-                            type: "post",
-                            data: {
-                                _token: '<?php echo csrf_token(); ?>',
-                                amount: ppv_price,
-                                live_id: video_id,
-
-                            },
-                            success: function(value) {
-                                alert("You have done  Payment !");
-                                setTimeout(function() {
-                                    location.reload();
-                                }, 2000);
-
-                            },
-                            error: (error) => {
-                                swal('error');
-                            }
-                        });
-
                 CinetPay.setConfig({
                     apikey: CinetPay_APIKEY, //   YOUR APIKEY
                     site_id: CinetPay_SITE_ID, //YOUR_SITE_ID
@@ -1161,29 +1139,28 @@ document.getElementById("demo").innerHTML = "EXPIRED";
                             window.location.reload();
                         }
                     } else if (data.status == "ACCEPTED") {
-                        // $.ajax({
-                        //     url: '<?php echo URL::to('CinetPay-live-rent'); ?>',
-                        //     type: "post",
-                        //     data: {
-                        //         _token: '<?php echo csrf_token(); ?>',
-                        //         amount: ppv_price,
-                        //         live_id: live_id,
+                       
+                        $.ajax({
+                            url: '<?php echo URL::to('CinetPay-live-rent'); ?>',
+                            type: "post",
+                            data: {
+                                _token: '<?php echo csrf_token(); ?>',
+                                amount: ppv_price,
+                                live_id: video_id,
 
-                        //     },
-                        //     success: function(value) {
-                        //         alert("You have done  Payment !");
-                        //         setTimeout(function() {
-                        //             location.reload();
-                        //         }, 2000);
+                            },
+                            success: function(value) {
+                                alert("You have done  Payment !");
+                                setTimeout(function() {
+                                    location.reload();
+                                }, 2000);
 
-                        //     },
-                        //     error: (error) => {
-                        //         swal('error');
-                        //     }
-                        // });
-                        // if (alert("Your payment has been made successfully")) {
-                        //     window.location.reload();
-                        // }
+                            },
+                            error: (error) => {
+                                swal('error');
+                            }
+                        });
+
                     }
                 });
                 CinetPay.onError(function(data) {
