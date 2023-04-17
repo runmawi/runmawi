@@ -288,4 +288,92 @@ class CinetPayController extends Controller
         
     }
 
+    
+    public function CinetPay_live_Rent( Request $request )
+    {
+        try {
+
+            $setting = Setting::first();  
+            $ppv_hours = $setting->ppv_hours;
+
+            $to_time = ppv_expirytime_started(); 
+            
+
+            $video = LiveStream::where('id','=',$request->live_id)->first();
+
+            if(!empty($video)){
+            $moderators_id = $video->user_id;
+            }
+
+            if(!empty($moderators_id)){
+                $moderator        = ModeratorsUser::where('id','=',$moderators_id)->first();  
+                $total_amount     = $video->ppv_price;
+                $title            =  $video->title;
+                $commssion        = VideoCommission::first();
+                $percentage       = $commssion->percentage; 
+                $ppv_price        = $video->ppv_price;
+                $admin_commssion  = ($percentage/100) * $ppv_price ;
+                $moderator_commssion = $ppv_price - $percentage;
+                $moderator_id = $moderators_id;
+            }
+            else
+            {
+                $total_amount   = $video->ppv_price;
+                $title          =  $video->title;
+                $commssion      = VideoCommission::first();
+                $percentage     = null; 
+                $ppv_price       = $video->ppv_price;
+                $admin_commssion =  null;
+                $moderator_commssion = null;
+                $moderator_id = null;
+            }
+
+            $purchase = new PpvPurchase;
+            $purchase->user_id       =  Auth::user()->id ;
+            $purchase->live_id       = $request->live_id ;
+            $purchase->total_amount  = $request->amount ; 
+            $purchase->admin_commssion = $admin_commssion;
+            $purchase->moderator_commssion = $moderator_commssion;
+            $purchase->status = 'active';
+            $purchase->to_time = $to_time;
+            $purchase->moderator_id = $moderator_id;
+            $purchase->save();
+
+            $livepurchase = new LivePurchase;
+            $livepurchase->user_id =  Auth::user()->id ;
+            $livepurchase->video_id = $request->live_id;
+            $livepurchase->to_time = $to_time;
+            $livepurchase->expired_date = $to_time;
+            $livepurchase->amount =  $request->amount ;
+            $livepurchase->from_time = Carbon::now()->format('Y-m-d H:i:s');
+            $livepurchase->unseen_expiry_date = ppv_expirytime_notstarted();
+            $livepurchase->status = 1;
+            $livepurchase->save();
+
+            if ($err) {                 // Error 
+                $response = array( 
+                    "status"  => false , 
+                    "message" => $err  
+                );
+            } 
+            else {                      // Success 
+                $response = array(
+                    "status"  => true ,
+                    "message" => "Payment done! Successfully", 
+                    'data'    =>  $result ,
+                );
+            }
+        
+
+        } catch (\Exception $e) {
+
+            $response = array(
+                "status"  => false , 
+                "message" => $e->getMessage(), 
+           );
+        }
+
+        return response()->json($response, 200);
+    }
+
 }
