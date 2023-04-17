@@ -58,9 +58,9 @@
 
                 $('#MP4_Trailer-videos').attr('src', trailer_url);
 
-            }else if(trailer_type == "embed_url"  ){
+            }else if( trailer_type == "embed_url"  ){
 
-                const player = new Plyr('#Embed_url-trailer',{
+                const player = new Plyr('#Embed_url-videos',{
                     controls: [
                         'play-large','restart','rewind','play','fast-forward','progress',
                         'current-time','mute','volume','captions','settings',
@@ -68,7 +68,7 @@
                     ],
                 });
 
-                $('#Embed_url-trailer').attr('src', trailer_url);
+                $('#Embed_url-videos').attr('src', trailer_url);
 
             }else if( trailer_type == "m3u8_url"){
 
