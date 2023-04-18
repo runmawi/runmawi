@@ -556,7 +556,7 @@ window.location = '<?= URL::to('login') ?>';
             }       
           });
 
-        if(countaudioppv.length > 0 ){
+        if(countaudioppv.length > 0 || role == 'subscriber'){
             var player = document.querySelector('#source-audio')
 
             player.src = listAudio[index].mp3_url
