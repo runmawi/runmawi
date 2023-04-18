@@ -267,6 +267,8 @@ class LiveStreamController extends Controller
                  'M3U_files'    => $M3U_files ,
                  'source_id'        => $source_id,
                  'commentable_type' => "LiveStream_play" ,
+                 'CinetPay_payment_settings' => PaymentSetting::where('payment_type','CinetPay')->first() ,
+
            );
 
            return Theme::view('livevideo', $data);
