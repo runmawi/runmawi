@@ -3,6 +3,27 @@ include public_path('themes/theme5-nemisha/views/header.php');
 ?>
 
 <!-- MainContent -->
+<section id="iq-favorites mt-4">
+    <div class="container-fluid mb-5 mt-4">
+        <div class="d-flex">
+            <div><h5 class="mr-2">Explore titles related to:</h5></div>
+            <div class="d-flex">
+                <a class="drama" href="https://dev.nemisatv.co.za/library"><p class="mb-0">Drama</p></a>
+                <a class="drama" href="https://dev.nemisatv.co.za/library"><p class="mb-0">Horror</p></a>
+                <a class="drama" href="https://dev.nemisatv.co.za/library"><p class="mb-0">Thirller</p></a>
+                <a class="drama" href="https://dev.nemisatv.co.za/library"><p class="mb-0">Basic</p></a>
+                <a class="drama" href="https://dev.nemisatv.co.za/library"><p class="mb-0">Google</p></a>
+                <a class="drama" href="https://dev.nemisatv.co.za/library"><p class="mb-0">Episode</p></a>
+                <a class="drama" href="https://dev.nemisatv.co.za/library"><p class="mb-0">Alpha</p></a>
+
+             
+               
+            </div>
+    
+
+        </div>
+  </div>
+</section>
 <section id="iq-favorites">
     @if (isset($respond_data['videos']) && count($respond_data['videos']) > 0)
 
@@ -15,7 +36,7 @@ include public_path('themes/theme5-nemisha/views/header.php');
                 <div class="col-sm-12 page-height">
                     <div class="iq-main-header align-items-center justify-content-between">
                     <h4 class="main-title mt-3">                  
-                    Video Library
+                    <b>Titles in:</b> Video Library
                   </h4>                    </div>
                     <div class="favorites-contens">
                         <ul class="category-page list-inline row p-0 mb-0">
