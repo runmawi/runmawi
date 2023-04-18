@@ -437,6 +437,11 @@
     body.light-theme .see {
        
         color: <?php echo GetLightText(); ?>!important;
+    }  
+    body.light-theme .drama {
+       
+        color: <?php echo GetLightText(); ?>!important;
+        border-right: 1px solid #000!important;
     } 
     body.light-theme .music-play-lists li {
         background-color: #ED563C!important;
