@@ -118,6 +118,7 @@ use App\ReSchedule as ReSchedule;
 use App\WebComment;
 use App\Channel;
 use App\ThumbnailSetting;
+use App\Menu;
 
 class ApiAuthController extends Controller
 {
@@ -11107,9 +11108,9 @@ public function QRCodeMobileLogout(Request $request)
             
               $response = array(
                   'status'=> 'true',
-                  'currency' => $currency,
                   'channels' => $channels,
                   'ThumbnailSetting' => $ThumbnailSetting,
+                  'currency' => $currency,
               );
               
             } catch (\Throwable $th) {
@@ -12327,4 +12328,30 @@ public function QRCodeMobileLogout(Request $request)
     }
   }
 
+  // Menus API 
+
+  public function Menus()
+      {
+        try{
+
+          $settings = Setting::first();
+          $Menus = Menu::get(); 
+            
+              $response = array(
+                  'status'=> 'true',
+                  'Menus' => $Menus,
+                  'settings' => $settings,
+              );
+              
+            } catch (\Throwable $th) {
+
+              $response = array(
+                'status'=>'false',
+                'message'=>$th->getMessage(),
+              );
+        }
+
+        return response()->json($response, 200);
+          
+      }
 }
