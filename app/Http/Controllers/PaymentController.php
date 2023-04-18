@@ -1566,7 +1566,7 @@ public function UpgadeSubscription(Request $request){
                 $plan = $request->get('plan');
                 $apply_coupon = $request->get('coupon_code') ?  $request->get('coupon_code') : null ;
 
-                $user=User::where('id',Auth::user()->id)->first();
+                $user = User::where('id',Auth::user()->id)->first();
 
                 if( subscription_trails_status() == 1 ){
                   
