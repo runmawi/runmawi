@@ -926,37 +926,55 @@ background-color: #000;padding: 10px!important;}
             var final_payment = $(".final_payment").val();
             var py_id = setupIntent.payment_method;
                 
-            console.log(plan_data);
-
+                console.log(plan_data);
 
             stripe.createToken(cardElement).then(function(result) {
                  console.log(result.token.id);
 
             var stripToken = result.token.id;
-            $.get(base_url+'/become_subscriber', {
-                     py_id:py_id, 
-                     stripToken:stripToken, 
-                     payment_type:payment_type, 
-                     amount:final_payment,
-                     plan:plan_data,
-                     coupon_code:final_coupon_code_stripe,
-                     _token:'<?= csrf_token(); ?>' 
-                   }, 
 
-                function(data){
-                        $('#loader').css('display','block');
-                        swal({
-                            title: "Subscription Purchased Successfully!",
-                            text: "Your Payment done Successfully!",
-                            icon: payment_images+'/Successful_Payment.gif',
-                            buttons: false,      
-                            closeOnClickOutside: false,
-                        });
-                            $("#card-button").html('Pay Now');
-                        setTimeout(function() {
-                            window.location.replace(base_url+'/login');
-                    }, 2000);
-               });
+            $.ajax({
+                url: "{{ route('become_subscriber') }}",
+                type: "get",
+                data: {
+                        _token  : '{{ csrf_token() }}',
+                        py_id   :  py_id, 
+                        plan    : plan_data,
+                        amount  : final_payment,
+                        stripToken   : stripToken, 
+                        payment_type : payment_type, 
+                        coupon_code  : final_coupon_code_stripe,
+                    },       
+                    success: function(data){
+                        if(data.status == "true"){
+                            $('#loader').css('display','block');
+                                swal({
+                                    title: "Subscription Purchased Successfully!",
+                                    text: data.message,
+                                    icon: payment_images+'/Successful_Payment.gif',
+                                    buttons: false,      
+                                    closeOnClickOutside: false,
+                                });
+                                    $("#card-button").html('Pay Now');
+                                setTimeout(function() {
+                                    window.location.replace(base_url+'/login');
+                            }, 2500);
+                        }
+                        else{
+                            $('#loader').css('display','block');
+                                swal({
+                                    title: "Payment Failed!",
+                                    text: data.message,
+                                    icon: payment_images+'/fails_Payment.avif',
+                                    buttons: false,      
+                                    closeOnClickOutside: false,
+                                });
+                                    $("#card-button").html('Pay Now');
+                                setTimeout(function() {
+                                    window.location.replace(base_url+'/becomesubscriber');
+                            }, 5000);
+                        }
+                    } });
             });
         }
     });

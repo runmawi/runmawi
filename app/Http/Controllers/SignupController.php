@@ -616,8 +616,11 @@ public function createStep3(Request $request)
             return response()->json($response);   
     }  
 
-    public function PostcreateStep3(Request $request)
-    {
+public function PostcreateStep3(Request $request)
+{
+    try {
+           
+        
         if ($request->has('ref')) {
             session(['referrer' => $request->query('ref')]);
         }
@@ -867,10 +870,19 @@ public function createStep3(Request $request)
 
         }
                 $response = array(
-                    'status' => 'success'
+                    'status' => 'success',
+                    "message" => 'Your Payment done Successfully!',
                 );
 
-                return response()->json($response);
+    } catch (\Throwable $th) {
+                  $response = array(
+                    'status' => 'false',
+                    "message" => $th->getMessage(),
+                );
+    }
+
+    return response()->json($response);
+
     }
 
     protected function registered(Request $request, $user)
