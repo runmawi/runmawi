@@ -2640,11 +2640,11 @@ line-height: 32px;
     text-transform: capitalize;
 }
 .Video_Categorynav .nav-link {
-    width: 183px!important;
+    width: 200px!important;
 }
 .tab-pane .nav-link {
     margin: 5px 5px;
-    max-width: 175px;
+    max-width: 230px;
     padding: 6px 15px;
     text-align: center;
 }
