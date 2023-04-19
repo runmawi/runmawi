@@ -37,7 +37,7 @@
         "league/flysystem-aws-s3-v3": "~1.0",
         "maatwebsite/excel": "^3.1",
         "paypal/rest-api-sdk-php": "^1.14",
-        "pbmedia/laravel-ffmpeg": "^7.0",
+        "pbmedia/laravel-ffmpeg": "^7.4",
         "php-ffmpeg/php-ffmpeg": "0.16",
         "phpoffice/phpspreadsheet": "^1.18",
         "pion/laravel-chunk-upload": "^1.5",

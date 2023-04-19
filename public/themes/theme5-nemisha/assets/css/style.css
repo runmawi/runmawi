@@ -25,6 +25,15 @@ a:link{
   text-decoration: none!important;
     cursor: pointer;
 }
+.drama:hover{
+     color: #ddd!important;
+}
+.drama{
+    border-right: 1px solid #fff;
+    padding: 0px 8px;
+    color: #fff!important;
+    font-weight: 400;
+}
 .menu-item{
     padding: 10px 0px;
 }
@@ -2591,4 +2600,47 @@ line-height: 32px;
 }
 .nem {
     color: #01DC82;
+}
+.nav-tabs {
+    border: 0;
+    margin-top: 20px;
+    text-align: center;
+    /* width: 60%; */
+}
+.channel_nav .nav-link.active {
+    border-bottom: none!important;
+    background-color: red!important;
+}
+.channel_nav .nav-tabs>li {
+    padding: 5px 5px!important;
+}
+.nav-link.active {
+    border-bottom: 4px solid #45c5e1 !important;
+    color: #f7f7f7 !important;
+    background-color: transparent !important;
+}
+.channel_nav .nav-link {
+    padding: 5px 15px;
+    background-color: #fff;
+    border-bottom: none!important;
+    border-radius: 5px;
+    color: #000!Important;
+    text-transform: capitalize;
+}
+.channel_nav .nav-link {
+    padding: 5px 15px;
+    background-color: #fff;
+    border-bottom: none!important;
+    border-radius: 5px;
+    color: #000!Important;
+    text-transform: capitalize;
+}
+.Video_Categorynav .nav-link {
+    width: 183px!important;
+}
+.tab-pane .nav-link {
+    margin: 5px 5px;
+    max-width: 175px;
+    padding: 6px 15px;
+    text-align: center;
 }

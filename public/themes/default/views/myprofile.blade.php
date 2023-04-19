@@ -392,6 +392,7 @@ $settings = App\Setting::first();
                      <div class=" text-center col-sm-4 ">
                         <a href="<?=URL::to('/transactiondetails');?>" class="btn btn-primary btn-login nomargin noborder-radius" >View Transaction Details</a>
                      </div>
+
                         
                         <div class="col-sm-4 text-center">
                            @if(Auth::user()->role == "subscriber")
@@ -403,6 +404,10 @@ $settings = App\Setting::first();
                                  <a href="<?=URL::to('/becomesubscriber');?>" class="btn btn-primary btn-login nomargin noborder-radius" > Become Subscriber</a>
                            @endif
                         </div>
+
+                        @if(Auth::user()->role == "subscriber" && Auth::user()->payment_status != "Cancel")
+                              <a  href="{{ URL::to('/cancelSubscription') }}" class="btn btn-primary editbtn" >Cancel Membership</a>
+                        @endif
 
                         @if ( $payment_package != null  && $payment_package->payment_gateway == "Paystack")
                               <a href="{{ route('Paystack_Subscription_cancel', [ 'subscription_id' => $payment_package->stripe_id ]) }}" class="btn btn-primary btn-login nomargin noborder-radius" > Cancel Membership </a>

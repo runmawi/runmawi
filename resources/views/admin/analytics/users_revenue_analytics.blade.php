@@ -210,6 +210,9 @@ body {font-family: Arial;}
 
 <script>
 
+var usersubscriber_Revenue_count = '<?= count($usersubscriber_Revenue) ?>';
+
+if(usersubscriber_Revenue_count > 0){
 
 google.charts.load('current', {'packages':['corechart']});
         google.charts.setOnLoadCallback(drawChart);
@@ -236,6 +239,7 @@ google.charts.load('current', {'packages':['corechart']});
 
           chart.draw(data, options);
         }
+    }
 
    $('#Subscription_content').show();
    $('#PayPerView_content').hide();

@@ -29,7 +29,7 @@
                                     <div>
                                     <a class="text-white" href="<?php echo URL::to('/play_series'.'/'.$Series_Genre->slug  ) ?> " >
                                             <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                        Visit Audio Player
+                                            Visit Series
                                         </a>
                                     </div> </div> </div>
                                 </a>
