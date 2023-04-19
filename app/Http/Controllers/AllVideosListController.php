@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use App\AdminLandingPage;
 use App\CurrencySetting;
 use App\ThumbnailSetting;
@@ -11,6 +12,8 @@ use App\VideoCategory;
 use App\HomeSetting;
 use App\Multiprofile;
 use App\RecentView;
+use App\AudioAlbums;
+use App\OrderHomeSetting;
 use App\Setting;
 use App\Video;
 use App\User;
@@ -18,6 +21,7 @@ use App\Series;
 use Session;
 use Theme;
 use Auth;
+use URL;
 use DB;
 
 class AllVideosListController extends Controller
@@ -48,25 +52,89 @@ class AllVideosListController extends Controller
     
                 return redirect()->route('landing_page', $landing_page_slug );
             }
-    
-            // All videos 
-    
-            $videos = Video::where('active', '=', '1')->where('status', '=', '1')->where('draft', '=', '1');
-    
-                if (Geofencing() != null && Geofencing()->geofencing == 'ON')
-                {
-                    $videos = $videos->whereNotIn('videos.id', Block_videos());
-                }
 
-                if( check_Kidmode() == 1 )
-                {
-                    $videos = $videos->whereBetween('videos.age_restrict', [ 0, 12 ]);
-                }
+            $OrderHomeSetting = OrderHomeSetting::get(); 
+
+            // Fetch all videos list
+                $videos = Video::select('active','status','draft','age_restrict','id','created_at','slug','image','title','rating','duration','featured','year')
+                        ->where('active', '1')->where('status', '1')->where('draft', '1');
+
+                    if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
+                        $videos = $videos->whereNotIn('videos.id', Block_videos());
+                    }
+                    if (check_Kidmode() == 1) {
+                        $videos = $videos->whereBetween('videos.age_restrict', [0, 12]);
+                    }
                     
-            $videos = $videos->latest('videos.created_at')->Paginate($this->settings->videos_per_page);
-    
+                $videos = $videos->latest()->get()->map(function ($item) {
+                    $item['source']       = 'videos';
+                    $item['redirect_url'] = URL::to('category/videos/'.$item->slug) ;
+                    $item['image_url']    = URL::to('public/uploads/images/' . $item->image);
+
+                    $item['title']    = $item->title;
+                    $item['rating']   = $item->rating;
+                    $item['duration'] = $item->duration;
+                    $item['featured'] = $item->featured;
+                    $item['year']     = $item->year;
+                    $item['age_restrict'] = $item->age_restrict;
+
+                    return $item;
+                });
+
+            // Fetch all series list
+
+                $Series = Series::select('active','id','created_at','slug','image','title','rating','duration','featured','year')
+                                    ->where('active', '=', '1')->orderBy('created_at', 'DESC')->latest()->get()
+                                    ->map(function ($item) use($OrderHomeSetting) {
+                    $item['source']       = $OrderHomeSetting->where('id',5)->pluck('header_name')->first() != null ? $OrderHomeSetting->where('id',5)->pluck('header_name')->first() : "Series" ;
+                    $item['redirect_url'] = URL::to('play_series/'.$item->slug) ;
+                    $item['image_url']    = URL::to('public/uploads/images/'.$item->image);
+
+                    $item['title']    = $item->title;
+                    $item['rating']   = $item->rating;
+                    $item['duration'] = $item->duration;
+                    $item['featured'] = $item->featured;
+                    $item['year']     = $item->year;
+                    $item['age_restrict'] = null ;
+
+                    return $item;
+                });
+
+            // Fetch all audio albums list
+
+                $AudioAlbums = AudioAlbums::orderBy('created_at', 'desc')->get()->map(function ($item) use($OrderHomeSetting) {
+                    $item['source']       = $OrderHomeSetting->where('id',7)->pluck('header_name')->first() != null ? $OrderHomeSetting->where('id',7)->pluck('header_name')->first() : "Podcast";
+                    $item['redirect_url'] = URL::to('album/'.$item->slug) ;
+                    $item['image_url']    = URL::to('public/uploads/albums/' . $item->album);
+
+                    $item['title']        = $item->albumname;
+                    $item['age_restrict'] = null ;
+                    $item['rating']       = null;
+                    $item['duration']     = null;
+                    $item['featured']     = null;
+                    $item['year']         = null;
+                    return $item;
+                  });
+
+            // Merge the results of the video, series, and audio album queries
+
+                $mergedResults = $videos->merge($Series)->merge($AudioAlbums);
+
+            // Paginate the merged results using LengthAwarePaginator
+
+                $currentPage = request()->get('page') ?: 1;
+                $pagedData = $mergedResults->forPage($currentPage, $this->settings->videos_per_page);
+
+                $mergedResults = new LengthAwarePaginator(
+                    $pagedData,
+                    $mergedResults->count(),
+                    $this->settings->videos_per_page,
+                    $currentPage,
+                    ['path' => request()->url()]
+                );
+
             $respond_data = array(
-                'videos'    => $videos,
+                'videos'    => $mergedResults,
                 'ppv_gobal_price'  => $this->ppv_gobal_price,
                 'currency'         => CurrencySetting::first(),
                 'ThumbnailSetting' => ThumbnailSetting::first(),
@@ -75,7 +143,7 @@ class AllVideosListController extends Controller
             return Theme::view('All-Videos.All_videos',['respond_data' => $respond_data]);
 
         } catch (\Throwable $th) {
-            // return $th->getMessage();
+            return $th->getMessage();
             return abort(404);
         }
        
@@ -102,17 +170,17 @@ class AllVideosListController extends Controller
                     ->where('series.active', '=', '1')
                     ->groupBy('episodes.id')
                     ->latest('episodes.created_at')
-                    ->Paginate($this->settings->videos_per_page);
+                    ->get();
 
 
                 $learn_series_sliders = Series::join('series_categories', 'series_categories.series_id', '=', 'series.id')
-                                                ->where('series_categories.category_id',19)
+                                                ->whereIn('series_categories.category_id',['19'])
                                                 ->where('series.active', 1 )
                                                 ->where('banner',1)
                                                 ->get();
 
                 $respond_data = array(
-                    'videos'    => $Episode_videos,
+                    'Episode_videos'    => $Episode_videos,
                     'learn_series_sliders' => $learn_series_sliders,
                     'ppv_gobal_price'  => $this->ppv_gobal_price,
                     'currency'         => CurrencySetting::first(),
