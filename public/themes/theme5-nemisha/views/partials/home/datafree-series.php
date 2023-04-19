@@ -3,12 +3,12 @@
 <h4 class="main-title">
         <!-- Data Free series -->
    <a href="<?php echo URL::to('/series/category/').'/'.$DataFreeseriesCategories->slug;?>" class="category-heading" style="text-decoration: none; color: #fff;">
-      <h4 class="movie-title">
+     
          <?php 
          if(!empty($DataFreeseriesCategories->home_genre)){ echo $DataFreeseriesCategories->name ; }else{ echo $DataFreeseriesCategories->name ; }  
          //   echo __($category->name);
             ?>
-      </h4>
+     
    </a>
         </h4>
 </div>
