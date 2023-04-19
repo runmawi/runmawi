@@ -310,16 +310,17 @@ class ThemeAudioController extends Controller{
                }    
                $blocked_Audio[]='';
 
-               $audios  =  Audio::where('active', '=', '1')->orderBy('created_at', 'DESC');
+               $audios  =  Audio::join('audio_albums', 'audio.album_id', '=', 'audio_albums.id')
+               ->where('audio.active', '=', '1')->orderBy('audio.created_at', 'DESC')
+               ->select('audio_albums.slug as albumslug' , 'audio.*');
 
                  if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
                       $audios = $audios  ->whereNotIn('id',$blocked_Audio);
                }
-                $audios = $audios ->get();      
+                $audios = $audios->get();      
             } else {
               $audios = [];
             } 
-
         $data = array(
             'audios' => $audios,
             'audios_count' => $audios_count,
