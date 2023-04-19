@@ -2588,7 +2588,7 @@ line-height: 52px;
     line-height: 52px;
 }
 .get{
-   font-family: 'Roboto', sans-serif;
+ 
 font-style: normal;
 font-weight: 500;
 font-size: 20px;
@@ -2607,6 +2607,9 @@ line-height: 32px;
     margin-top: 20px;
     text-align: center;
     /* width: 60%; */
+}
+.nav-link:hover{
+      background-color: #ed553b!important;
 }
 .channel_nav .nav-link.active {
    

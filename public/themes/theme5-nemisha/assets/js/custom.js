@@ -912,7 +912,7 @@ document.addEventListener("DOMContentLoaded", function() {
      
 
 $('.Video_Categorynav').slick({
-  dots: true,
+  dots: false,
   infinite: true,
   speed: 300,
   slidesToShow: 3,
@@ -920,7 +920,7 @@ $('.Video_Categorynav').slick({
   variableWidth: true
 });
 $('.Audio_Categorynav').slick({
-  dots: true,
+  dots: false,
   infinite: true,
   speed: 300,
   slidesToShow: 3,
@@ -928,7 +928,7 @@ $('.Audio_Categorynav').slick({
   variableWidth: true
 });
 $('.Series_Categorynav').slick({
-  dots: true,
+  dots: false,
   infinite: true,
   speed: 300,
   slidesToShow: 3,
