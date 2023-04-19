@@ -12335,7 +12335,7 @@ public function QRCodeMobileLogout(Request $request)
       {
         try{
 
-          $settings = Setting::first();
+          $settings = Setting::get();
           $Menus = Menu::get(); 
           $VideoCategory = VideoCategory::where('in_home','=',1)->get();
           $LiveCategory = LiveCategory::get();
