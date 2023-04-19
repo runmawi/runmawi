@@ -24,6 +24,8 @@ $uppercase =  ucfirst($request_url);
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
      <!-- Bootstrap CSS -->
       <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
                          <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/fonts/font.css') ?>" rel="stylesheet">
 
       <!-- Typography CSS -->
@@ -205,9 +207,9 @@ i.fa.fa-google-plus {
     background: #474644 !important;
 }
     .reveal{
-        margin-left: -92px;
+        margin-left: -57px;
     height: 45px !important;
-    background: transparent !important;
+    background: #ED553B !important;
     color: #fff !important;
     }
     .error {
@@ -444,6 +446,7 @@ $jsondata = json_decode($jsonString, true); ?>
                            
                             
                                 @if(!empty($SignupMenu) && $SignupMenu->password == 1)
+                                
                                  <div class="col-md-12">
                                      <div class="row">
                                      <div class="col-md-12">
@@ -1099,6 +1102,22 @@ $(document).ready(function() {
     return regexpr.test(value);
 }, "Please enter a valid pasword.");
     </script>
+       <script>
+           $(document).ready(function() {
+    $("#show_hide_password a").on('click', function(event) {
+        event.preventDefault();
+        if($('#show_hide_password input').attr("type") == "text"){
+            $('#show_hide_password input').attr('type', 'password');
+            $('#show_hide_password i').addClass( "fa-eye-slash" );
+            $('#show_hide_password i').removeClass( "fa-eye" );
+        }else if($('#show_hide_password input').attr("type") == "password"){
+            $('#show_hide_password input').attr('type', 'text');
+            $('#show_hide_password i').removeClass( "fa-eye-slash" );
+            $('#show_hide_password i').addClass( "fa-eye" );
+        }
+    });
+});
+       </script>
 
 
  <!-- jQuery, Popper JS -->
