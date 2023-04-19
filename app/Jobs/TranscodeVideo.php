@@ -74,11 +74,14 @@ class TranscodeVideo implements ShouldQueue
                 'bottom' => 10,
                 'right' => 10,
             ]);
-            
+
+        $video->save($format, $output_path);
+
+        // return response()->download($output_path);
         $this->video->update([
             'path' =>  $output_path_rand,
         ]);
-        // $video->save($format, $output_path); 
+        $video->save($format, $output_path); 
         $video = $this->video;   
         ConvertVideoForStreaming::dispatch($video);
 
