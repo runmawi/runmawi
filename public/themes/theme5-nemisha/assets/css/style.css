@@ -2611,6 +2611,7 @@ line-height: 32px;
 .nav-link:hover{
     border: none!important;
       background-color: #ed553b!important;
+   padding: 6px 15px;
 }
 .channel_nav .nav-link.active {
    
