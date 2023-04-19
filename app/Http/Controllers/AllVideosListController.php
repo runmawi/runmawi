@@ -11,6 +11,7 @@ use App\VideoCategory;
 use App\HomeSetting;
 use App\Multiprofile;
 use App\RecentView;
+use App\AudioAlbums;
 use App\Setting;
 use App\Video;
 use App\User;
@@ -65,6 +66,10 @@ class AllVideosListController extends Controller
                     
             $videos = $videos->latest('videos.created_at')->Paginate($this->settings->videos_per_page);
     
+            $Series = Series::where('active', '=', '1')->orderBy('created_at', 'DESC')->Paginate($this->settings->videos_per_page);
+
+            $AudioAlbums = AudioAlbums::orderBy('created_at', 'desc')->Paginate($this->settings->videos_per_page);
+
             $respond_data = array(
                 'videos'    => $videos,
                 'ppv_gobal_price'  => $this->ppv_gobal_price,
