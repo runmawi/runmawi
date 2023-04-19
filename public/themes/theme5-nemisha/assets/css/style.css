@@ -726,7 +726,7 @@ video.trail-vid{
 .tab-pane {
   color: #ffff;
   display: none;
-  padding: 10px;
+ 
   text-align: left;
  
 }
@@ -780,11 +780,11 @@ a.title-dec{
     padding: 5px 20px;
       border: 1px solid #fff !important;
    font-size: 20px;
-    font-family: 'Roboto', sans-serif;
+   font-family: 'futurabook';
 font-weight: 500;
 }
 .nav-link.active {
-  border: 1px solid rgba(1, 220, 130, 1) !important;
+  border: 1px solid transparent !important;
     padding: 5px 20px;
 	color: rgba(1, 220, 130, 1)!important;
 
@@ -2497,6 +2497,7 @@ font-family: 'Roboto', sans-serif;
 }
 .see{
     color: #fff!important;
+    font-family: 'futurabook';
 }
 #home-slider{
     display: none;
@@ -2600,4 +2601,75 @@ line-height: 32px;
 }
 .nem {
     color: #01DC82;
+}
+.nav-tabs {
+    border: 0;
+    margin-top: 20px;
+    text-align: center;
+    /* width: 60%; */
+}
+.channel_nav .nav-link.active {
+   
+    background-color: #ed553b!important;
+}
+.channel_nav .nav-tabs>li {
+    padding: 5px 5px!important;
+}
+.nav-link.active {
+   
+    color: #f7f7f7 !important;
+    background-color: transparent !important;
+}
+.channel_nav .nav-link {
+    padding: 5px 15px;
+    background-color: #fff;
+   
+    border-radius: 5px;
+    color: #000!Important;
+    text-transform: capitalize;
+}
+.nav-tabs{
+    border-bottom: none!important;
+}
+.channel_nav .nav-link {
+    padding: 5px 15px;
+    background-color: #fff;
+   
+    border-radius: 5px;
+    color: #000!Important;
+    text-transform: capitalize;
+}
+.Video_Categorynav .nav-link {
+    width: 200px!important;
+}
+.tab-pane .nav-link {
+    font-size: 14px;
+    margin: 5px 5px;
+    max-width: 230px;
+    padding: 6px 15px;
+    text-align: center;
+}
+.Video_Categorynav .slick-prev:before {
+    content: "\f053";
+    font-family: 'FontAwesome';
+    color: #fff;
+    font-size: 30px;
+}
+.Video_Categorynav .slick-next:before {
+    content: "\f054";
+    color: #fff;
+    font-size: 30px;
+    font-family: 'FontAwesome';
+}
+.Series_Categorynav  .slick-prev:before {
+    content: "\f053";
+    font-family: 'FontAwesome';
+    color: #fff;
+    font-size: 30px;
+}
+.Series_Categorynav  .slick-next:before {
+    content: "\f054";
+    color: #fff;
+    font-size: 30px;
+    font-family: 'FontAwesome';
 }
