@@ -118,6 +118,8 @@ use App\ReSchedule as ReSchedule;
 use App\WebComment;
 use App\Channel;
 use App\ThumbnailSetting;
+use App\Menu;
+use App\SeriesGenre;
 
 class ApiAuthController extends Controller
 {
@@ -11107,9 +11109,9 @@ public function QRCodeMobileLogout(Request $request)
             
               $response = array(
                   'status'=> 'true',
-                  'currency' => $currency,
                   'channels' => $channels,
                   'ThumbnailSetting' => $ThumbnailSetting,
+                  'currency' => $currency,
               );
               
             } catch (\Throwable $th) {
@@ -12327,4 +12329,127 @@ public function QRCodeMobileLogout(Request $request)
     }
   }
 
+  // Menus API 
+
+  public function Menus()
+      {
+        try{
+
+          $settings = Setting::first();
+          $Menus = Menu::get(); 
+            
+              $response = array(
+                  'status'=> 'true',
+                  'Menus' => $Menus,
+                  'settings' => $settings,
+              );
+              
+            } catch (\Throwable $th) {
+
+              $response = array(
+                'status'=>'false',
+                'message'=>$th->getMessage(),
+              );
+        }
+
+        return response()->json($response, 200);
+          
+      }
+
+
+      
+  public function DataFree()
+  {
+    try{
+      $HomeSetting = HomeSetting::first();
+      // print_r($HomeSetting);exit;
+      if($HomeSetting->latest_videos == 1){
+      $settings = Setting::first();
+        // Data Free Video Based on Category 
+         
+        $DataFreeCategories = VideoCategory::where('slug','datafree')->where('in_home','=',1)->first();
+          $countDataFreeCategories = VideoCategory::where('slug','datafree')->where('in_home','=',1)->count();
+          if ($countDataFreeCategories > 0 ) {   
+
+                $videos = Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
+                            ->where('category_id','=',@$DataFreeCategories->id)->where('active', '=', '1')
+                            ->where('status', '=', '1')->where('draft', '=', '1');
+                $videos = $videos->latest('videos.created_at')->get();
+          
+          }else{
+            $videos = [];
+          }
+
+        // Data Free Series Based on Category 
+
+          $DataFreeseriesCategories = SeriesGenre::where('slug','datafree')->where('in_menu','=',1)->first();
+          $countDataFreeseriesCategories = SeriesGenre::where('slug','datafree')->where('in_menu','=',1)->count();
+          if ($countDataFreeseriesCategories > 0 ) {   
+
+                $series = Series::join('series_categories', 'series_categories.series_id', '=', 'series.id')
+                            ->where('category_id','=',@$DataFreeseriesCategories->id)->where('active', '=', '1')
+                            ->where('active', '=', '1');
+                $series = $series->latest('series.created_at')->get();
+          
+          }else{
+             $series = [];
+          }
+
+        // Data Free Live Stream Based on Category 
+
+          $DataFreeliveCategories = LiveCategory::where('slug','datafree')->first();
+          $countDataFreeliveCategories = LiveCategory::where('slug','datafree')->count();
+          if ($countDataFreeliveCategories > 0 ) {   
+
+                $live_streams = LiveStream::join('livecategories', 'livecategories.live_id', '=', 'live_streams.id')
+                            ->where('category_id','=',@$DataFreeliveCategories->id)->where('active', '=', '1')
+                            ->where('status', '=', '1');
+                $live_streams = $live_streams->latest('live_streams.created_at')->get();
+          
+          }else{
+             $live_streams = [];
+          }
+
+        // Data Free Audio Based on Category 
+
+          $DataFreeAudioCategories = AudioCategory::where('slug','datafree')->first();
+          $countDataFreeAudioCategories = AudioCategory::where('slug','datafree')->count();
+          if ($countDataFreeAudioCategories > 0 ) {   
+
+                $audio = Audio::join('category_audios', 'category_audios.audio_id', '=', 'audio.id')
+                            ->where('category_id','=',@$DataFreeAudioCategories->id)->where('active', '=', '1')
+                            ->where('status', '=', '1');
+                $audio = $audio->latest('audio.created_at')->get();
+          
+          }else{
+             $audio = [];
+          } 
+        
+          $response = array(
+              'status'=> 'true',
+              'videos' => $videos,
+              'series' => $series,
+              'live_streams' => $live_streams,
+              'audio' => $audio,
+              'settings' => $settings,
+          );
+      }else{
+
+          $response = array(
+            'status'=> 'true',
+            'Message' => 'Please Trun On Latest Video on Home Page Settings',
+        );
+      }
+          
+        } catch (\Throwable $th) {
+
+          $response = array(
+            'status'=>'false',
+            'message'=>$th->getMessage(),
+          );
+    }
+
+    return response()->json($response, 200);
+      
+  }
 }
