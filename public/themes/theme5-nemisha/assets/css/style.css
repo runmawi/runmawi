@@ -2497,6 +2497,7 @@ font-family: 'Roboto', sans-serif;
 }
 .see{
     color: #fff!important;
+    font-family: 'futurabook';
 }
 #home-slider{
     display: none;
@@ -2626,6 +2627,9 @@ line-height: 32px;
     border-radius: 5px;
     color: #000!Important;
     text-transform: capitalize;
+}
+.nav-tabs{
+    border-bottom: none!important;
 }
 .channel_nav .nav-link {
     padding: 5px 15px;
