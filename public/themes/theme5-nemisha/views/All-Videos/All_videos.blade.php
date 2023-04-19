@@ -1,9 +1,6 @@
-<?php
-include public_path('themes/theme5-nemisha/views/header.php');
-?>
+<?php include public_path('themes/theme5-nemisha/views/header.php'); ?>
 
-<!-- MainContent -->
-<section id="iq-favorites mt-4">
+{{-- <section id="iq-favorites mt-4">
     <div class="container-fluid mb-5 mt-4">
         <div class="d-flex">
             <div><h5 class="mr-2">Explore titles related to:</h5></div>
@@ -15,64 +12,61 @@ include public_path('themes/theme5-nemisha/views/header.php');
                 <a class="drama" href="https://dev.nemisatv.co.za/library"><p class="mb-0">Google</p></a>
                 <a class="drama" href="https://dev.nemisatv.co.za/library"><p class="mb-0">Episode</p></a>
                 <a class="drama" href="https://dev.nemisatv.co.za/library"><p class="mb-0">Alpha</p></a>
-
-             
-               
             </div>
-    
-
         </div>
   </div>
-</section>
+</section> --}}
+
+<!-- MainContent -->
+
 <section id="iq-favorites">
     @if (isset($respond_data['videos']) && count($respond_data['videos']) > 0)
-
-        {{-- <h3 class="vid-title text-center mt-4 mb-5">Latest Videos</h3> --}}
 
         <div class="container-fluid"
             style="padding: 0px 40px!important;background: linear-gradient(135.05deg, rgba(136, 136, 136, 0.48) 1.85%, rgba(64, 32, 32, 0.13) 38.53%, rgba(81, 57, 57, 0.12) 97.89%);">
             <div class="row">
 
                 <div class="col-sm-12 page-height">
+
                     <div class="iq-main-header align-items-center justify-content-between">
-                    <h4 class="main-title mt-3">                  
-                    <b>Titles in:</b> Video Library
-                  </h4>                    </div>
+                        <h4 class="main-title mt-3">                  
+                            <b>Titles in:</b> Video-Series-Podcast Library
+                        </h4>                   
+                    </div>
+
                     <div class="favorites-contens">
                         <ul class="category-page list-inline row p-0 mb-0">
                             @if (isset($respond_data['videos']))
 
                                 @foreach ($respond_data['videos'] as $key => $video)
+
                                     <li class="slide-item col-sm-3 col-md-3 col-xs-12">
-                                        <a href="{{ URL::to('category/videos/' . $video->slug) }}">
+
+                                        <a href="{{ $video->redirect_url }}">
                                             <div class="block-images position-relative">
                                                 <div class="img-box">
-                                                    <img loading="lazy"
-                                                        data-src="{{ URL::to('public/uploads/images/' . $video->image) }}"
-                                                        class="img-fluid" alt="">
+                                                    <img loading="lazy" data-src="{{ $video->image_url }}" class="img-fluid" alt="">
                                                 </div>
 
                                                 <div class="block-description">
                                                     <div class="hover-buttons">
-                                                        <a href="{{ URL::to('category/videos/' . $video->slug) }}">
-                                                            <img class="ply"
-                                                                src="{{ URL::to('assets/img/play.svg') }} ">
+                                                        <a href="{{ $video->redirect_url }}">
+                                                            <img class="ply" src="{{ URL::to('assets/img/play.svg') }} ">
                                                         </a>
-                                                        <div>
-                                                            <!-- <a   href="" class="text-white mt-4"><i class="fa fa-plus" aria-hidden="true"></i> Add to Watchlist</a> -->
-                                                        </div>
+                                                    <div>
+                                                </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div>
 
+                                            <div>
                                                 <div class="mt-2 d-flex justify-content-between p-0">
                                                     @if ($respond_data['ThumbnailSetting']->title == 1)
                                                         <h6>{{ strlen($video->title) > 17 ? substr($video->title, 0, 18) . '...' : $video->title }}
                                                         </h6>
                                                     @endif
 
-                                                    @if ($respond_data['ThumbnailSetting']->age == 1)
+                                                    @if ($respond_data['ThumbnailSetting']->age == 1 && $video->age_restrict != null )
                                                         <div class="badge badge-secondary">
                                                             {{ $video->age_restrict . ' ' . '+' }}
                                                         </div>
@@ -84,10 +78,10 @@ include public_path('themes/theme5-nemisha/views/header.php');
 
                                                     <!-- Duration -->
 
-                                                    @if ($respond_data['ThumbnailSetting']->duration == 1)
+                                                    @if ($respond_data['ThumbnailSetting']->duration == 1 && $video->duration != null )
                                                         <span class="text-white">
                                                             <i class="fa fa-clock-o"></i>
-                                                            <?= gmdate('H:i:s', $video->duration) ?>
+                                                            {{ gmdate('H:i:s', $video->duration) }}
                                                         </span>
                                                     @endif
 
@@ -96,50 +90,57 @@ include public_path('themes/theme5-nemisha/views/header.php');
                                                     @if ($respond_data['ThumbnailSetting']->rating == 1 && $video->rating != null)
                                                         <span class="text-white">
                                                             <i class="fa fa-star-half-o" aria-hidden="true"></i>
-                                                            <?php echo __($video->rating); ?>
+                                                             {{ $video->rating }}
                                                         </span>
                                                     @endif
 
-                                                    @if ($respond_data['ThumbnailSetting']->featured == 1 && $video->featured == 1)
-                                                        <!-- Featured -->
+                                                    <!-- Featured -->
+                                                    @if ($respond_data['ThumbnailSetting']->featured == 1 && $video->featured != null && $video->featured == 1)
                                                         <span class="text-white">
                                                             <i class="fa fa-flag" aria-hidden="true"></i>
                                                         </span>
                                                     @endif
                                                 </div>
 
+                                                    {{-- Source --}}
                                                 <div class="movie-time my-2">
-                                                    <!-- published_year -->
-
-                                                    @if ($respond_data['ThumbnailSetting']->published_year == 1 && $video->year != null)
-                                                        <span class="text-white">
-                                                            <i class="fa fa-calendar" aria-hidden="true"></i>
-                                                            <?php echo __($video->year); ?>
-                                                        </span>
-                                                    @endif
+                                                    <span class="text-white">
+                                                        {{ $video->source }}
+                                                    </span>
                                                 </div>
 
-                                                <div class="movie-time my-2">
+                                                    <!-- published_year -->
+                                                @if ($respond_data['ThumbnailSetting']->published_year == 1 && $video->year != null)
+                                                    <div class="movie-time my-2">
+                                                        <span class="text-white">
+                                                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                                {{ $video->year }}
+                                                        </span>
+                                                    </div>
+                                                @endif
+
+
+                                                {{-- <div class="movie-time my-2">
                                                     <!-- Category Thumbnail  setting -->
                                                     <?php
-                                                    $CategoryThumbnail_setting = App\CategoryVideo::join('video_categories', 'video_categories.id', '=', 'categoryvideos.category_id')
-                                                        ->where('categoryvideos.video_id', $video->id)
-                                                        ->pluck('video_categories.name');
+                                                        // $CategoryThumbnail_setting = App\CategoryVideo::join('video_categories', 'video_categories.id', '=', 'categoryvideos.category_id')
+                                                        //     ->where('categoryvideos.video_id', $video->id)
+                                                        //     ->pluck('video_categories.name');
                                                     ?>
 
                                                     @if ($respond_data['ThumbnailSetting']->category == 1 && count($CategoryThumbnail_setting) > 0)
                                                         <span class="text-white">
                                                             <i class="fa fa-list-alt" aria-hidden="true"></i>
                                                             <?php
-                                                            $Category_Thumbnail = [];
-                                                            foreach ($CategoryThumbnail_setting as $key => $CategoryThumbnail) {
-                                                                $Category_Thumbnail[] = $CategoryThumbnail;
-                                                            }
-                                                            echo implode(',' . ' ', $Category_Thumbnail);
+                                                                // $Category_Thumbnail = [];
+                                                                // foreach ($CategoryThumbnail_setting as $key => $CategoryThumbnail) {
+                                                                //     $Category_Thumbnail[] = $CategoryThumbnail;
+                                                                // }
+                                                                // echo implode(',' . ' ', $Category_Thumbnail);
                                                             ?>
                                                         </span>
                                                     @endif
-                                                </div>
+                                                </div> --}}
                                             </div>
                                         </a>
                                     </li>
