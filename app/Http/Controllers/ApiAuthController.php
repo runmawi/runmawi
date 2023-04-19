@@ -12337,10 +12337,18 @@ public function QRCodeMobileLogout(Request $request)
 
           $settings = Setting::first();
           $Menus = Menu::get(); 
-            
+          $VideoCategory = VideoCategory::where('in_home','=',1)->get();
+          $LiveCategory = LiveCategory::get();
+          $AudioCategory = AudioCategory::get();
+          $SeriesGenre = SeriesGenre::where('in_home','=',1)->get();
+          
               $response = array(
                   'status'=> 'true',
                   'Menus' => $Menus,
+                  'VideoCategory' => $VideoCategory,
+                  'LiveCategory' => $LiveCategory,
+                  'AudioCategory' => $AudioCategory,
+                  'SeriesGenre' => $SeriesGenre,
                   'settings' => $settings,
               );
               
@@ -12452,4 +12460,25 @@ public function QRCodeMobileLogout(Request $request)
     return response()->json($response, 200);
       
   }
+
+  public function categoryLive(Request $request)
+  {
+    try{
+      $LiveCategory = LiveCategory::find($request->category_id) != null ? LiveCategory::find($request->category_id)->specific_category_live : array();
+      
+      $Live_Category = $LiveCategory->all();
+
+      $response = array( 'status'=> 'true','LiveCategory' => $Live_Category );
+
+    } catch (\Throwable $th) {
+
+      $response = array(
+        'status'=>'false',
+        'message'=>$th->getMessage(),
+      );
+  }
+
+  return response()->json($response, 200);
+  }
+  
 }
