@@ -118,7 +118,7 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
                         </div></div>
   <div class="tab-pane fade" id="Audios" role="tabpanel" aria-labelledby="Audios-tab"><hr>
      
-      <div class="Audio_Categorynav">
+      <div class="Audio_Categorynav d-flex">
                             <?php foreach ($AudioCategory as $key => $audios_category) { ?>
 
                             <a class="nav-link dropdown-item" id="pills-kids-tab" data-toggle="pill"
