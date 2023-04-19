@@ -2648,3 +2648,27 @@ line-height: 32px;
     padding: 6px 15px;
     text-align: center;
 }
+.Video_Categorynav .slick-prev:before {
+    content: "\f053";
+    font-family: 'FontAwesome';
+    color: #fff;
+    font-size: 30px;
+}
+.Video_Categorynav .slick-next:before {
+    content: "\f054";
+    color: #fff;
+    font-size: 30px;
+    font-family: 'FontAwesome';
+}
+.Series_Categorynav  .slick-prev:before {
+    content: "\f053";
+    font-family: 'FontAwesome';
+    color: #fff;
+    font-size: 30px;
+}
+.Series_Categorynav  .slick-next:before {
+    content: "\f054";
+    color: #fff;
+    font-size: 30px;
+    font-family: 'FontAwesome';
+}
