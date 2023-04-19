@@ -92,14 +92,14 @@ class TranscodeController extends Controller
         public function addWatermark()
         {
 
-            $watermark_path = URL::to("/storage/app/public/watermark.png");
-        $watermark_path = public_path() . "/uploads/watermark.png";
+            // $watermark_path = URL::to("/storage/app/public/watermark.png");
+        $watermark_path = public_path() . "/uploads/transcode/watermark.png";
 
             // $video_path = URL::to("/storage/app/public/eA81jhw9Zhgj5Wkk.mp4");
             // $output_path = URL::to("/storage/app/public/output.mp4");
-        $video_path = public_path() . "/uploads/eA81jhw9Zhgj5Wkk.mp4";
+        $video_path = public_path() . "/uploads/transcode/eA81jhw9Zhgj5Wkk.mp4";
 
-        $output_path = public_path() . "/uploads/output.mp4";
+        $output_path = public_path() . "/uploads/transcode/output.mp4";
 
             // dd($watermark_path);
             // $ffmpeg = FFMpeg::create([
@@ -107,12 +107,13 @@ class TranscodeController extends Controller
             //     'ffprobe.binaries' => '/usr/bin/ffprobe',
             // ]);
 
-            $ffmpeg = \FFMpeg\FFMpeg::create([
-                'ffmpeg.binaries'  => 'C:/ffmpeg/bin/ffmpeg.exe', // tCe path to the FFMpeg binary
-                'ffprobe.binaries' => 'C:/ffmpeg/bin/ffprobe.exe', // the path to the FFProbe binary
-                'timeout'          => 0, // the timeout for the underlying process
-                'ffmpeg.threads'   => 1,   // the number of threads that FFMpeg should use
-            ]);
+            // $ffmpeg = \FFMpeg\FFMpeg::create([
+            //     'ffmpeg.binaries'  => 'C:/ffmpeg/bin/ffmpeg.exe', // tCe path to the FFMpeg binary
+            //     'ffprobe.binaries' => 'C:/ffmpeg/bin/ffprobe.exe', // the path to the FFProbe binary
+            //     'timeout'          => 0, // the timeout for the underlying process
+            //     'ffmpeg.threads'   => 1,   // the number of threads that FFMpeg should use
+            // ]);
+            $ffmpeg = \FFMpeg\FFMpeg::create();
 
             $video = $ffmpeg->open($video_path);
 
