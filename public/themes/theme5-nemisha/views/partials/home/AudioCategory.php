@@ -7,7 +7,7 @@
         <div class="row">
             <div class="col-sm-12 page-height">
                 <div class="iq-main-header align-items-center justify-content-between">
-                    <h4 class="movie-title">Audio Genre <?php echo @$CategoryAudio->name ?></h4>                     
+                    <h4 class="movie-title"> <?php echo @$CategoryAudio->name ?></h4>                     
                 </div>
                 <div class="favorites-contens">
                     <ul class="category-page list-inline row p-0 mb-0">
