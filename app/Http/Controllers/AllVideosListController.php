@@ -13,6 +13,7 @@ use App\HomeSetting;
 use App\Multiprofile;
 use App\RecentView;
 use App\AudioAlbums;
+use App\OrderHomeSetting;
 use App\Setting;
 use App\Video;
 use App\User;
@@ -20,6 +21,7 @@ use App\Series;
 use Session;
 use Theme;
 use Auth;
+use URL;
 use DB;
 
 class AllVideosListController extends Controller
@@ -50,9 +52,13 @@ class AllVideosListController extends Controller
     
                 return redirect()->route('landing_page', $landing_page_slug );
             }
-    
+
+            $OrderHomeSetting = OrderHomeSetting::get(); 
+
             // Fetch all videos list
-                $videos = Video::where('active', '=', '1')->where('status', '=', '1')->where('draft', '=', '1');
+                $videos = Video::select('active','status','draft','age_restrict','id','created_at','slug','image','title','rating','duration','featured','year')
+                        ->where('active', '1')->where('status', '1')->where('draft', '1');
+
                     if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
                         $videos = $videos->whereNotIn('videos.id', Block_videos());
                     }
@@ -60,15 +66,55 @@ class AllVideosListController extends Controller
                         $videos = $videos->whereBetween('videos.age_restrict', [0, 12]);
                     }
                     
-                $videos = $videos->latest('videos.created_at')->get();
+                $videos = $videos->latest()->get()->map(function ($item) {
+                    $item['source']       = 'videos';
+                    $item['redirect_url'] = URL::to('category/videos/'.$item->slug) ;
+                    $item['image_url']    = URL::to('public/uploads/images/' . $item->image);
+
+                    $item['title']    = $item->title;
+                    $item['rating']   = $item->rating;
+                    $item['duration'] = $item->duration;
+                    $item['featured'] = $item->featured;
+                    $item['year']     = $item->year;
+                    $item['age_restrict'] = $item->age_restrict;
+
+                    return $item;
+                });
 
             // Fetch all series list
 
-                $Series = Series::where('active', '=', '1')->orderBy('created_at', 'DESC')->get();
+                $Series = Series::select('active','id','created_at','slug','image','title','rating','duration','featured','year')
+                                    ->where('active', '=', '1')->orderBy('created_at', 'DESC')->latest()->get()
+                                    ->map(function ($item) use($OrderHomeSetting) {
+                    $item['source']       = $OrderHomeSetting->where('id',5)->pluck('header_name')->first() != null ? $OrderHomeSetting->where('id',5)->pluck('header_name')->first() : "Series" ;
+                    $item['redirect_url'] = URL::to('play_series/'.$item->slug) ;
+                    $item['image_url']    = URL::to('public/uploads/images/'.$item->image);
+
+                    $item['title']    = $item->title;
+                    $item['rating']   = $item->rating;
+                    $item['duration'] = $item->duration;
+                    $item['featured'] = $item->featured;
+                    $item['year']     = $item->year;
+                    $item['age_restrict'] = null ;
+
+                    return $item;
+                });
 
             // Fetch all audio albums list
 
-                $AudioAlbums = AudioAlbums::orderBy('created_at', 'desc')->get();
+                $AudioAlbums = AudioAlbums::orderBy('created_at', 'desc')->get()->map(function ($item) use($OrderHomeSetting) {
+                    $item['source']       = $OrderHomeSetting->where('id',7)->pluck('header_name')->first() != null ? $OrderHomeSetting->where('id',7)->pluck('header_name')->first() : "Podcast";
+                    $item['redirect_url'] = URL::to('album/'.$item->slug) ;
+                    $item['image_url']    = URL::to('public/uploads/albums/' . $item->album);
+
+                    $item['title']        = $item->albumname;
+                    $item['age_restrict'] = null ;
+                    $item['rating']       = null;
+                    $item['duration']     = null;
+                    $item['featured']     = null;
+                    $item['year']         = null;
+                    return $item;
+                  });
 
             // Merge the results of the video, series, and audio album queries
 
