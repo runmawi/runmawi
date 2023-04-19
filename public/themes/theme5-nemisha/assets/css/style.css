@@ -2609,6 +2609,7 @@ line-height: 32px;
     /* width: 60%; */
 }
 .nav-link:hover{
+    border: none!important;
       background-color: #ed553b!important;
 }
 .channel_nav .nav-link.active {

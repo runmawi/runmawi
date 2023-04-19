@@ -209,7 +209,7 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
 </section>-->
 
 
-<div class="channel_home container-fluid">
+<div class="channel_home container-fluid mt-4">
     <?php 
 if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 0 || count($audios) > 0){
       if(count($latest_video) > 0 ){
