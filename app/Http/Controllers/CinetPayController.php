@@ -27,6 +27,7 @@ use Paystack;
 use URL;
 use App\SubscriptionPlan;
 use App\EmailTemplate;
+use App\Audio;
 
 class CinetPayController extends Controller
 {
@@ -203,6 +204,176 @@ class CinetPayController extends Controller
     
     return response()->json($response, 200);
 
+    }
+
+    
+    public function CinetPay_audio_Rent_Payment(Request $request)
+    {
+        $data = $request->all();
+        $email = User::where('id',Auth::user()->id)->pluck('email')->first();
+        
+        try{
+            $to_time = ppv_expirytime_started(); 
+            $ppv_price = $request->amount;
+        $audio = Audio::where('id','=',$request->audio_id)->where('uploaded_by','CPP')->orWhere('uploaded_by','Channel')->first();
+        if(!empty($audio)){
+        $moderators_id = $audio->user_id;
+        }
+
+        if(!empty($moderators_id)){
+            $moderator        = ModeratorsUser::where('id','=',$moderators_id)->first();  
+            $total_amount     = $audio->ppv_price;
+            $title            =  $audio->title;
+            $commssion        = VideoCommission::first();
+            $percentage       = $commssion->percentage; 
+            $ppv_price        = $audio->ppv_price;
+            $admin_commssion  = ($percentage/100) * $ppv_price ;
+            $moderator_commssion = $ppv_price - $percentage;
+            $moderator_id = $moderators_id;
+        }
+        else
+        {
+        $audio = Audio::where('id','=',$request->audio_id)->first();
+
+            $total_amount   = $request->ppv_price;
+            $title          =  $audio->title;
+            $commssion      = VideoCommission::first();
+            $percentage     = null; 
+            $ppv_price       = $request->amount;
+            $admin_commssion =  null;
+            $moderator_commssion = null;
+            $moderator_id = null;
+        }
+
+        $purchase = new PpvPurchase;
+        $purchase->user_id       =  Auth::user()->id ;
+        $purchase->audio_id       = $request->audio_id ;
+        $purchase->total_amount  = $request->amount ; 
+        $purchase->admin_commssion = $admin_commssion;
+        $purchase->moderator_commssion = $moderator_commssion;
+        $purchase->status = 'active';
+        $purchase->to_time = $to_time;
+        $purchase->moderator_id = $moderator_id;
+        $purchase->save();
+
+                    // Success 
+            $response = array(
+                "status"  => true ,
+                "message" => "Payment done! Successfully", 
+            );
+    
+
+    } catch (\Exception $e) {
+
+        $response = array(
+            "status"  => false , 
+            "message" => $e->getMessage(), 
+       );
+    }
+
+    return response()->json($response, 200);
+
+    }
+
+    public function audio_ppv(Request $request)
+    {
+
+        if(!Auth::guest()){  
+            $countaudioppv = App\PpvPurchase::where('audio_id',$request->id)->where('user_id',Auth::user()->id)->count();
+
+            return $countaudioppv;
+          }else {
+            return 0;
+          }     
+        
+    }
+
+    
+    public function CinetPay_live_Rent( Request $request )
+    {
+        try {
+
+            $setting = Setting::first();  
+            $ppv_hours = $setting->ppv_hours;
+
+            $to_time = ppv_expirytime_started(); 
+            
+
+            $video = LiveStream::where('id','=',$request->live_id)->first();
+
+            if(!empty($video)){
+            $moderators_id = $video->user_id;
+            }
+
+            if(!empty($moderators_id)){
+                $moderator        = ModeratorsUser::where('id','=',$moderators_id)->first();  
+                $total_amount     = $video->ppv_price;
+                $title            =  $video->title;
+                $commssion        = VideoCommission::first();
+                $percentage       = $commssion->percentage; 
+                $ppv_price        = $video->ppv_price;
+                $admin_commssion  = ($percentage/100) * $ppv_price ;
+                $moderator_commssion = $ppv_price - $percentage;
+                $moderator_id = $moderators_id;
+            }
+            else
+            {
+                $total_amount   = $video->ppv_price;
+                $title          =  $video->title;
+                $commssion      = VideoCommission::first();
+                $percentage     = null; 
+                $ppv_price       = $video->ppv_price;
+                $admin_commssion =  null;
+                $moderator_commssion = null;
+                $moderator_id = null;
+            }
+
+            $purchase = new PpvPurchase;
+            $purchase->user_id       =  Auth::user()->id ;
+            $purchase->live_id       = $request->live_id ;
+            $purchase->total_amount  = $request->amount ; 
+            $purchase->admin_commssion = $admin_commssion;
+            $purchase->moderator_commssion = $moderator_commssion;
+            $purchase->status = 'active';
+            $purchase->to_time = $to_time;
+            $purchase->moderator_id = $moderator_id;
+            $purchase->save();
+
+            $livepurchase = new LivePurchase;
+            $livepurchase->user_id =  Auth::user()->id ;
+            $livepurchase->video_id = $request->live_id;
+            $livepurchase->to_time = $to_time;
+            $livepurchase->expired_date = $to_time;
+            $livepurchase->amount =  $request->amount ;
+            $livepurchase->from_time = Carbon::now()->format('Y-m-d H:i:s');
+            $livepurchase->unseen_expiry_date = ppv_expirytime_notstarted();
+            $livepurchase->status = 1;
+            $livepurchase->save();
+
+            if ($err) {                 // Error 
+                $response = array( 
+                    "status"  => false , 
+                    "message" => $err  
+                );
+            } 
+            else {                      // Success 
+                $response = array(
+                    "status"  => true ,
+                    "message" => "Payment done! Successfully", 
+                    'data'    =>  $result ,
+                );
+            }
+        
+
+        } catch (\Exception $e) {
+
+            $response = array(
+                "status"  => false , 
+                "message" => $e->getMessage(), 
+           );
+        }
+
+        return response()->json($response, 200);
     }
 
 }

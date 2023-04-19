@@ -15,6 +15,7 @@ Route::group(['prefix' => '/admin/filemanager', 'middleware' => ['web', 'auth']]
 Route::get('/cinet_pay/billings-details', 'PaymentController@cinet_pay');
 Route::get('/admin/transcode-index', 'TranscodeController@index');
 Route::post('/admin/transcode-upload', 'TranscodeController@upload');
+Route::post('/audio_ppv', 'CinetPayController@audio_ppv')->name('audio_ppv');
 
 
 Route::get('/moderator', 'ModeratorsUserController@index');
@@ -275,7 +276,7 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
     Route::post('/remove_dislike-episode', 'TvshowsController@RemoveDisLikeEpisode');
 
 // Become subscriber - single page
-    Route::get('become_subscriber', 'PaymentController@become_subscriber');
+    Route::get('become_subscriber', 'PaymentController@become_subscriber')->name('become_subscriber');
     Route::get('retrieve_stripe_coupon', 'PaymentController@retrieve_stripe_coupon')->name('retrieve_stripe_coupon');
     Route::get('retrieve_stripe_invoice', 'PaymentController@retrieve_stripe_invoice')->name('retrieve_stripe_invoice');
 });
@@ -2155,6 +2156,8 @@ Route::group(['middleware' => ['RazorpayMiddleware']], function() {
 // CinetPay-Video Rent
 Route::post('/CinetPaySubscription', 'CinetPayController@CinetPaySubscription')->name('CinetPay_Subscription');
 Route::post('/CinetPay-video-rent', 'CinetPayController@CinetPay_Video_Rent_Payment')->name('CinetPay_Video_Rent_Payment');
+Route::post('/CinetPay-audio-rent', 'CinetPayController@CinetPay_audio_Rent_Payment')->name('CinetPay_audio_Rent_Payment');
+Route::post('/CinetPay-live-rent', 'CinetPayController@CinetPay_live_Rent')->name('CinetPay_live_Rent');
     
 // CinetPay- Series/Season Rent
 Route::post('/CinetPay-series_season-rent', 'PaymentController@CinetPay_series_season_Rent_Payment')->name('CinetPay_series_season_Rent_Payment');

@@ -357,7 +357,7 @@ $settings  = App\Setting::first();?>
 									{{-- Trailer option --}}
 							<div class="d-flex align-items-baseline mr-2">
                                 <div><label class="p2" for="active" style="display:block; margin-right:10px;">Season Trailer:</label></div>
-                                <div><input type="checkbox" @if(!empty($series->series_trailer) && $series->series_trailer == 1){{ 'checked="checked"' }}@elseif(!isset($series->series_trailer)){{ 'checked="checked"' }}@endif name="series_trailer" value="1" id="series_trailer" /></div>
+                                <div><input type="checkbox" @if(!empty($series->series_trailer) && $series->series_trailer == 1){{ 'checked="checked"' }}@endif name="series_trailer"  value="1" id="series_trailer" /></div>
 								
 								
 							</div>
@@ -366,9 +366,7 @@ $settings  = App\Setting::first();?>
 
 								<div class="row align-items-center season_trailer">
                                     <div class="col-md-3"><label class="p2" for="active" style="display:block; margin-right:10px;">Season 1 :</label></div>
-                                    <div class="col-md-3"><input type="radio" name="season_trailer" value="1" checked> </div>
-									
-									
+                                    <div class="col-md-3"><input type="radio" name="season_trailer" value="1" > </div>
 								</div>
 
 							@elseif($button_text == "Update Series")

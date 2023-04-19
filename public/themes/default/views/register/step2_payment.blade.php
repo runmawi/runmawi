@@ -1136,6 +1136,7 @@ for (var i = 0; i < btns.length; i++) {
             stripe.createToken(cardElement).then(function(result) {
                  console.log(result.token.id);
             var stripToken = result.token.id;
+
             $.post(base_url+'/register3', {
                      py_id:py_id, 
                      stripToken:stripToken, 
@@ -1147,19 +1148,34 @@ for (var i = 0; i < btns.length; i++) {
                    }, 
 
                 function(data){
-                        $('#loader').css('display','block');
-                        swal({
-                            title: "Subscription Purchased Successfully!",
-                            text: "Your Payment done Successfully!",
-                            icon: payment_images+'/Successful_Payment.gif',
-                            buttons: false,      
-                            closeOnClickOutside: false,
-                        });
-
-                        $("#card-button").html('Pay Now');
-                        setTimeout(function() {
-                            window.location.replace(base_url+'/login');
-                    }, 2000);
+                    if(data.status == "success"){
+                            $('#loader').css('display','block');
+                                swal({
+                                    title: "Subscription Purchased Successfully!",
+                                    text: data.message,
+                                    icon: payment_images+'/Successful_Payment.gif',
+                                    buttons: false,      
+                                    closeOnClickOutside: false,
+                                });
+                                    $("#card-button").html('Pay Now');
+                                setTimeout(function() {
+                                    window.location.replace(base_url+'/login');
+                            }, 2500);
+                        }
+                        else{
+                            $('#loader').css('display','block');
+                                swal({
+                                    title: "Payment Failed!",
+                                    text: data.message,
+                                    icon: payment_images+'/fails_Payment.avif',
+                                    buttons: false,      
+                                    closeOnClickOutside: false,
+                                });
+                                    $("#card-button").html('Pay Now');
+                                setTimeout(function() {
+                                     location.reload();
+                            }, 5000);
+                        }
                });
             });
         }

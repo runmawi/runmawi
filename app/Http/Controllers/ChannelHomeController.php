@@ -115,7 +115,7 @@ class ChannelHomeController extends Controller
                 'LiveCategory' => LiveCategory::get(),
                 'VideoCategory' => VideoCategory::get(),
                 'AudioCategory' => AudioCategory::get(),
-                'channel' => $channel,
+                'channel_partner' => $channel,
             );
             
             return Theme::view('ChannelHome', $data);
