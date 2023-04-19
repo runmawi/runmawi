@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use App\AdminLandingPage;
 use App\CurrencySetting;
 use App\ThumbnailSetting;
@@ -50,28 +51,44 @@ class AllVideosListController extends Controller
                 return redirect()->route('landing_page', $landing_page_slug );
             }
     
-            // All videos 
-    
-            $videos = Video::where('active', '=', '1')->where('status', '=', '1')->where('draft', '=', '1');
-    
-                if (Geofencing() != null && Geofencing()->geofencing == 'ON')
-                {
-                    $videos = $videos->whereNotIn('videos.id', Block_videos());
-                }
-
-                if( check_Kidmode() == 1 )
-                {
-                    $videos = $videos->whereBetween('videos.age_restrict', [ 0, 12 ]);
-                }
+            // Fetch all videos list
+                $videos = Video::where('active', '=', '1')->where('status', '=', '1')->where('draft', '=', '1');
+                    if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
+                        $videos = $videos->whereNotIn('videos.id', Block_videos());
+                    }
+                    if (check_Kidmode() == 1) {
+                        $videos = $videos->whereBetween('videos.age_restrict', [0, 12]);
+                    }
                     
-            $videos = $videos->latest('videos.created_at')->Paginate($this->settings->videos_per_page);
-    
-            $Series = Series::where('active', '=', '1')->orderBy('created_at', 'DESC')->Paginate($this->settings->videos_per_page);
+                $videos = $videos->latest('videos.created_at')->get();
 
-            $AudioAlbums = AudioAlbums::orderBy('created_at', 'desc')->Paginate($this->settings->videos_per_page);
+            // Fetch all series list
+
+                $Series = Series::where('active', '=', '1')->orderBy('created_at', 'DESC')->get();
+
+            // Fetch all audio albums list
+
+                $AudioAlbums = AudioAlbums::orderBy('created_at', 'desc')->get();
+
+            // Merge the results of the video, series, and audio album queries
+
+                $mergedResults = $videos->merge($Series)->merge($AudioAlbums);
+
+            // Paginate the merged results using LengthAwarePaginator
+
+                $currentPage = request()->get('page') ?: 1;
+                $pagedData = $mergedResults->forPage($currentPage, $this->settings->videos_per_page);
+
+                $mergedResults = new LengthAwarePaginator(
+                    $pagedData,
+                    $mergedResults->count(),
+                    $this->settings->videos_per_page,
+                    $currentPage,
+                    ['path' => request()->url()]
+                );
 
             $respond_data = array(
-                'videos'    => $videos,
+                'videos'    => $mergedResults,
                 'ppv_gobal_price'  => $this->ppv_gobal_price,
                 'currency'         => CurrencySetting::first(),
                 'ThumbnailSetting' => ThumbnailSetting::first(),
@@ -80,7 +97,7 @@ class AllVideosListController extends Controller
             return Theme::view('All-Videos.All_videos',['respond_data' => $respond_data]);
 
         } catch (\Throwable $th) {
-            // return $th->getMessage();
+            return $th->getMessage();
             return abort(404);
         }
        
