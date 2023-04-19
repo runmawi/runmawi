@@ -439,4 +439,6 @@ Route::group(
 
         // library - All videos
         Route::get('library', 'ApiAuthController@all_videos');
+        Route::get('menus', 'ApiAuthController@Menus');
+
     });
