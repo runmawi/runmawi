@@ -76,7 +76,7 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
 </section>
 <section class="channel_nav ">
     <div class="container-fluid">
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <ul class="nav nav-tabs container-fluid" id="myTab" role="tablist">
   <li class="nav-item Allnav">
     <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">All</a>
   </li>
@@ -93,7 +93,7 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
     <a class="nav-link" id="Audios-tab" data-toggle="tab" href="#Audios" role="tab" aria-controls="contact" aria-selected="false">Audios</a>
   </li>
 </ul>
-<div class="tab-content" id="myTabContent">
+<div class="tab-content container-fluid" id="myTabContent">
   <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab"><hr ></div>
   <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab"><hr>
       
@@ -118,7 +118,7 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
                         </div></div>
   <div class="tab-pane fade" id="Audios" role="tabpanel" aria-labelledby="Audios-tab"><hr>
      
-      <div class="Audio_Categorynav">
+      <div class="Audio_Categorynav d-flex">
                             <?php foreach ($AudioCategory as $key => $audios_category) { ?>
 
                             <a class="nav-link dropdown-item" id="pills-kids-tab" data-toggle="pill"
@@ -130,7 +130,7 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
                         </div></div>
     <div class="tab-pane fade" id="live" role="tabpanel" aria-labelledby="live-tab"><hr>
      
-      <div class="Live_Categorynav">
+      <div class="Live_Categorynav d-flex">
                             <?php foreach ($LiveCategory as $key => $live_category) { ?>
                             <a class="nav-link dropdown-item" id="pills-kids-tab" data-toggle="pill"
                                 data-category-id=<?php echo $live_category->id; ?> onclick="Live_Category(this)" href="#pills-kids"
