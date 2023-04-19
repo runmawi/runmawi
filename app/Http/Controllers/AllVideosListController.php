@@ -68,9 +68,9 @@ class AllVideosListController extends Controller
                     
                 $videos = $videos->latest()->get()->map(function ($item) {
                     $item['source']       = 'videos';
+                    $item['source_data']  = 'videos';
                     $item['redirect_url'] = URL::to('category/videos/'.$item->slug) ;
                     $item['image_url']    = URL::to('public/uploads/images/' . $item->image);
-
                     $item['title']    = $item->title;
                     $item['rating']   = $item->rating;
                     $item['duration'] = $item->duration;
@@ -87,9 +87,9 @@ class AllVideosListController extends Controller
                                     ->where('active', '=', '1')->orderBy('created_at', 'DESC')->latest()->get()
                                     ->map(function ($item) use($OrderHomeSetting) {
                     $item['source']       = $OrderHomeSetting->where('id',5)->pluck('header_name')->first() != null ? $OrderHomeSetting->where('id',5)->pluck('header_name')->first() : "Series" ;
+                    $item['source_data']  = 'series';
                     $item['redirect_url'] = URL::to('play_series/'.$item->slug) ;
                     $item['image_url']    = URL::to('public/uploads/images/'.$item->image);
-
                     $item['title']    = $item->title;
                     $item['rating']   = $item->rating;
                     $item['duration'] = $item->duration;
@@ -104,9 +104,9 @@ class AllVideosListController extends Controller
 
                 $AudioAlbums = AudioAlbums::orderBy('created_at', 'desc')->get()->map(function ($item) use($OrderHomeSetting) {
                     $item['source']       = $OrderHomeSetting->where('id',7)->pluck('header_name')->first() != null ? $OrderHomeSetting->where('id',7)->pluck('header_name')->first() : "Podcast";
+                    $item['source_data']  = 'AudioAlbums';
                     $item['redirect_url'] = URL::to('album/'.$item->slug) ;
                     $item['image_url']    = URL::to('public/uploads/albums/' . $item->album);
-
                     $item['title']        = $item->albumname;
                     $item['age_restrict'] = null ;
                     $item['rating']       = null;
