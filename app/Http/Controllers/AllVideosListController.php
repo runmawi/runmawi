@@ -102,17 +102,17 @@ class AllVideosListController extends Controller
                     ->where('series.active', '=', '1')
                     ->groupBy('episodes.id')
                     ->latest('episodes.created_at')
-                    ->Paginate($this->settings->videos_per_page);
+                    ->get();
 
 
                 $learn_series_sliders = Series::join('series_categories', 'series_categories.series_id', '=', 'series.id')
-                                                ->where('series_categories.category_id',19)
+                                                ->whereIn('series_categories.category_id',['19'])
                                                 ->where('series.active', 1 )
                                                 ->where('banner',1)
                                                 ->get();
 
                 $respond_data = array(
-                    'videos'    => $Episode_videos,
+                    'Episode_videos'    => $Episode_videos,
                     'learn_series_sliders' => $learn_series_sliders,
                     'ppv_gobal_price'  => $this->ppv_gobal_price,
                     'currency'         => CurrencySetting::first(),
