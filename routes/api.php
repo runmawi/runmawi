@@ -444,5 +444,6 @@ Route::group(
         // Data Free - Only for Nemisha
 
         Route::get('data_free', 'ApiAuthController@DataFree');
+        Route::post('category_live', 'ApiAuthController@categorylive');
 
     });
