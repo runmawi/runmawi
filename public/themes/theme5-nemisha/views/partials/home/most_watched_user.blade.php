@@ -1,5 +1,5 @@
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-    <h4 class="main-title"><a href="">Most Watching Videos - User</a></h4>
+    <h4 class="main-title"><a href="">Your Most Watched Videos</a></h4>
     <a class="see" href="<?php echo route('All_User_MostwatchedVideos') ?>">See All</a>
 </div>
 <div class="favorites-contens">
