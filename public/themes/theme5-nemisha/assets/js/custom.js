@@ -919,6 +919,22 @@ $('.Video_Categorynav').slick({
   centerMode: true,
   variableWidth: true
 });
+$('.Audio_Categorynav').slick({
+  dots: true,
+  infinite: true,
+  speed: 300,
+  slidesToShow: 3,
+  centerMode: true,
+  variableWidth: true
+});
+$('.Series_Categorynav').slick({
+  dots: true,
+  infinite: true,
+  speed: 300,
+  slidesToShow: 3,
+  centerMode: true,
+  variableWidth: true
+});
 $('.owl-carousel').owlCarousel({
     loop:true,
     margin:10,

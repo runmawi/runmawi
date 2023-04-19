@@ -726,7 +726,7 @@ video.trail-vid{
 .tab-pane {
   color: #ffff;
   display: none;
-  padding: 10px;
+ 
   text-align: left;
  
 }
@@ -780,7 +780,7 @@ a.title-dec{
     padding: 5px 20px;
       border: 1px solid #fff !important;
    font-size: 20px;
-    font-family: 'Roboto', sans-serif;
+   font-family: 'futurabook';
 font-weight: 500;
 }
 .nav-link.active {
