@@ -74,9 +74,9 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
         </div>
     </div>
 </section>
-<section class="channel_nav">
+<section class="channel_nav ">
     <div class="container-fluid">
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <ul class="nav nav-tabs container-fluid" id="myTab" role="tablist">
   <li class="nav-item Allnav">
     <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">All</a>
   </li>
@@ -93,11 +93,11 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
     <a class="nav-link" id="Audios-tab" data-toggle="tab" href="#Audios" role="tab" aria-controls="contact" aria-selected="false">Audios</a>
   </li>
 </ul>
-<div class="tab-content" id="myTabContent">
+<div class="tab-content container-fluid" id="myTabContent">
   <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab"><hr ></div>
   <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab"><hr>
       
-      <div class=" Video_Categorynav ">
+      <div class="Video_Categorynav">
                             @foreach ($VideoCategory as $key => $videos_category)
                                 <div>
                                 <a class="nav-link dropdown-item " id="pills-kids-tab" data-toggle="pill"
@@ -280,7 +280,7 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
     <?php } }else{ ?>
     <div class="col-md-12 text-center mt-4 mb-5" style="padding-top:80px;padding-bottom:80px;">
         <h4 class="main-title mb-4">Sorry! There are no contents under this genre at this moment.</h4>
-        <a href="https://ssflix.tv/" class="outline-danger1">Home</a>
+        <a href="https://ssflix.tv/" class="btn btn-primary ">Home</a>
     </div>
     <?php   } ?>
 </div>
