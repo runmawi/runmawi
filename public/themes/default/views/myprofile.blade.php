@@ -219,7 +219,7 @@ $settings = App\Setting::first();
                     <img class="rounded-circle img-fluid d-block  mb-3" height="100" width="100" src="<?=  $user->provider_avatar; ?>"  alt="profile-bg"/>
                      <?php } ?>
                     <h4 class="mb-3"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></h4>
-                    <a href="#updatepic" class="edit-icon text-primary">Edit</a></div>
+                   
                      <div class=""> <!--style="margin-left: 66%;margin-right: 13%;padding-left: 1%;padding-bottom: 0%;"-->
                 <div class="" id="personal_det">
                 <div class="" >
@@ -525,9 +525,9 @@ $settings = App\Setting::first();
                                 <th style="width:20%;">Video</th>
                                 <th style="width:10%;">Rating</th>
                                 <th style="width:20%;">Category</th>
-                                <th style="width:10%;">Views</th>
-                               <!-- <th style="width:10%;">User</th>-->
-                                 <th style="width:20%;">Date</th> 
+                                  <!-- <th style="width:10%;">Views</th>
+                             <th style="width:10%;">User</th>-->
+                                    <!--<th style="width:20%;">Date</th>-->
                                 <th style="width:10%;"><i class="lar la-heart"></i></th>
                              </tr>
                           </thead>
@@ -549,9 +549,9 @@ $settings = App\Setting::first();
                                 </td>
                                 <td>{{ $val->rating }}<i class="lar la-star mr-2"></i></td>
                                 <td>@if(isset($val->categories->name)) {{ $val->categories->name }} @endif</td>
-                                <td>{{ $val->views }}</td> 
+                                <!--<td>{{ $val->views }}</td> 
                               
-                                 <td>{{ $val->created_at }}</td> 
+                                 <td>{{ $val->created_at }}</td>--> 
                                 <td><i class="las la-heart text-primary"></i></td>
                              </tr>
                              @endforeach                                                                     
