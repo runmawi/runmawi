@@ -1,5 +1,23 @@
 @php include(public_path('themes/default/views/header.php')); @endphp
 
+<section id="iq-favorites mt-4">
+   <div class="container-fluid mb-5 mt-4">
+       <div class="d-flex">
+           <div><h5 class="mr-2">Explore titles related to:</h5></div>
+           <div class="d-flex">
+
+               @foreach ($respond_data['VideoCategory']  as $key => $item)
+                   <a class="drama" href="{{ $item->redirect_url }}"><p style="color:white" class="mb-0">{{ " ".$item->slug." " }} | </p></a>
+               @endforeach
+
+               @foreach ($respond_data['SeriesGenre']  as $key => $item)
+                   <a class="drama" href="{{ $item->redirect_url }}"><p style="color:white;text-align:right" class="mb-0">{{ " ".$item->slug." " }} | </p></a>
+               @endforeach
+               
+           </div>
+       </div>
+ </div>
+</section>
 
 <!-- MainContent -->
 
