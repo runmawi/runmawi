@@ -63,7 +63,7 @@
 
 
 @if(isset( $respond_data['series']  )) 
-    @foreach( $respond_data['series']  as $key => $series_category)
+    @forelse( $respond_data['series']  as $key => $series_category)
         <section id="iq-favorites">
             <div class="fluid overflow-hidden">
                 <div class="row">
@@ -77,8 +77,7 @@
 
                         <div class="favorites-contens">
                             <ul class="favorites-slider list-inline row p-0 mb-0">
-                                @forelse (  $series_category['category_series'] as $key => $series)
-
+                                @foreach (  $series_category['category_series'] as $key => $series)
                                     <li class="slide-item">
                                         <a href="{{ $series->redirect_url }}">
                                             <div class="block-images position-relative">
@@ -104,7 +103,7 @@
                                                             <h6>  {{ strlen($series->title) > 17 ? substr($series->title, 0, 18) . '...' : $series->title }} </h6>
                                                         </a>
                                                     @endif
-                                                     
+                                                    
                                                     <div class="badge badge-secondary p-1 mr-2">          <!-- Season -->
                                                         {{ $series->season_count.' '.'Season' }}
                                                     </div>
@@ -139,17 +138,18 @@
                                             </div>
                                         </a>
                                     </li>
-                                @empty
-                                    
-                                @endforelse
-                                   
+                                @endforeach
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-    @endforeach
+    @empty
+        <div class="col-md-12 text-center mt-4" style="background: url(<?= URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
+            <h3 class="text-center">No Video Available</h3>
+        </div>
+    @endforelse
 @endif
 
 

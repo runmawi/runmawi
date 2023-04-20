@@ -172,7 +172,7 @@ class AllVideosListController extends Controller
                         }])
                         ->select('series_genre.id', 'series_genre.name', 'series_genre.in_home', 'series_genre.slug', 'series_genre.order')
                         ->orderBy('series_genre.order')
-                        ->whereIn('series_genre.id', [19])
+                        ->whereIn('series_genre.id', [])
                         ->get();
                     
                     $series = $series->map(function ($genre) {
@@ -187,7 +187,7 @@ class AllVideosListController extends Controller
                     });
 
                 $series_sliders = Series::join('series_categories', 'series_categories.series_id', '=', 'series.id')
-                                                ->whereIn('series_categories.category_id',[19])
+                                                ->whereIn('series_categories.category_id',[ ])
                                                 ->where('series.active', 1 )
                                                 ->where('banner',1)
                                                 ->get();
