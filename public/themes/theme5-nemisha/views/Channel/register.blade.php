@@ -147,7 +147,7 @@
                             </div>
                             <div class="sign-up-buttons col-md-12" align="right">
                                   <button type="button" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile" style="display: none;"> Verify Profile</button>
-                                  <button class="btn btn-hover btn-primary btn-block signup" style="display: block;" type="submit" name="create-account">{{ __('Sign Up Today') }}</button>
+                                  <button class="btn signup w-100 text-white" style="display: block;" type="submit" name="create-account">{{ __('Sign Up Today') }}</button>
                                 </div>
                         </div>
                         
