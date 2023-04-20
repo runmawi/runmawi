@@ -136,6 +136,46 @@ class TranscodeController extends Controller
             return response()->download($output_path->getPathname());
         }
 
+
+        public function addSTorageWatermark()
+        {
+
+            // $watermark_path = URL::to("/storage/app/public/watermark.png");
+        $watermark_path = public_path() . "/uploads/transcode/watermark.png";
+
+            // $video_path = URL::to("/storage/app/public/eA81jhw9Zhgj5Wkk.mp4");
+            // $output_path = URL::to("/storage/app/public/output.mp4");
+        // $video_path = public_path() . "/uploads/transcode/eA81jhw9Zhgj5Wkk.mp4";
+
+        // $output_path = public_path() . "/uploads/transcode/output.mp4";
+
+        $video_path = storage_path() . "/app/public/eA81jhw9Zhgj5Wkk.mp4";
+
+        $output_path = storage_path() . "/app/public/output.mp4";
+
+            // dd($output_path);
+            $ffmpeg = \FFMpeg\FFMpeg::create();
+
+            $video = $ffmpeg->open($video_path);
+
+
+            $watermark = $ffmpeg->open($watermark_path);
+
+            $watermark->filters()->resize(new Dimension(100, 100));
+
+            $format = new X264('aac');
+
+            $video->filters()
+                ->watermark($watermark, [
+                    'position' => 'relative',
+                    'bottom' => 10,
+                    'right' => 10,
+                ]);
+
+            $video->save($format, $output_path);
+
+            return response()->download($output_path);
+        }
     
 
 }

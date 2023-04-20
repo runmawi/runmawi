@@ -34,6 +34,7 @@ use FFMpeg\Coordinate\TimeCode;
 use FFMpeg\Format\Video\X264;
 use App\Http\Requests\StoreVideoRequest;
 use App\Jobs\ConvertVideoForStreaming;
+use App\Jobs\TranscodeVideo;
 use App\Jobs\VideoSchedule;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use FFMpeg\Filters\Video\VideoFilters;
@@ -556,7 +557,9 @@ class AdminVideosController extends Controller
                 $video->user_id = Auth::user()->id;
                 $video->save();
 
-                ConvertVideoForStreaming::dispatch($video);
+                TranscodeVideo::dispatch($video);
+
+                // ConvertVideoForStreaming::dispatch($video);
                 $video_id = $video->id;
                 $video_title = Video::find($video_id);
                 $title = $video_title->title;
@@ -1023,6 +1026,7 @@ class AdminVideosController extends Controller
                 "libx264"
             ))->setKiloBitrate(3000);
             $converted_name = ConvertVideoForStreaming::handle($path);
+
 
             ConvertVideoForStreaming::dispatch($video);
         } else {
@@ -1790,7 +1794,8 @@ class AdminVideosController extends Controller
 
             // $original_name = ($request->video->getClientOriginalName()) ? $request->video->getClientOriginalName() : '';
             $original_name = URL::to("/") . "/storage/app/public/" . $path;
-            ConvertVideoForStreaming::dispatch($video);
+            TranscodeVideo::dispatch($video);
+            // ConvertVideoForStreaming::dispatch($video);
         }
 
         if (!empty($data["embed_code"])) {
@@ -3845,7 +3850,9 @@ class AdminVideosController extends Controller
             $video->user_id = Auth::user()->id;
             $video->save();
 
-            ConvertVideoForStreaming::dispatch($video);
+            TranscodeVideo::dispatch($video);
+
+            // ConvertVideoForStreaming::dispatch($video);
             $video_id = $video->id;
             $video_title = Video::find($video_id);
             $title = $video_title->title;
