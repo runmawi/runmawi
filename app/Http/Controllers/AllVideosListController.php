@@ -18,6 +18,9 @@ use App\Setting;
 use App\Video;
 use App\User;
 use App\Series;
+use App\SeriesGenre;
+use App\SeriesSeason;
+use App\Episode;
 use App\ContinueWatching as ContinueWatching;
 use Session;
 use Theme;
@@ -69,9 +72,9 @@ class AllVideosListController extends Controller
                     
                 $videos = $videos->latest()->get()->map(function ($item) {
                     $item['source']       = 'videos';
+                    $item['source_data']  = 'videos';
                     $item['redirect_url'] = URL::to('category/videos/'.$item->slug) ;
                     $item['image_url']    = URL::to('public/uploads/images/' . $item->image);
-
                     $item['title']    = $item->title;
                     $item['rating']   = $item->rating;
                     $item['duration'] = $item->duration;
@@ -88,9 +91,9 @@ class AllVideosListController extends Controller
                                     ->where('active', '=', '1')->orderBy('created_at', 'DESC')->latest()->get()
                                     ->map(function ($item) use($OrderHomeSetting) {
                     $item['source']       = $OrderHomeSetting->where('id',5)->pluck('header_name')->first() != null ? $OrderHomeSetting->where('id',5)->pluck('header_name')->first() : "Series" ;
+                    $item['source_data']  = 'series';
                     $item['redirect_url'] = URL::to('play_series/'.$item->slug) ;
                     $item['image_url']    = URL::to('public/uploads/images/'.$item->image);
-
                     $item['title']    = $item->title;
                     $item['rating']   = $item->rating;
                     $item['duration'] = $item->duration;
@@ -105,9 +108,9 @@ class AllVideosListController extends Controller
 
                 $AudioAlbums = AudioAlbums::orderBy('created_at', 'desc')->get()->map(function ($item) use($OrderHomeSetting) {
                     $item['source']       = $OrderHomeSetting->where('id',7)->pluck('header_name')->first() != null ? $OrderHomeSetting->where('id',7)->pluck('header_name')->first() : "Podcast";
+                    $item['source_data']  = 'AudioAlbums';
                     $item['redirect_url'] = URL::to('album/'.$item->slug) ;
                     $item['image_url']    = URL::to('public/uploads/albums/' . $item->album);
-
                     $item['title']        = $item->albumname;
                     $item['age_restrict'] = null ;
                     $item['rating']       = null;
@@ -160,35 +163,47 @@ class AllVideosListController extends Controller
     
                 return redirect()->route('landing_page', $landing_page_slug );
             }
-    
-                    // All Education Catogery videos - only for Nemisha
+
+            $series_categories = SeriesGenre::where('category_list_active',1)->pluck('id');
+
+            //  Catogery Series - only for Nemisha
              
-                $Episode_videos = Series::select('episodes.*', 'series.title as series_name','series.slug as series_slug','series.year')
-                    ->join('series_categories', 'series_categories.series_id', '=', 'series.id')
-                    ->join('episodes', 'episodes.series_id', '=', 'series.id')
-                    ->where('series_categories.category_id', '=', 19)
-                    ->where('episodes.active', '=', '1')
-                    ->where('series.active', '=', '1')
-                    ->groupBy('episodes.id')
-                    ->latest('episodes.created_at')
-                    ->get();
+            $series = SeriesGenre::query()->with(['category_series' => function ($series) {
+                    $series->select('series.id','series.slug', 'series.image', 'series.title', 'series.duration', 'series.rating', 'series.featured')
+                        ->where('series.active', '1')
+                        ->latest('series.created_at');
+                }])
+                ->select('series_genre.id', 'series_genre.name', 'series_genre.in_home', 'series_genre.slug', 'series_genre.order')
+                ->orderBy('series_genre.order')
+                ->whereIn('series_genre.id', $series_categories)
+                ->get();
+            
+            $series = $series->map(function ($genre) {
+                $genre->category_series = $genre->category_series->map(function ($item) {
+                    $item->image_url     = URL::to('/public/uploads/images/'.$item->image);
+                    $item->redirect_url  = URL::to('play_series/'. $item->slug);
+                    $item->season_count  = SeriesSeason::where('series_id',$item->id)->count();
+                    $item->Episode_count = Episode::where('series_id',$item->id)->count();
+                    return $item;
+                });
+                return $genre;
+            });
 
+            $series_sliders = Series::join('series_categories', 'series_categories.series_id', '=', 'series.id')
+                                ->whereIn('series_categories.category_id', $series_categories)
+                                ->where('series.active', 1 )
+                                ->where('banner',1)
+                                ->get();
 
-                $learn_series_sliders = Series::join('series_categories', 'series_categories.series_id', '=', 'series.id')
-                                                ->whereIn('series_categories.category_id',['19'])
-                                                ->where('series.active', 1 )
-                                                ->where('banner',1)
-                                                ->get();
-
-                $respond_data = array(
-                    'Episode_videos'    => $Episode_videos,
-                    'learn_series_sliders' => $learn_series_sliders,
-                    'ppv_gobal_price'  => $this->ppv_gobal_price,
-                    'currency'         => CurrencySetting::first(),
-                    'ThumbnailSetting' => ThumbnailSetting::first(),
-                );
+            $respond_data = array(
+                'series'    => $series,
+                'series_sliders' => $series_sliders,
+                'ppv_gobal_price'  => $this->ppv_gobal_price,
+                'currency'         => CurrencySetting::first(),
+                'ThumbnailSetting' => ThumbnailSetting::first(),
+            );
     
-                return Theme::view('All-Videos.learn',['respond_data' => $respond_data]);
+           return Theme::view('All-Videos.learn',['respond_data' => $respond_data]);
 
         } catch (\Throwable $th) {
              return $th->getMessage();
@@ -402,7 +417,7 @@ class AllVideosListController extends Controller
             return Theme::view('All-Videos.All_series',['respond_data' => $respond_data]);
 
         } catch (\Throwable $th) {
-            return $th->getMessage();
+            // return $th->getMessage();
             return abort(404);
         }
        
@@ -422,7 +437,7 @@ class AllVideosListController extends Controller
             $OrderHomeSetting = OrderHomeSetting::get(); 
 
 
-                        // Fetch all ContinueWatching videos list
+             // Fetch all ContinueWatching videos list
                 
             $videos = ContinueWatching::join("videos", "continue_watchings.videoid", "=", "videos.id")
                 ->select('videos.*')
@@ -473,10 +488,8 @@ class AllVideosListController extends Controller
             return Theme::view('All-Videos.ContinueWatchingList',['respond_data' => $respond_data]);
 
         } catch (\Throwable $th) {
-            return $th->getMessage();
+            // return $th->getMessage();
             return abort(404);
         }
-       
     }
-
 }

@@ -101,6 +101,13 @@ border-radius: 0px 4px 4px 0px;
 											<input type="radio" id="in_menu" name="in_menu" value="0">No
 										</div>
 
+
+										<div class="form-group ">
+											<label>Display In Category List :</label>
+											<input type="radio"  name="category_list_active" value="1" >Yes
+											<input type="radio"  name="category_list_active" value="0" checked >No
+										</div>
+
 										<div class="form-group {{ $errors->has('image') ? 'has-error' : '' }}">
 											<label>Image:</label>
 											<input type="file" multiple="true" class="form-control" name="image" id="image" />
