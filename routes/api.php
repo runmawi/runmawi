@@ -439,4 +439,11 @@ Route::group(
 
         // library - All videos
         Route::get('library', 'ApiAuthController@all_videos');
+        Route::get('menus', 'ApiAuthController@Menus');
+
+        // Data Free - Only for Nemisha
+
+        Route::get('data_free', 'ApiAuthController@DataFree');
+        Route::post('category_live', 'ApiAuthController@categorylive');
+
     });

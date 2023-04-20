@@ -1,15 +1,17 @@
 <?php  if(count($videos) > 0 && $countDataFreeCategories > 0 )  : ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
 <h4 class="main-title">
+    
         <!-- Data Free Videos -->
    <a href="<?php echo URL::to('/category/').'/'.$DataFreeCategories->slug;?>" class="category-heading" style="text-decoration: none; color: #fff;">
-      <h4 class="movie-title">
+    
          <?php 
          if(!empty($DataFreeCategories->home_genre)){ echo $DataFreeCategories->name ; }else{ echo $DataFreeCategories->name ; }  
          //   echo __($category->name);
             ?>
-      </h4>
+     
    </a>
+      <a class="see" href="<?php echo URL::to('/category/').'/'.$DataFreeCategories->slug;?>"> See All  </a>
         </h4>
 </div>
 <div class="favorites-contens">

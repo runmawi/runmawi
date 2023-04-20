@@ -3,13 +3,14 @@
 <h4 class="main-title">
         <!-- Data Free audios -->
    <a href="<?php echo URL::to('/audios/category').'/'.$DataFreeAudioCategories->slug;?>" class="category-heading" style="text-decoration: none; color: #fff;">
-      <h4 class="movie-title">
+      
          <?php 
          if(!empty($DataFreeAudioCategories->name)){ echo $DataFreeAudioCategories->name ; }else{ echo $DataFreeAudioCategories->name ; }  
          //   echo __($category->name);
             ?>
-      </h4>
+    
    </a>
+     <a class="see" href="<?php echo URL::to('/category/').'/'.$DataFreeCategories->slug;?>"> See All  </a>
         </h4>
 </div>
 <div class="favorites-contens">

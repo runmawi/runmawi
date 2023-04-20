@@ -7,6 +7,15 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
 use URL;
+use Symfony\Component\Process\Process;
+use FFMpeg\FFMpeg;
+use FFMpeg\FFProbe;
+use FFMpeg\Coordinate\Dimension;
+use FFMpeg\Format\Video\X264;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+use Illuminate\Support\Facades\Storage;
+use App\Setting as Setting;
+
 
 class TranscodeController extends Controller
 {
@@ -52,5 +61,124 @@ class TranscodeController extends Controller
         }
 
     }
+
+    public function watermark(){
+
+        $watermark_path = URL::to("/storage/app/public/watermark.png");
+        $video_path = URL::to("/storage/app/public/eA81jhw9Zhgj5Wkk.mp4");
+
+    $ffmpeg = FFMpeg::create();
+    $video = $ffmpeg->open($video_path);
+    $watermark = $ffmpeg->open($watermark_path);
+
+    $format = new X264('aac');
+    // $format->setVideoDimensions(640, 360);
+
+    $output_path = storage_path('app/public/result.mp4');
+    
+    $video->filters()
+        ->watermark($watermark, [
+            'position' => 'relative',
+            'bottom' => 10,
+            'right' => 10,
+        ])
+        ->synchronize();
+        
+    $video->save($format, $output_path);
+
+    return response()->download($output_path);
+
+    }
+                
+        public function addWatermark()
+        {
+
+            // $watermark_path = URL::to("/storage/app/public/watermark.png");
+        $watermark_path = public_path() . "/uploads/transcode/watermark.png";
+
+            // $video_path = URL::to("/storage/app/public/eA81jhw9Zhgj5Wkk.mp4");
+            // $output_path = URL::to("/storage/app/public/output.mp4");
+        $video_path = public_path() . "/uploads/transcode/eA81jhw9Zhgj5Wkk.mp4";
+
+        $output_path = public_path() . "/uploads/transcode/output.mp4";
+
+            // dd($watermark_path);
+            // $ffmpeg = FFMpeg::create([
+            //     'ffmpeg.binaries' => '/usr/bin/ffmpeg',
+            //     'ffprobe.binaries' => '/usr/bin/ffprobe',
+            // ]);
+
+            // $ffmpeg = \FFMpeg\FFMpeg::create([
+            //     'ffmpeg.binaries'  => 'C:/ffmpeg/bin/ffmpeg.exe', // tCe path to the FFMpeg binary
+            //     'ffprobe.binaries' => 'C:/ffmpeg/bin/ffprobe.exe', // the path to the FFProbe binary
+            //     'timeout'          => 0, // the timeout for the underlying process
+            //     'ffmpeg.threads'   => 1,   // the number of threads that FFMpeg should use
+            // ]);
+            $ffmpeg = \FFMpeg\FFMpeg::create();
+
+            $video = $ffmpeg->open($video_path);
+
+
+            $watermark = $ffmpeg->open($watermark_path);
+
+            $watermark->filters()->resize(new Dimension(100, 100));
+
+            $format = new X264('aac');
+
+            $video->filters()
+                ->watermark($watermark, [
+                    'position' => 'relative',
+                    'bottom' => 10,
+                    'right' => 10,
+                ]);
+
+            $video->save($format, $output_path);
+
+            return response()->download($output_path->getPathname());
+        }
+
+
+        public function addSTorageWatermark()
+        {
+
+            // $watermark_path = URL::to("/storage/app/public/watermark.png");
+        $watermark_path = public_path() . "/uploads/transcode/watermark.png";
+
+            // $video_path = URL::to("/storage/app/public/eA81jhw9Zhgj5Wkk.mp4");
+            // $output_path = URL::to("/storage/app/public/output.mp4");
+        // $video_path = public_path() . "/uploads/transcode/eA81jhw9Zhgj5Wkk.mp4";
+
+        // $output_path = public_path() . "/uploads/transcode/output.mp4";
+        $settings = Setting::first();
+
+        $video_path = storage_path() . "/app/public/eA81jhw9Zhgj5Wkk.mp4";
+
+        $output_path = storage_path() . "/app/public/output.mp4";
+        $watermark_path = public_path() . "/uploads/settings/".$settings->watermark;
+
+            // dd($output_path);
+            $ffmpeg = \FFMpeg\FFMpeg::create();
+
+            $video = $ffmpeg->open($video_path);
+
+
+            $watermark = $ffmpeg->open($watermark_path);
+
+            $watermark->filters()->resize(new Dimension(100, 100));
+
+            $format = new X264('aac');
+
+            $video->filters()
+                ->watermark($watermark, [
+                    'position' => 'relative',
+                    'bottom' => 10,
+                    'right' => 10,
+                ]);
+
+            $video->save($format, $output_path);
+
+            return response()->download($output_path);
+        }
+    
 
 }

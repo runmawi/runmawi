@@ -14,8 +14,9 @@ Route::group(['prefix' => '/admin/filemanager', 'middleware' => ['web', 'auth']]
 
 Route::get('/cinet_pay/billings-details', 'PaymentController@cinet_pay');
 Route::get('/admin/transcode-index', 'TranscodeController@index');
-Route::post('/admin/transcode-upload', 'TranscodeController@upload');
+Route::get('/admin/addWatermark', 'TranscodeController@addWatermark');
 Route::post('/audio_ppv', 'CinetPayController@audio_ppv')->name('audio_ppv');
+Route::get('/admin/addSTorageWatermark', 'TranscodeController@addSTorageWatermark');
 
 
 Route::get('/moderator', 'ModeratorsUserController@index');
