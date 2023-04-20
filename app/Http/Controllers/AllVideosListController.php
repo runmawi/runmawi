@@ -162,45 +162,47 @@ class AllVideosListController extends Controller
     
                 return redirect()->route('landing_page', $landing_page_slug );
             }
-    
-                    // All Catogery videos - only for Nemisha
+
+            $series_categories = SeriesGenre::where('category_list_active',1)->pluck('id');
+
+            //  Catogery Series - only for Nemisha
              
-                    $series = SeriesGenre::query()->with(['category_series' => function ($series) {
-                            $series->select('series.id','series.slug', 'series.image', 'series.title', 'series.duration', 'series.rating', 'series.featured')
-                                ->where('series.active', '1')
-                                ->latest('series.created_at');
-                        }])
-                        ->select('series_genre.id', 'series_genre.name', 'series_genre.in_home', 'series_genre.slug', 'series_genre.order')
-                        ->orderBy('series_genre.order')
-                        ->whereIn('series_genre.id', [])
-                        ->get();
-                    
-                    $series = $series->map(function ($genre) {
-                        $genre->category_series = $genre->category_series->map(function ($item) {
-                            $item->image_url     = URL::to('/public/uploads/images/'.$item->image);
-                            $item->redirect_url  = URL::to('play_series/'. $item->slug);
-                            $item->season_count  = SeriesSeason::where('series_id',$item->id)->count();
-                            $item->Episode_count = Episode::where('series_id',$item->id)->count();
-                            return $item;
-                        });
-                        return $genre;
-                    });
+            $series = SeriesGenre::query()->with(['category_series' => function ($series) {
+                    $series->select('series.id','series.slug', 'series.image', 'series.title', 'series.duration', 'series.rating', 'series.featured')
+                        ->where('series.active', '1')
+                        ->latest('series.created_at');
+                }])
+                ->select('series_genre.id', 'series_genre.name', 'series_genre.in_home', 'series_genre.slug', 'series_genre.order')
+                ->orderBy('series_genre.order')
+                ->whereIn('series_genre.id', $series_categories)
+                ->get();
+            
+            $series = $series->map(function ($genre) {
+                $genre->category_series = $genre->category_series->map(function ($item) {
+                    $item->image_url     = URL::to('/public/uploads/images/'.$item->image);
+                    $item->redirect_url  = URL::to('play_series/'. $item->slug);
+                    $item->season_count  = SeriesSeason::where('series_id',$item->id)->count();
+                    $item->Episode_count = Episode::where('series_id',$item->id)->count();
+                    return $item;
+                });
+                return $genre;
+            });
 
-                $series_sliders = Series::join('series_categories', 'series_categories.series_id', '=', 'series.id')
-                                                ->whereIn('series_categories.category_id',[ ])
-                                                ->where('series.active', 1 )
-                                                ->where('banner',1)
-                                                ->get();
+            $series_sliders = Series::join('series_categories', 'series_categories.series_id', '=', 'series.id')
+                                ->whereIn('series_categories.category_id', $series_categories)
+                                ->where('series.active', 1 )
+                                ->where('banner',1)
+                                ->get();
 
-                $respond_data = array(
-                    'series'    => $series,
-                    'series_sliders' => $series_sliders,
-                    'ppv_gobal_price'  => $this->ppv_gobal_price,
-                    'currency'         => CurrencySetting::first(),
-                    'ThumbnailSetting' => ThumbnailSetting::first(),
-                );
+            $respond_data = array(
+                'series'    => $series,
+                'series_sliders' => $series_sliders,
+                'ppv_gobal_price'  => $this->ppv_gobal_price,
+                'currency'         => CurrencySetting::first(),
+                'ThumbnailSetting' => ThumbnailSetting::first(),
+            );
     
-                return Theme::view('All-Videos.learn',['respond_data' => $respond_data]);
+           return Theme::view('All-Videos.learn',['respond_data' => $respond_data]);
 
         } catch (\Throwable $th) {
              return $th->getMessage();
