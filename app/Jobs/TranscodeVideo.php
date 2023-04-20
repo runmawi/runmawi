@@ -19,6 +19,7 @@ use App\Setting as Setting;
 use App\Video as Video;
 use Carbon\Carbon;
 use App\Jobs\ConvertVideoForStreaming;
+use App\Playerui as Playerui;
 
 class TranscodeVideo implements ShouldQueue
 {
@@ -52,6 +53,10 @@ class TranscodeVideo implements ShouldQueue
         $output_path_rand = Str::random(3).$video;
 
         $watermark_path = public_path() . "/uploads/transcode/watermark.png";
+
+        $Playerui = Playerui::first();
+  
+        $watermark_path = public_path() . "/uploads/settings/".$Playerui->video_watermark;
 
         $video_path = storage_path() . "/app/public/".$video;
 

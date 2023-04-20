@@ -541,7 +541,6 @@ class AdminSettingsController extends Controller
         } else {
             $playerui->watermark = 1;
         }
-
         if ($playerui->thumbnail == 0) {
             $playerui->thumbnail = 0;
         } else {
@@ -667,7 +666,8 @@ class AdminSettingsController extends Controller
         $playerui->watermark_opacity = $request['watermark_opacity'];
         $playerui->watermar_link = $request['watermar_link'];
         $playerui->watermar_width = $request['watermar_width'];
-
+        $playerui->video_watermark_enable = $request['video_watermark_enable'];
+        // dd($request['video_watermark_enable']);
         $logopath = URL::to('/public/uploads/settings/');
         $path = public_path() . '/uploads/settings/';
         $watermark = $request['watermark_logo'];
@@ -682,6 +682,7 @@ class AdminSettingsController extends Controller
             //upload new file
             $file = $watermark;
             $playerui->watermark_logo = $logopath . '/' . $file->getClientOriginalName();
+            $playerui->video_watermark = $file->getClientOriginalName();
             $file->move($path, $playerui->watermark_logo);
         }
         $playerui->save();

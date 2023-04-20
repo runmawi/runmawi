@@ -246,7 +246,7 @@ public function PaypalIndex()
     public function subscriptiondelete($id) {
 
     	
-        SubscriptionPlan::where('plans_name',$id)->delete();
+        SubscriptionPlan::where('id',$id)->delete();
 
     	return Redirect::back()->with(array('note' => 'You have been successfully Added New Country', 'note_type' => 'success'));
 
