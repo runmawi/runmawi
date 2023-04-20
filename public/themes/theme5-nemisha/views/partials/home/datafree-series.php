@@ -10,6 +10,7 @@
             ?>
      
    </a>
+     <a class="see" href="<?php echo URL::to('/series/category/').'/'.$DataFreeseriesCategories->slug;?>"> See All  </a>
         </h4>
 </div>
 <div class="favorites-contens">
