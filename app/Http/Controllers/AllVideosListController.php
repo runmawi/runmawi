@@ -18,6 +18,7 @@ use App\Setting;
 use App\Video;
 use App\User;
 use App\Series;
+use App\ContinueWatching as ContinueWatching;
 use Session;
 use Theme;
 use Auth;
@@ -343,4 +344,139 @@ class AllVideosListController extends Controller
             return abort(404);
         }
     }
+
+    
+    public function all_series(Request $request)
+    {
+        try {
+
+            if($this->settings->enable_landing_page == 1 && Auth::guest()){
+
+                $landing_page_slug = AdminLandingPage::where('status',1)->pluck('slug')->first() ? AdminLandingPage::where('status',1)->pluck('slug')->first() : "landing-page" ;
+    
+                return redirect()->route('landing_page', $landing_page_slug );
+            }
+
+            $OrderHomeSetting = OrderHomeSetting::get(); 
+
+
+            // Fetch all series list
+
+                $Series = Series::select('active','id','created_at','slug','image','title','rating','duration','featured','year')
+                                    ->where('active', '=', '1')->orderBy('created_at', 'DESC')->latest()->get()
+                                    ->map(function ($item) use($OrderHomeSetting) {
+                    $item['source']       = $OrderHomeSetting->where('id',5)->pluck('header_name')->first() != null ? $OrderHomeSetting->where('id',5)->pluck('header_name')->first() : "Series" ;
+                    $item['redirect_url'] = URL::to('play_series/'.$item->slug) ;
+                    $item['image_url']    = URL::to('public/uploads/images/'.$item->image);
+
+                    $item['title']    = $item->title;
+                    $item['rating']   = $item->rating;
+                    $item['duration'] = $item->duration;
+                    $item['featured'] = $item->featured;
+                    $item['year']     = $item->year;
+                    $item['age_restrict'] = null ;
+
+                    return $item;
+                });
+
+            // Paginate the merged results using LengthAwarePaginator
+
+                $currentPage = request()->get('page') ?: 1;
+                $pagedData = $Series->forPage($currentPage, $this->settings->videos_per_page);
+
+                $Series = new LengthAwarePaginator(
+                    $pagedData,
+                    $Series->count(),
+                    $this->settings->videos_per_page,
+                    $currentPage,
+                    ['path' => request()->url()]
+                );
+
+            $respond_data = array(
+                'Series'    => $Series,
+                'ppv_gobal_price'  => $this->ppv_gobal_price,
+                'currency'         => CurrencySetting::first(),
+                'ThumbnailSetting' => ThumbnailSetting::first(),
+            );
+    
+            return Theme::view('All-Videos.All_series',['respond_data' => $respond_data]);
+
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+            return abort(404);
+        }
+       
+    }
+
+    public function ContinueWatchingList(Request $request)
+    {
+        try {
+
+            if($this->settings->enable_landing_page == 1 && Auth::guest()){
+
+                $landing_page_slug = AdminLandingPage::where('status',1)->pluck('slug')->first() ? AdminLandingPage::where('status',1)->pluck('slug')->first() : "landing-page" ;
+    
+                return redirect()->route('landing_page', $landing_page_slug );
+            }
+
+            $OrderHomeSetting = OrderHomeSetting::get(); 
+
+
+                        // Fetch all ContinueWatching videos list
+                
+            $videos = ContinueWatching::join("videos", "continue_watchings.videoid", "=", "videos.id")
+                ->select('videos.*')
+                ->where('videos.active', '1')->where('videos.status', '1')->where('videos.draft', '1');
+
+                    if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
+                        $videos = $videos->whereNotIn('videos.id', Block_videos());
+                    }
+                    if (check_Kidmode() == 1) {
+                        $videos = $videos->whereBetween('videos.age_restrict', [0, 12]);
+                    }
+                    
+                $videos = $videos->get()->map(function ($item) {
+                    $item['source']       = 'videos';
+                    $item['redirect_url'] = URL::to('category/videos/'.$item->slug) ;
+                    $item['image_url']    = URL::to('public/uploads/images/' . $item->image);
+
+                    $item['title']    = $item->title;
+                    $item['rating']   = $item->rating;
+                    $item['duration'] = $item->duration;
+                    $item['featured'] = $item->featured;
+                    $item['year']     = $item->year;
+                    $item['age_restrict'] = $item->age_restrict;
+
+                    return $item;
+                });
+
+            // Paginate the merged results using LengthAwarePaginator
+
+                $currentPage = request()->get('page') ?: 1;
+                $pagedData = $videos->forPage($currentPage, $this->settings->videos_per_page);
+
+                $videos = new LengthAwarePaginator(
+                    $pagedData,
+                    $videos->count(),
+                    $this->settings->videos_per_page,
+                    $currentPage,
+                    ['path' => request()->url()]
+                );
+
+            $respond_data = array(
+                'videos'    => $videos,
+                'ppv_gobal_price'  => $this->ppv_gobal_price,
+                'currency'         => CurrencySetting::first(),
+                'ThumbnailSetting' => ThumbnailSetting::first(),
+            );
+    
+            return Theme::view('All-Videos.ContinueWatchingList',['respond_data' => $respond_data]);
+
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+            return abort(404);
+        }
+       
+    }
+
 }

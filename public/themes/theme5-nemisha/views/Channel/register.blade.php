@@ -8,6 +8,7 @@
     $jsondata = json_decode($jsonString, true); ?>
 <link rel="stylesheet" href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/bootstrap.min.css')?>" rel="stylesheet">
       <!-- Typography CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
       <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/typography.css') ?>" rel="stylesheet">
       <!-- Style -->
       <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/style.css') ?>" rel="stylesheet">
@@ -300,12 +301,12 @@ i.fa.fa-google-plus {
     option {
     background: #474644 !important;
 }
-    .reveal{
-        margin-left: -92px !important;
+   .reveal {
+    margin-left: -57px;
     height: 45px !important;
-    background: transparent !important;
+    background: #ED553B !important;
     color: #fff !important;
-    }
+}
     .modal-content {
         background-color: #000000;
     }
