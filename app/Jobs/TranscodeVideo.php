@@ -18,6 +18,7 @@ use Illuminate\Support\Str;
 use App\Setting as Setting;
 use App\Video as Video;
 use Carbon\Carbon;
+use App\Jobs\ConvertVideoForStreaming;
 
 class TranscodeVideo implements ShouldQueue
 {
@@ -45,9 +46,10 @@ class TranscodeVideo implements ShouldQueue
      */
     public function handle()
     {
-        $output_path_rand = Str::random(3).$video;
         
         $video = $this->video->path;
+
+        $output_path_rand = Str::random(3).$video;
 
         $watermark_path = public_path() . "/uploads/transcode/watermark.png";
 
@@ -72,10 +74,17 @@ class TranscodeVideo implements ShouldQueue
                 'bottom' => 10,
                 'right' => 10,
             ]);
+
+        $video->save($format, $output_path);
+
+        // return response()->download($output_path);
         $this->video->update([
             'path' =>  $output_path_rand,
         ]);
-        // $video->save($format, $output_path);    
+        $video->save($format, $output_path); 
+        $video = $this->video;   
+        ConvertVideoForStreaming::dispatch($video);
+
     }
     
 }
