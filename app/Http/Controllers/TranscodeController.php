@@ -14,6 +14,7 @@ use FFMpeg\Coordinate\Dimension;
 use FFMpeg\Format\Video\X264;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Illuminate\Support\Facades\Storage;
+use App\Setting as Setting;
 
 
 class TranscodeController extends Controller
@@ -148,10 +149,12 @@ class TranscodeController extends Controller
         // $video_path = public_path() . "/uploads/transcode/eA81jhw9Zhgj5Wkk.mp4";
 
         // $output_path = public_path() . "/uploads/transcode/output.mp4";
+        $settings = Setting::first();
 
         $video_path = storage_path() . "/app/public/eA81jhw9Zhgj5Wkk.mp4";
 
         $output_path = storage_path() . "/app/public/output.mp4";
+        $watermark_path = public_path() . "/uploads/settings/".$settings->watermark;
 
             // dd($output_path);
             $ffmpeg = \FFMpeg\FFMpeg::create();
