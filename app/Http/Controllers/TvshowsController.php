@@ -71,6 +71,8 @@ class TvshowsController extends Controller
         $cityName = $geoip->getcity();
 
         $this->countryName = $countryName;
+
+        $this->videos_per_page = $settings->videos_per_page;
     }
 
     /**
@@ -988,14 +990,18 @@ class TvshowsController extends Controller
 
     public function SeriesCategory($slug){
 
+        $Theme = HomeSetting::pluck('theme_choosen')->first();
+        Theme::uses($Theme);
+
         $CategorySeries =  SeriesGenre::where('slug',$slug)->first();
         $SeriesGenre = $CategorySeries != null ? $CategorySeries->specific_category_series : array();
-        // dd($SeriesGenre);
         
         $Series_Genre = $SeriesGenre->all();
 
-        $data = array( 'SeriesGenre' => $Series_Genre , 'CategorySeries' => $CategorySeries);
-
+        $data = array( 
+                    'SeriesGenre' => $Series_Genre ,
+                    'CategorySeries' => $CategorySeries
+                );
 
         return Theme::view('partials.home.SeriesCategory',$data);
 
