@@ -62,51 +62,57 @@
 </section>
 
 
-<!-- Education Episode videos -->
+@if(isset( $respond_data['series']  )) 
+    @foreach( $respond_data['series']  as $key => $series_category)
+        <section id="iq-favorites">
+            <div class="fluid overflow-hidden">
+                <div class="row">
+                    <div class="col-sm-12">
 
-@if(isset( $respond_data['Episode_videos']  )) 
-    <section id="iq-favorites">
-        <div class="fluid overflow-hidden">
-            <div class="row">
-                <div class="col-sm-12">
+                        <div class="iq-main-header d-flex align-items-center justify-content-between">
+                            <h4 class="main-title">
+                                {{ $series_category->name }}
+                            </h4>
+                        </div>
 
-                    <div class="iq-main-header d-flex align-items-center justify-content-between">
-                        <h4 class="main-title">
-                            {{ 'Education' }}
-                        </h4>
-                    </div>
-
-                    <div class="favorites-contens">
-                        <ul class="favorites-slider list-inline row p-0 mb-0">
-
-                            @if(isset( $respond_data['Episode_videos']  )) 
-                                @foreach( $respond_data['Episode_videos']  as $key => $Episode_video)
+                        <div class="favorites-contens">
+                            <ul class="favorites-slider list-inline row p-0 mb-0">
+                                @forelse (  $series_category['category_series'] as $key => $series)
 
                                     <li class="slide-item">
-                                        <a href="<?= URL::to('/episode' . '/' . $Episode_video->series_slug . '/' . $Episode_video->episode_slug); ?>">
+                                        <a href="{{ $series->redirect_url }}">
                                             <div class="block-images position-relative">
                                                 <div class="img-box">
-                                                    <img loading="lazy" data-src="{{ URL::to('public/uploads/images/'.$Episode_video->image) }} " class="img-fluid lazyload w-100">
+                                                    <img loading="lazy" data-src="{{ $series->image_url }}" class="img-fluid lazyload w-100">
                                                 </div>
                                             </div>
 
                                             <div class="block-description">
                                                 <div class="hover-buttons text-white">
-                                                    <a class="" href="{{ URL::to('episode/' . $Episode_video->series_slug . '/' . $Episode_video->episode_slug) }}"> 
+                                                    <a class="" href="{{ $series->redirect_url }}"> 
                                                         <img class="ply" src="{{ URL::to('assets/img/default_play_buttons.svg') }}" />
                                                     </a>
                                                     <div></div>
                                                 </div>
                                             </div>
 
-                                            <div class="mt-2 d-flex justify-content-between p-0">
-                                                @if($respond_data['ThumbnailSetting']->title == 1) 
-                                                    <h6>  {{ strlen($Episode_video->title) > 17 ? substr($Episode_video->title, 0, 18) . '...' : $Episode_video->title }} </h6>
-                                                @endif
+                                            <div class="mt-2">
+                                                <div class="movie-time align-items-center justify-content-between my-2">
 
-                                                @if($respond_data['ThumbnailSetting']->age == 1) 
-                                                    <div class="badge badge-secondary">{{ $Episode_video->age_restrict . ' ' . '+' }}</div>
-                                                @endif
+                                                    @if($respond_data['ThumbnailSetting']->title == 1)    <!-- Title -->
+                                                        <a href="{{ URL::to('play_series/'. $series->slug) }}">
+                                                            <h6>  {{ strlen($series->title) > 17 ? substr($series->title, 0, 18) . '...' : $series->title }} </h6>
+                                                        </a>
+                                                    @endif
+                                                     
+                                                    <div class="badge badge-secondary p-1 mr-2">          <!-- Season -->
+                                                        {{ $series->season_count.' '.'Season' }}
+                                                    </div>
+                                
+                                                    <div class="badge badge-secondary p-1 mr-2">         <!-- Episodes -->
+                                                        {{ $series->Episode_count.' '.'Episodes' }}
+                                                    </div>
+                                                </div>
                                             </div>
 
                                             <div class="movie-time my-2">
@@ -114,18 +120,18 @@
                                                 @if($respond_data['ThumbnailSetting']->duration == 1)     <!-- Duration -->
                                                     <span class="text-white">
                                                         <i class="fa fa-clock-o"></i>
-                                                        {{ gmdate('H:i:s', $Episode_video->duration) }}
+                                                        {{ gmdate('H:i:s', $series->duration) }}
                                                     </span>
                                                 @endif
 
-                                                @if($respond_data['ThumbnailSetting']->rating == 1 && $Episode_video->rating != null)   <!-- Rating -->
+                                                @if($respond_data['ThumbnailSetting']->rating == 1 && $series->rating != null)   <!-- Rating -->
                                                     <span class="text-white">  
                                                         <i class="fa fa-star-half-o" aria-hidden="true"></i>
-                                                        {{ ($Episode_video->rating) }}
+                                                        {{ $series->rating }}
                                                     </span>
                                                 @endif
 
-                                                @if($respond_data['ThumbnailSetting']->featured == 1 && $Episode_video->featured == 1)  <!-- Featured -->
+                                                @if($respond_data['ThumbnailSetting']->featured == 1 && $series->featured == 1)  <!-- Featured -->
                                                     <span class="text-white">   
                                                         <i class="fa fa-flag" aria-hidden="true"></i>
                                                     </span>
@@ -133,14 +139,17 @@
                                             </div>
                                         </a>
                                     </li>
-                                @endforeach
-                            @endif
-                        </ul>
+                                @empty
+                                    
+                                @endforelse
+                                   
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    @endforeach
 @endif
 
 

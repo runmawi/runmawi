@@ -16,4 +16,10 @@ class SeriesGenre extends Model
     {
         return $this->belongsToMany(Series::class, 'series_categories','category_id','series_id');
     }
+
+    public function category_series()
+    {
+        return $this->belongsToMany( 'App\Series','series_categories','category_id','series_id');
+    }
+
 }
