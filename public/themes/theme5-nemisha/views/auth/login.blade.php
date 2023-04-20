@@ -10,7 +10,7 @@ $system_settings = App\SystemSetting::find(1);
       <meta http-equiv="X-UA-Compatible" content="ie=edge">
       <title>Login | <?php echo $settings->website_name ; ?></title>
     <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
-
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
       <!-- Favicon -->
       <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
       <!-- Bootstrap CSS -->
@@ -35,6 +35,17 @@ $system_settings = App\SystemSetting::find(1);
     </script>
     
 <style>
+      .reveal{
+        margin-left: -57px;
+   
+          height: 45px !important;
+    background: #ED553B !important;
+    color: #fff !important;
+    position: absolute;
+    right: 0px;
+    padding: 10px!important;
+    top: -55px;
+    }
      .sec-3{
         background:#003C3C
 !important;
@@ -314,7 +325,17 @@ font-weight: 600;
 			
                            
                             								<input id="password" type="password" class="input-field  form-control @error('password') is-invalid @enderror" placeholder="{{ __('PASSWORD') }}" name="password" required autocomplete="current-password" >
-                        </div> </div>
+                            
+                        </div> 
+                            <div class="position-relative">
+                                 <span class="input-group-btn" id="eyeSlash">
+                                   <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
+                                 </span>
+                                 <span class="input-group-btn" id="eyeShow" style="display: none;">
+                                   <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                                 </span>
+                            </div>
+                                 </div>
 
                          <div class="links text-right">
                              <a href="{{ route('Reset_Password') }}" class="f-link mb-3">Can't Login?</a>
@@ -418,6 +439,37 @@ font-weight: 600;
         }, 3000);
     })
 </script>
+        <script>
+    function visibility1() {
+  var x = document.getElementById('password');
+  if (x.type === 'password') {
+    x.type = "text";
+    $('#eyeShow').show();
+    $('#eyeSlash').hide();
+  }else {
+    x.type = "password";
+    $('#eyeShow').hide();
+    $('#eyeSlash').show();
+  }
+}
+</script>
+    <script>
+           $(document).ready(function() {
+    $("#show_hide_password a").on('click', function(event) {
+        event.preventDefault();
+        if($('#show_hide_password input').attr("type") == "text"){
+            $('#show_hide_password input').attr('type', 'password');
+            $('#show_hide_password i').addClass( "fa-eye-slash" );
+            $('#show_hide_password i').removeClass( "fa-eye" );
+        }else if($('#show_hide_password input').attr("type") == "password"){
+            $('#show_hide_password input').attr('type', 'text');
+            $('#show_hide_password i').removeClass( "fa-eye-slash" );
+            $('#show_hide_password i').addClass( "fa-eye" );
+        }
+    });
+});
+       </script>
+
 </body>
 
       <!-- jQuery, Popper JS -->
