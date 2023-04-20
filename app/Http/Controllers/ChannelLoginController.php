@@ -519,13 +519,36 @@ Please recheck the credentials before you try again!');
 
             try {
 
-                Mail::send('emails.channel_approved', array('users'=> $users, ),
-                function($message) use ($users) {
+                $email_template_subject =  EmailTemplate::where('id',44)->pluck('heading')->first() ;
+                $email_subject  =  $email_template_subject;
+
+                $data = array( 'email_subject' => $email_subject,);
+
+                Mail::send('emails.Channel_user_approved', array(
+                    'partner_name' => $users->username,
+                    'partner_account_name' => $users->username,
+                    'login_link' => URL::to("/channel/login"),
+                    'website_name' => GetWebsiteName(),
+                ), 
+                function($message) use ($data,$users) {
                     $message->from(AdminMail(),GetWebsiteName());
-                    $message->to($users->email)->subject("Approved You're Channel");
+                    $message->to($users->email, $users->username)->subject($data['email_subject']);
                 });
 
-            } catch (\Throwable $th) {
+                $email_log      = "Mail Sent Successfully from Congratulations! Your Partner's (Channel Partner) request has been Approved.";
+                $email_template = "44";
+                $user_id = $users->id;
+
+                Email_sent_log($user_id,$email_log,$email_template);
+
+            }
+            catch (\Exception $e) {
+
+                $email_log      = $e->getMessage();
+                $email_template = "44";
+                $user_id = $users->id;
+
+                Email_notsent_log($user_id,$email_log,$email_template);
 
                 return redirect()->route('ChannelPendingUsers')->with('error',$th->getMessage()  );
             }
@@ -571,13 +594,37 @@ Please recheck the credentials before you try again!');
             $users->save();
 
             try {
-                    Mail::send('emails.channel_rejected', array('users'=> $users ),function($message) use ($users) {
-                        $message->from(AdminMail(),GetWebsiteName());
-                        $message->to($users->email)->subject("Rejected You're Channel");
-                    });
-                
-            } catch (\Throwable $th) {
 
+                $email_template_subject =  EmailTemplate::where('id',45)->pluck('heading')->first() ;
+                $email_subject  =  $email_template_subject;
+
+                $data = array(
+                   'email_subject' => $email_subject,
+                );
+
+                Mail::send('emails.cpp_user_reject', array(
+                    'partner_name' => $users->username,
+                    'partner_account_name' => $users->username,
+                    'website_name' => GetWebsiteName(),
+                ), 
+                function($message) use ($data,$users) {
+                    $message->from(AdminMail(),GetWebsiteName());
+                    $message->to($users->email, $users->username)->subject($data['email_subject']);
+                });
+
+                $email_log      = "Mail Sent Successfully from Partner's (Content Partner) request has been Reject";
+                $email_template = "45";
+                $user_id = $users->id;
+
+                Email_sent_log($user_id,$email_log,$email_template);
+            }
+            catch (\Exception $e) {
+
+                $email_log      = $e->getMessage();
+                $email_template = "45";
+                $user_id = $users->id;
+
+                Email_notsent_log($user_id,$email_log,$email_template);
 
                 return redirect()->route('ChannelPendingUsers')->with('error',$th->getMessage()  );
             }

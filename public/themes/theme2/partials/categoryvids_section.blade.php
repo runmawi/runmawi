@@ -111,77 +111,15 @@
                         </a>
                     </li>
                 @endforeach
-            @elseif(count($categoryVideos['Episode_videos']) == 0 && count($categoryVideos['categoryVideos']) == 0)
+            @elseif( count($categoryVideos['categoryVideos']) == 0)
                 <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:cover;height: 500px!important;">
                     <p><h2 style="position: absolute;top: 50%;left: 50%;color: white;">No video Available</h2>
                 </div>
             @endif
 
-            {{-- Episode --}}
+            <div class="col-md-12 pagination justify-content-end">
+                {!! count($categoryVideos['categoryVideos']) != 0 ? $categoryVideos['categoryVideos']->links() : " "!!}
+            </div>
 
-
-        @if (count($categoryVideos['Episode_videos']) > 0)         
-            @foreach($categoryVideos['Episode_videos']  as $Episode) 
-                <li class="slide-item col-sm-2 col-md-2 col-xs-12 margin-bottom-30">
-
-                    <a href="<?php echo URL::to('episode/play_series') ?><?= '/'.@$Episode->series_slug .'/'. $Episode->slug ?>">
-                        <div class="block-images position-relative">
-                            <div class="img-box">
-                                <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$Episode->image;  ?>" class="img-fluid" alt="" width="">
-                            </div>
-                        </div>
-
-                        <div class="block-description" >
-                            <div class="hover-buttons">
-                                <a  class="text-white btn-cl"  href="<?php echo URL::to('episode/play_series') ?><?= '/'.@$Episode->series_slug .'/'. $Episode->slug ?>">
-                                    <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.png';  ?>">                                      
-                                </a>
-                            </div>
-                            </div>
-
-                            <div>
-                                <div class="movie-time d-flex align-items-center justify-content-between my-2">
-                                    <?php if($categoryVideos['ThumbnailSetting']->title == 1) { ?>
-                                        <h6><?php  echo (strlen($Episode->title) > 17) ? substr($Episode->title,0,18).'...' : $Episode->title; ?></h6>
-                                    <?php } ?>
-
-                                    <?php if($categoryVideos['ThumbnailSetting']->age == 1) { ?>
-                                        <div class="badge badge-secondary"><?php echo $Episode->age_restrict.' '.'+' ?></div>
-                                    <?php } ?>
-                                </div>
-
-                                <div class="movie-time my-2">
-
-                                    <!-- Duration -->
-            
-                                    <?php if($categoryVideos['ThumbnailSetting']->duration == 1) { ?>
-                                        <span class="text-white">
-                                            <i class="fa fa-clock-o"></i>
-                                            <?= gmdate('H:i:s', $Episode->duration); ?>
-                                        </span>
-                                    <?php } ?>
-            
-                                    <!-- Rating -->
-            
-                                    <?php if($categoryVideos['ThumbnailSetting']->rating == 1 && $Episode->rating != null) { ?>
-                                        <span class="text-white">
-                                            <i class="fa fa-star-half-o" aria-hidden="true"></i>
-                                            <?php echo __($Episode->rating); ?>
-                                        </span>
-                                    <?php } ?>
-            
-                                    <?php if($categoryVideos['ThumbnailSetting']->featured == 1 && $Episode->featured == 1) { ?>
-                                    <!-- Featured -->
-                                        <span class="text-white">
-                                            <i class="fa fa-flag" aria-hidden="true"></i>
-                                        </span>
-                                    <?php }?>
-                                </div>
-                            
-                        </div>
-                    </a>
-                </li>
-            @endforeach
-        @endif
     </ul>
 </div>

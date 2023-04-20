@@ -374,7 +374,7 @@ class ModeratorsUserController extends Controller
                     $message->to($users->email, $users->username)->subject($data['email_subject']);
                 });
 
-                $email_log      = "Mail Sent Successfully from Congratulations! Your Partner's request has been Approved.";
+                $email_log      = "Mail Sent Successfully from Congratulations! Your Partner's (Content Partner) request has been Approved.";
                 $email_template = "44";
                 $user_id = $users->id;
 
@@ -440,7 +440,7 @@ class ModeratorsUserController extends Controller
                    'email_subject' => $email_subject,
                 );
 
-                Mail::send('emails.cpp_user_reject', array(
+                Mail::send('emails.Channel_user_rejected.blade', array(
                     'partner_name' => $users->username,
                     'partner_account_name' => $users->username,
                     'website_name' => GetWebsiteName(),
@@ -450,7 +450,7 @@ class ModeratorsUserController extends Controller
                     $message->to($users->email, $users->username)->subject($data['email_subject']);
                 });
 
-                $email_log      = "Mail Sent Successfully from Partner's request has been Reject";
+                $email_log      = "Mail Sent Successfully from Partner's (Content Partner) request has been Reject";
                 $email_template = "45";
                 $user_id = $users->id;
 
