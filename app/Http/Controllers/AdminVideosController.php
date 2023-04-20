@@ -80,6 +80,7 @@ use App\PlayerAnalytic;
 use Carbon\Carbon;
 use ProtoneMedia\LaravelFFMpeg\Filters\WatermarkFactory;
 use ParseM3U8;
+use App\Playerui;
 
 class AdminVideosController extends Controller
 {
@@ -557,9 +558,12 @@ class AdminVideosController extends Controller
                 $video->user_id = Auth::user()->id;
                 $video->save();
 
-                TranscodeVideo::dispatch($video);
-
-                // ConvertVideoForStreaming::dispatch($video);
+                $Playerui = Playerui::first();
+                if(@$Playerui->video_watermark_enable == 1 && !empty($Playerui->video_watermark)){
+                    TranscodeVideo::dispatch($video);
+                }else{
+                    ConvertVideoForStreaming::dispatch($video);
+                }           
                 $video_id = $video->id;
                 $video_title = Video::find($video_id);
                 $title = $video_title->title;
@@ -1027,8 +1031,12 @@ class AdminVideosController extends Controller
             ))->setKiloBitrate(3000);
             $converted_name = ConvertVideoForStreaming::handle($path);
 
-
-            ConvertVideoForStreaming::dispatch($video);
+            $Playerui = Playerui::first();
+            if(@$Playerui->video_watermark_enable == 1 && !empty($Playerui->video_watermark)){
+                TranscodeVideo::dispatch($video);
+            }else{
+                ConvertVideoForStreaming::dispatch($video);
+            }             
         } else {
             $video = Video::create($data);
         }
@@ -1794,8 +1802,14 @@ class AdminVideosController extends Controller
 
             // $original_name = ($request->video->getClientOriginalName()) ? $request->video->getClientOriginalName() : '';
             $original_name = URL::to("/") . "/storage/app/public/" . $path;
-            TranscodeVideo::dispatch($video);
-            // ConvertVideoForStreaming::dispatch($video);
+
+            $Playerui = Playerui::first();
+            if(@$Playerui->video_watermark_enable == 1 && !empty($Playerui->video_watermark)){
+                TranscodeVideo::dispatch($video);
+            }else{
+                ConvertVideoForStreaming::dispatch($video);
+            }           
+             // ConvertVideoForStreaming::dispatch($video);
         }
 
         if (!empty($data["embed_code"])) {
@@ -3850,9 +3864,13 @@ class AdminVideosController extends Controller
             $video->user_id = Auth::user()->id;
             $video->save();
 
-            TranscodeVideo::dispatch($video);
 
-            // ConvertVideoForStreaming::dispatch($video);
+            $Playerui = Playerui::first();
+            if(@$Playerui->video_watermark_enable == 1 && !empty($Playerui->video_watermark)){
+                TranscodeVideo::dispatch($video);
+            }else{
+                ConvertVideoForStreaming::dispatch($video);
+            }          
             $video_id = $video->id;
             $video_title = Video::find($video_id);
             $title = $video_title->title;

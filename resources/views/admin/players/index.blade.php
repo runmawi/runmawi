@@ -128,6 +128,19 @@
 							</div>
 						</div>
 						<div class="flex">
+							<div>
+								<label>Add Watermark on the Video</label>
+							</div>
+							<div>
+								<label class="switch">
+
+								<input type="checkbox" name="video_watermark_enable" @if((isset($playerui->video_watermark_enable) && $playerui->video_watermark_enable) == 1)checked="checked" value="1"@else value="1"@endif>
+									<span class="slider round"></span>
+
+								</label>
+							</div>
+						</div>
+						<div class="flex">
 							{{-- <div>
 								<label>Advanced player <br><span class="span1">(Allows you to change add html code)</span></label>
 							</div>
