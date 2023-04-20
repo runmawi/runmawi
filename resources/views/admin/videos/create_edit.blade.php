@@ -201,6 +201,13 @@ border-radius: 0px 4px 4px 0px;
    <div class="iq-header-title">
       <h4 class="card-title">Add Video</h4>
    </div>
+   <div class="d-flex justify-content-between">
+            <div>
+                <a href="{{ URL::to('category/videos') . '/' . $video->slug }}" target="_blank" class="btn btn-primary">
+                    <i class="fa fa-eye"></i> Preview <i class="fa fa-external-link"></i>
+                </a>
+            </div>
+        </div>
 </div>
 @if($page == 'Edit' && $video->status == 0  && $video->type != 'embed' && $video->type != 'mp4_url' && $video->type != 'm3u8_url')
       <div class="col-sm-12">
