@@ -816,7 +816,7 @@ cursor: pointer;
 
                               <div class="col-md-4 text-right">
                                     @if( (Auth::user()->role == "subscriber" ) )
-                                       {{-- <a href=" {{ URL::to('/upgrade-subscription_plan') }} class="text-white font-size-13"> Update Payment</a> --}}
+                                       {{--<a href=" {{ URL::to('/upgrade-subscription_plan') }} class="text-white font-size-13"> Update Payment</a> --}}
                                     @elseif( (Auth::user()->role == "admin" ) )
 
                                     @else
@@ -863,7 +863,7 @@ cursor: pointer;
                     <div class=" d-flex justify-content-between mb-3">
                         <img class="rounded-circle img-fluid d-block  mb-3" height="100" width="100" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg"/>
                         <h4 class="mb-3"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></h4>
-                        <a href="#updatepic" class="edit-icon text-primary">Edit</a></div>
+                       </div>
                          <div class=""> <!--style="margin-left: 66%;margin-right: 13%;padding-left: 1%;padding-bottom: 0%;"
                     <div class="" id="personal_det">
                     <div class="" >
