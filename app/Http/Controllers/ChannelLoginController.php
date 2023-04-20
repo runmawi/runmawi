@@ -206,6 +206,61 @@ class ChannelLoginController extends Controller
             // });
             // return redirect('/channel/verify-request')
             //     ->with('message', 'Successfully Users saved!.');
+            try
+            {
+                $data = array(
+                    'email_subject' => EmailTemplate::where('id', 43)->pluck('heading')->first() ,
+                );
+
+                Mail::send('emails.partner_welcome', array('Partner_Name' => $request->username,'website_name' => GetWebsiteName() ,) ,
+                    function ($message) use ($data, $request){
+                        $message->from(AdminMail() , GetWebsiteName());
+                        $message->to($request->email_id, $request->username)->subject($data['email_subject']);
+                    });
+
+                $email_log = 'Mail Sent Successfully from Welcome on Partner’s Registration';
+                $email_template = "43";
+                $user_id = $user->id;
+
+                Email_sent_log($user_id, $email_log, $email_template);
+            }
+            catch(\Exception $e)
+            {
+                $email_log = $e->getMessage();
+                $email_template = "43";
+                $user_id = 1;
+
+                Email_notsent_log($user_id, $email_log, $email_template);
+            }
+
+
+                    // Note: While CPP Signup Email - Template for CPP registered user and Admin
+            try
+            {
+                $data = array(
+                    'email_subject' => EmailTemplate::where('id', 43)->pluck('heading')->first() ,
+                );
+
+                Mail::send('emails.partner_welcome', array('Partner_Name' => $request->username,'website_name' => GetWebsiteName() ,) ,
+                    function ($message) use ($data, $request){
+                        $message->from(AdminMail() , GetWebsiteName());
+                        $message->to(AdminMail())->subject($data['email_subject']);
+                    });
+
+                $email_log = 'Mail Sent Successfully from Welcome on Partner’s Registration';
+                $email_template = "43";
+                $user_id = 1;
+
+                Email_sent_log($user_id, $email_log, $email_template);
+            }
+            catch(\Exception $e)
+            {
+                $email_log = $e->getMessage();
+                $email_template = "43";
+                $user_id = $user->id;
+
+                Email_notsent_log($user_id, $email_log, $email_template);
+            }
 
             return redirect('/channel/login')
                 ->with('message', 'You have successfully registered. Please login If You Approved below.');
