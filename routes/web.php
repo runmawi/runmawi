@@ -2243,5 +2243,5 @@ Route::get('/Most-watched-videos-site', 'AllVideosListController@All_Mostwatched
 
 // Series
 
-Route::get('/SeiesList', 'AllVideosListController@all_series')->name('all_series');
+Route::get('/SeriesList', 'AllVideosListController@all_series')->name('all_series');
 Route::get('continue-watching-list', 'AllVideosListController@ContinueWatchingList');
