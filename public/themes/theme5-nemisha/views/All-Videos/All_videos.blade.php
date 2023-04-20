@@ -1,21 +1,23 @@
 <?php include public_path('themes/theme5-nemisha/views/header.php'); ?>
 
-{{-- <section id="iq-favorites mt-4">
+<section id="iq-favorites mt-4">
     <div class="container-fluid mb-5 mt-4">
         <div class="d-flex">
             <div><h5 class="mr-2">Explore titles related to:</h5></div>
             <div class="d-flex">
-                <a class="drama" href="https://dev.nemisatv.co.za/library"><p class="mb-0">Drama</p></a>
-                <a class="drama" href="https://dev.nemisatv.co.za/library"><p class="mb-0">Horror</p></a>
-                <a class="drama" href="https://dev.nemisatv.co.za/library"><p class="mb-0">Thirller</p></a>
-                <a class="drama" href="https://dev.nemisatv.co.za/library"><p class="mb-0">Basic</p></a>
-                <a class="drama" href="https://dev.nemisatv.co.za/library"><p class="mb-0">Google</p></a>
-                <a class="drama" href="https://dev.nemisatv.co.za/library"><p class="mb-0">Episode</p></a>
-                <a class="drama" href="https://dev.nemisatv.co.za/library"><p class="mb-0">Alpha</p></a>
+
+                @foreach ($respond_data['VideoCategory']  as $key => $item)
+                    <a class="drama" href="{{ $item->redirect_url }}"><p class="mb-0">{{ $item->slug }}</p></a>
+                @endforeach
+
+                @foreach ($respond_data['SeriesGenre']  as $key => $item)
+                    <a class="drama" href="{{ $item->redirect_url }}"><p class="mb-0">{{ $item->slug }}</p></a>
+                @endforeach
+                
             </div>
         </div>
   </div>
-</section> --}}
+</section>
 
 <!-- MainContent -->
 
@@ -62,8 +64,7 @@
                                             <div>
                                                 <div class="mt-2 d-flex justify-content-between p-0">
                                                     @if ($respond_data['ThumbnailSetting']->title == 1)
-                                                        <h6>{{ strlen($video->title) > 17 ? substr($video->title, 0, 18) . '...' : $video->title }}
-                                                        </h6>
+                                                        <h6>{{ strlen($video->title) > 17 ? substr($video->title, 0, 18) . '...' : $video->title }}</h6>
                                                     @endif
 
                                                     @if ($respond_data['ThumbnailSetting']->age == 1 && $video->age_restrict != null )

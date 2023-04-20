@@ -57,7 +57,28 @@ class AllVideosListController extends Controller
                 return redirect()->route('landing_page', $landing_page_slug );
             }
 
-            $OrderHomeSetting = OrderHomeSetting::get(); 
+            // Video Category 
+
+                $VideoCategory = VideoCategory::select('id','slug','in_home')->where('in_home','=',1)
+                                ->get()->map(function ($item) {
+                                    $item['redirect_url']  = URL::to('videos/category/'.$item->slug);
+                                    $item['source_data']   = 'video_category';
+                                    return $item;
+                                });
+
+            // Series Genres
+
+                $SeriesGenre = SeriesGenre::select('id','slug','in_home')
+                                ->get()->map(function ($item) {
+                                    $item['redirect_url']  = URL::to('series/category/'.$item->slug);
+                                    $item['source_data']  = 'SeriesGenre';
+                                    return $item;
+                                });
+                                
+
+            // Fetch all OrderHomeSetting list
+
+                $OrderHomeSetting = OrderHomeSetting::get(); 
 
             // Fetch all videos list
                 $videos = Video::select('active','status','draft','age_restrict','id','created_at','slug','image','title','rating','duration','featured','year')
@@ -81,7 +102,6 @@ class AllVideosListController extends Controller
                     $item['featured'] = $item->featured;
                     $item['year']     = $item->year;
                     $item['age_restrict'] = $item->age_restrict;
-
                     return $item;
                 });
 
@@ -100,7 +120,6 @@ class AllVideosListController extends Controller
                     $item['featured'] = $item->featured;
                     $item['year']     = $item->year;
                     $item['age_restrict'] = null ;
-
                     return $item;
                 });
 
@@ -140,6 +159,8 @@ class AllVideosListController extends Controller
             $respond_data = array(
                 'videos'    => $mergedResults,
                 'ppv_gobal_price'  => $this->ppv_gobal_price,
+                'SeriesGenre'      => $SeriesGenre ,
+                'VideoCategory'    => $VideoCategory ,
                 'currency'         => CurrencySetting::first(),
                 'ThumbnailSetting' => ThumbnailSetting::first(),
             );
