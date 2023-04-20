@@ -135,8 +135,12 @@
                                                                     $Category_Thumbnail = [];
                                                                     foreach ($CategoryThumbnail_setting as $key => $CategoryThumbnail) {
                                                                         $Category_Thumbnail[] = $CategoryThumbnail;
+                                                                        $CategoryThumbnail_link = URL::to('category/'.$CategoryThumbnail);
                                                                     }
-                                                                    echo implode(',' . ' ', $Category_Thumbnail);
+
+                                                                    echo  implode(',' . ' ', $Category_Thumbnail)
+
+                                                                    // echo '<a href="' . $CategoryThumbnail_link . '">' . implode(',' . ' ', $Category_Thumbnail) . '</a>';
                                                                 ?>
                                                             </span>
                                                         @endif
@@ -158,7 +162,7 @@
                                                                     foreach ($CategoryThumbnail_setting as $key => $CategoryThumbnail) {
                                                                         $Category_Thumbnail[] = $CategoryThumbnail;
                                                                     }
-                                                                    echo implode(',' . ' ', $Category_Thumbnail);
+                                                                    echo  implode(',' . ' ', $Category_Thumbnail)
                                                                 ?>
                                                             </span>
                                                         @endif
