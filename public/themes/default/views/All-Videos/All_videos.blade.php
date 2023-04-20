@@ -1,6 +1,5 @@
-   @php
-      include(public_path('themes/default/views/header.php'));
-   @endphp
+@php include(public_path('themes/default/views/header.php')); @endphp
+
 
 <!-- MainContent -->
 
@@ -20,12 +19,11 @@
             <div class="favorites-contens">
                <ul class="category-page list-inline row p-0 mb-0">
                      @forelse($respond_data['videos'] as $key => $video)
-
                         <li class="slide-item col-sm-2 col-md-2 col-xs-12">
-                           <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $video->slug ?>">
+                           <a  href="{{ $video->redirect_url  }}">
                               <div class="block-images position-relative">
                                  <div class="img-box">
-                                    <img src="<?php echo URL::to('/').'/public/uploads/images/'.$video->image;  ?>" class="img-fluid w-100" alt="">
+                                    <img src="{{ $video->image_url }}" class="img-fluid w-100" alt="">
                                        @if(!empty($video->ppv_price))
                                           <p class="p-tag1" ><?php echo $respond_data['currency']->symbol.' '.$video->ppv_price; ?></p>
                                        @elseif( !empty($video->global_ppv || !empty($video->global_ppv) && $video->ppv_price == null)) 
@@ -37,18 +35,25 @@
 
                                  <div class="block-description">
                                     @if( $respond_data['ThumbnailSetting']->title == 1)  <!-- Title -->
-                                       <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $video->slug ?>">
-                                          <h6><?php  echo (strlen($video->title) > 17) ? substr($video->title,0,18).'...' : $video->title; ?></h6>
+                                       <a  href="{{ $video->redirect_url  }}">
+                                          <h6>{{ strlen($video->title) > 17 ? substr($video->title, 0, 18) . '...' : $video->title }}</h6>
                                        </a>
                                     @endif  
 
+                                         {{-- Source --}}
+                                    <div class="movie-time my-2">
+                                       <span class="text-white">
+                                           {{ $video->source }}
+                                       </span>
+                                    </div>
+
                                     <div class="movie-time d-flex align-items-center pt-1">
-                                       @if($respond_data['ThumbnailSetting']->age == 1) 
+                                       @if($respond_data['ThumbnailSetting']->age == 1 && $video->age_restrict != null ) 
                                                    <!-- Age -->
-                                          <div class="badge badge-secondary p-1 mr-2"><?php echo $video->age_restrict.' '.'+' ?></div>
+                                          <div class="badge badge-secondary p-1 mr-2">{{ $video->age_restrict.' '.'+' }} </div>
                                        @endif
 
-                                       @if($respond_data['ThumbnailSetting']->duration == 1) 
+                                       @if($respond_data['ThumbnailSetting']->duration == 1 && $video->duration != null ) 
                                                    <!-- Duration -->
                                           <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $video->duration); ?></span>
                                        @endif
@@ -56,7 +61,7 @@
 
                                     @if(($respond_data['ThumbnailSetting']->published_year == 1) || ($respond_data['ThumbnailSetting']->rating == 1))
                                        <div class="movie-time d-flex align-items-center pt-1">
-                                          @if($respond_data['ThumbnailSetting']->rating == 1) <!--Rating  -->
+                                          @if($respond_data['ThumbnailSetting']->rating == 1 && $video->rating != null) <!--Rating  -->
                                              <div class="badge badge-secondary p-1 mr-2">
                                                 <span class="text-white">
                                                    <i class="fa fa-star-half-o" aria-hidden="true"></i>
@@ -65,7 +70,7 @@
                                              </div>
                                           @endif
 
-                                          @if($respond_data['ThumbnailSetting']->published_year == 1)   <!-- published_year -->
+                                          @if($respond_data['ThumbnailSetting']->published_year == 1 && $video->year != null)   <!-- published_year -->
                                                 <div class="badge badge-secondary p-1 mr-2">
                                                    <span class="text-white">
                                                       <i class="fa fa-calendar" aria-hidden="true"></i>
@@ -74,7 +79,7 @@
                                                 </div>
                                           @endif
 
-                                          @if($respond_data['ThumbnailSetting']->featured == 1 &&  $video->featured == 1) <!-- Featured -->
+                                          @if($respond_data['ThumbnailSetting']->featured == 1 && $video->featured != null &&  $video->featured == 1) <!-- Featured -->
                                                 <div class="badge badge-secondary p-1 mr-2">
                                                    <span class="text-white">
                                                       <i class="fa fa-flag-o" aria-hidden="true"></i>
@@ -85,7 +90,7 @@
                                     @endif
 
                                     <div class="hover-buttons">
-                                       <a  href="<?php echo URL::to('category') ?><?= '/videos/' . $video->slug ?>">	
+                                       <a  href="{{ $video->redirect_url  }}">	
                                           <span class="text-white">
                                              <i class="fa fa-play mr-1" aria-hidden="true"></i> Watch Now
                                           </span>
