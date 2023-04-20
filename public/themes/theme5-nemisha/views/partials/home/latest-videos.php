@@ -6,7 +6,7 @@
 <h4 class="main-title"><a href="<?php if ($order_settings_list[1]->header_name) { echo URL::to('/').'/'.$order_settings_list[1]->url ;} else { echo "" ; } ?>">
                     <?php if ($order_settings_list[1]->header_name) { echo $order_settings_list[1]->header_name ;} else { echo "" ; } ?>
                     </a></h4>  
-     <a class="see" href="<?php if ($order_settings_list[1]->header_name) { echo URL::to('/').'/'.$order_settings_list[1]->url ;} else { echo "" ; } ?>"> See all  </a>
+     <a class="see" href="<?php if ($order_settings_list[1]->header_name) { echo URL::to('/').'/'.$order_settings_list[1]->url ;} else { echo "" ; } ?>"> See All  </a>
 </div>
 <div class="favorites-contens">
     <ul class="favorites-slider list-inline row p-0 mb-0">
