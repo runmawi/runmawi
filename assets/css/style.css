@@ -22,6 +22,9 @@ NOTE: This file contains the styling for responsive Template.
 /*---------------------------------------------------------------------
                     Header
 -----------------------------------------------------------------------*/
+.edit-icon{
+    display: none;
+}
 .channel-img img{
     position: absolute;
     bottom: -30px;
