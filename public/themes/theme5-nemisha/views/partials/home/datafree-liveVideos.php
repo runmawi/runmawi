@@ -3,13 +3,14 @@
 <h4 class="main-title">
         <!-- Data Free live_streams -->
    <a href="<?php echo URL::to('/live/category/').'/'.$DataFreeliveCategories->slug;?>" class="category-heading" style="text-decoration: none; color: #fff;">
-      <h4 class="movie-title">
+    
          <?php 
          if(!empty($DataFreeliveCategories->name)){ echo $DataFreeliveCategories->name ; }else{ echo $DataFreeliveCategories->name ; }  
          //   echo __($category->name);
             ?>
-      </h4>
+    
    </a>
+     <a class="see" href="<?php echo URL::to('/live/category/').'/'.$DataFreeliveCategories->slug;?>"> See All  </a>
         </h4>
 </div>
 <div class="favorites-contens">
