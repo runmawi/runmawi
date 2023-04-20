@@ -527,6 +527,7 @@ class AdminVideosController extends Controller
                 $video->status = 0;
                 $video->original_name = "public";
                 $video->path = $path;
+                $video->old_path_mp4 = $path;   
                 $video->title = $file_folder_name;
                 $video->mp4_url = $storepath;
                 $video->draft = 0;
@@ -3855,6 +3856,7 @@ class AdminVideosController extends Controller
             $video->status = 0;
             $video->original_name = "public";
             $video->path = $path;
+            $video->old_path_mp4 = $path;
             $video->title = $file_folder_name;
             $video->mp4_url = $storepath;
             //  $video->draft = 0;

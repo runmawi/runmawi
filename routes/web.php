@@ -2239,3 +2239,9 @@ Route::get('/library', 'AllVideosListController@all_videos')->name('all_videos')
 Route::get('/Most-watched-videos', 'AllVideosListController@All_User_MostwatchedVideos')->name('All_User_MostwatchedVideos');
 Route::get('/Most-watched-videos-country', 'AllVideosListController@All_Country_MostwatchedVideos')->name('All_Country_MostwatchedVideos');
 Route::get('/Most-watched-videos-site', 'AllVideosListController@All_MostwatchedVideos')->name('All_MostwatchedVideos');
+
+
+// Series
+
+Route::get('/SeiesList', 'AllVideosListController@all_series')->name('all_series');
+Route::get('continue-watching-list', 'AllVideosListController@ContinueWatchingList');
