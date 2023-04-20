@@ -7,19 +7,19 @@
 <section id="home" class="iq-main-slider p-0">
     <div class="overflow-hidden ">
         <div id="home-slider" class="slider m-0 p-0">
-            @if(isset($respond_data['learn_series_sliders'])) 
-                @foreach($respond_data['learn_series_sliders'] as  $key => $learn_series_sliders)
+            @if(isset($respond_data['series_sliders'])) 
+                @foreach($respond_data['series_sliders'] as  $key => $series_sliders)
 
                     <div class="item <?php if($key == 0){echo 'active';}?> header-image">
-                        <div onclick="window.location.href='<?php echo URL::to('/') ?><?= '/play_series'.'/'. $learn_series_sliders->slug ?>';" class="slide slick-bg s-bg-2 lazy"
-                                style="background:url('<?php echo URL::to('/').'/public/uploads/images/' .$learn_series_sliders->player_image;?>'); background-repeat:no-repeat;background-size:cover;background-position:right;cursor: pointer; ">
+                        <div onclick="window.location.href='<?php echo URL::to('/') ?><?= '/play_series'.'/'. $series_sliders->slug ?>';" class="slide slick-bg s-bg-2 lazy"
+                                style="background:url('<?php echo URL::to('/').'/public/uploads/images/' .$series_sliders->player_image;?>'); background-repeat:no-repeat;background-size:cover;background-position:right;cursor: pointer; ">
                         <div class="container-fluid position-relative h-100">
                             <div class="slider-inner h-100">
 
                                 <div class="row align-items-center bl h-100">
                                     <div class="col-xl-5 col-lg-12 col-md-12">
                                         <h1 class=" text-white title text-uppercase mb-3" >
-                                            <?php echo __($learn_series_sliders->title); ?>
+                                           {{ ($series_sliders->title) }}
                                         </h1>
 
                                         <div class="">
@@ -29,12 +29,12 @@
                                         <div 
                                             style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
                                                     -webkit-line-clamp: 3;  -webkit-box-orient: vertical; overflow: hidden;">
-                                            <p><?php echo __($learn_series_sliders->description); ?></p>
+                                            <p> {{ ($series_sliders->description) }} </p>
                                         </div>
 
 
                                         <div class="justify r-mb-23  p-0" >    
-                                            <a href="<?php echo URL::to('/') ?><?= '/play_series'.'/'. $learn_series_sliders->slug ?>" class="btn bd">
+                                            <a href="{{ URL::to('play_series/'.$series_sliders->slug) }}" class="btn bd">
                                                 <i class="fa fa-play mr-2" aria-hidden="true"></i> Start Watching
                                             </a>
                                         </div>
