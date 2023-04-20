@@ -302,10 +302,10 @@ i.fa.fa-google-plus {
     option {
     background: #474644 !important;
 }
-    .reveal{
-        margin-left: -92px !important;
+      .reveal{
+        margin-left: -57px;
     height: 45px !important;
-    background: transparent !important;
+    background: #ED553B !important;
     color: #fff !important;
     }
     .modal-content {
