@@ -112,7 +112,7 @@ class ChannelController extends Controller
                 if ($getfeching != null && $getfeching->geofencing == 'ON') {
                     $categoryVideos = $categoryVideos->whereNotIn('videos.id', Block_videos());
                 }
-                $categoryVideos = $categoryVideos->orderBy('videos.created_at', 'desc')->get();
+                $categoryVideos = $categoryVideos->orderBy('videos.created_at', 'desc')->paginate(1);
             } else {
                 $categoryVideos = [];
             }
@@ -140,7 +140,7 @@ class ChannelController extends Controller
             $data = [
                 'currency' => $currency,
                 'category_title' => $category_title[0],
-                'categoryVideos' => $categoryVideos,
+                'categoryVideos' =>  $categoryVideos,
                 'ppv_gobal_price' => $ppv_gobal_price,
                 'ThumbnailSetting' => $ThumbnailSetting,
                 'age_categories' => AgeCategory::get(),
@@ -148,6 +148,7 @@ class ChannelController extends Controller
             ];
             return Theme::view('categoryvids', ['categoryVideos' => $data]);
         } catch (\Throwable $th) {
+            // return $th->getMessage();
             return abort(404);
         }
     }
