@@ -118,29 +118,56 @@
                                                         </span>
                                                     </div>
                                                 @endif
+    
+                                                @if ( $video->source_data == "videos" )
+                                                    <div class="movie-time my-2">
+                                                        <!-- Category Thumbnail  setting -->
+                                                        <?php
+                                                            $CategoryThumbnail_setting = App\CategoryVideo::join('video_categories', 'video_categories.id', '=', 'categoryvideos.category_id')
+                                                                ->where('categoryvideos.video_id', $video->id)
+                                                                ->pluck('video_categories.name');
+                                                        ?>
 
+                                                        @if ($respond_data['ThumbnailSetting']->category == 1 && count($CategoryThumbnail_setting) > 0)
+                                                            <span class="text-white">
+                                                                <i class="fa fa-list-alt" aria-hidden="true"></i>
+                                                                <?php
+                                                                    $Category_Thumbnail = [];
+                                                                    foreach ($CategoryThumbnail_setting as $key => $CategoryThumbnail) {
+                                                                        $Category_Thumbnail[] = $CategoryThumbnail;
+                                                                        $CategoryThumbnail_link = URL::to('category/'.$CategoryThumbnail);
+                                                                    }
 
-                                                {{-- <div class="movie-time my-2">
-                                                    <!-- Category Thumbnail  setting -->
-                                                    <?php
-                                                        // $CategoryThumbnail_setting = App\CategoryVideo::join('video_categories', 'video_categories.id', '=', 'categoryvideos.category_id')
-                                                        //     ->where('categoryvideos.video_id', $video->id)
-                                                        //     ->pluck('video_categories.name');
-                                                    ?>
+                                                                    echo  implode(',' . ' ', $Category_Thumbnail)
 
-                                                    @if ($respond_data['ThumbnailSetting']->category == 1 && count($CategoryThumbnail_setting) > 0)
-                                                        <span class="text-white">
-                                                            <i class="fa fa-list-alt" aria-hidden="true"></i>
-                                                            <?php
-                                                                // $Category_Thumbnail = [];
-                                                                // foreach ($CategoryThumbnail_setting as $key => $CategoryThumbnail) {
-                                                                //     $Category_Thumbnail[] = $CategoryThumbnail;
-                                                                // }
-                                                                // echo implode(',' . ' ', $Category_Thumbnail);
-                                                            ?>
-                                                        </span>
-                                                    @endif
-                                                </div> --}}
+                                                                    // echo '<a href="' . $CategoryThumbnail_link . '">' . implode(',' . ' ', $Category_Thumbnail) . '</a>';
+                                                                ?>
+                                                            </span>
+                                                        @endif
+                                                    </div>
+                                                @elseif ( $video->source_data == "series" )
+                                                    <div class="movie-time my-2">
+                                                        <!-- Category Thumbnail  setting -->
+                                                        <?php
+                                                            $CategoryThumbnail_setting = App\SeriesCategory::join('series_genre', 'series_genre.id', '=', 'series_categories.category_id')
+                                                                ->where('series_categories.series_id', $video->id)
+                                                                ->pluck('series_genre.name');
+                                                        ?>
+
+                                                        @if ($respond_data['ThumbnailSetting']->category == 1 && count($CategoryThumbnail_setting) > 0)
+                                                            <span class="text-white">
+                                                                <i class="fa fa-list-alt" aria-hidden="true"></i>
+                                                                <?php
+                                                                    $Category_Thumbnail = [];
+                                                                    foreach ($CategoryThumbnail_setting as $key => $CategoryThumbnail) {
+                                                                        $Category_Thumbnail[] = $CategoryThumbnail;
+                                                                    }
+                                                                    echo  implode(',' . ' ', $Category_Thumbnail)
+                                                                ?>
+                                                            </span>
+                                                        @endif
+                                                    </div>
+                                                @endif
                                             </div>
                                         </a>
                                     </li>
@@ -159,9 +186,9 @@
     @else
         <div class="col-md-12 text-center mt-4"
             style="background: url(<?= URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
-            <p>
             <h3 class="text-center">No Video Available</h3>
         </div>
     @endif
+</section>
 
-    <?php include public_path('themes/theme5-nemisha/views/footer.blade.php'); ?>
+<?php include public_path('themes/theme5-nemisha/views/footer.blade.php'); ?>
