@@ -112,7 +112,7 @@ class ChannelController extends Controller
                 if ($getfeching != null && $getfeching->geofencing == 'ON') {
                     $categoryVideos = $categoryVideos->whereNotIn('videos.id', Block_videos());
                 }
-                $categoryVideos = $categoryVideos->orderBy('videos.created_at', 'desc')->paginate(1);
+                $categoryVideos = $categoryVideos->orderBy('videos.created_at', 'desc')->paginate($this->videos_per_page);
             } else {
                 $categoryVideos = [];
             }
