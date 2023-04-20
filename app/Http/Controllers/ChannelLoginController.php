@@ -494,7 +494,7 @@ Please recheck the credentials before you try again!');
 
                 Email_notsent_log($user_id,$email_log,$email_template);
 
-                return redirect()->route('ChannelPendingUsers')->with('error',$th->getMessage()  );
+                return redirect()->route('ChannelPendingUsers')->with('error',$e->getMessage()  );
             }
           
             return \Redirect::back()->with( "success", "The channel user has been approved !!");
@@ -570,7 +570,7 @@ Please recheck the credentials before you try again!');
 
                 Email_notsent_log($user_id,$email_log,$email_template);
 
-                return redirect()->route('ChannelPendingUsers')->with('error',$th->getMessage()  );
+                return redirect()->route('ChannelPendingUsers')->with('error',$e->getMessage()  );
             }
         
             return \Redirect::back()->with( "success", "The channel user has been Rejected !!");
