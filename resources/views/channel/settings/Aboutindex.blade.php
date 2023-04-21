@@ -24,6 +24,7 @@
 
 <div id="content-page" class="content-page">
 	<div class="container-fluid">
+        <div class="iq-card">
 		<div class="row">
 			<div class="col-sm-12">
 				<div class="">
@@ -76,12 +77,12 @@
                                     </div>
                                 </div>
                                 </div>
-								<div class="col-md-6 mt-3">
+								<div class="col-md-12 mt-3 d-flex justify-content-end">
 								<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 								<input type="hidden" name="id" value="{{ @$user->id }}" />
-								<input type="submit" value="Update" class="btn btn-primary pull-right" />
+								<input type="submit" value="Update" class="btn btn-primary" />
                                     </div>
-                            </div>
+                           
 							</form>
 
 							<div class="clear"></div>
