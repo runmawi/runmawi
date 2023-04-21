@@ -44,6 +44,8 @@ class AdminSeriesGenreController extends Controller
 
         $in_home = $request['in_home']; 
 
+        $input['category_list_active']= $request['category_list_active']; 
+
         if ( $slug != '') {
             $input['slug']  =  str_replace(' ', '_',  $request['slug']);
         } else {
@@ -123,7 +125,8 @@ class AdminSeriesGenreController extends Controller
          $category->slug = $request['slug'];
          $category->parent_id = $request['parent_id'];
          $category->in_menu = $request['in_menu']; 
-         
+         $category->category_list_active = $request['category_list_active']; 
+
          if ( $category->slug != '') {
             $category->slug  =str_replace(' ', '_',  $request['slug']);
           } else {

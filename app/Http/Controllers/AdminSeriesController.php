@@ -35,6 +35,7 @@ use FFMpeg\Format\Video\X264;
 use App\Http\Requests\StoreVideoRequest;
 use App\Jobs\ConvertVideoForStreaming;
 use App\Jobs\ConvertEpisodeVideo;
+use App\Jobs\ConvertEpisodeVideoWatermark;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use FFMpeg\Filters\Video\VideoFilters;
 use Illuminate\Support\Str;
@@ -56,6 +57,7 @@ use App\Channel as Channel;
 use App\ModeratorsUser as ModeratorsUser;
 use App\StorageSetting as StorageSetting;
 use App\Advertisement;
+use App\Playerui as Playerui;
 
 
 class AdminSeriesController extends Controller
@@ -2085,7 +2087,13 @@ class AdminSeriesController extends Controller
                 $video->duration = $Video_duration;
                 $video->save();
 
-                ConvertEpisodeVideo::dispatch($video,$storepath);
+                $Playerui = Playerui::first();
+                if(@$Playerui->video_watermark_enable == 1 && !empty($Playerui->video_watermark)){
+                    ConvertEpisodeVideoWatermark::dispatch($video,$storepath);
+                }else{
+                    ConvertEpisodeVideo::dispatch($video,$storepath);
+                } 
+
 
                 $episode_id = $video->id;
                 $episode_title = Episode::find($episode_id);
@@ -2781,8 +2789,13 @@ class AdminSeriesController extends Controller
             $video->duration = $Video_duration;
             $video->save();
 
-            ConvertEpisodeVideo::dispatch($video,$storepath);
-
+            $Playerui = Playerui::first();
+            if(@$Playerui->video_watermark_enable == 1 && !empty($Playerui->video_watermark)){
+                ConvertEpisodeVideoWatermark::dispatch($video,$storepath);
+            }else{
+                ConvertEpisodeVideo::dispatch($video,$storepath);
+            } 
+            
         $episode_id = $video->id;
         $episode_title = Episode::find($episode_id);
         $title =$episode_title->title; 

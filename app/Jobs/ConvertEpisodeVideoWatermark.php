@@ -16,16 +16,17 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Str;
 use App\Setting as Setting;
-use App\Video as Video;
+use App\Episode as Episode;
 use Carbon\Carbon;
-use App\Jobs\ConvertVideoForStreaming;
+use App\Jobs\ConvertEpisodeVideo;
 use App\Playerui as Playerui;
 
-class TranscodeVideo implements ShouldQueue
+class ConvertEpisodeVideoWatermark implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $video;
+    protected $storepath;
     public $timeout = 14400;
 
     /**
@@ -35,9 +36,10 @@ class TranscodeVideo implements ShouldQueue
      * @param  string  $watermark
      * @return void
      */
-    public function __construct(Video $video)
+    public function __construct(Episode $video,$storepath)
     {
         $this->video = $video;
+        $this->storepath = $storepath;
     }
 
     /**
@@ -49,6 +51,7 @@ class TranscodeVideo implements ShouldQueue
     {
         
         $video = $this->video->path;
+        $storepath = $this->storepath;
 
         $output_path_rand = Str::random(3).$video;
 
@@ -88,7 +91,7 @@ class TranscodeVideo implements ShouldQueue
         ]);
         $video->save($format, $output_path); 
         $video = $this->video;   
-        ConvertVideoForStreaming::dispatch($video);
+        ConvertEpisodeVideo::dispatch($video,$storepath);
 
     }
     

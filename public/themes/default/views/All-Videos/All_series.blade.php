@@ -1,23 +1,6 @@
-@php include(public_path('themes/default/views/header.php')); @endphp
-
-<section id="iq-favorites mt-4">
-   <div class="container-fluid mb-5 mt-4">
-       <div class="d-flex">
-           <div><h5 class="mr-2">Explore titles related to:</h5></div>
-           <div class="d-flex">
-
-               @foreach ($respond_data['VideoCategory']  as $key => $item)
-                   <a class="drama" href="{{ $item->redirect_url }}"><p style="color:white" class="mb-0">{{ " ".$item->slug." " }} | </p></a>
-               @endforeach
-
-               @foreach ($respond_data['SeriesGenre']  as $key => $item)
-                   <a class="drama" href="{{ $item->redirect_url }}"><p style="color:white;text-align:right" class="mb-0">{{ " ".$item->slug." " }} | </p></a>
-               @endforeach
-               
-           </div>
-       </div>
- </div>
-</section>
+@php
+      include(public_path('themes/default/views/header.php'));
+   @endphp
 
 <!-- MainContent -->
 
@@ -26,78 +9,72 @@
    <div class="row">
       <div class="col-sm-12 page-height">
 
-         @if(isset($respond_data['videos']) && count($respond_data['videos']) > 0 )
+         @if(isset($respond_data['Series']) && count($respond_data['Series']) > 0 )
 
 
-            {{-- <div class="iq-main-header align-items-center justify-content-between">
-               <h3 class="vid-title"> Videos</h3>
+             <div class="iq-main-header align-items-center justify-content-between">
+               <h3 class="vid-title"> Series List</h3>
             </div>
-             --}}
+            
              
             <div class="favorites-contens">
                <ul class="category-page list-inline row p-0 mb-0">
-                     @forelse($respond_data['videos'] as $key => $video)
+                     @forelse($respond_data['Series'] as $key => $Serie)
+
                         <li class="slide-item col-sm-2 col-md-2 col-xs-12">
-                           <a  href="{{ $video->redirect_url  }}">
+                           <a  href="<?php echo URL::to('') ?><?= '/play_series/' . $Serie->slug ?>">
                               <div class="block-images position-relative">
                                  <div class="img-box">
-                                    <img src="{{ $video->image_url }}" class="img-fluid w-100" alt="">
-                                       @if(!empty($video->ppv_price))
-                                          <p class="p-tag1" ><?php echo $respond_data['currency']->symbol.' '.$video->ppv_price; ?></p>
-                                       @elseif( !empty($video->global_ppv || !empty($video->global_ppv) && $video->ppv_price == null)) 
-                                          <p class="p-tag1"><?php echo $video->global_ppv.' '. $respond_data['currency']->symbol; ?></p>
-                                       @elseif($video->global_ppv == null && $video->ppv_price == null )
+                                    <img src="<?php echo URL::to('/').'/public/uploads/images/'.$Serie->image;  ?>" class="img-fluid w-100" alt="">
+                                       @if(!empty($Serie->ppv_price))
+                                          <p class="p-tag1" ><?php echo $respond_data['currency']->symbol.' '.$Serie->ppv_price; ?></p>
+                                       @elseif( !empty($Serie->global_ppv || !empty($Serie->global_ppv) && $Serie->ppv_price == null)) 
+                                          <p class="p-tag1"><?php echo $Serie->global_ppv.' '. $respond_data['currency']->symbol; ?></p>
+                                       @elseif($Serie->global_ppv == null && $Serie->ppv_price == null )
                                           <p class="p-tag" ><?php echo "Free"; ?></p>
                                        @endif
                                  </div>
 
                                  <div class="block-description">
                                     @if( $respond_data['ThumbnailSetting']->title == 1)  <!-- Title -->
-                                       <a  href="{{ $video->redirect_url  }}">
-                                          <h6>{{ strlen($video->title) > 17 ? substr($video->title, 0, 18) . '...' : $video->title }}</h6>
+                                       <a  href="<?php echo URL::to('') ?><?= '/play_series/' . $Serie->slug ?>">
+                                          <h6><?php  echo (strlen($Serie->title) > 17) ? substr($Serie->title,0,18).'...' : $Serie->title; ?></h6>
                                        </a>
                                     @endif  
 
-                                         {{-- Source --}}
-                                    <div class="movie-time my-2">
-                                       <span class="text-white">
-                                           {{ $video->source }}
-                                       </span>
-                                    </div>
-
                                     <div class="movie-time d-flex align-items-center pt-1">
-                                       @if($respond_data['ThumbnailSetting']->age == 1 && $video->age_restrict != null ) 
+                                       @if($respond_data['ThumbnailSetting']->age == 1) 
                                                    <!-- Age -->
-                                          <div class="badge badge-secondary p-1 mr-2">{{ $video->age_restrict.' '.'+' }} </div>
+                                          <div class="badge badge-secondary p-1 mr-2"><?php echo $Serie->age_restrict.' '.'+' ?></div>
                                        @endif
 
-                                       @if($respond_data['ThumbnailSetting']->duration == 1 && $video->duration != null ) 
+                                       @if($respond_data['ThumbnailSetting']->duration == 1) 
                                                    <!-- Duration -->
-                                          <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $video->duration); ?></span>
+                                          <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $Serie->duration); ?></span>
                                        @endif
                                     </div>
 
                                     @if(($respond_data['ThumbnailSetting']->published_year == 1) || ($respond_data['ThumbnailSetting']->rating == 1))
                                        <div class="movie-time d-flex align-items-center pt-1">
-                                          @if($respond_data['ThumbnailSetting']->rating == 1 && $video->rating != null) <!--Rating  -->
+                                          @if($respond_data['ThumbnailSetting']->rating == 1) <!--Rating  -->
                                              <div class="badge badge-secondary p-1 mr-2">
                                                 <span class="text-white">
                                                    <i class="fa fa-star-half-o" aria-hidden="true"></i>
-                                                      {{ $video->rating }}
+                                                      {{ $Serie->rating }}
                                                 </span>
                                              </div>
                                           @endif
 
-                                          @if($respond_data['ThumbnailSetting']->published_year == 1 && $video->year != null)   <!-- published_year -->
+                                          @if($respond_data['ThumbnailSetting']->published_year == 1)   <!-- published_year -->
                                                 <div class="badge badge-secondary p-1 mr-2">
                                                    <span class="text-white">
                                                       <i class="fa fa-calendar" aria-hidden="true"></i>
-                                                         {{ ($video->year) }}
+                                                         {{ ($Serie->year) }}
                                                    </span>
                                                 </div>
                                           @endif
 
-                                          @if($respond_data['ThumbnailSetting']->featured == 1 && $video->featured != null &&  $video->featured == 1) <!-- Featured -->
+                                          @if($respond_data['ThumbnailSetting']->featured == 1 &&  $Serie->featured == 1) <!-- Featured -->
                                                 <div class="badge badge-secondary p-1 mr-2">
                                                    <span class="text-white">
                                                       <i class="fa fa-flag-o" aria-hidden="true"></i>
@@ -108,7 +85,7 @@
                                     @endif
 
                                     <div class="hover-buttons">
-                                       <a  href="{{ $video->redirect_url  }}">	
+                                       <a  href="<?php echo URL::to('') ?><?= '/play_series/' . $Serie->slug ?>">	
                                           <span class="text-white">
                                              <i class="fa fa-play mr-1" aria-hidden="true"></i> Watch Now
                                           </span>
@@ -118,7 +95,7 @@
                               </div>
 
                               <div>
-                                 <button type="button" class="show-details-button" data-toggle="modal" data-target="#myModal<?= $video->id;?>">
+                                 <button type="button" class="show-details-button" data-toggle="modal" data-target="#myModal<?= $Serie->id;?>">
                                     <span class="text-center thumbarrow-sec">
                                        <!-- <img src="<?php echo URL::to('/').'/assets/img/arrow-red.png';?>" class="thumbarrow thumbarrow-red" alt="right-arrow">-->
                                     </span>
@@ -130,19 +107,19 @@
                         </li>
                      @empty
                         <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
-                           <p ><h3 class="text-center">No video Available</h3>
+                           <p ><h3 class="text-center">No Series Available</h3>
                         </div>
                      @endforelse
                </ul>
 
                <div class="col-md-12 pagination justify-content-end" >
-                  {!!  $respond_data['videos']->links() !!}
+                  {!!  $respond_data['Series']->links() !!}
                </div>
 
             </div>
          @else
             <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
-               <p ><h3 class="text-center">No Video Available</h3>
+               <p ><h3 class="text-center">No Series Available</h3>
             </div>
          @endif
       </div>

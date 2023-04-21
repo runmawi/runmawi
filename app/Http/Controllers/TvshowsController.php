@@ -71,6 +71,8 @@ class TvshowsController extends Controller
         $cityName = $geoip->getcity();
 
         $this->countryName = $countryName;
+
+        $this->videos_per_page = $settings->videos_per_page;
     }
 
     /**
@@ -723,83 +725,80 @@ class TvshowsController extends Controller
 
     public function PlayEpisode($episode_name)
     {
-        //
-        $settings = Setting::first();
-        if (Auth::guest() && $settings->access_free == 0):
-            return Redirect::to('/login');
-        endif;
-        $episode = Episode::where('slug', '=', $episode_name)->first();
-        $id = $episode->id;
-        // $episode = Episode::findOrFail($id);
-        $season = SeriesSeason::where('series_id', '=', $episode->series_id)
-            ->with('episodes')
-            ->get();
-        $series = Series::find($episode->series_id);
-        //  if(){}
-        //$episoderesolutions = Episode::findOrFail($id)->episoderesolutions;
-        $episodenext = Episode::where('id', '>', $id)
-            ->where('series_id', '=', $episode->series_id)
-            ->first();
-        $episodeprev = Episode::where('id', '<', $id)
-            ->where('series_id', '=', $episode->series_id)
-            ->first();
-        //Make sure series is active
+        try{
+            $settings = Setting::first();
 
-        $wishlisted = false;
-        if (!Auth::guest()):
-            $wishlisted = Wishlist::where('user_id', '=', Auth::user()->id)
-                ->where('episode_id', '=', $id)
-                ->first();
-        endif;
+            if (Auth::guest() && $settings->access_free == 0):
+                return Redirect::to('/login');
+            endif;
+            
+            $episode = Episode::where('slug', '=', $episode_name)->first();
 
-        $watchlater = false;
+            $id = $episode->id;
 
-        if (!Auth::guest()):
-            $watchlater = Watchlater::where('user_id', '=', Auth::user()->id)
-                ->where('episode_id', '=', $id)
-                ->first();
-        endif;
-        if ($series->ppv_status == 1 && $settings->access_free == 0) {
-            $ppv_exits = PpvPurchase::where('user_id', '=', Auth::user()->id)
-                ->where('series_id', '=', $series->id)
-                ->count();
-            // dd($ppv_exits);
-        } else {
-            $ppv_exits = 0;
-        }
-
-        if ((!Auth::guest() && Auth::user()->role == 'admin') || $series->active) {
-            if ($series->ppv_status != 1 || $ppv_exits > 0) {
-                $view_increment = $this->handleViewCount($id);
-
-                $playerui = Playerui::first();
-                $data = [
-                    'episode' => $episode,
-                    'season' => $season,
-                    'series' => $series,
-                    'playerui_settings' => $playerui,
-                    'episodenext' => $episodenext,
-                    'episodeprev' => $episodeprev,
-                    'mywishlisted' => $wishlisted,
-                    'watchlatered' => $watchlater,
-                    'url' => 'episodes',
-                    'settings' => $settings,
-                    'menu' => Menu::orderBy('order', 'ASC')->get(),
-                    'view_increment' => $view_increment,
-                    'series_categories' => SeriesGenre::all(),
-                    'pages' => Page::where('active', '=', 1)->get(),
-                ];
-                if (Auth::guest() && $settings->access_free == 1) {
-                    return Theme::view('beforloginepisode', $data);
+            $season = SeriesSeason::where('series_id', '=', $episode->series_id)
+                ->with('episodes')
+                ->get();
+            
+            $series = Series::find($episode->series_id);
+            
+            $wishlisted = false;
+            if (!Auth::guest()):
+                $wishlisted = Wishlist::where('user_id', '=', Auth::user()->id)
+                    ->where('episode_id', '=', $id)
+                    ->first();
+            endif;
+            
+            $watchlater = false;
+            if (!Auth::guest()):
+                $watchlater = Watchlater::where('user_id', '=', Auth::user()->id)
+                    ->where('episode_id', '=', $id)
+                    ->first();
+            endif;
+            
+            if ($series->ppv_status == 1 && $settings->access_free == 0) {
+                $ppv_exits = PpvPurchase::where('user_id', '=', Auth::user()->id)
+                    ->where('series_id', '=', $series->id)
+                    ->count();
+            } else {
+                $ppv_exits = 0;
+            }
+            
+            if ((!Auth::guest() && Auth::user()->role == 'admin') || $series->active) {
+                if ($series->ppv_status != 1 || $ppv_exits > 0) {
+                    $view_increment = $this->handleViewCount($id);
+            
+                    $playerui = Playerui::first();
+                    $data = [
+                        'episode' => $episode,
+                        'season' => $season,
+                        'series' => $series,
+                        'playerui_settings' => $playerui,
+                        'episodenext' => $episodenext,
+                        'episodeprev' => $episodeprev,
+                        'mywishlisted' => $wishlisted,
+                        'watchlatered' => $watchlater,
+                        'url' => 'episodes',
+                        'settings' => $settings,
+                        'menu' => Menu::orderBy('order', 'ASC')->get(),
+                        'view_increment' => $view_increment,
+                        'series_categories' => SeriesGenre::all(),
+                        'pages' => Page::where('active', '=', 1)->get(),
+                    ];
+            
+                    if (Auth::guest() && $settings->access_free == 1) {
+                        return Theme::view('beforloginepisode', $data);
+                    } else {
+                        return Theme::view('episode', $data);
+                    }
                 } else {
-                    return Theme::view('episode', $data);
+                    return Redirect::to('/tv-shows')->with(['message' => 'Sorry, To Watch series You have to purchase.', 'note_type' => 'error']);
                 }
             } else {
-                // return Redirect::to('/login');
-                return Redirect::to('/tv-shows')->with(['message' => 'Sorry, To Watch series You have to purchase.', 'note_type' => 'error']);
+                return Redirect::to('series-list')->with(['note' => 'Sorry, this series is no longer active.', 'note_type' => 'error']);
             }
-        } else {
-            return Redirect::to('series-list')->with(['note' => 'Sorry, this series is no longer active.', 'note_type' => 'error']);
+        } catch (\Throwable $th) {
+            return abort(404);
         }
     }
 
@@ -991,14 +990,18 @@ class TvshowsController extends Controller
 
     public function SeriesCategory($slug){
 
+        $Theme = HomeSetting::pluck('theme_choosen')->first();
+        Theme::uses($Theme);
+
         $CategorySeries =  SeriesGenre::where('slug',$slug)->first();
         $SeriesGenre = $CategorySeries != null ? $CategorySeries->specific_category_series : array();
-        // dd($SeriesGenre);
         
         $Series_Genre = $SeriesGenre->all();
 
-        $data = array( 'SeriesGenre' => $Series_Genre , 'CategorySeries' => $CategorySeries);
-
+        $data = array( 
+                    'SeriesGenre' => $Series_Genre ,
+                    'CategorySeries' => $CategorySeries
+                );
 
         return Theme::view('partials.home.SeriesCategory',$data);
 
@@ -1007,7 +1010,7 @@ class TvshowsController extends Controller
     
     public function SeriescategoryList(Request $request)
     {
-        // try {
+        try {
             $settings = Setting::first();
 
             if ($settings->enable_landing_page == 1 && Auth::guest()) {
@@ -1027,9 +1030,9 @@ class TvshowsController extends Controller
             ];
 
             return Theme::view('SeriescategoryList', $data);
-        // } catch (\Throwable $th) {
-        //     return abort(404);
-        // }
+        } catch (\Throwable $th) {
+            return abort(404);
+        }
     }
 
 }

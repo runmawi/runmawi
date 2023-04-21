@@ -1,15 +1,18 @@
 <?php 
-            // Partner Welcome Template - signup
-    $template = App\EmailTemplate::where('id','=',43)->first(); 
+            // Partner Content Reject Tempalte
+            
+    $template = App\EmailTemplate::where('id','=',45)->first(); 
     $template_description = $template->description ;
 
     $template_change = array( 
         "{Partner Name}", 
+        "{Partner Account Name}",
         "{Website Name}", 
     );
 
     $template_content= array( 
-        $Partner_Name,
+        $partner_name,
+        $partner_account_name,
         $website_name ,
     ) ;
 

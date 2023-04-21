@@ -14,7 +14,6 @@ use Hash;
 use Illuminate\Support\Facades\DB;
 use App\Video as Video;
 use App\VideoCategory as VideoCategory;
-use Image;
 use App\Menu as Menu;
 use App\Country as Country;
 use App\Slider as Slider;
@@ -75,6 +74,8 @@ use App\Region;
 use App\RegionView;
 use App\ModeratorPayout;
 use App\SeriesGenre;
+use Intervention\Image\Facades\Image;
+use Intervention\Image\Filters\DemoFilter;
 
 class ModeratorsUserController extends Controller
 {
@@ -373,7 +374,7 @@ class ModeratorsUserController extends Controller
                     $message->to($users->email, $users->username)->subject($data['email_subject']);
                 });
 
-                $email_log      = "Mail Sent Successfully from Congratulations! Your Partner's request has been Approved.";
+                $email_log      = "Mail Sent Successfully from Congratulations! Your Partner's (Content Partner) request has been Approved.";
                 $email_template = "44";
                 $user_id = $users->id;
 
@@ -439,7 +440,7 @@ class ModeratorsUserController extends Controller
                    'email_subject' => $email_subject,
                 );
 
-                Mail::send('emails.cpp_user_reject', array(
+                Mail::send('emails.Channel_user_rejected.blade', array(
                     'partner_name' => $users->username,
                     'partner_account_name' => $users->username,
                     'website_name' => GetWebsiteName(),
@@ -449,7 +450,7 @@ class ModeratorsUserController extends Controller
                     $message->to($users->email, $users->username)->subject($data['email_subject']);
                 });
 
-                $email_log      = "Mail Sent Successfully from Partner's request has been Reject";
+                $email_log      = "Mail Sent Successfully from Partner's (Content Partner) request has been Reject";
                 $email_template = "45";
                 $user_id = $users->id;
 
@@ -7168,6 +7169,7 @@ class ModeratorsUserController extends Controller
 
         $logopath = URL::to("/public/uploads/moderator_albums/");
         $path = public_path() . "/uploads/moderator_albums/";
+        $image_path = public_path() . "/uploads/moderator_albums/";
 
         if ($banner != "") {
 
@@ -7180,9 +7182,23 @@ class ModeratorsUserController extends Controller
             }
             //upload new file
             $file = $banner;
-            $file_banner = str_replace(' ', '_', $file->getClientOriginalName());
-            $file->move($path, $file_banner);
-            $banner = str_replace(' ', '_', $file->getClientOriginalName());
+            if(compress_image_enable() == 1){
+            
+                $filename  = time().'.'.compress_image_format();
+                $banner_image     =  'banner_'.$filename ;
+  
+                Image::make($file)->save(base_path().'/public/uploads/moderator_albums/'.$banner_image,compress_image_resolution() );
+                
+               $banner =  $banner_image;
+            
+              }else{
+  
+                $filename  = time().'.'.$file->getClientOriginalExtension();
+                $banner_image     =  'banner_'.$filename ;
+                Image::make($file)->save(base_path().'/public/uploads/moderator_albums/'.$banner_image );
+                $banner =  $banner_image;
+  
+            }
 
         }else{
             $banner = $ModeratorsUser->banner;
@@ -7200,10 +7216,23 @@ class ModeratorsUserController extends Controller
             }
             //upload new file
             $file = $picture;
-            $file_picture = str_replace(' ', '_', $file->getClientOriginalName());
-            $file->move($path, $file_picture);
-            $file_picture = str_replace(' ', '_', $file->getClientOriginalName());
-
+            if(compress_image_enable() == 1){
+            
+                $filename  = time().'.'.compress_image_format();
+                $picture_image     =  'picture_'.$filename ;
+  
+                Image::make($file)->save(base_path().'/public/uploads/moderator_albums/'.$picture_image,compress_image_resolution() );
+                
+               $file_picture =  $picture_image;
+            
+              }else{
+  
+                $filename  = time().'.'.$file->getClientOriginalExtension();
+                $picture_image     =  'picture_'.$filename ;
+                Image::make($file)->save(base_path().'/public/uploads/moderator_albums/'.$picture_image );
+                $file_picture =  $picture_image;
+  
+            }
         }else{
             $file_picture = $ModeratorsUser->picture;
         }

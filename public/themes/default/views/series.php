@@ -298,7 +298,7 @@ $series = $series_data ;
 				<div class="clear"></div>
 				</div> 
 
-        <?php elseif( Auth::user()->role == "registered" && $series->access == "subscriber"):
+        <?php elseif(!Auth::guest() && Auth::user()->role == "registered" && $series->access == "subscriber"):
 						
             // }
               ?>
@@ -316,7 +316,7 @@ $series = $series_data ;
 
 				<div class="col-md-2 text-center text-white">
                 <div class="col-md-4">
-			<?php if ( $series->ppv_status == 1 && Auth::User()->role !="admin") { ?>
+			<?php if ( $series->ppv_status == 1 && !Auth::guest() && Auth::User()->role !="admin") { ?>
 			<button class="btn btn-primary" onclick="pay(<?php echo $settings->ppv_price; ?>)" >
 			Purchase For <?php echo $currency->symbol.' '.$settings->ppv_price; ?></button>
 			<?php } ?>

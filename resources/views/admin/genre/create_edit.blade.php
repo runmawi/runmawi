@@ -32,8 +32,14 @@
         
                     <div class="form-group {{ $errors->has('slug') ? 'has-error' : '' }}">
                         <label>Display In Menu :</label>
-                        <input type="radio" checked id="in_menu"  id="in_menu" name="in_menu" value="1" <?php if( $categories[0]->in_menu == 1) { echo "checked";} ?>>Yes
+                        <input type="radio" checked   id="in_menu" name="in_menu" value="1" <?php if( $categories[0]->in_menu == 1) { echo "checked";} ?>>Yes
                         <input type="radio" id="in_menu" name="in_menu" value="0"<?php if( $categories[0]->in_menu == 0) { echo "checked";} ?>>No
+                    </div>
+
+					<div class="form-group">
+                        <label>Display In Category List :</label>
+                        <input type="radio" name="category_list_active" value="1" {{ $categories[0]->category_list_active == 1 ? "checked" : " " }} />Yes
+                        <input type="radio" name="category_list_active" value="0" {{ $categories[0]->category_list_active == 0 ? "checked" : " " }} />No
                     </div>
 
 					<div class="row">
