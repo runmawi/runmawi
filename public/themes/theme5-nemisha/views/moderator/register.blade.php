@@ -19,7 +19,7 @@
                <div class="sign-in-page-data">
                   <div class="sign-in-from w-100 m-auto">
                       <div align="center">
-                          <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" style="margin-bottom:1rem;">       <h3 class="mb-3 text-center">Sign Up and Content Partner</h3>
+                          <img class="mb-2" src="<?php echo URL::to('/assets/img/nem.png'); ?>" alt="<?php echo $settings->website_name; ?>" />        <h3 class="mb-3 text-center">Sign Up and Content Partner</h3>
                       </div>
                       <div class="clear"></div>
                       @if (Session::has('message'))
@@ -302,6 +302,9 @@ i.fa.fa-google-plus {
     option {
     background: #474644 !important;
 }
+    .sign-in-page-data h3{
+        font-size: 45px!important;
+    }
       .reveal{
         margin-left: -57px;
     height: 45px !important;
