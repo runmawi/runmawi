@@ -19,7 +19,7 @@
 
 @section('content')
 <div id="content-page" class="content-page">
-         <div class="container-fluid">
+         <div class="container-fluid mt-4">
              <div class="iq-card">
 <div id="admin-container" style="padding: 15px;">
 <!-- This is where -->
