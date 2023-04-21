@@ -276,6 +276,9 @@
     border-radius: 0;
     margin-bottom: 1rem !important;
 }
+    .sign-in-page-data h3{
+    font-size: 35px!important;
+    }
     .form-control:focus {
      color: var(--iq-white) !important;
     background-color: #fff;
