@@ -360,6 +360,7 @@ for($i=0;$i<(count($userrolepermissiom));$i++){
                    <?php }else{
 
                    } ?>
+                  <li><a href="{{ URL::to('/cpp/my-account') }}"><i class="las la-user-plus"></i>About My Profile</a></li>
                
                </ul>
             </nav>

@@ -411,8 +411,8 @@ class ModeratorsLoginController extends Controller
             //       $message->to($request->email_id, $request->username)->subject('Verify your email address');
             //    });
 
-            return redirect('/cpp/verify-request')
-                ->with('message', 'Successfully Users saved!.');
+            return redirect('/cpp/login')
+            ->with('message', 'You have successfully registered. Please login If You Approved below.');
         }
         else
         {

@@ -1268,6 +1268,8 @@ Route::post('video_exportCsv', 'CPPAnalyticsController@VideoExportCsv');
 Route::get('myprofile', 'ModeratorsUserController@CPPMyProfile');
 Route::post('update-myprofile', 'ModeratorsUserController@CPPUpdateMyProfile');
 
+Route::get('my-account', 'ModeratorsUserController@CPPmyaccount');
+Route::post('update-account', 'ModeratorsUserController@CPPUpdateMyAccount');
 
 Route::get('/view_by_region', 'ModeratorsUserController@CPPViewsRegion');
 Route::get('/regionvideos', 'ModeratorsUserController@CPPRegionVideos');
@@ -1278,6 +1280,12 @@ Route::get('/logout', 'ModeratorsLoginController@logout');
 //  CPP Video Management
 Route::get('/videos', 'CPPAdminVideosController@CPPindex');
 Route::get('/videos/edit/{id}', 'CPPAdminVideosController@CPPedit');
+Route::get('/videos/editvideo/{id}', 'CPPAdminVideosController@CPPeditvideo');
+Route::post('/Updatem3u8url',  'CPPAdminVideosController@Updatem3u8url');
+Route::post('/UpdateEmbededcode',  'CPPAdminVideosController@UpdateEmbededcode');
+Route::post('/Updatemp4url',  'CPPAdminVideosController@Updatemp4url');
+Route::post('/uploadEditVideo',  'CPPAdminVideosController@uploadEditVideo');
+Route::post('/AWSuploadEditVideo',  'CPPAdminVideosController@AWSuploadEditVideo');
 Route::get('/videos/delete/{id}', array('before' => 'demo', 'uses' => 'CPPAdminVideosController@CPPdestroy'));
 Route::get('/videos/create', 'CPPAdminVideosController@CPPcreate');
 Route::post('/videos/fileupdate', array('before' => 'demo', 'uses' => 'CPPAdminVideosController@CPPfileupdate'));
@@ -1470,6 +1478,12 @@ Route::post('/audios/audioupdate', array('before' => 'demo', 'uses' => 'CPPAdmin
     //  Channel Video Management
     Route::get('/videos', 'ChannelVideosController@Channelindex');
     Route::get('/videos/edit/{id}', 'ChannelVideosController@Channeledit');
+    Route::get('/videos/editvideo/{id}', 'ChannelVideosController@Channeleditvideo');
+    Route::post('/Updatem3u8url',  'ChannelVideosController@Updatem3u8url');
+    Route::post('/UpdateEmbededcode',  'ChannelVideosController@UpdateEmbededcode');
+    Route::post('/Updatemp4url',  'ChannelVideosController@Updatemp4url');
+    Route::post('/uploadEditVideo',  'ChannelVideosController@uploadEditVideo');
+    Route::post('/AWSuploadEditVideo',  'ChannelVideosController@AWSuploadEditVideo');
     Route::get('/videos/delete/{id}', array('before' => 'demo', 'uses' => 'ChannelVideosController@Channeldestroy'));
     Route::get('/videos/create', 'ChannelVideosController@Channelcreate');
     Route::post('/videos/fileupdate', array('before' => 'demo', 'uses' => 'ChannelVideosController@Channelfileupdate'));
