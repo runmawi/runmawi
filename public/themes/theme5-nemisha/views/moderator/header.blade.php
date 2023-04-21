@@ -64,7 +64,7 @@ $uppercase =  ucfirst($request_url);
                               <span class="navbar-menu-icon navbar-menu-icon--bottom"></span>
                            </div>
                         </a>
-                        <a class="navbar-brand" href="#"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a>
+                        <a class="navbar-brand" href="#">  <img class="mb-2" src="<?php echo URL::to('/assets/img/nem.png'); ?>" alt="<?php echo $settings->website_name; ?>" />   </a>
                          
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                            <div class="menu-main-menu-container">
