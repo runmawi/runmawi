@@ -13,7 +13,7 @@
 @section('content')
 <?php //dd($cppuser); ?>
      <div id="content-page" class="content-page">
-         <div class="container-fluid">
+         <div class="container-fluid mt-4">
             <div class="row">
                <div class="col-sm-12">
                   <div class="iq-card">

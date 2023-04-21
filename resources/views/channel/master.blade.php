@@ -89,6 +89,9 @@ $channel = App\Channel::where('id',$channel->id)->first();
     hr {
         border-top: 1px solid #e2e2e22e!important;
     }
+    #video{
+        background: #fff!important;
+    }
     
 </style>
 
@@ -116,26 +119,26 @@ $channel = App\Channel::where('id',$channel->id)->first();
             <nav class="iq-sidebar-menu">
                <ul id="iq-sidebar-toggle" class="iq-menu">
                      
-                  <li class="active active-menu"><a href="<?php echo URL::to('/channel/dashboard') ?>" class="iq-waves-effect"><i class="las la-home iq-arrow-left"></i><span>Dashboard</span></a></li>
-                  <li><a href="#video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-star-half-alt"></i><span>Video Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                  <li class="active active-menu"><a href="<?php echo URL::to('/channel/dashboard') ?>" class="iq-waves-effect"><img height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/home.svg')?>"><span>Dashboard</span></a></li>
+                  <li><a href="#video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" height="40" width="40" src="<?php echo  URL::to('/assets/img/sidemenu/vi.svg')?>"><span>Video Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                   <ul id="video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li><a href="{{ URL::to('/channel/videos') }}"><i class="las la-user-plus"></i>All Videos</a></li>
-                        <li><a href="{{ URL::to('/channel/videos/create') }}"><i class="las la-eye"></i>Add New Video</a></li>
-                        <li><a href="{{ URL::to('/channel/videos/categories') }}"><i class="las la-eye"></i>Manage Video Categories</a></li>
+                        <li><a href="{{ URL::to('/channel/videos') }}">All Videos</a></li>
+                        <li><a href="{{ URL::to('/channel/videos/create') }}">Add New Video</a></li>
+                        <li><a href="{{ URL::to('/channel/videos/categories') }}">Manage Video Categories</a></li>
                         </ul></li>
-                  <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-star-half-alt"></i><span>Series & Episodes </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                  <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/tv.svg')?>"><span>Series & Episodes </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                   <ul id="series" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                  <li><a href="{{ URL::to('/channel/series_list') }}"><i class="las la-user-plus"></i>Series List</a></li>
-                  <li><a href="{{ URL::to('/channel/series_create') }}"><i class="las la-eye"></i>Add New Series</a></li>
+                  <li><a href="{{ URL::to('/channel/series_list') }}">Series List</a></li>
+                  <li><a href="{{ URL::to('/channel/series_create') }}">Add New Series</a></li>
                   </ul>
                </li>   
            
-           <li><a href="#audios" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-music"></i><span>Audio Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+           <li><a href="#audios" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/music.svg')?>" height="40" width="40"><span>Audio Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
             <ul id="audios" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-              <li><a href="{{ URL::to('/channel/audios') }}"><i class="las la-music"></i>Audio List</a></li>
-              <li><a href="{{ URL::to('/channel/audios/create') }}"><i class="las la-plus"></i>Add New Audio</a></li>
-              <li><a href="{{ URL::to('/channel/audios/categories') }}"><i class="las la-eye"></i>Manage Audio Categories</a></li>
-              <li><a href="{{ URL::to('/channel/audios/albums') }}"><i class="las la-eye"></i>Manage Albums</a></li>
+              <li><a href="{{ URL::to('/channel/audios') }}">Audio List</a></li>
+              <li><a href="{{ URL::to('/channel/audios/create') }}">Add New Audio</a></li>
+              <li><a href="{{ URL::to('/channel/audios/categories') }}">Manage Audio Categories</a></li>
+              <li><a href="{{ URL::to('/channel/audios/albums') }}">Manage Albums</a></li>
             </ul>
           </li>
 
@@ -150,31 +153,31 @@ $channel = App\Channel::where('id',$channel->id)->first();
 
         
                    <li>
-                     <a href="#live-video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-film"></i><span>Manage Live Videos</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                     <a href="#live-video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/live.svg')?>" height="40" width="40"><span>Manage Live Videos</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                      <ul id="live-video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                     <li><a href="{{ URL::to('/channel/livestream') }}"><i class="las la-user-plus"></i>All Live Videos</a></li>
-                     <li><a href="{{ URL::to('/channel/livestream/create') }}"><i class="las la-eye"></i>Add New Live Video</a></li>
-                     <li><a href="{{ URL::to('/channel/livestream/categories') }}"><i class="las la-eye"></i>Manage Live Video Categories</a></li>
-                     <li><a href="{{ URL::to('/channel/live-event-artist') }}"><i class="las la-eye"></i>Manage Live Event Create</a></li>
+                     <li><a href="{{ URL::to('/channel/livestream') }}">All Live Videos</a></li>
+                     <li><a href="{{ URL::to('/channel/livestream/create') }}">Add New Live Video</a></li>
+                     <li><a href="{{ URL::to('/channel/livestream/categories') }}">Manage Live Video Categories</a></li>
+                     <li><a href="{{ URL::to('/channel/live-event-artist') }}">Manage Live Event Create</a></li>
                   </ul>
                   </li>
 
 
                           
                   <li>
-                     <a href="#settings" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-film"></i><span>Manage Channel Setting</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                     <a href="#settings" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/cpl.svg')?>"><span>Manage Channel Setting</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                      <ul id="settings" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                     <li><a href="{{ URL::to('/channel/setting/bank_setting') }}"><i class="las la-eye"></i>My Channel Bank Settings </a></li>
-                     <li><a href="{{ URL::to('/channel/setting/about_channel_setting') }}"><i class="las la-user-plus"></i>About My Channel</a></li>
+                     <li><a href="{{ URL::to('/channel/setting/bank_setting') }}">My Channel Settings </a></li>
+                     <li><a href="{{ URL::to('/channel/setting/about_channel_setting') }}">About My Channel</a></li>
                   </ul>
                   </li>
 
                   <li>
-                     <a href="#analytics_managements" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-film"></i><span>Analytics</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                     <a href="#analytics_managements" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/ana.svg')?>" height="40" width="40"><span>Analytics</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                      <ul id="analytics_managements" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                     <li><a href="{{ URL::to('/channel/video-analytics') }}"><i class="las la-eye"></i>Video Analytics </a></li>
-                     <li><a href="{{ URL::to('/channel/view_by_region') }}"><i class="las la-user-plus"></i>Video View BY Region</a></li>
-                     <li><a href="{{ URL::to('/channel/payouts') }}"><i class="las la-user-plus"></i>Payouts</a></li>
+                     <li><a href="{{ URL::to('/channel/video-analytics') }}">Video Analytics </a></li>
+                     <li><a href="{{ URL::to('/channel/view_by_region') }}">Video View BY Region</a></li>
+                     <li><a href="{{ URL::to('/channel/payouts') }}">Payouts</a></li>
 
                   </ul>
                   </li>
@@ -301,7 +304,7 @@ $channel = App\Channel::where('id',$channel->id)->first();
                          </a>
                       </div>
                    </div>
-                   <div class="iq-search-bar ml-auto" style="margin-left: 59% !important;margin-top: -1% !important;">
+                   <div class="iq-search-bar ml-auto" style="margin-left: 56% !important;margin-top: -2% !important;">
 
                    <form method="POST" action="{{ route('login') }}" class="mt-4">
                     @csrf

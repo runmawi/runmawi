@@ -18,7 +18,7 @@
 </style>
 @section('content')
 <div id="content-page" class="content-page">
-            <div class="container-fluid">
+            <div class="container-fluid mt-4">
 	<div class="admin-section-title">
          <div class="iq-card">
 		<div class="row">

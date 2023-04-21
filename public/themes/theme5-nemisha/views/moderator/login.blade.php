@@ -107,7 +107,7 @@ i.fa.fa-google-plus {
             <div class="sign-user_card ">                    
                <div class="sign-in-page-data">
                   <div class="sign-in-from  m-auto" align="center">
-                  <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;">
+                 <img class="mb-2" src="<?php echo URL::to('/assets/img/nem.png'); ?>" alt="<?php echo $settings->website_name; ?>" /> 
                   <div>
 
                   @if (Session::has('message'))
