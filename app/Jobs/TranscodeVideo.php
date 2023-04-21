@@ -55,7 +55,18 @@ class TranscodeVideo implements ShouldQueue
         $watermark_path = public_path() . "/uploads/transcode/watermark.png";
 
         $Playerui = Playerui::first();
-  
+        if(!empty($Playerui->watermark_right)){
+            $watermark_right = $Playerui->watermark_right;
+        }else{
+            $watermark_right = 10 ;
+        }
+
+        if(!empty($Playerui->watermark_bottom)){
+            $watermark_bottom = $Playerui->watermark_bottom;
+        }else{
+            $watermark_bottom = 10 ;
+        }
+
         $watermark_path = public_path() . "/uploads/settings/".$Playerui->video_watermark;
 
         $video_path = storage_path() . "/app/public/".$video;
@@ -76,8 +87,8 @@ class TranscodeVideo implements ShouldQueue
         $video->filters()
             ->watermark($watermark, [
                 'position' => 'relative',
-                'bottom' => 10,
-                'right' => 10,
+                'bottom' => $watermark_bottom,
+                'right' => $watermark_right,
             ]);
 
         $video->save($format, $output_path);
