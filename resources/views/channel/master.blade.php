@@ -89,6 +89,9 @@ $channel = App\Channel::where('id',$channel->id)->first();
     hr {
         border-top: 1px solid #e2e2e22e!important;
     }
+    #video{
+        background: #fff!important;
+    }
     
 </style>
 
