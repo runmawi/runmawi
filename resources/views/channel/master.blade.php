@@ -301,7 +301,7 @@ $channel = App\Channel::where('id',$channel->id)->first();
                          </a>
                       </div>
                    </div>
-                   <div class="iq-search-bar ml-auto" style="margin-left: 59% !important;margin-top: -1% !important;">
+                   <div class="iq-search-bar ml-auto" style="margin-left: 56% !important;margin-top: -2% !important;">
 
                    <form method="POST" action="{{ route('login') }}" class="mt-4">
                     @csrf
