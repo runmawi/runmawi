@@ -87,8 +87,8 @@ class TranscodeVideo implements ShouldQueue
         $video->filters()
             ->watermark($watermark, [
                 'position' => 'relative',
-                'bottom' => 10,
-                'right' => 10,
+                'bottom' => $watermark_bottom,
+                'right' => $watermark_right,
             ]);
 
         $video->save($format, $output_path);
