@@ -174,9 +174,10 @@ class ModeratorsLoginController extends Controller
                             ->today())
                             ->count();
                         $top_rated_videos = Video::where("rating", ">", 7)->get();
-                        $recent_views = RecentView::limit(10)->orderBy('id', 'DESC')
+                        $recent_views = RecentView::limit(50)->orderBy('id', 'DESC')
                             ->get();
                         $recent_view = $recent_views->unique('video_id');
+
                         $page = 'admin-dashboard';
                         $data = array(
                             'userrolepermissiom' => $userrolepermissiom,
@@ -189,8 +190,10 @@ class ModeratorsLoginController extends Controller
                             'top_rated_videos' => $top_rated_videos,
                             'recent_views' => $recent_view,
                             'page' => $page,
-                            'total_ppvvideos' => $total_ppvvideos
+                            'total_ppvvideos' => $total_ppvvideos,
+                            'video_category' => VideoCategory::where('uploaded_by','CPP')->get(),
                         );
+
                         return \View::make('moderator.dashboard', $data);
                     }
                     else
@@ -495,8 +498,8 @@ class ModeratorsLoginController extends Controller
             $top_rated_videos = Video::where("rating", ">", 7)->get();
             $recent_views = RecentView::limit(10)->orderBy('id', 'DESC')
                 ->get();
-
             $recent_view = $recent_views->unique('video_id');
+
             $page = 'admin-dashboard';
             $data = array(
                 'userrolepermissiom' => $userrolepermissiom,
@@ -509,7 +512,8 @@ class ModeratorsLoginController extends Controller
                 'top_rated_videos' => $top_rated_videos,
                 'recent_views' => $recent_view,
                 'page' => $page,
-                'total_ppvvideos' => $total_ppvvideos
+                'total_ppvvideos' => $total_ppvvideos,
+                'video_category' => VideoCategory::where('uploaded_by','CPP')->get(),
             );
 
             return \View::make('moderator.dashboard', $data);

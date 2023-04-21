@@ -118,7 +118,9 @@ border-radius: 0px 4px 4px 0px;
                                    
                                     </td> -->
                                     <!-- <td>@if(isset($video->cppuser->username)) Uploaded by {{ $video->cppuser->username }} @else  Admin @endif</td> -->
-                                    <td>@if(isset($video->uploaded_by) && $video->uploaded_by == 'CPP') Uploaded by Content Partner @else  Uploaded by Admin @endif</td>
+                                    <td>@if(isset($video->uploaded_by) && $video->uploaded_by == 'CPP') Uploaded by Content Partner 
+                                       @elseif(isset($video->uploaded_by) && $video->uploaded_by == 'Channel') Uploaded by Channel Partner 
+                                       @else  Uploaded by Admin @endif</td>
                                     <td>@if(isset($video->type) && $video->type == "") M3u8 Converted Video  
                                        @elseif(isset($video->type) && $video->type == "mp4_url") MP4 Video
                                        @elseif(isset($video->type) && $video->type == "m3u8_url") M3u8 URL Video
