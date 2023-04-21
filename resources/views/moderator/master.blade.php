@@ -136,13 +136,13 @@ for($i=0;$i<(count($userrolepermissiom));$i++){
  <li><a href="#video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" height="40" width="40" src="<?php echo  URL::to('/assets/img/sidemenu/vi.svg')?>"><span>Video Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
  <ul id="video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
  <?php if( in_array( "All Videos" ,$role)){ ?>
-       <li><a href="{{ URL::to('/cpp/videos') }}"><i class="las la-user-plus"></i>All Videos</a></li>
+       <li><a href="{{ URL::to('/cpp/videos') }}">All Videos</a></li>
        <?php }else{ } ?>
        <?php if( in_array( "Add New Video" ,$role)){ ?>
-       <li><a href="{{ URL::to('/cpp/videos/create') }}"><i class="las la-eye"></i>Add New Video</a></li>
+       <li><a href="{{ URL::to('/cpp/videos/create') }}">Add New Video</a></li>
        <?php }else{ } ?>
        <?php if( in_array( "Manage Video Categories" ,$role)){ ?>
-       <li><a href="{{ URL::to('/cpp/videos/categories') }}"><i class="las la-eye"></i>Manage Video Categories</a></li>
+       <li><a href="{{ URL::to('/cpp/videos/categories') }}">Manage Video Categories</a></li>
        <?php }else{ } ?>
 
       </ul></li>
@@ -151,8 +151,8 @@ for($i=0;$i<(count($userrolepermissiom));$i++){
    <li><a href="#series" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/tv.svg')?>"><span>Series & Episodes </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
             <ul id="series" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
             <?php if( in_array( "Series List" ,$role)){ ?>
-              <li><a href="{{ URL::to('cpp/series_list') }}"><i class="las la-user-plus"></i>Series List</a></li>
-              <li><a href="{{ URL::to('cpp/series/create') }}"><i class="las la-user-plus"></i>Add New Series</a></li>
+              <li><a href="{{ URL::to('cpp/series_list') }}">Series List</a></li>
+              <li><a href="{{ URL::to('cpp/series/create') }}">Add New Series</a></li>
              <?php }else{ } ?>
             <?php if( in_array( "Manage Series Genre" ,$role)){ ?>         
               <!-- <li><a href="{{ URL::to('cpp/Series/Genre') }}"><i class="las la-eye"></i>Manage Series Genre</a></li> -->
@@ -165,16 +165,16 @@ for($i=0;$i<(count($userrolepermissiom));$i++){
            <li><a href="#audios" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/music.svg')?>"><span>Audio Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
             <ul id="audios" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
             <?php if( in_array( "Audio List" ,$role)){ ?>
-              <li><a href="{{ URL::to('/cpp/audios') }}"><i class="las la-music"></i>Audio List</a></li>
+              <li><a href="{{ URL::to('/cpp/audios') }}">Audio List</a></li>
               <?php }else{ } ?>    
               <?php if( in_array( "Add New Audio" ,$role)){ ?>
-              <li><a href="{{ URL::to('/cpp/audios/create') }}"><i class="las la-plus"></i>Add New Audio</a></li>
+              <li><a href="{{ URL::to('/cpp/audios/create') }}">Add New Audio</a></li>
               <?php }else{ } ?>    
               <?php if( in_array( "Manage Audio Categories" ,$role)){ ?>
-              <li><a href="{{ URL::to('/cpp/audios/categories') }}"><i class="las la-eye"></i>Manage Audio Categories</a></li>
+              <li><a href="{{ URL::to('/cpp/audios/categories') }}">Manage Audio Categories</a></li>
            <?php }else{ } ?>    
               <?php if( in_array( "Manage Albums" ,$role)){ ?>
-              <li><a href="{{ URL::to('/cpp/audios/albums') }}"><i class="las la-eye"></i>Manage Albums</a></li>
+              <li><a href="{{ URL::to('/cpp/audios/albums') }}">Manage Albums</a></li>
               <?php }else{ } ?>    
             </ul>
           </li>
@@ -184,10 +184,10 @@ for($i=0;$i<(count($userrolepermissiom));$i++){
           <li><a href="#artists" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-user"></i><span>Artist Management </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
             <ul id="artists" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
    <?php if( in_array( "All Artists" ,$role)){ ?>
-              <li><a href="{{ URL::to('/cpp/artists') }}"><i class="las la-user-plus"></i>All Artists</a></li>
+              <li><a href="{{ URL::to('/cpp/artists') }}">All Artists</a></li>
               <?php }else{ } ?>    
    <?php if( in_array( "Add New Artist" ,$role)){ ?>
-              <li><a href="{{ URL::to('/cpp/artists/create') }}"><i class="las la-eye"></i>Add New Artist</a></li>
+              <li><a href="{{ URL::to('/cpp/artists/create') }}">Add New Artist</a></li>
               <?php }else{ } ?>    
 
             </ul>
@@ -201,15 +201,15 @@ for($i=0;$i<(count($userrolepermissiom));$i++){
                      <a href="#live-video" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/live.svg')?>"><span>Manage Live Videos</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                      <ul id="live-video" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
        <?php if( in_array( "All Live Videos" ,$role)){ ?>  
-                     <li><a href="{{ URL::to('/cpp/livestream') }}"><i class="las la-user-plus"></i>All Live Videos</a></li>
+                     <li><a href="{{ URL::to('/cpp/livestream') }}">All Live Videos</a></li>
                      <?php }else{ } ?>
        <?php if( in_array( "Add New Live Video" ,$role)){ ?>   
-                     <li><a href="{{ URL::to('/cpp/livestream/create') }}"><i class="las la-eye"></i>Add New Live Video</a></li>
+                     <li><a href="{{ URL::to('/cpp/livestream/create') }}">Add New Live Video</a></li>
                      <?php }else{ } ?>
        <?php if( in_array( "Manage Live Video Categories" ,$role)){ ?>   
-                     <li><a href="{{ URL::to('/cpp/livestream/categories') }}"><i class="las la-eye"></i>Manage Live Video Categories</a></li>
+                     <li><a href="{{ URL::to('/cpp/livestream/categories') }}">Manage Live Video Categories</a></li>
                      <?php }else{ } ?>
-                     <li><a href="{{ URL::to('/cpp/live-event-artist') }}"><i class="las la-eye"></i>Manage Live Event Create</a></li>
+                     <li><a href="{{ URL::to('/cpp/live-event-artist') }}">Manage Live Event Create</a></li>
                   </ul>
                   </li>
            <?php }else{ } ?>             
@@ -218,13 +218,13 @@ for($i=0;$i<(count($userrolepermissiom));$i++){
                   <li><a href="#user" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-user-friends"></i><span>Users</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                        <ul id="user" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
        <?php if( in_array( "All Users" ,$role)){ ?>
-                       <li><a href="{{ URL::to('users') }}"><i class="las la-user-plus"></i>All Users</a></li>
+                       <li><a href="{{ URL::to('users') }}">All Users</a></li>
                        <?php }else{ } ?>
        <?php if( in_array( "Add New User" ,$role)){ ?> 
-                       <li><a href="{{ URL::to('user_create') }}"><i class="las la-eye"></i>Add New User</a></li>
+                       <li><a href="{{ URL::to('user_create') }}">Add New User</a></li>
                        <?php }else{ } ?>
        <?php if( in_array( "Add User Roles" ,$role)){ ?> 
-                       <li><a href="{{ URL::to('admin_roles') }}"><i class="las la-eye"></i>Add User Roles</a></li>
+                       <li><a href="{{ URL::to('admin_roles') }}">Add User Roles</a></li>
                        <?php }else{ } ?>
                      </ul>
                       
@@ -237,10 +237,10 @@ for($i=0;$i<(count($userrolepermissiom));$i++){
                      <a href="#language" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-list-ul"></i><span>Manage Languages </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                      <ul id="language" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
        <?php if( in_array( "Video Languages" ,$role)){ ?> 
-                     <li><a href="{{ URL::to('admin_languages') }}"><i class="las la-user-plus"></i>Video Languages</a></li>
+                     <li><a href="{{ URL::to('admin_languages') }}">Video Languages</a></li>
                      <?php }else{ } ?>
        <?php if( in_array( "Manage Translations" ,$role)){ ?>
-                     <li><a href="{{ URL::to('languages') }}"><i class="las la-eye"></i>Manage Translations</a></li>
+                     <li><a href="{{ URL::to('languages') }}">Manage Translations</a></li>
                      <?php }else{ } ?>
        <?php if( in_array( "Manage Transulate Languages" ,$role)){ ?>   
                      <li><a href="{{ URL::to('admin_languages_transulates') }}"><i class="las la-eye"></i>Manage Translate Languages</a></li>
@@ -250,11 +250,11 @@ for($i=0;$i<(count($userrolepermissiom));$i++){
            <?php }else{ } ?>             
             <?php if( in_array( "Manage Countries" ,$role)){ ?>
 
-                    <li><a href="{{ URL::to('managecountry') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Manage Countries</span></a></li>
+                    <li><a href="{{ URL::to('managecountry') }}" class="iq-waves-effect"><span>Manage Countries</span></a></li>
            <?php }else{ } ?>             
             <?php if( in_array( "Manage Sliders" ,$role)){ ?>
 
-            <li><a href="{{ URL::to('slider') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Manage Sliders</span></a></li>
+            <li><a href="{{ URL::to('slider') }}" class="iq-waves-effect"><span>Manage Sliders</span></a></li>
 <?php }else{ } ?> 
    <?php if( in_array( "Player UI" ,$role)){ ?>
 
@@ -285,10 +285,10 @@ for($i=0;$i<(count($userrolepermissiom));$i++){
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="analytics_managements" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li><a href="{{ URL::to('/cpp/video-analytics') }}"><i class="las la-user-plus"></i>Video Analytics </a></li>
-                        <li><a href="{{ URL::to('/cpp/view_by_region') }}"><i class="las la-user-plus"></i>Video View BY Region  </a></li>
-                        <li><a href="{{ URL::to('/cpp/payouts') }}"><i class="las la-user-plus"></i>Video Payouts </a></li>
-                        <li><a href="{{ URL::to('/cpp/live-payouts') }}"><i class="las la-user-plus"></i>LiveStream Payouts </a></li>
+                        <li><a href="{{ URL::to('/cpp/video-analytics') }}">Video Analytics </a></li>
+                        <li><a href="{{ URL::to('/cpp/view_by_region') }}">Video View BY Region  </a></li>
+                        <li><a href="{{ URL::to('/cpp/payouts') }}">Video Payouts </a></li>
+                        <li><a href="{{ URL::to('/cpp/live-payouts') }}">LiveStream Payouts </a></li>
                      </ul>
                   </li>
                   
