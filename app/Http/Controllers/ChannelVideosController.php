@@ -51,6 +51,8 @@ use App\VideoSearchTag;
 use App\RelatedVideo;
 use App\InappPurchase;
 use App\Adscategory;
+use App\StorageSetting;
+use App\Playerui;
 
 class ChannelVideosController extends Controller
 {
@@ -1091,36 +1093,58 @@ class ChannelVideosController extends Controller
             $player_image = (isset($data['player_image'])) ? $data['player_image'] : '';
             $image_path = public_path() . '/uploads/images/';
 
-            if ($player_image != '')
-            {
-                //code for remove old file
-                if ($player_image != '' && $player_image != null)
-                {
-                    $file_old = $image_path . $player_image;
-                    if (file_exists($file_old))
-                    {
+        
+            $image_path = public_path() . "/uploads/images/";
+
+            if ($image != "") {
+                if ($image != "" && $image != null) {
+                    $file_old = $image_path . $image;
+                    if (file_exists($file_old)) {
                         unlink($file_old);
                     }
                 }
-
-                //upload new file
-                $player_image = $player_image;
-                // $data['player_image']  = $file->getClientOriginalName();
-                $data['player_image'] = str_replace(' ', '_', $player_image->getClientOriginalName());
-
-                $player_image->move($image_path, $data['player_image']);
-                // $player_image = $file->getClientOriginalName();
-                $player_image = str_replace(' ', '_', $player_image->getClientOriginalName());
-
-                //    $data['player_image'] = $video->image;
-                
-
-                
+    
+                $file = $image;
+    
+                if(compress_image_enable() == 1){
+    
+                    $image_filename  = time().'.'.compress_image_format();
+                    $video_image     =  'pc-image-'.$image_filename ;
+                    $Mobile_image    =  'Mobile-image-'.$image_filename ;
+                    $Tablet_image    =  'Tablet-image-'.$image_filename ;
+    
+                    Image::make($file)->save( base_path() . "/public/uploads/images/" . $video_image,compress_image_resolution());
+                    Image::make($file)->save( base_path() . "/public/uploads/images/" . $Mobile_image,compress_image_resolution());
+                    Image::make($file)->save(base_path() . "/public/uploads/images/" . $Tablet_image, compress_image_resolution());
+    
+                    $video->image = $video_image;
+                    $video->mobile_image = $Mobile_image;
+                    $video->tablet_image = $Tablet_image;
+    
+                }
+                else{
+                    $image_filename  = time().'.'.$file->getClientOriginalExtension();
+    
+                    $video_image     =  'pc-image-'.$image_filename ;
+                    $Mobile_image    =  'Mobile-image-'.$image_filename ;
+                    $Tablet_image    =  'Tablet-image-'.$image_filename ;
+    
+                    Image::make($file)->save( base_path() . "/public/uploads/images/" . $video_image);
+                    Image::make($file)->save( base_path() . "/public/uploads/images/" . $Mobile_image);
+                    Image::make($file)->save(base_path() . "/public/uploads/images/" . $Tablet_image);
+    
+                    $video->image = $video_image;
+                    $video->mobile_image = $Mobile_image;
+                    $video->tablet_image = $Tablet_image;
+                }
+              
+            } else {
+                $data["image"] = $video->image;
             }
-            else
-            {
-                $player_image = $video->image;
-            }
+    
+ 
+            
+           
 
             $path = public_path() . '/uploads/videos/';
 
@@ -1516,6 +1540,85 @@ class ChannelVideosController extends Controller
                     $draft = 0;
                 }
             }
+            $player_image = isset($data["player_image"])? $data["player_image"]: "";
+
+            if($request->hasFile('player_image')){
+
+                if (File::exists(base_path('public/uploads/images/'.$player_image))) {
+                    File::delete(base_path('public/uploads/images/'.$player_image));
+                }
+            
+                $player_image_upload = $request->player_image;
+    
+                if(compress_image_enable() == 1){
+    
+                    $Tv_image_format  = time().'.'.compress_image_format();
+                    $Tv_image_filename     =  'player-image-'.$Tv_image_format ;
+                    Image::make($player_image_upload)->save(base_path().'/public/uploads/images/'.$Tv_image_filename,compress_image_resolution() );
+                    $player_image = $Tv_image_filename;
+    
+                }else{
+    
+                    $Tv_image_format  = time().'.'.$player_image->getClientOriginalExtension();
+                    $Tv_image_filename     =  'player-image-'.$Tv_image_format ;
+                    Image::make($player_image_upload)->save(base_path().'/public/uploads/images/'.$Tv_image_filename );
+                    $player_image = $Tv_image_filename;
+               
+                }
+                $player_image = $player_image;
+            }
+            // DD($player_image);
+                     // Tv video Image 
+        $video_title_image = isset($data["video_title_image"])? $data["video_title_image"]: "";
+
+        if($request->hasFile('video_tv_image')){
+
+            if (File::exists(base_path('public/uploads/images/'.$video_title_image))) {
+                File::delete(base_path('public/uploads/images/'.$video_title_image));
+            }
+        
+            $video_tv_image = $request->video_tv_image;
+
+            if(compress_image_enable() == 1){
+
+                $Tv_image_format  = time().'.'.compress_image_format();
+                $Tv_image_filename     =  'tv-live-image-'.$Tv_image_format ;
+                Image::make($video_tv_image)->save(base_path().'/public/uploads/images/'.$Tv_image_filename,compress_image_resolution() );
+
+            }else{
+
+                $Tv_image_format  = time().'.'.$video_tv_image->getClientOriginalExtension();
+                $Tv_image_filename     =  'tv-live-image-'.$Tv_image_format ;
+                Image::make($video_tv_image)->save(base_path().'/public/uploads/images/'.$Tv_image_filename );
+            }
+            $video->video_tv_image = $Tv_image_filename;
+        }
+
+                    // Video Title Thumbnail
+        $video_title_image = isset($data["video_title_image"])? $data["video_title_image"]: "";
+
+        if($request->hasFile('video_title_image')){
+
+            if (File::exists(base_path('public/uploads/images/'.$video_title_image))) {
+                File::delete(base_path('public/uploads/images/'.$video_title_image));
+            }
+        
+            $video_title_image = $request->video_title_image;
+
+            if(compress_image_enable() == 1){
+
+                $video_title_image_format   = time().'.'.compress_image_format();
+                $video_title_image_filename =  'video-title-'.$video_title_image_format ;
+                Image::make($video_title_image)->save(base_path().'/public/uploads/images/'.$video_title_image_filename,compress_image_resolution() );
+            }else{
+
+                $video_title_image_format  = time().'.'.$video_title_image->getClientOriginalExtension();
+                $video_title_image_filename     =  'video-title-'.$video_title_image_format ;
+                Image::make($video_title_image)->save(base_path().'/public/uploads/images/'.$video_title_image_filename );
+            }
+
+            $video->video_title_image = $video_title_image_filename;
+        }
             $user = Session::get('channel');
             $user_id = $user->id;
             $video->user_id = $user_id;
@@ -1892,42 +1995,85 @@ class ChannelVideosController extends Controller
             $trailer = (isset($data['trailer'])) ? $data['trailer'] : '';
             $files = (isset($data['subtitle_upload'])) ? $data['subtitle_upload'] : '';
 
-            //    player_image 1280X720
-            $player_image = (isset($data['player_image'])) ? $data['player_image'] : '';
+            $player_image = isset($data["player_image"])? $data["player_image"]: "";
 
-            $image_path = public_path() . '/uploads/images/';
+            if($request->hasFile('player_image')){
 
-            if ($player_image != '')
-            {
-                //code for remove old file
-                if ($player_image != '' && $player_image != null)
-                {
-                    $file_old = $image_path . $player_image;
-                    if (file_exists($file_old))
-                    {
-                        unlink($file_old);
-                    }
+                if (File::exists(base_path('public/uploads/images/'.$player_image))) {
+                    File::delete(base_path('public/uploads/images/'.$player_image));
                 }
-
-                //upload new file
+            
+                $player_image_upload = $request->player_image;
+    
+                if(compress_image_enable() == 1){
+    
+                    $Tv_image_format  = time().'.'.compress_image_format();
+                    $Tv_image_filename     =  'player-image-'.$Tv_image_format ;
+                    Image::make($player_image_upload)->save(base_path().'/public/uploads/images/'.$Tv_image_filename,compress_image_resolution() );
+                    $player_image = $Tv_image_filename;
+    
+                }else{
+    
+                    $Tv_image_format  = time().'.'.$player_image->getClientOriginalExtension();
+                    $Tv_image_filename     =  'player-image-'.$Tv_image_format ;
+                    Image::make($player_image_upload)->save(base_path().'/public/uploads/images/'.$Tv_image_filename );
+                    $player_image = $Tv_image_filename;
+               
+                }
                 $player_image = $player_image;
-                // $data['player_image']  = $file->getClientOriginalName();
-                $data['player_image'] = str_replace(' ', '_', $player_image->getClientOriginalName());
-
-                $player_image->move($image_path, $data['player_image']);
-                // $player_image = $file->getClientOriginalName();
-                $player_image = str_replace(' ', '_', $player_image->getClientOriginalName());
-
-                //    $data['player_image'] = $video->image;
-                
-
-                
             }
-            else
-            {
-                $player_image = "default_horizontal_image.jpg";
+            // DD($player_image);
+                     // Tv video Image 
+        $video_title_image = isset($data["video_title_image"])? $data["video_title_image"]: "";
+
+        if($request->hasFile('video_tv_image')){
+
+            if (File::exists(base_path('public/uploads/images/'.$video_title_image))) {
+                File::delete(base_path('public/uploads/images/'.$video_title_image));
+            }
+        
+            $video_tv_image = $request->video_tv_image;
+
+            if(compress_image_enable() == 1){
+
+                $Tv_image_format  = time().'.'.compress_image_format();
+                $Tv_image_filename     =  'tv-live-image-'.$Tv_image_format ;
+                Image::make($video_tv_image)->save(base_path().'/public/uploads/images/'.$Tv_image_filename,compress_image_resolution() );
+
+            }else{
+
+                $Tv_image_format  = time().'.'.$video_tv_image->getClientOriginalExtension();
+                $Tv_image_filename     =  'tv-live-image-'.$Tv_image_format ;
+                Image::make($video_tv_image)->save(base_path().'/public/uploads/images/'.$Tv_image_filename );
+            }
+            $video->video_tv_image = $Tv_image_filename;
+        }
+
+                    // Video Title Thumbnail
+        $video_title_image = isset($data["video_title_image"])? $data["video_title_image"]: "";
+
+        if($request->hasFile('video_title_image')){
+
+            if (File::exists(base_path('public/uploads/images/'.$video_title_image))) {
+                File::delete(base_path('public/uploads/images/'.$video_title_image));
+            }
+        
+            $video_title_image = $request->video_title_image;
+
+            if(compress_image_enable() == 1){
+
+                $video_title_image_format   = time().'.'.compress_image_format();
+                $video_title_image_filename =  'video-title-'.$video_title_image_format ;
+                Image::make($video_title_image)->save(base_path().'/public/uploads/images/'.$video_title_image_filename,compress_image_resolution() );
+            }else{
+
+                $video_title_image_format  = time().'.'.$video_title_image->getClientOriginalExtension();
+                $video_title_image_filename     =  'video-title-'.$video_title_image_format ;
+                Image::make($video_title_image)->save(base_path().'/public/uploads/images/'.$video_title_image_filename );
             }
 
+            $video->video_title_image = $video_title_image_filename;
+        }
             if (empty($data['active']))
             {
                 $data['active'] = 0;
@@ -2604,6 +2750,417 @@ class ChannelVideosController extends Controller
     }
     }
 
+
+    public function Channeleditvideo($id)
+    {
+
+     
+        $settings = Setting::first();
+
+        $video = Video::find($id);
+
+        $ads_details = AdsVideo::join(
+            "advertisements",
+            "advertisements.id",
+            "ads_videos.ads_id"
+        )
+            ->where("ads_videos.video_id", $id)
+            ->pluck("ads_id")
+            ->first();
+
+        $ads_rolls = AdsVideo::join(
+            "advertisements",
+            "advertisements.id",
+            "ads_videos.ads_id"
+        )
+            ->where("ads_videos.video_id", $id)
+            ->pluck("ad_roll")
+            ->first();
+
+        $ads_category = Adscategory::get();
+
+        $Reels_videos = Video::Join(
+            "reelsvideo",
+            "reelsvideo.video_id",
+            "=",
+            "videos.id"
+        )
+            ->where("videos.id", $id)
+            ->get();
+
+            $StorageSetting = StorageSetting::first();
+            if($StorageSetting->site_storage == 1){
+                $dropzone_url =  URL::to('channel/uploadEditVideo');
+            }elseif($StorageSetting->aws_storage == 1){
+                $dropzone_url =  URL::to('channel/AWSuploadEditVideo');
+            }else{ 
+                $dropzone_url =  URL::to('channel/uploadEditVideo');
+            }
+            $user = Session::get('channel');
+            $id = $user->id;
+            
+        $data = [
+            "headline" => '<i class="fa fa-edit"></i> Edit Video',
+            "video" => $video,
+            "post_route" => URL::to("channel/videos/update"),
+            "button_text" => "Update Video",
+            "user" => $user,
+            "video_categories" => VideoCategory::all(),
+            "ads" => Advertisement::where("status", "=", 1)->get(),
+            "video_subtitle" => VideosSubtitle::all(),
+            "subtitles" => Subtitle::all(),
+            "languages" => Language::all(),
+            "artists" => Artist::all(),
+            "settings" => $settings,
+            "age_categories" => AgeCategory::all(),
+            "countries" => CountryCode::all(),
+            "video_artist" => Videoartist::where("video_id", $id)
+                ->pluck("artist_id")
+                ->toArray(),
+            "category_id" => CategoryVideo::where("video_id", $id)
+                ->pluck("category_id")
+                ->toArray(),
+            "languages_id" => LanguageVideo::where("video_id", $id)
+                ->pluck("language_id")
+                ->toArray(),
+            "page" => "Edit",
+            "Reels_videos" => $Reels_videos,
+            "ads_paths" => $ads_details ? $ads_details : 0,
+            "ads_rolls" => $ads_rolls ? $ads_rolls : 0,
+            "ads_category" => $ads_category,
+            "dropzone_url" => $dropzone_url,
+
+        ];
+
+        return View::make("channel.videos.edit_video", $data);
+    }
+    public function Updatemp4url(Request $request)
+    {
+        $value = [];
+        $data = $request->all();
+        $user = Session::get('channel');
+        $userid = $user->id;
+        $id = $data["videoid"];
+        $video = Video::findOrFail($id);
+        if(!empty($video) && $video->mp4_url == $data["mp4_url"]){
+            $value["success"] = 1;
+            $value["message"] = "Already Exits";
+            $value["video_id"] = $id;
+
+            return $value;
+        }else{
+        // echo"<pre>";print_r($data);exit;
+        if (!empty($data["mp4_url"])) {
+            $video->disk = "public";
+            $video->original_name = "public";
+            // $video->title = $data['mp4_url'];
+            $video->mp4_url = $data["mp4_url"];
+            $video->type = "mp4_url";
+            // $video->draft = 0;
+            $video->active = 1;
+            $video->image = "default_image.jpg";
+
+            $video->user_id = $userid;
+            $video->save();
+
+            $video_id = $video->id;
+
+            $value["success"] = 1;
+            $value["message"] = "URL Updated Successfully!";
+            $value["video_id"] = $video_id;
+
+            // return $value;
+            return redirect("/channel/videos");
+
+        }
+    }
+    }
+    public function Updatem3u8url(Request $request)
+    {
+        $data = $request->all();
+        $value = [];
+        $user = Session::get('channel');
+        $userid = $user->id;
+        $id = $data["videoid"];
+
+        $video = Video::findOrFail($id);
+        if(!empty($video) && $video->m3u8_url == $data["m3u8_url"]){
+            $value["success"] = 1;
+            $value["message"] = "Already Exits";
+            $value["video_id"] = $id;
+
+            return $value;
+        }else{
+
+        if (!empty($data["m3u8_url"])) {
+            // $video = new Video();
+            $video->disk = "public";
+            $video->original_name = "public";
+            // $video->title = $data['m3u8_url'];
+            $video->m3u8_url = $data["m3u8_url"];
+            $video->type = "m3u8_url";
+            // $video->draft = 0;
+            $video->active = 1;
+            $video->image = "default_image.jpg";
+
+            $video->user_id = $userid;
+            $video->save();
+
+            $video_id = $video->id;
+
+            $value["success"] = 1;
+            $value["message"] = "URL Updated Successfully!";
+            $value["video_id"] = $video_id;
+
+            // return $value;
+            return redirect("/channel/videos");
+
+        }
+    }
+
+    }
+    public function UpdateEmbededcode(Request $request)
+    {
+        $data = $request->all();
+        $value = [];
+        $user = Session::get('channel');
+        $userid = $user->id;
+        // echo "<pre>";
+        // print_r($data);
+        // exit();
+        $id = $data["videoid"];
+        $video = Video::findOrFail($id);
+        if(!empty($video) && $video->embed_code == $data["embed"]){
+            $value["success"] = 1;
+            $value["message"] = "Already Exits";
+            $value["video_id"] = $id;
+
+            return $value;
+        }else{
+        if (!empty($data["embed"])) {
+            // $video = new Video();
+            $video->disk = "public";
+            $video->original_name = "public";
+            // $video->title = $data['embed'];
+            $video->embed_code = $data["embed"];
+            $video->type = "embed";
+            $video->draft = 0;
+            $video->active = 1;
+            $video->image = "default_image.jpg";
+
+            $video->user_id = $userid;
+            $video->save();
+
+            $video_id = $video->id;
+
+            $value["success"] = 1;
+            $value["message"] = "URL Updated Successfully!";
+            $value["video_id"] = $video_id;
+            // return $value;
+            return redirect("/channel/videos");
+
+        }
+    }
+    }
+
+    
+    public function uploadEditVideo(Request $request)
+    {
+        $value = [];
+        $data = $request->all();
+        $id = $data["videoid"];
+        $video = Video::findOrFail($id);
+        $user = Session::get('channel');
+        $userid = $user->id;
+        // echo "<pre>";
+        // print_r($video);exit();
+        $validator = Validator::make($request->all(), [
+            "file" => "required|mimes:video/mp4,video/x-m4v,video/*",
+        ]);
+        $mp4_url = isset($data["file"]) ? $data["file"] : "";
+
+        $path = public_path() . "/uploads/videos/";
+
+        $file = $request->file->getClientOriginalName();
+        $newfile = explode(".mp4", $file);
+        $file_folder_name = $newfile[0];
+
+        $package = User::where("id", 1)->first();
+        $pack = $package->package;
+        $mp4_url = $data["file"];
+        $settings = Setting::first();
+
+        if (
+            $mp4_url != "" &&
+            $pack != "Business" &&
+            $settings->transcoding_access == 0
+        ) {
+            // $ffprobe = \FFMpeg\FFProbe::create();
+            // $disk = 'public';
+            // $data['duration'] = $ffprobe->streams($request->file)
+            // ->videos()
+            // ->first()
+            // ->get('duration');
+
+            $rand = Str::random(16);
+            $path = $rand . "." . $request->file->getClientOriginalExtension();
+
+            $request->file->storeAs("public", $path);
+            $thumb_path = "public";
+
+            // $this->build_video_thumbnail($request->file,$path, $data['slug']);
+
+            $original_name = $request->file->getClientOriginalName()
+                ? $request->file->getClientOriginalName()
+                : "";
+            //  $storepath  = URL::to('/storage/app/public/'.$file_folder_name.'/'.$original_name);
+            //  $str = explode(".mp4",$path);
+            //  $path =$str[0];
+            $storepath = URL::to("/storage/app/public/" . $path);
+
+            //  Video duration
+            $getID3 = new getID3();
+            $Video_storepath = storage_path("app/public/" . $path);
+            $VideoInfo = $getID3->analyze($Video_storepath);
+            $Video_duration = $VideoInfo["playtime_seconds"];
+
+            // $video = new Video();
+            $video->disk = "public";
+            $video->title = $file_folder_name;
+            $video->original_name = "public";
+            $video->path = $path;
+            $video->mp4_url = $storepath;
+            $video->type = "mp4_url";
+            // $video->draft = 0;
+            // $video->image = 'default_image.jpg';
+
+            $video->duration = $Video_duration;
+            $video->save();
+
+            $video_id = $video->id;
+            $video_title = Video::find($video_id);
+            $title = $video_title->title;
+
+            $value["success"] = 1;
+            $value["message"] = "Uploaded Successfully!";
+            $value["video_id"] = $video_id;
+            $value["video_title"] = $title;
+
+            // return $value;
+            return redirect("/cpp/videos");
+
+        } elseif (
+            $mp4_url != "" &&
+            $pack == "Business" &&
+            $settings->transcoding_access == 1
+        ) {
+            // echo "<pre>";
+            // print_r($mp4_url);exit();
+            $rand = Str::random(16);
+            $path = $rand . "." . $request->file->getClientOriginalExtension();
+            $request->file->storeAs("public", $path);
+
+            $original_name = $request->file->getClientOriginalName()
+                ? $request->file->getClientOriginalName()
+                : "";
+
+            $storepath = URL::to("/storage/app/public/" . $path);
+
+            //  Video duration
+            $getID3 = new getID3();
+            $Video_storepath = storage_path("app/public/" . $path);
+            $VideoInfo = $getID3->analyze($Video_storepath);
+            $Video_duration = $VideoInfo["playtime_seconds"];
+
+            //  $video = new Video();
+            $video->disk = "public";
+            $video->status = 0;
+            $video->original_name = "public";
+            $video->path = $path;
+            $video->old_path_mp4 = $path;
+            $video->title = $file_folder_name;
+            $video->mp4_url = $storepath;
+            //  $video->draft = 0;
+            $video->type = "";
+            //  $video->image = 'default_image.jpg';
+            $video->duration = $Video_duration;
+            $video->user_id = $userid;
+            $video->save();
+
+
+            $Playerui = Playerui::first();
+            if(@$Playerui->video_watermark_enable == 1 && !empty($Playerui->video_watermark)){
+                TranscodeVideo::dispatch($video);
+            }else{
+                ConvertVideoForStreaming::dispatch($video);
+            }          
+            $video_id = $video->id;
+            $video_title = Video::find($video_id);
+            $title = $video_title->title;
+
+            $value["success"] = 1;
+            $value["message"] = "Uploaded Successfully!";
+            $value["video_id"] = $video_id;
+            $value["video_title"] = $title;
+
+            return $value;
+            // return redirect("/admin/videos");
+
+        } elseif (
+            $mp4_url != "" &&
+            $pack == "Business" &&
+            $settings->transcoding_access == 0
+        ) {
+            $rand = Str::random(16);
+            $path = $rand . "." . $request->file->getClientOriginalExtension();
+
+            $request->file->storeAs("public", $path);
+            $thumb_path = "public";
+
+            $original_name = $request->file->getClientOriginalName()
+                ? $request->file->getClientOriginalName()
+                : "";
+
+            $storepath = URL::to("/storage/app/public/" . $path);
+
+            //  Video duration
+            $getID3 = new getID3();
+            $Video_storepath = storage_path("app/public/" . $path);
+            $VideoInfo = $getID3->analyze($Video_storepath);
+            $Video_duration = $VideoInfo["playtime_seconds"];
+
+            // $video = new Video();
+            $video->disk = "public";
+            $video->title = $file_folder_name;
+            $video->original_name = "public";
+            $video->path = $path;
+            $video->mp4_url = $storepath;
+            $video->type = "mp4_url";
+            // $video->draft = 0;
+            $video->image = "default_image.jpg";
+            $video->duration = $Video_duration;
+            $video->save();
+
+            $video_id = $video->id;
+            $video_title = Video::find($video_id);
+            $title = $video_title->title;
+
+            $value["success"] = 1;
+            $value["message"] = "Uploaded Successfully!";
+            $value["video_id"] = $video_id;
+            $value["video_title"] = $title;
+
+            return $value;
+        } else {
+            $value["success"] = 2;
+            $value["message"] = "File not uploaded.";
+            return response()->json($value);
+            // return redirect("/admin/videos");
+
+        }
+
+        // return response()->json($value);
+    }
 
 }
 

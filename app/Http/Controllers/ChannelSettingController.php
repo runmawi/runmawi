@@ -18,7 +18,6 @@ use App\Tag as Tag;
 use Auth;
 use Hash;
 use Illuminate\Support\Facades\Cache;
-use Intervention\Image\Facades\Image;
 use View;
 use Validator;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
@@ -51,6 +50,8 @@ use App\VideoSearchTag;
 use App\RelatedVideo;
 use App\InappPurchase;
 use App\Channel;
+use Intervention\Image\Facades\Image;
+use Intervention\Image\Filters\DemoFilter;
 
 class ChannelSettingController extends Controller
 {
@@ -287,6 +288,11 @@ class ChannelSettingController extends Controller
 
             $intro_video = (isset($data['intro_video'])) ? $data['intro_video'] : '';
 
+            $image = (isset($data['picture'])) ? $data['picture'] : '';
+            $channel_logo = (isset($data['channel_logo'])) ? $data['channel_logo'] : '';
+            $channel_banner = (isset($data['channel_banner'])) ? $data['channel_banner'] : '';
+
+            
             $logopath = URL::to("/public/uploads/channel/");
             $path = public_path() . "/uploads/channel/";
 
@@ -318,32 +324,147 @@ class ChannelSettingController extends Controller
 
             $logopath = URL::to("/public/uploads/channel/");
             $path = public_path() . "/uploads/channel/";
-            if ($channel_logo != "")
+
+            $image_path = public_path() . "/uploads/channel/";
+      
+            if($image != '') {   
+              if($image != ''  && $image != null){
+                   $file_old = $image_path.$image;
+                  if (file_exists($file_old)){
+                   unlink($file_old);
+                  }
+              }
+                $file = $image;
+      
+                if(compress_image_enable() == 1){
+                  
+                    $filename  = time().'.'.compress_image_format();
+                    $PC_image     =  'channel_'.$filename ;
+      
+                    Image::make($file)->save(base_path().'/public/uploads/channel/'.$PC_image,compress_image_resolution() );
+                    
+                   $image = URL::to('/') . '/public/uploads/channel/' . $PC_image;
+                
+                  }else{
+      
+                    $filename  = time().'.'.$file->getClientOriginalExtension();
+                    $PC_image     =  'channel_'.$filename ;
+                    Image::make($file)->save(base_path().'/public/uploads/channel/'.$PC_image );
+                    $image = URL::to('/') . '/public/uploads/channel/' . $PC_image;
+      
+                }
+              
+              }elseif(!empty($Channel->channel_image)){
+                  $image = $Channel->channel_image;
+              }
+              else{
+                  $image = null;
+              } 
+         
+      
+          //   dd( $image);
+            if ($channel_logo != '')
             {
                 //code for remove old file
-                if ($channel_logo != "" && $channel_logo != null)
+                if ($channel_logo != '' && $channel_logo != null)
                 {
                     $file_old = $path . $channel_logo;
                     if (file_exists($file_old))
                     {
-                        unemail($file_old);
+                        unlink($file_old);
                     }
                 }
                 //upload new file
-                $logo = $channel_logo;
-                $file_channel_logos = str_replace(' ', '_', $logo->getClientOriginalName());
-                $file_channel_logo = URL::to('/') . '/public/uploads/channel/' . $file_channel_logos;
-                $logo->move($path, $logo);
+                $randval = Str::random(16);
+                $file = $channel_logo;
+      
+                if(compress_image_enable() == 1){
+                  
+                  $filename  = time().'.'.compress_image_format();
+                  $channel_logo_ext     =  'channel_logo_'.$filename ;
+      
+                  Image::make($file)->save(base_path().'/public/uploads/channel/'.$channel_logo_ext,compress_image_resolution() );
+                  
+                  $channel_logo = URL::to('/') . '/public/uploads/channel/' . $channel_logo_ext;
+              
+                }else{
+      
+                  $filename  = time().'.'.$file->getClientOriginalExtension();
+                  $channel_logo_ext     =  'channel_logo_'.$filename ;
+                  Image::make($file)->save(base_path().'/public/uploads/channel/'.$channel_logo_ext );
+                  $channel_logo = URL::to('/') . '/public/uploads/channel/' . $channel_logo_ext;
+      
+              }
+            
+      
+            }elseif(!empty($Channel->channel_logo)){
+              $channel_logo = $Channel->channel_logo;
             }
             else
             {
-                $file_channel_logo = $Channel->channel_logo;
+                $channel_logo = null;
             }
-
+            
+            if ($channel_banner != '')
+            {
+                //code for remove old file
+                if ($channel_banner != '' && $channel_banner != null)
+                {
+                    $file_old = $path . $channel_banner;
+                    if (file_exists($file_old))
+                    {
+                        unlink($file_old);
+                    }
+                }
+                //upload new file
+                $randval = Str::random(16);
+                $file = $channel_banner;
+                if(compress_image_enable() == 1){
+                  
+                  $filename  = time().'.'.compress_image_format();
+                  $channel_banner_ext     =  'channel_banner_'.$filename ;
+      
+                  Image::make($file)->save(base_path().'/public/uploads/channel/'.$channel_banner_ext,compress_image_resolution() );
+                  
+                  $channel_banner = URL::to('/') . '/public/uploads/channel/' . $channel_banner_ext;
+              
+                }else{
+      
+                  $filename  = time().'.'.$file->getClientOriginalExtension();
+                  $channel_banner_ext     =  'channel_banner_'.$filename ;
+                  Image::make($file)->save(base_path().'/public/uploads/channel/'.$channel_banner_ext );
+                  $channel_banner = URL::to('/') . '/public/uploads/channel/' . $channel_banner_ext;
+      
+              }
+            
+                $channel_banner = URL::to('/') . '/public/uploads/channel/' . $channel_banner_ext;
+      
+            }elseif(!empty($Channel->channel_banner)){
+              $channel_banner = $Channel->channel_banner;
+            }
+            else
+            {
+                $channel_banner = null;
+            }
+            if(!empty($data['mobile_number'])){
+                $mobile_number = $data['mobile_number'];
+            }else{
+                $mobile_number = $channel->mobile_number;
+            }  
+            if(!empty($data['email'])){
+                $email = $data['email'];
+            }else{
+                $email = $channel->email;
+            }  
             $Channel->channel_name = $channel_name;
             $Channel->channel_about = $channel_about;
-            $Channel->channel_logo = $file_channel_logo;
             $Channel->intro_video = $intro_video;
+            $Channel->email = $email;
+            $Channel->mobile_number = $mobile_number;
+            $Channel->channel_image = $image;
+            $Channel->channel_logo = $channel_logo;
+            $Channel->channel_banner = $channel_banner;
+            $Channel->channel_slug = str_replace(' ', '_', $channel_name);
             $Channel->save();
             // dd($Channel);
             return \Redirect::back()
