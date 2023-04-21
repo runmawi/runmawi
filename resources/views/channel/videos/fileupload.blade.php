@@ -13,6 +13,24 @@
     <script src="{{asset('dropzone/dist/min/dropzone.min.js')}}" type="text/javascript"></script>
 @section('content')
 <style>
+    #video li{
+        padding-left: 30px;
+    }
+    #series li{
+         padding-left: 30px;
+    }
+    #audios li{
+         padding-left: 30px;
+    }
+    #live-video{
+         padding-left: 30px;
+    }
+    #settings{
+        padding-left: 30px; 
+    }
+    #analytics_managements{
+       padding-left: 30px;  
+    }
     #optionradio {color: #000;}
     #video_upload {margin-top: 5%;}
    .file {
