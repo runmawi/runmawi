@@ -961,9 +961,9 @@ class CPPAdminVideosController extends Controller
             $id = $data['id'];
 
             $video = Video::findOrFail($id);
-            if ($request->slug == '') {
-                $data['slug'] = $this->createSlug($data['title']);
-            }
+            // if ($request->slug == '') {
+            //     $data['slug'] = $this->createSlug($data['title']);
+            // }
 
             $image = isset($data['image']) ? $data['image'] : '';
             $trailer = isset($data['trailer']) ? $data['trailer'] : '';
@@ -1196,8 +1196,9 @@ class CPPAdminVideosController extends Controller
             }
             if (!empty($data['slug'])) {
                 // dd($data['global_ppv']);
-                $video->slug = $this->createSlug($data['slug']);
+                $video->slug = $data['slug'];
             } else {
+                $video->slug = $this->createSlug($data['slug']);
             }
             if (empty($data['publish_type'])) {
                 // dd($data['global_ppv']);
