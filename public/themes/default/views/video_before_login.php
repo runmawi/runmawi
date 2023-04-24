@@ -299,7 +299,7 @@
    </video>
 </div> -->
 
-<div id="subscribers_only" style="background: linear-gradient(rgba(0,0,0, 0),rgba(0,0,0, 100)), url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 500px; margin-top: 20px;padding:150px;">
+<div id="subscribers_only" style="background: linear-gradient(rgba(0,0,0, 0),rgba(0,0,0, 100)), url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 500px; margin-top: 20px;padding-top:150px;">
     <div class="container-fluid">
       <h2 class="text-left"><?php echo $video->title; ?></h2>
       <p class="text-left text-white col-lg-8 am" style="margin:0 auto;color:#fff!important;">
