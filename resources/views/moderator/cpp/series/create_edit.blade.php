@@ -315,14 +315,14 @@ $settings  = App\Setting::first();?>
 									{{-- Trailer option --}}
 							<div class="d-flex align-items-baseline">
 								<label class="p2" for="active" style="float:left; display:block; margin-right:10px;">Season Trailer:</label>
-								<input type="checkbox" @if(!empty($series->series_trailer) && $series->series_trailer == 1){{ 'checked="checked"' }}@elseif(!isset($series->series_trailer)){{ 'checked="checked"' }}@endif name="series_trailer" value="1" id="series_trailer" />
+								<input type="checkbox" @if(!empty($series->series_trailer) && $series->series_trailer == 1){{ 'checked="checked"' }}@endif name="series_trailer" value="1" id="series_trailer" />
 							</div>
 
 							@if( $button_text == "Add New Series" )
 
 								<div class="d-flex align-items-baseline season_trailer">
 									<label class="p2" for="active" style="float:left; display:block; margin-right:10px;">Season 1 :</label>
-									<input type="radio" name="season_trailer" value="1" checked> 
+									<input type="radio" name="season_trailer" value="1" > 
 								</div>
 
 							@elseif($button_text == "Update Series" )
@@ -804,7 +804,7 @@ $('#submit-new-cat').click(function(){
 
 $('form[id="new-cat-form"]').validate({
 	rules: {
-		trailer: 'required',
+		// trailer: 'required',
 		image: {
 				required:true,
 				season_dimention:[1280,720]
