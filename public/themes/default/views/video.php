@@ -701,7 +701,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
  else { ?>
 <?php if($video->access == 'subscriber' && Auth::user()->role == 'registered'){  ?>
 <div
-    id="subscribers_only"style="background: url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>);background-position:center; background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
+    id="subscribers_only"style="background:  linear-gradient(rgba(0,0,0, 0),rgba(0,0,0, 100)), url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>);background-position:center; background-repeat: no-repeat; background-size: cover; height: 500px; margin-top: 20px;">
     <div id="subscribers_only">
         <div class="clear"></div>
         <div style="position: absolute;top: 20%;left: 20%;width: 100%;">
@@ -731,7 +731,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
             <?php }  ?>
             <?php }else if($video->access == 'subscriber' && $video->global_ppv == 1 && Auth::user()->role == 'subscriber'){   ?>
             <div
-                id="subscribers_only"style="background: url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>);background-position:center; background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
+                id="subscribers_only"style="background:  linear-gradient(rgba(0,0,0, 0),rgba(0,0,0, 100)), url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>);background-position:center; background-repeat: no-repeat; background-size: cover; height: 500px; margin-top: 20px;">
                 <div id="subscribers_only">
                     <div class="clear"></div>
                     <div style="margin-left: -20%;position: absolute;top: 20%;left: 20%;width: 100%;">
@@ -756,7 +756,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                         </form>
                         <?php } }else{ ?>
                         <div
-                            id="subscribers_only"style="background: url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>);background-position:center; background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
+                            id="subscribers_only"style="background:  linear-gradient(rgba(0,0,0, 0),rgba(0,0,0, 100)), url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>);background-position:center; background-repeat: no-repeat; background-size: cover; height: 500px; margin-top: 20px;">
                             <div id="subscribers_only">
                                 <div class="clear"></div>
                                 <div style="position: absolute;top: 20%;left: 20%;width: 100%;">
@@ -796,7 +796,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                         <?php }
 }elseif($video->access == 'subscriber' && Auth::user()->role == 'registered' || $video->access == 'ppv' && Auth::user()->role == 'registered'){  ?>
                         <div
-                            id="subscribers_only"style="background: url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>);background-position:center; background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
+                            id="subscribers_only"style="background:  linear-gradient(rgba(0,0,0, 0),rgba(0,0,0, 100)), url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>);background-position:center; background-repeat: no-repeat; background-size: cover; height: 500px; margin-top: 20px;">
 
                             <div id="subscribers_only">
                                 <h4 class="text-center"><?php echo $video->title; ?></h4>
