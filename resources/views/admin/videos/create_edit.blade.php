@@ -162,6 +162,38 @@ border-radius: 0px 4px 4px 0px;
  .tag__remove:focus {
 	 outline: 1px auto #fff;
 }
+
+	
+.tags-input-wrapper{
+    background: transparent;
+    padding: 10px;
+    border-radius: 4px;
+    max-width: 400px;
+    border: 1px solid #ccc
+}
+.tags-input-wrapper input{
+    border: none;
+    background: transparent;
+    outline: none;
+    width: 140px;
+    margin-left: 8px;
+}
+.tags-input-wrapper .tag{
+    display: inline-block;
+    background-color: #20222c;
+    color: white;
+    border-radius: 40px;
+    padding: 0px 3px 0px 7px;
+    margin-right: 5px;
+    margin-bottom:5px;
+    box-shadow: 0 5px 15px -2px rgba(250 , 14 , 126 , .7)
+}
+.tags-input-wrapper .tag a {
+    margin: 0 7px 3px;
+    display: inline-block;
+    cursor: pointer;
+} 
+
  @keyframes shake {
 	 0%, 100% {
 		 transform: translate3d(0, 0, 0);
@@ -728,8 +760,8 @@ border-radius: 0px 4px 4px 0px;
                        <?php } ?>
                    </div>
                    <div class="col-sm-6 form-group mt-3" id="ppv_price">
-                  <label for="">Search Tags</label>
-                     <input type="text" id="exist-values" class="tagged form-control1" data-removeBtn="true" name="searchtags" value="@if(!empty($video->search_tags)){{ $video->search_tags }}@endif" >
+                  <label for="">  Search Tags</label>
+                     <input type="text" id="tag-input1" class="tagged form-control1" data-removeBtn="true" name="searchtags" >
                      <!-- <input type="text" class="form-control" id="#inputTag" name="searchtags" value="" data-role="tagsinput"> -->
                   </div>
                </div>
@@ -2253,338 +2285,8 @@ else if(trailer_type == 'null' ){
 
 });
 
-     // https://github.com/k-ivan/Tags
-(function() {
-
-'use strict';
-
-// Helpers
-function $$(selectors, context) {
-  return (typeof selectors === 'string') ? (context || document).querySelectorAll(selectors) : [selectors];
-}
-function $(selector, context) {
-  return (typeof selector === 'string') ? (context || document).querySelector(selector) : selector;
-}
-function create(tag, attr) {
-  var element = document.createElement(tag);
-  if(attr) {
-    for(var name in attr) {
-      if(element[name] !== undefined) {
-        element[name] = attr[name];
-      }
-    }
-  }
-  return element;
-}
-function whichTransitionEnd() {
-  var root = document.documentElement;
-  var transitions = {
-    'transition'       : 'transitionend',
-    'WebkitTransition' : 'webkitTransitionEnd',
-    'MozTransition'    : 'mozTransitionEnd',
-    'OTransition'      : 'oTransitionEnd otransitionend'
-  };
-
-  for(var t in transitions){
-    if(root.style[t] !== undefined){
-      return transitions[t];
-    }
-  }
-  return false;
-}
-function oneListener(el, type, fn, capture) {
-  capture = capture || false;
-  el.addEventListener(type, function handler(e) {
-    fn.call(this, e);
-    el.removeEventListener(e.type, handler, capture)
-  }, capture);
-}
-function hasClass(cls, el) {
-  return new RegExp('(^|\\s+)' + cls + '(\\s+|$)').test(el.className);
-}
-function addClass(cls, el) {
-  if( ! hasClass(cls, el) )
-    return el.className += (el.className === '') ? cls : ' ' + cls;
-}
-function removeClass(cls, el) {
-  el.className = el.className.replace(new RegExp('(^|\\s+)' + cls + '(\\s+|$)'), '');
-}
-function toggleClass(cls, el) {
-  ( ! hasClass(cls, el)) ? addClass(cls, el) : removeClass(cls, el);
-}
-
-function Tags(tag) {
-
-  var el = $(tag);
-
-  if(el.instance) return;
-  el.instance = this;
-
-  var type = el.type;
-  var transitionEnd = whichTransitionEnd();
-
-  var tagsArray = [];
-  var KEYS = {
-    ENTER: 13,
-    COMMA: 188,
-    BACK: 8
-  };
-  var isPressed = false;
-
-  var timer;
-  var wrap;
-  var field;
-
-  function init() {
-
-    // create and add wrapper
-    wrap = create('div', {
-      'className': 'tags-container',
-    });
-    field = create('input', {
-      'type': 'text',
-      'className': 'tag-input',
-      'placeholder': el.placeholder || ''
-    });
-
-    wrap.appendChild(field);
-
-    if(el.value.trim() !== '') {
-      hasTags();
-    }
-
-    el.type = 'hidden';
-    el.parentNode.insertBefore(wrap, el.nextSibling);
-
-    wrap.addEventListener('click', btnRemove, false);
-    wrap.addEventListener('keydown', keyHandler, false);
-    wrap.addEventListener('keyup', backHandler, false);
-  }
-
-  function hasTags() {
-    var arr = el.value.trim().split(',');
-    arr.forEach(function(item) {
-      item = item.trim();
-      if(~tagsArray.indexOf(item)) {
-        return;
-      }
-      var tag = createTag(item);
-      tagsArray.push(item);
-      wrap.insertBefore(tag, field);
-    });
-  }
-
-  function createTag(name) {
-    var tag = create('div', {
-      'className': 'tag',
-      'innerHTML': '<span class="tag__name">' + name + '</span>'+
-                   '<button class="tag__remove">&times;</button>'
-    });
-//       var tagName = create('span', {
-//         'className': 'tag__name',
-//         'textContent': name
-//       });
-//       var delBtn = create('button', {
-//         'className': 'tag__remove',
-//         'innerHTML': '&times;'
-//       });
-    
-//       tag.appendChild(tagName);
-//       tag.appendChild(delBtn);
-    return tag;
-  }
-
-  function btnRemove(e) {
-    e.preventDefault();
-    if(e.target.className === 'tag__remove') {
-      var tag  = e.target.parentNode;
-      var name = $('.tag__name', tag);
-      wrap.removeChild(tag);
-      tagsArray.splice(tagsArray.indexOf(name.textContent), 1);
-      el.value = tagsArray.join(',')
-    }
-    field.focus();
-  }
-
-  function keyHandler(e) {
-
-    if(e.target.tagName === 'INPUT' && e.target.className === 'tag-input') {
-
-      var target = e.target;
-      var code = e.which || e.keyCode;
-
-      if(field.previousSibling && code !== KEYS.BACK) {
-        removeClass('tag--marked', field.previousSibling);
-      }
-
-      var name = target.value.trim();
-
-      // if(code === KEYS.ENTER || code === KEYS.COMMA) {
-      if(code === KEYS.ENTER) {
-
-        target.blur();
-
-        addTag(name);
-
-        if(timer) clearTimeout(timer);
-        timer = setTimeout(function() { target.focus(); }, 10 );
-      }
-      else if(code === KEYS.BACK) {
-        if(e.target.value === '' && !isPressed) {
-          isPressed = true;
-          removeTag();
-        }
-      }
-    }
-  }
-  function backHandler(e) {
-    isPressed = false;
-  }
-
-  function addTag(name) {
-
-    // delete comma if comma exists
-    name = name.toString().replace(/,/g, '').trim();
-
-    if(name === '') return field.value = '';
-
-    if(~tagsArray.indexOf(name)) {
-
-      var exist = $$('.tag', wrap);
-
-      Array.prototype.forEach.call(exist, function(tag) {
-        if(tag.firstChild.textContent === name) {
-
-          addClass('tag--exists', tag);
-
-          if(transitionEnd) {
-            oneListener(tag, transitionEnd, function() {
-              removeClass('tag--exists', tag);
-            });
-          } else {
-            removeClass('tag--exists', tag);
-          }
-
-
-        }
-
-      });
-
-      return field.value = '';
-    }
-
-    var tag = createTag(name);
-    wrap.insertBefore(tag, field);
-    tagsArray.push(name);
-    field.value = '';
-    el.value += (el.value === '') ? name : ',' + name;
-  }
-
-  function removeTag() {
-    if(tagsArray.length === 0) return;
-
-    var tags = $$('.tag', wrap);
-    var tag = tags[tags.length - 1];
-
-    if( ! hasClass('tag--marked', tag) ) {
-      addClass('tag--marked', tag);
-      return;
-    }
-
-    tagsArray.pop();
-
-    wrap.removeChild(tag);
-
-    el.value = tagsArray.join(',');
-  }
-
-  init();
-
-  /* Public API */
-
-  this.getTags = function() {
-    return tagsArray;
-  }
-
-  this.clearTags = function() {
-    if(!el.instance) return;
-    tagsArray.length = 0;
-    el.value = '';
-    wrap.innerHTML = '';
-    wrap.appendChild(field);
-  }
-
-  this.addTags = function(name) {
-    if(!el.instance) return;
-    if(Array.isArray(name)) {
-      for(var i = 0, len = name.length; i < len; i++) {
-        addTag(name[i])
-      }
-    } else {
-      addTag(name);
-    }
-    return tagsArray;
-  }
-
-  this.destroy = function() {
-    if(!el.instance) return;
-
-    wrap.removeEventListener('click', btnRemove, false);
-    wrap.removeEventListener('keydown', keyHandler, false);
-    wrap.removeEventListener('keyup', keyHandler, false);
-
-    wrap.parentNode.removeChild(wrap);
-
-    tagsArray = null;
-    timer = null;
-    wrap = null;
-    field = null;
-    transitionEnd = null;
-
-    delete el.instance;
-    el.type = type;
-  }
-}
-
-window.Tags = Tags;
-
-})();
-
-// Use
-var tags = new Tags('.tagged');
-
-document.getElementById('get').addEventListener('click', function(e) {
-e.preventDefault();
-alert(tags.getTags());
-});
-document.getElementById('clear').addEventListener('click', function(e) {
-e.preventDefault();
-tags.clearTags();
-});
-document.getElementById('add').addEventListener('click', function(e) {
-e.preventDefault();
-tags.addTags('New');
-});
-document.getElementById('addArr').addEventListener('click', function(e) {
-e.preventDefault();
-tags.addTags(['Steam Machines', 'Nintendo Wii U', 'Shield Portable']);
-});
-document.getElementById('destroy').addEventListener('click', function(e) {
-e.preventDefault();
-if(this.textContent === 'destroy') {
-  tags.destroy();
-  this.textContent = 'reinit';
-} else {
-  this.textContent = 'destroy';
-  tags = new Tags('.tagged');
-}
-
-});
-
 
 </script>
-
-
 
 
 <script src="https://cdn.plyr.io/3.5.10/plyr.js"></script>
@@ -2754,6 +2456,198 @@ if(this.textContent === 'destroy') {
             }
          }
       });
+
+   </script>
+
+   <script>
+
+   (function() {
+
+        "use strict"
+
+        // Plugin Constructor
+        var TagsInput = function(opts) {
+            this.options = Object.assign(TagsInput.defaults, opts);
+            this.init();
+        }
+
+        // Initialize the plugin
+        TagsInput.prototype.init = function(opts) {
+            this.options = opts ? Object.assign(this.options, opts) : this.options;
+
+            if (this.initialized)
+                this.destroy();
+
+            if (!(this.orignal_input = document.getElementById(this.options.selector))) {
+                console.error("tags-input couldn't find an element with the specified ID");
+                return this;
+            }
+
+            this.arr = [];
+            this.wrapper = document.createElement('div');
+            this.input = document.createElement('input');
+            init(this);
+            initEvents(this);
+
+            this.initialized = true;
+            return this;
+        }
+
+        // Add Tags
+        TagsInput.prototype.addTag = function(string) {
+
+            if (this.anyErrors(string))
+                return;
+
+            this.arr.push(string);
+            var tagInput = this;
+
+            var tag = document.createElement('span');
+            tag.className = this.options.tagClass;
+            tag.innerText = string;
+
+            var closeIcon = document.createElement('a');
+            closeIcon.innerHTML = '&times;';
+
+            // delete the tag when icon is clicked
+            closeIcon.addEventListener('click', function(e) {
+                e.preventDefault();
+                var tag = this.parentNode;
+
+                for (var i = 0; i < tagInput.wrapper.childNodes.length; i++) {
+                    if (tagInput.wrapper.childNodes[i] == tag)
+                        tagInput.deleteTag(tag, i);
+                }
+            })
+
+
+            tag.appendChild(closeIcon);
+            this.wrapper.insertBefore(tag, this.input);
+            this.orignal_input.value = this.arr.join(',');
+
+            return this;
+        }
+
+        // Delete Tags
+        TagsInput.prototype.deleteTag = function(tag, i) {
+            tag.remove();
+            this.arr.splice(i, 1);
+            this.orignal_input.value = this.arr.join(',');
+            return this;
+        }
+
+        // Make sure input string have no error with the plugin
+        TagsInput.prototype.anyErrors = function(string) {
+            if (this.options.max != null && this.arr.length >= this.options.max) {
+                console.log('max tags limit reached');
+                return true;
+            }
+
+            if (!this.options.duplicate && this.arr.indexOf(string) != -1) {
+                console.log('duplicate found " ' + string + ' " ')
+                return true;
+            }
+
+            return false;
+        }
+
+        // Add tags programmatically 
+        TagsInput.prototype.addData = function(array) {
+            var plugin = this;
+
+            array.forEach(function(string) {
+                plugin.addTag(string);
+            })
+            return this;
+        }
+
+        // Get the Input String
+        TagsInput.prototype.getInputString = function() {
+            return this.arr.join(',');
+        }
+
+        // destroy the plugin
+        TagsInput.prototype.destroy = function() {
+            this.orignal_input.removeAttribute('hidden');
+
+            delete this.orignal_input;
+            var self = this;
+
+            Object.keys(this).forEach(function(key) {
+                if (self[key] instanceof HTMLElement)
+                    self[key].remove();
+
+                if (key != 'options')
+                    delete self[key];
+            });
+
+            this.initialized = false;
+        }
+
+        // Private function to initialize the tag input plugin
+        function init(tags) {
+            tags.wrapper.append(tags.input);
+            tags.wrapper.classList.add(tags.options.wrapperClass);
+            tags.orignal_input.setAttribute('hidden', 'true');
+            tags.orignal_input.parentNode.insertBefore(tags.wrapper, tags.orignal_input);
+        }
+
+        // initialize the Events
+        function initEvents(tags) {
+            tags.wrapper.addEventListener('click', function() {
+                tags.input.focus();
+            });
+
+            tags.input.addEventListener('keydown', function(e) {
+                if (!!(~[9, 13, 188].indexOf(e.keyCode))) {
+                    e.preventDefault();
+                    var str = tags.input.value.trim();
+                    if (str == "") return;
+                    str.split(",").forEach(function(tag) {
+                        tags.addTag(tag.trim());
+                    });
+                    tags.input.value = "";
+                }
+
+            });
+        }
+
+
+        // Set All the Default Values
+        TagsInput.defaults = {
+            selector: '',
+            wrapperClass: 'tags-input-wrapper',
+            tagClass: 'tag',
+            max: null,
+            duplicate: false
+        }
+
+        window.TagsInput = TagsInput;
+
+    })();
+
+        
+    var tagInput1 = new TagsInput({
+        selector: 'tag-input1',
+        duplicate : false,
+        max : 10
+    });
+
+    var tagsdata = '<?= $video->search_tags ?>';
+	
+
+	if(tagsdata == ""){
+            tagInput1.addData([])
+    }
+    else{
+        var search_tag = "<?= $video->search_tags ?>";
+        var tagsArray = search_tag.split(',');
+
+        for (var i = 0; i < tagsArray.length; i++) {
+            tagInput1.addData([tagsArray[i]]);
+        }
+   }
+		
 
    </script>
 
