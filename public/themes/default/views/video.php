@@ -827,7 +827,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                             <?php }
 }elseif(!empty($new_date)){ ?>
                             <div
-                                id="subscribers_only"style="background: url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
+                                id="subscribers_only"style="background: linear-gradient(rgba(0,0,0, 0),rgba(0,0,0, 100)), url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 500px; margin-top: 20px;">
                                 <h2> COMING SOON </h2>
                                 <p class="countdown" id="demo"></p>
                             </div>
