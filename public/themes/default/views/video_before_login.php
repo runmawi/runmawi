@@ -12,6 +12,9 @@
    .modal {
    top:40px;
    }
+    .am p{
+        color: #fff!important;
+    }
    .img__wrap {
    position: relative;
    height: 200px;
@@ -296,13 +299,14 @@
    </video>
 </div> -->
 
-<div id="subscribers_only" style="background: url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
-      <h4 class="text-center"><?php echo $video->title; ?></h4>
-      <p class="text-center text-white col-lg-8" style="margin:0 auto";>
-         <?php echo $video->description; ?></p>
-      <h2>Sorry, this video is only available to
+<div id="subscribers_only" style="background: linear-gradient(rgba(0,0,0, 0),rgba(0,0,0, 100)), url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 500px; margin-top: 20px;padding-top:150px;">
+    <div class="container-fluid">
+      <h2 class="text-left"><?php echo $video->title; ?></h2>
+      <div class="text-white col-lg-7 p-0"><p style="margin:0 auto;">
+          <?php echo $video->description; ?></p></div>
+      <h4 class="mb-3">Sorry, this video is only available to
          <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered' ): ?>Registered
-         Users<?php endif; ?></h2>
+         Users<?php endif; ?></h4>
       <div class="clear"></div>
       <?php if(Auth::guest() && $video->access == 'registered'): ?>
       <form method="get"
@@ -313,7 +317,7 @@
       <form method="get" action="<?= URL::to('signup') ?>">
       </form>
       <?php endif; ?>
-
+</div>
 </div>
 
                         </div>
