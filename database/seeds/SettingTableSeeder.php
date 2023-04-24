@@ -23,8 +23,8 @@ class SettingTableSeeder extends Seeder
             $domain_url   = $website->Domain_name;
         }
         else{
-            $website_name = 'Flicknexs';
-            $domain_url   = 'http://Flicknexs.com/';
+            $website_name = env('APP_NAME');
+            $domain_url   = env('APP_NAME');
         }
         $setting = [
             [  'website_name' => $website_name, 
