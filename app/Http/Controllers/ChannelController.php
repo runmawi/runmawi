@@ -378,6 +378,9 @@ class ChannelController extends Controller
                         ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
                         ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
                         ->where('videos.id', '!=', $vid)
+                        ->where('videos.active',  1)
+                        ->where('videos.status',  1)
+                        ->where('videos.draft',  1)
                         ->limit(10)
                         ->get();
 
@@ -455,6 +458,9 @@ class ChannelController extends Controller
                             ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
                             ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
                             ->where('videos.id', '!=', $vid)
+                            ->where('videos.active',  1)
+                            ->where('videos.status',  1)
+                            ->where('videos.draft',  1)
                             ->groupBy('videos.id')
                             ->limit(10)
                             ->get();
@@ -781,6 +787,9 @@ class ChannelController extends Controller
                         ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
                         ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
                         ->where('videos.id', '!=', $vid)
+                        ->where('videos.active',  1)
+                        ->where('videos.status',  1)
+                        ->where('videos.draft',  1)
                         ->groupBy('videos.id')
                         ->limit(10)
                         ->get();
@@ -859,6 +868,9 @@ class ChannelController extends Controller
                         $recomended = Video::select('videos.*', 'video_categories.name as categories_name', 'categoryvideos.category_id as categories_id')
                             ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
                             ->where('videos.id', '!=', $vid)
+                            ->where('videos.active',  1)
+                            ->where('videos.status',  1)
+                            ->where('videos.draft',  1)
                             ->groupBy('videos.id')
                             ->limit(10)
                             ->get();
@@ -1269,6 +1281,9 @@ class ChannelController extends Controller
                         ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
                         ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
                         ->where('videos.id', '!=', $vid)
+                        ->where('videos.active',  1)
+                        ->where('videos.status',  1)
+                        ->where('videos.draft',  1)
                         ->groupBy('videos.id')
                         ->limit(10)
                         ->get();
@@ -1347,6 +1362,9 @@ class ChannelController extends Controller
                             ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
                             ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
                             ->where('videos.id', '!=', $vid)
+                            ->where('videos.active',  1)
+                            ->where('videos.status',  1)
+                            ->where('videos.draft',  1)
                             ->groupBy('videos.id')
                             ->limit(10)
                             ->get();
@@ -1659,6 +1677,9 @@ class ChannelController extends Controller
                         ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
                         ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
                         ->where('videos.id', '!=', $vid)
+                        ->where('videos.active',  1)
+                        ->where('videos.status',  1)
+                        ->where('videos.draft',  1)
                         ->limit(10)
                         ->get();
 
@@ -1721,6 +1742,9 @@ class ChannelController extends Controller
                             ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
                             ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
                             ->where('videos.id', '!=', $vid)
+                            ->where('videos.active',  1)
+                            ->where('videos.status',  1)
+                            ->where('videos.draft',  1)
                             ->groupBy('videos.id')
                             ->limit(10)
                             ->get();
@@ -1994,6 +2018,9 @@ class ChannelController extends Controller
                         ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
                         ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
                         ->where('videos.id', '!=', $vid)
+                        ->where('videos.active',  1)
+                        ->where('videos.status',  1)
+                        ->where('videos.draft',  1)
                         ->groupBy('videos.id')
                         ->limit(10)
                         ->get();
@@ -2057,6 +2084,9 @@ class ChannelController extends Controller
                         $recomended = Video::select('videos.*', 'video_categories.name as categories_name', 'categoryvideos.category_id as categories_id')
                             ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
                             ->where('videos.id', '!=', $vid)
+                            ->where('videos.active',  1)
+                            ->where('videos.status',  1)
+                            ->where('videos.draft',  1)
                             ->groupBy('videos.id')
                             ->limit(10)
                             ->get();
@@ -2386,6 +2416,9 @@ class ChannelController extends Controller
                         ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
                         ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
                         ->where('videos.id', '!=', $vid)
+                        ->where('videos.active',  1)
+                        ->where('videos.status',  1)
+                        ->where('videos.draft',  1)
                         ->groupBy('videos.id')
                         ->limit(10)
                         ->get();
@@ -2449,6 +2482,9 @@ class ChannelController extends Controller
                             ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
                             ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
                             ->where('videos.id', '!=', $vid)
+                            ->where('videos.active',  1)
+                            ->where('videos.status',  1)
+                            ->where('videos.draft',  1)
                             ->groupBy('videos.id')
                             ->limit(10)
                             ->get();
@@ -3018,6 +3054,9 @@ class ChannelController extends Controller
                         ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
                         ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
                         ->where('videos.id', '!=', $vid)
+                        ->where('videos.active',  1)
+                        ->where('videos.status',  1)
+                        ->where('videos.draft',  1)
                         ->groupBy('videos.id')
                         ->limit(10)
                         ->get();
@@ -3734,5 +3773,19 @@ class ChannelController extends Controller
         } catch (\Throwable $th) {
             return abort(404);
         }
+    }
+
+    public function live_location()
+    {
+
+        echo '<pre>';
+        echo Country_name();
+
+        echo '<pre>';
+        echo city_name();
+        echo '<pre>';
+    
+        echo Region_name();
+        exit;
     }
 }

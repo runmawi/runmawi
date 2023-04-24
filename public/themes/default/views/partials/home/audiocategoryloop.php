@@ -63,7 +63,9 @@
                                     <p class="p-tag1">
                                         <?php  if($audio->access == 'subscriber' ){ ?>
                                     <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
-                                    <?php }
+                                    <?php }elseif($audio->access == 'registered'){?>
+                                          <p class="p-tag2"><img alt="logo" src="<?php echo URL::to('/').'/assets/icons/register.png'; ?>" width=10 class="c-logo" ></p>
+                                          <?php }
                                        elseif(!empty($audio->ppv_price)) {
                                           echo $currency->symbol.' '.$audio->ppv_price ; 
                                           }  elseif( $audio->ppv_price == null) {
