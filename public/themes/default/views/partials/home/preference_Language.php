@@ -25,7 +25,7 @@
                                             <?php  if($preference_Languages->access == 'subscriber' ){ ?>
                                                 <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
                                             <?php }elseif($preference_Languages->access == 'registered'){?>
-                                                <p class="p-tag2"><img alt="logo" src="<?php echo URL::to('/').'/assets/icons/register.png'; ?>" width=10 class="c-logo" ></p>
+                                                <p class="p-tag"><?php echo "Register Now"; ?></p>
                                                 <?php } elseif(!empty($preference_Languages->ppv_price)){?>
                                                 <p class="p-tag1"><?php echo $currency->symbol.' '.$preference_Languages->ppv_price; ?></p>
                                             <?php }elseif( !empty($preference_Languages->global_ppv || !empty($preference_Languages->global_ppv) && $preference_Languages->ppv_price == null)){ ?>

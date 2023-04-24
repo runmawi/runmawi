@@ -84,7 +84,7 @@ $currency = App\CurrencySetting::first();
                                             <?php if($category_video->access == 'subscriber' ){ ?>
                                                 <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
                                             <?php }elseif($category_video->access == 'registered'){?>
-                                                <p class="p-tag2"><img alt="logo" src="<?php echo URL::to('/').'/assets/icons/register.png'; ?>" width=10 class="c-logo" ></p>
+                                                <p class="p-tag"><?php echo "Register Now"; ?></p>
                                                 <?php } elseif(!empty($category_video->ppv_price)) {
                                                    echo $category_video->ppv_price.' '.$currency->symbol ; 
                                                 } elseif(!empty($category_video->global_ppv) && $category_video->ppv_price == null) {

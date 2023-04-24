@@ -24,7 +24,7 @@
                                         <?php  if($most_watched_video->access == 'subscriber' ){ ?>
                                             <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
                                             <?php }elseif($most_watched_video->access == 'registered'){?>
-                                            <p class="p-tag2"><img alt="logo" src="<?php echo URL::to('/').'/assets/icons/register.png'; ?>" width=10 class="c-logo" ></p>
+                                            <p class="p-tag"><?php echo "Register Now"; ?></p>
                                             <?php } elseif(!empty($most_watched_video->ppv_price)){?>
                                             <p class="p-tag1"><?php echo $currency->symbol.' '.$most_watched_video->ppv_price; ?></p>
                                         <?php }elseif( !empty($most_watched_video->global_ppv || !empty($most_watched_video->global_ppv) && $most_watched_video->ppv_price == null)){ ?>

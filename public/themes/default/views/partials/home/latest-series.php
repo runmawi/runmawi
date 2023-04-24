@@ -34,7 +34,7 @@
                     <?php if($latest_serie->access == 'subscriber' ){ ?>
                         <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
                         <?php }elseif($latest_serie->access == 'registered'){?>
-                        <p class="p-tag2"><img alt="logo" src="<?php echo URL::to('/').'/assets/icons/register.png'; ?>" width=10 class="c-logo" ></p>
+                        <p class="p-tag"><?php echo "Register Now"; ?></p>
                         <?php } elseif(!empty($latest_serie->ppv_status)){?>
                     <p class="p-tag1"><?php echo $currency->symbol.' '.$settings->ppv_price; ?></p>
                     <?php }elseif(!empty($latest_serie->ppv_status || !empty($latest_serie->ppv_status) && $latest_serie->ppv_status == null)){ ?>

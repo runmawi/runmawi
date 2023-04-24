@@ -27,7 +27,7 @@
                                             <?php }else(!empty($preference_genre->ppv_price)){?>
                                                 <p class="p-tag1"><?php echo $currency->symbol.' '.$preference_genre->ppv_price; ?></p>
                                             <?php }elseif($preference_genre->access == 'registered'){?>
-                                                <p class="p-tag2"><img alt="logo" src="<?php echo URL::to('/').'/assets/icons/register.png'; ?>" width=10 class="c-logo" ></p>
+                                                <p class="p-tag"><?php echo "Register Now"; ?></p>
                                                 <?php } elseif( !empty($preference_genre->global_ppv || !empty($preference_genre->global_ppv) && $preference_genre->ppv_price == null)){ ?>
                                                 <p class="p-tag1"><?php echo $preference_genre->global_ppv.' '.$currency->symbol; ?></p>
                                             <?php }elseif($preference_genre->global_ppv == null && $preference_genre->ppv_price == null ){ ?>
