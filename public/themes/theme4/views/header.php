@@ -642,7 +642,7 @@ input:checked + .sliderk:before {
                                                                               <?php echo $tvshows_series->title; ?>
                                                                            </a>
                                                                         <?php else: ?>
-                                                                           <a class="dropdown-item cont-item text-primary" href="<?php echo URL::to('/tv-shows');?>"> 
+                                                                           <a class="dropdown-item cont-item text-primary" href="<?php echo URL::to('/series/list');?>"> 
                                                                               <?php echo 'More...';?> 
                                                                            </a>
                                                                         <?php endif; ?>
