@@ -17,6 +17,7 @@ Route::get('/admin/transcode-index', 'TranscodeController@index');
 Route::get('/admin/addWatermark', 'TranscodeController@addWatermark');
 Route::post('/audio_ppv', 'CinetPayController@audio_ppv')->name('audio_ppv');
 Route::get('/admin/addSTorageWatermark', 'TranscodeController@addSTorageWatermark');
+Route::get('/live_location', 'ChannelController@live_location');
 
 
 Route::get('/moderator', 'ModeratorsUserController@index');
@@ -1087,6 +1088,7 @@ Route::post('/currency/update', 'AdminCurrencySettings@UpdateCurrencySettings');
 Route::get('/currency/edit/{id}', 'AdminCurrencySettings@EditCurrencySettings');
 Route::get('/currency/delete/{id}', 'AdminCurrencySettings@DeleteCurrencySettings');
 Route::get('/Allregionvideos', 'AdminUsersController@AllRegionVideos');
+Route::post('/VideoByRegionCSV', 'AdminUsersController@VideoByRegionCSV');
 
 // Geofencing
 Route::get('/Geofencing', 'GeofencingController@index');

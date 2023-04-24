@@ -3994,4 +3994,50 @@ class AdminUsersController extends Controller
             return Redirect::back()->with("import-error-message", $th->getMessage() );
         }
     }
+
+    public function VideoByRegionCSV(Request $request)
+    {
+
+        $data = $request->all();
+        // $start_time = $data['start_time'];
+        // $end_time = $data['end_time'];
+        $region_views = RegionView::leftjoin('videos', 'region_views.video_id', '=', 'videos.id')->get();
+        $data = $region_views->groupBy('countryname');
+
+        $viewbyregion = Video::select('videos.*', 'region_views.countryname as countryname')->join('region_views', 'region_views.video_id', '=', 'videos.id')
+            ->orderBy('created_at', 'desc')
+            ->get();
+        //  $file = 'CPPRevenue_' . rand(10, 100000) . '.csv';
+        $file = 'viewbyregion.csv';
+        $headers = array(
+            'Content-Type' => 'application/vnd.ms-excel; charset=utf-8',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Content-Disposition' => 'attachment; filename=download.csv',
+            'Expires' => '0',
+            'Pragma' => 'public',
+        );
+        if (!File::exists(public_path() . "/uploads/csv"))
+        {
+            File::makeDirectory(public_path() . "/uploads/csv");
+        }
+        $filename = public_path("/uploads/csv/" . $file);
+        $handle = fopen($filename, 'w');
+        fputcsv($handle, ["#","Title", "Country Name", "User Ip", "View Count", ]);
+        if (count($viewbyregion) > 0)
+        {
+            foreach ($viewbyregion as $each_user)
+            {
+
+                fputcsv($handle, ['#',$each_user->title, $each_user->countryname,  $each_user->user_ip,  $each_user->views,
+                ]);
+            }
+        }
+
+        fclose($handle);
+
+        \Response::download($filename, "download.csv", $headers);
+
+        return $file;
+    }
+
 }

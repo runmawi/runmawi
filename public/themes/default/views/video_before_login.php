@@ -274,11 +274,11 @@
    </video>
 </div>
 <input type="hidden" id="hls_m3u8" name="hls_m3u8" value="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>">
-<?php }else{ 
+<?php }else{  
    if(!empty($video->path) && $video->path != "public"){ $hls = "hls" ;}else{ $hls = "" ;}
    ?>
 <input type="hidden" id="hls" name="hls" value="<?php echo $hls; ?>">
-<div id="video" class="fitvid" style="margin: 0 auto;">
+<!-- <div id="video" class="fitvid" style="margin: 0 auto;">
    <video id="videoPlayer" <?= $autoplay ?> class="video-js vjs-default-skin vjs-big-play-centered  adstime_url" 
       poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" 
       controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'
@@ -294,7 +294,29 @@
       <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value['url'] ?>" >
       <?php } } } else { } ?>  
    </video>
+</div> -->
+
+<div id="subscribers_only" style="background: url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
+      <h4 class="text-center"><?php echo $video->title; ?></h4>
+      <p class="text-center text-white col-lg-8" style="margin:0 auto";>
+         <?php echo $video->description; ?></p>
+      <h2>Sorry, this video is only available to
+         <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered' ): ?>Registered
+         Users<?php endif; ?></h2>
+      <div class="clear"></div>
+      <?php if(Auth::guest() && $video->access == 'registered'): ?>
+      <form method="get"
+         action="<?= URL::to('/signup') ?>">
+         <button   class="btn btn-primary" id="button">Become a Registered to watch this video</button>
+      </form>
+      <?php else: ?>
+      <form method="get" action="<?= URL::to('signup') ?>">
+      </form>
+      <?php endif; ?>
+
 </div>
+
+                        </div>
 <?php  } ?>
 <input type="hidden" class="videocategoryid" data-videocategoryid="<?= $video->video_category_id ?>" value="<?= $video->video_category_id ?>">
 <div class="container-fluid video-details" >
