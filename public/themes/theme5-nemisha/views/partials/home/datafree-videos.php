@@ -11,8 +11,9 @@
             ?>
      
    </a>
-      <a class="see" href="<?php echo URL::to('/category/').'/'.$DataFreeCategories->slug;?>"> See All  </a>
+    
         </h4>
+      <a class="see" href="<?php echo URL::to('/category/').'/'.$DataFreeCategories->slug;?>"> See All  </a>
 </div>
 <div class="favorites-contens">
     <ul class="favorites-slider list-inline row p-0 mb-0">

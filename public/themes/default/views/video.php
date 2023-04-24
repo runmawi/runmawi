@@ -645,16 +645,19 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
     id="subscribers_only"style="background: linear-gradient(rgba(0,0,0, 0),rgba(0,0,0, 100)),url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-position:center; background-repeat: no-repeat; background-size: cover; height: 500px; margin-top: 20px;">
     <div id="subscribers_only">
         <div class="clear"></div>
-        <div style="padding-top:10%;">
-            <h4 class="text-center"><?php echo $video->title; ?></h4>
-            <p class="text-center text-white col-lg-8" style="margin:0 auto";><?php echo $video->description; ?></p>
+        <div class="container-fluid">
+        <div style="padding-top:8%;">
+            <h4 class=""><?php echo $video->title; ?></h4>
+            <div class="text-white col-lg-7 p-0">
+            <p class=" " style="margin:0 auto";><?php echo $video->description; ?></p>
+</div>
 
-
-            <h2>
-                <p style="text-center">Sorry, this video is only available to</p>
-                <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered'): ?>Registered Users<?php endif; ?>
-            </h2>
+            <h4>
+               Sorry, this video is only available to Subscribers or PPV users
+                <?php if($video->access == 'subscriber'): ?><?php elseif($video->access == 'registered'): ?>Registered Users<?php endif; ?>
+            </h4>
             <?php if(!Auth::guest() && $video->access == 'subscriber' || !Auth::guest() && $video->access == 'guest' && !empty($video->ppv_price) ){ ?>
+            <div class="d-flex align-items-baseline">
             <form class="text-center" method="get" action="<?= route('payment_becomeSubscriber') ?>">
                 <button style="margin-top: 0%;" class="btn btn-primary"id="button"> subscribe to watch this
                     video</button>
@@ -668,12 +671,12 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
             </form>
             <?php } 
   if(!Auth::guest() && $video->ppv_price != '' && $video->ppv_price != null || $video->global_ppv == 1 ){ ?>
-            <button style="margin-left: 46%;margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter"
+            <button style="margin-left:1%;margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter"
                 class="view-count rent-video btn btn-primary">
                 <?php echo __('Purchase Now'); ?> </button>
             <?php } 
-?>
-        </div>
+?></div>
+        </div></div>
     </div>
 </div>
 <!-- <div id="video" class="adstime_url" class="fitvid" style="margin: 0 auto;"> -->
@@ -703,12 +706,12 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
         <div class="clear"></div>
         <div style="position: absolute;top: 20%;left: 20%;width: 100%;">
             <h4 class="text-center"><?php echo $video->title; ?></h4>
-            <p class="text-center text-white col-lg-8" style="margin:0 auto";><?php echo $video->description; ?></p>
+            <p class="text-center text-white col-lg-8" style="";><?php echo $video->description; ?></p>
 
-            <h2>
+            <h6>
                 <p style="margin-left:14%">Sorry, this video is only available to</p>
                 <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered'): ?>Registered Users<?php endif; ?>
-            </h2>
+            </h6>
             <?php if(!Auth::guest() && $video->access == 'subscriber' || !Auth::guest() && $video->access == 'guest' && !empty($video->ppv_price) ){ ?>
             <form method="get" action="<?= route('payment_becomeSubscriber') ?>">
                 <button style="margin-left: 27%;margin-top: 0%;" class="btn btn-primary"id="button">Purchase to
@@ -722,7 +725,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
             </form>
             <?php }
     if(!Auth::guest() && $video->ppv_price != '' && $video->ppv_price != null || $video->global_ppv == 1 ){ ?>
-            <button style="margin-left: 46%;margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter"
+            <button style="margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter"
                 class="view-count rent-video btn btn-primary">
                 <?php echo __('Purchase Now'); ?> </button>
             <?php }  ?>
@@ -733,7 +736,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                     <div class="clear"></div>
                     <div style="margin-left: -20%;position: absolute;top: 20%;left: 20%;width: 100%;">
                         <h4 class="text-center"><?php echo $video->title; ?></h4>
-                        <p class="text-center text-white col-lg-8" style="margin:0 auto";><?php echo $video->description; ?></p>
+                        <p class="text-center text-white col-lg-8" style="";><?php echo $video->description; ?></p>
 
                         <h2>
                             <p style="margin-left:14%">Purchase to watch this PPV video</p>
@@ -781,7 +784,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                                     </form>
                                     <?php }
      if(!Auth::guest() && $video->ppv_price != '' && $video->ppv_price != null || $video->global_ppv == 1 ){ ?>
-                                    <button style="margin-left: 46%;margin-top: 1%;" data-toggle="modal"
+                                    <button style="margin-top: 1%;" data-toggle="modal"
                                         data-target="#exampleModalCenter"
                                         class="view-count rent-video btn btn-primary">
                                         <?php echo __('Purchase Now'); ?> </button>
@@ -809,13 +812,14 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                                         video</button>
                                 </form>
                                 <?php else: ?>
+                                
                                 <form method="get" action="<?= URL::to('signup') ?>">
                                     <button id="button">Signup Now <?php if($video->access == 'subscriber'): ?>to Become a
                                         Subscriber<?php elseif($video->access == 'registered'): ?>for Free!<?php endif; ?></button>
                                 </form>
                                 <?php endif; ?>
                                 <?php if(!Auth::guest() && $video->ppv_price != '' && $video->ppv_price != null || $video->global_ppv == 1 ){ ?>
-                                <button style="margin-left: 46%;margin-top: 1%;" data-toggle="modal"
+                                <button style="margin-top: 1%;" data-toggle="modal"
                                     data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
                                     <?php echo __('Purchase Now'); ?> </button>
                                 <?php } ?>
@@ -1298,7 +1302,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                            $user = Auth::user(); 
                            if (  ($user->role!="subscriber" && $video->access != 'guest' && $user->role!="admin") ) { ?>
                                                     <a href="<?php echo URL::to('/becomesubscriber'); ?>"><span
-                                                            class="view-count btn1 btn-outline-danger subsc-video"><?php echo __('Subscribe'); ?>
+                                                            class="view-count btn btn-primary subsc-video"><?php echo __('Subscribe'); ?>
                                                         </span></a>
                                                     <?php } ?>
                                                 </li>
@@ -1310,7 +1314,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
 
                                                     <!-- && ($video->global_ppv == 1 ) -->
                                                     <button data-toggle="modal" data-target="#exampleModalCenter"
-                                                        class="view-count btn1 btn-outline-danger rent-video">
+                                                        class="view-count btn btn-primary rent-video">
                                                         <?php echo __('Purchase Now'); ?> </button>
                                                     <?php } ?>
                                                 </li>
@@ -1740,7 +1744,7 @@ $artists = [];
                                                         <label
                                                             class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
                                                             <input type="radio" class="payment_btn"
-                                                                id="tres_important" checked name="payment_method"
+                                                                id="tres_important" 
                                                                 value=<?= $Stripepayment->payment_type ?>
                                                                 data-value="stripe">
                                                             <?php if (!empty($Stripepayment->stripe_lable)) {
@@ -1756,7 +1760,7 @@ $artists = [];
                                                         <label
                                                             class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
                                                             <input type="radio" class="payment_btn"
-                                                                id="tres_important" checked name="payment_method"
+                                                                id="tres_important" 
                                                                 value="<?= $Stripepayment->payment_type ?>"
                                                                 data-value="stripe">
                                                             <!--<img class="" height="20" width="40" src="<?php echo URL::to('/assets/img/stripe.png'); ?>" style="margin-top:-5px" >-->
@@ -1827,10 +1831,10 @@ $artists = [];
 
                                                         <label
                                                             class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
-                                                            <input type="radio" class="payment_btn" id=""
+                                                            <input type="radio" class="payment_btn" id="" checked name="payment_method"  
                                                                 name="payment_method"
                                                                 value="<?= $CinetPay_payment_settings->payment_type ?>"
-                                                                data-value="Paystack">
+                                                                data-value="CinetPay">
                                                             <?= $CinetPay_payment_settings->payment_type ?>
                                                         </label>
                                                         <?php }
@@ -2582,14 +2586,14 @@ $artists = [];
 
                 <script>
                     window.onload = function() {
-                        $('.Razorpay_button,.paystack_button,.cinetpay_button').hide();
+                        $('.Razorpay_button,.paystack_button,.Stripe_button').hide();
                     }
 
                     $(document).ready(function() {
 
                         $(".payment_btn").click(function() {
 
-                            $('.Razorpay_button,.Stripe_button,.paystack_button,.cinetpay_button').hide();
+                            $('.Razorpay_button,.Stripe_button,.paystack_button,.cinetpay_button,.cinetpay_button').hide();
 
                             let payment_gateway = $('input[name="payment_method"]:checked').val();
 
