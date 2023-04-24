@@ -12372,7 +12372,7 @@ public function QRCodeMobileLogout(Request $request)
       $HomeSetting = HomeSetting::first();
       // print_r($HomeSetting);exit;
       if($HomeSetting->latest_videos == 1){
-      $settings = Setting::first();
+      $settings = Setting::get();
         // Data Free Video Based on Category 
          
         $DataFreeCategories = VideoCategory::where('slug','datafree')->where('in_home','=',1)->first();

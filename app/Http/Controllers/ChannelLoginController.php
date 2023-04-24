@@ -13,7 +13,6 @@ use Auth;
 use Hash;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Crypt;
-use Image;
 use View;
 use Flash;
 use App\Subscription as Subscription;
@@ -51,6 +50,8 @@ use App\SubscriptionPlan;
 use App\Channel;
 use App\VideoCommission;
 use Theme;
+use Intervention\Image\Facades\Image;
+use Intervention\Image\Filters\DemoFilter;
 
 class ChannelLoginController extends Controller
 {
@@ -206,6 +207,61 @@ class ChannelLoginController extends Controller
             // });
             // return redirect('/channel/verify-request')
             //     ->with('message', 'Successfully Users saved!.');
+            try
+            {
+                $data = array(
+                    'email_subject' => EmailTemplate::where('id', 43)->pluck('heading')->first() ,
+                );
+
+                Mail::send('emails.partner_welcome', array('Partner_Name' => $request->username,'website_name' => GetWebsiteName() ,) ,
+                    function ($message) use ($data, $request){
+                        $message->from(AdminMail() , GetWebsiteName());
+                        $message->to($request->email_id, $request->username)->subject($data['email_subject']);
+                    });
+
+                $email_log = 'Mail Sent Successfully from Welcome on Partner’s Registration';
+                $email_template = "43";
+                $user_id = $user->id;
+
+                Email_sent_log($user_id, $email_log, $email_template);
+            }
+            catch(\Exception $e)
+            {
+                $email_log = $e->getMessage();
+                $email_template = "43";
+                $user_id = 1;
+
+                Email_notsent_log($user_id, $email_log, $email_template);
+            }
+
+
+                    // Note: While CPP Signup Email - Template for CPP registered user and Admin
+            try
+            {
+                $data = array(
+                    'email_subject' => EmailTemplate::where('id', 43)->pluck('heading')->first() ,
+                );
+
+                Mail::send('emails.partner_welcome', array('Partner_Name' => $request->username,'website_name' => GetWebsiteName() ,) ,
+                    function ($message) use ($data, $request){
+                        $message->from(AdminMail() , GetWebsiteName());
+                        $message->to(AdminMail())->subject($data['email_subject']);
+                    });
+
+                $email_log = 'Mail Sent Successfully from Welcome on Partner’s Registration';
+                $email_template = "43";
+                $user_id = 1;
+
+                Email_sent_log($user_id, $email_log, $email_template);
+            }
+            catch(\Exception $e)
+            {
+                $email_log = $e->getMessage();
+                $email_template = "43";
+                $user_id = $user->id;
+
+                Email_notsent_log($user_id, $email_log, $email_template);
+            }
 
             return redirect('/channel/login')
                 ->with('message', 'You have successfully registered. Please login If You Approved below.');
@@ -786,34 +842,43 @@ Please recheck the credentials before you try again!');
       $logopath = URL::to("/public/uploads/channel/");
       $path = public_path() . "/uploads/channel/";
 
-
-      if ($image != '')
-      {
-          //code for remove old file
-          if ($image != '' && $image != null)
-          {
-              $file_old = $path . $image;
-              if (file_exists($file_old))
-              {
-                  unlink($file_old);
-              }
-          }
-          //upload new file
-          $randval = Str::random(16);
+      $image_path = public_path() . "/uploads/channel/";
+      
+      if($image != '') {   
+        if($image != ''  && $image != null){
+             $file_old = $image_path.$image;
+            if (file_exists($file_old)){
+             unlink($file_old);
+            }
+        }
           $file = $image;
-          $image_ext = $randval . '.' . $request->file('picture')
-              ->extension();
-          $file->move($path, $image_ext);
 
-          $image = URL::to('/') . '/public/uploads/channel/' . $image_ext;
+          if(compress_image_enable() == 1){
+            
+              $filename  = time().'.'.compress_image_format();
+              $PC_image     =  'channel_'.$filename ;
 
-      }elseif(!empty($channel->channel_image)){
-        $image = $channel->channel_image;
-      }
-      else
-      {
-          $image = null;
-      }
+              Image::make($file)->save(base_path().'/public/uploads/channel/'.$PC_image,compress_image_resolution() );
+              
+             $image = URL::to('/') . '/public/uploads/channel/' . $PC_image;
+          
+            }else{
+
+              $filename  = time().'.'.$file->getClientOriginalExtension();
+              $PC_image     =  'channel_'.$filename ;
+              Image::make($file)->save(base_path().'/public/uploads/channel/'.$PC_image );
+              $image = URL::to('/') . '/public/uploads/channel/' . $PC_image;
+
+          }
+        
+        }elseif(!empty($channel->channel_image)){
+            $image = $channel->channel_image;
+        }
+        else{
+            $image = null;
+        } 
+   
+
     //   dd( $image);
       if ($channel_logo != '')
       {
@@ -829,11 +894,25 @@ Please recheck the credentials before you try again!');
           //upload new file
           $randval = Str::random(16);
           $file = $channel_logo;
-          $channel_logo_ext = $randval . '.' . $request->file('channel_logo')
-              ->extension();
-          $file->move($path, $channel_logo_ext);
 
-          $channel_logo = URL::to('/') . '/public/uploads/channel/' . $channel_logo_ext;
+          if(compress_image_enable() == 1){
+            
+            $filename  = time().'.'.compress_image_format();
+            $channel_logo_ext     =  'channel_logo_'.$filename ;
+
+            Image::make($file)->save(base_path().'/public/uploads/channel/'.$channel_logo_ext,compress_image_resolution() );
+            
+            $channel_logo = URL::to('/') . '/public/uploads/channel/' . $channel_logo_ext;
+        
+          }else{
+
+            $filename  = time().'.'.$file->getClientOriginalExtension();
+            $channel_logo_ext     =  'channel_logo_'.$filename ;
+            Image::make($file)->save(base_path().'/public/uploads/channel/'.$channel_logo_ext );
+            $channel_logo = URL::to('/') . '/public/uploads/channel/' . $channel_logo_ext;
+
+        }
+      
 
       }elseif(!empty($channel->channel_logo)){
         $channel_logo = $channel->channel_logo;
@@ -842,7 +921,6 @@ Please recheck the credentials before you try again!');
       {
           $channel_logo = null;
       }
-    //   dd();
       
       if ($channel_banner != '')
       {
@@ -858,10 +936,24 @@ Please recheck the credentials before you try again!');
           //upload new file
           $randval = Str::random(16);
           $file = $channel_banner;
-          $channel_banner_ext = $randval . '.' . $request->file('channel_banner')
-              ->extension();
-          $file->move($path, $channel_banner_ext);
+          if(compress_image_enable() == 1){
+            
+            $filename  = time().'.'.compress_image_format();
+            $channel_banner_ext     =  'channel_banner_'.$filename ;
 
+            Image::make($file)->save(base_path().'/public/uploads/channel/'.$channel_banner_ext,compress_image_resolution() );
+            
+            $channel_banner = URL::to('/') . '/public/uploads/channel/' . $channel_banner_ext;
+        
+          }else{
+
+            $filename  = time().'.'.$file->getClientOriginalExtension();
+            $channel_banner_ext     =  'channel_banner_'.$filename ;
+            Image::make($file)->save(base_path().'/public/uploads/channel/'.$channel_banner_ext );
+            $channel_banner = URL::to('/') . '/public/uploads/channel/' . $channel_banner_ext;
+
+        }
+      
           $channel_banner = URL::to('/') . '/public/uploads/channel/' . $channel_banner_ext;
 
       }elseif(!empty($channel->channel_banner)){

@@ -24,6 +24,7 @@
 
 <div id="content-page" class="content-page">
 	<div class="container-fluid">
+        <div class="iq-card">
 		<div class="row">
 			<div class="col-sm-12">
 				<div class="">
@@ -59,6 +60,16 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 form-group">
+                                    <label> Phone Number:</label>
+                                        <input type="number" class="form-control" name="mobile_number" id="mobile_number" placeholder="Mobile Number"  value="@if(!empty($user->mobile_number)){{ $user->mobile_number }}@endif" />
+                                     </div>
+                                    <div class="col-md-6 form-group">
+                                        <label> Email:</label>
+                                        <input type="email" class="form-control" name="email" id="email" placeholder="Email"  value="@if(!empty($user->email)){{ $user->email }}@endif" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 form-group">
                                         <label> Channel Logo :</label>
                                         <input type="file" multiple="true" class="form-control" style="padding: 0px;" name="channel_logo" id="channel_logo" />
                                         @if(!empty($user->channel_logo))
@@ -70,18 +81,33 @@
                                         <input type="file" multiple="true" class="form-control" style="padding: 0px;" accept="video/mp4,video/x-m4v,video/*" name="intro_video" id="intro_video" />
                                         @if(!empty($user->intro_video))
                                         <video width="200" height="200" controls>
-                                 <source src="{{ $user->intro_video }}" type="video/mp4">
-                              </video>
+                                            <source src="{{ $user->intro_video }}" type="video/mp4">
+                                        </video>
                                         @endif
                                     </div>
                                 </div>
                                 </div>
-								<div class="col-md-6 mt-3">
-								<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-								<input type="hidden" name="id" value="{{ @$user->id }}" />
-								<input type="submit" value="Update" class="btn btn-primary pull-right" />
+                                <div class="row">
+                                    <div class="col-md-6 form-group">
+                                            <label> Channel Banner:</label>
+                                            <input type="file" multiple="true" class="form-control" style="padding: 0px;" name="channel_banner" id="channel_banner" />
+                                            @if(!empty($user->channel_banner))
+                                                <img src="{{ @$user->channel_banner }}" class="video-img" width="200" height="200"/>
+                                            @endif
+                                        </div>
+                                    <div class="col-md-6 form-group">
+                                        <label> Profile Picture:</label>
+                                        <input type="file" multiple="true" class="form-control" style="padding: 0px;" name="picture" id="picture" />
+                                        @if(!empty($user->channel_image))
+                                            <img src="{{ @$user->channel_image }}" class="video-img" width="200" height="200"/>
+                                        @endif
                                     </div>
-                            </div>
+                                </div>
+                                <div class="col-md-12 mt-3 d-flex justify-content-end">								<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+								<input type="hidden" name="id" value="{{ @$user->id }}" />
+								<input type="submit" value="Update" class="btn btn-primary" />
+                                    </div>
+                           
 							</form>
 
 							<div class="clear"></div>

@@ -114,11 +114,32 @@
                      </div>
                   </div>
                   <div class="iq-card">
-                     <div class="iq-card-header d-flex justify-content-between align-items-center">
-                        <div class="iq-header-title">
-                           <h4 class="card-title">Get Started </h4>
+
+                  <div class="iq-card-body row align-items-center">
+                        <div class="col-lg-7">
+                           <div class="row list-unstyled mb-0 pb-0">
+                           <?php $all_category = App\VideoCategory::where('uploaded_by','Channel')->get();
+                                    foreach($all_category as $category) { 
+                                       $categoty_sum = App\Video::where("video_category_id","=",$category->id)->sum('views');
+                                       ?>                                   
+                              <div class="col-sm-6 col-md-4 col-lg-6 mb-3">
+                                 <div class="iq-progress-bar progress-bar-vertical iq-bg-primary">
+                                    <span class="bg-primary" data-percent="100" style="transition: height 2s ease 0s; width: 100%; height: 40%;"></span>
+                                 </div>
+                                 <div class="media align-items-center">
+                                    <div class="iq-icon-box-view rounded mr-3 iq-bg-secondary"><i class="las la-film font-size-32"></i></div>
+                                    <div class="media-body text-white">
+                                       <h6 class="mb-0 font-size-14 line-height"><?php echo ucfirst($category->name);?></h6>
+                                       <small class="text-primary mb-0">+ {{ $categoty_sum }} views</small>
+                                    </div>
+                                 </div>
+                              </div>
+                               <?php } ?>
+                           </div>
                         </div>
-                        <div id="top-rated-item-slick-arrow" class="slick-aerrow-block"></div>
+                        <div class="col-lg-5">
+                           <div id="view-chart-02" class="view-cahrt-02"></div>
+                        </div>
                      </div>
                      <div class="iq-card-body">
                         <!-- <p style="color:black;">Subscribed To {{ $users->package }}</p> -->
@@ -201,63 +222,7 @@
                   </div>
                </div>
             </div>
-            <div class="row">
-               <div class="col-sm-12  col-lg-4">
-                  <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
-                     <div class="iq-card-header d-flex align-items-center justify-content-between">
-                        <div class="iq-header-title">
-                           <h4 class="card-title">Categories</h4>
-                        </div>
-                     </div>
-                     <div class="iq-card-body p-0">
-                        <div id="view-chart-03"></div>
-                     </div>
-                  </div>
-               </div>
-               <div class="col-lg-8">
-                  <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
-                     <div class="iq-card-header d-flex align-items-center justify-content-between">
-                        <div class="iq-header-title">
-                           <h4 class="card-title">Top Category</h4>
-                        </div>
-                        <!-- <div class="iq-card-header-toolbar d-flex align-items-center seasons">
-                           <div class="iq-custom-select d-inline-block sea-epi s-margin">
-                              <select name="cars" class="form-control season-select">
-                                 <option value="season1">Today</option>
-                                 <option value="season2">This Week</option>
-                                 <option value="season2">This Month</option>
-                              </select>
-                           </div>
-                        </div> -->
-                     </div>
-                     <div class="iq-card-body row align-items-center">
-                        <div class="col-lg-7">
-                           <div class="row list-unstyled mb-0 pb-0">
-                           <?php $all_category = App\VideoCategory::all();
-                                    foreach($all_category as $category) { 
-                                       $categoty_sum = App\Video::where("video_category_id","=",$category->id)->sum('views');
-                                       ?>                                   
-                              <div class="col-sm-6 col-md-4 col-lg-6 mb-3">
-                                 <div class="iq-progress-bar progress-bar-vertical iq-bg-primary">
-                                    <span class="bg-primary" data-percent="100" style="transition: height 2s ease 0s; width: 100%; height: 40%;"></span>
-                                 </div>
-                                 <div class="media align-items-center">
-                                    <div class="iq-icon-box-view rounded mr-3 iq-bg-secondary"><i class="las la-film font-size-32"></i></div>
-                                    <div class="media-body text-white">
-                                       <h6 class="mb-0 font-size-14 line-height"><?php echo ucfirst($category->name);?></h6>
-                                       <small class="text-primary mb-0">+ {{ $categoty_sum }} views</small>
-                                    </div>
-                                 </div>
-                              </div>
-                               <?php } ?>
-                           </div>
-                        </div>
-                        <div class="col-lg-5">
-                           <div id="view-chart-02" class="view-cahrt-02"></div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
+
                <div class="col-sm-12">
                   <div class="iq-card">
                      <div class="iq-card-header d-flex justify-content-between">
@@ -281,10 +246,15 @@
                                  </tr>
                               </thead>
                               <tbody>
+                                 <?php 
+                                    $recent_views = App\RecentView::limit(10)->orderBy('id', 'DESC')
+                                    ->get();
+                                 $recent_view = $recent_views->unique('video_id'); 
+                                 ?>
                                 @if(!empty(@$recent_views))
                               @foreach(@$recent_views as $views)
                                   <?php 
-                                  $video_detail = App\Video::find($views->video_id); 
+                                  $video_detail = App\Video::where('uploaded_by','Channel')->where('id',$views->video_id)->first(); 
                                   $user_detail = App\User::find($views->user_id);
                                   if (isset($video_detail) && !empty($video_detail)) {
                                   ?>

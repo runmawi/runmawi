@@ -17,7 +17,7 @@
 
 @section('content')
     <div id="content-page" class="content-page">
-        <div class="iq-card">
+        <div class="iq-card mt-4">
         <div class="col-md-12">
             <div class="iq-card-header  justify-content-between">
                 <div class="iq-header-title">

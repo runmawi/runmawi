@@ -56,7 +56,7 @@ input[type="number"] {
 @section('content')
 
 <div id="content-page" class="content-page">
-            <div class="row">
+            <div class="row mt-4">
                <div class="col-sm-12">
                   <div class="iq-card">
                      <div class="iq-card-header  justify-content-between">

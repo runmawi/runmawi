@@ -14,7 +14,6 @@ use Hash;
 use Illuminate\Support\Facades\DB;
 use App\Video as Video;
 use App\VideoCategory as VideoCategory;
-use Image;
 use App\Menu as Menu;
 use App\Country as Country;
 use App\Slider as Slider;
@@ -75,6 +74,8 @@ use App\Region;
 use App\RegionView;
 use App\ModeratorPayout;
 use App\SeriesGenre;
+use Intervention\Image\Facades\Image;
+use Intervention\Image\Filters\DemoFilter;
 
 class ModeratorsUserController extends Controller
 {
@@ -7168,6 +7169,7 @@ class ModeratorsUserController extends Controller
 
         $logopath = URL::to("/public/uploads/moderator_albums/");
         $path = public_path() . "/uploads/moderator_albums/";
+        $image_path = public_path() . "/uploads/moderator_albums/";
 
         if ($banner != "") {
 
@@ -7180,9 +7182,23 @@ class ModeratorsUserController extends Controller
             }
             //upload new file
             $file = $banner;
-            $file_banner = str_replace(' ', '_', $file->getClientOriginalName());
-            $file->move($path, $file_banner);
-            $banner = str_replace(' ', '_', $file->getClientOriginalName());
+            if(compress_image_enable() == 1){
+            
+                $filename  = time().'.'.compress_image_format();
+                $banner_image     =  'banner_'.$filename ;
+  
+                Image::make($file)->save(base_path().'/public/uploads/moderator_albums/'.$banner_image,compress_image_resolution() );
+                
+               $banner =  $banner_image;
+            
+              }else{
+  
+                $filename  = time().'.'.$file->getClientOriginalExtension();
+                $banner_image     =  'banner_'.$filename ;
+                Image::make($file)->save(base_path().'/public/uploads/moderator_albums/'.$banner_image );
+                $banner =  $banner_image;
+  
+            }
 
         }else{
             $banner = $ModeratorsUser->banner;
@@ -7200,10 +7216,23 @@ class ModeratorsUserController extends Controller
             }
             //upload new file
             $file = $picture;
-            $file_picture = str_replace(' ', '_', $file->getClientOriginalName());
-            $file->move($path, $file_picture);
-            $file_picture = str_replace(' ', '_', $file->getClientOriginalName());
-
+            if(compress_image_enable() == 1){
+            
+                $filename  = time().'.'.compress_image_format();
+                $picture_image     =  'picture_'.$filename ;
+  
+                Image::make($file)->save(base_path().'/public/uploads/moderator_albums/'.$picture_image,compress_image_resolution() );
+                
+               $file_picture =  $picture_image;
+            
+              }else{
+  
+                $filename  = time().'.'.$file->getClientOriginalExtension();
+                $picture_image     =  'picture_'.$filename ;
+                Image::make($file)->save(base_path().'/public/uploads/moderator_albums/'.$picture_image );
+                $file_picture =  $picture_image;
+  
+            }
         }else{
             $file_picture = $ModeratorsUser->picture;
         }
@@ -7233,6 +7262,228 @@ class ModeratorsUserController extends Controller
         $ModeratorsUser->email = $email;
         $ModeratorsUser->mobile_number = $mobile_number;
         // $ModeratorsUser->bank_name = $bank_name ;
+        // $ModeratorsUser->branch_name = $branch_name ;
+        // $ModeratorsUser->account_number = $account_number ;
+        // $ModeratorsUser->IFSC_Code = $IFSC_Code ;
+        $ModeratorsUser->picture = $file_picture ;
+        $ModeratorsUser->banner = $banner ;
+        // $ModeratorsUser->cancelled_cheque = $file_cancelled_cheque ;
+        $ModeratorsUser->upi_id = $upi_id ;
+        $ModeratorsUser->upi_mobile_number = $upi_mobile_number ;
+
+        $ModeratorsUser->save();
+
+        return \Redirect::back()->with('message','Update User Profile');
+
+    }
+
+    
+    public function CPPmyaccount()
+    {
+        $data = Session::all();
+        $id = $data['user']->id;
+        $ModeratorsUser = ModeratorsUser::where('id',$id)->first();
+
+        $data = [
+            "user" => $ModeratorsUser,
+        ];
+        // dd($data['user']);
+        return view("moderator.cpp.myaccount",$data);
+
+    }
+
+    public function CPPUpdateMyAccount(Request $request)
+    {
+        $Session = Session::all();
+        $data = $request->all();
+        
+        $id = $data['id'];
+        $ModeratorsUser = ModeratorsUser::where('id',$id)->first();
+        // dd($data);
+        if(!empty($data['username'])){
+            $username = $data['username'];
+        }else{
+            $username = $ModeratorsUser->username;
+        } 
+        if(!empty($data['description'])){
+            $description = $data['description'];
+        }else{
+            $description = $ModeratorsUser->description;
+        } 
+        if(!empty($data['email'])){
+            $email = $data['email'];
+        }else{
+            $email = $ModeratorsUser->email;
+        }  
+        if(!empty($data['upi_id'])){
+            $upi_id = $data['upi_id'];
+        }else{
+            $upi_id = $ModeratorsUser->upi_id;
+        }  
+        if(!empty($data['upi_mobile_number'])){
+            $upi_mobile_number = $data['upi_mobile_number'];
+        }else{
+            $upi_mobile_number = $ModeratorsUser->upi_mobile_number;
+        }  
+        if(!empty($data['mobile_number'])){
+            $mobile_number = $data['mobile_number'];
+        }else{
+            $mobile_number = $ModeratorsUser->mobile_number;
+        }  
+
+        if(!empty($data['bank_name'])){
+            $bank_name = $data['bank_name'];
+        }else{
+            $bank_name = $ModeratorsUser->bank_name;
+        }  
+
+        if(!empty($data['branch_name'])){
+            $branch_name = $data['branch_name'];
+        }else{
+            $branch_name = $ModeratorsUser->branch_name;
+        }    
+
+        if(!empty($data['account_number'])){
+            $account_number = $data['account_number'];
+        }else{
+            $account_number = $ModeratorsUser->account_number;
+        }    
+
+        if(!empty($data['IFSC_Code'])){
+            $IFSC_Code = $data['IFSC_Code'];
+        }else{
+            $IFSC_Code = $ModeratorsUser->IFSC_Code;
+        }    
+
+        $picture = (isset($data['picture'])) ? $data['picture'] : '';
+
+        $cancelled_cheque = (isset($data['cancelled_cheque'])) ? $data['cancelled_cheque'] : '';
+
+        $banner = (isset($data['banner'])) ? $data['banner'] : '';
+
+        $logopath = URL::to("/public/uploads/moderator_albums/");
+        $path = public_path() . "/uploads/moderator_albums/";
+        $image_path = public_path() . "/uploads/moderator_albums/";
+
+        if ($banner != "") {
+
+            //code for remove old file
+            if ($banner != "" && $banner != null) {
+                $file_old = $path . $banner;
+                if (file_exists($file_old)) {
+                    unemail($file_old);
+                }
+            }
+            //upload new file
+            $file = $banner;
+            if(compress_image_enable() == 1){
+            
+                $filename  = time().'.'.compress_image_format();
+                $banner_image     =  'banner_'.$filename ;
+  
+                Image::make($file)->save(base_path().'/public/uploads/moderator_albums/'.$banner_image,compress_image_resolution() );
+                
+               $banner =  $banner_image;
+            
+              }else{
+  
+                $filename  = time().'.'.$file->getClientOriginalExtension();
+                $banner_image     =  'banner_'.$filename ;
+                Image::make($file)->save(base_path().'/public/uploads/moderator_albums/'.$banner_image );
+                $banner =  $banner_image;
+  
+            }
+
+        }else{
+            $banner = $ModeratorsUser->banner;
+        }
+
+
+        if ($picture != "") {
+
+            //code for remove old file
+            if ($picture != "" && $picture != null) {
+                $file_old = $path . $picture;
+                if (file_exists($file_old)) {
+                    unemail($file_old);
+                }
+            }
+            //upload new file
+            $file = $picture;
+            if(compress_image_enable() == 1){
+            
+                $filename  = time().'.'.compress_image_format();
+                $picture_image     =  'picture_'.$filename ;
+  
+                Image::make($file)->save(base_path().'/public/uploads/moderator_albums/'.$picture_image,compress_image_resolution() );
+                
+               $file_picture =  $picture_image;
+            
+              }else{
+  
+                $filename  = time().'.'.$file->getClientOriginalExtension();
+                $picture_image     =  'picture_'.$filename ;
+                Image::make($file)->save(base_path().'/public/uploads/moderator_albums/'.$picture_image );
+                $file_picture =  $picture_image;
+  
+            }
+        }else{
+            $file_picture = $ModeratorsUser->picture;
+        }
+
+        $logopath = URL::to("/public/uploads/moderator_albums/");
+        $path = public_path() . "/uploads/moderator_albums/";
+        if ($cancelled_cheque != "") {
+            //code for remove old file
+            if ($cancelled_cheque != "" && $cancelled_cheque != null) {
+                $file_old = $path . $cancelled_cheque;
+                if (file_exists($file_old)) {
+                    unemail($file_old);
+                }
+            }
+            //upload new file
+            $cheque = $cancelled_cheque;
+            $file_cancelled_cheque = str_replace(' ', '_', $cheque->getClientOriginalName());
+            $cheque->move($path, $cheque);
+            $file_cancelled_cheque = $ModeratorsUser->cancelled_cheque;
+
+        }else{
+            $file_cancelled_cheque = $ModeratorsUser->cancelled_cheque;
+        }
+
+        $intro_video = (isset($request['intro_video'])) ? $request['intro_video'] : '';
+
+        $path = public_path() . '/uploads/moderator/';
+
+        if ($intro_video != '')
+        {
+            //code for remove old file
+            if ($intro_video != '' && $intro_video != null)
+            {
+                $file_old = $path . $intro_video;
+                if (file_exists($file_old))
+                {
+                    unlink($file_old);
+                }
+            }
+            //upload new file
+            $randval = Str::random(16);
+            $file = $intro_video;
+            $intro_video_ext = $randval . '.' . $request->file('intro_video')->extension();
+            $file->move($path, $intro_video_ext);
+
+            $ModeratorsUser->intro_video = URL::to('/') . '/public/uploads/moderator/' . $intro_video_ext;
+        }
+        else
+        {
+            $ModeratorsUser->intro_video = $ModeratorsUser->intro_video;
+        }
+
+        $ModeratorsUser->username = $username;
+        $ModeratorsUser->slug = str_replace(" ", "-", $request->username);
+        $ModeratorsUser->email = $email;
+        $ModeratorsUser->mobile_number = $mobile_number;
+        $ModeratorsUser->description = $description ;
         // $ModeratorsUser->branch_name = $branch_name ;
         // $ModeratorsUser->account_number = $account_number ;
         // $ModeratorsUser->IFSC_Code = $IFSC_Code ;

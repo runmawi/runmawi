@@ -1,4 +1,4 @@
-@extends('channel.master')
+@extends('moderator.master')
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -24,7 +24,6 @@
 
 <div id="content-page" class="content-page">
 	<div class="container-fluid">
-        <div class="iq-card">
 		<div class="row">
 			<div class="col-sm-12">
 				<div class="">
@@ -46,12 +45,12 @@
                         @endif
 					<div class="iq-card-body">
 						<h5></h5>
-						<form id="user_update" method="POST" action="{{ URL::to('channel/setting/update-myprofile') }}" accept-charset="UTF-8" enctype="multipart/form-data">
-							<div class=" col-md-12 align-items-center p-0">
+						<form id="user_update" method="POST" action="{{ URL::to('cpp/update-account') }}" accept-charset="UTF-8" enctype="multipart/form-data">
+							<div class=" col-md-12 align-items-center">
                                 <div class="row">
                                     <div class="col-md-6 form-group">
                                         <label> User Name:</label>
-                                        <input type="text" class="form-control" name="channel_name" id="channel_name" placeholder="Channel Name"  value="@if(!empty($user->channel_name)){{ $user->channel_name }}@endif" />
+                                        <input type="text" class="form-control" name="username" id="username" placeholder="UserName"  value="@if(!empty($user->username)){{ $user->username }}@endif" />
                                     </div>
                                     <div class="col-md-6 form-group">
                                         <label> Email:</label>
@@ -63,21 +62,10 @@
                                         <label> Phone Number:</label>
                                         <input type="number" class="form-control" name="mobile_number" id="mobile_number" placeholder="Mobile Number"  value="@if(!empty($user->mobile_number)){{ $user->mobile_number }}@endif" />
                                     </div>
-                                    <!-- <div class="col-md-6 form-group">
-                                        <label> Profile Picture:</label>
-                                        <input type="file" multiple="true" class="form-control" style="padding: 0px;" name="picture" id="picture" />
-                                        @if(!empty($user->picture))
-                                            <img src="{{ URL::to('/') . '/public/uploads/moderator_albums/' . @$user->picture }}" class="video-img" width="200" height="200"/>
-                                        @endif
-                                    </div> -->
                                     <div class="col-md-6 form-group">
-                                        <label> Cancelled Cheque:</label>
-                                        <input type="file" multiple="true" class="form-control" style="padding: 0px;" name="cancelled_cheque" id="cancelled_cheque" />
-                                        @if(!empty($user->cancelled_cheque))
-                                            <img src="{{ URL::to('/') . '/public/uploads/channel/' . @$user->cancelled_cheque }}" class="video-img" width="200" height="200"/>
-                                        @endif
+                                        <label>Description:</label>
+                                        <input type="text" class="form-control" name="description" id="description" placeholder="Description"  value="@if(!empty($user->description)){{ $user->description }}@endif" />
                                     </div>
-                                </div>
                                 </div>
 
                                 <div class="row">
@@ -90,8 +78,35 @@
                                         <input type="text" class="form-control" name="upi_mobile_number" id="upi_mobile_number" placeholder="UPI Mobile Number"  value="@if(!empty($user->upi_mobile_number)){{ $user->upi_mobile_number }}@endif" />
                                     </div>
                                 </div>
-
                                 <div class="row">
+                                    <div class="col-md-6 form-group">
+                                        <label> Banner :</label>
+                                        <input type="file" multiple="true" class="form-control" style="padding: 0px;" name="banner" id="banner" />
+                                        @if(!empty($user->banner))
+                                            <img src="{{ URL::to('/') . '/public/uploads/moderator_albums/' . @$user->banner }}" class="video-img" width="200" height="200"/>
+                                        @endif
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <label> Profile Picture:</label>
+                                        <input type="file" multiple="true" class="form-control" style="padding: 0px;" name="picture" id="picture" />
+                                        @if(!empty($user->picture))
+                                            <img src="{{ URL::to('/') . '/public/uploads/moderator_albums/' . @$user->picture }}" class="video-img" width="200" height="200"/>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 form-group">
+                                        <label> Intro Video:</label>
+                                        <input type="file" multiple="true" class="form-control" style="padding: 0px;" accept="video/mp4,video/x-m4v,video/*" name="intro_video" id="intro_video" />
+                                        @if(!empty($user->intro_video))
+                                        <video width="200" height="200" controls>
+                                            <source src="{{ $user->intro_video }}" type="video/mp4">
+                                        </video>
+                                        @endif
+                                    </div>
+                                </div>
+                                </div>
+                                <!-- <div class="row">
                                     <div class="col-md-6 form-group">
                                         <label> Bank Name:</label>
                                         <input type="text" class="form-control" name="bank_name" id="bank_name" placeholder="Bank Name"  value="@if(!empty($user->bank_name)){{ $user->bank_name }}@endif" />
@@ -100,9 +115,9 @@
                                         <label> Branch Name:</label>
                                         <input type="text" class="form-control" name="branch_name" id="branch_name" placeholder="Branch Name"  value="@if(!empty($user->branch_name)){{ $user->branch_name }}@endif" />
                                     </div>
-                                </div>
+                                </div> -->
 
-                                <div class="row">
+                                <!-- <div class="row">
                                     <div class="col-md-6 form-group">
                                         <label> Account No:</label>
                                         <input type="text" class="form-control" name="account_number" id="account_number" placeholder="Account Number"  value="@if(!empty($user->account_number)){{ $user->account_number }}@endif" />
@@ -111,19 +126,26 @@
                                         <label> IFSC Code:</label>
                                         <input type="text" class="form-control" name="IFSC_Code" id="IFSC_Code" placeholder="IFSC Code"  value="@if(!empty($user->IFSC_Code)){{ $user->IFSC_Code }}@endif" />
                                     </div>
-                                </div>
+                                </div> -->
 
-                                <div class="row">
-                          
-							</div>
+                                <!-- <div class="row">
+                                    <div class="col-md-6 form-group">
+                                        <label> Cancelled Cheque:</label>
+                                        <input type="file" multiple="true" class="form-control" style="padding: 0px;" name="cancelled_cheque" id="cancelled_cheque" />
+                                        @if(!empty($user->cancelled_cheque))
+                                            <img src="{{ URL::to('/') . '/public/uploads/moderator_albums/' . @$user->cancelled_cheque }}" class="video-img" width="200" height="200"/>
+                                        @endif
+                                    </div>
+                                </div>
+							</div> -->
                                
 
-								<div class="col-md-12 mt-3 d-flex justify-content-end">
+								<div class="col-md-6 mt-3">
 								<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 								<input type="hidden" name="id" value="{{ @$user->id }}" />
-								<input type="submit" value="Update" class="btn btn-primary " />
+								<input type="submit" value="Update" class="btn btn-primary pull-right" />
                                     </div>
-                           
+                            </div>
 							</form>
 
 							<div class="clear"></div>
@@ -161,37 +183,37 @@
    	rules: {
         upi_mobile_number : 'required',
         upi_id : 'required',
-        account_number : 'required',
-        upi_mobile_number : 'required',
-        cancelled_cheque: {
+        // account_number : 'required',
+        // upi_mobile_number : 'required',
+        // cancelled_cheque: {
+        //         required: function (element) {
+        //             var  cheque = "{{ $user->cancelled_cheque }}";
+        //             if (cheque == "") {
+        //                 return true;
+        //             } else {
+        //                 return false;
+        //             }
+        //         },
+        //     },
+            picture: {
                 required: function (element) {
-                    var  cheque = "{{ $user->cancelled_cheque }}";
-                    if (cheque == "") {
+                    var  image = "{{ $user->picture }}";
+                    if (image == "") {
                         return true;
                     } else {
                         return false;
                     }
                 },
             },
-            // picture: {
-            //     required: function (element) {
-            //         var  image = "{{ $user->picture }}";
-            //         if (image == "") {
-            //             return true;
-            //         } else {
-            //             return false;
-            //         }
-            //     },
-            // },
-        cancelled_cheque : 'required',
+        // cancelled_cheque : 'required',
         // picture : 'required',
    	},
    	messages: {
         upi_mobile_number: 'This field is required',
         upi_id: 'This field is required',
-        account_number : 'This field is required',
-        IFSC_Code : 'This field is required',
-        cancelled_cheque : 'This field is required',
+        // account_number : 'This field is required',
+        // IFSC_Code : 'This field is required',
+        // cancelled_cheque : 'This field is required',
         // picture : 'This field is required',
    	},
    	submitHandler: function(form) {
