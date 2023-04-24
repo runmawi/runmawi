@@ -1080,10 +1080,6 @@ class ChannelVideosController extends Controller
             $id = $data['id'];
 
             $video = Video::findOrFail($id);
-            if ($request->slug == '')
-            {
-                $data['slug'] = $this->createSlug($data['title']);
-            }
 
             $image = (isset($data['image'])) ? $data['image'] : '';
             $trailer = (isset($data['trailer'])) ? $data['trailer'] : '';
@@ -1225,13 +1221,6 @@ class ChannelVideosController extends Controller
                 $data['age_restrict'] = $data['age_restrict'];
             }
 
-            // $data['age_restrict'] =  $data['age_restrict'];;
-            // $dd($data);
-            
-
-            //        if(empty($data['featured'])){
-            //            $data['featured'] = 0;
-            //        }
             if (empty($data['featured']))
             {
                 $data['featured'] = 0;
@@ -1322,34 +1311,6 @@ class ChannelVideosController extends Controller
                 $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
                 $data['duration'] = $time_seconds;
             }
-
-            // if( $mp4_url2 != ''){
-            //     $ffprobe = \FFMpeg\FFProbe::create();
-            //     $disk = 'public';
-            //     $data['duration'] = $ffprobe->streams($request->video)
-            //     ->videos()
-            //     ->first()
-            //     ->get('duration');
-            
-
-            //       //code for remove old file
-            //         $rand = Str::random(16);
-            //         $path = $rand . '.' . $request->video->getClientOriginalExtension();
-            //         $request->video->storeAs('public', $path);
-            //         $data['mp4_url'] = $path;
-            //         $data['path'] = $rand;
-            //         $thumb_path = 'public';
-            //         $this->build_video_thumbnail($request->video,$path, $data['slug']);
-            //     // $original_name = ($request->video->getClientOriginalName()) ? $request->video->getClientOriginalName() : '';
-            //         $original_name = URL::to('/').'/storage/app/public/'.$path;
-            //         $lowBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(500);
-            //         $midBitrateFormat  =(new X264('libmp3lame', 'libx264'))->setKiloBitrate(1500);
-            //         $highBitrateFormat = (new X264('libmp3lame', 'libx264'))->setKiloBitrate(3000);
-            //         $converted_name = ConvertVideoForStreaming::handle($path);
-            //         ConvertVideoForStreaming::dispatch($video);
-            
-
-            //  }
             
 
             if (!empty($data['embed_code']))
@@ -1425,10 +1386,11 @@ class ChannelVideosController extends Controller
             if (!empty($data['slug']))
             {
                 // dd($data['global_ppv']);
-                $video->slug = $this->createSlug($data['slug']);
+                $video->slug = $data['slug'];
             }
             else
             {
+                $video->slug = $this->createSlug($data['title']);
             }
             if (empty($data['publish_type']))
             {
@@ -1566,7 +1528,10 @@ class ChannelVideosController extends Controller
                
                 }
                 $player_image = $player_image;
+            }else {
+                $player_image = $video->player_image;
             }
+    
             // DD($player_image);
                      // Tv video Image 
         $video_title_image = isset($data["video_title_image"])? $data["video_title_image"]: "";
@@ -1584,6 +1549,7 @@ class ChannelVideosController extends Controller
                 $Tv_image_format  = time().'.'.compress_image_format();
                 $Tv_image_filename     =  'tv-live-image-'.$Tv_image_format ;
                 Image::make($video_tv_image)->save(base_path().'/public/uploads/images/'.$Tv_image_filename,compress_image_resolution() );
+                $video->video_tv_image = $Tv_image_filename;
 
             }else{
 
@@ -1592,7 +1558,10 @@ class ChannelVideosController extends Controller
                 Image::make($video_tv_image)->save(base_path().'/public/uploads/images/'.$Tv_image_filename );
             }
             $video->video_tv_image = $Tv_image_filename;
+        }else {
+            $video->video_tv_image = $video->video_tv_image;
         }
+
 
                     // Video Title Thumbnail
         $video_title_image = isset($data["video_title_image"])? $data["video_title_image"]: "";
@@ -1618,6 +1587,8 @@ class ChannelVideosController extends Controller
             }
 
             $video->video_title_image = $video_title_image_filename;
+        }else {
+            $video->video_tv_image = $video->video_tv_image;
         }
             $user = Session::get('channel');
             $user_id = $user->id;

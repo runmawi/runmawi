@@ -115,7 +115,9 @@
                                     <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
                                         <?php  if($latest_view_video->access == 'subscriber' ){ ?>
                                             <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
-                                        <?php }elseif(!empty($latest_view_video->ppv_price)){?>
+                                        <?php }elseif($latest_view_video->access == 'registered'){?>
+                                                <p class="p-tag"><?php echo "Register Now"; ?></p>
+                                                <?php }elseif(!empty($latest_view_video->ppv_price)){?>
                                             <p class="p-tag1"><?php echo $currency->symbol . ' ' . $latest_view_video->ppv_price; ?></p>
                                         <?php }elseif( !empty($latest_view_video->global_ppv || !empty($latest_view_video->global_ppv) && $latest_view_video->ppv_price == null)){ ?>
                                             <p class="p-tag1"><?php echo $latest_view_video->global_ppv . ' ' . $currency->symbol; ?></p>

@@ -72,6 +72,7 @@
                                             <th>User Name</th>
                                             <th>User Email</th>
                                             <th>Video Name</th>
+                                            <th>Video Slug</th>
                                             <th>Amount</th>
                                             <th>Purchased Date</th>
                                             <!-- <th>Seek Time (Seconds)</th>
@@ -86,6 +87,7 @@
                                         <td>{{ $video->username  }}</td>  
                                         <td>{{ $video->email  }}</td>   
                                         <td><a  href="{{ URL::to('/category/videos') . '/' . $video->slug }}">{{ $video->title  }}</a></td>   
+                                        <td>{{ $video->slug  }}</td>   
                                         <td>{{ $currency->symbol.' '.$video->total_amount  }}</td>   
                                         <td>
                                         @php

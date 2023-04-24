@@ -20,7 +20,9 @@
                      <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  
                      <?php if($cont_video->access == 'subscriber' ){ ?>
                         <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
-                        <?php }elseif(!empty($cont_video->ppv_price)){?>
+                        <?php }elseif($cont_video->access == 'registered'){?>
+                           <p class="p-tag"><?php echo "Register Now"; ?></p>
+                           <?php }elseif(!empty($cont_video->ppv_price)){?>
                      <p class="p-tag1"><?php echo $currency->symbol.' '.$cont_video->ppv_price; ?></p>
                      <?php }elseif( !empty($cont_video->global_ppv || !empty($cont_video->global_ppv) && $cont_video->ppv_price == null)){ ?>
                      <p class="p-tag1"><?php echo $cont_video->global_ppv.' '.$currency->symbol; ?></p>

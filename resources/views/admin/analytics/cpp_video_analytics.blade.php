@@ -79,6 +79,7 @@
                                         <tr class="r1">
                                             <th>#</th>
                                             <th>Video Name</th>
+                                            <th>Video Slug</th>
                                             <th>Uploader Name</th>
                                             <th>Total Commission</th>
                                             <th>Admin Commission</th>
@@ -91,7 +92,8 @@
                                 <tr>
                                     @foreach($ppv_purchases as $key => $videos)
                                         <td>{{ $key+1  }}</td>   
-                                        <td>{{ $videos->title  }}</td>   
+                                        <td>{{ $videos->title  }}</td>  
+                                        <td>{{ $videos->slug  }}</td>   
                                         <td>{{ $videos->cppusername  }}</td>   
                                         <td>{{ $videos->total_amount  }}</td>   
                                         <td>{{ $videos->admin_commssion  }}</td>   
