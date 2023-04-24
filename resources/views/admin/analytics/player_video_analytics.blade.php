@@ -66,6 +66,7 @@
                                             <th>#</th>
                                             <!-- <th>User Name</th> -->
                                             <th>Video Name</th>
+                                            <th>Video Slug</th>
                                             <th>Viewed Count</th>
                                             <th>Watch Hours  (H:M:S)</th>
                                             <th>Seek Time (Seconds)</th>
@@ -78,7 +79,8 @@
                                     @foreach($player_videos as $key => $playervideo)
                                         <td>{{ $key+1  }}</td>   
                                         <!-- <td>{{ $playervideo->username  }}</td>    -->
-                                        <td>{{ $playervideo->title  }}</td>   
+                                        <td>{{ $playervideo->title  }}</td>  
+                                        <td>{{ $playervideo->slug  }}</td>   
                                         <td>{{ $playervideo->count  }}</td> 
                                         <td><?= gmdate("H:i:s", @$playervideo->currentTime) ?></td> 
                                         <!-- <td>{{ @$playervideo->watchpercentage  }}</td>    -->

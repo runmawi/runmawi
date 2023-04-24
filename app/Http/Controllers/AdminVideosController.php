@@ -4402,7 +4402,10 @@ class AdminVideosController extends Controller
                             $video_url .
                             '">' .
                             $row->title .
-                            '</a></td>    
+                            '</a></td> 
+                      <td>' .
+                            $row->slug .
+                            '</td>     
                       <td>' .
                             $currency->symbol .
                             " " .
@@ -4506,7 +4509,10 @@ class AdminVideosController extends Controller
                             '">' .
                             $row->title .
                             '</a>
-                                    </td>       
+                                    </td>
+                      <td>' .
+                            $row->slug .
+                            '</td>           
                       <td>' .
                             $currency->symbol .
                             " " .
@@ -4635,6 +4641,7 @@ class AdminVideosController extends Controller
                 "UserName",
                 "Email",
                 "Video Name",
+                "Video Slug",
                 "Amount",
                 "Purchased ON",
             ]);
@@ -4649,6 +4656,7 @@ class AdminVideosController extends Controller
                         $each_user->username,
                         $each_user->email,
                         $each_user->title,
+                        $each_user->slug,
                         $each_user->total_amount,
                         $newDate,
                     ]);

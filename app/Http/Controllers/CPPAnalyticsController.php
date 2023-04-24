@@ -875,6 +875,9 @@ class CPPAnalyticsController extends Controller
                             $row->title .
                             '</td>
               <td>' .
+                            $row->slug .
+                            '</td>
+              <td>' .
                             $row->cppemail .
                             '</td>    
               <td>' .
@@ -913,7 +916,7 @@ class CPPAnalyticsController extends Controller
             (!empty($package) && $package == "Business")
         ) {
             $user = Session::get("user");
-            $user_id = $user->id;
+            // $user_id = $user->id;
             $data = $request->all();
 
             $start_time = $data["start_time"];
@@ -958,6 +961,9 @@ class CPPAnalyticsController extends Controller
                             '</td>
               <td>' .
                             $row->title .
+                            '</td>
+              <td>' .
+                            $row->slug .
                             '</td>
               <td>' .
                             $row->cppemail .
@@ -1081,6 +1087,7 @@ class CPPAnalyticsController extends Controller
             $handle = fopen($filename, "w");
             fputcsv($handle, [
                 "Video Name",
+                "Video Slug",
                 "Email",
                 "Uploader Name",
                 "Total Views",
@@ -1089,6 +1096,7 @@ class CPPAnalyticsController extends Controller
                 foreach ($total_content as $each_user) {
                     fputcsv($handle, [
                         $each_user->title,
+                        $each_user->slug,
                         $each_user->cppemail,
                         $each_user->cppusername,
                         $each_user->views,

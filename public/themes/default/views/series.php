@@ -183,7 +183,7 @@ $series = $series_data ;
                     <div class="col-md-3 p-0">
                     <select class="form-control" id="season_id" name="season_id">
 							<?php foreach($season as $key => $seasons): ?>
-								<option value="season_<?= $seasons->id;?>">Season <?= $key+1; ?></option>
+								<option value="season_<?= $seasons->id;?>" data-key=<?= $key+1; ?>>Season <?= $key+1; ?></option>
 							<?php endforeach; ?>
 						</select></div>
           <ul class="category-page list-inline row p-3 mb-0">
@@ -470,10 +470,13 @@ if('season_'+$val.id == season_id){
 
 $('#season_id').change(function(){
 	var season_id = $('#season_id').val();
-// alert($('#season_id').val())	
 $.each(obj, function(i, $val)
 {
+
 if('season_'+$val.id == season_id){
+
+  var seasonkey_id = i+1;
+
 	console.log('season_'+$val.id)
 	// $("#theDiv").append("<img id='theImg' src=$val.image/>");
 	$("#myImage").attr("src", $val.image);
@@ -491,7 +494,7 @@ if('season_'+$val.id == season_id){
 
   $(".sea").empty();
   // alert($val.id);
-  var id = $val.id;
+  var id = seasonkey_id;
 	$(".sea").html(id);
 }
 });

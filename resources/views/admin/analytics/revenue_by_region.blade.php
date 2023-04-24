@@ -63,7 +63,12 @@ input[type="number"] {
                      <div class="iq-card-header  justify-content-between">
                         <div class="iq-header-title">
                            <h4 class="card-title">Revenue By Region</h4>
-                           </div>
+
+          <img id="loader-image" src="{{ URL::to('/assets/icons/loader.gif') }}" 
+          style="width: 30px; position: absolute;margin-left: 39%;
+          margin-top: 19%;height: 30px;" alt="No GIF">
+
+                    </div>
                             </div>
                     <!-- <div class="row"> -->
                     <div class="col-sm-12">
@@ -158,7 +163,10 @@ input[type="number"] {
 @stop
 
 <script>
+
 $(document).ready(function() {
+$('#loader-image').hide();
+
 $('#country').on('change', function() {
 var country_id = this.value;
 if(country_id == "Allcountry"){
@@ -217,6 +225,8 @@ if(country_id == "Allcountry"){
 }
 else{
 // alert('country_id')
+$('#loader-image').show();
+
   $("#state-dropdown").html('');
 $.ajax({
 url:"{{url::to('admin/getState')}}",
@@ -227,6 +237,8 @@ _token: '{{csrf_token()}}'
 },
 dataType : 'json',
 success: function(result){
+$('#loader-image').hide();
+
 $('#state-dropdown').html('<option value="">Select State</option>'); 
 $('#state-dropdown').append('<option value="Allstate">Choose All State</option>'); 
 $.each(result.states,function(key,value){
@@ -243,6 +255,7 @@ $('#city-dropdown').html('<option value="">Select State First</option>');
 $('#state-dropdown').on('change', function() {
 var state_id = this.value;
 $("#city-dropdown").html('');
+$('#loader-image').show();
 $.ajax({
 url:"{{url::to('admin/getCity')}}",
 type: "POST",
@@ -252,6 +265,8 @@ _token: '{{csrf_token()}}'
 },
 dataType : 'json',
 success: function(result){
+$('#loader-image').hide();
+
 $('#city-dropdown').html('<option value="">Select City</option>'); 
 $('#city-dropdown').append('<option value="Allcity">Choose All City</option>'); 
 $.each(result.cities,function(key,value){
@@ -339,6 +354,8 @@ $.ajaxSetup({
    var Allcity = $('#city-dropdown').val();
 //    alert(country);
    if(Allcity == "Allcity"){
+$('#loader-image').show();
+
 	$.ajax({
    url:"{{ URL::to('admin/PlanAllCity') }}",
    method:'get',
@@ -346,6 +363,8 @@ $.ajaxSetup({
    dataType:'json',
    success:function(data)
    {
+$('#loader-image').hide();
+
     $('tbody').html(data.table_data);
     $('#total_records').text(data.total_data);
     $('#page').DataTable();
@@ -404,6 +423,8 @@ $.ajaxSetup({
    var city = $('#city-dropdown').val();
 //    alert(country);
    if(city == city){
+$('#loader-image').show();
+
 	$.ajax({
    url:"{{ URL::to('admin/Plancity') }}",
    method:'get',
@@ -411,6 +432,8 @@ $.ajaxSetup({
    dataType:'json',
    success:function(data)
    {
+$('#loader-image').hide();
+
     $('tbody').html(data.table_data);
     $('#total_records').text(data.total_data);
     $('#page').DataTable();

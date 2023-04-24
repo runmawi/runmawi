@@ -106,7 +106,7 @@ class AdminPlayerAnalyticsController extends Controller
         // $player_videos = PlayerAnalytic::groupBy('videoid')
         ->groupBy('player_analytics.videoid')
         ->orderBy('player_analytics.created_at')
-        ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title',
+        ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title','videos.slug',
         DB::raw('sum(player_analytics.duration) as duration') ,
          DB::raw('sum(player_analytics.currentTime) as currentTime') ,
          DB::raw('(player_analytics.seekTime) as seekTime') ,
@@ -157,7 +157,7 @@ class AdminPlayerAnalyticsController extends Controller
             // ->groupBy('player_analytics.videoid')
             ->orderBy('player_analytics.created_at')
             ->whereDate('player_analytics.created_at', '>=', $start_time)->groupBy('month_name')
-            ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title',
+            ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title','videos.slug',
             DB::raw('sum(player_analytics.duration) as duration') ,
              DB::raw('sum(player_analytics.currentTime) as currentTime') ,
              DB::raw('(player_analytics.seekTime) as seekTime') ,
@@ -192,6 +192,7 @@ class AdminPlayerAnalyticsController extends Controller
                <tr>
                <td>' . $i++ . '</td>
                <td>' . $row->title . '</td>
+               <td>' . $row->slug . '</td>
                <td>' . $row->count . '</td>    
                <td>' . gmdate("H:i:s", @$row->currentTime) . '</td>  
                <td>' . $row->seekTime . '</td>    
@@ -235,7 +236,7 @@ class AdminPlayerAnalyticsController extends Controller
             // ->groupBy('player_analytics.videoid')
             ->orderBy('player_analytics.created_at')
             ->whereBetween('player_analytics.created_at', [$start_time, $end_time])->groupBy('month_name')
-            ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title',
+            ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title','videos.slug',
             DB::raw('sum(player_analytics.duration) as duration') ,
              DB::raw('sum(player_analytics.currentTime) as currentTime') ,
              DB::raw('(player_analytics.seekTime) as seekTime') ,
@@ -268,6 +269,7 @@ class AdminPlayerAnalyticsController extends Controller
               <tr>
               <td>' . $i++ . '</td>
               <td>' . $row->title . '</td>
+              <td>' . $row->slug . '</td>
               <td>' . $row->count . '</td>    
               <td>' . gmdate("H:i:s", @$row->currentTime) . '</td>  
               <td>' . $row->seekTime . '</td>    
@@ -314,7 +316,7 @@ class AdminPlayerAnalyticsController extends Controller
                 // ->groupBy('player_analytics.videoid')
                 ->orderBy('player_analytics.created_at')
                 ->whereDate('player_analytics.created_at', '>=', $start_time)->groupBy('month_name')
-                ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title',
+                ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title','videos.slug',
                 DB::raw('sum(player_analytics.duration) as duration') ,
                  DB::raw('sum(player_analytics.currentTime) as currentTime') ,
                  DB::raw('(player_analytics.seekTime) as seekTime') ,
@@ -332,7 +334,7 @@ class AdminPlayerAnalyticsController extends Controller
                 // ->groupBy('player_analytics.videoid')
                 ->orderBy('player_analytics.created_at')
                 ->whereBetween('player_analytics.created_at', [$start_time, $end_time])->groupBy('month_name')
-                ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title',
+                ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title','videos.slug',
                 DB::raw('sum(player_analytics.duration) as duration') ,
                  DB::raw('sum(player_analytics.currentTime) as currentTime') ,
                  DB::raw('(player_analytics.seekTime) as seekTime') ,
@@ -350,7 +352,7 @@ class AdminPlayerAnalyticsController extends Controller
                 // $player_videos = PlayerAnalytic::groupBy('videoid')
                 ->groupBy('player_analytics.videoid')
                 ->orderBy('player_analytics.created_at')
-                ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title',
+                ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title','videos.slug',
                 DB::raw('sum(player_analytics.duration) as duration') ,
                  DB::raw('sum(player_analytics.currentTime) as currentTime') ,
                  DB::raw('sum(player_analytics.seekTime) as seekTime') ,
@@ -379,6 +381,7 @@ class AdminPlayerAnalyticsController extends Controller
             $handle = fopen($filename, "w");
             fputcsv($handle, [
                 "Video Name",
+                "Video Slug",
                 "Viewed Count",
                 "Watch Percentage (Minutes)",
                 "Seek Time (Seconds)",
@@ -388,6 +391,7 @@ class AdminPlayerAnalyticsController extends Controller
                 foreach ($player_videos as $each_user) {
                     fputcsv($handle, [
                         $each_user->title,
+                        $each_user->slug,
                         $each_user->count,
                         gmdate("H:i:s", @$each_user->currentTime),
                         $each_user->seekTime,
@@ -417,7 +421,7 @@ class AdminPlayerAnalyticsController extends Controller
         ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')
         ->groupBy('player_analytics.country_name')
         ->orderBy('player_analytics.created_at')
-        ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title',
+        ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title','videos.slug',
         'player_analytics.country_name','player_analytics.state_name','player_analytics.city_name',
         DB::raw('sum(player_analytics.duration) as duration') ,
          DB::raw('sum(player_analytics.currentTime) as currentTime') ,
@@ -459,7 +463,7 @@ class AdminPlayerAnalyticsController extends Controller
                 ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')
                 ->groupBy('player_analytics.country_name')
                 ->orderBy('player_analytics.created_at')
-                ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title',
+                ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title','videos.slug',
                 'player_analytics.country_name','player_analytics.state_name','player_analytics.city_name',
                 DB::raw('sum(player_analytics.duration) as duration') ,
                  DB::raw('sum(player_analytics.currentTime) as currentTime') ,
@@ -489,6 +493,7 @@ class AdminPlayerAnalyticsController extends Controller
                   <tr>
                   <td>' . $i++ . '</td>
                   <td>' . $row->title . '</td>
+                  <td>' . $row->slug . '</td>
                   <td>' . $row->count . '</td>    
                   <td>' . $row->watchpercentage . '</td>  
                   <td>' . $row->seekTime . '</td>    
@@ -542,7 +547,7 @@ class AdminPlayerAnalyticsController extends Controller
                     ->groupBy('player_analytics.state_name')
                     ->orderBy('player_analytics.created_at')
                     ->where('player_analytics.state_name','=',$Statename->name)
-                    ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title',
+                    ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title','videos.slug',
                     'player_analytics.country_name','player_analytics.state_name','player_analytics.city_name',
                     DB::raw('sum(player_analytics.duration) as duration') ,
                      DB::raw('sum(player_analytics.currentTime) as currentTime') ,
@@ -591,6 +596,7 @@ class AdminPlayerAnalyticsController extends Controller
                   <tr>
                   <td>' . $i++ . '</td>
                   <td>' . $row->title . '</td>
+                  <td>' . $row->slug . '</td>
                   <td>' . $row->count . '</td>    
                   <td>' . $row->watchpercentage . '</td>  
                   <td>' . $row->seekTime . '</td>    
@@ -644,7 +650,7 @@ class AdminPlayerAnalyticsController extends Controller
                     ->groupBy('player_analytics.city_name')
                     ->orderBy('player_analytics.created_at')
                     ->where('player_analytics.city_name','=',$cityname->name)
-                    ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title',
+                    ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title','videos.slug',
                     'player_analytics.country_name','player_analytics.state_name','player_analytics.city_name',
                     DB::raw('sum(player_analytics.duration) as duration') ,
                      DB::raw('sum(player_analytics.currentTime) as currentTime') ,
@@ -693,6 +699,7 @@ class AdminPlayerAnalyticsController extends Controller
                   <tr>
                   <td>' . $i++ . '</td>
                   <td>' . $row->title . '</td>
+                  <td>' . $row->slug . '</td>
                   <td>' . $row->count . '</td>    
                   <td>' . $row->watchpercentage . '</td>  
                   <td>' . $row->seekTime . '</td>    
@@ -741,7 +748,7 @@ class AdminPlayerAnalyticsController extends Controller
                 ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')
                 ->groupBy('player_analytics.city_name')
                 ->orderBy('player_analytics.created_at')
-                ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title',
+                ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title','videos.slug',
                 'player_analytics.country_name','player_analytics.state_name','player_analytics.city_name',
                 DB::raw('sum(player_analytics.duration) as duration') ,
                  DB::raw('sum(player_analytics.currentTime) as currentTime') ,
@@ -759,7 +766,7 @@ class AdminPlayerAnalyticsController extends Controller
                 ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')
                 ->groupBy('player_analytics.city_name')
                 ->orderBy('player_analytics.created_at')
-                ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title',
+                ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title','videos.slug',
                 'player_analytics.country_name','player_analytics.state_name','player_analytics.city_name',
                 DB::raw('sum(player_analytics.duration) as duration') ,
                  DB::raw('sum(player_analytics.currentTime) as currentTime') ,
@@ -788,6 +795,7 @@ class AdminPlayerAnalyticsController extends Controller
                   <tr>
                   <td>' . $i++ . '</td>
                   <td>' . $row->title . '</td>
+                  <td>' . $row->slug . '</td>
                   <td>' . $row->count . '</td>    
                   <td>' . $row->watchpercentage . '</td>  
                   <td>' . $row->seekTime . '</td>    
@@ -845,7 +853,7 @@ class AdminPlayerAnalyticsController extends Controller
         ->groupBy('player_analytics.user_id')
         ->groupBy('player_analytics.videoid')
         ->orderBy('player_analytics.created_at')
-        ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title',
+        ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title','videos.slug',
         DB::raw('sum(player_analytics.duration) as duration') ,
          DB::raw('sum(player_analytics.currentTime) as currentTime') ,
          DB::raw('(player_analytics.seekTime) as seekTime') ,
@@ -885,7 +893,7 @@ class AdminPlayerAnalyticsController extends Controller
             // ->groupBy('player_analytics.videoid')
             ->orderBy('player_analytics.created_at')
             ->whereDate('player_analytics.created_at', '>=', $start_time)->groupBy('month_name')
-            ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title',
+            ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title','videos.slug',
             DB::raw('sum(player_analytics.duration) as duration') ,
              DB::raw('sum(player_analytics.currentTime) as currentTime') ,
              DB::raw('(player_analytics.seekTime) as seekTime') ,
@@ -919,6 +927,8 @@ class AdminPlayerAnalyticsController extends Controller
                <tr>
                <td>' . $i++ . '</td>
                <td>' . $row->username . '</td>
+               <td>' . $row->title . '</td>
+               <td>' . $row->slug . '</td>
                <td>' . $row->count . '</td>    
                <td>' . $row->watchpercentage . '</td>  
                <td>' . $row->seekTime . '</td>    
@@ -962,7 +972,7 @@ class AdminPlayerAnalyticsController extends Controller
             // ->groupBy('player_analytics.videoid')
             ->orderBy('player_analytics.created_at')
             ->whereBetween('player_analytics.created_at', [$start_time, $end_time])->groupBy('month_name')
-            ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title',
+            ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title','videos.slug',
             DB::raw('sum(player_analytics.duration) as duration') ,
              DB::raw('sum(player_analytics.currentTime) as currentTime') ,
              DB::raw('(player_analytics.seekTime) as seekTime') ,
@@ -995,6 +1005,8 @@ class AdminPlayerAnalyticsController extends Controller
               <tr>
               <td>' . $i++ . '</td>
               <td>' . $row->username . '</td>
+              <td>' . $row->title . '</td>
+              <td>' . $row->slug . '</td>
               <td>' . $row->count . '</td>    
               <td>' . $row->watchpercentage . '</td>  
               <td>' . $row->seekTime . '</td>    
@@ -1044,7 +1056,7 @@ class AdminPlayerAnalyticsController extends Controller
             // ->groupBy('player_analytics.videoid')
             ->orderBy('player_analytics.created_at')
             ->whereDate('player_analytics.created_at', '>=', $start_time)->groupBy('month_name')
-            ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title',
+            ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title','videos.slug',
             DB::raw('sum(player_analytics.duration) as duration') ,
              DB::raw('sum(player_analytics.currentTime) as currentTime') ,
              DB::raw('(player_analytics.seekTime) as seekTime') ,
@@ -1062,7 +1074,7 @@ class AdminPlayerAnalyticsController extends Controller
             // ->groupBy('player_analytics.videoid')
             ->orderBy('player_analytics.created_at')
             ->whereBetween('player_analytics.created_at', [$start_time, $end_time])->groupBy('month_name')
-            ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title',
+            ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title','videos.slug',
             DB::raw('sum(player_analytics.duration) as duration') ,
              DB::raw('sum(player_analytics.currentTime) as currentTime') ,
              DB::raw('(player_analytics.seekTime) as seekTime') ,
@@ -1080,7 +1092,7 @@ class AdminPlayerAnalyticsController extends Controller
                 ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')
                 ->groupBy('player_analytics.user_id')
                 ->orderBy('player_analytics.created_at')
-                ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title',
+                ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title','videos.slug',
                 DB::raw('sum(player_analytics.duration) as duration') ,
                 DB::raw('sum(player_analytics.currentTime) as currentTime') ,
                 DB::raw('(player_analytics.seekTime) as seekTime') ,
@@ -1108,6 +1120,8 @@ class AdminPlayerAnalyticsController extends Controller
             $handle = fopen($filename, "w");
             fputcsv($handle, [
                 "User Name",
+                "Video Name",
+                "Video Slug",
                 "Viewed Count",
                 "Watch Percentage (Minutes)",
                 "Commission Pending",
@@ -1118,6 +1132,8 @@ class AdminPlayerAnalyticsController extends Controller
                 foreach ($player_videos as $each_user) {
                     fputcsv($handle, [
                         $each_user->username,
+                        $each_user->title,
+                        $each_user->slug,
                         $each_user->count,
                         $each_user->watchpercentage,
                         $each_user->seekTime,
