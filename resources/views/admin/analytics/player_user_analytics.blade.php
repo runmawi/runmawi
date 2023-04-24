@@ -72,6 +72,7 @@
                                             <!-- <th>User Name</th> -->
                                             <th>User Name</th>
                                             <th>Video Name</th>
+                                            <th>Video Slug</th>
                                             <th>Viewed Count</th>
                                             <th>Watch Percentage (Minutes)</th>
                                             <th>Seek Time (Seconds)</th>
@@ -84,7 +85,8 @@
                                     @foreach($player_videos as $key => $playervideo)
                                         <td>{{ $key+1  }}</td>   
                                         <td>{{ $playervideo->username  }}</td>   
-                                        <td>{{ $playervideo->title  }}</td>   
+                                        <td>{{ $playervideo->title  }}</td>  
+                                        <td>{{ $playervideo->slug  }}</td>   
                                         <td>{{ $playervideo->count  }}</td>   
                                         <td>{{ $playervideo->watchpercentage  }}</td>   
                                         <td>{{ $playervideo->seekTime  }}</td>   

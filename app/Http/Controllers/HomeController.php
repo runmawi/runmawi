@@ -689,9 +689,9 @@ class HomeController extends Controller
                     $new_login = new UserLogs;
                     $new_login->user_id = Auth::User()->id;
                     $new_login->user_ip = $userIp;
-                    $new_login->countryname = $countryName;
-                    $new_login->regionname = $regionName;
-                    $new_login->cityname = $cityName;
+                    $new_login->countryname = Country_name();
+                    $new_login->regionname = Region_name();
+                    $new_login->cityname = city_name();
                     $new_login->save();
                 }
                 else
@@ -699,9 +699,9 @@ class HomeController extends Controller
                     $new_login = new UserLogs;
                     $new_login->user_id = Auth::User()->id;
                     $new_login->user_ip = $userIp;
-                    $new_login->countryname = $countryName;
-                    $new_login->regionname = $regionName;
-                    $new_login->cityname = $cityName;
+                    $new_login->countryname = Country_name();
+                    $new_login->regionname = Region_name();
+                    $new_login->cityname = city_name();
                     $new_login->save();
                 }
 
@@ -1615,9 +1615,9 @@ class HomeController extends Controller
                     $new_login = new UserLogs;
                     $new_login->user_id = Auth::User()->id;
                     $new_login->user_ip = $userIp;
-                    $new_login->countryname = $countryName;
-                    $new_login->regionname = $regionName;
-                    $new_login->cityname = $cityName;
+                    $new_login->countryname = Country_name();
+                    $new_login->regionname = Region_name();
+                    $new_login->cityname = city_name();
                     $new_login->save();
                 }
                 else
@@ -1625,9 +1625,9 @@ class HomeController extends Controller
                     $new_login = new UserLogs;
                     $new_login->user_id = Auth::User()->id;
                     $new_login->user_ip = $userIp;
-                    $new_login->countryname = $countryName;
-                    $new_login->regionname = $regionName;
-                    $new_login->cityname = $cityName;
+                    $new_login->countryname = Country_name();
+                    $new_login->regionname = Region_name();
+                    $new_login->cityname = city_name();
                     $new_login->save();
                 }
 
