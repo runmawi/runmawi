@@ -63,7 +63,9 @@
                                     <p class="p-tag1">
                                         <?php  if($series_video->access == 'subscriber' ){ ?>
                                     <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
-                                    <?php }
+                                    <?php }elseif($series_video->access == 'registered'){?>
+                                    <p class="p-tag2"><img alt="logo" src="<?php echo URL::to('/').'/assets/icons/register.png'; ?>" width=10 class="c-logo" ></p>
+                                    <?php } 
                                        elseif(!empty($series_video->ppv_price)) {
                                           echo $currency->symbol.' '.$series_video->ppv_price ; 
                                           } elseif(!empty($series_video->global_ppv) && $series_video->ppv_price == null) {

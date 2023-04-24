@@ -2207,6 +2207,25 @@ padding: 15px;
     border-left: none;  
     border-bottom-right-radius: 15px;
 }
+.p-tag2 {
+    color: #fff!important;
+    position: absolute;
+    top: -14px;
+    left: 0;
+   
+    padding: 7px;
+    font-size: 14px;
+    
+    border-radius: 3px;
+    font-family: "HelveticaNeue-CondensedBold", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+   
+     border-top: none;
+    border-left: none;  
+    border-bottom-right-radius: 15px;
+}
+.p-tag2 img{
+    width: 60px;
+}
 .bg-strip{
     background-color: rgb(249 250 252);
     padding: 25PX;
