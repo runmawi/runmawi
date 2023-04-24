@@ -581,12 +581,13 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
     <?php else: ?>
 
     <div id="subscribers_only">
-        <h4 class="text-center"><?php echo $video->title; ?></h4>
+        <div class="container-fluid">
+        <h2 class="text-left"><?php echo $video->title; ?></h2>
         <p class="text-center text-white col-lg-8" style="margin:0 auto";><?php echo $video->description; ?></p>
 
 
-        <h2>Sorry, this video is only available to <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered'): ?>Registered
-            Users<?php endif; ?></h2>
+        <h4>Sorry, this video is only available to <?php if($video->access == 'subscriber'): ?>Subscribers<?php elseif($video->access == 'registered'): ?>Registered
+            Users<?php endif; ?></h4>
         <div class="clear"></div>
         <?php if(!Auth::guest() && $video->access == 'subscriber'): ?>
         <form method="get" action="<?= URL::to('/') ?>/user/<?= Auth::user()->username ?>/upgrade_subscription">
@@ -603,7 +604,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
             class="view-count rent-video btn btn-primary">
             <?php echo __('Purchase Now'); ?> </button>
         <?php } ?>
-    </div>
+    </div></div>
 
     <?php endif; ?>
 </div>
