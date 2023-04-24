@@ -728,7 +728,7 @@ border-radius: 0px 4px 4px 0px;
                        <?php } ?>
                    </div>
                    <div class="col-sm-6 form-group mt-3" id="ppv_price">
-                  <label for="">Search Tags</label>
+                  <label for="">  Search Tags</label>
                      <input type="text" id="exist-values" class="tagged form-control1" data-removeBtn="true" name="searchtags" value="@if(!empty($video->search_tags)){{ $video->search_tags }}@endif" >
                      <!-- <input type="text" class="form-control" id="#inputTag" name="searchtags" value="" data-role="tagsinput"> -->
                   </div>

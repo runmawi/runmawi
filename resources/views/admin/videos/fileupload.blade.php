@@ -753,8 +753,7 @@ border-radius: 0px 4px 4px 0px;
                            <div class="row align-items-center">
                               <div class="col-sm-6 form-group mt-3" >
                                  <label for="">Search Tags </label>
-                                    <!-- <input type="text" class="form-control" id="#inputTag" name="searchtags" value="" data-role="tagsinput"> -->
-                                    <input type="text" id="exist-values" class="tagged form-control1" data-removeBtn="true" name="searchtags" value="" >
+                                    <input type="text"  class="form-control1"  id="tag-input1" name="searchtags" >
                                  </div>
 
                                  <div class="col-sm-6 form-group">
@@ -2446,6 +2445,8 @@ if(this.textContent === 'destroy') {
 
 
 </script>
+
+@include('admin.videos.search_tag'); 
 
 @include('admin.videos.Ads_videos'); 
 
