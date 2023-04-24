@@ -94,7 +94,7 @@
                                                 <?php if($livestream->access == 'subscriber' ){ ?>
                                                     <i class="fas fa-crown" style='color:gold'></i> 
                                                     <?php }elseif($livestream->access == 'registered'){?>
-                                                    <p class="p-tag2"><img alt="logo" src="<?php echo URL::to('/').'/assets/icons/register.png'; ?>" width=10 class="c-logo" ></p>
+                                                    <p class="p-tag"><?php echo "Register Now"; ?></p>
                                                     <?php } elseif(!empty($livestream->ppv_price)) {
                                                     echo $currency->symbol.' '.$livestream->ppv_price ; 
                                                     } elseif(!empty($livestream->global_ppv) && $livestream->ppv_price == null) {

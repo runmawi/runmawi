@@ -116,7 +116,7 @@
                                         <?php  if($latest_view_video->access == 'subscriber' ){ ?>
                                             <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
                                         <?php }elseif($latest_view_video->access == 'registered'){?>
-                                                <p class="p-tag2"><img alt="logo" src="<?php echo URL::to('/').'/assets/icons/register.png'; ?>" width=10 class="c-logo" ></p>
+                                                <p class="p-tag"><?php echo "Register Now"; ?></p>
                                                 <?php }elseif(!empty($latest_view_video->ppv_price)){?>
                                             <p class="p-tag1"><?php echo $currency->symbol . ' ' . $latest_view_video->ppv_price; ?></p>
                                         <?php }elseif( !empty($latest_view_video->global_ppv || !empty($latest_view_video->global_ppv) && $latest_view_video->ppv_price == null)){ ?>

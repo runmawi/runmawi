@@ -195,6 +195,9 @@ i.fa.fa-google-plus {
                                           <img src="<?php echo URL::to('/').'/assets/img/twiter.png'; ?>" width="30" style="margin-bottom:1rem;"></a>
                                 </div>-->
                                 <?php if($system_settings != null && $system_settings->google == 0 ){  }else{ ?>
+                                        <div>
+                                            <p class="links">Login with using:</p>
+                                        </div>
                                     <div>
                                     <a href="{{ url('/auth/redirect/google') }}" class="" >
                                         <img alt="apps-logo" src="<?php echo URL::to('/').'/assets/img/google.png'; ?>" width="30" style="margin-bottom:1rem;"></a>

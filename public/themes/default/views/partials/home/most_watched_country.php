@@ -25,7 +25,7 @@
                                             <?php  if($Most_watched_countries->access == 'subscriber' ){ ?>
                                                 <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
                                             <?php }elseif($Most_watched_countries->access == 'registered'){?>
-                                            <p class="p-tag2"><img alt="logo" src="<?php echo URL::to('/').'/assets/icons/register.png'; ?>" width=10 class="c-logo" ></p>
+                                            <p class="p-tag"><?php echo "Register Now"; ?></p>
                                             <?php } elseif(!empty($Most_watched_countries->ppv_price)){?>
                                                 <p class="p-tag1"><?php echo $currency->symbol.' '.$Most_watched_countries->ppv_price; ?></p>
                                             <?php }elseif( !empty($Most_watched_countries->global_ppv || !empty($Most_watched_countries->global_ppv) && $Most_watched_countries->ppv_price == null)){ ?>
