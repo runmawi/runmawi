@@ -312,7 +312,7 @@ class CPPAdminAudioController extends Controller
         }
 
         $data['ppv_price'] = $request->ppv_price;
-        $data['ios_ppv_price'] =$request->ios_ppv_price;
+        $data['ios_ppv_price'] = $request->ios_ppv_price;
         
         /*Slug*/
         if(  $data['slug']  == '' || $audio->slug == ''){
@@ -392,6 +392,7 @@ class CPPAdminAudioController extends Controller
         $audio->player_image =  $player_image;
         $audio->uploaded_by =  'CPP';
 
+        $audio->search_tags = !empty($request->searchtags) ? $request->searchtags : null ;
         $audio->update($data);
 
 
@@ -770,6 +771,7 @@ class CPPAdminAudioController extends Controller
         $audio->update($data);
         $audio->player_image =  $player_image;
         $audio->uploaded_by =  'CPP';
+        $audio->search_tags = !empty( $input['searchtags'] ) ? $input['searchtags'] : null ;
 
         $audio->update($data);
         $audio = Audio::findOrFail($id);

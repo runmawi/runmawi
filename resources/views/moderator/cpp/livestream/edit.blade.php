@@ -7,7 +7,40 @@
 		color:red;
 		font-size : 14px ;
 	}
+	.tags-input-wrapper{
+    background: transparent;
+    padding: 10px;
+    border-radius: 4px;
+    max-width: 400px;
+	border: 1px solid #ccc
+	}
+
+	.tags-input-wrapper input{
+		border: none;
+		background: transparent;
+		outline: none;
+		width: 140px;
+		margin-left: 8px;
+	}
+
+	.tags-input-wrapper .tag{
+		display: inline-block;
+		background-color: #20222c;
+		color: white;
+		border-radius: 40px;
+		padding: 0px 3px 0px 7px;
+		margin-right: 5px;
+		margin-bottom:5px;
+		box-shadow: 0 5px 15px -2px rgba(250 , 14 , 126 , .7)
+	}
+
+	.tags-input-wrapper .tag a {
+		margin: 0 7px 3px;
+		display: inline-block;
+		cursor: pointer;
+	}
 </style>
+
 @section('css')
 	<link rel="stylesheet" href="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.css') }}" />
 <style>
@@ -16,6 +49,9 @@
 @stop
  
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+{{-- Search Tag URL --}}
+<script src="https://bootstrap-tagsinput.github.io/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
 
 @section('content')
 <div id="content-page" class="content-page">
@@ -356,10 +392,11 @@
 		
 			<div class="col-sm-6"> 
 			<div class="panel panel-primary" data-collapsed="0"> 
-				<div class="panel-heading"> <div class="panel-title"><label> Duration</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+				<div class="panel-heading"> <div class="panel-title"><label> 
+					</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body"> 
-					<p class="p1">Enter the video duration in the following format (Hours : Minutes : Seconds)</p> 
-					<input class="form-control" name="duration" id="duration" value="@if(!empty($video->duration)){{ gmdate('H:i:s', $video->duration) }}@endif">
+					<label class="">Search Tag</label>
+						<input type="text" id="tag-input1" name="searchtags" >
 				</div> 
 			</div>
 			</div>
@@ -858,6 +895,9 @@ $(document).ready(function(){
                 });
 
         </script>
+
+	@include('moderator.cpp.livestream.search_tag_edit'); 
+
 	@stop
 @stop
 
@@ -897,3 +937,5 @@ $(document).ready(function(){
         background: black;
     }
 </style>
+
+
