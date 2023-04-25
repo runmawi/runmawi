@@ -12306,7 +12306,7 @@ public function QRCodeMobileLogout(Request $request)
               'series_sliders' => $series_sliders,
               'series_categories' => $series_categories ,
               'ppv_gobal_price'  => $this->ppv_gobal_price,
-              'Series_videos_data' => $Series_videos_data ,
+              'Series_videos_andriod' => $Series_videos_data ,
               'currency'         => CurrencySetting::first(),
               'ThumbnailSetting' => ThumbnailSetting::first(),
             ], 200);
@@ -12423,16 +12423,8 @@ public function QRCodeMobileLogout(Request $request)
                     ['path' => request()->url()]
                 );
 
-            $respond_data = array(
-                'videos'    => $mergedResults,
-                'ppv_gobal_price'  => $this->ppv_gobal_price,
-                'SeriesGenre'      => $SeriesGenre ,
-                'VideoCategory'    => $VideoCategory ,
-                'currency'         => CurrencySetting::first(),
-                'ThumbnailSetting' => ThumbnailSetting::first(),
-            );
 
-            // $videos_data[] = $videos ;
+            $videos_data[] = $mergedResults ;
 
             return response()->json([
               'status'  => 'true',
@@ -12441,6 +12433,7 @@ public function QRCodeMobileLogout(Request $request)
               'ppv_gobal_price'  => $this->ppv_gobal_price,
               'SeriesGenre'      => $SeriesGenre ,
               'VideoCategory'    => $VideoCategory ,
+              'video_andriod'    => $videos_data ,
               'currency'         => CurrencySetting::first(),
               'ThumbnailSetting' => ThumbnailSetting::first(),
            ], 200);

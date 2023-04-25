@@ -6142,6 +6142,9 @@ class ModeratorsUserController extends Controller
               <td>' .
                         $row->title .
                         '</td>
+                <td>' .
+                        $row->slug .
+                        '</td>
               <td>' .
                         $row->cppusername .
                         '</td>    
@@ -6241,6 +6244,9 @@ class ModeratorsUserController extends Controller
                         '</td>
               <td>' .
                         $row->title .
+                        '</td>
+                        <td>' .
+                        $row->slug .
                         '</td>
               <td>' .
                         $row->cppusername .
@@ -6342,6 +6348,9 @@ class ModeratorsUserController extends Controller
                         '</td>
               <td>' .
                         $row->title .
+                        '</td>
+                        <td>' .
+                        $row->slug .
                         '</td>
               <td>' .
                         $row->cppusername .
@@ -6511,6 +6520,7 @@ class ModeratorsUserController extends Controller
         $handle = fopen($filename, "w");
         fputcsv($handle, [
             "Video Name",
+            "Video Slug",
             "Uploader Name",
             "Total Commission",
             "Admin Commission",
@@ -6522,6 +6532,7 @@ class ModeratorsUserController extends Controller
             foreach ($ppv_purchases as $each_user) {
                 fputcsv($handle, [
                     $each_user->title,
+                    $each_user->slug,
                     $each_user->cppusername,
                     $each_user->total_amount,
                     $each_user->admin_commssion,

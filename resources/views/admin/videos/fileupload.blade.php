@@ -129,6 +129,38 @@
 		 transform: translate3d(5px, 0, 0);
 	}
 }
+
+	
+.tags-input-wrapper{
+    background: transparent;
+    padding: 10px;
+    border-radius: 4px;
+    max-width: 400px;
+    border: 1px solid #ccc
+}
+.tags-input-wrapper input{
+    border: none;
+    background: transparent;
+    outline: none;
+    width: 140px;
+    margin-left: 8px;
+}
+.tags-input-wrapper .tag{
+    display: inline-block;
+    background-color: #20222c;
+    color: white;
+    border-radius: 40px;
+    padding: 0px 3px 0px 7px;
+    margin-right: 5px;
+    margin-bottom:5px;
+    box-shadow: 0 5px 15px -2px rgba(250 , 14 , 126 , .7)
+}
+.tags-input-wrapper .tag a {
+    margin: 0 7px 3px;
+    display: inline-block;
+    cursor: pointer;
+} 
+
 </style>
 <div id=" content_videopage" class="content-page">
     <div class="mt-5 d-flex">
@@ -753,8 +785,7 @@ border-radius: 0px 4px 4px 0px;
                            <div class="row align-items-center">
                               <div class="col-sm-6 form-group mt-3" >
                                  <label for="">Search Tags </label>
-                                    <!-- <input type="text" class="form-control" id="#inputTag" name="searchtags" value="" data-role="tagsinput"> -->
-                                    <input type="text" id="exist-values" class="tagged form-control1" data-removeBtn="true" name="searchtags" value="" >
+                                    <input type="text"  class="form-control1"  id="tag-input1" name="searchtags" >
                                  </div>
 
                                  <div class="col-sm-6 form-group">
@@ -2446,6 +2477,8 @@ if(this.textContent === 'destroy') {
 
 
 </script>
+
+@include('admin.videos.search_tag'); 
 
 @include('admin.videos.Ads_videos'); 
 

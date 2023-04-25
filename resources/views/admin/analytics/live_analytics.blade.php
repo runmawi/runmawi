@@ -68,6 +68,7 @@
                                         <tr class="r1">
                                             <th>#</th>
                                             <th>Video Name</th>
+                                            <th>Video Slug</th>
                                             <th>Email</th>
                                             <th>Uploader Name</th>
                                             <!-- <th>Total Views</th> -->
@@ -79,6 +80,7 @@
                                     @foreach($total_content as $key => $videos)
                                         <td>{{ $key+1  }}</td>   
                                         <td>{{ $videos->title  }}</td>   
+                                        <td>{{ $videos->slug  }}</td>   
                                         <td>{{ $videos->cppemail  }}</td>   
                                         <td>{{ $videos->cppusername  }}</td>   
                                         <!-- <td>{{ $videos->views  }}</td>    -->

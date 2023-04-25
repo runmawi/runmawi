@@ -65,6 +65,19 @@ input[type="number"] {
                         <div class="iq-header-title">
                            <h4 class="card-title">View By Region</h4>
                      </div>
+                     <div class="row mt-3"> 
+                          <div class="col-md-4">
+                          <!-- <label for="start_time">  Start Date: </label>
+                          <input type="date" id="start_time" name="start_time" > -->
+                          </div>
+                          <div class="col-md-4">
+                          <!-- <label for="start_time">  End Date: </label>
+                          <input type="date" id="end_time" name="end_time"> -->
+                          </div>
+                          <div class="col-md-4 ">
+                             <span  id="export" class="btn btn-success btn-sm" >Export CSV</span>
+                          </div>
+                          </div>
                             </div>
                             <div class="col-sm-12">
                     <div class="row">
@@ -307,7 +320,39 @@ $.ajaxSetup({
 
 });
 
+$(document).ready(function(){
+          $('#export').click(function(){
+          var start_time =  $('#start_time').val();
+          var end_time =  $('#end_time').val();
+          var country = $('#country').val();
+          var url =  '{{ URL::to('admin/VideoByRegionCSV') }}';
+          $.ajax({
+          url: url,
+          type: "post",
+          data: {
+          _token: '{{ csrf_token() }}',
+          // start_time: start_time,
+          // end_time: end_time,
+          country: country,
 
+          },      
+          success: function(data){
+            var Excel = data ;
+            var Excel_url =  "{{ URL::to('public/uploads/csv/')  }}";
+            var link_url = Excel_url+'/'+Excel;
+
+            // console.log(link_url);
+
+            $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Downloaded User CSV File </div>');
+                          setTimeout(function() {
+                            $('.add_watch').slideUp('fast');
+                          }, 3000);
+
+            location.href = link_url;
+          }
+          });
+    });
+});
 
 
       </script>
