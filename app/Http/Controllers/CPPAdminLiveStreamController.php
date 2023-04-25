@@ -353,6 +353,7 @@ class CPPAdminLiveStreamController extends Controller
         $movie->player_image = $player_image;
         $movie->user_id = $user_id;
         $movie->ios_ppv_price = $request->ios_ppv_price;
+        $movie->search_tags = !empty($request->searchtags) ? $request->searchtags : null ;
         $movie->save();
 
         // $movie = LiveStream::create($data);
@@ -518,6 +519,7 @@ class CPPAdminLiveStreamController extends Controller
     }
      public function CPPupdate(Request $request)
     {
+        
         $user_package =    User::where('id', 1)->first();
         $package = $user_package->package;
         if(!empty($package) && $package== "Pro" || !empty($package) && $package == "Business" ){
@@ -526,6 +528,7 @@ class CPPAdminLiveStreamController extends Controller
         $data = $request->all();       
         $id = $data['id'];
         $video = LiveStream::findOrFail($id);  
+
         $validatedData = $request->validate([
             // 'title' => 'required|max:255',
             // 'slug' => 'required|max:255',
@@ -577,8 +580,6 @@ class CPPAdminLiveStreamController extends Controller
             $data['type'] = '';
         }
         
-
-
         
         $path = public_path().'/uploads/livecategory/';
         $image_path = public_path().'/uploads/images/';
@@ -702,7 +703,6 @@ class CPPAdminLiveStreamController extends Controller
             }
         }
 
-
         $video->update($data);
         $video->embed_url =     $embed_url;
         $video->url_type = $url_type;
@@ -714,6 +714,7 @@ class CPPAdminLiveStreamController extends Controller
         $video->user_id =  $user_id;
         $video->ios_ppv_price =  $request->ios_ppv_price;
         $video->uploaded_by = 'CPP';
+        $video->search_tags = !empty($data['searchtags']) ? $data['searchtags'] : null ;
         $video->save();
 
         if(!empty($data['video_category_id'])){
