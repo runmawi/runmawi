@@ -1067,6 +1067,7 @@ Route::post('/analytics/playervideos_export', 'AdminPlayerAnalyticsController@Pl
 // Route::post('/admin/subscriber_end_date_url', 'AdminUsersController@SubscriberRevenueStartEndDateRecord');
 
 Route::get('/analytics/RegionVideoAnalytics', 'AdminPlayerAnalyticsController@RegionVideoAnalytics');
+Route::post('/analytics/VideoRegionAnalyticsCSV', 'AdminPlayerAnalyticsController@VideoRegionAnalyticsCSV');
 
 
 Route::get('/analytics/PlayerUserAnalytics', 'AdminPlayerAnalyticsController@PlayerUserAnalytics');
