@@ -62,7 +62,10 @@ class TranscodeVideo implements ShouldQueue
 
         $output_path = storage_path() . "/app/public/".$output_path_rand;
 
-        $ffmpeg = \FFMpeg\FFMpeg::create();
+        $ffmpeg = \FFMpeg\FFMpeg::create([
+            'timeout'          => 0, // the timeout for the underlying process
+            'ffmpeg.threads'   => 1, 
+    ]);
 
         $video = $ffmpeg->open($video_path);
 
