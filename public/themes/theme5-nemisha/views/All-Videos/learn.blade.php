@@ -11,6 +11,9 @@
     h3{
         color: #000!important;
     }
+    .favorites-slider .slick-arrow, #trending-slider-nav .slick-arrow{
+        color: #000!important;
+    }
 </style>
 <!-- Learn Series silder -->
 
