@@ -90,56 +90,47 @@ class LiveStreamController extends Controller
     }
     
     public function Play($vid)
-        {
-          
+    {
+      try {
 
-          $Theme = HomeSetting::pluck('theme_choosen')->first();
-          Theme::uses( $Theme );
+      $Theme = HomeSetting::pluck('theme_choosen')->first();
+      Theme::uses( $Theme );
 
-          $data = session()->all();
+      $data = session()->all();
 
-          $categoryVideos = LiveStream::where('slug',$vid)->first();
-          $source_id = LiveStream::where('slug',$vid)->pluck('id')->first();
-          
+      $categoryVideos = LiveStream::where('slug',$vid)->first();
+      $source_id = LiveStream::where('slug',$vid)->pluck('id')->first();
 
-        if(@$categoryVideos->uploaded_by == 'Channel'){
+         // Channel Livestream videos
+         
+      if(@$categoryVideos->uploaded_by == 'Channel'){
           $user_id = $categoryVideos->user_id;
 
           $user = Channel::where("channels.id", "=", $user_id )
-          ->join(
-              "users",
-              "channels.email",
-              "=",
-              "users.email"
-          )
-          ->select(
-              "users.id as user_id"
-          )
+          ->join("users","channels.email","=","users.email")
+          ->select("users.id as user_id")
           ->first();
+
           if(!Auth::guest() &&  $user->user_id == Auth::user()->id){
               $video_access = 'free';
           }else{ 
               $video_access = 'pay';
           }
+
+          // CPP Livestream videos
+
       }else if(@$categoryVideos->uploaded_by == 'CPP'){
+
           $user_id = $categoryVideos->user_id;
 
           $user = ModeratorsUser::where("moderators_users.id", "=", $user_id )
-          ->join(
-              "users",
-              "moderators_users.email",
-              "=",
-              "users.email"
-          )
-          ->select(
-              "users.id as user_id"
-          )
-          ->first();
-          if(!Auth::guest() &&  $user->user_id == Auth::user()->id){
-              $video_access = 'free';
-          }else{ 
-              $video_access = 'pay';
-          }
+              ->join("users","moderators_users.email","=","users.email")
+              ->select("users.id as user_id")
+              ->first();
+
+          $video_access = !Auth::guest() &&  $user->user_id == Auth::user()->id ? 'free' :  'pay' ;
+
+          // Admin Livestream videos
       }else{
           if(!Auth::guest() &&  @$categoryVideos->access  == 'ppv' ||  @$categoryVideos->access  == 'subscriber' && Auth::user()->role != 'admin' ){
               $video_access = 'pay';
@@ -148,25 +139,26 @@ class LiveStreamController extends Controller
           }
       }
 
-          $vid =  $categoryVideos->id;
-          //  $categoryVideos = LiveStream::where('id',$vid)->first();
-        if(!Auth::guest()){
-           $user_id = Auth::user()->id;
-          }
+      $vid =  $categoryVideos->id;
+
+      if(!Auth::guest()){
+        $user_id = Auth::user()->id;
+      }
 
            $settings = Setting::first(); 
 
-        if(!Auth::guest()){
-            $ppv_exist = LivePurchase::where('video_id',$vid)->where('user_id',$user_id)->where('status',1)->latest()->count();
-            $ppv_exists = LivePurchase::where('video_id',$vid)->where('user_id',$user_id)->where('status',1)->latest()->count();
+          if(!Auth::guest()){
+              $ppv_exist = LivePurchase::where('video_id',$vid)->where('user_id',$user_id)->where('status',1)->latest()->count();
+              $ppv_exists = LivePurchase::where('video_id',$vid)->where('user_id',$user_id)->where('status',1)->latest()->count();
 
-          }else{
-            $ppv_exist = [];
-            $ppv_exists = 0;
-
+          }
+          else{
+              $ppv_exist = [];
+              $ppv_exists = 0;
           }
 
             $wishlisted = false;
+
             if(!Auth::guest()):
                     $wishlisted = Wishlist::where('user_id', '=', Auth::user()->id)->where('video_id', '=', $vid)->where('type', '=', 'live')->first();
             endif;
@@ -177,12 +169,13 @@ class LiveStreamController extends Controller
                     $watchlater = Watchlater::where('user_id', '=', Auth::user()->id)->where('video_id', '=', $vid)->where('type', '=', 'live')->first();
              endif;
              $session = Session::all();
-            //  dd($session['password_hash']);
+
              if(!empty($session['password_hash'])){
               $password_hash = $session['password_hash'];
              }else{
               $password_hash = "";
              }
+
              $payment_settings = PaymentSetting::first();  
               $mode = $payment_settings->live_mode ;
                 if($mode == 0){
@@ -194,7 +187,8 @@ class LiveStreamController extends Controller
                 }else{
                     $secret_key= null;
                     $publishable_key= null;
-                }        
+                }   
+                     
              $currency = CurrencySetting::first();
              if (!empty($categoryVideos->publish_time))
              {
@@ -277,6 +271,9 @@ class LiveStreamController extends Controller
 
           //   return view('auth.login',compact('system_settings'));
           // }
+        } catch (\Throwable $th) {
+            return abort(404);
+        }
         }
 
 
