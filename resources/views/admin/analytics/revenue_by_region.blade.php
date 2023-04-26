@@ -68,7 +68,23 @@ input[type="number"] {
           style="width: 30px; position: absolute;margin-left: 39%;
           margin-top: 19%;height: 30px;" alt="No GIF">
 
+                    <div class="row mt-3">
+                    <!-- <div class="col-md-4">
+                        <label for="start_time">  Start Date: </label>
+                        <input type="date" id="start_time" name="start_time" >               
                     </div>
+
+                    <div class="col-md-4">
+                        <label for="start_time">  End Date: </label>
+                        <input type="date" id="end_time" name="end_time">     
+                    </div> -->
+
+                    <div class="col-md-4">
+                        <span  id="export" class="btn btn-primary" >Download CSV</span>
+                    </div>
+                    
+                    </div>
+                </div>
                             </div>
                     <!-- <div class="row"> -->
                     <div class="col-sm-12">
@@ -287,7 +303,7 @@ $.ajaxSetup({
     $('#state-dropdown').change(function(){
    var Allstate = $('#state-dropdown').val();
   //  alert(Allstate);
-   if(Allstate == Allstate){
+   if(Allstate == 'Allstate'){
 	$.ajax({
    url:"{{ URL::to('admin/Planstate') }}",
    method:'get',
@@ -354,7 +370,7 @@ $.ajaxSetup({
    var Allcity = $('#city-dropdown').val();
 //    alert(country);
    if(Allcity == "Allcity"){
-$('#loader-image').show();
+// $('#loader-image').show();
 
 	$.ajax({
    url:"{{ URL::to('admin/PlanAllCity') }}",
@@ -423,7 +439,7 @@ $.ajaxSetup({
    var city = $('#city-dropdown').val();
 //    alert(country);
    if(city == city){
-$('#loader-image').show();
+// $('#loader-image').show();
 
 	$.ajax({
    url:"{{ URL::to('admin/Plancity') }}",
@@ -482,6 +498,40 @@ $('#loader-image').hide();
 });
 
 
+$(document).ready(function(){
+          $('#export').click(function(){
+            var country = $('#country').val();
+            var state = $('#state-dropdown').val();
+            var City = $('#city-dropdown').val();
+            // alert(country);
+            // alert(state);
+            // alert(City);
+          var url = "{{ URL::to('admin/analytics/RevenueRegionCSV/')  }}";
+
+            $.ajax({
+            url: url,
+            type: "post",
+                data: {
+                _token: '{{ csrf_token() }}',
+                country: country,
+                state: state,
+                City: City,
+
+                },      
+                success: function(data){
+                var Excel = data ;
+                var Excel_url =  "{{ URL::to('public/uploads/csv/')  }}";
+                var link_url = Excel_url+'/'+Excel;
+                $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Downloaded User CSV File </div>');
+                            setTimeout(function() {
+                                $('.add_watch').slideUp('fast');
+                            }, 3000);
+
+                location.href = link_url;
+            }
+            });
+        });
+    });
 
 
 

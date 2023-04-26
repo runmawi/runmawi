@@ -15,7 +15,7 @@ use FFMpeg\Format\Video\X264;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Illuminate\Support\Facades\Storage;
 use App\Setting as Setting;
-
+use hlsparser\HLS;
 
 class TranscodeController extends Controller
 {
@@ -25,6 +25,32 @@ class TranscodeController extends Controller
      * @param  Request  $request
      * @return Response
      */
+
+     public function M3u8Test(Request $request)
+     {
+
+        $url1 = 'https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8';
+        $url2 = 'https://content.jwplatform.com/manifests/vM7nH0Kl.m3u8';
+        
+        $content1 = file_get_contents($url1);
+        $content2 = file_get_contents($url2);
+        
+        $hlsParser = new HLS();
+        $segments1 = $hlsParser->parse($content1)->getSegments();
+        $segments2 = $hlsParser->parse($content2)->getSegments();
+        
+        $mergedSegments = array_merge($segments1, $segments2);
+        
+        $mergedPlaylist = "#EXTM3U\n";
+        
+        foreach ($mergedSegments as $segment) {
+            $mergedPlaylist .= "#EXTINF:" . $segment->getDuration() . ",\n";
+            $mergedPlaylist .= $segment->getUri() . "\n";
+        }
+        
+        Storage::put('merged_playlist.m3u8', $mergedPlaylist);
+     }
+
     public function index(Request $request)
     {
         // Create post here ..
