@@ -1,7 +1,17 @@
 <?php
     include public_path('themes/theme5-nemisha/views/header.php');
 ?>
-
+<style>
+    body{
+        background-color: #fff!important;
+    }
+    h6{
+        color: #000!important;
+    }
+    h3{
+        color: #000!important;
+    }
+</style>
 <!-- Learn Series silder -->
 
 <section id="home" class="iq-main-slider p-0">
