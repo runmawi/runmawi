@@ -448,6 +448,88 @@ class AdminPlayerAnalyticsController extends Controller
     }
 
 
+    public function VideoRegionAnalyticsCSV(Request $request)
+    {
+        $user_package = User::where("id", 1)->first();
+        $package = $user_package->package;
+        if (
+            (!empty($package) && $package == "Pro") ||
+            (!empty($package) && $package == "Business")
+        ) {
+
+            $data = $request->all();
+            // $start_time = $data["start_time"];
+            // $end_time = $data["end_time"];
+
+            $player_videos = PlayerAnalytic::join('users', 'users.id', '=', 'player_analytics.user_id')
+            ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')
+            ->groupBy('player_analytics.country_name')
+            ->orderBy('player_analytics.created_at')
+            ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title','videos.slug',
+            'player_analytics.country_name','player_analytics.state_name','player_analytics.city_name',
+            DB::raw('sum(player_analytics.duration) as duration') ,
+             DB::raw('sum(player_analytics.currentTime) as currentTime') ,
+             DB::raw('(player_analytics.seekTime) as seekTime') ,
+             DB::raw('(player_analytics.bufferedTime) as bufferedTime') ,
+             DB::raw('sum(player_analytics.watch_percentage) as watch_percentage') ,
+             \DB::raw("MONTHNAME(player_analytics.created_at) as month_name") ,
+             \DB::raw("COUNT(player_analytics.videoid) as count"),
+             \DB::raw("(player_analytics.watch_percentage) as watchpercentage"),
+            ]);
+
+            $file = "VideoRegionAnalytics.csv";
+
+            $headers = [
+                "Content-Type" => "application/vnd.ms-excel; charset=utf-8",
+                "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+                "Content-Disposition" => "attachment; filename=download.csv",
+                "Expires" => "0",
+                "Pragma" => "public",
+            ];
+            if (!File::exists(public_path() . "/uploads/csv")) {
+                File::makeDirectory(public_path() . "/uploads/csv");
+            }
+            $filename = public_path("/uploads/csv/" . $file);
+            $handle = fopen($filename, "w");
+            fputcsv($handle, [
+                "Video Name",
+                "Video Slug",
+                "Viewed Count",
+                "Watch Percentage (Minutes)",
+                "Seek Time (Seconds)",
+                "Buffered Time (Seconds)",
+                "Country Name",
+                "State Name",
+                "City Name",
+
+            ]);
+            if (count($player_videos) > 0) {
+                foreach ($player_videos as $each_user) {
+                    fputcsv($handle, [
+                        $each_user->title,
+                        $each_user->slug,
+                        $each_user->count,
+                        $each_user->watchpercentage,
+                        $each_user->seekTime,
+                        $each_user->bufferedTime,
+                        $each_user->country_name,
+                        $each_user->state_name,
+                        $each_user->city_name,
+                    ]);
+                }
+            }
+
+            fclose($handle);
+
+            \Response::download($filename, "download.csv", $headers);
+
+            return $file;
+        } else {
+            return Redirect::to("/blocked");
+        }
+    }
+
+
     public function RegionVideoAllCountry(Request $request)
     {
         if ($request->ajax())
