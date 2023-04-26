@@ -14,6 +14,9 @@
     .favorites-slider .slick-arrow, #trending-slider-nav .slick-arrow{
         color: #000!important;
     }
+    .s-bg-2:before{
+        background-image:linear-gradient(to left, rgba(4,8,15,0)44%, rgb(191 194 198)69%, rgb(109 143 172))!important;
+    }
 </style>
 <!-- Learn Series silder -->
 
