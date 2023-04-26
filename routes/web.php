@@ -1060,6 +1060,7 @@ Route::get('/analytics/revenue', 'AdminUsersController@AnalyticsRevenue');
 Route::get('/analytics/ViewsRegion', 'AdminUsersController@ViewsRegion');
 Route::get('/analytics/RevenueRegion', 'AdminUsersController@RevenueRegion');
 Route::get('/regionvideos', 'AdminUsersController@RegionVideos');
+Route::post('/analytics/RevenueRegionCSV', 'AdminUsersController@RevenueRegionCSV');
 
 Route::get('/analytics/PlayerVideoAnalytics', 'AdminPlayerAnalyticsController@PlayerVideoAnalytics');
 Route::post('/analytics/playervideos_start_date_url', 'AdminPlayerAnalyticsController@PlayerVideosStartDateRecord');

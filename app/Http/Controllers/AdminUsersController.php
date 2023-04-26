@@ -4040,4 +4040,66 @@ class AdminUsersController extends Controller
         return $file;
     }
 
+    
+    public function RevenueRegionCSV(Request $request)
+    {
+
+        $data = $request->all();
+        $Country = $data['country'];
+        $state = $data['state'];
+        $city = $data['City'];
+
+        if($Country == 'Allcountry' || $state == 'Allstate' || $city == 'Allcity'){
+            $data =  Subscription::select('users.username','subscription_plans.plans_name', 'subscription_plans.plan_id', 'users.id')
+                    ->join('users','users.id','=','subscriptions.user_id')
+                    ->join('subscription_plans','subscription_plans.plan_id','=','subscriptions.stripe_plan')
+                    ->get();
+        }else if($Country != '' && $state != '' && $city != '' && $Country != 'Allcountry' && $state != 'Allstate' && $city != 'Allcity'){
+
+            $state = State::where("id", $state)
+            ->first();
+            $data =  Subscription::select('users.username','subscription_plans.plans_name', 'subscription_plans.plan_id', 'users.id')
+                    ->join('users','users.id','=','subscriptions.user_id')
+                    ->join('subscription_plans','subscription_plans.plan_id','=','subscriptions.stripe_plan')
+                    ->where('subscriptions.cityname', '=', $city)
+                    ->get();
+
+        }else {
+            $data =  Subscription::select('users.username','subscription_plans.plans_name', 'subscription_plans.plan_id', 'users.id')
+                    ->join('users','users.id','=','subscriptions.user_id')
+                    ->join('subscription_plans','subscription_plans.plan_id','=','subscriptions.stripe_plan')
+                    ->get();
+        }
+        $file = 'RevenueRegionCSV.csv';
+
+        $headers = array(
+            'Content-Type' => 'application/vnd.ms-excel; charset=utf-8',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Content-Disposition' => 'attachment; filename=download.csv',
+            'Expires' => '0',
+            'Pragma' => 'public',
+        );
+        if (!File::exists(public_path() . "/uploads/csv"))
+        {
+            File::makeDirectory(public_path() . "/uploads/csv");
+        }
+        $filename = public_path("/uploads/csv/" . $file);
+        $handle = fopen($filename, 'w');
+        fputcsv($handle, ["ID", "User Name", "Plan Name",]);
+        if (count($data) > 0)
+        {
+            foreach ($data as $each_user)
+            {
+
+                fputcsv($handle, ['#',$each_user->username, $each_user->plans_name,
+                ]);
+            }
+        }
+
+        fclose($handle);
+
+        \Response::download($filename, "download.csv", $headers);
+
+        return $file;
+    }
 }
