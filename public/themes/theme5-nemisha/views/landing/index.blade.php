@@ -1147,6 +1147,12 @@
             top: 56%;
         }
         }
+        .nav-link:hover {
+    border: none!important;
+     background-color: transparent!important; 
+    /* padding: 6px 15px; */
+    padding: 10px 0!important;
+}
     </style>
 
     <?php $jsonString = file_get_contents(base_path('assets/country_code.json'));
