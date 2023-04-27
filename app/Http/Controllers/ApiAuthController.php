@@ -11424,6 +11424,278 @@ public function QRCodeMobileLogout(Request $request)
 
     return response()->json($response, 200);
   }
+
+  public function all_videos()
+  {
+    try {
+          // Video Category 
+
+                $VideoCategory = VideoCategory::select('id','slug','in_home')->where('in_home','=',1)
+                                ->get()->map(function ($item) {
+                                    $item['redirect_url']  = URL::to('videos/category/'.$item->slug);
+                                    $item['source_data']   = 'video_category';
+                                    return $item;
+                                });
+
+            // Series Genres
+
+                $SeriesGenre = SeriesGenre::select('id','slug','in_home')
+                                ->get()->map(function ($item) {
+                                    $item['redirect_url']  = URL::to('series/category/'.$item->slug);
+                                    $item['source_data']  = 'SeriesGenre';
+                                    return $item;
+                                });
+                                
+
+            // Fetch all OrderHomeSetting list
+
+                $OrderHomeSetting = OrderHomeSetting::get(); 
+
+            // Fetch all videos list
+                $videos = Video::select('active','status','draft','age_restrict','id','created_at','slug','image','title','rating','duration','featured','year')
+                        ->where('active', '1')->where('status', '1')->where('draft', '1');
+
+                    if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
+                        $videos = $videos->whereNotIn('videos.id', Block_videos());
+                    }
+                    if (check_Kidmode() == 1) {
+                        $videos = $videos->whereBetween('videos.age_restrict', [0, 12]);
+                    }
+                    
+                $videos = $videos->latest()->get()->map(function ($item) {
+                    $item['source']       = 'videos';
+                    $item['source_data']  = 'videos';
+                    $item['redirect_url'] = URL::to('category/videos/'.$item->slug) ;
+                    $item['image_url']    = URL::to('public/uploads/images/' . $item->image);
+                    $item['title']    = $item->title;
+                    $item['rating']   = $item->rating;
+                    $item['duration'] = $item->duration;
+                    $item['featured'] = $item->featured;
+                    $item['year']     = $item->year;
+                    $item['age_restrict'] = $item->age_restrict;
+                    return $item;
+                });
+
+            // Fetch all series list
+
+                $Series = Series::select('active','id','created_at','slug','image','title','rating','duration','featured','year')
+                                    ->where('active', '=', '1')->orderBy('created_at', 'DESC')->latest()->get()
+                                    ->map(function ($item) use($OrderHomeSetting) {
+                    $item['source']       = $OrderHomeSetting->where('id',5)->pluck('header_name')->first() != null ? $OrderHomeSetting->where('id',5)->pluck('header_name')->first() : "Series" ;
+                    $item['source_data']  = 'series';
+                    $item['redirect_url'] = URL::to('play_series/'.$item->slug) ;
+                    $item['image_url']    = URL::to('public/uploads/images/'.$item->image);
+                    $item['title']    = $item->title;
+                    $item['rating']   = $item->rating;
+                    $item['duration'] = $item->duration;
+                    $item['featured'] = $item->featured;
+                    $item['year']     = $item->year;
+                    $item['age_restrict'] = null ;
+                    return $item;
+                });
+
+            // Fetch all audio albums list
+
+                $AudioAlbums = AudioAlbums::orderBy('created_at', 'desc')->get()->map(function ($item) use($OrderHomeSetting) {
+                    $item['source']       = $OrderHomeSetting->where('id',7)->pluck('header_name')->first() != null ? $OrderHomeSetting->where('id',7)->pluck('header_name')->first() : "Podcast";
+                    $item['source_data']  = 'AudioAlbums';
+                    $item['redirect_url'] = URL::to('album/'.$item->slug) ;
+                    $item['image_url']    = URL::to('public/uploads/albums/' . $item->album);
+                    $item['title']        = $item->albumname;
+                    $item['age_restrict'] = null ;
+                    $item['rating']       = null;
+                    $item['duration']     = null;
+                    $item['featured']     = null;
+                    $item['year']         = null;
+                    return $item;
+                  });
+
+            // Merge the results of the video, series, and audio album queries
+
+                $mergedResults = $videos->merge($Series)->merge($AudioAlbums);
+
+            // Paginate the merged results using LengthAwarePaginator
+
+                $currentPage = request()->get('page') ?: 1;
+                $pagedData = $mergedResults->forPage($currentPage, $this->settings->videos_per_page);
+
+                $mergedResults = new LengthAwarePaginator(
+                    $pagedData,
+                    $mergedResults->count(),
+                    $this->settings->videos_per_page,
+                    $currentPage,
+                    ['path' => request()->url()]
+                );
+
+
+            $videos_data[] = $mergedResults ;
+
+            return response()->json([
+              'status'  => 'true',
+              'Message' => 'All videos Retrieved  Successfully',
+              'videos'    => $mergedResults,
+              'ppv_gobal_price'  => $this->ppv_gobal_price,
+              'SeriesGenre'      => $SeriesGenre ,
+              'VideoCategory'    => $VideoCategory ,
+              'video_andriod'    => $videos_data ,
+              'currency'         => CurrencySetting::first(),
+              'ThumbnailSetting' => ThumbnailSetting::first(),
+           ], 200);
+
+    } catch (\Throwable $th) {
+        return response()->json([
+                'status'  => 'false',
+                'Message' => $th->getMessage(),
+            ], 200);
+    }
+  }
+
+  // Menus API 
+
+  public function Menus()
+  {
+    try{
+          $settings = Setting::get();
+          $Menus = Menu::orderBy('order', 'asc')->get(); 
+          $VideoCategory = VideoCategory::where('in_home','=',1)->get();
+          $LiveCategory = LiveCategory::get();
+          $AudioCategory = AudioCategory::get();
+          $SeriesGenre = SeriesGenre::where('in_home','=',1)->get();
+          
+          $response = array(
+            'status'=> 'true',
+            'Menus' => $Menus,
+            'VideoCategory' => $VideoCategory,
+            'LiveCategory' => $LiveCategory,
+            'AudioCategory' => $AudioCategory,
+            'SeriesGenre' => $SeriesGenre,
+            'settings' => $settings,
+          );
+              
+      }catch (\Throwable $th) {
+
+          $response = array(
+              'status'=>'false',
+              'message'=>$th->getMessage(),
+          );
+      }
+      
+      return response()->json($response, 200);
+  }
+      
+  public function DataFree()
+  {
+    try{
+      $HomeSetting = HomeSetting::first();
+      
+      if($HomeSetting->latest_videos == 1){
+      $settings = Setting::get();
+        // Data Free Video Based on Category 
+         
+        $DataFreeCategories = VideoCategory::where('slug','datafree')->where('in_home','=',1)->first();
+          $countDataFreeCategories = VideoCategory::where('slug','datafree')->where('in_home','=',1)->count();
+          if ($countDataFreeCategories > 0 ) {   
+
+                $videos = Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
+                            ->where('category_id','=',@$DataFreeCategories->id)->where('active', '=', '1')
+                            ->where('status', '=', '1')->where('draft', '=', '1');
+                $videos = $videos->latest('videos.created_at')->get();
+          
+          }else{
+            $videos = [];
+          }
+
+        // Data Free Series Based on Category 
+
+          $DataFreeseriesCategories = SeriesGenre::where('slug','datafree')->where('in_menu','=',1)->first();
+          $countDataFreeseriesCategories = SeriesGenre::where('slug','datafree')->where('in_menu','=',1)->count();
+          if ($countDataFreeseriesCategories > 0 ) {   
+
+                $series = Series::join('series_categories', 'series_categories.series_id', '=', 'series.id')
+                            ->where('category_id','=',@$DataFreeseriesCategories->id)->where('active', '=', '1')
+                            ->where('active', '=', '1');
+                $series = $series->latest('series.created_at')->get();
+          
+          }else{
+             $series = [];
+          }
+
+        // Data Free Live Stream Based on Category 
+
+          $DataFreeliveCategories = LiveCategory::where('slug','datafree')->first();
+          $countDataFreeliveCategories = LiveCategory::where('slug','datafree')->count();
+          if ($countDataFreeliveCategories > 0 ) {   
+
+                $live_streams = LiveStream::join('livecategories', 'livecategories.live_id', '=', 'live_streams.id')
+                            ->where('category_id','=',@$DataFreeliveCategories->id)->where('active', '=', '1')
+                            ->where('status', '=', '1');
+                $live_streams = $live_streams->latest('live_streams.created_at')->get();
+          
+          }else{
+             $live_streams = [];
+          }
+
+        // Data Free Audio Based on Category 
+
+          $DataFreeAudioCategories = AudioCategory::where('slug','datafree')->first();
+          $countDataFreeAudioCategories = AudioCategory::where('slug','datafree')->count();
+          if ($countDataFreeAudioCategories > 0 ) {   
+
+                $audio = Audio::join('category_audios', 'category_audios.audio_id', '=', 'audio.id')
+                            ->where('category_id','=',@$DataFreeAudioCategories->id)->where('active', '=', '1')
+                            ->where('status', '=', '1');
+                $audio = $audio->latest('audio.created_at')->get();
+          
+          }else{
+             $audio = [];
+          } 
+        
+          $response = array(
+              'status'=> 'true',
+              'videos' => $videos,
+              'series' => $series,
+              'live_streams' => $live_streams,
+              'audio' => $audio,
+              'settings' => $settings,
+          );
+      }else{
+
+          $response = array(
+            'status'=> 'true',
+            'Message' => 'Please Trun On Latest Video on Home Page Settings',
+        );
+      }
+          
+        } catch (\Throwable $th) {
+
+          $response = array(
+            'status'=>'false',
+            'message'=>$th->getMessage(),
+          );
+    }
+
+    return response()->json($response, 200);
+      
+  }
+  public function categoryLive(Request $request)
+  {
+      try{
+        $LiveCategory = LiveCategory::find($request->category_id) != null ? LiveCategory::find($request->category_id)->specific_category_live : array();
+        
+        $Live_Category = $LiveCategory->all();
+
+        $response = array( 'status'=> 'true','LiveCategory' => $Live_Category );
+
+      } catch (\Throwable $th) {
+
+        $response = array(
+          'status'=>'false',
+          'message'=>$th->getMessage(),
+        );
+    }
+
+    return response()->json($response, 200);
+  }
   
   //  All Homepage
 
@@ -11568,7 +11840,7 @@ public function QRCodeMobileLogout(Request $request)
         }
 
 
-        if( $OrderHomeSetting['video_name'] == "category_videos" ){          // category videos
+        if( $OrderHomeSetting['video_name'] == "category_videos" ){          // Videos based on Categories
           
           $data = $this->All_Homepage_category_videos();
           $source = $OrderHomeSetting['video_name'] ;
@@ -11577,7 +11849,7 @@ public function QRCodeMobileLogout(Request $request)
 
         }
 
-        if( $OrderHomeSetting['video_name'] == "live_category" ){          // category livestream
+        if( $OrderHomeSetting['video_name'] == "live_category" ){          // livestream Videos based on Categories category 
           
           $data = $this->All_Homepage_category_livestream();
           $source = $OrderHomeSetting['video_name'] ;
@@ -11613,7 +11885,7 @@ public function QRCodeMobileLogout(Request $request)
 
         }
 
-        if( $OrderHomeSetting['video_name'] == "liveCategories" ){          // liveCategories
+        if( $OrderHomeSetting['video_name'] == "liveCategories" ){          // live Categories
          
           $data = $this->All_Homepage_liveCategories();
           $source = $OrderHomeSetting['video_name'] ;
@@ -11622,12 +11894,48 @@ public function QRCodeMobileLogout(Request $request)
 
         }
 
-        if( $OrderHomeSetting['video_name'] == "videoCategories" ){          // videoCategories
+        if( $OrderHomeSetting['video_name'] == "videoCategories" ){          // Video Categories
          
           $data = $this->All_Homepage_videoCategories();
           $source = $OrderHomeSetting['video_name'] ;
           $header_name = $OrderHomeSetting['header_name'] ;
           $source_type = "videos" ;
+
+        }
+
+        if( $OrderHomeSetting['video_name'] == "Series_Genre" ){          // Series Genre
+         
+          $data = $this->All_Homepage_Series_Genre();
+          $source = $OrderHomeSetting['video_name'] ;
+          $header_name = $OrderHomeSetting['header_name'] ;
+          $source_type = "Series_Genre" ;
+
+        }
+
+        if( $OrderHomeSetting['video_name'] == "Series_Genre_videos" ){          // Audio Genre
+
+          $data = $this->All_Homepage_Series_Genre_videos();
+          $source = $OrderHomeSetting['video_name'] ;
+          $header_name = $OrderHomeSetting['header_name'] ;
+          $source_type = "Series" ;
+
+        }
+
+        if( $OrderHomeSetting['video_name'] == "Audio_Genre" ){          // Audio Genre
+         
+          $data = $this->All_Homepage_Audio_Genre();
+          $source = $OrderHomeSetting['video_name'] ;
+          $header_name = $OrderHomeSetting['header_name'] ;
+          $source_type = "Audio_Genre" ;
+
+        }
+
+        if( $OrderHomeSetting['video_name'] == "Audio_Genre_audios" ){   // Audio Genre based on audios
+         
+          $data = $this->All_Homepage_Audio_Genre_audios();
+          $source = $OrderHomeSetting['video_name'] ;
+          $header_name = $OrderHomeSetting['header_name'] ;
+          $source_type = "Audios" ;
 
         }
 
@@ -11729,6 +12037,22 @@ public function QRCodeMobileLogout(Request $request)
       array_push($input,'latest_viewed_Episode');
     }
 
+    if($Homesetting->SeriesGenre == 1){
+      array_push($input,'Series_Genre');
+    }
+
+    if($Homesetting->SeriesGenre_videos == 1){
+      array_push($input,'Series_Genre_videos');
+    }
+
+    if($Homesetting->AudioGenre == 1){
+      array_push($input,'Audio_Genre');
+    }
+
+    if($Homesetting->AudioGenre_audios == 1){
+      array_push($input,'Audio_Genre_audios');
+    }
+
     // if($Homesetting->artist == 1){
     //   array_push($input,'artist');
     // }
@@ -11736,6 +12060,7 @@ public function QRCodeMobileLogout(Request $request)
     return $input;
 
   }
+
 
   private static function All_Homepage_latestvideos(){
 
@@ -12196,9 +12521,6 @@ public function QRCodeMobileLogout(Request $request)
         $data = array();      // Note - if the home-setting (category_videos_status) is turned off in the admin panel
     else:
 
-      //  $data = array();      
-
-
       $data = VideoCategory::query()->with(['category_videos' => function ($videos) {
 
         $check_Kidmode = 0 ;
@@ -12241,22 +12563,107 @@ public function QRCodeMobileLogout(Request $request)
           $data = array();      // Note - if the home-setting (Live category status) is turned off in the admin panel
       else:
 
-          // $data = array(); 
-
           $data = LiveCategory::query()->with(['category_livestream' => function ($live_stream_videos) {
 
-            $live_stream_videos->select('live_streams.id','live_streams.title','live_streams.slug','live_streams.year','live_streams.rating','live_streams.access','live_streams.ppv_price','live_streams.publish_type','live_streams.publish_status','live_streams.publish_time','live_streams.duration','live_streams.rating','live_streams.image','live_streams.featured')
-                              ->where('live_streams.active',1)->where('live_streams.status', 1)
-                              ->latest('live_streams.created_at')->limit(30)->get()->map(function ($item) {
-                                  $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
-                                  return $item;
-                              });
+              $live_stream_videos->select('live_streams.id','live_streams.title','live_streams.slug','live_streams.year','live_streams.rating','live_streams.access','live_streams.ppv_price','live_streams.publish_type','live_streams.publish_status','live_streams.publish_time','live_streams.duration','live_streams.rating','live_streams.image','live_streams.featured')
+                                ->where('live_streams.active',1)->where('live_streams.status', 1)
+                                ->latest('live_streams.created_at')->limit(30)->get()->map(function ($item) {
+                                    $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
+                                    return $item;
+                                });
 
-        }])
-        ->select('live_categories.id','live_categories.name', 'live_categories.slug', 'live_categories.order')
-        ->orderBy('live_categories.order')
-        ->get();
+          }])
+          ->select('live_categories.id','live_categories.name', 'live_categories.slug', 'live_categories.order')
+          ->orderBy('live_categories.order')
+          ->get();
 
+      endif;
+
+    return $data;
+  }
+
+  private static function All_Homepage_Series_Genre(){
+
+    $Series_Genre_status = MobileHomeSetting::pluck('SeriesGenre')->first();
+
+      if( $Series_Genre_status == null || $Series_Genre_status == 0 ): 
+
+          $data = array();      // Note - if the home-setting (Series Genre Status) is turned off in the admin panel
+      else:
+
+          $data = array();
+
+      endif;
+
+    return $data;
+
+  }
+
+  private static function All_Homepage_Series_Genre_videos(){
+
+    $Series_Genre_videos_status = MobileHomeSetting::pluck('SeriesGenre_videos')->first();
+
+      if( $Series_Genre_videos_status == null || $Series_Genre_videos_status == 0 ): 
+
+          $data = array();      // Note - if the home-setting (Series Genre videos Status) is turned off in the admin panel
+      else:
+
+          $data = array();
+
+      endif;
+
+    return $data;
+
+  }
+
+  private static function All_Homepage_Audio_Genre(){
+
+    $Audio_Genre_status = MobileHomeSetting::pluck('AudioGenre')->first();
+
+      if( $Audio_Genre_status == null || $Audio_Genre_status == 0 ): 
+
+          $data = array();      // Note - if the home-setting (Audio Genre status) is turned off in the admin panel
+      else:
+
+        $data = AudioCategory::query()->latest()->limit(30)->get()->map(function ($item) {
+              $item['image_url'] = URL::to('public/uploads/audios/'.$item->image) ;
+            return $item;
+        });
+
+      endif;
+
+    return $data;
+
+  }
+
+  private static function All_Homepage_Audio_Genre_audios(){
+
+    $Audio_Genre_audios_status = MobileHomeSetting::pluck('AudioGenre_audios')->first();
+
+      if( $Audio_Genre_audios_status == null || $Audio_Genre_audios_status == 0 ): 
+
+          $data = array();      // Note - if the home-setting (Audio Genre Audios status) is turned off in the admin panel
+      else:
+          
+        $data = AudioCategory::query()
+          ->with(['category_audios' => function ($live_stream_videos) {
+              $live_stream_videos
+                  ->select('audio.id','audio.title','audio.slug','audio.year','audio.rating','audio.access','audio.ppv_price','audio.duration','audio.rating','audio.image','audio.featured')
+                  ->where('audio.active', 1)
+                  ->latest('audio.created_at')
+                  ->limit(30);
+          }])
+          ->select('audio_categories.id', 'audio_categories.name', 'audio_categories.slug', 'audio_categories.order')
+          ->orderBy('audio_categories.order')
+          ->get();
+    
+        $data->each(function ($category) {
+            $category->category_audios->transform(function ($item) {
+                $item['image_url'] = URL::to('public/uploads/audios/'.$item->image);
+                return $item;
+            });
+        });
+    
       endif;
 
     return $data;
@@ -12319,281 +12726,6 @@ public function QRCodeMobileLogout(Request $request)
           ], 200);
 
     }
-  }
-
-  public function all_videos()
-  {
-    try {
-          // Video Category 
-
-                $VideoCategory = VideoCategory::select('id','slug','in_home')->where('in_home','=',1)
-                                ->get()->map(function ($item) {
-                                    $item['redirect_url']  = URL::to('videos/category/'.$item->slug);
-                                    $item['source_data']   = 'video_category';
-                                    return $item;
-                                });
-
-            // Series Genres
-
-                $SeriesGenre = SeriesGenre::select('id','slug','in_home')
-                                ->get()->map(function ($item) {
-                                    $item['redirect_url']  = URL::to('series/category/'.$item->slug);
-                                    $item['source_data']  = 'SeriesGenre';
-                                    return $item;
-                                });
-                                
-
-            // Fetch all OrderHomeSetting list
-
-                $OrderHomeSetting = OrderHomeSetting::get(); 
-
-            // Fetch all videos list
-                $videos = Video::select('active','status','draft','age_restrict','id','created_at','slug','image','title','rating','duration','featured','year')
-                        ->where('active', '1')->where('status', '1')->where('draft', '1');
-
-                    if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
-                        $videos = $videos->whereNotIn('videos.id', Block_videos());
-                    }
-                    if (check_Kidmode() == 1) {
-                        $videos = $videos->whereBetween('videos.age_restrict', [0, 12]);
-                    }
-                    
-                $videos = $videos->latest()->get()->map(function ($item) {
-                    $item['source']       = 'videos';
-                    $item['source_data']  = 'videos';
-                    $item['redirect_url'] = URL::to('category/videos/'.$item->slug) ;
-                    $item['image_url']    = URL::to('public/uploads/images/' . $item->image);
-                    $item['title']    = $item->title;
-                    $item['rating']   = $item->rating;
-                    $item['duration'] = $item->duration;
-                    $item['featured'] = $item->featured;
-                    $item['year']     = $item->year;
-                    $item['age_restrict'] = $item->age_restrict;
-                    return $item;
-                });
-
-            // Fetch all series list
-
-                $Series = Series::select('active','id','created_at','slug','image','title','rating','duration','featured','year')
-                                    ->where('active', '=', '1')->orderBy('created_at', 'DESC')->latest()->get()
-                                    ->map(function ($item) use($OrderHomeSetting) {
-                    $item['source']       = $OrderHomeSetting->where('id',5)->pluck('header_name')->first() != null ? $OrderHomeSetting->where('id',5)->pluck('header_name')->first() : "Series" ;
-                    $item['source_data']  = 'series';
-                    $item['redirect_url'] = URL::to('play_series/'.$item->slug) ;
-                    $item['image_url']    = URL::to('public/uploads/images/'.$item->image);
-                    $item['title']    = $item->title;
-                    $item['rating']   = $item->rating;
-                    $item['duration'] = $item->duration;
-                    $item['featured'] = $item->featured;
-                    $item['year']     = $item->year;
-                    $item['age_restrict'] = null ;
-                    return $item;
-                });
-
-            // Fetch all audio albums list
-
-                $AudioAlbums = AudioAlbums::orderBy('created_at', 'desc')->get()->map(function ($item) use($OrderHomeSetting) {
-                    $item['source']       = $OrderHomeSetting->where('id',7)->pluck('header_name')->first() != null ? $OrderHomeSetting->where('id',7)->pluck('header_name')->first() : "Podcast";
-                    $item['source_data']  = 'AudioAlbums';
-                    $item['redirect_url'] = URL::to('album/'.$item->slug) ;
-                    $item['image_url']    = URL::to('public/uploads/albums/' . $item->album);
-                    $item['title']        = $item->albumname;
-                    $item['age_restrict'] = null ;
-                    $item['rating']       = null;
-                    $item['duration']     = null;
-                    $item['featured']     = null;
-                    $item['year']         = null;
-                    return $item;
-                  });
-
-            // Merge the results of the video, series, and audio album queries
-
-                $mergedResults = $videos->merge($Series)->merge($AudioAlbums);
-
-            // Paginate the merged results using LengthAwarePaginator
-
-                $currentPage = request()->get('page') ?: 1;
-                $pagedData = $mergedResults->forPage($currentPage, $this->settings->videos_per_page);
-
-                $mergedResults = new LengthAwarePaginator(
-                    $pagedData,
-                    $mergedResults->count(),
-                    $this->settings->videos_per_page,
-                    $currentPage,
-                    ['path' => request()->url()]
-                );
-
-
-            $videos_data[] = $mergedResults ;
-
-            return response()->json([
-              'status'  => 'true',
-              'Message' => 'All videos Retrieved  Successfully',
-              'videos'    => $mergedResults,
-              'ppv_gobal_price'  => $this->ppv_gobal_price,
-              'SeriesGenre'      => $SeriesGenre ,
-              'VideoCategory'    => $VideoCategory ,
-              'video_andriod'    => $videos_data ,
-              'currency'         => CurrencySetting::first(),
-              'ThumbnailSetting' => ThumbnailSetting::first(),
-           ], 200);
-
-    } catch (\Throwable $th) {
-        return response()->json([
-                'status'  => 'false',
-                'Message' => $th->getMessage(),
-            ], 200);
-    }
-  }
-
-  // Menus API 
-
-  public function Menus()
-      {
-        try{
-
-          $settings = Setting::get();
-          $Menus = Menu::orderBy('order', 'asc')->get(); 
-          $VideoCategory = VideoCategory::where('in_home','=',1)->get();
-          $LiveCategory = LiveCategory::get();
-          $AudioCategory = AudioCategory::get();
-          $SeriesGenre = SeriesGenre::where('in_home','=',1)->get();
-          
-              $response = array(
-                  'status'=> 'true',
-                  'Menus' => $Menus,
-                  'VideoCategory' => $VideoCategory,
-                  'LiveCategory' => $LiveCategory,
-                  'AudioCategory' => $AudioCategory,
-                  'SeriesGenre' => $SeriesGenre,
-                  'settings' => $settings,
-              );
-              
-            } catch (\Throwable $th) {
-
-              $response = array(
-                'status'=>'false',
-                'message'=>$th->getMessage(),
-              );
-        }
-
-        return response()->json($response, 200);
-          
-      }
-      
-  public function DataFree()
-  {
-    try{
-      $HomeSetting = HomeSetting::first();
-      
-      if($HomeSetting->latest_videos == 1){
-      $settings = Setting::get();
-        // Data Free Video Based on Category 
-         
-        $DataFreeCategories = VideoCategory::where('slug','datafree')->where('in_home','=',1)->first();
-          $countDataFreeCategories = VideoCategory::where('slug','datafree')->where('in_home','=',1)->count();
-          if ($countDataFreeCategories > 0 ) {   
-
-                $videos = Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
-                            ->where('category_id','=',@$DataFreeCategories->id)->where('active', '=', '1')
-                            ->where('status', '=', '1')->where('draft', '=', '1');
-                $videos = $videos->latest('videos.created_at')->get();
-          
-          }else{
-            $videos = [];
-          }
-
-        // Data Free Series Based on Category 
-
-          $DataFreeseriesCategories = SeriesGenre::where('slug','datafree')->where('in_menu','=',1)->first();
-          $countDataFreeseriesCategories = SeriesGenre::where('slug','datafree')->where('in_menu','=',1)->count();
-          if ($countDataFreeseriesCategories > 0 ) {   
-
-                $series = Series::join('series_categories', 'series_categories.series_id', '=', 'series.id')
-                            ->where('category_id','=',@$DataFreeseriesCategories->id)->where('active', '=', '1')
-                            ->where('active', '=', '1');
-                $series = $series->latest('series.created_at')->get();
-          
-          }else{
-             $series = [];
-          }
-
-        // Data Free Live Stream Based on Category 
-
-          $DataFreeliveCategories = LiveCategory::where('slug','datafree')->first();
-          $countDataFreeliveCategories = LiveCategory::where('slug','datafree')->count();
-          if ($countDataFreeliveCategories > 0 ) {   
-
-                $live_streams = LiveStream::join('livecategories', 'livecategories.live_id', '=', 'live_streams.id')
-                            ->where('category_id','=',@$DataFreeliveCategories->id)->where('active', '=', '1')
-                            ->where('status', '=', '1');
-                $live_streams = $live_streams->latest('live_streams.created_at')->get();
-          
-          }else{
-             $live_streams = [];
-          }
-
-        // Data Free Audio Based on Category 
-
-          $DataFreeAudioCategories = AudioCategory::where('slug','datafree')->first();
-          $countDataFreeAudioCategories = AudioCategory::where('slug','datafree')->count();
-          if ($countDataFreeAudioCategories > 0 ) {   
-
-                $audio = Audio::join('category_audios', 'category_audios.audio_id', '=', 'audio.id')
-                            ->where('category_id','=',@$DataFreeAudioCategories->id)->where('active', '=', '1')
-                            ->where('status', '=', '1');
-                $audio = $audio->latest('audio.created_at')->get();
-          
-          }else{
-             $audio = [];
-          } 
-        
-          $response = array(
-              'status'=> 'true',
-              'videos' => $videos,
-              'series' => $series,
-              'live_streams' => $live_streams,
-              'audio' => $audio,
-              'settings' => $settings,
-          );
-      }else{
-
-          $response = array(
-            'status'=> 'true',
-            'Message' => 'Please Trun On Latest Video on Home Page Settings',
-        );
-      }
-          
-        } catch (\Throwable $th) {
-
-          $response = array(
-            'status'=>'false',
-            'message'=>$th->getMessage(),
-          );
-    }
-
-    return response()->json($response, 200);
-      
-  }
-
-  public function categoryLive(Request $request)
-  {
-    try{
-      $LiveCategory = LiveCategory::find($request->category_id) != null ? LiveCategory::find($request->category_id)->specific_category_live : array();
-      
-      $Live_Category = $LiveCategory->all();
-
-      $response = array( 'status'=> 'true','LiveCategory' => $Live_Category );
-
-    } catch (\Throwable $th) {
-
-      $response = array(
-        'status'=>'false',
-        'message'=>$th->getMessage(),
-      );
-  }
-
-  return response()->json($response, 200);
   }
   
 }
