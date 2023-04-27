@@ -388,6 +388,7 @@ class ChannelLiveStreamController extends Controller
             $movie->user_id = $user_id;
             $movie->uploaded_by = 'Channel';
             $movie->ios_ppv_price = $request->ios_ppv_price;
+            $movie->search_tags = !empty($request->searchtags) ? $request->searchtags : null ;
             $movie->save();
 
             // $movie = LiveStream::create($data);
@@ -788,6 +789,7 @@ class ChannelLiveStreamController extends Controller
             $video->publish_time = $request['publish_time'];
             $video->user_id = $user_id;
             $video->ios_ppv_price = $request->ios_ppv_price;
+            $video->search_tags = !empty($data['searchtags']) ? $data['searchtags'] : null ;
             $video->save();
 
             if (!empty($data['video_category_id']))
