@@ -430,15 +430,6 @@ else{
 
         <div class="container-fluid">
             <div class="row ">
-                <div class="col-lg-9">
-
-                    <?php $m3u_url = session('m3u_url_link') ; ?>
-                    
-                    <video  controls  <?= $autoplay ?> crossorigin playsinline poster="<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
-                        <source  type="application/x-mpegURL"  src="<?php echo $m3u_url; ?>" >
-                    </video>
-                </div>
-
                 <div class="col-lg-3 p-0">
                     <div class="border-end" id="sidebar-wrapper">
                         <div class="sidebar-heading border-bottom">Channels</div>
@@ -449,6 +440,16 @@ else{
                         </div>
                     </div>
                 </div>
+                <div class="col-lg-9">
+
+                    <?php $m3u_url = session('m3u_url_link') ; ?>
+                    
+                    <video  controls  <?= $autoplay ?> crossorigin playsinline poster="<?=URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                        <source  type="application/x-mpegURL"  src="<?php echo $m3u_url; ?>" >
+                    </video>
+                </div>
+
+                
             </div>
         </div>
                                         <!-- Modal - M3U Modal  -->
@@ -814,7 +815,6 @@ window.location = '<?=URL::to('login') ?>';
 
 <!-- RESIZING FLUID VIDEO for VIDEO JS -->
 
-<script src="https://rawgit.com/kimmobrunfeldt/progressbar.js/1.0.0/dist/progressbar.js"></script>
 
 
 <script type="text/javascript">
