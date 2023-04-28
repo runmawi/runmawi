@@ -121,6 +121,7 @@ use App\Channel;
 use App\ThumbnailSetting;
 use App\Menu;
 use App\SeriesGenre;
+use App\M3UFileParser;
 
 class ApiAuthController extends Controller
 {
@@ -1643,6 +1644,10 @@ public function verifyandupdatepassword(Request $request)
                           $item['live_description'] = $item->description ? $item->description : "" ;
                           $item['trailer'] = null ;
 
+                        // M3U_channels
+                        $parser       = new M3UFileParser( $item->m3u_url);
+                        $item['M3U_channel'] =   $parser->getGroup()  ;
+
           $plans_ads_enable = $this->plans_ads_enable($user_id);
 
           if( $plans_ads_enable == 1){
@@ -1683,6 +1688,39 @@ public function verifyandupdatepassword(Request $request)
         );
     }
     return response()->json($response, 200);
+  }
+
+  public function M3u_channel_videos(Request $request)
+  {
+
+      $M3u_category = $request->m3u_url_category ;
+      $m3u_url = $request->m3u_url ;
+
+      $parser = new M3UFileParser($m3u_url) ;
+      $parser_list = $parser->list() ;
+
+      foreach($parser_list['ENTERTAINMENT'] as $channel):
+
+        $pattern = '/http:\/\/\S+/';
+        preg_match($pattern, $channel, $matches);
+        $url = $matches;
+      endforeach;
+
+    
+    return $url ;
+
+
+
+    $respond = array(
+      'status' => true ,
+      'message' => 'M3u url Retrieved Successfully !' ,
+      'M3u_url_array' => $M3u_url_array ,
+      'M3u_category' => $M3u_category ,
+    );
+
+    return response()->json($response, 200);
+
+
   }
 
   public function cmspages()
