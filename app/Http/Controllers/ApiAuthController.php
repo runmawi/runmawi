@@ -1692,34 +1692,48 @@ public function verifyandupdatepassword(Request $request)
 
   public function M3u_channel_videos(Request $request)
   {
+    try {
+      
+        $M3u_category = $request->m3u_url_category;
+        $m3u_url = $request->m3u_url;
 
-      $M3u_category = $request->m3u_url_category ;
-      $m3u_url = $request->m3u_url ;
-
-      $parser = new M3UFileParser($m3u_url) ;
-      $parser_list = $parser->list() ;
-
-      foreach($parser_list['ENTERTAINMENT'] as $channel):
-
-        $pattern = '/http:\/\/\S+/';
-        preg_match($pattern, $channel, $matches);
-        $url = $matches;
-      endforeach;
-
-    
-    return $url ;
+        $parser = new M3UFileParser($m3u_url);
+        $parser_list = $parser->list();
 
 
+        $M3u_url_array = collect($parser_list[$M3u_category])->map(function ($item) {
 
-    $respond = array(
-      'status' => true ,
-      'message' => 'M3u url Retrieved Successfully !' ,
-      'M3u_url_array' => $M3u_url_array ,
-      'M3u_category' => $M3u_category ,
-    );
+            $mp3 = preg_match_all('/(?P<tag>#EXTINF:-1)|(?:(?P<prop_key>[-a-z]+)=\"(?P<prop_val>[^"]+)")|(?<something>,[^\r\n]+)|(?<url>http[^\s]+)/', $item, $match );
+            $count = count( $match[0] );
+            $tag_name = '1' ;
+            $url      = '4' ;
 
-    return response()->json($response, 200);
+            for( $i =0; $i < $count; $i++ ){
+                $M3u_videos = array(
+                    'M3u_video_url' => $match[0][3],
+                    'M3u_video_name' => $match[0][2],
+                  );
+            } 
 
+            return $M3u_videos;
+        });
+
+        $respond = array(
+          'status' => 'true' ,
+          'message' => 'M3 urls Retrieved Successfully !' ,
+          'M3u_category' => $M3u_category ,
+          'M3u_url_array' => $M3u_url_array ,
+        );
+
+    } catch (\Throwable $th) {
+      
+      $respond = array(
+        'status' => 'false' ,
+        'message' => $th->getMessage() ,
+      );
+    }
+  
+    return response()->json($respond, 200);
 
   }
 
