@@ -12576,11 +12576,7 @@ public function QRCodeMobileLogout(Request $request)
                 $videos->whereBetween('videos.age_restrict', [0, 12]);
             }
     
-            $videos->latest('videos.created_at')->limit(30)->get()
-                ->map(function ($item) {
-                  $item->image_url = URL::to('/public/uploads/images/'.$item->image);
-                  return $item;
-                });
+            $videos->latest('videos.created_at')->get();
         }])
         ->select('video_categories.id', 'video_categories.name', 'video_categories.slug', 'video_categories.in_home', 'video_categories.order')
         ->where('video_categories.in_home', 1)
