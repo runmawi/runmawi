@@ -44,6 +44,7 @@ Route::group(
         Route::post('videodetail', 'ApiAuthController@videodetail');
         Route::get('livestreams', 'ApiAuthController@livestreams');
         Route::post('livestreamdetail', 'ApiAuthController@livestreamdetail');
+        Route::post('M3u_channel_videos', 'ApiAuthController@M3u_channel_videos');
         Route::get('cmspages', 'ApiAuthController@cmspages');
         Route::get('sliders', 'ApiAuthController@sliders');
         Route::post('coupons', 'ApiAuthController@coupons');

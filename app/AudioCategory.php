@@ -35,4 +35,8 @@ class AudioCategory extends Model
         return $this->belongsToMany('App\Audio', 'category_audios','category_id','audio_id');
     }
 
+    public function category_audios()
+    {
+        return $this->belongsToMany('App\Audio','category_audios','category_id','audio_id');
+    }
 }
