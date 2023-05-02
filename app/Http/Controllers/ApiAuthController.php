@@ -12547,81 +12547,64 @@ public function QRCodeMobileLogout(Request $request)
         $data = array();      // Note - if the home-setting (category_videos_status) is turned off in the admin panel
     else:
 
-      // $data = VideoCategory::query()->with(['category_videos' => function ($videos) {
-
-      //   $check_Kidmode = 0 ;
-                  
-      //   $videos->select('videos.id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price','duration','rating','image','featured','age_restrict')
-      //           ->where('videos.active',1)->where('videos.status', 1)->where('videos.draft',1);
-  
-      //       if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
-      //       {
-      //           $videos = $videos->whereNotIn('videos.id',Block_videos());
-      //       }
-  
-      //       if( $check_Kidmode == 1 )
-      //       {
-      //           $videos = $videos->whereBetween('videos.age_restrict', [ 0, 12 ]);
-      //       }
-  
-      //       $videos = $videos->latest('videos.created_at')->limit(30)->get()->map(function ($item) {
-      //           $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
-      //           return $item;
-      //       });
-  
-      //   }])
-      //   ->select('video_categories.id','video_categories.name', 'video_categories.slug', 'video_categories.in_home','video_categories.order')
-      //   ->where('video_categories.in_home',1)
-      //   ->orderBy('video_categories.order')
-      //   ->get();
-
         $check_Kidmode = 0 ;
 
-          $data = VideoCategory::query()->whereHas('category_videos', function ($query) use ($check_Kidmode) {
+        $data = VideoCategory::query()
+        ->whereHas('category_videos', function ($query) use ($check_Kidmode) {
             $query->where('videos.active', 1)->where('videos.status', 1)->where('videos.draft', 1);
-
+    
             if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
-                $query->whereNotIn('videos.id', Block_videos());
+              $query->whereNotIn('videos.id', Block_videos());
             }
-
+    
             if ($check_Kidmode == 1) {
-                $query->whereBetween('videos.age_restrict', [0, 12]);
+              $query->whereBetween('videos.age_restrict', [0, 12]);
             }
-            
-          })->with(['category_videos' => function ($videos) use ($check_Kidmode) {
+        })
 
+        ->with(['category_videos' => function ($videos) use ($check_Kidmode) {
             $videos->select('videos.id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'global_ppv', 'publish_time', 'ppv_price', 'duration', 'rating', 'image', 'featured', 'age_restrict')
-                  ->where('videos.active', 1)->where('videos.status', 1)->where('videos.draft', 1);
-
+                ->where('videos.active', 1)
+                ->where('videos.status', 1)
+                ->where('videos.draft', 1);
+    
             if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
                 $videos->whereNotIn('videos.id', Block_videos());
             }
-            
+    
             if ($check_Kidmode == 1) {
                 $videos->whereBetween('videos.age_restrict', [0, 12]);
             }
+    
             $videos->latest('videos.created_at')->limit(30)->get()
-                  ->map(function ($item) {
-                      $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
-                      return $item;
-                  });
+                ->map(function ($item) {
+                  $item->image_url = URL::to('/public/uploads/images/'.$item->image);
+                  return $item;
+                });
         }])
         ->select('video_categories.id', 'video_categories.name', 'video_categories.slug', 'video_categories.in_home', 'video_categories.order')
         ->where('video_categories.in_home', 1)
         ->whereHas('category_videos', function ($query) use ($check_Kidmode) {
             $query->where('videos.active', 1)->where('videos.status', 1)->where('videos.draft', 1);
-
+    
             if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
                 $query->whereNotIn('videos.id', Block_videos());
             }
-
+    
             if ($check_Kidmode == 1) {
                 $query->whereBetween('videos.age_restrict', [0, 12]);
             }
         })
         ->orderBy('video_categories.order')
-        ->get();
-
+        ->get()
+        ->map(function ($category) {
+            $category->category_videos->map(function ($video) {
+                $video->image_url = URL::to('/public/uploads/images/'.$video->image);
+                return $video;
+            });
+            return $category;
+        });
+    
     endif;
 
     return $data;
@@ -12636,11 +12619,11 @@ public function QRCodeMobileLogout(Request $request)
           $data = array();      // Note - if the home-setting (Live category status) is turned off in the admin panel
       else:
 
-          $data = LiveCategory::query()->whereHas('category_audios', function ($query) {
+          $data = LiveCategory::query()->whereHas('category_livestream', function ($query) {
                         $query->where('live_streams.active',1)->where('live_streams.status', 1);
                       })
 
-          ->with(['category_audios' => function ($live_stream_videos) {
+          ->with(['category_livestream' => function ($live_stream_videos) {
               $live_stream_videos
                   ->select('live_streams.id','live_streams.title','live_streams.slug','live_streams.year','live_streams.rating','live_streams.access','live_streams.ppv_price','live_streams.publish_type','live_streams.publish_status','live_streams.publish_time','live_streams.duration','live_streams.rating','live_streams.image','live_streams.featured')
                   ->where('live_streams.active',1)->where('live_streams.status', 1)
@@ -12651,7 +12634,7 @@ public function QRCodeMobileLogout(Request $request)
           ->get();
       
           $data->each(function ($category) {
-              $category->category_audios->transform(function ($item) {
+              $category->category_livestream->transform(function ($item) {
                   $item['image_url'] = URL::to('public/uploads/images/'.$item->image);
                   return $item;
               });
