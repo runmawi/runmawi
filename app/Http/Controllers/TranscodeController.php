@@ -16,6 +16,10 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Illuminate\Support\Facades\Storage;
 use App\Setting as Setting;
 use hlsparser\HLS;
+use Chrisyue\PhpM3u8\Facade\DumperFacade;
+use Chrisyue\PhpM3u8\Facade\ParserFacade;
+use Chrisyue\PhpM3u8\Stream\TextStream;
+use Chrisyue\PhpM3u8\M3u8;
 
 class TranscodeController extends Controller
 {
@@ -25,8 +29,12 @@ class TranscodeController extends Controller
      * @param  Request  $request
      * @return Response
      */
-
-     public function M3u8Test(Request $request)
+    public function M3u8Test(Request $request)
+    {
+        $url1 = 'https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8';
+        $url2 = 'https://content.jwplatform.com/manifests/vM7nH0Kl.m3u8'; 
+    }
+     public function M3u8Testold(Request $request)
      {
 
         $url1 = 'https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8';
