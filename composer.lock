@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dc56adc575ada07c694777a2e7bf3b47",
+    "content-hash": "eebc16afaba101150021fcc3f74ac12b",
     "packages": [
         {
             "name": "acaronlex/laravel-calendar",
@@ -973,6 +973,62 @@
                 "source": "https://github.com/cartalyst/stripe-laravel/tree/12.x"
             },
             "time": "2020-03-03T18:50:48+00:00"
+        },
+        {
+            "name": "chrisyue/php-m3u8",
+            "version": "3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/chrisyue/php-m3u8.git",
+                "reference": "1999470d87b59a7f980585ac93230306046b018d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/chrisyue/php-m3u8/zipball/1999470d87b59a7f980585ac93230306046b018d",
+                "reference": "1999470d87b59a7f980585ac93230306046b018d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2",
+                "phpunit/phpunit": "^4"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Chrisyue\\PhpM3u8\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "chrisyue",
+                    "email": "blizzchris@gmail.com",
+                    "homepage": "https://chrisyue.com"
+                }
+            ],
+            "description": "PHP M3U8 parser / dumper",
+            "homepage": "http://chrisyue.com",
+            "keywords": [
+                "dumper",
+                "m3u8",
+                "parser"
+            ],
+            "support": {
+                "issues": "https://github.com/chrisyue/php-m3u8/issues",
+                "source": "https://github.com/chrisyue/php-m3u8/tree/3.0"
+            },
+            "time": "2018-09-24T05:47:04+00:00"
         },
         {
             "name": "cinetpay/cinetpay-php",

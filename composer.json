@@ -17,6 +17,7 @@
         "aranyasen/hl7": "1.0",
         "aws/aws-sdk-php-laravel": "^3.7",
         "cartalyst/stripe-laravel": "^12.0",
+        "chrisyue/php-m3u8": "3",
         "cinetpay/cinetpay-php": "^1.9",
         "facuz/laravel-themes": "^3.2",
         "fideloper/proxy": "^4.2",
