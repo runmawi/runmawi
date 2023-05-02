@@ -12623,7 +12623,7 @@ public function QRCodeMobileLogout(Request $request)
               $live_stream_videos
                   ->select('live_streams.id','live_streams.title','live_streams.slug','live_streams.year','live_streams.rating','live_streams.access','live_streams.ppv_price','live_streams.publish_type','live_streams.publish_status','live_streams.publish_time','live_streams.duration','live_streams.rating','live_streams.image','live_streams.featured')
                   ->where('live_streams.active',1)->where('live_streams.status', 1)
-                  ->latest('live_streams.created_at')->limit(30);
+                  ->latest('live_streams.created_at');
           }])
           ->select('live_categories.id','live_categories.name', 'live_categories.slug', 'live_categories.order')
           ->orderBy('live_categories.order')
@@ -12677,8 +12677,7 @@ public function QRCodeMobileLogout(Request $request)
               $audios_videos
                   ->select('audio.id','audio.title','audio.slug','audio.year','audio.rating','audio.access','audio.ppv_price','audio.duration','audio.rating','audio.image','audio.featured')
                   ->where('audio.active', 1)
-                  ->latest('audio.created_at')
-                  ->limit(30);
+                  ->latest('audio.created_at');
           }])
           ->select('audio_categories.id', 'audio_categories.name', 'audio_categories.slug', 'audio_categories.order')
           ->orderBy('audio_categories.order')
