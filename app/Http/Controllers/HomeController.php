@@ -2886,8 +2886,15 @@ class HomeController extends Controller
         }
 
         $multiuser = Session::get('subuser_id');
+
+        if(!Auth::guest()):
              
-        $Mode = $multiuser != null ?  Multiprofile::where('id', $multiuser)->first() : User::where('id', Auth::User()->id)->first();
+            $Mode = $multiuser != null ?  Multiprofile::where('id', $multiuser)->first() : User::where('id', Auth::User()->id)->first();
+        else:
+
+            $Mode['user_type'] = null ;
+        endif;
+
            
         $check_Kidmode = $Mode['user_type'] != null && $Mode['user_type'] == "Kids" ? 1 : 0 ;
 
