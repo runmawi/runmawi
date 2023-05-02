@@ -12632,6 +12632,7 @@ public function QRCodeMobileLogout(Request $request)
           $data->each(function ($category) {
               $category->category_livestream->transform(function ($item) {
                   $item['image_url'] = URL::to('public/uploads/images/'.$item->image);
+                  $item['source'] = "Livestream";
                   return $item;
               });
         });
