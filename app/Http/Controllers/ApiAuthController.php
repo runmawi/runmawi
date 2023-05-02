@@ -12438,7 +12438,7 @@ public function QRCodeMobileLogout(Request $request)
       else:
 
         $data =  LiveCategory::where('in_menu',1)->limit(30)->orderBy('order')->get()->map(function ($item) {
-                              $item['image_url'] = URL::to('public/uploads/videocategory/'.$item->image);
+                              $item['image_url'] = URL::to('public/uploads/livecategory/'.$item->image);
                               return $item;
                             });
       endif;
