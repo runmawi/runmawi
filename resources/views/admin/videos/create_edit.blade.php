@@ -697,16 +697,16 @@ border-radius: 0px 4px 4px 0px;
                      </select>
                </div>
 
-               <!-- {{-- country --}} -->
-               <div class="col-sm-6 form-group">
-               <label class="m-0">Available Country</label>
-               <select  name="video_country" class="form-control" id="country">
-                   <option value="All">Select Country </option>
-                   @foreach($countries as $country)
-                        <option value="{{ $country->country_name }}"  @if($video->country=== $country->country_name) selected='selected' @endif >{{ $country->country_name }}</option>
-                   @endforeach
-               </select>
-               </div>
+                  <!-- {{-- country --}} -->
+                  <div class="col-sm-6 form-group">
+                     <label class="m-0">Available Country</label>
+                     <select  name="video_country[]" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
+                        <option value="All"> Select Country </option>
+                        @foreach($countries as $country) 
+                           <option value="{{ $country->country_name }}" @if( !empty(json_decode($video->country)) && in_array( $country->country_name, json_decode($video->country) ))selected='selected' @endif >{{ $country->country_name }}</option>
+                        @endforeach
+                     </select>
+                  </div>
                </div>
 
                <div class="row">

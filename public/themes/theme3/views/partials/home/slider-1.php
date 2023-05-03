@@ -461,7 +461,7 @@ style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bo
    <div class="row justify r-mb-23  p-0 mb-4 text-center" data-animation-in="fadeInUp"
                             data-delay-in="1.2">
                                 <div class="col-md-3">
-                                  <a href="<?php echo URL::to('episode') ?><?= '/'.@$slider_video->series_title->slug.'/' . $slider_video->title ?>"
+                                  <a href="<?php echo URL::to('episode') ?><?= '/'.@$slider_video->series_title->slug.'/' . $slider_video->slug ?>"
                                 class="text-white">
                                 <div class="" style="font-size:25px;">
                              <i class="fa fa-plus" aria-hidden="true"></i>
@@ -469,7 +469,7 @@ style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bo
                                       </div>
                                 Add Whislist</a></div>
                                 <div class="col-md-3">
-                                 <a href="<?php echo URL::to('episode') ?><?= '/'.@$slider_video->series_title->slug.'/' . $slider_video->title ?>"
+                                 <a href="<?php echo URL::to('episode') ?><?= '/'.@$slider_video->series_title->slug.'/' . $slider_video->slug ?>"
                                 class="text-white ">
                                 <div class="" style="font-size:25px;">
                               <i class="fa fa-share-alt" aria-hidden="true"></i>
@@ -478,15 +478,15 @@ style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bo
                             </div></div>                         
 <div class="justify r-mb-23" data-animation-in="fadeInUp"
 data-delay-in="1.2">
-<a href="<?php echo URL::to('episode') ?><?= '/'.@$slider_video->series_title->title.'/' . $slider_video->title ?>"
+<a href="<?php echo URL::to('episode') ?><?= '/'.@$slider_video->series_title->title.'/' . $slider_video->slug ?>"
     class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play</a>
     <!-- <a class=" btn black" href="https://flicknexui.webnexs.org/" ><i class="fa fa-plus" aria-hidden="true"></i> Watchlater</a>-->
-    <a class="btn bd ml-3" href="<?php echo URL::to('episode') ?><?= '/'.@$slider_video->series_title->slug.'/' . $slider_video->title ?>"><i class="fa fa-info" aria-hidden="true"></i> More details</a>
+    <a class="btn bd ml-3" href="<?php echo URL::to('episode') ?><?= '/'.@$slider_video->series_title->slug.'/' . $slider_video->slug ?>"><i class="fa fa-info" aria-hidden="true"></i> More details</a>
 </div>
 </div>
 </div>
 <!--<div class="trailor-video">
-    <a href="<?php echo URL::to('episode') ?><?= '/'.@$slider_video->series_title->slug.'/' . $slider_video->title ?>"
+    <a href="<?php echo URL::to('episode') ?><?= '/'.@$slider_video->series_title->slug.'/' . $slider_video->slug ?>"
         class="video-open playbtn">
         <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px"
