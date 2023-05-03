@@ -968,13 +968,17 @@ class AdminPlayerAnalyticsController extends Controller
 
         $start_time = $data['start_time'];
         $end_time = $data['end_time'];
+        // $start_times = Carbon::parse($start_time);
+
         if (!empty($start_time) && empty($end_time))
         {
             $player_videos = PlayerAnalytic::join('users', 'users.id', '=', 'player_analytics.user_id')
             ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')
             // ->groupBy('player_analytics.videoid')
             ->orderBy('player_analytics.created_at')
-            ->whereDate('player_analytics.created_at', '>=', $start_time)->groupBy('month_name')
+            ->whereDate('player_analytics.created_at', '>=', $start_time)
+            ->groupBy('player_analytics.user_id')
+            ->groupBy('player_analytics.videoid')
             ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title','videos.slug',
             DB::raw('sum(player_analytics.duration) as duration') ,
              DB::raw('sum(player_analytics.currentTime) as currentTime') ,
@@ -1053,7 +1057,10 @@ class AdminPlayerAnalyticsController extends Controller
             ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')
             // ->groupBy('player_analytics.videoid')
             ->orderBy('player_analytics.created_at')
-            ->whereBetween('player_analytics.created_at', [$start_time, $end_time])->groupBy('month_name')
+            ->whereBetween('player_analytics.created_at', [$start_time, $end_time])
+            ->groupBy('player_analytics.user_id')
+            ->groupBy('player_analytics.videoid')
+            // ->groupBy('month_name')
             ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title','videos.slug',
             DB::raw('sum(player_analytics.duration) as duration') ,
              DB::raw('sum(player_analytics.currentTime) as currentTime') ,
@@ -1137,7 +1144,10 @@ class AdminPlayerAnalyticsController extends Controller
             ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')
             // ->groupBy('player_analytics.videoid')
             ->orderBy('player_analytics.created_at')
-            ->whereDate('player_analytics.created_at', '>=', $start_time)->groupBy('month_name')
+            ->whereDate('player_analytics.created_at', '>=', $start_time)
+            ->groupBy('player_analytics.user_id')
+            ->groupBy('player_analytics.videoid')
+            // ->groupBy('month_name')
             ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title','videos.slug',
             DB::raw('sum(player_analytics.duration) as duration') ,
              DB::raw('sum(player_analytics.currentTime) as currentTime') ,
