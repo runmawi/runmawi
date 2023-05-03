@@ -25,6 +25,11 @@
 
     <body>
 
+            {{-- Header --}}
+        @if ( $header == 1)
+            @php include(public_path('themes/default/views/header.php'))  @endphp 
+        @endif
+
                 {{-- Section 1 --}}
         @foreach ($sections_1 as $key => $section_1)
 
@@ -57,5 +62,11 @@
        <script>
             document.write("<?php echo ( $script_content); ?>");
         </script>
+
+                {{-- Footer --}}
+        @if ( $footer == 1)
+          @php include(public_path('themes/default/views/footer.blade.php')); @endphp 
+        @endif
+
     </body>
 </html>

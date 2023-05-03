@@ -104,6 +104,11 @@ class AdminLandingpageController extends Controller
             'script_content' => $request->script_content ,
           ]);
 
+          $Header_footer = AdminLandingPage::where('id',$last_id)->update([
+            'footer' => !empty( $request->footer &&  $request->footer == "on" ) ? 1 : 0 ,
+            'header' => !empty( $request->header &&  $request->header == "on" ) ? 1 : 0 ,
+          ]);
+
         return Redirect::route('landing_page_index')->with('message', 'Successfully! Created Landing Page');
     }
 
@@ -119,6 +124,8 @@ class AdminLandingpageController extends Controller
             'custom_css'  => AdminLandingPage::where('landing_page_id',$id)->orderBy('id', 'desc')->pluck('custom_css')->first(),
             'bootstrap_link'  => AdminLandingPage::where('landing_page_id',$id)->orderBy('id', 'desc')->pluck('bootstrap_link')->first(),
             'stript_content'  => AdminLandingPage::where('landing_page_id',$id)->orderBy('id', 'desc')->pluck('script_content')->first(),
+            'footer'  => AdminLandingPage::where('landing_page_id',$id)->orderBy('id', 'desc')->pluck('footer')->first(),
+            'header'  => AdminLandingPage::where('landing_page_id',$id)->orderBy('id', 'desc')->pluck('header')->first(),
             'landing_page_id' => $id ,
         ];
         
@@ -130,7 +137,7 @@ class AdminLandingpageController extends Controller
 
       AdminLandingPage::where('landing_page_id',$request->landing_page_id)->delete();
 
-      if($request->section_1  != null ){
+      if( !empty($request->date) && in_array ('section_1',$request->date) == true && $request->section_1  != null ){
 
         $section_1 = count($request['section_1']);
 
@@ -145,7 +152,7 @@ class AdminLandingpageController extends Controller
         }
       }
 
-      if($request->section_2  != null  ){
+      if(  !empty($request->date) && in_array ('section_2',$request->date) == true && $request->section_2  != null  ){
 
         $section_2 = count($request['section_2']);
 
@@ -160,7 +167,7 @@ class AdminLandingpageController extends Controller
         }
       }
 
-      if($request->section_3  != null ){
+      if(  !empty($request->date) && in_array ('section_3',$request->date) == true && $request->section_3  != null ){
 
         $section_3 = count($request['section_3']);
 
@@ -175,7 +182,7 @@ class AdminLandingpageController extends Controller
         }
       }
 
-      if($request->section_4  != null ){
+      if(  !empty($request->date) && in_array ('section_4',$request->date) == true && $request->section_4  != null ){
 
         $section_4 = count($request['section_4']);
 
@@ -202,6 +209,11 @@ class AdminLandingpageController extends Controller
 
       $script_content = AdminLandingPage::where('id',$last_id)->update([
         'script_content' => $request->script_content ,
+      ]);
+
+      $Header_footer = AdminLandingPage::where('id',$last_id)->update([
+        'footer' => !empty( $request->footer &&  $request->footer == "on" ) ? 1 : 0 ,
+        'header' => !empty( $request->header &&  $request->header == "on" ) ? 1 : 0 ,
       ]);
 
       return Redirect::route('landing_page_index')->with('message', 'Successfully! Updated Landing Page');
