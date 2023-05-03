@@ -25,7 +25,7 @@ use App\Tag as Tag;
 use Auth;
 use Hash;
 use Illuminate\Support\Facades\Cache;
-use Image;
+use Intervention\Image\Facades\Image;
 use View;
 use Validator;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg as FFMpeg;
