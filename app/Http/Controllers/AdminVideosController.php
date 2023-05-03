@@ -2052,7 +2052,7 @@ class AdminVideosController extends Controller
         $video->skip_intro = $request["skip_intro"];
         $video->intro_start_time = $request["intro_start_time"];
         $video->intro_end_time = $request["intro_end_time"];
-        $video->country = json_encode($request["video_country"]);
+        $video->country = !empty(($request["video_country"])) ? json_encode($request["video_country"]) : ["All"] ;
         $video->publish_status = $request["publish_status"];
         $video->publish_type = $publish_type;
         $video->publish_time = $publish_time;
@@ -3055,7 +3055,7 @@ class AdminVideosController extends Controller
         $video->access = $data["access"];
         $video->banner = $banner;
         $video->featured = $featured;
-        $video->country = json_encode($data["video_country"]);
+        $video->country = !empty(($request["video_country"])) ? json_encode($request["video_country"]) : ["All"] ;
         $video->enable = 1;
         $video->search_tags = $searchtags;
         $video->ios_ppv_price = $data["ios_ppv_price"];
