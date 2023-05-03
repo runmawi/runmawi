@@ -17,7 +17,7 @@
     <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> 
 
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 @section('content')
     <div id="content-page" class="content-page">
         <div class="iq-card">
@@ -31,18 +31,29 @@
 
                 <div class="clear"></div>
 
+                <form action="{{ URL::to('/admin/analytics/PlayerUserDateAnalytics') }}" method= "post">
+                    <div class="row mt-3">
+                        <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+
+                        <div class="col-md-4">
+                            <label for="start_time">  Start Date: </label>
+                            <input type="date"  value="{{ @$start_time }}" id="start_time" name="start_time" >               
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="start_time">  End Date: </label>
+                            <input type="date" id="end_time" value="{{ @$end_time }}" name="end_time">     
+                        </div>
+                        <div class="col-md-4">
+                            <input type="submit" value="Show Result" class="btn btn-primary">
+                        </div>
+                    </div>
+
+                </form>
+                    <br>
                 <div class="row mt-3">
-                    <div class="col-md-4">
-                        <label for="start_time">  Start Date: </label>
-                        <input type="date" id="start_time" name="start_time" >               
-                    </div>
-
-                    <div class="col-md-4">
-                        <label for="start_time">  End Date: </label>
-                        <input type="date" id="end_time" name="end_time">     
-                    </div>
-
-                    <div class="col-md-4">
+                    
+                    <div class="col-md-3">
                         <span  id="export" class="btn btn-primary" >Download CSV</span>
                     </div>
                     
@@ -63,7 +74,7 @@
                     <div id="google-line-chart" style="width: 900px; height: 500px"></div>
                  </div>
                 </div>
-                        <div class="row">
+                        <div class="row" id="player_user">
                             <div class="col-md-12">
                                 <table class="table text-center" id="player_table" style="width:100%">
                                     <thead>
@@ -80,7 +91,7 @@
 
                                         </tr>
                                     </thead>
-                                <tbody>
+                                <tbody class='player_user'>
                                 <tr>
                                     @foreach($player_videos as $key => $playervideo)
                                         <td>{{ $key+1  }}</td>   
@@ -112,112 +123,114 @@
 
 
 <script type="text/javascript">
-         $(document).ready(function(){
+    //      $(document).ready(function(){
 
 
-        var start_time =  $('#start_time').val();
-        var end_time =  $('#end_time').val();
+    //     var start_time =  $('#start_time').val();
+    //     var end_time =  $('#end_time').val();
 
-        $('#start_time').change(function(){
-            var start_time =  $('#start_time').val();
-            var end_time =  $('#end_time').val();
-            // alert(start_time);
-            var url = "{{ URL::to('admin/analytics/playerusers_start_date_url')  }}";
+    //     $('#start_time').change(function(){
+    //         var start_time =  $('#start_time').val();
+    //         var end_time =  $('#end_time').val();
+    //         // alert(start_time);
+    //         var url = "{{ URL::to('admin/analytics/playerusers_start_date_url')  }}";
        
-       if(start_time != "" && end_time == ""){
-        // alert(start_time);
+    //    if(start_time != "" && end_time == ""){
+    //     // alert(start_time);
 
-            $.ajax({
-                url: url,
-                type: "post",
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        start_time: start_time,
-                        end_time: end_time,
+    //         $.ajax({
+    //             url: url,
+    //             type: "post",
+    //                 data: {
+    //                     _token: '{{ csrf_token() }}',
+    //                     start_time: start_time,
+    //                     end_time: end_time,
 
-                    },      
-                    success: function(value){       
-                    // console.log(value);
+    //                 },      
+    //                 success: function(value){       
+    //                 // console.log(value);
 
-                    $('tbody').html(value.table_data);
-                    $('#player_table').DataTable();
-                    google.charts.load('current', {'packages':['corechart']});
-                    google.charts.setOnLoadCallback(drawChart);
+    //                 $('tbody').html(value.table_data);
+    //                 $('#player_table').DataTable();
+    //                 google.charts.load('current', {'packages':['corechart']});
+    //                 google.charts.setOnLoadCallback(drawChart);
             
-                    function drawChart() {
-                    var linechart = value.total_Revenue;
-                    var data = new google.visualization.DataTable(linechart);
-                    var data = new google.visualization.DataTable();
-                    data.addColumn('string', 'Month');
-                    data.addColumn('number', 'Users Count');
+    //                 function drawChart() {
+    //                 var linechart = value.total_Revenue;
+    //                 var data = new google.visualization.DataTable(linechart);
+    //                 var data = new google.visualization.DataTable();
+    //                 data.addColumn('string', 'Month');
+    //                 data.addColumn('number', 'Users Count');
 
-                    linechart.forEach(function (row) {
-                        data.addRow([
-                        row.month_name,
-                        parseInt(row.count),
-                        ]);
-                    });
-                    var chart = new google.visualization.LineChart(document.getElementById('google-line-chart'));
-                    chart.draw(data, {
-                        // width: 400,
-                        // height: 240
-                    });
-                    }
-                }
-            });
-       }
-    });
+    //                 linechart.forEach(function (row) {
+    //                     data.addRow([
+    //                     row.month_name,
+    //                     parseInt(row.count),
+    //                     ]);
+    //                 });
+    //                 var chart = new google.visualization.LineChart(document.getElementById('google-line-chart'));
+    //                 chart.draw(data, {
+    //                     // width: 400,
+    //                     // height: 240
+    //                 });
+    //                 }
+    //             }
+    //         });
+    //    }
+    // });
 
 
-    $('#end_time').change(function(){
-        var start_time =  $('#start_time').val();
-        var end_time =  $('#end_time').val();
-        var url = "{{ URL::to('admin/analytics/playerusers_end_date_url')  }}";
+    // $('#end_time').change(function(){
+    //     var start_time =  $('#start_time').val();
+    //     var end_time =  $('#end_time').val();
+    //     var url = "{{ URL::to('admin/analytics/playerusers_end_date_url')  }}";
 
-       if(start_time != "" && end_time != ""){
-            $.ajax({
-                url: url,
-                type: "post",
-                data: {
-                      _token: '{{ csrf_token() }}',
-                      start_time: start_time,
-                      end_time: end_time,
+    //    if(start_time != "" && end_time != ""){
+    //         $.ajax({
+    //             url: url,
+    //             type: "post",
+    //             data: {
+    //                   _token: '{{ csrf_token() }}',
+    //                   start_time: start_time,
+    //                   end_time: end_time,
 
-                },      
-                success: function(value){
-                    console.log(value);
-                    $('tbody').html(value.table_data);
-                    $('#total_views').text(value.views_count);  
-                    $('#player_table').DataTable();
-                    google.charts.load('current', {'packages':['corechart']});
-                    google.charts.setOnLoadCallback(drawChart);
+    //             },      
+    //             success: function(value){
+    //                 console.log(value);
+    //                 // $('tbody').html(value.table_data);
+    //                  $(".player_user").html(data);
+
+    //                 $('#total_views').text(value.views_count);  
+    //                 // $('#player_table').DataTable();
+    //                 google.charts.load('current', {'packages':['corechart']});
+    //                 google.charts.setOnLoadCallback(drawChart);
             
-                    function drawChart() {
-                    var linechart = value.total_Revenue;
-                    var data = new google.visualization.DataTable(linechart);
-                    var data = new google.visualization.DataTable();
-                    data.addColumn('string', 'Month');
-                    data.addColumn('number', 'Users Count');
+    //                 function drawChart() {
+    //                 var linechart = value.total_Revenue;
+    //                 var data = new google.visualization.DataTable(linechart);
+    //                 var data = new google.visualization.DataTable();
+    //                 data.addColumn('string', 'Month');
+    //                 data.addColumn('number', 'Users Count');
 
-                    linechart.forEach(function (row) {
-                        data.addRow([
-                        row.month_name,
-                        parseInt(row.count),
-                        ]);
-                    });
-                    var chart = new google.visualization.LineChart(document.getElementById('google-line-chart'));
-                    chart.draw(data, {
-                        // width: 400,
-                        // height: 240
-                    });
-                }
+    //                 linechart.forEach(function (row) {
+    //                     data.addRow([
+    //                     row.month_name,
+    //                     parseInt(row.count),
+    //                     ]);
+    //                 });
+    //                 var chart = new google.visualization.LineChart(document.getElementById('google-line-chart'));
+    //                 chart.draw(data, {
+    //                     // width: 400,
+    //                     // height: 240
+    //                 });
+    //             }
 
-               }
-            });
-        }
-      });
+    //            }
+    //         });
+    //     }
+    //   });
 
-    });
+    // });
 
 
 

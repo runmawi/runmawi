@@ -1067,6 +1067,7 @@ Route::post('/analytics/playervideos_start_date_url', 'AdminPlayerAnalyticsContr
 Route::post('/analytics/playervideos_end_date_url', 'AdminPlayerAnalyticsController@PlayerVideosEndDateRecord');
 Route::post('/analytics/playervideos_export', 'AdminPlayerAnalyticsController@PlayerVideosExport');
 // Route::post('/admin/subscriber_end_date_url', 'AdminUsersController@SubscriberRevenueStartEndDateRecord');
+Route::post('/analytics/PlayerVideoDateAnalytics', 'AdminPlayerAnalyticsController@PlayerVideoDateAnalytics');
 
 Route::get('/analytics/RegionVideoAnalytics', 'AdminPlayerAnalyticsController@RegionVideoAnalytics');
 Route::post('/analytics/VideoRegionAnalyticsCSV', 'AdminPlayerAnalyticsController@VideoRegionAnalyticsCSV');
@@ -1076,6 +1077,7 @@ Route::get('/analytics/PlayerUserAnalytics', 'AdminPlayerAnalyticsController@Pla
 Route::post('/analytics/playerusers_start_date_url', 'AdminPlayerAnalyticsController@PlayerUsersStartDateRecord');
 Route::post('/analytics/playerusers_end_date_url', 'AdminPlayerAnalyticsController@PlayerUsersEndDateRecord');
 Route::post('/analytics/playerusers_export', 'AdminPlayerAnalyticsController@PlayerUsersExport');
+Route::post('/analytics/PlayerUserDateAnalytics', 'AdminPlayerAnalyticsController@PlayerUserDateAnalytics');
 
 
 Route::get('/analytics/VideoAllCountry', 'AdminPlayerAnalyticsController@RegionVideoAllCountry');
