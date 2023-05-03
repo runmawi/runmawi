@@ -1176,123 +1176,99 @@ class AdminVideosController extends Controller
     public function edit($id)
     {
        
-        if (!Auth::user()->role == "admin") {
-            return redirect("/home");
-        }
-        $settings = Setting::first();
+        try {
 
-
-        $video = Video::find($id);
-
-        $ads_details = AdsVideo::join(
-            "advertisements",
-            "advertisements.id",
-            "ads_videos.ads_id"
-        )
-            ->where("ads_videos.video_id", $id)
-            ->pluck("ads_id")
-            ->first();
-
-        $ads_rolls = AdsVideo::join(
-            "advertisements",
-            "advertisements.id",
-            "ads_videos.ads_id"
-        )
-            ->where("ads_videos.video_id", $id)
-            ->pluck("ad_roll")
-            ->first();
-        $MoviesSubtitles = MoviesSubtitles::where('movie_id',$id)->get();
-        $ads_category = Adscategory::get();
-
-        $Reels_videos = Video::Join(
-            "reelsvideo",
-            "reelsvideo.video_id",
-            "=",
-            "videos.id"
-        )
-            ->where("videos.id", $id)
-            ->get();
-        $related_videos = Video::get();
-
-        $all_related_videos = RelatedVideo::where("video_id", $id)
-            ->pluck("related_videos_id")
-            ->toArray();
-            $subtitlescount = Subtitle::
-            join('movies_subtitles', 'movies_subtitles.sub_language', '=', 'subtitles.language')
-            ->where(['movie_id' => $id])->count();
-            if($subtitlescount > 0){
-                $subtitles = Subtitle::
-                join('movies_subtitles', 'movies_subtitles.sub_language', '=', 'subtitles.language')
-                ->where(['movie_id' => $id])->get(["subtitles.*","movies_subtitles.url","movies_subtitles.id as movies_subtitles_id"]);
-            }else{
+            if (!Auth::user()->role == "admin") {
+                return redirect("/home");
+            }
+            
+            $settings = Setting::first();
+            $video = Video::find($id);
+            
+            $ads_details = AdsVideo::join("advertisements", "advertisements.id", "ads_videos.ads_id")
+                ->where("ads_videos.video_id", $id)
+                ->pluck("ads_id")
+                ->first();
+            
+            $ads_rolls = AdsVideo::join("advertisements", "advertisements.id", "ads_videos.ads_id")
+                ->where("ads_videos.video_id", $id)
+                ->pluck("ad_roll")
+                ->first();
+            
+            $MoviesSubtitles = MoviesSubtitles::where('movie_id', $id)->get();
+            $ads_category = Adscategory::get();
+            
+            $Reels_videos = Video::Join("reelsvideo", "reelsvideo.video_id", "=", "videos.id")
+                ->where("videos.id", $id)
+                ->get();
+            
+            $related_videos = Video::get();
+            $all_related_videos = RelatedVideo::where("video_id", $id)->pluck("related_videos_id")->toArray();
+            $subtitlescount = Subtitle::join('movies_subtitles', 'movies_subtitles.sub_language', '=', 'subtitles.language')
+                ->where(['movie_id' => $id])
+                ->count();
+            
+            if ($subtitlescount > 0) {
+                $subtitles = Subtitle::join('movies_subtitles', 'movies_subtitles.sub_language', '=', 'subtitles.language')
+                    ->where(['movie_id' => $id])
+                    ->get(["subtitles.*", "movies_subtitles.url", "movies_subtitles.id as movies_subtitles_id"]);
+            } else {
                 $subtitles = Subtitle::all();
             }
-            // dd($subtitles);
+            
+            $data = [
+                "headline" => '<i class="fa fa-edit"></i> Edit Video',
+                "page"     => "Edit",
+                "video"    => $video,
+                "post_route"  => URL::to("admin/videos/update"),
+                "button_text" => "Update Video",
+                "admin_user"  => Auth::user(),
+                "video_categories" => VideoCategory::all(),
+                "ads" => Advertisement::where("status", "=", 1)->get(),
+                "video_subtitle" => VideosSubtitle::all(),
+                "subtitles" => Subtitle::all(),
+                "languages" => Language::all(),
+                "artists" => Artist::all(),
+                "settings" => $settings,
+                "related_videos" => Video::get(),
+                "all_related_videos" => RelatedVideo::where("video_id", $id)->pluck("related_videos_id")->toArray(),
+                "age_categories" => AgeCategory::get(),
+                "countries" => CountryCode::all(),
+                "video_artist" => Videoartist::where("video_id", $id)->pluck("artist_id")->toArray(),
+                "category_id"  => CategoryVideo::where("video_id", $id)->pluck("category_id")->toArray(),
+                "languages_id" => LanguageVideo::where("video_id", $id)->pluck("language_id")->toArray(),
+                "block_countries" => BlockVideo::where("video_id", $id)->pluck("country_id")->toArray(),
+                "Reels_videos" => $Reels_videos,
+                "ads_paths" => $ads_details ? $ads_details : 0,
+                "ads_rolls" => $ads_rolls ? $ads_rolls : 0,
+                "ads_category" => $ads_category,
+                "block_countries" => BlockVideo::where("video_id", $id)->pluck("country_id")->toArray(),
+                "InappPurchase" => InappPurchase::all(),
 
-        $data = [
-            "headline" => '<i class="fa fa-edit"></i> Edit Video',
-            "video" => $video,
-            "post_route" => URL::to("admin/videos/update"),
-            "button_text" => "Update Video",
-            "admin_user" => Auth::user(),
-            "video_categories" => VideoCategory::all(),
-            "ads" => Advertisement::where("status", "=", 1)->get(),
-            "video_subtitle" => VideosSubtitle::all(),
-            "subtitles" => Subtitle::all(),
-            "languages" => Language::all(),
-            "artists" => Artist::all(),
-            "settings" => $settings,
-            "related_videos" => Video::get(),
-            "all_related_videos" => RelatedVideo::where("video_id", $id)
-                ->pluck("related_videos_id")
-                ->toArray(),
-            "age_categories" => AgeCategory::get(),
-            "countries" => CountryCode::all(),
-            "video_artist" => Videoartist::where("video_id", $id)
-                ->pluck("artist_id")
-                ->toArray(),
-            "category_id" => CategoryVideo::where("video_id", $id)
-                ->pluck("category_id")
-                ->toArray(),
-            "languages_id" => LanguageVideo::where("video_id", $id)
-                ->pluck("language_id")
-                ->toArray(),
-            "block_countries" => BlockVideo::where("video_id", $id)
-                ->pluck("country_id")
-                ->toArray(),
-            "page" => "Edit",
-            "Reels_videos" => $Reels_videos,
-            "ads_paths" => $ads_details ? $ads_details : 0,
-            "ads_rolls" => $ads_rolls ? $ads_rolls : 0,
-            "ads_category" => $ads_category,
-            "block_countries" => BlockVideo::where("video_id", $id)
-                ->pluck("country_id")
-                ->toArray(),
+                'pre_ads'  => Video::select('advertisements.*')->join('advertisements','advertisements.id','=','videos.pre_ads')
+                                ->where('ads_upload_type','ads_video_upload')->where('advertisements.status',1)
+                                ->where('videos.id',$id)->first(),
+    
+                'mid_ads'  => Video::select('advertisements.*')->join('advertisements','advertisements.id','=','videos.mid_ads')
+                                ->where('ads_upload_type','ads_video_upload')->where('advertisements.status',1)
+                                ->where('videos.id',$id)->first(),
+    
+                'post_ads' => Video::select('advertisements.*')->join('advertisements','advertisements.id','=','videos.post_ads')
+                                ->where('ads_upload_type','ads_video_upload')->where('advertisements.status',1)
+                                ->where('videos.id',$id)->first(),
+    
+                "ads_tag_urls" => Advertisement::where('status',1)->where('ads_upload_type','tag_url')->where('id',$video->ads_tag_url_id)->first(),
+                "MoviesSubtitles" => $MoviesSubtitles ,
+                "subtitlescount" => $subtitlescount,
+            ];
 
-            "InappPurchase" => InappPurchase::all(),
+            return View::make("admin.videos.create_edit", $data);
+            
+        } catch (\Throwable $th) {
 
-            'pre_ads'  => Video::select('advertisements.*')->join('advertisements','advertisements.id','=','videos.pre_ads')
-                            ->where('ads_upload_type','ads_video_upload')->where('advertisements.status',1)
-                            ->where('videos.id',$id)->first(),
-
-            'mid_ads'  => Video::select('advertisements.*')->join('advertisements','advertisements.id','=','videos.mid_ads')
-                            ->where('ads_upload_type','ads_video_upload')->where('advertisements.status',1)
-                            ->where('videos.id',$id)->first(),
-
-            'post_ads' => Video::select('advertisements.*')->join('advertisements','advertisements.id','=','videos.post_ads')
-                            ->where('ads_upload_type','ads_video_upload')->where('advertisements.status',1)
-                            ->where('videos.id',$id)->first(),
-
-            "ads_tag_urls" => Advertisement::where('status',1)->where('ads_upload_type','tag_url')->where('id',$video->ads_tag_url_id)->first(),
-            "MoviesSubtitles" => $MoviesSubtitles ,
-            "subtitlescount" => $subtitlescount,
-
-
-        ];
-
-        return View::make("admin.videos.create_edit", $data);
+            return abort(404);  
+        }
     }
-
     
     public function subtitledestroy($id)
     {
@@ -2076,7 +2052,7 @@ class AdminVideosController extends Controller
         $video->skip_intro = $request["skip_intro"];
         $video->intro_start_time = $request["intro_start_time"];
         $video->intro_end_time = $request["intro_end_time"];
-        $video->country = $request["video_country"];
+        $video->country = json_encode($request["video_country"]);
         $video->publish_status = $request["publish_status"];
         $video->publish_type = $publish_type;
         $video->publish_time = $publish_time;
@@ -3079,7 +3055,7 @@ class AdminVideosController extends Controller
         $video->access = $data["access"];
         $video->banner = $banner;
         $video->featured = $featured;
-        $video->country = $data["video_country"];
+        $video->country = json_encode($data["video_country"]);
         $video->enable = 1;
         $video->search_tags = $searchtags;
         $video->ios_ppv_price = $data["ios_ppv_price"];

@@ -7,49 +7,66 @@
 
         <title>{{  $title ? $title.' | '.GetWebsiteName() : 'Landing-page'.' | '.GetWebsiteName() }}</title>
 
-                    {{--style Page  --}}
-        @php include(public_path('themes/default/views/landing/landing_style.blade.php')); @endphp
+                            {{-- Boostrap --}}
+         <?php  echo  $bootstrap_link ;  ?>
+         
+                            {{--Google fonts --}}
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,800&display=swap" rel="stylesheet">
+                
+                            {{-- Favicon icon --}}
+        <link rel="shortcut icon" href="<?php echo getFavicon();?>" type="image/gif" sizes="16x16">
 
+                            {{-- custom css --}}
+        <?php  echo  ( $custom_css);  ?>
+        
     </head>
 
     <body>
 
+            {{-- Header --}}
+        @if ( $header == 1)
+            @php include(public_path('themes/default/views/header.php'))  @endphp 
+        @endif
+
                 {{-- Section 1 --}}
-        @forelse ($sections_1 as $key => $section_1)
+        @foreach ($sections_1 as $key => $section_1)
 
             @php echo html_entity_decode($section_1) @endphp
-        @empty
 
-        @endforelse
-
+        @endforeach
 
                 {{-- Section 2 --}}
 
-        @forelse ($sections_2 as $section_2)
+        @foreach ($sections_2 as $section_2)
 
              @php echo html_entity_decode($section_2) @endphp
-
-        @empty
             
-        @endforelse
+        @endforeach
 
                 {{-- Section 3 --}}
-        @forelse ($sections_3 as $section_3)
+        @foreach ($sections_3 as $section_3)
 
              @php echo html_entity_decode($section_3) @endphp
-
-        @empty
             
-        @endforelse
+        @endforeach
 
                     {{-- Section 4  --}}
-        @forelse ($sections_4 as $section_4)
+        @foreach ($sections_4 as $section_4)
 
             @php echo html_entity_decode($section_4) @endphp
-
-        @empty
             
-        @endforelse
+        @endforeach
+
+       <script>
+            document.write("<?php echo ( $script_content); ?>");
+        </script>
+
+                {{-- Footer --}}
+        @if ( $footer == 1)
+          @php include(public_path('themes/default/views/footer.blade.php')); @endphp 
+        @endif
 
     </body>
 </html>

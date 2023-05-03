@@ -143,6 +143,88 @@ class AdminPlayerAnalyticsController extends Controller
 
     }
 
+    
+    public function PlayerVideoDateAnalytics(Request $request)
+    {
+        // 2022-04-01
+        $data = $request->all();
+
+        $start_time = $data['start_time'];
+        $end_time = $data['end_time'];
+        if (!empty($start_time) && empty($end_time))
+        {
+            $player_videos = PlayerAnalytic::join('users', 'users.id', '=', 'player_analytics.user_id')
+            ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')
+            // ->groupBy('player_analytics.videoid')
+            ->orderBy('player_analytics.created_at')
+            ->whereDate('player_analytics.created_at', '>=', $start_time)
+            ->groupBy('player_analytics.videoid')
+            ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title','videos.slug',
+            DB::raw('sum(player_analytics.duration) as duration') ,
+             DB::raw('sum(player_analytics.currentTime) as currentTime') ,
+             DB::raw('(player_analytics.seekTime) as seekTime') ,
+             DB::raw('(player_analytics.bufferedTime) as bufferedTime') ,
+             DB::raw('sum(player_analytics.watch_percentage) as watch_percentage') ,
+             \DB::raw("MONTHNAME(player_analytics.created_at) as month_name") ,
+             \DB::raw("COUNT(player_analytics.videoid) as count"),
+             \DB::raw("(player_analytics.watch_percentage) as watchpercentage"),
+            ]);
+
+       }else if (!empty($start_time) && !empty($end_time))
+       {
+           $player_videos = PlayerAnalytic::join('users', 'users.id', '=', 'player_analytics.user_id')
+           ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')
+           // ->groupBy('player_analytics.videoid')
+           ->orderBy('player_analytics.created_at')
+           ->whereBetween('player_analytics.created_at', [$start_time, $end_time])
+           ->groupBy('player_analytics.user_id')
+           ->groupBy('player_analytics.videoid')
+           // ->groupBy('month_name')
+           ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title','videos.slug',
+           DB::raw('sum(player_analytics.duration) as duration') ,
+            DB::raw('sum(player_analytics.currentTime) as currentTime') ,
+            DB::raw('(player_analytics.seekTime) as seekTime') ,
+            DB::raw('(player_analytics.bufferedTime) as bufferedTime') ,
+            DB::raw('sum(player_analytics.watch_percentage) as watch_percentage') ,
+            \DB::raw("MONTHNAME(player_analytics.created_at) as month_name") ,
+            \DB::raw("COUNT(player_analytics.videoid) as count"),
+            \DB::raw("(player_analytics.watch_percentage) as watchpercentage"),
+           ]);
+   
+           $player_videos_count =  count($player_videos);
+       }else{
+
+        $player_videos = PlayerAnalytic::join('users', 'users.id', '=', 'player_analytics.user_id')
+        ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')
+        // $player_videos = PlayerAnalytic::groupBy('videoid')
+        ->groupBy('player_analytics.videoid')
+        ->orderBy('player_analytics.created_at')
+        ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title','videos.slug',
+        DB::raw('sum(player_analytics.duration) as duration') ,
+         DB::raw('sum(player_analytics.currentTime) as currentTime') ,
+         DB::raw('(player_analytics.seekTime) as seekTime') ,
+         DB::raw('(player_analytics.bufferedTime) as bufferedTime') ,
+         DB::raw('sum(player_analytics.watch_percentage) as watch_percentage') ,
+         \DB::raw("MONTHNAME(player_analytics.created_at) as month_name") ,
+         \DB::raw("COUNT(player_analytics.videoid) as count"),
+         \DB::raw("sum(player_analytics.watch_percentage) as watchpercentage"),
+        //  floor($player_videos[1]->duration / 60)
+        ]);
+
+        }
+        $player_videos_count =  count($player_videos);
+
+        $data = array(
+            'player_videos' => $player_videos,
+            'player_videos_count' => $player_videos_count,
+            'start_time' => $start_time,
+            'end_time' => $end_time,
+
+        );
+        return \View::make('admin.analytics.player_video_analytics', $data);
+
+    }
+    
     public function PlayerVideosStartDateRecord(Request $request)
     {
         // 2022-04-01
@@ -156,7 +238,8 @@ class AdminPlayerAnalyticsController extends Controller
             ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')
             // ->groupBy('player_analytics.videoid')
             ->orderBy('player_analytics.created_at')
-            ->whereDate('player_analytics.created_at', '>=', $start_time)->groupBy('month_name')
+            ->whereBetween('player_analytics.created_at', [$start_time, $end_time])
+            ->groupBy('player_analytics.videoid')
             ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title','videos.slug',
             DB::raw('sum(player_analytics.duration) as duration') ,
              DB::raw('sum(player_analytics.currentTime) as currentTime') ,
@@ -175,7 +258,12 @@ class AdminPlayerAnalyticsController extends Controller
         $player_videos = [];
 
         }
-
+        $data = array(
+            'player_videos' => $player_videos,
+            'player_videos_count' => $player_videos_count,
+            'start_time' => $start_time,
+        );
+        return \View::make('admin.analytics.player_video_analytics', $data)->render();
 
         $output = '';
         $i = 1;
@@ -315,7 +403,8 @@ class AdminPlayerAnalyticsController extends Controller
                 ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')
                 // ->groupBy('player_analytics.videoid')
                 ->orderBy('player_analytics.created_at')
-                ->whereDate('player_analytics.created_at', '>=', $start_time)->groupBy('month_name')
+                ->whereDate('player_analytics.created_at', '>=', $start_time)            
+                ->groupBy('player_analytics.videoid')
                 ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title','videos.slug',
                 DB::raw('sum(player_analytics.duration) as duration') ,
                  DB::raw('sum(player_analytics.currentTime) as currentTime') ,
@@ -333,7 +422,8 @@ class AdminPlayerAnalyticsController extends Controller
                 ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')
                 // ->groupBy('player_analytics.videoid')
                 ->orderBy('player_analytics.created_at')
-                ->whereBetween('player_analytics.created_at', [$start_time, $end_time])->groupBy('month_name')
+                ->whereBetween('player_analytics.created_at', [$start_time, $end_time])
+                ->groupBy('player_analytics.videoid')
                 ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title','videos.slug',
                 DB::raw('sum(player_analytics.duration) as duration') ,
                  DB::raw('sum(player_analytics.currentTime) as currentTime') ,
@@ -960,8 +1050,7 @@ class AdminPlayerAnalyticsController extends Controller
     }
 
 
-
-    public function PlayerUsersStartDateRecord(Request $request)
+    public function PlayerUserDateAnalytics(Request $request)
     {
         // 2022-04-01
         $data = $request->all();
@@ -974,7 +1063,96 @@ class AdminPlayerAnalyticsController extends Controller
             ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')
             // ->groupBy('player_analytics.videoid')
             ->orderBy('player_analytics.created_at')
-            ->whereDate('player_analytics.created_at', '>=', $start_time)->groupBy('month_name')
+            ->whereDate('player_analytics.created_at', '>=', $start_time)
+            ->groupBy('player_analytics.user_id')
+            ->groupBy('player_analytics.videoid')
+            ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title','videos.slug',
+            DB::raw('sum(player_analytics.duration) as duration') ,
+             DB::raw('sum(player_analytics.currentTime) as currentTime') ,
+             DB::raw('(player_analytics.seekTime) as seekTime') ,
+             DB::raw('(player_analytics.bufferedTime) as bufferedTime') ,
+             DB::raw('sum(player_analytics.watch_percentage) as watch_percentage') ,
+             \DB::raw("MONTHNAME(player_analytics.created_at) as month_name") ,
+             \DB::raw("COUNT(player_analytics.videoid) as count"),
+             \DB::raw("(player_analytics.watch_percentage) as watchpercentage"),
+            ]);
+        //    dd($player_videos);
+            $player_videos_count =  count($player_videos);
+
+       }else if (!empty($start_time) && !empty($end_time))
+       {
+           $player_videos = PlayerAnalytic::join('users', 'users.id', '=', 'player_analytics.user_id')
+           ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')
+           // ->groupBy('player_analytics.videoid')
+           ->orderBy('player_analytics.created_at')
+           ->whereBetween('player_analytics.created_at', [$start_time, $end_time])
+           ->groupBy('player_analytics.user_id')
+           ->groupBy('player_analytics.videoid')
+           // ->groupBy('month_name')
+           ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title','videos.slug',
+           DB::raw('sum(player_analytics.duration) as duration') ,
+            DB::raw('sum(player_analytics.currentTime) as currentTime') ,
+            DB::raw('(player_analytics.seekTime) as seekTime') ,
+            DB::raw('(player_analytics.bufferedTime) as bufferedTime') ,
+            DB::raw('sum(player_analytics.watch_percentage) as watch_percentage') ,
+            \DB::raw("MONTHNAME(player_analytics.created_at) as month_name") ,
+            \DB::raw("COUNT(player_analytics.videoid) as count"),
+            \DB::raw("(player_analytics.watch_percentage) as watchpercentage"),
+           ]);
+   
+           $player_videos_count =  count($player_videos);
+       }else{
+            $player_videos_count = PlayerAnalytic::get([ \DB::raw("COUNT(videoid) as count")]); 
+            $player_videos = PlayerAnalytic::join('users', 'users.id', '=', 'player_analytics.user_id')
+            ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')
+            ->groupBy('player_analytics.user_id')
+            ->groupBy('player_analytics.videoid')
+            ->orderBy('player_analytics.created_at')
+            ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title','videos.slug',
+            DB::raw('sum(player_analytics.duration) as duration') ,
+            DB::raw('sum(player_analytics.currentTime) as currentTime') ,
+            DB::raw('(player_analytics.seekTime) as seekTime') ,
+            DB::raw('(player_analytics.bufferedTime) as bufferedTime') ,
+            DB::raw('sum(player_analytics.watch_percentage) as watch_percentage') ,
+            \DB::raw("MONTHNAME(player_analytics.created_at) as month_name") ,
+            \DB::raw("COUNT(player_analytics.videoid) as count"),
+            \DB::raw("(player_analytics.watch_percentage) as watchpercentage"),
+            ]);
+            $player_videos_count =  count($player_videos);
+
+        }
+        $UserLogs_count = UserLogs::get()->count(); 
+
+        $data = array(
+            'player_videos' => $player_videos,
+            'player_videos_count' => $player_videos_count,
+            'start_time' => $start_time,
+            'end_time' => $end_time,
+            'UserLogs_count' => $UserLogs_count,
+
+        );
+        return \View::make('admin.analytics.player_user_analytics', $data);
+
+    }
+    
+    public function PlayerUsersStartDateRecord(Request $request)
+    {
+        // 2022-04-01
+        $data = $request->all();
+
+        $start_time = $data['start_time'];
+        $end_time = $data['end_time'];
+        // $start_times = Carbon::parse($start_time);
+
+        if (!empty($start_time) && empty($end_time))
+        {
+            $player_videos = PlayerAnalytic::join('users', 'users.id', '=', 'player_analytics.user_id')
+            ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')
+            // ->groupBy('player_analytics.videoid')
+            ->orderBy('player_analytics.created_at')
+            ->whereDate('player_analytics.created_at', '>=', $start_time)
+            ->groupBy('player_analytics.user_id')
+            ->groupBy('player_analytics.videoid')
             ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title','videos.slug',
             DB::raw('sum(player_analytics.duration) as duration') ,
              DB::raw('sum(player_analytics.currentTime) as currentTime') ,
@@ -1053,7 +1231,10 @@ class AdminPlayerAnalyticsController extends Controller
             ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')
             // ->groupBy('player_analytics.videoid')
             ->orderBy('player_analytics.created_at')
-            ->whereBetween('player_analytics.created_at', [$start_time, $end_time])->groupBy('month_name')
+            ->whereBetween('player_analytics.created_at', [$start_time, $end_time])
+            ->groupBy('player_analytics.user_id')
+            ->groupBy('player_analytics.videoid')
+            // ->groupBy('month_name')
             ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title','videos.slug',
             DB::raw('sum(player_analytics.duration) as duration') ,
              DB::raw('sum(player_analytics.currentTime) as currentTime') ,
@@ -1137,7 +1318,10 @@ class AdminPlayerAnalyticsController extends Controller
             ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')
             // ->groupBy('player_analytics.videoid')
             ->orderBy('player_analytics.created_at')
-            ->whereDate('player_analytics.created_at', '>=', $start_time)->groupBy('month_name')
+            ->whereDate('player_analytics.created_at', '>=', $start_time)
+            ->groupBy('player_analytics.user_id')
+            ->groupBy('player_analytics.videoid')
+            // ->groupBy('month_name')
             ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title','videos.slug',
             DB::raw('sum(player_analytics.duration) as duration') ,
              DB::raw('sum(player_analytics.currentTime) as currentTime') ,
@@ -1152,21 +1336,24 @@ class AdminPlayerAnalyticsController extends Controller
             } elseif (!empty($start_time) && !empty($end_time)) {
 
                 $player_videos = PlayerAnalytic::join('users', 'users.id', '=', 'player_analytics.user_id')
-            ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')
-            // ->groupBy('player_analytics.videoid')
-            ->orderBy('player_analytics.created_at')
-            ->whereBetween('player_analytics.created_at', [$start_time, $end_time])->groupBy('month_name')
-            ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title','videos.slug',
-            DB::raw('sum(player_analytics.duration) as duration') ,
-             DB::raw('sum(player_analytics.currentTime) as currentTime') ,
-             DB::raw('(player_analytics.seekTime) as seekTime') ,
-             DB::raw('(player_analytics.bufferedTime) as bufferedTime') ,
-             DB::raw('sum(player_analytics.watch_percentage) as watch_percentage') ,
-             \DB::raw("MONTHNAME(player_analytics.created_at) as month_name") ,
-             \DB::raw("COUNT(player_analytics.videoid) as count"),
-             \DB::raw("(player_analytics.watch_percentage) as watchpercentage"),
-            ]);
-    
+                ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')
+                // ->groupBy('player_analytics.videoid')
+                ->orderBy('player_analytics.created_at')
+                ->whereBetween('player_analytics.created_at', [$start_time, $end_time])
+                ->groupBy('player_analytics.user_id')
+                ->groupBy('player_analytics.videoid')
+                // ->groupBy('month_name')
+                ->get(['player_analytics.videoid','player_analytics.user_id','users.username','videos.title','videos.slug',
+                DB::raw('sum(player_analytics.duration) as duration') ,
+                 DB::raw('sum(player_analytics.currentTime) as currentTime') ,
+                 DB::raw('(player_analytics.seekTime) as seekTime') ,
+                 DB::raw('(player_analytics.bufferedTime) as bufferedTime') ,
+                 DB::raw('sum(player_analytics.watch_percentage) as watch_percentage') ,
+                 \DB::raw("MONTHNAME(player_analytics.created_at) as month_name") ,
+                 \DB::raw("COUNT(player_analytics.videoid) as count"),
+                 \DB::raw("(player_analytics.watch_percentage) as watchpercentage"),
+                ]);
+        
 
             } else {
 
