@@ -135,69 +135,72 @@ class AdminLandingpageController extends Controller
     public function update(Request $request)
     {
 
-      AdminLandingPage::where('landing_page_id',$request->landing_page_id)->delete();
+      if(  !empty($request->date) ){
 
-      if( !empty($request->date) && in_array ('section_1',$request->date) == true && $request->section_1  != null ){
+          AdminLandingPage::where('landing_page_id',$request->landing_page_id)->delete();
 
-        $section_1 = count($request['section_1']);
-
-        for ($i=0; $i<$section_1; $i++){
-                $AdminLandingPage = new AdminLandingPage;
-                $AdminLandingPage->content = $request['section_1'][$i];
-                $AdminLandingPage->section = "1";
-                $AdminLandingPage->landing_page_id = $request->landing_page_id;
-                $AdminLandingPage->title = $request->title;
-                $AdminLandingPage->slug =  $request->slug != null ? str_replace(" ", "-", $request->slug) : str_replace(" ", "-", $request->title);
-                $AdminLandingPage->save();
-        }
+          if( !empty($request->date) && in_array ('section_1',$request->date) == true && $request->section_1  != null ){
+    
+            $section_1 = count($request['section_1']);
+    
+            for ($i=0; $i<$section_1; $i++){
+                    $AdminLandingPage = new AdminLandingPage;
+                    $AdminLandingPage->content = $request['section_1'][$i];
+                    $AdminLandingPage->section = "1";
+                    $AdminLandingPage->landing_page_id = $request->landing_page_id;
+                    $AdminLandingPage->title = $request->title;
+                    $AdminLandingPage->slug =  $request->slug != null ? str_replace(" ", "-", $request->slug) : str_replace(" ", "-", $request->title);
+                    $AdminLandingPage->save();
+            }
+          }
+    
+          if(  !empty($request->date) && in_array ('section_2',$request->date) == true && $request->section_2  != null  ){
+    
+            $section_2 = count($request['section_2']);
+    
+            for ($i=0; $i<$section_2; $i++){
+                    $AdminLandingPage = new AdminLandingPage;
+                    $AdminLandingPage->content = $request['section_2'][$i];
+                    $AdminLandingPage->section = "2";
+                    $AdminLandingPage->landing_page_id = $request->landing_page_id;
+                    $AdminLandingPage->title = $request->title;
+                    $AdminLandingPage->slug =  $request->slug != null ? str_replace(" ", "-", $request->slug) : str_replace(" ", "-", $request->title);
+                    $AdminLandingPage->save();
+            }
+          }
+    
+          if(  !empty($request->date) && in_array ('section_3',$request->date) == true && $request->section_3  != null ){
+    
+            $section_3 = count($request['section_3']);
+    
+            for ($i=0; $i<$section_3; $i++){
+                    $AdminLandingPage = new AdminLandingPage;
+                    $AdminLandingPage->content = $request['section_3'][$i];
+                    $AdminLandingPage->section = "3";
+                    $AdminLandingPage->landing_page_id = $request->landing_page_id;
+                    $AdminLandingPage->title = $request->title;
+                    $AdminLandingPage->slug =  $request->slug != null ? str_replace(" ", "-", $request->slug) : str_replace(" ", "-", $request->title);
+                    $AdminLandingPage->save();
+            }
+          }
+    
+          if(  !empty($request->date) && in_array ('section_4',$request->date) == true && $request->section_4  != null ){
+    
+            $section_4 = count($request['section_4']);
+    
+            for ($i=0; $i<$section_4; $i++){
+                    $AdminLandingPage = new AdminLandingPage;
+                    $AdminLandingPage->content = $request['section_4'][$i];
+                    $AdminLandingPage->section = "4";
+                    $AdminLandingPage->landing_page_id = $request->landing_page_id;
+                    $AdminLandingPage->title = $request->title;
+                    $AdminLandingPage->slug =  $request->slug != null ? str_replace(" ", "-", $request->slug) : str_replace(" ", "-", $request->title);
+                    $AdminLandingPage->save();
+            }
+          }
       }
-
-      if(  !empty($request->date) && in_array ('section_2',$request->date) == true && $request->section_2  != null  ){
-
-        $section_2 = count($request['section_2']);
-
-        for ($i=0; $i<$section_2; $i++){
-                $AdminLandingPage = new AdminLandingPage;
-                $AdminLandingPage->content = $request['section_2'][$i];
-                $AdminLandingPage->section = "2";
-                $AdminLandingPage->landing_page_id = $request->landing_page_id;
-                $AdminLandingPage->title = $request->title;
-                $AdminLandingPage->slug =  $request->slug != null ? str_replace(" ", "-", $request->slug) : str_replace(" ", "-", $request->title);
-                $AdminLandingPage->save();
-        }
-      }
-
-      if(  !empty($request->date) && in_array ('section_3',$request->date) == true && $request->section_3  != null ){
-
-        $section_3 = count($request['section_3']);
-
-        for ($i=0; $i<$section_3; $i++){
-                $AdminLandingPage = new AdminLandingPage;
-                $AdminLandingPage->content = $request['section_3'][$i];
-                $AdminLandingPage->section = "3";
-                $AdminLandingPage->landing_page_id = $request->landing_page_id;
-                $AdminLandingPage->title = $request->title;
-                $AdminLandingPage->slug =  $request->slug != null ? str_replace(" ", "-", $request->slug) : str_replace(" ", "-", $request->title);
-                $AdminLandingPage->save();
-        }
-      }
-
-      if(  !empty($request->date) && in_array ('section_4',$request->date) == true && $request->section_4  != null ){
-
-        $section_4 = count($request['section_4']);
-
-        for ($i=0; $i<$section_4; $i++){
-                $AdminLandingPage = new AdminLandingPage;
-                $AdminLandingPage->content = $request['section_4'][$i];
-                $AdminLandingPage->section = "4";
-                $AdminLandingPage->landing_page_id = $request->landing_page_id;
-                $AdminLandingPage->title = $request->title;
-                $AdminLandingPage->slug =  $request->slug != null ? str_replace(" ", "-", $request->slug) : str_replace(" ", "-", $request->title);
-                $AdminLandingPage->save();
-        }
-      }
-
-      $last_id = $AdminLandingPage->id;
+      
+      $last_id =  !empty($request->date) ? $AdminLandingPage->id : $request->landing_page_id ;
 
       $custom_css = AdminLandingPage::where('id',$last_id)->update([
         'custom_css' => $request->custom_css ,
