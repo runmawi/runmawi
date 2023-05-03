@@ -1710,8 +1710,11 @@ public function verifyandupdatepassword(Request $request)
 
             for( $i =0; $i < $count; $i++ ){
                 $M3u_videos = array(
-                    'M3u_video_url' => $match[0][3],
-                    'M3u_video_name' => $match[0][2],
+                    'M3u_Networl_url' => $match[0][1],
+                    'M3u_video_image' => $match[0][2],
+                    'M3u_video_title' => $match[0][3],
+                    'M3u_video_Network' => $match[0][4],
+                    'M3u_video_url' => $match[0][5],
                   );
             } 
 
