@@ -91,8 +91,15 @@ class TranscodeVideo implements ShouldQueue
         ]);
         $video->save($format, $output_path); 
         $video = $this->video;   
-        ConvertVideoForStreaming::dispatch($video);
 
+        $setting = Setting::first();
+
+        if(@$settings->video_clip_enable == 1 && !empty($settings->video_clip)){
+            VideoClip::dispatch($video);
+        }else{
+            ConvertVideoForStreaming::dispatch($video);
+        }    
+        
     }
     
 }

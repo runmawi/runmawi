@@ -36,6 +36,7 @@ use App\Http\Requests\StoreVideoRequest;
 use App\Jobs\ConvertVideoForStreaming;
 use App\Jobs\TranscodeVideo;
 use App\Jobs\VideoSchedule;
+use App\Jobs\VideoClip;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use FFMpeg\Filters\Video\VideoFilters;
 use Illuminate\Support\Str;
@@ -562,6 +563,8 @@ class AdminVideosController extends Controller
                 $Playerui = Playerui::first();
                 if(@$Playerui->video_watermark_enable == 1 && !empty($Playerui->video_watermark)){
                     TranscodeVideo::dispatch($video);
+                }else if(@$settings->video_clip_enable == 1 && !empty($settings->video_clip)){
+                    VideoClip::dispatch($video);
                 }else{
                     ConvertVideoForStreaming::dispatch($video);
                 }           
@@ -1035,6 +1038,8 @@ class AdminVideosController extends Controller
             $Playerui = Playerui::first();
             if(@$Playerui->video_watermark_enable == 1 && !empty($Playerui->video_watermark)){
                 TranscodeVideo::dispatch($video);
+            }else if(@$settings->video_clip_enable == 1 && !empty($settings->video_clip)){
+                VideoClip::dispatch($video);
             }else{
                 ConvertVideoForStreaming::dispatch($video);
             }             
@@ -1783,6 +1788,8 @@ class AdminVideosController extends Controller
             $Playerui = Playerui::first();
             if(@$Playerui->video_watermark_enable == 1 && !empty($Playerui->video_watermark)){
                 TranscodeVideo::dispatch($video);
+            }else if(@$settings->video_clip_enable == 1 && !empty($settings->video_clip)){
+                VideoClip::dispatch($video);
             }else{
                 ConvertVideoForStreaming::dispatch($video);
             }           
@@ -3846,6 +3853,8 @@ class AdminVideosController extends Controller
             $Playerui = Playerui::first();
             if(@$Playerui->video_watermark_enable == 1 && !empty($Playerui->video_watermark)){
                 TranscodeVideo::dispatch($video);
+            }else if(@$settings->video_clip_enable == 1 && !empty($settings->video_clip)){
+                VideoClip::dispatch($video);
             }else{
                 ConvertVideoForStreaming::dispatch($video);
             }          
