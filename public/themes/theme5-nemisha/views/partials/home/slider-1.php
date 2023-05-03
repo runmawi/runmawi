@@ -13,10 +13,7 @@
                     <div class="row align-items-center bl h-100">
                         <div class="col-xl-6 col-lg-12 col-md-12">
                         <h1 class="text-white text-uppercase mb-3" style="color:#fff!important;">
-                        <?php 
-                         echo (strlen($slider_video->title) > 15) ? substr($slider_video->title,0,80).'...' : $slider_video->title;
-                        //  echo __($slider_video->title);
-                          ?>
+                        <?php  echo (strlen($slider_video->title) > 15) ? substr($slider_video->title,0,80).'...' : $slider_video->title; ?>
                     </h1>
                             <div class="mb-3">
                             <span class="fa fa-star checked"></span>
@@ -25,10 +22,9 @@
                             <span class="fa fa-star"></span>
                             <span class="fa fa-star"></span></div>
                             <div class="p-0">
-                     <a href="<?php echo $slider_video->link; ?>"
-                        class="btn bd "><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now</a>
-                             <a href="<?php echo $slider_video->link; ?>"
-                        class="btn bd ml-2"><i class="fa fa-play ml-2" aria-hidden="true"></i> Watch Trailer</a></div>
+
+                    <a href="<?php echo $slider_video->link; ?>" class="btn bd "><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now</a>
+                    <a href="<?php echo $slider_video->link; ?>" class="btn bd ml-2"><i class="fa fa-play ml-2" aria-hidden="true"></i> Watch Trailer</a></div>
                 </div>
                         <div class="col-xl-2 col-lg-12 col-md-6 mt-5 pt-5 b2">
                         <div class="justify align-items-left r-mb-23 mt-5" data-animation-in="fadeInUp"
@@ -435,12 +431,12 @@ if(Route::current()->getName() == "home"){
 </script>
 -->
 <!-- Banners -->
-<?php if(isset($banner)) : 
+<?php  if(isset($banner)) : 
     foreach($banner as $key => $slider_video): 
             ?>
 
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
-            <div onclick="window.location.href='<?php echo URL::to('episode') ?><?= '/'.@$slider_video->series_title->slug.'/' . $slider_video->title ?>';" class="slide slick-bg s-bg-1 lazy"
+            <div onclick="window.location.href='<?php echo URL::to('episode/'.@$slider_video->series_title->slug.'/'.$slider_video->slug ) ?>';" class="slide slick-bg s-bg-1 lazy"
             style="background: url('<?php echo URL::to('/').'/public/uploads/images/' .$slider_video->player_image;?>') no-repeat;background-size:cover;background-position:right; cursor: pointer; ">
             <div class="container-fluid position-relative h-100">
                 <div class="slider-inner h-100">
@@ -481,7 +477,7 @@ style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bo
    <div class="row justify r-mb-23  p-0 mb-4 text-center" data-animation-in="fadeInUp"
                             data-delay-in="1.2">
                                 <div class="col-md-3">
-                                  <a href="<?php echo URL::to('episode') ?><?= '/'.@$slider_video->series_title->slug.'/' . $slider_video->title ?>"
+                                  <a href="<?php echo URL::to('episode/'.@$slider_video->series_title->slug.'/'.$slider_video->slug ) ?>"
                                 class="text-white">
                                 <div class="" style="font-size:25px;">
                              <i class="fa fa-plus" aria-hidden="true"></i>
@@ -489,7 +485,7 @@ style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bo
                                       </div>
                                 Add Watchlist</a></div>
                                 <div class="col-md-3">
-                                 <a href="<?php echo URL::to('episode') ?><?= '/'.@$slider_video->series_title->slug.'/' . $slider_video->title ?>"
+                                 <a href="<?php echo URL::to('episode/'.@$slider_video->series_title->slug.'/'.$slider_video->slug ) ?>"
                                 class="text-white ">
                                 <div class="" style="font-size:25px;">
                               <i class="fa fa-share-alt" aria-hidden="true"></i>
@@ -498,7 +494,7 @@ style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bo
                             </div></div>                         
 <div class="justify r-mb-23" data-animation-in="fadeInUp"
 data-delay-in="1.2">
-<a href="<?php echo URL::to('episode') ?><?= '/'.@$slider_video->series_title->slug.'/' . $slider_video->title ?>"
+<a href="<?php echo URL::to('episode/'.@$slider_video->series_title->slug.'/'.$slider_video->slug ) ?>"
     class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play</a>
     <!-- <a class=" btn black" href="https://flicknexui.webnexs.org/" ><i class="fa fa-plus" aria-hidden="true"></i> Watchlater</a>-->
     <a class="btn bd ml-3" href="<?php echo URL::to('episode') ?><?= '/'.@$slider_video->series_title->slug.'/' . $slider_video->slug ?>"><i class="fa fa-info" aria-hidden="true"></i> More details</a>
@@ -506,7 +502,7 @@ data-delay-in="1.2">
 </div>
 </div>
 <!--<div class="trailor-video">
-    <a href="<?php echo URL::to('episode') ?><?= '/'.@$slider_video->series_title->slug.'/' . $slider_video->title ?>"
+    <a href="<?php echo URL::to('episode/'.@$slider_video->series_title->slug.'/'.$slider_video->slug ) ?>"
         class="video-open playbtn">
         <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px"

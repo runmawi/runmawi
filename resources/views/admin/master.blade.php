@@ -493,7 +493,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      <ul id="language" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/admin-languages') }}"><i class="las la-user-plus"></i>Video Languages</a></li>
                         <li><a href="{{ URL::to('admin/languages') }}"><i class="las la-eye"></i>Manage Translations</a></li>
-                         <li><a href="{{ URL::to('admin/admin-languages-transulates') }}"><i class="las la-eye"></i>Manage Translate Languages</a></li>
+                         {{-- <li><a href="{{ URL::to('admin/admin-languages-transulates') }}"><i class="las la-eye"></i>Manage Translate Languages</a></li> --}}
                      </ul>
                   </li>
                    
@@ -799,7 +799,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      <ul id="language" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/admin-languages') }}">Video Languages</a></li>
                         <li><a href="{{ URL::to('admin/languages') }}">Manage Translations</a></li>
-                         <li><a href="{{ URL::to('admin/admin-languages-transulates') }}">Manage Translate Languages</a></li>
+                         {{-- <li><a href="{{ URL::to('admin/admin-languages-transulates') }}">Manage Translate Languages</a></li> --}}
                      </ul>
                   </li>
                    
@@ -1108,7 +1108,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      <ul id="language" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/admin-languages') }}"><i class="las la-user-plus"></i>Video Languages</a></li>
                         <li><a href="{{ URL::to('admin/languages') }}"><i class="las la-eye"></i>Manage Translations</a></li>
-                         <li><a href="{{ URL::to('admin/admin-languages-transulates') }}"><i class="las la-eye"></i>Manage Translate Languages</a></li>
+                         {{-- <li><a href="{{ URL::to('admin/admin-languages-transulates') }}"><i class="las la-eye"></i>Manage Translate Languages</a></li> --}}
                      </ul>
                   </li>
                    
