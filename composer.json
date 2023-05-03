@@ -24,7 +24,7 @@
         "fruitcake/laravel-cors": "^1.0",
         "google/apiclient": "~2.0",
         "guzzlehttp/guzzle": "~6.0",
-        "intervention/image": "^2.5",
+        "intervention/image": "^2.7",
         "james-heinrich/getid3": "^1.9",
         "jenssegers/agent": "^2.6",
         "laravel/cashier": "^12.2",
