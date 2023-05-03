@@ -31,16 +31,28 @@
 
                 <div class="clear"></div>
 
-                <div class="row mt-3">
-                    <div class="col-md-4">
-                        <label for="start_time">  Start Date: </label>
-                        <input type="date" id="start_time" name="start_time" >               
+
+                <form action="{{ URL::to('/admin/analytics/PlayerVideoDateAnalytics') }}" method= "post">
+                    <div class="row mt-3">
+                        <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+
+                        <div class="col-md-4">
+                            <label for="start_time">  Start Date: </label>
+                            <input type="date"  value="{{ @$start_time }}" id="start_time" name="start_time" >               
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="start_time">  End Date: </label>
+                            <input type="date" id="end_time" value="{{ @$end_time }}" name="end_time">     
+                        </div>
+                        <div class="col-md-4">
+                            <input type="submit" value="Show Result" class="btn btn-primary">
+                        </div>
                     </div>
 
-                    <div class="col-md-4">
-                        <label for="start_time">  End Date: </label>
-                        <input type="date" id="end_time" name="end_time">     
-                    </div>
+                </form>
+                <br>
+                <div class="row mt-3">
 
                     <div class="col-md-4">
                         <span  id="export" class="btn btn-primary" >Download CSV</span>
@@ -113,104 +125,104 @@
         var start_time =  $('#start_time').val();
         var end_time =  $('#end_time').val();
 
-        $('#start_time').change(function(){
-            var start_time =  $('#start_time').val();
-            var end_time =  $('#end_time').val();
-            // alert(start_time);
-            var url = "{{ URL::to('admin/analytics/playervideos_start_date_url')  }}";
+    //     $('#start_time').change(function(){
+    //         var start_time =  $('#start_time').val();
+    //         var end_time =  $('#end_time').val();
+    //         // alert(start_time);
+    //         var url = "{{ URL::to('admin/analytics/playervideos_start_date_url')  }}";
        
-       if(start_time != "" && end_time == ""){
-        // alert(start_time);
+    //    if(start_time != "" && end_time == ""){
+    //     // alert(start_time);
 
-            $.ajax({
-                url: url,
-                type: "post",
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        start_time: start_time,
-                        end_time: end_time,
+    //         $.ajax({
+    //             url: url,
+    //             type: "post",
+    //                 data: {
+    //                     _token: '{{ csrf_token() }}',
+    //                     start_time: start_time,
+    //                     end_time: end_time,
 
-                    },      
-                    success: function(value){       
-                    // console.log(value);
+    //                 },      
+    //                 success: function(value){       
+    //                 // console.log(value);
 
-                    $('tbody').html(value.table_data);
-                    $('#player_table').DataTable();
-                    google.charts.load('current', {'packages':['corechart']});
-                    google.charts.setOnLoadCallback(drawChart);
+    //                 $('tbody').html(value.table_data);
+    //                 $('#player_table').DataTable();
+    //                 google.charts.load('current', {'packages':['corechart']});
+    //                 google.charts.setOnLoadCallback(drawChart);
             
-                    function drawChart() {
-                    var linechart = value.total_Revenue;
-                    var data = new google.visualization.DataTable(linechart);
-                    var data = new google.visualization.DataTable();
-                    data.addColumn('string', 'Month');
-                    data.addColumn('number', 'Users Count');
+    //                 function drawChart() {
+    //                 var linechart = value.total_Revenue;
+    //                 var data = new google.visualization.DataTable(linechart);
+    //                 var data = new google.visualization.DataTable();
+    //                 data.addColumn('string', 'Month');
+    //                 data.addColumn('number', 'Users Count');
 
-                    linechart.forEach(function (row) {
-                        data.addRow([
-                        row.month_name,
-                        parseInt(row.count),
-                        ]);
-                    });
-                    var chart = new google.visualization.LineChart(document.getElementById('google-line-chart'));
-                    chart.draw(data, {
-                        // width: 400,
-                        // height: 240
-                    });
-                    }
-                }
-            });
-       }
-    });
+    //                 linechart.forEach(function (row) {
+    //                     data.addRow([
+    //                     row.month_name,
+    //                     parseInt(row.count),
+    //                     ]);
+    //                 });
+    //                 var chart = new google.visualization.LineChart(document.getElementById('google-line-chart'));
+    //                 chart.draw(data, {
+    //                     // width: 400,
+    //                     // height: 240
+    //                 });
+    //                 }
+    //             }
+    //         });
+    //    }
+    // });
 
 
-    $('#end_time').change(function(){
-        var start_time =  $('#start_time').val();
-        var end_time =  $('#end_time').val();
-        var url = "{{ URL::to('admin/analytics/playervideos_end_date_url')  }}";
+    // $('#end_time').change(function(){
+    //     var start_time =  $('#start_time').val();
+    //     var end_time =  $('#end_time').val();
+    //     var url = "{{ URL::to('admin/analytics/playervideos_end_date_url')  }}";
 
-       if(start_time != "" && end_time != ""){
-            $.ajax({
-                url: url,
-                type: "post",
-                data: {
-                      _token: '{{ csrf_token() }}',
-                      start_time: start_time,
-                      end_time: end_time,
+    //    if(start_time != "" && end_time != ""){
+    //         $.ajax({
+    //             url: url,
+    //             type: "post",
+    //             data: {
+    //                   _token: '{{ csrf_token() }}',
+    //                   start_time: start_time,
+    //                   end_time: end_time,
 
-                },      
-                success: function(value){
-                    console.log(value);
-                    $('tbody').html(value.table_data);
-                    $('#total_views').text(value.views_count);  
-                    $('#player_table').DataTable();
-                    google.charts.load('current', {'packages':['corechart']});
-                    google.charts.setOnLoadCallback(drawChart);
+    //             },      
+    //             success: function(value){
+    //                 console.log(value);
+    //                 $('tbody').html(value.table_data);
+    //                 $('#total_views').text(value.views_count);  
+    //                 $('#player_table').DataTable();
+    //                 google.charts.load('current', {'packages':['corechart']});
+    //                 google.charts.setOnLoadCallback(drawChart);
             
-                    function drawChart() {
-                    var linechart = value.total_Revenue;
-                    var data = new google.visualization.DataTable(linechart);
-                    var data = new google.visualization.DataTable();
-                    data.addColumn('string', 'Month');
-                    data.addColumn('number', 'Users Count');
+    //                 function drawChart() {
+    //                 var linechart = value.total_Revenue;
+    //                 var data = new google.visualization.DataTable(linechart);
+    //                 var data = new google.visualization.DataTable();
+    //                 data.addColumn('string', 'Month');
+    //                 data.addColumn('number', 'Users Count');
 
-                    linechart.forEach(function (row) {
-                        data.addRow([
-                        row.month_name,
-                        parseInt(row.count),
-                        ]);
-                    });
-                    var chart = new google.visualization.LineChart(document.getElementById('google-line-chart'));
-                    chart.draw(data, {
-                        // width: 400,
-                        // height: 240
-                    });
-                }
+    //                 linechart.forEach(function (row) {
+    //                     data.addRow([
+    //                     row.month_name,
+    //                     parseInt(row.count),
+    //                     ]);
+    //                 });
+    //                 var chart = new google.visualization.LineChart(document.getElementById('google-line-chart'));
+    //                 chart.draw(data, {
+    //                     // width: 400,
+    //                     // height: 240
+    //                 });
+    //             }
 
-               }
-            });
-        }
-      });
+    //            }
+    //         });
+    //     }
+    //   });
 
     });
 
