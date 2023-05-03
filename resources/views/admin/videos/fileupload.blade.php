@@ -736,13 +736,13 @@ border-radius: 0px 4px 4px 0px;
                               </div>
                               {{-- country --}}
                               <div class="col-sm-6 form-group">
-                                 <label class="m-0"> Country </label>
+                                 <label class="m-0"> Available Country </label>
                                  <p class="p1">( Choose the countries videos )</p>
-                                 <select  name="video_country" class="form-control" id="country">
+                                 <select  name="video_country[]" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple"  id="country">
                                     <option value="All">Select Country </option>
-                                    @foreach($countries as $country)
-                                    <option value="{{ $country->country_name }}" >{{ $country->country_name }}</option>
-                                    @endforeach
+                                       @foreach($countries as $country)
+                                          <option value="{{ $country->country_name }}" >{{ $country->country_name }}</option>
+                                       @endforeach
                                  </select>
                               </div>
                            </div>

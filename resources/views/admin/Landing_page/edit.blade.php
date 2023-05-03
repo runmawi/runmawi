@@ -80,10 +80,9 @@
                                                  {{-- Custom Script Content --}}
                                         <br>
                                         <div class="row">
-                                            
                                             <div class="container"> 
                                                 <label class="m-0"> Custom JavaScript Content
-                                                    <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title="Please add Script Content Link as <link> ..... </link>"  href="#">
+                                                    <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title="Please add Script Content Script as <Script> ..... </Script>"  href="#">
                                                         <i class="las la-exclamation-circle"></i>
                                                     </a>:
                                                 </label>
@@ -93,6 +92,49 @@
                                                 </div> 
                                             </div> 
                                         </div>
+
+                                                {{-- Header & Footer --}}
+
+                                        <div class="row d-flex">
+                                            <div class="container"> 
+                                                <label class="m-0"> Header & Footer
+                                                    <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title="Enable/Disable - Header&Footer"  href="#">
+                                                        <i class="las la-exclamation-circle"></i>
+                                                    </a>:
+                                                </label>
+
+                                                <div class="col-sm-4">
+                                                    <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                                                        <div><label class="mt-1"> Header </label></div>
+                                                        <div class="mt-1 d-flex align-items-center justify-content-around">
+                                                            <div class="mr-2" style="color:red;">Disable</div>
+                                                            <label class="switch mt-2">
+                                                                <input name="header" type="checkbox" {{ (!empty($header) && $header == 1) ? "checked" : null }} >
+                                                                <span class="slider round"></span>
+                                                            </label>
+                                                            <div class="ml-2" style="color:green;" >Enable</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-4">
+                                                    <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                                                        <div><label class="mt-1"> Footer </label></div>
+                                                        <div class="mt-1 d-flex align-items-center justify-content-around">
+                                                            <div class="mr-2" style="color:red;">Disable</div>
+                                                            <label class="switch mt-2">
+                                                                <input name="footer" type="checkbox" {{ (!empty($footer) && $footer == 1) ? "checked" : null }} >
+                                                                <span class="slider round"></span>
+                                                            </label>
+                                                            <div class="ml-2" style="color:green;" >Enable</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div> 
+                                        </div>
+
+                                            {{-- Section 1 --}}
 
                                         <div class="row">
                                             <div class="col-sm-4">
