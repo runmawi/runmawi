@@ -389,6 +389,10 @@ public function createStep2(Request $request)
 
         $profile_checkout = SiteTheme::pluck('profile_checkout')->first();  // Note - for Nemisha
 
+        $free_registration = Setting::pluck('free_registration')->first();  // Note - Free Registration 
+        if(@$free_registration == 1) {
+            return redirect('/')->with('message', 'You have successfully registered your account. Please login below.');
+        }
 
             if ($request->has('ref')) {
                 session(['referrer' => $request->query('ref')]);
