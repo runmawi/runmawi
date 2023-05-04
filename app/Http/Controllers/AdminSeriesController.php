@@ -240,13 +240,13 @@ class AdminSeriesController extends Controller
                 if(compress_image_enable() == 1){
     
                     $series_filename  = time().'.'.compress_image_format();
-                    $series_image     =  'series_'.$series_filename ;
-                    Image::make($file)->save(base_path().'/public/uploads/images/'.$series_image,compress_image_resolution() );
+                    $series_image     =  'series-'.$series_filename ;
+                    Image::make($file)->save(public_path('uploads/images/'.$series_image),compress_image_resolution() );
                 }else{
     
                     $series_filename  = time().'.'.$image->getClientOriginalExtension();
-                    $series_image     =  'series_'.$series_filename ;
-                    Image::make($file)->save(base_path().'/public/uploads/images/'.$series_image );
+                    $series_image     =  'series-'.$series_filename ;
+                    Image::make($file)->save(public_path('uploads/images/'.$series_image) );
                 }  
 
                 $data['image'] = $series_image;
