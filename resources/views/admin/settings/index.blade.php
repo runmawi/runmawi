@@ -984,7 +984,46 @@ border-radius: 0px 4px 4px 0px;
                             <br>
 
                             </div>
+                            <br>
+                            <br>
+
+                        <!-- Video CLIP -->
+                  
+                            <label for="">Add Video Clip On Transcoding</label>
+                        <div class="row">
+                                <div>
+                                <div class="mt-1 d-flex align-items-center justify-content-around">
+                                         <div class="mr-2">OFF</div>
+                                        <label class="switch">
+                                        <input type="checkbox" @if(!isset($settings->video_clip_enable) ||
+                                            (isset($settings->video_clip_enable) && $settings->video_clip_enable))checked="checked"
+                                            value="1"@else value="0"@endif name="video_clip_enable" id="video_clip_enable" />
+                                        <span class="slider round"></span>
+                                        </label>
+                                           <div class="ml-2">ON</div>
+                                    </div>                                   
+                                </div>
+                            <br>
+                            <br>
+                            <div class="mt-1  align-items-center justify-content-around">
+                            <label class="m-0">Video Clip :</label>
+                                    <p class="p1">Drop and drag the video file</p>
+                                    <div style="position: relative;" >
+                                        <input type="file" accept="video/mp4,video/x-m4v,video/*" name="video_clip" id="video_clip" />
+                                        <!-- <p class="p1">Drop and drag the video file</p>  class="form_video-upload" -->
+                                    </div>
+                                    <?php if(!empty($settings->video_clip)){ ?>
+                                    <video width="200" height="200" controls>
+                                        <source src="<?php echo URL::to('storage/app/public/').'/'.$settings->video_clip; ?>" type="video/mp4" />
+                                    </video>
+                                    <?php }else{  } ?>
+                            </div>
+                            <br>
+                            <br>
+
+                            </div>
                         </div>
+                        <!-- /// -->
                     </div>
                 </div>
             </div>

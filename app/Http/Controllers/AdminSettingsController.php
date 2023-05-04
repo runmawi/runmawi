@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use App\User as User;
 use \Redirect as Redirect;
 //use Request;
@@ -89,6 +90,8 @@ class AdminSettingsController extends Controller
     public function save_settings(Request $request)
     {
         $input = $request->all();
+
+        $video_clip = (isset($input['video_clip'])) ? $input['video_clip'] : '';
 
         // transcoding_resolution
         if (!empty($request['transcoding_resolution'])) {
@@ -221,6 +224,25 @@ class AdminSettingsController extends Controller
 
         $settings->ppv_status = $request['ppv_status'];
 
+        $path = storage_path('app/public/');
+
+        if($video_clip != '') {
+            
+            if (File::exists(base_path('storage/app/public/' . $settings->video_clip))) {
+                File::delete(base_path('storage/app/public/' . $settings->video_clip));
+            }
+
+            //upload new file
+            $randval = Str::random(16);
+            $file = $video_clip;
+            $video_clip_vid  = $randval.'.'.$request->file('video_clip')->extension();
+            $video_clip_name  = str_replace(" ", "-", $video_clip_vid);
+            $file->move($path, $video_clip_name);
+            $settings->video_clip  = str_replace(" ", "-", $video_clip_name);
+
+        } else {
+            $settings->video_clip = $settings->video_clip;
+        }
         $path = public_path() . '/uploads/settings/';
         $logo = $request['logo'];
         $favicon = $request['favicon'];
@@ -459,6 +481,7 @@ class AdminSettingsController extends Controller
 
 
         $settings->default_ads_url = $request['default_ads_url'];
+        $settings->video_clip_enable = !empty($request->video_clip_enable) ?  "1" : "0" ;
 
         $settings->save();
 

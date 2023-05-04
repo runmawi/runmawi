@@ -36,6 +36,7 @@ use App\Http\Requests\StoreVideoRequest;
 use App\Jobs\ConvertVideoForStreaming;
 use App\Jobs\TranscodeVideo;
 use App\Jobs\VideoSchedule;
+use App\Jobs\VideoClip;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use FFMpeg\Filters\Video\VideoFilters;
 use Illuminate\Support\Str;
@@ -562,6 +563,8 @@ class AdminVideosController extends Controller
                 $Playerui = Playerui::first();
                 if(@$Playerui->video_watermark_enable == 1 && !empty($Playerui->video_watermark)){
                     TranscodeVideo::dispatch($video);
+                }else if(@$settings->video_clip_enable == 1 && !empty($settings->video_clip)){
+                    VideoClip::dispatch($video);
                 }else{
                     ConvertVideoForStreaming::dispatch($video);
                 }           
@@ -605,49 +608,7 @@ class AdminVideosController extends Controller
                 : "";
 
             $storepath = URL::to("/storage/app/public/" . $path);
-            $logo = URL::to('/').'/public/uploads/settings/'. $settings->logo;
-            $watermark = 'https://dev-flick.webnexs.org/public/uploads/settings/webnexs-250.png';
-
-            $ffmpeg = \FFMpeg\FFMpeg::create([
-                'ffmpeg.binaries'  => 'H:/ffmpeg/bin/ffmpeg.exe', // the path to the FFMpeg binary
-                'ffprobe.binaries' => 'H:/ffmpeg/bin/ffprobe.exe', // the path to the FFProbe binary
-                'timeout'          => 0, // the timeout for the underlying process
-                'ffmpeg.threads'   => 1,   // the number of threads that FFMpeg should use
-            ]);
-
    
-
-
-            $video = $ffmpeg->open($storepath);
-        
-            $watermark = 'https://dev-flick.webnexs.org/public/uploads/settings/webnexs-250.png';
-            if (!empty($watermark))
-            {
-                $video  ->filters()
-                        ->watermark("public/uploads/settings" . "/" . $settings->logo, array(
-                            'position' => 'relative',
-                            'top' => 25,
-                            'right' => 50,
-                        ));
-            }
-        
-         
-            // $video->save($storepath);
-        
-    
-            // $videos = $ffmpeg->open(
-            //     "storage/app/public" . "/" . $path
-            // );
-            // // print_r( $videos);exit;
-            // $videos  ->filters()
-            // ->watermark("public/uploads/settings" . "/" . $settings->logo);
-     
-            // $video->save(
-            //     "public/uploads/reelsVideos" . "/" . $path
-            // );
-
-
-
             //  Video duration
             $getID3 = new getID3();
             $Video_storepath = storage_path("app/public/" . $path);
@@ -1035,6 +996,8 @@ class AdminVideosController extends Controller
             $Playerui = Playerui::first();
             if(@$Playerui->video_watermark_enable == 1 && !empty($Playerui->video_watermark)){
                 TranscodeVideo::dispatch($video);
+            }else if(@$settings->video_clip_enable == 1 && !empty($settings->video_clip)){
+                VideoClip::dispatch($video);
             }else{
                 ConvertVideoForStreaming::dispatch($video);
             }             
@@ -1783,6 +1746,8 @@ class AdminVideosController extends Controller
             $Playerui = Playerui::first();
             if(@$Playerui->video_watermark_enable == 1 && !empty($Playerui->video_watermark)){
                 TranscodeVideo::dispatch($video);
+            }else if(@$settings->video_clip_enable == 1 && !empty($settings->video_clip)){
+                VideoClip::dispatch($video);
             }else{
                 ConvertVideoForStreaming::dispatch($video);
             }           
@@ -2052,7 +2017,7 @@ class AdminVideosController extends Controller
         $video->skip_intro = $request["skip_intro"];
         $video->intro_start_time = $request["intro_start_time"];
         $video->intro_end_time = $request["intro_end_time"];
-        $video->country = json_encode($request["video_country"]);
+        $video->country = !empty(($request["video_country"])) ? json_encode($request["video_country"]) : ["All"] ;
         $video->publish_status = $request["publish_status"];
         $video->publish_type = $publish_type;
         $video->publish_time = $publish_time;
@@ -3055,7 +3020,7 @@ class AdminVideosController extends Controller
         $video->access = $data["access"];
         $video->banner = $banner;
         $video->featured = $featured;
-        $video->country = json_encode($data["video_country"]);
+        $video->country = !empty(($request["video_country"])) ? json_encode($request["video_country"]) : ["All"] ;
         $video->enable = 1;
         $video->search_tags = $searchtags;
         $video->ios_ppv_price = $data["ios_ppv_price"];
@@ -3846,6 +3811,8 @@ class AdminVideosController extends Controller
             $Playerui = Playerui::first();
             if(@$Playerui->video_watermark_enable == 1 && !empty($Playerui->video_watermark)){
                 TranscodeVideo::dispatch($video);
+            }else if(@$settings->video_clip_enable == 1 && !empty($settings->video_clip)){
+                VideoClip::dispatch($video);
             }else{
                 ConvertVideoForStreaming::dispatch($video);
             }          
