@@ -492,6 +492,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      <a href="#language" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/lang.svg')?>"><span>Manage Languages </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                      <ul id="language" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/admin-languages') }}"><i class="las la-user-plus"></i>Video Languages</a></li>
+                        <li><a href="{{ URL::to('admin/subtitles/create') }}"><i class="las la-user-plus"></i>Add Subtitle Languages</a></li>
                         <li><a href="{{ URL::to('admin/languages') }}"><i class="las la-eye"></i>Manage Translations</a></li>
                          {{-- <li><a href="{{ URL::to('admin/admin-languages-transulates') }}"><i class="las la-eye"></i>Manage Translate Languages</a></li> --}}
                      </ul>
@@ -798,6 +799,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      <a href="#language" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img height="40" width="40"  class="" src="<?php echo  URL::to('/assets/img/icon/manage-lang.svg')?>"><span>Manage Languages </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                      <ul id="language" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/admin-languages') }}">Video Languages</a></li>
+                        <li><a href="{{ URL::to('admin/subtitles/create') }}">Add Subtitle Languages</a></li>
                         <li><a href="{{ URL::to('admin/languages') }}">Manage Translations</a></li>
                          {{-- <li><a href="{{ URL::to('admin/admin-languages-transulates') }}">Manage Translate Languages</a></li> --}}
                      </ul>
@@ -1107,6 +1109,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      <a href="#language" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/lang.svg')?>"><span>Manage Languages </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                      <ul id="language" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('admin/admin-languages') }}"><i class="las la-user-plus"></i>Video Languages</a></li>
+                        <li><a href="{{ URL::to('admin/subtitles/create') }}"><i class="las la-user-plus"></i>Add Subtitle Languages</a></li>
                         <li><a href="{{ URL::to('admin/languages') }}"><i class="las la-eye"></i>Manage Translations</a></li>
                          {{-- <li><a href="{{ URL::to('admin/admin-languages-transulates') }}"><i class="las la-eye"></i>Manage Translate Languages</a></li> --}}
                      </ul>
