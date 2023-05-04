@@ -58,6 +58,7 @@ use App\ModeratorsUser as ModeratorsUser;
 use App\StorageSetting as StorageSetting;
 use App\Advertisement;
 use App\Playerui as Playerui;
+use App\SeriesSubtitle as SeriesSubtitle;
 
 
 class AdminSeriesController extends Controller
@@ -1475,6 +1476,8 @@ class AdminSeriesController extends Controller
                 'settings' => Setting::first(),
                 'InappPurchase' => InappPurchase::all(),
                 'post_dropzone_url' => $dropzone_url,
+                "subtitles" => Subtitle::all(),
+
             );
 
         return View::make('admin.series.season_edit', $data);
@@ -1729,6 +1732,33 @@ class AdminSeriesController extends Controller
             $episodes->save();
 
 
+            $shortcodes = $request["short_code"];
+            $languages = $request["sub_language"];
+            $subtitles = isset($data["subtitle_upload"])? $data["subtitle_upload"] : "";
+            if (!empty($subtitles != "" && $subtitles != null)) {
+                foreach ($subtitles as $key => $val) {
+                    if (!empty($subtitles[$key])) {
+                        $destinationPath = "public/uploads/subtitles/";
+                        $filename = $episodes->id . "-" . $shortcodes[$key] . ".srt";
+                        $subtitles[$key]->move($destinationPath, $filename);
+                        $subtitle_data["sub_language"] =
+                            $languages[
+                                $key
+                            ]; /*URL::to('/').$destinationPath.$filename; */
+                        $subtitle_data["shortcode"] = $shortcodes[$key];
+                        $subtitle_data["episode_id"] = $id;
+                        $subtitle_data["url"] =
+                            URL::to("/") . "/public/uploads/subtitles/" . $filename;
+                        $episode_subtitle = new SeriesSubtitle();
+                        $episode_subtitle->episode_id = $episodes->id;
+                        $episode_subtitle->shortcode = $shortcodes[$key];
+                        $episode_subtitle->sub_language = $languages[$key];
+                        $episode_subtitle->url =
+                            URL::to("/") . "/public/uploads/subtitles/" . $filename;
+                        $episode_subtitle->save();
+                    }
+                }
+            }
         return Redirect::to('admin/season/edit/'.$data['series_id'].'/'.$data['season_id'])->with(array('note' => 'New Episode Successfully Added!', 'note_type' => 'success') );
     }
 
@@ -1745,6 +1775,19 @@ class AdminSeriesController extends Controller
     public function edit_episode($id)
     {
         $episodes = Episode::find($id);
+        $subtitlescount = Subtitle::join('series_subtitles', 'series_subtitles.sub_language', '=', 'subtitles.language')
+        ->where(['episode_id' => $id])
+        ->count();
+        if ($subtitlescount > 0) {
+            $subtitles = Subtitle::join('series_subtitles', 'series_subtitles.sub_language', '=', 'subtitles.language')
+                ->where(['episode_id' => $id])
+                ->get(["subtitles.*", "series_subtitles.url", "series_subtitles.id as series_subtitles_id"]);
+        } else {
+            $subtitles = Subtitle::all();
+        }
+
+        $SeriesSubtitle = SeriesSubtitle::where('episode_id', $id)->get();
+        // dd($SeriesSubtitle);
         $data = array(
                 'headline' => '<i class="fa fa-edit"></i> Edit Episode '.$episodes->title,
                 'episodes' => $episodes,
@@ -1753,9 +1796,24 @@ class AdminSeriesController extends Controller
                 'admin_user' => Auth::user(),
                 'age_categories' => AgeCategory::all(),
                 'settings' => Setting::first(),
+                "subtitles" => Subtitle::all(),
+                // "subtitles" => $subtitles,
+                "SeriesSubtitle" => $SeriesSubtitle ,
+                "subtitlescount" => $subtitlescount,
             );
 
         return View::make('admin.series.edit_episode', $data);
+    }
+
+    public function subtitledestroy($id)
+    {
+        SeriesSubtitle::destroy($id);
+
+        return Redirect::back()->with([
+            "message" => "Successfully Updated Video!",
+            "note_type" => "success",
+        ]);
+
     }
 
     public function update_episode(Request $request)
@@ -1765,6 +1823,7 @@ class AdminSeriesController extends Controller
         $id = $input['id'];
         $episode  = Episode::findOrFail($id);
         $settings = Setting::first();
+        $subtitles = isset($input["subtitle_upload"])? $input["subtitle_upload"] : "";
 
         $searchtags = !empty($input['searchtags']) ? $input['searchtags'] :  $episode->searchtags ;
 
@@ -1976,6 +2035,32 @@ class AdminSeriesController extends Controller
         $episode->ads_position =  $data['ads_position'];
         $episode->episode_ads =  $data['episode_ads'];
         $episode->save();
+        $shortcodes = $request["short_code"];
+        $languages = $request["sub_language"];
+        if (!empty($subtitles != "" && $subtitles != null)) {
+            foreach ($subtitles as $key => $val) {
+                if (!empty($subtitles[$key])) {
+                    $destinationPath = "public/uploads/subtitles/";
+                    $filename = $episode->id . "-" . $shortcodes[$key] . ".srt";
+                    $subtitles[$key]->move($destinationPath, $filename);
+                    $subtitle_data["sub_language"] =
+                        $languages[
+                            $key
+                        ]; /*URL::to('/').$destinationPath.$filename; */
+                    $subtitle_data["shortcode"] = $shortcodes[$key];
+                    $subtitle_data["episode_id"] = $id;
+                    $subtitle_data["url"] =
+                        URL::to("/") . "/public/uploads/subtitles/" . $filename;
+                    $episode_subtitle = new SeriesSubtitle();
+                    $episode_subtitle->episode_id = $episode->id;
+                    $episode_subtitle->shortcode = $shortcodes[$key];
+                    $episode_subtitle->sub_language = $languages[$key];
+                    $episode_subtitle->url =
+                        URL::to("/") . "/public/uploads/subtitles/" . $filename;
+                    $episode_subtitle->save();
+                }
+            }
+        }
 
         $episode = Episode::findOrFail($id);
         return Redirect::to('admin/season/edit' . '/' . $episode->series_id .'/'.$episode->season_id)->with(array('note' => 'Successfully Updated Episode!', 'note_type' => 'success') );
