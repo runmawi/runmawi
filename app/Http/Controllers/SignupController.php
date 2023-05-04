@@ -391,7 +391,8 @@ public function createStep2(Request $request)
 
         $free_registration = Setting::pluck('free_registration')->first();  // Note - Free Registration 
         if(@$free_registration == 1) {
-            return redirect('/')->with('message', 'You have successfully registered your account. Please login below.');
+            session()->put('message',"You have successfully registered your account. Please login below.");
+            return Theme::view('auth.login');
         }
 
             if ($request->has('ref')) {
