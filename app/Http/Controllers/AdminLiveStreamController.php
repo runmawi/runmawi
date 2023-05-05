@@ -1,11 +1,20 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Support\Facades\Storage;
-use \App\User as User;
-use \Redirect as Redirect;
 use Illuminate\Http\Request;
-use URL;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
+use Streaming\Representation;
+use GuzzleHttp\Client;
+use GuzzleHttp\Message\Response;
+use Intervention\Image\Facades\Image;
+use Intervention\Image\Filters\DemoFilter;
+use Symfony\Component\Process\Process;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Illuminate\Support\Facades\File; 
+use App\User as User;
+use \Redirect as Redirect;
 use App\LiveStream as LiveStream;
 use App\LiveCategory as LiveCategory;
 use App\VideoResolution as VideoResolution;
@@ -14,31 +23,22 @@ use App\Language as Language;
 use App\Subtitle as Subtitle;
 use App\Setting as Setting;
 use App\Tag as Tag;
-use Auth;
-use Hash;
-use Illuminate\Support\Facades\Cache;
-use View;
-use Session;
-use Illuminate\Support\Str;
 use App\Users as Users;
 use App\LiveLanguage as LiveLanguage;
 use App\CategoryLive as CategoryLive;
-use App\RTMP;
-use Streaming\Representation;
-use GuzzleHttp\Client;
-use GuzzleHttp\Message\Response;
 use App\InappPurchase;
 use App\ModeratorsUser;
 use App\PpvPurchase;
 use App\CurrencySetting;
 use App\Adscategory;
-use Intervention\Image\Facades\Image;
-use Intervention\Image\Filters\DemoFilter;
-use Symfony\Component\Process\Process;
-use Symfony\Component\Process\Exception\ProcessFailedException;
 use App\StorageSetting as StorageSetting;
-use Illuminate\Support\Facades\File; 
 use App\Advertisement;
+use App\RTMP;
+use URL;
+use View;
+use Session;
+use Auth;
+use Hash;
 
 class AdminLiveStreamController extends Controller
 {
@@ -669,13 +669,6 @@ class AdminLiveStreamController extends Controller
         return View::make('admin.livestream.edit', $data); 
     }
     
-    public function destroy($id)
-    {
-    //  LiveStream::destroy($id);
-     LiveStream::destroy($id);
-
-        return Redirect::back(); 
-    }
     
     public function update(Request $request)
     {
@@ -2410,5 +2403,60 @@ class AdminLiveStreamController extends Controller
             );
         }
         return response()->json($response, 200);
+    }
+
+    public function destroy($id)
+    {
+        try {
+
+            $livestream_details =LiveStream::findOrFail( $id )->first();
+
+                // Image
+            if (File::exists(base_path('public/uploads/images/'.$livestream_details->image))) {
+                File::delete(base_path('public/uploads/images/'.$livestream_details->image));
+            }
+
+                // Player Image
+            if (File::exists(base_path('public/uploads/images/'.$livestream_details->player_image))) {
+                File::delete(base_path('public/uploads/images/'.$livestream_details->player_image));
+            }
+
+                // Tv Live Image
+            if (File::exists(base_path('public/uploads/images/'.$livestream_details->Tv_live_image))) {
+                File::delete(base_path('public/uploads/images/'.$livestream_details->Tv_live_image));
+            }
+
+                // Acc Audio File
+            if (File::exists(base_path('public/uploads/LiveStream/'.$livestream_details->acc_audio_file))) 
+            {
+                File::delete(base_path('public/uploads/LiveStream/'.$livestream_details->acc_audio_file));
+            }
+
+                // Live Stream Video
+            $live_stream_video = basename(substr($livestream_details->live_stream_video, 0, strrpos($livestream_details->live_stream_video, '.')));
+
+            if (File::exists(base_path('public/uploads/LiveStream/'.$live_stream_video))) 
+            {
+                $directory = base_path('public/uploads/LiveStream/');
+                   
+                $pattern =  $live_stream_video.'*';
+
+                $files = glob($directory . $pattern);
+
+                foreach ($files as $file) {
+                    File::delete($file);
+                }
+            }
+
+            LiveStream::destroy($id);
+            LiveLanguage::where("live_id", $id)->delete();
+            CategoryLive::where("live_id", $id )->delete();
+
+            return Redirect::back(); 
+
+        } catch (\Throwable $th) {
+            // return $th->getMessage();
+           return abort(404);
+        }
     }
 }
