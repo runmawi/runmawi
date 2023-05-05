@@ -98,6 +98,14 @@ Route::post('/admin/cpp_exportCsv', 'ModeratorsUserController@CPPExportCsv');
 
 
 
+//Subtitles Manage
+
+Route::get('admin/subtitles', 'AdminSubtitlesController@index');
+Route::get('admin/subtitles/create', 'AdminSubtitlesController@index');
+Route::post('admin/subtitles/store', 'AdminSubtitlesController@store');
+Route::get('admin/subtitles/edit/{id}', 'AdminSubtitlesController@edit');
+Route::post('admin/subtitles/update', 'AdminSubtitlesController@update');
+Route::get('admin/subtitles/delete/{id}', 'AdminSubtitlesController@destroy');
 
 ////// CPP Video Analytics
 
@@ -822,6 +830,7 @@ Route::get('/Testwatermark', 'Testwatermark@index');
     Route::post('/episode_upload',  'AdminSeriesController@EpisodeUpload');
     Route::get('/episode/episode_edit/{id}',  'AdminSeriesController@EpisodeUploadEdit');
     Route::post('/EpisodeVideoUpload',  'AdminSeriesController@EpisodeVideoUpload');
+    Route::get('/episode/subtitle/delete/{id}', array('before' => 'demo', 'uses' => 'AdminSeriesController@subtitledestroy'));
     
     Route::post('/AWSEpisodeUpload',  'AdminSeriesController@AWSEpisodeUpload');
     Route::get('/episode/AWSepisode_edit/{id}',  'AdminSeriesController@AWSEpisodeUploadEdit');
