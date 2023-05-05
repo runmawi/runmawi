@@ -554,7 +554,7 @@ class AllVideosListController extends Controller
                 return Theme::view('All-Videos.free_movies_list',['respond_data' => $respond_data]);
 
         } catch (\Throwable $th) {
-            return $th->getMessage();
+            // return $th->getMessage();
             return abort(404);
         }
     }
