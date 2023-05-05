@@ -50,13 +50,6 @@ class AllVideosListController extends Controller
     {
         try {
 
-            // if($this->settings->enable_landing_page == 1 && Auth::guest()){
-
-            //     $landing_page_slug = AdminLandingPage::where('status',1)->pluck('slug')->first() ? AdminLandingPage::where('status',1)->pluck('slug')->first() : "landing-page" ;
-    
-            //     return redirect()->route('landing_page', $landing_page_slug );
-            // }
-
             // Video Category 
 
                 $VideoCategory = VideoCategory::select('id','slug','in_home')->where('in_home','=',1)
@@ -386,15 +379,7 @@ class AllVideosListController extends Controller
     {
         try {
 
-            if($this->settings->enable_landing_page == 1 && Auth::guest()){
-
-                $landing_page_slug = AdminLandingPage::where('status',1)->pluck('slug')->first() ? AdminLandingPage::where('status',1)->pluck('slug')->first() : "landing-page" ;
-    
-                return redirect()->route('landing_page', $landing_page_slug );
-            }
-
             $OrderHomeSetting = OrderHomeSetting::get(); 
-
 
             // Fetch all series list
 
@@ -510,6 +495,66 @@ class AllVideosListController extends Controller
 
         } catch (\Throwable $th) {
             // return $th->getMessage();
+            return abort(404);
+        }
+    }
+
+    public function Free_videos(Request $request)
+    {
+        try {
+
+                $OrderHomeSetting = OrderHomeSetting::get(); 
+
+               // Fetch all videos list
+
+                $videos = Video::select('active','status','draft','age_restrict','id','created_at','slug','image','title','rating','duration','featured','year')
+                        ->where('active', '1')->where('status', '1')->where('draft', '1')->where('access','guest');
+
+                    if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
+                        $videos = $videos->whereNotIn('videos.id', Block_videos());
+                    }
+                    if (check_Kidmode() == 1) {
+                        $videos = $videos->whereBetween('videos.age_restrict', [0, 12]);
+                    }
+                    
+                $videos = $videos->latest()->get()->map(function ($item) {
+                    $item['source']       = 'videos';
+                    $item['source_data']  = 'videos';
+                    $item['redirect_url'] = URL::to('category/videos/'.$item->slug) ;
+                    $item['image_url']    = URL::to('public/uploads/images/' . $item->image);
+                    $item['title']    = $item->title;
+                    $item['rating']   = $item->rating;
+                    $item['duration'] = $item->duration;
+                    $item['featured'] = $item->featured;
+                    $item['year']     = $item->year;
+                    $item['age_restrict'] = $item->age_restrict;
+                    return $item;
+                });
+            
+            // Paginate the merged results using LengthAwarePaginator
+
+                $currentPage = request()->get('page') ?: 1;
+                $pagedData = $videos->forPage($currentPage, $this->settings->videos_per_page);
+
+                $videos = new LengthAwarePaginator(
+                    $pagedData,
+                    $videos->count(),
+                    $this->settings->videos_per_page,
+                    $currentPage,
+                    ['path' => request()->url()]
+                );
+
+                $respond_data = array(
+                    'videos'    => $videos,
+                    'ppv_gobal_price'  => $this->ppv_gobal_price,
+                    'currency'         => CurrencySetting::first(),
+                    'ThumbnailSetting' => ThumbnailSetting::first(),
+                );
+
+                return Theme::view('All-Videos.free_movies_list',['respond_data' => $respond_data]);
+
+        } catch (\Throwable $th) {
+            return $th->getMessage();
             return abort(404);
         }
     }
