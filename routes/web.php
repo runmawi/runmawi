@@ -2261,8 +2261,9 @@ Route::get('/Most-watched-videos', 'AllVideosListController@All_User_Mostwatched
 Route::get('/Most-watched-videos-country', 'AllVideosListController@All_Country_MostwatchedVideos')->name('All_Country_MostwatchedVideos');
 Route::get('/Most-watched-videos-site', 'AllVideosListController@All_MostwatchedVideos')->name('All_MostwatchedVideos');
 
+// Free-Movies 
+Route::get('/Free-Movies', 'AllVideosListController@Free_videos')->name('Free_videos');
 
 // Series
-
 Route::get('/series/list', 'AllVideosListController@all_series')->name('all_series');
 Route::get('continue-watching-list', 'AllVideosListController@ContinueWatchingList');
