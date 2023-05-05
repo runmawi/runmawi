@@ -213,7 +213,7 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
     <?php } }else{ ?>
     <div class="col-md-12 text-center mt-4 mb-5" style="padding-top:80px;padding-bottom:80px;">
         <h4 class="main-title mb-4">Sorry! There are no contents under this genre at this moment.</h4>
-        <a href="https://ssflix.tv/" class="outline-danger1">Home</a>
+        <a href="{{ URL::to('/') }}" class="outline-danger1">Home</a>
     </div>
     <?php   } ?>
 </div>
