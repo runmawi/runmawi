@@ -19,19 +19,17 @@
                                         <div class="img-box">
                                             <img src="<?php echo $channel->channel_image;  ?>" class="img-fluid w-100" alt="">
                                         </div>
-                            
-                                        <div class="block-description" >
+                            </div>
+                                        <div class="block-description" ></div>
                                                 <a href="{{ URL::to('channel').'/'.$channel->channel_slug   }}">
                                                     <h6><?php  echo (strlen($channel->channel_name) > 17) ? substr($channel->channel_name,0,18).'...' : $channel->channel_name; ?></h6>
                                                 </a>
-                                            <div class="hover-buttons"><div>
-                                        </div>
-                                    </div>
+                                          
                                     <div>
                                         <button type="button" class="show-details-button" data-toggle="modal" data-target="#myModal<?= $channel->channel_slug;?>">
                                             <span class="text-center thumbarrow-sec"></span>
                                         </button>
-                                    </div> </div> </div>
+                                    </div>  
                                 </a>
                             </li>
                         @endforeach
