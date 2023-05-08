@@ -1374,7 +1374,7 @@
                     <div>
                         <div class="row align-items-center justify-content-center mt-4">
                             <div class="col-lg-2 position-relative p-0 mn">
-                                <a href="https://dev.nemisatv.co.za/live/category/live-radio">
+                                <a href=" https://dev.nemisatv.co.za/live/category/live-radio">
                                     <img class="w-100" src="<?php echo URL::to('/assets/img/lan/radio.jpg'); ?>" style=>
                                     <p class="io">Radio</p>
                                 </a>
@@ -1382,7 +1382,7 @@
 
                             <div class="col-lg-2 p-0 ">
                                 <div class="position-relative mn">
-                                    <a href="https://dev.nemisatv.co.za/tv-shows"> <img class="w-100"
+                                    <a href="https://dev.nemisatv.co.za/series/category/Education"> <img class="w-100"
                                             src="<?php echo URL::to('/assets/img/lan/education.jpg'); ?>" style=>
                                         <p class="io">Education</p>
                                     </a>
@@ -1396,7 +1396,7 @@
                             </div>
 
                             <div class="col-lg-2 position-relative p-0 mn">
-                                <a href="https://dev.nemisatv.co.za/">
+                                <a href="https://dev.nemisatv.co.za/audios">
                                     <img class="w-100" src="<?php echo URL::to('/assets/img/lan/podcast.jpg'); ?>" style=>
                                     <p class="io">Podcast</p>
                                 </a>
@@ -1404,14 +1404,14 @@
 
                             <div class="col-lg-2 p-0">
                                 <div class="position-relative mn">
-                                    <a href="https://dev.nemisatv.co.za/">
+                                    <a href="https://dev.nemisatv.co.za/live/category/live-tv">
                                         <img class="w-100" src="<?php echo URL::to('/assets/img/lan/online.jpg'); ?>" style=>
                                         <p class="io">Online <br>Streaming </p>
                                     </a>
                                 </div>
 
                                 <div class="position-relative mn">
-                                    <a href="https://dev.nemisatv.co.za/category/Movies">
+                                    <a href=" https://dev.nemisatv.co.za/series/category/Movie">
                                         <img class="w-100 " src="<?php echo URL::to('/assets/img/lan/movies.jpg'); ?>" style=>
                                         <p class="io">Movies</p>
                                     </a>
@@ -1419,7 +1419,7 @@
                             </div>
 
                             <div class="col-lg-2 position-relative p-0 mn">
-                                <a href="https://dev.nemisatv.co.za/category/Animation">
+                                <a href="https://dev.nemisatv.co.za/series/category/Animation">
                                     <img class="w-100" src="<?php echo URL::to('/assets/img/lan/animation.jpg'); ?>" style=>
                                     <p class="io">Animation</p>
                                 </a>

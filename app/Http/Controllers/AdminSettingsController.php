@@ -221,6 +221,8 @@ class AdminSettingsController extends Controller
         $settings->show_recommended_videos = $request['show_recommended_videos'];
         $settings->show_artist = $request['show_artist'];
         $settings->show_subtitle = $request['show_subtitle'];
+        $settings->show_views = $request['show_views'];
+
 
         $settings->ppv_status = $request['ppv_status'];
 
