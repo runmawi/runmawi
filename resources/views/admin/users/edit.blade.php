@@ -42,14 +42,7 @@
 	@if (Session::has('message'))
                        <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
                         @endif
-                        @if(count($errors) > 0)
-                        @foreach( $errors->all() as $message )
-                        <div class="alert alert-danger display-hide" id="successMessage" >
-                        <button id="successMessage" class="close" data-close="alert"></button>
-                        <span>{{ $message }}</span>
-                        </div>
-                        @endforeach
-                        @endif
+                      
 	<div class="clear"></div>
 
 	
@@ -87,7 +80,7 @@
 				<!--<div class="panel-title">Mobile</div>--> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body" style="display: block;"> 
                       
-					<?php if($errors->first('email')): ?><div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button> <strong>Oh snap!</strong> <?= $errors->first('mobile'); ?></div><?php endif; ?>
+					<?php if($errors->first('mobile')): ?><div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button> <strong>Oh snap!</strong> <?= $errors->first('mobile'); ?></div><?php endif; ?>
 					<label class="mb-1">User's Mobile</label>
                     <div class="row">
                        <div class="col-sm-4">
