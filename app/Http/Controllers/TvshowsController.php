@@ -50,6 +50,7 @@ use Theme;
 use App\Channel;
 use App\ModeratorsUser;
 use App\SeriesGenre;
+use App\SeriesSubtitle as SeriesSubtitle;
 
 class TvshowsController extends Controller
 {
@@ -248,8 +249,19 @@ class TvshowsController extends Controller
         $episode_Wishlist = Wishlist::where('episode_id', $episodess->id)
             ->where('user_id', $auth_user_id)
             ->first();
+            
+            // Subtitle Data 
+            
+        $playerui = Playerui::first();
+        
+        $subtitle = SeriesSubtitle::where('episode_id', '=', $episodess->id)->get();
 
-        if (Auth::guest() && $settings->access_free == 0):
+        $subtitles_name = SeriesSubtitle::select('subtitles.language as language')
+            ->Join('subtitles', 'series_subtitles.shortcode', '=', 'subtitles.short_code')
+            ->where('series_subtitles.episode_id', $episodess->id)
+            ->get();
+            
+            if (Auth::guest() && $settings->access_free == 0):
             return Redirect::to('/login');
         endif;
         $episode = Episode::where('slug', '=', $episode_name)
@@ -515,8 +527,11 @@ class TvshowsController extends Controller
                     'episode_Wishlist' => $episode_Wishlist,
                     'like_dislike' => $like_dislike,
                     'source_id' => $source_id,
-                    'commentable_type' => 'play_episode',
+                    'commentable_type' => 'play_episode',   
                     'series_lists' =>   $series_lists ,
+                    'subtitles_name' =>   $subtitles_name ,
+                    'playerui_settings' =>   $playerui ,
+                    'episodesubtitles' =>   $subtitle ,
                     'Stripepayment' => PaymentSetting::where('payment_type', 'Stripe')->first(),
                     'PayPalpayment' => PaymentSetting::where('payment_type', 'PayPal')->first(),
                     'Paystack_payment_settings' => PaymentSetting::where('payment_type', 'Paystack')->first(),
@@ -556,6 +571,9 @@ class TvshowsController extends Controller
                     'source_id' => $source_id,
                     'commentable_type' => 'play_episode',
                     'series_lists' =>  $series_lists ,
+                    'subtitles_name' =>   $subtitles_name ,
+                    'playerui_settings' =>   $playerui ,
+                    'episodesubtitles' =>   $subtitle ,
                 ];
 
                 if (Auth::guest() && $settings->access_free == 1) {

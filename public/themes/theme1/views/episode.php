@@ -72,12 +72,12 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                 <source src="<?= $episode->mp4_url ?>" type='video/mp4' label='auto'>
                 <source src="<?= $episode->webm_url ?>" type='video/webm' label='auto'>
                 <source src="<?= $episode->ogg_url ?>" type='video/ogg' label='auto'>
-                <?php  if(isset($episodesubtitles)){
-							foreach ($episodesubtitles as $key => $episodesubtitles_file) { ?>
+                <?php  if(@$playerui_settings['subtitle'] == 1 ){ if(isset($episodesubtitles)){
+                                    foreach ($episodesubtitles as $key => $episodesubtitles_file) { ?>
                 <track kind="captions" src="<?= $episodesubtitles_file->url ?>"
                     srclang="<?= $episodesubtitles_file->sub_language ?>"
                     label="<?= $episodesubtitles_file->shortcode ?>" default>
-                <?php } } ?>
+                <?php } } } ?>
                 <p class="vjs-no-js">To view this series please enable JavaScript, and consider upgrading to a web
                     browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5
                         series</a></p>
@@ -89,12 +89,12 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                 poster="<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>" controls
                 data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'>
                 <source type="application/x-mpegURL" src="<?php echo URL::to('/storage/app/public/') . '/' . $episode->path . '.m3u8'; ?>">
-                <?php  if(isset($episodesubtitles)){
-								foreach ($episodesubtitles as $key => $episodesubtitles_file) { ?>
+                <?php  if(@$playerui_settings['subtitle'] == 1 ){ if(isset($episodesubtitles)){
+                                    foreach ($episodesubtitles as $key => $episodesubtitles_file) { ?>
                 <track kind="captions" src="<?= $episodesubtitles_file->url ?>"
                     srclang="<?= $episodesubtitles_file->sub_language ?>"
                     label="<?= $episodesubtitles_file->shortcode ?>" default>
-                <?php } } ?>
+                <?php } } } ?>
             </video>
         </div>
         <?php  elseif( $episode->type == 'aws_m3u8' ): ?>
@@ -105,12 +105,12 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
 
                 <source type="application/x-mpegURL" src="<?php echo $episode->path; ?>">
 
-                <?php  if(isset($episodesubtitles)){
-						foreach ($episodesubtitles as $key => $episodesubtitles_file) { ?>
+                <?php  if(@$playerui_settings['subtitle'] == 1 ){ if(isset($episodesubtitles)){
+                                    foreach ($episodesubtitles as $key => $episodesubtitles_file) { ?>
                 <track kind="captions" src="<?= $episodesubtitles_file->url ?>"
                     srclang="<?= $episodesubtitles_file->sub_language ?>"
                     label="<?= $episodesubtitles_file->shortcode ?>" default>
-                <?php } } ?>
+                <?php } } } ?>
             </video>
         </div>
 
@@ -123,17 +123,12 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                 <source src="<?php echo URL::to('/storage/app/public/') . '/' . 'TfLwBgA62jiyfpce_2_1000_00018'; ?>" type='application/x-mpegURL' label='360p' res='360' />
                 <source src="<?php echo URL::to('/storage/app/public/') . '/' . $episode->path . '_0_250.m3u8'; ?>" type='application/x-mpegURL' label='480p' res='480' />
                 <source src="<?php echo URL::to('/storage/app/public/') . '/' . $episode->path . '_2_1000.m3u8'; ?>" type='application/x-mpegURL' label='720p' res='720' />
-                <!--
-      <php foreach ($episoderesolutions as $key => $episoderesolution_file) { ?>
-       <source src="<= $episoderesolution_file->url; ?>" type='video/mp4' label='<= $episoderesolution_file->quality; ?>p' res='<= $episoderesolution_file->quality; ?>p'/>
-      <php } ?>
-      
-      <php if(isset($episodesubtitles)){
-      foreach ($episodesubtitles as $key => $episodesubtitles_file) { ?>
-       <track kind="captions" src="<= $episodesubtitles_file->url; ?>" srclang="<= $episodesubtitles_file->sub_language; ?>" label="<= $episodesubtitles_file->shortcode; ?>" default>
-      <php }  }
-      ?>
--->
+                <?php  if(@$playerui_settings['subtitle'] == 1 ){ if(isset($episodesubtitles)){
+                                    foreach ($episodesubtitles as $key => $episodesubtitles_file) { ?>
+                <track kind="captions" src="<?= $episodesubtitles_file->url ?>"
+                    srclang="<?= $episodesubtitles_file->sub_language ?>"
+                    label="<?= $episodesubtitles_file->shortcode ?>" default>
+                <?php } } } ?>
 
             </video>
         </div>
@@ -184,12 +179,12 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                 poster="<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>" data-setup="{}"
                 width="100%" style="width:100%;" data-authenticated="<?= !Auth::guest() ?>">
                 <source src="<?= $season[0]->trailer ?>" type='video/mp4' label='auto'>
-                <?php  if(isset($episodesubtitles)){
-				foreach ($episodesubtitles as $key => $episodesubtitles_file) { ?>
+                <?php  if(@$playerui_settings['subtitle'] == 1 ){ if(isset($episodesubtitles)){
+                                    foreach ($episodesubtitles as $key => $episodesubtitles_file) { ?>
                 <track kind="captions" src="<?= $episodesubtitles_file->url ?>"
                     srclang="<?= $episodesubtitles_file->sub_language ?>"
                     label="<?= $episodesubtitles_file->shortcode ?>" default>
-                <?php } } ?>
+                <?php } } } ?>
             </video>
 
             <!-- <div id=""style="background: url(<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
