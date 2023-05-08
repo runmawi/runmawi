@@ -440,6 +440,8 @@ Route::group(
 
         // library - All videos
         Route::get('library', 'ApiAuthController@all_videos');
+        Route::post('library-IOS', 'ApiAuthController@all_videos_IOS');
+        
         Route::get('menus', 'ApiAuthController@Menus');
 
         // Data Free - Only for Nemisha

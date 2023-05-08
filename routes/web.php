@@ -523,7 +523,7 @@ Route::get('/Testwatermark', 'Testwatermark@index');
 
     // Restream - live
     
-    Route::get('/youtube_startyoutube_start_restream_test_restream', 'AdminLiveStreamController@youtube_start_restream_test')->name('youtube_start_restream_test');
+    Route::get('/youtube_start_restream_test', 'AdminLiveStreamController@youtube_start_restream_test')->name('youtube_start_restream_test');
     Route::post('/youtube_start_restream', 'AdminLiveStreamController@youtube_start_restream')->name('youtube_start_restream');
     Route::post('/fb_start_restream', 'AdminLiveStreamController@fb_start_restream')->name('fb_start_restream');
     Route::post('/twitter_start_restream', 'AdminLiveStreamController@twitter_start_restream')->name('twitter_start_restream');
@@ -2263,7 +2263,7 @@ Route::post('/forget-password-update', 'PasswordForgetController@forget_password
 
 Route::get('/current-time', 'CurrentTimeController@current_time')->name('CurrentTimeController.current_time');
 
-// Learn Page
+// Learn Page   
 Route::get('/learn', 'AllVideosListController@learn')->name('learn');
 
 //All Video
