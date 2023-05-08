@@ -21,7 +21,7 @@
                                         </div>
                             </div>
                                         <div class="block-description" ></div>
-                                                <a href="{{ URL::to('channel').'/'.$channel->channel_slug   }}">
+                                                <a class="mt-1" href="{{ URL::to('channel').'/'.$channel->channel_slug   }}">
                                                     <h6><?php  echo (strlen($channel->channel_name) > 17) ? substr($channel->channel_name,0,18).'...' : $channel->channel_name; ?></h6>
                                                 </a>
                                           
