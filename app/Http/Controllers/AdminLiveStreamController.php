@@ -2239,16 +2239,22 @@ class AdminLiveStreamController extends Controller
     }
 
     // Restream - Testing  
-    public function youtube_start_restream_test($hls_url,$streaming_url){
+    public function youtube_start_restream_test(Request $request){
 
-        $command_line = "ffmpeg -re -i ".$hls_url." -c:v libx264 -c:a aac -f flv ".$streaming_url;
+        $hlsUrl = $request->hls_url ;
+        $streamingUrl = $request->streaming_url ;
+
+        $command_line = "ffmpeg -re -i ".$hlsUrl." -c:v libx264 -c:a aac -f flv ".$streamingUrl;
 
         $process = Process::fromShellCommandline( $command_line);
 
         $process->setTimeout(0);
         $process->mustRun();
-        
-        return response()->json($process, 200);   
+
+        return response()->stream(function() use ($process) {
+            echo $process->getOutput();
+        });
+            
     }
 
         // Restream
