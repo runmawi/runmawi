@@ -12,7 +12,7 @@
             <p> &nbsp;&nbsp;&nbsp;&nbsp;Dear <?php echo $settings->website_name; ?>,&nbsp;&nbsp;&nbsp;&nbsp;</p>
             <p> &nbsp;&nbsp;&nbsp;&nbsp;Content Partner Portal <?php echo $user->username; ?>.Uploaded Content has been Submitted
                 for Approval. &nbsp;&nbsp;&nbsp;&nbsp; </p>
-
+            <p> &nbsp;&nbsp;&nbsp;{{ @$UploadMessage }}&nbsp;&nbsp;&nbsp;&nbsp;</p>
             <p> &nbsp;&nbsp;&nbsp;Sincerely,&nbsp;&nbsp;&nbsp;&nbsp;</p>
             <p>&nbsp;&nbsp;&nbsp;Team <?php echo $settings->website_name; ?>&nbsp;&nbsp;&nbsp;&nbsp;</p>
 

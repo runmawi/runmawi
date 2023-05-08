@@ -15,12 +15,11 @@ use FFMpeg\Format\Video\X264;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Illuminate\Support\Facades\Storage;
 use App\Setting as Setting;
-use hlsparser\HLS;
-use Chrisyue\PhpM3u8\Facade\DumperFacade;
-use Chrisyue\PhpM3u8\Facade\ParserFacade;
-use Chrisyue\PhpM3u8\Stream\TextStream;
-use Chrisyue\PhpM3u8\M3u8;
 use FFMpeg\Coordinate\AspectRatio;
+use FFMpeg\FFMpeg as FFMpegDriver;
+use FFMpeg\Format\FormatInterface;
+use FFMpeg\Format\Video\WebM;
+use FFMpeg\Media\Concat;
 
 class TranscodeController extends Controller
 {
@@ -32,33 +31,31 @@ class TranscodeController extends Controller
      */
     public function M3u8Test(Request $request)
     {
-
-        require_once 'vendor/autoload.php';
-        $m3u8 = new M3u8();
-
         $firstM3u8 = 'https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8';
         $secondM3u8 = 'https://content.jwplatform.com/manifests/vM7nH0Kl.m3u8'; 
-        $firstM3u8String = file_get_contents('https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8');
+        $firstM3u8 = public_path() . "/uploads/transcode/input1.m3u8";
+        $secondM3u8 = public_path() . "/uploads/transcode/input2.m3u8";
+        // dd($firstM3u8);
 
-        $firstM3u8 = $m3u8->fromString($firstM3u8String);
-
-        $secondM3u8Content = file_get_contents('https://content.jwplatform.com/manifests/vM7nH0Kl.m3u8');
-        $secondM3u8 = $m3u8->fromString($secondM3u8String);
-        dd($secondM3u8);
-
-        $concatenatedM3u8 = new M3u8();
-        foreach ($firstM3u8->getSegments() as $segment) {
-            $concatenatedM3u8->addSegment($segment);
-        }
-        
-        // Loop through each media segment in the second M3U8 file and add it to the new instance
-        foreach ($secondM3u8->getSegments() as $segment) {
-            $concatenatedM3u8->addSegment($segment);
-        }
-
-        $concatenatedM3u8String = $concatenatedM3u8->toString();
-file_put_contents('https://localhost/flicknexs/storage/app/public/concatenated.m3u8', $concatenatedM3u8String);
-
+        $inputFile = public_path('/uploads/transcode/concat.txt');
+        $outputFile = public_path('uploads/transcode/output.m3u8');
+    
+        // $ffmpeg = \FFMpeg\FFMpeg::create();
+    
+        $ffmpeg = FFMpeg::create();
+        $ffprobe = FFProbe::create();
+        $concat = new Concat($ffmpeg->getFFMpegDriver());
+    
+        $concat->setSafeMode(false);
+    
+        $m3u8Format = new WebM();
+        $m3u8Format->setAudioCodec('copy');
+        $m3u8Format->setVideoCodec('copy');
+    
+        $concat->fromFile($inputFile)
+        ->saveToFile($outputFile, $m3u8Format);
+        return response()->download($outputFile)->deleteFileAfterSend(true);
+       
     }
      public function M3u8Testold(Request $request)
      {
