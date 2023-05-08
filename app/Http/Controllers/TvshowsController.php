@@ -220,8 +220,7 @@ class TvshowsController extends Controller
 
     public function play_episode($series_name, $episode_name)
     {
-        //
-
+        
         $Theme = HomeSetting::pluck('theme_choosen')->first();
         Theme::uses($Theme);
         $settings = Setting::first();
@@ -261,17 +260,20 @@ class TvshowsController extends Controller
             ->where('series_subtitles.episode_id', $episodess->id)
             ->get();
             
-            if (Auth::guest() && $settings->access_free == 0):
+        if (Auth::guest() && $settings->access_free == 0):
             return Redirect::to('/login');
         endif;
+
         $episode = Episode::where('slug', '=', $episode_name)
             ->orderBy('id', 'DESC')
             ->first();
+
         $id = $episode->id;
 
         $season = SeriesSeason::where('series_id', '=', $episode->series_id)
             ->with('episodes')
             ->get();
+
         $series = Series::find($episode->series_id);
 
         $episodenext = Episode::where('id', '>', $id)
@@ -296,6 +298,7 @@ class TvshowsController extends Controller
                 ->where('episode_id', '=', $id)
                 ->first();
         endif;
+        
         // use App\PpvPurchase as PpvPurchase;
 
         if (!empty($episode->ppv_price) && $settings->access_free == 0) {
