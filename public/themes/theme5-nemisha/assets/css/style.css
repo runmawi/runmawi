@@ -1,4 +1,6 @@
-
+html {
+  scroll-behavior: smooth;
+}
 
 
 /*
@@ -94,7 +96,7 @@ header .navbar-light .navbar-brand img.logo { width: 160px; }
 .notify-bg:after { content: ''; display: block; position: absolute; background: rgba(255, 255, 255, 0.2); width: 30px; height: 100%; left: 30px; top: 0; opacity: 0; filter: blur(5px); transform: translateX(-100px) skewX(-30deg); animation: noti-after-animation 2s infinite 2s; }
 .navbar-right .iq-sub-dropdown .iq-card-body div { border-radius: 0; }
 .navbar-right .iq-show .iq-sub-dropdown, .iq-show .search-box { opacity: 1; visibility: visible; transform: translate(0, 0); }
-.navbar-right .iq-sub-dropdown { width: 300px; opacity: 0; visibility: hidden; position: absolute; top: 97px!important; right: 15px; background: linear-gradient(180deg, #121C28 -35.59%, rgba(11, 18, 28, 0.36) 173.05%); transform: translate(0, 70px); -webkit-transform: translate(0, 70px); transition: all 0.3s; padding: 0; -webkit-box-shadow: 0px 0 20px 0 rgba(0, 0, 0, 0.5); -moz-box-shadow: 0px 0 20px 0 rgba(0, 0, 0, 0.5); box-shadow: 0px 0 20px 0 rgba(0, 0, 0, 0.5); -webkit-transition: all 0.3s ease-out 0s; -moz-transition: all 0.3s ease-out 0s; -ms-transition: all 0.3s ease-out 0s; -o-transition: all 0.3s ease-out 0s; transition: all 0.3s ease-out 0s; z-index: 1; }
+.navbar-right .iq-sub-dropdown { width: 300px; opacity: 0; visibility: hidden; position: absolute; top: 72px!important; right: 10px; background: linear-gradient(180deg, #121C28 -35.59%, rgba(11, 18, 28, 0.36) 173.05%); transform: translate(0, 70px); -webkit-transform: translate(0, 70px); transition: all 0.5s; padding: 0; -webkit-box-shadow: 0px 0 20px 0 rgba(0, 0, 0, 0.5); -moz-box-shadow: 0px 0 20px 0 rgba(0, 0, 0, 0.5); box-shadow: 0px 0 20px 0 rgba(0, 0, 0, 0.5); -webkit-transition: all 0.3s ease-out 0s; -moz-transition: all 0.3s ease-out 0s; -ms-transition: all 0.3s ease-out 0s; -o-transition: all 0.3s ease-out 0s; transition: all 0.3s ease-out 0s; z-index: 1; }
 .navbar-light .navbar-toggler-icon { background: url(../images/menu.png) no-repeat scroll center center; }
 .search-toggle:hover, header .navbar ul li.menu-item a:hover { color: #ED553B!important; }
 .search-wrapper { position: relative; display: inline-block; height: 36px; vertical-align: bottom; }
@@ -604,50 +606,7 @@ in{
 /*---------------------------------------------------------------------
                       Animation
 -----------------------------------------------------------------------*/
-@keyframes slide-down {
-	0% { opacity: 0; transform: translateY(100%);}
-	100% { opacity: 1; transform: translateY(0); }
-}
-@keyframes notify {
-	0% { -webkit-transform: scaleX(1); transform: scaleX(1) }
-	10% { -webkit-transform: scale3d(0.9, 0.9, 0.9) rotate(-3deg); transform: scale3d(0.9, 0.9, 0.9) rotate(-3deg) }
-	20% { -webkit-transform: scale3d(0.9, 0.9, 0.9) rotate(-3deg); transform: scale3d(0.9, 0.9, 0.9) rotate(-3deg) }
-	30% { -webkit-transform: scale3d(1.1, 1.1, 1.1) rotate(3deg); transform: scale3d(1.1, 1.1, 1.1) rotate(3deg) }
-	50% { -webkit-transform: scale3d(1.1, 1.1, 1.1) rotate(3deg); transform: scale3d(1.1, 1.1, 1.1) rotate(3deg) }
-	70% { -webkit-transform: scale3d(1.1, 1.1, 1.1) rotate(3deg); transform: scale3d(1.1, 1.1, 1.1) rotate(3deg) }
-	90% { -webkit-transform: scale3d(1.1, 1.1, 1.1) rotate(3deg); transform: scale3d(1.1, 1.1, 1.1) rotate(3deg) }
-	40% { -webkit-transform: scale3d(1.1, 1.1, 1.1) rotate(-3deg); transform: scale3d(1.1, 1.1, 1.1) rotate(-3deg) }
-	60% { -webkit-transform: scale3d(1.1, 1.1, 1.1) rotate(-3deg); transform: scale3d(1.1, 1.1, 1.1) rotate(-3deg) }
-	80% { -webkit-transform: scale3d(1.1, 1.1, 1.1) rotate(-3deg); transform: scale3d(1.1, 1.1, 1.1) rotate(-3deg) }
-	to { -webkit-transform: scaleX(1); transform: scaleX(1) }
-}
-@-webkit-keyframes slide-in {
-	100% { left: 0; }
-}
-@keyframes slide-in {
-	100% { left: 0; }
-}
-@keyframes pulse-border {
-	0% { transform: translateX(-50%) translateY(-50%) translateZ(0) scale(1); opacity: 1; }
-	100% { transform: translateX(-50%) translateY(-50%) translateZ(0) scale(1.5); opacity: 0; }
-}
-@-webkit-keyframes fadeIn {
-	0% { opacity: 0; }
-	50% { opacity: 0.2; }
-	to { opacity: 1; }
-}
-@keyframes fadeIn {
-	0% { opacity: 0; }
-	50% { opacity: 0.2; }
-	to { opacity: 1; }
-}
-@keyframes trailorPlay {
-	0% { transform: translateX(0); }
-	30% { transform: translateX(-5px); }
-	50% { transform: translateX(5px); }
-	70% { transform: translateX(-2px); }
-	100% { transform: translateX(0); }
-}
+
 .show-details-button {
     bottom: 0;
     left: 0;
