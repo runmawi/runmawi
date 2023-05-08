@@ -1643,6 +1643,35 @@ public function verifyandupdatepassword(Request $request)
                           $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
                           $item['live_description'] = $item->description ? $item->description : "" ;
                           $item['trailer'] = null ;
+                          $item['livestream_format'] =  $item->url_type ;
+
+                          if( $item['livestream_format'] == "mp4"){
+                            $item['livestream_url'] =  $item->mp4_url ;
+                          }
+
+                          elseif( $item['livestream_format'] == "embed"){
+                            $item['livestream_url'] =  $item->embed_url ;
+                          }
+
+                          elseif( $item['livestream_format'] == "live_stream_video"){
+                            $item['livestream_url'] =  $item->live_stream_video ;
+                          }
+
+                          elseif( $item['livestream_format'] == "acc_audio_url"){
+                            $item['livestream_url'] =  $item->acc_audio_url ;
+                          }
+
+                          elseif( $item['livestream_format'] == "acc_audio_file"){
+                            $item['livestream_url'] =  $item->acc_audio_file ;
+                          }
+
+                          elseif( $item['livestream_format'] == "Encode_video"){
+                            $item['livestream_url'] =  $item->hls_url ;
+                          }
+
+                          else{
+                            $item['livestream_url'] =  null ;
+                          }
 
                         // M3U_channels
                         $parser       = new M3UFileParser( $item->m3u_url);
