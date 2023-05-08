@@ -2239,10 +2239,7 @@ class AdminLiveStreamController extends Controller
     }
 
     // Restream - Testing  
-    public function youtube_start_restream_test(Request $request){
-
-        $hls_url       = $request->hls_url ;
-        $streaming_url = $request->streaming_url ;
+    public function youtube_start_restream_test($hls_url,$streaming_url){
 
         $command_line = "ffmpeg -re -i ".$hls_url." -c:v libx264 -c:a aac -f flv ".$streaming_url;
 
