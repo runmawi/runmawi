@@ -101,7 +101,7 @@
                                         <a href="{{ $series->redirect_url }}">
                                             <div class="block-images position-relative">
                                                 <div class="img-box">
-                                                    <img loading="lazy"  data-original="{{ $series->image_url }}" class="img-fluid lazyload w-100">
+                                                    <img loading="lazy"  data-src="{{ $series->image_url }}" class="img-fluid lazyload w-100">
                                                 </div>
                                             </div>
 
