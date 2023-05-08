@@ -677,8 +677,7 @@
 
 
 </section>
-</div>
-</div>
+
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         var lazyloadImages = document.querySelectorAll("img.lazy");
@@ -785,3 +784,5 @@ include public_path('themes/default/views/partials/home/home_pop_up.php');
 
 <?php include 'footer.blade.php'; ?>
 <!-- End Of MainContent -->
+</div>
+</div>

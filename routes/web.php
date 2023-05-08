@@ -522,6 +522,8 @@ Route::get('/Testwatermark', 'Testwatermark@index');
     Route::post('/livestream/store', array('before' => 'demo', 'uses' => 'AdminLiveStreamController@store'));
 
     // Restream - live
+    
+    Route::get('/youtube_startyoutube_start_restream_test_restream', 'AdminLiveStreamController@youtube_start_restream_test')->name('youtube_start_restream_test');
     Route::post('/youtube_start_restream', 'AdminLiveStreamController@youtube_start_restream')->name('youtube_start_restream');
     Route::post('/fb_start_restream', 'AdminLiveStreamController@fb_start_restream')->name('fb_start_restream');
     Route::post('/twitter_start_restream', 'AdminLiveStreamController@twitter_start_restream')->name('twitter_start_restream');
