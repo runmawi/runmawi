@@ -12,14 +12,15 @@
                         <div class="img-box">
                             <img class="w-100" src="<?php echo URL::to('/') . '/public/uploads/images/' . $series_list->image; ?>" width="">
                             <?php if($series_list->access == 'guest'): ?>
-                            <span class="label label-info p-tag1">Free</span>
+                                <span class="label label-info p-tag1">Free</span>
                             <?php elseif($series_list->access == 'subscriber'): ?>
-                            <span class="label label-success ">Subscribers Only</span>
+                                <span class="label label-success ">Subscribers Only</span>
                             <?php elseif($series_list->access == 'registered'): ?>
-                            <span class="label label-warning">Registered Users</span>
+                                <span class="label label-warning">Registered Users</span>
                             <?php endif; ?>
                         </div>
                     </div>
+
                     <div class="thumbnail-overlay"></div>
 
                     <div class="details">
@@ -29,17 +30,17 @@
 
                         <div class="badge badge-secondary p-1 mr-2">
                             <?php
-                                $SeriesSeason = App\SeriesSeason::where('series_id', $series_list->id)->count();
+                                $SeriesSeason = App\SeriesSeason::where('series_id', $series_list->series_id)->count();
                                 echo $SeriesSeason . ' ' . 'Season';
                             ?>
                         </div>
+
                         <div class="badge badge-secondary p-1 mr-2">
                             <?php
-                                $Episode = App\Episode::where('series_id', $series_list->id)->count();
+                                $Episode = App\Episode::where('series_id', $series_list->series_id)->count();
                                 echo $Episode . ' ' . 'Episodes';
                             ?>
                         </div>
-
                     </div>
                 </a>
 
