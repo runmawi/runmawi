@@ -470,10 +470,10 @@ class AdminUsersController extends Controller
     {
 
         $validatedData = $request->validate([
-                    'email' => 'required|max:255|unique:users',
-                    'id' => 'required|max:255', 
-                    'username' => 'required|max:255', 
-                ]);
+            'email' => 'required|max:255|unique:users,email,'.$request->id,
+            'id' => 'required|max:255', 
+            'username' => 'required|max:255', 
+        ]);
 
         $id = $request['id'];
         $user = User::find($id);
