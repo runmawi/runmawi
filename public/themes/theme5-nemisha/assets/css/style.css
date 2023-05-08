@@ -2,7 +2,9 @@ html {
   scroll-behavior: smooth;
 }
 
-
+.badge{
+    font-family: 'futurabook';
+}
 /*
 Template: Streamit - Responsive Bootstrap 4 Template
 Author: iqonicthemes.in
