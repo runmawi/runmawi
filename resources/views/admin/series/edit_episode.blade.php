@@ -303,7 +303,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                 <div class="row">    
                <div class="panel panel-primary" data-collapsed="0"> 
                <div class="panel-heading"> 
-               <div class="panel-title col-sm-12"> <h3 class="fs-title">Subtitles (srt or txt)
+               <div class="panel-title col-sm-12"> <h3 class="fs-title">Subtitles (srt or Vtt)
                <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title="Upload Subtitles" data-original-title="Upload Subtitles" href="#">
                <i class="las la-exclamation-circle"></i>
                </a>:</h3>
