@@ -238,7 +238,7 @@
         }
 
         .nav-link {
-            padding: 5px 20px;
+            padding: 5px!important;
         }
 
         .adv {
