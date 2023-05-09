@@ -441,6 +441,7 @@ Route::group(
         // library - All videos
         Route::get('library', 'ApiAuthController@all_videos');
         Route::post('library-IOS', 'ApiAuthController@all_videos_IOS');
+        Route::get('library-TV', 'ApiAuthController@all_videos_tv');
         
         Route::get('menus', 'ApiAuthController@Menus');
 
