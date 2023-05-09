@@ -90,7 +90,7 @@
 
                         <div class="iq-main-header d-flex align-items-center justify-content-between">
                             <h4 class="main-title">
-                                <a href="{{ URL::to('series/category/'.$series_category->slug )}}"> {{ $series_category->name }} </a>
+                               <a href="{{ URL::to('series/category/'.$series_category->slug)}}"> {{ $series_category->name }} </a> 
                             </h4>
                         </div>
 
