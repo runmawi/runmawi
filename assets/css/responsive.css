@@ -218,13 +218,14 @@
     align-items: center;
     align-items: center;
     }
-    .apps{
-        width: 100%;
-    }
+    
     .btn{
         background-color: transparent!important;
     /*  width: 60%!important;*/
        
+    }
+    .offset-2{
+        margin-left: 0%;
     }
     .links{
         flex-wrap: wrap;
