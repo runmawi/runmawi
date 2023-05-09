@@ -1764,12 +1764,46 @@ class AdminSeriesController extends Controller
 
     public function destroy_episode($id)
     {
-        $series_id = Episode::find($id)->series_id;
-        $season_id = Episode::find($id)->season_id;
+        try {
+       
+            $series_id = Episode::find($id)->series_id;
+            $season_id = Episode::find($id)->season_id;
+            $Episode   = Episode::find($id);
 
-        Episode::destroy($id);
+                    //  Delete Existing  Image
+            if (File::exists(base_path('public/uploads/images/'.$Episode->image))) {
+                File::delete(base_path('public/uploads/images/'.$Episode->image));
+            }
 
-        return Redirect::to('admin/season/edit' . '/' . $series_id.'/'.$season_id)->with(array('note' => 'Successfully Deleted Season', 'note_type' => 'success') );
+                    //  Delete Existing Player Image
+            if (File::exists(base_path('public/uploads/images/'.$Episode->player_image))) {
+                File::delete(base_path('public/uploads/images/'.$Episode->player_image));
+            }
+
+                    //  Delete Existing  Tv Image
+            if (File::exists(base_path('public/uploads/images/'.$Episode->tv_image))) {
+                File::delete(base_path('public/uploads/images/'.$Episode->tv_image));
+            }
+
+                    //  Delete Existing  Episode
+            $directory = storage_path('app/public');
+
+            $info = pathinfo($Episode->mp4_url);
+        
+            $pattern =  $info['filename'] . '*';
+        
+            $files = glob($directory . '/' . $pattern);
+        
+            foreach ($files as $file) {
+                unlink($file);
+            }
+
+            Episode::destroy($id);
+
+            return Redirect::to('admin/season/edit' . '/' . $series_id.'/'.$season_id)->with(array('note' => 'Successfully Deleted Season', 'note_type' => 'success') );
+        } catch (\Throwable $th) {
+            return abort(404);
+        }
     }
 
     public function edit_episode($id)
