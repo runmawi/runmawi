@@ -18,7 +18,8 @@ include public_path('themes/theme5-nemisha/views/header.php');
                                             <div class="img-box">
                                                 <img src="<?php echo URL::to('/') . '/public/uploads/images/' . @$Series_Genre->image; ?>" class="img-fluid w-100" alt="">
                                             </div>
-    </div>
+  </div>
+                                    
                                             <div class="block-description">    </div>
                                                 <a href="<?php echo URL::to('/play_series/') . '/' . $Series_Genre->slug; ?>">
                                                     <h6><?php echo strlen(@$Series_Genre->title) > 17 ? substr(@$Series_Genre->title, 0, 18) . '...' : @$Series_Genre->title; ?></h6>
@@ -34,7 +35,6 @@ include public_path('themes/theme5-nemisha/views/header.php');
                                                     </a>-->
                                                 </div>
                                           
-                                    
                                     </a>
                                 </li>
                             @empty
