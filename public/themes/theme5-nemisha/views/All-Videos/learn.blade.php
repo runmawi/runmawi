@@ -23,7 +23,7 @@
 </style>
 <!-- Learn Series silder -->
 
-<section id="home" class="iq-main-slider p-0">
+<section id="home" class="iq-main-slider p-0 mb-3">
     <div class="overflow-hidden ">
         <div id="home-slider" class="slider m-0 p-0">
             @if(isset($respond_data['series_sliders'])) 
@@ -83,7 +83,7 @@
 
 @if(isset( $respond_data['series']  )) 
     @forelse( $respond_data['series']  as $key => $series_category)
-        <section id="iq-favorites">
+        <section id="iq-favorites mt-4">
             <div class="fluid overflow-hidden">
                 <div class="row">
                     <div class="col-sm-12">
@@ -101,7 +101,7 @@
                                         <a href="{{ $series->redirect_url }}">
                                             <div class="block-images position-relative">
                                                 <div class="img-box">
-                                                    <img loading="lazy"  data-original="{{ $series->image_url }}" class="img-fluid lazyload w-100">
+                                                    <img loading="lazy"  data-src="{{ $series->image_url }}" class="img-fluid lazyload w-100">
                                                 </div>
                                             </div>
 

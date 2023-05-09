@@ -55,6 +55,9 @@ use App\Theme;
 use App\Watchlater;
 use App\Wishlist;
 use Session;
+use App\ModeratorsUser;
+use App\EmailTemplate;
+use Mail;
 
 class CPPSeriesController extends Controller
 {
@@ -408,30 +411,43 @@ class CPPSeriesController extends Controller
             }else{
                 $user_id = 0 ;
             }
-        try {
-                \Mail::send('emails.cpp_approval', array(
-                    'website_name' => $settings->website_name
-                ) , function ($message) use ($request,$user)
-                {
-                    $message->to(AdminMail() , GetWebsiteName())
-                        ->subject('Content has been Submitted for Approval');
+            $user_id = $user->id;
+            $ModeratorsUser = ModeratorsUser::where('id', $user_id)->first();
+            try {
+    
+                $email_template_subject =  EmailTemplate::where('id',11)->pluck('heading')->first() ;
+                $email_subject  = str_replace("{ContentName}", "$series->title", $email_template_subject);
+    
+                $data = array(
+                    'email_subject' => $email_subject,
+                );
+    
+                Mail::send('emails.CPP_Partner_Content_Pending', array(
+                    'Name'         => $ModeratorsUser->username,
+                    'ContentName'  =>  $series->title,
+                    'AdminApprovalLink' => "",
+                    'website_name' => GetWebsiteName(),
+                    'UploadMessage'  => 'A Series has been Uploaded into Portal',
+                ), 
+                function($message) use ($data,$ModeratorsUser) {
+                    $message->from(AdminMail(),GetWebsiteName());
+                    $message->to($ModeratorsUser->email, $ModeratorsUser->username)->subject($data['email_subject']);
                 });
-                
-                $email_log      = 'Mail Sent Successfully from Approval';
-                $email_template = "Approval";
+    
+                $email_log      = 'Mail Sent Successfully from Partner Content Series Successfully Uploaded & Awaiting Approval !';
+                $email_template = "44";
                 $user_id = $user_id;
     
                 Email_sent_log($user_id,$email_log,$email_template);
-
-           } catch (\Throwable $th) {
     
-                $email_log      = $th->getMessage();
-                $email_template = "Approval";
-                $user_id = $user_id;
+        } catch (\Throwable $th) {
     
-                Email_notsent_log($user_id,$email_log,$email_template);
-
-           }
+            $email_log = $th->getMessage();
+            $email_template = "44";
+            $user_id = $user_id;
+    
+            Email_notsent_log($user_id, $email_log, $email_template);
+        }
         return Redirect::to('cpp/series-list')
             ->with(array(
             'note' => 'New Series Successfully Added!',

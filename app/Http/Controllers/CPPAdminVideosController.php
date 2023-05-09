@@ -2090,6 +2090,7 @@ class CPPAdminVideosController extends Controller
                     Mail::send('emails.CPP_Partner_Content_Pending', array(
                         'Name'         => "Admin",
                         'ContentName'  =>  $video->title,
+                        'UploadMessage'  => 'Video has been submitted',
                         'AdminApprovalLink' => "Link - " . URL::to('/admin/CPPVideosIndex'),
                         'website_name' => GetWebsiteName(),
                     ), 
@@ -2127,6 +2128,7 @@ class CPPAdminVideosController extends Controller
                         'ContentName'  =>  $video->title,
                         'AdminApprovalLink' => "",
                         'website_name' => GetWebsiteName(),
+                        'UploadMessage'  => 'A Video has been Uploaded into Portal',
                     ), 
                     function($message) use ($data,$ModeratorsUser) {
                         $message->from(AdminMail(),GetWebsiteName());

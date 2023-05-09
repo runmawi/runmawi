@@ -742,7 +742,7 @@
         left: 0;
         background: #ED563C;
 
-        transition: 0.5s;
+        transition: 0.8s;
         overflow-x: hidden;
         padding-top: 70px;
         white-space: nowrap;
@@ -788,7 +788,7 @@
     #main {
 
         margin-left: 50px;
-        transition: margin-left 0.5s;
+        transition: margin-left 0.8s;
     }
 
     .sidebar img {
