@@ -532,7 +532,7 @@
                                     <?php if($episode->active == null){ ?>
                                     <td > <p class = "bg-warning video_active"><?php echo "Draft"; ?></p></td>
                                              <?php }elseif($episode->active == 1){ ?>
-                                    <td > <p class = "bg-success video_active"><?php  echo "Approved"; ?></p></td>
+                                    <td > <p class = "bg-success video_active"><?php  echo "Published"; ?></p></td>
                                              <?php } ?>
                                     <td>
                                         <div class=" align-items-center">
