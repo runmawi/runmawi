@@ -332,7 +332,29 @@
                             </div>
                         </div>
                     </div>
-
+                    <div class="row mt-5">
+                              <div class="panel panel-primary" data-collapsed="0">
+                                 <div class="panel-heading col-sm-12">
+                                    <div class="panel-title" style="color: #000;"> <label class="m-0"><h3 class="fs-title">Subtitles (srt or txt) :</h3></label>
+                                    </div>
+                                    <div class="panel-options"> 
+                                       <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> 
+                                    </div>
+                                 </div>
+                                 <div class="panel-body" style="display: block;">
+                                    @foreach($subtitles as $subtitle)
+                                    <div class="col-sm-6 form-group" style="float: left;">
+                                       <div class="align-items-center" style="clear:both;" >
+                                          <label for="embed_code"  style="display:block;">Upload Subtitle {{ $subtitle->language }}</label>
+                                          <input class="mt-1" type="file" name="subtitle_upload[]" id="subtitle_upload_{{ $subtitle->short_code }}">
+                                          <input class="mt-1"  type="hidden" name="short_code[]" value="{{ $subtitle->short_code }}">
+                                          <input class="mt-1"  type="hidden" name="sub_language[]" value="{{ $subtitle->language }}">
+                                       </div>
+                                    </div>
+                                    @endforeach
+                                 </div>
+                              </div>
+                           </div>
                     <div class="row mt-3">
                         <div class="col-sm-6"  >
                             <label class="m-0">Choose Ads Position</label>

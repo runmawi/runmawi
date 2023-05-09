@@ -1074,71 +1074,160 @@ class AdminVideosController extends Controller
 
     public function destroy($id)
     {
-
-        $video = Video::find($id);
-
         try {
-            if($video->uploaded_by != null && $video->uploaded_by == "CPP"){
+        
+            $videos = Video::find($id);
 
-                $Moderators_user_email = ModeratorsUser::where('id',$video->user_id)->pluck('email')->first();
-    
-                try {
-    
-                    $email_template_subject =  EmailTemplate::where('id',15)->pluck('heading')->first() ;
-                    $email_subject  = str_replace("{ContentName}", "$video->title", $email_template_subject);
-        
-                    $data = array(
-                        'email_subject' => $email_subject,
-                    );
-        
-                    Mail::send('emails.CPP_Partner_Content_delete', array(
-                        'Name'         => Auth::user() != null && Auth::user()->name ? Auth::user()->name : Auth::user()->username ,
-                        'ContentName'  =>  $video->title,
-                        'website_name' =>  GetWebsiteName(),
-                    ), 
-                    function($message) use ($data,$Moderators_user_email) {
-                        $message->from(AdminMail(),GetWebsiteName());
-                        $message->to($Moderators_user_email)->subject($data['email_subject']);
-                    });
-        
-                    $email_log      = 'Mail Sent Successfully from Partner Content Delete';
-                    $email_template = "15";
-                    $user_id = $id;
-        
-                    Email_sent_log($user_id,$email_log,$email_template);
-        
-                } catch (\Throwable $th) {
-        
-                    $email_log = $th->getMessage();
-                    $email_template = "15";
-                    $user_id = $user_id;
-        
-                    Email_notsent_log($user_id, $email_log, $email_template);
+                    //  Delete Existing Image (PC-Image, Mobile-Image, Tablet-Image )
+            if (File::exists(base_path('public/uploads/images/'.$videos->image))) {
+                File::delete(base_path('public/uploads/images/'.$videos->image));
+            }
+
+            if (File::exists(base_path('public/uploads/images/'.$videos->mobile_image))) {
+                File::delete(base_path('public/uploads/images/'.$videos->mobile_image));
+            }
+
+            if (File::exists(base_path('public/uploads/images/'.$videos->tablet_image))) {
+                File::delete(base_path('public/uploads/images/'.$videos->tablet_image));
+            }
+
+                    //  Delete Existing Player Image
+            if (File::exists(base_path('public/uploads/images/'.$videos->player_image))) {
+                File::delete(base_path('public/uploads/images/'.$videos->player_image));
+            }
+
+                    //  Delete Existing Video Tv Image
+            if (File::exists(base_path('public/uploads/images/'.$videos->video_tv_image))) {
+                File::delete(base_path('public/uploads/images/'.$videos->video_tv_image));
+            }
+
+                    //  Delete Existing Video Title Image
+            if (File::exists(base_path('public/uploads/images/'.$videos->video_title_image))) {
+                File::delete(base_path('public/uploads/images/'.$videos->video_title_image));
+            }
+
+                    //  Delete Existing PDF Image
+            if (File::exists(base_path('public/uploads/videoPdf/'.$videos->pdf_files))) {
+                File::delete(base_path('public/uploads/videoPdf/'.$videos->pdf_files));
+            }
+
+                    //  Delete Existing Reels Thumbnail Image
+            if (File::exists(base_path('public/uploads/images/'.$videos->reels_thumbnail))) {
+                File::delete(base_path('public/uploads/images/'.$videos->reels_thumbnail));
+            }
+
+                    //  Delete Existing Reels Video
+            $ReelsVideo_retrieve =  ReelsVideo::where("video_id", $id)->get();
+
+            foreach ($ReelsVideo_retrieve as $Reels_videos){
+                if (File::exists(base_path('public/uploads/reelsVideos/'.$Reels_videos->reels_videos))) {
+                    File::delete(base_path('public/uploads/reelsVideos/'.$Reels_videos->reels_videos));
                 }
             }
-        } catch (\Throwable $th) {
+
+                    //  Delete Existing Trailer Video - M3u8 Format
+            $video_trailer_m3u8 = pathinfo($videos->trailer)['filename'];
+
+            $directory = base_path('public/uploads/trailer/');
+                    
+            $pattern =  $video_trailer_m3u8.'*';
+
+            $files = glob($directory . $pattern);
+
+            foreach ($files as $file) {
+                File::delete($file);
+            }
+
+                     //  Delete Existing Trailer Video - MP4 Format
+            $video_trailer_mp4 = basename($videos->trailer);
+
+            if (File::exists(base_path('public/uploads/videos/'.$video_trailer_mp4))) {
+                File::delete(base_path('public/uploads/videos/'.$video_trailer_mp4));
+            }
+
+                    //  Delete Existing  Video
+            $directory = storage_path('app/public');
+                    
+            $info = pathinfo($videos->path);
+
+            $pattern =  $info['filename'] . '*';
+
+            $files = glob($directory . '/' . $pattern);
+
+            foreach ($files as $file) {
+                unlink($file);
+            }
+
+                    // Video uploaded by CPP user while deleting Mail
+            try {
+                if($videos->uploaded_by != null && $videos->uploaded_by == "CPP"){
+
+                    $Moderators_user_email = ModeratorsUser::where('id',$videos->user_id)->pluck('email')->first();
+        
+                    try {
+        
+                        $email_template_subject =  EmailTemplate::where('id',15)->pluck('heading')->first() ;
+                        $email_subject  = str_replace("{ContentName}", "$videos->title", $email_template_subject);
             
+                        $data = array(
+                            'email_subject' => $email_subject,
+                        );
+            
+                        Mail::send('emails.CPP_Partner_Content_delete', array(
+                            'Name'         => Auth::user() != null && Auth::user()->name ? Auth::user()->name : Auth::user()->username ,
+                            'ContentName'  =>  $videos->title,
+                            'website_name' =>  GetWebsiteName(),
+                        ), 
+                        function($message) use ($data,$Moderators_user_email) {
+                            $message->from(AdminMail(),GetWebsiteName());
+                            $message->to($Moderators_user_email)->subject($data['email_subject']);
+                        });
+            
+                        $email_log      = 'Mail Sent Successfully from Partner Content Delete';
+                        $email_template = "15";
+                        $user_id = $id;
+            
+                        Email_sent_log($user_id,$email_log,$email_template);
+            
+                    } catch (\Throwable $th) {
+            
+                        $email_log = $th->getMessage();
+                        $email_template = "15";
+                        $user_id = $user_id;
+            
+                        Email_notsent_log($user_id, $email_log, $email_template);
+                    }
+                }
+            } catch (\Throwable $th) {
+                
+            }
+
+                    // Video Destroy
+            \LogActivity::addVideodeleteLog("Deleted Video.", $id);
+
+            Videoartist::where('video_id', $id)->delete();
+            RelatedVideo::where('video_id', $id)->delete();
+            LanguageVideo::where('video_id', $id)->delete();
+            Blockvideo::where('video_id', $id)->delete();
+            ReelsVideo::where("video_id", $id)->delete();
+            PlayerAnalytic::where("videoid", $id)->delete();
+            CategoryVideo::where("video_id", $id)->delete();
+            Video::destroy($id);
+
+            // VideoResolution::where('video_id', '=', $id)->delete();
+            // VideoSubtitle::where('video_id', '=', $id)->delete();
+
+            return Redirect::to("admin/videos")->with([
+                "message" => "Successfully Deleted Video",
+                "note_type" => "success",
+            ]);
+        } catch (\Throwable $th) {
+            return abort(404) ;
         }
-
-        \LogActivity::addVideodeleteLog("Deleted Video.", $id);
-
-        Video::destroy($id);
-      
-        PlayerAnalytic::where("videoid", $id)->delete();
-        //        VideoResolution::where('video_id', '=', $id)->delete();
-        //        VideoSubtitle::where('video_id', '=', $id)->delete();
-        Videoartist::where("video_id", $id)->delete();
-        CategoryVideo::where("video_id", $video->id)->delete();
-
-        return Redirect::to("admin/videos")->with([
-            "message" => "Successfully Deleted Video",
-            "note_type" => "success",
-        ]);
     }
 
     public function edit($id)
     {
-       
         try {
 
             if (!Auth::user()->role == "admin") {
@@ -2682,10 +2771,8 @@ class AdminVideosController extends Controller
                     // $resolution = explode(",",$settings->transcoding_resolution);
                     if ($settings->transcoding_resolution != null) {
                         $convertresolution = [];
-                        $resolution = explode(
-                            ",",
-                            $settings->transcoding_resolution
-                        );
+                        $resolution = explode(",", $settings->transcoding_resolution );
+
                         foreach ($resolution as $value) {
                             if ($value == "240p") {
                                 $r_240p = (new Representation())
@@ -2723,6 +2810,7 @@ class AdminVideosController extends Controller
                     $trailer_path = URL::to("public/uploads/trailer/");
                     $trailer_Videoname =  Str::lower($trailer->getClientOriginalName());
                     $trailer_Video = time() . "_" . str_replace(" ","_",$trailer_Videoname);
+
                     // $trailer_Video =
                     //     time() . "_" . $trailer->getClientOriginalName();
                     $trailer->move(public_path("uploads/trailer/"), $trailer_Video);

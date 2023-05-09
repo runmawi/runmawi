@@ -55,6 +55,9 @@ use App\Theme;
 use App\Watchlater;
 use App\Wishlist;
 use Session;
+use App\Channel;
+use App\EmailTemplate;
+use Mail;
 
 class ChannelSeriesController extends Controller
 {
@@ -402,31 +405,43 @@ class ChannelSeriesController extends Controller
         $languages = $request->get('language');
         $settings = Setting::first();
         $user = Session::get('channel'); 
+        $user_id = $user->id;
+        $Channel = Channel::where('id', $user_id)->first();
+        try {
 
-            try {
-                \Mail::send('emails.chhanel_approval', array(
-                    'website_name' => $settings->website_name
-                ) , function ($message) use ($request,$user)
-                {
-                    $message->to(AdminMail() , GetWebsiteName())
-                        ->subject('Content has been Submitted for Approval');
-                });
-                
-                $email_log      = 'Mail Sent Successfully from Approval';
-                $email_template = "Approval";
-                $user_id = $user_id;
-    
-                Email_sent_log($user_id,$email_log,$email_template);
+            $email_template_subject =  EmailTemplate::where('id',11)->pluck('heading')->first() ;
+            $email_subject  = str_replace("{ContentName}", "$series->title", $email_template_subject);
 
-           } catch (\Throwable $th) {
-    
-                $email_log      = $th->getMessage();
-                $email_template = "Approval";
-                $user_id = $user_id;
-    
-                Email_notsent_log($user_id,$email_log,$email_template);
-           }
-        return Redirect::to('channel/series-list')
+            $data = array(
+                'email_subject' => $email_subject,
+            );
+
+            Mail::send('emails.Channel_Partner_Content_Pending', array(
+                'Name'         => $Channel->channel_name,
+                'ContentName'  =>  $series->title,
+                'AdminApprovalLink' => "",
+                'website_name' => GetWebsiteName(),
+                'UploadMessage'  => 'A Series has been Uploaded into Portal',
+            ), 
+            function($message) use ($data,$Channel) {
+                $message->from(AdminMail(),GetWebsiteName());
+                $message->to($Channel->email, $Channel->channel_name)->subject($data['email_subject']);
+            });
+
+            $email_log      = 'Mail Sent Successfully from Partner Channel Audio Successfully Uploaded & Awaiting Approval !';
+            $email_template = "44";
+            $user_id = $user_id;
+
+            Email_sent_log($user_id,$email_log,$email_template);
+
+    } catch (\Throwable $th) {
+
+        $email_log = $th->getMessage();
+        $email_template = "44";
+        $user_id = $user_id;
+
+        Email_notsent_log($user_id, $email_log, $email_template);
+    }            return Redirect::to('channel/series-list')
             ->with(array(
             'note' => 'New Series Successfully Added!',
             'note_type' => 'success'

@@ -18,7 +18,7 @@ Route::get('/admin/addWatermark', 'TranscodeController@addWatermark');
 Route::post('/audio_ppv', 'CinetPayController@audio_ppv')->name('audio_ppv');
 Route::get('/admin/addSTorageWatermark', 'TranscodeController@addSTorageWatermark');
 Route::get('/live_location', 'ChannelController@live_location');
-Route::get('/admin/TestClipVideo', 'TranscodeController@TestClipVideo');
+Route::get('/admin/M3u8Test', 'TranscodeController@M3u8Test');
 
 
 Route::get('/moderator', 'ModeratorsUserController@index');
@@ -98,6 +98,14 @@ Route::post('/admin/cpp_exportCsv', 'ModeratorsUserController@CPPExportCsv');
 
 
 
+//Subtitles Manage
+
+Route::get('admin/subtitles', 'AdminSubtitlesController@index');
+Route::get('admin/subtitles/create', 'AdminSubtitlesController@index');
+Route::post('admin/subtitles/store', 'AdminSubtitlesController@store');
+Route::get('admin/subtitles/edit/{id}', 'AdminSubtitlesController@edit');
+Route::post('admin/subtitles/update', 'AdminSubtitlesController@update');
+Route::get('admin/subtitles/delete/{id}', 'AdminSubtitlesController@destroy');
 
 ////// CPP Video Analytics
 
@@ -514,6 +522,8 @@ Route::get('/Testwatermark', 'Testwatermark@index');
     Route::post('/livestream/store', array('before' => 'demo', 'uses' => 'AdminLiveStreamController@store'));
 
     // Restream - live
+    
+    Route::get('/youtube_start_restream_test', 'AdminLiveStreamController@youtube_start_restream_test')->name('youtube_start_restream_test');
     Route::post('/youtube_start_restream', 'AdminLiveStreamController@youtube_start_restream')->name('youtube_start_restream');
     Route::post('/fb_start_restream', 'AdminLiveStreamController@fb_start_restream')->name('fb_start_restream');
     Route::post('/twitter_start_restream', 'AdminLiveStreamController@twitter_start_restream')->name('twitter_start_restream');
@@ -822,6 +832,7 @@ Route::get('/Testwatermark', 'Testwatermark@index');
     Route::post('/episode_upload',  'AdminSeriesController@EpisodeUpload');
     Route::get('/episode/episode_edit/{id}',  'AdminSeriesController@EpisodeUploadEdit');
     Route::post('/EpisodeVideoUpload',  'AdminSeriesController@EpisodeVideoUpload');
+    Route::get('/episode/subtitle/delete/{id}', array('before' => 'demo', 'uses' => 'AdminSeriesController@subtitledestroy'));
     
     Route::post('/AWSEpisodeUpload',  'AdminSeriesController@AWSEpisodeUpload');
     Route::get('/episode/AWSepisode_edit/{id}',  'AdminSeriesController@AWSEpisodeUploadEdit');
@@ -2252,7 +2263,7 @@ Route::post('/forget-password-update', 'PasswordForgetController@forget_password
 
 Route::get('/current-time', 'CurrentTimeController@current_time')->name('CurrentTimeController.current_time');
 
-// Learn Page
+// Learn Page   
 Route::get('/learn', 'AllVideosListController@learn')->name('learn');
 
 //All Video
@@ -2261,8 +2272,9 @@ Route::get('/Most-watched-videos', 'AllVideosListController@All_User_Mostwatched
 Route::get('/Most-watched-videos-country', 'AllVideosListController@All_Country_MostwatchedVideos')->name('All_Country_MostwatchedVideos');
 Route::get('/Most-watched-videos-site', 'AllVideosListController@All_MostwatchedVideos')->name('All_MostwatchedVideos');
 
+// Free-Movies 
+Route::get('/Free-Movies', 'AllVideosListController@Free_videos')->name('Free_videos');
 
 // Series
-
 Route::get('/series/list', 'AllVideosListController@all_series')->name('all_series');
 Route::get('continue-watching-list', 'AllVideosListController@ContinueWatchingList');

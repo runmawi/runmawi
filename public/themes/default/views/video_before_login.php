@@ -418,11 +418,13 @@
                <?php } ?>
             </li>
             <li>
-               <div class="btn btn-default views text-white">
-                  <span class="view-count"><i class="fa fa-eye"></i> 
-                  <?php if(isset($view_increment) && $view_increment == true ): ?><?= $movie->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?> 
-                  </span>
-               </div>
+               <?php if(!empty($video->show_views) && $settings->show_views == 1 ) : ?>
+                  <div class="btn btn-default views text-white">
+                     <span class="view-count"><i class="fa fa-eye"></i> 
+                        <?php if(isset($view_increment) && $view_increment == true ): ?><?= $movie->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?> 
+                     </span>
+                  </div>
+               <?php endif; ?>
             </li>
          </ul>
       </div>
@@ -456,11 +458,15 @@
                <a href="<?php echo URL::to('/login');?>"><span class="view-count btn btn-primary subsc-video"><?php echo __('Subscribe');?> </span></a>
             </li>
             <li>
-               <div class="btn btn-default views">
-                  <span class="view-count"><i class="fa fa-eye"></i> 
-                  <?php if(isset($view_increment) && $view_increment == true ): ?><?= $movie->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?> 
-                  </span>
-               </div>
+
+               <?php if(!empty($video->show_views) && $settings->show_views == 1 ) : ?>
+                  <div class="btn btn-default views">
+                     <span class="view-count"><i class="fa fa-eye"></i> 
+                     <?php if(isset($view_increment) && $view_increment == true ): ?><?= $movie->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?> 
+                     </span>
+                  </div>
+               <?php endif; ?>
+
             </li>
             <?php }
                elseif($video->access == "ppv"){ ?> 
@@ -470,11 +476,14 @@
                <?php echo __('Rent');?> </span></a>
             </li>
             <li>
-               <div class="btn btn-default views text-white">
-                  <span class="view-count"><i class="fa fa-eye"></i> 
-                  <?php if(isset($view_increment) && $view_increment == true ): ?><?= $movie->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?> 
-                  </span>
-               </div>
+               <?php if(!empty($video->show_views) && $settings->show_views == 1 ) : ?>
+                     <div class="btn btn-default views text-white">
+                        <span class="view-count"><i class="fa fa-eye"></i> 
+                        <?php if(isset($view_increment) && $view_increment == true ): ?><?= $movie->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?> 
+                        </span>
+                     </div>
+               <?php endif; ?>
+               
             </li>
             <?php }else{ ?>
             <?php } ?>

@@ -345,19 +345,19 @@
 
                 <div class="row justify-content-center">
                     <div class="col-md-5 sigk text-center">
-                        <div class="d-flex justify-content-between">
+                        <div class="d-flex justify-content-center">
 
                             {{-- message --}}
                             @if (Session::has('message'))
                                 <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
                             @endif
 
-                            <div><i class="fa fa-arrow-left text-white" aria-hidden="true"></i></div>
+                           <!-- <div><i class="fa fa-arrow-left text-white" aria-hidden="true"></i></div>-->
                             <div>
                                 <h4 class="main-title mb-4 text-center">My Account</h4>
                             </div>
-                            <div><a herf="" class="text-white">Done</a>
-                            </div>
+                           <!-- <div><a herf="" class="text-white">Done</a>
+                            </div>-->
 
                         </div>
 

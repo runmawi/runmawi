@@ -50,6 +50,9 @@ use App\Wishlist;
 use App\Watchlater;
 use App\PpvPurchase;
 use Carbon\Carbon;
+use App\ModeratorsUser;
+use App\EmailTemplate;
+use Mail;
 
 class CPPAdminAudioController extends Controller
 {
@@ -835,37 +838,43 @@ class CPPAdminAudioController extends Controller
 
         $settings = Setting::first();
         $user = Session::get('user'); 
+        $user_id = $user->id;
+        $ModeratorsUser = ModeratorsUser::where('id', $user_id)->first();
+        try {
 
-            try {
-                \Mail::send('emails.cpp_approval', array(
-                    'website_name' => $settings->website_name
-                ) , function ($message) use ($request,$user)
-                {
-                    $message->to(AdminMail() , GetWebsiteName())
-                        ->subject('Content has been Submitted for Approval');
-                });
-                
-                $email_log      = 'Mail Sent Successfully from Approval';
-                $email_template = "Approval";
-                $user_id = $user_id;
-    
-                Email_sent_log($user_id,$email_log,$email_template);
+            $email_template_subject =  EmailTemplate::where('id',11)->pluck('heading')->first() ;
+            $email_subject  = str_replace("{ContentName}", "$audio->title", $email_template_subject);
 
-                return Redirect::back()
-                ->with('message', 'Content has been Submitted for Approval ');
+            $data = array(
+                'email_subject' => $email_subject,
+            );
 
-           } catch (\Throwable $th) {
-    
-                $email_log      = $th->getMessage();
-                $email_template = "Approval";
-                $user_id = $user_id;
-    
-                Email_notsent_log($user_id,$email_log,$email_template);
+            Mail::send('emails.CPP_Partner_Content_Pending', array(
+                'Name'         => $ModeratorsUser->username,
+                'ContentName'  =>  $audio->title,
+                'AdminApprovalLink' => "",
+                'website_name' => GetWebsiteName(),
+                'UploadMessage'  => 'A Audio has been Uploaded into Portal',
+            ), 
+            function($message) use ($data,$ModeratorsUser) {
+                $message->from(AdminMail(),GetWebsiteName());
+                $message->to($ModeratorsUser->email, $ModeratorsUser->username)->subject($data['email_subject']);
+            });
 
-                return Redirect::back()
-                ->with('message', 'Content has been Submitted for Approval ');
+            $email_log      = 'Mail Sent Successfully from Partner Content Audio Successfully Uploaded & Awaiting Approval !';
+            $email_template = "44";
+            $user_id = $user_id;
 
-           }
+            Email_sent_log($user_id,$email_log,$email_template);
+
+    } catch (\Throwable $th) {
+
+        $email_log = $th->getMessage();
+        $email_template = "44";
+        $user_id = $user_id;
+
+        Email_notsent_log($user_id, $email_log, $email_template);
+    }
            
         return Redirect::back()
         ->with('message', 'Content has been Submitted for Approval ');

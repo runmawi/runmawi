@@ -1643,6 +1643,35 @@ public function verifyandupdatepassword(Request $request)
                           $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
                           $item['live_description'] = $item->description ? $item->description : "" ;
                           $item['trailer'] = null ;
+                          $item['livestream_format'] =  $item->url_type ;
+
+                          if( $item['livestream_format'] == "mp4"){
+                            $item['livestream_url'] =  $item->mp4_url ;
+                          }
+
+                          elseif( $item['livestream_format'] == "embed"){
+                            $item['livestream_url'] =  $item->embed_url ;
+                          }
+
+                          elseif( $item['livestream_format'] == "live_stream_video"){
+                            $item['livestream_url'] =  $item->live_stream_video ;
+                          }
+
+                          elseif( $item['livestream_format'] == "acc_audio_url"){
+                            $item['livestream_url'] =  $item->acc_audio_url ;
+                          }
+
+                          elseif( $item['livestream_format'] == "acc_audio_file"){
+                            $item['livestream_url'] =  $item->acc_audio_file ;
+                          }
+
+                          elseif( $item['livestream_format'] == "Encode_video"){
+                            $item['livestream_url'] =  $item->hls_url ;
+                          }
+
+                          else{
+                            $item['livestream_url'] =  null ;
+                          }
 
                         // M3U_channels
                         $parser       = new M3UFileParser( $item->m3u_url);
@@ -11604,6 +11633,133 @@ public function QRCodeMobileLogout(Request $request)
             ], 200);
     }
   }
+
+
+  public function all_videos_IOS()
+  {
+    try {
+          // Video Category 
+
+                $VideoCategory = VideoCategory::select('id','slug','in_home')->where('in_home','=',1)
+                                ->get()->map(function ($item) {
+                                    $item['redirect_url']  = URL::to('videos/category/'.$item->slug);
+                                    $item['source_data']   = 'video_category';
+                                    return $item;
+                                });
+
+            // Series Genres
+
+                $SeriesGenre = SeriesGenre::select('id','slug','in_home')
+                                ->get()->map(function ($item) {
+                                    $item['redirect_url']  = URL::to('series/category/'.$item->slug);
+                                    $item['source_data']  = 'SeriesGenre';
+                                    return $item;
+                                });
+                                
+
+            // Fetch all OrderHomeSetting list
+
+                $OrderHomeSetting = OrderHomeSetting::get(); 
+
+            // Fetch all videos list
+                $videos = Video::select('active','status','draft','age_restrict','id','created_at','slug','image','title','rating','duration','featured','year')
+                        ->where('active', '1')->where('status', '1')->where('draft', '1');
+
+                    if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
+                        $videos = $videos->whereNotIn('videos.id', Block_videos());
+                    }
+                    if (check_Kidmode() == 1) {
+                        $videos = $videos->whereBetween('videos.age_restrict', [0, 12]);
+                    }
+                    
+                $videos = $videos->latest()->get()->map(function ($item) {
+                    $item['source']       = 'videos';
+                    $item['source_data']  = 'videos';
+                    $item['redirect_url'] = URL::to('category/videos/'.$item->slug) ;
+                    $item['image_url']    = URL::to('public/uploads/images/' . $item->image);
+                    $item['title']    = $item->title;
+                    $item['rating']   = $item->rating;
+                    $item['duration'] = $item->duration;
+                    $item['featured'] = $item->featured;
+                    $item['year']     = $item->year;
+                    $item['age_restrict'] = $item->age_restrict;
+                    return $item;
+                });
+
+            // Fetch all series list
+
+                $Series = Series::select('active','id','created_at','slug','image','title','rating','duration','featured','year')
+                                    ->where('active', '=', '1')->orderBy('created_at', 'DESC')->latest()->get()
+                                    ->map(function ($item) use($OrderHomeSetting) {
+                    $item['source']       = $OrderHomeSetting->where('id',5)->pluck('header_name')->first() != null ? $OrderHomeSetting->where('id',5)->pluck('header_name')->first() : "Series" ;
+                    $item['source_data']  = 'series';
+                    $item['redirect_url'] = URL::to('play_series/'.$item->slug) ;
+                    $item['image_url']    = URL::to('public/uploads/images/'.$item->image);
+                    $item['title']    = $item->title;
+                    $item['rating']   = $item->rating;
+                    $item['duration'] = $item->duration;
+                    $item['featured'] = $item->featured;
+                    $item['year']     = $item->year;
+                    $item['age_restrict'] = null ;
+                    return $item;
+                });
+
+            // Fetch all audio albums list
+
+                $AudioAlbums = AudioAlbums::orderBy('created_at', 'desc')->get()->map(function ($item) use($OrderHomeSetting) {
+                    $item['source']       = $OrderHomeSetting->where('id',7)->pluck('header_name')->first() != null ? $OrderHomeSetting->where('id',7)->pluck('header_name')->first() : "Podcast";
+                    $item['source_data']  = 'AudioAlbums';
+                    $item['redirect_url'] = URL::to('album/'.$item->slug) ;
+                    $item['image_url']    = URL::to('public/uploads/albums/' . $item->album);
+                    $item['title']        = $item->albumname;
+                    $item['age_restrict'] = null ;
+                    $item['rating']       = null;
+                    $item['duration']     = null;
+                    $item['featured']     = null;
+                    $item['year']         = null;
+                    return $item;
+                  });
+
+            // Merge the results of the video, series, and audio album queries
+
+                $mergedResults = $videos->merge($Series)->merge($AudioAlbums);
+
+            // Paginate the merged results using LengthAwarePaginator
+
+                $currentPage = request()->get('page') ?: 1;
+                $pagedData = $mergedResults->forPage($currentPage, $this->settings->videos_per_page);
+
+                $mergedResults = new LengthAwarePaginator(
+                    $pagedData,
+                    $mergedResults->count(),
+                    $this->settings->videos_per_page,
+                    $currentPage,
+                    ['path' => request()->url()]
+                );
+
+
+            $videos_data[] = $mergedResults ;
+
+            return response()->json([
+              'status'  => 'true',
+              'Message' => 'All videos Retrieved  Successfully',
+              'videos'    => $mergedResults,
+              'ppv_gobal_price'  => $this->ppv_gobal_price,
+              'SeriesGenre'      => $SeriesGenre ,
+              'VideoCategory'    => $VideoCategory ,
+              'video_andriod'    => $videos_data ,
+              'currency'         => CurrencySetting::first(),
+              'ThumbnailSetting' => ThumbnailSetting::first(),
+           ], 200);
+
+    } catch (\Throwable $th) {
+        return response()->json([
+                'status'  => 'false',
+                'Message' => $th->getMessage(),
+            ], 200);
+    }
+  }
+
 
   // Menus API 
 
