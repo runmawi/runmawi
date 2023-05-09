@@ -218,10 +218,16 @@
     align-items: center;
     align-items: center;
     }
+    .apps{
+        width: 100%;
+    }
     .btn{
         background-color: transparent!important;
     /*  width: 60%!important;*/
        
+    }
+    .links{
+        flex-wrap: wrap;
     }
     .buttonClass{
         font-size: 15px!important;
@@ -271,9 +277,11 @@
         padding: 10px;
     }
     #mob a{
-        font-size: 12px;
+       
     }
-    
+    .navbar-brand{
+        width: 77%;
+    }
     footer{
         padding: 0!important;
     }
