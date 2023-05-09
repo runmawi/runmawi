@@ -1440,9 +1440,76 @@ class AdminSeriesController extends Controller
     
     public function destroy_season($id)
     {
-        $series_id = SeriesSeason::find($id)->series_id;
+        try {
 
-        SeriesSeason::destroy($id);
+            $series_id = SeriesSeason::find($id)->series_id;
+
+            $season = SeriesSeason::find($id); 
+            $episodes = $season->episodes->pluck('id'); 
+            
+            foreach($episodes as $episode_id ){
+
+                $Episode   = Episode::find($episode_id);
+
+                        //  Delete Existing  Image
+                if (File::exists(base_path('public/uploads/images/'.$Episode->image))) {
+                    File::delete(base_path('public/uploads/images/'.$Episode->image));
+                }
+
+                        //  Delete Existing Player Image
+                if (File::exists(base_path('public/uploads/images/'.$Episode->player_image))) {
+                    File::delete(base_path('public/uploads/images/'.$Episode->player_image));
+                }
+
+                        //  Delete Existing  Tv Image
+                if (File::exists(base_path('public/uploads/images/'.$Episode->tv_image))) {
+                    File::delete(base_path('public/uploads/images/'.$Episode->tv_image));
+                }
+
+                        //  Delete Existing  Episode
+                $directory = storage_path('app/public');
+
+                $info = pathinfo($Episode->mp4_url);
+            
+                $pattern =  $info['filename'] . '*';
+            
+                $files = glob($directory . '/' . $pattern);
+            
+                foreach ($files as $file) {
+                    unlink($file);
+                }
+
+                Episode::destroy($episode_id);
+            }
+
+                    //  Delete Existing Image - Season
+            $season_image = basename($season->image);
+
+            if (File::exists(base_path('public/uploads/season_images/'.$season_image))) {
+                File::delete(base_path('public/uploads/season_images/'.$season_image));
+            }
+
+                    //  Delete Existing Trailer - Season
+
+            $vseason_trailer = pathinfo($season->trailer)['filename'];
+
+            $directory = base_path('public/uploads/season_trailer/');
+                    
+            $pattern =  $vseason_trailer.'*';
+
+            $files = glob($directory . $pattern);
+
+            foreach ($files as $file) {
+                File::delete($file);
+            }
+          
+             SeriesSeason::destroy($id);
+
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+
+            return abort (404);
+        }
 
         return Redirect::to('admin/series/edit' . '/' . $id)->with(array('note' => 'Successfully Deleted Season', 'note_type' => 'success') );
     }
