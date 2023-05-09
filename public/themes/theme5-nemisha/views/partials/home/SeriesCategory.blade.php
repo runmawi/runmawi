@@ -18,8 +18,9 @@ include public_path('themes/theme5-nemisha/views/header.php');
                                             <div class="img-box">
                                                 <img src="<?php echo URL::to('/') . '/public/uploads/images/' . @$Series_Genre->image; ?>" class="img-fluid w-100" alt="">
                                             </div>
-
-                                            <div class="block-description">
+  </div>
+                                    
+                                            <div class="block-description">    </div>
                                                 <a href="<?php echo URL::to('/play_series/') . '/' . $Series_Genre->slug; ?>">
                                                     <h6><?php echo strlen(@$Series_Genre->title) > 17 ? substr(@$Series_Genre->title, 0, 18) . '...' : @$Series_Genre->title; ?></h6>
                                                 </a>
@@ -28,13 +29,12 @@ include public_path('themes/theme5-nemisha/views/header.php');
                                                     </div>
                                                 </div>
                                                 <div>
-                                                    <a class="text-white" href="<?php echo URL::to('/play_series' . '/' . $Series_Genre->slug); ?> ">
+                                                   <!-- <a class="text-white" href="<?php echo URL::to('/play_series' . '/' . $Series_Genre->slug); ?> ">
                                                         <i class="fa fa-play mr-1" aria-hidden="true"></i>
                                                         Visit Series
-                                                    </a>
+                                                    </a>-->
                                                 </div>
-                                            </div>
-                                        </div>
+                                          
                                     </a>
                                 </li>
                             @empty
