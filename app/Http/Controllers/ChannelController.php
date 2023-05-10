@@ -588,7 +588,12 @@ class ChannelController extends Controller
                     $date = date_create($current_date);
                     $currentdate = date_format($date, 'M d ,y H:i:s');
 
-                    if ($currentdate < $new_date) {
+                    $newdate = Carbon::parse($categoryVideos->publish_time)->format('m/d/y');
+
+                    $current_date = date_format($date, 'm/d/y');
+
+
+                    if ($current_date < $newdate) {
                         $new_date = Carbon::parse($categoryVideos->publish_time)->format('M d , y h:i:s a');
                     } else {
                         $new_date = null;
@@ -596,6 +601,7 @@ class ChannelController extends Controller
                 } else {
                     $new_date = null;
                 }
+
                 if (@$categoryVideos->uploaded_by == 'Channel' && @$categoryVideos->access != 'guest') {
                     $user_id = $categoryVideos->user_id;
 
@@ -1862,8 +1868,10 @@ class ChannelController extends Controller
                     $current_date = Date('M d , y H:i:s');
                     $date = date_create($current_date);
                     $currentdate = date_format($date, 'M d ,y H:i:s');
+                    $newdate = Carbon::parse($categoryVideos->publish_time)->format('m/d/y');
+                    $current_date = date_format($date, 'm/d/y');
 
-                    if ($currentdate < $new_date) {
+                    if ($current_date < $newdate) {
                         $new_date = Carbon::parse($categoryVideos->publish_time)->format('M d , y h:i:s a');
                     } else {
                         $new_date = null;
@@ -1871,6 +1879,7 @@ class ChannelController extends Controller
                 } else {
                     $new_date = null;
                 }
+                
                 $currency = CurrencySetting::first();
                 $data = [
                     'currency' => $currency,
