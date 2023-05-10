@@ -19,7 +19,7 @@ Route::post('/audio_ppv', 'CinetPayController@audio_ppv')->name('audio_ppv');
 Route::get('/admin/addSTorageWatermark', 'TranscodeController@addSTorageWatermark');
 Route::get('/live_location', 'ChannelController@live_location');
 Route::get('/admin/M3u8Test', 'TranscodeController@M3u8Test');
-Route::get('/merge-m3u8-files', 'TranscodeController@mergeMp4Files');
+Route::get('/merge-m3u8-files', 'TranscodeController@mergeM3u8Files');
 
 
 Route::get('/moderator', 'ModeratorsUserController@index');
