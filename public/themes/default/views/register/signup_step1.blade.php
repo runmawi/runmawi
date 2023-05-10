@@ -294,11 +294,12 @@ i.fa.fa-google-plus {
                                    <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye" aria-hidden="true"></i></button>
                                  </span>
                                          </div>
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                                         @if ($errors->has('password_confirmation'))
+                                        <span class="text-danger" id="successMessage"  style='padding-left: 22px' >
+                                            <strong>Password Not matching.</strong>
+                                        </span>
+                                    @endif
+                                     
                                          </div>
                             </div>
                                 @endif
@@ -309,7 +310,7 @@ i.fa.fa-google-plus {
                                 <div class="row">
                                      <div class="col-md-12">
                                 <input id="password-confirm" type="password" class="form-control" placeholder="Confirm Password" name="password_confirmation" required autocomplete="new-password">
-                                    </div>
+                            </div>
                                     <div >
                               <span class="input-group-btn" id="eyeSlash1">
                                    <button class="btn btn-default reveal" onclick="visibility2()" type="button"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
@@ -319,10 +320,9 @@ i.fa.fa-google-plus {
                                  </span>
                                     </div>
                                 </div>
-    
                                 <span style="color: var(--iq-white);font-size: 14px;font-style: italic;">(Password should be at least 8 characters in length and should include at least one upper case letter, one number, and one special character.)</span>
                             </div>
-                                 
+     
                             </div>            
                                 @endif
                             

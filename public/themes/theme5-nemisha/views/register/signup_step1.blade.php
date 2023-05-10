@@ -461,11 +461,11 @@ $jsondata = json_decode($jsonString, true); ?>
                                    <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye" aria-hidden="true"></i></button>
                                  </span>
                                          </div>
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
+                                @if ($errors->has('password_confirmation'))
+                                    <span class="text-danger" id="successMessage"  style='padding-left: 22px' >
+                                    <strong>Password Not matching.</strong>
                                     </span>
-                                @enderror
+                                    @endif
                                          </div>
                             </div>
                                 @endif

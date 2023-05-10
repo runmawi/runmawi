@@ -20,6 +20,7 @@ use FFMpeg\FFMpeg as FFMpegDriver;
 use FFMpeg\Format\FormatInterface;
 use FFMpeg\Format\Video\WebM;
 use FFMpeg\Media\Concat;
+use FFMpeg\Coordinate\TimeCode;
 
 class TranscodeController extends Controller
 {
@@ -29,6 +30,51 @@ class TranscodeController extends Controller
      * @param  Request  $request
      * @return Response
      */
+    public function mergeM3u8Files()
+    {
+        // https://localhost/flicknexs/public/uploads/transcode/input1.m3u8
+        // https://localhost/flicknexs/public/uploads/transcode/input2.m3u8
+        // $inputFiles = ['https://localhost/flicknexs/public/uploads/transcode/input1.m3u8',
+        // 'https://localhost/flicknexs/public/uploads/transcode/input2.m3u8'];
+
+        $firstM3u8 = 'https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8';
+        $secondM3u8 = 'https://content.jwplatform.com/manifests/vM7nH0Kl.m3u8'; 
+
+        // $inputFiles = [public_path() . "/uploads/transcode/input1.m3u8",
+        // public_path() . "/uploads/transcode/input1.m3u8"];
+
+        $inputFiles = [$firstM3u8, $secondM3u8];
+        $outputFile = public_path() . '/uploads/transcode/output.m3u8';
+        $ffmpeg = FFMpeg::create();
+    
+        $media = [];
+        foreach ($inputFiles as $file) {
+            $media[] = $ffmpeg->open($file);
+        }
+    
+        $concatenated = $ffmpeg->concatenate($media)
+                               ->saveFromNonBlockingStreams($outputFile);
+    
+        return response()->download($outputFile);
+    }
+    
+     public function mergeM3u8Filesold()
+{
+
+    $firstM3u8 = public_path() . "/uploads/transcode/input1.m3u8";
+    $secondM3u8 = public_path() . "/uploads/transcode/input2.m3u8";
+
+    $inputFiles = [public_path() . "/uploads/transcode/input1.m3u8",
+    public_path() . "/uploads/transcode/input1.m3u8"];
+    $outputFile = public_path() . '/uploads/transcode/output.m3u8';
+    $concatenate = \FFMpeg\FFMpeg::fromSources($inputFiles)
+        ->concatenate()
+        ->saveFromNonBlockingStreams($outputFile);
+        dd($outputFile );
+    
+    return response()->download($outputFile);
+}
+
     public function M3u8Test(Request $request)
     {
         $firstM3u8 = 'https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8';
