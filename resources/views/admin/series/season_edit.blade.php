@@ -335,7 +335,7 @@
                     <div class="row mt-5">
                               <div class="panel panel-primary" data-collapsed="0">
                                  <div class="panel-heading col-sm-12">
-                                    <div class="panel-title" style="color: #000;"> <label class="m-0"><h3 class="fs-title">Subtitles (srt or txt) :</h3></label>
+                                    <div class="panel-title" style="color: #000;"> <label class="m-0"><h3 class="fs-title">Subtitles (srt or Vtt) :</h3></label>
                                     </div>
                                     <div class="panel-options"> 
                                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> 
@@ -532,7 +532,7 @@
                                     <?php if($episode->active == null){ ?>
                                     <td > <p class = "bg-warning video_active"><?php echo "Draft"; ?></p></td>
                                              <?php }elseif($episode->active == 1){ ?>
-                                    <td > <p class = "bg-success video_active"><?php  echo "Approved"; ?></p></td>
+                                    <td > <p class = "bg-success video_active"><?php  echo "Published"; ?></p></td>
                                              <?php } ?>
                                     <td>
                                         <div class=" align-items-center">
