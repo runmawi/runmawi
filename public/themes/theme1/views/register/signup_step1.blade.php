@@ -211,7 +211,7 @@ i.fa.fa-google-plus {
                       <div align="center">
                           <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" style="margin-bottom:1rem;">       <h3 class="mb-3 text-center">Sign Up</h3>
                       </div>
-                      <form action="<?php if (isset($ref) ) { echo URL::to('/').'/register1?ref='.$ref.'&coupon='.$coupon; } else { echo URL::to('/').'/register1'; } ?>" method="POST" id="stripe_plan" class="stripe_plan" name="member_signup" enctype="multipart/form-data">
+                      <form onsubmit="return ValidationEvent()"action="<?php if (isset($ref) ) { echo URL::to('/').'/register1?ref='.$ref.'&coupon='.$coupon; } else { echo URL::to('/').'/register1'; } ?>" method="POST" id="stripe_plan" class="stripe_plan" name="member_signup" enctype="multipart/form-data">
                         @csrf
                             <div class="form-group">
                             
@@ -358,7 +358,8 @@ i.fa.fa-google-plus {
 
                             <div class="sign-up-buttons col-md-12" align="right">
                                   <button type="button" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile" style="display: none;"> Verify Profile</button>
-                                  <button class="btn btn-hover btn-primary btn-block signup" style="display: block;" type="submit" name="create-account">{{ __('Sign Up Today') }}</button>
+                                  <!-- <button class="btn btn-hover btn-primary btn-block signup" style="display: block;" type="submit" name="create-account">{{ __('Sign Up Today') }}</button> -->
+                                  <input class="btn btn-hover btn-primary btn-block signup" style="border: #f3ece0 !important;color: white;background-color: #006aff!important;display: block;" type="submit" name="create-account" value="Sign Up Today">
                                 </div>
                             </div>
                         
@@ -451,7 +452,29 @@ i.fa.fa-google-plus {
     </section>
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <script>
+    $(document).ready(function(){
+         $('#error_password').hide();
+
+    });
+
+    function ValidationEvent(form) {
+    // 👇 get passwords from the field using their name attribute
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('password-confirm').value;
+
+    // 👇 check if both match using if-else condition
+    if (password != confirmPassword) {
+        $('.error_password').show();
+      return false;
+    } else {
+        $('.error_password').hide();
+      return true;
+    }
+  }
+
+
     function visibility1() {
   var x = document.getElementById('password');
   if (x.type === 'password') {
