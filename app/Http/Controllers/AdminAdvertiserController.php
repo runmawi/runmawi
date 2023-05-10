@@ -25,6 +25,7 @@ use App\EmailTemplate;
 use Auth;
 use Mail;
 use URL;
+use Hash;
 
 class AdminAdvertiserController extends Controller
 {
@@ -77,20 +78,18 @@ class AdminAdvertiserController extends Controller
     {
         if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
             return redirect('/admin/restrict');
-    }
+        }
+
         $user = User::where('id', 1)->first();
         $duedate = $user->package_ends;
         $current_date = date('Y-m-d');
+
         if ($current_date > $duedate) {
             $client = new Client();
             $url = 'https://flicknexs.com/userapi/allplans';
-            $params = [
-                'userid' => 0,
-            ];
+            $params = [  'userid' => 0, ];
+            $headers = [   'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ',];
 
-            $headers = [
-                'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ',
-            ];
             $response = $client->request('post', $url, [
                 'json' => $params,
                 'headers' => $headers,
@@ -104,9 +103,10 @@ class AdminAdvertiserController extends Controller
                 'responseBody' => $responseBody,
             ];
             return View::make('admin.expired_dashboard', $data);
-        } else {
+        } 
+        else {
             $setting = Setting::first();
-            // dd($setting);
+            
             if ($setting->ads_on_videos == 1) {
                 $data = [
                     'advertisers' => Advertiser::where('id', $id)->first(),
@@ -124,29 +124,32 @@ class AdminAdvertiserController extends Controller
     }
     public function advertisersUpdate(Request $request)
     {
-        $data = $request->all();
-        $id = $data['id'];
-        $advertisers = Advertiser::find($id);
-        $advertisers->company_name = $request->company_name;
-        $advertisers->license_number = $request->license_number;
-        $advertisers->address = $request->address;
-        $advertisers->mobile_number = $request->mobile_number;
-        $advertisers->email_id = $request->email_id;
+        try {
 
-        $advertisers->save();
+            $data = $request->all();
 
-        return Redirect::back()->with(['message' => 'Successfully Updated Advertiser Details', 'note_type' => 'success']);
+            $inputs = array(
+                "company_name"   => $request->company_name ,
+                "license_number" => $request->license_number ,
+                "mobile_number"  => $request->mobile_number ,
+                "address"   => $request->address ,
+                "email_id"  => $request->email_id ,
+                "status"    => $request->status != null || $request->status == "on"  || $request->status == 1  ? 1 : 0 ,
+            );
 
-        // $setting = Setting::first();
-        // // dd($setting);
-        // if($setting->ads_on_videos == 1){
-        //   $data = array(
-        //     'advertisers' => Advertiser::orderBy('created_at', 'desc')->paginate(9),
-        //   );
-        //   return view('admin.ads_management.advertiser_list',$data);
-        // }else{
-        //   return abort(404);
-        // }
+            if( $request->password != null ){
+                $inputs+= ["password"  => Hash::make($request->password) ] ;
+            }
+
+
+            Advertiser::find($request->id)->update($inputs);
+           
+            return Redirect::back()->with(['message' => 'Successfully Updated Advertiser Details', 'note_type' => 'success']);
+
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+            return abort(404);
+        }
     }
 
     public function ads_categories()
