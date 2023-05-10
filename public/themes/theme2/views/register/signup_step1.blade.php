@@ -295,11 +295,11 @@ i.fa.fa-google-plus {
                                    <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye" aria-hidden="true"></i></button>
                                  </span>
                                          </div>
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                                         @if ($errors->has('password_confirmation'))
+                                        <span class="text-danger" id="successMessage"  style='padding-left: 22px' >
+                                        <strong>Password Not matching.</strong>
+                                        </span>
+                                    @endif
                                          </div>
                             </div>
                                 @endif
