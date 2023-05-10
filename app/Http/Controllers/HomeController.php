@@ -2321,10 +2321,10 @@ class HomeController extends Controller
             if($SignupMenu->password_confirm == 1){
                 $validatedData = $request->validate([
                     // 'password_confirmation' => 'required',
-                    'password_confirmation' => 'required|confirmed'
+                    'password_confirmation' => 'required'
                 ]);
             }
-            dd(1);
+            // dd(1);
 
         }else{
         // dd('testone');
