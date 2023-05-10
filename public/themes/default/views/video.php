@@ -72,10 +72,17 @@ if(!empty($request_url)){
     echo get_adurl($ads->ads_id);
 } ?>">
 <style>
+    
     .plyr__video-embed {
         position: relative;
     }
-
+    span1{
+        background-color: rgba(109,102,96,0.5);
+        padding: 9px;
+    }
+    .countdown span1{
+        margin: 2px 2px auto;
+    }
     td {}
 
     th {
@@ -106,7 +113,16 @@ if(!empty($request_url)){
         text-align: center;
         padding-top: 20%;
     }
-
+hr {
+    height: 8px;
+    // background-color: red;
+    background-image: linear-gradient(90deg, red, transparent);
+    
+    border: 0;
+    height: 1px;
+    margin-bottom: 0!important;
+    margin-top: 0!important;
+}
     .vjs-seek-to-live-control {
         display: none !important;
     }
@@ -259,7 +275,8 @@ if(!empty($request_url)){
         text-align: center;
         font-size: 60px;
         margin-top: 0px;
-        color: red;
+        color: #fff;
+        font-weight:bolder;
     }
 
     h2 {
@@ -806,9 +823,17 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                             <?php }
 }elseif(!empty($new_date)){ ?>
                             <div
-                                id="subscribers_only"style="background: linear-gradient(rgba(0,0,0, 0),rgba(0,0,0, 100)), url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 500px; margin-top: 20px;">
+                                id="subscribers_only"style="background: linear-gradient(rgba(0,0,0, 0.5),rgba(0,0,0, 100)), url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 550px; margin-top: 20px;padding-top:100px;">
                                 <h2> COMING SOON </h2>
-                                <p class="countdown" id="demo"></p>
+                                 <?php if(!empty($video->description) && $settings->show_description == 1 ) : ?>
+                                <div class="text-white col-lg-7 text-center" style="margin:0 auto;">
+                                              <p class="  mt-2 ">
+                                                <?php echo __($video->description); ?>
+                                              </p></div>
+                                            <?php endif; ?>
+                                <hr>
+                                <p class="countdown mb-0" id="demo">
+                                </p><hr>
                             </div>
                             <?php } ?>
                             <!-- For Guest users -->
@@ -2478,9 +2503,11 @@ $artists = [];
                 </div>
 
                 <script>
+                    
                     // Set the date we're counting down to
                     var date = "<?= $new_date ?>";
                     var countDownDate = new Date(date).getTime();
+                    var days, hours, minutes, seconds;
                     // alert(countDownDate)
                     // Update the count down every 1 second
                     var x = setInterval(function() {
@@ -2499,8 +2526,11 @@ $artists = [];
                         var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
                         // Output the result in an element with id="demo"
-                        document.getElementById("demo").innerHTML = days + "d " + hours + "h " +
-                            minutes + "m " + seconds + "s ";
+                        document.getElementById("demo").innerHTML = 
+                            
+                            "<span1>" + days + "d "+ "</span1><span1>" + hours+ "h " + "</span1><span1>" + minutes+ "m "  + "</span1><span1>" + seconds  + "s "+ "</span1>"; 
+//                            days + "d " + hours + "h " +
+//                            minutes + "m " + seconds + "s ";
 
                         // If the count down is over, write some text 
                         if (distance < 0) {
