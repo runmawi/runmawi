@@ -1307,6 +1307,7 @@ public function verifyandupdatepassword(Request $request)
           $item['mid_position_time'] = $ads_videos != null  && $ads_videos->ads_position == 'mid'  ? $ads_mid_time  : "0";
           $item['post_position_time'] =$ads_videos != null  && $ads_videos->ads_position == 'post' ? $ads_Post_time  : "0";
           $item['ads_seen_status'] = $item->ads_status;
+          $item['ios_publish_time']    = Carbon::parse($item->publish_time)->format('y-m-d H:i:s');
           return $item;
         });
   
