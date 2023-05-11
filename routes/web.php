@@ -141,6 +141,7 @@ Route::get('/verify-request-sent', 'HomeController@VerifyRequestNotsent');
 Route::get('verify/{activation_code}', 'SignupController@Verify');
 Route::get('/category/{cid}', 'ChannelController@channelVideos');
 Route::get('/category/videos/{vid}', 'ChannelController@play_videos')->name('play_videos');
+Route::get('datafree/category/videos/{vid}','ChannelController@play_videos');
 Route::get('/category/videos/embed/{vid}', 'ChannelController@Embed_play_videos');
 Route::get('/language/{language}', 'ChannelController@LanguageVideo');
 Route::post('/saveSubscription', 'PaymentController@saveSubscription');
@@ -1315,6 +1316,7 @@ Route::get('/videos/create', 'CPPAdminVideosController@CPPcreate');
 Route::post('/videos/fileupdate', array('before' => 'demo', 'uses' => 'CPPAdminVideosController@CPPfileupdate'));
 Route::post('/videos/store', array('before' => 'demo', 'uses' => 'CPPAdminVideosController@CPPstore'));
 Route::post('/videos/update', array('before' => 'demo', 'uses' => 'CPPAdminVideosController@Cppupdate'));
+Route::get('/category/videos/{slug}','CPPChannelController@PlayVideo');
 Route::get('/category/videos/{slug}','CPPChannelController@PlayVideo');
 
 
