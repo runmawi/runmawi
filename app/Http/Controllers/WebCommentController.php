@@ -49,7 +49,7 @@ class WebCommentController extends Controller
             'user_id'   => Auth::user()->id ,
             'user_role' => Auth::user()->role ,
             'user_name' => Auth::user()->username ,
-            'first_letter' => Auth::user()->username != null ? Auth::user()->username : 'No Name',
+            'first_letter' => Auth::user()->username != null ? ucfirst(mb_substr(Auth::user()->username, 0, 1)) : 'No Name',
             'commenter_type'   => 'App\User' ,
             'commentable_type' => $request->source ,
             'source'      => $source ,

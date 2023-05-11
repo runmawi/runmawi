@@ -6651,11 +6651,19 @@ public function LocationCheck(Request $request){
 
         if( $Recommendation == 1 ){
 
+          $check_Kidmode = 0 ;
+
           $Mostwatchedvideos = RecentView::select('video_id','videos.*',DB::raw('COUNT(video_id) AS count'))
                 ->join('videos', 'videos.id', '=', 'recent_views.video_id');
+               
                 if(Geofencing() !=null && Geofencing()->geofencing == 'ON')
                 {
                   $Mostwatchedvideos = $Mostwatchedvideos->whereNotIn('videos.id',Block_videos());
+                }
+    
+                if( $check_Kidmode == 1 )
+                {
+                  $Mostwatchedvideos = $Mostwatchedvideos->whereBetween('videos.age_restrict', [ 0, 12 ]);
                 }
           $Mostwatchedvideos =$Mostwatchedvideos->groupBy('video_id')
                 ->orderByRaw('count DESC' )->limit(20)->get()->map(function ($item) {
@@ -6676,17 +6684,30 @@ public function LocationCheck(Request $request){
         return response()->json($response, 200);
     }
 
-    public function MostwatchedVideosUser(){
+    public function MostwatchedVideosUser(Request $request){
 
-      $Sub_user ='';
-      $user_id= Session::get('login_web_59ba36addc2b2f9401580f014c7f58ea4e30989d');
+      $Sub_user = '';
+      $user_id  = $request->user_id ;
       $Recomended = HomeSetting::first();
 
 
       if( $Recomended->Recommendation == 1 ){
+
+        $check_Kidmode = 0 ;
+
         $Mostwatched = RecentView::select('video_id','videos.*',DB::raw('COUNT(video_id) AS count'))
               ->join('videos', 'videos.id', '=', 'recent_views.video_id')
               ->groupBy('video_id');
+
+              if(Geofencing() !=null && Geofencing()->geofencing == 'ON')
+              {
+                $Mostwatched = $Mostwatched->whereNotIn('videos.id',Block_videos());
+              }
+  
+              if( $check_Kidmode == 1 )
+              {
+                $Mostwatched = $Mostwatched->whereBetween('videos.age_restrict', [ 0, 12 ]);
+              }
 
               if($Sub_user != null){
                   $Mostwatched = $Mostwatched->where('recent_views.sub_user',$Sub_user);
@@ -6706,34 +6727,37 @@ public function LocationCheck(Request $request){
 
       $Recomended = HomeSetting::first();
 
-      $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-      $countryName =  $geoip->getCountry();
-      $getfeching = Geofencing::first();
-
-      if( $getfeching->geofencing == 'ON'){
-          $block_videos=BlockVideo::where('country_id', $countryName)->get();
-            if(!$block_videos->isEmpty()){
-                foreach($block_videos as $block_video){
-                    $blockvideos[]=$block_video->video_id;
-                }
-            }  else{  $blockvideos=[];  }}
-      else{
-        $blockvideos=[];
-      }
-
       if( $Recomended->Recommendation == 1 ){
 
-        $Most_watched_country =RecentView::select('video_id','videos.*',DB::raw('COUNT(video_id) AS count'))
-              ->join('videos', 'videos.id', '=', 'recent_views.video_id')->groupBy('video_id')->orderByRaw('count DESC' )
-              ->where('country', $countryName)->limit(20)->get();
-      }else{
-        $Most_watched_country =[];
+        $check_Kidmode = 0 ;
+
+        $data = RecentView::select('video_id','videos.*',DB::raw('COUNT(video_id) AS count'))
+                  ->join('videos', 'videos.id', '=', 'recent_views.video_id')->groupBy('video_id')->orderByRaw('count DESC' )
+                  ->where('country', Country_name());
+                  
+                  if(Geofencing() !=null && Geofencing()->geofencing == 'ON')
+                  {
+                    $data = $data->whereNotIn('videos.id',Block_videos());
+                  }
+      
+                  if( $check_Kidmode == 1 )
+                  {
+                    $data = $data->whereBetween('age_restrict', [ 0, 12 ]);
+                  }
+
+                  $data = $data->limit(30)->get()->map(function ($item) {
+                      $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image ;
+                      $item['source']    = "Videos"; 
+                  return $item;
+        });
+
       }
 
       return response()->json([
         'message' => 'Country Most watched videos Retrieve successfully',
-        'Mostwatched' => $Most_watched_country], 200);
-  }
+        'country_Name' => Country_name(),
+        'Mostwatched' => !empty($data) ? $data : [] ], 200);
+    }
 
   public function ComingSoon() {
 
@@ -11078,7 +11102,15 @@ public function QRCodeMobileLogout(Request $request)
 
     try {
 
-     $comment = WebComment::with('child_comment')->where('source_id',$request->source_id)->where('commentable_type',$request->commentable_type)->whereNull('child_id')->get();
+     $comment = WebComment::with('child_comment')->where('source_id',$request->source_id)
+                  ->where('commentable_type',$request->commentable_type)
+                  ->whereNull('child_id')->get()
+                  ->map(function ($item) {
+                    $item['user_image']     = User::where('id',$item->user_id)->pluck('avatar')->first() ;
+                    $item['user_image_url'] = URL::to('public/uploads/avatars/'.$item->user_image);
+                    $item['user_name'] = User::where('id',$item->user_id)->pluck('username')->first();
+                    return $item;
+                });
 
       $response = array(
         'status'=> 'true',
@@ -12770,12 +12802,19 @@ public function QRCodeMobileLogout(Request $request)
           $data = array();      // Note - if the home-setting (Recommendation_status) is turned off in the admin panel
       else:
 
+        $check_Kidmode = 0 ;
+
         $data = RecentView::select('video_id','videos.*',DB::raw('COUNT(video_id) AS count'))
               ->join('videos', 'videos.id', '=', 'recent_views.video_id');
 
             if(Geofencing() !=null && Geofencing()->geofencing == 'ON')
             {
               $data = $data->whereNotIn('videos.id',Block_videos());
+            }
+
+            if( $check_Kidmode == 1 )
+            {
+              $data = $data->whereBetween('age_restrict', [ 0, 12 ]);
             }
 
             $data = $data->groupBy('video_id')
@@ -12801,10 +12840,24 @@ public function QRCodeMobileLogout(Request $request)
           $data = array();      // Note - if the home-setting (Recommendation_status) is turned off in the admin panel
       else:
 
+        $check_Kidmode = 0 ;
+
         $data = RecentView::select('video_id','videos.*',DB::raw('COUNT(video_id) AS count'))
                   ->join('videos', 'videos.id', '=', 'recent_views.video_id')
                   ->groupBy('video_id')->where('recent_views.sub_user',$user_id)
-                  ->orderByRaw('count DESC' )->limit(30)->get()->map(function ($item) {
+                  ->orderByRaw('count DESC' );
+                  
+                  if(Geofencing() !=null && Geofencing()->geofencing == 'ON')
+                  {
+                    $data = $data->whereNotIn('videos.id',Block_videos());
+                  }
+      
+                  if( $check_Kidmode == 1 )
+                  {
+                    $data = $data->whereBetween('age_restrict', [ 0, 12 ]);
+                  }
+
+                  $data = $data->limit(30)->get()->map(function ($item) {
                       $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image ;
                       $item['source']    = "Videos";
                   return $item;
@@ -12823,10 +12876,24 @@ public function QRCodeMobileLogout(Request $request)
 
         $data = array();      // Note - if the home-setting (Recommendation_status) is turned off in the admin panel
     else:
+      
+        $check_Kidmode = 0 ;
 
         $data = RecentView::select('video_id','videos.*',DB::raw('COUNT(video_id) AS count'))
                   ->join('videos', 'videos.id', '=', 'recent_views.video_id')->groupBy('video_id')->orderByRaw('count DESC' )
-                  ->where('country', Country_name())->limit(30)->get()->map(function ($item) {
+                  ->where('country', Country_name());
+                  
+                  if(Geofencing() !=null && Geofencing()->geofencing == 'ON')
+                  {
+                    $data = $data->whereNotIn('videos.id',Block_videos());
+                  }
+      
+                  if( $check_Kidmode == 1 )
+                  {
+                    $data = $data->whereBetween('age_restrict', [ 0, 12 ]);
+                  }
+
+                  $data = $data->limit(30)->get()->map(function ($item) {
                       $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image ;
                       $item['source']    = "Videos"; 
                   return $item;
