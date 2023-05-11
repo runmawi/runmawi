@@ -1086,9 +1086,10 @@ public function verifyandupdatepassword(Request $request)
             $latestvideos = $latestvideos  ->whereNotIn('videos.id',Block_videos());
           }
 
-      $latestvideos =$latestvideos->latest('created_at')->limit(50)->get()->map(function ($item) {
-          $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-          $item['video_url'] = URL::to('/').'/storage/app/public/';
+      $latestvideos =$latestvideos->latest('created_at')->limit(1)->get()->map(function ($item) {
+          $item['image_url'] = URL::to('public/uploads/images/'.$item->image);
+          $item['publish_time_IOS'] = $carbon = Carbon::createFromFormat('Y-m-d\TH:i',$item->publish_time)->format('Y-m-d H:i:s');
+
           return $item;
         });
 
@@ -6733,7 +6734,7 @@ public function LocationCheck(Request $request){
 
         $data = RecentView::select('video_id','videos.*',DB::raw('COUNT(video_id) AS count'))
                   ->join('videos', 'videos.id', '=', 'recent_views.video_id')->groupBy('video_id')->orderByRaw('count DESC' )
-                  ->where('country', Country_name());
+                  ->where('country_name', '=',Country_name());
                   
                   if(Geofencing() !=null && Geofencing()->geofencing == 'ON')
                   {
@@ -6746,8 +6747,7 @@ public function LocationCheck(Request $request){
                   }
 
                   $data = $data->limit(30)->get()->map(function ($item) {
-                      $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image ;
-                      $item['source']    = "Videos"; 
+                      $item['image_url'] = URL::to('public/uploads/images'.$item->image) ;
                   return $item;
         });
 
@@ -12881,7 +12881,7 @@ public function QRCodeMobileLogout(Request $request)
 
         $data = RecentView::select('video_id','videos.*',DB::raw('COUNT(video_id) AS count'))
                   ->join('videos', 'videos.id', '=', 'recent_views.video_id')->groupBy('video_id')->orderByRaw('count DESC' )
-                  ->where('country', Country_name());
+                  ->where('country_name', Country_name());
                   
                   if(Geofencing() !=null && Geofencing()->geofencing == 'ON')
                   {
