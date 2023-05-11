@@ -1316,6 +1316,7 @@ Route::post('/videos/fileupdate', array('before' => 'demo', 'uses' => 'CPPAdminV
 Route::post('/videos/store', array('before' => 'demo', 'uses' => 'CPPAdminVideosController@CPPstore'));
 Route::post('/videos/update', array('before' => 'demo', 'uses' => 'CPPAdminVideosController@Cppupdate'));
 Route::get('/category/videos/{slug}','CPPChannelController@PlayVideo');
+Route::get('datafree/category/videos/{slug}','CPPChannelController@PlayVideo');
 
 
 Route::get('/cppusers_videodata', 'CPPAdminVideosController@CPPVideo');
