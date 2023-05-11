@@ -6676,10 +6676,10 @@ public function LocationCheck(Request $request){
         return response()->json($response, 200);
     }
 
-    public function MostwatchedVideosUser(){
+    public function MostwatchedVideosUser(Request $request){
 
-      $Sub_user ='';
-      $user_id= Session::get('login_web_59ba36addc2b2f9401580f014c7f58ea4e30989d');
+      $Sub_user = '';
+      $user_id  = $request->user_id ;
       $Recomended = HomeSetting::first();
 
 
@@ -11078,7 +11078,15 @@ public function QRCodeMobileLogout(Request $request)
 
     try {
 
-     $comment = WebComment::with('child_comment')->where('source_id',$request->source_id)->where('commentable_type',$request->commentable_type)->whereNull('child_id')->get();
+     $comment = WebComment::with('child_comment')->where('source_id',$request->source_id)
+                  ->where('commentable_type',$request->commentable_type)
+                  ->whereNull('child_id')->get()
+                  ->map(function ($item) {
+                    $item['user_image']     = User::where('id',$item->user_id)->pluck('avatar')->first() ;
+                    $item['user_image_url'] = URL::to('public/uploads/avatars/'.$item->user_image);
+                    $item['user_name'] = User::where('id',$item->user_id)->pluck('username')->first();
+                    return $item;
+                });
 
       $response = array(
         'status'=> 'true',
