@@ -88,12 +88,13 @@
                 <div class="row">
                     <div class="col-sm-12">
 
-                        <div class="iq-main-header d-flex align-items-center justify-content-between">
-                            <h4 class="main-title">
-                               <a href="{{ URL::to('series/category/'.$series_category->slug)}}"> {{ $series_category->name }} </a> 
+                        <div class="iq-main-header d-flex align-items-center justify-content-between ">
+                            <h4 class="main-title text-justify">
+                                <a class="text-left" href="{{ URL::to('series/category/'.$series_category->slug)}}">{{ $series_category->name }}</a> 
+                                <a class="text-right" href="{{ URL::to('series/category/'.$series_category->slug)}}">See All</a>
                             </h4>
                         </div>
-
+                        
                         <div class="favorites-contens">
                             <ul class="favorites-slider list-inline row p-0 mb-0">
                                 @foreach (  $series_category['category_series'] as $key => $series)
