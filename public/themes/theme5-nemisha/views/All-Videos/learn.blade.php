@@ -88,8 +88,8 @@
                 <div class="row">
                     <div class="col-sm-12">
 
-                        <div class="iq-main-header d-flex align-items-center justify-content-between ">
-                            <h4 class="main-title text-justify">
+                        <div class="iq-main-header  ">
+                            <h4 class="main-title text-justify d-flex align-items-center justify-content-between">
                                 <a class="text-left" href="{{ URL::to('series/category/'.$series_category->slug)}}">{{ $series_category->name }}</a> 
                                 <a class="text-right" href="{{ URL::to('series/category/'.$series_category->slug)}}">See All</a>
                             </h4>
