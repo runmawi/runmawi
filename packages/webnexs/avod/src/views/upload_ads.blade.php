@@ -140,8 +140,7 @@
                                                                     <label>Ads Name:</label>
                                                                     <p class="error-message ml-1"   style="color: red;font-size:10px;">(This filed    is required)</p>
                                                                 </div>
-
-                                                                <input type="text" id="ads_name" name="ads_name"    required class="form-control" />
+                                                                <input type="text" id="ads_name" name="ads_name" required class="from-control" placeholder="Please! Enter the Ads Name" />
                                                             </div>
 
                                                             <div class="form-group">
@@ -174,16 +173,16 @@
                                                                 </div>
                                                                 <select class="form-control ads_type" name="ads_upload_type">
                                                                     <option value="null">select Ads Type </option>
-                                                                    <option value="tag_url">Ad Tag Url </option>
-                                                                    <option value="ads_video_upload">Ads Video Upload
-                                                                    </option>
+                                                                    <option selected="selected" value="tag_url">Ad Tag Url </option>
+                                                                    {{-- <option value="ads_video_upload">Ads Video Upload
+                                                                    </option> --}}
                                                                 </select>
                                                             </div>
 
                                                             <div class="form-group tag_url">
                                                                 <label> Ad Tag Url:</label>
                                                                 <input type="text" id="ads_path" name="ads_path"
-                                                                    class="form-control" />
+                                                                    class="form-control" placeholder="Please! Enter the Ads Tag URL" />
                                                             </div>
 
                                                             <div class="form-group ads_video_upload">
@@ -924,7 +923,7 @@
             // document.getElementsByClassName('error-message')[4].style.display = 'none';
             $('.location_input').hide();
             $('.ads_video_upload').hide();
-            $('.tag_url').hide();
+            $('.tag_url').show();
         };
 
         $('.form-card').on('keyup keypress blur change click mouseover', function(event) {
