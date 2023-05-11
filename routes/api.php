@@ -255,7 +255,7 @@ Route::group(
 
         // Recommendation Videos
         Route::get('MostwatchedVideos', 'ApiAuthController@MostwatchedVideos');
-        Route::get('MostwatchedVideosUser', 'ApiAuthController@MostwatchedVideosUser');
+        Route::post('MostwatchedVideosUser', 'ApiAuthController@MostwatchedVideosUser');
         Route::get('Country_MostwatchedVideos', 'ApiAuthController@Country_MostwatchedVideos');
         Route::get('Preference_genres', 'ApiAuthController@Preference_genres');
         Route::get('Preference_Language', 'ApiAuthController@Preference_Language');
