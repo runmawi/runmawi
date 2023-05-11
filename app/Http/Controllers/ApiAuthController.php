@@ -2052,7 +2052,10 @@ public function verifyandupdatepassword(Request $request)
         $user->mobile = $request->user_mobile;
         $user->password = $user_password;
         $user->avatar = $avatar;
+        $user->gender = $request->gender;
+        $user->DOB = $request->DOB;
         $user->save();
+        
         $response = array(
         'status'=>'true',
         'message'=>'Your Profile detail has been updated'
@@ -2864,24 +2867,27 @@ public function verifyandupdatepassword(Request $request)
   }
 
 
-        public function ViewProfile(Request $request) {
+  public function ViewProfile(Request $request) {
 
-            $user_id = $request->user_id;
-            if($user_id == 1){
+    $user_id = $request->user_id;
 
-              $user_details = User::where('id', '=', $user_id)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+      if($user_id == 1){
+
+          $user_details = User::where('id', '=', $user_id)->orderBy('created_at', 'desc')->get()->map(function ($item) {
                 $item['profile_url'] = URL::to('/').'/public/uploads/avatars/'.$item->avatar;
                 return $item;
-            });
-              $response = array(
-                'status'=>'true',
-                'message'=>'success',
-                'curren_stripe_plan'=> '',
-                'user_details' => $user_details,
-                'next_billing' => '',
-                'ends_at' => '',
-            );
-            }else{
+          });
+          
+          $response = array(
+              'status'=>'true',
+              'message'=>'success',
+              'curren_stripe_plan'=> '',
+              'user_details' => $user_details,
+              'next_billing' => '',
+              'ends_at' => '',
+          );
+
+      }else{
 
             $stripe_plan = SubscriptionPlan();
 
@@ -2889,9 +2895,9 @@ public function verifyandupdatepassword(Request $request)
                 $item['profile_url'] = URL::to('/').'/public/uploads/avatars/'.$item->avatar;
                 return $item;
             });
+
             $userdata = User::where('id', '=', $user_id)->first();
             $paymode_type =  Subscription::where('user_id',$user_id)->latest()->pluck('PaymentGateway')->first();
-
 
           if($paymode_type != null && $paymode_type == "Razorpay" &&  !empty($userdata) && $userdata->role == "subscriber"){
 
@@ -2905,7 +2911,7 @@ public function verifyandupdatepassword(Request $request)
                 $nextPaymentAttemptDate = '';
               }
 
-            }
+          }
           else{
             if ($userdata->subscription($stripe_plan)) {
                   $timestamp = $userdata->asStripeCustomer()["subscriptions"]->data[0]["current_period_end"];
@@ -2915,16 +2921,9 @@ public function verifyandupdatepassword(Request $request)
               }
           }
 
+          $user = User::find($user_id);
 
-            $user = User::find($user_id);
-
-            // if ($user->subscription($stripe_plan) && $user->subscription($stripe_plan)->onGracePeriod()) {
-            //     $ends_at = $user->subscription($stripe_plan)->ends_at->format('dS M Y');
-            // }else{
-            //     $ends_at = "";
-            // }
-
-            $stripe_plan = SubscriptionPlan();
+          $stripe_plan = SubscriptionPlan();
 
             if ( !empty($userdata) && $userdata->role == "subscriber" || $userdata->subscribed($stripe_plan) && $userdata->role == "subscriber")
             {
