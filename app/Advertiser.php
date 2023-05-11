@@ -13,5 +13,5 @@ class Advertiser extends Model
     protected $guarded = array();
     public static $rules = array();
 
-    protected $fillable = array('company_name','license_number','address','mobile_number','email_id');
+    protected $fillable = array('company_name','license_number','address','mobile_number','email_id','status','password');
 }

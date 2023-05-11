@@ -34,35 +34,37 @@
                               <th>Action</th>
                            </tr>
                         </thead>
-                        <tbody>
-                           @foreach($advertisers as $key => $advertiser)
-                           <tr>
-                                 <td>{{ $key+1 }}</td>
-                                 <td>{{ $advertiser->company_name }}</td>
-                                 <td>{{ $advertiser->license_number }}</td>
-                                 <td>{{ $advertiser->address }}</td>
-                                 <td>{{ $advertiser->mobile_number }}</td>
-                                 <td>{{ $advertiser->email_id }}</td>
-                                 <td>@if ($advertiser->status == 1)
-                                   <p class="font-weight-bold text-success">Approved</p>
-                                   @elseif ($advertiser->status == 2)
-                                   <p class="font-weight-bold text-danger">Disapproved</p>
-                                   @else
-                                   <button class="btn btn-success status_change" value="1" data-id="{{$advertiser->id}}">Approve</button>
-                                   <button class="btn btn-danger status_change" value="2" data-id="{{$advertiser->id}}">DisApprove</button>
-                                @endif</td>
-                                <td class=" align-items-center list-inline">								
-							            <a href="{{ URL::to('admin/advertiser/edit') . '/' . $advertiser->id }}" class="iq-bg-success"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
-                                 <a href="{{ URL::to('admin/advertiser/delete') . '/' . $advertiser->id }}" onclick="return confirm('Are you sure?')" class="iq-bg-danger"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
-                                 </td>
-                              </tr>
+
+                           <tbody>
+                              @foreach($advertisers as $key => $advertiser)
+                                 <tr>
+                                    <td>{{ $key+1 }}</td>
+                                    <td>{{ $advertiser->company_name }}</td>
+                                    <td>{{ $advertiser->license_number }}</td>
+                                    <td>{{ $advertiser->address }}</td>
+                                    <td>{{ $advertiser->mobile_number }}</td>
+                                    <td>{{ $advertiser->email_id }}</td>
+                                    <td>
+                                       @if ($advertiser->status == 1)
+                                          <p class="font-weight-bold text-success">Approved</p>
+                                       @elseif ($advertiser->status == 2)
+                                          <p class="font-weight-bold text-danger">Disapproved</p>
+                                       @else
+                                          <button class="btn btn-success status_change" onclick="return confirmAction(event)" value="1" data-id="{{$advertiser->id}}">Approve</button>
+                                          <button class="btn btn-danger status_change" onclick="return confirmAction(event)" value="2" data-id="{{$advertiser->id}}">Disapprove</button>
+                                       @endif
+                                    </td>
+
+                                    <td class=" align-items-center list-inline">								
+                                       <a href="{{ URL::to('admin/advertiser/edit') . '/' . $advertiser->id }}" class="iq-bg-success"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
+                                       <a href="{{ URL::to('admin/advertiser/delete') . '/' . $advertiser->id }}" onclick="return confirm('Are you sure?')" class="iq-bg-danger"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
+                                    </td>
+                                 </tr>
                               @endforeach
                            </tbody>
                         </table>
                         <div class="clear"></div>
-
                         <div class="pagination-outter"><?= $advertisers->appends(Request::only('s'))->render(); ?></div>
-
                      </div>
                   </div>
                </div>
@@ -77,27 +79,35 @@
    <script>
 
       $(document).ready(function () {
-         $('body').on('click', '.status_change', function (event) {
-           event.preventDefault()
-           var status = $(this).val();
-           var id = $(this).data('id');
-           var url = $('#save_url').val();
 
-           $.ajax({
-            url: url,
-            type: "POST",
-            data: {
-             _token: $("#token").val(),
-             status: status,
-             id: id,
-          },
-          dataType: 'json',
-          success: function (data) {
-           window.location.reload(true);
-        }
-     });
-        });
-        });
+      $('body').on('click', '.status_change', function (event) {
+         var confirmed = confirm('Are you sure you want to perform this action?');
+
+         if (!confirmed) {
+            event.preventDefault();
+            return false;
+         }
+
+         var status = $(this).val();
+         var id = $(this).data('id');
+         var url = $('#save_url').val();
+
+         $.ajax({
+            url: url, 
+            type: "POST", 
+            data: { 
+            _token: $("#token").val(), 
+            status: status, 
+            id: id, 
+            },
+            dataType: 'json', 
+            success: function (data) { 
+               window.location.reload(true); 
+            }
+         });
+      });
+      });
+
 
          
    </script>
