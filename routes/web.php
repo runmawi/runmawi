@@ -196,11 +196,14 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
     /*TV-shows */ 
     Route::get('tv-shows', 'TvshowsController@index');
     Route::get('episode/{series_name}/{episode_name}', 'TvshowsController@play_episode')->name('play_episode');
+    Route::get('datafree/episode/{series_name}/{episode_name}', 'TvshowsController@play_episode')->name('play_episode');
     Route::get('episode/embed/{series_name}/{episode_name}', 'TvshowsController@Embedplay_episode');
     Route::get('episode/{episode_name}', 'TvshowsController@PlayEpisode');
     // Route::get('episode/{series_name}/{episode_name}/{id}', 'TvshowsController@play_episode');
 
     Route::get('play_series/{name}/', 'TvshowsController@play_series');
+    Route::get('datafree/play_series/{name}/', 'TvshowsController@play_series');
+
     // Route::get('play_series/{name}/{id}', 'TvshowsController@play_series');
 
 
@@ -213,6 +216,7 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
     //Route::get('audios/tag/{tag}', 'ThemeAudioController@tag' );
     //Route::get('audio/{slug}/{name}', 'ThemeAudioController@index');
     Route::get('audio/{slug}', 'ThemeAudioController@index')->name('play_audios');
+    Route::get('datafree/audio/{slug}', 'ThemeAudioController@index')->name('play_audios');
     //Route::get('audios_category/{audio_id}', 'ThemeAudioController@categoryaudios');
     Route::get('album/{album_slug}', 'ThemeAudioController@album');
     Route::get('/albums-list', 'ThemeAudioController@albums_list')->name('albums_list');
@@ -339,6 +343,7 @@ Route::get('/live', 'LiveStreamController@Index');
 // Route::get('/live/{play}/{id}', 'LiveStreamController@Play');
 
 Route::get('/live/{id}', 'LiveStreamController@Play')->name('LiveStream_play');
+Route::get('datafree/live/{id}', 'LiveStreamController@Play')->name('LiveStream_play');
 Route::get('/live/embed/{id}', 'LiveStreamController@EmbedLivePlay');
 
 
