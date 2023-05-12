@@ -287,4 +287,86 @@ class AdminDashboardController extends Controller
         }
     
     }
+
+    public function storagelimit(){
+        $StorageSetting = StorageSetting::first();
+                // if(!empty($StorageSetting->site_key && $StorageSetting->site_user && $StorageSetting->site_action)){}
+                // $data = array('key' => $StorageSetting->site_key,
+                // 'action' => $StorageSetting->site_action,
+                // 'user'=> $StorageSetting->site_user);
+
+                    // $data = array('key' => 'ymR5pBF7IDZkPshdU4Vrl36AO0VtHxiwgQPxqtcbqIFumE6qfKx2P6e4UXc40kkxA7BHGy',
+                    // 'action' => 'list',
+                    // 'user'=> 'jacksmac');
+                    $data = array(
+                        "key" => "ymR5pBF7IDZkPshdU4Vrl36AO0VtHxiwgQPxqtcbqIFumE6qfKx2P6e4UXc40kkxA7BHGy",
+                        "action" => "list",
+                        "user" => "jacksmac"
+                    );
+                    
+                    $url = "https://173.208.195.114:2304/v1/accountdetail";
+                    
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_POST, true);
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                    
+                    $response = curl_exec($ch);
+                    
+                    if ($response === false) {
+                        echo 'cURL error: ' . curl_error($ch);
+                    } else {
+                        echo 'Response: ' . $response;
+                    }
+                    echo"<pre>";
+                    print_r($response);
+                    echo"<pre>";
+
+            var_dump($response);exit;
+            curl_close($ch);
+
+    }
+
+    
+    public function storagelimitone(){
+        $StorageSetting = StorageSetting::first();
+                // if(!empty($StorageSetting->site_key && $StorageSetting->site_user && $StorageSetting->site_action)){}
+                // $data = array('key' => $StorageSetting->site_key,
+                // 'action' => $StorageSetting->site_action,
+                // 'user'=> $StorageSetting->site_user);
+
+                    // $data = array('key' => 'ymR5pBF7IDZkPshdU4Vrl36AO0VtHxiwgQPxqtcbqIFumE6qfKx2P6e4UXc40kkxA7BHGy',
+                    // 'action' => 'list',
+                    // 'user'=> 'jacksmac');
+                    $data = array(
+                        "key" => "ymR5pBF7IDZkPshdU4Vrl36AO0VtHxiwgQPxqtcbqIFumE6qfKx2P6e4UXc40kkxA7BHGy",
+                        "action" => "list",
+                        "user" => "jacksmac"
+                    );
+                    
+                    $url = "https://173.208.195.114:2304/v1/accountdetail";
+                    
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_POST, true);
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                    
+                    $response = curl_exec($ch);
+                    
+                    if ($response === false) {
+                        echo 'cURL error: ' . curl_error($ch);
+                    } else {
+                        echo 'Response: ' . $response;
+                    }
+            curl_close($ch);
+
+                    echo"<pre>";
+                    print_r($response);
+                    echo"<pre>";
+
+            var_dump($response);exit;
+
+    }
 }

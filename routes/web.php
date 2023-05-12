@@ -20,6 +20,8 @@ Route::get('/admin/addSTorageWatermark', 'TranscodeController@addSTorageWatermar
 Route::get('/live_location', 'ChannelController@live_location');
 Route::get('/admin/M3u8Test', 'TranscodeController@M3u8Test');
 Route::get('/merge-m3u8-files', 'TranscodeController@mergeM3u8Files');
+Route::get('/storagelimitone', 'AdminDashboardController@storagelimitone'); 
+Route::get('/storagelimit', 'AdminDashboardController@storagelimit'); 
 
 
 Route::get('/moderator', 'ModeratorsUserController@index');
