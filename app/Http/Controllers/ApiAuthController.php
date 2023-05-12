@@ -2053,7 +2053,10 @@ public function verifyandupdatepassword(Request $request)
         $user->mobile = $request->user_mobile;
         $user->password = $user_password;
         $user->avatar = $avatar;
+        $user->gender = $request->gender;
+        $user->DOB = $request->DOB;
         $user->save();
+        
         $response = array(
         'status'=>'true',
         'message'=>'Your Profile detail has been updated'
@@ -2865,24 +2868,27 @@ public function verifyandupdatepassword(Request $request)
   }
 
 
-        public function ViewProfile(Request $request) {
+  public function ViewProfile(Request $request) {
 
-            $user_id = $request->user_id;
-            if($user_id == 1){
+    $user_id = $request->user_id;
 
-              $user_details = User::where('id', '=', $user_id)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+      if($user_id == 1){
+
+          $user_details = User::where('id', '=', $user_id)->orderBy('created_at', 'desc')->get()->map(function ($item) {
                 $item['profile_url'] = URL::to('/').'/public/uploads/avatars/'.$item->avatar;
                 return $item;
-            });
-              $response = array(
-                'status'=>'true',
-                'message'=>'success',
-                'curren_stripe_plan'=> '',
-                'user_details' => $user_details,
-                'next_billing' => '',
-                'ends_at' => '',
-            );
-            }else{
+          });
+          
+          $response = array(
+              'status'=>'true',
+              'message'=>'success',
+              'curren_stripe_plan'=> '',
+              'user_details' => $user_details,
+              'next_billing' => '',
+              'ends_at' => '',
+          );
+
+      }else{
 
             $stripe_plan = SubscriptionPlan();
 
@@ -2890,9 +2896,9 @@ public function verifyandupdatepassword(Request $request)
                 $item['profile_url'] = URL::to('/').'/public/uploads/avatars/'.$item->avatar;
                 return $item;
             });
+
             $userdata = User::where('id', '=', $user_id)->first();
             $paymode_type =  Subscription::where('user_id',$user_id)->latest()->pluck('PaymentGateway')->first();
-
 
           if($paymode_type != null && $paymode_type == "Razorpay" &&  !empty($userdata) && $userdata->role == "subscriber"){
 
@@ -2906,7 +2912,7 @@ public function verifyandupdatepassword(Request $request)
                 $nextPaymentAttemptDate = '';
               }
 
-            }
+          }
           else{
             if ($userdata->subscription($stripe_plan)) {
                   $timestamp = $userdata->asStripeCustomer()["subscriptions"]->data[0]["current_period_end"];
@@ -2916,16 +2922,9 @@ public function verifyandupdatepassword(Request $request)
               }
           }
 
+          $user = User::find($user_id);
 
-            $user = User::find($user_id);
-
-            // if ($user->subscription($stripe_plan) && $user->subscription($stripe_plan)->onGracePeriod()) {
-            //     $ends_at = $user->subscription($stripe_plan)->ends_at->format('dS M Y');
-            // }else{
-            //     $ends_at = "";
-            // }
-
-            $stripe_plan = SubscriptionPlan();
+          $stripe_plan = SubscriptionPlan();
 
             if ( !empty($userdata) && $userdata->role == "subscriber" || $userdata->subscribed($stripe_plan) && $userdata->role == "subscriber")
             {
@@ -6688,42 +6687,52 @@ public function LocationCheck(Request $request){
 
     public function MostwatchedVideosUser(Request $request){
 
-      $Sub_user = '';
-      $user_id  = $request->user_id ;
-      $Recomended = HomeSetting::first();
+      try {
+      
+        $Sub_user = '';
+        $user_id  = $request->user_id ;
+        $Recomended = HomeSetting::first();
 
 
-      if( $Recomended->Recommendation == 1 ){
+        if( $Recomended->Recommendation == 1 ){
 
-        $check_Kidmode = 0 ;
+          $check_Kidmode = 0 ;
 
-        $Mostwatched = RecentView::select('video_id','videos.*',DB::raw('COUNT(video_id) AS count'))
-              ->join('videos', 'videos.id', '=', 'recent_views.video_id')
-              ->groupBy('video_id');
+          $mostWatchedUserVideos = RecentView::select('video_id','videos.*',DB::raw('COUNT(video_id) AS count'))
+                ->join('videos', 'videos.id', '=', 'recent_views.video_id')
+                ->groupBy('video_id');
 
-              if(Geofencing() !=null && Geofencing()->geofencing == 'ON')
-              {
-                $Mostwatched = $Mostwatched->whereNotIn('videos.id',Block_videos());
-              }
-  
-              if( $check_Kidmode == 1 )
-              {
-                $Mostwatched = $Mostwatched->whereBetween('videos.age_restrict', [ 0, 12 ]);
-              }
+                if(Geofencing() !=null && Geofencing()->geofencing == 'ON')
+                {
+                  $mostWatchedUserVideos = $mostWatchedUserVideos->whereNotIn('videos.id',Block_videos());
+                }
+    
+                if( $check_Kidmode == 1 )
+                {
+                  $mostWatchedUserVideos = $mostWatchedUserVideos->whereBetween('videos.age_restrict', [ 0, 12 ]);
+                }
 
-              if($Sub_user != null){
-                  $Mostwatched = $Mostwatched->where('recent_views.sub_user',$Sub_user);
-              }else{
-                  $Mostwatched = $Mostwatched->where('recent_views.user_id',$user_id);
-              }
-              $Mostwatched = $Mostwatched->orderByRaw('count DESC' )->limit(20)->get();
-      }else{
-        $Mostwatched=[];
-      }
+                if($Sub_user != null){
+                    $mostWatchedUserVideos = $mostWatchedUserVideos->where('recent_views.sub_user',$Sub_user);
+                }else{
+                    $mostWatchedUserVideos = $mostWatchedUserVideos->where('recent_views.user_id',$user_id);
+                }
+                $mostWatchedUserVideos = $mostWatchedUserVideos->orderByRaw('count DESC' )->limit(20)->get();
+          }
             return response()->json([
+              'status'  => 'true',
               'message' => 'Most watched videos by User data Retrieve successfully',
-              'Mostwatched' => $Mostwatched], 200);
+              'mostWatchedUserVideos' => $mostWatchedUserVideos], 200);
+      
+    } catch (\Throwable $th) {
+      
+        return response()->json([
+          'status'  => 'false',
+          'Message' => $th->getMessage(),
+      ], 200);
     }
+  }
+
 
     public function Country_MostwatchedVideos(){
 
