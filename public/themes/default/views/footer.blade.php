@@ -327,7 +327,7 @@ function about(evt , id) {
 </script>
 <?php } ?>
   <?php if( get_image_loader() == 1) { ?>
-    <script>
+ <script>
         const loaderEl = document.getElementsByClassName('fullpage-loader')[0];
         document.addEventListener('readystatechange', (event) => {
         const readyState = "complete";
