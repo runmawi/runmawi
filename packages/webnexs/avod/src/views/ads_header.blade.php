@@ -41,9 +41,9 @@
         font-size: 15px;
     }
     
-.top-left-logo img{opacity:.9;overflow:hidden}span{font-weight:400!important}.header-logo{padding-left:25px}hr{border-top:1px solid #e2e2e22e!important}*{margin:0;padding:0}html{height:100%}#grad1{background-color::#9c27b0;background-image:linear-gradient(120deg,#ff4081,#81d4fa)}#msform{text-align:center;position:relative;margin-top:20px}#msform fieldset .form-card{border:0 none;border-radius:0;/*box-shadow:0 2px 2px 2px rgba(0,0,0,.2);*/padding:10px ;box-sizing:border-box;margin:0 5% 20px;position:relative}#msform fieldset{background:#fff;border:0 none;border-radius:.5rem;box-sizing:border-box;width:100%;margin:0;padding-bottom:20px;position:relative}#msform fieldset:not(:first-of-type){display:none}#msform fieldset .form-card{text-align:left;color:#9e9e9e}#msform input,#msform textarea{border:none;border-radius:0;margin-bottom:25px;margin-top:2px;box-sizing:border-box;color:#2c3e50;font-size:16px;letter-spacing:1px;background: #fff;}
+.top-left-logo img{opacity:.9;overflow:hidden}span{font-weight:400!important}.header-logo{padding-left:25px}hr{border-top:1px solid #e2e2e22e!important}*{margin:0;padding:0}html{height:100%}#grad1{background-color::#9c27b0;background-image:linear-gradient(120deg,#ff4081,#81d4fa)}#msform{text-align:center;position:relative;margin-top:20px}#msform fieldset .form-card{border:0 none;border-radius:0;/*box-shadow:0 2px 2px 2px rgba(0,0,0,.2);*/padding:10px ;box-sizing:border-box;margin:0 5% 20px;position:relative}#msform fieldset{background:#fff;border:0 none;border-radius:.5rem;box-sizing:border-box;width:100%;margin:0;padding-bottom:20px;position:relative}#msform fieldset:not(:first-of-type){display:none}#msform fieldset .form-card{text-align:left;color:#9e9e9e}#msform input,#msform textarea{border:none;border-radius:0;margin-bottom:25px;margin-top:2px;box-sizing:border-box;color:#2c3e50;font-size:16px;letter-spacing:1px;background: ;}
 #msform input:focus,#msform textarea:focus{-moz-box-shadow:none !important;-webkit-box-shadow:none !important;box-shadow:none !important;border:none;font-weight:700;border-bottom:2px solid skyblue;outline-width:0}#msform .action-button{width:100px;background:skyblue;font-weight:700;color:#fff;border:0 none;border-radius:0;cursor:pointer;padding:10px 5px;margin:10px 5px}#msform .action-button:hover,#msform .action-button:focus{box-shadow:0 0 0 2px #fff,0 0 0 3px skyblue}#msform .action-button-previous{width:100px;background:#616161;font-weight:700;color:#fff;border:0 none;border-radius:0;cursor:pointer;padding:10px 5px;margin:10px 5px}#msform .action-button-previous:hover,#msform .action-button-previous:focus{box-shadow:0 0 0 2px #fff,0 0 0 3px #616161}select.list-dt{border:none;outline:0;border-bottom:1px solid #ccc;padding:2px 5px 3px;margin:2px}select.list-dt:focus{border-bottom:2px solid skyblue}.card{z-index:0;border:none;border-radius:.5rem;position:relative}.fs-title{font-size:25px;color:#2c3e50;margin-bottom:10px;font-weight:700;text-align:left}
-#progressbar{overflow:hidden;color:#d3d3d3}#progressbar .active{color:#000}#progressbar li{list-style-type:none;font-size:15px;width:17%;float:left;position:relative;font-weight: 500;}#progressbar #account:before{font-family:FontAwesome;content:"\f023";display: none;}#progressbar #personal:before{font-family:FontAwesome;content:"\f007";display: none;}#progressbar #payment:before{font-family:FontAwesome;content:"\f09d";display: none;}#progressbar #confirm:before{font-family:FontAwesome;content:"\f00c";display: none;}#progressbar li:before{width:50px;height:50px;line-height:45px;display:block;font-size:18px;color:#fff;background:#d3d3d3;border-radius:50%;margin:0 auto 10px auto;padding:2px}#progressbar li:after{content:'';width:100%;height:2px;background:#d3d3d3;position:absolute;left:0;top:25px;z-index:-1}#progressbar li.active:before,#progressbar li.active:after{background:skyblue}.radio-group{position:relative;margin-bottom:25px}.radio{display:inline-block;width:204;height:104;border-radius:0;background:#add8e6;box-shadow:0 2px 2px 2px rgba(0,0,0,.2);box-sizing:border-box;cursor:pointer;margin:8px 2px}
+#progressbar{overflow:hidden;color:#d3d3d3}#progressbar .active{color:#000}#progressbar li{list-style-type:none;font-size:15px;width:25%;float:left;position:relative;font-weight: 500;}#progressbar #account:before{font-family:FontAwesome;content:"\f023";display: none;}#progressbar #personal:before{font-family:FontAwesome;content:"\f007";display: none;}#progressbar #payment:before{font-family:FontAwesome;content:"\f09d";display: none;}#progressbar #confirm:before{font-family:FontAwesome;content:"\f00c";display: none;}#progressbar li:before{width:50px;height:50px;line-height:45px;display:block;font-size:18px;color:#fff;background:#d3d3d3;border-radius:50%;margin:0 auto 10px auto;padding:2px}#progressbar li:after{content:'';width:100%;height:2px;background:#d3d3d3;position:absolute;left:0;top:25px;z-index:-1}#progressbar li.active:before,#progressbar li.active:after{background:skyblue}.radio-group{position:relative;margin-bottom:25px}.radio{display:inline-block;width:204;height:104;border-radius:0;background:#add8e6;box-shadow:0 2px 2px 2px rgba(0,0,0,.2);box-sizing:border-box;cursor:pointer;margin:8px 2px}
 .radio:hover{box-shadow:2px 2px 2px 2px rgba(0,0,0,.3)}.radio.selected{box-shadow:1px 1px 2px 2px rgba(0,0,0,.1)}.fit-image{width:100%;object-fit:cover}.pay,.razorpay-payment-button{width:100px;background:skyblue !important;font-weight:700;color:#fff !important;border:0 none;border-radius:0;cursor:pointer;padding:10px 5px;margin:10px 5px}
    table.dataTable thead .sorting:before, table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting_desc:before, table.dataTable thead .sorting_desc:after, table.dataTable thead .sorting_asc_disabled:before, table.dataTable thead .sorting_asc_disabled:after, table.dataTable thead .sorting_desc_disabled:before, table.dataTable thead .sorting_desc_disabled:after {
     position: absolute;
@@ -87,6 +87,17 @@
    
     float: right;
 }
+    #Advertiser{
+        padding-left: 50px;
+    }
+    li.active a span{
+       color: #000!important;
+    }
+    #Ads{
+        padding-left: 50px;
+    }#his{
+        padding-left: 50px;
+    }
     #msform .action-button-previous {
     width: 100px;
     background: #616161;
@@ -129,10 +140,12 @@
          <div id="sidebar-scrollbar">
             <nav class="iq-sidebar-menu">
                <ul id="iq-sidebar-toggle" class="iq-menu">
-                  <li class="views"><a href="<?php echo URL::to('home') ?>" ><span>Visit site</span></a></li>
-                  <li class=" "><a href="<?php echo URL::to('advertiser') ?>" class="iq-waves-effect"><span>Dashboard</span></a></li>
-                   <p class="ads">Advertisements </p>
-                      <li><a href="<?php echo URL::to('advertiser') ?>/upload_ads" class="iq-waves-effect"><span> Upload Ads</span></a></li>
+                  <li class="views"><a href="<?php echo URL::to('home') ?>" ><img height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/visit.svg')?>"><span>Visit site</span></a></li>
+                  <li class=" "><a href="<?php echo URL::to('advertiser') ?>" class="iq-waves-effect"> <img height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/home.svg')?>"><span>Dashboard</span></a></li>
+                     <li>
+                    <a href="#Advertiser" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/user.svg')?>" height="40" width="40"><span>Advertisements </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                    <ul id="Advertiser" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                       <li><a href="<?php echo URL::to('advertiser') ?>/upload_ads" class="iq-waves-effect"><span> Upload Ads</span></a></li>
                       <li class=" "><a href="<?php echo URL::to('advertiser') ?>/upload_featured_ad" class="iq-waves-effect"><span>Upload Payperview Ads</span></a></li>
                       <li><a href="<?php echo URL::to('advertiser') ?>/ads-list" class="iq-waves-effect"><span>View Ads</span></a></li>
 
@@ -141,14 +154,29 @@
                  
                    <li class=" "><a href="<?php echo URL::to('advertiser/Ads_Scheduled') ?>" class="iq-waves-effect"><span>Schedule Ads</span></a></li>
                     <li class=" "><a href="<?php echo URL::to('advertiser') ?>/ads_campaign" class="iq-waves-effect"><span>Ads campaign</span></a></li>
-                   <p class="ads">Ads Analytics</p>
+                    </ul>
+                </li>
+                   
+                 <li>
+                      <a href="#Ads" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/anay.svg')?>" height="40" width="40"><span>Ads Analytics </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a> 
+                     <ul id="Ads" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                           
                   <li class=" "><a href="<?php echo URL::to('advertiser') ?>/list_total_cpc" class="iq-waves-effect"><span>CPC</span></a></li>
                   <li class=" "><a href="<?php echo URL::to('advertiser') ?>/list_total_cpv" class="iq-waves-effect"><span>CPV</span></a></li>
-                   <p class="ads">History</p>
-                   <li class=" "><a href="<?php echo URL::to('advertiser') ?>/featured_ad_history" class="iq-waves-effect"><span>Featured Ad History</span></a></li>
+                     </ul>
+                   </li>
+                    
+          
+                   <li>
+                       <a href="#his" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="<?php echo  URL::to('/assets/img/icon/his.svg')?>" height="40" width="40"><span>History </span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a> 
+                     <ul id="his" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                  <li class=" "><a href="<?php echo URL::to('advertiser') ?>/featured_ad_history" class="iq-waves-effect"><span>Featured Ad History</span></a></li>
                      <li><a href="<?php echo URL::to('advertiser') ?>/plan_history" class="iq-waves-effect"><span> Plans History</span></a></li>
-                      <li><a href="<?php echo URL::to('advertiser') ?>/logout" class="iq-waves-effect"><span> Logout</span></a></li>
+                     </ul>
+                   </li>
                    <div class="bod"></div>
+                      <li><a href="<?php echo URL::to('advertiser') ?>/logout" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/logout.svg')?>" height="40" width="40"><span> Logout</span></a></li>
+                  
                    <?php $activeplan =  App\Advertiserplanhistory::where('advertiser_id',session('advertiser_id'))->where('status','active')->count(); ?>
                    @if($activeplan != 0)
                    
