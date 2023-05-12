@@ -6684,49 +6684,54 @@ public function LocationCheck(Request $request){
         return response()->json($response, 200);
     }
 
-  public function MostwatchedVideosUser(Request $request)
-  {
-    $checkKidMode = 0 ;
-    $subUser = '';
-    $userId = $request->user_id;
-    $recommendation = HomeSetting::first()->Recommendation;
+    public function MostwatchedVideosUser(Request $request){
 
-    if ($recommendation != 1) {
+      try {
+      
+        $Sub_user = '';
+        $user_id  = $request->user_id ;
+        $Recomended = HomeSetting::first();
+
+
+        if( $Recomended->Recommendation == 1 ){
+
+          $check_Kidmode = 0 ;
+
+          $mostWatchedUserVideos = RecentView::select('video_id','videos.*',DB::raw('COUNT(video_id) AS count'))
+                ->join('videos', 'videos.id', '=', 'recent_views.video_id')
+                ->groupBy('video_id');
+
+                if(Geofencing() !=null && Geofencing()->geofencing == 'ON')
+                {
+                  $mostWatchedUserVideos = $mostWatchedUserVideos->whereNotIn('videos.id',Block_videos());
+                }
+    
+                if( $check_Kidmode == 1 )
+                {
+                  $mostWatchedUserVideos = $mostWatchedUserVideos->whereBetween('videos.age_restrict', [ 0, 12 ]);
+                }
+
+                if($Sub_user != null){
+                    $mostWatchedUserVideos = $mostWatchedUserVideos->where('recent_views.sub_user',$Sub_user);
+                }else{
+                    $mostWatchedUserVideos = $mostWatchedUserVideos->where('recent_views.user_id',$user_id);
+                }
+                $mostWatchedUserVideos = $mostWatchedUserVideos->orderByRaw('count DESC' )->limit(20)->get();
+          }
+            return response()->json([
+              'status'  => 'true',
+              'message' => 'Most watched videos by User data Retrieve successfully',
+              'mostWatchedUserVideos' => $mostWatchedUserVideos], 200);
+      
+    } catch (\Throwable $th) {
+      
         return response()->json([
-        'status'  => "true" ,
-        'message' => 'Recommendation is turned off',
-        'mostWatchedUserVideos' => []
+          'status'  => 'false',
+          'Message' => $th->getMessage(),
       ], 200);
     }
-
-    $mostWatchedUserVideos = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))
-        ->join('videos', 'videos.id', '=', 'recent_views.video_id')
-        ->when(Geofencing() != null && Geofencing()->geofencing == 'ON', function ($query) {
-            $blockVideoIds = Block_videos();
-            if (!empty($blockVideoIds)) {
-                $query->whereNotIn('videos.id', $blockVideoIds);
-            }
-        })
-        ->when($subUser != null, function ($query) use ($subUser) {
-            $query->where('recent_views.sub_user', $subUser);
-        }, function ($query) use ($userId) {
-            $query->where('recent_views.user_id', $userId);
-        })
-        ->when($checkKidMode == 1, function ($query) {
-            $query->whereBetween('videos.age_restrict', [0, 12]);
-        })
-        ->with('videos')
-        ->groupBy('video_id')
-        ->orderByDesc('count')
-        ->limit(30)
-        ->get();
-
-    return response()->json([
-        'status'  => "true" ,
-        'message' => 'Most watched videos by user data retrieved successfully',
-        'mostWatchedUserVideos' => $mostWatchedUserVideos
-    ], 200);
   }
+
 
     public function Country_MostwatchedVideos(){
 
