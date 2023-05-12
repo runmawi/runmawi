@@ -1086,9 +1086,10 @@ public function verifyandupdatepassword(Request $request)
             $latestvideos = $latestvideos  ->whereNotIn('videos.id',Block_videos());
           }
 
-      $latestvideos =$latestvideos->latest('created_at')->limit(50)->get()->map(function ($item) {
-          $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-          $item['video_url'] = URL::to('/').'/storage/app/public/';
+      $latestvideos =$latestvideos->latest('created_at')->limit(1)->get()->map(function ($item) {
+          $item['image_url'] = URL::to('public/uploads/images/'.$item->image);
+          $item['publish_time_IOS'] = $carbon = Carbon::createFromFormat('Y-m-d\TH:i',$item->publish_time)->format('Y-m-d H:i:s');
+
           return $item;
         });
 
@@ -1306,6 +1307,7 @@ public function verifyandupdatepassword(Request $request)
           $item['mid_position_time'] = $ads_videos != null  && $ads_videos->ads_position == 'mid'  ? $ads_mid_time  : "0";
           $item['post_position_time'] =$ads_videos != null  && $ads_videos->ads_position == 'post' ? $ads_Post_time  : "0";
           $item['ads_seen_status'] = $item->ads_status;
+          $item['ios_publish_time']    = Carbon::parse($item->publish_time)->format('Y-m-d H:i:s');
           return $item;
         });
   
@@ -2051,7 +2053,10 @@ public function verifyandupdatepassword(Request $request)
         $user->mobile = $request->user_mobile;
         $user->password = $user_password;
         $user->avatar = $avatar;
+        $user->gender = $request->gender;
+        $user->DOB = $request->DOB;
         $user->save();
+        
         $response = array(
         'status'=>'true',
         'message'=>'Your Profile detail has been updated'
@@ -2863,24 +2868,27 @@ public function verifyandupdatepassword(Request $request)
   }
 
 
-        public function ViewProfile(Request $request) {
+  public function ViewProfile(Request $request) {
 
-            $user_id = $request->user_id;
-            if($user_id == 1){
+    $user_id = $request->user_id;
 
-              $user_details = User::where('id', '=', $user_id)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+      if($user_id == 1){
+
+          $user_details = User::where('id', '=', $user_id)->orderBy('created_at', 'desc')->get()->map(function ($item) {
                 $item['profile_url'] = URL::to('/').'/public/uploads/avatars/'.$item->avatar;
                 return $item;
-            });
-              $response = array(
-                'status'=>'true',
-                'message'=>'success',
-                'curren_stripe_plan'=> '',
-                'user_details' => $user_details,
-                'next_billing' => '',
-                'ends_at' => '',
-            );
-            }else{
+          });
+          
+          $response = array(
+              'status'=>'true',
+              'message'=>'success',
+              'curren_stripe_plan'=> '',
+              'user_details' => $user_details,
+              'next_billing' => '',
+              'ends_at' => '',
+          );
+
+      }else{
 
             $stripe_plan = SubscriptionPlan();
 
@@ -2888,9 +2896,9 @@ public function verifyandupdatepassword(Request $request)
                 $item['profile_url'] = URL::to('/').'/public/uploads/avatars/'.$item->avatar;
                 return $item;
             });
+
             $userdata = User::where('id', '=', $user_id)->first();
             $paymode_type =  Subscription::where('user_id',$user_id)->latest()->pluck('PaymentGateway')->first();
-
 
           if($paymode_type != null && $paymode_type == "Razorpay" &&  !empty($userdata) && $userdata->role == "subscriber"){
 
@@ -2904,7 +2912,7 @@ public function verifyandupdatepassword(Request $request)
                 $nextPaymentAttemptDate = '';
               }
 
-            }
+          }
           else{
             if ($userdata->subscription($stripe_plan)) {
                   $timestamp = $userdata->asStripeCustomer()["subscriptions"]->data[0]["current_period_end"];
@@ -2914,16 +2922,9 @@ public function verifyandupdatepassword(Request $request)
               }
           }
 
+          $user = User::find($user_id);
 
-            $user = User::find($user_id);
-
-            // if ($user->subscription($stripe_plan) && $user->subscription($stripe_plan)->onGracePeriod()) {
-            //     $ends_at = $user->subscription($stripe_plan)->ends_at->format('dS M Y');
-            // }else{
-            //     $ends_at = "";
-            // }
-
-            $stripe_plan = SubscriptionPlan();
+          $stripe_plan = SubscriptionPlan();
 
             if ( !empty($userdata) && $userdata->role == "subscriber" || $userdata->subscribed($stripe_plan) && $userdata->role == "subscriber")
             {
@@ -6684,44 +6685,49 @@ public function LocationCheck(Request $request){
         return response()->json($response, 200);
     }
 
-    public function MostwatchedVideosUser(Request $request){
+  public function MostwatchedVideosUser(Request $request)
+  {
+    $checkKidMode = 0 ;
+    $subUser = '';
+    $userId = $request->user_id;
+    $recommendation = HomeSetting::first()->Recommendation;
 
-      $Sub_user = '';
-      $user_id  = $request->user_id ;
-      $Recomended = HomeSetting::first();
-
-
-      if( $Recomended->Recommendation == 1 ){
-
-        $check_Kidmode = 0 ;
-
-        $Mostwatched = RecentView::select('video_id','videos.*',DB::raw('COUNT(video_id) AS count'))
-              ->join('videos', 'videos.id', '=', 'recent_views.video_id')
-              ->groupBy('video_id');
-
-              if(Geofencing() !=null && Geofencing()->geofencing == 'ON')
-              {
-                $Mostwatched = $Mostwatched->whereNotIn('videos.id',Block_videos());
-              }
-  
-              if( $check_Kidmode == 1 )
-              {
-                $Mostwatched = $Mostwatched->whereBetween('videos.age_restrict', [ 0, 12 ]);
-              }
-
-              if($Sub_user != null){
-                  $Mostwatched = $Mostwatched->where('recent_views.sub_user',$Sub_user);
-              }else{
-                  $Mostwatched = $Mostwatched->where('recent_views.user_id',$user_id);
-              }
-              $Mostwatched = $Mostwatched->orderByRaw('count DESC' )->limit(20)->get();
-      }else{
-        $Mostwatched=[];
-      }
-            return response()->json([
-              'message' => 'Most watched videos by User data Retrieve successfully',
-              'Mostwatched' => $Mostwatched], 200);
+    if ($recommendation != 1) {
+        return response()->json([
+        'status'  => "true" ,
+        'message' => 'Recommendation is turned off',
+        'mostWatchedUserVideos' => []
+      ], 200);
     }
+
+    $mostWatchedUserVideos = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))
+        ->join('videos', 'videos.id', '=', 'recent_views.video_id')
+        ->when(Geofencing() != null && Geofencing()->geofencing == 'ON', function ($query) {
+            $blockVideoIds = Block_videos();
+            if (!empty($blockVideoIds)) {
+                $query->whereNotIn('videos.id', $blockVideoIds);
+            }
+        })
+        ->when($subUser != null, function ($query) use ($subUser) {
+            $query->where('recent_views.sub_user', $subUser);
+        }, function ($query) use ($userId) {
+            $query->where('recent_views.user_id', $userId);
+        })
+        ->when($checkKidMode == 1, function ($query) {
+            $query->whereBetween('videos.age_restrict', [0, 12]);
+        })
+        ->with('videos')
+        ->groupBy('video_id')
+        ->orderByDesc('count')
+        ->limit(30)
+        ->get();
+
+    return response()->json([
+        'status'  => "true" ,
+        'message' => 'Most watched videos by user data retrieved successfully',
+        'mostWatchedUserVideos' => $mostWatchedUserVideos
+    ], 200);
+  }
 
     public function Country_MostwatchedVideos(){
 
@@ -6733,7 +6739,7 @@ public function LocationCheck(Request $request){
 
         $data = RecentView::select('video_id','videos.*',DB::raw('COUNT(video_id) AS count'))
                   ->join('videos', 'videos.id', '=', 'recent_views.video_id')->groupBy('video_id')->orderByRaw('count DESC' )
-                  ->where('country', Country_name());
+                  ->where('country_name', '=',Country_name());
                   
                   if(Geofencing() !=null && Geofencing()->geofencing == 'ON')
                   {
@@ -6746,8 +6752,7 @@ public function LocationCheck(Request $request){
                   }
 
                   $data = $data->limit(30)->get()->map(function ($item) {
-                      $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image ;
-                      $item['source']    = "Videos"; 
+                      $item['image_url'] = URL::to('public/uploads/images'.$item->image) ;
                   return $item;
         });
 
@@ -12881,7 +12886,7 @@ public function QRCodeMobileLogout(Request $request)
 
         $data = RecentView::select('video_id','videos.*',DB::raw('COUNT(video_id) AS count'))
                   ->join('videos', 'videos.id', '=', 'recent_views.video_id')->groupBy('video_id')->orderByRaw('count DESC' )
-                  ->where('country', Country_name());
+                  ->where('country_name', Country_name());
                   
                   if(Geofencing() !=null && Geofencing()->geofencing == 'ON')
                   {
