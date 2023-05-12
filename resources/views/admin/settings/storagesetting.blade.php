@@ -112,6 +112,38 @@ border-radius: 0px 4px 4px 0px;
                             </div>
                         </div>
                     </div>
+                      <!-- AWS Env Details -->
+                      <div class="row" id="site_details">
+                        <div class="col-sm-6">
+                            <label class="">Site KEY  </label>
+                            <div class="panel-body" style="display: block;">
+                              <input type="text" class="form-control" name="site_key" id="site_key" value="@if(!empty($storage_settings->site_key)){{ $storage_settings->site_key }}  @endif" />
+                           </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label class="">Site User  </label>
+                            <div class="panel-body" style="display: block;">
+                              <input type="text" class="form-control" name="site_user" id="site_user" value="@if(!empty($storage_settings->site_user)){{ $storage_settings->site_user }}  @endif" />
+                           </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label class="">Site Action(Ex:(list))  </label>
+                            <div class="panel-body" style="display: block;">
+                              <input type="text" class="form-control" name="site_action" id="site_action" value="@if(!empty($storage_settings->site_action)){{ $storage_settings->site_action }} @endif" />
+                           </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label class="">Site Server IP </label>
+                            <div class="panel-body" style="display: block;">
+                              <input type="text" class="form-control" name="site_IPSERVERAPI" id="site_IPSERVERAPI" value="@if(!empty($storage_settings->site_IPSERVERAPI)){{ $storage_settings->site_IPSERVERAPI }} @endif" />
+                           </div>
+                        </div>
+
+                    </div>
+                        
                         <!-- AWS Env Details -->
                     <div class="row" id="aws_details">
                         <div class="col-sm-6">
@@ -230,13 +262,16 @@ border-radius: 0px 4px 4px 0px;
         var aws_storage = "{{ $storage_settings->aws_storage }}";
         if(aws_storage == 1){
             $('#aws_details').show(); 
+            $('#site_details').hide(); 
         }
 
         $('.aws_storage').on('change', function(event) {
             var aws_storage = $("#aws_storage").prop("checked");
-            $('#site_storage').prop('checked', false); // Unchecks it
+            // Unchecks it
                 if(aws_storage == true){
+                    $('#site_storage').prop('checked', false);
                     $('#aws_details').show(); 
+                    $('#site_details').hide(); 
                     Swal.fire({
                         title: 'Aws - Storage',
                         imageWidth: 320,
@@ -244,9 +279,15 @@ border-radius: 0px 4px 4px 0px;
                         imageAlt: 'Custom image',
                     })
                 }else{
-                    $('#site_storage').prop('checked', true); // checks it
+                    var site_storage = $("#site_storage").prop("checked", true);
                     $('#aws_details').hide(); 
-                
+                    $('#site_details').show(); 
+                    Swal.fire({
+                        title: 'Site - Storage',
+                        imageWidth: 320,
+                        imageHeight: 200,
+                        imageAlt: 'Custom image',
+                    })
                 }
         });
     });
