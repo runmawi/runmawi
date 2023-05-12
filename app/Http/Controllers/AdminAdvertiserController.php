@@ -200,51 +200,8 @@ class AdminAdvertiserController extends Controller
     {
         if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
             return redirect('/admin/restrict');
-    }
-        $user = User::where('id', 1)->first();
-        $duedate = $user->package_ends;
-        $current_date = date('Y-m-d');
-        if ($current_date > $duedate) {
-            $client = new Client();
-            $url = 'https://flicknexs.com/userapi/allplans';
-            $params = [
-                'userid' => 0,
-            ];
-
-            $headers = [
-                'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ',
-            ];
-            $response = $client->request('post', $url, [
-                'json' => $params,
-                'headers' => $headers,
-                'verify' => false,
-            ]);
-
-            $responseBody = json_decode($response->getBody());
-            $settings = Setting::first();
-            $data = [
-                'settings' => $settings,
-                'responseBody' => $responseBody,
-            ];
-            return View::make('admin.expired_dashboard', $data);
-        } else {
-            $setting = Setting::first();
-            if ($setting->ads_on_videos == 1) {
-                $data = [
-                    'advertisements' => Advertisement::orderBy('created_at', 'desc')->paginate(9),
-                ];
-                return view('admin.ads_management.ads_list', $data);
-            } else {
-                return abort(404);
-            }
         }
-    }
 
-    public function ads_Edit($id)
-    {
-        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
-            return redirect('/admin/restrict');
-    }
         $user = User::where('id', 1)->first();
         $duedate = $user->package_ends;
         $current_date = date('Y-m-d');
@@ -273,38 +230,98 @@ class AdminAdvertiserController extends Controller
             ];
             return View::make('admin.expired_dashboard', $data);
         } 
-        else {
+        else 
+        {
             $setting = Setting::first();
-
             if ($setting->ads_on_videos == 1) {
                 $data = [
-                    'advertisement' => Advertisement::where('id', $id)->first(),
-                    'ads_categories' => Adscategory::get(),
-                    'advertisers' => Advertiser::get(),
+                    'advertisements' => Advertisement::orderBy('created_at', 'desc')->paginate(9),
                 ];
-                return view('admin.ads_management.advertisement_edit', $data);
+                return view('admin.ads_management.ads_list', $data);
             } else {
                 return abort(404);
             }
         }
     }
+
+    public function ads_Edit($id)
+    {
+        try {
+    
+            if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+                return redirect('/admin/restrict');
+            }
+
+            $user = User::where('id', 1)->first();
+            $duedate = $user->package_ends;
+            $current_date = date('Y-m-d');
+
+            if ($current_date > $duedate) {
+
+                $client = new Client();
+                $url = 'https://flicknexs.com/userapi/allplans';
+                $params = ['userid' => 0,];
+
+                $headers = [
+                    'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ',
+                ];
+                $response = $client->request('post', $url, [
+                    'json' => $params,
+                    'headers' => $headers,
+                    'verify' => false,
+                ]);
+
+                $responseBody = json_decode($response->getBody());
+                $settings = Setting::first();
+                $data = [
+                    'settings' => $settings,
+                    'responseBody' => $responseBody,
+                ];
+                return View::make('admin.expired_dashboard', $data);
+            } 
+            
+            else {
+                $setting = Setting::first();
+
+                if ($setting->ads_on_videos == 1) {
+                    
+                    $data = [
+                        'advertisement' => Advertisement::where('id', $id)->first(),
+                        'ads_categories' => Adscategory::get(),
+                        'advertisers' => Advertiser::get(),
+                    ];
+                    return view('admin.ads_management.advertisement_edit', $data);
+                } else {
+                    return abort(404);
+                }
+            }
+        } catch (\Throwable $th) {
+            return abort(404);
+        }
+    }
+
     public function ads_Delete($id)
     {
         Advertisement::find($id)->delete();
         return Redirect::back();
     }
+
     public function ads_Update(Request $request)
     {
-        $data = $request->all();
-        $id = $data['id'];
-        $advertisement = Advertisement::find($id);
-        $advertisement->advertiser_id = $request->company_name;
-        $advertisement->ads_name = $request->ads_name;
-        $advertisement->ads_category = $request->ads_category;
-        $advertisement->ads_position = $request->ads_position;
-        $advertisement->ads_path = $request->ads_path;
-        $advertisement->save();
-
+        $inputs = array(
+            'advertiser_id' => $request->company_name ,
+            'ads_name' => $request->ads_name ,
+            'ads_category' => $request->ads_category ,
+            'ads_position' => $request->ads_position ,
+            'ads_upload_type' => $request->ads_upload_type ,
+            'ads_path' => $request->ads_path ,
+            'age' => !empty($request->age) ? json_encode($request->age) : null,
+            'gender' => !empty($request->gender) ? json_encode($request->gender) : null,
+            'location' => $request->location === 'all_countries' || $request->location === 'India' ? $request->location : $request->locations,
+        );
+        
+        Advertisement::where('id', $request->id)->update($inputs);
+        
         return Redirect::back()->with(['message' => 'Successfully Updated Advertisement Details', 'note_type' => 'success']);
     }
 
