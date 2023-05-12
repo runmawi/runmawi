@@ -1088,8 +1088,6 @@ public function verifyandupdatepassword(Request $request)
 
       $latestvideos =$latestvideos->latest('created_at')->limit(1)->get()->map(function ($item) {
           $item['image_url'] = URL::to('public/uploads/images/'.$item->image);
-          $item['publish_time_IOS'] =  Carbon::parse($item->publish_time)->format('Y-m-d H:i:s');
-          
           return $item;
         });
 
