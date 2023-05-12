@@ -318,7 +318,7 @@ elseif (isset($episodeprev))
 
                         <!-- Comment Section -->
                
-                        <?php if( App\CommentSection::first() != null && App\CommentSection::pluck('livestream')->first() == 1 ): ?>
+                        <?php if( App\CommentSection::first() != null && App\CommentSection::pluck('episode')->first() == 1 ): ?>
        <div class="row">
            <div class=" container-fluid video-list you-may-like overflow-hidden">
                <h4 class="" style="color:#fffff;"><?php echo __('Comments');?></h4>
