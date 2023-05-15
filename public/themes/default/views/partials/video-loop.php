@@ -600,8 +600,7 @@ function about(evt , id) {
 // Get the element with id="defaultOpen" and click on it
 //document.getElementById("defaultOpen").click();
 </script>
-<script src="<?= THEME_URL . '/assets/js/rrssb.min.js'; ?>"></script>
-	<script src="<?= THEME_URL . '/assets/js/videojs-resolution-switcher.js';?>"></script>
+
 
 
 
