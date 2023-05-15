@@ -1773,7 +1773,7 @@ return;
             content: '';
             height: 100px;
             width: 10%;
-            background: url(<?php echo URL::to($logo_url) ; ?>) no-repeat;
+            background: url('https://dev.nemisatv.co.za/public/uploads/settings/Untitled-1 (2).png') no-repeat;
             background-size: 100px auto, auto;
             }
         </style>
