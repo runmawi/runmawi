@@ -22,6 +22,7 @@ use FFMpeg\Format\Video\WebM;
 use FFMpeg\Media\Concat;
 use FFMpeg\Coordinate\TimeCode;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use App\Video;
 
 class TranscodeController extends Controller
 {
@@ -31,8 +32,30 @@ class TranscodeController extends Controller
      * @param  Request  $request
      * @return Response
      */
+    public function mergeMp4Files()
+    {
+      $videos =   Video::where('active',1)->get();
 
-     public function mergeMp4Files()
+      $arrContextOptions=array(
+        "ssl"=>array(
+             "verify_peer"=>false,
+             "verify_peer_name"=>false,
+        ),
+    );  
+    foreach($videos as $value){
+        $url = $value->mp4_url;
+        $contents = file_get_contents($value->mp4_url,false, stream_context_create($arrContextOptions));
+        file_put_contents('video1.mp4', $contents,false, stream_context_create($arrContextOptions));
+    // $data = file_get_contents($url, false, stream_context_create($arrContextOptions));
+
+      };
+    
+    
+
+    //   dd($data);
+
+    }
+     public function mergeMp4FilesOLD()
      {
 
         $media1 = Media::createFromUrl('https://localhost/flicknexs/storage/app/public/i8x9acGw5oix9Fi5.mp4');
