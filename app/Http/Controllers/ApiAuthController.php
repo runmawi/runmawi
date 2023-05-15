@@ -3083,6 +3083,8 @@ public function verifyandupdatepassword(Request $request)
       //   $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
       //   return $item;
       // });
+    $myData = array();
+
       $category_id = CategoryVideo::where('video_id', $videoid)->get();
         // Recomendeds
         foreach ($category_id as $key => $value)
@@ -3097,11 +3099,14 @@ public function verifyandupdatepassword(Request $request)
                     $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
                     return $item;
                   });
+                  $myData[] = array(
+                    "recomendeds" => $recomendeds
+                  );
         }
 
         $response = array(
         'status'=>'true',
-        'channelrecomended' => $recomendeds
+        'channelrecomended' => $myData
       );
       return response()->json($response, 200);
     }
