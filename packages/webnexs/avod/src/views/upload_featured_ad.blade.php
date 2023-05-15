@@ -9,7 +9,7 @@
     }
 
     #progressbar li {
-        width: 20%;
+        width: 25%;
     }
 </style>
 

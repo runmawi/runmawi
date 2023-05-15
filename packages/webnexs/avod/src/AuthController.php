@@ -5,36 +5,36 @@ namespace Webnexs\Avod;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Laravel\Cashier\Exceptions\IncompletePayment;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Cache;
+use Intervention\Image\Facades\Image;
+use Carbon\CarbonInterval;
+use Illuminate\Support\Str;
+use Razorpay\Api\Api;
 use Validator,Redirect,Response;
-Use App\Advertiser;
-Use App\Adsplan;
-Use App\Advertisement;
+use Exception;
+use Carbon\Carbon;
 Use App\Advertiserplanhistory;
+Use App\Advertiser;
+Use App\Advertisement;
 Use App\Adscategory;
-Use App\Setting;
 use App\FeaturedadHistory;
 use App\Advertiserwallet;
+use App\AdsTimeSlot;
 use App\Adcampaign;
 use App\Adviews;
 use App\Adrevenue;
-Use App\User;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Session;
-use DB;
-use Stripe;
-use Razorpay\Api\Api;
-use Exception;
-use Illuminate\Support\Facades\Cache;
-use Intervention\Image\Facades\Image;
-use Laravel\Cashier\Exceptions\IncompletePayment;
-use Carbon\Carbon;
-use Carbon\CarbonInterval;
-use Mail; 
-use Illuminate\Support\Str;
+Use App\Setting;
+Use App\Adsplan;
 use App\AdsEvent;
-use App\AdsTimeSlot;
+Use App\User;
 use DatePeriod;
+use Session;
+use Stripe;
+use Mail; 
+use DB;
 
 class AuthController extends Controller
 {
@@ -109,6 +109,31 @@ class AuthController extends Controller
         }
 
         return Redirect::to("advertiser/login")->withSuccess('Great! You have Successfully registered');
+    }
+
+    public function ads_list() {
+
+        try {
+           
+            if(empty(session('advertiser_id'))){
+                return Redirect::to("advertiser/login")->withError('Opps! You do not have access');
+            }
+
+            $data = array(
+                'settings' => Setting::first() ,
+                'advertisements' => Advertisement::where('advertiser_id',session('advertiser_id'))->get()->map(function ($item) {
+                    $item['ads_category'] = Adscategory::where('id',$item->ads_category )->pluck('name')->first() ; 
+                    return $item;
+                  }),
+                  
+                // App\
+            );
+
+            return view('avod::ads_list',$data);
+
+        } catch (\Throwable $th) {
+            return abort(404);
+        }
     }
 
     public function dashboard()
@@ -546,16 +571,6 @@ class AuthController extends Controller
         // $getdata->save();
 
         return Redirect::to('advertiser/ads-list');
-    }
-
-    public function ads_list() {
-        $data = [];
-        $data['settings'] = Setting::first();
-        if(!empty(session('advertiser_id')) ){
-            $data['advertisements'] = Advertisement::where('advertiser_id',session('advertiser_id'))->get();
-            return view('avod::ads_list',$data);
-        }
-        return Redirect::to("advertiser/login")->withError('Opps! You do not have access');
     }
 
     public function paymentgateway($plan_id){
@@ -1036,6 +1051,6 @@ class AuthController extends Controller
 
             return view('avod::Ads_events',$data);
         }
-
+    
 }
 ?>

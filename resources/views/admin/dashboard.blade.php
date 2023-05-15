@@ -120,6 +120,17 @@
                                     $date=date_create($users->package_ends);
                                     $package_ends = date_format($date,"Y-M-d"); 
                                   ?>
+                              <p style="color:black;">Space Available: {{ $space_available }}</p>
+                              <p style="color:black;">Space Usage: {{ $space_usage }} </p>
+                              <p style="color:black;">Total Space Disk: {{ $space_disk }} </p>
+ 
+                            </div>
+                            <div class="iq-header-title">
+                                 <?php 
+                                    $users = App\User::where('id',1)->first(); 
+                                    $date=date_create($users->package_ends);
+                                    $package_ends = date_format($date,"Y-M-d"); 
+                                  ?>
                               <p style="color:black;">Subscribed To {{ $users->package }}</p>
                               <p style="color:black;">Package Ends On {{ $package_ends }} </p>
  
