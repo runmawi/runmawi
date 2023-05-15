@@ -32,9 +32,9 @@
             <div class="block-images position-relative">
               <div class="img-box">
                 <img src="<?php echo $channel->channel_image;  ?>" class="img-fluid w-100" alt="channel">                 
-              </div>
+                </div></div>
 
-              <div class="block-description">
+              <div class="block-description"></div>
                 <a href="<?php echo URL::to('/channel'.'/'.$channel->slug) ?> ">
 
               <h6><?php echo __($channel->channel_name); ?></h6>
@@ -46,8 +46,7 @@
                   </a>
                 </div>
                      </a>
-              </div>
-            </div>
+            
           </a>
         </li>
       <?php endforeach; 

@@ -1,5 +1,5 @@
 <section id="iq-favorites">
-    <div class="container-fluid">
+    <div class="">
         <div class="row">
             <div class="col-sm-12 overflow-hidden">
                 <div class="favorites-contens">
