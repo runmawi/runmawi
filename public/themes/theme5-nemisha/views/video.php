@@ -123,7 +123,7 @@ h2{
   margin-top: 0px;
 }
       #video_container{
-          padding: 20px;
+        
           background: #202933;
 border-radius: 20px;
 
@@ -164,7 +164,7 @@ line-height: 21px;
           border-radius: 5px;
           font-weight: 700;
 font-size: 18px;
-line-height: 21px;
+line-height: 16px;
       }
       .modal-body a{
           font-weight: 400;
@@ -855,7 +855,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
        <!-- Year, Running time, Age --> 
          <div class="row align-items- text-white text-detail justify-content-between">
              <div class="col-sm-6 col-md-6 col-xs-12">
-            <span class="badge badge-secondary p-3"><?php echo __($video->age_restrict).' '.'+';?></span>
+            <span class="badge badge-secondary p-3" style="line-height: 5px;"><?php echo __($video->age_restrict).' '.'+';?></span>
             <span class="ml-3"><?php echo __(gmdate('H:i:s', $video->duration));?></span>
             <span class="trending-year">,<?php if ($video->year == 0) { echo ""; } else { echo $video->year;} ?></span>
             <span class="trending-year" style="display:none;"><?php
@@ -1773,7 +1773,7 @@ return;
             content: '';
             height: 100px;
             width: 10%;
-            background: url(<?php echo URL::to($logo_url) ; ?>) no-repeat;
+            background: url('https://dev.nemisatv.co.za/public/uploads/settings/Untitled-1 (2).png') no-repeat;
             background-size: 100px auto, auto;
             }
         </style>

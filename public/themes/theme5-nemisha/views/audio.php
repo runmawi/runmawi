@@ -298,7 +298,7 @@ Your browser does not support the audio element.
 <h6 class="hero-title album mt-3"><div class="title"></div> </h6>
 <p class="mt-2">Music by <?php echo get_audio_artist($audio->id); ?></p>
 <p class="mt-2">Album <a href="<?php echo URL::to('/').'/album/'.$album_slug;?>"><?php echo ucfirst($album_name); ?></a></p>
-<div class="d-flex" style="justify-content: space-between;width: 40%;align-items: center;">
+<div class="d-flex aw" style="justify-content: space-between;width: 40%;align-items: center;">
 
 <div onclick="toggleAudio()">
   <button class="  btn btn-outline-success" id="vidbutton"  ><i class="fa fa-play mr-2" aria-hidden="true"  ></i> Play</button>
