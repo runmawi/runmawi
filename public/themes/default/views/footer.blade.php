@@ -253,8 +253,6 @@ function about(evt , id) {
  <script  src="<?= URL::to('/'). '/assets/js/hls.min.js';?>"></script>
  <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/0.14.5/hls.min.js.map"></script>
  <script  src="<?= URL::to('/'). '/assets/js/hls.js';?>"></script>
- <script type="text/javascript" src="https://unpkg.com/default-passive-events"></script>
-
 
 <script>
     function loadJS(u) {
