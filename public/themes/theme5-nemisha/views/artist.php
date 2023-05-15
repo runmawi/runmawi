@@ -38,7 +38,7 @@
                 <h2>Lastest Release</h2>
             </div>
 
-            <div class="container">
+            <div class="container-fluid">
                 <div class="row mb-5">
                     <?php foreach ($latest_audios as $key => $latest_audio) { 
                         ?>
@@ -72,7 +72,7 @@
                 <h2>Album</h2>
             </div>
 
-            <div class="container">
+            <div class="container-fluid">
                 <div class="row mb-5">
                     <?php foreach ($albums as $key => $album) { ?>
                         
@@ -103,7 +103,7 @@
                 <h2>Audio</h2>
             </div>
 
-            <div class="container">
+            <div class="container-fluid">
                 <div class="row mb-5">
                     <?php  foreach ($artist_audios as $key => $artist_audio) { 
                         ?>
@@ -137,7 +137,7 @@
                 <h2>Series</h2>
             </div>
 
-            <div class="container">
+            <div class="container-fluid">
                 <div class="row mb-5">
                     <?php  foreach ($artist_series as $key => $artist_serie) { 
                         ?>
@@ -171,7 +171,7 @@
                 <h2>Videos</h2>
             </div>
 
-            <div class="container">
+            <div class="container-fluid">
                 <div class="row mb-5">
                     <?php  foreach ($artist_videos as $key => $artist_video) { 
                         ?>
