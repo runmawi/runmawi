@@ -109,6 +109,24 @@
     #top-menu{
     display: block;
 }
+    .aw{
+        width: 60%!important;
+    }
+    .badge {
+    display: inline-block;
+    padding: 0.28em 0.4em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 16px;
+    height: 20px;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.25rem;
+}
+    .player-ctn{
+        margin-bottom: 10px;
+    }
     #mySidebar{
         display: none;
     }

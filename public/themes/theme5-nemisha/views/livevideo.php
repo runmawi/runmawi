@@ -604,9 +604,10 @@ else{
                         </div>
                     </div>
                     <?php   }?>
+                <div class="container-fluid">
                     <div class="text-white col-md-6 p-0">
                         <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->description); ?></p>
-                    </div>
+                    </div></div>
                     <div class="row">
                         <div class="col-sm-12 col-md-12 col-xs-12">
                             <div class="video-details-container">
