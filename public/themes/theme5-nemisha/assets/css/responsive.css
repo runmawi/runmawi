@@ -112,6 +112,9 @@
     .aw{
         width: 60%!important;
     }
+    #video .plyr.plyr--full-ui, #video-trailer .plyr.plyr--full-ui, #video_container .plyr.plyr--full-ui, #video_container .plyr__video-embed {
+        height: auto!important;
+    }
     .badge {
     display: inline-block;
     padding: 0.28em 0.4em;
