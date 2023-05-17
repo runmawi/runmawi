@@ -278,10 +278,13 @@ for($i=0;$i<(count($userrolepermissiom));$i++){
                      <?php }else{ } ?>
                   </ul>
                   </li>
-                  <li>
 
+
+                  
+<?php }else{ } ?> 
+                  <li>
                      <a href="#analytics_managements" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/ana.svg')?>">
-<span>Analytics</span><i
+                     <span>Analytics</span><i
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="analytics_managements" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -291,8 +294,6 @@ for($i=0;$i<(count($userrolepermissiom));$i++){
                         <li><a href="{{ URL::to('/cpp/live-payouts') }}">LiveStream Payouts </a></li>
                      </ul>
                   </li>
-                  
-<?php }else{ } ?> 
    <?php if( in_array( "Plans" ,$role)){ ?>
                    
                     <li>

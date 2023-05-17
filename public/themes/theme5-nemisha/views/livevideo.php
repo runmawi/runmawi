@@ -780,7 +780,7 @@ else{
         </div>
     </div>
 </div>
-<script src="<?= THEME_URL . '/assets/js/jquery.fitvid.js' ?>"></script>
+<!--<script src="<?= THEME_URL . '/assets/js/jquery.fitvid.js' ?>"></script>-->
 <script type="text/javascript">
     $(document).ready(function() {
         $('#video_container').fitVids();

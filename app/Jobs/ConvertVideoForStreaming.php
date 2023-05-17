@@ -101,19 +101,19 @@ class ConvertVideoForStreaming implements ShouldQueue
             })
             
             ->addFormat($BitrateFormat250, function($media) {
-                $media->addFilter('scale=352:240');
+                $media->addFilter('scale=420:240');
             })
             ->addFormat($BitrateFormat360, function($media) {
-                $media->addFilter('scale=480:360');
+                $media->addFilter('scale=640:360');
             })
             ->addFormat($lowBitrateFormat, function($media) {
-                $media->addFilter('scale=640:480');
+                $media->addFilter('scale=853:480');
             })
              ->addFormat($midBitrateFormat, function($media) {
-               $media->addFilter('scale=960:720');
+               $media->addFilter('scale=1280:720');
             })
              ->addFormat($highBitrateFormat, function($media) {
-               $media->addFilter('scale=1280:1080');
+               $media->addFilter('scale=1920:1080');
             })
             ->save($converted_name);
 
