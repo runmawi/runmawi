@@ -1771,15 +1771,27 @@ public function verifyandupdatepassword(Request $request)
 
   public function cmspages()
      {
+      try {
+          $pages = Page::where('active', '=', 1)->get()->map(function ($item) {
+            $item['page_url'] = URL::to('page/'.$item->slug);
+            $item['body'] = strip_tags(html_entity_decode($item->body));
+            $item['body'] = str_replace(["\r", "\n"], '', $item['body']);
+            return $item;
+          });
 
-      $pages = Page::where('active', '=', 1)->get()->map(function ($item) {
-        $item['page_url'] = URL::to('page').'/'.$item->slug;
-        return $item;
-      });
-      $response = array(
-        'status' => 'true',
-        'pages' => $pages
-      );
+          $response=array(
+            'status' => 'true',
+            'pages' => $pages
+          );
+
+      } catch (\Throwable $th) {
+
+          $response=array(
+            'status' => 'false',
+            'pages' => $th->getMessage()
+          );
+      }
+     
       return response()->json($response, 200);
      }
 
