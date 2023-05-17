@@ -7,7 +7,7 @@
 
 <!-- Header End -->
 <!-- MainContent -->
-<?php if(!empty($data['password_hash'])) { $id = Auth::user()->id ; } else { $id = 0 ; }
+<?php if(!Auth::guest() && !empty($data['password_hash'])) { $id = Auth::user()->id ; } else { $id = 0 ; }
 $category_id = App\VideoCategory::where('name',$categoryVideos['category_title'])->pluck('id')->first();
 $category_slug = App\VideoCategory::where('name',$categoryVideos['category_title'])->pluck('slug')->first();
 ?>

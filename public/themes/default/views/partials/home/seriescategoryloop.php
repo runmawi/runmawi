@@ -45,7 +45,7 @@
             </div>
             <div class="favorites-contens">
                 <ul class="favorites-slider list-inline  row p-0 mb-0">
-                    <?php if (!empty($data['password_hash'])) {
+                    <?php if (!Auth::guest() && !empty($data['password_hash'])) {
                         $id = Auth::user()->id;
                     } else {
                         $id = 0;

@@ -17,7 +17,7 @@
         <div class="favorites-contens">
             <ul class="favorites-slider list-inline row p-0 mb-0">
                 <?php  
-                if(!empty($data['password_hash'])) { 
+                if(!Auth::guest() && !empty($data['password_hash'])) { 
                           $id = Auth::user()->id ; } else { $id = 0 ; } ?>
                 <?php  if(isset($top_category_videos)) :
                        foreach($top_category_videos as $category_video):
