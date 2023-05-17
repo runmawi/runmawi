@@ -89,7 +89,6 @@ class TranscodeVideo implements ShouldQueue
         $this->video->update([
             'path' =>  $output_path_rand,
         ]);
-        $video->save($format, $output_path); 
         $video = $this->video;   
 
         $setting = Setting::first();
