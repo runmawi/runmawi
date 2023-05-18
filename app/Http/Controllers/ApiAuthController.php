@@ -3356,6 +3356,122 @@ public function verifyandupdatepassword(Request $request)
 
       return response()->json($response, 200);
     }
+
+    public function search_andriod(Request $request)
+    {
+
+      try {
+
+          $search_value = $request->search_value;
+
+          $videos = Video::Select('videos.id', 'videos.title', 'videos.slug', 'videos.year', 'videos.rating', 'videos.access', 'videos.publish_type', 'videos.global_ppv', 'videos.publish_time', 'videos.ppv_price', 'videos.duration', 'videos.rating', 'videos.image', 'videos.featured', 'videos.age_restrict','categoryvideos.category_id','categoryvideos.video_id','video_categories.name as category_name')
+            ->Join('categoryvideos','categoryvideos.video_id','=','videos.id')
+            ->Join('video_categories','video_categories.id','=','categoryvideos.category_id')
+            ->orwhere('videos.search_tags', 'LIKE', '%' . $search_value . '%')
+            ->orwhere('videos.title', 'LIKE', '%' . $search_value . '%')
+            ->orwhere('video_categories.name', 'LIKE', '%' . $search_value . '%')
+            ->where('active', '=', '1')
+            ->where('status', '=', '1')
+            ->where('draft', '=', '1')
+            ->latest('videos.created_at')
+            ->groupBy('videos.id')
+            ->limit('10');
+
+            if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+                $videos = $videos  ->whereNotIn('videos.id',Block_videos());
+            }
+
+            $videos = $videos->get()->map(function ($item) {
+              $item['image_url'] = URL::to('public/uploads/images/'.$item->image); ;
+              $item['source']    = "videos";
+              return $item;
+            });
+          
+
+          $livestreams = LiveStream::select('live_streams.id','live_streams.title','live_streams.slug','live_streams.year','live_streams.rating','live_streams.access','live_streams.ppv_price','live_streams.publish_type','live_streams.publish_status','live_streams.publish_time','live_streams.duration','live_streams.rating','live_streams.image','live_streams.featured','livecategories.live_id','live_categories.name')
+                                ->Join('livecategories','livecategories.live_id','=','live_streams.id')
+                                ->Join('live_categories','live_categories.id','=','livecategories.category_id')
+                                ->orwhere('live_streams.search_tags', 'LIKE', '%' . $search_value . '%')
+                                ->orwhere('live_streams.title', 'LIKE', '%' . $search_value . '%')
+                                ->orwhere('live_categories.name', 'LIKE', '%' . $search_value . '%')           
+                                ->where('live_streams.active', '=', '1')
+                                // ->where('status', '=', '1')
+                                ->limit('10')
+                                ->groupBy('live_streams.id')
+                                ->get()->map(function ($item) {
+                                  $item['image_url'] = URL::to('public/uploads/images/'.$item->image);
+                                  $item['source'] = "Livestream";
+                                  return $item;
+                                });
+
+          $audio = Audio::select('id','title','slug','year','rating','access','ppv_price','duration','rating','image','featured')
+                                ->orwhere('search_tags', 'LIKE', '%' . $search_value . '%')
+                                ->orwhere('audio.title', 'LIKE', '%' .$search_value . '%')
+                                ->where('active', '=', '1')
+                                ->where('status', '=', '1')
+                                ->limit('10')
+                                ->get()->map(function ($item) {
+                                  $item['image_url'] = URL::to('public/uploads/audios/'.$item->image);
+                                  $item['source']    = "Audios";
+                                  return $item;
+                                });
+                               
+
+          $episodes = Episode::Select('episodes.id','episodes.title','episodes.slug','episodes.rating','episodes.access','episodes.ppv_price','episodes.duration','episodes.rating','episodes.image','episodes.featured','series.id','series_categories.category_id','video_categories.name as Category_name')
+                                ->Join('series','series.id','=','episodes.series_id')
+                                ->Join('series_categories','series_categories.series_id','=','series.id')
+                                ->Join('video_categories','video_categories.id','=','series_categories.category_id')
+                                ->orwhere('episodes.search_tags', 'LIKE', '%' . $search_value . '%')
+                                ->orwhere('episodes.title', 'LIKE', '%' . $search_value . '%')
+                                ->orwhere('video_categories.name', 'LIKE', '%' . $search_value . '%')           
+                                ->where('episodes.active', '=', '1')
+                                ->where('episodes.status', '=', '1')
+                                ->groupBy('episodes.id')
+                                ->limit('10')
+                                ->get()->map(function ($item) {
+                                  $item['image_url'] = URL::to('/public/uploads/image/'.$item->image);
+                                  $item['season_count'] = SeriesSeason::where('series_id',$item->id)->count();
+                                  $item['episode_count'] = Episode::where('series_id',$item->id)->count();
+                                  $item['source']    = "Episode";
+                                  return $item;
+                                }); 
+
+
+          $series = Series::Select('series.id','series.title','series.slug','series.access','series.active','series.ppv_status','series.featured','series.duration','series.image','series.embed_code','series.mp4_url','series.webm_url','series.ogg_url','series.url','series_categories.category_id','video_categories.name as Category_name')
+                                ->Join('series_categories','series_categories.series_id','=','series.id')
+                                ->Join('video_categories','video_categories.id','=','series_categories.category_id')
+                                ->orwhere('series.search_tag', 'LIKE', '%' . $search_value . '%')
+                                ->orwhere('series.title', 'LIKE', '%' . $search_value . '%')
+                                ->orwhere('video_categories.name', 'LIKE', '%' . $search_value . '%')           
+                                ->where('series.active', '=', '1')
+                                ->groupBy('series.id')
+                                ->limit('10')
+                                ->get()->map(function ($item) {
+                                  $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
+                                  $item['season_count'] = SeriesSeason::where('series_id',$item->id)->count();
+                                  $item['episode_count'] = Episode::where('series_id',$item->id)->count();
+                                  $item['source']    = "Series";
+                                  return $item;
+                                });   
+
+          $mergedData = $videos->concat($livestreams)->concat($audio)->concat($episodes)->concat($series);
+
+          return $mergedData ;
+
+          return response()->json([
+            'status'  => 'true',
+            'Message' => 'Search Videos,Livestreams,audio,episodes,series Retrieved Successfully',
+            'data'    => $mergedData,
+          ], 200);
+
+      } catch (\Throwable $th) {
+          return response()->json([
+            'status'  => 'false',
+            'Message' => $th->getMessage(),
+        ], 200);
+      }
+    }
+    
     public function isPaymentEnable()
   {
     $settings = Setting::first();
