@@ -271,6 +271,7 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
     Route::post('ppvWatchlater', 'WatchLaterController@ppvWatchlater');
     Route::get('/promotions', 'HomeController@promotions');
     Route::get('/page/{slug}', 'PagesController@index');
+
     Route::get('/paypal/billings-details', 'HomeController@ViewPaypal');
     Route::get('/paypal/transaction-details', 'HomeController@ViewTrasaction');
     Route::get('/stripe/transaction-details', 'HomeController@ViewStripeTrasaction');
@@ -597,7 +598,7 @@ Route::get('/Testwatermark', 'Testwatermark@index');
     Route::get('/pages/edit/{id}', 'AdminPageController@edit');
     Route::post('/pages/update', 'AdminPageController@update');
     Route::get('/pages/delete/{id}','AdminPageController@destroy');
-
+    Route::post('/page_status_update', 'PagesController@page_status')->name('page_status_update'); 
 
     Route::get('/menu', 'AdminMenuController@index');
     Route::post('/menu/store', array('before' => 'demo', 'uses' => 'AdminMenuController@store'));

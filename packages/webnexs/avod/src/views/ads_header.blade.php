@@ -468,7 +468,7 @@
                         </li>
 
                         <div class="bod"></div>
-                        <li><a href=" {{ URL::to('advertiser') }}" class="iq-waves-effect"><img  src=" {{ URL::to('/assets/img/icon/logout.svg') }}" height="40" width="40"><span> Logout</span></a></li>
+                        <li><a href=" {{ route('ads_logout') }}" class="iq-waves-effect"><img  src=" {{ URL::to('/assets/img/icon/logout.svg') }}" height="40" width="40"><span> Logout</span></a></li>
 
                         <?php $activeplan = App\Advertiserplanhistory::where('advertiser_id', session('advertiser_id'))->where('status', 'active')->count();
                            ($activeplan != 0)
