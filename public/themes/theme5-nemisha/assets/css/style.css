@@ -6,7 +6,7 @@ html {
     font-family: 'futurabook';
 }
 video{
-    object-fit: fill!important;
+    object-fit: fill;
 }
 .search-toggle{
     border:none!important;
@@ -21,7 +21,9 @@ NOTE: This file contains the styling for responsive Template.
 /*================================================
 [  Table of contents  ]
 ================================================
-
+.navbar-dark .navbar-toggler-icon {
+    
+}
 :: Header
 :: Navigation
 :: Pages Content
