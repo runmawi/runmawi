@@ -131,6 +131,35 @@
     } else {
         echo URL::to('/') . '/public/uploads/settings/' . $settings->logo;
     } //echo $settings; ?>" />
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image:alt" content="<?php
+      if(!empty($videos_data)){  echo $videos_data->title .' | '. $settings->website_name ;
+       }
+      elseif(!empty($series)){ echo $series->title .' | '. $settings->website_name ; }
+      elseif(!empty($episdoe)){ echo $episdoe->title .' | '. $settings->website_name ; }
+      elseif(!empty($livestream)){ echo $livestream->title .' | '. $settings->website_name ; }
+      else{ echo $uppercase .' | ' . $settings->website_name ;} ?>">
+<meta name="twitter:title" content="<?php
+      if(!empty($videos_data)){  echo $videos_data->title .' | '. $settings->website_name ;
+       }
+      elseif(!empty($series)){ echo $series->title .' | '. $settings->website_name ; }
+      elseif(!empty($episdoe)){ echo $episdoe->title .' | '. $settings->website_name ; }
+      elseif(!empty($livestream)){ echo $livestream->title .' | '. $settings->website_name ; }
+      else{ echo $uppercase .' | ' . $settings->website_name ;} ?>">
+<meta name="twitter:description" content="<?php 
+      if(!empty($videos_data)){ echo $videos_data->description  ;
+      }
+      elseif(!empty($episdoe)){ echo $episdoe->description  ;}
+      elseif(!empty($series)){ echo $series->description ;}
+      elseif(!empty($livestream)){ echo $livestream->description  ;}
+      else{ echo $settings->website_description   ;} //echo $settings; ?>">
+<meta name="twitter:image:src" content="<?php 
+      if(!empty($videos_data)){ echo URL::to('/public/uploads/images').'/'.$videos_data->image  ;
+      }
+      elseif(!empty($episdoe)){ echo URL::to('/public/uploads/images').'/'.$episdoe->image  ;}
+      elseif(!empty($series)){ echo URL::to('/public/uploads/images').'/'.$series->image ;}
+      elseif(!empty($livestream)){ echo URL::to('/public/uploads/images').'/'.$livestream->image ;}
+      else{  echo URL::to('/').'/public/uploads/settings/'. $settings->logo   ;} //echo $settings; ?>">
 
 
     <?php $Linking_Setting = App\LinkingSetting::first();
