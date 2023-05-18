@@ -39,6 +39,12 @@ $uppercase =  ucfirst($request_url);
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
   </script>
 <style>
+     .navbar-collapse{
+        padding-left: 25px;
+    }
+    .btn{
+        z-index: 0;
+    }
     .sec-3{
         background:#003C3C
 !important;
