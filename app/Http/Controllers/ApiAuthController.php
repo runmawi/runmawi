@@ -13267,15 +13267,12 @@ public function QRCodeMobileLogout(Request $request)
   {
     try {
 
-        $series = Series::select('id','image','player_image','tv_image')->where('id',$request->series_id)->get()->map(function ($item) {
-          $item['image_url'] = URL::to('public/uploads/images/'.$item->image); 
-          $item['banner_image_url'] = URL::to('public/uploads/images/'.$item->player_image); 
-          $item['Tv_image_url'] = URL::to('public/uploads/images/'.$item->tv_image); 
-          $item['source']    = "videos";
-          return $item;
-        });
+        $series = Series::select('id','image','player_image','tv_image')->findOrFail($request->series_id);
 
-        $series =  $series->first();
+        $series['image_url'] = URL::to('public/uploads/images/' . $series->image);
+        $series['banner_image_url'] = URL::to('public/uploads/images/' . $series->player_image);
+        $series['Tv_image_url'] = URL::to('public/uploads/images/' . $series->tv_image);
+        $series['source'] = "Series";
 
        return response()->json([
         'status'  => 'true',
