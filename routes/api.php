@@ -32,7 +32,8 @@ Route::group(
         Route::post('tv_search', 'ApiAuthController@TV_Search');
         Route::post('search_andriod', 'ApiAuthController@search_andriod');
 
-        
+        Route::post('series_image_details', 'ApiAuthController@series_image_details');
+
         Route::get('home_page', 'ApiAuthController@PageHome');
         Route::post('login', 'ApiAuthController@login');
         Route::post('signup', 'ApiAuthController@signup');
