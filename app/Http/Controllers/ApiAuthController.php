@@ -3456,8 +3456,6 @@ public function verifyandupdatepassword(Request $request)
 
           $mergedData = $videos->concat($livestreams)->concat($audio)->concat($episodes)->concat($series);
 
-          return $mergedData ;
-
           return response()->json([
             'status'  => 'true',
             'Message' => 'Search Videos,Livestreams,audio,episodes,series Retrieved Successfully',
@@ -13263,6 +13261,36 @@ public function QRCodeMobileLogout(Request $request)
           ], 200);
 
     }
+  }
+
+  public function series_image_details(Request $request)
+  {
+    try {
+
+        $series = Series::select('id','image','player_image','tv_image')->where('id',$request->series_id)->get()->map(function ($item) {
+          $item['image_url'] = URL::to('public/uploads/images/'.$item->image); 
+          $item['banner_image_url'] = URL::to('public/uploads/images/'.$item->player_image); 
+          $item['Tv_image_url'] = URL::to('public/uploads/images/'.$item->tv_image); 
+          $item['source']    = "videos";
+          return $item;
+        });
+
+        $series =  $series->first();
+
+       return response()->json([
+        'status'  => 'true',
+        'Message' => 'series Image Retrieved Successfully',
+        'Series_image' => $series,
+      ], 200);
+
+    } catch (\Throwable $th) {
+
+        return response()->json([
+          'status'  => 'false',
+          'Message' => $th->getMessage(),
+        ], 200);
+    }
+
   }
   
 }
