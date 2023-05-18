@@ -1,4 +1,4 @@
-@media only screen and (max-device-width: 480px)
+@media only screen and (max-device-width: 480px){
 #video .plyr.plyr--full-ui, #video-trailer .plyr.plyr--full-ui, #video_container .plyr.plyr--full-ui, #video_container .plyr__video-embed, #watch_trailer .plyr.plyr--full-ui, #watch_trailer .plyr__video-embed {
     height: calc(65vh - 80px - 75px)!important;
     max-width: none;
