@@ -8851,7 +8851,8 @@ $cpanel->end();
     $episode = Episode::where('id',$episodeid)->orderBy('episode_order')->get()->map(function ($item) use ($request){
        $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
        $item['series_name'] = Series::where('id',$item->series_id)->pluck('title')->first();
-
+       $item['shareurl'] = URL::to('/episode/') . '/' . Series::where('id',$item->series_id)->pluck('slug')->first() . '/' . $item->slug;
+       
        $plans_ads_enable = $this->plans_ads_enable($request->user_id);
 
        if($plans_ads_enable == 1){

@@ -79,11 +79,11 @@ class AdminDashboardController extends Controller
                 'action' => $StorageSetting->site_action,
                 'user'=> $StorageSetting->site_user);
 
-                    $data = array(
-                        "key" => "ymR5pBF7IDZkPshdU4Vrl36AO0VtHxiwgQPxqtcbqIFumE6qfKx2P6e4UXc40kkxA7BHGy",
-                        "action" => "list",
-                        "user" => "jacksmac"
-                    );
+                    // $data = array(
+                    //     "key" => "ymR5pBF7IDZkPshdU4Vrl36AO0VtHxiwgQPxqtcbqIFumE6qfKx2P6e4UXc40kkxA7BHGy",
+                    //     "action" => "list",
+                    //     "user" => "jacksmac"
+                    // );
                     
                     $url = "https://$StorageSetting->site_IPSERVERAPI/v1/accountdetail";
                     
@@ -96,6 +96,7 @@ class AdminDashboardController extends Controller
 
                     $response = curl_exec($ch);
                     $storage = json_decode($response);
+                    // dd($storage);
                     if (curl_errno($ch)) {
                         $space_available = 0 .' '.'TB';
                         $space_usage = 0 .' '.'TB';
