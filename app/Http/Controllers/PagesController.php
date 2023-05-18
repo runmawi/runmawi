@@ -41,4 +41,20 @@ class PagesController extends Controller{
         }
   }
 
+  public function page_status(Request $request)
+  {
+    try {
+
+        Page::where("id", $request->page_id)->update([
+            "active" => $request->page_status,
+        ]);
+
+      return response()->json(["message" => "true"]);
+    }
+     catch (\Throwable $th) {
+        return response()->json(["message" => "false"]);
+    }
+
+  }
+
 }

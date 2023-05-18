@@ -469,8 +469,8 @@ function send_password_notification($title,$message,$video_name='',$video_img=''
     return true;
 }
 
-function get_ad($ad_id,$field){
-    $ads = App\Advertisement::where('id',$ad_id)->first()->$field;
+function get_ad($ad_id){
+    $ads = App\Advertisement::where('id',$ad_id)->pluck('ads_name')->first();
     return  $ads; 
 }
 
@@ -478,7 +478,6 @@ function get_advertiser($advertiser_id,$field){
     $ads = App\Advertiser::where('id',$advertiser_id)->first()->$field;
     return  $ads; 
 }
-
 
 function get_revenue($ad_id){
     $revenue_total = App\Adrevenue::where('ad_id',$ad_id)->sum('advertiser_share');
@@ -496,8 +495,9 @@ function get_views($ad_id){
 }
 
 
-function get_video($vid,$field){
-    $getdata = App\Video::where('id',$vid)->first()->$field;
+function get_video($vid){
+
+    $getdata = App\Video::where('id',$vid)->pluck('title')->first();
     return  $getdata; 
 }
 
