@@ -1252,11 +1252,12 @@
                                                             <input name="_token" type="hidden"
                                                                 value="<?php echo csrf_token(); ?>">
                                                             <div>
-                                                                <i class="fa fa-search">
-                                                                </i>
-                                                                <input type="text" name="search" class="searches"
+                                                                
+                                                                <input type="text" name="search" class="searches form-control"
                                                                     id="searches" autocomplete="off"
                                                                     placeholder="Search movies,series">
+                                                                <i class="fa fa-search">
+                                                                </i>
                                                             </div>
                                                         </form>
                                                     </div>
