@@ -1347,6 +1347,11 @@
 
                                                     </div>
                                                 </form>
+                                                 <div class="iq-card-body" style="margin-top: -15px;background-color: #000;">
+                                                    <div id="search_list"
+                                                        class="search_list search-toggle device-search">
+                                                    </div>
+                                                </div>
                                             </div>
 
                                             <a href="<?php echo URL::to('/') . '/searchResult'; ?>" class="search-toggle device-search">
@@ -1356,11 +1361,7 @@
 
                                             <div class="iq-sub-dropdown search_content overflow-auto"
                                                 id="sidebar-scrollbar">
-                                                <div class="iq-card-body">
-                                                    <div id="search_list"
-                                                        class="search_list search-toggle device-search">
-                                                    </div>
-                                                </div>
+                                               
                                             </div>
                                         </li>
                                         <li class="nav-item nav-icon">
