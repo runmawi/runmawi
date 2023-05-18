@@ -7,11 +7,11 @@
             <div class="d-flex">
 
                 @foreach ($respond_data['VideoCategory']  as $key => $item)
-                    <a class="drama" href="{{ $item->redirect_url }}"><p class="mb-0">{{ $item->slug }}</p></a>
+                    <a class="drama" href="{{ $item->redirect_url }}"><p class="mb-0">{{ $item->name }}</p></a>
                 @endforeach
 
                 @foreach ($respond_data['SeriesGenre']  as $key => $item)
-                    <a class="drama" href="{{ $item->redirect_url }}"><p class="mb-0">{{ $item->slug }}</p></a>
+                    <a class="drama" href="{{ $item->redirect_url }}"><p class="mb-0">{{ $item->name }}</p></a>
                 @endforeach
                 
             </div>

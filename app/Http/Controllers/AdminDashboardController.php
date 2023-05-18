@@ -102,10 +102,15 @@ class AdminDashboardController extends Controller
                         $space_disk = 0 .' '.'TB';
                     } else {
 
-                        $space_available = ($storage->result->account_info->space_available / 1024 / 1024) .' '.'TB';
-                        $space_usage = $storage->result->account_info->space_usage / 1024 / 1024 .' '.'TB';
-                        $space_disk = $storage->result->account_info->space_disk / 1024 / 1024 .' '.'TB';
-                        
+                        $space_available = ($storage->result->account_info->space_available / 1024 / 1024) ;
+                        $space_usage = $storage->result->account_info->space_usage / 1024 / 1024 ;
+                        $space_disk = $storage->result->account_info->space_disk / 1024 / 1024 ;
+                        $spaceavailable = $space_available * 1024; // space_available Convert TB to GB
+                        $space_available = round($spaceavailable).' '.'GB';
+                        $spaceusage = $space_usage * 1024; // space_usage Convert TB to GB
+                        $space_usage = round($spaceusage).' '.'GB';
+                        $spacedisk = $space_disk * 1024; // space_disk Convert TB to GB
+                        $space_disk = round($spacedisk).' '.'GB';
                     }
                     curl_close($ch);
 
@@ -114,7 +119,7 @@ class AdminDashboardController extends Controller
                     $space_usage = 0 .' '.'TB';
                     $space_disk = 0 .' '.'TB';
                 }
-
+ 
         $videocategory = VideoCategory::get();
         $categoryvideo = CategoryVideo::get();
         if(count($videocategory) > 0){
