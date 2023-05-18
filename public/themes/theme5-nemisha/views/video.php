@@ -820,7 +820,7 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
                                                         <!-- Video Title  -->
                   <?php }else{ ?>
                     <h1 class="trending-text big-title text-uppercase mt-3">
-                        <?php echo (strlen($video->title) > 15) ? substr($video->title,0,80).'...' : $video->title;  if( Auth::guest() ) { } ?>
+                        <?php echo (strlen($video->title) > 50) ? substr($video->title,0,120).'...' : $video->title;  if( Auth::guest() ) { } ?>
                       </h1>
                   <?php } ?>
                   
