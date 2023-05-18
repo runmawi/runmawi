@@ -186,6 +186,9 @@
     .plyr__video-wrapper::before{
         width: 25%!important;
     }
+    video{
+        object-fit: contain!important;
+    }
     #mob{
         display: flex;
     align-items: center;
