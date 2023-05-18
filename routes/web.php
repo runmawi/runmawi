@@ -18,7 +18,10 @@ Route::get('/admin/addWatermark', 'TranscodeController@addWatermark');
 Route::post('/audio_ppv', 'CinetPayController@audio_ppv')->name('audio_ppv');
 Route::get('/admin/addSTorageWatermark', 'TranscodeController@addSTorageWatermark');
 Route::get('/live_location', 'ChannelController@live_location');
-Route::get('/admin/M3u8Test', 'TranscodeController@M3u8Test');
+Route::get('/admin/mergeMp4Files', 'TranscodeController@mergeMp4Files');
+Route::get('/merge-m3u8-files', 'TranscodeController@mergeM3u8Files');
+Route::get('/storagelimitone', 'AdminDashboardController@storagelimitone'); 
+Route::get('/storagelimit', 'AdminDashboardController@storagelimit'); 
 
 
 Route::get('/moderator', 'ModeratorsUserController@index');
@@ -140,6 +143,7 @@ Route::get('/verify-request-sent', 'HomeController@VerifyRequestNotsent');
 Route::get('verify/{activation_code}', 'SignupController@Verify');
 Route::get('/category/{cid}', 'ChannelController@channelVideos');
 Route::get('/category/videos/{vid}', 'ChannelController@play_videos')->name('play_videos');
+Route::get('datafree/category/videos/{vid}','ChannelController@play_videos');
 Route::get('/category/videos/embed/{vid}', 'ChannelController@Embed_play_videos');
 Route::get('/language/{language}', 'ChannelController@LanguageVideo');
 Route::post('/saveSubscription', 'PaymentController@saveSubscription');
@@ -195,11 +199,14 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
     /*TV-shows */ 
     Route::get('tv-shows', 'TvshowsController@index');
     Route::get('episode/{series_name}/{episode_name}', 'TvshowsController@play_episode')->name('play_episode');
+    Route::get('datafree/episode/{series_name}/{episode_name}', 'TvshowsController@play_episode')->name('play_episode');
     Route::get('episode/embed/{series_name}/{episode_name}', 'TvshowsController@Embedplay_episode');
     Route::get('episode/{episode_name}', 'TvshowsController@PlayEpisode');
     // Route::get('episode/{series_name}/{episode_name}/{id}', 'TvshowsController@play_episode');
 
     Route::get('play_series/{name}/', 'TvshowsController@play_series');
+    Route::get('datafree/play_series/{name}/', 'TvshowsController@play_series');
+
     // Route::get('play_series/{name}/{id}', 'TvshowsController@play_series');
 
 
@@ -212,6 +219,7 @@ Route::get('/stripe/billings-details', 'PaymentController@BecomeSubscriber');
     //Route::get('audios/tag/{tag}', 'ThemeAudioController@tag' );
     //Route::get('audio/{slug}/{name}', 'ThemeAudioController@index');
     Route::get('audio/{slug}', 'ThemeAudioController@index')->name('play_audios');
+    Route::get('datafree/audio/{slug}', 'ThemeAudioController@index')->name('play_audios');
     //Route::get('audios_category/{audio_id}', 'ThemeAudioController@categoryaudios');
     Route::get('album/{album_slug}', 'ThemeAudioController@album');
     Route::get('/albums-list', 'ThemeAudioController@albums_list')->name('albums_list');
@@ -338,6 +346,7 @@ Route::get('/live', 'LiveStreamController@Index');
 // Route::get('/live/{play}/{id}', 'LiveStreamController@Play');
 
 Route::get('/live/{id}', 'LiveStreamController@Play')->name('LiveStream_play');
+Route::get('datafree/live/{id}', 'LiveStreamController@Play')->name('LiveStream_play');
 Route::get('/live/embed/{id}', 'LiveStreamController@EmbedLivePlay');
 
 
@@ -1309,6 +1318,7 @@ Route::get('/videos/create', 'CPPAdminVideosController@CPPcreate');
 Route::post('/videos/fileupdate', array('before' => 'demo', 'uses' => 'CPPAdminVideosController@CPPfileupdate'));
 Route::post('/videos/store', array('before' => 'demo', 'uses' => 'CPPAdminVideosController@CPPstore'));
 Route::post('/videos/update', array('before' => 'demo', 'uses' => 'CPPAdminVideosController@Cppupdate'));
+Route::get('/category/videos/{slug}','CPPChannelController@PlayVideo');
 Route::get('/category/videos/{slug}','CPPChannelController@PlayVideo');
 
 

@@ -289,8 +289,8 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
 
                 <!-- Watchlater & Wishlist -->
                 <?php
-                $media_url = URL::to('/episode/') . '/' . $series->title . '/' . $episode->slug;
-                $embed_media_url = URL::to('/episode/embed') . '/' . $series->title . '/' . $episode->slug;
+                $media_url = URL::to('/episode/') . '/' . $series->slug . '/' . $episode->slug;
+                $embed_media_url = URL::to('/episode/embed') . '/' . $series->slug . '/' . $episode->slug;
                 $url_path = '<iframe width="853" height="480" src="' . $embed_media_url . '"  allowfullscreen></iframe>';
                 ?>
                 <div class="col-md-5 p-0">

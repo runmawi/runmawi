@@ -52,7 +52,7 @@ class AllVideosListController extends Controller
 
             // Video Category 
 
-                $VideoCategory = VideoCategory::select('id','slug','in_home')->where('in_home','=',1)
+                $VideoCategory = VideoCategory::select('id','name','slug','in_home')->where('in_home','=',1)
                                 ->get()->map(function ($item) {
                                     $item['redirect_url']  = URL::to('videos/category/'.$item->slug);
                                     $item['source_data']   = 'video_category';
@@ -61,7 +61,7 @@ class AllVideosListController extends Controller
 
             // Series Genres
 
-                $SeriesGenre = SeriesGenre::select('id','slug','in_home')
+                $SeriesGenre = SeriesGenre::select('id','name','slug','in_home')
                                 ->get()->map(function ($item) {
                                     $item['redirect_url']  = URL::to('series/category/'.$item->slug);
                                     $item['source_data']  = 'SeriesGenre';

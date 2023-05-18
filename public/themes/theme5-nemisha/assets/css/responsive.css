@@ -1,6 +1,11 @@
 @media (min-width:1300px) {
   .container { max-width: 1170px; }
 }
+@media only screen and (max-device-width: 480px){
+ video {
+    object-fit: fill;
+}
+}
 @media (min-width:1499px) {
   .container { max-width: 1266px; }
   #home-slider h1.slider-text { margin: 30px 0; }
@@ -26,6 +31,9 @@
   #home-slider .slick-bg { height: 100%; }
 }
 @media(max-width:991px) {
+    video {
+    object-fit: fill;
+}
   li.slide-item .block-description .parallax-ratting span, li.slide-item .block-description .movie-time span, li.slide-item .block-description .ratting-start, .block-description .movie-content li { font-size: 10px; }
   .hover-buttons .btn { font-size: 10px; }
   #home-slider .slick-bg { padding: 50px 0; }
@@ -109,8 +117,33 @@
     #top-menu{
     display: block;
 }
+    .aw{
+        width: 60%!important;
+    }
+    #video .plyr.plyr--full-ui, #video-trailer .plyr.plyr--full-ui, #video_container .plyr.plyr--full-ui, #video_container .plyr__video-embed {
+        height: auto!important;
+    }
+    .badge {
+    display: inline-block;
+    padding: 0.28em 0.4em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 16px;
+    height: 20px;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.25rem;
+}
+    .player-ctn{
+        margin-bottom: 10px;
+    }
     #mySidebar{
         display: none;
+    }
+    
+     video{
+        object-fit: contain!important;
     }
     #main{
         margin-left: 0!important;

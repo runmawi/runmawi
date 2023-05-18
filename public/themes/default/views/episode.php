@@ -308,8 +308,8 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                 <!-- Watchlater & Wishlist -->
 
                 <?php
-                $media_url = URL::to('/episode/') . '/' . $series->title . '/' . $episode->slug;
-                $embed_media_url = URL::to('/episode/embed') . '/' . $series->title . '/' . $episode->slug;
+                $media_url = URL::to('/episode/') . '/' . $series->slug . '/' . $episode->slug;
+                $embed_media_url = URL::to('/episode/embed') . '/' . $series->slug . '/' . $episode->slug;
                 $url_path = '<iframe width="853" height="480" src="' . $embed_media_url . '"  allowfullscreen></iframe>';
                 ?>
 
@@ -468,7 +468,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
 
             <!-- Comment Section -->
 
-            <?php if( App\CommentSection::first() != null && App\CommentSection::pluck('livestream')->first() == 1 ): ?>
+            <?php if( App\CommentSection::first() != null && App\CommentSection::pluck('episode')->first() == 1 ): ?>
             <div class="row">
                 <div class=" container-fluid video-list you-may-like overflow-hidden">
                     <h4 class="" style="color:#fffff;"><?php echo __('Comments'); ?></h4>

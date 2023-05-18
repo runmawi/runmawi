@@ -131,6 +131,35 @@
     } else {
         echo URL::to('/') . '/public/uploads/settings/' . $settings->logo;
     } //echo $settings; ?>" />
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image:alt" content="<?php
+      if(!empty($videos_data)){  echo $videos_data->title .' | '. $settings->website_name ;
+       }
+      elseif(!empty($series)){ echo $series->title .' | '. $settings->website_name ; }
+      elseif(!empty($episdoe)){ echo $episdoe->title .' | '. $settings->website_name ; }
+      elseif(!empty($livestream)){ echo $livestream->title .' | '. $settings->website_name ; }
+      else{ echo $uppercase .' | ' . $settings->website_name ;} ?>">
+<meta name="twitter:title" content="<?php
+      if(!empty($videos_data)){  echo $videos_data->title .' | '. $settings->website_name ;
+       }
+      elseif(!empty($series)){ echo $series->title .' | '. $settings->website_name ; }
+      elseif(!empty($episdoe)){ echo $episdoe->title .' | '. $settings->website_name ; }
+      elseif(!empty($livestream)){ echo $livestream->title .' | '. $settings->website_name ; }
+      else{ echo $uppercase .' | ' . $settings->website_name ;} ?>">
+<meta name="twitter:description" content="<?php 
+      if(!empty($videos_data)){ echo $videos_data->description  ;
+      }
+      elseif(!empty($episdoe)){ echo $episdoe->description  ;}
+      elseif(!empty($series)){ echo $series->description ;}
+      elseif(!empty($livestream)){ echo $livestream->description  ;}
+      else{ echo $settings->website_description   ;} //echo $settings; ?>">
+<meta name="twitter:image:src" content="<?php 
+      if(!empty($videos_data)){ echo URL::to('/public/uploads/images').'/'.$videos_data->image  ;
+      }
+      elseif(!empty($episdoe)){ echo URL::to('/public/uploads/images').'/'.$episdoe->image  ;}
+      elseif(!empty($series)){ echo URL::to('/public/uploads/images').'/'.$series->image ;}
+      elseif(!empty($livestream)){ echo URL::to('/public/uploads/images').'/'.$livestream->image ;}
+      else{  echo URL::to('/').'/public/uploads/settings/'. $settings->logo   ;} //echo $settings; ?>">
 
 
     <?php $Linking_Setting = App\LinkingSetting::first();
@@ -185,7 +214,6 @@
 
 
     <!-- Responsive -->
-    <link rel="stylesheet" href="<?= URL::to('/') . '/assets/css/responsive.css' ?>" />
     <link rel="stylesheet" href="<?= URL::to('/') . '/assets/css/slick.css' ?>" />
     <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -1253,11 +1281,12 @@
                                                             <input name="_token" type="hidden"
                                                                 value="<?php echo csrf_token(); ?>">
                                                             <div>
-                                                                <i class="fa fa-search">
-                                                                </i>
-                                                                <input type="text" name="search" class="searches"
+                                                                
+                                                                <input type="text" name="search" class="searches form-control"
                                                                     id="searches" autocomplete="off"
                                                                     placeholder="Search movies,series">
+                                                                <i class="fa fa-search">
+                                                                </i>
                                                             </div>
                                                         </form>
                                                     </div>
@@ -1319,6 +1348,11 @@
 
                                                     </div>
                                                 </form>
+                                                 <div class="iq-card-body" style="margin-top: -15px;background-color: #000;">
+                                                    <div id="search_list"
+                                                        class="search_list search-toggle device-search">
+                                                    </div>
+                                                </div>
                                             </div>
 
                                             <a href="<?php echo URL::to('/') . '/searchResult'; ?>" class="search-toggle device-search">
@@ -1328,11 +1362,7 @@
 
                                             <div class="iq-sub-dropdown search_content overflow-auto"
                                                 id="sidebar-scrollbar">
-                                                <div class="iq-card-body">
-                                                    <div id="search_list"
-                                                        class="search_list search-toggle device-search">
-                                                    </div>
-                                                </div>
+                                               
                                             </div>
                                         </li>
                                         <li class="nav-item nav-icon">

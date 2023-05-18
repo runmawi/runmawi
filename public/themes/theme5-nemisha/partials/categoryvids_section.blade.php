@@ -3,7 +3,7 @@
 
             @if (count($categoryVideos['categoryVideos']) > 0)         
                 @foreach($categoryVideos['categoryVideos']  as $category_video) 
-                    <li class="slide-item col-sm-2 col-md-2 col-xs-12 margin-bottom-30">
+                    <li class="slide-item col-6 col-sm-2 col-md-2 col-xs-12 margin-bottom-30">
                         <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
                             <div class="block-images position-relative">
                                 <div class="img-box">

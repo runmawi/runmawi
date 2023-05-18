@@ -3,7 +3,7 @@
 ?>
 <style>
     #video_container {
-    padding: 20px;
+   
     background: #202933;
     border-radius: 20px;
 }
@@ -11,6 +11,22 @@
           background-color: #fff!important;
           height: 100px;
       }
+    .share-box {
+    -webkit-box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.75);
+    display: none;
+    position: absolute;
+    width: 130px;
+    left: 15px!important;
+    bottom: -60px;
+    background-color: var(--iq-bg1);
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    z-index: 2;
+    animation: slide-in 0.5s forwards;
+    margin-bottom: 10px;
+}
 </style>
 <?php 
 
@@ -316,7 +332,7 @@ if(!empty($request_url)){
                                     <!-- Video Title  -->
                   <?php }else{ ?>
                     <h1 class="trending-text big-title text-uppercase mt-3">
-                        <?php echo (strlen($video->title) > 15) ? substr($video->title,0,80).'...' : $video->title;  if( Auth::guest() ) { } ?>
+                        <?php echo (strlen($video->title) > 50) ? substr($video->title,0,180).'...' : $video->title;  if( Auth::guest() ) { } ?>
                       </h1>
                   <?php } ?>    
                     
@@ -584,9 +600,9 @@ if(!empty($request_url)){
 
                         <!-- Comment Section -->
                
-                        <?php if( App\CommentSection::first() != null && App\CommentSection::pluck('livestream')->first() == 1 ): ?>
+                        <?php if( App\CommentSection::first() != null && App\CommentSection::pluck('videos')->first() == 1 ): ?>
        <div class="row">
-           <div class=" container-fluid video-list you-may-like overflow-hidden">
+           <div class="video-list you-may-like overflow-hidden col-lg-12 p-0">
                <h4 class="" style="color:#fffff;"><?php echo __('Comments');?></h4>
                <?php include('comments/index.blade.php');?>
            </div>

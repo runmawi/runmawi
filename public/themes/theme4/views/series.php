@@ -57,6 +57,7 @@
 
 <?php 
 $series = $series_data ;
+$media_url = URL::to('/play_series/') . '/' . $series->slug ;
 // dd($series);
  ?>
      <div id="myImage" style="background:linear-gradient(90deg, rgba(0, 0, 0, 1.3)47%, rgba(0, 0, 0, 0.3))40%, url(<?=URL::to('/') . '/public/uploads/images/' . $series->player_image ?>);background-position:right; background-repeat: no-repeat; background-size:contain;padding:0px 0px 20px; ">
@@ -95,9 +96,12 @@ $series = $series_data ;
 <span><i class="ri-share-fill"></i></span>
     <div class="share-box">
        <div class="d-flex align-items-center"> 
-          <a href="https://www.facebook.com/sharer/sharer.php?u=" class="share-ico"><i class="ri-facebook-fill"></i></a>
-          <a href="https://twitter.com/intent/tweet?text=" class="share-ico"><i class="ri-twitter-fill"></i></a>
-          <a href="#"onclick="Copy();" class="share-ico"><i class="ri-links-fill"></i></a>
+       <a href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>"
+              class="share-ico"><i class="ri-facebook-fill"></i></a>
+          <a href="https://twitter.com/intent/tweet?text=<?= $media_url ?>"
+              class="share-ico"><i class="ri-twitter-fill"></i></a>
+          <a href="#"onclick="Copy();" class="share-ico"><i
+                  class="ri-links-fill"></i></a>
        </div>
     </div>
 </li>Share
@@ -815,4 +819,16 @@ if (!Hls.isSupported()) {
 
 })
 
+function Copy() {
+            var media_path = '<?= $media_url ?>';;
+            var url = navigator.clipboard.writeText(window.location.href);
+            var path = navigator.clipboard.writeText(media_path);
+            $("body").append(
+                '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Copied URL</div>'
+                );
+            setTimeout(function() {
+                $('.add_watch').slideUp('fast');
+            }, 3000);
+        }
+        
 </script>

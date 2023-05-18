@@ -152,11 +152,6 @@ $settings = App\Setting::first();
             </div>
          
       </footer>
-
-           <!-- back-to-top End -->
-     <!-- back-to-top End -->
-      <!-- jQuery, Popper JS -->
-
       <script  src="<?= URL::to('/'). '/assets/js/jquery-3.4.1.min.js';?>"></script>
       <script  src="<?= URL::to('/'). '/assets/js/popper.min.js';?>"></script>
       <!-- Bootstrap JS -->
@@ -205,8 +200,6 @@ function about(evt , id) {
   document.getElementById(id).style.display = "block";
  
 }
-// Get the element with id="defaultOpen" and click on it
-//document.getElementById("defaultOpen").click();
 </script>
 
 <script type="text/javascript">
@@ -243,20 +236,7 @@ function about(evt , id) {
   }
                    );
 </script>
-<!--<script>
-window.onscroll = function() {myFunction()};
 
-var header = document.getElementById("myHeader");
-var sticky = header.offsetTop;
-
-function myFunction() {
-  if (window.pageYOffset > sticky) {
-    header.classList.add("sticky");
-  } else {
-    header.classList.remove("sticky");
-  }
-}
-</script>-->
 <?php 
       $footer_script = App\Script::pluck('footer_script')->toArray();
       if(count($footer_script) > 0){
@@ -272,9 +252,7 @@ function myFunction() {
  <script  src="<?= URL::to('/'). '/assets/js/plyr.polyfilled.js';?>"></script>
  <script  src="<?= URL::to('/'). '/assets/js/hls.min.js';?>"></script>
  <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/0.14.5/hls.min.js.map"></script>
- <!-- <script src="<? //URL::to('/'). '/assets/js/plyr-3-7.js';?>"></script> -->
  <script  src="<?= URL::to('/'). '/assets/js/hls.js';?>"></script>
-          
 
 <script>
     function loadJS(u) {
@@ -283,29 +261,22 @@ function myFunction() {
         s.src = u;
         r.parentNode.insertBefore(s, r);
     }
-
     if (!window.HTMLPictureElement) {
     loadJS("https://afarkas.github.io/lazysizes/plugins/respimg/ls.respimg.min.js");
     }
 </script>
-
 <script defer src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
-
 <?php
   if( Route::currentRouteName() == "LiveStream_play" ){
-
     include('livevideo_player_script.blade.php');
   }
   elseif ( Route::currentRouteName() == "play_episode"){
-
     include('episode_player_script.blade.php');
   }
   else{
-
     include('footerPlayerScript.blade.php');
   }
 ?>
-
 <script>
   if ('loading' in HTMLImageElement.prototype) {
     const images = document.querySelectorAll('img[loading="lazy"]');
@@ -313,21 +284,16 @@ function myFunction() {
       img.src = img.dataset.src;
     });
   } else {
-    // Dynamically import the LazySizes library
-    const script = document.createElement('script');
+       const script = document.createElement('script');
     script.src =
       'https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.1.2/lazysizes.min.js';
     document.body.appendChild(script);
   }
 </script>
-
-
 <?php  
-                  //  Prevent Inspect 
   $Prevent_inspect = App\SiteTheme::pluck('prevent_inspect')->first();
   if( $Prevent_inspect == 1){
 ?>
-
 <script>
         $(document).keydown(function (event) {
             if (event.keyCode == 123) { 
@@ -357,16 +323,12 @@ function myFunction() {
             e.preventDefault();
         });
 </script>
-
 <?php } ?>
-
   <?php if( get_image_loader() == 1) { ?>
-    
-    <script>
+ <script>
         const loaderEl = document.getElementsByClassName('fullpage-loader')[0];
         document.addEventListener('readystatechange', (event) => {
         const readyState = "complete";
-        
           if(document.readyState == readyState) {
             loaderEl.classList.add('fullpage-loader--invisible');
             setTimeout(()=>{
@@ -375,8 +337,6 @@ function myFunction() {
           }
         });
     </script>
-
 <?php } ?>
-
 </body>
 </html>

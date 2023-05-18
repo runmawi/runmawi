@@ -208,8 +208,8 @@ endif; ?>
                         overflow: hidden;">
                         <p> <?php echo __($videos->description); ?></p>
                         </div>
-                            <div class="row justify r-mb-23  p-0 mb-4 text-center" >
-                                <div class="col-md-3">
+                            <div class="row justify r-mb-23  p-0 mb-4 text-center align-items-center" >
+                                <div class="col-3 col-md-3">
                                   <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"
                                 class="text-white">
                                 <div class="" style="font-size:25px;">
@@ -217,13 +217,13 @@ endif; ?>
 
                                       </div>
                                 Add Watchlist</a></div>
-                                <div class="col-md-3">
-                                 <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"
+                                <div class="col-3 col-md-3">
+                                 <!-- <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"
                                 class="text-white ">
                                 <div class="" style="font-size:25px;">
                               <i class="fa fa-share-alt" aria-hidden="true"></i>
                                       </div>
-                                Share</a>
+                                Share</a> -->
                             </div></div>
                             <div class="justify r-mb-23  p-0" >
                                 
@@ -336,7 +336,7 @@ if(Route::current()->getName() == "home"){
                                 </div>
 
                                 <div class="row justify r-mb-23  p-0 mb-4 text-center" data-animation-in="fadeInUp"  data-delay-in="1.2">
-                                    <div class="col-md-3">
+                                    <div class="col-4 col-md-3">
                                     <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>" class="text-white">
                                         <div class="" style="font-size:25px;">
                                             <i class="fa fa-plus" aria-hidden="true"></i>
@@ -344,12 +344,12 @@ if(Route::current()->getName() == "home"){
                                     </a>
                                     </div>
 
-                                    <div class="col-md-3">
-                                        <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>" class="text-white ">
+                                    <div class="col-3 col-md-3">
+                                        <!-- <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>" class="text-white ">
                                             <div class="" style="font-size:25px;">
                                                 <i class="fa fa-share-alt" aria-hidden="true"></i>
                                             </div> Share
-                                        </a>
+                                        </a> -->
                                     </div>
                                 </div>
 
@@ -485,12 +485,12 @@ style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bo
                                       </div>
                                 Add Watchlist</a></div>
                                 <div class="col-md-3">
-                                 <a href="<?php echo URL::to('episode/'.@$slider_video->series_title->slug.'/'.$slider_video->slug ) ?>"
+                                 <!-- <a href="<?php echo URL::to('episode/'.@$slider_video->series_title->slug.'/'.$slider_video->slug ) ?>"
                                 class="text-white ">
                                 <div class="" style="font-size:25px;">
                               <i class="fa fa-share-alt" aria-hidden="true"></i>
                                       </div>
-                                Share</a>
+                                Share</a> -->
                             </div></div>                         
 <div class="justify r-mb-23" data-animation-in="fadeInUp"
 data-delay-in="1.2">

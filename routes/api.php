@@ -25,10 +25,17 @@ Route::group(
      
 
         Route::post('All_Homepage', 'ApiAuthController@All_Homepage');
-        
+
+        // Search 
+        Route::post('search', 'ApiAuthController@search');
+        Route::post('searchapi', 'ApiAuthController@searchapi');
+        Route::post('tv_search', 'ApiAuthController@TV_Search');
+        Route::post('search_andriod', 'ApiAuthController@search_andriod');
+
+        Route::post('series_image_details', 'ApiAuthController@series_image_details');
+
         Route::get('home_page', 'ApiAuthController@PageHome');
         Route::post('login', 'ApiAuthController@login');
-        Route::post('search', 'ApiAuthController@search');
         Route::post('signup', 'ApiAuthController@signup');
         Route::post('directVerify', 'ApiAuthController@directVerify');
         Route::post('resetpassword', 'ApiAuthController@resetpassword');
@@ -87,7 +94,6 @@ Route::group(
         Route::get('paypal_recurring', 'ApiAuthController@PaypalRecurringPlan');
         Route::post('relatedchannelvideos', 'ApiAuthController@relatedchannelvideos');
         Route::post('relatedppvvideos', 'ApiAuthController@relatedppvvideos');
-        Route::post('searchapi', 'ApiAuthController@searchapi');
         Route::get('isPaymentEnable', 'ApiAuthController@isPaymentEnable');
         Route::post('checkEmailExists', 'ApiAuthController@checkEmailExists');
         Route::post('SendOtp', 'ApiAuthController@SendOtp');
@@ -255,7 +261,7 @@ Route::group(
 
         // Recommendation Videos
         Route::get('MostwatchedVideos', 'ApiAuthController@MostwatchedVideos');
-        Route::get('MostwatchedVideosUser', 'ApiAuthController@MostwatchedVideosUser');
+        Route::post('MostwatchedVideosUser', 'ApiAuthController@MostwatchedVideosUser');
         Route::get('Country_MostwatchedVideos', 'ApiAuthController@Country_MostwatchedVideos');
         Route::get('Preference_genres', 'ApiAuthController@Preference_genres');
         Route::get('Preference_Language', 'ApiAuthController@Preference_Language');
@@ -368,7 +374,6 @@ Route::group(
 
         Route::post('pages', 'ApiAuthController@Page');
 
-        Route::post('tv_search', 'ApiAuthController@TV_Search');
 
         Route::post('tv_barcode_login', 'ApiAuthController@TVQRLogin');
 

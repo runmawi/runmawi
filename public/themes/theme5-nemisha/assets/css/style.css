@@ -5,6 +5,12 @@ html {
 .badge{
     font-family: 'futurabook';
 }
+video{
+    object-fit: fill;
+}
+.search-toggle{
+    border:none!important;
+}
 /*
 Template: Streamit - Responsive Bootstrap 4 Template
 Author: iqonicthemes.in
@@ -15,7 +21,9 @@ NOTE: This file contains the styling for responsive Template.
 /*================================================
 [  Table of contents  ]
 ================================================
-
+.navbar-dark .navbar-toggler-icon {
+    
+}
 :: Header
 :: Navigation
 :: Pages Content
@@ -97,8 +105,8 @@ header .navbar-light .navbar-brand img.logo { width: 160px; }
 .notify-bg:before { content: ''; display: block; position: absolute; background: rgba(255, 255, 255, 0.5); width: 70px; height: 100%; left: 0; top: 0; opacity: 0.5; filter: blur(30px); transform: translateX(-100px) skewX(-30deg); animation: noti-before-animation 2s infinite 2s; }
 .notify-bg:after { content: ''; display: block; position: absolute; background: rgba(255, 255, 255, 0.2); width: 30px; height: 100%; left: 30px; top: 0; opacity: 0; filter: blur(5px); transform: translateX(-100px) skewX(-30deg); animation: noti-after-animation 2s infinite 2s; }
 .navbar-right .iq-sub-dropdown .iq-card-body div { border-radius: 0; }
-.navbar-right .iq-show .iq-sub-dropdown, .iq-show .search-box { opacity: 1; visibility: visible; transform: translate(0, 0); }
-.navbar-right .iq-sub-dropdown { width: 300px; opacity: 0; visibility: hidden; position: absolute; top: 72px!important; right: 10px; background: linear-gradient(180deg, #121C28 -35.59%, rgba(11, 18, 28, 0.36) 173.05%); transform: translate(0, 70px); -webkit-transform: translate(0, 70px); transition: all 0.5s; padding: 0; -webkit-box-shadow: 0px 0 20px 0 rgba(0, 0, 0, 0.5); -moz-box-shadow: 0px 0 20px 0 rgba(0, 0, 0, 0.5); box-shadow: 0px 0 20px 0 rgba(0, 0, 0, 0.5); -webkit-transition: all 0.3s ease-out 0s; -moz-transition: all 0.3s ease-out 0s; -ms-transition: all 0.3s ease-out 0s; -o-transition: all 0.3s ease-out 0s; transition: all 0.3s ease-out 0s; z-index: 1; }
+.navbar-right .iq-show .iq-sub-dropdown, .iq-show .search-box { display: block!important;transform: translate(0, 0); }
+.navbar-right .iq-sub-dropdown { width: 300px; display:none;  position: absolute; top: 72px!important; right: 10px; background: linear-gradient(180deg, #121C28 -35.59%, rgba(11, 18, 28, 0.36) 173.05%); transform: translate(0, 70px); -webkit-transform: translate(0, 70px); transition: all 0.5s; padding: 0; -webkit-box-shadow: 0px 0 20px 0 rgba(0, 0, 0, 0.5); -moz-box-shadow: 0px 0 20px 0 rgba(0, 0, 0, 0.5); box-shadow: 0px 0 20px 0 rgba(0, 0, 0, 0.5); -webkit-transition: all 0.3s ease-out 0s; -moz-transition: all 0.3s ease-out 0s; -ms-transition: all 0.3s ease-out 0s; -o-transition: all 0.3s ease-out 0s; transition: all 0.3s ease-out 0s; z-index: 1; }
 .navbar-light .navbar-toggler-icon { background: url(../images/menu.png) no-repeat scroll center center; }
 .search-toggle:hover, header .navbar ul li.menu-item a:hover { color: #ED553B!important; }
 .search-wrapper { position: relative; display: inline-block; height: 36px; vertical-align: bottom; }
@@ -111,7 +119,7 @@ header .navbar-light .navbar-brand img.logo { width: 160px; }
 .search::placehoder { color: var(--iq-white) !important; }
 .noti-svg { -webkit-animation: notify 1.5s ease infinite; animation: notify 1.5s ease infinite; fill:#fff; }
 .noti-svg:hover { fill: var(--iq-primary); }
-.search-box { position: absolute; left: 0; right: 0; top: 59px; min-width: 25rem; /*width: 100%;*/ z-index: -1; opacity: 0; transform: translate(0, 70px); -webkit-transform: translate(0, 70px); -webkit-transition: all 0.3s ease-out 0s; -moz-transition: all 0.3s ease-out 0s; -ms-transition: all 0.3s ease-out 0s; -o-transition: all 0.3s ease-out 0s; transition: all 0.3s ease-out 0s; box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.15); }
+.search-box { position: absolute; left: 0; right: 0; top: 59px; min-width: 25rem; /*width: 100%;*/ z-index: -1; display: none;transform: translate(0, 70px); -webkit-transform: translate(0, 70px); -webkit-transition: all 0.3s ease-out 0s; -moz-transition: all 0.3s ease-out 0s; -ms-transition: all 0.3s ease-out 0s; -o-transition: all 0.3s ease-out 0s; transition: all 0.3s ease-out 0s; box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.15); }
 .search-toggle { padding: 0 !important; font-size: 16px;}
 .media h6 {font-size: 16px !important;line-height: 30px;}
 
@@ -422,7 +430,7 @@ ul.f-link li a:hover { color: var(--iq-primary);!important }
 .movie-detail .trending-info .trending-text { font-size: 50px; line-height: 1.5; margin: 0; }
 .main-content.movi { padding-top: 30px; }
 .share { position: relative; }
-.share-box { -webkit-box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.75); box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.75); display: none; position: absolute; width: 130px; left: -130px; bottom: -60px; background-color: var(--iq-bg1); padding: 10px; border-radius: 5px; text-align: center; z-index: 2; animation: slide-in  0.5s forwards; margin-bottom: 10px; }
+.share-box { -webkit-box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.75); box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.75); display: none; position: absolute; width: 130px; left: 0px; bottom: -60px; background-color: var(--iq-bg1); padding: 10px; border-radius: 5px; text-align: center; z-index: 2; animation: slide-in  0.5s forwards; margin-bottom: 10px; }
 .share:hover .share-box { display: inline-block; }
 .share-box a { background: transparent !important; color: #fff!important; margin-right: 8px; }
 .share-box i { font-size: 25px !important; }

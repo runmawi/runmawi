@@ -2310,6 +2310,7 @@ class HomeController extends Controller
                 $validatedData = $request->validate([
                     // 'password' => 'required|string|min:6|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/',
                     'password' => 'required',
+
                 ]);
             }
             if($SignupMenu->mobile == 1){
@@ -2319,9 +2320,12 @@ class HomeController extends Controller
             }
             if($SignupMenu->password_confirm == 1){
                 $validatedData = $request->validate([
-                    'password_confirmation' => 'required',
+                    // 'password_confirmation' => 'required',
+                    'password_confirmation' => 'required'
                 ]);
             }
+            // dd(1);
+
         }else{
         // dd('testone');
 
@@ -2331,7 +2335,7 @@ class HomeController extends Controller
                     // 'password' => 'required|string|min:6|confirmed|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/',
                     'password_confirmation' => 'required',
                     'mobile' => ['required', 'numeric', 'min:8', 'unique:users'],
-                    'password_confirmation' => 'required',
+                    'password_confirmation' => 'required|confirmed',
                     'g-recaptcha-response' => get_enable_captcha() == 1 ? 'required|captcha' : '',
                  ]);
         }

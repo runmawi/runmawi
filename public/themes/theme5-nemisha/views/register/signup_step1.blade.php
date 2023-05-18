@@ -39,6 +39,12 @@ $uppercase =  ucfirst($request_url);
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
   </script>
 <style>
+     .navbar-collapse{
+        padding-left: 25px;
+    }
+    .btn{
+        z-index: 0;
+    }
     .sec-3{
         background:#003C3C
 !important;
@@ -375,7 +381,7 @@ $jsondata = json_decode($jsonString, true); ?>
                       </div>
                        
                       
-                      <form action="<?php if (isset($ref) ) { echo URL::to('/').'/register1?ref='.$ref.'&coupon='.$coupon; } else { echo URL::to('/').'/register1'; } ?>" method="POST" id="stripe_plan" class="stripe_plan" name="member_signup" enctype="multipart/form-data">
+                      <form onsubmit="return ValidationEvent()" action="<?php if (isset($ref) ) { echo URL::to('/').'/register1?ref='.$ref.'&coupon='.$coupon; } else { echo URL::to('/').'/register1'; } ?>" method="POST" id="stripe_plan" class="stripe_plan" name="member_signup" enctype="multipart/form-data">
                         @csrf
                             <div class="form-group">
                             
@@ -461,11 +467,11 @@ $jsondata = json_decode($jsonString, true); ?>
                                    <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye" aria-hidden="true"></i></button>
                                  </span>
                                          </div>
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
+                                @if ($errors->has('password_confirmation'))
+                                    <span class="text-danger" id="successMessage"  style='padding-left: 22px' >
+                                    <strong>Password Not matching.</strong>
                                     </span>
-                                @enderror
+                                    @endif
                                          </div>
                             </div>
                                 @endif
@@ -524,7 +530,9 @@ $jsondata = json_decode($jsonString, true); ?>
 
                             <div class="sign-up-buttons col-md-12 mt-3 " align="right">
                                   <button type="button" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile" style="display: none;"> Verify Profile</button>
-                                  <button class="btn  btn-primary btn-block signup" style="display: block;color:#fff;font-size:20px;" type="submit" name="create-account">{{ __('START EXPLORING TODAY') }}</button>
+                                  <!-- <button class="btn  btn-primary btn-block signup" style="display: block;color:#fff;font-size:20px;" type="submit" name="create-account">{{ __('START EXPLORING TODAY') }}</button> -->
+                                  <input class="btn  btn-primary btn-block signup" style="border: #f3ece0 !important;color:#fff;font-size:20px;background-color: #006aff!important;display: block;" type="submit" name="create-account" value="START EXPLORING TODAY">
+
                                  <p class="text-left poli mb-0 mt-2" >By signing up you agree to NEMISA TV Terms of Service and Privacy Policy. </p>
                                  <!-- <div class=" pt-4 mb-2">
                           <hr style="border-color:#fff;">
@@ -688,8 +696,28 @@ $jsondata = json_decode($jsonString, true); ?>
        
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <script>
-    function visibility1() {
+    $(document).ready(function(){
+         $('#error_password').hide();
+
+    });
+
+    function ValidationEvent(form) {
+    // 👇 get passwords from the field using their name attribute
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('password-confirm').value;
+
+    // 👇 check if both match using if-else condition
+    if (password != confirmPassword) {
+        $('.error_password').show();
+      return false;
+    } else {
+        $('.error_password').hide();
+      return true;
+    }
+  }
+
   var x = document.getElementById('password');
   if (x.type === 'password') {
     x.type = "text";

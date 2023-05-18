@@ -17,7 +17,7 @@
                         <ul class="category-page list-inline row p-0 mb-0">
                         <?php if(isset($latestvideo['latest_videos'])) :
                           foreach($latestvideo['latest_videos'] as $latest_video): ?>
-                           <li class="slide-item col-sm-2 col-md-2 col-xs-12">
+                           <li class="slide-item col-6 col-sm-2 col-md-2 col-xs-12">
                               <a href="<?php echo URL::to('home') ?>">
                                  <div class="block-images position-relative">
                                     <div class="img-box">

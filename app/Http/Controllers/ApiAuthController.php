@@ -1086,9 +1086,8 @@ public function verifyandupdatepassword(Request $request)
             $latestvideos = $latestvideos  ->whereNotIn('videos.id',Block_videos());
           }
 
-      $latestvideos =$latestvideos->latest('created_at')->limit(50)->get()->map(function ($item) {
-          $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-          $item['video_url'] = URL::to('/').'/storage/app/public/';
+      $latestvideos =$latestvideos->latest('created_at')->limit(1)->get()->map(function ($item) {
+          $item['image_url'] = URL::to('public/uploads/images/'.$item->image);
           return $item;
         });
 
@@ -1306,6 +1305,7 @@ public function verifyandupdatepassword(Request $request)
           $item['mid_position_time'] = $ads_videos != null  && $ads_videos->ads_position == 'mid'  ? $ads_mid_time  : "0";
           $item['post_position_time'] =$ads_videos != null  && $ads_videos->ads_position == 'post' ? $ads_Post_time  : "0";
           $item['ads_seen_status'] = $item->ads_status;
+          $item['ios_publish_time']    = Carbon::parse($item->publish_time)->format('Y-m-d H:i:s');
           return $item;
         });
   
@@ -1771,15 +1771,27 @@ public function verifyandupdatepassword(Request $request)
 
   public function cmspages()
      {
+      try {
+          $pages = Page::where('active', '=', 1)->get()->map(function ($item) {
+            $item['page_url'] = URL::to('page/'.$item->slug);
+            $item['body'] = strip_tags(html_entity_decode($item->body));
+            $item['body'] = str_replace(["\r", "\n"], '', $item['body']);
+            return $item;
+          });
 
-      $pages = Page::where('active', '=', 1)->get()->map(function ($item) {
-        $item['page_url'] = URL::to('page').'/'.$item->slug;
-        return $item;
-      });
-      $response = array(
-        'status' => 'true',
-        'pages' => $pages
-      );
+          $response=array(
+            'status' => 'true',
+            'pages' => $pages
+          );
+
+      } catch (\Throwable $th) {
+
+          $response=array(
+            'status' => 'false',
+            'pages' => $th->getMessage()
+          );
+      }
+     
       return response()->json($response, 200);
      }
 
@@ -2051,7 +2063,10 @@ public function verifyandupdatepassword(Request $request)
         $user->mobile = $request->user_mobile;
         $user->password = $user_password;
         $user->avatar = $avatar;
+        $user->gender = $request->gender;
+        $user->DOB = $request->DOB;
         $user->save();
+        
         $response = array(
         'status'=>'true',
         'message'=>'Your Profile detail has been updated'
@@ -2863,24 +2878,27 @@ public function verifyandupdatepassword(Request $request)
   }
 
 
-        public function ViewProfile(Request $request) {
+  public function ViewProfile(Request $request) {
 
-            $user_id = $request->user_id;
-            if($user_id == 1){
+    $user_id = $request->user_id;
 
-              $user_details = User::where('id', '=', $user_id)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+      if($user_id == 1){
+
+          $user_details = User::where('id', '=', $user_id)->orderBy('created_at', 'desc')->get()->map(function ($item) {
                 $item['profile_url'] = URL::to('/').'/public/uploads/avatars/'.$item->avatar;
                 return $item;
-            });
-              $response = array(
-                'status'=>'true',
-                'message'=>'success',
-                'curren_stripe_plan'=> '',
-                'user_details' => $user_details,
-                'next_billing' => '',
-                'ends_at' => '',
-            );
-            }else{
+          });
+          
+          $response = array(
+              'status'=>'true',
+              'message'=>'success',
+              'curren_stripe_plan'=> '',
+              'user_details' => $user_details,
+              'next_billing' => '',
+              'ends_at' => '',
+          );
+
+      }else{
 
             $stripe_plan = SubscriptionPlan();
 
@@ -2888,9 +2906,9 @@ public function verifyandupdatepassword(Request $request)
                 $item['profile_url'] = URL::to('/').'/public/uploads/avatars/'.$item->avatar;
                 return $item;
             });
+
             $userdata = User::where('id', '=', $user_id)->first();
             $paymode_type =  Subscription::where('user_id',$user_id)->latest()->pluck('PaymentGateway')->first();
-
 
           if($paymode_type != null && $paymode_type == "Razorpay" &&  !empty($userdata) && $userdata->role == "subscriber"){
 
@@ -2904,7 +2922,7 @@ public function verifyandupdatepassword(Request $request)
                 $nextPaymentAttemptDate = '';
               }
 
-            }
+          }
           else{
             if ($userdata->subscription($stripe_plan)) {
                   $timestamp = $userdata->asStripeCustomer()["subscriptions"]->data[0]["current_period_end"];
@@ -2914,16 +2932,9 @@ public function verifyandupdatepassword(Request $request)
               }
           }
 
+          $user = User::find($user_id);
 
-            $user = User::find($user_id);
-
-            // if ($user->subscription($stripe_plan) && $user->subscription($stripe_plan)->onGracePeriod()) {
-            //     $ends_at = $user->subscription($stripe_plan)->ends_at->format('dS M Y');
-            // }else{
-            //     $ends_at = "";
-            // }
-
-            $stripe_plan = SubscriptionPlan();
+          $stripe_plan = SubscriptionPlan();
 
             if ( !empty($userdata) && $userdata->role == "subscriber" || $userdata->subscribed($stripe_plan) && $userdata->role == "subscriber")
             {
@@ -3084,6 +3095,8 @@ public function verifyandupdatepassword(Request $request)
       //   $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
       //   return $item;
       // });
+    $myData = array();
+
       $category_id = CategoryVideo::where('video_id', $videoid)->get();
         // Recomendeds
         foreach ($category_id as $key => $value)
@@ -3098,11 +3111,14 @@ public function verifyandupdatepassword(Request $request)
                     $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
                     return $item;
                   });
+                  $myData[] = array(
+                    "recomendeds" => $recomendeds
+                  );
         }
 
         $response = array(
         'status'=>'true',
-        'channelrecomended' => $recomendeds
+        'channelrecomended' => $myData
       );
       return response()->json($response, 200);
     }
@@ -3340,6 +3356,120 @@ public function verifyandupdatepassword(Request $request)
 
       return response()->json($response, 200);
     }
+
+    public function search_andriod(Request $request)
+    {
+
+      try {
+
+          $search_value = $request->search_value;
+
+          $videos = Video::Select('videos.id', 'videos.title', 'videos.slug', 'videos.year', 'videos.rating', 'videos.access', 'videos.publish_type', 'videos.global_ppv', 'videos.publish_time', 'videos.ppv_price', 'videos.duration', 'videos.rating', 'videos.image', 'videos.featured', 'videos.age_restrict','categoryvideos.category_id','categoryvideos.video_id','video_categories.name as category_name')
+            ->Join('categoryvideos','categoryvideos.video_id','=','videos.id')
+            ->Join('video_categories','video_categories.id','=','categoryvideos.category_id')
+            ->orwhere('videos.search_tags', 'LIKE', '%' . $search_value . '%')
+            ->orwhere('videos.title', 'LIKE', '%' . $search_value . '%')
+            ->orwhere('video_categories.name', 'LIKE', '%' . $search_value . '%')
+            ->where('active', '=', '1')
+            ->where('status', '=', '1')
+            ->where('draft', '=', '1')
+            ->latest('videos.created_at')
+            ->groupBy('videos.id')
+            ->limit('10');
+
+            if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+                $videos = $videos  ->whereNotIn('videos.id',Block_videos());
+            }
+
+            $videos = $videos->get()->map(function ($item) {
+              $item['image_url'] = URL::to('public/uploads/images/'.$item->image); ;
+              $item['source']    = "videos";
+              return $item;
+            });
+          
+
+          $livestreams = LiveStream::select('live_streams.id','live_streams.title','live_streams.slug','live_streams.year','live_streams.rating','live_streams.access','live_streams.ppv_price','live_streams.publish_type','live_streams.publish_status','live_streams.publish_time','live_streams.duration','live_streams.rating','live_streams.image','live_streams.featured','livecategories.live_id','live_categories.name')
+                                ->Join('livecategories','livecategories.live_id','=','live_streams.id')
+                                ->Join('live_categories','live_categories.id','=','livecategories.category_id')
+                                ->orwhere('live_streams.search_tags', 'LIKE', '%' . $search_value . '%')
+                                ->orwhere('live_streams.title', 'LIKE', '%' . $search_value . '%')
+                                ->orwhere('live_categories.name', 'LIKE', '%' . $search_value . '%')           
+                                ->where('live_streams.active', '=', '1')
+                                // ->where('status', '=', '1')
+                                ->limit('10')
+                                ->groupBy('live_streams.id')
+                                ->get()->map(function ($item) {
+                                  $item['image_url'] = URL::to('public/uploads/images/'.$item->image);
+                                  $item['source'] = "Livestream";
+                                  return $item;
+                                });
+
+          $audio = Audio::select('id','title','slug','year','rating','access','ppv_price','duration','rating','image','featured')
+                                ->orwhere('search_tags', 'LIKE', '%' . $search_value . '%')
+                                ->orwhere('audio.title', 'LIKE', '%' .$search_value . '%')
+                                ->where('active', '=', '1')
+                                ->where('status', '=', '1')
+                                ->limit('10')
+                                ->get()->map(function ($item) {
+                                  $item['image_url'] = URL::to('public/uploads/audios/'.$item->image);
+                                  $item['source']    = "Audios";
+                                  return $item;
+                                });
+                               
+
+          $episodes = Episode::Select('episodes.id','episodes.title','episodes.slug','episodes.rating','episodes.access','episodes.ppv_price','episodes.duration','episodes.rating','episodes.image','episodes.featured','series.id','series_categories.category_id','video_categories.name as Category_name')
+                                ->Join('series','series.id','=','episodes.series_id')
+                                ->Join('series_categories','series_categories.series_id','=','series.id')
+                                ->Join('video_categories','video_categories.id','=','series_categories.category_id')
+                                ->orwhere('episodes.search_tags', 'LIKE', '%' . $search_value . '%')
+                                ->orwhere('episodes.title', 'LIKE', '%' . $search_value . '%')
+                                ->orwhere('video_categories.name', 'LIKE', '%' . $search_value . '%')           
+                                ->where('episodes.active', '=', '1')
+                                ->where('episodes.status', '=', '1')
+                                ->groupBy('episodes.id')
+                                ->limit('10')
+                                ->get()->map(function ($item) {
+                                  $item['image_url'] = URL::to('/public/uploads/image/'.$item->image);
+                                  $item['season_count'] = SeriesSeason::where('series_id',$item->id)->count();
+                                  $item['episode_count'] = Episode::where('series_id',$item->id)->count();
+                                  $item['source']    = "Episode";
+                                  return $item;
+                                }); 
+
+
+          $series = Series::Select('series.id','series.title','series.slug','series.access','series.active','series.ppv_status','series.featured','series.duration','series.image','series.embed_code','series.mp4_url','series.webm_url','series.ogg_url','series.url','series_categories.category_id','video_categories.name as Category_name')
+                                ->Join('series_categories','series_categories.series_id','=','series.id')
+                                ->Join('video_categories','video_categories.id','=','series_categories.category_id')
+                                ->orwhere('series.search_tag', 'LIKE', '%' . $search_value . '%')
+                                ->orwhere('series.title', 'LIKE', '%' . $search_value . '%')
+                                ->orwhere('video_categories.name', 'LIKE', '%' . $search_value . '%')           
+                                ->where('series.active', '=', '1')
+                                ->groupBy('series.id')
+                                ->limit('10')
+                                ->get()->map(function ($item) {
+                                  $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
+                                  $item['season_count'] = SeriesSeason::where('series_id',$item->id)->count();
+                                  $item['episode_count'] = Episode::where('series_id',$item->id)->count();
+                                  $item['source']    = "Series";
+                                  return $item;
+                                });   
+
+          $mergedData = $videos->concat($livestreams)->concat($audio)->concat($episodes)->concat($series);
+
+          return response()->json([
+            'status'  => 'true',
+            'Message' => 'Search Videos,Livestreams,audio,episodes,series Retrieved Successfully',
+            'data'    => $mergedData,
+          ], 200);
+
+      } catch (\Throwable $th) {
+          return response()->json([
+            'status'  => 'false',
+            'Message' => $th->getMessage(),
+        ], 200);
+      }
+    }
+    
     public function isPaymentEnable()
   {
     $settings = Setting::first();
@@ -6651,11 +6781,19 @@ public function LocationCheck(Request $request){
 
         if( $Recommendation == 1 ){
 
+          $check_Kidmode = 0 ;
+
           $Mostwatchedvideos = RecentView::select('video_id','videos.*',DB::raw('COUNT(video_id) AS count'))
                 ->join('videos', 'videos.id', '=', 'recent_views.video_id');
+               
                 if(Geofencing() !=null && Geofencing()->geofencing == 'ON')
                 {
                   $Mostwatchedvideos = $Mostwatchedvideos->whereNotIn('videos.id',Block_videos());
+                }
+    
+                if( $check_Kidmode == 1 )
+                {
+                  $Mostwatchedvideos = $Mostwatchedvideos->whereBetween('videos.age_restrict', [ 0, 12 ]);
                 }
           $Mostwatchedvideos =$Mostwatchedvideos->groupBy('video_id')
                 ->orderByRaw('count DESC' )->limit(20)->get()->map(function ($item) {
@@ -6676,64 +6814,89 @@ public function LocationCheck(Request $request){
         return response()->json($response, 200);
     }
 
-    public function MostwatchedVideosUser(){
+    public function MostwatchedVideosUser(Request $request){
 
-      $Sub_user ='';
-      $user_id= Session::get('login_web_59ba36addc2b2f9401580f014c7f58ea4e30989d');
-      $Recomended = HomeSetting::first();
+      try {
+      
+        $Sub_user = '';
+        $user_id  = $request->user_id ;
+        $Recomended = HomeSetting::first();
 
 
-      if( $Recomended->Recommendation == 1 ){
-        $Mostwatched = RecentView::select('video_id','videos.*',DB::raw('COUNT(video_id) AS count'))
-              ->join('videos', 'videos.id', '=', 'recent_views.video_id')
-              ->groupBy('video_id');
+        if( $Recomended->Recommendation == 1 ){
 
-              if($Sub_user != null){
-                  $Mostwatched = $Mostwatched->where('recent_views.sub_user',$Sub_user);
-              }else{
-                  $Mostwatched = $Mostwatched->where('recent_views.user_id',$user_id);
-              }
-              $Mostwatched = $Mostwatched->orderByRaw('count DESC' )->limit(20)->get();
-      }else{
-        $Mostwatched=[];
-      }
+          $check_Kidmode = 0 ;
+
+          $mostWatchedUserVideos = RecentView::select('video_id','videos.*',DB::raw('COUNT(video_id) AS count'))
+                ->join('videos', 'videos.id', '=', 'recent_views.video_id')
+                ->groupBy('video_id');
+
+                if(Geofencing() !=null && Geofencing()->geofencing == 'ON')
+                {
+                  $mostWatchedUserVideos = $mostWatchedUserVideos->whereNotIn('videos.id',Block_videos());
+                }
+    
+                if( $check_Kidmode == 1 )
+                {
+                  $mostWatchedUserVideos = $mostWatchedUserVideos->whereBetween('videos.age_restrict', [ 0, 12 ]);
+                }
+
+                if($Sub_user != null){
+                    $mostWatchedUserVideos = $mostWatchedUserVideos->where('recent_views.sub_user',$Sub_user);
+                }else{
+                    $mostWatchedUserVideos = $mostWatchedUserVideos->where('recent_views.user_id',$user_id);
+                }
+                $mostWatchedUserVideos = $mostWatchedUserVideos->orderByRaw('count DESC' )->limit(20)->get();
+          }
             return response()->json([
+              'status'  => 'true',
               'message' => 'Most watched videos by User data Retrieve successfully',
-              'Mostwatched' => $Mostwatched], 200);
+              'mostWatchedUserVideos' => $mostWatchedUserVideos], 200);
+      
+    } catch (\Throwable $th) {
+      
+        return response()->json([
+          'status'  => 'false',
+          'Message' => $th->getMessage(),
+      ], 200);
     }
+  }
+
 
     public function Country_MostwatchedVideos(){
 
       $Recomended = HomeSetting::first();
 
-      $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-      $countryName =  $geoip->getCountry();
-      $getfeching = Geofencing::first();
-
-      if( $getfeching->geofencing == 'ON'){
-          $block_videos=BlockVideo::where('country_id', $countryName)->get();
-            if(!$block_videos->isEmpty()){
-                foreach($block_videos as $block_video){
-                    $blockvideos[]=$block_video->video_id;
-                }
-            }  else{  $blockvideos=[];  }}
-      else{
-        $blockvideos=[];
-      }
-
       if( $Recomended->Recommendation == 1 ){
 
-        $Most_watched_country =RecentView::select('video_id','videos.*',DB::raw('COUNT(video_id) AS count'))
-              ->join('videos', 'videos.id', '=', 'recent_views.video_id')->groupBy('video_id')->orderByRaw('count DESC' )
-              ->where('country', $countryName)->limit(20)->get();
-      }else{
-        $Most_watched_country =[];
+        $check_Kidmode = 0 ;
+
+        $data = RecentView::select('video_id','videos.*',DB::raw('COUNT(video_id) AS count'))
+                  ->join('videos', 'videos.id', '=', 'recent_views.video_id')->groupBy('video_id')->orderByRaw('count DESC' )
+                  ->where('country_name', '=',Country_name());
+                  
+                  if(Geofencing() !=null && Geofencing()->geofencing == 'ON')
+                  {
+                    $data = $data->whereNotIn('videos.id',Block_videos());
+                  }
+      
+                  if( $check_Kidmode == 1 )
+                  {
+                    $data = $data->whereBetween('age_restrict', [ 0, 12 ]);
+                  }
+
+                  $data = $data->limit(30)->get()->map(function ($item) {
+                      $item['image_url'] = URL::to('public/uploads/images'.$item->image) ;
+                  return $item;
+        });
+
       }
 
       return response()->json([
         'message' => 'Country Most watched videos Retrieve successfully',
-        'Mostwatched' => $Most_watched_country], 200);
-  }
+        'country_Name' => Country_name(),
+        'Mostwatched' => !empty($data) ? $data : [] ], 200);
+    }
 
   public function ComingSoon() {
 
@@ -8688,7 +8851,8 @@ $cpanel->end();
     $episode = Episode::where('id',$episodeid)->orderBy('episode_order')->get()->map(function ($item) use ($request){
        $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
        $item['series_name'] = Series::where('id',$item->series_id)->pluck('title')->first();
-
+       $item['shareurl'] = URL::to('/episode/') . '/' . Series::where('id',$item->series_id)->pluck('slug')->first() . '/' . $item->slug;
+       
        $plans_ads_enable = $this->plans_ads_enable($request->user_id);
 
        if($plans_ads_enable == 1){
@@ -11078,7 +11242,15 @@ public function QRCodeMobileLogout(Request $request)
 
     try {
 
-     $comment = WebComment::with('child_comment')->where('source_id',$request->source_id)->where('commentable_type',$request->commentable_type)->whereNull('child_id')->get();
+     $comment = WebComment::with('child_comment')->where('source_id',$request->source_id)
+                  ->where('commentable_type',$request->commentable_type)
+                  ->whereNull('child_id')->get()
+                  ->map(function ($item) {
+                    $item['user_image']     = User::where('id',$item->user_id)->pluck('avatar')->first() ;
+                    $item['user_image_url'] = URL::to('public/uploads/avatars/'.$item->user_image);
+                    $item['user_name'] = User::where('id',$item->user_id)->pluck('username')->first();
+                    return $item;
+                });
 
       $response = array(
         'status'=> 'true',
@@ -12770,12 +12942,19 @@ public function QRCodeMobileLogout(Request $request)
           $data = array();      // Note - if the home-setting (Recommendation_status) is turned off in the admin panel
       else:
 
+        $check_Kidmode = 0 ;
+
         $data = RecentView::select('video_id','videos.*',DB::raw('COUNT(video_id) AS count'))
               ->join('videos', 'videos.id', '=', 'recent_views.video_id');
 
             if(Geofencing() !=null && Geofencing()->geofencing == 'ON')
             {
               $data = $data->whereNotIn('videos.id',Block_videos());
+            }
+
+            if( $check_Kidmode == 1 )
+            {
+              $data = $data->whereBetween('age_restrict', [ 0, 12 ]);
             }
 
             $data = $data->groupBy('video_id')
@@ -12801,10 +12980,24 @@ public function QRCodeMobileLogout(Request $request)
           $data = array();      // Note - if the home-setting (Recommendation_status) is turned off in the admin panel
       else:
 
+        $check_Kidmode = 0 ;
+
         $data = RecentView::select('video_id','videos.*',DB::raw('COUNT(video_id) AS count'))
                   ->join('videos', 'videos.id', '=', 'recent_views.video_id')
                   ->groupBy('video_id')->where('recent_views.sub_user',$user_id)
-                  ->orderByRaw('count DESC' )->limit(30)->get()->map(function ($item) {
+                  ->orderByRaw('count DESC' );
+                  
+                  if(Geofencing() !=null && Geofencing()->geofencing == 'ON')
+                  {
+                    $data = $data->whereNotIn('videos.id',Block_videos());
+                  }
+      
+                  if( $check_Kidmode == 1 )
+                  {
+                    $data = $data->whereBetween('age_restrict', [ 0, 12 ]);
+                  }
+
+                  $data = $data->limit(30)->get()->map(function ($item) {
                       $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image ;
                       $item['source']    = "Videos";
                   return $item;
@@ -12823,10 +13016,24 @@ public function QRCodeMobileLogout(Request $request)
 
         $data = array();      // Note - if the home-setting (Recommendation_status) is turned off in the admin panel
     else:
+      
+        $check_Kidmode = 0 ;
 
         $data = RecentView::select('video_id','videos.*',DB::raw('COUNT(video_id) AS count'))
                   ->join('videos', 'videos.id', '=', 'recent_views.video_id')->groupBy('video_id')->orderByRaw('count DESC' )
-                  ->where('country', Country_name())->limit(30)->get()->map(function ($item) {
+                  ->where('country_name', Country_name());
+                  
+                  if(Geofencing() !=null && Geofencing()->geofencing == 'ON')
+                  {
+                    $data = $data->whereNotIn('videos.id',Block_videos());
+                  }
+      
+                  if( $check_Kidmode == 1 )
+                  {
+                    $data = $data->whereBetween('age_restrict', [ 0, 12 ]);
+                  }
+
+                  $data = $data->limit(30)->get()->map(function ($item) {
                       $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image ;
                       $item['source']    = "Videos"; 
                   return $item;
@@ -13055,6 +13262,36 @@ public function QRCodeMobileLogout(Request $request)
           ], 200);
 
     }
+  }
+
+  public function series_image_details(Request $request)
+  {
+    try {
+
+        $series = Series::select('id','image','player_image','tv_image')->where('id',$request->series_id)->get()->map(function ($item) {
+          $item['image_url'] = URL::to('public/uploads/images/'.$item->image); 
+          $item['banner_image_url'] = URL::to('public/uploads/images/'.$item->player_image); 
+          $item['Tv_image_url'] = URL::to('public/uploads/images/'.$item->tv_image); 
+          $item['source']    = "videos";
+          return $item;
+        });
+
+        $series =  $series->first();
+
+       return response()->json([
+        'status'  => 'true',
+        'Message' => 'series Image Retrieved Successfully',
+        'Series_image' => $series,
+      ], 200);
+
+    } catch (\Throwable $th) {
+
+        return response()->json([
+          'status'  => 'false',
+          'Message' => $th->getMessage(),
+        ], 200);
+    }
+
   }
   
 }

@@ -27,6 +27,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Message\Response;
 use Mail;
 use Laravel\Cashier\Invoice;
+use App\StorageSetting;
 
 class AdminDashboardController extends Controller
 {
@@ -72,6 +73,54 @@ class AdminDashboardController extends Controller
                 return View::make('admin.expired_dashboard', $data);
             }else{
             
+                $StorageSetting = StorageSetting::first();
+                if(!empty($StorageSetting->site_key && $StorageSetting->site_user && $StorageSetting->site_action)){
+                $data = array('key' => $StorageSetting->site_key,
+                'action' => $StorageSetting->site_action,
+                'user'=> $StorageSetting->site_user);
+
+                    // $data = array(
+                    //     "key" => "ymR5pBF7IDZkPshdU4Vrl36AO0VtHxiwgQPxqtcbqIFumE6qfKx2P6e4UXc40kkxA7BHGy",
+                    //     "action" => "list",
+                    //     "user" => "jacksmac"
+                    // );
+                    
+                    $url = "https://$StorageSetting->site_IPSERVERAPI/v1/accountdetail";
+                    
+                    $ch = curl_init($url);
+                    curl_setopt($ch, CURLOPT_POST, true);
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+
+                    $response = curl_exec($ch);
+                    $storage = json_decode($response);
+                    // dd($storage);
+                    if (curl_errno($ch)) {
+                        $space_available = 0 .' '.'TB';
+                        $space_usage = 0 .' '.'TB';
+                        $space_disk = 0 .' '.'TB';
+                    } else {
+
+                        $space_available = ($storage->result->account_info->space_available / 1024 / 1024) ;
+                        $space_usage = $storage->result->account_info->space_usage / 1024 / 1024 ;
+                        $space_disk = $storage->result->account_info->space_disk / 1024 / 1024 ;
+                        $spaceavailable = $space_available * 1024; // space_available Convert TB to GB
+                        $space_available = round($spaceavailable).' '.'GB';
+                        $spaceusage = $space_usage * 1024; // space_usage Convert TB to GB
+                        $space_usage = round($spaceusage).' '.'GB';
+                        $spacedisk = $space_disk * 1024; // space_disk Convert TB to GB
+                        $space_disk = round($spacedisk).' '.'GB';
+                    }
+                    curl_close($ch);
+
+                }else{
+                    $space_available = 0 .' '.'TB';
+                    $space_usage = 0 .' '.'TB';
+                    $space_disk = 0 .' '.'TB';
+                }
+ 
         $videocategory = VideoCategory::get();
         $categoryvideo = CategoryVideo::get();
         if(count($videocategory) > 0){
@@ -112,7 +161,10 @@ class AdminDashboardController extends Controller
                 'recent_views' => $recent_view,
                 'page' => $page,
                 'total_ppvvideos' => $total_ppvvideos,
-                'video_category' => $video_category
+                'video_category' => $video_category,
+                'space_available' => $space_available,
+                'space_usage' => $space_usage,
+                'space_disk' => ($space_disk),
 
         );
         
@@ -287,4 +339,5 @@ class AdminDashboardController extends Controller
         }
     
     }
+
 }
