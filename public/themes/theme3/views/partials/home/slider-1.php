@@ -332,11 +332,11 @@ if(Route::current()->getName() == "home"){
                                     </div>
 
                                     <div class="col-md-3">
-                                        <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>" class="text-white ">
+                                        <!-- <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>" class="text-white ">
                                             <div class="" style="font-size:25px;">
                                                 <i class="fa fa-share-alt" aria-hidden="true"></i>
                                             </div> Share
-                                        </a>
+                                        </a> -->
                                     </div>
                                 </div>
 
@@ -469,12 +469,12 @@ style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bo
                                       </div>
                                 Add Whislist</a></div>
                                 <div class="col-md-3">
-                                 <a href="<?php echo URL::to('episode') ?><?= '/'.@$slider_video->series_title->slug.'/' . $slider_video->slug ?>"
+                                 <!-- <a href="<?php echo URL::to('episode') ?><?= '/'.@$slider_video->series_title->slug.'/' . $slider_video->slug ?>"
                                 class="text-white ">
                                 <div class="" style="font-size:25px;">
                               <i class="fa fa-share-alt" aria-hidden="true"></i>
                                       </div>
-                                Share</a>
+                                Share</a> -->
                             </div></div>                         
 <div class="justify r-mb-23" data-animation-in="fadeInUp"
 data-delay-in="1.2">
