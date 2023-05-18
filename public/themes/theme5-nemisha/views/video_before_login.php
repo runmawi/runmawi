@@ -3,7 +3,7 @@
 ?>
 <style>
     #video_container {
-    padding: 20px;
+   
     background: #202933;
     border-radius: 20px;
 }
