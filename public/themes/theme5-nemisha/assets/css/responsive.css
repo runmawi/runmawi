@@ -133,6 +133,9 @@
     #mySidebar{
         display: none;
     }
+     video{
+        object-fit: contain!important;
+    }
     #main{
         margin-left: 0!important;
     }
