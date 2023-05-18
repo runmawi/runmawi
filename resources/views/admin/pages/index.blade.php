@@ -56,9 +56,12 @@
                                     <td><a href="{{ URL::to('page/'.$page->slug) }}"  target="_blank">{{ $page->title }}</a> </td>
                                     <td valign="bottom"> <p> {{ $page->slug }} </p> </td>
                                     <td> 
-										<span class="badge {{ $page->active == 1 ? "badge-success": "badge-danger" }}">
-											{{  $page->active == 1 ? "Active": "Inactive" }}
-										 </span>
+										<div class="mt-1">
+											<label class="switch">
+												<input name="page_status" class="page_status" id="{{ 'page_'.$page->id }}" type="checkbox" @if( $page->active == "1") checked  @endif data-page-id={{ $page->id }}  data-type="pages" onchange="update_page_banner(this)" >
+												<span class="slider round"></span>
+											</label>
+										</div>
 									</td>
                                     <td>
                                         <div class="align-items-center list-user-action">
@@ -91,5 +94,54 @@
                     return false;
                 });
             });
-        </script>
+    
+		function update_page_banner(ele){
+
+		var page_id = $(ele).attr('data-page-id');
+		var status   = '#page_'+page_id;
+		var Page_Status = $(status).prop("checked");
+
+		if(Page_Status == true){
+			var pge_status  = '1';
+			var check = confirm("Are you sure you want to active this Page?");  
+
+		}else{
+			var pge_status  = '0';
+			var check = confirm("Are you sure you want to remove this Page?");  
+		}
+
+
+		if(check == true){ 
+
+		$.ajax({
+					type: "POST", 
+					dataType: "json", 
+					url: "{{ route('page_status_update') }}",
+						data: {
+							_token  : "{{csrf_token()}}" ,
+							page_id: page_id,
+							page_status: pge_status,
+					},
+					success: function(data) {
+						if(data.message == 'true'){
+							// location.reload();
+						}
+						else if(data.message == 'false'){
+							swal.fire({
+							title: 'Oops', 
+							text: 'Something went wrong!', 
+							allowOutsideClick:false,
+							icon: 'error',
+							title: 'Oops...',
+							}).then(function() {
+								location.href = '{{ URL::to('admin/pages') }}';
+							});
+						}
+					},
+				});
+		}else if(check == false){
+			$(status).prop('checked', true);
+		}
+		}
+	</script>
     @stop
