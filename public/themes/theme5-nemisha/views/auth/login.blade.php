@@ -35,6 +35,12 @@ $system_settings = App\SystemSetting::find(1);
     </script>
     
 <style>
+    .navbar-collapse{
+        padding-left: 25px;
+    }
+    .btn{
+        z-index: 0;
+    }
       .reveal{
         margin-left: -57px;
    
