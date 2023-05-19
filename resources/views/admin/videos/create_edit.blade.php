@@ -240,7 +240,29 @@ border-radius: 0px 4px 4px 0px;
                 </a>
             </div>
         </div>
+           
+      
 </div>
+<br>
+
+@if($video->type == 'mp4_url')
+   <h5> Mp4: {{ URL::to('category/videos') . '/' . $video->slug }}</h5>
+
+   @elseif ($video->type == 'm3u8_url')
+   <h5> M3U8 URL : {{ URL::to('category/videos') . '/' . $video->slug }}</h5>
+
+   @elseif($video->type == 'embed')
+   <h5> Embeded : {{ URL::to('category/videos') . '/' . $video->slug }}</h5>
+
+   @elseif ($video->type == '')
+   <h5> M3U8 : {{ URL::to('category/videos') . '/' . $video->slug }}</h5>
+
+   @elseif ($video->type == 'aws_m3u8') 
+   <h5> Aws M3U8 : {{ URL::to('category/videos') . '/' . $video->slug }}</h5>
+
+@endif
+                       
+
 @if($page == 'Edit' && $video->status == 0  && $video->type != 'embed' && $video->type != 'mp4_url' && $video->type != 'm3u8_url')
       <div class="col-sm-12">
          Video Transcoding is under Progress

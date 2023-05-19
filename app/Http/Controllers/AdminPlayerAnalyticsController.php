@@ -1404,8 +1404,7 @@ class AdminPlayerAnalyticsController extends Controller
                         $each_user->title,
                         $each_user->slug,
                         $each_user->count,
-                        $each_user->watchpercentage,
-                        $each_user->seekTime,
+                        gmdate("H:i:s", @$each_user->currentTime),                      $each_user->seekTime,
                         $each_user->bufferedTime,
                     ]);
                 }
