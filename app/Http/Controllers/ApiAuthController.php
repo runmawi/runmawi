@@ -11325,6 +11325,28 @@ public function QRCodeMobileLogout(Request $request)
       $settings = Setting::first();
       $slug = $request->slug;
       $channel = Channel::where('channel_slug',$slug)->first(); 
+      $channels = Channel::where('channel_slug',$slug)->get()->map(function ($item) {
+        $settings = Setting::first();
+  
+          if(!empty($item['channel_banner']) && $item['channel_banner'] != null){
+            $item['channel_banner'] = $item->channel_banner;
+          }else{
+            $item['channel_banner'] = URL::to('/public/uploads/images/'.$settings->default_horizontal_image);
+          }
+                
+          if(!empty($item['channel_image']) && $item['channel_image'] != null){
+            $item['channel_image'] = $item->channel_image;
+          }else{
+            $item['channel_image'] = URL::to('/public/uploads/images/'.$settings->default_video_image);
+          }
+          if(!empty($item['channel_logo']) && $item['channel_logo'] != null){
+            $item['channel_logo'] = $item->channel_logo;
+          }else{
+            $item['channel_logo'] = URL::to('/public/uploads/images/'.$settings->default_video_image);
+          }
+          return $item;
+      });
+
       $currency = CurrencySetting::first();
           
               $livetreams = LiveStream::where('active', '=', '1')->where('user_id', '=', $channel->id)
@@ -11360,7 +11382,7 @@ public function QRCodeMobileLogout(Request $request)
               'LiveCategory' => LiveCategory::get(),
               'VideoCategory' => VideoCategory::get(),
               'AudioCategory' => AudioCategory::get(),
-              'channel' => $channel,
+              'channel' => $channels,
               'media_url' => $media_url,
               'facebook_url' => $facebook_url,
               'twitter_url' => $twitter_url,
@@ -11385,6 +11407,29 @@ public function QRCodeMobileLogout(Request $request)
 
           $settings = Setting::first();
           $channels = Channel::get(); 
+
+          $channels = Channel::where('status',1)->get()->map(function ($item) {
+            $settings = Setting::first();
+      
+              if(!empty($item['channel_banner']) && $item['channel_banner'] != null){
+                $item['channel_banner'] = $item->channel_banner;
+              }else{
+                $item['channel_banner'] = URL::to('/public/uploads/images/'.$settings->default_horizontal_image);
+              }
+                    
+              if(!empty($item['channel_image']) && $item['channel_image'] != null){
+                $item['channel_image'] = $item->channel_image;
+              }else{
+                $item['channel_image'] = URL::to('/public/uploads/images/'.$settings->default_video_image);
+              }
+              if(!empty($item['channel_logo']) && $item['channel_logo'] != null){
+                $item['channel_logo'] = $item->channel_logo;
+              }else{
+                $item['channel_logo'] = URL::to('/public/uploads/images/'.$settings->default_video_image);
+              }
+              return $item;
+          });
+
           $currency = CurrencySetting::first();
           $ThumbnailSetting = ThumbnailSetting::first();
             
@@ -11527,9 +11572,19 @@ public function QRCodeMobileLogout(Request $request)
       $slug = $request->slug;
       $ModeratorsUserid = ModeratorsUser::where('slug',$slug)->first(); 
 
-      $ModeratorsUser = ModeratorsUser::where('status',1)->get()->map(function ($item) {
-        $item['banner'] = URL::to('/public/uploads/moderator_albums/'.$item->banner);
-        $item['picture'] = URL::to('/public/uploads/moderator_albums/'.$item->picture);
+      $ModeratorsUser = ModeratorsUser::where('slug',$slug)->get()->map(function ($item) {
+      $settings = Setting::first();
+
+        if(!empty($item['banner']) && $item['banner'] != null){
+          $item['banner'] = URL::to('/public/uploads/moderator_albums/'.$item->banner);
+        }else{
+          $item['banner'] = URL::to('/public/uploads/images/'.$settings->default_horizontal_image);
+        }
+        if(!empty($item['picture']) && $item['picture'] != null){
+          $item['picture'] = URL::to('/public/uploads/moderator_albums/'.$item->picture);
+        }else{
+          $item['picture'] = URL::to('/public/uploads/images/'.$settings->default_video_image);
+        }
         return $item;
     });
 
@@ -11560,7 +11615,7 @@ public function QRCodeMobileLogout(Request $request)
 
           $response = array(
               'status'=> 'true',
-              'Content_Partner' => ModeratorsUser::where('slug',$slug)->first(),
+              'Content_Partner' => $ModeratorsUser,
               'currency' => $currency,
               'latest_video' => $latest_videos,
               'latest_series' => $latest_series,
@@ -11595,6 +11650,20 @@ public function QRCodeMobileLogout(Request $request)
     try{ 
       $settings = Setting::first();
       $ModeratorsUser = ModeratorsUser::get(); 
+      $ModeratorsUser = ModeratorsUser::where('status',1)->get()->map(function ($item) {
+      $settings = Setting::first();
+        if(!empty($item['banner']) && $item['banner'] != null){
+          $item['banner'] = URL::to('/public/uploads/moderator_albums/'.$item->banner);
+        }else{
+          $item['banner'] = URL::to('/public/uploads/images/'.$settings->default_horizontal_image);
+        }
+        if(!empty($item['picture']) && $item['picture'] != null){
+          $item['picture'] = URL::to('/public/uploads/moderator_albums/'.$item->picture);
+        }else{
+          $item['picture'] = URL::to('/public/uploads/images/'.$settings->default_video_image);
+        }
+        return $item;
+    });
       $currency = CurrencySetting::first();
       $ThumbnailSetting = ThumbnailSetting::first();
         
