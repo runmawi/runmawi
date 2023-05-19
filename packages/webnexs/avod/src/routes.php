@@ -16,7 +16,7 @@ Route::group(['middleware' => ['web']], function () {
 		Route::get('/paymentgateway/{plan_id}', 'Webnexs\Avod\AuthController@paymentgateway'); 
 		Route::get('/billing_details', 'Webnexs\Avod\AuthController@billing_details'); 
 		Route::get('/featured_ad_history', 'Webnexs\Avod\AuthController@featured_ad_history'); 
-		Route::get('logout', 'Webnexs\Avod\AuthController@logout');
+		Route::get('logout', 'Webnexs\Avod\AuthController@logout')->name('ads_logout');
 		Route::get('forget-password', 'Webnexs\Avod\AuthController@showForgetPasswordForm')->name('forget.password.get');
 		Route::post('forget-password', 'Webnexs\Avod\AuthController@submitForgetPasswordForm')->name('forget.password.post'); 
 		Route::get('reset-password/{token}', 'Webnexs\Avod\AuthController@showResetPasswordForm')->name('reset.password.get');

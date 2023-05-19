@@ -761,14 +761,15 @@
                                        <?php  include 'public/themes/default/partials/Search_content.php'; ?>
                                     </div>
                                  </form>
-                              </div>
-
-                              <div class="iq-sub-dropdown search_content overflow-auto" id="sidebar-scrollbar" >
+                                  <div class="iq-sub-dropdown search_content overflow-auto" id="sidebar-scrollbar" >
                                  <div class="iq-card-body">
                                     <div id="search_list" class="search_list search-toggle device-search" >
                                     </div>
                                  </div>
                               </div>
+                              </div>
+
+                              
                            </li>
                            <li class="nav-item nav-icon">
                               <!--<a href="#" class="search-toggle" data-toggle="search-toggle">
