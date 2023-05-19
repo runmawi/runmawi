@@ -103,27 +103,34 @@ class AdminDashboardController extends Controller
                         $space_disk = 0 .' '.'TB';
                     } else {
 
-                        $space_available = ($storage->result->account_info->space_available / 1024 / 1024) ;
-                        $space_usage = $storage->result->account_info->space_usage / 1024 / 1024 ;
-                        $space_disk = $storage->result->account_info->space_disk / 1024 / 1024 ;
-                        $spaceavailable = $space_available * 1024; // space_available Convert TB to GB
-                        $space_available = round($spaceavailable).' '.'GB';
-                        $spaceusage = $space_usage * 1024; // space_usage Convert TB to GB
-                        $space_usage = round($spaceusage).' '.'GB';
-                        $spacedisk = $space_disk * 1024; // space_disk Convert TB to GB
-                        $space_disk = round($spacedisk).' '.'GB';
+                        $spaceavailable = ($storage->result->account_info->space_available ) ;
+                        $spaceusage = $storage->result->account_info->space_usage  ;
+                        $spacedisk = $storage->result->account_info->space_disk  ;
+
+                        $space_available = intval(round($spaceavailable  / 1024 ,3)).' '.'GB';
+                        $space_usage = intval(round($spaceusage  / 1024 ,3)).' '.'GB';	
+                        $space_disk = intval(round($spacedisk  / 1024 ,3)).' '.'GB';	
+
+                        // dd(intval($fileSize));
+
+                        // $spaceavailable = $space_available * 1024; // space_available Convert TB to GB
+                        // $space_available = round($spaceavailable).' '.'GB';
+                        // $spaceusage = $space_usage * 1024; // space_usage Convert TB to GB
+                        // $space_usage = round($spaceusage).' '.'GB';
+                        // $spacedisk = $space_disk * 1024; // space_disk Convert TB to GB
+                        // $space_disk = round($spacedisk).' '.'GB';
 
                         if($space_available == "0 GB"){
-                            $value = $storage->result->account_info->space_available;
+                            $value = $storage->result->account_info->space_available / 1024;
                             $space_available = round($value / 0.001, 2).' '.'GB'; // Round to 2 decimal places
                         }
                         if($space_usage == "0 GB"){
-                            $value = $storage->result->account_info->space_usage ;
+                            $value = $storage->result->account_info->space_usage / 1024;
                             $space_usage =  round($value / 0.001, 2).' '.'GB'; // Round to 2 decimal places
 
                         }
                         if($space_disk == "0 GB"){
-                            $value = $storage->result->account_info->space_disk;
+                            $value = $storage->result->account_info->space_disk / 1024;
                             $space_disk = round($value / 0.001, 2).' '.'GB'; // Round to 2 decimal places
                         }
                     }
