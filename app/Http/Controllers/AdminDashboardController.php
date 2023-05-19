@@ -112,6 +112,20 @@ class AdminDashboardController extends Controller
                         $space_usage = round($spaceusage).' '.'GB';
                         $spacedisk = $space_disk * 1024; // space_disk Convert TB to GB
                         $space_disk = round($spacedisk).' '.'GB';
+
+                        if($space_available == "0 GB"){
+                            $value = $storage->result->account_info->space_available;
+                            $space_available = round($value / 0.001, 2).' '.'GB'; // Round to 2 decimal places
+                        }
+                        if($space_usage == "0 GB"){
+                            $value = $storage->result->account_info->space_usage ;
+                            $space_usage =  round($value / 0.001, 2).' '.'GB'; // Round to 2 decimal places
+
+                        }
+                        if($space_disk == "0 GB"){
+                            $value = $storage->result->account_info->space_disk;
+                            $space_disk = round($value / 0.001, 2).' '.'GB'; // Round to 2 decimal places
+                        }
                     }
                     curl_close($ch);
 
