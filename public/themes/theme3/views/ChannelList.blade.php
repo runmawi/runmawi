@@ -17,7 +17,11 @@
                                 <a href="{{ URL::to('channel').'/'.$channel->channel_slug   }} ">
                                     <div class="block-images position-relative">
                                         <div class="img-box">
+                                        @if(!empty($channel->channel_image) && $channel->channel_image != null)
                                             <img src="<?php echo $channel->channel_image;  ?>" class="img-fluid w-100" alt="">
+                                        @else
+                                            <img src="<?= URL::to('/') . '/public/uploads/images/' . $settings->default_video_image ?>" class="img-fluid w-100" alt="">
+                                        @endif
                                         </div>
                             
                                         <div class="block-description" >

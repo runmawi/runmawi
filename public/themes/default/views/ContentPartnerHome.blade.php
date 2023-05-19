@@ -22,15 +22,26 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
 <script  src="<?= URL::to('/'). '/assets/js/plyr.polyfilled.js';?>"></script>
 <script  src="<?= URL::to('/'). '/assets/js/hls.js';?>"></script>
 
+@if(!empty($Content_Partner->banner) && $Content_Partner->banner != null)
 <section class="ContentPartner-header"
     style="background:url('<?php echo URL::to('/') . '/public/uploads/moderator_albums/' . @$Content_Partner->banner; ?>') no-repeat scroll 0 0;;background-size: cover;height:350px;background-color: rgba(0, 0, 0, 0.45);
     background-blend-mode: multiply;">
-</section>
+</section>            
+@else
+<section class="ContentPartner-header"
+    style="background:url('<?= URL::to('/') . '/public/uploads/images/' . $settings->default_horizontal_image ?>') no-repeat scroll 0 0;;background-size: cover;height:350px;background-color: rgba(0, 0, 0, 0.45);
+    background-blend-mode: multiply;">
+</section> 
+@endif
 
 <div class="container-fluid">
     <div class="position-relative">
         <div class="ContentPartner-img">
-            <img src="<?php echo  URL::to('/') . '/public/uploads/moderator_albums/'. @$Content_Partner->picture; ?>" class=" " width="150" alt="user">
+            @if(!empty($Content_Partner->picture) && $Content_Partner->picture != null)
+                <img src="<?php echo  URL::to('/') . '/public/uploads/moderator_albums/'. @$Content_Partner->picture; ?>" class=" " width="150" alt="user">
+            @else
+                <img src="<?= URL::to('/') . '/public/uploads/images/' . $settings->default_video_image ?>"  class=" " width="150" alt="user">
+            @endif
         </div>
     </div>
 </div>
