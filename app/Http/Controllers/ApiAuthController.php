@@ -1078,22 +1078,44 @@ public function verifyandupdatepassword(Request $request)
 
   public function latestvideos()
   {
+    try {
 
-      $latestvideos = Video::where('active','=',1)->where('status','=', 1);
+        $check_Kidmode = 0 ;
 
-        if(Geofencing() !=null && Geofencing()->geofencing == 'ON')
-          {
-            $latestvideos = $latestvideos  ->whereNotIn('videos.id',Block_videos());
-          }
+        $data = Video::where('active',1)->where('status', 1)->where('draft',1);
 
-      $latestvideos =$latestvideos->latest('created_at')->limit(1)->get()->map(function ($item) {
-          $item['image_url'] = URL::to('public/uploads/images/'.$item->image);
-          return $item;
-        });
+              if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
+              {
+                $data = $data->whereNotIn('videos.id',Block_videos());
+              }
+
+              if( $check_Kidmode == 1 )
+              {
+                $data = $data->whereBetween('age_restrict', [ 0, 12 ]);
+              }
+
+          $data = $data->latest()->limit(30)->get()->map(function ($item) {
+            $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
+            $item['source']    = "Videos";
+            return $item;
+          });
 
         $response = array(
-          'latestvideos' => $latestvideos
+          'status'  => 'true',
+          'Message' => 'Latest videos Retrieved successfully',
+          'latestvideos' => $data
         );
+
+    } catch (\Throwable $th) {
+
+      $response = array(
+        'status'  => 'false',
+        'Message' => $th->getMessage(),
+      );
+      
+    }
+
+    
         
         return response()->json($response, 200);
   }
