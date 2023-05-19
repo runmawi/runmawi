@@ -854,14 +854,22 @@ class AuthController extends Controller
     }
 
     public function list_total_cpv() {
-        $data = [];
-        $data['settings'] = Setting::first();
-        $data['activeplan'] = Advertiserplanhistory::where('advertiser_id',session('advertiser_id'))->where('status','active')->count();
-        if(!empty(session('advertiser_id')) ){
-            $data['cpv_lists'] = Adviews::where('advertiser_id',session('advertiser_id'))->get();
-            return view('avod::total_cpv',$data);
+
+        try {
+            $data = [];
+            $data['settings'] = Setting::first();
+            $data['activeplan'] = Advertiserplanhistory::where('advertiser_id',session('advertiser_id'))->where('status','active')->count();
+    
+            if(!empty(session('advertiser_id')) ){
+                $data['cpv_lists'] = Adviews::where('advertiser_id',session('advertiser_id'))->get();
+                return view('avod::total_cpv',$data);
+            }
+            
+            return Redirect::to("advertiser/login")->withError('Opps! You do not have access');
+
+        } catch (\Throwable $th) {
+            return abort(404);
         }
-        return Redirect::to("advertiser/login")->withError('Opps! You do not have access');
     }
 
     public function ads_campaign() {
