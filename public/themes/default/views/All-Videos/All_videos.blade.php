@@ -3,20 +3,29 @@
 <section id="iq-favorites mt-4">
    <div class="container-fluid mb-5 mt-4">
        <div class="d-flex">
-           <div><h5 class="mr-2">Explore titles related to:</h5></div>
+           <div><h5 class="mr-2">Explore titles related to videos  :</h5></div>
+
            <div class="d-flex">
+               <a class="drama" href="{{ route('all_videos') }}"><p class="mb-0">{{ "ALL" }}</p></a>
 
                @foreach ($respond_data['VideoCategory']  as $key => $item)
-                   <a class="drama" href="{{ $item->redirect_url }}"><p style="color:white" class="mb-0">{{ " ".$item->slug." " }} | </p></a>
+                   <a class="drama" href="{{ $item->redirect_url }}"><p style="color:white" class="mb-0">{{ $item->name."|" }}</p></a>
                @endforeach
+           </div>
+       </div>
+
+       <div class="d-flex">
+           <div><h5 class="mr-2">Explore titles related to series  :</h5></div>
+           <div class="d-flex">
+               <a class="drama" href="{{ route('all_videos') }}"><p class="mb-0">{{ "ALL" }}</p></a>
 
                @foreach ($respond_data['SeriesGenre']  as $key => $item)
-                   <a class="drama" href="{{ $item->redirect_url }}"><p style="color:white;text-align:right" class="mb-0">{{ " ".$item->slug." " }} | </p></a>
+                   <a class="drama" href="{{ $item->redirect_url }}"><p style="color:white" class="mb-0">{{ $item->name."|" }}</p></a>
                @endforeach
                
            </div>
        </div>
- </div>
+   </div>
 </section>
 
 <!-- MainContent -->

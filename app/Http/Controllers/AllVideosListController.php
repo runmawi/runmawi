@@ -53,7 +53,7 @@ class AllVideosListController extends Controller
             // Video Category 
 
                 $VideoCategory = VideoCategory::select('id','name','slug','in_home')->where('in_home','=',1)
-                                ->get()->map(function ($item) {
+                                ->orderBy('name', "asc")->get()->map(function ($item) {
                                     $item['redirect_url']  = URL::to('videos/category/'.$item->slug);
                                     $item['source_data']   = 'video_category';
                                     return $item;
@@ -62,7 +62,7 @@ class AllVideosListController extends Controller
             // Series Genres
 
                 $SeriesGenre = SeriesGenre::select('id','name','slug','in_home')
-                                ->get()->map(function ($item) {
+                                ->orderBy('name', "asc")->get()->map(function ($item) {
                                     $item['redirect_url']  = URL::to('series/category/'.$item->slug);
                                     $item['source_data']  = 'SeriesGenre';
                                     return $item;
@@ -161,7 +161,7 @@ class AllVideosListController extends Controller
             return Theme::view('All-Videos.All_videos',['respond_data' => $respond_data]);
 
         } catch (\Throwable $th) {
-            // return $th->getMessage();
+            return $th->getMessage();
             return abort(404);
         }
        
