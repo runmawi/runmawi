@@ -318,8 +318,9 @@ class AdminAdvertiserController extends Controller
             'age' => !empty($request->age) ? json_encode($request->age) : null,
             'gender' => !empty($request->gender) ? json_encode($request->gender) : null,
             'location' => $request->location === 'all_countries' || $request->location === 'India' ? $request->location : $request->locations,
+            'status' =>  $request->status == "on"  ? 1 : 0 ,
         );
-        
+
         Advertisement::where('id', $request->id)->update($inputs);
         
         return Redirect::back()->with(['message' => 'Successfully Updated Advertisement Details', 'note_type' => 'success']);
