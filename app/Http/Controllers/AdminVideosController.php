@@ -82,6 +82,7 @@ use Carbon\Carbon;
 use ProtoneMedia\LaravelFFMpeg\Filters\WatermarkFactory;
 use ParseM3U8;
 use App\Playerui;
+use App\PlayerSeekTimeAnalytic;
 
 class AdminVideosController extends Controller
 {
@@ -1212,6 +1213,7 @@ class AdminVideosController extends Controller
             ReelsVideo::where("video_id", $id)->delete();
             PlayerAnalytic::where("videoid", $id)->delete();
             CategoryVideo::where("video_id", $id)->delete();
+            PlayerSeekTimeAnalytic::where("video_id", $id)->delete();
             Video::destroy($id);
 
             // VideoResolution::where('video_id', '=', $id)->delete();
@@ -3978,7 +3980,8 @@ class AdminVideosController extends Controller
             $video_id = $request->video_id;
             Video::whereIn("id", explode(",", $video_id))->delete();
             PlayerAnalytic::whereIn("videoid", explode(",", $video_id))->delete();
-            CategoryVideo::where("video_id", $video->id)->delete();
+            CategoryVideo::whereIn("video_id", explode(",", $video_id))->delete();
+            PlayerSeekTimeAnalytic::whereIn("video_id", explode(",", $video_id))->delete();
 
             return response()->json(["message" => "true"]);
         } catch (\Throwable $th) {
