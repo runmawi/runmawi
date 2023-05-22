@@ -13380,4 +13380,71 @@ public function QRCodeMobileLogout(Request $request)
 
   }
   
+
+  public function Category_Videos(Request $request)
+  {
+
+    $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+    $countryName =  $geoip->getCountry();
+    $getfeching = Geofencing::first();
+
+    $block_videos=BlockVideo::where('country_id',$countryName)->get();
+
+        if(!$block_videos->isEmpty()){
+          foreach($block_videos as $block_video){
+              $blockvideos[]=$block_video->video_id;
+          }
+      }
+      $blockvideos[]='';
+
+    $videocategories = VideoCategory::select('id','image')->orderBy('order', 'ASC')->get()->toArray();
+    $myData = array();
+    foreach ($videocategories as $key => $videocategory) {
+      $videocategoryid = $videocategory['id'];
+      $genre_image = $videocategory['image'];
+
+      $videos= Video::Join('categoryvideos','categoryvideos.video_id','=','videos.id')->where('categoryvideos.category_id',$videocategoryid)
+      ->where('active','=',1)->where('status','=',1)->where('draft','=',1)->orderBy('videos.created_at', 'desc')->get()->map(function ($item) {
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $item['video_url'] = URL::to('/').'/storage/app/public/';
+        $item['category_name'] = VideoCategory::where('id',$item->category_id)->pluck('slug')->first();
+
+        return $item;
+      });
+
+      $main_genre = CategoryVideo::Join('video_categories','video_categories.id','=','categoryvideos.category_id')
+      ->get('name');
+      foreach($main_genre as $value){
+        $category[] = $value['name'];
+      }
+      if(!empty($category)){
+      $main_genre = implode(",",$category);
+      }else{
+        $main_genre = "";
+      }
+      if(count($videos) > 0){
+        $msg = 'success';
+      }else{
+        $msg = 'nodata';
+      }
+      $myData[] = array(
+
+        "message" => $msg,
+        'gener_name' =>  VideoCategory::where('id',$videocategoryid)->pluck('name')->first(),
+        'home_genre' =>  VideoCategory::where('id',$videocategoryid)->pluck('home_genre')->first(),
+        'gener_id' =>  VideoCategory::where('id',$videocategoryid)->pluck('id')->first(),
+        "videos" => $videos
+      );
+    }
+
+
+    $response = array(
+      'status' => 'true',
+      'genre_movies' => $myData,
+      'main_genre' => $msg,
+      'main_genre' => $main_genre,
+
+    );
+    return response()->json($response, 200);
+  }
 }
