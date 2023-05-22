@@ -56,6 +56,27 @@
                                 <label> Ads Name:</label>
                                 <input type="text" id="ads_name" name="ads_name" value="{{ $advertisement->ads_name }}" class="form-control" placeholder="Enter the Ads Name">
                             </div>
+
+                                            {{-- Ads Status --}}
+
+                            <div class="col-md-6">
+                                <label for=""> Ads Status: </label>
+                                <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                    
+                                    <div style="color:red;">In-active</div>
+
+                                    <div class="mt-1">
+                                        <label class="switch">
+                                            <input type="checkbox"  {{ $advertisement->status == 1 ? "checked" : " "  }} name="status" >
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+
+                                    <div style="color:green;">Active</div>
+                                </div>
+                                <div class="make-switch" data-on="success" data-off="warning"></div>
+                            </div>
+
                         </div>
 
                         <div class="row">
@@ -132,6 +153,7 @@
                             </div>
                         </div>
 
+                                        {{-- Location --}}
                          <div class="row">
                             <div class="form-group col-md-6">
                                 <label> Location Details :</label><br>
@@ -142,18 +164,18 @@
                                 <input type="radio"   name="location" value="India" {{ $advertisement->location == 'India' ? 'checked' : '' }}  />
                                 <label>India</label><br>
 
-                                <input type="radio"  name="location"  value="enter_location" {{ $advertisement->location != 'India' || $advertisement->location == 'all_countries' ? 'checked' : '' }}  />
+                                <input type="radio"  name="location"  value="enter_location" {{ $advertisement->location != 'India' && $advertisement->location != 'all_countries' ? 'checked' : '' }}  />
                                 <label>{{ ucwords('enter the location') }}</label>
                             </div>
 
-                            <div class="col-md-6 location_input" style="display: {{ $advertisement->location != 'all_countries' || $advertisement->location != 'India'  ? 'block' : 'none' }};">
+                            <div class="col-md-6 location_input">
                                 <div class="form-group">
                                     <label>Enter the Location:</label> 
                                     <input type="text" name="locations" class="form-control" placeholder="Enter the Location" value="{{ $advertisement->location }}" />
                                 </div>
                             </div>
                         </div>
-                        
+
                                             {{-- Footer --}}
                         <div class="modal-footer">
                             <input type="submit" class="btn btn-primary" id="submit-update-cat" value="Update" />
@@ -193,12 +215,25 @@
 
             // Location Hide and show
             $(document).ready(function() {
+
+                var retrieve_location = "{{ $advertisement->location }}";
+
+                if(retrieve_location == "India" || retrieve_location == "all_countries" ){
+                    $('.location_input').hide();
+                }
+
                 $("input[name='location']").click(function() {
                     
+                    $('.location_input').hide();
+                    
                     var location = $(this).val();
-                    var showInput = location === 'enter_location';
 
-                    $('.location_input').show(showInput);
+                    if( location == "enter_location" ){
+                        $('.location_input').show();
+                    }else{
+                        $('.location_input').hide();
+                    }
+
                 });
             });
     </script>
