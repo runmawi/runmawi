@@ -358,6 +358,7 @@ Route::post('purchase-video', 'PaymentController@purchaseVideo');
 Route::post('purchase-videocount', 'AdminVideosController@purchaseVideocount');
 Route::post('player_analytics_create', 'AdminPlayerAnalyticsController@PlayerAnalyticsCreate');
 Route::post('player_analytics_store', 'AdminPlayerAnalyticsController@PlayerAnalyticsStore');
+Route::post('player_seektime_store', 'AdminPlayerAnalyticsController@PlayerSeekTimeStore');
 Route::post('purchase-episode', 'PaymentController@purchaseEpisode');
 Route::post('purchase-series', 'PaymentController@purchaseSeries');
 Route::get('/ppvVideos/play_videos/{vid}', 'ChannelController@PlayPpv');
@@ -1099,6 +1100,10 @@ Route::post('/analytics/playerusers_start_date_url', 'AdminPlayerAnalyticsContro
 Route::post('/analytics/playerusers_end_date_url', 'AdminPlayerAnalyticsController@PlayerUsersEndDateRecord');
 Route::post('/analytics/playerusers_export', 'AdminPlayerAnalyticsController@PlayerUsersExport');
 Route::post('/analytics/PlayerUserDateAnalytics', 'AdminPlayerAnalyticsController@PlayerUserDateAnalytics');
+
+Route::get('/analytics/PlayerSeekUserTimeAnalytics', 'AdminPlayerAnalyticsController@PlayerSeekTimeAnalytics');
+Route::post('/analytics/PlayerUserSeekTime_export', 'AdminPlayerAnalyticsController@PlayerSeekTimeExport');
+Route::post('/analytics/PlayerSeekUserTimeDateAnalytics', 'AdminPlayerAnalyticsController@PlayerSeekTimeDateAnalytics');
 
 
 Route::get('/analytics/VideoAllCountry', 'AdminPlayerAnalyticsController@RegionVideoAllCountry');

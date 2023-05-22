@@ -455,4 +455,5 @@ Route::group(
         Route::get('data_free', 'ApiAuthController@DataFree');
         Route::post('category_live', 'ApiAuthController@categorylive');
 
+        Route::get('category_videos', 'ApiAuthController@Category_Videos');
     });

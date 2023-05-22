@@ -24,7 +24,7 @@ class VideoCategoryTableSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => null, ],
 
-                [ 'order' => '1', 
+                [ 'order' => '2', 
                 'name' => 'Drama',
                  'image' => '10 Drama.jpg' ,
                  'slug' => 'Drama',
@@ -32,7 +32,7 @@ class VideoCategoryTableSeeder extends Seeder
                  'created_at' => Carbon::now(),
                  'updated_at' => null, ],
 
-                 [  'order' => '1', 
+                 [  'order' => '3', 
                  'name' => 'Action',
                   'image' => '1 Action.jpg' ,
                   'slug' => 'action',
@@ -40,7 +40,7 @@ class VideoCategoryTableSeeder extends Seeder
                   'created_at' => Carbon::now(),
                   'updated_at' => null,  ],
 
-                  [  'order' => '1', 
+                  [  'order' => '4', 
                   'name' => 'Fantasy',
                    'image' => '3 fantasy.jpg' ,
                    'slug' => 'fantasy',
@@ -48,7 +48,7 @@ class VideoCategoryTableSeeder extends Seeder
                    'created_at' => Carbon::now(),
                    'updated_at' => null,  ],
 
-                   [  'order' => '1', 
+                   [  'order' => '5', 
                    'name' => 'Horror',
                     'image' => '5 horror.jpg' ,
                     'slug' => 'horror',
@@ -56,7 +56,7 @@ class VideoCategoryTableSeeder extends Seeder
                     'created_at' => Carbon::now(),
                     'updated_at' => null, ],
 
-                    [  'order' => '1', 
+                    [  'order' => '6', 
                     'name' => 'Romance',
                      'image' => '6 romance.jpg' ,
                      'slug' => 'Romance',
@@ -64,7 +64,7 @@ class VideoCategoryTableSeeder extends Seeder
                      'created_at' => Carbon::now(),
                      'updated_at' => null,  ],
 
-                     [  'order' => '1', 
+                     [  'order' => '7', 
                      'name' => 'Animation',
                       'image' => '9 Animation.jpg' ,
                       'slug' => 'Animation',
