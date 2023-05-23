@@ -21,6 +21,7 @@ class Kernel extends ConsoleKernel
         Commands\SubscriptionReminder::class,
         Commands\SubscriptionRenewal::class,
         Commands\SubscriptionExpiry::class,
+        Commands\GenerateSitemap::class,
     ];
 
     /**
@@ -52,6 +53,9 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('SubscriptionExpiry:cron')
         ->everyMinute();
+
+        $schedule->command('sitemap:generate')->everyMinute();
+
     }
 
     /**

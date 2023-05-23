@@ -214,6 +214,7 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         Unicodeveloper\Paystack\PaystackServiceProvider::class,
         Aws\Laravel\AwsServiceProvider::class,
+        Laravelium\Sitemap\SitemapServiceProvider::class,
 
     ],
 
