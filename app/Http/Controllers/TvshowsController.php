@@ -1009,23 +1009,28 @@ class TvshowsController extends Controller
         return Theme::view('iframeembedepisode', $data);
     }
 
-    public function SeriesCategory($slug){
+    public function SeriesCategory($slug)
+    {
+        try {
 
-        $Theme = HomeSetting::pluck('theme_choosen')->first();
-        Theme::uses($Theme);
+            $Theme = HomeSetting::pluck('theme_choosen')->first();
+            Theme::uses($Theme);
 
-        $CategorySeries =  SeriesGenre::where('slug',$slug)->first();
-        $SeriesGenre = $CategorySeries != null ? $CategorySeries->specific_category_series : array();
-        
-        $Series_Genre = $SeriesGenre->all();
+            $CategorySeries =  SeriesGenre::where('slug',$slug)->first();
+            $SeriesGenre = $CategorySeries != null ? $CategorySeries->specific_category_series : array();
+            
+            $Series_Genre = $SeriesGenre->all();
 
-        $data = array( 
-                    'SeriesGenre' => $Series_Genre ,
-                    'CategorySeries' => $CategorySeries
-                );
+            $data = array( 
+                        'SeriesGenre' => $Series_Genre ,
+                        'CategorySeries' => $CategorySeries
+                    );
 
-        return Theme::view('partials.home.SeriesCategory',$data);
+            return Theme::view('partials.home.SeriesCategory',$data);
 
+        } catch (\Throwable $th) {
+            return abort(404);
+        }
     }
 
     
