@@ -3060,7 +3060,6 @@ public function verifyandupdatepassword(Request $request)
         // $plans = SubscriptionPlan::where("payment_type","=","recurring")->where('type','=','Stripe')->get();
 
       $plans = SubscriptionPlan::where("payment_type","=","recurring")->groupby('plans_name')->orderBy('id', 'asc')->get()->map(function ($item) {
-        $item['plan_content'] =  (($plan_content));
         return $item;
       });
       
