@@ -466,26 +466,11 @@ class AdminVideosController extends Controller
             $video->type = "mp4_url";
             $video->draft = 0;
             $video->image = default_vertical_image();
+            $video->video_tv_image = default_horizontal_image();
+            $video->player_image = default_horizontal_image();
 
-            $PC_image_path = public_path("/uploads/images/default_image.jpg");
 
-            if (file_exists($PC_image_path)) {
-                $Mobile_image = "Mobile-default_image.jpg";
-                $Tablet_image = "Tablet-default_image.jpg";
 
-                Image::make($PC_image_path)->save(
-                    base_path() . "/public/uploads/images/" . $Mobile_image
-                );
-                Image::make($PC_image_path)->save(
-                    base_path() . "/public/uploads/images/" . $Tablet_image
-                );
-
-                $video->mobile_image = $Mobile_image;
-                $video->tablet_image = $Tablet_image;
-            } else {
-                $video->mobile_image = default_vertical_image();
-                $video->tablet_image = default_vertical_image();
-            }
 
             $video->duration = $Video_duration;
             $video->save();
@@ -535,29 +520,12 @@ class AdminVideosController extends Controller
                 $video->mp4_url = $storepath;
                 $video->draft = 0;
                 $video->image = default_vertical_image();
+                $video->video_tv_image = default_horizontal_image();
+                $video->player_image = default_horizontal_image();
 
-                $PC_image_path = public_path(
-                    "/uploads/images/default_image.jpg"
-                );
 
-                if (file_exists($PC_image_path)) {
-                    $Mobile_image = "Mobile-default_image.jpg";
-                    $Tablet_image = "Tablet-default_image.jpg";
 
-                    Image::make($PC_image_path)->save(
-                        base_path() . "/public/uploads/images/" . $Mobile_image
-                    );
-                    Image::make($PC_image_path)->save(
-                        base_path() . "/public/uploads/images/" . $Tablet_image
-                    );
-
-                    $video->mobile_image = $Mobile_image;
-                    $video->tablet_image = $Tablet_image;
-                } else {
-                    $video->mobile_image = default_vertical_image();
-                    $video->tablet_image = default_vertical_image();
-                }
-
+                
                 $video->duration = $Video_duration;
                 $video->user_id = Auth::user()->id;
                 $video->save();
@@ -626,26 +594,9 @@ class AdminVideosController extends Controller
             $video->type = "mp4_url";
             $video->draft = 0;
             $video->image = default_vertical_image();
+            $video->video_tv_image = default_horizontal_image();
+            $video->player_image = default_horizontal_image();
 
-            $PC_image_path = public_path("/uploads/images/default_image.jpg");
-
-            if (file_exists($PC_image_path)) {
-                $Mobile_image = "Mobile-default_image.jpg";
-                $Tablet_image = "Tablet-default_image.jpg";
-
-                Image::make($PC_image_path)->save(
-                    base_path() . "/public/uploads/images/" . $Mobile_image
-                );
-                Image::make($PC_image_path)->save(
-                    base_path() . "/public/uploads/images/" . $Tablet_image
-                );
-
-                $video->mobile_image = $Mobile_image;
-                $video->tablet_image = $Tablet_image;
-            } else {
-                $video->mobile_image = default_vertical_image();
-                $video->tablet_image = default_vertical_image();
-            }
 
             $video->duration = $Video_duration;
             $video->save();
@@ -3248,26 +3199,8 @@ class AdminVideosController extends Controller
             $video->draft = 0;
             $video->active = 1;
             $video->image = default_vertical_image();
-
-            $PC_image_path = public_path("/uploads/images/default_image.jpg");
-
-            if (file_exists($PC_image_path)) {
-                $Mobile_image = "Mobile-default_image.jpg";
-                $Tablet_image = "Tablet-default_image.jpg";
-
-                Image::make($PC_image_path)->save(
-                    base_path() . "/public/uploads/images/" . $Mobile_image
-                );
-                Image::make($PC_image_path)->save(
-                    base_path() . "/public/uploads/images/" . $Tablet_image
-                );
-
-                $video->mobile_image = $Mobile_image;
-                $video->tablet_image = $Tablet_image;
-            } else {
-                $video->mobile_image = default_vertical_image();
-                $video->tablet_image = default_vertical_image();
-            }
+            $video->video_tv_image = default_horizontal_image();
+            $video->player_image = default_horizontal_image();
             $video->user_id = Auth::user()->id;
             $video->save();
 
@@ -3296,27 +3229,8 @@ class AdminVideosController extends Controller
             $video->draft = 0;
             $video->active = 1;
             $video->image = default_vertical_image();
-
-            $PC_image_path = public_path("/uploads/images/default_image.jpg");
-
-            if (file_exists($PC_image_path)) {
-                $Mobile_image = "Mobile-default_image.jpg";
-                $Tablet_image = "Tablet-default_image.jpg";
-
-                Image::make($PC_image_path)->save(
-                    base_path() . "/public/uploads/images/" . $Mobile_image
-                );
-                Image::make($PC_image_path)->save(
-                    base_path() . "/public/uploads/images/" . $Tablet_image
-                );
-
-                $video->mobile_image = $Mobile_image;
-                $video->tablet_image = $Tablet_image;
-            } else {
-                $video->mobile_image = default_vertical_image();
-                $video->tablet_image = default_vertical_image();
-            }
-
+            $video->video_tv_image = default_horizontal_image();
+            $video->player_image = default_horizontal_image();
             $video->user_id = Auth::user()->id;
             $video->save();
 
@@ -3336,9 +3250,6 @@ class AdminVideosController extends Controller
         $data = $request->all();
         $value = [];
 
-        // echo "<pre>";
-        // print_r($data);
-        // exit();
 
         if (!empty($data["embed"])) {
             $video = new Video();
@@ -3350,26 +3261,8 @@ class AdminVideosController extends Controller
             $video->draft = 0;
             $video->active = 1;
             $video->image = default_vertical_image();
-
-            $PC_image_path = public_path("/uploads/images/default_image.jpg");
-
-            if (file_exists($PC_image_path)) {
-                $Mobile_image = "Mobile-default_image.jpg";
-                $Tablet_image = "Tablet-default_image.jpg";
-
-                Image::make($PC_image_path)->save(
-                    base_path() . "/public/uploads/images/" . $Mobile_image
-                );
-                Image::make($PC_image_path)->save(
-                    base_path() . "/public/uploads/images/" . $Tablet_image
-                );
-
-                $video->mobile_image = $Mobile_image;
-                $video->tablet_image = $Tablet_image;
-            } else {
-                $video->mobile_image = default_vertical_image();
-                $video->tablet_image = default_vertical_image();
-            }
+            $video->video_tv_image = default_horizontal_image();
+            $video->player_image = default_horizontal_image();
             $video->user_id = Auth::user()->id;
             $video->save();
 
@@ -3700,8 +3593,6 @@ class AdminVideosController extends Controller
             $video->mp4_url = $storepath;
             $video->type = "mp4_url";
             // $video->draft = 0;
-            // $video->image = 'default_image.jpg';
-
             $video->duration = $Video_duration;
             $video->save();
 
@@ -3722,8 +3613,7 @@ class AdminVideosController extends Controller
             $pack == "Business" &&
             $settings->transcoding_access == 1
         ) {
-            // echo "<pre>";
-            // print_r($mp4_url);exit();
+            
             $rand = Str::random(16);
             $path = $rand . "." . $request->file->getClientOriginalExtension();
             $request->file->storeAs("public", $path);
@@ -3807,7 +3697,6 @@ class AdminVideosController extends Controller
             $video->mp4_url = $storepath;
             $video->type = "mp4_url";
             // $video->draft = 0;
-            $video->image = default_vertical_image();
             $video->duration = $Video_duration;
             $video->save();
 
@@ -3870,8 +3759,6 @@ class AdminVideosController extends Controller
             $video->type = "mp4_url";
             // $video->draft = 0;
             $video->active = 1;
-            $video->image = default_vertical_image();
-
             $video->user_id = Auth::user()->id;
             $video->save();
 
@@ -3912,8 +3799,6 @@ class AdminVideosController extends Controller
             $video->type = "m3u8_url";
             // $video->draft = 0;
             $video->active = 1;
-            $video->image = default_vertical_image();
-
             $video->user_id = Auth::user()->id;
             $video->save();
 
@@ -3935,9 +3820,7 @@ class AdminVideosController extends Controller
         $data = $request->all();
         $value = [];
 
-        // echo "<pre>";
-        // print_r($data);
-        // exit();
+       
         $id = $data["videoid"];
         $video = Video::findOrFail($id);
         if(!empty($video) && $video->embed_code == $data["embed"]){
@@ -3956,8 +3839,6 @@ class AdminVideosController extends Controller
             $video->type = "embed";
             $video->draft = 0;
             $video->active = 1;
-            $video->image = default_vertical_image();
-
             $video->user_id = Auth::user()->id;
             $video->save();
 
