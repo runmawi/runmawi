@@ -90,42 +90,25 @@ class ChannelController extends Controller
 
     public function channelVideos($cid)
     {
-        $getfeching = \App\Geofencing::first();
-        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-        $userIp = $geoip->getip();
-        $countryName = $geoip->getCountry();
-        $ThumbnailSetting = ThumbnailSetting::first();
-
         try {
-            $vpp = VideoPerPage();
-            $category_id = \App\VideoCategory::where('slug', $cid)->pluck('id');
-            $categoryVideos_count = Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
-                ->where('category_id', '=', $category_id)
-                ->where('active', '=', '1')
-                ->count();
 
-            if ($categoryVideos_count > 0) {
-                $categoryVideos = Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
+            $ThumbnailSetting = ThumbnailSetting::first();
+
+            $category_id = VideoCategory::where('slug', $cid)->pluck('id');
+           
+            $categoryVideos = Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
                     ->where('category_id', '=', $category_id)
                     ->where('active', '=', '1');
 
-                if ($getfeching != null && $getfeching->geofencing == 'ON') {
+                if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){       
                     $categoryVideos = $categoryVideos->whereNotIn('videos.id', Block_videos());
                 }
-                $categoryVideos = $categoryVideos->orderBy('videos.created_at', 'desc')->paginate($this->videos_per_page);
-            } else {
-                $categoryVideos = [];
-            }
-            // $categoryVideos = \App\Video::where('video_category_id',$category_id)->paginate();
-            $category_title = \App\VideoCategory::where('id', $category_id)->pluck('name');
-            $settings = Setting::first();
+
+            $categoryVideos = $categoryVideos->orderBy('videos.created_at', 'desc')->paginate($this->videos_per_page);
+          
+            $category_title = VideoCategory::where('id', $category_id)->pluck('name')->first();
             $PPV_settings = Setting::where('ppv_status', '=', 1)->first();
-            if (!empty($PPV_settings)) {
-                $ppv_gobal_price = $PPV_settings->ppv_price;
-            } else {
-                $ppv_gobal_price = null;
-            }
-            $currency = CurrencySetting::first();
+            $ppv_gobal_price = !empty($PPV_settings) ? $PPV_settings->ppv_price : null ;
 
             $Episode_videos = Series::select('episodes.*', 'series.title as series_name','series.slug as series_slug')
                 ->join('series_categories', 'series_categories.series_id', '=', 'series.id')
@@ -135,20 +118,22 @@ class ChannelController extends Controller
                 ->where('series.active', '=', '1')
                 ->groupBy('episodes.id')
                 ->latest('episodes.created_at')
-                ->get();
+                ->paginate($this->videos_per_page);
 
             $data = [
-                'currency' => $currency,
-                'category_title' => $category_title[0],
+                'currency' => CurrencySetting::first(),
+                'category_title' => $category_title,
                 'categoryVideos' =>  $categoryVideos,
                 'ppv_gobal_price' => $ppv_gobal_price,
                 'ThumbnailSetting' => $ThumbnailSetting,
                 'age_categories' => AgeCategory::get(),
                 'Episode_videos' => $Episode_videos,
             ];
+
             return Theme::view('categoryvids', ['categoryVideos' => $data]);
+
         } catch (\Throwable $th) {
-            // return $th->getMessage();
+            return $th->getMessage();
             return abort(404);
         }
     }
@@ -3341,6 +3326,7 @@ class ChannelController extends Controller
 
     public function categoryfilter(Request $request)
     {
+
         $settings = Setting::first();
         $PPV_settings = Setting::where('ppv_status', '=', 1)->first();
 
@@ -3370,7 +3356,7 @@ class ChannelController extends Controller
             $categoryVideos = $categoryVideos->orderBy('videos.created_at', 'DESC');
         }
 
-        $categoryVideos = $categoryVideos->get();
+        $categoryVideos = $categoryVideos->paginate($this->videos_per_page);
 
         $Episode_videos = Series::select('episodes.*', 'series.title as series_name')
             ->join('series_categories', 'series_categories.series_id', '=', 'series.id')
@@ -3393,7 +3379,7 @@ class ChannelController extends Controller
             $Episode_videos = $Episode_videos->orderBy('episodes.created_at', 'DESC');
         }
 
-        $Episode_videos = $Episode_videos->get();
+        $Episode_videos = $Episode_videos->paginate($this->videos_per_page);
 
         $data = [
             'currency' => CurrencySetting::first(),
