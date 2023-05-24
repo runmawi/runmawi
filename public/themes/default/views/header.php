@@ -44,11 +44,11 @@
       // }
       ?>
    <?php //if (!empty($data["password_hash"])) {
-      $series = App\Series::where("title", $request_url)->first();
+      $series = App\Series::where("slug", $request_url)->first();
       // }
       ?>
    <?php //if (!empty($data["password_hash"])) {
-      $episdoe = App\Episode::where("title", $request_url)->first();
+      $episdoe = App\Episode::where("slug", $request_url)->first();
       // }
       ?>
    <?php //if (!empty($data["password_hash"])) {

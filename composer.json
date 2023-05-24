@@ -34,6 +34,7 @@
         "laravel/socialite": "^5.1",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.0",
+        "laravelium/sitemap": "^7.0",
         "league/flysystem-aws-s3-v3": "~1.0",
         "maatwebsite/excel": "^3.1",
         "paypal/rest-api-sdk-php": "^1.14",
@@ -52,6 +53,7 @@
         "vedmant/laravel-feed-reader": "^1.5",
         "victorybiz/geoip-location": "^1.1",
         "wapmorgan/mp3info": "^0.0.8",
+        "watson/sitemap": "^3.0",
         "yajra/laravel-datatables-oracle": "~9.0",
         "zanysoft/laravel-zip": "^1.0",
         "zusamarehan/tourify": "^0.5.4"

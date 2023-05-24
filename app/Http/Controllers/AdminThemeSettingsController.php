@@ -813,6 +813,7 @@ class AdminThemeSettingsController extends Controller
           Language::create([
             'name'  => $request->name ,
             'language_image' =>  $language_PC_image ,
+            'slug' =>  str_replace(' ', '_', $request['name']) ,
           ]);
 
           return back()->with('success', 'New Language added successfully.');
@@ -1023,6 +1024,7 @@ class AdminThemeSettingsController extends Controller
               Language::where('id',$id)->update([
                 'name' => $request['name'] ,
                 'language_image' => $language_PC_image ,
+                'slug' => str_replace(' ', '_', $request['name']) ,
               ]);
             
               return back()->with('success', 'New Language Updated successfully.');

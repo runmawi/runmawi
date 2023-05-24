@@ -64,6 +64,7 @@ use App\AdminLandingPage;
 use App\EmailTemplate;
 use App\VideoSchedules as VideoSchedules;
 use App\ScheduleVideos as ScheduleVideos;
+use App\Language as Language;
 
 class HomeController extends Controller
 {
@@ -4143,4 +4144,77 @@ class HomeController extends Controller
             return abort (404);
         }
     }
+
+    
+    public function Language_Video($slug)
+    {
+
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+        $userIp = $geoip->getip();
+        $countryName = $geoip->getCountry();
+        $regionName = $geoip->getregion();
+        $cityName = $geoip->getcity();
+        $ThumbnailSetting = ThumbnailSetting::first();
+
+
+        $getfeching = Geofencing::first();
+
+        $block_videos = BlockVideo::where('country_id', $countryName)->get();
+        if (!$block_videos->isEmpty())
+        {
+            foreach ($block_videos as $block_video)
+            {
+                $blockvideos[] = $block_video->video_id;
+            }
+        }
+        else
+        {
+            $blockvideos[] = '';
+        }
+
+        $lanid = Language::where('slug', $slug)->pluck('id');
+
+        $language_videos = Video::join('languagevideos', 'languagevideos.video_id', '=', 'videos.id')
+        ->where('language_id', '=', $lanid)->where('active', '=', '1')->where('status', '=', '1')
+        ->where('draft', '=', '1');
+
+        if ($getfeching != null && $getfeching->geofencing == 'ON')
+        {
+            $language_videos = $language_videos->whereNotIn('videos.id', $blockvideos);
+        }
+        $language_videos = $language_videos->orderBy('videos.created_at','desc')->get();
+
+        $currency = CurrencySetting::first();
+
+        $data = array(
+            'lang_videos' => $language_videos,
+            'currency' => $currency,
+            'ThumbnailSetting' => $ThumbnailSetting
+
+        );
+
+
+        return Theme::View('languagevideo', $data);
+    }
+
+    
+    public function Language_List()
+    {
+
+        try {
+            $Language = Language::get();
+            $data = array(
+                'Languages' => $Language,    
+            );
+        } catch (\Throwable $th) {
+
+            
+            return abort (404);
+        }
+    
+
+
+        return Theme::View('LanguageList', $data);
+    }
+
 }

@@ -457,17 +457,27 @@ i.fa.fa-google-plus {
     });
 
     function ValidationEvent(form) {
-    // 👇 get passwords from the field using their name attribute
-    const password = document.getElementById('password').value;
-    const confirmPassword = document.getElementById('password-confirm').value;
 
-    // 👇 check if both match using if-else condition
-    if (password != confirmPassword) {
-        $('.error_password').show();
-      return false;
-    } else {
+    var password_confirm = '<?= $SignupMenu->password_confirm ?>'; 
+    if(password_confirm == 0){
+        var password_confirmation = 0;
         $('.error_password').hide();
-      return true;
+        return true;
+    }else{
+            var password_confirmation = '<?= $SignupMenu->password_confirmation ?>';
+        // alert(password_confirmation);
+        // 👇 get passwords from the field using their name attribute
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('password-confirm').value;
+
+        // 👇 check if both match using if-else condition
+        if (password != confirmPassword) {
+            $('.error_password').show();
+        return false;
+        } else {
+            $('.error_password').hide();
+        return true;
+        }
     }
   }
 

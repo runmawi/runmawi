@@ -40,7 +40,7 @@
 $series = App\Series::where('id',$episodes->series_id)->first()  ;
 // dd($series->title);
 $media_url = URL::to('/episode/').'/'.$series->title.'/'.$episodes->slug;
-$embed_media_url = URL::to('/episode/embed').'/'.$series->title.'/'.$episodes->slug;
+$embed_media_url = URL::to('/episode/embed').'/'.$series->slug.'/'.$episodes->slug;
 $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowfullscreen></iframe>';
 ?>
 <link rel="stylesheet" href="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.css') }}" />

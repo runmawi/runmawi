@@ -4512,8 +4512,14 @@ class AdminVideosController extends Controller
         }else{
             $in_home = 0;
         }
+        if ( $request["name"] != '') {
+            $slug =  str_replace(' ', '_',  $request['name']);
+        } else {
+            $slug  = str_replace(' ', '_', $request['name']);
+        }
         $Schedules = new VideoSchedules();
         $Schedules->name = $request["name"];
+        $Schedules->slug = $slug;
         $Schedules->description = $request["description"];
         $Schedules->image = $image;
         $Schedules->player_image = $player_image;
@@ -4605,8 +4611,13 @@ class AdminVideosController extends Controller
         } else {
             $player_image = $Schedules->player_image;
         }
-
+        if ( $request["name"] != '') {
+            $slug =  str_replace(' ', '_',  $request['name']);
+        } else {
+            $slug  = str_replace(' ', '_', $request['name']);
+        }
         $Schedules->name = $request["name"];
+        $Schedules->slug = $slug;
         $Schedules->description = $request["description"];
         $Schedules->image = $image;
         $Schedules->player_image = $player_image;

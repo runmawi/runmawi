@@ -44,10 +44,10 @@
         $videos_data = App\Video::where('slug', $request_url)->first();
     } //echo $settings->website_name; ?>
     <?php if (!empty($data['password_hash'])) {
-        $series = App\Series::where('title', $request_url)->first();
+        $series = App\Series::where('slug', $request_url)->first();
     } //echo $settings->website_name; ?>
     <?php if (!empty($data['password_hash'])) {
-        $episdoe = App\Episode::where('title', $request_url)->first();
+        $episdoe = App\Episode::where('slug', $request_url)->first();
     } //echo $settings->website_name; ?>
     <?php if (!empty($data['password_hash'])) {
         $livestream = App\LiveStream::where('slug', $request_url)->first();
