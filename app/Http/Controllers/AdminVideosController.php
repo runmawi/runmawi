@@ -1031,27 +1031,39 @@ class AdminVideosController extends Controller
         
             $videos = Video::find($id);
 
+            $image_name_WithoutExtension     = substr($videos->image, 0, strrpos($videos->image, '.'));
+            $ply_image_name_WithoutExtension = substr($videos->player_image, 0, strrpos($videos->player_image, '.'));
+            $tv_image_name_WithoutExtension  = substr($videos->video_tv_image, 0, strrpos($videos->video_tv_image, '.'));
+
+
                     //  Delete Existing Image (PC-Image, Mobile-Image, Tablet-Image )
-            if (File::exists(base_path('public/uploads/images/'.$videos->image))) {
-                File::delete(base_path('public/uploads/images/'.$videos->image));
+            if( $image_name_WithoutExtension != null && $image_name_WithoutExtension != "default_image"){
+                if (File::exists(base_path('public/uploads/images/'.$videos->image))) {
+                    File::delete(base_path('public/uploads/images/'.$videos->image));
+                }
+    
+                if (File::exists(base_path('public/uploads/images/'.$videos->mobile_image))) {
+                    File::delete(base_path('public/uploads/images/'.$videos->mobile_image));
+                }
+    
+                if (File::exists(base_path('public/uploads/images/'.$videos->tablet_image))) {
+                    File::delete(base_path('public/uploads/images/'.$videos->tablet_image));
+                }
             }
-
-            if (File::exists(base_path('public/uploads/images/'.$videos->mobile_image))) {
-                File::delete(base_path('public/uploads/images/'.$videos->mobile_image));
-            }
-
-            if (File::exists(base_path('public/uploads/images/'.$videos->tablet_image))) {
-                File::delete(base_path('public/uploads/images/'.$videos->tablet_image));
-            }
+            
 
                     //  Delete Existing Player Image
-            if (File::exists(base_path('public/uploads/images/'.$videos->player_image))) {
-                File::delete(base_path('public/uploads/images/'.$videos->player_image));
-            }
-
+            if($ply_image_name_WithoutExtension != null && $ply_image_name_WithoutExtension != "default_horizontal_image"){
+                if (File::exists(base_path('public/uploads/images/'.$videos->player_image))) {
+                    File::delete(base_path('public/uploads/images/'.$videos->player_image));
+                }
+            }        
+           
                     //  Delete Existing Video Tv Image
-            if (File::exists(base_path('public/uploads/images/'.$videos->video_tv_image))) {
-                File::delete(base_path('public/uploads/images/'.$videos->video_tv_image));
+            if($tv_image_name_WithoutExtension != null && $tv_image_name_WithoutExtension != "default_horizontal_image"){
+                if (File::exists(base_path('public/uploads/images/'.$videos->video_tv_image))) {
+                    File::delete(base_path('public/uploads/images/'.$videos->video_tv_image));
+                }
             }
 
                     //  Delete Existing Video Title Image
@@ -1176,7 +1188,7 @@ class AdminVideosController extends Controller
                 "note_type" => "success",
             ]);
         } catch (\Throwable $th) {
-            // return $th->getMessage();
+            return $th->getMessage();
             return abort(404) ;
         }
     }
