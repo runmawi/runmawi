@@ -816,3 +816,17 @@ function Mail_Image()
 
     return public_path('uploads/settings/'. $Mail_Image) ;
 }
+
+function default_vertical_image()
+{
+    $default_vertical_image = App\Setting::pluck('default_video_image')->first();
+
+    return  $default_vertical_image ;
+} 
+
+function default_horizontal_image()
+{
+    $default_horizontal_image = App\Setting::pluck('default_horizontal_image')->first();
+
+    return  $default_horizontal_image ;
+}
