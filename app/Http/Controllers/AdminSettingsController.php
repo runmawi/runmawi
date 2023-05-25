@@ -62,6 +62,12 @@ class AdminSettingsController extends Controller
             ];
             return View::make('admin.expired_dashboard', $data);
         } else {
+            //  Delete Existing Image (PC-Image, Mobile-Image, Tablet-Image )
+            if (File::exists(base_path('public/uploads/sitemap/sitemap.xml'))) {
+                $sitemap = URL::to('public/uploads/sitemap/sitemap.xml');
+            }else{
+                $sitemap = '';
+            }
             $setting = Setting::first();
             $app_settings = AppSetting::first();
             if (!empty($setting->transcoding_resolution)) {
@@ -81,6 +87,7 @@ class AdminSettingsController extends Controller
                 'settings' => $setting,
                 'rtmp_url' => RTMP::all(),
                 'captchas' => Captcha::first(),
+                'sitemap' => $sitemap,
             ];
 
             return \View::make('admin.settings.index', $data);

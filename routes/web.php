@@ -2296,3 +2296,12 @@ Route::get('/Free-Movies', 'AllVideosListController@Free_videos')->name('Free_vi
 // Series
 Route::get('/series/list', 'AllVideosListController@all_series')->name('all_series');
 Route::get('continue-watching-list', 'AllVideosListController@ContinueWatchingList');
+
+Route::get('/download-xml', function () {
+    $file = public_path('uploads/sitemap/sitemap.xml');
+    $headers = [
+        'Content-Type' => 'application/xml',
+    ];
+
+    return response()->download($file, 'filename.xml', $headers);
+})->name('download.xml');
