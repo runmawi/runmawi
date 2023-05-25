@@ -12246,6 +12246,11 @@ public function QRCodeMobileLogout(Request $request)
           $response = array(
             'status'=> 'true',
             'Message' => 'Please Trun On Latest Video on Home Page Settings',
+            'videos' => [],
+            'series' =>[],
+            'live_streams' => [],
+            'audio' => [],
+            'settings' => [],
         );
       }
           
