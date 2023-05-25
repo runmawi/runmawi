@@ -218,10 +218,11 @@ border-radius: 0px 4px 4px 0px;
                         placeholder="Site Description"
                         value="@if(!empty($settings->website_description)){{ $settings->website_description }}@endif" />
                 </div>
+                <br>
                 @if(!empty($sitemap))
                 <div class="panel-body" style="display: block;">
-                    <p class="p1">Click Here to Download you'r SiteMap :</p>
-                    <a href="{{ route('download.xml') }}">Download SiteMap</a>
+                <label>Click Here to Download you'r SiteMap :</label>
+                    <a href="{{ route('download.xml') }}">Download SiteMap XML</a>
                 </div>
                 @endif
                 <div class=" mt-4 pt-3  p-0" data-collapsed="0">
