@@ -9180,7 +9180,7 @@ $cpanel->end();
 
       try{
 
-        $HomeSetting = HomeSetting::first();
+        $HomeSetting = MobileHomeSetting::first();
         $OrderHomeSetting = OrderHomeSetting::first();
         $OrderSetting = array();
 
@@ -12169,7 +12169,7 @@ public function QRCodeMobileLogout(Request $request)
   public function DataFree()
   {
     try{
-      $HomeSetting = HomeSetting::first();
+      $HomeSetting = MobileHomeSetting::first();
       
       if($HomeSetting->latest_videos == 1){
       $settings = Setting::get();
