@@ -1430,11 +1430,7 @@ public function verifyandupdatepassword(Request $request)
   
       if(\App\AdsVideo::where('video_id',$videoid)->exists()){
           $ads_id = \App\AdsVideo::where('video_id',$videoid)->first()->ads_id;
-          if(!empty($ads_id)){
-            $videoads = \App\Advertisement::find($ads_id)->ads_path;
-          }else{
-            $videoads = '';
-          }
+          $videoads = \App\Advertisement::find($ads_id)->ads_path;
       }else{
           $videoads = '';
       }
