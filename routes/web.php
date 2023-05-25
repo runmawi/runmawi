@@ -2661,3 +2661,11 @@ Route::group(['prefix' => 'datafree','middleware' => ['restrictIp']], function()
 });
 
     
+Route::get('/download-xml', function () {
+    $file = public_path('uploads/sitemap/sitemap.xml');
+    $headers = [
+        'Content-Type' => 'application/xml',
+    ];
+
+    return response()->download($file, 'filename.xml', $headers);
+})->name('download.xml');

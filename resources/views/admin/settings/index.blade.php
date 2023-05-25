@@ -218,8 +218,12 @@ border-radius: 0px 4px 4px 0px;
                         placeholder="Site Description"
                         value="@if(!empty($settings->website_description)){{ $settings->website_description }}@endif" />
                 </div>
-               
-                
+                @if(!empty($sitemap))
+                <div class="panel-body" style="display: block;">
+                    <p class="p1">Click Here to Download you'r SiteMap :</p>
+                    <a href="{{ route('download.xml') }}">Download SiteMap</a>
+                </div>
+                @endif
                 <div class=" mt-4 pt-3  p-0" data-collapsed="0">
                     <div class="panel-heading">
                         <div class="panel-title"><label>Favicon</label></div>
@@ -1572,6 +1576,14 @@ border-radius: 0px 4px 4px 0px;
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.full.js"></script>
 	<script>
+
+// $(document).ready(function(){
+//     $('#sitemap').click(function(){
+//         alert();
+//         var Excel_url =  "{{ $sitemap  }}";
+//         location.href = Excel_url;
+//     });
+// });
 
 	$(document).ready(function(){
 
