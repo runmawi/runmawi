@@ -25,6 +25,8 @@ use App\AdminLandingPage;
 use App\Language;
 use URL;
 use Laravelium\Sitemap\SitemapServiceProvider;
+use File;
+use Illuminate\Contracts\Filesystem\Filesystem;
 
 class GenerateSitemap extends Command
 {
@@ -47,7 +49,14 @@ class GenerateSitemap extends Command
      */
     public function handle()
     {
+        $path = public_path('uploads/sitemap/');
 
+        if(!File::isDirectory($path)){
+            File::makeDirectory($path, 0777, true, true);
+    
+    // retry storing the file in newly created path.
+        }   
+        
         $sitemap = app(Sitemap::class);
 
         // Video Management 
