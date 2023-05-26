@@ -488,7 +488,6 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
             poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls
             data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' type="video/mp4">
             <!-- <video class="video-js vjs-big-play-centered" data-setup='{"seek_param": "time"}' id="videoPlayer" >-->
-            <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default />
             <source src="<?php if (!empty($video->mp4_url)) {
                 echo $video->mp4_url;
             } else {
