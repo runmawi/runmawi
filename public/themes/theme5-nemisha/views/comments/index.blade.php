@@ -11,7 +11,7 @@
 
     <div class="media-body">
         <div class="d-flex align-items-center"><img class="mr-3"
-                src="https://via.placeholder.com/128/fe669e/ffcbde.png?text=<?= $comment->first_letter ?>" width="50px"
+                src="https://via.placeholder.com/128/fe669e/ffcbde.png?text=<?= ucfirst(substr(App\User::where('id', $comment->user_id)->pluck('username')->first(), 0, 1)); ?>" width="50px"
                 alt="<?= $comment->user_name ?>" style="border-radius: 30px;">
 
             <h5 class="mt-0 mb-1"><?= ucfirst(App\User::where('id',$comment->user_id)->pluck('username')->first()); ?><br>
@@ -52,10 +52,12 @@
             <div style="margin-left:10% !important">
 
                 <div class="d-flex align-items-center"><img class="mr-3"
-                        src="https://via.placeholder.com/128/fe669e/ffcbde.png?text=<?= $reply_comments->first_letter ?>"
-                        width="40px" alt="<?= ucfirst(App\User::where('id',$reply_comments->user_name)->pluck('username')->first())  ?>" style="border-radius: 30px;">
-                    <h5 class="mt-0 mb-1"><?= ucfirst(App\User::where('id',$reply_comments->user_name)->pluck('username')->first())  ?><br> <small class="text-muted">
-                            <?= $reply_comments->created_at->diffForHumans() ?></small></h5>
+                        src="https://via.placeholder.com/128/fe669e/ffcbde.png?text=<?= ucfirst(substr(App\User::where('id', $reply_comments->user_id)->pluck('username')->first(), 0, 1));?>"
+                        width="40px" alt="<?= ucfirst(App\User::where('id',$reply_comments->user_id)->pluck('username')->first())  ?>" style="border-radius: 30px;">
+                    
+                    <h5 class="mt-0 mb-1"><?= ucfirst(App\User::where('id',$reply_comments->user_id)->pluck('username')->first())  ?><br> <small class="text-muted">
+                        <?= $reply_comments->created_at->diffForHumans() ?></small>
+                    </h5>
                 </div>
 
             <div style="white-space: pre-wrap;" class="rep text-white"><?= $reply_comments->comment ?></div>

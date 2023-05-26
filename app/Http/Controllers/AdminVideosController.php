@@ -2502,7 +2502,7 @@ class AdminVideosController extends Controller
 
             $data["image"]  = default_vertical_image() ;
             $data["mobile_image"] = default_vertical_image();
-            $data{"tablet_image"} = default_vertical_image();
+            $data["tablet_image"] = default_vertical_image();
 
         }
 
