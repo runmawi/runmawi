@@ -13452,4 +13452,32 @@ public function QRCodeMobileLogout(Request $request)
     );
     return response()->json($response, 200);
   }
+
+  
+  public function relatedtvvideos(Request $request) {
+    
+    $videoid = $request->videoid;
+   
+      // Recomendeds
+                
+      $recomendeds = Video::select('videos.*', 'video_categories.name as categories_name', 'categoryvideos.category_id as categories_id')
+      ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
+      ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+      ->where('videos.id', '!=', $videoid)
+      ->where('videos.active',  1)
+      ->where('videos.status',  1)
+      ->where('videos.draft',  1)
+      ->limit(10)
+      ->get()->map(function ($item) {
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        return $item;
+      });
+      $response = array(
+      'status'=>'true',
+      'channelrecomended' => $recomendeds
+    );
+    return response()->json($response, 200);
+  }
+
+
 }
