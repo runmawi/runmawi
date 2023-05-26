@@ -291,15 +291,12 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
           <source src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>"  type='application/x-mpegURL' label='auto' > 
                <!-- <video id="video"  class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'   > -->
   <!-- Captions are optional -->
-  <?php if($playerui_settings['subtitle'] == 1 ){ foreach($subtitles as $key => $value){ if($value['sub_language'] == "English"){ ?>
-           <track label="English" kind="subtitles" srclang="en" src="<?= $value['url'] ?>" >
-           <?php } if($value['sub_language'] == "German"){ ?>
-           <track label="German" kind="subtitles" srclang="de" src="<?= $value['url'] ?>" >
-           <?php } if($value['sub_language'] == "Spanish"){ ?>
-           <track label="Spanish" kind="subtitles" srclang="es" src="<?= $value['url'] ?>" >
-           <?php } if($value['sub_language'] == "Hindi"){ ?>
-           <track label="Hindi" kind="subtitles" srclang="hi" src="<?= $value['url'] ?>" >
-           <?php } } } else { }  ?>  
+  <?php  if(@$playerui_settings['subtitle'] == 1 ){ if(isset($subtitles)){
+                        foreach ($subtitles as $key => $subtitles_file) { ?>
+                    <track kind="captions" src="<?= $subtitles_file->url ?>"
+                        srclang="<?= $subtitles_file->sub_language ?>"
+                        label="<?= $subtitles_file->shortcode ?>" default>
+                    <?php } } } ?>  
 
 <div class="playertextbox hide">
                    <!--<h2>Up Next</h2>-->

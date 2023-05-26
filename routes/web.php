@@ -2667,5 +2667,5 @@ Route::get('/download-xml', function () {
         'Content-Type' => 'application/xml',
     ];
 
-    return response()->download($file, 'filename.xml', $headers);
+    return response()->download($file, 'sitemap.xml', $headers);
 })->name('download.xml');

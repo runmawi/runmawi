@@ -6797,6 +6797,7 @@ public function LocationCheck(Request $request){
 
         $Recommendation = HomeSetting::pluck('Recommendation')->first();
 
+
         if( $Recommendation == 1 ){
 
           $check_Kidmode = 0 ;
@@ -6821,7 +6822,8 @@ public function LocationCheck(Request $request){
                   $item['Video_Title_Thumbnail'] = URL::to('/').'/public/uploads/images/'.$item->video_title_image ;
                   return $item;
             });
-        } 
+        }
+        
 
         $response = array(
           'status'  => 'true',
@@ -6869,7 +6871,7 @@ public function LocationCheck(Request $request){
             return response()->json([
               'status'  => 'true',
               'message' => 'Most watched videos by User data Retrieve successfully',
-              'mostWatchedUserVideos' => $mostWatchedUserVideos], 200);
+              'mostWatchedUserVideos' => !empty($mostWatchedUserVideos) ? $mostWatchedUserVideos  : [] ], 200);
       
     } catch (\Throwable $th) {
       
@@ -9178,7 +9180,7 @@ $cpanel->end();
 
       try{
 
-        $HomeSetting = HomeSetting::first();
+        $HomeSetting = MobileHomeSetting::first();
         $OrderHomeSetting = OrderHomeSetting::first();
         $OrderSetting = array();
 
@@ -12167,7 +12169,7 @@ public function QRCodeMobileLogout(Request $request)
   public function DataFree()
   {
     try{
-      $HomeSetting = HomeSetting::first();
+      $HomeSetting = MobileHomeSetting::first();
       
       if($HomeSetting->latest_videos == 1){
       $settings = Setting::get();
@@ -12244,6 +12246,11 @@ public function QRCodeMobileLogout(Request $request)
           $response = array(
             'status'=> 'true',
             'Message' => 'Please Trun On Latest Video on Home Page Settings',
+            'videos' => [],
+            'series' =>[],
+            'live_streams' => [],
+            'audio' => [],
+            'settings' => [],
         );
       }
           
