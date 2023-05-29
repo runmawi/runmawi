@@ -63,6 +63,14 @@ class AdminMenuController extends Controller
             'responseBody' => $responseBody,
     );
             return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
         }else{
         // $menu = json_decode(Menu::orderBy('order', 'ASC')->get()->toJson());
         $menu = Menu::orderBy('order', 'asc')->get();
@@ -161,6 +169,14 @@ class AdminMenuController extends Controller
             'responseBody' => $responseBody,
     );
             return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
         }else{
         return View::make('admin.menu.edit', array('menu' => Menu::find($id)));
         }

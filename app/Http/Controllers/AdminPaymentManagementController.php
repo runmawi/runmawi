@@ -60,6 +60,14 @@ class AdminPaymentManagementController extends Controller
             'responseBody' => $responseBody,
     );
             return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
         }else{
         $revenue =  SubscriptionPlan::select(('subscription_plans.price'))
         ->join('subscriptions','subscriptions.stripe_plan', '=', 'subscription_plans.plan_id')
@@ -136,6 +144,14 @@ class AdminPaymentManagementController extends Controller
             'responseBody' => $responseBody,
     );
             return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
         }else{
 
     //    $user = User::where('role', '!=' , 'admin')->get();
@@ -185,6 +201,14 @@ class AdminPaymentManagementController extends Controller
             'responseBody' => $responseBody,
     );
             return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
         }else{
         // dd($id);
         $subscription = Subscription::select('subscriptions.*','users.*')
@@ -233,6 +257,14 @@ class AdminPaymentManagementController extends Controller
             'responseBody' => $responseBody,
     );
             return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
         }else{
         $PayPerView = PpvPurchase::select('ppv_purchases.*','videos.*','users.*')
         ->join('videos', 'ppv_purchases.video_id', '=', 'videos.id')
@@ -290,6 +322,14 @@ class AdminPaymentManagementController extends Controller
             'responseBody' => $responseBody,
     );
             return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
         }else{
         $PayPerView = PpvPurchase::select('ppv_purchases.*','videos.*','users.*')
         ->join('videos', 'ppv_purchases.video_id', '=', 'videos.id')

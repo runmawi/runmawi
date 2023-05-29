@@ -60,6 +60,14 @@ class AdminAdvertiserController extends Controller
                 'responseBody' => $responseBody,
             ];
             return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
         } else {
             $setting = Setting::first();
             // dd($setting);
@@ -103,6 +111,14 @@ class AdminAdvertiserController extends Controller
                 'responseBody' => $responseBody,
             ];
             return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
         } 
         else {
             $setting = Setting::first();
@@ -183,6 +199,14 @@ class AdminAdvertiserController extends Controller
                 'responseBody' => $responseBody,
             ];
             return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
         } else {
             $setting = Setting::first();
             if ($setting->ads_on_videos == 1) {
@@ -229,6 +253,14 @@ class AdminAdvertiserController extends Controller
                 'responseBody' => $responseBody,
             ];
             return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
         } 
         else 
         {
@@ -278,6 +310,14 @@ class AdminAdvertiserController extends Controller
                     'responseBody' => $responseBody,
                 ];
                 return View::make('admin.expired_dashboard', $data);
+            }else if(check_storage_exist() == 0){
+                $settings = Setting::first();
+
+                $data = array(
+                    'settings' => $settings,
+                );
+
+                return View::make('admin.expired_storage', $data);
             } 
             
             else {
@@ -412,6 +452,14 @@ class AdminAdvertiserController extends Controller
                 'responseBody' => $responseBody,
             ];
             return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
         } else {
             $setting = Setting::first();
             if ($setting->ads_on_videos == 1) {
@@ -533,6 +581,14 @@ class AdminAdvertiserController extends Controller
                 'responseBody' => $responseBody,
             ];
             return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
         } else {
             $setting = Setting::first();
             if ($setting->ads_on_videos == 1) {

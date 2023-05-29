@@ -101,6 +101,14 @@ class AdminAudioController extends Controller
             'responseBody' => $responseBody,
     );
             return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
         }else{
         if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
       $search_value = $request->get('s');
@@ -180,6 +188,14 @@ class AdminAudioController extends Controller
             'responseBody' => $responseBody,
     );
             return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
         }else{
         if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
 
@@ -415,6 +431,14 @@ class AdminAudioController extends Controller
                     'responseBody' => $responseBody,
                 ];
                 return View::make('admin.expired_dashboard', $data);
+            }else if(check_storage_exist() == 0){
+                $settings = Setting::first();
+
+                $data = array(
+                    'settings' => $settings,
+                );
+
+                return View::make('admin.expired_storage', $data);
             } else {
                 if ($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role == "admin") {
                     
@@ -1350,6 +1374,14 @@ class AdminAudioController extends Controller
             'responseBody' => $responseBody,
                 );
             return View::make('admin.expired_dashboard', $data);
+            }else if(check_storage_exist() == 0){
+                $settings = Setting::first();
+
+                $data = array(
+                    'settings' => $settings,
+                );
+
+                return View::make('admin.expired_storage', $data);
             }else{
 
                 $audios =    Audio::join('channels', 'channels.id','=','audio.user_id')
@@ -1479,6 +1511,14 @@ class AdminAudioController extends Controller
                 'responseBody' => $responseBody,
             );
                 return View::make('admin.expired_dashboard', $data);
+            }else if(check_storage_exist() == 0){
+                $settings = Setting::first();
+
+                $data = array(
+                    'settings' => $settings,
+                );
+
+                return View::make('admin.expired_storage', $data);
             }else{
             // $videos = LiveStream::orderBy('created_at', 'DESC')->paginate(9);
     

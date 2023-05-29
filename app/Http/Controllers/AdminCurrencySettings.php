@@ -64,6 +64,14 @@ class AdminCurrencySettings extends Controller
             'responseBody' => $responseBody,
     );
             return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
         }else{
          $currency = Currency::get();
          $allCurrency = CurrencySetting::get();
@@ -151,6 +159,14 @@ class AdminCurrencySettings extends Controller
             'responseBody' => $responseBody,
     );
             return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
         }else{
         $allCurrency = CurrencySetting::first();
         // dd( $allCurrency);
