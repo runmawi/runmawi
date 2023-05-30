@@ -12580,11 +12580,11 @@ public function QRCodeMobileLogout(Request $request)
     }
 
     if($Homesetting->channel_partner == 1){
-      array_push($input,'channel_partner');
+      array_push($input,'ChannelPartner');
     }
 
     if($Homesetting->content_partner == 1){
-      array_push($input,'content_partner');
+      array_push($input,'ContentPartner');
     }
 
     if($Homesetting->continue_watching == 1){
