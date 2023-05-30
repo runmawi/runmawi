@@ -22,9 +22,14 @@ use App\State as State;
 use App\UserLogs as UserLogs;
 use File;
 use App\PlayerSeekTimeAnalytic as PlayerSeekTimeAnalytic;
+use View;
+use GuzzleHttp\Client;
+use GuzzleHttp\Message\Response;
+use \App\Setting as Setting;
 
 class AdminPlayerAnalyticsController extends Controller
 {
+
     public function PlayerAnalyticsCreate(Request $request){
 
 
@@ -96,6 +101,44 @@ class AdminPlayerAnalyticsController extends Controller
 
 
     public function PlayerVideoAnalytics(Request $request){
+
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+
+        if ($current_date > $duedate)
+        {
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [
+                'userid' => 0,
+            ];
+    
+            $headers = [
+                'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+            ];
+            $response = $client->request('post', $url, [
+                'json' => $params,
+                'headers' => $headers,
+                'verify'  => false,
+            ]);
+    
+                $responseBody = json_decode($response->getBody());
+                $settings = Setting::first();
+                $data = array(
+                    'settings' => $settings,
+                    'responseBody' => $responseBody,
+                );
+            return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
+        }
 
         $player_videos_count = PlayerAnalytic::get([ \DB::raw("COUNT(videoid) as count")]); 
         // groupBy('videoid')->
@@ -501,6 +544,44 @@ class AdminPlayerAnalyticsController extends Controller
     }
 
     public function RegionVideoAnalytics(Request $request){
+
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+
+        if ($current_date > $duedate)
+        {
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [
+                'userid' => 0,
+            ];
+    
+            $headers = [
+                'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+            ];
+            $response = $client->request('post', $url, [
+                'json' => $params,
+                'headers' => $headers,
+                'verify'  => false,
+            ]);
+    
+                $responseBody = json_decode($response->getBody());
+                $settings = Setting::first();
+                $data = array(
+                    'settings' => $settings,
+                    'responseBody' => $responseBody,
+                );
+            return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
+        }
 
         $player_videos_count = PlayerAnalytic::get([ \DB::raw("COUNT(videoid) as count")]); 
         $CountryCode = CountryCode::get();
@@ -1019,6 +1100,43 @@ class AdminPlayerAnalyticsController extends Controller
 
     public function PlayerUserAnalytics()
     {
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+
+        if ($current_date > $duedate)
+        {
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [
+                'userid' => 0,
+            ];
+    
+            $headers = [
+                'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+            ];
+            $response = $client->request('post', $url, [
+                'json' => $params,
+                'headers' => $headers,
+                'verify'  => false,
+            ]);
+    
+                $responseBody = json_decode($response->getBody());
+                $settings = Setting::first();
+                $data = array(
+                    'settings' => $settings,
+                    'responseBody' => $responseBody,
+                );
+            return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
+        }
         $player_videos_count = PlayerAnalytic::get([ \DB::raw("COUNT(videoid) as count")]); 
         $player_videos = PlayerAnalytic::join('users', 'users.id', '=', 'player_analytics.user_id')
         ->leftjoin('videos', 'videos.id', '=', 'player_analytics.videoid')

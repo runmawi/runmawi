@@ -104,6 +104,14 @@ class AdminSeriesController extends Controller
                 'responseBody' => $responseBody,
         );
                 return View::make('admin.expired_dashboard', $data);
+            }else if(check_storage_exist() == 0){
+                $settings = Setting::first();
+
+                $data = array(
+                    'settings' => $settings,
+                );
+
+                return View::make('admin.expired_storage', $data);
             }else{
 
           $search_value = $request->get('s');
@@ -168,6 +176,14 @@ class AdminSeriesController extends Controller
             'responseBody' => $responseBody,
     );
             return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
         }else{
         $data = array(
             'settings ' => $settings,
@@ -2736,6 +2752,14 @@ class AdminSeriesController extends Controller
             'responseBody' => $responseBody,
     );
             return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
         }else{
 
             $videos =    Series::where('active', '=',0)
@@ -2866,6 +2890,14 @@ class AdminSeriesController extends Controller
                 'responseBody' => $responseBody,
         );
                 return View::make('admin.expired_dashboard', $data);
+            }else if(check_storage_exist() == 0){
+                $settings = Setting::first();
+
+                $data = array(
+                    'settings' => $settings,
+                );
+
+                return View::make('admin.expired_storage', $data);
             }else{
             // $videos = LiveStream::orderBy('created_at', 'DESC')->paginate(9);
     

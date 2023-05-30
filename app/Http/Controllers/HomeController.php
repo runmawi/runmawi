@@ -65,6 +65,7 @@ use App\EmailTemplate;
 use App\VideoSchedules as VideoSchedules;
 use App\ScheduleVideos as ScheduleVideos;
 use App\Language as Language;
+use GuzzleHttp\Client;
 
 class HomeController extends Controller
 {
@@ -3647,8 +3648,43 @@ class HomeController extends Controller
 
     public function logActivity()
     {
-        $logs = \LogActivity::logActivityLists();
-        return view('admin.logActivity',compact('logs'));
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+
+        if ($current_date > $duedate)
+        {
+
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [
+                'userid' => 0,
+            ];
+    
+            $headers = [
+                'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+            ];
+            $response = $client->request('post', $url, [
+                'json' => $params,
+                'headers' => $headers,
+                'verify'  => false,
+            ]);
+    
+            $responseBody = json_decode($response->getBody());
+
+           $settings = Setting::first();
+           $data = array(
+            'settings' => $settings,
+            'responseBody' => $responseBody,
+            );
+            return View::make('admin.expired_dashboard', $data);
+
+        }else{
+            $logs = \LogActivity::logActivityLists();
+            return view('admin.logActivity',compact('logs'));
+        }
+
+
     }
 
     public function searchResult(Request $request)

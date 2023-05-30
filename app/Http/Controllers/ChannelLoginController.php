@@ -52,6 +52,8 @@ use App\VideoCommission;
 use Theme;
 use Intervention\Image\Facades\Image;
 use Intervention\Image\Filters\DemoFilter;
+use GuzzleHttp\Client;
+use GuzzleHttp\Message\Response;
 
 class ChannelLoginController extends Controller
 {
