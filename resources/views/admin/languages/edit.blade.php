@@ -83,7 +83,6 @@
                                 <input type="file" id="language_image" name="language_image" class="form-control" value="{{ $languages->language_image  }}">
                             </div>
                         </div>
-
                     </div>
 
                     <div class="row mt-3 p-3 align-items-center">
@@ -91,7 +90,10 @@
                         <div class="col-sm-6 mt-3" data-collapsed="0">
                             <div class="panel-body">
                                 @if(!empty( $languages->language_image ) && $languages->language_image != null )
-                                    <img src="{{ URL::to('/public/uploads/Language/'.$languages->language_image)  }}" class="movie-img" width="200" alt="No Image Found" />
+                                    @php
+                                        $image_name_WithoutExtension  = substr($languages->language_image, 0, strrpos($languages->language_image, '.'));
+                                    @endphp
+                                    <img src="{{ $image_name_WithoutExtension == "default_horizontal_image" ? URL::to('/public/uploads/images/' . $languages->language_image)  : URL::to('/public/uploads/Language/' . $languages->language_image) }}" class="movie-img" width="200" alt="No Image Found" />
                                 @endif
                             </div>
                         </div>
@@ -130,9 +132,9 @@
         $('form[id="language_edit"]').validate({
             rules: {
                 name: "required",
-                language_image: {
-                    required: '#check_image:blank',
-                },
+                // language_image: {
+                //     required: '#check_image:blank',
+                // },
             },
         
             submitHandler: function (form) {
