@@ -386,12 +386,12 @@ class AdminDashboardController extends Controller
         $locationData = \Location::get($userIp);
         echo"<pre>";
         print_r($locationData);
-        echo"<pre>";
-        print_r($countryName);
-        echo"<pre>";
-        print_r($regionName);
-        echo"<pre>";
-        print_r($cityName);
+        // echo"<pre>";
+        // print_r($countryName);
+        // echo"<pre>";
+        // print_r($regionName);
+        // echo"<pre>";
+        // print_r($cityName);
         exit;
     }
 }
