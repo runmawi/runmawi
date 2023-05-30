@@ -12291,7 +12291,7 @@ public function QRCodeMobileLogout(Request $request)
   {
       $user_id = $request->user_id;
 
-      $All_Homepage_homesetting =  $this->All_Homepage_homesetting();
+      $All_Homepage_homesetting =  $this->All_Homepage_homesetting( $user_id );
 
       $OrderHomeSettings =  OrderHomeSetting::whereIn('video_name', $All_Homepage_homesetting )->orderBy('order_id')->get()->toArray();
 
@@ -12527,13 +12527,11 @@ public function QRCodeMobileLogout(Request $request)
       return response()->json($response, 200);
   }
 
-  private  function All_Homepage_homesetting(){
+  private  function All_Homepage_homesetting( $user_id ){
 
      $Homesetting = MobileHomeSetting::first();
 
      $input = array();
-
-     $user_id = 1; 
 
      if($Homesetting->featured_videos == 1 && $this->All_Homepage_featured_videos()->isNotEmpty() ){
         array_push($input,'featured_videos');
@@ -12599,9 +12597,9 @@ public function QRCodeMobileLogout(Request $request)
       array_push($input,'latest_viewed_Videos');
     }
 
-    // if($Homesetting->latest_viewed_Livestream == 1 && ($this->All_Homepage_latest_viewed_Livestream( $user_id ))->isNotEmpty() ){
-    //   array_push($input,'latest_viewed_Livestream');
-    // }
+    if($Homesetting->latest_viewed_Livestream == 1 && ($this->All_Homepage_latest_viewed_Livestream( $user_id ))->isNotEmpty() ){
+      array_push($input,'latest_viewed_Livestream');
+    }
 
     if($Homesetting->latest_viewed_Episode == 1 && $this->All_Homepage_latest_viewed_Episode( $user_id )->isNotEmpty() ){
       array_push($input,'latest_viewed_Episode');
