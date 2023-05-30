@@ -7,15 +7,60 @@ use Illuminate\Http\Request;
 use App\Channel;
 use App\ChannelPackage;
 use Auth;
+use View;
+use GuzzleHttp\Client;
+use GuzzleHttp\Message\Response;
+use App\User;
+use App\Setting;
 
 class AdminChannelPackageController extends Controller
 {
+
     public function index(Request $request)
     {
-        $data = array(
-            'Channel_list' => ChannelPackage::get() ,
-        );
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
 
+        if ($current_date > $duedate)
+        {
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [
+                'userid' => 0,
+            ];
+    
+            $headers = [
+                'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+            ];
+            $response = $client->request('post', $url, [
+                'json' => $params,
+                'headers' => $headers,
+                'verify'  => false,
+            ]);
+    
+                $responseBody = json_decode($response->getBody());
+                $settings = Setting::first();
+                $data = array(
+                    'settings' => $settings,
+                    'responseBody' => $responseBody,
+                );
+            return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
+        }else{
+
+        
+            $data = array(
+                'Channel_list' => ChannelPackage::get() ,
+            );
+        }
        return view('admin.channel_package.index',$data);
     }
 

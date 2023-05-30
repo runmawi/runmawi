@@ -12,6 +12,10 @@ use Auth;
 use App\EmailTemplate;
 use Mail;
 use App\Setting;
+use GuzzleHttp\Client;
+use GuzzleHttp\Message\Response;
+use App\User;
+use View;
 
 class ContactController extends Controller
 {
@@ -136,13 +140,47 @@ class ContactController extends Controller
   
     public function ViewRequest()
     {
-        $contact = Contact::get();
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
 
-        $data = array(
-            'contact' => $contact,
-        );
+        if ($current_date > $duedate)
+        {
 
-		return \View::make('admin.contact.index',$data);
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [
+                'userid' => 0,
+            ];
+    
+            $headers = [
+                'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+            ];
+            $response = $client->request('post', $url, [
+                'json' => $params,
+                'headers' => $headers,
+                'verify'  => false,
+            ]);
+    
+            $responseBody = json_decode($response->getBody());
+
+           $settings = Setting::first();
+           $data = array(
+            'settings' => $settings,
+            'responseBody' => $responseBody,
+            );
+            return View::make('admin.expired_dashboard', $data);
+
+        }else{   
+
+            $contact = Contact::get();
+
+            $data = array(
+                'contact' => $contact,
+            );
+
+            return \View::make('admin.contact.index',$data);
+        }
     }
 
 }

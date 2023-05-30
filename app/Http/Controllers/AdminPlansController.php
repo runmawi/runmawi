@@ -100,6 +100,14 @@ public function PaypalIndex()
             );
 
             return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
         }
         else{
             
@@ -192,6 +200,14 @@ public function PaypalIndex()
             'responseBody' => $responseBody,
     );
             return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
         }else{
         // $edit_plan = SubscriptionPlan::find($id);
         $edit_plan =  SubscriptionPlan::where('id',$id)->get();
@@ -536,6 +552,14 @@ public function PaypalIndex()
                 'responseBody' => $responseBody,
         );
                 return View::make('admin.expired_dashboard', $data);
+            }else if(check_storage_exist() == 0){
+                $settings = Setting::first();
+
+                $data = array(
+                    'settings' => $settings,
+                );
+
+                return View::make('admin.expired_storage', $data);
             }else{
          $devices = Devices::all();
         
@@ -590,6 +614,14 @@ public function PaypalIndex()
             'responseBody' => $responseBody,
     );
             return View::make('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
         }else{
     	 $edit_devices =  Devices::where('id', '=', $id)->first();
          

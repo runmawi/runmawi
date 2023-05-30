@@ -121,6 +121,14 @@ class AdminVideosController extends Controller
                 "responseBody" => $responseBody,
             ];
             return View::make("admin.expired_dashboard", $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
         } else {
             // $search_value = Request::get('s');
             if (!empty($search_value)):
@@ -662,6 +670,14 @@ class AdminVideosController extends Controller
                 "responseBody" => $responseBody,
             ];
             return View::make("admin.expired_dashboard", $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
         } else {
 
                 $StorageSetting = StorageSetting::first();
@@ -3322,6 +3338,14 @@ class AdminVideosController extends Controller
                 "responseBody" => $responseBody,
             ];
             return View::make("admin.expired_dashboard", $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
         } else {
             
             $videos = Video::where("active", 1)->where('status',0)->where('uploaded_by','CPP')->latest()->get();
@@ -3930,6 +3954,14 @@ class AdminVideosController extends Controller
                 "responseBody" => $responseBody,
             ];
             return View::make("admin.expired_dashboard", $data);
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
         } else {
             $videos = Video::where("active", "=", 1)
                 ->orderBy("created_at", "DESC")
@@ -4066,51 +4098,88 @@ class AdminVideosController extends Controller
 
     public function PurchasedVideoAnalytics()
     {
-        $user_package = User::where("id", 1)->first();
-        $package = $user_package->package;
-        if (
-            (!empty($package) && $package == "Pro") ||
-            (!empty($package) && $package == "Business")
-        ) {
-            $settings = Setting::first();
-            $total_content = Video::join(
-                "ppv_purchases",
-                "ppv_purchases.video_id",
-                "=",
-                "videos.id"
-            )
-                ->join("users", "users.id", "=", "ppv_purchases.user_id")
-                ->groupBy("ppv_purchases.id")
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+          $client = new Client();
+          $url = "https://flicknexs.com/userapi/allplans";
+          $params = [
+              'userid' => 0,
+          ];
+  
+          $headers = [
+              'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+          ];
+          $response = $client->request('post', $url, [
+              'json' => $params,
+              'headers' => $headers,
+              'verify'  => false,
+          ]);
+  
+          $responseBody = json_decode($response->getBody());
+         $settings = Setting::first();
+         $data = array(
+          'settings' => $settings,
+          'responseBody' => $responseBody,
+  );
+            return view('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+          $settings = Setting::first();
 
-                ->get([
-                    \DB::raw("videos.*"),
-                    \DB::raw("users.username"),
-                    \DB::raw("users.email"),
-                    \DB::raw("ppv_purchases.total_amount"),
-                    \DB::raw("ppv_purchases.created_at as ppvcreated_at"),
-                    // DB::raw(
-                    //     "sum(ppv_purchases.total_amount) as total_amount"
-                    // ),
-                    \DB::raw("COUNT(*) as count"),
-                    \DB::raw(
-                        "MONTHNAME(ppv_purchases.created_at) as month_name"
-                    ),
-                ]);
-            // dd($total_content);
-            $total_contentss = $total_content->groupBy("month_name");
+          $data = array(
+              'settings' => $settings,
+          );
 
-            // dd($total_content);
+          return View::make('admin.expired_storage', $data);
+      }else{
+            $user_package = User::where("id", 1)->first();
+            $package = $user_package->package;
+            if (
+                (!empty($package) && $package == "Pro") ||
+                (!empty($package) && $package == "Business")
+            ) {
+                $settings = Setting::first();
+                $total_content = Video::join(
+                    "ppv_purchases",
+                    "ppv_purchases.video_id",
+                    "=",
+                    "videos.id"
+                )
+                    ->join("users", "users.id", "=", "ppv_purchases.user_id")
+                    ->groupBy("ppv_purchases.id")
 
-            $data = [
-                "settings" => $settings,
-                "total_content" => $total_content,
-                "total_video_count" => count($total_content),
-                "total_contentss" => $total_contentss,
-                "currency" => CurrencySetting::first(),
-            ];
-            return view("admin.analytics.purchased_video_analytics", $data);
-        } else {
-            return Redirect::to("/blocked");
+                    ->get([
+                        \DB::raw("videos.*"),
+                        \DB::raw("users.username"),
+                        \DB::raw("users.email"),
+                        \DB::raw("ppv_purchases.total_amount"),
+                        \DB::raw("ppv_purchases.created_at as ppvcreated_at"),
+                        // DB::raw(
+                        //     "sum(ppv_purchases.total_amount) as total_amount"
+                        // ),
+                        \DB::raw("COUNT(*) as count"),
+                        \DB::raw(
+                            "MONTHNAME(ppv_purchases.created_at) as month_name"
+                        ),
+                    ]);
+                // dd($total_content);
+                $total_contentss = $total_content->groupBy("month_name");
+
+                // dd($total_content);
+
+                $data = [
+                    "settings" => $settings,
+                    "total_content" => $total_content,
+                    "total_video_count" => count($total_content),
+                    "total_contentss" => $total_contentss,
+                    "currency" => CurrencySetting::first(),
+                ];
+                return view("admin.analytics.purchased_video_analytics", $data);
+            } else {
+                return Redirect::to("/blocked");
+            }
         }
     }
 
