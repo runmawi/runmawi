@@ -322,7 +322,7 @@ $channel = App\Channel::where('id',$channel->id)->first();
                               <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
                                     <input id="email" type="hidden"  name="email"  value="<?=  $ModeratorsUser->email ?>"  autocomplete="email" autofocus>
                                     <input id="password" type="hidden"  name="password" value="<?=  $ModeratorsUser->password ?>" autocomplete="current-password" >
-                                    <button type="submit" class="btn btn-hover" style="margin-top: -13%;margin-left: -8%;">Visit CPP Portal </button>                          
+                                    <button type="submit" class="btn btn-hover" style="margin-top: -13%;margin-left: -78%;">Visit CPP Portal </button>                          
                           </form>
                         </div>
                       <?php } ?>
