@@ -22,6 +22,7 @@ Route::get('/admin/mergeMp4Files', 'TranscodeController@mergeMp4Files');
 Route::get('/merge-m3u8-files', 'TranscodeController@mergeM3u8Files');
 Route::get('/storagelimitone', 'AdminDashboardController@storagelimitone'); 
 Route::get('/storagelimit', 'AdminDashboardController@storagelimit'); 
+Route::get('/country_route_check', 'AdminDashboardController@testuserroute'); 
 
 
 Route::get('/moderator', 'ModeratorsUserController@index');
