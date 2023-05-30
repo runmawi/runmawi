@@ -376,5 +376,21 @@ class AdminDashboardController extends Controller
         }
     
     }
+    public function testuserroute(){
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+        $userIp = $geoip->getip();
+        $countryName = $geoip->getCountry();
+        $regionName = $geoip->getregion();
+        $cityName = $geoip->getcity();
 
+        echo"<pre>";
+        print_r($userIp);
+        echo"<pre>";
+        print_r($countryName);
+        echo"<pre>";
+        print_r($regionName);
+        echo"<pre>";
+        print_r($cityName);
+        exit;
+    }
 }
