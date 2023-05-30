@@ -12605,13 +12605,13 @@ public function QRCodeMobileLogout(Request $request)
       array_push($input,'latest_viewed_Episode');
     }
 
-    if($Homesetting->latest_viewed_Audios == 1 && count($this->All_Homepage_latest_viewed_Audios( $user_id )) != 0 ){
+    if($Homesetting->latest_viewed_Audios == 1 && $this->All_Homepage_latest_viewed_Audios( $user_id )->isNotEmpty() ){
       array_push($input,'latest_viewed_Audios');
     }
 
-    // if($Homesetting->Recommendation == 1 ){
-    //   array_push($input,'Recommendation');
-    // }
+    if($Homesetting->Recommendation == 1 ){
+      array_push($input,'Recommendation');
+    }
 
     if($Homesetting->continue_watching == 1 ){
       array_push($input,'continue_watching');
@@ -13094,7 +13094,7 @@ public function QRCodeMobileLogout(Request $request)
                   }
 
                   $data = $data->limit(30)->get()->map(function ($item) {
-                      $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image ;
+                      $item['image_url'] = URL::to('public/uploads/images/'.$item->image) ;
                       $item['source']    = "Videos";
                   return $item;
             });
@@ -13130,7 +13130,7 @@ public function QRCodeMobileLogout(Request $request)
                   }
 
                   $data = $data->limit(30)->get()->map(function ($item) {
-                      $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image ;
+                      $item['image_url'] = URL::to('public/uploads/images/'.$item->image) ;
                       $item['source']    = "Videos"; 
                   return $item;
             });
