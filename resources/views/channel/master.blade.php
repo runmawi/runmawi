@@ -72,7 +72,12 @@ $channel = App\Channel::where('id',$channel->id)->first();
     <script src="https://oss.maxcdn.com/libs/respond.js') }}/1.4.2/respond.min.js') }}"></script>
   <![endif]-->
 <style>
-
+.iq-search-bar {
+    padding: 0 15px;
+    position: absolute;
+    right: 60px;
+    z-index: 1;
+}
     .top-left-logo img {
         opacity: 0.9;
         overflow: hidden;
